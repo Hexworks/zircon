@@ -49,13 +49,13 @@ Adding content to your [Terminal] is also very simple:
 
 ```java
 // Enable a modifier (means that any following characters will have this modifier)
-terminal.enableModifier(CROSSED_OUT);
+terminal.enableModifier(Modifier.CROSSED_OUT);
 
 // set a background for the following characters
-terminal.setBackgroundColor(BLUE);
+terminal.setBackgroundColor(TextColor.ANSI.BLUE);
 
 // set a foreground
-terminal.setForegroundColor(YELLOW);
+terminal.setForegroundColor(TextColor.ANSI.YELLOW);
 
 // and finally put a character on the screen
 terminal.putCharacter('A');
@@ -67,17 +67,17 @@ Let's add some more content!
 terminal.resetColorsAndModifiers();
 terminal.putCharacter(' ');
 
-terminal.enableModifiers(BOLD, ITALIC);
-terminal.setBackgroundColor(GREEN);
-terminal.setForegroundColor(YELLOW);
+terminal.enableModifiers(Modifier.BOLD, Modifier.ITALIC);
+terminal.setBackgroundColor(TextColor.ANSI.GREEN);
+terminal.setForegroundColor(TextColor.ANSI.YELLOW);
 terminal.putCharacter('B');
 
 terminal.resetColorsAndModifiers();
 terminal.putCharacter(' ');
 
-terminal.enableModifiers(BLINK);
-terminal.setBackgroundColor(RED);
-terminal.setForegroundColor(WHITE);
+terminal.enableModifiers(Modifier.BLINK);
+terminal.setBackgroundColor(TextColor.ANSI.RED);
+terminal.setForegroundColor(TextColor.ANSI.WHITE);
 terminal.putCharacter('C');
 ```
 And the result is:
