@@ -114,6 +114,12 @@ textGraphics.setForegroundColor(TextColor.ANSI.CYAN);
 textGraphics.putString(new TerminalPosition(10, 10), String.format("<%s>", "OK"), Collections.emptySet());
 ```
 
+display it:
+
+```java
+screen.display();
+```
+
 and you'll have this:
 
 ![][button img]
