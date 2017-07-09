@@ -10,6 +10,7 @@ import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.terminal.DefaultTerminalFactory;
 import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.TerminalSize;
+import org.codetome.zircon.terminal.config.TerminalFontConfiguration;
 import org.codetome.zircon.terminal.swing.SwingTerminalFrame;
 
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ public class TypingExample {
     public static void main(String[] args) {
         final DefaultTerminalFactory factory = new DefaultTerminalFactory();
         factory.setInitialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT));
+        final TerminalFontConfiguration fontConfig = TerminalFontConfiguration.getDefault();
+        fontConfig.setAntiAliased(false);
+        factory.setTerminalFontConfiguration(fontConfig);
         final Terminal terminal = factory.createTerminal();
         final Screen screen = factory.createScreenFor(terminal);
 

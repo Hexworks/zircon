@@ -3,6 +3,7 @@ package org.codetome.zircon.examples;
 import org.codetome.zircon.terminal.DefaultTerminalFactory;
 import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.TerminalSize;
+import org.codetome.zircon.terminal.config.TerminalFontConfiguration;
 
 import static org.codetome.zircon.Modifier.*;
 import static org.codetome.zircon.TextColor.ANSI.*;
@@ -15,6 +16,9 @@ public class FontModifiersExample {
     public static void main(String[] args) {
         final DefaultTerminalFactory factory = new DefaultTerminalFactory();
         factory.setInitialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT));
+        final TerminalFontConfiguration fontConfig = TerminalFontConfiguration.getDefault();
+        fontConfig.setAntiAliased(false);
+        factory.setTerminalFontConfiguration(fontConfig);
         final Terminal terminal = factory.createTerminal();
 
         terminal.enableModifier(CROSSED_OUT);

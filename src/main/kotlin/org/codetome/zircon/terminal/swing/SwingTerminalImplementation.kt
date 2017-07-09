@@ -66,7 +66,7 @@ class SwingTerminalImplementation(
         return fontConfiguration.getFontForCharacter(character)
     }
 
-    override fun isTextAntiAliased() = fontConfiguration.isAntiAliased
+    override fun isTextAntiAliased() = fontConfiguration.isAntiAliased()
 
     override fun repaint() {
         if (SwingUtilities.isEventDispatchThread()) {
