@@ -13,8 +13,8 @@ import java.awt.font.FontRenderContext
  * Font configuration class for [org.codetome.zircon.terminal.swing.SwingTerminalComponent].
  */
 class TerminalFontConfiguration(
-        internal val isAntiAliased: Boolean,
-        private val boldMode: BoldMode,
+        private var antiAliased: Boolean,
+        private var boldMode: BoldMode,
         vararg fontsInOrderOfPriority: Font) {
 
     private val fontsInOrderOfPriority: MutableList<Font>
@@ -24,6 +24,18 @@ class TerminalFontConfiguration(
     fun getFontWidth() = fontWidth
 
     fun getFontHeight() = fontHeight
+
+    fun isAntiAliased() = antiAliased
+
+    fun setAntiAliased(antiAliased: Boolean) {
+        this.antiAliased = antiAliased
+    }
+
+    fun getBoldMode() = boldMode
+
+    fun setBoldMode(boldMode: BoldMode) {
+        this.boldMode = boldMode
+    }
 
     init {
         if (fontsInOrderOfPriority.isEmpty()) {
@@ -83,7 +95,7 @@ class TerminalFontConfiguration(
     }
 
     private fun getFontRenderContext() = FontRenderContext(null,
-            if (isAntiAliased) {
+            if (antiAliased) {
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON
             } else {
                 RenderingHints.VALUE_TEXT_ANTIALIAS_OFF
