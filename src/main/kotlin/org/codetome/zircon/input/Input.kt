@@ -54,6 +54,10 @@ data class KeyStroke(
             character
         }
     }
+
+    companion object {
+        val EOF_STROKE = KeyStroke(character = ' ', it = InputType.EOF)
+    }
 }
 
 /**

@@ -13,9 +13,4 @@ interface InputProvider {
      */
     fun pollInput(): Optional<Input>
 
-    /**
-     * Returns the next [Input] off the input queue or blocks until one is available.
-     */
-    fun readInput(): Input
-
 }

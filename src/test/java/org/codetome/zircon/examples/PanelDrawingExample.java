@@ -25,7 +25,9 @@ public class PanelDrawingExample {
 
     public static void main(String[] args) {
         final DefaultTerminalFactory factory = new DefaultTerminalFactory();
-        factory.setTerminalFontConfiguration(TerminalFontConfiguration.Companion.getDefault());
+        final TerminalFontConfiguration fontConfig = TerminalFontConfiguration.getDefault();
+        fontConfig.setAntiAliased(true);
+        factory.setTerminalFontConfiguration(fontConfig);
         factory.setInitialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT));
         final Terminal terminal = factory.createTerminal();
 
