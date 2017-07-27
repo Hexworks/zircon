@@ -4,6 +4,8 @@ import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.TextUtils
 import org.codetome.zircon.input.Input
+import org.codetome.zircon.input.InputType
+import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.screen.TabBehavior
 import org.codetome.zircon.terminal.AbstractTerminal
 import org.codetome.zircon.terminal.TerminalSize
@@ -38,7 +40,7 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
     override fun setTerminalSize(newSize: TerminalSize) {
         this.terminalSize.set(newSize)
         cursorPosition.get().let {
-            if(it.row >= newSize.rows || it.column >= newSize.columns) {
+            if (it.row >= newSize.rows || it.column >= newSize.columns) {
                 setCursorPosition(TerminalPosition.DEFAULT_POSITION)
             }
         }
@@ -103,13 +105,13 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
     @Synchronized
     override fun flush() = listeners.forEach { it.onFlush() }
 
-    override fun close() = listeners.forEach { it.onClose() }
+    override fun close() {
+        inputQueue.add(KeyStroke(character = ' ', it = InputType.EOF))
+        listeners.forEach { it.onClose() }
+    }
 
     @Synchronized
     override fun pollInput() = Optional.ofNullable(inputQueue.poll())
-
-    @Synchronized
-    override fun readInput(): Input = inputQueue.take()
 
     override fun newTextGraphics() = VirtualTerminalTextGraphics(this)
 

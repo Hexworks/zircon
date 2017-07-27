@@ -9,13 +9,16 @@ import org.codetome.zircon.TextColor
  * and if the cursor should blink or not.
  */
 class TerminalDeviceConfiguration(
-        val blinkLengthInMilliSeconds: Long = 500,
-        val cursorStyle: CursorStyle = CursorStyle.REVERSED,
-        val cursorColor: TextColor = TextColor.ANSI.WHITE,
-        val isCursorBlinking: Boolean = false,
-        val isClipboardAvailable: Boolean = true) {
+        var blinkLengthInMilliSeconds: Long = 500,
+        var cursorStyle: CursorStyle = CursorStyle.REVERSED,
+        var cursorColor: TextColor = TextColor.ANSI.WHITE,
+        var isCursorBlinking: Boolean = false,
+        var isClipboardAvailable: Boolean = true) {
+
 
     companion object {
+
+        @JvmStatic
         fun getDefault() = TerminalDeviceConfiguration()
     }
 }

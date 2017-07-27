@@ -1,7 +1,10 @@
 package org.codetome.zircon.terminal.swing
 
 import org.codetome.zircon.*
-import org.codetome.zircon.input.*
+import org.codetome.zircon.input.InputType
+import org.codetome.zircon.input.KeyStroke
+import org.codetome.zircon.input.MouseAction
+import org.codetome.zircon.input.MouseActionType
 import org.codetome.zircon.input.MouseActionType.*
 import org.codetome.zircon.terminal.config.CursorStyle.*
 import org.codetome.zircon.terminal.config.TerminalColorConfiguration
@@ -12,13 +15,12 @@ import java.awt.datatransfer.DataFlavor
 import java.awt.event.*
 import java.awt.image.BufferedImage
 import java.util.*
-import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * This is the class that does the heavy lifting for [SwingTerminalComponent]. It maintains
- * most of the external terminal state and also the main back buffer that is copied to the component area on draw
- * operations.
+ * most of the external terminal state and also the main back buffer that is copied to the component
+ * area on draw operations.
  */
 @Suppress("unused")
 abstract class GraphicalTerminalImplementation(
@@ -27,20 +29,16 @@ abstract class GraphicalTerminalImplementation(
         private val virtualTerminal: VirtualTerminal)
     : VirtualTerminal by virtualTerminal {
 
-    private val keyQueue = LinkedBlockingQueue<Input>()
-    private val dirtyCellsLookupTable = DirtyCellsLookupTable()
-    private var cursorIsVisible = true
-    private var enableInput = false
+    private var enableInput = AtomicBoolean(false)
     private var hasBlinkingText = false
     private var blinkOn = true
-    private var needFullRedraw = false
     private var lastDrawnCursorPosition: TerminalPosition = TerminalPosition.UNKNOWN
     private var lastBufferUpdateScrollPosition: Int = 0
     private var lastComponentWidth: Int = 0
     private var lastComponentHeight: Int = 0
 
     private var blinkTimer: Optional<Timer> = Optional.empty()
-    private var backBuffer: Optional<BufferedImage> = Optional.empty()
+    private var buffer: Optional<BufferedImage> = Optional.empty()
 
     /**
      * Used to find out the font height, in pixels.
@@ -81,15 +79,14 @@ abstract class GraphicalTerminalImplementation(
     @Synchronized
     fun onCreated() {
         startBlinkTimer()
-        enableInput = true
-        keyQueue.clear()
+        enableInput.set(true)
     }
 
     @Synchronized
     fun onDestroyed() {
         stopBlinkTimer()
-        enableInput = false
-        keyQueue.add(KeyStroke(character = ' ', it = InputType.EOF))
+        enableInput.set(false)
+        virtualTerminal.addInput(KeyStroke.EOF_STROKE)
     }
 
     /**
@@ -134,7 +131,7 @@ abstract class GraphicalTerminalImplementation(
      */
     @Synchronized
     fun paintComponent(componentGraphics: Graphics) {
-        var needToUpdateBackBuffer = hasBlinkingText.or(needFullRedraw)
+        var needToUpdateBackBuffer = hasBlinkingText
 
         // Detect resize
         if (resizeHappened()) {
@@ -155,7 +152,7 @@ abstract class GraphicalTerminalImplementation(
             clipBounds = Rectangle(0, 0, getWidth(), getHeight())
         }
         componentGraphics.drawImage(
-                backBuffer.get(),
+                buffer.get(),
                 // Destination coordinates
                 clipBounds.x,
                 clipBounds.y,
@@ -167,32 +164,35 @@ abstract class GraphicalTerminalImplementation(
                 clipBounds.getWidth().toInt(),
                 clipBounds.getHeight().toInt(), null)
 
-        // Take care of the left-over area at the bottom and right of the component where no character can fit
-        //int leftoverHeight = getHeight() % getFontHeight();
-        val leftoverWidth = getWidth() % getFontWidth()
-        componentGraphics.color = Color.BLACK
-        if (leftoverWidth > 0) {
-            componentGraphics.fillRect(getWidth() - leftoverWidth, 0, leftoverWidth, getHeight())
-        }
+        fillLeftoverSpaceWithBlack(componentGraphics)
 
-        //0, 0, getWidth(), getHeight(), 0, 0, getWidth(), getHeight(), null);
         this.lastComponentWidth = getWidth()
         this.lastComponentHeight = getHeight()
         componentGraphics.dispose()
     }
 
+    private fun fillLeftoverSpaceWithBlack(componentGraphics: Graphics) {
+        // Take care of the left-over area at the bottom and right of the component where no character can fit
+        componentGraphics.color = Color.BLACK
+
+        val leftoverWidth = getWidth() % getFontWidth()
+        if (leftoverWidth > 0) {
+            componentGraphics.fillRect(getWidth() - leftoverWidth, 0, leftoverWidth, getHeight())
+        }
+
+        val leftoverHeight = getHeight() % getFontHeight()
+        if (leftoverHeight > 0) {
+            componentGraphics.fillRect(0, getHeight() - leftoverHeight, getWidth(), leftoverHeight)
+        }
+    }
+
     @Synchronized
     private fun updateBackBuffer() {
-        //Retrieve the position of the cursor, relative to the scrolling state
         val cursorPosition = virtualTerminal.getCursorPosition()
-        val viewportSize = virtualTerminal.getTerminalSize()
+        val terminalSize = virtualTerminal.getTerminalSize()
 
-        val firstVisibleRowIndex = 0
-        val lastVisibleRowIndex = getHeight() / getFontHeight()
-
-        //Setup the graphics object
         ensureGraphicBufferHasRightSize()
-        val backBufferGraphics = backBuffer.get().createGraphics()
+        val backBufferGraphics: Graphics2D = buffer.get().createGraphics()
 
         if (isTextAntiAliased()) {
             backBufferGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
@@ -200,40 +200,25 @@ abstract class GraphicalTerminalImplementation(
         }
 
         val foundBlinkingCharacters = AtomicBoolean(deviceConfiguration.isCursorBlinking)
-        buildDirtyCellsLookupTable(firstVisibleRowIndex, lastVisibleRowIndex)
-
-        // Detect component resize
-        if (lastComponentWidth < getWidth()) {
-            if (!dirtyCellsLookupTable.isAllDirty()) {
-                //Mark right columns as dirty so they are repainted
-                val lastVisibleColumnIndex = getWidth() / getFontWidth()
-                val previousLastVisibleColumnIndex = lastComponentWidth / getFontWidth()
-                for (column in previousLastVisibleColumnIndex..lastVisibleColumnIndex) {
-                    dirtyCellsLookupTable.setColumnDirty(column)
-                }
-            }
+        var isAllDirty = virtualTerminal.isWholeBufferDirtyThenReset()
+        val dirtyCells = virtualTerminal.getAndResetDirtyCells()
+        if(resizeHappened()) {
+            isAllDirty = true
         }
-        if (lastComponentHeight < getHeight()) {
-            if (!dirtyCellsLookupTable.isAllDirty()) {
-                //Mark bottom rows as dirty so they are repainted
-                val previousLastVisibleRowIndex = (lastComponentHeight) / getFontHeight()
-                for (row in previousLastVisibleRowIndex..lastVisibleRowIndex) {
-                    dirtyCellsLookupTable.setRowDirty(row)
-                }
-            }
+        if (lastDrawnCursorPosition != cursorPosition) {
+            dirtyCells.add(lastDrawnCursorPosition)
         }
-
-        virtualTerminal.forEachLine(firstVisibleRowIndex, lastVisibleRowIndex, object : VirtualTerminal.BufferWalker {
+        virtualTerminal.forEachLine(0, terminalSize.rows - 1, object : VirtualTerminal.BufferWalker {
             override fun onLine(rowNumber: Int, bufferLine: VirtualTerminal.BufferLine) {
                 var column = 0
-                while (column < viewportSize.columns) {
+                while (column < terminalSize.columns) {
                     val textCharacter = bufferLine.getCharacterAt(column)
                     val atCursorLocation = cursorPosition == TerminalPosition(column, rowNumber)
                     val isBlinking = textCharacter.getModifiers().contains(Modifier.BLINK)
                     if (isBlinking) {
                         foundBlinkingCharacters.set(true)
                     }
-                    if (dirtyCellsLookupTable.isAllDirty() || dirtyCellsLookupTable.isDirty(rowNumber, column) || isBlinking) {
+                    if (isAllDirty || dirtyCells.contains(TerminalPosition(column, rowNumber)) || isBlinking) {
                         val characterWidth = getFontWidth()
                         val foregroundColor = deriveTrueForegroundColor(textCharacter, atCursorLocation)
                         val backgroundColor = deriveTrueBackgroundColor(textCharacter, atCursorLocation)
@@ -259,39 +244,19 @@ abstract class GraphicalTerminalImplementation(
         // Update the blink status according to if there were any blinking characters or not
         this.hasBlinkingText = foundBlinkingCharacters.get()
         this.lastDrawnCursorPosition = cursorPosition
-        this.needFullRedraw = false
 
-    }
-
-    private fun buildDirtyCellsLookupTable(firstRowOffset: Int, lastRowOffset: Int) {
-        if (virtualTerminal.isWholeBufferDirtyThenReset() || needFullRedraw) {
-            dirtyCellsLookupTable.setAllDirty()
-            return
-        }
-
-        val viewportSize = virtualTerminal.getTerminalSize()
-        val cursorPosition = virtualTerminal.getCursorPosition()
-
-        dirtyCellsLookupTable.resetAndInitialize(firstRowOffset, lastRowOffset, viewportSize.columns)
-        dirtyCellsLookupTable.setDirty(cursorPosition)
-        if (lastDrawnCursorPosition != cursorPosition) {
-            dirtyCellsLookupTable.setDirty(lastDrawnCursorPosition)
-        }
-
-        val dirtyCells = virtualTerminal.getAndResetDirtyCells()
-        dirtyCells.forEach { position -> dirtyCellsLookupTable.setDirty(position) }
     }
 
     private fun ensureGraphicBufferHasRightSize() {
-        if (backBuffer.isPresent.not()) {
-            backBuffer = Optional.of(BufferedImage(getWidth() * 2, getHeight() * 2, BufferedImage.TYPE_INT_RGB))
+        if (buffer.isPresent.not()) {
+            buffer = Optional.of(BufferedImage(getWidth() * 2, getHeight() * 2, BufferedImage.TYPE_INT_RGB))
 
-            val graphics = backBuffer.get().createGraphics()
+            val graphics = buffer.get().createGraphics()
             graphics.color = colorConfiguration.toAWTColor(TextColor.ANSI.DEFAULT, false, false)
             graphics.fillRect(0, 0, getWidth() * 2, getHeight() * 2)
             graphics.dispose()
         }
-        val backBufferRef = backBuffer.get()
+        val backBufferRef = buffer.get()
         if (backBufferRef.width < getWidth() || backBufferRef.width > getWidth() * 4 ||
                 backBufferRef.height < getHeight() || backBufferRef.height > getHeight() * 4) {
 
@@ -300,7 +265,7 @@ abstract class GraphicalTerminalImplementation(
             graphics.fillRect(0, 0, newBackBuffer.width, newBackBuffer.height)
             graphics.drawImage(backBufferRef, 0, 0, null)
             graphics.dispose()
-            backBuffer = Optional.of(newBackBuffer)
+            buffer = Optional.of(newBackBuffer)
         }
     }
 
@@ -356,7 +321,7 @@ abstract class GraphicalTerminalImplementation(
         var inverse = character.isInverse()
         val blink = character.isBlinking()
 
-        if (cursorIsVisible && atCursorLocation) {
+        if (isCursorVisible() && atCursorLocation) {
             if (deviceConfiguration.cursorStyle === REVERSED) {
                 inverse = true
             }
@@ -375,7 +340,7 @@ abstract class GraphicalTerminalImplementation(
         val foregroundColor = character.getForegroundColor()
         var backgroundColor = character.getBackgroundColor()
         var reverse = false
-        if (cursorIsVisible && atCursorLocation) {
+        if (isCursorVisible() && atCursorLocation) {
             if (deviceConfiguration.cursorStyle === REVERSED && (!deviceConfiguration.isCursorBlinking || !blinkOn)) {
                 reverse = true
             } else if (deviceConfiguration.cursorStyle === FIXED_BACKGROUND) {
@@ -390,23 +355,6 @@ abstract class GraphicalTerminalImplementation(
         }
     }
 
-    override fun pollInput(): Optional<Input> {
-        if (!enableInput) {
-            return Optional.of(KeyStroke(character = ' ', it = InputType.EOF))
-        }
-        return Optional.ofNullable(keyQueue.poll())
-    }
-
-
-    override fun readInput(): Input {
-        synchronized(keyQueue) {
-            if (!enableInput) {
-                return KeyStroke(character = ' ', it = InputType.EOF)
-            }
-            return keyQueue.take()
-        }
-    }
-
     @Synchronized
     override fun clearScreen() {
         virtualTerminal.clearScreen()
@@ -414,8 +362,8 @@ abstract class GraphicalTerminalImplementation(
     }
 
     private fun clearBackBuffer() {
-        if (backBuffer.isPresent) {
-            val graphics = backBuffer.get().createGraphics()
+        if (buffer.isPresent) {
+            val graphics = buffer.get().createGraphics()
             val backgroundColor = colorConfiguration.toAWTColor(TextColor.ANSI.DEFAULT, false, false)
             graphics.color = backgroundColor
             graphics.fillRect(0, 0, getWidth(), getHeight())
@@ -433,10 +381,6 @@ abstract class GraphicalTerminalImplementation(
             fixedPos = fixedPos.withRow(0)
         }
         virtualTerminal.setCursorPosition(fixedPos)
-    }
-
-    override fun setCursorVisible(cursorVisible: Boolean) {
-        cursorIsVisible = cursorVisible
     }
 
     @Synchronized
@@ -471,7 +415,7 @@ abstract class GraphicalTerminalImplementation(
                 if (!altDown && ctrlDown && shiftDown && character == 'V' && deviceConfiguration.isClipboardAvailable) {
                     pasteClipboardContent()
                 } else {
-                    keyQueue.add(KeyStroke(
+                    virtualTerminal.addInput(KeyStroke(
                             character = character,
                             ctrlDown = ctrlDown,
                             altDown = altDown,
@@ -490,25 +434,25 @@ abstract class GraphicalTerminalImplementation(
                 if (!altDown && !ctrlDown && shiftDown && deviceConfiguration.isClipboardAvailable) {
                     pasteClipboardContent()
                 } else {
-                    keyQueue.add(KeyStroke(it = InputType.Insert,
+                    virtualTerminal.addInput(KeyStroke(it = InputType.Insert,
                             ctrlDown = ctrlDown,
                             altDown = altDown,
                             shiftDown = shiftDown))
                 }
             } else if (e.keyCode == KeyEvent.VK_TAB) {
                 if (e.isShiftDown) {
-                    keyQueue.add(KeyStroke(it = InputType.ReverseTab,
+                    virtualTerminal.addInput(KeyStroke(it = InputType.ReverseTab,
                             ctrlDown = ctrlDown,
                             altDown = altDown,
                             shiftDown = shiftDown))
                 } else {
-                    keyQueue.add(KeyStroke(it = InputType.Tab,
+                    virtualTerminal.addInput(KeyStroke(it = InputType.Tab,
                             ctrlDown = ctrlDown,
                             altDown = altDown,
                             shiftDown = shiftDown))
                 }
             } else if (KEY_EVENT_TO_KEY_TYPE_LOOKUP.containsKey(e.keyCode)) {
-                keyQueue.add(KeyStroke(it = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
+                virtualTerminal.addInput(KeyStroke(it = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
                         shiftDown = shiftDown))
@@ -519,7 +463,7 @@ abstract class GraphicalTerminalImplementation(
                     if (!shiftDown) {
                         character = Character.toLowerCase(character)
                     }
-                    keyQueue.add(KeyStroke(
+                    virtualTerminal.addInput(KeyStroke(
                             character = character,
                             ctrlDown = ctrlDown,
                             altDown = altDown,
@@ -575,7 +519,7 @@ abstract class GraphicalTerminalImplementation(
         }
 
         private fun addActionToKeyQueue(actionType: MouseActionType, e: MouseEvent) {
-            keyQueue.add(MouseAction(
+            virtualTerminal.addInput(MouseAction(
                     actionType = actionType,
                     button = e.button,
                     position = TerminalPosition(
@@ -603,7 +547,7 @@ abstract class GraphicalTerminalImplementation(
                     TextUtils.isPrintableCharacter(it)
                 }
                 .forEach {
-                    keyQueue.add(KeyStroke(character = it))
+                    virtualTerminal.addInput(KeyStroke(character = it))
                 }
     }
 

@@ -75,11 +75,4 @@ class SwingTerminalImplementation(
             SwingUtilities.invokeLater { component.repaint() }
         }
     }
-
-    override fun readInput(): Input {
-        if (SwingUtilities.isEventDispatchThread()) {
-            throw UnsupportedOperationException("Cannot call SwingTerminalComponent.readInput() on the AWT thread")
-        }
-        return super.readInput()
-    }
 }

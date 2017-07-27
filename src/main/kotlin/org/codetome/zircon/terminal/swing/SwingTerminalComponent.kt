@@ -133,10 +133,6 @@ class SwingTerminalComponent(
         return terminalImplementation.pollInput()
     }
 
-    override fun readInput(): Input {
-        return terminalImplementation.readInput()
-    }
-
     override fun newTextGraphics(): TextGraphics {
         return terminalImplementation.newTextGraphics()
     }

@@ -8,7 +8,8 @@ import java.util.*
 /**
  * Implementation of [org.codetome.zircon.graphics.TextGraphics] for a [VirtualTerminal].
  */
-class VirtualTerminalTextGraphics(private val virtualTerminal: DefaultVirtualTerminal) : AbstractTextGraphics() {
+class VirtualTerminalTextGraphics(private val virtualTerminal: DefaultVirtualTerminal)
+    : AbstractTextGraphics() {
 
     override fun getSize() = virtualTerminal.getTerminalSize()
 

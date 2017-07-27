@@ -17,7 +17,7 @@ abstract class AbstractTextGraphics(
         private val shapeRenderer: DefaultShapeRenderer = DefaultShapeRenderer())
     : DefaultStyleSet(), TextGraphics, ShapeRenderer by shapeRenderer {
 
-    private var tabBehavior = TabBehavior.ALIGN_TO_COLUMN_4
+    private var tabBehavior = TabBehavior.DEFAULT_TAB_BEHAVIOR
 
     init {
         shapeRenderer.setCallback(object : DefaultShapeRenderer.Callback {
@@ -103,9 +103,13 @@ abstract class AbstractTextGraphics(
         if (fromRow >= untilRow || fromColumn >= untilColumn) {
             return
         }
-        for (row in fromRow..untilRow - 1) {
-            for (column in fromColumn..untilColumn - 1) {
-                setCharacter(TerminalPosition(column + diffColumn, row + diffRow), image.getCharacterAt(TerminalPosition(column, row)))
+        (fromRow..untilRow - 1).forEach { row ->
+            (fromColumn..untilColumn - 1).forEach { column ->
+                setCharacter(
+                        position = TerminalPosition(
+                                column = column + diffColumn,
+                                row = row + diffRow),
+                        character = image.getCharacterAt(TerminalPosition(column, row)))
             }
         }
     }

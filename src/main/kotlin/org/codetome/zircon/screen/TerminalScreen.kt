@@ -34,14 +34,10 @@ class TerminalScreen(private val terminal: Terminal) : Screen {
         this.fullRedrawHint = true
     }
 
-    override fun getTabBehavior() = tabBehavior.get()
+    override fun getTabBehavior(): TabBehavior = tabBehavior.get()
 
     override fun setTabBehavior(tabBehavior: TabBehavior) {
         this.tabBehavior.set(tabBehavior)
-    }
-
-    override fun readInput(): Input {
-        return terminal.readInput()
     }
 
     override fun pollInput(): Optional<Input> {

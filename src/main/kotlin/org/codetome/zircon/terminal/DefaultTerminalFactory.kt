@@ -12,7 +12,6 @@ class DefaultTerminalFactory
     : TerminalFactory {
 
     private var initialTerminalSize: TerminalSize = TerminalSize.DEFAULT
-    private var inputTimeout = -1
     private var title: String = "Zircon Terminal"
     private var autoOpenTerminalFrame = true
     private var colorConfiguration = TerminalColorConfiguration.getDefault()

@@ -9,7 +9,7 @@ import java.util.*
  */
 internal class TextCharacterBuffer {
 
-    private val lines = LinkedList<MutableList<TextCharacter>>()
+    private val lines = mutableListOf<MutableList<TextCharacter>>()
 
     init {
         newLine()
