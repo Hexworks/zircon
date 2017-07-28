@@ -8,43 +8,46 @@ import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.screen.TabBehavior
 import org.codetome.zircon.terminal.AbstractTerminal
+import org.codetome.zircon.terminal.Cell
 import org.codetome.zircon.terminal.TerminalSize
-import org.codetome.zircon.terminal.virtual.VirtualTerminal.BufferLine
-import org.codetome.zircon.terminal.virtual.VirtualTerminal.BufferWalker
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicReference
 
 class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DEFAULT)
     : AbstractTerminal(), VirtualTerminal {
 
-    private val cursorPosition = AtomicReference(TerminalPosition.DEFAULT_POSITION)
-    private val cursorVisible = AtomicBoolean(true)
-    private val terminalSize = AtomicReference(initialTerminalSize)
-    private val wholeBufferDirty = AtomicBoolean(false)
+    private var cursorPosition = TerminalPosition.DEFAULT_POSITION
+    private var cursorVisible = true
+    private var terminalSize = initialTerminalSize
+    private var wholeBufferDirty = false
+    private var lastDrawnCursorPosition: TerminalPosition = TerminalPosition.UNKNOWN
     private val textCharacterBuffer: TextCharacterBuffer = TextCharacterBuffer()
     private val dirtyTerminalCells = TreeSet<TerminalPosition>()
     private val listeners = mutableListOf<VirtualTerminalListener>()
     private val inputQueue = LinkedBlockingQueue<Input>()
 
-    override fun isCursorVisible() = cursorVisible.get()
-
-    override fun setCursorVisible(cursorVisible: Boolean) {
-        this.cursorVisible.set(cursorVisible)
+    init {
+        dirtyTerminalCells.add(cursorPosition)
     }
 
-    override fun getTerminalSize(): TerminalSize = terminalSize.get()
+    override fun isCursorVisible() = cursorVisible
+
+    override fun setCursorVisible(cursorVisible: Boolean) {
+        this.cursorVisible = cursorVisible
+    }
+
+    override fun getTerminalSize(): TerminalSize = terminalSize
 
     @Synchronized
     override fun setTerminalSize(newSize: TerminalSize) {
-        this.terminalSize.set(newSize)
-        cursorPosition.get().let {
+        this.terminalSize = newSize
+        cursorPosition.let {
             if (it.row >= newSize.rows || it.column >= newSize.columns) {
                 setCursorPosition(TerminalPosition.DEFAULT_POSITION)
             }
         }
-        listeners.forEach { it.onResized(this, terminalSize.get()) }
+        wholeBufferDirty = true // TODO: this can be optimized later
+        listeners.forEach { it.onResized(this, terminalSize) }
         super.onResized(newSize)
     }
 
@@ -56,12 +59,12 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
     }
 
     @Synchronized
-    override fun getCursorPosition(): TerminalPosition = cursorPosition.get()
+    override fun getCursorPosition(): TerminalPosition = cursorPosition
 
     @Synchronized
     override fun setCursorPosition(cursorPosition: TerminalPosition) {
-        this.cursorPosition.set(cursorPosition)
-        dirtyTerminalCells.add(this.cursorPosition.get())
+        this.cursorPosition = cursorPosition
+        dirtyTerminalCells.add(this.cursorPosition)
     }
 
     @Synchronized
@@ -80,25 +83,20 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
     @Synchronized
     internal fun putCharacter(textCharacter: TextCharacter) {
         if (textCharacter.getCharacter() == '\t') {
-            val nrOfSpaces = TabBehavior.DEFAULT_TAB_BEHAVIOR.getTabReplacement(cursorPosition.get().column).length
+            val nrOfSpaces = TabBehavior.DEFAULT_TAB_BEHAVIOR.getTabReplacement(cursorPosition.column).length
             var i = 0
-            while (i < nrOfSpaces && cursorPosition.get().column < terminalSize.get().columns - 1) {
+            while (i < nrOfSpaces && cursorPosition.column < terminalSize.columns - 1) {
                 putCharacter(textCharacter.withCharacter(' '))
                 i++
             }
         } else {
-            textCharacterBuffer.setCharacter(cursorPosition.get(), textCharacter)
-            if (wholeBufferDirty.get().not()) {
-                dirtyTerminalCells.add(cursorPosition.get())
-                if (moreThanThresholdPercentIsDirty()) {
-                    setWholeBufferDirty()
-                }
-            }
-            setCursorPosition(cursorPosition.get().withRelativeColumn(1)) // TODO: extract cursor logic?
+            textCharacterBuffer.setCharacter(cursorPosition, textCharacter)
+            dirtyTerminalCells.add(cursorPosition)
+            setCursorPosition(cursorPosition.withRelativeColumn(1)) // TODO: extract cursor logic?
             if (cursorIsAtTheEndOfTheLine()) {
                 moveCursorToNextLine()
             }
-            dirtyTerminalCells.add(TerminalPosition(cursorPosition.get().column, cursorPosition.get().row))
+            dirtyTerminalCells.add(cursorPosition)
         }
     }
 
@@ -130,66 +128,45 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
     }
 
     @Synchronized
-    override fun getAndResetDirtyCells(): TreeSet<TerminalPosition> {
-        val copy = TreeSet<TerminalPosition>(dirtyTerminalCells)
-        dirtyTerminalCells.clear()
-        return copy
-    }
-
-    @Synchronized
-    override fun isWholeBufferDirtyThenReset(): Boolean {
-        val oldVal = wholeBufferDirty.get()
-        wholeBufferDirty.set(false)
-        return oldVal
-    }
-
-    @Synchronized
     override fun getCharacter(position: TerminalPosition): TextCharacter {
         return textCharacterBuffer.getCharacter(position)
     }
 
-    @Synchronized
-    override fun forEachLine(startRow: Int, endRow: Int, bufferWalker: BufferWalker) {
-        val emptyLine: BufferLine = object : BufferLine {
-            override fun getCharacterAt(column: Int): TextCharacter {
-                return TextCharacter.DEFAULT_CHARACTER
+    override fun forEachDirtyCell(fn: (Cell) -> Unit) {
+        if (lastDrawnCursorPosition != getCursorPosition()) {
+            dirtyTerminalCells.add(lastDrawnCursorPosition)
+        }
+        if (wholeBufferDirty) {
+            textCharacterBuffer.forEachCell(fn)
+            fn(Cell(cursorPosition, textCharacterBuffer.getCharacter(cursorPosition)))
+            wholeBufferDirty = false
+        } else {
+            dirtyTerminalCells.forEach { pos ->
+                fn(Cell(pos, textCharacterBuffer.getCharacter(pos)))
             }
         }
-        val iterator = textCharacterBuffer.getLinesFrom(startRow)
-        (startRow..endRow).forEach { row ->
-            var bufferLine = emptyLine
-            if (iterator.hasNext()) {
-                val list = iterator.next()
-                bufferLine = object : BufferLine {
-                    override fun getCharacterAt(column: Int): TextCharacter {
-                        if (column >= list.size) {
-                            return TextCharacter.DEFAULT_CHARACTER
-                        }
-                        return list[column]
-                    }
-                }
-            }
-            bufferWalker.onLine(row, bufferLine)
-        }
+        val blinkingChars = dirtyTerminalCells.filter { getCharacter(it).isBlinking() }
+        dirtyTerminalCells.clear()
+        dirtyTerminalCells.addAll(blinkingChars)
+        this.lastDrawnCursorPosition = getCursorPosition()
+        dirtyTerminalCells.add(cursorPosition)
+    }
+
+    override fun forEachCell(fn: (Cell) -> Unit) {
+        textCharacterBuffer.forEachCell(fn)
     }
 
     private fun moveCursorToNextLine() {
-        cursorPosition.set(cursorPosition.get().withColumn(0).withRelativeRow(1))
-        if (cursorPosition.get().row >= textCharacterBuffer.getLineCount()) {
+        cursorPosition = cursorPosition.withColumn(0).withRelativeRow(1)
+        if (cursorPosition.row >= textCharacterBuffer.getLineCount()) {
             textCharacterBuffer.newLine()
         }
     }
 
     private fun setWholeBufferDirty() {
-        wholeBufferDirty.set(true)
+        wholeBufferDirty = true
         dirtyTerminalCells.clear()
     }
 
-    private fun moreThanThresholdPercentIsDirty() = dirtyTerminalCells.size > terminalSize.get().columns * terminalSize.get().rows * ALL_DIRTY_THRESHOLD
-
-    private fun cursorIsAtTheEndOfTheLine() = cursorPosition.get().column == terminalSize.get().columns
-
-    companion object {
-        private val ALL_DIRTY_THRESHOLD = 0.9
-    }
+    private fun cursorIsAtTheEndOfTheLine() = cursorPosition.column == terminalSize.columns
 }

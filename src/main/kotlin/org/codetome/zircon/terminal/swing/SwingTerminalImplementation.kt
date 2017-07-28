@@ -26,10 +26,12 @@ class SwingTerminalImplementation(
         deviceConfiguration: TerminalDeviceConfiguration,
         colorConfiguration: TerminalColorConfiguration)
 
-    : GraphicalTerminalImplementation(deviceConfiguration, colorConfiguration, DefaultVirtualTerminal(initialTerminalSize)) {
+    : GraphicalTerminalImplementation(
+        deviceConfiguration = deviceConfiguration,
+        colorConfiguration = colorConfiguration,
+         virtualTerminal = DefaultVirtualTerminal(initialTerminalSize)) {
 
     init {
-
         //Prevent us from shrinking beyond one character
         component.minimumSize = Dimension(fontConfiguration.getFontWidth(), fontConfiguration.getFontHeight())
         component.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())

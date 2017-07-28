@@ -29,15 +29,14 @@ abstract class GraphicalTerminalImplementation(
         private val virtualTerminal: VirtualTerminal)
     : VirtualTerminal by virtualTerminal {
 
-    private var enableInput = AtomicBoolean(false)
-    private var hasBlinkingText = false
+    private var enableInput = false
+    private var hasBlinkingText = deviceConfiguration.isCursorBlinking
     private var blinkOn = true
-    private var lastDrawnCursorPosition: TerminalPosition = TerminalPosition.UNKNOWN
     private var lastBufferUpdateScrollPosition: Int = 0
     private var lastComponentWidth: Int = 0
     private var lastComponentHeight: Int = 0
 
-    private var blinkTimer: Optional<Timer> = Optional.empty()
+    private var blinkTimer: Optional<Timer> = Optional.empty() // TODO: externalize blinker
     private var buffer: Optional<BufferedImage> = Optional.empty()
 
     /**
@@ -79,14 +78,14 @@ abstract class GraphicalTerminalImplementation(
     @Synchronized
     fun onCreated() {
         startBlinkTimer()
-        enableInput.set(true)
+        enableInput = true
     }
 
     @Synchronized
     fun onDestroyed() {
-        stopBlinkTimer()
-        enableInput.set(false)
         virtualTerminal.addInput(KeyStroke.EOF_STROKE)
+        stopBlinkTimer()
+        enableInput = false
     }
 
     /**
@@ -189,8 +188,7 @@ abstract class GraphicalTerminalImplementation(
     @Synchronized
     private fun updateBackBuffer() {
         val cursorPosition = virtualTerminal.getCursorPosition()
-        val terminalSize = virtualTerminal.getTerminalSize()
-
+        var foundBlinkingCharacters = deviceConfiguration.isCursorBlinking
         ensureGraphicBufferHasRightSize()
         val backBufferGraphics: Graphics2D = buffer.get().createGraphics()
 
@@ -199,52 +197,30 @@ abstract class GraphicalTerminalImplementation(
             backBufferGraphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY)
         }
 
-        val foundBlinkingCharacters = AtomicBoolean(deviceConfiguration.isCursorBlinking)
-        var isAllDirty = virtualTerminal.isWholeBufferDirtyThenReset()
-        val dirtyCells = virtualTerminal.getAndResetDirtyCells()
-        if(resizeHappened()) {
-            isAllDirty = true
-        }
-        if (lastDrawnCursorPosition != cursorPosition) {
-            dirtyCells.add(lastDrawnCursorPosition)
-        }
-        virtualTerminal.forEachLine(0, terminalSize.rows - 1, object : VirtualTerminal.BufferWalker {
-            override fun onLine(rowNumber: Int, bufferLine: VirtualTerminal.BufferLine) {
-                var column = 0
-                while (column < terminalSize.columns) {
-                    val textCharacter = bufferLine.getCharacterAt(column)
-                    val atCursorLocation = cursorPosition == TerminalPosition(column, rowNumber)
-                    val isBlinking = textCharacter.getModifiers().contains(Modifier.BLINK)
-                    if (isBlinking) {
-                        foundBlinkingCharacters.set(true)
-                    }
-                    if (isAllDirty || dirtyCells.contains(TerminalPosition(column, rowNumber)) || isBlinking) {
-                        val characterWidth = getFontWidth()
-                        val foregroundColor = deriveTrueForegroundColor(textCharacter, atCursorLocation)
-                        val backgroundColor = deriveTrueBackgroundColor(textCharacter, atCursorLocation)
-                        val drawCursor = atCursorLocation && (!deviceConfiguration.isCursorBlinking || //Always draw if the cursor isn't blinking
-                                deviceConfiguration.isCursorBlinking && blinkOn)    //If the cursor is blinking, only draw when blinkOn is true
-
-                        drawCharacter(backBufferGraphics,
-                                textCharacter,
-                                column,
-                                rowNumber,
-                                foregroundColor,
-                                backgroundColor,
-                                characterWidth,
-                                drawCursor)
-                    }
-                    column++
-                }
+        virtualTerminal.forEachDirtyCell { (position, textCharacter) ->
+            val atCursorLocation = cursorPosition == position
+            val characterWidth = getFontWidth()
+            val foregroundColor = deriveTrueForegroundColor(textCharacter, atCursorLocation)
+            val backgroundColor = deriveTrueBackgroundColor(textCharacter, atCursorLocation)
+            val drawCursor = atCursorLocation && (!deviceConfiguration.isCursorBlinking || //Always draw if the cursor isn't blinking
+                    deviceConfiguration.isCursorBlinking && blinkOn)    //If the cursor is blinking, only draw when blinkOn is true
+            if (textCharacter.getModifiers().contains(Modifier.BLINK)) {
+                foundBlinkingCharacters = true
             }
-        })
+
+            drawCharacter(backBufferGraphics,
+                    textCharacter,
+                    position.column,
+                    position.row,
+                    foregroundColor,
+                    backgroundColor,
+                    characterWidth,
+                    drawCursor)
+        }
 
         backBufferGraphics.dispose()
 
-        // Update the blink status according to if there were any blinking characters or not
-        this.hasBlinkingText = foundBlinkingCharacters.get()
-        this.lastDrawnCursorPosition = cursorPosition
-
+        this.hasBlinkingText = foundBlinkingCharacters || deviceConfiguration.isCursorBlinking
     }
 
     private fun ensureGraphicBufferHasRightSize() {

@@ -2,7 +2,7 @@ package org.codetome.zircon.terminal.virtual
 
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TextCharacter
-import java.util.*
+import org.codetome.zircon.terminal.Cell
 
 /**
  * This class is used to store lines of text inside of a terminal emulator.
@@ -26,8 +26,12 @@ internal class TextCharacterBuffer {
         newLine()
     }
 
-    fun getLinesFrom(rowNumber: Int): ListIterator<List<TextCharacter>> {
-        return lines.listIterator(rowNumber)
+    fun forEachCell(fn: (Cell) -> Unit) {
+        lines.forEachIndexed { row, line ->
+            line.forEachIndexed { col, tc ->
+                fn(Cell(TerminalPosition(col, row), tc))
+            }
+        }
     }
 
     @Synchronized
