@@ -21,7 +21,7 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
     private var terminalSize = initialTerminalSize
     private var wholeBufferDirty = false
     private var lastDrawnCursorPosition: TerminalPosition = TerminalPosition.UNKNOWN
-    private val textCharacterBuffer: TextCharacterBuffer = TextCharacterBuffer()
+    private val buffer: TextCharacterBuffer = TextCharacterBuffer()
     private val dirtyTerminalCells = TreeSet<TerminalPosition>()
     private val listeners = mutableListOf<VirtualTerminalListener>()
     private val inputQueue = LinkedBlockingQueue<Input>()
@@ -40,20 +40,25 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
 
     @Synchronized
     override fun setTerminalSize(newSize: TerminalSize) {
-        this.terminalSize = newSize
-        cursorPosition.let {
-            if (it.row >= newSize.rows || it.column >= newSize.columns) {
-                setCursorPosition(TerminalPosition.DEFAULT_POSITION)
+        if (newSize != terminalSize) {
+            this.terminalSize = newSize
+            buffer.resize(newSize)
+            cursorPosition.let { (cursorCol, cursorRow) ->
+                if (cursorRow >= newSize.rows || cursorCol >= newSize.columns) {
+                    setCursorPosition(TerminalPosition(
+                            column = Math.min(newSize.columns, cursorCol),
+                            row = Math.min(newSize.rows, cursorRow)))
+                }
             }
+            wholeBufferDirty = true // TODO: this can be optimized later
+            listeners.forEach { it.onResized(this, terminalSize) }
+            super.onResized(newSize)
         }
-        wholeBufferDirty = true // TODO: this can be optimized later
-        listeners.forEach { it.onResized(this, terminalSize) }
-        super.onResized(newSize)
     }
 
     @Synchronized
     override fun clearScreen() {
-        textCharacterBuffer.clear()
+        buffer.clear()
         setWholeBufferDirty()
         setCursorPosition(TerminalPosition.DEFAULT_POSITION)
     }
@@ -90,7 +95,7 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
                 i++
             }
         } else {
-            textCharacterBuffer.setCharacter(cursorPosition, textCharacter)
+            buffer.setCharacter(cursorPosition, textCharacter)
             dirtyTerminalCells.add(cursorPosition)
             setCursorPosition(cursorPosition.withRelativeColumn(1)) // TODO: extract cursor logic?
             if (cursorIsAtTheEndOfTheLine()) {
@@ -129,7 +134,7 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
 
     @Synchronized
     override fun getCharacter(position: TerminalPosition): TextCharacter {
-        return textCharacterBuffer.getCharacter(position)
+        return buffer.getCharacter(position)
     }
 
     override fun forEachDirtyCell(fn: (Cell) -> Unit) {
@@ -137,12 +142,12 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
             dirtyTerminalCells.add(lastDrawnCursorPosition)
         }
         if (wholeBufferDirty) {
-            textCharacterBuffer.forEachCell(fn)
-            fn(Cell(cursorPosition, textCharacterBuffer.getCharacter(cursorPosition)))
+            buffer.forEachCell(fn)
+            fn(Cell(cursorPosition, buffer.getCharacter(cursorPosition)))
             wholeBufferDirty = false
         } else {
             dirtyTerminalCells.forEach { pos ->
-                fn(Cell(pos, textCharacterBuffer.getCharacter(pos)))
+                fn(Cell(pos, buffer.getCharacter(pos)))
             }
         }
         val blinkingChars = dirtyTerminalCells.filter { getCharacter(it).isBlinking() }
@@ -153,13 +158,13 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
     }
 
     override fun forEachCell(fn: (Cell) -> Unit) {
-        textCharacterBuffer.forEachCell(fn)
+        buffer.forEachCell(fn)
     }
 
     private fun moveCursorToNextLine() {
         cursorPosition = cursorPosition.withColumn(0).withRelativeRow(1)
-        if (cursorPosition.row >= textCharacterBuffer.getLineCount()) {
-            textCharacterBuffer.newLine()
+        if (cursorPosition.row >= buffer.getLineCount()) {
+            buffer.newLine()
         }
     }
 

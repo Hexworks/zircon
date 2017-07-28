@@ -3,16 +3,29 @@ package org.codetome.zircon.terminal.virtual
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.terminal.Cell
+import org.codetome.zircon.terminal.TerminalSize
 
 /**
  * This class is used to store lines of text inside of a terminal emulator.
  */
 internal class TextCharacterBuffer {
 
-    private val lines = mutableListOf<MutableList<TextCharacter>>()
+    private var lines = mutableListOf<MutableList<TextCharacter>>()
 
     init {
         newLine()
+    }
+
+    @Synchronized
+    fun resize(size: TerminalSize) {
+        println("old size: rows:${lines.size}, cols: ${lines.firstOrNull()?.size}")
+        lines = lines.filterIndexed { row, _ -> row < size.rows }
+                .map { line ->
+                    line.filterIndexed { col, _ ->
+                        col < size.columns
+                    }.toMutableList()
+                }.toMutableList()
+        println("new size: rows:${lines.size}, cols: ${lines.firstOrNull()?.size}")
     }
 
     @Synchronized

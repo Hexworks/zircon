@@ -20,18 +20,17 @@ import java.util.concurrent.atomic.AtomicReference
  */
 class TerminalScreen(private val terminal: Terminal) : Screen {
 
-    private var cursorPosition = TerminalPosition.DEFAULT_POSITION
     private var backBuffer: ScreenBuffer = ScreenBuffer(terminal.getTerminalSize(), DEFAULT_CHARACTER)
     private var frontBuffer: ScreenBuffer = ScreenBuffer(terminal.getTerminalSize(), DEFAULT_CHARACTER)
     private var tabBehavior = AtomicReference(TabBehavior.DEFAULT_TAB_BEHAVIOR)
-    private var latestResizeRequest: Optional<TerminalSize> = Optional.empty()
     private var fullRedrawHint: Boolean = true
 
     init {
         this.terminal.addResizeListener(object : TerminalResizeListener {
-            override fun onResized(terminal: Terminal, newSize: TerminalSize) = addResizeRequest(newSize)
+            override fun onResized(terminal: Terminal, newSize: TerminalSize) {
+                resize()
+            }
         })
-        this.fullRedrawHint = true
     }
 
     override fun getTabBehavior(): TabBehavior = tabBehavior.get()
@@ -46,10 +45,9 @@ class TerminalScreen(private val terminal: Terminal) : Screen {
 
     override fun getTerminalSize() = terminal.getTerminalSize()
 
-    override fun getCursorPosition() = cursorPosition
+    override fun getCursorPosition() = terminal.getCursorPosition()
 
     override fun setCursorPosition(position: TerminalPosition) {
-        this.cursorPosition = position
         terminal.setCursorPosition(position)
     }
 
@@ -77,9 +75,10 @@ class TerminalScreen(private val terminal: Terminal) : Screen {
         var character = screenCharacter
         if (character.getCharacter() == '\t') {
             character = character.withCharacter(' ')
-            for (i in 0..tabBehavior.get().replaceTabs("\t", column).length - 1) {
-                backBuffer.setCharacterAt(position.withRelativeColumn(i), character)
-            }
+            (0..tabBehavior.get().replaceTabs("\t", column).length - 1)
+                    .forEach { i ->
+                        backBuffer.setCharacterAt(position.withRelativeColumn(i), character)
+                    }
         } else {
             backBuffer.setCharacterAt(position, character)
         }
@@ -101,25 +100,20 @@ class TerminalScreen(private val terminal: Terminal) : Screen {
         fullRedrawHint = true
     }
 
-    @Synchronized
-    override fun doResizeIfNecessary(): Optional<TerminalSize> {
-        val pendingResize = getAndClearPendingResize()
-        if (pendingResize.isPresent) {
-            backBuffer = backBuffer.resize(pendingResize.get(), DEFAULT_CHARACTER)
-            frontBuffer = frontBuffer.resize(pendingResize.get(), DEFAULT_CHARACTER)
-        }
-        if (pendingResize.isPresent) {
-            fullRedrawHint = true
-        }
-        return pendingResize
-    }
-
     override fun close() {
         //Drain the input queue
         var input: Optional<Input>
         do {
             input = pollInput()
         } while (input.isPresent && input.get().getInputType() !== InputType.EOF)
+    }
+
+    @Synchronized
+    private fun resize() {
+        backBuffer = backBuffer.resize(getTerminalSize(), DEFAULT_CHARACTER)
+        frontBuffer = frontBuffer.resize(getTerminalSize(), DEFAULT_CHARACTER)
+
+        fullRedrawHint = true
     }
 
     @Synchronized
@@ -142,21 +136,6 @@ class TerminalScreen(private val terminal: Terminal) : Screen {
     }
 
     private fun charDiffersInBuffers(backChar: TextCharacter, position: TerminalPosition) = backChar != frontBuffer.getCharacterAt(position)
-
-    @Synchronized
-    private fun getAndClearPendingResize(): Optional<TerminalSize> {
-        if (latestResizeRequest.isPresent) {
-            terminal.getTerminalSize()
-            terminal.setTerminalSize(latestResizeRequest.get())
-            latestResizeRequest = Optional.empty()
-            return Optional.of(terminal.getTerminalSize())
-        }
-        return Optional.empty<TerminalSize>()
-    }
-
-    private fun addResizeRequest(newSize: TerminalSize) {
-        latestResizeRequest = Optional.of(newSize)
-    }
 
     private fun getCharacterFromBuffer(position: TerminalPosition, buffer: ScreenBuffer): TextCharacter {
         return buffer.getCharacterAt(position)
