@@ -5,9 +5,9 @@ import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalSize
-import org.codetome.zircon.terminal.config.TerminalFontConfiguration
 import org.codetome.zircon.terminal.config.TerminalColorConfiguration
 import org.codetome.zircon.terminal.config.TerminalDeviceConfiguration
+import org.codetome.zircon.terminal.config.TerminalFontConfiguration
 import java.awt.BorderLayout
 import java.awt.Color
 import java.util.*
@@ -31,7 +31,7 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
         background = Color.BLACK //This will reduce white flicker when resizing the window
         pack()
 
-        //Put input focus on the terminal component by default
+        // Put input focus on the terminal component by default
         swingTerminal.requestFocusInWindow()
     }
 

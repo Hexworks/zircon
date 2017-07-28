@@ -6,6 +6,7 @@ import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.input.MouseAction
 import org.codetome.zircon.input.MouseActionType
 import org.codetome.zircon.input.MouseActionType.*
+import org.codetome.zircon.terminal.TerminalSize
 import org.codetome.zircon.terminal.config.CursorStyle.*
 import org.codetome.zircon.terminal.config.TerminalColorConfiguration
 import org.codetome.zircon.terminal.config.TerminalDeviceConfiguration
@@ -15,7 +16,6 @@ import java.awt.datatransfer.DataFlavor
 import java.awt.event.*
 import java.awt.image.BufferedImage
 import java.util.*
-import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * This is the class that does the heavy lifting for [SwingTerminalComponent]. It maintains
@@ -36,7 +36,7 @@ abstract class GraphicalTerminalImplementation(
     private var lastComponentWidth: Int = 0
     private var lastComponentHeight: Int = 0
 
-    private var blinkTimer: Optional<Timer> = Optional.empty() // TODO: externalize blinker
+    private var blinkTimer = Timer("BlinkTimer", true)
     private var buffer: Optional<BufferedImage> = Optional.empty()
 
     /**
@@ -77,27 +77,7 @@ abstract class GraphicalTerminalImplementation(
 
     @Synchronized
     fun onCreated() {
-        startBlinkTimer()
-        enableInput = true
-    }
-
-    @Synchronized
-    fun onDestroyed() {
-        virtualTerminal.addInput(KeyStroke.EOF_STROKE)
-        stopBlinkTimer()
-        enableInput = false
-    }
-
-    /**
-     * Start the timer that triggers blinking
-     */
-    @Synchronized
-    fun startBlinkTimer() {
-        if (blinkTimer.isPresent) {
-            return
-        }
-        blinkTimer = Optional.of(Timer("BlinkTimer", true))
-        blinkTimer.get().schedule(object : TimerTask() {
+        blinkTimer.schedule(object : TimerTask() {
             override fun run() {
                 blinkOn = !blinkOn
                 if (hasBlinkingText) {
@@ -105,17 +85,14 @@ abstract class GraphicalTerminalImplementation(
                 }
             }
         }, deviceConfiguration.blinkLengthInMilliSeconds, deviceConfiguration.blinkLengthInMilliSeconds)
+        enableInput = true
     }
 
-    /**
-     * Stops the timer the triggers blinking
-     */
     @Synchronized
-    fun stopBlinkTimer() {
-        if (blinkTimer.isPresent) {
-            blinkTimer.get().cancel()
-            blinkTimer = Optional.empty()
-        }
+    fun onDestroyed() {
+        virtualTerminal.addInput(KeyStroke.EOF_STROKE)
+        blinkTimer.cancel()
+        enableInput = false
     }
 
     /**
@@ -134,9 +111,9 @@ abstract class GraphicalTerminalImplementation(
 
         // Detect resize
         if (resizeHappened()) {
-            val columns = getWidth() / getFontWidth()
-            val rows = getHeight() / getFontHeight()
-            val terminalSize = virtualTerminal.getTerminalSize().withColumns(columns).withRows(rows)
+            val terminalSize = TerminalSize(
+                    columns = getWidth() / getFontWidth(),
+                    rows = getHeight() / getFontHeight())
             virtualTerminal.setTerminalSize(terminalSize)
             needToUpdateBackBuffer = true
         }
@@ -146,18 +123,13 @@ abstract class GraphicalTerminalImplementation(
         }
 
         ensureGraphicBufferHasRightSize()
-        var clipBounds: Rectangle? = componentGraphics.clipBounds
-        if (clipBounds == null) {
-            clipBounds = Rectangle(0, 0, getWidth(), getHeight())
-        }
+        val clipBounds: Rectangle = componentGraphics.clipBounds ?: Rectangle(0, 0, getWidth(), getHeight())
         componentGraphics.drawImage(
                 buffer.get(),
-                // Destination coordinates
                 clipBounds.x,
                 clipBounds.y,
                 clipBounds.getWidth().toInt(),
                 clipBounds.getHeight().toInt(),
-                // Source coordinates
                 clipBounds.x,
                 clipBounds.y,
                 clipBounds.getWidth().toInt(),
@@ -334,10 +306,10 @@ abstract class GraphicalTerminalImplementation(
     @Synchronized
     override fun clearScreen() {
         virtualTerminal.clearScreen()
-        clearBackBuffer()
+        clearBuffer()
     }
 
-    private fun clearBackBuffer() {
+    private fun clearBuffer() {
         if (buffer.isPresent) {
             val graphics = buffer.get().createGraphics()
             val backgroundColor = colorConfiguration.toAWTColor(TextColor.ANSI.DEFAULT, false, false)

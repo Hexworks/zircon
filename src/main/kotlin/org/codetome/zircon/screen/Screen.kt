@@ -79,14 +79,4 @@ interface Screen : InputProvider, Closeable {
      */
     fun refresh()
 
-    /**
-     * One problem working with [Screen]s is that whenever the terminal is resized, the front and back buffers
-     * need to be adjusted accordingly and the program should have a chance to figure out what to do with
-     * this extra space (or less space). The solution is to call, at the start of your rendering code,
-     * this method, which will check if the terminal has been resized and in that case update the internals
-     * of the [Screen]. After this call finishes, the screen's internal buffers will match the most
-     * recent size report from the underlying terminal.
-     */
-    fun doResizeIfNecessary(): Optional<TerminalSize>
-
 }
