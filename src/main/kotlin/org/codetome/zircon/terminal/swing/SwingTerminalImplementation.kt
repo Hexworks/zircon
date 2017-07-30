@@ -1,16 +1,11 @@
 package org.codetome.zircon.terminal.swing
 
-import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.input.Input
+import org.codetome.zircon.font.MonospaceFontRenderer
 import org.codetome.zircon.terminal.TerminalSize
-import org.codetome.zircon.terminal.config.TerminalFontConfiguration
-import org.codetome.zircon.terminal.config.TerminalColorConfiguration
-import org.codetome.zircon.terminal.config.TerminalDeviceConfiguration
+import org.codetome.zircon.terminal.config.ColorConfiguration
+import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.terminal.virtual.DefaultVirtualTerminal
-import java.awt.AWTKeyStroke
-import java.awt.Dimension
-import java.awt.Font
-import java.awt.KeyboardFocusManager
+import java.awt.*
 import java.awt.event.HierarchyEvent
 import java.awt.event.MouseEvent
 import javax.swing.JComponent
@@ -21,19 +16,20 @@ import javax.swing.SwingUtilities
  */
 class SwingTerminalImplementation(
         private val component: JComponent,
-        val fontConfiguration: TerminalFontConfiguration,
+        val renderer: MonospaceFontRenderer<Graphics>,
         initialTerminalSize: TerminalSize,
-        deviceConfiguration: TerminalDeviceConfiguration,
-        colorConfiguration: TerminalColorConfiguration)
+        deviceConfiguration: DeviceConfiguration,
+        colorConfiguration: ColorConfiguration)
 
     : GraphicalTerminalImplementation(
         deviceConfiguration = deviceConfiguration,
         colorConfiguration = colorConfiguration,
-         virtualTerminal = DefaultVirtualTerminal(initialTerminalSize)) {
+        monospaceFontRenderer = renderer,
+        virtualTerminal = DefaultVirtualTerminal(initialTerminalSize)) {
 
     init {
         //Prevent us from shrinking beyond one character
-        component.minimumSize = Dimension(fontConfiguration.getFontWidth(), fontConfiguration.getFontHeight())
+        component.minimumSize = Dimension(renderer.width, renderer.height)
         component.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         component.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         //Make sure the component is double-buffered to prevent flickering
@@ -56,19 +52,15 @@ class SwingTerminalImplementation(
         }
     }
 
-    override fun getFontHeight() = fontConfiguration.getFontHeight()
+    override fun getFontHeight() = renderer.height
 
-    override fun getFontWidth() = fontConfiguration.getFontWidth()
+    override fun getFontWidth() = renderer.width
 
     override fun getHeight() = component.height
 
     override fun getWidth() = component.width
 
-    override fun getFontForCharacter(character: TextCharacter): Font {
-        return fontConfiguration.getFontForCharacter(character)
-    }
-
-    override fun isTextAntiAliased() = fontConfiguration.isAntiAliased()
+    override fun isTextAntiAliased() = renderer.isAntiAliased()
 
     override fun repaint() {
         if (SwingUtilities.isEventDispatchThread()) {

@@ -79,7 +79,7 @@ class BasicTextImage @JvmOverloads constructor(private val size: TerminalSize,
         var destinationRowOffset = destinationRowOffset
         var destinationColumnOffset = destinationColumnOffset
 
-        // If the source image position is negative, offset the whole image
+        // If the source sprite position is negative, offset the whole sprite
         if (startColumnIndex < 0) {
             destinationColumnOffset += -startColumnIndex
             columns += startColumnIndex

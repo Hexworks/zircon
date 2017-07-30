@@ -1,15 +1,15 @@
 package org.codetome.zircon.terminal.swing
 
 import org.codetome.zircon.*
+import org.codetome.zircon.font.MonospaceFontRenderer
 import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.input.MouseAction
 import org.codetome.zircon.input.MouseActionType
 import org.codetome.zircon.input.MouseActionType.*
 import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.config.*
 import org.codetome.zircon.terminal.config.CursorStyle.*
-import org.codetome.zircon.terminal.config.TerminalColorConfiguration
-import org.codetome.zircon.terminal.config.TerminalDeviceConfiguration
 import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.awt.*
 import java.awt.datatransfer.DataFlavor
@@ -24,8 +24,9 @@ import java.util.*
  */
 @Suppress("unused")
 abstract class GraphicalTerminalImplementation(
-        private val deviceConfiguration: TerminalDeviceConfiguration,
-        private val colorConfiguration: TerminalColorConfiguration,
+        private val deviceConfiguration: DeviceConfiguration,
+        private val colorConfiguration: ColorConfiguration,
+        private val monospaceFontRenderer: MonospaceFontRenderer<Graphics>,
         private val virtualTerminal: VirtualTerminal)
     : VirtualTerminal by virtualTerminal {
 
@@ -58,11 +59,6 @@ abstract class GraphicalTerminalImplementation(
      * Used when requiring the total width of the terminal component, in pixels.
      */
     abstract fun getWidth(): Int
-
-    /**
-     * Returning the AWT font to use for the specific character.
-     */
-    internal abstract fun getFontForCharacter(character: TextCharacter): Font
 
     /**
      * Returns `true` if anti-aliasing is enabled, `false` otherwise.
@@ -234,23 +230,8 @@ abstract class GraphicalTerminalImplementation(
         graphics.fillRect(x, y, characterWidth, getFontHeight())
 
         graphics.color = foregroundColor
-        val font = getFontForCharacter(character) // TODO: custom tileset support
-        graphics.font = font
-        val fontMetrics = graphics.fontMetrics
-        graphics.drawString(Character.toString(character.getCharacter()), x, y + getFontHeight() - fontMetrics.descent + 1)
 
-        if (character.isCrossedOut()) {
-            val lineStartX = x
-            val lineStartY = y + getFontHeight() / 2
-            val lineEndX = lineStartX + characterWidth
-            graphics.drawLine(lineStartX, lineStartY, lineEndX, lineStartY)
-        }
-        if (character.isUnderlined()) {
-            val lineStartX = x
-            val lineStartY = y + getFontHeight() - fontMetrics.descent + 1
-            val lineEndX = lineStartX + characterWidth
-            graphics.drawLine(lineStartX, lineStartY, lineEndX, lineStartY)
-        }
+        monospaceFontRenderer.renderCharacter(character, graphics, x, y)
 
         if (drawCursor) {
             graphics.color = colorConfiguration.toAWTColor(deviceConfiguration.cursorColor, false, false)
