@@ -1,11 +1,13 @@
 package org.codetome.zircon.terminal
 
+import org.codetome.zircon.font.MonospaceFontRenderer
 import org.codetome.zircon.screen.TerminalScreen
+import org.codetome.zircon.terminal.config.ColorConfiguration
+import org.codetome.zircon.terminal.config.DeviceConfiguration
+import org.codetome.zircon.terminal.config.FontConfiguration
 import org.codetome.zircon.terminal.swing.SwingTerminalComponent
 import org.codetome.zircon.terminal.swing.SwingTerminalFrame
-import org.codetome.zircon.terminal.config.TerminalFontConfiguration
-import org.codetome.zircon.terminal.config.TerminalColorConfiguration
-import org.codetome.zircon.terminal.config.TerminalDeviceConfiguration
+import java.awt.Graphics
 
 
 class DefaultTerminalFactory
@@ -14,9 +16,9 @@ class DefaultTerminalFactory
     private var initialTerminalSize: TerminalSize = TerminalSize.DEFAULT
     private var title: String = "Zircon Terminal"
     private var autoOpenTerminalFrame = true
-    private var colorConfiguration = TerminalColorConfiguration.getDefault()
-    private var deviceConfiguration = TerminalDeviceConfiguration.getDefault()
-    private var fontConfiguration = TerminalFontConfiguration.getDefault()
+    private var colorConfiguration = ColorConfiguration.getDefault()
+    private var deviceConfiguration = DeviceConfiguration.getDefault()
+    private var fontRenderer: MonospaceFontRenderer<Graphics> = FontConfiguration.createSwingFontRendererForPhysicalFonts()
 
     override fun createTerminal(): Terminal = createTerminalEmulator()
 
@@ -27,7 +29,7 @@ class DefaultTerminalFactory
                 title = title,
                 terminalSize =  initialTerminalSize,
                 deviceConfiguration = deviceConfiguration,
-                fontConfiguration = fontConfiguration,
+                fontConfiguration = fontRenderer,
                 colorConfiguration = colorConfiguration)
         if(autoOpenTerminalFrame) {
             stf.isVisible = true
@@ -68,7 +70,7 @@ class DefaultTerminalFactory
     /**
      * Sets the color configuration to use on created [SwingTerminalFrame] created by this factory
      */
-    fun setTerminalColorConfiguration(colorConfiguration: TerminalColorConfiguration): DefaultTerminalFactory {
+    fun setTerminalColorConfiguration(colorConfiguration: ColorConfiguration): DefaultTerminalFactory {
         this.colorConfiguration = colorConfiguration
         return this
     }
@@ -76,18 +78,16 @@ class DefaultTerminalFactory
     /**
      * Sets the device configuration to use on created [SwingTerminalFrame] created by this factory
      */
-    fun setTerminalDeviceConfiguration(deviceConfiguration: TerminalDeviceConfiguration): DefaultTerminalFactory {
+    fun setTerminalDeviceConfiguration(deviceConfiguration: DeviceConfiguration): DefaultTerminalFactory {
         this.deviceConfiguration = deviceConfiguration
         return this
     }
 
-    /**
-     * Sets the font configuration to use on created [SwingTerminalFrame] created by this factory
-     */
-    fun setTerminalFontConfiguration(fontConfiguration: TerminalFontConfiguration): DefaultTerminalFactory {
-        this.fontConfiguration = fontConfiguration
-        return this
+    fun setFontRenderer(fontRenderer: MonospaceFontRenderer<Graphics>) {
+        this.fontRenderer = fontRenderer
     }
+
+    // TODO: font renderer
 
     /**
      * Create a [Terminal] and immediately wrap it up in a [TerminalScreen]

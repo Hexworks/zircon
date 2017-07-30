@@ -8,7 +8,7 @@ import org.codetome.zircon.screen.TerminalScreen;
 import org.codetome.zircon.terminal.DefaultTerminalFactory;
 import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.TerminalSize;
-import org.codetome.zircon.terminal.config.TerminalFontConfiguration;
+import org.codetome.zircon.terminal.config.FontConfiguration;
 
 import java.util.Collections;
 
@@ -20,7 +20,7 @@ public class BasicScreenExample {
 
     public static void main(String[] args) {
         final DefaultTerminalFactory factory = new DefaultTerminalFactory();
-        factory.setTerminalFontConfiguration(TerminalFontConfiguration.Companion.getDefault());
+        factory.setFontRenderer(FontConfiguration.getDefault());
         factory.setInitialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT));
         final Terminal terminal = factory.createTerminal();
 

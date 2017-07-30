@@ -3,6 +3,7 @@ package org.codetome.zircon.examples;
 import org.codetome.zircon.TerminalPosition;
 import org.codetome.zircon.TextCharacter;
 import org.codetome.zircon.TextColor;
+import org.codetome.zircon.font.MonospaceFontRenderer;
 import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.input.KeyStroke;
@@ -10,9 +11,11 @@ import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.terminal.DefaultTerminalFactory;
 import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.TerminalSize;
-import org.codetome.zircon.terminal.config.TerminalDeviceConfiguration;
-import org.codetome.zircon.terminal.config.TerminalFontConfiguration;
+import org.codetome.zircon.terminal.config.DeviceConfiguration;
+import org.codetome.zircon.terminal.config.FontConfiguration;
+import org.codetome.zircon.font.TilesetResource;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +26,7 @@ import static org.codetome.zircon.TextColor.ANSI.CYAN;
 
 public class TypingExample {
 
-    private static final int TERMINAL_WIDTH = 60;
+    private static final int TERMINAL_WIDTH = 30;
     private static final int TERMINAL_HEIGHT = 30;
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
@@ -36,13 +39,12 @@ public class TypingExample {
     public static void main(String[] args) {
         final DefaultTerminalFactory factory = new DefaultTerminalFactory();
         factory.setInitialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT));
-        final TerminalFontConfiguration fontConfig = TerminalFontConfiguration.getDefault();
-        final TerminalDeviceConfiguration deviceConfig = TerminalDeviceConfiguration.getDefault();
+        final MonospaceFontRenderer<Graphics> fontConfig = FontConfiguration.createSwingFontRendererForTileset(TilesetResource.JOLLY);
+        final DeviceConfiguration deviceConfig = DeviceConfiguration.getDefault();
 
-        fontConfig.setAntiAliased(false);
         deviceConfig.setCursorBlinking(true);
 
-        factory.setTerminalFontConfiguration(fontConfig);
+        factory.setFontRenderer(fontConfig);
         factory.setTerminalDeviceConfiguration(deviceConfig);
         final Terminal terminal = factory.createTerminal();
         final Screen screen = factory.createScreenFor(terminal);

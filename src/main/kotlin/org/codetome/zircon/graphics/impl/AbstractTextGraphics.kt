@@ -70,7 +70,7 @@ abstract class AbstractTextGraphics(
         var sourceImageTopLeftTemp = TerminalPosition.TOP_LEFT_CORNER
         var sourceImageSize = image.getSize()
 
-        // If the source image position is negative, offset the whole image
+        // If the source sprite position is negative, offset the whole sprite
         if (sourceImageTopLeftTemp.column < 0) {
             topLeftTemp = topLeftTemp.withRelativeColumn(-sourceImageTopLeftTemp.column)
             sourceImageSize = sourceImageSize.withRelativeColumns(sourceImageTopLeftTemp.column)
@@ -82,13 +82,13 @@ abstract class AbstractTextGraphics(
             sourceImageTopLeftTemp = sourceImageTopLeftTemp.withRow(0)
         }
 
-        // cropping specified image-subrectangle to the image itself:
+        // cropping specified sprite-subrectangle to the sprite itself:
         var fromRow = Math.max(sourceImageTopLeftTemp.row, 0)
         var untilRow = Math.min(sourceImageTopLeftTemp.row + sourceImageSize.rows, image.getSize().rows)
         var fromColumn = Math.max(sourceImageTopLeftTemp.column, 0)
         var untilColumn = Math.min(sourceImageTopLeftTemp.column + sourceImageSize.columns, image.getSize().columns)
 
-        // difference between position in image and position on target:
+        // difference between position in sprite and position on target:
         val diffRow = topLeftTemp.row - sourceImageTopLeftTemp.row
         val diffColumn = topLeftTemp.column - sourceImageTopLeftTemp.column
 

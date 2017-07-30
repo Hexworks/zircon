@@ -4,13 +4,12 @@ import org.codetome.zircon.TextColor
 import org.codetome.zircon.TextColor.ANSI.*
 import java.awt.Color
 
-@Suppress("unused")
 /**
  * This class specifies the palette of colors the terminal will use for the normally available 8 + 1 ANSI colors but
  * also their bright versions with are normally enabled through bold mode. There are several palettes available, all
  * based on popular terminal emulators. All colors are defined in the AWT format.
  */
-class TerminalEmulatorPalette(
+class TerminalDisplayPalette(
         private val defaultColor: Color,
         private val defaultBrightColor: Color,
         private val defaultBackgroundColor: Color,
@@ -67,7 +66,7 @@ class TerminalEmulatorPalette(
         /**
          * Values taken from gnome-terminal on Ubuntu
          */
-        val GNOME_TERMINAL = TerminalEmulatorPalette(
+        val GNOME_TERMINAL = TerminalDisplayPalette(
                 Color(211, 215, 207),
                 Color(238, 238, 236),
                 Color(46, 52, 54),
@@ -91,7 +90,7 @@ class TerminalEmulatorPalette(
         /**
          * Values taken from [Wikipedia](http://en.wikipedia.org/wiki/ANSI_escape_code), these are supposed to be the standard VGA palette.
          */
-        val STANDARD_VGA = TerminalEmulatorPalette(
+        val STANDARD_VGA = TerminalDisplayPalette(
                 Color(170, 170, 170),
                 Color(255, 255, 255),
                 Color(0, 0, 0),
@@ -115,7 +114,7 @@ class TerminalEmulatorPalette(
         /**
          * Values taken from [Wikipedia](http://en.wikipedia.org/wiki/ANSI_escape_code), these are supposed to be what Windows XP cmd is using.
          */
-        val WINDOWS_XP_COMMAND_PROMPT = TerminalEmulatorPalette(
+        val WINDOWS_XP_COMMAND_PROMPT = TerminalDisplayPalette(
                 Color(192, 192, 192),
                 Color(255, 255, 255),
                 Color(0, 0, 0),
@@ -139,7 +138,7 @@ class TerminalEmulatorPalette(
         /**
          * Values taken from [Wikipedia](http://en.wikipedia.org/wiki/ANSI_escape_code), these are supposed to be what terminal.app on MacOSX is using.
          */
-        val MAC_OS_X_TERMINAL_APP = TerminalEmulatorPalette(
+        val MAC_OS_X_TERMINAL_APP = TerminalDisplayPalette(
                 Color(203, 204, 205),
                 Color(233, 235, 235),
                 Color(0, 0, 0),
@@ -163,7 +162,7 @@ class TerminalEmulatorPalette(
         /**
          * Values taken from [Wikipedia](http://en.wikipedia.org/wiki/ANSI_escape_code), these are supposed to be what putty is using.
          */
-        val PUTTY = TerminalEmulatorPalette(
+        val PUTTY = TerminalDisplayPalette(
                 Color(187, 187, 187),
                 Color(255, 255, 255),
                 Color(0, 0, 0),
@@ -187,7 +186,7 @@ class TerminalEmulatorPalette(
         /**
          * Values taken from [Wikipedia](http://en.wikipedia.org/wiki/ANSI_escape_code), these are supposed to be what xterm is using.
          */
-        val XTERM = TerminalEmulatorPalette(
+        val XTERM = TerminalDisplayPalette(
                 Color(229, 229, 229),
                 Color(255, 255, 255),
                 Color(0, 0, 0),

@@ -1,24 +1,27 @@
 package org.codetome.zircon.terminal.swing
 
+import org.codetome.zircon.font.MonospaceFontRenderer
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalSize
-import org.codetome.zircon.terminal.config.TerminalColorConfiguration
-import org.codetome.zircon.terminal.config.TerminalDeviceConfiguration
-import org.codetome.zircon.terminal.config.TerminalFontConfiguration
+import org.codetome.zircon.terminal.config.ColorConfiguration
+import org.codetome.zircon.terminal.config.DeviceConfiguration
+import org.codetome.zircon.terminal.config.FontConfiguration
 import java.awt.BorderLayout
 import java.awt.Color
+import java.awt.Graphics
+import java.awt.Image
 import java.util.*
 import javax.swing.JFrame
 
 
 class SwingTerminalFrame(title: String = "ZirconTerminal",
                          terminalSize: TerminalSize,
-                         deviceConfiguration: TerminalDeviceConfiguration = TerminalDeviceConfiguration.getDefault(),
-                         fontConfiguration: TerminalFontConfiguration = TerminalFontConfiguration.getDefault(),
-                         colorConfiguration: TerminalColorConfiguration = TerminalColorConfiguration.getDefault(),
+                         deviceConfiguration: DeviceConfiguration = DeviceConfiguration.getDefault(),
+                         fontConfiguration: MonospaceFontRenderer<Graphics> = FontConfiguration.getDefault(),
+                         colorConfiguration: ColorConfiguration = ColorConfiguration.getDefault(),
                          private val swingTerminal: SwingTerminalComponent = SwingTerminalComponent(terminalSize, deviceConfiguration, fontConfiguration, colorConfiguration))
     : JFrame(title), Terminal by swingTerminal {
 

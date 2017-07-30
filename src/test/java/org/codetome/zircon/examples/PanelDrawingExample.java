@@ -2,6 +2,7 @@ package org.codetome.zircon.examples;
 
 import org.codetome.zircon.TerminalPosition;
 import org.codetome.zircon.TextColor;
+import org.codetome.zircon.font.MonospaceFontRenderer;
 import org.codetome.zircon.graphics.TextGraphics;
 import org.codetome.zircon.graphics.TextImage;
 import org.codetome.zircon.graphics.impl.BasicTextImage;
@@ -10,8 +11,7 @@ import org.codetome.zircon.screen.TerminalScreen;
 import org.codetome.zircon.terminal.DefaultTerminalFactory;
 import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.TerminalSize;
-import org.codetome.zircon.terminal.config.TerminalFontConfiguration;
-import org.codetome.zircon.terminal.swing.SwingTerminalFrame;
+import org.codetome.zircon.terminal.config.FontConfiguration;
 
 import java.util.Collections;
 
@@ -25,9 +25,8 @@ public class PanelDrawingExample {
 
     public static void main(String[] args) {
         final DefaultTerminalFactory factory = new DefaultTerminalFactory();
-        final TerminalFontConfiguration fontConfig = TerminalFontConfiguration.getDefault();
-        fontConfig.setAntiAliased(true);
-        factory.setTerminalFontConfiguration(fontConfig);
+        final MonospaceFontRenderer fontConfig = FontConfiguration.createSwingFontRendererForPhysicalFonts();
+        factory.setFontRenderer(fontConfig);
         factory.setInitialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT));
         final Terminal terminal = factory.createTerminal();
 

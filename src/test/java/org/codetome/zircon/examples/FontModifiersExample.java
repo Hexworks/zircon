@@ -1,12 +1,16 @@
 package org.codetome.zircon.examples;
 
+import org.codetome.zircon.Symbols;
+import org.codetome.zircon.font.MonospaceFontRenderer;
 import org.codetome.zircon.terminal.DefaultTerminalFactory;
 import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.TerminalSize;
-import org.codetome.zircon.terminal.config.TerminalFontConfiguration;
+import org.codetome.zircon.terminal.config.FontConfiguration;
+import org.codetome.zircon.font.TilesetResource;
 
 import static org.codetome.zircon.Modifier.*;
 import static org.codetome.zircon.TextColor.ANSI.*;
+import static org.codetome.zircon.font.TilesetResource.*;
 
 public class FontModifiersExample {
 
@@ -16,9 +20,8 @@ public class FontModifiersExample {
     public static void main(String[] args) {
         final DefaultTerminalFactory factory = new DefaultTerminalFactory();
         factory.setInitialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT));
-        final TerminalFontConfiguration fontConfig = TerminalFontConfiguration.getDefault();
-        fontConfig.setAntiAliased(false);
-        factory.setTerminalFontConfiguration(fontConfig);
+        final MonospaceFontRenderer fontConfig = FontConfiguration.createSwingFontRendererForTileset(PHOEBUS);
+        factory.setFontRenderer(fontConfig);
         final Terminal terminal = factory.createTerminal();
 
         terminal.enableModifier(CROSSED_OUT);
@@ -41,6 +44,13 @@ public class FontModifiersExample {
         terminal.setBackgroundColor(RED);
         terminal.setForegroundColor(WHITE);
         terminal.putCharacter('C');
+
+        terminal.resetColorsAndModifiers();
+        terminal.setForegroundColor(RED);
+        terminal.setBackgroundColor(BLUE);
+        terminal.putCharacter(Symbols.FACE_WHITE);
+        terminal.putCharacter(Symbols.FACE_BLACK);
+        terminal.putCharacter(Symbols.BLOCK_MIDDLE);
 
         terminal.flush();
     }

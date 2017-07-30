@@ -7,8 +7,8 @@ import org.codetome.zircon.TextColor
  * This class contains color-related settings that is used
  * by [org.codetome.zircon.terminal.swing.SwingTerminalComponent] when it renders the component.
  */
-class TerminalColorConfiguration private constructor(
-        private val colorPalette: TerminalEmulatorPalette,
+class ColorConfiguration private constructor(
+        private val colorPalette: TerminalDisplayPalette,
         private val useBrightColorsOnBold: Boolean = true) {
 
     /**
@@ -29,14 +29,14 @@ class TerminalColorConfiguration private constructor(
          * [org.codetome.zircon.terminal.swing.SwingTerminalComponent] without specifying any color
          * configuration. It will use classic VGA colors for the ANSI palette and bright colors on bold text.
          */
-        fun getDefault() = newInstance(TerminalEmulatorPalette.STANDARD_VGA)
+        fun getDefault() = newInstance(TerminalDisplayPalette.STANDARD_VGA)
 
         /**
          * Creates a new color configuration based on a particular palette and with using brighter
          * colors on bold text.
          */
-        fun newInstance(colorPalette: TerminalEmulatorPalette): TerminalColorConfiguration {
-            return TerminalColorConfiguration(colorPalette)
+        fun newInstance(colorPalette: TerminalDisplayPalette): ColorConfiguration {
+            return ColorConfiguration(colorPalette)
         }
     }
 }

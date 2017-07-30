@@ -85,8 +85,8 @@ interface TextGraphics : StyleSet, ShapeRenderer {
 
     /**
      * Takes a [TextImage] and draws it on the surface this [TextGraphics] is targeting, given the
-     * coordinates on the target that is specifying where the top-left corner of the image should be drawn.
-     * This method will only draw a portion of the image to the target, as specified by the two last parameters.
+     * coordinates on the target that is specifying where the top-left corner of the sprite should be drawn.
+     * This method will only draw a portion of the sprite to the target, as specified by the two last parameters.
      */
     fun drawImage(topLeft: TerminalPosition,
                   image: TextImage)

@@ -8,7 +8,7 @@ import org.codetome.zircon.TextColor
  * This includes properties such as the shape of the cursor, the color of the cursor
  * and if the cursor should blink or not.
  */
-class TerminalDeviceConfiguration(
+class DeviceConfiguration(
         var blinkLengthInMilliSeconds: Long = 500,
         var cursorStyle: CursorStyle = CursorStyle.REVERSED,
         var cursorColor: TextColor = TextColor.ANSI.WHITE,
@@ -19,6 +19,6 @@ class TerminalDeviceConfiguration(
     companion object {
 
         @JvmStatic
-        fun getDefault() = TerminalDeviceConfiguration()
+        fun getDefault() = DeviceConfiguration()
     }
 }
