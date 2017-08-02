@@ -57,6 +57,8 @@ interface TextColor {
 
         private val RGB_COLOR = Pattern.compile("#[0-9a-fA-F]{6}")
 
+        fun fromAWTColor(color: Color) = TextColorImpl(color.red, color.green, color.blue)
+
         /**
          * Creates a [TextColor] from a <code>red</code>, <code>green</code>, <code>blue</code> triple.
          */

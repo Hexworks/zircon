@@ -3,10 +3,11 @@ package org.codetome.zircon.terminal.config
 import org.codetome.zircon.font.*
 import org.codetome.zircon.terminal.swing.BufferedImageSprite
 import org.codetome.zircon.terminal.swing.SwingCharacterImageRenderer
+import org.codetome.zircon.tileset.DFTilesetResource
 import java.awt.Font
 import java.awt.Graphics
 import java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment
-import java.awt.Image
+import java.awt.image.BufferedImage
 import java.awt.RenderingHints
 import java.awt.font.FontRenderContext
 import java.io.File
@@ -37,9 +38,9 @@ object FontConfiguration {
     fun getDefault() = createSwingFontRendererForPhysicalFonts()
 
     @JvmStatic
-    fun createSwingFontRendererForTileset(tileset: TilesetResource)
+    fun createSwingFontRendererForTileset(tileset: DFTilesetResource)
             : MonospaceFontRenderer<Graphics> {
-        return TilesetFontRenderer<Sprite<Image>, Image, Graphics>(
+        return TilesetFontRenderer<Sprite<BufferedImage>, BufferedImage, Graphics>(
                 width = tileset.width,
                 height = tileset.height,
                 renderer = SwingCharacterImageRenderer(
@@ -54,7 +55,7 @@ object FontConfiguration {
     fun createSwingFontRendererForPhysicalFonts(isAntiAliased: Boolean = false,
                                                 boldMode: BoldMode = BoldMode.EVERYTHING_BUT_SYMBOLS,
                                                 fontsInOrderOfPriority: MutableList<Font> = filterMonospaced(selectDefaultFont()))
-            : PhysicalFontRenderer<Image, Graphics> {
+            : PhysicalFontRenderer<BufferedImage, Graphics> {
 
         val fontWidth = getFontWidth(fontsInOrderOfPriority.first(), isAntiAliased)
         val fontHeight = getFontHeight(fontsInOrderOfPriority.first(), isAntiAliased)
@@ -86,7 +87,8 @@ object FontConfiguration {
                         fontWidth = fontWidth,
                         fontHeight = fontHeight),
                 width = fontWidth,
-                height = fontHeight)
+                height = fontHeight,
+                antiAliased = isAntiAliased)
     }
 
 
