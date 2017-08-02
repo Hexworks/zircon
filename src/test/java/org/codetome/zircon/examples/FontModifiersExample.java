@@ -10,11 +10,6 @@ import static org.codetome.zircon.Modifier.*;
 public class FontModifiersExample {
 
     public static void main(String[] args) {
-        new FontModifiersExample().run();
-    }
-
-    @Test
-    public void run() {
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = DefaultTerminalBuilder.buildDefault();
         terminal.setCursorVisible(false); // we don't want the cursor right now
