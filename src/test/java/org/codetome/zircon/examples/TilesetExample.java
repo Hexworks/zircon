@@ -1,20 +1,16 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.Symbols;
-import org.codetome.zircon.TerminalPosition;
-import org.codetome.zircon.TextCharacter;
-import org.codetome.zircon.TextColor;
+import org.codetome.zircon.*;
+import org.codetome.zircon.builder.FontRendererBuilder;
 import org.codetome.zircon.screen.TerminalScreen;
-import org.codetome.zircon.terminal.DefaultTerminalFactory;
-import org.codetome.zircon.terminal.Terminal;
+import org.codetome.zircon.terminal.DefaultTerminalBuilder;
 import org.codetome.zircon.terminal.TerminalSize;
-import org.codetome.zircon.terminal.config.FontConfiguration;
-import org.codetome.zircon.tileset.DFTilesetResource;
+import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.Random;
 
-import static org.codetome.zircon.tileset.DFTilesetResource.*;
+import static org.codetome.zircon.tileset.DFTilesetResource.WANDERLUST_16X16;
 
 public class TilesetExample {
 
@@ -35,31 +31,38 @@ public class TilesetExample {
     private static final int TERMINAL_HEIGHT = 40;
     private static final TextCharacter GRASS_0 = new TextCharacter(
             ',',
-            TextColor.Companion.fromString("#22bb33"),
-            TextColor.Companion.fromString("#114911"),
+            TextColorFactory.fromString("#22bb33"),
+            TextColorFactory.fromString("#114911"),
             new HashSet<>());
     private static final TextCharacter GRASS_1 = new TextCharacter(
             '`',
-            TextColor.Companion.fromString("#22aa33"),
-            TextColor.Companion.fromString("#114511"),
+            TextColorFactory.fromString("#22aa33"),
+            TextColorFactory.fromString("#114511"),
             new HashSet<>());
     private static final TextCharacter GRASS_2 = new TextCharacter(
             '\'',
-            TextColor.Companion.fromString("#229933"),
-            TextColor.Companion.fromString("#114011"),
+            TextColorFactory.fromString("#229933"),
+            TextColorFactory.fromString("#114011"),
             new HashSet<>());
     private static final TextCharacter[] GRASSES = new TextCharacter[]{GRASS_0, GRASS_1, GRASS_2};
-    private static final TextColor TEXT_COLOR = TextColor.Companion.fromString("#bb4422");
-    private static final TextColor TEXT_BG_COLOR = TextColor.Companion.fromString("#114011");
+    private static final TextColor TEXT_COLOR = TextColorFactory.fromString("#bb4422");
+    private static final TextColor TEXT_BG_COLOR = TextColorFactory.fromString("#114011");
 
     public static void main(String[] args) {
+        new TilesetExample().run();
+    }
 
-        final DefaultTerminalFactory factory = new DefaultTerminalFactory();
-        factory.setFontRenderer(FontConfiguration.createSwingFontRendererForTileset(WANDERLUST_16X16));
-        factory.setInitialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT));
-        final Terminal terminal = factory.createTerminal();
+    @Test
+    public void run() {
+        final TerminalScreen screen = DefaultTerminalBuilder.newBuilder()
+                .fontRenderer(FontRendererBuilder.newBuilder()
+                        .useSwing()
+                        .useDFTileset(WANDERLUST_16X16)
+                        .build())
+                .initialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT))
+                .buildScreen();
+        screen.setCursorVisible(false);
 
-        final TerminalScreen screen = new TerminalScreen(terminal);
         final Random random = new Random();
         for (int y = 0; y < TERMINAL_HEIGHT; y++) {
             for (int x = 0; x < TERMINAL_WIDTH; x++) {
@@ -69,22 +72,26 @@ public class TilesetExample {
         final String text = "Tileset Example";
         for (int i = 0; i < text.length(); i++) {
             screen.setCharacter(new TerminalPosition(i + 2, 1),
-                    new TextCharacter(text.charAt(i), TEXT_COLOR, TEXT_BG_COLOR, new HashSet<>()));
+                    TextCharacter.builder()
+                            .character(text.charAt(i))
+                            .foregroundColor(TEXT_COLOR)
+                            .backgroundColor(TEXT_BG_COLOR)
+                            .build());
         }
 
         final int charCount = RANDOM_CHARS.length;
-        final int ansiCount = TextColor.ANSI.values().length;
+        final int ansiCount = ANSITextColor.values().length;
 
         for (int i = 0; i < RANDOM_CHAR_COUNT; i++) {
             screen.setCharacter(
                     new TerminalPosition(
                             random.nextInt(TERMINAL_WIDTH),
                             random.nextInt(TERMINAL_HEIGHT - 2) + 2),
-                    new TextCharacter(
-                            RANDOM_CHARS[random.nextInt(charCount)],
-                            TextColor.ANSI.values()[random.nextInt(ansiCount)],
-                            TextColor.Companion.fromString("#114011"),
-                            new HashSet<>()));
+                    TextCharacter.builder()
+                            .character(RANDOM_CHARS[random.nextInt(charCount)])
+                            .foregroundColor(ANSITextColor.values()[random.nextInt(ansiCount)])
+                            .backgroundColor(TextColorFactory.fromString("#114011"))
+                            .build());
         }
         screen.display();
     }

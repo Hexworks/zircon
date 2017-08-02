@@ -1,0 +1,36 @@
+package org.codetome.zircon.examples;
+
+import org.codetome.zircon.TextColorFactory;
+import org.codetome.zircon.builder.DeviceConfigurationBuilder;
+import org.codetome.zircon.terminal.DefaultTerminalBuilder;
+import org.codetome.zircon.terminal.Terminal;
+import org.codetome.zircon.terminal.config.CursorStyle;
+import org.junit.Test;
+
+public class CursorExample {
+
+    public static void main(String[] args) {
+        new CursorExample().run();
+    }
+
+    @Test
+    public void run() {
+        // we create a new terminal using DefaultTerminalBuilder
+        final Terminal terminal = DefaultTerminalBuilder.newBuilder()
+                // we only override the parts which we need, in this case the device config
+                .terminalDeviceConfiguration(DeviceConfigurationBuilder.newBuilder()
+                        .cursorColor(TextColorFactory.fromString("#ff8844"))
+                        .cursorStyle(CursorStyle.UNDER_BAR)
+                        .cursorBlinking(true)
+                        .build())
+                .buildTerminal(); // then we build the terminal
+
+        // for this example we need the cursor to be visible
+        terminal.setCursorVisible(true);
+
+        String text = "Cursor example...";
+        for (int i = 0; i < text.length(); i++) {
+            terminal.putCharacter(text.charAt(i));
+        }
+    }
+}

@@ -2,7 +2,7 @@ package org.codetome.zircon.terminal.virtual
 
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.TextUtils
+import org.codetome.zircon.util.TextUtils
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke

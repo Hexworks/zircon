@@ -16,7 +16,7 @@ data class TerminalPosition(val column: Int,
         if (row == 0 && this.column == 0) {
             return TOP_LEFT_CORNER
         }
-        return TerminalPosition(this.column, row)
+        return copy(row = row)
     }
 
     /**
@@ -27,7 +27,7 @@ data class TerminalPosition(val column: Int,
         if (column == 0 && this.row == 0) {
             return TOP_LEFT_CORNER
         }
-        return TerminalPosition(column, this.row)
+        return copy(column = column)
     }
 
     /**

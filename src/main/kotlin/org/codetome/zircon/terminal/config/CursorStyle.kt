@@ -1,7 +1,7 @@
 package org.codetome.zircon.terminal.config
 
 /**
- * Different cursor styles supported by [org.codetome.zircon.terminal.swing.SwingTerminalComponent].
+ * Different cursor styles supported by [org.codetome.zircon.terminal.Terminal].
  */
 enum class CursorStyle {
     /**

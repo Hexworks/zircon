@@ -39,7 +39,7 @@ compile("org.codetome.zircon:zircon:2017.1.0")
 final DefaultTerminalFactory factory = new DefaultTerminalFactory();
 
 // Then set a size for your terminal (in characters)
-factory.setInitialTerminalSize(new TerminalSize(84, 32));
+factory.initialTerminalSize(new TerminalSize(84, 32));
 
 // And finally create a new Terminal
 final Terminal terminal = factory.createTerminal();
@@ -90,8 +90,8 @@ And the result is:
 
 ```java
 final DefaultTerminalFactory factory = new DefaultTerminalFactory();
-factory.setTerminalFontConfiguration(TerminalFontConfiguration.Companion.getDefault());
-factory.setInitialTerminalSize(new TerminalSize(84, 32));
+factory.setTerminalFontConfiguration(TerminalFontConfiguration.Companion.buildDefault());
+factory.initialTerminalSize(new TerminalSize(84, 32));
 final Terminal terminal = factory.createTerminal();
 
 final TerminalScreen screen = new TerminalScreen(terminal);

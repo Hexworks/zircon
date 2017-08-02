@@ -26,8 +26,17 @@ sealed class Input(private val inputType: InputType = InputType.Character,
 
     fun getInputType() = inputType
 
+    fun inputTypeIs(inputType: InputType) = inputType == this.inputType
+
     fun getEventTime() = eventTime
 
+    fun isKeyStroke() = this is KeyStroke
+
+    fun isMouseAction() = this is MouseAction
+
+    fun asKeyStroke() = this as KeyStroke
+
+    fun asMouseAction() = this as MouseAction
 
 }
 

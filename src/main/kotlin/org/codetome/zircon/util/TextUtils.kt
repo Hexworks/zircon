@@ -1,4 +1,4 @@
-package org.codetome.zircon
+package org.codetome.zircon.util
 
 object TextUtils {
 

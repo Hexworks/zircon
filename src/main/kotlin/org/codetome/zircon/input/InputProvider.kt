@@ -3,8 +3,8 @@ package org.codetome.zircon.input
 import java.util.*
 
 /**
- * Objects implementing this interface can read character streams and transform them into [Input] objects which can
- * be read in a FIFO manner.
+ * Objects implementing this interface can read character streams and transform them into [Input]
+ * objects which can be read in a FIFO manner.
  */
 interface InputProvider {
     /**

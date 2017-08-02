@@ -1,17 +1,19 @@
 package org.codetome.zircon
 
 import org.codetome.zircon.Modifier.*
+import org.codetome.zircon.builder.TextCharacterBuilder
 
 /**
  * Represents a single character with additional metadata such as colors and modifiers. This class is immutable and
  * cannot be modified after creation.
  */
 data class TextCharacter(
-        private val character: Char = ' ',
-        private val foregroundColor: TextColor = TextColor.ANSI.WHITE,
-        private val backgroundColor: TextColor = TextColor.ANSI.BLACK,
-        private val modifiersToUse: Set<Modifier> = setOf()) {
+        private val character: Char,
+        private val foregroundColor: TextColor,
+        private val backgroundColor: TextColor,
+        private val modifiersToUse: Set<Modifier>) {
 
+    // reverse defensive copy (haha)
     private val modifiers: Set<Modifier> = modifiersToUse.toSet()
 
     fun getCharacter() = character
@@ -26,8 +28,6 @@ data class TextCharacter(
 
     fun isUnderlined() = modifiers.contains(UNDERLINE)
 
-    fun isInverse() = modifiers.contains(INVERSE)
-
     fun isCrossedOut() = modifiers.contains(CROSSED_OUT)
 
     fun isItalic() = modifiers.contains(ITALIC)
@@ -41,14 +41,14 @@ data class TextCharacter(
         if (this.character == character) {
             return this
         }
-        return TextCharacter(character, foregroundColor, backgroundColor, modifiers)
+        return copy(character = character)
     }
 
     fun withForegroundColor(foregroundColor: TextColor): TextCharacter {
         if (this.foregroundColor === foregroundColor || this.foregroundColor == foregroundColor) {
             return this
         }
-        return TextCharacter(character, foregroundColor, backgroundColor, modifiers)
+        return copy(foregroundColor = foregroundColor)
     }
 
     /**
@@ -58,7 +58,7 @@ data class TextCharacter(
         if (this.backgroundColor === backgroundColor || this.backgroundColor == backgroundColor) {
             return this
         }
-        return TextCharacter(character, foregroundColor, backgroundColor, modifiers)
+        return copy(backgroundColor = backgroundColor)
     }
 
     /**
@@ -69,7 +69,7 @@ data class TextCharacter(
         if (this.modifiers == modifiers) {
             return this
         }
-        return TextCharacter(character, foregroundColor, backgroundColor, modifiers)
+        return copy(modifiersToUse = modifiers)
     }
 
     /**
@@ -81,7 +81,7 @@ data class TextCharacter(
             return this
         }
         val newSet = this.modifiers.plus(modifier)
-        return TextCharacter(character, foregroundColor, backgroundColor, newSet)
+        return copy(modifiersToUse = newSet)
     }
 
     /**
@@ -94,14 +94,18 @@ data class TextCharacter(
             return this
         }
         val newSet = this.modifiers.minus(modifier)
-        return TextCharacter(character, foregroundColor, backgroundColor, newSet)
+        return copy(modifiersToUse = newSet)
     }
 
+
+
     companion object {
-        val DEFAULT_CHARACTER = TextCharacter(
-                character = ' ',
-                foregroundColor = TextColor.ANSI.WHITE,
-                backgroundColor = TextColor.ANSI.BLACK)
+
+        @JvmStatic
+        fun builder() = TextCharacterBuilder()
+
+        @JvmField
+        val DEFAULT_CHARACTER = builder().build()
 
     }
 }

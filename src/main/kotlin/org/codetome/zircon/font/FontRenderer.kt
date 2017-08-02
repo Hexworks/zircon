@@ -10,8 +10,8 @@ import org.codetome.zircon.TextCharacter
  * use it in a terminal display environment. The other mandatory requirement for a
  * font is to be monospaced (for the same reason).
  */
-abstract class MonospaceFontRenderer<in S>(val width: Int,
-                                           val height: Int) {
+abstract class FontRenderer<in S>(val width: Int,
+                                  val height: Int) {
 
     /**
      * Renders a `textCharacter` on the given `surface` at `x`:`y` coordinates.

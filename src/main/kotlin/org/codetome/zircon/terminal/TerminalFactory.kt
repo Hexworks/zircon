@@ -4,5 +4,5 @@ interface TerminalFactory {
     /**
      * Instantiates a [Terminal] according to the factory implementation.
      */
-    fun createTerminal(): Terminal
+    fun buildTerminal(): Terminal
 }

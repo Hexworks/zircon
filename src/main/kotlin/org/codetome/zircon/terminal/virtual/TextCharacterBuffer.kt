@@ -18,14 +18,12 @@ internal class TextCharacterBuffer {
 
     @Synchronized
     fun resize(size: TerminalSize) {
-        println("old size: rows:${lines.size}, cols: ${lines.firstOrNull()?.size}")
         lines = lines.filterIndexed { row, _ -> row < size.rows }
                 .map { line ->
                     line.filterIndexed { col, _ ->
                         col < size.columns
                     }.toMutableList()
                 }.toMutableList()
-        println("new size: rows:${lines.size}, cols: ${lines.firstOrNull()?.size}")
     }
 
     @Synchronized

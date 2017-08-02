@@ -1,7 +1,7 @@
 package org.codetome.zircon.terminal.swing
 
 import org.codetome.zircon.*
-import org.codetome.zircon.font.MonospaceFontRenderer
+import org.codetome.zircon.font.FontRenderer
 import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.input.MouseAction
@@ -11,6 +11,7 @@ import org.codetome.zircon.terminal.TerminalSize
 import org.codetome.zircon.terminal.config.*
 import org.codetome.zircon.terminal.config.CursorStyle.*
 import org.codetome.zircon.terminal.virtual.VirtualTerminal
+import org.codetome.zircon.util.TextUtils
 import java.awt.*
 import java.awt.datatransfer.DataFlavor
 import java.awt.event.*
@@ -25,8 +26,7 @@ import java.util.*
 @Suppress("unused")
 abstract class GraphicalTerminalImplementation(
         private val deviceConfiguration: DeviceConfiguration,
-        private val colorConfiguration: ColorConfiguration,
-        private val monospaceFontRenderer: MonospaceFontRenderer<Graphics>,
+        private val fontRenderer: FontRenderer<Graphics>,
         private val virtualTerminal: VirtualTerminal)
     : VirtualTerminal by virtualTerminal {
 
@@ -177,7 +177,7 @@ abstract class GraphicalTerminalImplementation(
         virtualTerminal.forEachDirtyCell { (position, textCharacter) ->
             val atCursorLocation = cursorPosition == position
             val characterWidth = getFontWidth()
-            val foregroundColor = deriveTrueForegroundColor(textCharacter, atCursorLocation)
+            val foregroundColor = deriveTrueForegroundColor(textCharacter)
             val backgroundColor = deriveTrueBackgroundColor(textCharacter, atCursorLocation)
             val drawCursor = atCursorLocation && (!deviceConfiguration.isCursorBlinking || //Always draw if the cursor isn't blinking
                     deviceConfiguration.isCursorBlinking && blinkOn)    //If the cursor is blinking, only draw when blinkOn is true
@@ -205,7 +205,7 @@ abstract class GraphicalTerminalImplementation(
             buffer = Optional.of(BufferedImage(getWidth() * 2, getHeight() * 2, BufferedImage.TYPE_INT_RGB))
 
             val graphics = buffer.get().createGraphics()
-            graphics.color = colorConfiguration.toAWTColor(TextColor.ANSI.DEFAULT, false, false)
+            graphics.color = ANSITextColor.DEFAULT.toColor()
             graphics.fillRect(0, 0, getWidth() * 2, getHeight() * 2)
             graphics.dispose()
         }
@@ -235,12 +235,12 @@ abstract class GraphicalTerminalImplementation(
         val x = columnIndex * getFontWidth()
         val y = rowIndex * getFontHeight()
 
-        monospaceFontRenderer.renderCharacter(character.copy(
-                foregroundColor = TextColor.fromAWTColor(foregroundColor),
-                backgroundColor = TextColor.fromAWTColor(backgroundColor)), graphics, x, y)
+        fontRenderer.renderCharacter(character.copy(
+                foregroundColor = TextColorFactory.fromAWTColor(foregroundColor),
+                backgroundColor = TextColorFactory.fromAWTColor(backgroundColor)), graphics, x, y)
 
         if (drawCursor) {
-            graphics.color = colorConfiguration.toAWTColor(deviceConfiguration.cursorColor, false, false)
+            graphics.color = deviceConfiguration.cursorColor.toColor()
             if (deviceConfiguration.cursorStyle === UNDER_BAR) {
                 graphics.fillRect(x, y + getFontHeight() - 3, characterWidth, 2)
             } else if (deviceConfiguration.cursorStyle === VERTICAL_BAR) {
@@ -250,24 +250,15 @@ abstract class GraphicalTerminalImplementation(
     }
 
 
-    private fun deriveTrueForegroundColor(character: TextCharacter, atCursorLocation: Boolean): Color {
+    private fun deriveTrueForegroundColor(character: TextCharacter): Color {
         val foregroundColor = character.getForegroundColor()
         val backgroundColor = character.getBackgroundColor()
-        var inverse = character.isInverse()
         val blink = character.isBlinking()
 
-        if (isCursorVisible() && atCursorLocation) {
-            if (deviceConfiguration.cursorStyle === REVERSED) {
-                inverse = true
-            }
-        }
-
-        if (inverse && (!blink || !blinkOn)) {
-            return colorConfiguration.toAWTColor(backgroundColor, backgroundColor !== TextColor.ANSI.DEFAULT, character.isBold())
-        } else if (!inverse && blink && blinkOn) {
-            return colorConfiguration.toAWTColor(backgroundColor, false, character.isBold())
-        } else {
-            return colorConfiguration.toAWTColor(foregroundColor, true, character.isBold())
+        if (blink && blinkOn) {
+            return backgroundColor.toColor()
+        }else {
+            return foregroundColor.toColor()
         }
     }
 
@@ -284,9 +275,9 @@ abstract class GraphicalTerminalImplementation(
         }
 
         if (reverse) {
-            return colorConfiguration.toAWTColor(foregroundColor, backgroundColor === TextColor.ANSI.DEFAULT, character.isBold())
+            return foregroundColor.toColor()
         } else {
-            return colorConfiguration.toAWTColor(backgroundColor, false, false)
+            return backgroundColor.toColor()
         }
     }
 
@@ -299,8 +290,7 @@ abstract class GraphicalTerminalImplementation(
     private fun clearBuffer() {
         if (buffer.isPresent) {
             val graphics = buffer.get().createGraphics()
-            val backgroundColor = colorConfiguration.toAWTColor(TextColor.ANSI.DEFAULT, false, false)
-            graphics.color = backgroundColor
+            graphics.color = ANSITextColor.DEFAULT.toColor()
             graphics.fillRect(0, 0, getWidth(), getHeight())
             graphics.dispose()
         }
