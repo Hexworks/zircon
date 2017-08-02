@@ -2,16 +2,17 @@ package org.codetome.zircon.examples;
 
 import org.codetome.zircon.TerminalPosition;
 import org.codetome.zircon.TextColor;
-import org.codetome.zircon.font.MonospaceFontRenderer;
+import org.codetome.zircon.TextColorFactory;
+import org.codetome.zircon.builder.FontRendererBuilder;
+import org.codetome.zircon.builder.TextImageBuilder;
 import org.codetome.zircon.graphics.TextGraphics;
 import org.codetome.zircon.graphics.TextImage;
 import org.codetome.zircon.graphics.impl.BasicTextImage;
 import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.screen.TerminalScreen;
-import org.codetome.zircon.terminal.DefaultTerminalFactory;
-import org.codetome.zircon.terminal.Terminal;
+import org.codetome.zircon.terminal.DefaultTerminalBuilder;
 import org.codetome.zircon.terminal.TerminalSize;
-import org.codetome.zircon.terminal.config.FontConfiguration;
+import org.junit.Test;
 
 import java.util.Collections;
 
@@ -21,16 +22,22 @@ public class PanelDrawingExample {
 
     private static final int TERMINAL_WIDTH = 100;
     private static final int TERMINAL_HEIGHT = 40;
-    private static final TextColor BACKGROUND_COLOR = TextColor.Companion.fromString("#223344");
+    private static final TextColor BACKGROUND_COLOR = TextColorFactory.fromString("#223344");
 
     public static void main(String[] args) {
-        final DefaultTerminalFactory factory = new DefaultTerminalFactory();
-        final MonospaceFontRenderer fontConfig = FontConfiguration.createSwingFontRendererForPhysicalFonts(true);
-        factory.setFontRenderer(fontConfig);
-        factory.setInitialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT));
-        final Terminal terminal = factory.createTerminal();
+        new PanelDrawingExample().run();
+    }
 
-        final TerminalScreen screen = new TerminalScreen(terminal);
+    @Test
+    public void run() {
+        final TerminalScreen screen = DefaultTerminalBuilder.newBuilder()
+                .fontRenderer(FontRendererBuilder.newBuilder()
+                        .useSwing()
+                        .usePhysicalFonts()
+                        .antiAliased(true)
+                        .build())
+                .initialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT))
+                .buildScreen();
 
         drawBackground(screen);
 
@@ -46,11 +53,12 @@ public class PanelDrawingExample {
     }
 
     private static TextImage createBackgroundForPanel(TextImage panel) {
-        final TextImage bg = new BasicTextImage(
-                new TerminalSize(panel.getSize().getColumns() + 1, panel.getSize().getRows() + 1));
+        final TextImage bg = TextImageBuilder.newBuilder()
+                .size(new TerminalSize(panel.getSize().getColumns() + 1, panel.getSize().getRows() + 1))
+                .build();
         final TerminalSize bgSize = bg.getSize();
         final TextGraphics panelWithBg = bg.newTextGraphics();
-        panelWithBg.setBackgroundColor(TextColor.Companion.fromString("#111111"));
+        panelWithBg.setBackgroundColor(TextColorFactory.fromString("#111111"));
         panelWithBg.fill(' ');
         panelWithBg.setBackgroundColor(BACKGROUND_COLOR);
         panelWithBg.setCharacter(new TerminalPosition(bgSize.getColumns() - 1, 0), ' ');
@@ -71,9 +79,11 @@ public class PanelDrawingExample {
         final TerminalPosition bottomLeft = topLeft.withRelativeRow(height - 1);
         final TerminalPosition bottomRight = topRight.withRelativeRow(height - 1);
 
-        final TextImage image = new BasicTextImage(new TerminalSize(width, height));
+        final TextImage image = TextImageBuilder.newBuilder()
+                .size(new TerminalSize(width, height))
+                .build();
         final TextGraphics graphics = image.newTextGraphics();
-        graphics.setBackgroundColor(TextColor.Companion.fromString("#666666"));
+        graphics.setBackgroundColor(TextColorFactory.fromString("#666666"));
         graphics.setCharacter(topLeft, DOUBLE_LINE_TOP_LEFT_CORNER);
         graphics.setCharacter(topRight, DOUBLE_LINE_TOP_RIGHT_CORNER);
         graphics.setCharacter(bottomLeft, DOUBLE_LINE_BOTTOM_LEFT_CORNER);

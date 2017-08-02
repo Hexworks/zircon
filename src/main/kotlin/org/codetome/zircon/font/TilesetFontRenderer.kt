@@ -7,7 +7,7 @@ class TilesetFontRenderer<out S : Sprite<I>, out I, in T>(width: Int,
                                                           height: Int,
                                                           private val renderer: CharacterImageRenderer<I, T>,
                                                           private val sprite: S)
-    : MonospaceFontRenderer<T>(width, height) {
+    : FontRenderer<T>(width, height) {
 
     override fun renderCharacter(textCharacter: TextCharacter, surface: T, x: Int, y: Int) {
         val cp437Idx = DFTilesetResource.fetchCP437IndexForChar(textCharacter.getCharacter())

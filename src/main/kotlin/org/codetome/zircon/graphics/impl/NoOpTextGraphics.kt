@@ -1,9 +1,6 @@
 package org.codetome.zircon.graphics.impl
 
-import org.codetome.zircon.Modifier
-import org.codetome.zircon.TerminalPosition
-import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.TextColor
+import org.codetome.zircon.*
 import org.codetome.zircon.graphics.StyleSet
 import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.graphics.TextImage
@@ -24,12 +21,12 @@ internal class NoOpTextGraphics(private val size: TerminalSize) : TextGraphics  
     override fun resetColorsAndModifiers() {
     }
 
-    override fun getBackgroundColor() = TextColor.DEFAULT_BACKGROUND_COLOR
+    override fun getBackgroundColor() = TextColorFactory.DEFAULT_BACKGROUND_COLOR
 
     override fun setBackgroundColor(backgroundColor: TextColor) {
     }
 
-    override fun getForegroundColor() = TextColor.DEFAULT_FOREGROUND_COLOR
+    override fun getForegroundColor() = TextColorFactory.DEFAULT_FOREGROUND_COLOR
 
     override fun setForegroundColor(foregroundColor: TextColor) {
     }

@@ -51,6 +51,12 @@ class TerminalScreen(private val terminal: Terminal) : Screen {
         terminal.setCursorPosition(position)
     }
 
+    override fun isCursorVisible() = terminal.isCursorVisible()
+
+    override fun setCursorVisible(cursorVisible: Boolean) {
+        terminal.setCursorVisible(cursorVisible)
+    }
+
     override fun display() {
         flipBuffers(true)
     }

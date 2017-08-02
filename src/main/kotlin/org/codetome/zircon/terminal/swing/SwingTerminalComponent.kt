@@ -3,19 +3,16 @@ package org.codetome.zircon.terminal.swing
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TextColor
-import org.codetome.zircon.font.MonospaceFontRenderer
+import org.codetome.zircon.font.FontRenderer
 import org.codetome.zircon.graphics.StyleSet
 import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
 import org.codetome.zircon.terminal.TerminalSize
-import org.codetome.zircon.terminal.config.FontConfiguration
-import org.codetome.zircon.terminal.config.ColorConfiguration
 import org.codetome.zircon.terminal.config.DeviceConfiguration
 import java.awt.Dimension
 import java.awt.Graphics
-import java.awt.Image
 import java.util.*
 import javax.swing.JComponent
 
@@ -26,8 +23,7 @@ import javax.swing.JComponent
 class SwingTerminalComponent(
         initialTerminalSize: TerminalSize,
         deviceConfiguration: DeviceConfiguration,
-        fontConfiguration: MonospaceFontRenderer<Graphics>,
-        colorConfiguration: ColorConfiguration)
+        fontConfiguration: FontRenderer<Graphics>)
     : JComponent(), Terminal {
 
     // this ugly hack is because of the lack of multiple inheritance
@@ -36,8 +32,7 @@ class SwingTerminalComponent(
             this,
             fontConfiguration,
             initialTerminalSize,
-            deviceConfiguration,
-            colorConfiguration)
+            deviceConfiguration)
 
     override fun getBackgroundColor(): TextColor {
         return terminalImplementation.getBackgroundColor()

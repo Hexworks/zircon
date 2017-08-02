@@ -34,6 +34,10 @@ interface Screen : InputProvider, Closeable {
 
     fun setCursorPosition(position: TerminalPosition)
 
+    fun isCursorVisible(): Boolean
+
+    fun setCursorVisible(cursorVisible: Boolean)
+
     fun getTabBehavior(): TabBehavior
 
     fun setTabBehavior(tabBehavior: TabBehavior)

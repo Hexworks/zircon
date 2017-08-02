@@ -7,7 +7,7 @@ import org.codetome.zircon.terminal.TerminalSize
 /**
  * An image built from [TextCharacter]s with color and style information.
  * These are completely in memory and not visible,
- * but can be used when drawing with a [TextGraphics] objects.
+ * but can be used when drawing with [TextGraphics] objects.
  */
 interface TextImage {
     /**

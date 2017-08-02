@@ -8,16 +8,16 @@ import org.codetome.zircon.terminal.TerminalSize
 import java.util.*
 
 /**
- * Simple implementation of [TextImage] that keeps the content as a two-dimensional [TextCharacter] array. Copy operations
- * between two [BasicTextImage] classes are semi-optimized by using [System.arraycopy] instead of iterating over each
- * character and copying them over one by one.
+ * Simple implementation of [TextImage] that keeps the content as a two-dimensional [TextCharacter] array.
+ * Copy operations between two [BasicTextImage] classes are semi-optimized by using [System.arraycopy]
+ * instead of iterating over each character and copying them over one by one.
  */
-class BasicTextImage @JvmOverloads constructor(private val size: TerminalSize,
-                     toCopy: Array<Array<TextCharacter>> = arrayOf<Array<TextCharacter>>(),
-                     initialContent: TextCharacter = TextCharacter.DEFAULT_CHARACTER) : TextImage {
+class BasicTextImage(private val size: TerminalSize,
+                     toCopy: Array<Array<TextCharacter>>,
+                     filler: TextCharacter) : TextImage {
 
     private val buffer = (0..size.rows - 1).map {
-        (0..size.columns - 1).map { initialContent }.toTypedArray()
+        (0..size.columns - 1).map { filler }.toTypedArray()
     }.toTypedArray()
 
     init {
@@ -25,7 +25,7 @@ class BasicTextImage @JvmOverloads constructor(private val size: TerminalSize,
             if (row < toCopy.size && col < toCopy[row].size) {
                 buffer[row][col] = toCopy[row][col]
             } else {
-                buffer[row][col] = initialContent
+                buffer[row][col] = filler
             }
         }
     }

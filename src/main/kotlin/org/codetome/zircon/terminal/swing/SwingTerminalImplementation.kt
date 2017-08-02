@@ -1,11 +1,13 @@
 package org.codetome.zircon.terminal.swing
 
-import org.codetome.zircon.font.MonospaceFontRenderer
+import org.codetome.zircon.font.FontRenderer
 import org.codetome.zircon.terminal.TerminalSize
-import org.codetome.zircon.terminal.config.ColorConfiguration
 import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.terminal.virtual.DefaultVirtualTerminal
-import java.awt.*
+import java.awt.AWTKeyStroke
+import java.awt.Dimension
+import java.awt.Graphics
+import java.awt.KeyboardFocusManager
 import java.awt.event.HierarchyEvent
 import java.awt.event.MouseEvent
 import javax.swing.JComponent
@@ -16,15 +18,13 @@ import javax.swing.SwingUtilities
  */
 class SwingTerminalImplementation(
         private val component: JComponent,
-        val renderer: MonospaceFontRenderer<Graphics>,
+        val renderer: FontRenderer<Graphics>,
         initialTerminalSize: TerminalSize,
-        deviceConfiguration: DeviceConfiguration,
-        colorConfiguration: ColorConfiguration)
+        deviceConfiguration: DeviceConfiguration)
 
     : GraphicalTerminalImplementation(
         deviceConfiguration = deviceConfiguration,
-        colorConfiguration = colorConfiguration,
-        monospaceFontRenderer = renderer,
+        fontRenderer = renderer,
         virtualTerminal = DefaultVirtualTerminal(initialTerminalSize)) {
 
     init {

@@ -1,8 +1,8 @@
 package org.codetome.zircon
 
 import org.assertj.core.api.Assertions.assertThat
+import org.codetome.zircon.ANSITextColor.*
 import org.codetome.zircon.Modifier.*
-import org.codetome.zircon.TextColor.ANSI.*
 import org.junit.Test
 
 @Suppress("UsePropertyAccessSyntax")
@@ -18,32 +18,27 @@ class TextCharacterTest {
 
     @Test
     fun boldModifierShouldBeBold() {
-        assertThat(TextCharacter(modifiersToUse = setOf(BOLD)).isBold()).isTrue()
+        assertThat(TextCharacter.builder().modifier(BOLD).build().isBold()).isTrue()
     }
 
     @Test
     fun underlinedModifierShouldBeUnderlined() {
-        assertThat(TextCharacter(modifiersToUse = setOf(UNDERLINE)).isUnderlined()).isTrue()
-    }
-
-    @Test
-    fun inverseModifierShouldBeInverse() {
-        assertThat(TextCharacter(modifiersToUse = setOf(INVERSE)).isInverse()).isTrue()
+        assertThat(TextCharacter.builder().modifier(UNDERLINE).build().isUnderlined()).isTrue()
     }
 
     @Test
     fun crossedOutModifierShouldBeCrossedOut() {
-        assertThat(TextCharacter(modifiersToUse = setOf(CROSSED_OUT)).isCrossedOut()).isTrue()
+        assertThat(TextCharacter.builder().modifier(CROSSED_OUT).build().isCrossedOut()).isTrue()
     }
 
     @Test
     fun italicModifierShouldBeItalic() {
-        assertThat(TextCharacter(modifiersToUse = setOf(ITALIC)).isItalic()).isTrue()
+        assertThat(TextCharacter.builder().modifier(ITALIC).build().isItalic()).isTrue()
     }
 
     @Test
     fun blinkingModifierShouldBeBlinking() {
-        assertThat(TextCharacter(modifiersToUse = setOf(BLINK)).isBlinking()).isTrue()
+        assertThat(TextCharacter.builder().modifier(BLINK).build().isBlinking()).isTrue()
     }
 
     @Test
@@ -114,8 +109,8 @@ class TextCharacterTest {
 
     companion object {
         val EXPECTED_CHAR = 'x'
-        val EXPECTED_FG_COLOR = TextColor.fromString("#aabbcc")
-        val EXPECTED_BG_COLOR = TextColor.fromString("#223344")
+        val EXPECTED_FG_COLOR = TextColorFactory.fromString("#aabbcc")
+        val EXPECTED_BG_COLOR = TextColorFactory.fromString("#223344")
         val EXPECTED_MODIFIERS = setOf(BOLD, ITALIC)
 
         val EXPECTED_TEXT_CHARACTER = TextCharacter(
