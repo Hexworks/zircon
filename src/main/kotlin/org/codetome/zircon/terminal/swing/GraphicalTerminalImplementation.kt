@@ -160,9 +160,18 @@ abstract class GraphicalTerminalImplementation(
         ensureGraphicBufferHasRightSize()
         val backBufferGraphics: Graphics2D = buffer.get().createGraphics()
 
+        backBufferGraphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED)
+        backBufferGraphics.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE)
+        backBufferGraphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY)
+        backBufferGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC)
+        backBufferGraphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
+        backBufferGraphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED)
         if (isTextAntiAliased()) {
             backBufferGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
-            backBufferGraphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY)
+            backBufferGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+        } else {
+            backBufferGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF)
+            backBufferGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
         }
 
         virtualTerminal.forEachDirtyCell { (position, textCharacter) ->
@@ -225,13 +234,10 @@ abstract class GraphicalTerminalImplementation(
 
         val x = columnIndex * getFontWidth()
         val y = rowIndex * getFontHeight()
-        graphics.color = backgroundColor
-        graphics.setClip(x, y, characterWidth, getFontHeight())
-        graphics.fillRect(x, y, characterWidth, getFontHeight())
 
-        graphics.color = foregroundColor
-
-        monospaceFontRenderer.renderCharacter(character, graphics, x, y)
+        monospaceFontRenderer.renderCharacter(character.copy(
+                foregroundColor = TextColor.fromAWTColor(foregroundColor),
+                backgroundColor = TextColor.fromAWTColor(backgroundColor)), graphics, x, y)
 
         if (drawCursor) {
             graphics.color = colorConfiguration.toAWTColor(deviceConfiguration.cursorColor, false, false)

@@ -19,6 +19,7 @@ public class BasicScreenExample {
     private static final TextColor BACKGROUND_COLOR = TextColor.Companion.fromString("#223344");
 
     public static void main(String[] args) {
+
         final DefaultTerminalFactory factory = new DefaultTerminalFactory();
         factory.setFontRenderer(FontConfiguration.getDefault());
         factory.setInitialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT));

@@ -25,7 +25,7 @@ public class PanelDrawingExample {
 
     public static void main(String[] args) {
         final DefaultTerminalFactory factory = new DefaultTerminalFactory();
-        final MonospaceFontRenderer fontConfig = FontConfiguration.createSwingFontRendererForPhysicalFonts();
+        final MonospaceFontRenderer fontConfig = FontConfiguration.createSwingFontRendererForPhysicalFonts(true);
         factory.setFontRenderer(fontConfig);
         factory.setInitialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT));
         final Terminal terminal = factory.createTerminal();

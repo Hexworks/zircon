@@ -10,13 +10,16 @@ import java.lang.reflect.Modifier.STATIC
 /**
  * This class wraps the built-in [java.awt.Font] class.
  */
-class PhysicalFontRenderer<out I, in T>(val fontsInOrderOfPriority: MutableList<Font>,
+class PhysicalFontRenderer<out I, in T>(private val fontsInOrderOfPriority: MutableList<Font>,
                                         private val boldMode: BoldMode,
                                         private val characterImageRenderer: CharacterImageRenderer<I, T>,
+                                        private val antiAliased: Boolean,
                                         width: Int,
                                         height: Int)
     : MonospaceFontRenderer<T>(width, height) {
 
+
+    override fun isAntiAliased() = antiAliased
 
     override fun renderCharacter(textCharacter: TextCharacter, surface: T, x: Int, y: Int) {
         characterImageRenderer.renderFromFont(

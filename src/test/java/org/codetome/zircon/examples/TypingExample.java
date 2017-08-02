@@ -13,7 +13,6 @@ import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.TerminalSize;
 import org.codetome.zircon.terminal.config.DeviceConfiguration;
 import org.codetome.zircon.terminal.config.FontConfiguration;
-import org.codetome.zircon.font.TilesetResource;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -21,8 +20,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-import static org.codetome.zircon.TextColor.ANSI.BLACK;
-import static org.codetome.zircon.TextColor.ANSI.CYAN;
+import static org.codetome.zircon.TextColor.ANSI.*;
+import static org.codetome.zircon.tileset.DFTilesetResource.*;
 
 public class TypingExample {
 
@@ -39,7 +38,8 @@ public class TypingExample {
     public static void main(String[] args) {
         final DefaultTerminalFactory factory = new DefaultTerminalFactory();
         factory.setInitialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT));
-        final MonospaceFontRenderer<Graphics> fontConfig = FontConfiguration.createSwingFontRendererForTileset(TilesetResource.JOLLY);
+        final MonospaceFontRenderer<Graphics> fontConfig =
+                FontConfiguration.createSwingFontRendererForTileset(WANDERLUST_16X16);
         final DeviceConfiguration deviceConfig = DeviceConfiguration.getDefault();
 
         deviceConfig.setCursorBlinking(true);
@@ -69,8 +69,8 @@ public class TypingExample {
                         final KeyStroke ks = (KeyStroke) key;
                         screen.setCharacter(pos, new TextCharacter(
                                 ks.getCharacter(),
-                                TextColor.ANSI.CYAN,
-                                TextColor.ANSI.BLACK,
+                                TextColor.ANSI.RED,
+                                TextColor.ANSI.YELLOW,
                                 new HashSet<>()));
                         if (pos.getColumn() == TERMINAL_WIDTH - 1) {
                             screen.setCursorPosition(pos.withRelativeRow(1).withColumn(0));
@@ -99,7 +99,7 @@ public class TypingExample {
                     if (key instanceof KeyStroke) {
                         final KeyStroke ks = (KeyStroke) key;
                         terminal.setBackgroundColor(BLACK);
-                        terminal.setForegroundColor(CYAN);
+                        terminal.setForegroundColor(RED);
                         terminal.putCharacter(ks.getCharacter());
                         terminal.resetColorsAndModifiers();
                         terminal.flush();

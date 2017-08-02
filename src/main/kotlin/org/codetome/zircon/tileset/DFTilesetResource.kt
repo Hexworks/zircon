@@ -1,13 +1,28 @@
-package org.codetome.zircon.font
+package org.codetome.zircon.tileset
 
-enum class TilesetResource(val tilesetName: String,
-                           val dir: String,
-                           val width: Int,
-                           val height: Int,
-                           val fileName: String = "${tilesetName}_${width}x$height.png") {
+enum class DFTilesetResource(val tilesetName: String,
+                             val dir: String,
+                             val width: Int,
+                             val height: Int,
+                             val fileName: String = "${tilesetName}_${width}x$height.png") {
 
-    PHOEBUS("Phoebus", "df_tilesets", 16, 16),
-    JOLLY("Jolly", "df_tilesets", 12, 12);
+
+    JOLLY_12x12("jolly", "df_tilesets", 12, 12),
+
+    ADU_DHABI_16x16("adu_dhabi", "df_tilesets", 16, 16),
+    AESOMATICA_16x16("aesomatica", "df_tilesets", 16, 16),
+    BISASAM_16X16("bisasam", "df_tilesets", 16, 16),
+    CHEEPICUS_16X16("cheepicus", "df_tilesets", 16, 16),
+    OBSIDIAN_16X16("obsidian" , "df_tilesets", 16, 16),
+    PHOEBUS_16X16("phoebus" , "df_tilesets", 16, 16),
+    ROGUE_YUN_16X16("rogue_yun", "df_tilesets", 16, 16),
+    WANDERLUST_16X16("wanderlust", "df_tilesets", 16, 16),
+
+    CLA_18X18("cla" , "df_tilesets", 18, 18),
+
+    BISASAM_20X20("bisasam", "df_tilesets", 20, 20),
+    TAFFER_20X20("taffer", "df_tilesets", 20, 20),
+    YOBBO_20X20("yobbo", "df_tilesets", 20, 20);
 
     companion object {
 
