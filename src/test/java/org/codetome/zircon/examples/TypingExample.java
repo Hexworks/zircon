@@ -41,16 +41,7 @@ public class TypingExample {
         EXIT_CONDITIONS.add(InputType.EOF);
     }
 
-    private static boolean TEST_RUN = true;
-
     public static void main(String[] args) {
-        final TypingExample typingExample = new TypingExample();
-        TEST_RUN = false;
-        typingExample.run();
-    }
-
-    @Test
-    public void run() {
         final DefaultTerminalBuilder factory = new DefaultTerminalBuilder();
         factory.initialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT));
         final FontRenderer<Graphics> fontConfig = FontRendererBuilder.newBuilder()
@@ -71,7 +62,7 @@ public class TypingExample {
     }
 
     private static void startTypingSupportForScreen(Screen screen) {
-        while (!TEST_RUN) {
+        while (true) {
             final Optional<Input> opKey = screen.pollInput();
             if (opKey.isPresent()) {
                 final Input key = opKey.get();
@@ -98,7 +89,7 @@ public class TypingExample {
     }
 
     private static void startTypingSupportForTerminal(Terminal terminal) {
-        while (!TEST_RUN) {
+        while (true) {
             final Optional<Input> opKey = terminal.pollInput();
             if (opKey.isPresent()) {
                 final Input key = opKey.get();

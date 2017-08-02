@@ -10,11 +10,6 @@ import org.junit.Test;
 public class CursorExample {
 
     public static void main(String[] args) {
-        new CursorExample().run();
-    }
-
-    @Test
-    public void run() {
         // we create a new terminal using DefaultTerminalBuilder
         final Terminal terminal = DefaultTerminalBuilder.newBuilder()
                 // we only override the parts which we need, in this case the device config

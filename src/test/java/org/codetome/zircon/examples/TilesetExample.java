@@ -49,11 +49,6 @@ public class TilesetExample {
     private static final TextColor TEXT_BG_COLOR = TextColorFactory.fromString("#114011");
 
     public static void main(String[] args) {
-        new TilesetExample().run();
-    }
-
-    @Test
-    public void run() {
         final TerminalScreen screen = DefaultTerminalBuilder.newBuilder()
                 .fontRenderer(FontRendererBuilder.newBuilder()
                         .useSwing()

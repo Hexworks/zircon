@@ -25,11 +25,6 @@ public class PanelDrawingExample {
     private static final TextColor BACKGROUND_COLOR = TextColorFactory.fromString("#223344");
 
     public static void main(String[] args) {
-        new PanelDrawingExample().run();
-    }
-
-    @Test
-    public void run() {
         final TerminalScreen screen = DefaultTerminalBuilder.newBuilder()
                 .fontRenderer(FontRendererBuilder.newBuilder()
                         .useSwing()
