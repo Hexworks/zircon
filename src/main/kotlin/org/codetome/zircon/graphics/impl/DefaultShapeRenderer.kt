@@ -107,8 +107,8 @@ class DefaultShapeRenderer : ShapeRenderer {
     }
 
     override fun fillTriangle(p1: TerminalPosition, p2: TerminalPosition, p3: TerminalPosition, character: TextCharacter) {
-        //I've used the algorithm described here:
-        //http://www-users.mat.uni.torun.pl/~wrona/3d_tutor/tri_fillers.html
+        // The algorithm described here is used
+        // http://www-users.mat.uni.torun.pl/~wrona/3d_tutor/tri_fillers.html
         val points = arrayOf(p1, p2, p3)
         Arrays.sort(points, { o1, o2 -> if (o1.row < o2.row) -1 else if (o1.row == o2.row) 0 else 1 })
 

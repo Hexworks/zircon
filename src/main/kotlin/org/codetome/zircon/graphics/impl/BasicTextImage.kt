@@ -72,64 +72,64 @@ class BasicTextImage(private val size: TerminalSize,
             columns: Int,
             destinationRowOffset: Int,
             destinationColumnOffset: Int) {
-        var startRowIndex = startRowIndex
-        var rows = rows
-        var startColumnIndex = startColumnIndex
-        var columns = columns
-        var destinationRowOffset = destinationRowOffset
-        var destinationColumnOffset = destinationColumnOffset
+        var startRowIdx = startRowIndex
+        var rowsToCopy = rows
+        var startColumnIdx = startColumnIndex
+        var columnsToCopy = columns
+        var destRowOffset = destinationRowOffset
+        var destColumnOffset = destinationColumnOffset
 
         // If the source sprite position is negative, offset the whole sprite
-        if (startColumnIndex < 0) {
-            destinationColumnOffset += -startColumnIndex
-            columns += startColumnIndex
-            startColumnIndex = 0
+        if (startColumnIdx < 0) {
+            destColumnOffset += -startColumnIdx
+            columnsToCopy += startColumnIdx
+            startColumnIdx = 0
         }
-        if (startRowIndex < 0) {
-            startRowIndex += -startRowIndex
-            rows = startRowIndex
-            startRowIndex = 0
+        if (startRowIdx < 0) {
+            destRowOffset += -startRowIdx
+            rowsToCopy += startRowIdx
+            startRowIdx = 0
         }
 
         // If the destination offset is negative, adjust the source start indexes
-        if (destinationColumnOffset < 0) {
-            startColumnIndex -= destinationColumnOffset
-            columns += destinationColumnOffset
-            destinationColumnOffset = 0
+        if (destColumnOffset < 0) {
+            startColumnIdx -= destColumnOffset
+            columnsToCopy += destColumnOffset
+            destColumnOffset = 0
         }
-        if (destinationRowOffset < 0) {
-            startRowIndex -= destinationRowOffset
-            rows += destinationRowOffset
-            destinationRowOffset = 0
+        if (destRowOffset < 0) {
+            startRowIdx -= destRowOffset
+            rowsToCopy += destRowOffset
+            destRowOffset = 0
         }
 
         //Make sure we can't copy more than is available
-        columns = Math.min(buffer[0].size - startColumnIndex, columns)
-        rows = Math.min(buffer.size - startRowIndex, rows)
+        columnsToCopy = Math.min(buffer[0].size - startColumnIdx, columnsToCopy)
+        rowsToCopy = Math.min(buffer.size - startRowIdx, rowsToCopy)
 
         //Adjust target lengths as well
-        columns = Math.min(destination.getSize().columns - destinationColumnOffset, columns)
-        rows = Math.min(destination.getSize().rows - destinationRowOffset, rows)
+        columnsToCopy = Math.min(destination.getSize().columns - destColumnOffset, columnsToCopy)
+        rowsToCopy = Math.min(destination.getSize().rows - destRowOffset, rowsToCopy)
 
-        if (columns <= 0 || rows <= 0) {
+        if (columnsToCopy <= 0 || rowsToCopy <= 0) {
             return
         }
 
         val destinationSize = destination.getSize()
         if (destination is BasicTextImage) {
-            var targetRow = destinationRowOffset
-            var y = startRowIndex
-            while (y < startRowIndex + rows && targetRow < destinationSize.rows) {
-                System.arraycopy(buffer[y], startColumnIndex, destination.buffer[targetRow++], destinationColumnOffset, columns)
+            var targetRow = destRowOffset
+            var y = startRowIdx
+            while (y < startRowIdx + rowsToCopy && targetRow < destinationSize.rows) {
+                System.arraycopy(buffer[y], startColumnIdx, destination.buffer[targetRow++], destColumnOffset, columnsToCopy)
                 y++
             }
         } else {
             //Manually copy character by character
-            for (y in startRowIndex..startRowIndex + rows - 1) {
-                for (x in startColumnIndex..startColumnIndex + columns - 1) {
+            for (y in startRowIdx..startRowIdx + rowsToCopy - 1) {
+                for (x in startColumnIdx..startColumnIdx + columnsToCopy - 1) {
                     destination.setCharacterAt(
-                            TerminalPosition(x - startColumnIndex + destinationColumnOffset,
-                                    y - startRowIndex + destinationRowOffset),
+                            TerminalPosition(x - startColumnIdx + destColumnOffset,
+                                    y - startRowIdx + destRowOffset),
                             buffer[y][x])
                 }
             }

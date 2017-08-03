@@ -51,8 +51,20 @@ interface TextImage {
     fun copyTo(destination: TextImage)
 
     /**
-     * Copies this [TextImage] content to another [TextImage]. If the destination [TextImage] is larger than this
+     * Copies this [TextImage]'s content to another [TextImage]. If the destination [TextImage] is larger than this
      * [TextImage], the areas outside of the area that is written to will be untouched.
+     * Note that start row / column indexes and destination row / column offsets can be negative.
+     * If the start row / column is negative `n` rows will be skipped from the source image.
+     * So if you copy a 2x2 image over a 3x3 image and `startRowIndex` is -1 the first row of the 3x3 image
+     * won't be touched.
+     * If the offsets is -1 the first row / column will be overwritten by the 2x2 image's second row
+     * @param destination [TextImage] to copy to
+     * @param startRowIndex which row in this image to start copying from
+     * @param rows how many rows to copy
+     * @param startColumnIndex which column in this image to start copying from
+     * @param columns how many columns to copy
+     * @param destinationRowOffset Offset (in number of rows) in the target image where we want to first copied row to be
+     * @param destinationColumnOffset Offset (in number of columns) in the target image where we want to first copied column to be
      */
     fun copyTo(
             destination: TextImage,

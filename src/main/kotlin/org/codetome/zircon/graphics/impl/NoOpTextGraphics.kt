@@ -1,6 +1,7 @@
 package org.codetome.zircon.graphics.impl
 
 import org.codetome.zircon.*
+import org.codetome.zircon.builder.TextColorFactory
 import org.codetome.zircon.graphics.StyleSet
 import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.graphics.TextImage
@@ -97,7 +98,11 @@ internal class NoOpTextGraphics(private val size: TerminalSize) : TextGraphics  
 
     override fun fillRectangle(topLeft: TerminalPosition, size: TerminalSize, character: TextCharacter) {
     }
+
     override fun drawImage(topLeft: TerminalPosition, image: TextImage) {
+    }
+
+    override fun drawImage(topLeft: TerminalPosition, image: TextImage, sourceImageTopLeft: TerminalPosition, sourceImageSize: TerminalSize) {
     }
 
     override fun putString(position: TerminalPosition, string: String, extraModifiers: Set<Modifier>) {

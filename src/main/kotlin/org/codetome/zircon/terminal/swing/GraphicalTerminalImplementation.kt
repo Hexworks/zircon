@@ -1,6 +1,7 @@
 package org.codetome.zircon.terminal.swing
 
 import org.codetome.zircon.*
+import org.codetome.zircon.builder.TextColorFactory
 import org.codetome.zircon.font.FontRenderer
 import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke
@@ -205,7 +206,7 @@ abstract class GraphicalTerminalImplementation(
             buffer = Optional.of(BufferedImage(getWidth() * 2, getHeight() * 2, BufferedImage.TYPE_INT_RGB))
 
             val graphics = buffer.get().createGraphics()
-            graphics.color = ANSITextColor.DEFAULT.toColor()
+            graphics.color = ANSITextColor.DEFAULT.toAWTColor()
             graphics.fillRect(0, 0, getWidth() * 2, getHeight() * 2)
             graphics.dispose()
         }
@@ -240,7 +241,7 @@ abstract class GraphicalTerminalImplementation(
                 backgroundColor = TextColorFactory.fromAWTColor(backgroundColor)), graphics, x, y)
 
         if (drawCursor) {
-            graphics.color = deviceConfiguration.cursorColor.toColor()
+            graphics.color = deviceConfiguration.cursorColor.toAWTColor()
             if (deviceConfiguration.cursorStyle === UNDER_BAR) {
                 graphics.fillRect(x, y + getFontHeight() - 3, characterWidth, 2)
             } else if (deviceConfiguration.cursorStyle === VERTICAL_BAR) {
@@ -256,9 +257,9 @@ abstract class GraphicalTerminalImplementation(
         val blink = character.isBlinking()
 
         if (blink && blinkOn) {
-            return backgroundColor.toColor()
+            return backgroundColor.toAWTColor()
         }else {
-            return foregroundColor.toColor()
+            return foregroundColor.toAWTColor()
         }
     }
 
@@ -275,9 +276,9 @@ abstract class GraphicalTerminalImplementation(
         }
 
         if (reverse) {
-            return foregroundColor.toColor()
+            return foregroundColor.toAWTColor()
         } else {
-            return backgroundColor.toColor()
+            return backgroundColor.toAWTColor()
         }
     }
 
@@ -290,7 +291,7 @@ abstract class GraphicalTerminalImplementation(
     private fun clearBuffer() {
         if (buffer.isPresent) {
             val graphics = buffer.get().createGraphics()
-            graphics.color = ANSITextColor.DEFAULT.toColor()
+            graphics.color = ANSITextColor.DEFAULT.toAWTColor()
             graphics.fillRect(0, 0, getWidth(), getHeight())
             graphics.dispose()
         }

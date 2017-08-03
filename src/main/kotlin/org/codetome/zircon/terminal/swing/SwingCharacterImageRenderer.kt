@@ -15,9 +15,9 @@ class SwingCharacterImageRenderer(
     : CharacterImageRenderer<BufferedImage, Graphics> {
 
     override fun renderFromFont(textCharacter: TextCharacter, font: Font, surface: Graphics, x: Int, y: Int) {
-        renderBackground(surface, textCharacter.getBackgroundColor().toColor(), x, y)
+        renderBackground(surface, textCharacter.getBackgroundColor().toAWTColor(), x, y)
 
-        surface.color = textCharacter.getForegroundColor().toColor()
+        surface.color = textCharacter.getForegroundColor().toAWTColor()
         surface.font = font
         val fontMetrics = surface.fontMetrics
         surface.drawString(Character.toString(textCharacter.getCharacter()),
@@ -45,7 +45,7 @@ class SwingCharacterImageRenderer(
                                  surface: Graphics,
                                  x: Int,
                                  y: Int) {
-        renderBackground(surface, backgroundColor.toColor(), x, y)
+        renderBackground(surface, backgroundColor.toAWTColor(), x, y)
         val r = foregroundColor.getRed().toFloat() / 255
         val g = foregroundColor.getGreen().toFloat() / 255
         val b = foregroundColor.getBlue().toFloat() / 255

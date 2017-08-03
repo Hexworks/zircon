@@ -3,7 +3,6 @@ package org.codetome.zircon.builder
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.TextColor
-import org.codetome.zircon.TextColorFactory
 
 class TextCharacterBuilder {
     private var character: Char = ' '

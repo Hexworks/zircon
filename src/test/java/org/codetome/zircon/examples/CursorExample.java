@@ -1,11 +1,10 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.TextColorFactory;
+import org.codetome.zircon.builder.TextColorFactory;
 import org.codetome.zircon.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.terminal.DefaultTerminalBuilder;
 import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.config.CursorStyle;
-import org.junit.Test;
 
 public class CursorExample {
 
@@ -13,7 +12,7 @@ public class CursorExample {
         // we create a new terminal using DefaultTerminalBuilder
         final Terminal terminal = DefaultTerminalBuilder.newBuilder()
                 // we only override the parts which we need, in this case the device config
-                .terminalDeviceConfiguration(DeviceConfigurationBuilder.newBuilder()
+                .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorColor(TextColorFactory.fromString("#ff8844"))
                         .cursorStyle(CursorStyle.UNDER_BAR)
                         .cursorBlinking(true)

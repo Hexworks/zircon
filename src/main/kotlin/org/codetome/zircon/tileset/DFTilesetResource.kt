@@ -36,7 +36,7 @@ enum class DFTilesetResource(val tilesetName: String,
          * Extracted from:
          * http://dwarffortresswiki.org/index.php/Character_table
          */
-        private val UNICODE_TO_CP437_LOOKUP = mapOf(
+        val UNICODE_TO_CP437_LOOKUP = mapOf(
                 Pair(0x263A, 1),
                 Pair(0x263B, 2),
                 Pair(0x2665, 3),

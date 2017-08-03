@@ -1,7 +1,6 @@
 package org.codetome.zircon.builder
 
 import org.codetome.zircon.TextColor
-import org.codetome.zircon.TextColorFactory
 import org.codetome.zircon.terminal.config.CursorStyle
 import org.codetome.zircon.terminal.config.DeviceConfiguration
 

@@ -43,6 +43,11 @@ object FontUtils {
     }
 
     @JvmStatic
+    fun getFontByName(name: String) = listOf(
+            Font(name, Font.PLAIN, getFontSize())
+    )
+
+    @JvmStatic
     fun getDefaultWindowsFonts() = listOf(
             Font("Courier New", Font.PLAIN, getFontSize()),
             Font("Monospaced", Font.PLAIN, getFontSize()))

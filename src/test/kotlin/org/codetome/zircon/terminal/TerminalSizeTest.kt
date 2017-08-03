@@ -70,6 +70,55 @@ class TerminalSizeTest {
                         TerminalPosition(column = 1, row = 1)))
     }
 
+    @Test
+    fun shouldReturnItselfWhenWithColumnsIsCalledAndColumnsAreTheSame() {
+        val target = TerminalSize.DEFAULT
+        val result = target.withColumns(target.columns)
+        assertThat(target).isSameAs(result)
+    }
+
+    @Test
+    fun shouldReturnItselfWhenWithRowsIsCalledAndRowsAreTheSame() {
+        val target = TerminalSize.DEFAULT
+        val result = target.withRows(target.rows)
+        assertThat(target).isSameAs(result)
+    }
+
+    @Test
+    fun shouldReturnItselfWhenWithRelativeColumnsIsCalledAndColumnsAreTheSame() {
+        val target = TerminalSize.DEFAULT
+        val result = target.withRelativeColumns(0)
+        assertThat(target).isSameAs(result)
+    }
+
+    @Test
+    fun shouldReturnItselfWhenWithRelativeRowsIsCalledAndRowsAreTheSame() {
+        val target = TerminalSize.DEFAULT
+        val result = target.withRelativeRows(0)
+        assertThat(target).isSameAs(result)
+    }
+
+    @Test
+    fun shouldReturnItselfWhenWithIsCalledAndRowsAndColumnsAreTheSame() {
+        val target = TerminalSize.DEFAULT
+        val result = target.with(target)
+        assertThat(target).isSameAs(result)
+    }
+
+    @Test
+    fun shouldReturnProperMin() {
+        val wide = TerminalSize(5, 2)
+        val tall = TerminalSize(2, 5)
+        assertThat(wide.min(tall)).isEqualTo(TerminalSize(2, 2))
+    }
+
+    @Test
+    fun shouldReturnProperMax() {
+        val wide = TerminalSize(5, 2)
+        val tall = TerminalSize(2, 5)
+        assertThat(wide.max(tall)).isEqualTo(TerminalSize(5, 5))
+    }
+
     companion object {
         val EXPECTED_COL = 5
         val EXPECTED_ROW = 5

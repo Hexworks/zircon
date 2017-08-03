@@ -80,16 +80,30 @@ interface TextGraphics : StyleSet, ShapeRenderer {
      * then the resulting object will be identical to this one, but having a separated state for colors,
      * position and modifiers.
      */
-    // TODO: correlate this with TextImage.newTextGraphics
     fun newTextGraphics(topLeftCorner: TerminalPosition, size: TerminalSize): TextGraphics
 
     /**
-     * Takes a [TextImage] and draws it on the surface this [TextGraphics] is targeting, given the
-     * coordinates on the target that is specifying where the top-left corner of the sprite should be drawn.
-     * This method will only draw a portion of the sprite to the target, as specified by the two last parameters.
+     * Takes a TextImage and draws it on the surface this TextGraphics is targeting, given the coordinates on the target
+     * that is specifying where the top-left corner of the image should be drawn. This is equivalent of calling
+     * `drawImage(topLeft, image, TerminalPosition.TOP_LEFT_CORNER, image.getSize()`.
+     * @param topLeft Position of the top-left corner of the image on the target
+     * @param image Image to draw
      */
-    fun drawImage(topLeft: TerminalPosition,
-                  image: TextImage)
+    fun drawImage(topLeft: TerminalPosition, image: TextImage)
+
+    /**
+     * Takes a TextImage and draws it on the surface this TextGraphics is targeting, given the coordinates on the target
+     * that is specifying where the top-left corner of the image should be drawn. This overload will only draw a portion
+     * of the image to the target, as specified by the two last parameters.
+     * @param topLeft Position of the top-left corner of the image on the target
+     * @param image Image to draw
+     * @param sourceImageTopLeft Position of the top-left corner in the source image to draw at the topLeft position on
+     *                          the target
+     * @param sourceImageSize How much of the source image to draw on the target, counted from the sourceImageTopLeft
+     *                         position
+     */
+    fun drawImage(topLeft: TerminalPosition, image: TextImage, sourceImageTopLeft: TerminalPosition, sourceImageSize: TerminalSize)
+
 
     /**
      * Puts a string on the screen at the specified position with the current colors and modifiers. If the string
