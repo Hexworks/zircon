@@ -45,7 +45,7 @@ data class TextCharacter(
     }
 
     fun withForegroundColor(foregroundColor: TextColor): TextCharacter {
-        if (this.foregroundColor === foregroundColor || this.foregroundColor == foregroundColor) {
+        if (this.foregroundColor == foregroundColor) {
             return this
         }
         return copy(foregroundColor = foregroundColor)
@@ -55,7 +55,7 @@ data class TextCharacter(
      * Returns a copy of this [TextCharacter] with a specified background color
      */
     fun withBackgroundColor(backgroundColor: TextColor): TextCharacter {
-        if (this.backgroundColor === backgroundColor || this.backgroundColor == backgroundColor) {
+        if (this.backgroundColor == backgroundColor) {
             return this
         }
         return copy(backgroundColor = backgroundColor)

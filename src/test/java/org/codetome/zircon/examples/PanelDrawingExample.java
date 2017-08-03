@@ -1,18 +1,18 @@
 package org.codetome.zircon.examples;
 
+import org.codetome.zircon.Symbols;
 import org.codetome.zircon.TerminalPosition;
 import org.codetome.zircon.TextColor;
-import org.codetome.zircon.TextColorFactory;
+import org.codetome.zircon.builder.TextColorFactory;
 import org.codetome.zircon.builder.FontRendererBuilder;
 import org.codetome.zircon.builder.TextImageBuilder;
 import org.codetome.zircon.graphics.TextGraphics;
 import org.codetome.zircon.graphics.TextImage;
-import org.codetome.zircon.graphics.impl.BasicTextImage;
 import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.screen.TerminalScreen;
 import org.codetome.zircon.terminal.DefaultTerminalBuilder;
 import org.codetome.zircon.terminal.TerminalSize;
-import org.junit.Test;
+import org.codetome.zircon.tileset.DFTilesetResource;
 
 import java.util.Collections;
 
@@ -20,16 +20,15 @@ import static org.codetome.zircon.Symbols.*;
 
 public class PanelDrawingExample {
 
-    private static final int TERMINAL_WIDTH = 100;
-    private static final int TERMINAL_HEIGHT = 40;
+    private static final int TERMINAL_WIDTH = 50;
+    private static final int TERMINAL_HEIGHT = 24;
     private static final TextColor BACKGROUND_COLOR = TextColorFactory.fromString("#223344");
 
     public static void main(String[] args) {
         final TerminalScreen screen = DefaultTerminalBuilder.newBuilder()
                 .fontRenderer(FontRendererBuilder.newBuilder()
                         .useSwing()
-                        .usePhysicalFonts()
-                        .antiAliased(true)
+                        .useDFTileset(DFTilesetResource.WANDERLUST_16X16)
                         .build())
                 .initialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT))
                 .buildScreen();
@@ -38,11 +37,11 @@ public class PanelDrawingExample {
 
         screen.newTextGraphics().drawImage(
                 new TerminalPosition(2, 2),
-                createPanel(20, 30, "Foo and Bar"));
+                createPanel(20, 10, "Foo and Bar"));
 
         screen.newTextGraphics().drawImage(
                 new TerminalPosition(24, 2),
-                createBackgroundForPanel(createPanel(30, 20, "Wom and Bat")));
+                createBackgroundForPanel(createPanel(20, 5, "Wom and Bat")));
 
         screen.display();
     }
@@ -53,8 +52,9 @@ public class PanelDrawingExample {
                 .build();
         final TerminalSize bgSize = bg.getSize();
         final TextGraphics panelWithBg = bg.newTextGraphics();
-        panelWithBg.setBackgroundColor(TextColorFactory.fromString("#111111"));
-        panelWithBg.fill(' ');
+        panelWithBg.setBackgroundColor(TextColorFactory.fromString("#112233"));
+        panelWithBg.setForegroundColor(TextColorFactory.fromString("#223344"));
+        panelWithBg.fill(Symbols.BLOCK_MIDDLE);
         panelWithBg.setBackgroundColor(BACKGROUND_COLOR);
         panelWithBg.setCharacter(new TerminalPosition(bgSize.getColumns() - 1, 0), ' ');
         panelWithBg.setCharacter(new TerminalPosition(0, bgSize.getRows() - 1), ' ');
@@ -91,6 +91,7 @@ public class PanelDrawingExample {
                 topLeft.withRelative(new TerminalPosition(1, 1)),
                 new TerminalSize(width - 2, height - 2),
                 ' ');
+        graphics.setForegroundColor(TextColorFactory.fromString("#cccc22"));
         graphics.putString(
                 topLeft.withRelativeColumn(width / 2 - title.length() / 2),
                 title,

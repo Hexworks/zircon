@@ -3,6 +3,7 @@ package org.codetome.zircon
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.ANSITextColor.*
 import org.codetome.zircon.Modifier.*
+import org.codetome.zircon.builder.TextColorFactory
 import org.junit.Test
 
 @Suppress("UsePropertyAccessSyntax")

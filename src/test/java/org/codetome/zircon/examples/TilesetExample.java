@@ -2,10 +2,10 @@ package org.codetome.zircon.examples;
 
 import org.codetome.zircon.*;
 import org.codetome.zircon.builder.FontRendererBuilder;
+import org.codetome.zircon.builder.TextColorFactory;
 import org.codetome.zircon.screen.TerminalScreen;
 import org.codetome.zircon.terminal.DefaultTerminalBuilder;
 import org.codetome.zircon.terminal.TerminalSize;
-import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.Random;

@@ -2,7 +2,6 @@ package org.codetome.zircon.terminal.virtual
 
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.util.TextUtils
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke
@@ -10,6 +9,7 @@ import org.codetome.zircon.screen.TabBehavior
 import org.codetome.zircon.terminal.AbstractTerminal
 import org.codetome.zircon.terminal.Cell
 import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.util.TextUtils
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 
@@ -69,6 +69,9 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
     @Synchronized
     override fun setCursorPosition(cursorPosition: TerminalPosition) {
         this.cursorPosition = cursorPosition
+                // this is not a bug! the cursor can extend beyond the last row
+                .withColumn(Math.min(cursorPosition.column, terminalSize.columns))
+                .withRow(Math.min(cursorPosition.row, terminalSize.rows - 1))
         dirtyTerminalCells.add(this.cursorPosition)
     }
 
@@ -95,13 +98,18 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
                 i++
             }
         } else {
+            checkCursorPosition()
             buffer.setCharacter(cursorPosition, textCharacter)
             dirtyTerminalCells.add(cursorPosition)
             setCursorPosition(cursorPosition.withRelativeColumn(1)) // TODO: extract cursor logic?
-            if (cursorIsAtTheEndOfTheLine()) {
-                moveCursorToNextLine()
-            }
+            checkCursorPosition()
             dirtyTerminalCells.add(cursorPosition)
+        }
+    }
+
+    private fun checkCursorPosition() {
+        if (cursorIsAtTheEndOfTheLine()) {
+            moveCursorToNextLine()
         }
     }
 
@@ -109,7 +117,7 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
     override fun flush() = listeners.forEach { it.onFlush() }
 
     override fun close() {
-        inputQueue.add(KeyStroke(character = ' ', it = InputType.EOF))
+        inputQueue.add(KeyStroke.EOF_STROKE)
         listeners.forEach { it.onClose() }
     }
 
@@ -138,7 +146,8 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
     }
 
     override fun forEachDirtyCell(fn: (Cell) -> Unit) {
-        if (lastDrawnCursorPosition != getCursorPosition()) {
+        if (lastDrawnCursorPosition != getCursorPosition()
+                && lastDrawnCursorPosition != TerminalPosition.UNKNOWN) {
             dirtyTerminalCells.add(lastDrawnCursorPosition)
         }
         if (wholeBufferDirty) {

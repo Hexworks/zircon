@@ -9,12 +9,12 @@ import org.codetome.zircon.builder.DeviceConfigurationBuilder
  * This includes properties such as the shape of the cursor, the color of the cursor
  * and if the cursor should blink or not.
  */
-class DeviceConfiguration(
-        var blinkLengthInMilliSeconds: Long,
-        var cursorStyle: CursorStyle,
-        var cursorColor: TextColor,
-        var isCursorBlinking: Boolean,
-        var isClipboardAvailable: Boolean) {
+data class DeviceConfiguration(
+        val blinkLengthInMilliSeconds: Long,
+        val cursorStyle: CursorStyle,
+        val cursorColor: TextColor,
+        val isCursorBlinking: Boolean,
+        val isClipboardAvailable: Boolean) {
 
     companion object {
 

@@ -13,7 +13,6 @@ import org.codetome.zircon.terminal.DefaultTerminalBuilder;
 import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.TerminalSize;
 import org.codetome.zircon.terminal.config.DeviceConfiguration;
-import org.junit.Test;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -48,12 +47,11 @@ public class TypingExample {
                 .useSwing()
                 .useDFTileset(WANDERLUST_16X16)
                 .build();
-        final DeviceConfiguration deviceConfig = DeviceConfigurationBuilder.getDefault();
-
-        deviceConfig.setCursorBlinking(true);
+        final DeviceConfiguration deviceConfig = DeviceConfigurationBuilder.newBuilder()
+                .cursorBlinking(true).build();
 
         factory.fontRenderer(fontConfig);
-        factory.terminalDeviceConfiguration(deviceConfig);
+        factory.deviceConfiguration(deviceConfig);
         final Terminal terminal = factory.buildTerminal();
         final Screen screen = factory.createScreenFor(terminal);
 

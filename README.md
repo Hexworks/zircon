@@ -124,7 +124,7 @@ and you'll have this:
 
 ![][button img]
 
-You can check out more examples [here](https://github.com/Hexworks/zircon/blob/master/src/test/java/org/codetome/zircon/examples)
+You can check out more examples [here](https://github.com/Hexworks/zircon/blob/master/src/testRendering/java/org/codetome/zircon/examples)
 
 ## How Zircon works
 

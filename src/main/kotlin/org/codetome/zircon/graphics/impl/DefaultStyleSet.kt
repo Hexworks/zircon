@@ -2,7 +2,7 @@ package org.codetome.zircon.graphics.impl
 
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.TextColor
-import org.codetome.zircon.TextColorFactory
+import org.codetome.zircon.builder.TextColorFactory
 import org.codetome.zircon.graphics.StyleSet
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicReference

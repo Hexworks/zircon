@@ -2,7 +2,9 @@ package org.codetome.zircon
 
 interface TextColor {
 
-    fun toColor(): java.awt.Color
+    fun toAWTColor(): java.awt.Color
+
+    fun getAlpha(): Int
 
     fun getRed(): Int
 

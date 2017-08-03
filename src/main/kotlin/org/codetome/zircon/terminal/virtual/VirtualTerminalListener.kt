@@ -13,11 +13,11 @@ interface VirtualTerminalListener : TerminalResizeListener {
      * Called when the [org.codetome.zircon.terminal.Terminal.flush] method is invoked
      * on the [VirtualTerminal].
      */
-    fun onFlush()
+    fun onFlush() {}
 
     /**
      * Called when the [org.codetome.zircon.terminal.Terminal.close] method is invoked
      * on the [VirtualTerminal].
      */
-    fun onClose()
+    fun onClose() {}
 }

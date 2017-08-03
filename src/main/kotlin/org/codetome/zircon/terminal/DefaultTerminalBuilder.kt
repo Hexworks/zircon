@@ -7,6 +7,7 @@ import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.builder.FontRendererBuilder
 import org.codetome.zircon.terminal.swing.SwingTerminalComponent
 import org.codetome.zircon.terminal.swing.SwingTerminalFrame
+import org.codetome.zircon.terminal.virtual.DefaultVirtualTerminal
 import java.awt.Graphics
 
 
@@ -50,21 +51,21 @@ class DefaultTerminalBuilder
      * If `false`, you will manually need to call `.setVisible(true)` on the JFrame to actually
      * see the terminal window. Default for this value is `true`.
      */
-    fun autoOpenTerminalWindow(autoOpenTerminalFrame: Boolean) = also {
+    fun autoOpenTerminalFrame(autoOpenTerminalFrame: Boolean) = also {
         this.autoOpenTerminalFrame = autoOpenTerminalFrame
     }
 
     /**
      * Sets the title to use on created [SwingTerminalFrame]s created by this factory
      */
-    fun setTerminalTitle(title: String) = also {
+    fun title(title: String) = also {
         this.title = title
     }
 
     /**
      * Sets the device configuration to use on created [SwingTerminalFrame] created by this factory.
      */
-    fun terminalDeviceConfiguration(deviceConfiguration: DeviceConfiguration) = also {
+    fun deviceConfiguration(deviceConfiguration: DeviceConfiguration) = also {
         this.deviceConfiguration = deviceConfiguration
     }
 

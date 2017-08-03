@@ -63,34 +63,40 @@ abstract class AbstractTextGraphics(
         return fillRectangle(topLeft, size, newTextCharacter(character))
     }
 
+    override fun drawImage(topLeft: TerminalPosition, image: TextImage) {
+        drawImage(topLeft, image, TerminalPosition.TOP_LEFT_CORNER, image.getSize())
+    }
+
     override fun drawImage(
             topLeft: TerminalPosition,
-            image: TextImage) {
-        var topLeftTemp = topLeft
-        var sourceImageTopLeftTemp = TerminalPosition.TOP_LEFT_CORNER
-        var sourceImageSize = image.getSize()
+            image: TextImage,
+            sourceImageTopLeft: TerminalPosition,
+            sourceImageSize: TerminalSize) {
+        var topLeftTmp = topLeft
+        var sourceImageTopLeftTmp = sourceImageTopLeft
+        var sourceImageSizeTmp = sourceImageSize
 
-        // If the source sprite position is negative, offset the whole sprite
-        if (sourceImageTopLeftTemp.column < 0) {
-            topLeftTemp = topLeftTemp.withRelativeColumn(-sourceImageTopLeftTemp.column)
-            sourceImageSize = sourceImageSize.withRelativeColumns(sourceImageTopLeftTemp.column)
-            sourceImageTopLeftTemp = sourceImageTopLeftTemp.withColumn(0)
+        // If the source image position is negative, offset the whole image
+        if (sourceImageTopLeftTmp.column < 0) {
+            topLeftTmp = topLeftTmp.withRelativeColumn(-sourceImageTopLeftTmp.column)
+            sourceImageSizeTmp = sourceImageSizeTmp.withRelativeColumns(sourceImageTopLeftTmp.column)
+            sourceImageTopLeftTmp = sourceImageTopLeftTmp.withColumn(0)
         }
-        if (sourceImageTopLeftTemp.row < 0) {
-            topLeftTemp = topLeftTemp.withRelativeRow(-sourceImageTopLeftTemp.row)
-            sourceImageSize = sourceImageSize.withRelativeRows(sourceImageTopLeftTemp.row)
-            sourceImageTopLeftTemp = sourceImageTopLeftTemp.withRow(0)
+        if (sourceImageTopLeftTmp.row < 0) {
+            topLeftTmp = topLeftTmp.withRelativeRow(-sourceImageTopLeftTmp.row)
+            sourceImageSizeTmp = sourceImageSizeTmp.withRelativeRows(sourceImageTopLeftTmp.row)
+            sourceImageTopLeftTmp = sourceImageTopLeftTmp.withRow(0)
         }
 
-        // cropping specified sprite-subrectangle to the sprite itself:
-        var fromRow = Math.max(sourceImageTopLeftTemp.row, 0)
-        var untilRow = Math.min(sourceImageTopLeftTemp.row + sourceImageSize.rows, image.getSize().rows)
-        var fromColumn = Math.max(sourceImageTopLeftTemp.column, 0)
-        var untilColumn = Math.min(sourceImageTopLeftTemp.column + sourceImageSize.columns, image.getSize().columns)
+        // cropping specified image-subrectangle to the image itself:
+        var fromRow = Math.max(sourceImageTopLeftTmp.row, 0)
+        var untilRow = Math.min(sourceImageTopLeftTmp.row + sourceImageSizeTmp.rows, image.getSize().rows)
+        var fromColumn = Math.max(sourceImageTopLeftTmp.column, 0)
+        var untilColumn = Math.min(sourceImageTopLeftTmp.column + sourceImageSizeTmp.columns, image.getSize().columns)
 
-        // difference between position in sprite and position on target:
-        val diffRow = topLeftTemp.row - sourceImageTopLeftTemp.row
-        val diffColumn = topLeftTemp.column - sourceImageTopLeftTemp.column
+        // difference between position in image and position on target:
+        val diffRow = topLeftTmp.row - sourceImageTopLeftTmp.row
+        val diffColumn = topLeftTmp.column - sourceImageTopLeftTmp.column
 
         // top/left-crop at target(TextGraphics) rectangle: (only matters, if topLeft has a negative coordinate)
         fromRow = Math.max(fromRow, -diffRow)
@@ -106,9 +112,7 @@ abstract class AbstractTextGraphics(
         (fromRow..untilRow - 1).forEach { row ->
             (fromColumn..untilColumn - 1).forEach { column ->
                 setCharacter(
-                        position = TerminalPosition(
-                                column = column + diffColumn,
-                                row = row + diffRow),
+                        position = TerminalPosition(column + diffColumn, row + diffRow),
                         character = image.getCharacterAt(TerminalPosition(column, row)))
             }
         }
