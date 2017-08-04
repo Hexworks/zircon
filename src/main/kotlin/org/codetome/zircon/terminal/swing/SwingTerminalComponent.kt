@@ -4,7 +4,7 @@ import org.codetome.zircon.Modifier
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TextColor
 import org.codetome.zircon.font.FontRenderer
-import org.codetome.zircon.graphics.StyleSet
+import org.codetome.zircon.graphics.style.StyleSet
 import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.terminal.Terminal

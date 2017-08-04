@@ -2,7 +2,7 @@ package org.codetome.zircon.screen
 
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.graphics.impl.AbstractTextGraphics
+import org.codetome.zircon.graphics.AbstractTextGraphics
 import org.codetome.zircon.graphics.TextGraphics
 import java.util.*
 

@@ -5,6 +5,8 @@ package org.codetome.zircon.graphics
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.graphics.shape.ShapeRenderer
+import org.codetome.zircon.graphics.style.StyleSet
 import org.codetome.zircon.screen.TabBehavior
 import org.codetome.zircon.terminal.TerminalSize
 import java.util.*

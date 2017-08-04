@@ -1,4 +1,4 @@
-package org.codetome.zircon.graphics
+package org.codetome.zircon.graphics.shape
 
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TextCharacter

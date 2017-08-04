@@ -1,5 +1,6 @@
 package org.codetome.zircon.graphics.impl
 
+import org.codetome.zircon.graphics.style.DefaultStyleSet
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations

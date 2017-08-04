@@ -1,4 +1,4 @@
-package org.codetome.zircon.graphics
+package org.codetome.zircon.graphics.style
 
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.TextColor

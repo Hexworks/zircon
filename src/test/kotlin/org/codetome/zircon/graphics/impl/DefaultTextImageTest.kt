@@ -6,21 +6,21 @@ import org.codetome.zircon.TerminalPosition.Companion.DEFAULT_POSITION
 import org.codetome.zircon.TerminalPosition.Companion.OFFSET_1x1
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.builder.TextCharacterBuilder
-import org.codetome.zircon.terminal.Cell
+import org.codetome.zircon.graphics.DefaultTextImage
 import org.codetome.zircon.terminal.TerminalSize
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
 
-class BasicTextImageTest {
+class DefaultTextImageTest {
 
-    lateinit var target: BasicTextImage
+    lateinit var target: DefaultTextImage
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        target = BasicTextImage(
+        target = DefaultTextImage(
                 size = SIZE,
                 toCopy = TO_COPY,
                 filler = FILLER)
@@ -299,8 +299,8 @@ class BasicTextImageTest {
                 .character('c')
                 .build()
         val TO_COPY = arrayOf(arrayOf(TO_COPY_CHAR))
-        val IMAGE_TO_COPY = BasicTextImage(TerminalSize.ONE, arrayOf(arrayOf()), SET_ALL_CHAR)
-        val IMAGE_TO_COPY_AND_CROP = BasicTextImage(TerminalSize(2, 2), arrayOf(arrayOf()), SET_ALL_CHAR)
+        val IMAGE_TO_COPY = DefaultTextImage(TerminalSize.ONE, arrayOf(arrayOf()), SET_ALL_CHAR)
+        val IMAGE_TO_COPY_AND_CROP = DefaultTextImage(TerminalSize(2, 2), arrayOf(arrayOf()), SET_ALL_CHAR)
 
     }
 

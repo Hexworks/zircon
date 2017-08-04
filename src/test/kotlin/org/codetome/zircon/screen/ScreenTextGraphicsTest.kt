@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.builder.TextCharacterBuilder
 import org.codetome.zircon.builder.TextImageBuilder
-import org.codetome.zircon.graphics.impl.BasicTextImage
 import org.codetome.zircon.terminal.TerminalSize
 import org.codetome.zircon.terminal.virtual.DefaultVirtualTerminal
 import org.junit.Before
