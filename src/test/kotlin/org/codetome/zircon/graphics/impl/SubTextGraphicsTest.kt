@@ -2,6 +2,7 @@ package org.codetome.zircon.graphics.impl
 
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.builder.TextImageBuilder
+import org.codetome.zircon.graphics.SubTextGraphics
 import org.codetome.zircon.terminal.TerminalSize
 import org.junit.Before
 import org.junit.Test

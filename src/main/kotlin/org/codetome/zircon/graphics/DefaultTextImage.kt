@@ -1,20 +1,18 @@
-package org.codetome.zircon.graphics.impl
+package org.codetome.zircon.graphics
 
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.graphics.TextGraphics
-import org.codetome.zircon.graphics.TextImage
 import org.codetome.zircon.terminal.TerminalSize
 import java.util.*
 
 /**
  * Simple implementation of [TextImage] that keeps the content as a two-dimensional [TextCharacter] array.
- * Copy operations between two [BasicTextImage] classes are semi-optimized by using [System.arraycopy]
+ * Copy operations between two [DefaultTextImage] classes are semi-optimized by using [System.arraycopy]
  * instead of iterating over each character and copying them over one by one.
  */
-class BasicTextImage(private val size: TerminalSize,
-                     toCopy: Array<Array<TextCharacter>>,
-                     filler: TextCharacter) : TextImage {
+class DefaultTextImage(private val size: TerminalSize,
+                       toCopy: Array<Array<TextCharacter>>,
+                       filler: TextCharacter) : TextImage {
 
     private val buffer = (0..size.rows - 1).map {
         (0..size.columns - 1).map { filler }.toTypedArray()
@@ -30,17 +28,25 @@ class BasicTextImage(private val size: TerminalSize,
         }
     }
 
+    override fun toString(): String {
+        return (0..size.rows - 1).map { row ->
+            (0..size.columns - 1).map { col ->
+                buffer[row][col].getCharacter()
+            }.joinToString("").plus("\n")
+        }.joinToString("")
+    }
+
     override fun getSize() = size
 
     override fun setAll(character: TextCharacter) {
         buffer.forEach { line -> Arrays.fill(line, character) }
     }
 
-    override fun resize(newSize: TerminalSize, filler: TextCharacter): BasicTextImage {
+    override fun resize(newSize: TerminalSize, filler: TextCharacter): DefaultTextImage {
         if (newSize.rows == buffer.size && (buffer.isEmpty() || newSize.columns == buffer[0].size)) {
             return this
         }
-        return BasicTextImage(newSize, buffer, filler)
+        return DefaultTextImage(newSize, buffer, filler)
     }
 
     override fun setCharacterAt(position: TerminalPosition, character: TextCharacter) {
@@ -116,7 +122,7 @@ class BasicTextImage(private val size: TerminalSize,
         }
 
         val destinationSize = destination.getSize()
-        if (destination is BasicTextImage) {
+        if (destination is DefaultTextImage) {
             var targetRow = destRowOffset
             var y = startRowIdx
             while (y < startRowIdx + rowsToCopy && targetRow < destinationSize.rows) {
@@ -142,11 +148,11 @@ class BasicTextImage(private val size: TerminalSize,
             override fun getSize() = size
 
             override fun setCharacter(position: TerminalPosition, character: TextCharacter) {
-                this@BasicTextImage.setCharacterAt(position, character)
+                this@DefaultTextImage.setCharacterAt(position, character)
             }
 
             override fun getCharacter(position: TerminalPosition): Optional<TextCharacter> {
-                return Optional.of(this@BasicTextImage.getCharacterAt(position))
+                return Optional.of(this@DefaultTextImage.getCharacterAt(position))
             }
         }
     }

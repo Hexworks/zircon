@@ -3,6 +3,7 @@ package org.codetome.zircon.builder
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.TextColor
+import org.codetome.zircon.graphics.style.StyleSet
 
 class TextCharacterBuilder {
     private var character: Char = ' '
@@ -12,6 +13,12 @@ class TextCharacterBuilder {
 
     fun character(character: Char) = also {
         this.character = character
+    }
+
+    fun styleSet(styleSet: StyleSet) = also {
+        backgroundColor = styleSet.getBackgroundColor()
+        foregroundColor = styleSet.getForegroundColor()
+        modifiersToUse = styleSet.getActiveModifiers().toSet()
     }
 
     fun foregroundColor(foregroundColor: TextColor) = also {

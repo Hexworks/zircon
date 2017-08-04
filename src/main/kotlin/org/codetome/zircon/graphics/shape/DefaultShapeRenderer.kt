@@ -1,8 +1,7 @@
-package org.codetome.zircon.graphics.impl
+package org.codetome.zircon.graphics.shape
 
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.graphics.ShapeRenderer
 import org.codetome.zircon.terminal.TerminalSize
 import java.util.*
 
@@ -170,8 +169,9 @@ class DefaultShapeRenderer : ShapeRenderer {
     }
 
     override fun fillRectangle(topLeft: TerminalPosition, size: TerminalSize, character: TextCharacter) {
-        for (y in 0..size.rows - 1) {
-            for (x in 0..size.columns - 1) {
+        (0..size.rows - 1).forEach { y ->
+            (0..size.columns - 1).forEach {
+                x ->
                 callback.onPoint(topLeft.column + x, topLeft.row + y, character)
             }
         }

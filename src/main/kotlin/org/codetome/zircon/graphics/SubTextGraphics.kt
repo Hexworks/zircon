@@ -1,8 +1,7 @@
-package org.codetome.zircon.graphics.impl
+package org.codetome.zircon.graphics
 
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.terminal.TerminalSize
 import java.util.*
 

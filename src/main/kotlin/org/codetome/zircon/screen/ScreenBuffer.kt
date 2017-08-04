@@ -3,7 +3,7 @@ package org.codetome.zircon.screen
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.builder.TextImageBuilder
 import org.codetome.zircon.graphics.TextImage
-import org.codetome.zircon.graphics.impl.BasicTextImage
+import org.codetome.zircon.graphics.DefaultTextImage
 import org.codetome.zircon.terminal.TerminalSize
 
 /**
@@ -12,7 +12,7 @@ import org.codetome.zircon.terminal.TerminalSize
  * A [ScreenBuffer] is essentially a two-dimensional array of [TextCharacter]s with some utility
  * methods to inspect and manipulate it in a safe way.
  */
-class ScreenBuffer private constructor(private val backend: BasicTextImage) : TextImage by backend {
+class ScreenBuffer private constructor(private val backend: DefaultTextImage) : TextImage by backend {
 
     constructor(size: TerminalSize, filler: TextCharacter) : this(TextImageBuilder.newBuilder()
             .size(size)

@@ -1,7 +1,7 @@
 package org.codetome.zircon.builder
 
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.graphics.impl.BasicTextImage
+import org.codetome.zircon.graphics.DefaultTextImage
 import org.codetome.zircon.terminal.TerminalSize
 
 class TextImageBuilder {
@@ -36,7 +36,7 @@ class TextImageBuilder {
         this.filler = filler
     }
 
-    fun build() = BasicTextImage(
+    fun build() = DefaultTextImage(
             size = size,
             toCopy = toCopy,
             filler = filler)

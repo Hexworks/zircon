@@ -1,11 +1,11 @@
-package org.codetome.zircon.graphics.impl
+package org.codetome.zircon.graphics
 
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.graphics.ShapeRenderer
-import org.codetome.zircon.graphics.TextGraphics
-import org.codetome.zircon.graphics.TextImage
+import org.codetome.zircon.graphics.shape.ShapeRenderer
+import org.codetome.zircon.graphics.shape.DefaultShapeRenderer
+import org.codetome.zircon.graphics.style.DefaultStyleSet
 import org.codetome.zircon.screen.TabBehavior
 import org.codetome.zircon.terminal.TerminalSize
 

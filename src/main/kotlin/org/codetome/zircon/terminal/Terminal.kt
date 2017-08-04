@@ -3,7 +3,7 @@
 package org.codetome.zircon.terminal
 
 import org.codetome.zircon.TerminalPosition
-import org.codetome.zircon.graphics.StyleSet
+import org.codetome.zircon.graphics.style.StyleSet
 import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.input.InputProvider
 import java.io.Closeable

@@ -5,6 +5,7 @@ import org.codetome.zircon.TerminalPosition
 import org.codetome.zircon.TerminalPosition.Companion.DEFAULT_POSITION
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.builder.TextCharacterBuilder
+import org.codetome.zircon.graphics.shape.DefaultShapeRenderer
 import org.codetome.zircon.terminal.TerminalSize
 import org.junit.Before
 import org.junit.Test

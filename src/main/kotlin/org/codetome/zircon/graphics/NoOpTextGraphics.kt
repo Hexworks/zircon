@@ -1,8 +1,11 @@
-package org.codetome.zircon.graphics.impl
+package org.codetome.zircon.graphics
 
-import org.codetome.zircon.*
+import org.codetome.zircon.Modifier
+import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.TextColor
 import org.codetome.zircon.builder.TextColorFactory
-import org.codetome.zircon.graphics.StyleSet
+import org.codetome.zircon.graphics.style.StyleSet
 import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.graphics.TextImage
 import org.codetome.zircon.screen.TabBehavior
@@ -12,7 +15,7 @@ import java.util.*
 /**
  * [TextGraphics] implementation that does nothing, but has a pre-defined size
  */
-internal class NoOpTextGraphics(private val size: TerminalSize) : TextGraphics  {
+internal class NoOpTextGraphics(private val size: TerminalSize) : TextGraphics {
     override fun enableModifier(modifier: Modifier) {
     }
 
