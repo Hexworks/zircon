@@ -1,8 +1,8 @@
 package org.codetome.zircon.graphics
 
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 
 /**
  * An image built from [TextCharacter]s with color and style information.
@@ -13,18 +13,18 @@ interface TextImage {
     /**
      * Returns the dimensions of this [TextImage], in columns and rows
      */
-    fun getSize(): TerminalSize
+    fun getSize(): Size
 
     /**
      * Returns the character stored at a particular position in this image
      */
-    fun getCharacterAt(position: TerminalPosition): TextCharacter
+    fun getCharacterAt(position: Position): TextCharacter
 
     /**
      * Sets the character at a specific position in the image to a particular [TextCharacter]. If the position is outside
      * of the images size, this method does nothing.
      */
-    fun setCharacterAt(position: TerminalPosition, character: TextCharacter)
+    fun setCharacterAt(position: Position, character: TextCharacter)
 
     /**
      * Sets the text image content to one specified character (including color and style)
@@ -41,7 +41,7 @@ interface TextImage {
      * larger than the old and we need to fill in empty areas. The copy will be independent from the one this method is
      * invoked on, so modifying one will not affect the other.
      */
-    fun resize(newSize: TerminalSize, filler: TextCharacter): TextImage
+    fun resize(newSize: Size, filler: TextCharacter): TextImage
 
 
     /**

@@ -1,7 +1,7 @@
 package org.codetome.zircon.font
 
 /**
- * This interface represents a sprite which contains multiple
+ * This interface represents a sprite which containsPosition multiple
  * textures and they can be accessed by extracting sub-images
  * from the sprite.
  */

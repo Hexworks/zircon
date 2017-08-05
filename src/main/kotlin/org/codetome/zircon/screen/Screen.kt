@@ -1,12 +1,14 @@
 package org.codetome.zircon.screen
 
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.behavior.Clearable
+import org.codetome.zircon.behavior.CursorHolder
+import org.codetome.zircon.behavior.Layerable
 import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.input.InputProvider
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 import java.io.Closeable
-import java.util.*
 
 /**
  * [Screen] is a fundamental layer presenting the terminal as a bitmap-like surface where you can perform
@@ -18,48 +20,26 @@ import java.util.*
  * [org.codetome.zircon.terminal.Terminal]. If you want a [Screen] to be displayed use the
  * [Screen.display] method.
  */
-interface Screen : InputProvider, Closeable {
+interface Screen : InputProvider, Closeable, Clearable, Layerable, CursorHolder {
 
-    /**
-     * Erases all the characters on the screen, effectively giving you a blank area.
-     * The default background color will be used. This is effectively the same as calling
-     * <pre>fill(TerminalPosition.TOP_LEFT_CORNER, getSize(), TextColor.ANSI.Default)</pre>.
-     *
-     * Please note that calling this method will only affect the back buffer,
-     * you need to call refresh to make the change visible.
-     */
-    fun clear()
-
-    fun getCursorPosition(): TerminalPosition
-
-    fun setCursorPosition(position: TerminalPosition)
-
-    fun isCursorVisible(): Boolean
-
-    fun setCursorVisible(cursorVisible: Boolean)
-
-    fun getTabBehavior(): TabBehavior
-
-    fun setTabBehavior(tabBehavior: TabBehavior)
-
-    fun getTerminalSize(): TerminalSize
+    fun getTerminalSize(): Size
 
     /**
      * Reads a character and its associated meta-data from the front-buffer and returns it encapsulated as a
      * [TextCharacter].
      */
-    fun getFrontCharacter(position: TerminalPosition): TextCharacter
+    fun getFrontCharacter(position: Position): TextCharacter
 
     /**
      * Reads a character and its associated meta-data from the back-buffer and returns it encapsulated as a
      * [TextCharacter].
      */
-    fun getBackCharacter(position: TerminalPosition): TextCharacter
+    fun getBackCharacter(position: Position): TextCharacter
 
     /**
      * Sets a character in the back-buffer to a specified value with specified colors and modifiers.
      */
-    fun setCharacter(position: TerminalPosition, screenCharacter: TextCharacter)
+    fun setCharacter(position: Position, screenCharacter: TextCharacter)
 
     /**
      * Creates a new [TextGraphics] objects that is targeting this [Screen] for writing to.

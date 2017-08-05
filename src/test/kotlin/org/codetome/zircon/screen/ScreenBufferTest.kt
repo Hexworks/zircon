@@ -2,7 +2,7 @@ package org.codetome.zircon.screen
 
 import org.codetome.zircon.builder.TextCharacterBuilder
 import org.codetome.zircon.builder.TextImageBuilder
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
@@ -24,15 +24,15 @@ class ScreenBufferTest {
     fun test() {
         // this class is a no brainer, but coverage suffers if we don't do this...
         target.copyFrom(IMG, 1, 2, 1, 2, 1, 2)
-        target.resize(TerminalSize(2, 2), FILLER)
+        target.resize(Size(2, 2), FILLER)
     }
 
     companion object {
-        val SIZE = TerminalSize(10, 10)
+        val SIZE = Size(10, 10)
         val FILLER = TextCharacterBuilder.newBuilder().build()
         val IMG = TextImageBuilder.newBuilder()
                 .filler(FILLER)
-                .size(TerminalSize(5, 5))
+                .size(Size(5, 5))
                 .build()
     }
 

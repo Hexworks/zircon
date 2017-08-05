@@ -1,61 +1,61 @@
 package org.codetome.zircon.terminal
 
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 
 /**
  * Terminal dimensions in 2D space, measured in number of rows and columns.
  * This class is immutable and cannot change its internal state after creation.
  */
-data class TerminalSize(val columns: Int,
-                        val rows: Int) {
+data class Size(val columns: Int,
+                val rows: Int) {
 
     init {
         require(columns >= 0) {
-            "TerminalSize.columns cannot be less than 0!"
+            "Size.columns cannot be less than 0!"
         }
         require(rows >= 0) {
-            "TerminalSize.rows cannot be less than 0!"
+            "Size.rows cannot be less than 0!"
         }
     }
 
     /**
-     * Creates a list of [TerminalPosition]s in the order in which they should
+     * Creates a list of [Position]s in the order in which they should
      * be iterated when drawing (from left to right, then top to bottom).
      */
-    fun fetchPositions(): List<TerminalPosition> = (0..rows - 1).flatMap { row ->
+    fun fetchPositions(): List<Position> = (0..rows - 1).flatMap { row ->
         (0..columns - 1).map { column ->
-            TerminalPosition(column, row)
+            Position(column, row)
         }
     }
 
     /**
      * Creates a new size based on this size, but with a different width.
      */
-    fun withColumns(columns: Int): TerminalSize {
+    fun withColumns(columns: Int): Size {
         if (this.columns == columns) {
             return this
         }
         if (isZeroSize(columns)) return ZERO
-        return TerminalSize(columns, this.rows)
+        return Size(columns, this.rows)
     }
 
     /**
      * Creates a new size based on this size, but with a different height.
      */
-    fun withRows(rows: Int): TerminalSize {
+    fun withRows(rows: Int): Size {
         if (this.rows == rows) {
             return this
         }
         if (isZeroSize(columns)) return ZERO
-        return TerminalSize(this.columns, rows)
+        return Size(this.columns, rows)
     }
 
     /**
-     * Creates a new [TerminalSize] object representing a size with the same number of rows, but with a column size offset by a
+     * Creates a new [Size] object representing a size with the same number of rows, but with a column size offset by a
      * supplied value. Calling this method with delta 0 will return this, calling it with a positive delta will return
      * a terminal size <code>delta</code> number of columns wider and for negative numbers shorter.
      */
-    fun withRelativeColumns(delta: Int): TerminalSize {
+    fun withRelativeColumns(delta: Int): Size {
         if (delta == 0) {
             return this
         }
@@ -63,11 +63,11 @@ data class TerminalSize(val columns: Int,
     }
 
     /**
-     * Creates a new [TerminalSize] object representing a size with the same number of columns, but with a row size offset by a
+     * Creates a new [Size] object representing a size with the same number of columns, but with a row size offset by a
      * supplied value. Calling this method with delta 0 will return this, calling it with a positive delta will return
      * a terminal size <code>delta</code> number of rows longer and for negative numbers shorter.
      */
-    fun withRelativeRows(delta: Int): TerminalSize {
+    fun withRelativeRows(delta: Int): Size {
         if (delta == 0) {
             return this
         }
@@ -75,27 +75,27 @@ data class TerminalSize(val columns: Int,
     }
 
     /**
-     * Creates a new [TerminalSize] object representing a size based on this object's size but with a delta applied.
+     * Creates a new [Size] object representing a size based on this object's size but with a delta applied.
      * This is the same as calling `withRelativeColumns(delta.getColumns()).withRelativeRows(delta.getRows())`
      */
-    fun withRelative(delta: TerminalSize): TerminalSize {
+    fun withRelative(delta: Size): Size {
         return withRelativeRows(delta.rows).withRelativeColumns(delta.columns)
     }
 
     /**
-     * Takes a different [TerminalSize] and returns a new [TerminalSize] that has the largest dimensions of the two,
+     * Takes a different [Size] and returns a new [Size] that has the largest dimensions of the two,
      * measured separately. So calling 3x5 on a 5x3 will return 5x5.
      */
-    fun max(other: TerminalSize): TerminalSize {
+    fun max(other: Size): Size {
         return withColumns(Math.max(columns, other.columns))
                 .withRows(Math.max(rows, other.rows))
     }
 
     /**
-     * Takes a different [TerminalSize] and returns a new [TerminalSize] that has the smallest dimensions of the two,
+     * Takes a different [Size] and returns a new [Size] that has the smallest dimensions of the two,
      * measured separately. So calling 3x5 on a 5x3 will return 3x3.
      */
-    fun min(other: TerminalSize): TerminalSize {
+    fun min(other: Size): Size {
         return withColumns(Math.min(columns, other.columns))
                 .withRows(Math.min(rows, other.rows))
     }
@@ -105,7 +105,7 @@ data class TerminalSize(val columns: Int,
      * size field which is frequently recalculated but often resolves to the same size; it will keep the same object
      * in memory instead of swapping it out every cycle.
      */
-    fun with(size: TerminalSize): TerminalSize {
+    fun with(size: Size): Size {
         if (equals(size)) {
             return this
         }
@@ -120,9 +120,9 @@ data class TerminalSize(val columns: Int,
     }
 
     companion object {
-        val UNKNOWN = TerminalSize(Int.MAX_VALUE, Int.MAX_VALUE)
-        val DEFAULT = TerminalSize(80, 24)
-        val ZERO = TerminalSize(0, 0)
-        val ONE = TerminalSize(1, 1)
+        val UNKNOWN = Size(Int.MAX_VALUE, Int.MAX_VALUE)
+        val DEFAULT = Size(80, 24)
+        val ZERO = Size(0, 0)
+        val ONE = Size(1, 1)
     }
 }

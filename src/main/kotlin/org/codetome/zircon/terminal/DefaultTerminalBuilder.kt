@@ -7,14 +7,13 @@ import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.builder.FontRendererBuilder
 import org.codetome.zircon.terminal.swing.SwingTerminalComponent
 import org.codetome.zircon.terminal.swing.SwingTerminalFrame
-import org.codetome.zircon.terminal.virtual.DefaultVirtualTerminal
 import java.awt.Graphics
 
 
 class DefaultTerminalBuilder
     : TerminalFactory {
 
-    private var initialTerminalSize: TerminalSize = TerminalSize.DEFAULT
+    private var initialSize: Size = Size.DEFAULT
     private var title: String = "Zircon Terminal"
     private var autoOpenTerminalFrame = true
     private var deviceConfiguration = DeviceConfigurationBuilder.getDefault()
@@ -26,7 +25,7 @@ class DefaultTerminalBuilder
 
     fun buildSwingTerminal() = SwingTerminalFrame(
             title = title,
-            terminalSize = initialTerminalSize,
+            size = initialSize,
             deviceConfiguration = deviceConfiguration,
             fontConfiguration = fontRenderer).apply {
 
@@ -41,8 +40,8 @@ class DefaultTerminalBuilder
      * and [SwingTerminalFrame] are and this value will be passed down on
      * creation.
      */
-    fun initialTerminalSize(initialTerminalSize: TerminalSize) = also {
-        this.initialTerminalSize = initialTerminalSize
+    fun initialTerminalSize(initialSize: Size) = also {
+        this.initialSize = initialSize
     }
 
     /**

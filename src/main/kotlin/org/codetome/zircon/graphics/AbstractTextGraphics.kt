@@ -1,13 +1,12 @@
 package org.codetome.zircon.graphics
 
 import org.codetome.zircon.Modifier
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.graphics.shape.ShapeRenderer
 import org.codetome.zircon.graphics.shape.DefaultShapeRenderer
+import org.codetome.zircon.graphics.shape.ShapeRenderer
 import org.codetome.zircon.graphics.style.DefaultStyleSet
-import org.codetome.zircon.screen.TabBehavior
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 
 
 /**
@@ -17,61 +16,51 @@ abstract class AbstractTextGraphics(
         private val shapeRenderer: DefaultShapeRenderer = DefaultShapeRenderer())
     : DefaultStyleSet(), TextGraphics, ShapeRenderer by shapeRenderer {
 
-    private var tabBehavior = TabBehavior.DEFAULT_TAB_BEHAVIOR
-
     init {
         shapeRenderer.setCallback(object : DefaultShapeRenderer.Callback {
-            override fun onPoint(column: Int, row: Int, character: TextCharacter) {
-                setCharacter(TerminalPosition(column, row), character)
+            override fun onPoint(position: Position, character: TextCharacter) {
+                setCharacter(position, character)
             }
         })
     }
 
-    override fun getTabBehavior(): TabBehavior {
-        return tabBehavior
-    }
-
-    override fun setTabBehavior(tabBehaviour: TabBehavior) {
-        this.tabBehavior = tabBehaviour
-    }
-
-    override fun setCharacter(position: TerminalPosition, character: Char) {
+    override fun setCharacter(position: Position, character: Char) {
         return setCharacter(position, newTextCharacter(character))
     }
 
     override fun fill(c: Char) {
-        fillRectangle(TerminalPosition.TOP_LEFT_CORNER, getSize(), c)
+        fillRectangle(Position.TOP_LEFT_CORNER, getSize(), c)
     }
 
-    override fun drawLine(fromPoint: TerminalPosition, toPoint: TerminalPosition, character: Char) {
+    override fun drawLine(fromPoint: Position, toPoint: Position, character: Char) {
         return drawLine(fromPoint, toPoint, newTextCharacter(character))
     }
 
-    override fun drawTriangle(p1: TerminalPosition, p2: TerminalPosition, p3: TerminalPosition, character: Char) {
+    override fun drawTriangle(p1: Position, p2: Position, p3: Position, character: Char) {
         return drawTriangle(p1, p2, p3, newTextCharacter(character))
     }
 
-    override fun fillTriangle(p1: TerminalPosition, p2: TerminalPosition, p3: TerminalPosition, character: Char) {
+    override fun fillTriangle(p1: Position, p2: Position, p3: Position, character: Char) {
         return fillTriangle(p1, p2, p3, newTextCharacter(character))
     }
 
-    override fun drawRectangle(topLeft: TerminalPosition, size: TerminalSize, character: Char) {
+    override fun drawRectangle(topLeft: Position, size: Size, character: Char) {
         return drawRectangle(topLeft, size, newTextCharacter(character))
     }
 
-    override fun fillRectangle(topLeft: TerminalPosition, size: TerminalSize, character: Char) {
+    override fun fillRectangle(topLeft: Position, size: Size, character: Char) {
         return fillRectangle(topLeft, size, newTextCharacter(character))
     }
 
-    override fun drawImage(topLeft: TerminalPosition, image: TextImage) {
-        drawImage(topLeft, image, TerminalPosition.TOP_LEFT_CORNER, image.getSize())
+    override fun drawImage(topLeft: Position, image: TextImage) {
+        drawImage(topLeft, image, Position.TOP_LEFT_CORNER, image.getSize())
     }
 
     override fun drawImage(
-            topLeft: TerminalPosition,
+            topLeft: Position,
             image: TextImage,
-            sourceImageTopLeft: TerminalPosition,
-            sourceImageSize: TerminalSize) {
+            sourceImageTopLeft: Position,
+            sourceImageSize: Size) {
         var topLeftTmp = topLeft
         var sourceImageTopLeftTmp = sourceImageTopLeft
         var sourceImageSizeTmp = sourceImageSize
@@ -112,13 +101,13 @@ abstract class AbstractTextGraphics(
         (fromRow..untilRow - 1).forEach { row ->
             (fromColumn..untilColumn - 1).forEach { column ->
                 setCharacter(
-                        position = TerminalPosition(column + diffColumn, row + diffRow),
-                        character = image.getCharacterAt(TerminalPosition(column, row)))
+                        position = Position(column + diffColumn, row + diffRow),
+                        character = image.getCharacterAt(Position(column, row)))
             }
         }
     }
 
-    override fun putString(position: TerminalPosition, string: String, extraModifiers: Set<Modifier>) {
+    override fun putString(position: Position, string: String, extraModifiers: Set<Modifier>) {
         val modifierDiff = extraModifiers.minus(getActiveModifiers())
         enableModifiers(*modifierDiff.toTypedArray())
         val stringToPut = prepareStringForPut(position.column, string)
@@ -129,7 +118,7 @@ abstract class AbstractTextGraphics(
     }
 
 
-    override fun newTextGraphics(topLeftCorner: TerminalPosition, size: TerminalSize): TextGraphics {
+    override fun newTextGraphics(topLeftCorner: Position, size: Size): TextGraphics {
         val writableArea = getSize()
         if (topLeftCorner.column + size.columns <= 0 ||
                 topLeftCorner.column >= writableArea.columns ||
@@ -154,7 +143,6 @@ abstract class AbstractTextGraphics(
         if (cleanString.contains("\r")) {
             cleanString = cleanString.substring(0, cleanString.indexOf("\r"))
         }
-        cleanString = tabBehavior.replaceTabs(cleanString, column)
         return cleanString
     }
 

@@ -1,8 +1,8 @@
 package org.codetome.zircon.graphics
 
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 import java.util.*
 
 /**
@@ -10,16 +10,16 @@ import java.util.*
  * top-left position and a size. Any attempts to put text outside of this area will be dropped.
  */
 internal class SubTextGraphics(private val underlyingTextGraphics: TextGraphics,
-                               private val topLeft: TerminalPosition,
-                               private val size: TerminalSize) : AbstractTextGraphics() {
+                               private val topLeft: Position,
+                               private val size: Size) : AbstractTextGraphics() {
 
     override fun getSize() = size
 
-    override fun getCharacter(position: TerminalPosition): Optional<TextCharacter> {
+    override fun getCharacter(position: Position): Optional<TextCharacter> {
         return underlyingTextGraphics.getCharacter(topLeft.withRelative(position))
     }
 
-    override fun setCharacter(position: TerminalPosition, character: TextCharacter) {
+    override fun setCharacter(position: Position, character: TextCharacter) {
         val (column, row) = position
         val writableArea = size
         if (column < 0 || column >= writableArea.columns ||

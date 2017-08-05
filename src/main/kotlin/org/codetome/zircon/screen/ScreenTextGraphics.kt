@@ -1,6 +1,6 @@
 package org.codetome.zircon.screen
 
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.graphics.AbstractTextGraphics
 import org.codetome.zircon.graphics.TextGraphics
@@ -12,11 +12,11 @@ import java.util.*
  */
 internal open class ScreenTextGraphics(private val screen: Screen) : AbstractTextGraphics() {
 
-    override fun getCharacter(position: TerminalPosition): Optional<TextCharacter> {
+    override fun getCharacter(position: Position): Optional<TextCharacter> {
         return Optional.of(screen.getBackCharacter(position))
     }
 
-    override fun setCharacter(position: TerminalPosition, character: TextCharacter) {
+    override fun setCharacter(position: Position, character: TextCharacter) {
         screen.setCharacter(position, character)
     }
 

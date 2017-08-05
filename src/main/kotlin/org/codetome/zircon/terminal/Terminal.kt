@@ -2,7 +2,8 @@
 
 package org.codetome.zircon.terminal
 
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.behavior.Clearable
+import org.codetome.zircon.behavior.CursorHolder
 import org.codetome.zircon.graphics.style.StyleSet
 import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.input.InputProvider
@@ -22,33 +23,7 @@ import java.io.Closeable
  * If you want to write an application that has a very precise control of the terminal, this is the
  * interface you should be programming against.
  */
-interface Terminal : InputProvider, Closeable, StyleSet {
-
-    /**
-     * Removes all the characters, colors and graphics from the screen and leaves you with a big empty space.
-     * Note that all metadata will be reset to their default values.
-     */
-    fun clearScreen()
-
-    /**
-     * Returns the position of the cursor, as reported by the terminal.
-     */
-    fun getCursorPosition(): TerminalPosition
-
-    /**
-     * Moves the text cursor to a new location on the terminal.
-     */
-    fun setCursorPosition(cursorPosition: TerminalPosition)
-
-    /**
-     * Checks if the terminal cursor is visible or not.
-     */
-    fun isCursorVisible(): Boolean
-
-    /**
-     * Hides or shows the text cursor.
-     */
-    fun setCursorVisible(cursorVisible: Boolean)
+interface Terminal : InputProvider, Closeable, Clearable, StyleSet, CursorHolder {
 
     /**
      * Prints one character to the terminal at the current cursor location.
@@ -82,16 +57,16 @@ interface Terminal : InputProvider, Closeable, StyleSet {
     fun removeResizeListener(listener: TerminalResizeListener)
 
     /**
-     * Returns the size of the terminal, expressed as a [TerminalSize] object.
+     * Returns the size of the terminal, expressed as a [Size] object.
      */
-    fun getTerminalSize(): TerminalSize
+    fun getTerminalSize(): Size
 
     /**
      * Changes the visible size of the virtual terminal. If you call this method with a size
      * that is different from the current size of the virtual terminal, the resize event
      * will be fired on all listeners.
      */
-    fun setTerminalSize(newSize: TerminalSize)
+    fun setTerminalSize(newSize: Size)
 
 //    /**
 //     * Makes the terminal (emulator) ring a bell (or more likely beep).

@@ -5,7 +5,7 @@ import org.codetome.zircon.graphics.style.DefaultStyleSet
 abstract class AbstractTerminal : DefaultStyleSet(), Terminal {
 
     private val resizeListeners = mutableListOf<TerminalResizeListener>()
-    private var lastKnownSize = TerminalSize.UNKNOWN
+    private var lastKnownSize = Size.UNKNOWN
 
     /**
      * Call this method when the terminal has been resized or the initial size of the terminal
@@ -13,7 +13,7 @@ abstract class AbstractTerminal : DefaultStyleSet(), Terminal {
      * but only if the size has changed from before.
      */
     @Synchronized
-    protected fun onResized(newSize: TerminalSize) {
+    protected fun onResized(newSize: Size) {
         if (lastKnownSize != newSize) {
             lastKnownSize = newSize
             resizeListeners.forEach { it.onResized(this, lastKnownSize) }

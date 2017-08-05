@@ -5,14 +5,14 @@ package org.codetome.zircon
  * corner of the terminal. This object is immutable so you cannot change it after it has been created. Instead, you
  * can easily create modified clones by using the `with*` methods.
  */
-data class TerminalPosition(val column: Int,
-                            val row: Int) : Comparable<TerminalPosition> {
+data class Position(val column: Int,
+                    val row: Int) : Comparable<Position> {
 
     /**
-     * Creates a new [TerminalPosition] object representing a position with the same column index as this but with a
+     * Creates a new [Position] object representing a position with the same column index as this but with a
      * supplied row index.
      */
-    fun withRow(row: Int): TerminalPosition {
+    fun withRow(row: Int): Position {
         if (row == 0 && this.column == 0) {
             return TOP_LEFT_CORNER
         }
@@ -20,10 +20,10 @@ data class TerminalPosition(val column: Int,
     }
 
     /**
-     * Creates a new [TerminalPosition] object representing a position with the same row index as this but with a
+     * Creates a new [Position] object representing a position with the same row index as this but with a
      * supplied column index.
      */
-    fun withColumn(column: Int): TerminalPosition {
+    fun withColumn(column: Int): Position {
         if (column == 0 && this.row == 0) {
             return TOP_LEFT_CORNER
         }
@@ -31,11 +31,11 @@ data class TerminalPosition(val column: Int,
     }
 
     /**
-     * Creates a new [TerminalPosition] object representing a position on the same row, but with a column offset by a
+     * Creates a new [Position] object representing a position on the same row, but with a column offset by a
      * supplied value. Calling this method with delta 0 will return this, calling it with a positive delta will return
      * a terminal position <code>delta</code> number of columns to the right and for negative numbers the same to the left.
      */
-    fun withRelativeColumn(delta: Int): TerminalPosition {
+    fun withRelativeColumn(delta: Int): Position {
         if (delta == 0) {
             return this
         }
@@ -43,11 +43,11 @@ data class TerminalPosition(val column: Int,
     }
 
     /**
-     * Creates a new [TerminalPosition] object representing a position on the same column, but with a row offset by a
+     * Creates a new [Position] object representing a position on the same column, but with a row offset by a
      * supplied value. Calling this method with delta 0 will return this, calling it with a positive delta will return
      * a terminal position <code>delta</code> number of rows to the down and for negative numbers the same up.
      */
-    fun withRelativeRow(delta: Int): TerminalPosition {
+    fun withRelativeRow(delta: Int): Position {
         if (delta == 0) {
             return this
         }
@@ -55,14 +55,14 @@ data class TerminalPosition(val column: Int,
     }
 
     /**
-     * Creates a new [TerminalPosition] object that is translated by an amount of rows and columns specified by another
-     * [TerminalPosition]. Same as calling `withRelativeRow(translate.getRow()).withRelativeColumn(translate.getColumn())`.
+     * Creates a new [Position] object that is translated by an amount of rows and columns specified by another
+     * [Position]. Same as calling `withRelativeRow(translate.getRow()).withRelativeColumn(translate.getColumn())`.
      */
-    fun withRelative(translate: TerminalPosition): TerminalPosition {
+    fun withRelative(translate: Position): Position {
         return withRelativeRow(translate.row).withRelativeColumn(translate.column)
     }
 
-    override fun compareTo(other: TerminalPosition): Int {
+    override fun compareTo(other: Position): Int {
         if (row < other.row) {
             return -1
         } else if (row == other.row) {
@@ -82,13 +82,13 @@ data class TerminalPosition(val column: Int,
          * Constant for the top-left corner (0x0)
          */
         @JvmStatic
-        val TOP_LEFT_CORNER = TerminalPosition(0, 0)
+        val TOP_LEFT_CORNER = Position(0, 0)
 
         /**
          * Constant for the 1x1 position (one offset in both directions from top-left)
          */
         @JvmStatic
-        val OFFSET_1x1 = TerminalPosition(1, 1)
+        val OFFSET_1x1 = Position(1, 1)
 
         /**
          * This position can be considered as the default
@@ -100,7 +100,7 @@ data class TerminalPosition(val column: Int,
          * Used in place of a possible null value. Means that the position is unknown (cursor for example)
          */
         @JvmStatic
-        val UNKNOWN = TerminalPosition(Int.MAX_VALUE, Int.MAX_VALUE)
+        val UNKNOWN = Position(Int.MAX_VALUE, Int.MAX_VALUE)
     }
 }
 

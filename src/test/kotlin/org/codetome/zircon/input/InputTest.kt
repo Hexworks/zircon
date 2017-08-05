@@ -1,7 +1,7 @@
 package org.codetome.zircon.input
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.junit.Test
 
 class InputTest {
@@ -26,7 +26,7 @@ class InputTest {
         return MouseAction(
                 actionType = MouseActionType.MOUSE_WHEEL_ROTATED_UP,
                 button = 1,
-                position = TerminalPosition.DEFAULT_POSITION
+                position = Position.DEFAULT_POSITION
         )
     }
 

@@ -5,7 +5,7 @@ import org.codetome.zircon.builder.FontRendererBuilder;
 import org.codetome.zircon.builder.TextColorFactory;
 import org.codetome.zircon.screen.TerminalScreen;
 import org.codetome.zircon.terminal.DefaultTerminalBuilder;
-import org.codetome.zircon.terminal.TerminalSize;
+import org.codetome.zircon.terminal.Size;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -54,19 +54,19 @@ public class TilesetExample {
                         .useSwing()
                         .useDFTileset(WANDERLUST_16X16)
                         .build())
-                .initialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT))
+                .initialTerminalSize(new Size(TERMINAL_WIDTH, TERMINAL_HEIGHT))
                 .buildScreen();
         screen.setCursorVisible(false);
 
         final Random random = new Random();
         for (int y = 0; y < TERMINAL_HEIGHT; y++) {
             for (int x = 0; x < TERMINAL_WIDTH; x++) {
-                screen.setCharacter(new TerminalPosition(x, y), GRASSES[random.nextInt(3)]);
+                screen.setCharacter(new Position(x, y), GRASSES[random.nextInt(3)]);
             }
         }
         final String text = "Tileset Example";
         for (int i = 0; i < text.length(); i++) {
-            screen.setCharacter(new TerminalPosition(i + 2, 1),
+            screen.setCharacter(new Position(i + 2, 1),
                     TextCharacter.builder()
                             .character(text.charAt(i))
                             .foregroundColor(TEXT_COLOR)
@@ -79,7 +79,7 @@ public class TilesetExample {
 
         for (int i = 0; i < RANDOM_CHAR_COUNT; i++) {
             screen.setCharacter(
-                    new TerminalPosition(
+                    new Position(
                             random.nextInt(TERMINAL_WIDTH),
                             random.nextInt(TERMINAL_HEIGHT - 2) + 2),
                     TextCharacter.builder()

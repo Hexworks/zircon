@@ -2,11 +2,11 @@ package org.codetome.zircon.builder
 
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.graphics.DefaultTextImage
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 
 class TextImageBuilder {
 
-    private var size: TerminalSize = TerminalSize.ONE
+    private var size: Size = Size.ONE
     private var toCopy: Array<Array<TextCharacter>> = arrayOf()
     private var filler: TextCharacter = TextCharacter.DEFAULT_CHARACTER
 
@@ -14,7 +14,7 @@ class TextImageBuilder {
      * Sets the size for the new [org.codetome.zircon.graphics.TextImage].
      * Default is 1x1.
      */
-    fun size(size: TerminalSize) = also {
+    fun size(size: Size) = also {
         this.size = size
     }
 
