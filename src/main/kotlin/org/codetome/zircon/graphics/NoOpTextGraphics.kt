@@ -1,21 +1,18 @@
 package org.codetome.zircon.graphics
 
 import org.codetome.zircon.Modifier
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.TextColor
 import org.codetome.zircon.builder.TextColorFactory
 import org.codetome.zircon.graphics.style.StyleSet
-import org.codetome.zircon.graphics.TextGraphics
-import org.codetome.zircon.graphics.TextImage
-import org.codetome.zircon.screen.TabBehavior
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 import java.util.*
 
 /**
  * [TextGraphics] implementation that does nothing, but has a pre-defined size
  */
-internal class NoOpTextGraphics(private val size: TerminalSize) : TextGraphics {
+internal class NoOpTextGraphics(private val size: Size) : TextGraphics {
     override fun enableModifier(modifier: Modifier) {
     }
 
@@ -54,62 +51,57 @@ internal class NoOpTextGraphics(private val size: TerminalSize) : TextGraphics {
 
     override fun getSize() = size
 
-    override fun newTextGraphics(topLeftCorner: TerminalPosition, size: TerminalSize): TextGraphics {
+    override fun newTextGraphics(topLeftCorner: Position, size: Size): TextGraphics {
         return this
-    }
-
-    override fun getTabBehavior() = TabBehavior.ALIGN_TO_COLUMN_4
-
-    override fun setTabBehavior(tabBehaviour: TabBehavior) {
     }
 
     override fun fill(c: Char) {
     }
 
-    override fun setCharacter(position: TerminalPosition, character: Char) {
+    override fun setCharacter(position: Position, character: Char) {
     }
 
-    override fun setCharacter(position: TerminalPosition, character: TextCharacter) {
+    override fun setCharacter(position: Position, character: TextCharacter) {
     }
 
-    override fun drawLine(fromPoint: TerminalPosition, toPoint: TerminalPosition, character: Char) {
+    override fun drawLine(fromPoint: Position, toPoint: Position, character: Char) {
     }
 
-    override fun drawLine(fromPoint: TerminalPosition, toPoint: TerminalPosition, character: TextCharacter) {
+    override fun drawLine(fromPoint: Position, toPoint: Position, character: TextCharacter) {
     }
 
-    override fun drawTriangle(p1: TerminalPosition, p2: TerminalPosition, p3: TerminalPosition, character: Char) {
+    override fun drawTriangle(p1: Position, p2: Position, p3: Position, character: Char) {
     }
 
-    override fun drawTriangle(p1: TerminalPosition, p2: TerminalPosition, p3: TerminalPosition, character: TextCharacter) {
+    override fun drawTriangle(p1: Position, p2: Position, p3: Position, character: TextCharacter) {
     }
 
-    override fun fillTriangle(p1: TerminalPosition, p2: TerminalPosition, p3: TerminalPosition, character: Char) {
+    override fun fillTriangle(p1: Position, p2: Position, p3: Position, character: Char) {
     }
 
-    override fun fillTriangle(p1: TerminalPosition, p2: TerminalPosition, p3: TerminalPosition, character: TextCharacter) {
+    override fun fillTriangle(p1: Position, p2: Position, p3: Position, character: TextCharacter) {
     }
 
-    override fun drawRectangle(topLeft: TerminalPosition, size: TerminalSize, character: Char) {
+    override fun drawRectangle(topLeft: Position, size: Size, character: Char) {
     }
 
-    override fun drawRectangle(topLeft: TerminalPosition, size: TerminalSize, character: TextCharacter) {
+    override fun drawRectangle(topLeft: Position, size: Size, character: TextCharacter) {
     }
 
-    override fun fillRectangle(topLeft: TerminalPosition, size: TerminalSize, character: Char) {
+    override fun fillRectangle(topLeft: Position, size: Size, character: Char) {
     }
 
-    override fun fillRectangle(topLeft: TerminalPosition, size: TerminalSize, character: TextCharacter) {
+    override fun fillRectangle(topLeft: Position, size: Size, character: TextCharacter) {
     }
 
-    override fun drawImage(topLeft: TerminalPosition, image: TextImage) {
+    override fun drawImage(topLeft: Position, image: TextImage) {
     }
 
-    override fun drawImage(topLeft: TerminalPosition, image: TextImage, sourceImageTopLeft: TerminalPosition, sourceImageSize: TerminalSize) {
+    override fun drawImage(topLeft: Position, image: TextImage, sourceImageTopLeft: Position, sourceImageSize: Size) {
     }
 
-    override fun putString(position: TerminalPosition, string: String, extraModifiers: Set<Modifier>) {
+    override fun putString(position: Position, string: String, extraModifiers: Set<Modifier>) {
     }
 
-    override fun getCharacter(position: TerminalPosition) = Optional.of(TextCharacter.DEFAULT_CHARACTER)
+    override fun getCharacter(position: Position) = Optional.of(TextCharacter.DEFAULT_CHARACTER)
 }

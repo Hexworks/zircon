@@ -2,14 +2,14 @@ package org.codetome.zircon.terminal.virtual
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Modifier
-import org.codetome.zircon.TerminalPosition
-import org.codetome.zircon.TerminalPosition.Companion.DEFAULT_POSITION
+import org.codetome.zircon.Position
+import org.codetome.zircon.Position.Companion.DEFAULT_POSITION
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.input.KeyStroke.Companion.EOF_STROKE
 import org.codetome.zircon.terminal.Cell
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
@@ -54,7 +54,7 @@ class DefaultVirtualTerminalTest {
     fun shouldNotifyResizeListenersWhenResizeHappens() {
         var resized = false
         target.addResizeListener(object : TerminalResizeListener {
-            override fun onResized(terminal: Terminal, newSize: TerminalSize) {
+            override fun onResized(terminal: Terminal, newSize: Size) {
                 resized = true
             }
         })
@@ -86,7 +86,7 @@ class DefaultVirtualTerminalTest {
 
     @Test
     fun shouldProperlySetCursorPositionWhenSetCursorPositionIsCalled() {
-        val pos = TerminalPosition(4, 5)
+        val pos = Position(4, 5)
         target.setCursorPosition(pos)
 
         assertThat(target.getCursorPosition()).isEqualTo(pos)
@@ -105,19 +105,19 @@ class DefaultVirtualTerminalTest {
         var cellCount = 0
         target.putCharacter(TextCharacter.builder().build())
 
-        target.clearScreen()
+        target.clear()
 
         target.forEachCell { cellCount++ }
 
         assertThat(cellCount).isEqualTo(0)
-        assertThat(target.getCursorPosition()).isEqualTo(TerminalPosition.DEFAULT_POSITION)
+        assertThat(target.getCursorPosition()).isEqualTo(Position.DEFAULT_POSITION)
     }
 
     @Test
     fun shouldMoveCursorToNextLineWhenNewLineIsPut() {
         target.putCharacter('\n')
         assertThat(target.getCursorPosition())
-                .isEqualTo(TerminalPosition.DEFAULT_POSITION.withRelativeRow(1))
+                .isEqualTo(Position.DEFAULT_POSITION.withRelativeRow(1))
     }
 
     @Test
@@ -259,8 +259,8 @@ class DefaultVirtualTerminalTest {
     }
 
     companion object {
-        val SIZE = TerminalSize(10, 20)
-        val NEW_BIGGER_SIZE = TerminalSize(30, 40)
+        val SIZE = Size(10, 20)
+        val NEW_BIGGER_SIZE = Size(30, 40)
         val NEW_LESS_ROWS_SIZE = SIZE.withRelativeRows(-1)
         val NEW_LESS_COLS_SIZE = SIZE.withRelativeColumns(-1)
     }

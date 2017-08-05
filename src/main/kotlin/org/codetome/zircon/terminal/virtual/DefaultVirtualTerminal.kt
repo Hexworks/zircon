@@ -1,51 +1,56 @@
 package org.codetome.zircon.terminal.virtual
 
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.behavior.CursorHolder
+import org.codetome.zircon.behavior.impl.DefaultCursorHolder
 import org.codetome.zircon.input.Input
-import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke
-import org.codetome.zircon.screen.TabBehavior
 import org.codetome.zircon.terminal.AbstractTerminal
 import org.codetome.zircon.terminal.Cell
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 import org.codetome.zircon.util.TextUtils
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 
-class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DEFAULT)
-    : AbstractTerminal(), VirtualTerminal {
+class DefaultVirtualTerminal private constructor(initialSize: Size,
+                                                 private val cursorHolder: CursorHolder)
+    : AbstractTerminal(), VirtualTerminal, CursorHolder by cursorHolder {
 
-    private var cursorPosition = TerminalPosition.DEFAULT_POSITION
-    private var cursorVisible = true
-    private var terminalSize = initialTerminalSize
+    private var terminalSize = initialSize
     private var wholeBufferDirty = false
-    private var lastDrawnCursorPosition: TerminalPosition = TerminalPosition.UNKNOWN
+    private var lastDrawnCursorPosition: Position = Position.UNKNOWN
     private val buffer: TextCharacterBuffer = TextCharacterBuffer()
-    private val dirtyTerminalCells = TreeSet<TerminalPosition>()
+    private val dirtyTerminalCells = TreeSet<Position>()
     private val listeners = mutableListOf<VirtualTerminalListener>()
     private val inputQueue = LinkedBlockingQueue<Input>()
 
+    constructor(initialSize: Size = Size.DEFAULT)
+            : this(initialSize, DefaultCursorHolder())
+
     init {
-        dirtyTerminalCells.add(cursorPosition)
+        dirtyTerminalCells.add(getCursorPosition())
     }
-
-    override fun isCursorVisible() = cursorVisible
-
-    override fun setCursorVisible(cursorVisible: Boolean) {
-        this.cursorVisible = cursorVisible
-    }
-
-    override fun getTerminalSize(): TerminalSize = terminalSize
 
     @Synchronized
-    override fun setTerminalSize(newSize: TerminalSize) {
+    override fun setCursorPosition(cursorPosition: Position) {
+        cursorHolder.setCursorPosition(cursorPosition
+                // this is not a bug! the cursor can extend beyond the last row
+                .withColumn(Math.min(cursorPosition.column, terminalSize.columns))
+                .withRow(Math.min(cursorPosition.row, terminalSize.rows - 1)))
+        dirtyTerminalCells.add(getCursorPosition())
+    }
+
+    override fun getTerminalSize(): Size = terminalSize
+
+    @Synchronized
+    override fun setTerminalSize(newSize: Size) {
         if (newSize != terminalSize) {
             this.terminalSize = newSize
             buffer.resize(newSize)
-            cursorPosition.let { (cursorCol, cursorRow) ->
+            getCursorPosition().let { (cursorCol, cursorRow) ->
                 if (cursorRow >= newSize.rows || cursorCol >= newSize.columns) {
-                    setCursorPosition(TerminalPosition(
+                    setCursorPosition(Position(
                             column = Math.min(newSize.columns, cursorCol),
                             row = Math.min(newSize.rows, cursorRow)))
                 }
@@ -57,22 +62,10 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
     }
 
     @Synchronized
-    override fun clearScreen() {
+    override fun clear() {
         buffer.clear()
         setWholeBufferDirty()
-        setCursorPosition(TerminalPosition.DEFAULT_POSITION)
-    }
-
-    @Synchronized
-    override fun getCursorPosition(): TerminalPosition = cursorPosition
-
-    @Synchronized
-    override fun setCursorPosition(cursorPosition: TerminalPosition) {
-        this.cursorPosition = cursorPosition
-                // this is not a bug! the cursor can extend beyond the last row
-                .withColumn(Math.min(cursorPosition.column, terminalSize.columns))
-                .withRow(Math.min(cursorPosition.row, terminalSize.rows - 1))
-        dirtyTerminalCells.add(this.cursorPosition)
+        setCursorPosition(Position.DEFAULT_POSITION)
     }
 
     @Synchronized
@@ -90,21 +83,12 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
 
     @Synchronized
     internal fun putCharacter(textCharacter: TextCharacter) {
-        if (textCharacter.getCharacter() == '\t') {
-            val nrOfSpaces = TabBehavior.DEFAULT_TAB_BEHAVIOR.getTabReplacement(cursorPosition.column).length
-            var i = 0
-            while (i < nrOfSpaces && cursorPosition.column < terminalSize.columns - 1) {
-                putCharacter(textCharacter.withCharacter(' '))
-                i++
-            }
-        } else {
-            checkCursorPosition()
-            buffer.setCharacter(cursorPosition, textCharacter)
-            dirtyTerminalCells.add(cursorPosition)
-            setCursorPosition(cursorPosition.withRelativeColumn(1)) // TODO: extract cursor logic?
-            checkCursorPosition()
-            dirtyTerminalCells.add(cursorPosition)
-        }
+        checkCursorPosition()
+        buffer.setCharacter(getCursorPosition(), textCharacter)
+        dirtyTerminalCells.add(getCursorPosition())
+        setCursorPosition(getCursorPosition().withRelativeColumn(1))
+        checkCursorPosition()
+        dirtyTerminalCells.add(getCursorPosition())
     }
 
     private fun checkCursorPosition() {
@@ -141,18 +125,18 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
     }
 
     @Synchronized
-    override fun getCharacter(position: TerminalPosition): TextCharacter {
+    override fun getCharacter(position: Position): TextCharacter {
         return buffer.getCharacter(position)
     }
 
     override fun forEachDirtyCell(fn: (Cell) -> Unit) {
         if (lastDrawnCursorPosition != getCursorPosition()
-                && lastDrawnCursorPosition != TerminalPosition.UNKNOWN) {
+                && lastDrawnCursorPosition != Position.UNKNOWN) {
             dirtyTerminalCells.add(lastDrawnCursorPosition)
         }
         if (wholeBufferDirty) {
             buffer.forEachCell(fn)
-            fn(Cell(cursorPosition, buffer.getCharacter(cursorPosition)))
+            fn(Cell(getCursorPosition(), buffer.getCharacter(getCursorPosition())))
             wholeBufferDirty = false
         } else {
             dirtyTerminalCells.forEach { pos ->
@@ -163,7 +147,7 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
         dirtyTerminalCells.clear()
         dirtyTerminalCells.addAll(blinkingChars)
         this.lastDrawnCursorPosition = getCursorPosition()
-        dirtyTerminalCells.add(cursorPosition)
+        dirtyTerminalCells.add(getCursorPosition())
     }
 
     override fun forEachCell(fn: (Cell) -> Unit) {
@@ -171,8 +155,8 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
     }
 
     private fun moveCursorToNextLine() {
-        cursorPosition = cursorPosition.withColumn(0).withRelativeRow(1)
-        if (cursorPosition.row >= buffer.getLineCount()) {
+        setCursorPosition(getCursorPosition().withColumn(0).withRelativeRow(1))
+        if (getCursorPosition().row >= buffer.getLineCount()) {
             buffer.newLine()
         }
     }
@@ -182,5 +166,5 @@ class DefaultVirtualTerminal(initialTerminalSize: TerminalSize = TerminalSize.DE
         dirtyTerminalCells.clear()
     }
 
-    private fun cursorIsAtTheEndOfTheLine() = cursorPosition.column == terminalSize.columns
+    private fun cursorIsAtTheEndOfTheLine() = getCursorPosition().column == terminalSize.columns
 }

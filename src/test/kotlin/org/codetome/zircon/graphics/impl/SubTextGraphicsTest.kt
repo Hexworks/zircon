@@ -1,9 +1,9 @@
 package org.codetome.zircon.graphics.impl
 
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.builder.TextImageBuilder
 import org.codetome.zircon.graphics.SubTextGraphics
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
@@ -18,7 +18,7 @@ class SubTextGraphicsTest {
 
         target = SubTextGraphics(
                 underlyingTextGraphics = TEXT_GRAPHICS,
-                topLeft = TerminalPosition.OFFSET_1x1,
+                topLeft = Position.OFFSET_1x1,
                 size = SUB_SIZE)
     }
 
@@ -28,8 +28,8 @@ class SubTextGraphicsTest {
     }
 
     companion object {
-        val SIZE = TerminalSize(10, 10)
-        val SUB_SIZE = TerminalSize(8, 8)
+        val SIZE = Size(10, 10)
+        val SUB_SIZE = Size(8, 8)
         val TEXT_GRAPHICS = TextImageBuilder.newBuilder()
                 .size(SIZE)
                 .build().newTextGraphics()

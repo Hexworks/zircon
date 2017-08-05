@@ -1,13 +1,13 @@
 package org.codetome.zircon.graphics.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.TerminalPosition
-import org.codetome.zircon.TerminalPosition.Companion.DEFAULT_POSITION
-import org.codetome.zircon.TerminalPosition.Companion.OFFSET_1x1
+import org.codetome.zircon.Position
+import org.codetome.zircon.Position.Companion.DEFAULT_POSITION
+import org.codetome.zircon.Position.Companion.OFFSET_1x1
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.builder.TextCharacterBuilder
 import org.codetome.zircon.graphics.DefaultTextImage
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
@@ -38,7 +38,7 @@ class DefaultTextImageTest {
                 .isEqualTo(FILLER)
         assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)))
                 .isEqualTo(FILLER)
-        assertThat(target.getCharacterAt(TerminalPosition(2, 2)))
+        assertThat(target.getCharacterAt(Position(2, 2)))
                 .isEqualTo(FILLER)
     }
 
@@ -52,7 +52,7 @@ class DefaultTextImageTest {
         target.setAll(SET_ALL_CHAR)
         (0..2).forEach { col ->
             (0..2).forEach { row ->
-                assertThat(target.getCharacterAt(TerminalPosition(col, row)))
+                assertThat(target.getCharacterAt(Position(col, row)))
                         .isEqualTo(SET_ALL_CHAR)
             }
         }
@@ -60,12 +60,12 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldProperlyResizeWhenResizeCalledWithDifferentSize() {
-        val result = target.resize(TerminalSize(4, 4), SET_ALL_CHAR)
+        val result = target.resize(Size(4, 4), SET_ALL_CHAR)
         assertThat(result.getCharacterAt(DEFAULT_POSITION))
                 .isEqualTo(TO_COPY_CHAR)
-        assertThat(result.getCharacterAt(TerminalPosition(1, 1)))
+        assertThat(result.getCharacterAt(Position(1, 1)))
                 .isEqualTo(FILLER)
-        assertThat(result.getCharacterAt(TerminalPosition(3, 3)))
+        assertThat(result.getCharacterAt(Position(3, 3)))
                 .isEqualTo(SET_ALL_CHAR)
     }
 
@@ -173,7 +173,7 @@ class DefaultTextImageTest {
                 .isEqualTo(TO_COPY_CHAR)
         assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)))
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(TerminalPosition(1, 1)))
+        assertThat(target.getCharacterAt(Position(1, 1)))
                 .isEqualTo(SET_ALL_CHAR)
         assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(2)))
                 .isEqualTo(FILLER)
@@ -189,7 +189,7 @@ class DefaultTextImageTest {
                 .isEqualTo(TO_COPY_CHAR)
         assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)))
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(TerminalPosition(1, 1)))
+        assertThat(target.getCharacterAt(Position(1, 1)))
                 .isEqualTo(SET_ALL_CHAR)
         assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(2)))
                 .isEqualTo(FILLER)
@@ -275,20 +275,20 @@ class DefaultTextImageTest {
     private fun fetchTargetChars(): List<TextCharacter> {
         return (0..2).flatMap { col ->
             (0..2).map { row ->
-                target.getCharacterAt(TerminalPosition(col, row))
+                target.getCharacterAt(Position(col, row))
             }
         }
     }
 
-    private fun fetchOutOfBoundsPositions(): List<TerminalPosition> {
-        return listOf(TerminalPosition(Int.MAX_VALUE, Int.MAX_VALUE),
-                TerminalPosition(Int.MIN_VALUE, Int.MAX_VALUE),
-                TerminalPosition(Int.MAX_VALUE, Int.MIN_VALUE),
-                TerminalPosition(Int.MIN_VALUE, Int.MIN_VALUE))
+    private fun fetchOutOfBoundsPositions(): List<Position> {
+        return listOf(Position(Int.MAX_VALUE, Int.MAX_VALUE),
+                Position(Int.MIN_VALUE, Int.MAX_VALUE),
+                Position(Int.MAX_VALUE, Int.MIN_VALUE),
+                Position(Int.MIN_VALUE, Int.MIN_VALUE))
     }
 
     companion object {
-        val SIZE = TerminalSize(3, 3)
+        val SIZE = Size(3, 3)
         val FILLER = TextCharacterBuilder.newBuilder()
                 .character('a')
                 .build()
@@ -299,8 +299,8 @@ class DefaultTextImageTest {
                 .character('c')
                 .build()
         val TO_COPY = arrayOf(arrayOf(TO_COPY_CHAR))
-        val IMAGE_TO_COPY = DefaultTextImage(TerminalSize.ONE, arrayOf(arrayOf()), SET_ALL_CHAR)
-        val IMAGE_TO_COPY_AND_CROP = DefaultTextImage(TerminalSize(2, 2), arrayOf(arrayOf()), SET_ALL_CHAR)
+        val IMAGE_TO_COPY = DefaultTextImage(Size.ONE, arrayOf(arrayOf()), SET_ALL_CHAR)
+        val IMAGE_TO_COPY_AND_CROP = DefaultTextImage(Size(2, 2), arrayOf(arrayOf()), SET_ALL_CHAR)
 
     }
 

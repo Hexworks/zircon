@@ -1,7 +1,7 @@
 package org.codetome.zircon.terminal.swing
 
 import org.codetome.zircon.font.FontRenderer
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.terminal.virtual.DefaultVirtualTerminal
 import java.awt.AWTKeyStroke
@@ -19,13 +19,13 @@ import javax.swing.SwingUtilities
 class SwingTerminalImplementation(
         private val component: JComponent,
         val renderer: FontRenderer<Graphics>,
-        initialTerminalSize: TerminalSize,
+        initialSize: Size,
         deviceConfiguration: DeviceConfiguration)
 
     : GraphicalTerminalImplementation(
         deviceConfiguration = deviceConfiguration,
         fontRenderer = renderer,
-        virtualTerminal = DefaultVirtualTerminal(initialTerminalSize)) {
+        virtualTerminal = DefaultVirtualTerminal(initialSize)) {
 
     init {
         //Prevent us from shrinking beyond one character

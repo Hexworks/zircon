@@ -1,6 +1,6 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.TerminalPosition;
+import org.codetome.zircon.Position;
 import org.codetome.zircon.TextCharacter;
 import org.codetome.zircon.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.builder.FontRendererBuilder;
@@ -11,7 +11,7 @@ import org.codetome.zircon.input.KeyStroke;
 import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.terminal.DefaultTerminalBuilder;
 import org.codetome.zircon.terminal.Terminal;
-import org.codetome.zircon.terminal.TerminalSize;
+import org.codetome.zircon.terminal.Size;
 import org.codetome.zircon.terminal.config.DeviceConfiguration;
 
 import java.awt.*;
@@ -42,7 +42,7 @@ public class TypingExample {
 
     public static void main(String[] args) {
         final DefaultTerminalBuilder factory = new DefaultTerminalBuilder();
-        factory.initialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT));
+        factory.initialTerminalSize(new Size(TERMINAL_WIDTH, TERMINAL_HEIGHT));
         final FontRenderer<Graphics> fontConfig = FontRendererBuilder.newBuilder()
                 .useSwing()
                 .useDFTileset(WANDERLUST_16X16)
@@ -64,7 +64,7 @@ public class TypingExample {
             final Optional<Input> opKey = screen.pollInput();
             if (opKey.isPresent()) {
                 final Input key = opKey.get();
-                final TerminalPosition pos = screen.getCursorPosition();
+                final Position pos = screen.getCursorPosition();
                 if (EXIT_CONDITIONS.contains(key.getInputType())) {
                     System.exit(0);
                 } else if (key.inputTypeIs(Enter)) {
@@ -91,7 +91,7 @@ public class TypingExample {
             final Optional<Input> opKey = terminal.pollInput();
             if (opKey.isPresent()) {
                 final Input key = opKey.get();
-                final TerminalPosition pos = terminal.getCursorPosition();
+                final Position pos = terminal.getCursorPosition();
                 if (EXIT_CONDITIONS.contains(key.getInputType())) {
                     System.exit(0);
                 } else if (key.inputTypeIs(Enter)) {

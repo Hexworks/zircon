@@ -1,6 +1,6 @@
 package org.codetome.zircon.input
 
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.input.InputType.*
 
 
@@ -70,11 +70,11 @@ data class KeyStroke(
 }
 
 /**
- * MouseAction, a Input in disguise, this class contains the information of a single mouse action event.
+ * MouseAction, a Input in disguise, this class containsPosition the information of a single mouse action event.
  */
 data class MouseAction(
         val actionType: MouseActionType,
         val button: Int,
-        val position: TerminalPosition)
+        val position: Position)
     : Input(inputType = InputType.MouseEvent)
 

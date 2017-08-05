@@ -1,8 +1,8 @@
 package org.codetome.zircon.graphics
 
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 import java.util.*
 
 /**
@@ -10,7 +10,7 @@ import java.util.*
  * Copy operations between two [DefaultTextImage] classes are semi-optimized by using [System.arraycopy]
  * instead of iterating over each character and copying them over one by one.
  */
-class DefaultTextImage(private val size: TerminalSize,
+class DefaultTextImage(private val size: Size,
                        toCopy: Array<Array<TextCharacter>>,
                        filler: TextCharacter) : TextImage {
 
@@ -42,14 +42,14 @@ class DefaultTextImage(private val size: TerminalSize,
         buffer.forEach { line -> Arrays.fill(line, character) }
     }
 
-    override fun resize(newSize: TerminalSize, filler: TextCharacter): DefaultTextImage {
+    override fun resize(newSize: Size, filler: TextCharacter): DefaultTextImage {
         if (newSize.rows == buffer.size && (buffer.isEmpty() || newSize.columns == buffer[0].size)) {
             return this
         }
         return DefaultTextImage(newSize, buffer, filler)
     }
 
-    override fun setCharacterAt(position: TerminalPosition, character: TextCharacter) {
+    override fun setCharacterAt(position: Position, character: TextCharacter) {
         val (column, row) = position
         if (column < 0 || row < 0 || row >= buffer.size || column >= buffer[0].size) {
             return
@@ -57,7 +57,7 @@ class DefaultTextImage(private val size: TerminalSize,
         buffer[row][column] = character
     }
 
-    override fun getCharacterAt(position: TerminalPosition): TextCharacter {
+    override fun getCharacterAt(position: Position): TextCharacter {
         val (column, row) = position
         if (column < 0 || row < 0 || row >= buffer.size || column >= buffer[0].size) {
             throw IllegalArgumentException("column or row is out of bounds")
@@ -134,7 +134,7 @@ class DefaultTextImage(private val size: TerminalSize,
             for (y in startRowIdx..startRowIdx + rowsToCopy - 1) {
                 for (x in startColumnIdx..startColumnIdx + columnsToCopy - 1) {
                     destination.setCharacterAt(
-                            TerminalPosition(x - startColumnIdx + destColumnOffset,
+                            Position(x - startColumnIdx + destColumnOffset,
                                     y - startRowIdx + destRowOffset),
                             buffer[y][x])
                 }
@@ -147,11 +147,11 @@ class DefaultTextImage(private val size: TerminalSize,
 
             override fun getSize() = size
 
-            override fun setCharacter(position: TerminalPosition, character: TextCharacter) {
+            override fun setCharacter(position: Position, character: TextCharacter) {
                 this@DefaultTextImage.setCharacterAt(position, character)
             }
 
-            override fun getCharacter(position: TerminalPosition): Optional<TextCharacter> {
+            override fun getCharacter(position: Position): Optional<TextCharacter> {
                 return Optional.of(this@DefaultTextImage.getCharacterAt(position))
             }
         }

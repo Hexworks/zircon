@@ -1,6 +1,6 @@
 package org.codetome.zircon.screen
 
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 import org.codetome.zircon.terminal.virtual.DefaultVirtualTerminal
 import org.junit.Before
 import org.junit.Test
@@ -24,7 +24,7 @@ class TerminalScreenTest {
 
 
     companion object {
-        val SIZE = TerminalSize(10, 10)
+        val SIZE = Size(10, 10)
         val TERMINAL = DefaultVirtualTerminal(SIZE)
     }
 }

@@ -22,7 +22,7 @@ class DefaultTerminalBuilderTest {
     @Test
     fun shouldSetFieldsProperly() {
         val autoOpen = true
-        val size = TerminalSize(5, 4)
+        val size = Size(5, 4)
         val title = "Title"
         val deviceConfiguration = DeviceConfigurationBuilder.newBuilder()
                 .blinkLengthInMilliSeconds(5)

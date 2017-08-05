@@ -1,6 +1,6 @@
 package org.codetome.zircon.terminal.virtual
 
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.terminal.Cell
@@ -23,7 +23,7 @@ interface VirtualTerminal : Terminal {
     /**
      * Returns a character from the viewport at the specified coordinates.
      */
-    fun getCharacter(position: TerminalPosition): TextCharacter
+    fun getCharacter(position: Position): TextCharacter
 
     /**
      * Adds a listener to receive notifications when certain events happens on the virtual terminal.

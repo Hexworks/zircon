@@ -3,11 +3,11 @@ package org.codetome.zircon
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
-class TerminalPositionTest {
+class PositionTest {
 
     @Test
     fun shouldProperlyCreateNewPositionWithRowWhenWithRowIsCalled() {
-        assertThat(TerminalPosition(
+        assertThat(Position(
                 column = EXPECTED_COL,
                 row = Int.MAX_VALUE)
                 .withRow(EXPECTED_ROW))
@@ -16,7 +16,7 @@ class TerminalPositionTest {
 
     @Test
     fun shouldProperlyCreateNewPositionWithRelativeRowWhenWithRelativeRowIsCalled() {
-        assertThat(TerminalPosition(
+        assertThat(Position(
                 column = EXPECTED_COL,
                 row = EXPECTED_ROW - 1)
                 .withRelativeRow(1))
@@ -25,7 +25,7 @@ class TerminalPositionTest {
 
     @Test
     fun shouldProperlyCreateNewPositionWithColWhenWithColumnIsCalled() {
-        assertThat(TerminalPosition(
+        assertThat(Position(
                 column = Int.MAX_VALUE,
                 row = EXPECTED_ROW)
                 .withColumn(EXPECTED_COL))
@@ -34,7 +34,7 @@ class TerminalPositionTest {
 
     @Test
     fun shouldProperlyCreateNewPositionWithRelativeColWhenWithRelativeColumnIsCalled() {
-        assertThat(TerminalPosition(
+        assertThat(Position(
                 column = EXPECTED_COL - 1,
                 row = EXPECTED_ROW)
                 .withRelativeColumn(1))
@@ -43,10 +43,10 @@ class TerminalPositionTest {
 
     @Test
     fun shouldProperlyCreateNewPositionWithRelativeValuesWhenWithRelativeIsCalled() {
-        assertThat(TerminalPosition(
+        assertThat(Position(
                 column = EXPECTED_COL - 1,
                 row = EXPECTED_ROW - 1)
-                .withRelative(TerminalPosition(1, 1)))
+                .withRelative(Position(1, 1)))
                 .isEqualTo(EXPECTED_TERMINAL_POSITION)
     }
 
@@ -71,7 +71,7 @@ class TerminalPositionTest {
     companion object {
         val EXPECTED_ROW = 2
         val EXPECTED_COL = 3
-        val EXPECTED_TERMINAL_POSITION = TerminalPosition(
+        val EXPECTED_TERMINAL_POSITION = Position(
                 column = EXPECTED_COL,
                 row = EXPECTED_ROW)
     }

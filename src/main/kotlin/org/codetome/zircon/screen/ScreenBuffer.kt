@@ -4,7 +4,7 @@ import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.builder.TextImageBuilder
 import org.codetome.zircon.graphics.TextImage
 import org.codetome.zircon.graphics.DefaultTextImage
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 
 /**
  * Defines a buffer used by [TerminalScreen] to keep its state of what's currently displayed and what
@@ -14,12 +14,12 @@ import org.codetome.zircon.terminal.TerminalSize
  */
 class ScreenBuffer private constructor(private val backend: DefaultTextImage) : TextImage by backend {
 
-    constructor(size: TerminalSize, filler: TextCharacter) : this(TextImageBuilder.newBuilder()
+    constructor(size: Size, filler: TextCharacter) : this(TextImageBuilder.newBuilder()
             .size(size)
             .filler(filler)
             .build())
 
-    override fun resize(newSize: TerminalSize, filler: TextCharacter): ScreenBuffer {
+    override fun resize(newSize: Size, filler: TextCharacter): ScreenBuffer {
         val resizedBackend = backend.resize(newSize, filler)
         return ScreenBuffer(resizedBackend)
     }

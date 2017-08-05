@@ -1,17 +1,17 @@
 package org.codetome.zircon.graphics.box
 
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.graphics.box.BoxConnectingMode.CONNECT
 import org.codetome.zircon.graphics.box.BoxType.BASIC
 import org.codetome.zircon.graphics.style.StyleSet
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 
 interface BoxRenderer {
 
     fun drawBox(target: TextGraphics,
-                topLeft: TerminalPosition,
-                size: TerminalSize,
+                topLeft: Position,
+                size: Size,
                 styleToUse: StyleSet,
                 boxType: BoxType = BASIC,
                 boxConnectingMode: BoxConnectingMode = CONNECT)

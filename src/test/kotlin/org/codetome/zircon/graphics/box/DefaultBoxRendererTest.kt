@@ -1,10 +1,10 @@
 package org.codetome.zircon.graphics.box
 
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.builder.TextImageBuilder
 import org.codetome.zircon.graphics.box.BoxType.*
 import org.codetome.zircon.graphics.style.DefaultStyleSet
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 import org.junit.Before
 import org.junit.Test
 
@@ -13,7 +13,7 @@ class DefaultBoxRendererTest {
     lateinit var target: DefaultBoxRenderer
 
     val textImage = TextImageBuilder.newBuilder()
-            .size(TerminalSize(20, 20))
+            .size(Size(20, 20))
             .build()
 
     @Before
@@ -25,34 +25,34 @@ class DefaultBoxRendererTest {
     fun test() {
         target.drawBox(
                 textGraphics = textImage.newTextGraphics(),
-                topLeft = TerminalPosition(1, 2),
-                size = TerminalSize(3, 3),
+                topLeft = Position(1, 2),
+                size = Size(3, 3),
                 boxType = DOUBLE,
                 styleSet = DefaultStyleSet())
 
         target.drawBox(
                 textGraphics = textImage.newTextGraphics(),
-                topLeft = TerminalPosition(2, 3),
-                size = TerminalSize(3, 3),
+                topLeft = Position(2, 3),
+                size = Size(3, 3),
                 boxType = DOUBLE,
                 styleSet = DefaultStyleSet())
         target.drawBox(
                 textGraphics = textImage.newTextGraphics(),
-                topLeft = TerminalPosition(3, 1),
-                size = TerminalSize(3, 3),
+                topLeft = Position(3, 1),
+                size = Size(3, 3),
                 boxType = DOUBLE,
                 styleSet = DefaultStyleSet())
         target.drawBox(
                 textGraphics = textImage.newTextGraphics(),
-                topLeft = TerminalPosition(5, 2),
-                size = TerminalSize(3, 3),
+                topLeft = Position(5, 2),
+                size = Size(3, 3),
                 boxType = DOUBLE,
                 styleSet = DefaultStyleSet())
 
         target.drawBox(
                 textGraphics = textImage.newTextGraphics(),
-                topLeft = TerminalPosition(6, 1),
-                size = TerminalSize(2, 2),
+                topLeft = Position(6, 1),
+                size = Size(2, 2),
                 boxType = DOUBLE,
                 styleSet = DefaultStyleSet())
         println(textImage.toString())

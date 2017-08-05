@@ -1,7 +1,7 @@
 package org.codetome.zircon.terminal.swing
 
 import org.codetome.zircon.Modifier
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.TextColor
 import org.codetome.zircon.font.FontRenderer
 import org.codetome.zircon.graphics.style.StyleSet
@@ -9,7 +9,7 @@ import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 import org.codetome.zircon.terminal.config.DeviceConfiguration
 import java.awt.Dimension
 import java.awt.Graphics
@@ -21,7 +21,7 @@ import javax.swing.JComponent
  * is an embeddable component you can put into a Swing container.
  */
 class SwingTerminalComponent(
-        initialTerminalSize: TerminalSize,
+        initialSize: Size,
         deviceConfiguration: DeviceConfiguration,
         fontConfiguration: FontRenderer<Graphics>)
     : JComponent(), Terminal {
@@ -31,7 +31,7 @@ class SwingTerminalComponent(
     private val terminalImplementation: SwingTerminalImplementation = SwingTerminalImplementation(
             this,
             fontConfiguration,
-            initialTerminalSize,
+            initialSize,
             deviceConfiguration)
 
     override fun getBackgroundColor(): TextColor {
@@ -84,13 +84,13 @@ class SwingTerminalComponent(
         terminalImplementation.paintComponent(componentGraphics)
     }
 
-    override fun clearScreen() {
-        terminalImplementation.clearScreen()
+    override fun clear() {
+        terminalImplementation.clear()
     }
 
     override fun getCursorPosition() = terminalImplementation.getCursorPosition()
 
-    override fun setCursorPosition(cursorPosition: TerminalPosition) {
+    override fun setCursorPosition(cursorPosition: Position) {
         terminalImplementation.setCursorPosition(cursorPosition)
     }
 
@@ -118,7 +118,7 @@ class SwingTerminalComponent(
 
     override fun getTerminalSize() = terminalImplementation.getTerminalSize()
 
-    override fun setTerminalSize(newSize: TerminalSize) {
+    override fun setTerminalSize(newSize: Size) {
         terminalImplementation.setTerminalSize(newSize)
     }
 

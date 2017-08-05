@@ -8,7 +8,7 @@ import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.input.MouseAction
 import org.codetome.zircon.input.MouseActionType
 import org.codetome.zircon.input.MouseActionType.*
-import org.codetome.zircon.terminal.TerminalSize
+import org.codetome.zircon.terminal.Size
 import org.codetome.zircon.terminal.config.*
 import org.codetome.zircon.terminal.config.CursorStyle.*
 import org.codetome.zircon.terminal.virtual.VirtualTerminal
@@ -108,7 +108,7 @@ abstract class GraphicalTerminalImplementation(
 
         // Detect resize
         if (resizeHappened()) {
-            val terminalSize = TerminalSize(
+            val terminalSize = Size(
                     columns = getWidth() / getFontWidth(),
                     rows = getHeight() / getFontHeight())
             virtualTerminal.setTerminalSize(terminalSize)
@@ -283,8 +283,8 @@ abstract class GraphicalTerminalImplementation(
     }
 
     @Synchronized
-    override fun clearScreen() {
-        virtualTerminal.clearScreen()
+    override fun clear() {
+        virtualTerminal.clear()
         clearBuffer()
     }
 
@@ -298,7 +298,7 @@ abstract class GraphicalTerminalImplementation(
     }
 
     @Synchronized
-    override fun setCursorPosition(cursorPosition: TerminalPosition) {
+    override fun setCursorPosition(cursorPosition: Position) {
         var fixedPos = cursorPosition
         if (fixedPos.column < 0) {
             fixedPos = fixedPos.withColumn(0)
@@ -448,7 +448,7 @@ abstract class GraphicalTerminalImplementation(
             virtualTerminal.addInput(MouseAction(
                     actionType = actionType,
                     button = e.button,
-                    position = TerminalPosition(
+                    position = Position(
                             column = e.x.div(getFontWidth()),
                             row = e.y.div(getFontHeight()))
             ))

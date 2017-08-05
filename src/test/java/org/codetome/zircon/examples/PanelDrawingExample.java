@@ -1,7 +1,7 @@
 package org.codetome.zircon.examples;
 
 import org.codetome.zircon.Symbols;
-import org.codetome.zircon.TerminalPosition;
+import org.codetome.zircon.Position;
 import org.codetome.zircon.TextColor;
 import org.codetome.zircon.builder.TextColorFactory;
 import org.codetome.zircon.builder.FontRendererBuilder;
@@ -11,7 +11,7 @@ import org.codetome.zircon.graphics.TextImage;
 import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.screen.TerminalScreen;
 import org.codetome.zircon.terminal.DefaultTerminalBuilder;
-import org.codetome.zircon.terminal.TerminalSize;
+import org.codetome.zircon.terminal.Size;
 import org.codetome.zircon.tileset.DFTilesetResource;
 
 import java.util.Collections;
@@ -30,17 +30,17 @@ public class PanelDrawingExample {
                         .useSwing()
                         .useDFTileset(DFTilesetResource.WANDERLUST_16X16)
                         .build())
-                .initialTerminalSize(new TerminalSize(TERMINAL_WIDTH, TERMINAL_HEIGHT))
+                .initialTerminalSize(new Size(TERMINAL_WIDTH, TERMINAL_HEIGHT))
                 .buildScreen();
 
         drawBackground(screen);
 
         screen.newTextGraphics().drawImage(
-                new TerminalPosition(2, 2),
+                new Position(2, 2),
                 createPanel(20, 10, "Foo and Bar"));
 
         screen.newTextGraphics().drawImage(
-                new TerminalPosition(24, 2),
+                new Position(24, 2),
                 createBackgroundForPanel(createPanel(20, 5, "Wom and Bat")));
 
         screen.display();
@@ -48,16 +48,16 @@ public class PanelDrawingExample {
 
     private static TextImage createBackgroundForPanel(TextImage panel) {
         final TextImage bg = TextImageBuilder.newBuilder()
-                .size(new TerminalSize(panel.getSize().getColumns() + 1, panel.getSize().getRows() + 1))
+                .size(new Size(panel.getSize().getColumns() + 1, panel.getSize().getRows() + 1))
                 .build();
-        final TerminalSize bgSize = bg.getSize();
+        final Size bgSize = bg.getSize();
         final TextGraphics panelWithBg = bg.newTextGraphics();
         panelWithBg.setBackgroundColor(TextColorFactory.fromString("#112233"));
         panelWithBg.setForegroundColor(TextColorFactory.fromString("#223344"));
         panelWithBg.fill(Symbols.BLOCK_MIDDLE);
         panelWithBg.setBackgroundColor(BACKGROUND_COLOR);
-        panelWithBg.setCharacter(new TerminalPosition(bgSize.getColumns() - 1, 0), ' ');
-        panelWithBg.setCharacter(new TerminalPosition(0, bgSize.getRows() - 1), ' ');
+        panelWithBg.setCharacter(new Position(bgSize.getColumns() - 1, 0), ' ');
+        panelWithBg.setCharacter(new Position(0, bgSize.getRows() - 1), ' ');
         panel.copyTo(bg);
         return bg;
     }
@@ -69,13 +69,13 @@ public class PanelDrawingExample {
     }
 
     private static TextImage createPanel(int width, int height, String title) {
-        final TerminalPosition topLeft = TerminalPosition.getTOP_LEFT_CORNER();
-        final TerminalPosition topRight = topLeft.withRelativeColumn(width - 1);
-        final TerminalPosition bottomLeft = topLeft.withRelativeRow(height - 1);
-        final TerminalPosition bottomRight = topRight.withRelativeRow(height - 1);
+        final Position topLeft = Position.getTOP_LEFT_CORNER();
+        final Position topRight = topLeft.withRelativeColumn(width - 1);
+        final Position bottomLeft = topLeft.withRelativeRow(height - 1);
+        final Position bottomRight = topRight.withRelativeRow(height - 1);
 
         final TextImage image = TextImageBuilder.newBuilder()
-                .size(new TerminalSize(width, height))
+                .size(new Size(width, height))
                 .build();
         final TextGraphics graphics = image.newTextGraphics();
         graphics.setBackgroundColor(TextColorFactory.fromString("#666666"));
@@ -88,8 +88,8 @@ public class PanelDrawingExample {
         graphics.drawLine(topLeft.withRelativeRow(1), bottomLeft.withRelativeRow(-1), DOUBLE_LINE_VERTICAL);
         graphics.drawLine(topRight.withRelativeRow(1), bottomRight.withRelativeRow(-1), DOUBLE_LINE_VERTICAL);
         graphics.fillRectangle(
-                topLeft.withRelative(new TerminalPosition(1, 1)),
-                new TerminalSize(width - 2, height - 2),
+                topLeft.withRelative(new Position(1, 1)),
+                new Size(width - 2, height - 2),
                 ' ');
         graphics.setForegroundColor(TextColorFactory.fromString("#cccc22"));
         graphics.putString(

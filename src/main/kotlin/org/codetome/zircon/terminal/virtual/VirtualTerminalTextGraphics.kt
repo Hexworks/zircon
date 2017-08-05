@@ -1,6 +1,6 @@
 package org.codetome.zircon.terminal.virtual
 
-import org.codetome.zircon.TerminalPosition
+import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.graphics.AbstractTextGraphics
 import java.util.*
@@ -13,11 +13,11 @@ class VirtualTerminalTextGraphics(private val virtualTerminal: DefaultVirtualTer
 
     override fun getSize() = virtualTerminal.getTerminalSize()
 
-    override fun getCharacter(position: TerminalPosition): Optional<TextCharacter> {
+    override fun getCharacter(position: Position): Optional<TextCharacter> {
         return Optional.of(virtualTerminal.getCharacter(position))
     }
 
-    override fun setCharacter(position: TerminalPosition, character: TextCharacter) {
+    override fun setCharacter(position: Position, character: TextCharacter) {
         val size = getSize()
         val (column, row) = position
         if (column < 0 || column >= size.columns ||
@@ -25,7 +25,7 @@ class VirtualTerminalTextGraphics(private val virtualTerminal: DefaultVirtualTer
             return
         }
         synchronized(virtualTerminal) {
-            virtualTerminal.setCursorPosition(TerminalPosition(column, row))
+            virtualTerminal.setCursorPosition(Position(column, row))
             virtualTerminal.putCharacter(character)
         }
     }
