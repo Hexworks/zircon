@@ -74,6 +74,7 @@ class SwingCharacterImageRenderer(
     }
 
     private fun renderBackground(surface: Graphics, backgroundColor: Color, x: Int, y: Int) {
+        println("Filling with bg alpha: ${backgroundColor.alpha} at x, y: $x, $y")
         surface.color = backgroundColor
         surface.setClip(x, y, fontWidth, fontHeight)
         surface.fillRect(x, y, fontWidth, fontHeight)

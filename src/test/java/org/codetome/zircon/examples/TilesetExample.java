@@ -3,8 +3,9 @@ package org.codetome.zircon.examples;
 import org.codetome.zircon.*;
 import org.codetome.zircon.builder.FontRendererBuilder;
 import org.codetome.zircon.builder.TextColorFactory;
+import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.screen.TerminalScreen;
-import org.codetome.zircon.terminal.DefaultTerminalBuilder;
+import org.codetome.zircon.builder.TerminalBuilder;
 import org.codetome.zircon.terminal.Size;
 
 import java.util.HashSet;
@@ -49,7 +50,7 @@ public class TilesetExample {
     private static final TextColor TEXT_BG_COLOR = TextColorFactory.fromString("#114011");
 
     public static void main(String[] args) {
-        final TerminalScreen screen = DefaultTerminalBuilder.newBuilder()
+        final Screen screen = TerminalBuilder.newBuilder()
                 .fontRenderer(FontRendererBuilder.newBuilder()
                         .useSwing()
                         .useDFTileset(WANDERLUST_16X16)

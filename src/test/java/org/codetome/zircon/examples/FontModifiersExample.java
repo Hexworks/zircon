@@ -1,8 +1,7 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.terminal.DefaultTerminalBuilder;
+import org.codetome.zircon.builder.TerminalBuilder;
 import org.codetome.zircon.terminal.Terminal;
-import org.junit.Test;
 
 import static org.codetome.zircon.ANSITextColor.*;
 import static org.codetome.zircon.Modifier.*;
@@ -11,7 +10,7 @@ public class FontModifiersExample {
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
-        final Terminal terminal = DefaultTerminalBuilder.buildDefault();
+        final Terminal terminal = TerminalBuilder.buildDefault();
         terminal.setCursorVisible(false); // we don't want the cursor right now
 
         terminal.enableModifier(CROSSED_OUT);

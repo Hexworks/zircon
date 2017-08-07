@@ -10,7 +10,7 @@ import org.codetome.zircon.graphics.TextGraphics;
 import org.codetome.zircon.graphics.TextImage;
 import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.screen.TerminalScreen;
-import org.codetome.zircon.terminal.DefaultTerminalBuilder;
+import org.codetome.zircon.builder.TerminalBuilder;
 import org.codetome.zircon.terminal.Size;
 import org.codetome.zircon.tileset.DFTilesetResource;
 
@@ -25,7 +25,7 @@ public class PanelDrawingExample {
     private static final TextColor BACKGROUND_COLOR = TextColorFactory.fromString("#223344");
 
     public static void main(String[] args) {
-        final TerminalScreen screen = DefaultTerminalBuilder.newBuilder()
+        final Screen screen = TerminalBuilder.newBuilder()
                 .fontRenderer(FontRendererBuilder.newBuilder()
                         .useSwing()
                         .useDFTileset(DFTilesetResource.WANDERLUST_16X16)

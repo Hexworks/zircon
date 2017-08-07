@@ -9,6 +9,28 @@ data class Position(val column: Int,
                     val row: Int) : Comparable<Position> {
 
     /**
+     * Returns a new [Position] which is the sum of `column` and `row` in both [Position]s.
+     * so `Position(column = 1, row = 1).plus(Position(column = 2, row = 2))` will be
+     * `Position(column = 3, row = 3)`.
+     */
+    operator fun plus(position: Position): Position {
+        return Position(
+                column = column + position.column,
+                row = row + position.row)
+    }
+
+    /**
+     * Returns a new [Position] which is the difference between `column` and `row` in both [Position]s.
+     * so `Position(column = 3, row = 3).minus(Position(column = 2, row = 2))` will be
+     * `Position(column = 1, row = 1)`.
+     */
+    operator fun minus(position: Position): Position {
+        return Position(
+                column = column - position.column,
+                row = row - position.row)
+    }
+
+    /**
      * Creates a new [Position] object representing a position with the same column index as this but with a
      * supplied row index.
      */

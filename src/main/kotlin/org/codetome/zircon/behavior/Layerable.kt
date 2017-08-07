@@ -17,12 +17,12 @@ interface Layerable : Boundable {
     fun addOverlay(layer: Layer)
 
     /**
-     * Adds a background layer below (under) the currenly present background layers.
+     * Adds a background layer below (under) the currently present background layers.
      */
     fun addBackgroundLayer(layer: Layer)
 
     /**
-     * Reoves and returns the overlay which is at the top of the currently present overlays.
+     * Removes and returns the overlay which is at the top of the currently present overlays.
      */
     fun popOverlay(): Optional<Layer>
 

@@ -1,6 +1,7 @@
 package org.codetome.zircon.terminal
 
 import org.assertj.core.api.Assertions.*
+import org.codetome.zircon.builder.TerminalBuilder
 import org.codetome.zircon.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.builder.FontRendererBuilder
 import org.junit.Before
@@ -10,11 +11,11 @@ import org.mockito.internal.util.reflection.Whitebox
 
 class DefaultTerminalBuilderTest {
 
-    lateinit var target: DefaultTerminalBuilder
+    lateinit var target: TerminalBuilder
 
     @Before
     fun setUp() {
-        target = DefaultTerminalBuilder()
+        target = TerminalBuilder()
     }
 
     // headless exception needs to be fixed

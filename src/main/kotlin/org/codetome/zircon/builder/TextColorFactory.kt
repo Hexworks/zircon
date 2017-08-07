@@ -52,7 +52,7 @@ object TextColorFactory {
                              private val blue: Int,
                              private val alpha: Int = DEFAULT_ALPHA) : TextColor {
 
-        private val color: Color = Color(red, green, blue)
+        private val color: Color = Color(red, green, blue, alpha)
 
         override fun toAWTColor() = color
 
