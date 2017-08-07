@@ -2,15 +2,15 @@ package org.codetome.zircon.examples;
 
 import org.codetome.zircon.builder.TextColorFactory;
 import org.codetome.zircon.builder.DeviceConfigurationBuilder;
-import org.codetome.zircon.terminal.DefaultTerminalBuilder;
+import org.codetome.zircon.builder.TerminalBuilder;
 import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.config.CursorStyle;
 
 public class CursorExample {
 
     public static void main(String[] args) {
-        // we create a new terminal using DefaultTerminalBuilder
-        final Terminal terminal = DefaultTerminalBuilder.newBuilder()
+        // we create a new terminal using TerminalBuilder
+        final Terminal terminal = TerminalBuilder.newBuilder()
                 // we only override the parts which we need, in this case the device config
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorColor(TextColorFactory.fromString("#ff8844"))

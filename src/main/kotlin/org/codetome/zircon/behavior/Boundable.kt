@@ -10,10 +10,19 @@ import java.util.*
  */
 interface Boundable {
 
-    fun getPosition(): Position
+    /**
+     * Returns the [Position] of this [Boundable] relative to its parent.
+     */
+    fun getOffset(): Position
 
+    /**
+     * Returns the [Size] of this [Boundable].
+     */
     fun getSize(): Size
 
+    /**
+     * Tells whether this [Boundable] intersects the other <code>boundable</code> or not.
+     */
     fun intersects(boundable: Boundable): Boolean
 
     fun calculateIntersectionForBoundable(boundable: Boundable): Optional<Boundable>

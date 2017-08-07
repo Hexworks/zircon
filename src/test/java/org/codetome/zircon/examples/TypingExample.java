@@ -9,7 +9,7 @@ import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.input.KeyStroke;
 import org.codetome.zircon.screen.Screen;
-import org.codetome.zircon.terminal.DefaultTerminalBuilder;
+import org.codetome.zircon.builder.TerminalBuilder;
 import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.Size;
 import org.codetome.zircon.terminal.config.DeviceConfiguration;
@@ -41,7 +41,7 @@ public class TypingExample {
     }
 
     public static void main(String[] args) {
-        final DefaultTerminalBuilder factory = new DefaultTerminalBuilder();
+        final TerminalBuilder factory = new TerminalBuilder();
         factory.initialTerminalSize(new Size(TERMINAL_WIDTH, TERMINAL_HEIGHT));
         final FontRenderer<Graphics> fontConfig = FontRendererBuilder.newBuilder()
                 .useSwing()

@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue
 
 class DefaultLayerable private constructor(boundable: Boundable) : Layerable, Boundable by boundable {
 
-    constructor(size: Size, position: Position) : this(DefaultBoundable(position, size))
+    constructor(offset: Position, size: Size) : this(DefaultBoundable(offset, size))
 
     private val overlays: Queue<Layer> = LinkedBlockingQueue()
     private val underlays: Queue<Layer> = LinkedBlockingQueue()
@@ -33,11 +33,19 @@ class DefaultLayerable private constructor(boundable: Boundable) : Layerable, Bo
         underlays.remove(layer)
     }
 
-    override fun fetchBackgroundZIntersectionForPosition(absolutePosition: Position): List<TextCharacter> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun fetchOverlayZIntersectionForPosition(absolutePosition: Position): List<TextCharacter> {
+        return fetchZIntersectionFor(overlays, absolutePosition)
     }
 
-    override fun fetchOverlayZIntersectionForPosition(absolutePosition: Position): List<TextCharacter> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun fetchBackgroundZIntersectionForPosition(absolutePosition: Position): List<TextCharacter> {
+        return fetchZIntersectionFor(underlays, absolutePosition)
+    }
+
+    private fun fetchZIntersectionFor(queue: Queue<Layer>, position: Position): List<TextCharacter> {
+        return queue.filter { layer ->
+            layer.containsPosition(position)
+        }.map { layer ->
+            layer.getCharacterAt(position)
+        }
     }
 }

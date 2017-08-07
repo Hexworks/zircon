@@ -2,6 +2,8 @@ package org.codetome.zircon.graphics
 
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.behavior.Boundable
+import org.codetome.zircon.behavior.impl.DefaultBoundable
 import org.codetome.zircon.terminal.Size
 import java.util.*
 
@@ -10,16 +12,26 @@ import java.util.*
  * Copy operations between two [DefaultTextImage] classes are semi-optimized by using [System.arraycopy]
  * instead of iterating over each character and copying them over one by one.
  */
-class DefaultTextImage(private val size: Size,
-                       toCopy: Array<Array<TextCharacter>>,
-                       filler: TextCharacter) : TextImage {
+class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
+                                           filler: TextCharacter,
+                                           boundable: Boundable) : TextImage, Boundable by boundable {
 
-    private val buffer = (0..size.rows - 1).map {
-        (0..size.columns - 1).map { filler }.toTypedArray()
+    constructor(size: Size,
+                toCopy: Array<Array<TextCharacter>>,
+                filler: TextCharacter) : this(
+            toCopy = toCopy,
+            filler = filler,
+            boundable = DefaultBoundable(
+                    offset = Position.DEFAULT_POSITION,
+                    size = size))
+
+
+    private val buffer = (0..getSize().rows - 1).map {
+        (0..getSize().columns - 1).map { filler }.toTypedArray()
     }.toTypedArray()
 
     init {
-        size.fetchPositions().forEach { (col, row) ->
+        getSize().fetchPositions().forEach { (col, row) ->
             if (row < toCopy.size && col < toCopy[row].size) {
                 buffer[row][col] = toCopy[row][col]
             } else {
@@ -29,14 +41,12 @@ class DefaultTextImage(private val size: Size,
     }
 
     override fun toString(): String {
-        return (0..size.rows - 1).map { row ->
-            (0..size.columns - 1).map { col ->
+        return (0..getSize().rows - 1).map { row ->
+            (0..getSize().columns - 1).map { col ->
                 buffer[row][col].getCharacter()
             }.joinToString("").plus("\n")
         }.joinToString("")
     }
-
-    override fun getSize() = size
 
     override fun setAll(character: TextCharacter) {
         buffer.forEach { line -> Arrays.fill(line, character) }
@@ -60,7 +70,7 @@ class DefaultTextImage(private val size: Size,
     override fun getCharacterAt(position: Position): TextCharacter {
         val (column, row) = position
         if (column < 0 || row < 0 || row >= buffer.size || column >= buffer[0].size) {
-            throw IllegalArgumentException("column or row is out of bounds")
+            throw IllegalArgumentException("column or row is out of bounds for position: $position! Size is: ${getSize()}")
         }
 
         return buffer[row][column]
@@ -145,7 +155,7 @@ class DefaultTextImage(private val size: Size,
     override fun newTextGraphics(): TextGraphics {
         return object : AbstractTextGraphics() {
 
-            override fun getSize() = size
+            override fun getSize(): Size = this@DefaultTextImage.getSize()
 
             override fun setCharacter(position: Position, character: TextCharacter) {
                 this@DefaultTextImage.setCharacterAt(position, character)
