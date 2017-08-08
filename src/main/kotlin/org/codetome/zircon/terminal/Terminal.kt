@@ -4,8 +4,9 @@ package org.codetome.zircon.terminal
 
 import org.codetome.zircon.behavior.Clearable
 import org.codetome.zircon.behavior.CursorHolder
-import org.codetome.zircon.graphics.style.StyleSet
+import org.codetome.zircon.behavior.Layerable
 import org.codetome.zircon.graphics.TextGraphics
+import org.codetome.zircon.graphics.style.StyleSet
 import org.codetome.zircon.input.InputProvider
 import java.io.Closeable
 
@@ -23,7 +24,7 @@ import java.io.Closeable
  * If you want to write an application that has a very precise control of the terminal, this is the
  * interface you should be programming against.
  */
-interface Terminal : InputProvider, Closeable, Clearable, StyleSet, CursorHolder {
+interface Terminal : InputProvider, Closeable, Clearable, StyleSet, CursorHolder, Layerable {
 
     /**
      * Prints one character to the terminal at the current cursor location.
@@ -57,16 +58,11 @@ interface Terminal : InputProvider, Closeable, Clearable, StyleSet, CursorHolder
     fun removeResizeListener(listener: TerminalResizeListener)
 
     /**
-     * Returns the size of the terminal, expressed as a [Size] object.
-     */
-    fun getTerminalSize(): Size
-
-    /**
      * Changes the visible size of the virtual terminal. If you call this method with a size
      * that is different from the current size of the virtual terminal, the resize event
      * will be fired on all listeners.
      */
-    fun setTerminalSize(newSize: Size)
+    fun setSize(newSize: Size)
 
 //    /**
 //     * Makes the terminal (emulator) ring a bell (or more likely beep).

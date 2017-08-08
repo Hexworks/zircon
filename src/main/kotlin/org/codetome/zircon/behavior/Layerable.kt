@@ -17,33 +17,14 @@ interface Layerable : Boundable {
     fun addOverlay(layer: Layer)
 
     /**
-     * Adds a background layer below (under) the currently present background layers.
-     */
-    fun addBackgroundLayer(layer: Layer)
-
-    /**
      * Removes and returns the overlay which is at the top of the currently present overlays.
      */
     fun popOverlay(): Optional<Layer>
 
     /**
-     * Removes and returns the overlay which is at the bottom of the currently
-     * present background layers.
-     */
-    fun popBackgroundLayer(): Optional<Layer>
-
-    /**
-     * Removes a [Layer] from both the current overlays and background layers.
+     * Removes a [Layer] from the current overlays.
      */
     fun removeLayer(layer: Layer)
-
-    /**
-     * Fetches the Z Intersection of the currently present background layers
-     * relative to its parent [Layerable].
-     * A Z intersection is a list of characters present at the same absolute
-     * position in a 3d space of [Layer]s ordered from bottom to top.
-     */
-    fun fetchBackgroundZIntersectionForPosition(absolutePosition: Position) : List<TextCharacter>
 
     /**
      * Fetches the Z Intersection of the currently present overlays
@@ -51,7 +32,7 @@ interface Layerable : Boundable {
      * A Z intersection is a list of characters present at the same absolute
      * position in a 3d space of [Layer]s ordered from bottom to top.
      */
-    fun fetchOverlayZIntersectionForPosition(absolutePosition: Position) : List<TextCharacter>
+    fun fetchOverlayZIntersection(absolutePosition: Position) : List<TextCharacter>
 
     // TODO: add dirty checking when adding / removing / popping layers
 }

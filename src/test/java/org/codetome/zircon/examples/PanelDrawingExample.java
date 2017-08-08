@@ -48,9 +48,9 @@ public class PanelDrawingExample {
 
     private static TextImage createBackgroundForPanel(TextImage panel) {
         final TextImage bg = TextImageBuilder.newBuilder()
-                .size(new Size(panel.getSize().getColumns() + 1, panel.getSize().getRows() + 1))
+                .size(new Size(panel.getBoundableSize().getColumns() + 1, panel.getBoundableSize().getRows() + 1))
                 .build();
-        final Size bgSize = bg.getSize();
+        final Size bgSize = bg.getBoundableSize();
         final TextGraphics panelWithBg = bg.newTextGraphics();
         panelWithBg.setBackgroundColor(TextColorFactory.fromString("#112233"));
         panelWithBg.setForegroundColor(TextColorFactory.fromString("#223344"));

@@ -14,7 +14,7 @@ import javax.swing.JComponent
 import javax.swing.SwingUtilities
 
 /**
- * Concrete implementation of [GraphicalTerminalImplementation] that adapts it to Swing.
+ * Concrete implementation of [Java2DTerminalImplementation] that adapts it to Swing.
  */
 class SwingTerminalImplementation(
         private val component: JComponent,
@@ -22,7 +22,7 @@ class SwingTerminalImplementation(
         initialSize: Size,
         deviceConfiguration: DeviceConfiguration)
 
-    : GraphicalTerminalImplementation(
+    : Java2DTerminalImplementation(
         deviceConfiguration = deviceConfiguration,
         fontRenderer = renderer,
         virtualTerminal = DefaultVirtualTerminal(initialSize)) {

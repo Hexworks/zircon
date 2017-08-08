@@ -29,25 +29,25 @@ class DefaultVirtualTerminalTest {
     fun shouldCapCursorColumnsWhenSetToBiggerThanTerminalSize() {
         target.setCursorPosition(DEFAULT_POSITION.withRelativeColumn(Int.MAX_VALUE))
         assertThat(target.getCursorPosition())
-                .isEqualTo(DEFAULT_POSITION.withColumn(target.getTerminalSize().columns))
+                .isEqualTo(DEFAULT_POSITION.withColumn(target.getBoundableSize().columns))
     }
 
     @Test
     fun shouldCapCursorRowsWhenSetToBiggerThanTerminalSize() {
         target.setCursorPosition(DEFAULT_POSITION.withRelativeRow(Int.MAX_VALUE))
         assertThat(target.getCursorPosition())
-                .isEqualTo(DEFAULT_POSITION.withRow(target.getTerminalSize().rows - 1))
+                .isEqualTo(DEFAULT_POSITION.withRow(target.getBoundableSize().rows - 1))
     }
 
     @Test
     fun shouldHaveProperSizeWhenGetSizeIsCalled() {
-        assertThat(target.getTerminalSize()).isEqualTo(SIZE)
+        assertThat(target.getBoundableSize()).isEqualTo(SIZE)
     }
 
     @Test
     fun shouldSetSizeCorrectlyWhenSetTerminalSizeIsCalled() {
-        target.setTerminalSize(NEW_BIGGER_SIZE)
-        assertThat(target.getTerminalSize()).isEqualTo(NEW_BIGGER_SIZE)
+        target.setSize(NEW_BIGGER_SIZE)
+        assertThat(target.getBoundableSize()).isEqualTo(NEW_BIGGER_SIZE)
     }
 
     @Test
@@ -58,7 +58,7 @@ class DefaultVirtualTerminalTest {
                 resized = true
             }
         })
-        target.setTerminalSize(NEW_BIGGER_SIZE)
+        target.setSize(NEW_BIGGER_SIZE)
         assertThat(resized).isTrue()
     }
 
@@ -66,7 +66,7 @@ class DefaultVirtualTerminalTest {
     fun shouldResetCursorWhenColsAreLessAfterResize() {
         target.setCursorPosition(DEFAULT_POSITION.withColumn(Int.MAX_VALUE))
         val originalCursorPos = target.getCursorPosition()
-        target.setTerminalSize(NEW_LESS_COLS_SIZE)
+        target.setSize(NEW_LESS_COLS_SIZE)
         assertThat(target.getCursorPosition()).isEqualTo(originalCursorPos.withRelativeColumn(-1))
     }
 
@@ -74,7 +74,7 @@ class DefaultVirtualTerminalTest {
     fun shouldResetCursorWhenRowsAreLessAfterResize() {
         target.setCursorPosition(DEFAULT_POSITION.withRow(Int.MAX_VALUE))
         val originalCursorPos = target.getCursorPosition()
-        target.setTerminalSize(NEW_LESS_ROWS_SIZE)
+        target.setSize(NEW_LESS_ROWS_SIZE)
         assertThat(target.getCursorPosition()).isEqualTo(originalCursorPos.withRelativeRow(-1))
     }
 

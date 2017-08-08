@@ -15,7 +15,7 @@ class TextImageBuilderTest {
                 .size(SIZE)
                 .build()
 
-        assertThat(result.getSize()).isEqualTo(SIZE)
+        assertThat(result.getBoundableSize()).isEqualTo(SIZE)
         assertThat(result.getCharacterAt(Position.DEFAULT_POSITION))
                 .isEqualTo(COPY_CHAR)
 

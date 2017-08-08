@@ -3,7 +3,9 @@ package org.codetome.zircon.terminal.virtual
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.behavior.CursorHolder
+import org.codetome.zircon.behavior.Layerable
 import org.codetome.zircon.behavior.impl.DefaultCursorHolder
+import org.codetome.zircon.behavior.impl.DefaultLayerable
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.terminal.AbstractTerminal
@@ -14,8 +16,11 @@ import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 
 class DefaultVirtualTerminal private constructor(initialSize: Size,
-                                                 private val cursorHolder: CursorHolder)
-    : AbstractTerminal(), VirtualTerminal, CursorHolder by cursorHolder {
+                                                 private val cursorHolder: CursorHolder,
+                                                 private val layerable: Layerable)
+    : AbstractTerminal(), VirtualTerminal,
+        CursorHolder by cursorHolder,
+        Layerable by layerable {
 
     private var terminalSize = initialSize
     private var wholeBufferDirty = false
@@ -26,7 +31,11 @@ class DefaultVirtualTerminal private constructor(initialSize: Size,
     private val inputQueue = LinkedBlockingQueue<Input>()
 
     constructor(initialSize: Size = Size.DEFAULT)
-            : this(initialSize, DefaultCursorHolder())
+            : this(
+            initialSize = initialSize,
+            cursorHolder = DefaultCursorHolder(),
+            layerable = DefaultLayerable(
+                    size = initialSize))
 
     init {
         dirtyTerminalCells.add(getCursorPosition())
@@ -41,10 +50,10 @@ class DefaultVirtualTerminal private constructor(initialSize: Size,
         dirtyTerminalCells.add(getCursorPosition())
     }
 
-    override fun getTerminalSize(): Size = terminalSize
+    override fun getBoundableSize(): Size = terminalSize
 
     @Synchronized
-    override fun setTerminalSize(newSize: Size) {
+    override fun setSize(newSize: Size) {
         if (newSize != terminalSize) {
             this.terminalSize = newSize
             buffer.resize(newSize)

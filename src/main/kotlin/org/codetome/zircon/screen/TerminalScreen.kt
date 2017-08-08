@@ -5,9 +5,6 @@ import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.TextCharacter.Companion.DEFAULT_CHARACTER
 import org.codetome.zircon.behavior.CursorHolder
 import org.codetome.zircon.behavior.Layerable
-import org.codetome.zircon.behavior.impl.DefaultLayerable
-import org.codetome.zircon.builder.FontRendererBuilder
-import org.codetome.zircon.font.FontRenderer
 import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.graphics.TextImage
 import org.codetome.zircon.input.Input
@@ -23,18 +20,13 @@ import java.util.*
  * It keeps data structures for the front- and back buffers, the cursor location and
  * some other simpler states.
  */
-class TerminalScreen private constructor(private val terminal: Terminal,
-                                         private val layerable: Layerable)
+class TerminalScreen constructor(private val terminal: Terminal)
     : Screen, CursorHolder by terminal,
         InputProvider by terminal,
-        Layerable by layerable {
+        Layerable by terminal {
 
-    internal constructor(terminal: Terminal) : this(terminal, DefaultLayerable(
-            offset = Position(0, 0),
-            size = terminal.getTerminalSize()))
-
-    private var backBuffer: ScreenBuffer = ScreenBuffer(terminal.getTerminalSize(), DEFAULT_CHARACTER)
-    private var frontBuffer: ScreenBuffer = ScreenBuffer(terminal.getTerminalSize(), DEFAULT_CHARACTER)
+    private var backBuffer: ScreenBuffer = ScreenBuffer(terminal.getBoundableSize(), DEFAULT_CHARACTER)
+    private var frontBuffer: ScreenBuffer = ScreenBuffer(terminal.getBoundableSize(), DEFAULT_CHARACTER)
 
     init {
         this.terminal.addResizeListener(object : TerminalResizeListener {
@@ -44,7 +36,7 @@ class TerminalScreen private constructor(private val terminal: Terminal,
         })
     }
 
-    override fun getTerminalSize() = terminal.getTerminalSize()
+    override fun getTerminalSize() = terminal.getBoundableSize()
 
     @Synchronized
     override fun getFrontCharacter(position: Position): TextCharacter {
@@ -65,7 +57,7 @@ class TerminalScreen private constructor(private val terminal: Terminal,
         return object : ScreenTextGraphics(this) {
             override fun drawImage(topLeft: Position, image: TextImage) {
                 val sourceImageTopLeft = Position.TOP_LEFT_CORNER
-                val sourceImageSize = image.getSize()
+                val sourceImageSize = image.getBoundableSize()
                 backBuffer.copyFrom(image, sourceImageTopLeft.row, sourceImageSize.rows, sourceImageTopLeft.column, sourceImageSize.columns, topLeft.row, topLeft.column)
             }
         }
@@ -102,35 +94,20 @@ class TerminalScreen private constructor(private val terminal: Terminal,
     @Synchronized
     private fun flipBuffers(forceRedraw: Boolean) {
         getTerminalSize().fetchPositions().forEach { position ->
-            val backChar = backBuffer.getCharacterAt(position)
-            // TODO:    add smart refresh for layers (`charDiffersInBuffers` should
-            // TODO:    check z level intersections of layers)
-
-            fetchBackgroundZIntersectionForPosition(position).forEach {
-                drawCharacter(position, it) // FIXME: don't overwrite the char just draw
-            }
-
-            if (charDiffersInBuffers(backChar, position).or(forceRedraw)) {
-                drawCharacter(position, backChar)
-            }
-
-            fetchOverlayZIntersectionForPosition(position).forEach {
-                drawCharacter(position, it) // FIXME: don't overwrite the char just draw
+            val character = backBuffer.getCharacterAt(position)
+            if (charDiffersInBuffers(character, position).or(forceRedraw)) {
+                terminal.setCursorPosition(position)
+                terminal.resetColorsAndModifiers()
+                terminal.setForegroundColor(character.getForegroundColor())
+                terminal.setBackgroundColor(character.getBackgroundColor())
+                character.getModifiers().forEach {
+                    terminal.enableModifier(it)
+                }
+                terminal.putCharacter(character.getCharacter())
             }
         }
         backBuffer.copyTo(frontBuffer)
         terminal.flush()
-    }
-
-    private fun drawCharacter(position: Position, character: TextCharacter) {
-        terminal.setCursorPosition(position)
-        terminal.resetColorsAndModifiers()
-        terminal.setForegroundColor(character.getForegroundColor())
-        terminal.setBackgroundColor(character.getBackgroundColor())
-        character.getModifiers().forEach {
-            terminal.enableModifier(it)
-        }
-        terminal.putCharacter(character.getCharacter())
     }
 
     private fun charDiffersInBuffers(backChar: TextCharacter, position: Position)
