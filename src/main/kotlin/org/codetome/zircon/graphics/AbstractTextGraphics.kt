@@ -53,7 +53,7 @@ abstract class AbstractTextGraphics(
     }
 
     override fun drawImage(topLeft: Position, image: TextImage) {
-        drawImage(topLeft, image, Position.TOP_LEFT_CORNER, image.getSize())
+        drawImage(topLeft, image, Position.TOP_LEFT_CORNER, image.getBoundableSize())
     }
 
     override fun drawImage(
@@ -79,9 +79,9 @@ abstract class AbstractTextGraphics(
 
         // cropping specified image-subrectangle to the image itself:
         var fromRow = Math.max(sourceImageTopLeftTmp.row, 0)
-        var untilRow = Math.min(sourceImageTopLeftTmp.row + sourceImageSizeTmp.rows, image.getSize().rows)
+        var untilRow = Math.min(sourceImageTopLeftTmp.row + sourceImageSizeTmp.rows, image.getBoundableSize().rows)
         var fromColumn = Math.max(sourceImageTopLeftTmp.column, 0)
-        var untilColumn = Math.min(sourceImageTopLeftTmp.column + sourceImageSizeTmp.columns, image.getSize().columns)
+        var untilColumn = Math.min(sourceImageTopLeftTmp.column + sourceImageSizeTmp.columns, image.getBoundableSize().columns)
 
         // difference between position in image and position on target:
         val diffRow = topLeftTmp.row - sourceImageTopLeftTmp.row

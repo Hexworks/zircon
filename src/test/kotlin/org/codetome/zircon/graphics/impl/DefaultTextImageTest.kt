@@ -44,7 +44,7 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldReportProperSizeWhenGetSizeIsCalled() {
-        assertThat(target.getSize()).isEqualTo(SIZE)
+        assertThat(target.getBoundableSize()).isEqualTo(SIZE)
     }
 
     @Test
@@ -71,7 +71,7 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldNotResizeWhenResizeIsCalledWithSameSize() {
-        val result = target.resize(target.getSize(), TO_COPY_CHAR)
+        val result = target.resize(target.getBoundableSize(), TO_COPY_CHAR)
 
         assertThat(result).isSameAs(target)
     }

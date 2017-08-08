@@ -7,24 +7,53 @@ import org.codetome.zircon.behavior.impl.DefaultBoundable
 import org.codetome.zircon.builder.TextImageBuilder
 import org.codetome.zircon.graphics.TextImage
 import org.codetome.zircon.terminal.Size
+import java.awt.Point
+import java.awt.Rectangle
+import java.util.*
 
-class DefaultLayer private constructor(private val textImage: TextImage,
-                                       private val boundable: Boundable)
-    : Layer, TextImage by textImage, Boundable by boundable {
+class DefaultLayer private constructor(private val textImage: TextImage)
+    : Layer, TextImage by textImage {
 
     constructor(size: Size, filler: TextCharacter, offset: Position)
             : this(
             textImage = TextImageBuilder.newBuilder()
                     .size(size)
                     .filler(filler)
-                    .build(),
-            boundable = DefaultBoundable(offset, size))
+                    .build()) {
+        this.offset = offset
+    }
 
-    override fun getSize() = textImage.getSize()
+    private var offset = Position.DEFAULT_POSITION
 
-    override fun getCharacterAt(position: Position) = textImage.getCharacterAt(position - boundable.getOffset())
+    private val rect = Rectangle(offset.column, offset.row, getBoundableSize().columns, getBoundableSize().rows)
+
+    override fun getOffset() = offset
+
+    override fun setOffset(offset: Position) {
+        this.offset = offset
+    }
+
+    override fun intersects(boundable: Boundable) = rect.intersects(
+            Rectangle(
+                    offset.column,
+                    offset.row,
+                    boundable.getBoundableSize().columns,
+                    boundable.getBoundableSize().rows))
+
+    override fun containsPosition(position: Position) = position.minus(offset).let {
+        rect.contains(Point(it.column, it.row))
+    }
+
+    override fun containsBoundable(boundable: Boundable) = rect.contains(
+            Rectangle(
+                    offset.column,
+                    offset.row,
+                    boundable.getBoundableSize().columns,
+                    boundable.getBoundableSize().rows))
+
+    override fun getCharacterAt(position: Position) = textImage.getCharacterAt(position - offset)
 
     override fun setCharacterAt(position: Position, character: TextCharacter) {
-        textImage.setCharacterAt(position - boundable.getOffset(), character)
+        textImage.setCharacterAt(position - offset, character)
     }
 }

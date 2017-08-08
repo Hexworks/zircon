@@ -2,6 +2,7 @@ package org.codetome.zircon.graphics
 
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.behavior.Boundable
 import org.codetome.zircon.terminal.Size
 
 /**
@@ -9,11 +10,7 @@ import org.codetome.zircon.terminal.Size
  * These are completely in memory and not visible,
  * but can be used when drawing with [TextGraphics] objects.
  */
-interface TextImage {
-    /**
-     * Returns the dimensions of this [TextImage], in columns and rows
-     */
-    fun getSize(): Size
+interface TextImage: Boundable {
 
     /**
      * Returns the character stored at a particular position in this image
@@ -69,9 +66,9 @@ interface TextImage {
     fun copyTo(
             destination: TextImage,
             startRowIndex: Int = 0,
-            rows: Int = getSize().rows,
+            rows: Int = getBoundableSize().rows,
             startColumnIndex: Int = 0,
-            columns: Int = getSize().columns,
+            columns: Int = getBoundableSize().columns,
             destinationRowOffset: Int = 0,
             destinationColumnOffset: Int = 0)
 

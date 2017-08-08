@@ -66,7 +66,7 @@ interface TextGraphics : StyleSet, ShapeRenderer {
      * Creates a new [TextGraphics] of the same type as this one, using the same underlying subsystem.
      * Using this method, you need to specify a section of the current [TextGraphics] valid area
      * that this new [TextGraphics] shall be restricted to.
-     * If you call `newTextGraphics(Position.TOP_LEFT_CORNER, textGraphics.getSize())`
+     * If you call `newTextGraphics(Position.TOP_LEFT_CORNER, textGraphics.getBoundableSize())`
      * then the resulting object will be identical to this one, but having a separated state for colors,
      * position and modifiers.
      */
@@ -75,7 +75,7 @@ interface TextGraphics : StyleSet, ShapeRenderer {
     /**
      * Takes a TextImage and draws it on the surface this TextGraphics is targeting, given the coordinates on the target
      * that is specifying where the top-left corner of the image should be drawn. This is equivalent of calling
-     * `drawImage(topLeft, image, Position.TOP_LEFT_CORNER, image.getSize()`.
+     * `drawImage(topLeft, image, Position.TOP_LEFT_CORNER, image.getBoundableSize()`.
      * @param topLeft Position of the top-left corner of the image on the target
      * @param image Image to draw
      */

@@ -22,16 +22,15 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
             toCopy = toCopy,
             filler = filler,
             boundable = DefaultBoundable(
-                    offset = Position.DEFAULT_POSITION,
                     size = size))
 
 
-    private val buffer = (0..getSize().rows - 1).map {
-        (0..getSize().columns - 1).map { filler }.toTypedArray()
+    private val buffer = (0..getBoundableSize().rows - 1).map {
+        (0..getBoundableSize().columns - 1).map { filler }.toTypedArray()
     }.toTypedArray()
 
     init {
-        getSize().fetchPositions().forEach { (col, row) ->
+        getBoundableSize().fetchPositions().forEach { (col, row) ->
             if (row < toCopy.size && col < toCopy[row].size) {
                 buffer[row][col] = toCopy[row][col]
             } else {
@@ -41,8 +40,8 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
     }
 
     override fun toString(): String {
-        return (0..getSize().rows - 1).map { row ->
-            (0..getSize().columns - 1).map { col ->
+        return (0..getBoundableSize().rows - 1).map { row ->
+            (0..getBoundableSize().columns - 1).map { col ->
                 buffer[row][col].getCharacter()
             }.joinToString("").plus("\n")
         }.joinToString("")
@@ -70,7 +69,7 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
     override fun getCharacterAt(position: Position): TextCharacter {
         val (column, row) = position
         if (column < 0 || row < 0 || row >= buffer.size || column >= buffer[0].size) {
-            throw IllegalArgumentException("column or row is out of bounds for position: $position! Size is: ${getSize()}")
+            throw IllegalArgumentException("column or row is out of bounds for position: $position! Size is: ${getBoundableSize()}")
         }
 
         return buffer[row][column]
@@ -124,14 +123,14 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
         rowsToCopy = Math.min(buffer.size - startRowIdx, rowsToCopy)
 
         //Adjust target lengths as well
-        columnsToCopy = Math.min(destination.getSize().columns - destColumnOffset, columnsToCopy)
-        rowsToCopy = Math.min(destination.getSize().rows - destRowOffset, rowsToCopy)
+        columnsToCopy = Math.min(destination.getBoundableSize().columns - destColumnOffset, columnsToCopy)
+        rowsToCopy = Math.min(destination.getBoundableSize().rows - destRowOffset, rowsToCopy)
 
         if (columnsToCopy <= 0 || rowsToCopy <= 0) {
             return
         }
 
-        val destinationSize = destination.getSize()
+        val destinationSize = destination.getBoundableSize()
         if (destination is DefaultTextImage) {
             var targetRow = destRowOffset
             var y = startRowIdx
@@ -155,7 +154,7 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
     override fun newTextGraphics(): TextGraphics {
         return object : AbstractTextGraphics() {
 
-            override fun getSize(): Size = this@DefaultTextImage.getSize()
+            override fun getSize(): Size = this@DefaultTextImage.getBoundableSize()
 
             override fun setCharacter(position: Position, character: TextCharacter) {
                 this@DefaultTextImage.setCharacterAt(position, character)

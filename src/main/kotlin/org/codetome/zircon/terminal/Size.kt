@@ -120,9 +120,13 @@ data class Size(val columns: Int,
     }
 
     companion object {
+        @JvmField
         val UNKNOWN = Size(Int.MAX_VALUE, Int.MAX_VALUE)
+        @JvmField
         val DEFAULT = Size(80, 24)
+        @JvmField
         val ZERO = Size(0, 0)
+        @JvmField
         val ONE = Size(1, 1)
     }
 }

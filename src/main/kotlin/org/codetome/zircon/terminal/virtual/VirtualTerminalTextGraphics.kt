@@ -11,7 +11,7 @@ import java.util.*
 class VirtualTerminalTextGraphics(private val virtualTerminal: DefaultVirtualTerminal)
     : AbstractTextGraphics() {
 
-    override fun getSize() = virtualTerminal.getTerminalSize()
+    override fun getSize() = virtualTerminal.getBoundableSize()
 
     override fun getCharacter(position: Position): Optional<TextCharacter> {
         return Optional.of(virtualTerminal.getCharacter(position))
