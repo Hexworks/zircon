@@ -30,11 +30,11 @@ public class HideNSeek {
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
         final Screen screen = TerminalBuilder.newBuilder()
-                .initialTerminalSize(new Size(40, 40))
-                .fontRenderer(FontRendererBuilder.newBuilder()
-                        .useSwing()
-                        .useDFTileset(DFTilesetResource.TAFFER_20X20)
-                        .build())
+                .initialTerminalSize(new Size(80, 40))
+//                .fontRenderer(FontRendererBuilder.newBuilder()
+//                        .useSwing()
+//                        .useDFTileset(DFTilesetResource.TAFFER_20X20)
+//                        .build())
                 .buildScreen();
         Size size = screen.getBoundableSize();
         screen.setCursorVisible(false); // we don't want the cursor right now

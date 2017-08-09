@@ -35,8 +35,7 @@ data class Size(val columns: Int,
         if (this.columns == columns) {
             return this
         }
-        if (isZeroSize(columns)) return ZERO
-        return Size(columns, this.rows)
+        return returnZeroIfZero(Size(columns, this.rows))
     }
 
     /**
@@ -46,8 +45,7 @@ data class Size(val columns: Int,
         if (this.rows == rows) {
             return this
         }
-        if (isZeroSize(columns)) return ZERO
-        return Size(this.columns, rows)
+        return returnZeroIfZero(Size(this.columns, rows))
     }
 
     /**
@@ -112,11 +110,12 @@ data class Size(val columns: Int,
         return size
     }
 
-    private fun isZeroSize(columns: Int): Boolean {
-        if (columns == 0 && this.rows == 0) {
-            return true
+    private fun returnZeroIfZero(size: Size): Size {
+        return if (size.columns == 0 || size.rows == 0) {
+            ZERO
+        } else {
+            size
         }
-        return false
     }
 
     companion object {
