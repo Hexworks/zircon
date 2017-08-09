@@ -6,11 +6,21 @@ import org.codetome.zircon.builder.TextColorFactory
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicReference
 
-open class DefaultStyleSet : StyleSet {
+open class DefaultStyleSet(
+        foregroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
+        backgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
+        modifiers: Set<Modifier> = setOf()
+) : StyleSet {
 
-    private var foregroundColor = AtomicReference<TextColor>(TextColorFactory.DEFAULT_FOREGROUND_COLOR)
-    private var backgroundColor = AtomicReference<TextColor>(TextColorFactory.DEFAULT_BACKGROUND_COLOR)
-    private val modifiers = ConcurrentHashMap<Modifier, Any>()
+    private var foregroundColor = AtomicReference<TextColor>(foregroundColor)
+    private var backgroundColor = AtomicReference<TextColor>(backgroundColor)
+    private val modifiers = ConcurrentHashMap<Modifier, Unit>()
+
+    init {
+        modifiers.forEach {
+            this.modifiers.put(it, Unit)
+        }
+    }
 
     override fun getForegroundColor(): TextColor = foregroundColor.get()
 
