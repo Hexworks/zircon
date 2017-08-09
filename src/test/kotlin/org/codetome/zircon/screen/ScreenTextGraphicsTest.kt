@@ -33,7 +33,7 @@ class ScreenTextGraphicsTest {
 
     @Test
     fun testDelegates() {
-        // these are delegated, no need to test, but needs coverage
+        // these are delegated, no need to shouldProperlySetValues, but needs coverage
         target.fill('x')
         target.drawLine(Position.DEFAULT_POSITION,
                 Position.OFFSET_1x1,
