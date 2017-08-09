@@ -119,6 +119,17 @@ class SizeTest {
         assertThat(wide.max(tall)).isEqualTo(Size(5, 5))
     }
 
+    @Test
+    fun withShouldReturnProperResult() {
+        assertThat(Size(1, 2).with(Size(2, 3)))
+                .isEqualTo(Size(2, 3))
+    }
+
+    @Test
+    fun zeroSizeShouldReturnTrueWhenSizeIsZero() {
+        assertThat(Size(5, 0).withColumns(0)).isSameAs(Size.ZERO)
+    }
+
     companion object {
         val EXPECTED_COL = 5
         val EXPECTED_ROW = 5
