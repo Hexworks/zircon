@@ -9,7 +9,8 @@ import org.codetome.zircon.terminal.Size
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 
-class DefaultLayerable private constructor(boundable: Boundable) : Layerable, Boundable by boundable {
+class DefaultLayerable private constructor(boundable: Boundable)
+    : Layerable, Boundable by boundable {
 
     constructor(size: Size) : this(DefaultBoundable(size))
 

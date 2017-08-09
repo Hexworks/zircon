@@ -7,7 +7,7 @@ import java.util.*
 
 /**
  * Represents an object which can contain multiple [org.codetome.zircon.graphics.layer.Layer]s
- * (which are specialized [org.codetome.zircon.graphics.TextImage]s) below or above it.
+ * (which are specialized [org.codetome.zircon.graphics.TextImage]s) overlays above the terminal.
  */
 interface Layerable : Boundable {
 
