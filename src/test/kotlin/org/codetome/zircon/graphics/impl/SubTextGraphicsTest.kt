@@ -1,6 +1,8 @@
 package org.codetome.zircon.graphics.impl
 
+import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
+import org.codetome.zircon.builder.TextCharacterBuilder
 import org.codetome.zircon.builder.TextImageBuilder
 import org.codetome.zircon.graphics.SubTextGraphics
 import org.codetome.zircon.terminal.Size
@@ -23,11 +25,26 @@ class SubTextGraphicsTest {
     }
 
     @Test
-    fun test() {
+    fun shouldProperlyGetCharWhenCharIsSet() {
+        target.setCharacter(Position.OFFSET_1x1, CHAR)
+        assertThat(target.getCharacter(Position.OFFSET_1x1).get())
+                .isEqualTo(CHAR)
+    }
 
+    @Test
+    fun shouldNotDrawCharWhenOutOfBounds() {
+        target.setCharacter(Position(10, 10), CHAR)
+    }
+
+    @Test
+    fun shouldProperlyReportSize() {
+        assertThat(target.getSize()).isEqualTo(SUB_SIZE)
     }
 
     companion object {
+        val CHAR = TextCharacterBuilder.newBuilder()
+                .character('x')
+                .build()
         val SIZE = Size(10, 10)
         val SUB_SIZE = Size(8, 8)
         val TEXT_GRAPHICS = TextImageBuilder.newBuilder()
