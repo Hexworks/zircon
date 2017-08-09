@@ -13,14 +13,16 @@ import org.codetome.zircon.input.InputType
 import org.codetome.zircon.terminal.Size
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
+import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.util.*
+import kotlin.system.measureNanoTime
 
 /**
  * This class implements the logic defined in the [Screen] interface.
  * It keeps data structures for the front- and back buffers, the cursor location and
  * some other simpler states.
  */
-class TerminalScreen constructor(private val terminal: Terminal)
+class TerminalScreen constructor(private val terminal: VirtualTerminal)
     : Screen, CursorHolder by terminal,
         InputProvider by terminal,
         Layerable by terminal {
@@ -36,7 +38,11 @@ class TerminalScreen constructor(private val terminal: Terminal)
         })
     }
 
-    override fun getTerminalSize() = terminal.getBoundableSize()
+    override fun addInput(input: Input) {
+        terminal.addInput(input)
+    }
+
+    override fun getSize() = terminal.getBoundableSize()
 
     @Synchronized
     override fun getFrontCharacter(position: Position): TextCharacter {
@@ -87,27 +93,30 @@ class TerminalScreen constructor(private val terminal: Terminal)
 
     @Synchronized
     private fun resize() {
-        backBuffer = backBuffer.resize(getTerminalSize(), DEFAULT_CHARACTER)
-        frontBuffer = frontBuffer.resize(getTerminalSize(), DEFAULT_CHARACTER)
+        backBuffer = backBuffer.resize(getSize(), DEFAULT_CHARACTER)
+        frontBuffer = frontBuffer.resize(getSize(), DEFAULT_CHARACTER)
     }
 
     @Synchronized
     private fun flipBuffers(forceRedraw: Boolean) {
-        getTerminalSize().fetchPositions().forEach { position ->
-            val character = backBuffer.getCharacterAt(position)
-            if (charDiffersInBuffers(character, position).or(forceRedraw)) {
-                terminal.setCursorPosition(position)
-                terminal.resetColorsAndModifiers()
-                terminal.setForegroundColor(character.getForegroundColor())
-                terminal.setBackgroundColor(character.getBackgroundColor())
-                character.getModifiers().forEach {
-                    terminal.enableModifier(it)
+        val time = measureNanoTime {
+            getSize().fetchPositions().forEach { position ->
+                val character = backBuffer.getCharacterAt(position)
+                if (charDiffersInBuffers(character, position).or(forceRedraw)) {
+                    terminal.setCursorPosition(position)
+                    terminal.resetColorsAndModifiers()
+                    terminal.setForegroundColor(character.getForegroundColor())
+                    terminal.setBackgroundColor(character.getBackgroundColor())
+                    character.getModifiers().forEach {
+                        terminal.enableModifier(it)
+                    }
+                    terminal.putCharacter(character.getCharacter())
                 }
-                terminal.putCharacter(character.getCharacter())
             }
+            backBuffer.copyTo(frontBuffer)
+            terminal.flush()
         }
-        backBuffer.copyTo(frontBuffer)
-        terminal.flush()
+        println("Rendering took: ${time / 1000 / 1000} ms.")
     }
 
     private fun charDiffersInBuffers(backChar: TextCharacter, position: Position)

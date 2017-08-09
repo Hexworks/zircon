@@ -7,10 +7,14 @@ import org.codetome.zircon.behavior.Boundable
 import org.codetome.zircon.font.FontRenderer
 import org.codetome.zircon.graphics.layer.Layer
 import org.codetome.zircon.graphics.style.StyleSet
+import org.codetome.zircon.input.Input
+import org.codetome.zircon.terminal.Cell
 import org.codetome.zircon.terminal.Size
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
 import org.codetome.zircon.terminal.config.DeviceConfiguration
+import org.codetome.zircon.terminal.virtual.VirtualTerminal
+import org.codetome.zircon.terminal.virtual.VirtualTerminalListener
 import java.awt.Graphics
 import javax.swing.JComponent
 
@@ -22,7 +26,7 @@ class SwingTerminalComponent(
         initialSize: Size,
         deviceConfiguration: DeviceConfiguration,
         fontConfiguration: FontRenderer<Graphics>)
-    : JComponent(), Terminal {
+    : JComponent(), VirtualTerminal {
 
     // this ugly hack of delegation is necessary because of the lack of multiple inheritance
     // the delegation feature of Kotlin does not work either because we can't pass `this` in
@@ -32,6 +36,21 @@ class SwingTerminalComponent(
             fontConfiguration,
             initialSize,
             deviceConfiguration)
+
+    override fun addInput(input: Input) = terminalImplementation.addInput(input)
+
+    override fun getCharacter(position: Position) = terminalImplementation.getCharacter(position)
+
+    override fun addVirtualTerminalListener(listener: VirtualTerminalListener)
+            = terminalImplementation.addVirtualTerminalListener(listener)
+
+    override fun removeVirtualTerminalListener(listener: VirtualTerminalListener)
+            = terminalImplementation.removeVirtualTerminalListener(listener)
+
+    override fun forEachDirtyCell(fn: (Cell) -> Unit)
+            = terminalImplementation.forEachDirtyCell(fn)
+
+    override fun forEachCell(fn: (Cell) -> Unit) = terminalImplementation.forEachCell(fn)
 
     override fun addOverlay(layer: Layer) = terminalImplementation.addOverlay(layer)
 
@@ -46,7 +65,7 @@ class SwingTerminalComponent(
     override fun removeLayer(layer: Layer) = terminalImplementation.removeLayer(layer)
 
     override fun fetchOverlayZIntersection(absolutePosition: Position)
-     = terminalImplementation.fetchOverlayZIntersection(absolutePosition)
+            = terminalImplementation.fetchOverlayZIntersection(absolutePosition)
 
     override fun getBackgroundColor() = terminalImplementation.getBackgroundColor()
 

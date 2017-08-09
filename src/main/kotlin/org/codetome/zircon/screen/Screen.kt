@@ -6,8 +6,10 @@ import org.codetome.zircon.behavior.Clearable
 import org.codetome.zircon.behavior.CursorHolder
 import org.codetome.zircon.behavior.Layerable
 import org.codetome.zircon.graphics.TextGraphics
+import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.InputProvider
 import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.io.Closeable
 
 /**
@@ -22,7 +24,13 @@ import java.io.Closeable
  */
 interface Screen : InputProvider, Closeable, Clearable, Layerable, CursorHolder {
 
-    fun getTerminalSize(): Size
+    /**
+     * Adds a [Input] to the input queue of this [Screen].
+     * See: [org.codetome.zircon.terminal.virtual.VirtualTerminal] for more info.
+     */
+    fun addInput(input: Input)
+
+    fun getSize(): Size
 
     /**
      * Reads a character and its associated meta-data from the front-buffer and returns it encapsulated as a

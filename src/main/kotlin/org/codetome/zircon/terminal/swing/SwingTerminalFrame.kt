@@ -9,6 +9,7 @@ import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.Size
 import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.builder.FontRendererBuilder
+import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Graphics
@@ -21,7 +22,7 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
                          deviceConfiguration: DeviceConfiguration = DeviceConfigurationBuilder.getDefault(),
                          fontConfiguration: FontRenderer<Graphics> = FontRendererBuilder.getDefault(),
                          private val swingTerminal: SwingTerminalComponent = SwingTerminalComponent(size, deviceConfiguration, fontConfiguration))
-    : JFrame(title), Terminal by swingTerminal {
+    : JFrame(title), VirtualTerminal by swingTerminal {
 
     private var disposed = false
 

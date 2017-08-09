@@ -19,8 +19,4 @@ interface Layer : TextImage {
      */
     fun setOffset(offset: Position)
 
-    /**
-     * Returns the [Position] of this [Layer] relative to its parent.
-     */
-    fun getOffset(): Position
 }

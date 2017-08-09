@@ -8,6 +8,7 @@ import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.terminal.swing.SwingTerminalComponent
 import org.codetome.zircon.terminal.swing.SwingTerminalFrame
+import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.awt.Graphics
 
 
@@ -19,7 +20,7 @@ class TerminalBuilder {
     private var deviceConfiguration = DeviceConfigurationBuilder.getDefault()
     private var fontRenderer: FontRenderer<Graphics> = FontRendererBuilder.getDefault()
 
-    fun buildTerminal(): Terminal = buildTerminalEmulator()
+    fun buildTerminal(): VirtualTerminal = buildTerminalEmulator()
 
     fun buildTerminalEmulator() = buildSwingTerminal()
 
@@ -85,7 +86,7 @@ class TerminalBuilder {
     /**
      * Creates a [org.codetome.zircon.screen.Screen] for the given [Terminal].
      */
-    fun createScreenFor(terminal: Terminal): TerminalScreen {
+    fun createScreenFor(terminal: VirtualTerminal): TerminalScreen {
         return TerminalScreen(terminal)
     }
 

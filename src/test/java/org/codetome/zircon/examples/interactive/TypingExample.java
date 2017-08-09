@@ -13,6 +13,7 @@ import org.codetome.zircon.builder.TerminalBuilder;
 import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.Size;
 import org.codetome.zircon.terminal.config.DeviceConfiguration;
+import org.codetome.zircon.terminal.virtual.VirtualTerminal;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class TypingExample {
 
         factory.fontRenderer(fontConfig);
         factory.deviceConfiguration(deviceConfig);
-        final Terminal terminal = factory.buildTerminal();
+        final VirtualTerminal terminal = factory.buildTerminal();
         final Screen screen = factory.createScreenFor(terminal);
 
         startTypingSupportForScreen(screen);
