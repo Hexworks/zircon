@@ -108,6 +108,42 @@ class TextCharacterTest {
                 .isEqualTo(EXPECTED_TEXT_CHARACTER)
     }
 
+    @Test
+    fun shouldReturnSameTextCharacterWhenWithCharIsCalledWithSameChar() {
+        assertThat(EXPECTED_TEXT_CHARACTER.withCharacter(EXPECTED_CHAR))
+                .isSameAs(EXPECTED_TEXT_CHARACTER)
+    }
+
+    @Test
+    fun shouldReturnSameTextCharacterWhenWithFGColorIsCalledWithSameFGColor() {
+        assertThat(EXPECTED_TEXT_CHARACTER.withForegroundColor(EXPECTED_FG_COLOR))
+                .isSameAs(EXPECTED_TEXT_CHARACTER)
+    }
+
+    @Test
+    fun shouldReturnSameTextCharacterWhenWithBGColorIsCalledWithSameBGColor() {
+        assertThat(EXPECTED_TEXT_CHARACTER.withBackgroundColor(EXPECTED_BG_COLOR))
+                .isSameAs(EXPECTED_TEXT_CHARACTER)
+    }
+
+    @Test
+    fun shouldReturnSameTextCharacterWhenWithModifierIsCalledWithSameModifier() {
+        assertThat(EXPECTED_TEXT_CHARACTER.withModifier(BOLD))
+                .isSameAs(EXPECTED_TEXT_CHARACTER)
+    }
+
+    @Test
+    fun shouldReturnSameTextCharacterWhenWithModifierSIsCalledWithSameModifierS() {
+        assertThat(EXPECTED_TEXT_CHARACTER.withModifiers(EXPECTED_MODIFIERS))
+                .isSameAs(EXPECTED_TEXT_CHARACTER)
+    }
+
+    @Test
+    fun shouldReturnSameTextCharacterWhenWithoutModifierIsCalledWithNonPresentModifier() {
+        assertThat(EXPECTED_TEXT_CHARACTER.withoutModifier(CROSSED_OUT))
+                .isSameAs(EXPECTED_TEXT_CHARACTER)
+    }
+
     companion object {
         val EXPECTED_CHAR = 'x'
         val EXPECTED_FG_COLOR = TextColorFactory.fromString("#aabbcc")
