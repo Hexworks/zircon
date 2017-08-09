@@ -1,21 +1,39 @@
 package org.codetome.zircon.terminal.config
 
+import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.ANSITextColor
-import org.junit.Before
+import org.codetome.zircon.builder.DeviceConfigurationBuilder
 import org.junit.Test
-import org.mockito.MockitoAnnotations
 
 class DeviceConfigurationTest {
 
     @Test
-    fun test() {
-        DeviceConfiguration(
-                blinkLengthInMilliSeconds = 5,
-                cursorStyle = CursorStyle.UNDER_BAR,
-                cursorColor = ANSITextColor.GREEN,
-                isCursorBlinking = true,
-                isClipboardAvailable = true)
+    fun shouldProperlySetValues() {
+        val target = DeviceConfigurationBuilder.newBuilder()
+                .blinkLengthInMilliSeconds(BLINK_TIME)
+                .clipboardAvailable(HAS_CLIPBOARD)
+                .cursorBlinking(IS_BLINKING)
+                .cursorColor(CURSOR_COLOR)
+                .cursorStyle(CURSOR_STYLE)
+                .build()
+
+        assertThat(target.blinkLengthInMilliSeconds)
+                .isEqualTo(BLINK_TIME)
+        assertThat(target.cursorStyle)
+                .isEqualTo(CURSOR_STYLE)
+        assertThat(target.cursorColor)
+                .isEqualTo(CURSOR_COLOR)
+        assertThat(target.isCursorBlinking)
+                .isEqualTo(IS_BLINKING)
+        assertThat(target.isClipboardAvailable)
+                .isEqualTo(HAS_CLIPBOARD)
     }
 
-
+    companion object {
+        val BLINK_TIME = 5L
+        val CURSOR_STYLE = CursorStyle.UNDER_BAR
+        val CURSOR_COLOR = ANSITextColor.GREEN
+        val IS_BLINKING = true
+        val HAS_CLIPBOARD = true
+    }
 }
