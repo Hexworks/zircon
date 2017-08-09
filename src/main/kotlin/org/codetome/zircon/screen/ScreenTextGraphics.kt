@@ -20,5 +20,5 @@ internal open class ScreenTextGraphics(private val screen: Screen) : AbstractTex
         screen.setCharacter(position, character)
     }
 
-    override fun getSize() = screen.getTerminalSize()
+    override fun getSize() = screen.getSize()
 }

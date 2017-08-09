@@ -11,6 +11,13 @@ import java.util.*
 interface Boundable {
 
     /**
+     * Returns the offset of this [Boundable]. Default is (0, 0).
+     * Only override the default if it is applicable in your context
+     * (in [org.codetome.zircon.graphics.layer.Layer] for example).
+     */
+    fun getOffset(): Position = Position.DEFAULT_POSITION
+
+    /**
      * Returns the [Size] of this [Boundable].
      */
     fun getBoundableSize(): Size
