@@ -1,8 +1,13 @@
 package org.codetome.zircon
 
 import org.codetome.zircon.builder.TextColorFactory.DEFAULT_ALPHA
+import java.awt.Color
 
-enum class ANSITextColor(red: Int, green: Int, blue: Int, alpha: Int = 255) : TextColor {
+enum class ANSITextColor(private val red: Int,
+                         private val green: Int,
+                         private val blue: Int,
+                         private val alpha: Int) : TextColor {
+
     BLACK(0, 0, 0, DEFAULT_ALPHA),
     RED(170, 0, 0, DEFAULT_ALPHA),
     GREEN(0, 170, 0, DEFAULT_ALPHA),
@@ -13,15 +18,13 @@ enum class ANSITextColor(red: Int, green: Int, blue: Int, alpha: Int = 255) : Te
     WHITE(170, 170, 170, DEFAULT_ALPHA),
     DEFAULT(0, 0, 0, DEFAULT_ALPHA);
 
-    private val color: java.awt.Color = java.awt.Color(red, green, blue)
+    override fun toAWTColor() = Color(red, green, blue, alpha)
 
-    override fun toAWTColor() = color
+    override fun getRed() = red
 
-    override fun getRed() = color.red
+    override fun getGreen() = green
 
-    override fun getGreen() = color.green
+    override fun getBlue() = blue
 
-    override fun getBlue() = color.blue
-
-    override fun getAlpha() = color.alpha
+    override fun getAlpha() = alpha
 }
