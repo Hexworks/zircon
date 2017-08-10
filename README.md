@@ -7,7 +7,7 @@ Currently only a Swing implementation is present but there other GUI platforms o
 
 *Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna) and parts of its codebase were ported to serve as a basis for this library.
 
-[![][travis img]][travis]
+[![][circleci img]][circleci]
 [![][codecov img]][codecov]
 [![][license img]][license]
 
@@ -189,8 +189,8 @@ Zircon is created and maintained by Adam Arold
 *I'm open to suggestions, feel free to comment or to send me a message.
 Pull requests are also welcome!*
 
-[travis]:https://travis-ci.org/Hexworks/zircon
-[travis img]:https://api.travis-ci.org/Hexworks/zircon.svg?branch=master
+[circleci]:https://circleci.com/gh/Hexworks/zircon
+[circleci img]:https://circleci.com/gh/Hexworks/zircon/tree/master.svg?style=shield
 
 [codecov]:https://codecov.io/github/Hexworks/zircon?branch=master
 [codecov img]:https://codecov.io/github/Hexworks/zircon/coverage.svg?branch=master
