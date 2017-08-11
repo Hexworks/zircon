@@ -1,14 +1,13 @@
 package org.codetome.zircon.terminal.swing
 
 import org.codetome.zircon.builder.DeviceConfigurationBuilder
+import org.codetome.zircon.builder.FontRendererBuilder
 import org.codetome.zircon.font.FontRenderer
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke
-import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.Size
 import org.codetome.zircon.terminal.config.DeviceConfiguration
-import org.codetome.zircon.builder.FontRendererBuilder
 import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.awt.BorderLayout
 import java.awt.Color

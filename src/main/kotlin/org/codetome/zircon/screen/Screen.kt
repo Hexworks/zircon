@@ -9,7 +9,6 @@ import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.InputProvider
 import org.codetome.zircon.terminal.Size
-import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.io.Closeable
 
 /**

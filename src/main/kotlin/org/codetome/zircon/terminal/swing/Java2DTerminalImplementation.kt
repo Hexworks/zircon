@@ -1,6 +1,9 @@
 package org.codetome.zircon.terminal.swing
 
-import org.codetome.zircon.*
+import org.codetome.zircon.ANSITextColor
+import org.codetome.zircon.Modifier
+import org.codetome.zircon.Position
+import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.builder.TextColorFactory
 import org.codetome.zircon.font.FontRenderer
 import org.codetome.zircon.input.InputType
@@ -9,8 +12,8 @@ import org.codetome.zircon.input.MouseAction
 import org.codetome.zircon.input.MouseActionType
 import org.codetome.zircon.input.MouseActionType.*
 import org.codetome.zircon.terminal.Size
-import org.codetome.zircon.terminal.config.*
 import org.codetome.zircon.terminal.config.CursorStyle.*
+import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import org.codetome.zircon.util.TextUtils
 import java.awt.*

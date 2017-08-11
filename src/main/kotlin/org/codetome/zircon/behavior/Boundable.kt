@@ -2,7 +2,6 @@ package org.codetome.zircon.behavior
 
 import org.codetome.zircon.Position
 import org.codetome.zircon.terminal.Size
-import java.util.*
 
 /**
  * Represents an object which has bounds in 2d space. A [Boundable] object can provide useful information

@@ -27,7 +27,7 @@ import static org.codetome.zircon.tileset.DFTilesetResource.WANDERLUST_16X16;
 
 public class TypingExample {
 
-    private static final int TERMINAL_WIDTH = 30;
+    private static final int TERMINAL_WIDTH = 80;
     private static final int TERMINAL_HEIGHT = 30;
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
@@ -83,6 +83,7 @@ public class TypingExample {
                         screen.refresh();
                     }
                 }
+                screen.setCursorPosition(pos.withRelativeColumn(1));
             }
         }
     }
