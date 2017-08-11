@@ -138,6 +138,7 @@ class DefaultVirtualTerminal private constructor(initialSize: Size,
         return buffer.getCharacter(position)
     }
 
+    @Synchronized
     override fun forEachDirtyCell(fn: (Cell) -> Unit) {
         if (lastDrawnCursorPosition != getCursorPosition()
                 && lastDrawnCursorPosition != Position.UNKNOWN) {

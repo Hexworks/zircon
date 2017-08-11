@@ -1,8 +1,8 @@
 package org.codetome.zircon.builder
 
-import org.codetome.zircon.util.FontUtils
 import org.codetome.zircon.font.PhysicalFontRenderer
 import org.codetome.zircon.terminal.swing.SwingCharacterImageRenderer
+import org.codetome.zircon.util.FontUtils
 import java.awt.Font
 import java.awt.Graphics
 import java.awt.image.BufferedImage

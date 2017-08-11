@@ -1,10 +1,8 @@
 package org.codetome.zircon.graphics.layer
 
 import org.codetome.zircon.Position
-import org.codetome.zircon.behavior.Boundable
 import org.codetome.zircon.behavior.Layerable
 import org.codetome.zircon.graphics.TextImage
-import org.codetome.zircon.screen.Screen
 
 /**
  * A [Layer] is a specialized [TextImage] which is drawn upon a

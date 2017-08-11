@@ -5,7 +5,6 @@ import org.codetome.zircon.behavior.Boundable
 import org.codetome.zircon.terminal.Size
 import java.awt.Point
 import java.awt.Rectangle
-import java.util.*
 
 /**
  * A [DefaultBoundable] has no offset.
