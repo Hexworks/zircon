@@ -15,7 +15,10 @@ import org.codetome.zircon.builder.TextCharacterBuilder
 import org.codetome.zircon.builder.TextColorFactory
 import org.codetome.zircon.font.DFTilesetResource
 import org.codetome.zircon.util.Stats
-import java.awt.*
+import java.awt.Canvas
+import java.awt.Dimension
+import java.awt.Graphics2D
+import java.awt.Rectangle
 import java.awt.image.BufferedImage
 import java.util.concurrent.Executors
 import javax.swing.JFrame
@@ -50,16 +53,20 @@ class MyPanel : Canvas() {
         this.preferredSize = Dimension(Config.TILESET.width * Config.WIDTH, Config.TILESET.height * Config.HEIGHT)
         pool.submit {
             while (true) {
-                val start = System.nanoTime()
-                draw()
-                val end = System.nanoTime()
-                val totalMs: Double = (end - start).toDouble() / 1000 / 1000
-                avgMs = (avgMs * measurements + totalMs.toInt()) / ++measurements
-                if (measurements % 10 == 0) {
-                    println(String.format("Current FPS is: %d. Average fps is %d. Render time is %d.",
-                            1000 / totalMs,
-                            1000 / avgMs,
-                            totalMs))
+                try {
+                    val start = System.nanoTime()
+                    draw()
+                    val end = System.nanoTime()
+                    var totalMs = (end - start) / 1000 / 1000
+                    avgMs = (avgMs * measurements + totalMs.toInt()) / ++measurements
+                    if (measurements % 10 == 0) {
+                        println(String.format("Current FPS is: %d. Average fps is %d. Render time is %d.",
+                                1000 / totalMs,
+                                1000 / avgMs,
+                                totalMs))
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
         }
@@ -76,17 +83,15 @@ class MyPanel : Canvas() {
             return
         }
 
-        val buffer = BufferedImage(Config.PIXEL_WIDTH, Config.PIXEL_HEIGHT, BufferedImage.TRANSLUCENT)
-        val bufferGraphics = buffer.createGraphics()
         val char = TextCharacterBuilder.newBuilder()
                 .foregroundColor(fgColors[currIdx])
                 .backgroundColor(bgColors[currIdx])
                 .character(chars[currIdx])
                 .build()
 
-        for(row in 0..Config.HEIGHT) {
-            for(column in 0..Config.WIDTH) {
-                bufferGraphics.drawImage(
+        for (row in 0..Config.HEIGHT) {
+            for (column in 0..Config.WIDTH) {
+                gc.drawImage(
                         tilesetFont.fetchRegionForChar(char),
                         Config.TILESET.width * column,
                         Config.TILESET.height * row,
@@ -94,17 +99,6 @@ class MyPanel : Canvas() {
             }
         }
         currIdx = if (currIdx == 0) 1 else 0
-        val clipBounds: Rectangle = bufferGraphics.clipBounds ?: Rectangle(0, 0, getWidth(), getHeight())
-        gc.drawImage(
-                buffer,
-                clipBounds.x,
-                clipBounds.y,
-                clipBounds.getWidth().toInt(),
-                clipBounds.getHeight().toInt(),
-                clipBounds.x,
-                clipBounds.y,
-                clipBounds.getWidth().toInt(),
-                clipBounds.getHeight().toInt(), null)
         gc.dispose()
         bs.show()
     }
