@@ -26,6 +26,11 @@ interface VirtualTerminal : Terminal {
     fun getCharacter(position: Position): TextCharacter
 
     /**
+     * Sets the character at a given position.
+     */
+    fun setCharacter(position: Position, textCharacter: TextCharacter)
+
+    /**
      * Adds a listener to receive notifications when certain events happens on the virtual terminal.
      * Notice that this is not the same as the list of [org.codetome.zircon.terminal.TerminalResizeListener],
      * but as the [VirtualTerminalListener] also allows you to listen on size changes,

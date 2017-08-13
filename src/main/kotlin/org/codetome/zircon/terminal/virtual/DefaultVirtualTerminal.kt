@@ -25,7 +25,7 @@ class DefaultVirtualTerminal private constructor(initialSize: Size,
     private var terminalSize = initialSize
     private var wholeBufferDirty = false
     private var lastDrawnCursorPosition: Position = Position.UNKNOWN
-    private val buffer: TextCharacterBuffer = TextCharacterBuffer()
+    private val textBuffer: TextCharacterBuffer = TextCharacterBuffer()
     private val dirtyTerminalCells = TreeSet<Position>()
     private val listeners = mutableListOf<VirtualTerminalListener>()
     private val inputQueue = LinkedBlockingQueue<Input>()
@@ -56,7 +56,7 @@ class DefaultVirtualTerminal private constructor(initialSize: Size,
     override fun setSize(newSize: Size) {
         if (newSize != terminalSize) {
             this.terminalSize = newSize
-            buffer.resize(newSize)
+            textBuffer.resize(newSize)
             getCursorPosition().let { (cursorCol, cursorRow) ->
                 if (cursorRow >= newSize.rows || cursorCol >= newSize.columns) {
                     setCursorPosition(Position(
@@ -72,7 +72,7 @@ class DefaultVirtualTerminal private constructor(initialSize: Size,
 
     @Synchronized
     override fun clear() {
-        buffer.clear()
+        textBuffer.clear()
         setWholeBufferDirty()
         setCursorPosition(Position.DEFAULT_POSITION)
     }
@@ -93,7 +93,7 @@ class DefaultVirtualTerminal private constructor(initialSize: Size,
     @Synchronized
     internal fun putCharacter(textCharacter: TextCharacter) {
         checkCursorPosition()
-        buffer.setCharacter(getCursorPosition(), textCharacter)
+        textBuffer.setCharacter(getCursorPosition(), textCharacter)
         dirtyTerminalCells.add(getCursorPosition())
         setCursorPosition(getCursorPosition().withRelativeColumn(1))
         checkCursorPosition()
@@ -135,7 +135,12 @@ class DefaultVirtualTerminal private constructor(initialSize: Size,
 
     @Synchronized
     override fun getCharacter(position: Position): TextCharacter {
-        return buffer.getCharacter(position)
+        return textBuffer.getCharacter(position)
+    }
+
+    @Synchronized
+    override fun setCharacter(position: Position, textCharacter: TextCharacter) {
+        textBuffer.setCharacter(position, textCharacter)
     }
 
     @Synchronized
@@ -145,12 +150,12 @@ class DefaultVirtualTerminal private constructor(initialSize: Size,
             dirtyTerminalCells.add(lastDrawnCursorPosition)
         }
         if (wholeBufferDirty) {
-            buffer.forEachCell(fn)
-            fn(Cell(getCursorPosition(), buffer.getCharacter(getCursorPosition())))
+            textBuffer.forEachCell(fn)
+            fn(Cell(getCursorPosition(), textBuffer.getCharacter(getCursorPosition())))
             wholeBufferDirty = false
         } else {
             dirtyTerminalCells.forEach { pos ->
-                fn(Cell(pos, buffer.getCharacter(pos)))
+                fn(Cell(pos, textBuffer.getCharacter(pos)))
             }
         }
         val blinkingChars = dirtyTerminalCells.filter { getCharacter(it).isBlinking() }
@@ -161,13 +166,13 @@ class DefaultVirtualTerminal private constructor(initialSize: Size,
     }
 
     override fun forEachCell(fn: (Cell) -> Unit) {
-        buffer.forEachCell(fn)
+        textBuffer.forEachCell(fn)
     }
 
     private fun moveCursorToNextLine() {
         setCursorPosition(getCursorPosition().withColumn(0).withRelativeRow(1))
-        if (getCursorPosition().row >= buffer.getLineCount()) {
-            buffer.newLine()
+        if (getCursorPosition().row >= textBuffer.getLineCount()) {
+            textBuffer.newLine()
         }
     }
 

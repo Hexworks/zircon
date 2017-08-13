@@ -1,4 +1,4 @@
-package org.codetome.zircon.font
+package org.codetome.zircon.oldfont
 
 import org.codetome.zircon.TextCharacter
 import java.awt.Font
@@ -28,7 +28,7 @@ class PhysicalFontRenderer<out I, in T>(private val fontsInOrderOfPriority: Muta
 
     private fun getFontForCharacter(character: TextCharacter): Font {
         var fontToUse = fontsInOrderOfPriority.firstOrNull { it.canDisplay(character.getCharacter()) }
-                ?: throw IllegalArgumentException("Can't find a font which can display character '${character.getCharacter()}'.")
+                ?: throw IllegalArgumentException("Can't find a oldfont which can display character '${character.getCharacter()}'.")
         if (character.isBold()) {
             fontToUse = fontToUse.deriveFont(Font.BOLD)
         }

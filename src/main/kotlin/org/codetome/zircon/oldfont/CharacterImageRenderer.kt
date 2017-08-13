@@ -1,4 +1,4 @@
-package org.codetome.zircon.font
+package org.codetome.zircon.oldfont
 
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.TextColor
@@ -7,7 +7,7 @@ import java.awt.Font
 interface CharacterImageRenderer<in I, in T> {
 
     /**
-     * Renders a `textCharacter` on a given `surface` from a `font`.
+     * Renders a `textCharacter` on a given `surface` from a `oldfont`.
      */
     fun renderFromFont(textCharacter: TextCharacter,
                        font: Font,

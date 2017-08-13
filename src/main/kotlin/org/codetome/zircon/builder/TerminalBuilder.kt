@@ -1,6 +1,7 @@
 package org.codetome.zircon.builder
 
-import org.codetome.zircon.font.FontRenderer
+import org.codetome.zircon.font.DFTilesetResource
+import org.codetome.zircon.font.Font
 import org.codetome.zircon.screen.Screen
 import org.codetome.zircon.screen.TerminalScreen
 import org.codetome.zircon.terminal.Size
@@ -9,7 +10,7 @@ import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.terminal.swing.SwingTerminalComponent
 import org.codetome.zircon.terminal.swing.SwingTerminalFrame
 import org.codetome.zircon.terminal.virtual.VirtualTerminal
-import java.awt.Graphics
+import java.awt.image.BufferedImage
 
 
 class TerminalBuilder {
@@ -18,7 +19,8 @@ class TerminalBuilder {
     private var title: String = "Zircon Terminal"
     private var autoOpenTerminalFrame = true
     private var deviceConfiguration = DeviceConfigurationBuilder.getDefault()
-    private var fontRenderer: FontRenderer<Graphics> = FontRendererBuilder.getDefault()
+    // TODO: refactor this to abstract factory when libgdx implementation comes
+    private var font: Font<BufferedImage> = DFTilesetResource.WANDERLUST_16X16.asJava2DFont()
 
     fun buildTerminal(): VirtualTerminal = buildTerminalEmulator()
 
@@ -28,7 +30,7 @@ class TerminalBuilder {
             title = title,
             size = initialSize,
             deviceConfiguration = deviceConfiguration,
-            fontConfiguration = fontRenderer).apply {
+            font = font).apply {
 
         if (autoOpenTerminalFrame) {
             isVisible = true
@@ -70,10 +72,10 @@ class TerminalBuilder {
     }
 
     /**
-     * Sets a [FontRenderer] for this builder
+     * Sets a [Font] for this builder.
      */
-    fun fontRenderer(fontRenderer: FontRenderer<Graphics>) = also {
-        this.fontRenderer = fontRenderer
+    fun font(font: Font<BufferedImage>) = also {
+        this.font = font
     }
 
     /**

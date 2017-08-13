@@ -2,7 +2,7 @@ package org.codetome.zircon.terminal.swing
 
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.TextColor
-import org.codetome.zircon.font.CharacterImageRenderer
+import org.codetome.zircon.oldfont.CharacterImageRenderer
 import java.awt.Color
 import java.awt.Font
 import java.awt.Graphics

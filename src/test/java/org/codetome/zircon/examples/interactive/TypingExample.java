@@ -3,19 +3,17 @@ package org.codetome.zircon.examples.interactive;
 import org.codetome.zircon.Position;
 import org.codetome.zircon.TextCharacter;
 import org.codetome.zircon.builder.DeviceConfigurationBuilder;
-import org.codetome.zircon.builder.FontRendererBuilder;
-import org.codetome.zircon.font.FontRenderer;
+import org.codetome.zircon.builder.TerminalBuilder;
+import org.codetome.zircon.font.DFTilesetResource;
 import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.input.KeyStroke;
 import org.codetome.zircon.screen.Screen;
-import org.codetome.zircon.builder.TerminalBuilder;
-import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.Size;
+import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.config.DeviceConfiguration;
 import org.codetome.zircon.terminal.virtual.VirtualTerminal;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +21,6 @@ import java.util.Optional;
 import static org.codetome.zircon.ANSITextColor.BLACK;
 import static org.codetome.zircon.ANSITextColor.RED;
 import static org.codetome.zircon.input.InputType.Enter;
-import static org.codetome.zircon.tileset.DFTilesetResource.WANDERLUST_16X16;
 
 public class TypingExample {
 
@@ -44,14 +41,10 @@ public class TypingExample {
     public static void main(String[] args) {
         final TerminalBuilder factory = new TerminalBuilder();
         factory.initialTerminalSize(new Size(TERMINAL_WIDTH, TERMINAL_HEIGHT));
-        final FontRenderer<Graphics> fontConfig = FontRendererBuilder.newBuilder()
-                .useSwing()
-                .useDFTileset(WANDERLUST_16X16)
-                .build();
         final DeviceConfiguration deviceConfig = DeviceConfigurationBuilder.newBuilder()
                 .cursorBlinking(true).build();
 
-        factory.fontRenderer(fontConfig);
+        factory.font(DFTilesetResource.WANDERLUST_16X16.asJava2DFont());
         factory.deviceConfiguration(deviceConfig);
         final VirtualTerminal terminal = factory.buildTerminal();
         final Screen screen = factory.createScreenFor(terminal);

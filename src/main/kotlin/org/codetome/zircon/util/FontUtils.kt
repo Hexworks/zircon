@@ -71,7 +71,7 @@ object FontUtils {
     fun getDefaultFonts() = listOf(Font("Monospaced", Font.PLAIN, getFontSize()))
 
     /**
-     * Returns the default font to use depending on the platform.
+     * Returns the default oldfont to use depending on the platform.
      */
     @JvmStatic
     fun selectDefaultFont(): MutableList<Font> {

@@ -1,28 +1,45 @@
-package org.codetome.zircon.tileset
+package org.codetome.zircon.font
+
+import javax.imageio.ImageIO
 
 enum class DFTilesetResource(val tilesetName: String,
                              val dir: String,
                              val width: Int,
                              val height: Int,
-                             val fileName: String = "${tilesetName}_${width}x$height.png") {
-
+                             val fileName: String = "${tilesetName}_${width}x$height.png",
+                             val path: String = "/$dir/$fileName") {
 
     JOLLY_12x12("jolly", "df_tilesets", 12, 12),
-
     ADU_DHABI_16x16("adu_dhabi", "df_tilesets", 16, 16),
     AESOMATICA_16x16("aesomatica", "df_tilesets", 16, 16),
     BISASAM_16X16("bisasam", "df_tilesets", 16, 16),
     CHEEPICUS_16X16("cheepicus", "df_tilesets", 16, 16),
-    OBSIDIAN_16X16("obsidian" , "df_tilesets", 16, 16),
-    PHOEBUS_16X16("phoebus" , "df_tilesets", 16, 16),
+    OBSIDIAN_16X16("obsidian", "df_tilesets", 16, 16),
+    PHOEBUS_16X16("phoebus", "df_tilesets", 16, 16),
     ROGUE_YUN_16X16("rogue_yun", "df_tilesets", 16, 16),
     WANDERLUST_16X16("wanderlust", "df_tilesets", 16, 16),
 
-    CLA_18X18("cla" , "df_tilesets", 18, 18),
+    CLA_18X18("cla", "df_tilesets", 18, 18),
 
     BISASAM_20X20("bisasam", "df_tilesets", 20, 20),
     TAFFER_20X20("taffer", "df_tilesets", 20, 20),
     YOBBO_20X20("yobbo", "df_tilesets", 20, 20);
+
+    fun asJava2DFont(): Java2DFont {
+        val metadata = UNICODE_TO_CP437_LOOKUP.map { (char, index) ->
+            val x = index.rem(16)
+            val y = index.div(16)
+            Pair(char.toChar(), listOf(CharacterMetadata(
+                    char = char.toChar(),
+                    x = x,
+                    y = y)))
+        }.toMap()
+        return Java2DFont(
+                source = ImageIO.read(this.javaClass.getResourceAsStream(path)),
+                metadata = metadata,
+                width = width,
+                height = height)
+    }
 
     companion object {
 
