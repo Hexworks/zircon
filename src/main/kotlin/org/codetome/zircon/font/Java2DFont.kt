@@ -54,9 +54,10 @@ class Java2DFont(private val source: BufferedImage,
         return image
     }
 
-    private fun applyColorSwap(image: BufferedImage, bg: Color, fg: Color): BufferedImage {
+    private fun applyColorSwap(source: BufferedImage, bg: Color, fg: Color): BufferedImage {
         val backgroundRGB = bg.rgb
         val foregroundRGB = fg.rgb
+        val image = cloneImage(source)
 
         for (y in 0..image.height - 1) {
             for (x in 0..image.width - 1) {
@@ -80,5 +81,13 @@ class Java2DFont(private val source: BufferedImage,
         }
 
         return image
+    }
+
+    private fun cloneImage(image: BufferedImage): BufferedImage {
+        val newImage = BufferedImage(image.width, image.height, image.type)
+        val g = newImage.graphics
+        g.drawImage(image, 0, 0, null)
+        g.dispose()
+        return newImage
     }
 }
