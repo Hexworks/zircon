@@ -1,14 +1,14 @@
-package org.codetome.zircon.font
+package org.codetome.zircon.oldfont
 
 import org.codetome.zircon.TextCharacter
 
 
 /**
- * Renders a monospace font type. There can be all kinds of fonts from the built-in
+ * Renders a monospace oldfont type. There can be all kinds of fonts from the built-in
  * [java.awt.Font] to custom tileset fonts. For our purposes the most important
- * things to know about a monospace font to render it is its width and height, otherwise we can't
+ * things to know about a monospace oldfont to render it is its width and height, otherwise we can't
  * use it in a terminal display environment. The other mandatory requirement for a
- * font is to be monospaced (for the same reason).
+ * oldfont is to be monospaced (for the same reason).
  */
 abstract class FontRenderer<in S>(val width: Int,
                                   val height: Int) {

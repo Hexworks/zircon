@@ -5,7 +5,7 @@ import org.codetome.zircon.Modifier
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.builder.TextColorFactory
-import org.codetome.zircon.font.FontRenderer
+import org.codetome.zircon.font.Font
 import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.input.MouseAction
@@ -30,7 +30,7 @@ import java.util.*
 @Suppress("unused")
 abstract class Java2DTerminalImplementation(
         private val deviceConfiguration: DeviceConfiguration,
-        private val fontRenderer: FontRenderer<Graphics>,
+        private val font: Font<BufferedImage>,
         private val virtualTerminal: VirtualTerminal)
     : VirtualTerminal by virtualTerminal {
 
@@ -43,14 +43,15 @@ abstract class Java2DTerminalImplementation(
 
     private var blinkTimer = Timer("BlinkTimer", true)
     private var buffer: Optional<BufferedImage> = Optional.empty()
+    private val charRenderer = SwingCharacterImageRenderer(font.getWidth(), font.getHeight())
 
     /**
-     * Used to find out the font height, in pixels.
+     * Used to find out the oldfont height, in pixels.
      */
     abstract fun getFontHeight(): Int
 
     /**
-     * Used to find out the font width, in pixels.
+     * Used to find out the oldfont width, in pixels.
      */
     abstract fun getFontWidth(): Int
 
@@ -242,14 +243,22 @@ abstract class Java2DTerminalImplementation(
         // TODO:    add smart refresh for layers (`charDiffersInBuffers` should
         // TODO:    check z level intersections of layers)
 
-        fontRenderer.renderCharacter(character.copy(
+        charRenderer.renderFromImage(
                 foregroundColor = TextColorFactory.fromAWTColor(foregroundColor),
-                backgroundColor = TextColorFactory.fromAWTColor(backgroundColor)), graphics, x, y)
+                backgroundColor = TextColorFactory.fromAWTColor(backgroundColor),
+                image = font.fetchRegionForChar(character),
+                surface = graphics,
+                x = x,
+                y = y)
 
         fetchOverlayZIntersection(Position(columnIndex, rowIndex)).forEach {
-            fontRenderer.renderCharacter(it.copy(
+            charRenderer.renderFromImage(
                     foregroundColor = TextColorFactory.fromAWTColor(it.getForegroundColor().toAWTColor()),
-                    backgroundColor = TextColorFactory.fromAWTColor(it.getBackgroundColor().toAWTColor())), graphics, x, y)
+                    backgroundColor = TextColorFactory.fromAWTColor(it.getBackgroundColor().toAWTColor()),
+                    image = font.fetchRegionForChar(it),
+                    surface = graphics,
+                    x = x,
+                    y = y)
         }
 
         if (drawCursor) {

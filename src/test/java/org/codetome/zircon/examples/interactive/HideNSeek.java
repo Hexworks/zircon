@@ -1,7 +1,6 @@
 package org.codetome.zircon.examples.interactive;
 
 import org.codetome.zircon.*;
-import org.codetome.zircon.builder.FontRendererBuilder;
 import org.codetome.zircon.builder.TerminalBuilder;
 import org.codetome.zircon.builder.TextCharacterBuilder;
 import org.codetome.zircon.builder.TextColorFactory;
@@ -12,7 +11,6 @@ import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.terminal.Size;
-import org.codetome.zircon.tileset.DFTilesetResource;
 
 import java.util.ArrayList;
 import java.util.List;

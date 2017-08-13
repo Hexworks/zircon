@@ -1,17 +1,14 @@
 package org.codetome.zircon.examples;
 
 import org.codetome.zircon.*;
-import org.codetome.zircon.builder.FontRendererBuilder;
-import org.codetome.zircon.builder.TextColorFactory;
-import org.codetome.zircon.screen.Screen;
-import org.codetome.zircon.screen.TerminalScreen;
 import org.codetome.zircon.builder.TerminalBuilder;
+import org.codetome.zircon.builder.TextColorFactory;
+import org.codetome.zircon.font.DFTilesetResource;
+import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.terminal.Size;
 
 import java.util.HashSet;
 import java.util.Random;
-
-import static org.codetome.zircon.tileset.DFTilesetResource.WANDERLUST_16X16;
 
 public class TilesetExample {
 
@@ -51,10 +48,7 @@ public class TilesetExample {
 
     public static void main(String[] args) {
         final Screen screen = TerminalBuilder.newBuilder()
-                .fontRenderer(FontRendererBuilder.newBuilder()
-                        .useSwing()
-                        .useDFTileset(WANDERLUST_16X16)
-                        .build())
+                .font(DFTilesetResource.WANDERLUST_16X16.asJava2DFont())
                 .initialTerminalSize(new Size(TERMINAL_WIDTH, TERMINAL_HEIGHT))
                 .buildScreen();
         screen.setCursorVisible(false);

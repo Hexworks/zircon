@@ -1,20 +1,15 @@
 package org.codetome.zircon.benchmark
 
 import org.codetome.zircon.Position
-import org.codetome.zircon.builder.FontRendererBuilder
 import org.codetome.zircon.builder.TerminalBuilder
+import org.codetome.zircon.font.DFTilesetResource
 import org.codetome.zircon.terminal.Size
-import org.codetome.zircon.tileset.DFTilesetResource
 import org.codetome.zircon.util.Stats
 
 fun main(args:Array<String>) {
     val terminal = TerminalBuilder.newBuilder()
             .initialTerminalSize(SIZE)
-            .fontRenderer(FontRendererBuilder.newBuilder()
-                    .useSwing()
-//                    .usePhysicalFonts()
-                    .useDFTileset(DFTilesetResource.WANDERLUST_16X16)
-                    .build())
+            .font(DFTilesetResource.WANDERLUST_16X16.asJava2DFont())
             .buildTerminal()
 
     val charCount = 60 * 30

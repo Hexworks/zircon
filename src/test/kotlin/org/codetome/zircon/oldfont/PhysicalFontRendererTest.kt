@@ -1,4 +1,4 @@
-package org.codetome.zircon.font
+package org.codetome.zircon.oldfont
 
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.util.FontUtils

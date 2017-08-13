@@ -82,7 +82,7 @@ terminal.putCharacter('C');
 ```
 And the result is:
 
-![][font modifiers img]
+![][tilesetFont modifiers img]
 
 ### Working with Screens
 
@@ -160,7 +160,7 @@ to other [TextImage] objects using the `copyTo` method.
 ## Screens
 
 [Screen]s are a bitmap-like in-memory representations of your [Terminal]. They are double buffered
-which means that you write to a back-buffer and when you `refresh` your [Screen] only the changes will
+which means that you write to a back-textBuffer and when you `refresh` your [Screen] only the changes will
 be written to the backing [Terminal] instance. Multiple [Screen]s can be attached to the same [Terminal]
 object which means that you can have multiple screens in your app and you can switch between them
 simultaneously by using the `display` method. 
@@ -198,7 +198,7 @@ Pull requests are also welcome!*
 [license]:https://github.com/Hexworks/zircon/blob/master/LICENSE
 [license img]:https://img.shields.io/badge/License-MIT-green.svg
 
-[font modifiers img]:https://github.com/Hexworks/zircon/blob/master/src/main/resources/modifiers_example.png
+[tilesetFont modifiers img]:https://github.com/Hexworks/zircon/blob/master/src/main/resources/modifiers_example.png
 [button img]:https://github.com/Hexworks/zircon/blob/master/src/main/resources/button.png
 
 [Terminal]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/terminal/Terminal.kt

@@ -33,7 +33,7 @@ public class FontModifiersExample {
         terminal.putCharacter('C');
 
         terminal.flush();
-        // note that anti alias can be enabled when building a font renderer
+        // note that anti alias can be enabled when building a oldfont renderer
     }
 
     private static void putEmptySpace(Terminal terminal) {

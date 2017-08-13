@@ -1,7 +1,7 @@
-package org.codetome.zircon.font
+package org.codetome.zircon.oldfont
 
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.tileset.DFTilesetResource
+import org.codetome.zircon.font.DFTilesetResource
 
 class TilesetFontRenderer<out S : Sprite<I>, out I, in T>(width: Int,
                                                           height: Int,
