@@ -10,6 +10,8 @@ object TextColorFactory {
     val DEFAULT_FOREGROUND_COLOR = ANSITextColor.WHITE
     val DEFAULT_BACKGROUND_COLOR = ANSITextColor.BLACK
     val DEFAULT_ALPHA = 255
+    @JvmField
+    val TRANSPARENT = TextColorImpl(0, 0, 0, 0)
 
     private val RGB_COLOR_PATTERN = Pattern.compile("#[0-9a-fA-F]{6}")
 

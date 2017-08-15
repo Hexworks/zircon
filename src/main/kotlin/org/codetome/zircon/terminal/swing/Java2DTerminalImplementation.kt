@@ -117,7 +117,7 @@ abstract class Java2DTerminalImplementation(
             needToRedraw = true
         }
 
-        if(isDirty()) {
+        if (isDirty()) {
             needToRedraw = true
         }
 
@@ -204,11 +204,14 @@ abstract class Java2DTerminalImplementation(
         // TODO:    add smart refresh for layers (`charDiffersInBuffers` should
         // TODO:    check z level intersections of layers)
 
-        graphics.drawImage(font.fetchRegionForChar(fixedChar), x, y, null)
-
+        if (fixedChar.isNotEmpty()) {
+            graphics.drawImage(font.fetchRegionForChar(fixedChar), x, y, null)
+        }
 
         fetchOverlayZIntersection(Position(columnIndex, rowIndex)).forEach {
-            graphics.drawImage(font.fetchRegionForChar(fixedChar), x, y, null)
+            if (it.isNotEmpty()) {
+                graphics.drawImage(font.fetchRegionForChar(it), x, y, null)
+            }
         }
 
         if (drawCursor) {
@@ -229,7 +232,7 @@ abstract class Java2DTerminalImplementation(
 
         if (blink && blinkOn) {
             return backgroundColor.toAWTColor()
-        }else {
+        } else {
             return foregroundColor.toAWTColor()
         }
     }

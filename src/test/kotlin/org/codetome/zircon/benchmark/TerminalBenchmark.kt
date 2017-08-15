@@ -12,6 +12,7 @@ fun main(args:Array<String>) {
             .initialTerminalSize(SIZE)
             .font(DFTilesetResource.WANDERLUST_16X16.asJava2DFont())
             .buildTerminal()
+    terminal.setCursorVisible(false)
 
     val charCount = 60 * 30
     val chars = listOf('a', 'b')

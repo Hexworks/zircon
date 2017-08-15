@@ -4,6 +4,8 @@ import org.codetome.zircon.*;
 import org.codetome.zircon.builder.TerminalBuilder;
 import org.codetome.zircon.builder.TextColorFactory;
 import org.codetome.zircon.font.resource.DFTilesetResource;
+import org.codetome.zircon.graphics.layer.DefaultLayer;
+import org.codetome.zircon.graphics.layer.Layer;
 import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.terminal.Size;
 
@@ -44,7 +46,7 @@ public class TilesetExample {
             new HashSet<>());
     private static final TextCharacter[] GRASSES = new TextCharacter[]{GRASS_0, GRASS_1, GRASS_2};
     private static final TextColor TEXT_COLOR = TextColorFactory.fromString("#bb4422");
-    private static final TextColor TEXT_BG_COLOR = TextColorFactory.fromRGB(0, 0, 0, 255);
+    private static final TextColor TEXT_BG_COLOR = TextColorFactory.fromString("#00ff00");
 
     public static void main(String[] args) {
         final Screen screen = TerminalBuilder.newBuilder()
@@ -72,17 +74,21 @@ public class TilesetExample {
         final int charCount = RANDOM_CHARS.length;
         final int ansiCount = ANSITextColor.values().length;
 
+        final Layer overlay = new DefaultLayer(screen.getSize(), TextCharacter.EMPTY
+                .withBackgroundColor(TextColorFactory.fromRGB(0, 0, 0, 50)), new Position(0, 0));
+
         for (int i = 0; i < RANDOM_CHAR_COUNT; i++) {
-            screen.setCharacter(
+            overlay.setCharacterAt(
                     new Position(
                             random.nextInt(TERMINAL_WIDTH),
                             random.nextInt(TERMINAL_HEIGHT - 2) + 2),
                     TextCharacter.builder()
                             .character(RANDOM_CHARS[random.nextInt(charCount)])
                             .foregroundColor(ANSITextColor.values()[random.nextInt(ansiCount)])
-                            .backgroundColor(TextColorFactory.fromString("#114011"))
+                            .backgroundColor(TextColorFactory.TRANSPARENT)
                             .build());
         }
+        screen.addOverlay(overlay);
         screen.display();
     }
 }

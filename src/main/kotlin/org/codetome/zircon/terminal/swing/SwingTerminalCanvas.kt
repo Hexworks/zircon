@@ -17,6 +17,7 @@ import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import org.codetome.zircon.terminal.virtual.VirtualTerminalListener
 import java.awt.Canvas
+import java.awt.Color
 import java.awt.Graphics
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
@@ -40,6 +41,10 @@ class SwingTerminalCanvas(
             font,
             initialSize,
             deviceConfiguration)
+
+    init {
+        background = Color.BLACK
+    }
 
     override fun addInput(input: Input) = terminal.addInput(input)
 

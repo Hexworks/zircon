@@ -23,15 +23,6 @@ apply plugin: 'maven'
 apply plugin: 'jacoco'
 apply plugin: 'application'
 
-mainClassName = "org.codetome.zircon.TerminalBenchmarkKt"
-
-jar {
-    manifest {
-        attributes 'Main-Class': 'org.codetome.zircon.TerminalBenchmarkKt'
-    }
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-}
-
 //apply plugin: 'signing'
 //apply plugin: 'maven-publish'
 
