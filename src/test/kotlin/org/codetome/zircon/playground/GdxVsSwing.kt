@@ -13,13 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import org.codetome.zircon.builder.TextCharacterBuilder
 import org.codetome.zircon.builder.TextColorFactory
-import org.codetome.zircon.font.DFTilesetResource
+import org.codetome.zircon.font.resource.DFTilesetResource
 import org.codetome.zircon.util.Stats
 import java.awt.Canvas
 import java.awt.Dimension
 import java.awt.Graphics2D
-import java.awt.Rectangle
-import java.awt.image.BufferedImage
 import java.util.concurrent.Executors
 import javax.swing.JFrame
 import javax.swing.SwingUtilities
@@ -47,7 +45,7 @@ class MyPanel : Canvas() {
     var currIdx = 0
     val pool = Executors.newFixedThreadPool(1)
     var measurements = 0
-    var avgMs: Long = 0
+    var avgMs: Double = 0.toDouble()
 
     init {
         this.preferredSize = Dimension(Config.TILESET.width * Config.WIDTH, Config.TILESET.height * Config.HEIGHT)
@@ -57,13 +55,16 @@ class MyPanel : Canvas() {
                     val start = System.nanoTime()
                     draw()
                     val end = System.nanoTime()
-                    var totalMs = (end - start) / 1000 / 1000
-                    avgMs = (avgMs * measurements + totalMs.toInt()) / ++measurements
+                    var totalMs: Double = (end - start).toDouble() / 1000.toDouble() / 1000.toDouble()
+                    avgMs = (avgMs * measurements + totalMs) / ++measurements
+                    if(avgMs == 0.0) {
+                        avgMs = 0.0001
+                    }
+                    if(totalMs == 0.0) {
+                        totalMs = 0.0001
+                    }
                     if (measurements % 10 == 0) {
-                        println(String.format("Current FPS is: %d. Average fps is %d. Render time is %d.",
-                                1000 / totalMs,
-                                1000 / avgMs,
-                                totalMs))
+                        println("Current FPS is: ${1000 / totalMs}. Average fps is ${1000 / avgMs}. Render time is ${totalMs}.")
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()

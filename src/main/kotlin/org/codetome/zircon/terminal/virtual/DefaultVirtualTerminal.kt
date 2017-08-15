@@ -169,6 +169,8 @@ class DefaultVirtualTerminal private constructor(initialSize: Size,
         textBuffer.forEachCell(fn)
     }
 
+
+
     private fun moveCursorToNextLine() {
         setCursorPosition(getCursorPosition().withColumn(0).withRelativeRow(1))
         if (getCursorPosition().row >= textBuffer.getLineCount()) {
@@ -180,6 +182,8 @@ class DefaultVirtualTerminal private constructor(initialSize: Size,
         wholeBufferDirty = true
         dirtyTerminalCells.clear()
     }
+
+    override fun isDirty() = wholeBufferDirty.or(dirtyTerminalCells.isNotEmpty())
 
     private fun cursorIsAtTheEndOfTheLine() = getCursorPosition().column == terminalSize.columns
 }

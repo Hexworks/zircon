@@ -73,10 +73,15 @@ interface Terminal : InputProvider, Closeable, Clearable, StyleSet, CursorHolder
     /**
      * Calls [Terminal.flush] on the underlying [java.io.OutputStream] object, or whatever
      * other implementation this terminal is built around. Some implementing classes of this
-     * interface (like [org.codetome.zircon.terminal.swing.SwingTerminalComponent])
+     * interface (like [org.codetome.zircon.terminal.swing.SwingTerminalCanvas])
      * doesn't do anything as it doesn't really apply to them.
      */
     fun flush()
+
+    /**
+     * Tells whether this [Terminal] was changed since the last [Terminal.flush].
+     */
+    fun isDirty(): Boolean
 
 }
 

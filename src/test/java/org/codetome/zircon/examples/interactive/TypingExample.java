@@ -4,7 +4,7 @@ import org.codetome.zircon.Position;
 import org.codetome.zircon.TextCharacter;
 import org.codetome.zircon.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.builder.TerminalBuilder;
-import org.codetome.zircon.font.DFTilesetResource;
+import org.codetome.zircon.font.resource.DFTilesetResource;
 import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.input.KeyStroke;
