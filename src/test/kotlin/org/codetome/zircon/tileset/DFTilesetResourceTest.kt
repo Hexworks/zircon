@@ -1,7 +1,7 @@
 package org.codetome.zircon.tileset
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.font.DFTilesetResource
+import org.codetome.zircon.font.resource.DFTilesetResource
 import org.junit.Test
 
 class DFTilesetResourceTest {

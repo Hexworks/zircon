@@ -1,7 +1,7 @@
 package org.codetome.zircon.oldfont
 
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.font.DFTilesetResource
+import org.codetome.zircon.font.resource.DFTilesetResource
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock

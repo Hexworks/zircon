@@ -6,7 +6,7 @@ import org.codetome.zircon.TextColor;
 import org.codetome.zircon.builder.TerminalBuilder;
 import org.codetome.zircon.builder.TextColorFactory;
 import org.codetome.zircon.builder.TextImageBuilder;
-import org.codetome.zircon.font.DFTilesetResource;
+import org.codetome.zircon.font.resource.DFTilesetResource;
 import org.codetome.zircon.graphics.TextGraphics;
 import org.codetome.zircon.graphics.TextImage;
 import org.codetome.zircon.screen.Screen;

@@ -1,6 +1,5 @@
 package org.codetome.zircon.terminal.swing
 
-import org.codetome.zircon.ANSITextColor
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
@@ -23,7 +22,7 @@ import java.awt.image.BufferedImage
 import java.util.*
 
 /**
- * This is the class that does the heavy lifting for [SwingTerminalComponent]. It maintains
+ * This is the class that does the heavy lifting for [SwingTerminalCanvas]. It maintains
  * most of the external terminal state and also the main back buffer that is copied to the component
  * area on draw operations.
  */
@@ -42,7 +41,6 @@ abstract class Java2DTerminalImplementation(
     private var lastComponentHeight: Int = 0
 
     private var blinkTimer = Timer("BlinkTimer", true)
-    private var buffer: Optional<BufferedImage> = Optional.empty()
     private val charRenderer = SwingCharacterImageRenderer(font.getWidth(), font.getHeight())
 
     /**
@@ -71,10 +69,10 @@ abstract class Java2DTerminalImplementation(
     abstract fun isTextAntiAliased(): Boolean
 
     /**
-     * Called by the [Java2DTerminalImplementation] when it would like the OS to schedule a repaint of the
+     * Called by the terminal implementation when it would like the OS to schedule a draw of the
      * window.
      */
-    abstract fun repaint()
+    abstract fun draw()
 
     @Synchronized
     fun onCreated() {
@@ -82,7 +80,7 @@ abstract class Java2DTerminalImplementation(
             override fun run() {
                 blinkOn = !blinkOn
                 if (hasBlinkingText) {
-                    repaint()
+                    draw()
                 }
             }
         }, deviceConfiguration.blinkLengthInMilliSeconds, deviceConfiguration.blinkLengthInMilliSeconds)
@@ -107,8 +105,8 @@ abstract class Java2DTerminalImplementation(
      * Updates the back buffer (if necessary) and draws it to the component's surface.
      */
     @Synchronized
-    fun paintComponent(componentGraphics: Graphics) {
-        var needToUpdateBackBuffer = hasBlinkingText
+    fun draw(graphics: Graphics2D) {
+        var needToRedraw = hasBlinkingText
 
         // Detect resize
         if (resizeHappened()) {
@@ -116,114 +114,73 @@ abstract class Java2DTerminalImplementation(
                     columns = getWidth() / getFontWidth(),
                     rows = getHeight() / getFontHeight())
             virtualTerminal.setSize(terminalSize)
-            needToUpdateBackBuffer = true
+            needToRedraw = true
         }
 
-        if (needToUpdateBackBuffer) {
-            updateBackBuffer()
+        if(isDirty()) {
+            needToRedraw = true
         }
 
-        ensureGraphicBufferHasRightSize()
-        val clipBounds: Rectangle = componentGraphics.clipBounds ?: Rectangle(0, 0, getWidth(), getHeight())
-        componentGraphics.drawImage(
-                buffer.get(),
-                clipBounds.x,
-                clipBounds.y,
-                clipBounds.getWidth().toInt(),
-                clipBounds.getHeight().toInt(),
-                clipBounds.x,
-                clipBounds.y,
-                clipBounds.getWidth().toInt(),
-                clipBounds.getHeight().toInt(), null)
+        if (needToRedraw) {
+            val cursorPosition = virtualTerminal.getCursorPosition()
+            var foundBlinkingCharacters = deviceConfiguration.isCursorBlinking
 
-        fillLeftoverSpaceWithBlack(componentGraphics)
+            graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED)
+            graphics.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE)
+            graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY)
+            graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
+            graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED)
+            if (isTextAntiAliased()) {
+                graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
+                graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+            } else {
+                graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF)
+                graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
+            }
+
+            virtualTerminal.forEachDirtyCell { (position, textCharacter) ->
+                val atCursorLocation = cursorPosition == position
+                val characterWidth = getFontWidth()
+                val foregroundColor = deriveTrueForegroundColor(textCharacter)
+                val backgroundColor = deriveTrueBackgroundColor(textCharacter, atCursorLocation)
+                val drawCursor = atCursorLocation && (!deviceConfiguration.isCursorBlinking || //Always draw if the cursor isn't blinking
+                        deviceConfiguration.isCursorBlinking && blinkOn)    //If the cursor is blinking, only draw when blinkOn is true
+                if (textCharacter.getModifiers().contains(Modifier.BLINK)) {
+                    foundBlinkingCharacters = true
+                }
+
+                drawCharacter(graphics,
+                        textCharacter,
+                        position.column,
+                        position.row,
+                        foregroundColor,
+                        backgroundColor,
+                        characterWidth,
+                        drawCursor)
+            }
+
+            this.hasBlinkingText = foundBlinkingCharacters || deviceConfiguration.isCursorBlinking
+        }
+
+        fillLeftoverSpaceWithBlack(graphics)
 
         this.lastComponentWidth = getWidth()
         this.lastComponentHeight = getHeight()
-        componentGraphics.dispose()
+        graphics.dispose()
     }
 
-    private fun fillLeftoverSpaceWithBlack(componentGraphics: Graphics) {
+    private fun fillLeftoverSpaceWithBlack(graphics: Graphics) {
         // Take care of the left-over area at the bottom and right of the component where no character can fit
-        componentGraphics.color = Color.BLACK
+        graphics.color = Color.BLACK
 
         val leftoverWidth = getWidth() % getFontWidth()
         if (leftoverWidth > 0) {
-            componentGraphics.fillRect(getWidth() - leftoverWidth, 0, leftoverWidth, getHeight())
+            graphics.fillRect(getWidth() - leftoverWidth, 0, leftoverWidth, getHeight())
         }
 
         val leftoverHeight = getHeight() % getFontHeight()
         if (leftoverHeight > 0) {
-            componentGraphics.fillRect(0, getHeight() - leftoverHeight, getWidth(), leftoverHeight)
-        }
-    }
-
-    @Synchronized
-    private fun updateBackBuffer() {
-        val cursorPosition = virtualTerminal.getCursorPosition()
-        var foundBlinkingCharacters = deviceConfiguration.isCursorBlinking
-        ensureGraphicBufferHasRightSize()
-        val backBufferGraphics: Graphics2D = buffer.get().createGraphics()
-
-        backBufferGraphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED)
-        backBufferGraphics.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE)
-        backBufferGraphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY)
-        backBufferGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC)
-        backBufferGraphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
-        backBufferGraphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED)
-        if (isTextAntiAliased()) {
-            backBufferGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
-            backBufferGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
-        } else {
-            backBufferGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF)
-            backBufferGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
-        }
-
-        virtualTerminal.forEachDirtyCell { (position, textCharacter) ->
-            val atCursorLocation = cursorPosition == position
-            val characterWidth = getFontWidth()
-            val foregroundColor = deriveTrueForegroundColor(textCharacter)
-            val backgroundColor = deriveTrueBackgroundColor(textCharacter, atCursorLocation)
-            val drawCursor = atCursorLocation && (!deviceConfiguration.isCursorBlinking || //Always draw if the cursor isn't blinking
-                    deviceConfiguration.isCursorBlinking && blinkOn)    //If the cursor is blinking, only draw when blinkOn is true
-            if (textCharacter.getModifiers().contains(Modifier.BLINK)) {
-                foundBlinkingCharacters = true
-            }
-
-            drawCharacter(backBufferGraphics,
-                    textCharacter,
-                    position.column,
-                    position.row,
-                    foregroundColor,
-                    backgroundColor,
-                    characterWidth,
-                    drawCursor)
-        }
-
-        backBufferGraphics.dispose()
-
-        this.hasBlinkingText = foundBlinkingCharacters || deviceConfiguration.isCursorBlinking
-    }
-
-    private fun ensureGraphicBufferHasRightSize() {
-        if (buffer.isPresent.not()) {
-            buffer = Optional.of(BufferedImage(getWidth() * 2, getHeight() * 2, BufferedImage.TYPE_INT_RGB))
-
-            val graphics = buffer.get().createGraphics()
-            graphics.color = ANSITextColor.DEFAULT.toAWTColor()
-            graphics.fillRect(0, 0, getWidth() * 2, getHeight() * 2)
-            graphics.dispose()
-        }
-        val backBufferRef = buffer.get()
-        if (backBufferRef.width < getWidth() || backBufferRef.width > getWidth() * 4 ||
-                backBufferRef.height < getHeight() || backBufferRef.height > getHeight() * 4) {
-
-            val newBackBuffer = BufferedImage(Math.max(getWidth(), 1) * 2, Math.max(getHeight(), 1) * 2, BufferedImage.TYPE_INT_RGB)
-            val graphics = newBackBuffer.createGraphics()
-            graphics.fillRect(0, 0, newBackBuffer.width, newBackBuffer.height)
-            graphics.drawImage(backBufferRef, 0, 0, null)
-            graphics.dispose()
-            buffer = Optional.of(newBackBuffer)
+            graphics.fillRect(0, getHeight() - leftoverHeight, getWidth(), leftoverHeight)
         }
     }
 
@@ -240,25 +197,18 @@ abstract class Java2DTerminalImplementation(
         val x = columnIndex * getFontWidth()
         val y = rowIndex * getFontHeight()
 
+        val fixedChar = character
+                .withBackgroundColor(TextColorFactory.fromAWTColor(backgroundColor))
+                .withForegroundColor(TextColorFactory.fromAWTColor(foregroundColor))
+
         // TODO:    add smart refresh for layers (`charDiffersInBuffers` should
         // TODO:    check z level intersections of layers)
 
-        charRenderer.renderFromImage(
-                foregroundColor = TextColorFactory.fromAWTColor(foregroundColor),
-                backgroundColor = TextColorFactory.fromAWTColor(backgroundColor),
-                image = font.fetchRegionForChar(character),
-                surface = graphics,
-                x = x,
-                y = y)
+        graphics.drawImage(font.fetchRegionForChar(fixedChar), x, y, null)
+
 
         fetchOverlayZIntersection(Position(columnIndex, rowIndex)).forEach {
-            charRenderer.renderFromImage(
-                    foregroundColor = TextColorFactory.fromAWTColor(it.getForegroundColor().toAWTColor()),
-                    backgroundColor = TextColorFactory.fromAWTColor(it.getBackgroundColor().toAWTColor()),
-                    image = font.fetchRegionForChar(it),
-                    surface = graphics,
-                    x = x,
-                    y = y)
+            graphics.drawImage(font.fetchRegionForChar(fixedChar), x, y, null)
         }
 
         if (drawCursor) {
@@ -306,16 +256,6 @@ abstract class Java2DTerminalImplementation(
     @Synchronized
     override fun clear() {
         virtualTerminal.clear()
-        clearBuffer()
-    }
-
-    private fun clearBuffer() {
-        if (buffer.isPresent) {
-            val graphics = buffer.get().createGraphics()
-            graphics.color = ANSITextColor.DEFAULT.toAWTColor()
-            graphics.fillRect(0, 0, getWidth(), getHeight())
-            graphics.dispose()
-        }
     }
 
     @Synchronized
@@ -332,8 +272,7 @@ abstract class Java2DTerminalImplementation(
 
     @Synchronized
     override fun flush() {
-        updateBackBuffer()
-        repaint()
+        draw()
     }
 
     override fun close() {

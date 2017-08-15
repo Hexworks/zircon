@@ -1,13 +1,13 @@
 package org.codetome.zircon.builder
 
-import org.codetome.zircon.font.DFTilesetResource
+import org.codetome.zircon.font.resource.DFTilesetResource
 import org.codetome.zircon.font.Font
 import org.codetome.zircon.screen.Screen
 import org.codetome.zircon.screen.TerminalScreen
 import org.codetome.zircon.terminal.Size
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.config.DeviceConfiguration
-import org.codetome.zircon.terminal.swing.SwingTerminalComponent
+import org.codetome.zircon.terminal.swing.SwingTerminalCanvas
 import org.codetome.zircon.terminal.swing.SwingTerminalFrame
 import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.awt.image.BufferedImage
@@ -39,7 +39,7 @@ class TerminalBuilder {
 
     /**
      * Sets a hint to the [TerminalFactory] of what size to use when creating the terminal.
-     * Most terminals are not created on request but for example the [SwingTerminalComponent]
+     * Most terminals are not created on request but for example the [SwingTerminalCanvas]
      * and [SwingTerminalFrame] are and this value will be passed down on
      * creation.
      */

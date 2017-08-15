@@ -6,18 +6,19 @@ import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.terminal.virtual.DefaultVirtualTerminal
 import java.awt.AWTKeyStroke
 import java.awt.Dimension
+import java.awt.Graphics2D
 import java.awt.KeyboardFocusManager
 import java.awt.event.HierarchyEvent
 import java.awt.event.MouseEvent
+import java.awt.image.BufferStrategy
 import java.awt.image.BufferedImage
-import javax.swing.JComponent
 import javax.swing.SwingUtilities
 
 /**
  * Concrete implementation of [Java2DTerminalImplementation] that adapts it to Swing.
  */
 class SwingTerminalImplementation(
-        private val component: JComponent,
+        private val canvas: SwingTerminalCanvas,
         val font: Font<BufferedImage>,
         initialSize: Size,
         deviceConfiguration: DeviceConfiguration)
@@ -29,19 +30,17 @@ class SwingTerminalImplementation(
 
     init {
         //Prevent us from shrinking beyond one character
-        component.minimumSize = Dimension(font.getWidth(), font.getHeight())
-        component.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
-        component.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
-        //Make sure the component is double-buffered to prevent flickering
-        component.isDoubleBuffered = true
-        component.addKeyListener(TerminalInputListener())
-        component.addMouseListener(object : TerminalMouseListener() {
+        canvas.minimumSize = Dimension(font.getWidth(), font.getHeight())
+        canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
+        canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
+        canvas.addKeyListener(TerminalInputListener())
+        canvas.addMouseListener(object : TerminalMouseListener() {
             override fun mouseClicked(e: MouseEvent) {
                 super.mouseClicked(e)
-                this@SwingTerminalImplementation.component.requestFocusInWindow()
+                this@SwingTerminalImplementation.canvas.requestFocusInWindow()
             }
         })
-        component.addHierarchyListener { e ->
+        canvas.addHierarchyListener { e ->
             if (e.changeFlags == HierarchyEvent.DISPLAYABILITY_CHANGED.toLong()) {
                 if (e.changed.isDisplayable) {
                     onCreated()
@@ -56,17 +55,35 @@ class SwingTerminalImplementation(
 
     override fun getFontWidth() = font.getWidth()
 
-    override fun getHeight() = component.height
+    override fun getHeight() = canvas.height
 
-    override fun getWidth() = component.width
+    override fun getWidth() = canvas.width
 
     override fun isTextAntiAliased() = false // TODO: what to do?
 
-    override fun repaint() {
+    override fun draw() {
+        val bs = canvas.bufferStrategy
+        val gc: Graphics2D
+        try {
+            gc = bs.drawGraphics as Graphics2D
+        } catch (e: NullPointerException) {
+            // buffer strategy might not be initialized yet
+            draw()
+            return
+        }
         if (SwingUtilities.isEventDispatchThread()) {
-            component.repaint()
+            drawAndDispose(bs, gc)
         } else {
-            SwingUtilities.invokeLater { component.repaint() }
+            SwingUtilities.invokeLater {
+                drawAndDispose(bs, gc)
+            }
         }
     }
+
+    private fun drawAndDispose(bs: BufferStrategy, gc: Graphics2D) {
+        draw(gc)
+        gc.dispose()
+        bs.show()
+    }
+
 }

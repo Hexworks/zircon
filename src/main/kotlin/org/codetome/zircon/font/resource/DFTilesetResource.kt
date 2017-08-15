@@ -1,5 +1,11 @@
-package org.codetome.zircon.font
+package org.codetome.zircon.font.resource
 
+import org.codetome.zircon.font.CharacterMetadata
+import org.codetome.zircon.font.Java2DFont
+import org.codetome.zircon.font.cache.DefaultFontRegionCache
+import org.codetome.zircon.font.cache.CP437TilesetCachingStrategy
+import org.codetome.zircon.font.transformer.Java2DFontRegionCloner
+import org.codetome.zircon.font.transformer.Java2DFontRegionColorizer
 import javax.imageio.ImageIO
 
 enum class DFTilesetResource(val tilesetName: String,
@@ -38,10 +44,16 @@ enum class DFTilesetResource(val tilesetName: String,
                 source = ImageIO.read(this.javaClass.getResourceAsStream(path)),
                 metadata = metadata,
                 width = width,
-                height = height)
+                height = height,
+                cache = DefaultFontRegionCache(CP437TilesetCachingStrategy()),
+                regionTransformers = DF_TILESET_TRANSFORMERS)
     }
 
     companion object {
+
+        private val DF_TILESET_TRANSFORMERS = listOf(
+                Java2DFontRegionCloner(),
+                Java2DFontRegionColorizer())
 
         fun fetchCP437IndexForChar(char: Char): Int {
             return UNICODE_TO_CP437_LOOKUP[char.toInt()]

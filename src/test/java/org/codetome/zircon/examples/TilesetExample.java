@@ -3,7 +3,7 @@ package org.codetome.zircon.examples;
 import org.codetome.zircon.*;
 import org.codetome.zircon.builder.TerminalBuilder;
 import org.codetome.zircon.builder.TextColorFactory;
-import org.codetome.zircon.font.DFTilesetResource;
+import org.codetome.zircon.font.resource.DFTilesetResource;
 import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.terminal.Size;
 
@@ -44,7 +44,7 @@ public class TilesetExample {
             new HashSet<>());
     private static final TextCharacter[] GRASSES = new TextCharacter[]{GRASS_0, GRASS_1, GRASS_2};
     private static final TextColor TEXT_COLOR = TextColorFactory.fromString("#bb4422");
-    private static final TextColor TEXT_BG_COLOR = TextColorFactory.fromString("#114011");
+    private static final TextColor TEXT_BG_COLOR = TextColorFactory.fromRGB(0, 0, 0, 255);
 
     public static void main(String[] args) {
         final Screen screen = TerminalBuilder.newBuilder()
