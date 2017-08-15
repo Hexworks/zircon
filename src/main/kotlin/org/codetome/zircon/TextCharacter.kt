@@ -2,6 +2,7 @@ package org.codetome.zircon
 
 import org.codetome.zircon.Modifier.*
 import org.codetome.zircon.builder.TextCharacterBuilder
+import org.codetome.zircon.builder.TextColorFactory
 
 /**
  * Represents a single character with additional metadata such as colors and modifiers. This class is immutable and
@@ -33,6 +34,8 @@ data class TextCharacter(
     fun isItalic() = modifiers.contains(ITALIC)
 
     fun isBlinking() = modifiers.contains(BLINK)
+
+    fun isNotEmpty() = this != EMPTY
 
     /**
      * Returns a new TextCharacter with the same colors and modifiers but a different underlying character.
@@ -107,5 +110,12 @@ data class TextCharacter(
         @JvmField
         val DEFAULT_CHARACTER = builder().build()
 
+        @JvmField
+        val EMPTY = builder()
+                .backgroundColor(TextColorFactory.TRANSPARENT)
+                .foregroundColor(TextColorFactory.TRANSPARENT)
+                .character(' ')
+                .build()
     }
+
 }

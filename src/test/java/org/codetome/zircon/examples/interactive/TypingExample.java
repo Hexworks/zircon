@@ -49,8 +49,8 @@ public class TypingExample {
         final VirtualTerminal terminal = factory.buildTerminal();
         final Screen screen = factory.createScreenFor(terminal);
 
-        startTypingSupportForScreen(screen);
-//        startTypingSupportForTerminal(terminal);
+//        startTypingSupportForScreen(screen);
+        startTypingSupportForTerminal(terminal);
     }
 
     private static void startTypingSupportForScreen(Screen screen) {

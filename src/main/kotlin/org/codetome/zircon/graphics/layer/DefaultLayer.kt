@@ -13,7 +13,7 @@ class DefaultLayer private constructor(offset: Position, private val textImage: 
     : Layer, TextImage by textImage {
 
     constructor(size: Size = Size.ONE,
-                filler: TextCharacter = TextCharacter.DEFAULT_CHARACTER,
+                filler: TextCharacter = TextCharacter.EMPTY,
                 offset: Position = Position.DEFAULT_POSITION)
             : this(
             offset = offset,
