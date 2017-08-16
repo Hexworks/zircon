@@ -2,19 +2,28 @@ package org.codetome.zircon.graphics
 
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.Position
+import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.api.TextCharacterBuilder
+import org.codetome.zircon.graphics.box.BoxConnectingMode
+import org.codetome.zircon.graphics.box.BoxRenderer
+import org.codetome.zircon.graphics.box.BoxType
+import org.codetome.zircon.graphics.box.DefaultBoxRenderer
 import org.codetome.zircon.graphics.shape.DefaultShapeRenderer
 import org.codetome.zircon.graphics.shape.ShapeRenderer
 import org.codetome.zircon.graphics.style.DefaultStyleSet
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.graphics.style.StyleSet
 
 
 /**
  * This class holds the default logic for drawing the basic text graphic as exposed by [TextGraphics].
  */
 abstract class AbstractTextGraphics(
-        private val shapeRenderer: DefaultShapeRenderer = DefaultShapeRenderer())
-    : DefaultStyleSet(), TextGraphics, ShapeRenderer by shapeRenderer {
+        private val shapeRenderer: DefaultShapeRenderer = DefaultShapeRenderer(),
+        private val boxRenderer: BoxRenderer = DefaultBoxRenderer())
+
+    : DefaultStyleSet(), TextGraphics,
+        ShapeRenderer by shapeRenderer {
 
     init {
         shapeRenderer.setCallback(object : DefaultShapeRenderer.Callback {
@@ -22,6 +31,16 @@ abstract class AbstractTextGraphics(
                 setCharacter(position, character)
             }
         })
+    }
+
+    override fun drawBox(topLeft: Position, size: Size, styleToUse: StyleSet, boxType: BoxType, boxConnectingMode: BoxConnectingMode) {
+        boxRenderer.drawBox(
+                textGraphics = this,
+                topLeft = topLeft,
+                size = size,
+                styleToUse = styleToUse,
+                boxType = boxType,
+                boxConnectingMode = boxConnectingMode)
     }
 
     override fun setCharacter(position: Position, character: Char) {
@@ -101,8 +120,8 @@ abstract class AbstractTextGraphics(
         (fromRow..untilRow - 1).forEach { row ->
             (fromColumn..untilColumn - 1).forEach { column ->
                 setCharacter(
-                        position = Position(column + diffColumn, row + diffRow),
-                        character = image.getCharacterAt(Position(column, row)))
+                        position = Position.of(column + diffColumn, row + diffRow),
+                        character = image.getCharacterAt(Position.of(column, row)))
             }
         }
     }
@@ -132,7 +151,12 @@ abstract class AbstractTextGraphics(
     }
 
     private fun newTextCharacter(character: Char): TextCharacter {
-        return TextCharacter(character, getForegroundColor(), getBackgroundColor(), getActiveModifiers())
+        return TextCharacterBuilder.newBuilder()
+                .character(character)
+                .backgroundColor(getBackgroundColor())
+                .foregroundColor(getForegroundColor())
+                .modifiers(getActiveModifiers())
+                .build()
     }
 
     private fun prepareStringForPut(string: String): String {

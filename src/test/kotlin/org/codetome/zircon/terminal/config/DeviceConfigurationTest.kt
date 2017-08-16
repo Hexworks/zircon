@@ -1,7 +1,7 @@
 package org.codetome.zircon.terminal.config
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.ANSITextColor
+import org.codetome.zircon.color.ANSITextColor
 import org.codetome.zircon.api.DeviceConfigurationBuilder
 import org.junit.Test
 

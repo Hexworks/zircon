@@ -1,63 +1,63 @@
 package org.codetome.zircon.api
 
+import org.codetome.zircon.Size
 import org.codetome.zircon.font.Font
 import org.codetome.zircon.screen.Screen
 import org.codetome.zircon.screen.TerminalScreen
-import org.codetome.zircon.terminal.Size
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.config.DeviceConfiguration
-import org.codetome.zircon.terminal.swing.SwingTerminalCanvas
 import org.codetome.zircon.terminal.swing.SwingTerminalFrame
 import org.codetome.zircon.terminal.virtual.VirtualTerminal
+import java.awt.Toolkit
 import java.awt.image.BufferedImage
 
 
+/**
+ * Builds [Terminal]s.
+ * Defaults are:
+ * - default `initialSize` is 80x24
+ * - default `title` is "Zircon Terminal"
+ * - default `font` is `ROBOTO_MONO`
+ * @see DeviceConfigurationBuilder for the defaults for `deviceConfiguration`
+ */
 class TerminalBuilder {
 
     private var initialSize: Size = Size.DEFAULT
     private var title: String = "Zircon Terminal"
-    private var autoOpenTerminalFrame = true
     private var deviceConfiguration = DeviceConfigurationBuilder.getDefault()
     // TODO: refactor this to abstract factory when libgdx implementation comes
-    private var font: Font<BufferedImage> = CP437TilesetResource.WANDERLUST_16X16.asJava2DFont()
+    private var font: Font<BufferedImage> = PhysicalFontResource.ROBOTO_MONO.asPhysicalFont()
 
-    fun buildTerminal(): VirtualTerminal = buildTerminalEmulator()
+    /**
+     * Builds a [VirtualTerminal] based on the properties of this [TerminalBuilder].
+     */
+    fun buildTerminal(): VirtualTerminal = buildSwingTerminal()
 
-    fun buildTerminalEmulator() = buildSwingTerminal()
-
-    fun buildSwingTerminal() = SwingTerminalFrame(
-            title = title,
-            size = initialSize,
-            deviceConfiguration = deviceConfiguration,
-            font = font).apply {
-
-        if (autoOpenTerminalFrame) {
+    /**
+     * Builds a terminal which is backed by a Swing canvas. Currently this is the only
+     * option.
+     */
+    fun buildSwingTerminal(): SwingTerminalFrame {
+        checkScreenSize()
+        return SwingTerminalFrame(
+                title = title,
+                size = initialSize,
+                deviceConfiguration = deviceConfiguration,
+                font = font).apply {
             isVisible = true
         }
     }
 
     /**
-     * Sets a hint to the [TerminalFactory] of what size to use when creating the terminal.
-     * Most terminals are not created on request but for example the [SwingTerminalCanvas]
-     * and [SwingTerminalFrame] are and this value will be passed down on
-     * creation.
+     * Sets the initial terminal [Size].
      */
     fun initialTerminalSize(initialSize: Size) = also {
         this.initialSize = initialSize
     }
 
-    /**
-     * Controls whether a [SwingTerminalFrame] shall be automatically shown (.setVisible(true))
-     * immediately after creation.
-     * If `false`, you will manually need to call `.setVisible(true)` on the JFrame to actually
-     * see the terminal window. Default for this value is `true`.
-     */
-    fun autoOpenTerminalFrame(autoOpenTerminalFrame: Boolean) = also {
-        this.autoOpenTerminalFrame = autoOpenTerminalFrame
-    }
 
     /**
-     * Sets the title to use on created [SwingTerminalFrame]s created by this factory
+     * Sets the title to use on created [Terminal]s created by this factory.
      */
     fun title(title: String) = also {
         this.title = title
@@ -72,13 +72,15 @@ class TerminalBuilder {
 
     /**
      * Sets a [Font] for this api.
+     * @see CP437TilesetResource and
+     * @see PhysicalFontResource
      */
     fun font(font: Font<BufferedImage>) = also {
         this.font = font
     }
 
     /**
-     * Creates a (default) [Terminal] and immediately wraps it up in a [TerminalScreen].
+     * Creates a (default) [Terminal] and immediately wraps it up in a [Screen].
      */
     fun buildScreen(): Screen {
         return TerminalScreen(buildTerminal())
@@ -89,6 +91,16 @@ class TerminalBuilder {
      */
     fun createScreenFor(terminal: VirtualTerminal): TerminalScreen {
         return TerminalScreen(terminal)
+    }
+
+    private fun checkScreenSize() {
+        val screenSize = Toolkit.getDefaultToolkit().screenSize
+        require(screenSize.width > font.getWidth() * initialSize.columns) {
+            "The requested column count '${initialSize.columns}' for font width '${font.getWidth()}' won't fit on the screen (width: ${screenSize.width}"
+        }
+        require(screenSize.height > font.getHeight() * initialSize.rows) {
+            "The requested row count '${initialSize.rows}' for font height '${font.getHeight()}' won't fit on the screen (height: ${screenSize.height}"
+        }
     }
 
     companion object {

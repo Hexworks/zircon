@@ -7,7 +7,10 @@ import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.graphics.shape.ShapeRenderer
 import org.codetome.zircon.graphics.style.StyleSet
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
+import org.codetome.zircon.graphics.box.BoxConnectingMode
+import org.codetome.zircon.graphics.box.BoxRenderer
+import org.codetome.zircon.graphics.box.BoxType
 import java.util.*
 
 
@@ -33,7 +36,7 @@ import java.util.*
  * Don't hold on to your [TextGraphics] objects for too long. Let them be GC-ed when you are done
  * with them. The reason is that not all implementations will handle the underlying terminal changing size.
  */
-interface TextGraphics : StyleSet, ShapeRenderer {
+interface TextGraphics : StyleSet, ShapeRenderer, BoxRenderer {
     /**
      * Returns the size of the area that this text graphic can write to.
      * Any attempts of placing characters outside of this area will be silently ignored.
@@ -145,5 +148,11 @@ interface TextGraphics : StyleSet, ShapeRenderer {
      * The current foreground color, background color and modifiers will be applied.
      */
     fun fillRectangle(topLeft: Position, size: Size, character: Char)
+
+    fun drawBox(topLeft: Position,
+                size: Size,
+                styleToUse: StyleSet,
+                boxType: BoxType = BoxType.BASIC,
+                boxConnectingMode: BoxConnectingMode = BoxConnectingMode.CONNECT)
 
 }

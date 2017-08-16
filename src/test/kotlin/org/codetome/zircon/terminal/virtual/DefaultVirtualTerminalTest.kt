@@ -7,10 +7,11 @@ import org.codetome.zircon.Position.Companion.DEFAULT_POSITION
 import org.codetome.zircon.Position.Companion.OFFSET_1x1
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.input.KeyStroke.Companion.EOF_STROKE
-import org.codetome.zircon.terminal.Cell
+import org.codetome.zircon.Cell
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
+import org.codetome.zircon.api.TextCharacterBuilder
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
@@ -158,7 +159,7 @@ class DefaultVirtualTerminalTest {
 
     @Test
     fun shouldBeDirtyAfterResize() {
-        target.putCharacter(TextCharacter.DEFAULT_CHARACTER)
+        target.putCharacter(TextCharacterBuilder.DEFAULT_CHARACTER)
         target.forEachDirtyCell {  }
         target.setSize(SIZE.withRelativeColumns(1))
 
@@ -178,7 +179,7 @@ class DefaultVirtualTerminalTest {
 
     @Test
     fun shouldBeAbleToSetCharacter() {
-        val expectedChar = TextCharacter.DEFAULT_CHARACTER.withCharacter('x')
+        val expectedChar = TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x')
         target.setCharacter(OFFSET_1x1, expectedChar)
 
         assertThat(target.getCharacter(OFFSET_1x1))

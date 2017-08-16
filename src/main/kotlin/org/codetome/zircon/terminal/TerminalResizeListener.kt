@@ -1,5 +1,7 @@
 package org.codetome.zircon.terminal
 
+import org.codetome.zircon.Size
+
 interface TerminalResizeListener {
 
     /**

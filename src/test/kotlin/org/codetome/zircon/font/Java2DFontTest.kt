@@ -3,6 +3,7 @@ package org.codetome.zircon.font
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.CP437TilesetResource
+import org.codetome.zircon.api.TextCharacterBuilder
 import org.junit.Test
 
 class Java2DFontTest {
@@ -11,16 +12,16 @@ class Java2DFontTest {
 
     @Test
     fun shouldProperlyCacheFontWhenFetchingRegionTwice() {
-        val firstResult = target.fetchRegionForChar(TextCharacter.DEFAULT_CHARACTER)
-        val secondResult = target.fetchRegionForChar(TextCharacter.DEFAULT_CHARACTER)
+        val firstResult = target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER)
+        val secondResult = target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER)
 
         assertThat(firstResult).isSameAs(secondResult)
     }
 
     @Test
     fun shouldNotBeTheSameWhenRegionIsLoadedForDifferentTextChars() {
-        val firstResult = target.fetchRegionForChar(TextCharacter.DEFAULT_CHARACTER)
-        val secondResult = target.fetchRegionForChar(TextCharacter.EMPTY)
+        val firstResult = target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER)
+        val secondResult = target.fetchRegionForChar(TextCharacterBuilder.EMPTY)
 
         assertThat(firstResult).isNotSameAs(secondResult)
     }
@@ -37,7 +38,7 @@ class Java2DFontTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotBeAbleToFetchRegionWithTags() {
-        target.fetchRegionForChar(TextCharacter.DEFAULT_CHARACTER, "foo")
+        target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER, "foo")
     }
 
     @Test

@@ -4,7 +4,7 @@ import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.TextImageBuilder
 import org.codetome.zircon.graphics.DefaultTextImage
 import org.codetome.zircon.graphics.TextImage
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 
 /**
  * Defines a buffer used by [TerminalScreen] to keep its state of what's currently displayed and what

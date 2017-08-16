@@ -1,4 +1,4 @@
-package org.codetome.zircon
+package org.codetome.zircon.color
 
 import org.junit.Test
 

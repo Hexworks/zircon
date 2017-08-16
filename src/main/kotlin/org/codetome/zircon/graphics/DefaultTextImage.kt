@@ -1,10 +1,15 @@
 package org.codetome.zircon.graphics
 
 import org.codetome.zircon.Position
+import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.behavior.Boundable
 import org.codetome.zircon.behavior.impl.DefaultBoundable
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.graphics.box.BoxConnectingMode
+import org.codetome.zircon.graphics.box.BoxRenderer
+import org.codetome.zircon.graphics.box.BoxType
+import org.codetome.zircon.graphics.box.DefaultBoxRenderer
+import org.codetome.zircon.graphics.style.StyleSet
 import java.util.*
 
 /**
@@ -14,7 +19,8 @@ import java.util.*
  */
 class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
                                            filler: TextCharacter,
-                                           boundable: Boundable) : TextImage, Boundable by boundable {
+                                           boundable: Boundable,
+                                           private val boxRenderer: BoxRenderer = DefaultBoxRenderer()) : TextImage, Boundable by boundable {
 
     constructor(size: Size,
                 toCopy: Array<Array<TextCharacter>>,
@@ -143,7 +149,7 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
             for (y in startRowIdx..startRowIdx + rowsToCopy - 1) {
                 for (x in startColumnIdx..startColumnIdx + columnsToCopy - 1) {
                     destination.setCharacterAt(
-                            Position(x - startColumnIdx + destColumnOffset,
+                            Position.of(x - startColumnIdx + destColumnOffset,
                                     y - startRowIdx + destRowOffset),
                             buffer[y][x])
                 }
@@ -153,6 +159,16 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
 
     override fun newTextGraphics(): TextGraphics {
         return object : AbstractTextGraphics() {
+
+            override fun drawBox(textGraphics: TextGraphics, topLeft: Position, size: Size, styleToUse: StyleSet, boxType: BoxType, boxConnectingMode: BoxConnectingMode) {
+                boxRenderer.drawBox(
+                        textGraphics = textGraphics,
+                        topLeft = topLeft,
+                        size = size,
+                        styleToUse = styleToUse,
+                        boxType = boxType,
+                        boxConnectingMode = boxConnectingMode)
+            }
 
             override fun getSize(): Size = this@DefaultTextImage.getBoundableSize()
 

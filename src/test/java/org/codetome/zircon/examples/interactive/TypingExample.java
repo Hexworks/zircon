@@ -3,29 +3,26 @@ package org.codetome.zircon.examples.interactive;
 import org.codetome.zircon.Position;
 import org.codetome.zircon.TextCharacter;
 import org.codetome.zircon.api.DeviceConfigurationBuilder;
-import org.codetome.zircon.api.TerminalBuilder;
 import org.codetome.zircon.api.PhysicalFontResource;
+import org.codetome.zircon.api.TerminalBuilder;
 import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.input.KeyStroke;
 import org.codetome.zircon.screen.Screen;
-import org.codetome.zircon.terminal.Size;
 import org.codetome.zircon.terminal.Terminal;
-import org.codetome.zircon.terminal.config.DeviceConfiguration;
 import org.codetome.zircon.terminal.virtual.VirtualTerminal;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.codetome.zircon.ANSITextColor.BLACK;
-import static org.codetome.zircon.ANSITextColor.RED;
+import static org.codetome.zircon.color.ANSITextColor.BLACK;
+import static org.codetome.zircon.color.ANSITextColor.RED;
 import static org.codetome.zircon.input.InputType.Enter;
 
 public class TypingExample {
 
     private static final int TERMINAL_WIDTH = 80;
-    private static final int TERMINAL_HEIGHT = 30;
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
     private static final TextCharacter TEXT_CHAR_TEMPLATE = TextCharacter.builder()
@@ -39,15 +36,12 @@ public class TypingExample {
     }
 
     public static void main(String[] args) {
-        final TerminalBuilder factory = new TerminalBuilder();
-        factory.initialTerminalSize(new Size(TERMINAL_WIDTH, TERMINAL_HEIGHT));
-        final DeviceConfiguration deviceConfig = DeviceConfigurationBuilder.newBuilder()
-                .cursorBlinking(true).build();
-
-        factory.font(PhysicalFontResource.SOURCE_CODE_PRO.asPhysicalFont());
-        factory.deviceConfiguration(deviceConfig);
-        final VirtualTerminal terminal = factory.buildTerminal();
-        final Screen screen = factory.createScreenFor(terminal);
+        TerminalBuilder builder = TerminalBuilder.newBuilder()
+                .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
+                        .cursorBlinking(true)
+                        .build());
+        final VirtualTerminal terminal = builder.buildTerminal();
+        final Screen screen = builder.createScreenFor(terminal);
 
 //        startTypingSupportForScreen(screen);
         startTypingSupportForTerminal(terminal);

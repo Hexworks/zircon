@@ -17,11 +17,11 @@ class TextCharacterBuilderTest {
                 .build()
 
         assertThat(result).isEqualTo(
-                TextCharacter(
+                TextCharacter.of(
                         character = CHAR,
                         foregroundColor = FG_COLOR,
                         backgroundColor = BG_COLOR,
-                        modifiersToUse = setOf(MODIFIER)))
+                        modifiers = setOf(MODIFIER)))
     }
 
     companion object {

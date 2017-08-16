@@ -7,7 +7,7 @@ import org.codetome.zircon.Position.Companion.OFFSET_1x1
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.graphics.DefaultTextImage
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations

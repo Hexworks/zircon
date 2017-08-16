@@ -5,7 +5,8 @@ import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.graphics.layer.DefaultLayer
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
+import org.codetome.zircon.api.TextCharacterBuilder.Companion.DEFAULT_CHARACTER
 import org.junit.Before
 import org.junit.Test
 
@@ -21,7 +22,7 @@ class DefaultLayerableTest {
     @Test
     fun shouldContainLayerWhenLayerIsAdded() {
 
-        val layer = DefaultLayer(Size.ONE, TextCharacter.DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
+        val layer = DefaultLayer(Size.ONE, DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
 
         target.addOverlay(layer)
 
@@ -33,7 +34,7 @@ class DefaultLayerableTest {
     @Test
     fun shouldNotContainLayerWhenLayerIsAddedThenRemoved() {
 
-        val layer = DefaultLayer(Size.ONE, TextCharacter.DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
+        val layer = DefaultLayer(Size.ONE, DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
 
         target.addOverlay(layer)
         target.removeLayer(layer)
@@ -46,7 +47,7 @@ class DefaultLayerableTest {
     @Test
     fun shouldNotContainLayerWhenLayerIsAddedThenPopped() {
 
-        val layer = DefaultLayer(Size.ONE, TextCharacter.DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
+        val layer = DefaultLayer(Size.ONE, DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
 
         target.addOverlay(layer)
         val result = target.popOverlay()

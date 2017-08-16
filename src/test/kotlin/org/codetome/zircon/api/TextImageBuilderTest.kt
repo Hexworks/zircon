@@ -2,7 +2,7 @@ package org.codetome.zircon.api
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 import org.junit.Test
 
 class TextImageBuilderTest {

@@ -1,10 +1,7 @@
 package org.codetome.zircon.font.transformer
 
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.TextColor
 import org.codetome.zircon.font.FontRegionTransformer
-import java.awt.Color
-import java.awt.Graphics
 import java.awt.image.BufferedImage
 
 class Java2DFontRegionColorizer : FontRegionTransformer<BufferedImage> {

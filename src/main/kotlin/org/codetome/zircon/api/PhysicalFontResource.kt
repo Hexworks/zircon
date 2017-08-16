@@ -1,6 +1,5 @@
 package org.codetome.zircon.api
 
-import org.codetome.zircon.font.Java2DFont
 import org.codetome.zircon.font.PhysicalFont
 import org.codetome.zircon.font.cache.DefaultFontRegionCache
 import org.codetome.zircon.font.cache.PhysicalFontCachingStrategy
@@ -9,7 +8,11 @@ import java.awt.Font
 import java.awt.GraphicsEnvironment
 import java.io.InputStream
 
-
+/**
+ * This enum encapsulates the means of loading physical fonts from `.ttf` files.
+ * You can either use a built-in font (downloaded from Google Fonts)
+ * or you can load your own using [PhysicalFontResource.loadPhysicalFont].
+ */
 enum class PhysicalFontResource(private val fontName: String,
                                 private val fileName: String = "$fontName.ttf",
                                 private val path: String = "/monospace_fonts/$fileName") {

@@ -2,8 +2,9 @@ package org.codetome.zircon.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
+import org.codetome.zircon.Size
+import org.codetome.zircon.api.LayerBuilder
 import org.codetome.zircon.graphics.layer.DefaultLayer
-import org.codetome.zircon.terminal.Size
 import org.junit.Before
 import org.junit.Test
 
@@ -43,15 +44,17 @@ class DefaultBoundableTest {
 
     @Test
     fun shouldIntersectWhenIntersectIsCalledWithNonIntersectingBoundable() {
-        assertThat(target.intersects(DefaultLayer(
-                offset = NON_INTERSECTING_OFFSET)))
+        assertThat(target.intersects(LayerBuilder.newBuilder()
+                .offset(NON_INTERSECTING_OFFSET)
+                .build()))
                 .isTrue()
     }
 
     @Test
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundableWithOffset() {
-        assertThat(target.intersects(DefaultLayer(
-                offset = INTERSECTION_OFFSET)))
+        assertThat(target.intersects(LayerBuilder.newBuilder()
+                .offset(INTERSECTION_OFFSET)
+                .build()))
                 .isTrue()
     }
 

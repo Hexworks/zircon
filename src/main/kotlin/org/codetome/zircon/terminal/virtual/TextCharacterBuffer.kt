@@ -3,8 +3,9 @@ package org.codetome.zircon.terminal.virtual
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.behavior.Clearable
-import org.codetome.zircon.terminal.Cell
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Cell
+import org.codetome.zircon.Size
+import org.codetome.zircon.api.TextCharacterBuilder
 
 /**
  * This class is used to store lines of text inside of a terminal emulator.
@@ -41,7 +42,7 @@ internal class TextCharacterBuffer: Clearable {
     fun forEachCell(fn: (Cell) -> Unit) {
         lines.forEachIndexed { row, line ->
             line.forEachIndexed { col, tc ->
-                fn(Cell(Position(col, row), tc))
+                fn(Cell(Position.of(col, row), tc))
             }
         }
     }
@@ -54,11 +55,11 @@ internal class TextCharacterBuffer: Clearable {
         checkRowAndColumn(position)
         val (col, row) = position
         if (row >= lines.size) {
-            return TextCharacter.DEFAULT_CHARACTER
+            return TextCharacterBuilder.DEFAULT_CHARACTER
         }
         val line = lines[row]
         if (line.size <= col) {
-            return TextCharacter.DEFAULT_CHARACTER
+            return TextCharacterBuilder.DEFAULT_CHARACTER
         }
         return line[col]
     }
@@ -72,7 +73,7 @@ internal class TextCharacterBuffer: Clearable {
         }
         val line = lines[row]
         while (line.size <= col) {
-            line.add(TextCharacter.DEFAULT_CHARACTER)
+            line.add(TextCharacterBuilder.DEFAULT_CHARACTER)
         }
         line[col] = textCharacter
     }

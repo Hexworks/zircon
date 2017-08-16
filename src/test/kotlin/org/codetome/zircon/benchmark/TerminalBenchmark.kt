@@ -1,15 +1,15 @@
 package org.codetome.zircon.benchmark
 
 import org.codetome.zircon.Position
+import org.codetome.zircon.api.CP437TilesetResource
 import org.codetome.zircon.api.TerminalBuilder
 import org.codetome.zircon.api.TextColorFactory
-import org.codetome.zircon.api.PhysicalFontResource
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 
 fun main(args: Array<String>) {
     val terminal = TerminalBuilder.newBuilder()
             .initialTerminalSize(SIZE)
-            .font(PhysicalFontResource.ANONYMOUS_PRO.asPhysicalFont())
+            .font(CP437TilesetResource.WANDERLUST_16X16.asJava2DFont())
             .buildTerminal()
     terminal.setCursorVisible(false)
 

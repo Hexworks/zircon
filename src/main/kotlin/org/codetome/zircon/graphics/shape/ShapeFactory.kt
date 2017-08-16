@@ -1,7 +1,7 @@
 package org.codetome.zircon.graphics.shape
 
 import org.codetome.zircon.Position
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 import java.util.*
 
 object ShapeFactory {
@@ -85,8 +85,8 @@ object ShapeFactory {
         if (dx1 > dx2) {
             while (startY <= points[1].row) {
                 result += createLine(
-                        fromPoint = Position(startX.toInt(), startY.toInt()),
-                        toPoint = Position(endX.toInt(), startY.toInt()))
+                        fromPoint = Position.of(startX.toInt(), startY.toInt()),
+                        toPoint = Position.of(endX.toInt(), startY.toInt()))
                 startY++
                 startX += dx2
                 endX += dx1
@@ -94,8 +94,8 @@ object ShapeFactory {
             endX = points[1].column.toFloat()
             while (startY <= points[2].row) {
                 result += createLine(
-                        fromPoint = Position(startX.toInt(), startY.toInt()),
-                        toPoint = Position(endX.toInt(), startY.toInt()))
+                        fromPoint = Position.of(startX.toInt(), startY.toInt()),
+                        toPoint = Position.of(endX.toInt(), startY.toInt()))
                 startY++
                 startX += dx2
                 endX += dx3
@@ -103,8 +103,8 @@ object ShapeFactory {
         } else {
             while (startY <= points[1].row) {
                 result += createLine(
-                        fromPoint = Position(startX.toInt(), startY.toInt()),
-                        toPoint = Position(endX.toInt(), startY.toInt()))
+                        fromPoint = Position.of(startX.toInt(), startY.toInt()),
+                        toPoint = Position.of(endX.toInt(), startY.toInt()))
                 startY++
                 startX += dx1
                 endX += dx2
@@ -113,8 +113,8 @@ object ShapeFactory {
             startY = points[1].row.toFloat()
             while (startY <= points[2].row) {
                 result += createLine(
-                        fromPoint = Position(startX.toInt(), startY.toInt()),
-                        toPoint = Position(endX.toInt(), startY.toInt()))
+                        fromPoint = Position.of(startX.toInt(), startY.toInt()),
+                        toPoint = Position.of(endX.toInt(), startY.toInt()))
                 startY++
                 startX += dx3
                 endX += dx2
@@ -147,7 +147,7 @@ object ShapeFactory {
     fun createFilledRectangle(topLeft: Position, size: Size): Shape {
         return DefaultShape((0..size.rows - 1).flatMap { y ->
             (0..size.columns - 1).map { x ->
-                Position(topLeft.column + x, topLeft.row + y)
+                Position.of(topLeft.column + x, topLeft.row + y)
             }
         }.toSet())
     }
@@ -159,7 +159,7 @@ object ShapeFactory {
         val deltaYx2 = deltaY * 2
         val deltaYx2MinusDeltaXx2 = deltaYx2 - dx * 2
         var errorTerm = deltaYx2 - dx
-        result.add(Position(x, y))
+        result.add(Position.of(x, y))
         while (dx-- > 0) {
             if (errorTerm >= 0) {
                 y++
@@ -168,7 +168,7 @@ object ShapeFactory {
                 errorTerm += deltaYx2
             }
             x += if (leftToRight) 1 else -1
-            result.add(Position(x, y))
+            result.add(Position.of(x, y))
         }
         return result
     }
@@ -180,7 +180,7 @@ object ShapeFactory {
         val deltaXx2 = deltaX * 2
         val deltaXx2MinusDeltaYx2 = deltaXx2 - dy * 2
         var errorTerm = deltaXx2 - dy
-        result.add(Position(x, y))
+        result.add(Position.of(x, y))
         while (dy-- > 0) {
             if (errorTerm >= 0) {
                 x += if (leftToRight) 1 else -1
@@ -189,7 +189,7 @@ object ShapeFactory {
                 errorTerm += deltaXx2
             }
             y++
-            result.add(Position(x, y))
+            result.add(Position.of(x, y))
         }
         return result
     }

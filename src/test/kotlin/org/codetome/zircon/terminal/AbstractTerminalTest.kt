@@ -1,6 +1,7 @@
 package org.codetome.zircon.terminal
 
 import org.assertj.core.api.Assertions.assertThat
+import org.codetome.zircon.Size
 import org.codetome.zircon.terminal.virtual.DefaultVirtualTerminal
 import org.junit.Before
 import org.junit.Test

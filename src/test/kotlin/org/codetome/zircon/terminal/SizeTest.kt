@@ -2,6 +2,7 @@ package org.codetome.zircon.terminal
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
+import org.codetome.zircon.Size
 import org.junit.Test
 
 class SizeTest {

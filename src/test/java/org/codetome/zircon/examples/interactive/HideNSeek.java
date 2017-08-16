@@ -5,13 +5,15 @@ import org.codetome.zircon.api.TerminalBuilder;
 import org.codetome.zircon.api.TextCharacterBuilder;
 import org.codetome.zircon.api.TextColorFactory;
 import org.codetome.zircon.api.CP437TilesetResource;
+import org.codetome.zircon.color.ANSITextColor;
+import org.codetome.zircon.color.TextColor;
 import org.codetome.zircon.graphics.TextGraphics;
 import org.codetome.zircon.graphics.layer.DefaultLayer;
 import org.codetome.zircon.graphics.layer.Layer;
 import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.screen.Screen;
-import org.codetome.zircon.terminal.Size;
+import org.codetome.zircon.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ public class HideNSeek {
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
         final Screen screen = TerminalBuilder.newBuilder()
-                .initialTerminalSize(new Size(80, 40))
+                .initialTerminalSize(Size.of(80, 40))
                 .font(CP437TilesetResource.TAFFER_20X20.asJava2DFont())
                 .buildScreen();
         Size size = screen.getBoundableSize();
@@ -44,34 +46,34 @@ public class HideNSeek {
                         .backgroundColor(TextColorFactory.fromRGB(0, 0, 0, 0))
                         .foregroundColor(ANSITextColor.WHITE)
                         .build(),
-                new Position(size.getColumns() / 2, size.getRows() / 2));
+                Position.of(size.getColumns() / 2, size.getRows() / 2));
 
         screen.addOverlay(player);
         screen.display();
-        drawBuilding(screen, new Position(5, 10));
+        drawBuilding(screen, Position.of(5, 10));
         enableMovement(screen, player);
     }
 
     private static void drawBuilding(Screen screen, Position position) {
-        Layer building = new DefaultLayer(new Size(4, 4), TextCharacter.DEFAULT_CHARACTER, position);
+        Layer building = new DefaultLayer(Size.of(4, 4), TextCharacterBuilder.DEFAULT_CHARACTER, position);
         TextColor windowColor = TextColorFactory.fromString("#808080");
         for (int y = 0; y < 2; y++) {
             for (int x = 0; x < 5; x++) {
-                building.setCharacterAt(new Position(x, y).plus(position), TextCharacterBuilder.newBuilder()
+                building.setCharacterAt(Position.of(x, y).plus(position), TextCharacterBuilder.newBuilder()
                         .backgroundColor(windowColor)
                         .character(' ')
                         .build());
             }
         }
 
-        drawCharAt(building, new Position(0, 2).plus(position), Symbols.SINGLE_LINE_TOP_LEFT_CORNER);
-        drawCharAt(building, new Position(1, 2).plus(position), Symbols.SINGLE_LINE_T_DOWN);
-        drawCharAt(building, new Position(2, 2).plus(position), Symbols.SINGLE_LINE_T_DOWN);
-        drawCharAt(building, new Position(3, 2).plus(position), Symbols.SINGLE_LINE_TOP_RIGHT_CORNER);
-        drawCharAt(building, new Position(0, 3).plus(position), Symbols.SINGLE_LINE_BOTTOM_LEFT_CORNER);
-        drawCharAt(building, new Position(1, 3).plus(position), Symbols.SINGLE_LINE_T_UP);
-        drawCharAt(building, new Position(2, 3).plus(position), Symbols.SINGLE_LINE_T_UP);
-        drawCharAt(building, new Position(3, 3).plus(position), Symbols.SINGLE_LINE_BOTTOM_RIGHT_CORNER);
+        drawCharAt(building, Position.of(0, 2).plus(position), Symbols.SINGLE_LINE_TOP_LEFT_CORNER);
+        drawCharAt(building, Position.of(1, 2).plus(position), Symbols.SINGLE_LINE_T_DOWN);
+        drawCharAt(building, Position.of(2, 2).plus(position), Symbols.SINGLE_LINE_T_DOWN);
+        drawCharAt(building, Position.of(3, 2).plus(position), Symbols.SINGLE_LINE_TOP_RIGHT_CORNER);
+        drawCharAt(building, Position.of(0, 3).plus(position), Symbols.SINGLE_LINE_BOTTOM_LEFT_CORNER);
+        drawCharAt(building, Position.of(1, 3).plus(position), Symbols.SINGLE_LINE_T_UP);
+        drawCharAt(building, Position.of(2, 3).plus(position), Symbols.SINGLE_LINE_T_UP);
+        drawCharAt(building, Position.of(3, 3).plus(position), Symbols.SINGLE_LINE_BOTTOM_RIGHT_CORNER);
         screen.display();
         screen.addOverlay(building);
     }

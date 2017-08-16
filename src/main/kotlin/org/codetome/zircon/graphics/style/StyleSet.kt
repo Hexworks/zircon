@@ -1,7 +1,7 @@
 package org.codetome.zircon.graphics.style
 
 import org.codetome.zircon.Modifier
-import org.codetome.zircon.TextColor
+import org.codetome.zircon.color.TextColor
 
 interface StyleSet {
 

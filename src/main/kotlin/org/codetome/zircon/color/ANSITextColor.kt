@@ -1,4 +1,4 @@
-package org.codetome.zircon
+package org.codetome.zircon.color
 
 import org.codetome.zircon.api.TextColorFactory.DEFAULT_ALPHA
 import java.awt.Color

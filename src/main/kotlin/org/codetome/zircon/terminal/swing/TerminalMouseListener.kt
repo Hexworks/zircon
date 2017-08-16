@@ -66,7 +66,7 @@ open class TerminalMouseListener(private val virtualTerminal: VirtualTerminal,
         virtualTerminal.addInput(MouseAction(
                 actionType = actionType,
                 button = e.button,
-                position = Position(
+                position = Position.of(
                         column = e.x.div(fontWidth),
                         row = e.y.div(fontHeight))
         ))

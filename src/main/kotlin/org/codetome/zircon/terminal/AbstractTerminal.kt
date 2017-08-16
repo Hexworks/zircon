@@ -1,5 +1,6 @@
 package org.codetome.zircon.terminal
 
+import org.codetome.zircon.Size
 import org.codetome.zircon.graphics.style.DefaultStyleSet
 
 abstract class AbstractTerminal : DefaultStyleSet(), Terminal {

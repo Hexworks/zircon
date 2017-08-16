@@ -5,7 +5,7 @@ import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.graphics.box.BoxConnectingMode.CONNECT
 import org.codetome.zircon.graphics.style.StyleSet
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 import java.util.*
 
 class DefaultBoxRenderer : BoxRenderer {
@@ -22,21 +22,21 @@ class DefaultBoxRenderer : BoxRenderer {
         val lastColumn = column + width - 1
 
         mapOf(
-                Pair(Position(column, row), boxType.topLeft),
-                Pair(Position(lastColumn, row), boxType.topRight),
-                Pair(Position(column, lastRow), boxType.bottomLeft),
-                Pair(Position(lastColumn, lastRow), boxType.bottomRight))
+                Pair(Position.of(column, row), boxType.topLeft),
+                Pair(Position.of(lastColumn, row), boxType.topRight),
+                Pair(Position.of(column, lastRow), boxType.bottomLeft),
+                Pair(Position.of(lastColumn, lastRow), boxType.bottomRight))
                 .plus((1..height - 2).map { i ->
-                    Pair(Position(column, row + i), boxType.vertical)
+                    Pair(Position.of(column, row + i), boxType.vertical)
                 })
                 .plus((1..height - 2).map { i ->
-                    Pair(Position(lastColumn, row + i), boxType.vertical)
+                    Pair(Position.of(lastColumn, row + i), boxType.vertical)
                 })
                 .plus((1..height - 2).map { i ->
-                    Pair(Position(column + i, row), boxType.horizontal)
+                    Pair(Position.of(column + i, row), boxType.horizontal)
                 })
                 .plus((1..height - 2).map { i ->
-                    Pair(Position(column + i, lastRow), boxType.horizontal)
+                    Pair(Position.of(column + i, lastRow), boxType.horizontal)
                 })
                 .forEach { (pos, char) ->
                     textGraphics.setCharacter(pos, TextCharacterBuilder.newBuilder()
@@ -45,19 +45,19 @@ class DefaultBoxRenderer : BoxRenderer {
                             .build())
                 }
         if (CONNECT == boxConnectingMode) {
-            setConnector(textGraphics, Position(column, row), boxType)
-            setConnector(textGraphics, Position(lastColumn, row), boxType)
-            setConnector(textGraphics, Position(column, lastRow), boxType)
-            setConnector(textGraphics, Position(lastColumn, lastRow), boxType)
+            setConnector(textGraphics, Position.of(column, row), boxType)
+            setConnector(textGraphics, Position.of(lastColumn, row), boxType)
+            setConnector(textGraphics, Position.of(column, lastRow), boxType)
+            setConnector(textGraphics, Position.of(lastColumn, lastRow), boxType)
 
             (1..height - 1 - 1).forEach { i ->
-                setConnector(textGraphics, Position(column, row + i), boxType)
-                setConnector(textGraphics, Position(lastColumn, row + i), boxType)
+                setConnector(textGraphics, Position.of(column, row + i), boxType)
+                setConnector(textGraphics, Position.of(lastColumn, row + i), boxType)
             }
 
             (1..width - 1 - 1).forEach { i ->
-                setConnector(textGraphics, Position(column + i, row), boxType)
-                setConnector(textGraphics, Position(column + i, lastRow), boxType)
+                setConnector(textGraphics, Position.of(column + i, row), boxType)
+                setConnector(textGraphics, Position.of(column + i, lastRow), boxType)
             }
         }
     }
