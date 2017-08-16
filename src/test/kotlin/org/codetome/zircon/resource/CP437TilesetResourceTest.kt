@@ -12,7 +12,11 @@ class CP437TilesetResourceTest {
     @Test
     fun shouldBeAbleToLoadAllTilesets() {
         CP437TilesetResource.values().forEach {
-            it.asJava2DFont()
+            try {
+                it.asJava2DFont()
+            } catch (e: Exception) {
+                throw IllegalStateException("Tileset resource '${it.path}' failed to load!", e)
+            }
         }
     }
 
