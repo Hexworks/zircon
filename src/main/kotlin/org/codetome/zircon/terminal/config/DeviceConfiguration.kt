@@ -1,6 +1,6 @@
 package org.codetome.zircon.terminal.config
 
-import org.codetome.zircon.TextColor
+import org.codetome.zircon.color.TextColor
 import org.codetome.zircon.api.DeviceConfigurationBuilder
 
 /**

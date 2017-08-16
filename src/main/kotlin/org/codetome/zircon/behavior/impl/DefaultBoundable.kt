@@ -2,7 +2,7 @@ package org.codetome.zircon.behavior.impl
 
 import org.codetome.zircon.Position
 import org.codetome.zircon.behavior.Boundable
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 import java.awt.Point
 import java.awt.Rectangle
 

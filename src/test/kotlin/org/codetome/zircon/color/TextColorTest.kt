@@ -1,4 +1,4 @@
-package org.codetome.zircon
+package org.codetome.zircon.color
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.TextColorFactory

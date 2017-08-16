@@ -1,8 +1,10 @@
 package org.codetome.zircon.font
 
+import org.codetome.zircon.Modifier
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.extensions.isNotPresent
 import org.codetome.zircon.font.cache.DefaultFontRegionCache
+import org.codetome.zircon.font.transformer.*
 import java.awt.image.BufferedImage
 
 /**
@@ -29,7 +31,7 @@ class Java2DFont(private val source: BufferedImage,
         val meta = fetchMetaFor(textCharacter, tags)
         val maybeRegion = cache.retrieveIfPresent(textCharacter)
         
-        return if(maybeRegion.isNotPresent()) {
+        var region = if(maybeRegion.isNotPresent()) {
             var image = source.getSubimage(meta.x * width, meta.y * height, width, height)
             regionTransformers.forEach {
                 image = it.transform(image, textCharacter)
@@ -39,6 +41,10 @@ class Java2DFont(private val source: BufferedImage,
         } else {
             maybeRegion.get()
         }
+        textCharacter.getModifiers().forEach {
+            region = MODIFIER_TRANSFORMER_LOOKUP[it]!!.transform(region, textCharacter)
+        }
+        return region
     }
 
     private fun fetchMetaFor(textCharacter: TextCharacter, tags: Array<out String>): CharacterMetadata {
@@ -52,5 +58,17 @@ class Java2DFont(private val source: BufferedImage,
             "There are more than 1 metadata entries for char: '${textCharacter.getCharacter()}' and tags: '${tags.toList().joinToString()}'"
         }
         return metas.first()
+    }
+
+    companion object {
+        val MODIFIER_TRANSFORMER_LOOKUP = mapOf(
+                Pair(Modifier.UNDERLINE, Java2DUnderlineTransformer()),
+                Pair(Modifier.VERTICAL_FLIP, Java2DVerticalFlipper()),
+                Pair(Modifier.HORIZONTAL_FLIP, Java2DHorizontalFlipper()),
+                Pair(Modifier.CROSSED_OUT, Java2DCrossedOutTransformer()),
+                Pair(Modifier.BLINK, NoOpTransformer()),
+                Pair(Modifier.HIDDEN, Java2DHiddenTransformer())
+
+        ).toMap()
     }
 }

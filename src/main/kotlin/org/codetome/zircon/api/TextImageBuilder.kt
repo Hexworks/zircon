@@ -2,13 +2,20 @@ package org.codetome.zircon.api
 
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.graphics.DefaultTextImage
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 
+/**
+ * Creates [org.codetome.zircon.graphics.TextImage]s.
+ * Defaults:
+ * - Default [Size] is `ONE` (1x1).
+ * - Default `toCopy` is an empty array
+ * - Default `filler` is an `EMPTY` character
+ */
 class TextImageBuilder {
 
     private var size: Size = Size.ONE
     private var toCopy: Array<Array<TextCharacter>> = arrayOf()
-    private var filler: TextCharacter = TextCharacter.DEFAULT_CHARACTER
+    private var filler: TextCharacter = TextCharacterBuilder.EMPTY
 
     /**
      * Sets the size for the new [org.codetome.zircon.graphics.TextImage].
@@ -30,7 +37,7 @@ class TextImageBuilder {
 
     /**
      * The new [org.codetome.zircon.graphics.TextImage] will be filled by this [TextCharacter].
-     * Defaults to ' ' (space).
+     * Defaults to `EMPTY`.
      */
     fun filler(filler: TextCharacter) = also {
         this.filler = filler
@@ -43,7 +50,11 @@ class TextImageBuilder {
 
     companion object {
 
+        /**
+         * Creates a new [TextImageBuilder] to build [org.codetome.zircon.graphics.TextImage]s.
+         */
         @JvmStatic
         fun newBuilder() = TextImageBuilder()
+
     }
 }

@@ -1,9 +1,13 @@
 package org.codetome.zircon
 
 enum class Modifier {
-    BOLD,
     UNDERLINE,
     BLINK,
     CROSSED_OUT,
-    ITALIC
+    VERTICAL_FLIP,
+    HORIZONTAL_FLIP,
+    HIDDEN,
+    // disabled temporarily
+    BOLD,
+    ITALIC,
 }

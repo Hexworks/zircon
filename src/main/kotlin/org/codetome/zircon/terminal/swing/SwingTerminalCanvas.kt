@@ -3,14 +3,15 @@ package org.codetome.zircon.terminal.swing
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.TextColor
+import org.codetome.zircon.color.TextColor
 import org.codetome.zircon.behavior.Boundable
 import org.codetome.zircon.font.Font
 import org.codetome.zircon.graphics.layer.Layer
 import org.codetome.zircon.graphics.style.StyleSet
 import org.codetome.zircon.input.Input
-import org.codetome.zircon.terminal.Cell
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Cell
+import org.codetome.zircon.Size
+import org.codetome.zircon.terminal.IterableTerminal
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
 import org.codetome.zircon.terminal.config.DeviceConfiguration
@@ -18,8 +19,6 @@ import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import org.codetome.zircon.terminal.virtual.VirtualTerminalListener
 import java.awt.Canvas
 import java.awt.Color
-import java.awt.Graphics
-import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
 /**
@@ -31,7 +30,7 @@ class SwingTerminalCanvas(
         initialSize: Size,
         deviceConfiguration: DeviceConfiguration,
         font: Font<BufferedImage>)
-    : Canvas(), VirtualTerminal {
+    : Canvas(), IterableTerminal {
 
     // this ugly hack of delegation is necessary because of the lack of multiple inheritance
     // the delegation feature of Kotlin does not work either because we can't pass `this` in

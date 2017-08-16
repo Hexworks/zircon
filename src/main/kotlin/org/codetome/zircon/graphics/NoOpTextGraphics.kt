@@ -3,16 +3,26 @@ package org.codetome.zircon.graphics
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.TextColor
+import org.codetome.zircon.color.TextColor
 import org.codetome.zircon.api.TextColorFactory
 import org.codetome.zircon.graphics.style.StyleSet
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
+import org.codetome.zircon.api.TextCharacterBuilder
+import org.codetome.zircon.graphics.box.BoxConnectingMode
+import org.codetome.zircon.graphics.box.BoxType
 import java.util.*
 
 /**
  * [TextGraphics] implementation that does nothing, but has a pre-defined size
  */
 internal class NoOpTextGraphics(private val size: Size) : TextGraphics {
+    override fun drawBox(topLeft: Position, size: Size, styleToUse: StyleSet, boxType: BoxType, boxConnectingMode: BoxConnectingMode) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun drawBox(textGraphics: TextGraphics, topLeft: Position, size: Size, styleToUse: StyleSet, boxType: BoxType, boxConnectingMode: BoxConnectingMode) {
+    }
+
     override fun enableModifier(modifier: Modifier) {
     }
 
@@ -103,5 +113,5 @@ internal class NoOpTextGraphics(private val size: Size) : TextGraphics {
     override fun putString(position: Position, string: String, extraModifiers: Set<Modifier>) {
     }
 
-    override fun getCharacter(position: Position) = Optional.of(TextCharacter.DEFAULT_CHARACTER)
+    override fun getCharacter(position: Position) = Optional.of(TextCharacterBuilder.DEFAULT_CHARACTER)
 }

@@ -1,6 +1,7 @@
 package org.codetome.zircon
 
 import org.assertj.core.api.Assertions.assertThat
+import org.codetome.zircon.api.TerminalBuilder
 import org.junit.Test
 
 class PositionTest {

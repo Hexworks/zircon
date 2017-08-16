@@ -1,8 +1,10 @@
 package org.codetome.zircon.screen
 
 import org.codetome.zircon.Position
+import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.TextCharacter.Companion.DEFAULT_CHARACTER
+import org.codetome.zircon.api.TextCharacterBuilder
+import org.codetome.zircon.api.TextCharacterBuilder.Companion.DEFAULT_CHARACTER
 import org.codetome.zircon.behavior.CursorHolder
 import org.codetome.zircon.behavior.Layerable
 import org.codetome.zircon.graphics.TextGraphics
@@ -10,7 +12,6 @@ import org.codetome.zircon.graphics.TextImage
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.InputProvider
 import org.codetome.zircon.input.InputType
-import org.codetome.zircon.terminal.Size
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
 import org.codetome.zircon.terminal.virtual.VirtualTerminal

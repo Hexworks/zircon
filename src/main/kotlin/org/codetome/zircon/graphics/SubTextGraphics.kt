@@ -2,7 +2,10 @@ package org.codetome.zircon.graphics
 
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
+import org.codetome.zircon.graphics.box.BoxConnectingMode
+import org.codetome.zircon.graphics.box.BoxType
+import org.codetome.zircon.graphics.style.StyleSet
 import java.util.*
 
 /**
@@ -12,6 +15,9 @@ import java.util.*
 internal class SubTextGraphics(private val underlyingTextGraphics: TextGraphics,
                                private val topLeft: Position,
                                private val size: Size) : AbstractTextGraphics() {
+    override fun drawBox(textGraphics: TextGraphics, topLeft: Position, size: Size, styleToUse: StyleSet, boxType: BoxType, boxConnectingMode: BoxConnectingMode) {
+        underlyingTextGraphics.drawBox(textGraphics, topLeft, size, styleToUse, boxType, boxConnectingMode)
+    }
 
     override fun getSize() = size
 

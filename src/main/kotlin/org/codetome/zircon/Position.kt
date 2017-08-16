@@ -103,26 +103,32 @@ data class Position(val column: Int,
         /**
          * Constant for the top-left corner (0x0)
          */
-        @JvmStatic
+        @JvmField
         val TOP_LEFT_CORNER = Position(0, 0)
 
         /**
          * Constant for the 1x1 position (one offset in both directions from top-left)
          */
-        @JvmStatic
+        @JvmField
         val OFFSET_1x1 = Position(1, 1)
 
         /**
          * This position can be considered as the default
          */
-        @JvmStatic
+        @JvmField
         val DEFAULT_POSITION = TOP_LEFT_CORNER
 
         /**
          * Used in place of a possible null value. Means that the position is unknown (cursor for example)
          */
-        @JvmStatic
+        @JvmField
         val UNKNOWN = Position(Int.MAX_VALUE, Int.MAX_VALUE)
+
+        /**
+         * Factory method for [Position].
+         */
+        @JvmStatic
+        fun of(column: Int, row: Int) = Position(column, row)
     }
 }
 

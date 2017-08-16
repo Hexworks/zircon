@@ -8,7 +8,7 @@ import org.codetome.zircon.behavior.Layerable
 import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.InputProvider
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 import java.io.Closeable
 
 /**

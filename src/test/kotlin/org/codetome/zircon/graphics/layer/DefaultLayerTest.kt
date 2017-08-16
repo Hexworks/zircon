@@ -4,7 +4,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
 import org.codetome.zircon.behavior.impl.DefaultBoundable
 import org.codetome.zircon.api.TextCharacterBuilder
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
+import org.codetome.zircon.TextCharacter
 import org.junit.Before
 import org.junit.Test
 
@@ -15,6 +16,7 @@ class DefaultLayerTest {
     @Before
     fun setUp() {
         target = DefaultLayer(
+                filler = TextCharacterBuilder.DEFAULT_CHARACTER,
                 size = SIZE,
                 offset = OFFSET)
     }

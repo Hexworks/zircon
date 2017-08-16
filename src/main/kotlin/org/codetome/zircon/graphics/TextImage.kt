@@ -3,7 +3,7 @@ package org.codetome.zircon.graphics
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.behavior.Boundable
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 
 /**
  * An image built from [TextCharacter]s with color and style information.

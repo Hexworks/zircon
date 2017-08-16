@@ -6,7 +6,8 @@ import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.TextColorFactory
 import org.codetome.zircon.font.Font
 import org.codetome.zircon.input.KeyStroke
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
+import org.codetome.zircon.terminal.IterableTerminal
 import org.codetome.zircon.terminal.config.CursorStyle.*
 import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.terminal.virtual.VirtualTerminal
@@ -23,8 +24,8 @@ import java.util.*
 abstract class Java2DTerminalImplementation(
         private val deviceConfiguration: DeviceConfiguration,
         private val font: Font<BufferedImage>,
-        private val virtualTerminal: VirtualTerminal)
-    : VirtualTerminal by virtualTerminal {
+        private val virtualTerminal: IterableTerminal)
+    : IterableTerminal by virtualTerminal {
 
     private var enableInput = false
     private var hasBlinkingText = deviceConfiguration.isCursorBlinking
@@ -97,7 +98,7 @@ abstract class Java2DTerminalImplementation(
 
         // Detect resize
         if (resizeHappened()) {
-            val terminalSize = Size(
+            val terminalSize = Size.of(
                     columns = getWidth() / getFontWidth(),
                     rows = getHeight() / getFontHeight())
             virtualTerminal.setSize(terminalSize)
@@ -188,7 +189,7 @@ abstract class Java2DTerminalImplementation(
             graphics.drawImage(font.fetchRegionForChar(fixedChar), x, y, null)
         }
 
-        fetchOverlayZIntersection(Position(columnIndex, rowIndex)).forEach {
+        fetchOverlayZIntersection(Position.of(columnIndex, rowIndex)).forEach {
             if (it.isNotEmpty()) {
                 graphics.drawImage(font.fetchRegionForChar(it), x, y, null)
             }

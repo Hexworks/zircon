@@ -2,7 +2,7 @@ package org.codetome.zircon.graphics.shape
 
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 
 /**
  * This interface exposes methods for translating abstract lines, triangles and rectangles to discreet

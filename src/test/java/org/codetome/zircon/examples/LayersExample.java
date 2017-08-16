@@ -1,16 +1,12 @@
 package org.codetome.zircon.examples;
 
 import org.codetome.zircon.Position;
+import org.codetome.zircon.Size;
 import org.codetome.zircon.TextCharacter;
-import org.codetome.zircon.TextColor;
-import org.codetome.zircon.api.DeviceConfigurationBuilder;
-import org.codetome.zircon.api.TerminalBuilder;
-import org.codetome.zircon.api.TextCharacterBuilder;
-import org.codetome.zircon.api.TextColorFactory;
-import org.codetome.zircon.api.PhysicalFontResource;
+import org.codetome.zircon.api.*;
+import org.codetome.zircon.color.TextColor;
 import org.codetome.zircon.graphics.layer.DefaultLayer;
 import org.codetome.zircon.screen.Screen;
-import org.codetome.zircon.terminal.Size;
 import org.jetbrains.annotations.NotNull;
 
 public class LayersExample {
@@ -27,20 +23,20 @@ public class LayersExample {
         final String firstRow = "This is white text on black";
         for (int x = 0; x < firstRow.length(); x++) {
             screen.setCharacter(
-                    new Position(x + 1, 1),
+                    Position.of(x + 1, 1),
                     buildWhiteOnBlack(firstRow.charAt(x)));
         }
 
         final String secondRow = "Like the row above but with blue overlay.";
         for (int x = 0; x < secondRow.length(); x++) {
             screen.setCharacter(
-                    new Position(x + 1, 2),
+                    Position.of(x + 1, 2),
                     buildWhiteOnBlack(secondRow.charAt(x)));
         }
 
         addOverlayAt(screen,
-                new Position(1, 2),
-                new Size(secondRow.length(), 1),
+                Position.of(1, 2),
+                Size.of(secondRow.length(), 1),
                 TextColorFactory.fromRGB(50, 50, 200, 127));
 
         screen.display();

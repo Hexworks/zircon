@@ -9,8 +9,10 @@ import org.codetome.zircon.behavior.impl.DefaultLayerable
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.terminal.AbstractTerminal
-import org.codetome.zircon.terminal.Cell
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Cell
+import org.codetome.zircon.Size
+import org.codetome.zircon.api.TextCharacterBuilder
+import org.codetome.zircon.terminal.IterableTerminal
 import org.codetome.zircon.util.TextUtils
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
@@ -18,7 +20,7 @@ import java.util.concurrent.LinkedBlockingQueue
 class DefaultVirtualTerminal private constructor(initialSize: Size,
                                                  private val cursorHolder: CursorHolder,
                                                  private val layerable: Layerable)
-    : AbstractTerminal(), VirtualTerminal,
+    : AbstractTerminal(), IterableTerminal,
         CursorHolder by cursorHolder,
         Layerable by layerable {
 
@@ -59,7 +61,7 @@ class DefaultVirtualTerminal private constructor(initialSize: Size,
             textBuffer.resize(newSize)
             getCursorPosition().let { (cursorCol, cursorRow) ->
                 if (cursorRow >= newSize.rows || cursorCol >= newSize.columns) {
-                    setCursorPosition(Position(
+                    setCursorPosition(Position.of(
                             column = Math.min(newSize.columns, cursorCol),
                             row = Math.min(newSize.rows, cursorRow)))
                 }
@@ -82,11 +84,12 @@ class DefaultVirtualTerminal private constructor(initialSize: Size,
         if (c == '\n') {
             moveCursorToNextLine()
         } else if (TextUtils.isPrintableCharacter(c)) {
-            putCharacter(TextCharacter(
-                    character = c,
-                    foregroundColor = getForegroundColor(),
-                    backgroundColor = getBackgroundColor(),
-                    modifiersToUse = getActiveModifiers()))
+            putCharacter(TextCharacterBuilder.newBuilder()
+                    .character(c)
+                    .foregroundColor(getForegroundColor())
+                    .backgroundColor(getBackgroundColor())
+                    .modifiers(getActiveModifiers())
+                    .build())
         }
     }
 

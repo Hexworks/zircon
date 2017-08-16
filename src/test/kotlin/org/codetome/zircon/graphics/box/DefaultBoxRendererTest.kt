@@ -4,7 +4,7 @@ import org.codetome.zircon.Position
 import org.codetome.zircon.api.TextImageBuilder
 import org.codetome.zircon.graphics.box.BoxType.*
 import org.codetome.zircon.graphics.style.DefaultStyleSet
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 import org.junit.Before
 import org.junit.Test
 

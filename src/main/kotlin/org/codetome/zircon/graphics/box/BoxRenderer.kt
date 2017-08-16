@@ -5,7 +5,7 @@ import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.graphics.box.BoxConnectingMode.CONNECT
 import org.codetome.zircon.graphics.box.BoxType.BASIC
 import org.codetome.zircon.graphics.style.StyleSet
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 
 interface BoxRenderer {
 

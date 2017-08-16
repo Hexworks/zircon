@@ -2,6 +2,7 @@
 
 package org.codetome.zircon.terminal
 
+import org.codetome.zircon.Size
 import org.codetome.zircon.behavior.Clearable
 import org.codetome.zircon.behavior.CursorHolder
 import org.codetome.zircon.behavior.Layerable
@@ -63,12 +64,6 @@ interface Terminal : InputProvider, Closeable, Clearable, StyleSet, CursorHolder
      * will be fired on all listeners.
      */
     fun setSize(newSize: Size)
-
-//    /**
-//     * Makes the terminal (emulator) ring a bell (or more likely beep).
-//     * [Wikipedia](https://en.wikipedia.org/wiki/Bell_character) has more details.
-//     */
-//    fun bell() // TODO: implement me
 
     /**
      * Calls [Terminal.flush] on the underlying [java.io.OutputStream] object, or whatever

@@ -5,7 +5,7 @@ import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.behavior.Boundable
 import org.codetome.zircon.behavior.Layerable
 import org.codetome.zircon.graphics.layer.Layer
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 

@@ -1,8 +1,13 @@
 package org.codetome.zircon.terminal.virtual
 
 import org.codetome.zircon.Position
+import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.graphics.AbstractTextGraphics
+import org.codetome.zircon.graphics.TextGraphics
+import org.codetome.zircon.graphics.box.BoxConnectingMode
+import org.codetome.zircon.graphics.box.BoxType
+import org.codetome.zircon.graphics.style.StyleSet
 import java.util.*
 
 /**
@@ -10,6 +15,10 @@ import java.util.*
  */
 class VirtualTerminalTextGraphics(private val virtualTerminal: DefaultVirtualTerminal)
     : AbstractTextGraphics() {
+
+    override fun drawBox(textGraphics: TextGraphics, topLeft: Position, size: Size, styleToUse: StyleSet, boxType: BoxType, boxConnectingMode: BoxConnectingMode) {
+        TODO("not implemented")
+    }
 
     override fun getSize() = virtualTerminal.getBoundableSize()
 
@@ -25,7 +34,7 @@ class VirtualTerminalTextGraphics(private val virtualTerminal: DefaultVirtualTer
             return
         }
         synchronized(virtualTerminal) {
-            virtualTerminal.setCursorPosition(Position(column, row))
+            virtualTerminal.setCursorPosition(Position.of(column, row))
             virtualTerminal.putCharacter(character)
         }
     }

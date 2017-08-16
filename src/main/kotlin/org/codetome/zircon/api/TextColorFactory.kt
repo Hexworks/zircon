@@ -1,25 +1,38 @@
 package org.codetome.zircon.api
 
-import org.codetome.zircon.ANSITextColor
-import org.codetome.zircon.DefaultTextColor
-import org.codetome.zircon.TextColor
+import org.codetome.zircon.color.ANSITextColor
+import org.codetome.zircon.color.DefaultTextColor
+import org.codetome.zircon.color.TextColor
 import java.awt.Color
 import java.util.regex.Pattern
 
 object TextColorFactory {
 
+    /**
+     * The default foreground color is `WHITE`.
+     */
     @JvmField
     val DEFAULT_FOREGROUND_COLOR = ANSITextColor.WHITE
 
+    /**
+     * The default background color is `BLACK`.
+     */
     @JvmField
     val DEFAULT_BACKGROUND_COLOR = ANSITextColor.BLACK
 
+    /**
+     * Shorthand for a [TextColor] which is fully transparent.
+     */
     @JvmField
     val TRANSPARENT = DefaultTextColor(0, 0, 0, 0)
 
     val DEFAULT_ALPHA = 255
+
     private val RGB_COLOR_PATTERN = Pattern.compile("#[0-9a-fA-F]{6}")
 
+    /**
+     * Creates a [TextColor] from an awt [Color].
+     */
     @JvmStatic
     fun fromAWTColor(color: Color) = DefaultTextColor(color.red, color.green, color.blue, color.alpha)
 

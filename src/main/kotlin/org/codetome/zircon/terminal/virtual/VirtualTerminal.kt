@@ -3,7 +3,6 @@ package org.codetome.zircon.terminal.virtual
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.input.Input
-import org.codetome.zircon.terminal.Cell
 import org.codetome.zircon.terminal.Terminal
 
 /**
@@ -44,7 +43,4 @@ interface VirtualTerminal : Terminal {
      */
     fun removeVirtualTerminalListener(listener: VirtualTerminalListener)
 
-    fun forEachDirtyCell(fn: (Cell) -> Unit)
-
-    fun forEachCell(fn: (Cell) -> Unit)
 }

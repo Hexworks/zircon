@@ -1,20 +1,20 @@
 package org.codetome.zircon.graphics.layer
 
 import org.codetome.zircon.Position
+import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.behavior.Boundable
 import org.codetome.zircon.api.TextImageBuilder
+import org.codetome.zircon.behavior.Boundable
 import org.codetome.zircon.graphics.TextImage
-import org.codetome.zircon.terminal.Size
 import java.awt.Point
 import java.awt.Rectangle
 
 class DefaultLayer private constructor(offset: Position, private val textImage: TextImage)
     : Layer, TextImage by textImage {
 
-    constructor(size: Size = Size.ONE,
-                filler: TextCharacter = TextCharacter.EMPTY,
-                offset: Position = Position.DEFAULT_POSITION)
+    constructor(size: Size,
+                filler: TextCharacter,
+                offset: Position)
             : this(
             offset = offset,
             textImage = TextImageBuilder.newBuilder()

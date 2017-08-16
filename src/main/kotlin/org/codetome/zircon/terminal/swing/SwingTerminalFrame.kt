@@ -5,7 +5,7 @@ import org.codetome.zircon.font.Font
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.awt.Color

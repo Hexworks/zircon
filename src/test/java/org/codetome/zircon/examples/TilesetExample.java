@@ -2,12 +2,15 @@ package org.codetome.zircon.examples;
 
 import org.codetome.zircon.*;
 import org.codetome.zircon.api.TerminalBuilder;
+import org.codetome.zircon.api.TextCharacterBuilder;
 import org.codetome.zircon.api.TextColorFactory;
 import org.codetome.zircon.api.CP437TilesetResource;
+import org.codetome.zircon.color.ANSITextColor;
+import org.codetome.zircon.color.TextColor;
 import org.codetome.zircon.graphics.layer.DefaultLayer;
 import org.codetome.zircon.graphics.layer.Layer;
 import org.codetome.zircon.screen.Screen;
-import org.codetome.zircon.terminal.Size;
+import org.codetome.zircon.Size;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -29,17 +32,17 @@ public class TilesetExample {
 
     private static final int TERMINAL_WIDTH = 40;
     private static final int TERMINAL_HEIGHT = 40;
-    private static final TextCharacter GRASS_0 = new TextCharacter(
+    private static final TextCharacter GRASS_0 =TextCharacter.of(
             ',',
             TextColorFactory.fromString("#22bb33"),
             TextColorFactory.fromString("#114911"),
             new HashSet<>());
-    private static final TextCharacter GRASS_1 = new TextCharacter(
+    private static final TextCharacter GRASS_1 = TextCharacter.of(
             '`',
             TextColorFactory.fromString("#22aa33"),
             TextColorFactory.fromString("#114511"),
             new HashSet<>());
-    private static final TextCharacter GRASS_2 = new TextCharacter(
+    private static final TextCharacter GRASS_2 = TextCharacter.of(
             '\'',
             TextColorFactory.fromString("#229933"),
             TextColorFactory.fromString("#114011"),
@@ -51,19 +54,19 @@ public class TilesetExample {
     public static void main(String[] args) {
         final Screen screen = TerminalBuilder.newBuilder()
                 .font(CP437TilesetResource.WANDERLUST_16X16.asJava2DFont())
-                .initialTerminalSize(new Size(TERMINAL_WIDTH, TERMINAL_HEIGHT))
+                .initialTerminalSize(Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT))
                 .buildScreen();
         screen.setCursorVisible(false);
 
         final Random random = new Random();
         for (int y = 0; y < TERMINAL_HEIGHT; y++) {
             for (int x = 0; x < TERMINAL_WIDTH; x++) {
-                screen.setCharacter(new Position(x, y), GRASSES[random.nextInt(3)]);
+                screen.setCharacter(Position.of(x, y), GRASSES[random.nextInt(3)]);
             }
         }
         final String text = "Tileset Example";
         for (int i = 0; i < text.length(); i++) {
-            screen.setCharacter(new Position(i + 2, 1),
+            screen.setCharacter(Position.of(i + 2, 1),
                     TextCharacter.builder()
                             .character(text.charAt(i))
                             .foregroundColor(TEXT_COLOR)
@@ -74,12 +77,12 @@ public class TilesetExample {
         final int charCount = RANDOM_CHARS.length;
         final int ansiCount = ANSITextColor.values().length;
 
-        final Layer overlay = new DefaultLayer(screen.getSize(), TextCharacter.EMPTY
-                .withBackgroundColor(TextColorFactory.fromRGB(0, 0, 0, 50)), new Position(0, 0));
+        final Layer overlay = new DefaultLayer(screen.getSize(), TextCharacterBuilder.EMPTY
+                .withBackgroundColor(TextColorFactory.fromRGB(0, 0, 0, 50)), Position.of(0, 0));
 
         for (int i = 0; i < RANDOM_CHAR_COUNT; i++) {
             overlay.setCharacterAt(
-                    new Position(
+                    Position.of(
                             random.nextInt(TERMINAL_WIDTH),
                             random.nextInt(TERMINAL_HEIGHT - 2) + 2),
                     TextCharacter.builder()

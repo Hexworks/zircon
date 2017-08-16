@@ -2,20 +2,18 @@ package org.codetome.zircon
 
 import org.codetome.zircon.Modifier.*
 import org.codetome.zircon.api.TextCharacterBuilder
-import org.codetome.zircon.api.TextColorFactory
+import org.codetome.zircon.color.TextColor
 
 /**
  * Represents a single character with additional metadata such as colors and modifiers. This class is immutable and
  * cannot be modified after creation.
  */
+@Suppress("DataClassPrivateConstructor")
 data class TextCharacter(
         private val character: Char,
         private val foregroundColor: TextColor,
         private val backgroundColor: TextColor,
-        private val modifiersToUse: Set<Modifier>) {
-
-    // reverse defensive copy (haha)
-    private val modifiers: Set<Modifier> = modifiersToUse.toSet()
+        private val modifiers: Set<Modifier>) {
 
     fun getCharacter() = character
 
@@ -35,7 +33,7 @@ data class TextCharacter(
 
     fun isBlinking() = modifiers.contains(BLINK)
 
-    fun isNotEmpty() = this != EMPTY
+    fun isNotEmpty() = this != TextCharacterBuilder.EMPTY
 
     /**
      * Returns a new TextCharacter with the same colors and modifiers but a different underlying character.
@@ -72,7 +70,7 @@ data class TextCharacter(
         if (this.modifiers == modifiers) {
             return this
         }
-        return copy(modifiersToUse = modifiers)
+        return copy(modifiers = modifiers.toSet())
     }
 
     /**
@@ -84,7 +82,7 @@ data class TextCharacter(
             return this
         }
         val newSet = this.modifiers.plus(modifier)
-        return copy(modifiersToUse = newSet)
+        return copy(modifiers = newSet)
     }
 
     /**
@@ -97,25 +95,31 @@ data class TextCharacter(
             return this
         }
         val newSet = this.modifiers.minus(modifier)
-        return copy(modifiersToUse = newSet)
+        return copy(modifiers = newSet)
     }
-
 
 
     companion object {
 
+        /**
+         * Creates a new [TextCharacterBuilder] for creating [TextCharacter]s.
+         */
         @JvmStatic
         fun builder() = TextCharacterBuilder()
 
-        @JvmField
-        val DEFAULT_CHARACTER = builder().build()
-
-        @JvmField
-        val EMPTY = builder()
-                .backgroundColor(TextColorFactory.TRANSPARENT)
-                .foregroundColor(TextColorFactory.TRANSPARENT)
-                .character(' ')
-                .build()
+        /**
+         * Creates a new [TextCharacter]. This method is necessary
+         * because a defensive copy of `modifiers` needs to be forced.
+         */
+        @JvmStatic
+        fun of(character: Char,
+               foregroundColor: TextColor,
+               backgroundColor: TextColor,
+               modifiers: Set<Modifier>) = TextCharacter(
+                character = character,
+                foregroundColor = foregroundColor,
+                backgroundColor = backgroundColor,
+                modifiers = modifiers.toSet())
     }
 
 }

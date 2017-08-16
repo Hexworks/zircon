@@ -10,7 +10,7 @@ import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.api.TextImageBuilder
 import org.codetome.zircon.graphics.TextImage
 import org.codetome.zircon.graphics.shape.DefaultShapeRenderer
-import org.codetome.zircon.terminal.Size
+import org.codetome.zircon.Size
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -24,7 +24,7 @@ class DefaultShapeRendererTest {
 
     private val textImage: TextImage = TextImageBuilder.newBuilder()
             .size(Size(50, 50))
-            .filler(TextCharacter.DEFAULT_CHARACTER)
+            .filler(TextCharacterBuilder.DEFAULT_CHARACTER)
             .build()
 
     @Before
