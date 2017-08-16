@@ -42,5 +42,19 @@ class DefaultCursorHolderTest {
                 .isFalse()
     }
 
+    @Test
+    fun shouldFixNegativeCursorRow() {
+        target.setCursorPosition(Position.DEFAULT_POSITION.withRow(-1))
+        assertThat(target.getCursorPosition())
+                .isEqualTo(Position.DEFAULT_POSITION)
+    }
+
+    @Test
+    fun shouldFixNegativeCursorColumn() {
+        target.setCursorPosition(Position.DEFAULT_POSITION.withColumn(-1))
+        assertThat(target.getCursorPosition())
+                .isEqualTo(Position.DEFAULT_POSITION)
+    }
+
 
 }

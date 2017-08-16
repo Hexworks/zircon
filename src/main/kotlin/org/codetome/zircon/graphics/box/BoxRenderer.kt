@@ -9,7 +9,7 @@ import org.codetome.zircon.terminal.Size
 
 interface BoxRenderer {
 
-    fun drawBox(target: TextGraphics,
+    fun drawBox(textGraphics: TextGraphics,
                 topLeft: Position,
                 size: Size,
                 styleToUse: StyleSet,

@@ -3,7 +3,7 @@ package org.codetome.zircon.graphics.layer
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
 import org.codetome.zircon.behavior.impl.DefaultBoundable
-import org.codetome.zircon.builder.TextCharacterBuilder
+import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.terminal.Size
 import org.junit.Before
 import org.junit.Test

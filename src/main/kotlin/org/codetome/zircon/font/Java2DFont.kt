@@ -5,6 +5,9 @@ import org.codetome.zircon.extensions.isNotPresent
 import org.codetome.zircon.font.cache.DefaultFontRegionCache
 import java.awt.image.BufferedImage
 
+/**
+ * Represents a font which is backed by a sprite sheet.
+ */
 class Java2DFont(private val source: BufferedImage,
                  private val metadata: Map<Char, List<CharacterMetadata>>,
                  private val width: Int,
@@ -48,7 +51,6 @@ class Java2DFont(private val source: BufferedImage,
         require(metas.size == 1) {
             "There are more than 1 metadata entries for char: '${textCharacter.getCharacter()}' and tags: '${tags.toList().joinToString()}'"
         }
-        val meta = metas.first()
-        return meta
+        return metas.first()
     }
 }

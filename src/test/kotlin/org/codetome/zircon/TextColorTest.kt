@@ -1,8 +1,7 @@
 package org.codetome.zircon
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.builder.TextColorFactory
-import org.codetome.zircon.builder.TextColorFactory.TextColorImpl
+import org.codetome.zircon.api.TextColorFactory
 import org.junit.Test
 
 class TextColorTest {
@@ -48,6 +47,6 @@ class TextColorTest {
     }
 
     companion object {
-        val EXPECTED_RESULT_COLOR = TextColorImpl(170, 68, 85)
+        val EXPECTED_RESULT_COLOR = DefaultTextColor(170, 68, 85)
     }
 }

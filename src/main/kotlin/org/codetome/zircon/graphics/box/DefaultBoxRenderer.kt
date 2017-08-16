@@ -1,7 +1,7 @@
 package org.codetome.zircon.graphics.box
 
 import org.codetome.zircon.Position
-import org.codetome.zircon.builder.TextCharacterBuilder
+import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.graphics.box.BoxConnectingMode.CONNECT
 import org.codetome.zircon.graphics.style.StyleSet
@@ -13,7 +13,7 @@ class DefaultBoxRenderer : BoxRenderer {
     override fun drawBox(textGraphics: TextGraphics,
                          topLeft: Position,
                          size: Size,
-                         styleSet: StyleSet,
+                         styleToUse: StyleSet,
                          boxType: BoxType,
                          boxConnectingMode: BoxConnectingMode) {
         val (column, row) = topLeft
@@ -41,7 +41,7 @@ class DefaultBoxRenderer : BoxRenderer {
                 .forEach { (pos, char) ->
                     textGraphics.setCharacter(pos, TextCharacterBuilder.newBuilder()
                             .character(char)
-                            .styleSet(styleSet)
+                            .styleSet(styleToUse)
                             .build())
                 }
         if (CONNECT == boxConnectingMode) {

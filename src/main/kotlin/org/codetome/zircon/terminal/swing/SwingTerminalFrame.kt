@@ -1,6 +1,6 @@
 package org.codetome.zircon.terminal.swing
 
-import org.codetome.zircon.builder.DeviceConfigurationBuilder
+import org.codetome.zircon.api.DeviceConfigurationBuilder
 import org.codetome.zircon.font.Font
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.InputType

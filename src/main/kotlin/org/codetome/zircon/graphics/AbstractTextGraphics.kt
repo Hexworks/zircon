@@ -110,7 +110,7 @@ abstract class AbstractTextGraphics(
     override fun putString(position: Position, string: String, extraModifiers: Set<Modifier>) {
         val modifierDiff = extraModifiers.minus(getActiveModifiers())
         enableModifiers(*modifierDiff.toTypedArray())
-        val stringToPut = prepareStringForPut(position.column, string)
+        val stringToPut = prepareStringForPut(string)
         stringToPut.forEachIndexed { i, char ->
             setCharacter(position.withRelativeColumn(i), newTextCharacter(char))
         }
@@ -135,7 +135,7 @@ abstract class AbstractTextGraphics(
         return TextCharacter(character, getForegroundColor(), getBackgroundColor(), getActiveModifiers())
     }
 
-    private fun prepareStringForPut(column: Int, string: String): String {
+    private fun prepareStringForPut(string: String): String {
         var cleanString = string
         if (cleanString.contains("\n")) {
             cleanString = cleanString.substring(0, cleanString.indexOf("\n"))

@@ -1,9 +1,9 @@
 package org.codetome.zircon.examples;
 
 import org.codetome.zircon.*;
-import org.codetome.zircon.builder.TerminalBuilder;
-import org.codetome.zircon.builder.TextColorFactory;
-import org.codetome.zircon.font.resource.DFTilesetResource;
+import org.codetome.zircon.api.TerminalBuilder;
+import org.codetome.zircon.api.TextColorFactory;
+import org.codetome.zircon.api.CP437TilesetResource;
 import org.codetome.zircon.graphics.layer.DefaultLayer;
 import org.codetome.zircon.graphics.layer.Layer;
 import org.codetome.zircon.screen.Screen;
@@ -50,7 +50,7 @@ public class TilesetExample {
 
     public static void main(String[] args) {
         final Screen screen = TerminalBuilder.newBuilder()
-                .font(DFTilesetResource.WANDERLUST_16X16.asJava2DFont())
+                .font(CP437TilesetResource.WANDERLUST_16X16.asJava2DFont())
                 .initialTerminalSize(new Size(TERMINAL_WIDTH, TERMINAL_HEIGHT))
                 .buildScreen();
         screen.setCursorVisible(false);

@@ -2,9 +2,9 @@ package org.codetome.zircon.examples.interactive;
 
 import org.codetome.zircon.Position;
 import org.codetome.zircon.TextCharacter;
-import org.codetome.zircon.builder.DeviceConfigurationBuilder;
-import org.codetome.zircon.builder.TerminalBuilder;
-import org.codetome.zircon.font.resource.DFTilesetResource;
+import org.codetome.zircon.api.DeviceConfigurationBuilder;
+import org.codetome.zircon.api.TerminalBuilder;
+import org.codetome.zircon.api.PhysicalFontResource;
 import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.input.KeyStroke;
@@ -44,7 +44,7 @@ public class TypingExample {
         final DeviceConfiguration deviceConfig = DeviceConfigurationBuilder.newBuilder()
                 .cursorBlinking(true).build();
 
-        factory.font(DFTilesetResource.WANDERLUST_16X16.asJava2DFont());
+        factory.font(PhysicalFontResource.SOURCE_CODE_PRO.asPhysicalFont());
         factory.deviceConfiguration(deviceConfig);
         final VirtualTerminal terminal = factory.buildTerminal();
         final Screen screen = factory.createScreenFor(terminal);

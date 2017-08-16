@@ -19,6 +19,13 @@ class DefaultCursorHolder : CursorHolder {
 
     @Synchronized
     override fun setCursorPosition(cursorPosition: Position) {
-        this.cursorPosition = cursorPosition
+        var fixedPos = cursorPosition
+        if (fixedPos.column < 0) {
+            fixedPos = fixedPos.withColumn(0)
+        }
+        if (fixedPos.row < 0) {
+            fixedPos = fixedPos.withRow(0)
+        }
+        this.cursorPosition = fixedPos
     }
 }

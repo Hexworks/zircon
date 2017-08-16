@@ -2,8 +2,8 @@ package org.codetome.zircon.graphics.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
-import org.codetome.zircon.builder.TextCharacterBuilder
-import org.codetome.zircon.builder.TextImageBuilder
+import org.codetome.zircon.api.TextCharacterBuilder
+import org.codetome.zircon.api.TextImageBuilder
 import org.codetome.zircon.graphics.SubTextGraphics
 import org.codetome.zircon.terminal.Size
 import org.junit.Before

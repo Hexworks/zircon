@@ -1,6 +1,6 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.builder.TerminalBuilder;
+import org.codetome.zircon.api.TerminalBuilder;
 import org.codetome.zircon.terminal.Terminal;
 
 import static org.codetome.zircon.ANSITextColor.*;

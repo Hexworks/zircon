@@ -4,7 +4,7 @@ import org.codetome.zircon.Modifier
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.TextColor
-import org.codetome.zircon.builder.TextColorFactory
+import org.codetome.zircon.api.TextColorFactory
 import org.codetome.zircon.graphics.style.StyleSet
 import org.codetome.zircon.terminal.Size
 import java.util.*
