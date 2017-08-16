@@ -1,10 +1,10 @@
 package org.codetome.zircon.examples.interactive;
 
 import org.codetome.zircon.*;
-import org.codetome.zircon.builder.TerminalBuilder;
-import org.codetome.zircon.builder.TextCharacterBuilder;
-import org.codetome.zircon.builder.TextColorFactory;
-import org.codetome.zircon.font.resource.DFTilesetResource;
+import org.codetome.zircon.api.TerminalBuilder;
+import org.codetome.zircon.api.TextCharacterBuilder;
+import org.codetome.zircon.api.TextColorFactory;
+import org.codetome.zircon.api.CP437TilesetResource;
 import org.codetome.zircon.graphics.TextGraphics;
 import org.codetome.zircon.graphics.layer.DefaultLayer;
 import org.codetome.zircon.graphics.layer.Layer;
@@ -30,7 +30,7 @@ public class HideNSeek {
         // for this example we only need a default terminal (no extra config)
         final Screen screen = TerminalBuilder.newBuilder()
                 .initialTerminalSize(new Size(80, 40))
-                .font(DFTilesetResource.TAFFER_20X20.asJava2DFont())
+                .font(CP437TilesetResource.TAFFER_20X20.asJava2DFont())
                 .buildScreen();
         Size size = screen.getBoundableSize();
         screen.setCursorVisible(false); // we don't want the cursor right now

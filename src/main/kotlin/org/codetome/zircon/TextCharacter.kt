@@ -1,8 +1,8 @@
 package org.codetome.zircon
 
 import org.codetome.zircon.Modifier.*
-import org.codetome.zircon.builder.TextCharacterBuilder
-import org.codetome.zircon.builder.TextColorFactory
+import org.codetome.zircon.api.TextCharacterBuilder
+import org.codetome.zircon.api.TextColorFactory
 
 /**
  * Represents a single character with additional metadata such as colors and modifiers. This class is immutable and

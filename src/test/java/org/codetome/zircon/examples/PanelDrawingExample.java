@@ -3,12 +3,12 @@ package org.codetome.zircon.examples;
 import org.codetome.zircon.Position;
 import org.codetome.zircon.Symbols;
 import org.codetome.zircon.TextColor;
-import org.codetome.zircon.builder.TerminalBuilder;
-import org.codetome.zircon.builder.TextColorFactory;
-import org.codetome.zircon.builder.TextImageBuilder;
-import org.codetome.zircon.font.resource.DFTilesetResource;
+import org.codetome.zircon.api.TerminalBuilder;
+import org.codetome.zircon.api.TextColorFactory;
+import org.codetome.zircon.api.TextImageBuilder;
 import org.codetome.zircon.graphics.TextGraphics;
 import org.codetome.zircon.graphics.TextImage;
+import org.codetome.zircon.api.PhysicalFontResource;
 import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.terminal.Size;
 
@@ -24,7 +24,7 @@ public class PanelDrawingExample {
 
     public static void main(String[] args) {
         final Screen screen = TerminalBuilder.newBuilder()
-                .font(DFTilesetResource.WANDERLUST_16X16.asJava2DFont())
+                .font(PhysicalFontResource.SOURCE_CODE_PRO.asPhysicalFont())
                 .initialTerminalSize(new Size(TERMINAL_WIDTH, TERMINAL_HEIGHT))
                 .buildScreen();
 

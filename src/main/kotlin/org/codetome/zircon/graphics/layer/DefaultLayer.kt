@@ -3,7 +3,7 @@ package org.codetome.zircon.graphics.layer
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.behavior.Boundable
-import org.codetome.zircon.builder.TextImageBuilder
+import org.codetome.zircon.api.TextImageBuilder
 import org.codetome.zircon.graphics.TextImage
 import org.codetome.zircon.terminal.Size
 import java.awt.Point

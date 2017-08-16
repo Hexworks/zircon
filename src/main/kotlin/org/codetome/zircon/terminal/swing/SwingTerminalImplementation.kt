@@ -33,8 +33,14 @@ class SwingTerminalImplementation(
         canvas.minimumSize = Dimension(font.getWidth(), font.getHeight())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
-        canvas.addKeyListener(TerminalInputListener())
-        canvas.addMouseListener(object : TerminalMouseListener() {
+        canvas.addKeyListener(TerminalInputListener(
+                virtualTerminal = this,
+                deviceConfiguration = deviceConfiguration))
+        canvas.addMouseListener(object : TerminalMouseListener(
+                virtualTerminal = this,
+                deviceConfiguration = deviceConfiguration,
+                fontWidth = getFontWidth(),
+                fontHeight = getFontHeight()) {
             override fun mouseClicked(e: MouseEvent) {
                 super.mouseClicked(e)
                 this@SwingTerminalImplementation.canvas.requestFocusInWindow()
@@ -58,8 +64,6 @@ class SwingTerminalImplementation(
     override fun getHeight() = canvas.height
 
     override fun getWidth() = canvas.width
-
-    override fun isTextAntiAliased() = false // TODO: what to do?
 
     override fun draw() {
         val bs = canvas.bufferStrategy

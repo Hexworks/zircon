@@ -1,9 +1,9 @@
 package org.codetome.zircon.terminal
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.builder.DeviceConfigurationBuilder
-import org.codetome.zircon.builder.TerminalBuilder
-import org.codetome.zircon.font.resource.DFTilesetResource
+import org.codetome.zircon.api.DeviceConfigurationBuilder
+import org.codetome.zircon.api.TerminalBuilder
+import org.codetome.zircon.api.CP437TilesetResource
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -28,7 +28,7 @@ class DefaultTerminalBuilderTest {
         val deviceConfiguration = DeviceConfigurationBuilder.newBuilder()
                 .blinkLengthInMilliSeconds(5)
                 .build()
-        val font = DFTilesetResource.WANDERLUST_16X16.asJava2DFont()
+        val font = CP437TilesetResource.WANDERLUST_16X16.asJava2DFont()
 
         target.autoOpenTerminalFrame(autoOpen)
                 .initialTerminalSize(size)
@@ -42,7 +42,7 @@ class DefaultTerminalBuilderTest {
                 .isEqualTo(title)
         assertThat(Whitebox.getInternalState(target, "deviceConfiguration"))
                 .isEqualTo(deviceConfiguration)
-        assertThat(Whitebox.getInternalState(target, "font"))
+        assertThat(Whitebox.getInternalState(target, "target"))
                 .isEqualTo(font)
         assertThat(Whitebox.getInternalState(target, "initialTerminalSize"))
                 .isEqualTo(size)

@@ -3,9 +3,11 @@ package org.codetome.zircon.examples;
 import org.codetome.zircon.Position;
 import org.codetome.zircon.TextCharacter;
 import org.codetome.zircon.TextColor;
-import org.codetome.zircon.builder.TerminalBuilder;
-import org.codetome.zircon.builder.TextCharacterBuilder;
-import org.codetome.zircon.builder.TextColorFactory;
+import org.codetome.zircon.api.DeviceConfigurationBuilder;
+import org.codetome.zircon.api.TerminalBuilder;
+import org.codetome.zircon.api.TextCharacterBuilder;
+import org.codetome.zircon.api.TextColorFactory;
+import org.codetome.zircon.api.PhysicalFontResource;
 import org.codetome.zircon.graphics.layer.DefaultLayer;
 import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.terminal.Size;
@@ -15,7 +17,11 @@ public class LayersExample {
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
-        final Screen screen = TerminalBuilder.newBuilder().buildScreen();
+        final Screen screen = TerminalBuilder.newBuilder()
+                .font(PhysicalFontResource.SOURCE_CODE_PRO.asPhysicalFont(18))
+                .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
+                        .build())
+                .buildScreen();
         screen.setCursorVisible(false); // we don't want the cursor right now
 
         final String firstRow = "This is white text on black";

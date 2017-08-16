@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.Position
 import org.codetome.zircon.Position.Companion.DEFAULT_POSITION
+import org.codetome.zircon.Position.Companion.OFFSET_1x1
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.input.KeyStroke.Companion.EOF_STROKE
 import org.codetome.zircon.terminal.Cell
@@ -153,6 +154,35 @@ class DefaultVirtualTerminalTest {
                                 .character(' ')
                                 .build())
         )
+    }
+
+    @Test
+    fun shouldBeDirtyAfterResize() {
+        target.putCharacter(TextCharacter.DEFAULT_CHARACTER)
+        target.forEachDirtyCell {  }
+        target.setSize(SIZE.withRelativeColumns(1))
+
+        val dirtyCells = mutableListOf<Cell>()
+
+        target.forEachDirtyCell {
+            dirtyCells.add(it)
+        }
+
+        assertThat(dirtyCells).hasSize(2)
+    }
+
+    @Test
+    fun shouldReportDirtyWhenDirty() {
+        assertThat(target.isDirty()).isTrue()
+    }
+
+    @Test
+    fun shouldBeAbleToSetCharacter() {
+        val expectedChar = TextCharacter.DEFAULT_CHARACTER.withCharacter('x')
+        target.setCharacter(OFFSET_1x1, expectedChar)
+
+        assertThat(target.getCharacter(OFFSET_1x1))
+                .isEqualTo(expectedChar)
     }
 
     @Test

@@ -1,8 +1,8 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.builder.TextColorFactory;
-import org.codetome.zircon.builder.DeviceConfigurationBuilder;
-import org.codetome.zircon.builder.TerminalBuilder;
+import org.codetome.zircon.api.TextColorFactory;
+import org.codetome.zircon.api.DeviceConfigurationBuilder;
+import org.codetome.zircon.api.TerminalBuilder;
 import org.codetome.zircon.terminal.Terminal;
 import org.codetome.zircon.terminal.config.CursorStyle;
 

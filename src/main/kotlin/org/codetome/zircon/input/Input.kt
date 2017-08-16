@@ -21,8 +21,8 @@ import org.codetome.zircon.input.InputType.*
  * - <code>InputType.Backspace</code>
  * respectively.
  */
-sealed class Input(private val inputType: InputType = InputType.Character,
-                   private val eventTime: Long = System.currentTimeMillis()) {
+sealed class Input(private val inputType: InputType,
+                   private val eventTime: Long) {
 
     fun getInputType() = inputType
 
@@ -45,7 +45,8 @@ data class KeyStroke(
         private val it: InputType = InputType.Character,
         private val ctrlDown: Boolean = false,
         private val altDown: Boolean = false,
-        private val shiftDown: Boolean = false) : Input(it) {
+        private val shiftDown: Boolean = false,
+        private val timestamp: Long = System.currentTimeMillis()) : Input(it, timestamp) {
 
     fun isCtrlDown() = ctrlDown
 
@@ -65,7 +66,9 @@ data class KeyStroke(
     }
 
     companion object {
-        val EOF_STROKE = KeyStroke(character = ' ', it = InputType.EOF)
+        val EOF_STROKE = KeyStroke(
+                character = ' ',
+                it = InputType.EOF)
     }
 }
 
@@ -76,5 +79,7 @@ data class MouseAction(
         val actionType: MouseActionType,
         val button: Int,
         val position: Position)
-    : Input(inputType = InputType.MouseEvent)
+    : Input(
+        inputType = InputType.MouseEvent,
+        eventTime = System.currentTimeMillis())
 
