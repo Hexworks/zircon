@@ -1,13 +1,13 @@
 package org.codetome.zircon.terminal.swing
 
+import org.codetome.zircon.Size
 import org.codetome.zircon.api.DeviceConfigurationBuilder
 import org.codetome.zircon.font.Font
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke
-import org.codetome.zircon.Size
+import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.config.DeviceConfiguration
-import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.util.*
@@ -19,7 +19,7 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
                          deviceConfiguration: DeviceConfiguration = DeviceConfigurationBuilder.getDefault(),
                          font: Font<BufferedImage>,
                          private val swingTerminal: SwingTerminalCanvas = SwingTerminalCanvas(size, deviceConfiguration, font))
-    : JFrame(title), VirtualTerminal by swingTerminal {
+    : JFrame(title), Terminal by swingTerminal {
 
     private var disposed = false
 

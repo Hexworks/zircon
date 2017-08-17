@@ -1,19 +1,19 @@
 package org.codetome.zircon.examples.interactive;
 
-import org.codetome.zircon.*;
+import org.codetome.zircon.Position;
+import org.codetome.zircon.Size;
+import org.codetome.zircon.Symbols;
+import org.codetome.zircon.api.CP437TilesetResource;
 import org.codetome.zircon.api.TerminalBuilder;
 import org.codetome.zircon.api.TextCharacterBuilder;
 import org.codetome.zircon.api.TextColorFactory;
-import org.codetome.zircon.api.CP437TilesetResource;
 import org.codetome.zircon.color.ANSITextColor;
 import org.codetome.zircon.color.TextColor;
-import org.codetome.zircon.graphics.TextGraphics;
 import org.codetome.zircon.graphics.layer.DefaultLayer;
 import org.codetome.zircon.graphics.layer.Layer;
 import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.screen.Screen;
-import org.codetome.zircon.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +36,11 @@ public class HideNSeek {
                 .buildScreen();
         Size size = screen.getBoundableSize();
         screen.setCursorVisible(false); // we don't want the cursor right now
-        TextGraphics graphics = screen.newTextGraphics();
-        graphics.setBackgroundColor(TextColorFactory.fromString("#665233"));
-        graphics.fill(' ');
+//        TextGraphics graphics = screen.newTextGraphics();
+//        graphics.setBackgroundColor(TextColorFactory.fromString("#665233"));
+//        graphics.fillRectangle(Position.TOP_LEFT_CORNER,
+//                graphics.getSize(),
+//                TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter(' '));
 
         final Layer player = new DefaultLayer(Size.ONE,
                 TextCharacterBuilder.newBuilder()

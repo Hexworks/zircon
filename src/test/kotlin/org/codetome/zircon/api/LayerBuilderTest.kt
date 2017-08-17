@@ -30,7 +30,7 @@ class LayerBuilderTest {
         assertThat(result.getOffset())
                 .isEqualTo(OFFSET)
 
-        assertThat(result.getCharacterAt(OFFSET))
+        assertThat(result.getCharacterAt(OFFSET).get())
                 .isEqualTo(FILLER)
     }
 

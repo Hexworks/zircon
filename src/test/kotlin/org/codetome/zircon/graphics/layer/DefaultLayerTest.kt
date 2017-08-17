@@ -68,7 +68,7 @@ class DefaultLayerTest {
     @Test
     fun shouldProperlySetChar() {
         target.setCharacterAt(CONTAINED_POSITION, CHAR)
-        assertThat(target.getCharacterAt(CONTAINED_POSITION))
+        assertThat(target.getCharacterAt(CONTAINED_POSITION).get())
                 .isEqualTo(CHAR)
     }
 

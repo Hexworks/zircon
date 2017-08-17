@@ -18,13 +18,13 @@ import org.mockito.MockitoAnnotations
 
 class DefaultVirtualTerminalTest {
 
-    lateinit var target: DefaultVirtualTerminal
+    lateinit var target: VirtualTerminal
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        target = DefaultVirtualTerminal(SIZE)
+        target = VirtualTerminal(SIZE)
     }
 
     @Test
@@ -205,33 +205,6 @@ class DefaultVirtualTerminalTest {
     }
 
     @Test
-    fun shouldBeNotifiedOfCloseWhenCloseIsCalled() {
-        var closed = false
-        target.addVirtualTerminalListener(object : VirtualTerminalListener {
-            override fun onClose() {
-                closed = true
-            }
-        })
-        target.close()
-        assertThat(closed).isTrue()
-        val input = target.pollInput()
-        assertThat(input.isPresent).isTrue()
-        assertThat(input.get()).isEqualTo(EOF_STROKE)
-    }
-
-    @Test
-    fun shouldBeNotifiedOfFlushWhenFlushIsCalled() {
-        var flushed = false
-        target.addVirtualTerminalListener(object : VirtualTerminalListener {
-            override fun onFlush() {
-                flushed = true
-            }
-        })
-        target.flush()
-        assertThat(flushed).isTrue()
-    }
-
-    @Test
     fun shouldReturnEmptyInputWhenNoneIsPresent() {
         val result = target.pollInput()
         assertThat(result.isPresent).isFalse()
@@ -241,43 +214,6 @@ class DefaultVirtualTerminalTest {
     fun shouldReturnNonEmptyInputWhenInputIsAdded() {
         target.addInput(EOF_STROKE)
         assertThat(target.pollInput().get()).isEqualTo(EOF_STROKE)
-    }
-
-    @Test
-    fun shouldNotBeNotifiedWhenListenerIsAddedThenRemoved() {
-        var closed = false
-        val listener = object : VirtualTerminalListener {
-            override fun onClose() {
-                closed = true
-            }
-        }
-        target.addVirtualTerminalListener(listener)
-        target.removeVirtualTerminalListener(listener)
-        target.close()
-
-        assertThat(closed).isFalse()
-    }
-
-    @Test
-    fun shouldAddCharsWhenTextGraphicsIsCreatedAndManipulated() {
-        val char = 'a'
-        val graphics = target.newTextGraphics()
-        graphics.putString(DEFAULT_POSITION, char.toString())
-        assertThat(target.getCharacter(DEFAULT_POSITION)).isEqualTo(TextCharacter.builder()
-                .character(char)
-                .build())
-    }
-
-    @Test
-    fun shouldNotAddCharsWhenTextGraphicsIsCreatedAndCharIsPutOutOfBounds() {
-        val char = 'a'
-        val graphics = target.newTextGraphics()
-        val cells = mutableListOf<Cell>()
-        graphics.putString(DEFAULT_POSITION.withRow(Int.MAX_VALUE), char.toString())
-        target.forEachCell {
-            cells.add(it)
-        }
-        assertThat(cells).isEmpty()
     }
 
     private fun addCharAndFetchDirtyCells(char: Char): MutableList<Cell> {

@@ -7,7 +7,6 @@ import org.codetome.zircon.screen.TerminalScreen
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.terminal.swing.SwingTerminalFrame
-import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.awt.Toolkit
 import java.awt.image.BufferedImage
 
@@ -29,9 +28,9 @@ class TerminalBuilder {
     private var font: Font<BufferedImage> = PhysicalFontResource.ROBOTO_MONO.asPhysicalFont()
 
     /**
-     * Builds a [VirtualTerminal] based on the properties of this [TerminalBuilder].
+     * Builds a [Terminal] based on the properties of this [TerminalBuilder].
      */
-    fun buildTerminal(): VirtualTerminal = buildSwingTerminal()
+    fun buildTerminal(): Terminal = buildSwingTerminal()
 
     /**
      * Builds a terminal which is backed by a Swing canvas. Currently this is the only
@@ -89,7 +88,7 @@ class TerminalBuilder {
     /**
      * Creates a [org.codetome.zircon.screen.Screen] for the given [Terminal].
      */
-    fun createScreenFor(terminal: VirtualTerminal): TerminalScreen {
+    fun createScreenFor(terminal: Terminal): TerminalScreen {
         return TerminalScreen(terminal)
     }
 

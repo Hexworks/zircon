@@ -28,17 +28,17 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldContainToCopyWhenCreated() {
-        assertThat(target.getCharacterAt(DEFAULT_POSITION))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(TO_COPY_CHAR)
     }
 
     @Test
     fun shouldContainFillerWhenCreated() {
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)).get())
                 .isEqualTo(FILLER)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)).get())
                 .isEqualTo(FILLER)
-        assertThat(target.getCharacterAt(Position(2, 2)))
+        assertThat(target.getCharacterAt(Position(2, 2)).get())
                 .isEqualTo(FILLER)
     }
 
@@ -48,24 +48,13 @@ class DefaultTextImageTest {
     }
 
     @Test
-    fun shouldSetAllWhenItIsCalled() {
-        target.setAll(SET_ALL_CHAR)
-        (0..2).forEach { col ->
-            (0..2).forEach { row ->
-                assertThat(target.getCharacterAt(Position(col, row)))
-                        .isEqualTo(SET_ALL_CHAR)
-            }
-        }
-    }
-
-    @Test
     fun shouldProperlyResizeWhenResizeCalledWithDifferentSize() {
         val result = target.resize(Size(4, 4), SET_ALL_CHAR)
-        assertThat(result.getCharacterAt(DEFAULT_POSITION))
+        assertThat(result.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(TO_COPY_CHAR)
-        assertThat(result.getCharacterAt(Position(1, 1)))
+        assertThat(result.getCharacterAt(Position(1, 1)).get())
                 .isEqualTo(FILLER)
-        assertThat(result.getCharacterAt(Position(3, 3)))
+        assertThat(result.getCharacterAt(Position(3, 3)).get())
                 .isEqualTo(SET_ALL_CHAR)
     }
 
@@ -88,7 +77,7 @@ class DefaultTextImageTest {
     @Test
     fun shouldSetCharProperlyWhenCalledWithinBounds() {
         target.setCharacterAt(OFFSET_1x1, SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(OFFSET_1x1))
+        assertThat(target.getCharacterAt(OFFSET_1x1).get())
                 .isEqualTo(SET_ALL_CHAR)
     }
 
@@ -97,7 +86,7 @@ class DefaultTextImageTest {
         fetchOutOfBoundsPositions().forEach {
             var ex: Exception? = null
             try {
-                target.getCharacterAt(it)
+                target.getCharacterAt(it).get()
             } catch (e: Exception) {
                 ex = e
             }
@@ -109,7 +98,7 @@ class DefaultTextImageTest {
     fun shouldProperlyCopyWithBasicParams() {
         IMAGE_TO_COPY.copyTo(target)
 
-        assertThat(target.getCharacterAt(DEFAULT_POSITION))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(SET_ALL_CHAR)
     }
 
@@ -119,7 +108,7 @@ class DefaultTextImageTest {
                 destination = target,
                 destinationRowOffset = 1)
 
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)).get())
                 .isEqualTo(SET_ALL_CHAR)
     }
 
@@ -129,7 +118,7 @@ class DefaultTextImageTest {
                 destination = target,
                 destinationColumnOffset = 1)
 
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)).get())
                 .isEqualTo(SET_ALL_CHAR)
     }
 
@@ -139,11 +128,11 @@ class DefaultTextImageTest {
                 destination = target,
                 startRowIndex = 1)
 
-        assertThat(target.getCharacterAt(DEFAULT_POSITION))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)).get())
                 .isEqualTo(FILLER)
 
     }
@@ -154,11 +143,11 @@ class DefaultTextImageTest {
                 destination = target,
                 startColumnIndex = 1)
 
-        assertThat(target.getCharacterAt(DEFAULT_POSITION))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)).get())
                 .isEqualTo(FILLER)
 
     }
@@ -169,13 +158,13 @@ class DefaultTextImageTest {
                 destination = target,
                 startColumnIndex = -1)
 
-        assertThat(target.getCharacterAt(DEFAULT_POSITION))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(TO_COPY_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(Position(1, 1)))
+        assertThat(target.getCharacterAt(Position(1, 1)).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(2)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(2)).get())
                 .isEqualTo(FILLER)
     }
 
@@ -185,13 +174,13 @@ class DefaultTextImageTest {
                 destination = target,
                 startRowIndex = -1)
 
-        assertThat(target.getCharacterAt(DEFAULT_POSITION))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(TO_COPY_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(Position(1, 1)))
+        assertThat(target.getCharacterAt(Position(1, 1)).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(2)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(2)).get())
                 .isEqualTo(FILLER)
     }
 
@@ -201,11 +190,11 @@ class DefaultTextImageTest {
                 destination = target,
                 destinationRowOffset = -1)
 
-        assertThat(target.getCharacterAt(DEFAULT_POSITION))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)).get())
                 .isEqualTo(FILLER)
     }
 
@@ -215,11 +204,11 @@ class DefaultTextImageTest {
                 destination = target,
                 destinationColumnOffset = -1)
 
-        assertThat(target.getCharacterAt(DEFAULT_POSITION))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)).get())
                 .isEqualTo(FILLER)
     }
 
@@ -229,11 +218,11 @@ class DefaultTextImageTest {
                 destination = target,
                 rows = 1)
 
-        assertThat(target.getCharacterAt(DEFAULT_POSITION))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)).get())
                 .isEqualTo(FILLER)
 
     }
@@ -244,38 +233,19 @@ class DefaultTextImageTest {
                 destination = target,
                 columns = 1)
 
-        assertThat(target.getCharacterAt(DEFAULT_POSITION))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)).get())
                 .isEqualTo(SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)).get())
                 .isEqualTo(FILLER)
 
-    }
-
-    @Test
-    fun shouldAddCharsWhenTextGraphicsIsCreatedAndManipulated() {
-        val char = 'a'
-        val graphics = target.newTextGraphics()
-        graphics.putString(DEFAULT_POSITION, char.toString())
-        assertThat(target.getCharacterAt(DEFAULT_POSITION)).isEqualTo(TextCharacter.builder()
-                .character(char)
-                .build())
-    }
-
-    @Test
-    fun shouldNotAddCharsWhenTextGraphicsIsCreatedAndCharIsPutOutOfBounds() {
-        val char = 'x'
-        val graphics = target.newTextGraphics()
-        graphics.putString(DEFAULT_POSITION.withRow(Int.MAX_VALUE), char.toString())
-        val cells  = fetchTargetChars()
-        assertThat(cells.filter { it.getCharacter() == 'x' }).isEmpty()
     }
 
     private fun fetchTargetChars(): List<TextCharacter> {
         return (0..2).flatMap { col ->
             (0..2).map { row ->
-                target.getCharacterAt(Position(col, row))
+                target.getCharacterAt(Position(col, row)).get()
             }
         }
     }

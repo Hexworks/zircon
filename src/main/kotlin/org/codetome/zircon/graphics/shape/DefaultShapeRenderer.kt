@@ -3,6 +3,7 @@ package org.codetome.zircon.graphics.shape
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.Size
+import org.codetome.zircon.graphics.shape.test.ShapeRenderer
 
 /**
  * Default implementation of [ShapeRenderer].

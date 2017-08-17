@@ -1,14 +1,16 @@
 package org.codetome.zircon.graphics
 
+import org.codetome.zircon.DrawSurface
 import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.behavior.Boundable
 import org.codetome.zircon.behavior.impl.DefaultBoundable
-import org.codetome.zircon.graphics.box.BoxConnectingMode
 import org.codetome.zircon.graphics.box.BoxRenderer
-import org.codetome.zircon.graphics.box.BoxType
 import org.codetome.zircon.graphics.box.DefaultBoxRenderer
+import org.codetome.zircon.graphics.shape.DrawOverflowStrategy
+import org.codetome.zircon.graphics.style.DefaultStyleSet
 import org.codetome.zircon.graphics.style.StyleSet
 import java.util.*
 
@@ -20,7 +22,9 @@ import java.util.*
 class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
                                            filler: TextCharacter,
                                            boundable: Boundable,
-                                           private val boxRenderer: BoxRenderer = DefaultBoxRenderer()) : TextImage, Boundable by boundable {
+                                           styleSet: StyleSet = DefaultStyleSet(),
+                                           private val boxRenderer: BoxRenderer = DefaultBoxRenderer())
+    : TextImage, Boundable by boundable, StyleSet by styleSet {
 
     constructor(size: Size,
                 toCopy: Array<Array<TextCharacter>>,
@@ -53,8 +57,8 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
         }.joinToString("")
     }
 
-    override fun setAll(character: TextCharacter) {
-        buffer.forEach { line -> Arrays.fill(line, character) }
+    override fun drawOnto(offset: Position, target: DrawSurface, overflowStrategy: DrawOverflowStrategy) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun resize(newSize: Size, filler: TextCharacter): DefaultTextImage {
@@ -64,21 +68,27 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
         return DefaultTextImage(newSize, buffer, filler)
     }
 
-    override fun setCharacterAt(position: Position, character: TextCharacter) {
-        val (column, row) = position
-        if (column < 0 || row < 0 || row >= buffer.size || column >= buffer[0].size) {
-            return
+    override fun setCharacterAt(position: Position, character: Char)
+            = setCharacterAt(position, TextCharacterBuilder.newBuilder()
+            .character(character)
+            .styleSet(toStyleSet())
+            .build())
+
+    override fun setCharacterAt(position: Position, character: TextCharacter) = position.let { (column, row) ->
+        if (positionIsOutOfBounds(column, row)) {
+            false
+        } else {
+            buffer[row][column] = character
+            true
         }
-        buffer[row][column] = character
     }
 
-    override fun getCharacterAt(position: Position): TextCharacter {
-        val (column, row) = position
-        if (column < 0 || row < 0 || row >= buffer.size || column >= buffer[0].size) {
-            throw IllegalArgumentException("column or row is out of bounds for position: $position! Size is: ${getBoundableSize()}")
+    override fun getCharacterAt(position: Position) = position.let { (column, row) ->
+        if (positionIsOutOfBounds(column, row)) {
+            Optional.empty()
+        } else {
+            Optional.of(buffer[row][column])
         }
-
-        return buffer[row][column]
     }
 
     override fun copyTo(destination: TextImage) {
@@ -157,28 +167,7 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
         }
     }
 
-    override fun newTextGraphics(): TextGraphics {
-        return object : AbstractTextGraphics() {
+    private fun positionIsOutOfBounds(column: Int, row: Int)
+            = column < 0 || row < 0 || row >= buffer.size || column >= buffer[0].size
 
-            override fun drawBox(textGraphics: TextGraphics, topLeft: Position, size: Size, styleToUse: StyleSet, boxType: BoxType, boxConnectingMode: BoxConnectingMode) {
-                boxRenderer.drawBox(
-                        textGraphics = textGraphics,
-                        topLeft = topLeft,
-                        size = size,
-                        styleToUse = styleToUse,
-                        boxType = boxType,
-                        boxConnectingMode = boxConnectingMode)
-            }
-
-            override fun getSize(): Size = this@DefaultTextImage.getBoundableSize()
-
-            override fun setCharacter(position: Position, character: TextCharacter) {
-                this@DefaultTextImage.setCharacterAt(position, character)
-            }
-
-            override fun getCharacter(position: Position): Optional<TextCharacter> {
-                return Optional.of(this@DefaultTextImage.getCharacterAt(position))
-            }
-        }
-    }
 }

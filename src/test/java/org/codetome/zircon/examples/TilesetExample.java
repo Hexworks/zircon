@@ -77,7 +77,7 @@ public class TilesetExample {
         final int charCount = RANDOM_CHARS.length;
         final int ansiCount = ANSITextColor.values().length;
 
-        final Layer overlay = new DefaultLayer(screen.getSize(), TextCharacterBuilder.EMPTY
+        final Layer overlay = new DefaultLayer(screen.getBoundableSize(), TextCharacterBuilder.EMPTY
                 .withBackgroundColor(TextColorFactory.fromRGB(0, 0, 0, 50)), Position.of(0, 0));
 
         for (int i = 0; i < RANDOM_CHAR_COUNT; i++) {

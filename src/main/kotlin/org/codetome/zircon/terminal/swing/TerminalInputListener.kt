@@ -2,8 +2,8 @@ package org.codetome.zircon.terminal.swing
 
 import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke
+import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.config.DeviceConfiguration
-import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import org.codetome.zircon.util.TextUtils
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
@@ -12,7 +12,7 @@ import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.util.*
 
-class TerminalInputListener(private val virtualTerminal: VirtualTerminal,
+class TerminalInputListener(private val terminal: Terminal,
                             private val deviceConfiguration: DeviceConfiguration) : KeyAdapter() {
 
     override fun keyTyped(e: KeyEvent) {
@@ -35,7 +35,7 @@ class TerminalInputListener(private val virtualTerminal: VirtualTerminal,
             if (!altDown && ctrlDown && shiftDown && character == 'V' && deviceConfiguration.isClipboardAvailable) {
                 pasteClipboardContent()
             } else {
-                virtualTerminal.addInput(KeyStroke(
+                terminal.addInput(KeyStroke(
                         character = character,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
@@ -54,25 +54,25 @@ class TerminalInputListener(private val virtualTerminal: VirtualTerminal,
             if (!altDown && !ctrlDown && shiftDown && deviceConfiguration.isClipboardAvailable) {
                 pasteClipboardContent()
             } else {
-                virtualTerminal.addInput(KeyStroke(it = InputType.Insert,
+                terminal.addInput(KeyStroke(it = InputType.Insert,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
                         shiftDown = shiftDown))
             }
         } else if (e.keyCode == KeyEvent.VK_TAB) {
             if (e.isShiftDown) {
-                virtualTerminal.addInput(KeyStroke(it = InputType.ReverseTab,
+                terminal.addInput(KeyStroke(it = InputType.ReverseTab,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
                         shiftDown = shiftDown))
             } else {
-                virtualTerminal.addInput(KeyStroke(it = InputType.Tab,
+                terminal.addInput(KeyStroke(it = InputType.Tab,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
                         shiftDown = shiftDown))
             }
         } else if (KEY_EVENT_TO_KEY_TYPE_LOOKUP.containsKey(e.keyCode)) {
-            virtualTerminal.addInput(KeyStroke(it = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
+            terminal.addInput(KeyStroke(it = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
                     ctrlDown = ctrlDown,
                     altDown = altDown,
                     shiftDown = shiftDown))
@@ -83,7 +83,7 @@ class TerminalInputListener(private val virtualTerminal: VirtualTerminal,
                 if (!shiftDown) {
                     character = Character.toLowerCase(character)
                 }
-                virtualTerminal.addInput(KeyStroke(
+                terminal.addInput(KeyStroke(
                         character = character,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
@@ -104,7 +104,7 @@ class TerminalInputListener(private val virtualTerminal: VirtualTerminal,
                     TextUtils.isPrintableCharacter(it)
                 }
                 .forEach {
-                    virtualTerminal.addInput(KeyStroke(character = it))
+                    terminal.addInput(KeyStroke(character = it))
                 }
     }
 

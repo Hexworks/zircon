@@ -1,15 +1,15 @@
 package org.codetome.zircon.graphics.box
 
 import org.codetome.zircon.Position
-import org.codetome.zircon.graphics.TextGraphics
+import org.codetome.zircon.Size
+import org.codetome.zircon.graphics.TextImage
 import org.codetome.zircon.graphics.box.BoxConnectingMode.CONNECT
 import org.codetome.zircon.graphics.box.BoxType.BASIC
 import org.codetome.zircon.graphics.style.StyleSet
-import org.codetome.zircon.Size
 
 interface BoxRenderer {
 
-    fun drawBox(textGraphics: TextGraphics,
+    fun drawBox(textImage: TextImage,
                 topLeft: Position,
                 size: Size,
                 styleToUse: StyleSet,

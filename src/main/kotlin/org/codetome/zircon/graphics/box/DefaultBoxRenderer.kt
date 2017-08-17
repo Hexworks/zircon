@@ -1,16 +1,16 @@
 package org.codetome.zircon.graphics.box
 
 import org.codetome.zircon.Position
+import org.codetome.zircon.Size
 import org.codetome.zircon.api.TextCharacterBuilder
-import org.codetome.zircon.graphics.TextGraphics
+import org.codetome.zircon.graphics.TextImage
 import org.codetome.zircon.graphics.box.BoxConnectingMode.CONNECT
 import org.codetome.zircon.graphics.style.StyleSet
-import org.codetome.zircon.Size
 import java.util.*
 
 class DefaultBoxRenderer : BoxRenderer {
 
-    override fun drawBox(textGraphics: TextGraphics,
+    override fun drawBox(textImage: TextImage,
                          topLeft: Position,
                          size: Size,
                          styleToUse: StyleSet,
@@ -39,41 +39,41 @@ class DefaultBoxRenderer : BoxRenderer {
                     Pair(Position.of(column + i, lastRow), boxType.horizontal)
                 })
                 .forEach { (pos, char) ->
-                    textGraphics.setCharacter(pos, TextCharacterBuilder.newBuilder()
+                    textImage.setCharacterAt(pos, TextCharacterBuilder.newBuilder()
                             .character(char)
                             .styleSet(styleToUse)
                             .build())
                 }
         if (CONNECT == boxConnectingMode) {
-            setConnector(textGraphics, Position.of(column, row), boxType)
-            setConnector(textGraphics, Position.of(lastColumn, row), boxType)
-            setConnector(textGraphics, Position.of(column, lastRow), boxType)
-            setConnector(textGraphics, Position.of(lastColumn, lastRow), boxType)
+            setConnector(textImage, Position.of(column, row), boxType)
+            setConnector(textImage, Position.of(lastColumn, row), boxType)
+            setConnector(textImage, Position.of(column, lastRow), boxType)
+            setConnector(textImage, Position.of(lastColumn, lastRow), boxType)
 
             (1..height - 1 - 1).forEach { i ->
-                setConnector(textGraphics, Position.of(column, row + i), boxType)
-                setConnector(textGraphics, Position.of(lastColumn, row + i), boxType)
+                setConnector(textImage, Position.of(column, row + i), boxType)
+                setConnector(textImage, Position.of(lastColumn, row + i), boxType)
             }
 
             (1..width - 1 - 1).forEach { i ->
-                setConnector(textGraphics, Position.of(column + i, row), boxType)
-                setConnector(textGraphics, Position.of(column + i, lastRow), boxType)
+                setConnector(textImage, Position.of(column + i, row), boxType)
+                setConnector(textImage, Position.of(column + i, lastRow), boxType)
             }
         }
     }
 
-    private fun setConnector(textGraphics: TextGraphics,
+    private fun setConnector(textImage: TextImage,
                              position: Position,
                              boxType: BoxType) {
-        Objects.requireNonNull<Any>(textGraphics)
+        Objects.requireNonNull<Any>(textImage)
 
-        val validTop = textGraphics.getCharacter(position.withRelativeRow(-1))
+        val validTop = textImage.getCharacterAt(position.withRelativeRow(-1))
                 .filter({ boxType.isValidTopCharacter(it) }).isPresent
-        val validBottom = textGraphics.getCharacter(position.withRelativeRow(1))
+        val validBottom = textImage.getCharacterAt(position.withRelativeRow(1))
                 .filter({ boxType.isValidBottomCharacter(it) }).isPresent
-        val validLeft = textGraphics.getCharacter(position.withRelativeColumn(-1))
+        val validLeft = textImage.getCharacterAt(position.withRelativeColumn(-1))
                 .filter({ boxType.isValidLeftCharacter(it) }).isPresent
-        val validRight = textGraphics.getCharacter(position.withRelativeColumn(1))
+        val validRight = textImage.getCharacterAt(position.withRelativeColumn(1))
                 .filter({ boxType.isValidRightCharacter(it) }).isPresent
 
         val neighbourPattern = booleanArrayOf(validRight, validTop, validLeft, validBottom)
@@ -81,7 +81,7 @@ class DefaultBoxRenderer : BoxRenderer {
 
         optChar.ifPresent({
             character ->
-            textGraphics.setCharacter(position, character)
+            textImage.setCharacterAt(position, character)
         })
     }
 

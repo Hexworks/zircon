@@ -1,6 +1,8 @@
 package org.codetome.zircon.graphics.shape
 
 import org.codetome.zircon.Position
+import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.graphics.TextImage
 
 /**
  * A [Shape] is a set of [org.codetome.zircon.Position]s representing a geometric formation
@@ -16,4 +18,9 @@ interface Shape : Collection<Position> {
     operator fun plus(shape: Shape): Shape {
         return DefaultShape(getPositions().plus(shape.getPositions()))
     }
+
+    /**
+     * Creates a [TextImage] from this [Shape] filling it with `textCharacter`.
+     */
+    fun toTextImage(textCharacter: TextCharacter) : TextImage
 }

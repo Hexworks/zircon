@@ -6,6 +6,11 @@ import org.codetome.zircon.color.TextColor
 interface StyleSet {
 
     /**
+     * Returns a copy of the style information stored in this [StyleSet].
+     */
+    fun toStyleSet(): StyleSet
+
+    /**
      * Returns the current background color.
      */
     fun getBackgroundColor(): TextColor

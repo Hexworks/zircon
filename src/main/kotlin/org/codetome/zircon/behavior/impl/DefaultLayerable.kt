@@ -34,7 +34,7 @@ class DefaultLayerable private constructor(boundable: Boundable)
         return queue.filter { layer ->
             layer.containsPosition(position)
         }.map { layer ->
-            layer.getCharacterAt(position)
+            layer.getCharacterAt(position).get()
         }
     }
 }

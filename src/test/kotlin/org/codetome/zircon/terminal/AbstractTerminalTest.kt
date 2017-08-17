@@ -2,7 +2,7 @@ package org.codetome.zircon.terminal
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Size
-import org.codetome.zircon.terminal.virtual.DefaultVirtualTerminal
+import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
@@ -15,7 +15,7 @@ class AbstractTerminalTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        target = DefaultVirtualTerminal()
+        target = VirtualTerminal()
     }
 
     @Test

@@ -4,8 +4,8 @@ import org.codetome.zircon.Position
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.input.MouseAction
 import org.codetome.zircon.input.MouseActionType
+import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.config.DeviceConfiguration
-import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import org.codetome.zircon.util.TextUtils
 import java.awt.MouseInfo
 import java.awt.Toolkit
@@ -14,7 +14,7 @@ import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
 
-open class TerminalMouseListener(private val virtualTerminal: VirtualTerminal,
+open class TerminalMouseListener(private val virtualTerminal: Terminal,
                             private val deviceConfiguration: DeviceConfiguration,
                             private val fontWidth: Int,
                             private val fontHeight: Int) : MouseAdapter() {

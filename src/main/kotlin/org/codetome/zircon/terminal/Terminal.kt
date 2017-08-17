@@ -2,12 +2,14 @@
 
 package org.codetome.zircon.terminal
 
+import org.codetome.zircon.Position
 import org.codetome.zircon.Size
+import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.behavior.Clearable
 import org.codetome.zircon.behavior.CursorHolder
 import org.codetome.zircon.behavior.Layerable
-import org.codetome.zircon.graphics.TextGraphics
 import org.codetome.zircon.graphics.style.StyleSet
+import org.codetome.zircon.input.InputConsumer
 import org.codetome.zircon.input.InputProvider
 import java.io.Closeable
 
@@ -25,7 +27,7 @@ import java.io.Closeable
  * If you want to write an application that has a very precise control of the terminal, this is the
  * interface you should be programming against.
  */
-interface Terminal : InputProvider, Closeable, Clearable, StyleSet, CursorHolder, Layerable {
+interface Terminal : InputProvider, InputConsumer, Closeable, Clearable, StyleSet, CursorHolder, Layerable {
 
     /**
      * Prints one character to the terminal at the current cursor location.
@@ -39,15 +41,6 @@ interface Terminal : InputProvider, Closeable, Clearable, StyleSet, CursorHolder
     fun putCharacter(c: Char)
 
     /**
-     * Creates a new [TextGraphics] object that uses this [Terminal] directly when outputting.
-     * Keep in mind that you are probably better off to switch to a [org.codetome.zircon.screen.Screen]
-     * to make advanced text graphics more efficient.
-     * Also, this [TextGraphics] implementation will not call [Terminal.flush] after any operation,
-     * so you'll need to do that on your own.
-     */
-    fun newTextGraphics(): TextGraphics
-
-    /**
      * Adds a [TerminalResizeListener] to be called when the terminal has changed size.
      */
     fun addResizeListener(listener: TerminalResizeListener)
@@ -59,8 +52,8 @@ interface Terminal : InputProvider, Closeable, Clearable, StyleSet, CursorHolder
     fun removeResizeListener(listener: TerminalResizeListener)
 
     /**
-     * Changes the visible size of the virtual terminal. If you call this method with a size
-     * that is different from the current size of the virtual terminal, the resize event
+     * Changes the visible size of the terminal. If you call this method with a size
+     * that is different from the current size of the terminal, the resize event
      * will be fired on all listeners.
      */
     fun setSize(newSize: Size)
@@ -74,9 +67,14 @@ interface Terminal : InputProvider, Closeable, Clearable, StyleSet, CursorHolder
     fun flush()
 
     /**
-     * Tells whether this [Terminal] was changed since the last [Terminal.flush].
+     * Returns a character from the viewport at the specified coordinates.
      */
-    fun isDirty(): Boolean
+    fun getCharacter(position: Position): TextCharacter
+
+    /**
+     * Sets the character at a given position.
+     */
+    fun setCharacter(position: Position, textCharacter: TextCharacter)
 
 }
 

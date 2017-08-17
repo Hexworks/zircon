@@ -22,6 +22,11 @@ open class DefaultStyleSet(
         }
     }
 
+    override fun toStyleSet() = DefaultStyleSet(
+            foregroundColor = foregroundColor.get(),
+            backgroundColor = backgroundColor.get(),
+            modifiers = modifiers.keys.toSet())
+
     override fun getForegroundColor(): TextColor = foregroundColor.get()
 
     override fun getBackgroundColor(): TextColor = backgroundColor.get()
