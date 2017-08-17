@@ -1,0 +1,85 @@
+package org.codetome.zircon.graphics.shape.test
+
+import org.codetome.zircon.Position
+import org.codetome.zircon.graphics.shape.DefaultShape
+import org.codetome.zircon.graphics.shape.Shape
+
+object LineBuilder : ShapeBuilder<LineParameters> {
+
+    override fun buildShape(shapeParameters: LineParameters): Shape {
+        var p1 = shapeParameters.fromPoint
+        var p2 = shapeParameters.toPoint
+        //http://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
+        //Implementation from Graphics Programming Black Book by Michael Abrash
+        //Available at http://www.gamedev.net/page/resources/_/technical/graphics-programming-and-theory/graphics-programming-black-book-r1698
+        if (p1.row > p2.row) {
+            val temp = p1
+            p1 = p2
+            p2 = temp
+        }
+        var deltaX = p2.column - p1.column
+        val deltaY = p2.row - p1.row
+        return if (deltaX > 0) {
+            if (deltaX > deltaY) {
+                DefaultShape(createLine0(p1, deltaX, deltaY, true))
+            } else {
+                DefaultShape(createLine1(p1, deltaX, deltaY, true))
+            }
+        } else {
+            deltaX = Math.abs(deltaX)
+            if (deltaX > deltaY) {
+                DefaultShape(createLine0(p1, deltaX, deltaY, false))
+            } else {
+                DefaultShape(createLine1(p1, deltaX, deltaY, false))
+            }
+        }
+    }
+
+    private fun createLine0(start: Position, deltaX: Int, deltaY: Int, leftToRight: Boolean): Set<Position> {
+        val result = mutableSetOf<Position>()
+        var dx = deltaX
+        var (x, y) = start
+        val deltaYx2 = deltaY * 2
+        val deltaYx2MinusDeltaXx2 = deltaYx2 - dx * 2
+        var errorTerm = deltaYx2 - dx
+        result.add(Position.of(x, y))
+        while (dx-- > 0) {
+            if (errorTerm >= 0) {
+                y++
+                errorTerm += deltaYx2MinusDeltaXx2
+            } else {
+                errorTerm += deltaYx2
+            }
+            x += if (leftToRight) 1 else -1
+            result.add(Position.of(x, y))
+        }
+        return result
+    }
+
+    private fun createLine1(start: Position, deltaX: Int, deltaY: Int, leftToRight: Boolean): Set<Position> {
+        val result = mutableSetOf<Position>()
+        var dy = deltaY
+        var (x, y) = start
+        val deltaXx2 = deltaX * 2
+        val deltaXx2MinusDeltaYx2 = deltaXx2 - dy * 2
+        var errorTerm = deltaXx2 - dy
+        result.add(Position.of(x, y))
+        while (dy-- > 0) {
+            if (errorTerm >= 0) {
+                x += if (leftToRight) 1 else -1
+                errorTerm += deltaXx2MinusDeltaYx2
+            } else {
+                errorTerm += deltaXx2
+            }
+            y++
+            result.add(Position.of(x, y))
+        }
+        return result
+    }
+
+    @JvmStatic
+    fun buildLine(shapeParameters: LineParameters) = buildShape(shapeParameters)
+
+    @JvmStatic
+    fun buildLine(fromPoint: Position, toPoint: Position) = buildLine(LineParameters(fromPoint, toPoint))
+}

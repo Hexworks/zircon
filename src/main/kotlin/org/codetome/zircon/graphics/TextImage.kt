@@ -1,37 +1,19 @@
 package org.codetome.zircon.graphics
 
+import org.codetome.zircon.DrawSurface
 import org.codetome.zircon.Position
+import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.behavior.Boundable
-import org.codetome.zircon.Size
+import org.codetome.zircon.graphics.shape.DrawOverflowStrategy
+import org.codetome.zircon.graphics.style.StyleSet
 
 /**
  * An image built from [TextCharacter]s with color and style information.
  * These are completely in memory and not visible,
- * but can be used when drawing with [TextGraphics] objects.
+ * but can be used when drawing on other [DrawSurface]s.
  */
-interface TextImage: Boundable {
-
-    /**
-     * Returns the character stored at a particular position in this image
-     */
-    fun getCharacterAt(position: Position): TextCharacter
-
-    /**
-     * Sets the character at a specific position in the image to a particular [TextCharacter]. If the position is outside
-     * of the images size, this method does nothing.
-     */
-    fun setCharacterAt(position: Position, character: TextCharacter)
-
-    /**
-     * Sets the text image content to one specified character (including color and style)
-     */
-    fun setAll(character: TextCharacter)
-
-    /**
-     * Creates a [TextGraphics] object that targets this [TextImage] for all its drawing operations.
-     */
-    fun newTextGraphics(): TextGraphics
+interface TextImage: Boundable, DrawSurface, StyleSet {
 
     /**
      * Returns a copy of this image resized to a new size and using a specified filler character if the new size is
@@ -40,6 +22,21 @@ interface TextImage: Boundable {
      */
     fun resize(newSize: Size, filler: TextCharacter): TextImage
 
+    /**
+     * Draws this [TextImage] onto a [DrawSurface].
+     */
+    fun drawOnto(offset: Position,
+                 target: DrawSurface,
+                 overflowStrategy: DrawOverflowStrategy =  DrawOverflowStrategy.IGNORE_OVERFLOW)
+
+    /**
+     * Sets the character at a specific position in the [DrawSurface] to a particular [TextCharacter].
+     * If the position is outside of the [DrawSurface]'s size, this method has no side effect.
+     * **Note that** this method will use the style information which is present in this [TextImage]
+     * when it sets the given `character` as a [TextCharacter].
+     * @return true if the character was set, false if the position is outside of the [DrawSurface].
+     */
+    fun setCharacterAt(position: Position, character: Char): Boolean
 
     /**
      * Copies this [TextImage]'s content to another [TextImage]. If the destination [TextImage] is larger than this

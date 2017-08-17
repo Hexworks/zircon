@@ -16,10 +16,10 @@ class TextImageBuilderTest {
                 .build()
 
         assertThat(result.getBoundableSize()).isEqualTo(SIZE)
-        assertThat(result.getCharacterAt(Position.DEFAULT_POSITION))
+        assertThat(result.getCharacterAt(Position.DEFAULT_POSITION).get())
                 .isEqualTo(COPY_CHAR)
 
-        assertThat(result.getCharacterAt(Position(SIZE.columns - 1, SIZE.rows - 1)))
+        assertThat(result.getCharacterAt(Position(SIZE.columns - 1, SIZE.rows - 1)).get())
                 .isEqualTo(FILLER)
     }
 

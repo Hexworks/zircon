@@ -5,11 +5,10 @@ import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.behavior.Clearable
 import org.codetome.zircon.behavior.CursorHolder
 import org.codetome.zircon.behavior.Layerable
-import org.codetome.zircon.graphics.TextGraphics
-import org.codetome.zircon.input.Input
+import org.codetome.zircon.input.InputConsumer
 import org.codetome.zircon.input.InputProvider
-import org.codetome.zircon.Size
 import java.io.Closeable
+import java.util.*
 
 /**
  * [Screen] is a fundamental layer presenting the terminal as a bitmap-like surface where you can perform
@@ -21,39 +20,24 @@ import java.io.Closeable
  * [org.codetome.zircon.terminal.Terminal]. If you want a [Screen] to be displayed use the
  * [Screen.display] method.
  */
-interface Screen : InputProvider, Closeable, Clearable, Layerable, CursorHolder {
-
-    /**
-     * Adds a [Input] to the input queue of this [Screen].
-     * See: [org.codetome.zircon.terminal.virtual.VirtualTerminal] for more info.
-     */
-    fun addInput(input: Input)
-
-    fun getSize(): Size
+interface Screen : InputProvider, InputConsumer, Closeable, Clearable, Layerable, CursorHolder {
 
     /**
      * Reads a character and its associated meta-data from the front-buffer and returns it encapsulated as a
      * [TextCharacter].
      */
-    fun getFrontCharacter(position: Position): TextCharacter
+    fun getFrontCharacter(position: Position): Optional<TextCharacter>
 
     /**
      * Reads a character and its associated meta-data from the back-buffer and returns it encapsulated as a
      * [TextCharacter].
      */
-    fun getBackCharacter(position: Position): TextCharacter
+    fun getBackCharacter(position: Position): Optional<TextCharacter>
 
     /**
      * Sets a character in the back-buffer to a specified value with specified colors and modifiers.
      */
     fun setCharacter(position: Position, screenCharacter: TextCharacter)
-
-    /**
-     * Creates a new [TextGraphics] objects that is targeting this [Screen] for writing to.
-     * Any operations done on this [TextGraphics] will be affecting this screen.
-     * Remember to call `refresh()` on the screen to see your changes.
-     */
-    fun newTextGraphics(): TextGraphics
 
     /**
      * Same as [Screen.refresh] but forces a redraw of each character regardless of its changes.

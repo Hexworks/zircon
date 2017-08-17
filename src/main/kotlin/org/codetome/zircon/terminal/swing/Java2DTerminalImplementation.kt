@@ -24,8 +24,8 @@ import java.util.*
 abstract class Java2DTerminalImplementation(
         private val deviceConfiguration: DeviceConfiguration,
         private val font: Font<BufferedImage>,
-        private val virtualTerminal: IterableTerminal)
-    : IterableTerminal by virtualTerminal {
+        private val terminal: IterableTerminal)
+    : IterableTerminal by terminal {
 
     private var enableInput = false
     private var hasBlinkingText = deviceConfiguration.isCursorBlinking
@@ -77,7 +77,7 @@ abstract class Java2DTerminalImplementation(
 
     @Synchronized
     fun onDestroyed() {
-        virtualTerminal.addInput(KeyStroke.EOF_STROKE)
+        terminal.addInput(KeyStroke.EOF_STROKE)
         blinkTimer.cancel()
         enableInput = false
     }
@@ -86,8 +86,8 @@ abstract class Java2DTerminalImplementation(
      * Calculates the preferred size of this terminal.
      */
     fun getPreferredSize() = Dimension(
-            getFontWidth() * virtualTerminal.getBoundableSize().columns,
-            getFontHeight() * virtualTerminal.getBoundableSize().rows)
+            getFontWidth() * terminal.getBoundableSize().columns,
+            getFontHeight() * terminal.getBoundableSize().rows)
 
     /**
      * Updates the back buffer (if necessary) and draws it to the component's surface.
@@ -101,7 +101,7 @@ abstract class Java2DTerminalImplementation(
             val terminalSize = Size.of(
                     columns = getWidth() / getFontWidth(),
                     rows = getHeight() / getFontHeight())
-            virtualTerminal.setSize(terminalSize)
+            terminal.setSize(terminalSize)
             needToRedraw = true
         }
 
@@ -110,7 +110,7 @@ abstract class Java2DTerminalImplementation(
         }
 
         if (needToRedraw) {
-            val cursorPosition = virtualTerminal.getCursorPosition()
+            val cursorPosition = terminal.getCursorPosition()
             var foundBlinkingCharacters = deviceConfiguration.isCursorBlinking
 
             graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED)
@@ -119,7 +119,7 @@ abstract class Java2DTerminalImplementation(
             graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
             graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED)
 
-            virtualTerminal.forEachDirtyCell { (position, textCharacter) ->
+            terminal.forEachDirtyCell { (position, textCharacter) ->
                 val atCursorLocation = cursorPosition == position
                 val characterWidth = getFontWidth()
                 val foregroundColor = deriveTrueForegroundColor(textCharacter)

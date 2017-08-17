@@ -57,8 +57,8 @@ class DefaultLayer private constructor(offset: Position, private val textImage: 
 
     override fun getCharacterAt(position: Position) = textImage.getCharacterAt(position - offset)
 
-    override fun setCharacterAt(position: Position, character: TextCharacter) {
-        textImage.setCharacterAt(position - offset, character)
+    override fun setCharacterAt(position: Position, character: TextCharacter): Boolean {
+        return textImage.setCharacterAt(position - offset, character)
     }
 
     private fun refreshRect(): Rectangle {

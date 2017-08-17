@@ -2,45 +2,179 @@ package org.codetome.zircon.terminal.virtual
 
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.behavior.CursorHolder
+import org.codetome.zircon.behavior.Layerable
+import org.codetome.zircon.behavior.impl.DefaultCursorHolder
+import org.codetome.zircon.behavior.impl.DefaultLayerable
 import org.codetome.zircon.input.Input
-import org.codetome.zircon.terminal.Terminal
+import org.codetome.zircon.input.KeyStroke
+import org.codetome.zircon.terminal.AbstractTerminal
+import org.codetome.zircon.Cell
+import org.codetome.zircon.Size
+import org.codetome.zircon.api.TextCharacterBuilder
+import org.codetome.zircon.terminal.IterableTerminal
+import org.codetome.zircon.util.TextUtils
+import java.util.*
+import java.util.concurrent.LinkedBlockingQueue
 
-/**
- * A virtual terminal is a kind of terminal emulator that exposes the [Terminal] interface
- * and maintains its state completely internally. The [VirtualTerminal] interface extends this interface and
- * allows you to query and modify its internals in a way you can not do with a regular terminal.
- */
-interface VirtualTerminal : Terminal {
+class VirtualTerminal private constructor(initialSize: Size,
+                                          private val cursorHolder: CursorHolder,
+                                          private val layerable: Layerable)
+    : AbstractTerminal(), IterableTerminal,
+        CursorHolder by cursorHolder,
+        Layerable by layerable {
 
-    /**
-     * Adds a [Input] to the input queue of this virtual terminal.
-     * This even will be read the next time either [VirtualTerminal.pollInput] or
-     * [VirtualTerminal.readInput] is called, assuming there are no other events before it in the queue.
-     */
-    fun addInput(input: Input)
+    private var terminalSize = initialSize
+    private var wholeBufferDirty = false
+    private var lastDrawnCursorPosition: Position = Position.UNKNOWN
+    private val textBuffer: TextCharacterBuffer = TextCharacterBuffer()
+    private val dirtyTerminalCells = TreeSet<Position>()
+    private val listeners = mutableListOf<VirtualTerminalListener>()
+    private val inputQueue = LinkedBlockingQueue<Input>()
 
-    /**
-     * Returns a character from the viewport at the specified coordinates.
-     */
-    fun getCharacter(position: Position): TextCharacter
+    constructor(initialSize: Size = Size.DEFAULT)
+            : this(
+            initialSize = initialSize,
+            cursorHolder = DefaultCursorHolder(),
+            layerable = DefaultLayerable(
+                    size = initialSize))
 
-    /**
-     * Sets the character at a given position.
-     */
-    fun setCharacter(position: Position, textCharacter: TextCharacter)
+    init {
+        dirtyTerminalCells.add(getCursorPosition())
+    }
 
-    /**
-     * Adds a listener to receive notifications when certain events happens on the virtual terminal.
-     * Notice that this is not the same as the list of [org.codetome.zircon.terminal.TerminalResizeListener],
-     * but as the [VirtualTerminalListener] also allows you to listen on size changes,
-     * it can be used for the same purpose.
-     */
-    fun addVirtualTerminalListener(listener: VirtualTerminalListener)
+    @Synchronized
+    override fun setCursorPosition(cursorPosition: Position) {
+        cursorHolder.setCursorPosition(cursorPosition
+                // this is not a bug! the cursor can extend beyond the last row
+                .withColumn(Math.min(cursorPosition.column, terminalSize.columns))
+                .withRow(Math.min(cursorPosition.row, terminalSize.rows - 1)))
+        dirtyTerminalCells.add(getCursorPosition())
+    }
 
-    /**
-     * Removes a listener from this virtual terminal so it will no longer receive events.
-     * Notice that this is not the same as the list of [org.codetome.zircon.terminal.TerminalResizeListener].
-     */
-    fun removeVirtualTerminalListener(listener: VirtualTerminalListener)
+    override fun getBoundableSize(): Size = terminalSize
 
+    @Synchronized
+    override fun setSize(newSize: Size) {
+        if (newSize != terminalSize) {
+            this.terminalSize = newSize
+            textBuffer.resize(newSize)
+            getCursorPosition().let { (cursorCol, cursorRow) ->
+                if (cursorRow >= newSize.rows || cursorCol >= newSize.columns) {
+                    setCursorPosition(Position.of(
+                            column = Math.min(newSize.columns, cursorCol),
+                            row = Math.min(newSize.rows, cursorRow)))
+                }
+            }
+            wholeBufferDirty = true // TODO: this can be optimized later
+            listeners.forEach { it.onResized(this, terminalSize) }
+            super.onResized(newSize)
+        }
+    }
+
+    @Synchronized
+    override fun clear() {
+        textBuffer.clear()
+        setWholeBufferDirty()
+        setCursorPosition(Position.DEFAULT_POSITION)
+    }
+
+    @Synchronized
+    override fun putCharacter(c: Char) {
+        if (c == '\n') {
+            moveCursorToNextLine()
+        } else if (TextUtils.isPrintableCharacter(c)) {
+            putCharacter(TextCharacterBuilder.newBuilder()
+                    .character(c)
+                    .foregroundColor(getForegroundColor())
+                    .backgroundColor(getBackgroundColor())
+                    .modifiers(getActiveModifiers())
+                    .build())
+        }
+    }
+
+    @Synchronized
+    internal fun putCharacter(textCharacter: TextCharacter) {
+        checkCursorPosition()
+        textBuffer.setCharacter(getCursorPosition(), textCharacter)
+        dirtyTerminalCells.add(getCursorPosition())
+        setCursorPosition(getCursorPosition().withRelativeColumn(1))
+        checkCursorPosition()
+        dirtyTerminalCells.add(getCursorPosition())
+    }
+
+    private fun checkCursorPosition() {
+        if (cursorIsAtTheEndOfTheLine()) {
+            moveCursorToNextLine()
+        }
+    }
+
+    @Synchronized
+    override fun flush() = listeners.forEach { it.onFlush() }
+
+    override fun close() {
+        inputQueue.add(KeyStroke.EOF_STROKE)
+        listeners.forEach { it.onClose() }
+    }
+
+    @Synchronized
+    override fun pollInput() = Optional.ofNullable(inputQueue.poll())
+
+    override fun addInput(input: Input) {
+        inputQueue.add(input)
+    }
+
+    @Synchronized
+    override fun getCharacter(position: Position): TextCharacter {
+        return textBuffer.getCharacter(position)
+    }
+
+    @Synchronized
+    override fun setCharacter(position: Position, textCharacter: TextCharacter) {
+        textBuffer.setCharacter(position, textCharacter)
+    }
+
+    @Synchronized
+    override fun forEachDirtyCell(fn: (Cell) -> Unit) {
+        if (lastDrawnCursorPosition != getCursorPosition()
+                && lastDrawnCursorPosition != Position.UNKNOWN) {
+            dirtyTerminalCells.add(lastDrawnCursorPosition)
+        }
+        if (wholeBufferDirty) {
+            textBuffer.forEachCell(fn)
+            fn(Cell(getCursorPosition(), textBuffer.getCharacter(getCursorPosition())))
+            wholeBufferDirty = false
+        } else {
+            dirtyTerminalCells.forEach { pos ->
+                fn(Cell(pos, textBuffer.getCharacter(pos)))
+            }
+        }
+        val blinkingChars = dirtyTerminalCells.filter { getCharacter(it).isBlinking() }
+        dirtyTerminalCells.clear()
+        dirtyTerminalCells.addAll(blinkingChars)
+        this.lastDrawnCursorPosition = getCursorPosition()
+        dirtyTerminalCells.add(getCursorPosition())
+    }
+
+    override fun forEachCell(fn: (Cell) -> Unit) {
+        textBuffer.forEachCell(fn)
+    }
+
+
+
+    private fun moveCursorToNextLine() {
+        setCursorPosition(getCursorPosition().withColumn(0).withRelativeRow(1))
+        if (getCursorPosition().row >= textBuffer.getLineCount()) {
+            textBuffer.newLine()
+        }
+    }
+
+    private fun setWholeBufferDirty() {
+        wholeBufferDirty = true
+        dirtyTerminalCells.clear()
+    }
+
+    override fun isDirty() = wholeBufferDirty.or(dirtyTerminalCells.isNotEmpty())
+
+    private fun cursorIsAtTheEndOfTheLine() = getCursorPosition().column == terminalSize.columns
 }

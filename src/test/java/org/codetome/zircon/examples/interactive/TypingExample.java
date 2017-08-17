@@ -3,14 +3,12 @@ package org.codetome.zircon.examples.interactive;
 import org.codetome.zircon.Position;
 import org.codetome.zircon.TextCharacter;
 import org.codetome.zircon.api.DeviceConfigurationBuilder;
-import org.codetome.zircon.api.PhysicalFontResource;
 import org.codetome.zircon.api.TerminalBuilder;
 import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.input.KeyStroke;
 import org.codetome.zircon.screen.Screen;
 import org.codetome.zircon.terminal.Terminal;
-import org.codetome.zircon.terminal.virtual.VirtualTerminal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +38,7 @@ public class TypingExample {
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorBlinking(true)
                         .build());
-        final VirtualTerminal terminal = builder.buildTerminal();
+        final Terminal terminal = builder.buildTerminal();
         final Screen screen = builder.createScreenFor(terminal);
 
 //        startTypingSupportForScreen(screen);

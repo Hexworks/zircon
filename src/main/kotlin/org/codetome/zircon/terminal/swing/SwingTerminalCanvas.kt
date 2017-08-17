@@ -1,22 +1,16 @@
 package org.codetome.zircon.terminal.swing
 
-import org.codetome.zircon.Modifier
-import org.codetome.zircon.Position
-import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.color.TextColor
+import org.codetome.zircon.*
 import org.codetome.zircon.behavior.Boundable
+import org.codetome.zircon.color.TextColor
 import org.codetome.zircon.font.Font
 import org.codetome.zircon.graphics.layer.Layer
 import org.codetome.zircon.graphics.style.StyleSet
 import org.codetome.zircon.input.Input
-import org.codetome.zircon.Cell
-import org.codetome.zircon.Size
 import org.codetome.zircon.terminal.IterableTerminal
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
 import org.codetome.zircon.terminal.config.DeviceConfiguration
-import org.codetome.zircon.terminal.virtual.VirtualTerminal
-import org.codetome.zircon.terminal.virtual.VirtualTerminalListener
 import java.awt.Canvas
 import java.awt.Color
 import java.awt.image.BufferedImage
@@ -52,11 +46,7 @@ class SwingTerminalCanvas(
     override fun setCharacter(position: Position, textCharacter: TextCharacter)
             = terminal.setCharacter(position, textCharacter)
 
-    override fun addVirtualTerminalListener(listener: VirtualTerminalListener)
-            = terminal.addVirtualTerminalListener(listener)
-
-    override fun removeVirtualTerminalListener(listener: VirtualTerminalListener)
-            = terminal.removeVirtualTerminalListener(listener)
+    override fun toStyleSet() = terminal.toStyleSet()
 
     override fun isDirty() = terminal.isDirty()
 
@@ -130,8 +120,6 @@ class SwingTerminalCanvas(
     override fun close() = terminal.close()
 
     override fun pollInput() = terminal.pollInput()
-
-    override fun newTextGraphics() = terminal.newTextGraphics()
 
     override fun addResizeListener(listener: TerminalResizeListener) = terminal.addResizeListener(listener)
 

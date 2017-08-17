@@ -3,7 +3,7 @@ package org.codetome.zircon.terminal.swing
 import org.codetome.zircon.font.Font
 import org.codetome.zircon.Size
 import org.codetome.zircon.terminal.config.DeviceConfiguration
-import org.codetome.zircon.terminal.virtual.DefaultVirtualTerminal
+import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.awt.AWTKeyStroke
 import java.awt.Dimension
 import java.awt.Graphics2D
@@ -26,7 +26,7 @@ class SwingTerminalImplementation(
     : Java2DTerminalImplementation(
         deviceConfiguration = deviceConfiguration,
         font = font,
-        virtualTerminal = DefaultVirtualTerminal(initialSize)) {
+        terminal = VirtualTerminal(initialSize)) {
 
     init {
         //Prevent us from shrinking beyond one character
@@ -34,7 +34,7 @@ class SwingTerminalImplementation(
         canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.addKeyListener(TerminalInputListener(
-                virtualTerminal = this,
+                terminal = this,
                 deviceConfiguration = deviceConfiguration))
         canvas.addMouseListener(object : TerminalMouseListener(
                 virtualTerminal = this,
