@@ -2,8 +2,8 @@ package org.codetome.zircon.screen
 
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.TextImageBuilder
-import org.codetome.zircon.graphics.DefaultTextImage
-import org.codetome.zircon.graphics.TextImage
+import org.codetome.zircon.graphics.image.DefaultTextImage
+import org.codetome.zircon.graphics.image.TextImage
 import org.codetome.zircon.Size
 
 /**

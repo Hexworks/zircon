@@ -11,6 +11,7 @@ import org.codetome.zircon.color.ANSITextColor;
 import org.codetome.zircon.color.TextColor;
 import org.codetome.zircon.graphics.layer.DefaultLayer;
 import org.codetome.zircon.graphics.layer.Layer;
+import org.codetome.zircon.graphics.shape.factory.FilledRectangleFactory;
 import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.screen.Screen;
@@ -36,11 +37,13 @@ public class HideNSeek {
                 .buildScreen();
         Size size = screen.getBoundableSize();
         screen.setCursorVisible(false); // we don't want the cursor right now
-//        TextGraphics graphics = screen.newTextGraphics();
-//        graphics.setBackgroundColor(TextColorFactory.fromString("#665233"));
-//        graphics.fillRectangle(Position.TOP_LEFT_CORNER,
-//                graphics.getSize(),
-//                TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter(' '));
+        FilledRectangleFactory
+                .buildFilledRectangle(Position.TOP_LEFT_CORNER, screen.getBoundableSize())
+                .toTextImage(TextCharacterBuilder.newBuilder()
+                        .backgroundColor(TextColorFactory.fromString("#665233"))
+                        .character(' ')
+                        .build())
+                .drawOnto(screen, Position.TOP_LEFT_CORNER);
 
         final Layer player = new DefaultLayer(Size.ONE,
                 TextCharacterBuilder.newBuilder()

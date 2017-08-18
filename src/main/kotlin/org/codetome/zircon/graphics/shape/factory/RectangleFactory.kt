@@ -14,14 +14,17 @@ object RectangleFactory : ShapeFactory<RectangleParameters> {
                 .plus(LineFactory.buildLine(topRight, bottomRight))
                 .plus(LineFactory.buildLine(bottomRight, bottomLeft))
                 .plus(LineFactory.buildLine(bottomLeft, topLeft))
+                .offsetToDefaultPosition()
     }
 
     /**
      * Creates the points for the outline of a rectangle.
      *
      * For example, calling this method with size being the size of a terminal and top-left
-     * value being the terminals top-left (0x0) corner will create a shape which can be drawn
-     * as a border for the terminal.
+     * value being the terminals top-left (0x0) corner will create a shape which when drawn
+     * will outline the borders of the terminal.
+     * **Note that** all resulting shapes will be offset to the top left (0x0) position!
+     * @see [org.codetome.zircon.graphics.shape.Shape.offsetToDefaultPosition] for more info!
      */
     @JvmStatic
     fun buildRectangle(rectParams: RectangleParameters) = createShape(rectParams)
@@ -30,8 +33,10 @@ object RectangleFactory : ShapeFactory<RectangleParameters> {
      * Creates the points for the outline of a rectangle.
      *
      * For example, calling this method with size being the size of a terminal and top-left
-     * value being the terminals top-left (0x0) corner will create a shape which can be drawn
-     * as a border for the terminal.
+     * value being the terminals top-left (0x0) corner will create a shape which when drawn
+     * will outline the borders of the terminal.
+     * **Note that** all resulting shapes will be offset to the top left (0x0) position!
+     * @see [org.codetome.zircon.graphics.shape.Shape.offsetToDefaultPosition] for more info!
      */
     @JvmStatic
     fun buildRectangle(topLeft: Position, size: Size) = buildRectangle(RectangleParameters(topLeft, size))

@@ -83,7 +83,7 @@ internal class TextCharacterBuffer(initialSize: Size): Clearable {
     private fun checkRowAndColumn(position: Position) {
         val (columnIndex, lineNumber) = position
         require(lineNumber >= 0 && columnIndex >= 0) {
-            throw IllegalArgumentException("Illegal argument to TextCharacterBuffer.setCharacter(..), lineNumber = " +
+            throw IllegalArgumentException("Illegal argument to TextCharacterBuffer.setCharacterAt(..), lineNumber = " +
                     lineNumber + ", columnIndex = " + columnIndex)
         }
     }

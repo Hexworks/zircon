@@ -79,12 +79,26 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
                 endX += dx2
             }
         }
-        result
+        result.offsetToDefaultPosition()
     }
 
+    /**
+     * Creates the points for a filled triangle. The triangle will be delimited by
+     * positions `p1` to `p2` to `p3` and back to `p1` from there.
+     *
+     * *Note that** all resulting shapes will be offset to the top left (0x0) position!
+     * @see [org.codetome.zircon.graphics.shape.Shape.offsetToDefaultPosition] for more info!
+     */
     @JvmStatic
     fun buildFilledTriangle(params: TriangleParameters) = createShape(params)
 
+    /**
+     * Creates the points for a filled triangle. The triangle will be delimited by
+     * positions `p1` to `p2` to `p3` and back to `p1` from there.
+     *
+     * *Note that** all resulting shapes will be offset to the top left (0x0) position!
+     * @see [org.codetome.zircon.graphics.shape.Shape.offsetToDefaultPosition] for more info!
+     */
     @JvmStatic
     fun buildFilledTriangle(p1: Position,
                             p2: Position,
