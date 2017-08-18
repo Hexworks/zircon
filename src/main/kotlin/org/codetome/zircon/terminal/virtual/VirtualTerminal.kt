@@ -47,6 +47,7 @@ class VirtualTerminal private constructor(initialSize: Size,
     @Synchronized
     override fun draw(drawable: Drawable, offset: Position) {
         drawable.drawOnto(this, offset)
+        setWholeBufferDirty() // TODO: this can be optimized later
     }
 
     @Synchronized
@@ -72,7 +73,7 @@ class VirtualTerminal private constructor(initialSize: Size,
                             row = Math.min(newSize.rows, cursorRow)))
                 }
             }
-            wholeBufferDirty = true // TODO: this can be optimized later
+            setWholeBufferDirty() // TODO: this can be optimized later
             listeners.forEach { it.onResized(this, terminalSize) }
             super.onResized(newSize)
         }
@@ -123,9 +124,10 @@ class VirtualTerminal private constructor(initialSize: Size,
             }
 
     @Synchronized
-    override fun setCharacterAt(position: Position, textCharacter: TextCharacter) =
+    override fun setCharacterAt(position: Position, character: TextCharacter) =
             if (containsPosition(position)) {
-                textBuffer.setCharacter(position, textCharacter)
+                textBuffer.setCharacter(position, character)
+                dirtyTerminalCells.add(position)
                 true
             } else {
                 false
