@@ -2,15 +2,14 @@ package org.codetome.zircon.terminal.swing
 
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.Position
+import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.TextColorFactory
 import org.codetome.zircon.font.Font
 import org.codetome.zircon.input.KeyStroke
-import org.codetome.zircon.Size
 import org.codetome.zircon.terminal.IterableTerminal
 import org.codetome.zircon.terminal.config.CursorStyle.*
 import org.codetome.zircon.terminal.config.DeviceConfiguration
-import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.awt.*
 import java.awt.image.BufferedImage
 import java.util.*
@@ -98,6 +97,7 @@ abstract class Java2DTerminalImplementation(
 
         // Detect resize
         if (resizeHappened()) {
+            fillLeftoverSpaceWithBlack(graphics)
             val terminalSize = Size.of(
                     columns = getWidth() / getFontWidth(),
                     rows = getHeight() / getFontHeight())

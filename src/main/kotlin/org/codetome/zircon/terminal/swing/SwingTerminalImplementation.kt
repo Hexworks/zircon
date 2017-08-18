@@ -17,13 +17,15 @@ import javax.swing.SwingUtilities
 class SwingTerminalImplementation(
         private val canvas: SwingTerminalCanvas,
         val font: Font<BufferedImage>,
-        initialSize: Size,
+        private val initialSize: Size,
         deviceConfiguration: DeviceConfiguration)
 
     : Java2DTerminalImplementation(
         deviceConfiguration = deviceConfiguration,
         font = font,
         terminal = VirtualTerminal(initialSize)) {
+
+    private var firstDraw = true
 
     init {
         //Prevent us from shrinking beyond one character
@@ -82,6 +84,12 @@ class SwingTerminalImplementation(
     }
 
     private fun drawAndDispose(bs: BufferStrategy, gc: Graphics2D) {
+        if(firstDraw) {
+            firstDraw = false
+            gc.color = Color.BLACK
+            gc.fillRect(0, 0, getWidth(), getHeight())
+            bs.show()
+        }
         draw(gc)
         gc.dispose()
         bs.show()

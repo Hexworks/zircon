@@ -12,7 +12,7 @@ interface Drawable : Boundable {
      * Copies this [Drawable]'s content to a [DrawSurface]. If the destination [DrawSurface] is larger
      * than this [Drawable], the areas outside of the area that is written to will be untouched.
      */
-    fun drawOnto(surface: DrawSurface, offset: Position)
+    fun drawOnto(surface: DrawSurface, offset: Position = Position.TOP_LEFT_CORNER)
 
     /**
      * Copies this [Drawable]'s content to another [DrawSurface]. If the destination [DrawSurface]
