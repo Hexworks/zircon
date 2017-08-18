@@ -41,5 +41,5 @@ interface DrawSurface : Boundable {
      * @param offset the starting position of the drawing relative to the [DrawSurface]'s top left corner.
      */
     fun draw(drawable: Drawable,
-             offset: Position)
+             offset: Position = Position.TOP_LEFT_CORNER)
 }

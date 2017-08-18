@@ -41,8 +41,8 @@ public class TypingExample {
         final Terminal terminal = builder.buildTerminal();
         final Screen screen = builder.createScreenFor(terminal);
 
-//        startTypingSupportForScreen(screen);
-        startTypingSupportForTerminal(terminal);
+        startTypingSupportForScreen(screen);
+//        startTypingSupportForTerminal(terminal);
     }
 
     private static void startTypingSupportForScreen(Screen screen) {
@@ -60,7 +60,7 @@ public class TypingExample {
                     if (key.isKeyStroke()) {
                         final KeyStroke ks = key.asKeyStroke();
                         screen.setCharacter(pos, TEXT_CHAR_TEMPLATE.withCharacter(ks.getCharacter()));
-                        if (pos.getColumn() == TERMINAL_WIDTH - 1) {
+                        if (pos.getColumn() == TERMINAL_WIDTH) {
                             screen.setCursorPosition(pos.withRelativeRow(1).withColumn(0));
                         } else {
                             screen.setCursorPosition(pos.withRelativeColumn(1));
@@ -68,7 +68,6 @@ public class TypingExample {
                         screen.refresh();
                     }
                 }
-                screen.setCursorPosition(pos.withRelativeColumn(1));
             }
         }
     }

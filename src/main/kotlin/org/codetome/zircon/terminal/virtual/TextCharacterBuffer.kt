@@ -10,12 +10,14 @@ import org.codetome.zircon.api.TextCharacterBuilder
 /**
  * This class is used to store lines of text inside of a terminal emulator.
  */
-internal class TextCharacterBuffer: Clearable {
+internal class TextCharacterBuffer(initialSize: Size): Clearable {
 
     private var lines = mutableListOf<MutableList<TextCharacter>>()
 
     init {
-        newLine()
+        initialSize.fetchPositions().forEach {
+            setCharacter(it, TextCharacterBuilder.DEFAULT_CHARACTER)
+        }
     }
 
     @Synchronized

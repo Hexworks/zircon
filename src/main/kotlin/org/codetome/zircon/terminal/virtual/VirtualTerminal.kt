@@ -28,7 +28,7 @@ class VirtualTerminal private constructor(initialSize: Size,
     private var terminalSize = initialSize
     private var wholeBufferDirty = false
     private var lastDrawnCursorPosition: Position = Position.UNKNOWN
-    private val textBuffer: TextCharacterBuffer = TextCharacterBuffer()
+    private val textBuffer: TextCharacterBuffer = TextCharacterBuffer(initialSize)
     private val dirtyTerminalCells = TreeSet<Position>()
     private val listeners = mutableListOf<VirtualTerminalListener>()
     private val inputQueue = LinkedBlockingQueue<Input>()
@@ -153,7 +153,11 @@ class VirtualTerminal private constructor(initialSize: Size,
                 fn(Cell(pos, textBuffer.getCharacter(pos)))
             }
         }
-        val blinkingChars = dirtyTerminalCells.filter { getCharacterAt(it).get().isBlinking() }
+        val blinkingChars = dirtyTerminalCells.filter {
+            getCharacterAt(it).let { char ->
+                char.isPresent && char.get().isBlinking()
+            }
+        }
         dirtyTerminalCells.clear()
         dirtyTerminalCells.addAll(blinkingChars)
         this.lastDrawnCursorPosition = getCursorPosition()

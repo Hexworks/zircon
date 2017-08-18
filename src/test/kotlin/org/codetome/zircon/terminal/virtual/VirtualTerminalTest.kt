@@ -159,7 +159,8 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldBeDirtyAfterResize() {
-        target.putCharacter(' ')
+        target.setCursorPosition(DEFAULT_POSITION)
+        target.putCharacter('x')
         target.forEachDirtyCell {  }
         target.setSize(SIZE.withRelativeColumns(1))
 
@@ -169,7 +170,12 @@ class VirtualTerminalTest {
             dirtyCells.add(it)
         }
 
-        assertThat(dirtyCells).hasSize(2)
+        assertThat(dirtyCells).hasSize(201)
+        dirtyCells.clear()
+        target.forEachDirtyCell {
+            dirtyCells.add(it)
+        }
+        assertThat(dirtyCells).hasSize(1)
     }
 
     @Test
