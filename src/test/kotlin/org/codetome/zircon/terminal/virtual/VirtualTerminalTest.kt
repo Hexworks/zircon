@@ -1,17 +1,13 @@
 package org.codetome.zircon.terminal.virtual
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.Modifier
-import org.codetome.zircon.Position
+import org.codetome.zircon.*
 import org.codetome.zircon.Position.Companion.DEFAULT_POSITION
 import org.codetome.zircon.Position.Companion.OFFSET_1x1
-import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.input.KeyStroke.Companion.EOF_STROKE
-import org.codetome.zircon.Cell
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
-import org.codetome.zircon.Size
-import org.codetome.zircon.api.TextCharacterBuilder
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
@@ -141,6 +137,19 @@ class VirtualTerminalTest {
     }
 
     @Test
+    fun shouldBecomeDirtyWhenACharacterIsSet() {
+        target.forEachDirtyCell { }
+        val pos = Position.OFFSET_1x1
+        target.setCharacterAt(pos, 'x')
+        val dirtyCells = mutableListOf<Cell>()
+        target.forEachDirtyCell { dirtyCells.add(it) }
+        assertThat(dirtyCells
+                .filter { it.position == OFFSET_1x1 }
+                .map { it.character })
+                .containsExactly(TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x'))
+    }
+
+    @Test
     fun shouldContainProperDirtyCellsWhenPutCharIsCalled() {
         val dirtyCells = addCharAndFetchDirtyCells('a')
         assertThat(dirtyCells).containsExactly(
@@ -161,7 +170,7 @@ class VirtualTerminalTest {
     fun shouldBeDirtyAfterResize() {
         target.setCursorPosition(DEFAULT_POSITION)
         target.putCharacter('x')
-        target.forEachDirtyCell {  }
+        target.forEachDirtyCell { }
         target.setSize(SIZE.withRelativeColumns(1))
 
         val dirtyCells = mutableListOf<Cell>()
@@ -175,6 +184,7 @@ class VirtualTerminalTest {
         target.forEachDirtyCell {
             dirtyCells.add(it)
         }
+        assertThat(dirtyCells).hasSize(1)
         assertThat(dirtyCells).hasSize(1)
     }
 

@@ -31,7 +31,7 @@ public class HideNSeek {
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
         final Screen screen = TerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.of(80, 40))
+                .initialTerminalSize(Size.of(40, 20))
                 .font(CP437TilesetResource.TAFFER_20X20.asJava2DFont())
                 .buildScreen();
         Size size = screen.getBoundableSize();
