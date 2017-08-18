@@ -28,6 +28,6 @@ class ScreenBuffer private constructor(private val backend: DefaultTextImage) : 
      * Copies the content from a TextImage into this buffer.
      */
     fun copyFrom(source: TextImage, startRowIndex: Int, rows: Int, startColumnIndex: Int, columns: Int, destinationRowOffset: Int, destinationColumnOffset: Int) {
-        source.copyTo(backend, startRowIndex, rows, startColumnIndex, columns, destinationRowOffset, destinationColumnOffset)
+        source.drawOnto(backend, startRowIndex, rows, startColumnIndex, columns, destinationRowOffset, destinationColumnOffset)
     }
 }

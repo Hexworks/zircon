@@ -2,6 +2,7 @@ package org.codetome.zircon.terminal.swing
 
 import org.codetome.zircon.*
 import org.codetome.zircon.behavior.Boundable
+import org.codetome.zircon.behavior.Drawable
 import org.codetome.zircon.color.TextColor
 import org.codetome.zircon.font.Font
 import org.codetome.zircon.graphics.layer.Layer
@@ -38,6 +39,9 @@ class SwingTerminalCanvas(
     init {
         background = Color.BLACK
     }
+
+    override fun draw(drawable: Drawable, offset: Position)
+            = terminal.draw(drawable, offset)
 
     override fun addInput(input: Input) = terminal.addInput(input)
 

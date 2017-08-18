@@ -96,7 +96,7 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldProperlyCopyWithBasicParams() {
-        IMAGE_TO_COPY.copyTo(target)
+        IMAGE_TO_COPY.drawOnto(target)
 
         assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(SET_ALL_CHAR)
@@ -104,7 +104,7 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldProperlyCopyWhenOffsettingRow() {
-        IMAGE_TO_COPY.copyTo(
+        IMAGE_TO_COPY.drawOnto(
                 destination = target,
                 destinationRowOffset = 1)
 
@@ -114,7 +114,7 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldProperlyCopyWhenOffsettingColumn() {
-        IMAGE_TO_COPY.copyTo(
+        IMAGE_TO_COPY.drawOnto(
                 destination = target,
                 destinationColumnOffset = 1)
 
@@ -124,7 +124,7 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldProperlyCopyWhenStartAtSecondRow() {
-        IMAGE_TO_COPY_AND_CROP.copyTo(
+        IMAGE_TO_COPY_AND_CROP.drawOnto(
                 destination = target,
                 startRowIndex = 1)
 
@@ -139,7 +139,7 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldProperlyCopyWhenStartAtSecondColumn() {
-        IMAGE_TO_COPY_AND_CROP.copyTo(
+        IMAGE_TO_COPY_AND_CROP.drawOnto(
                 destination = target,
                 startColumnIndex = 1)
 
@@ -154,7 +154,7 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldProperlyCopyWhenStartAtMinusOneColumn() {
-        IMAGE_TO_COPY_AND_CROP.copyTo(
+        IMAGE_TO_COPY_AND_CROP.drawOnto(
                 destination = target,
                 startColumnIndex = -1)
 
@@ -170,7 +170,7 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldProperlyCopyWhenStartAtMinusOneRow() {
-        IMAGE_TO_COPY_AND_CROP.copyTo(
+        IMAGE_TO_COPY_AND_CROP.drawOnto(
                 destination = target,
                 startRowIndex = -1)
 
@@ -186,7 +186,7 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldProperlyCopyWhenRowOffsetIsNegative() {
-        IMAGE_TO_COPY_AND_CROP.copyTo(
+        IMAGE_TO_COPY_AND_CROP.drawOnto(
                 destination = target,
                 destinationRowOffset = -1)
 
@@ -200,7 +200,7 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldProperlyCopyWhenColumnOffsetIsNegative() {
-        IMAGE_TO_COPY_AND_CROP.copyTo(
+        IMAGE_TO_COPY_AND_CROP.drawOnto(
                 destination = target,
                 destinationColumnOffset = -1)
 
@@ -214,7 +214,7 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldProperlyCopyWhenOneRowToCopy() {
-        IMAGE_TO_COPY_AND_CROP.copyTo(
+        IMAGE_TO_COPY_AND_CROP.drawOnto(
                 destination = target,
                 rows = 1)
 
@@ -229,7 +229,7 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldProperlyCopyWhenOneColToCopy() {
-        IMAGE_TO_COPY_AND_CROP.copyTo(
+        IMAGE_TO_COPY_AND_CROP.drawOnto(
                 destination = target,
                 columns = 1)
 

@@ -6,6 +6,7 @@ import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.behavior.CursorHolder
+import org.codetome.zircon.behavior.Drawable
 import org.codetome.zircon.behavior.Layerable
 import org.codetome.zircon.behavior.impl.DefaultCursorHolder
 import org.codetome.zircon.behavior.impl.DefaultLayerable
@@ -41,6 +42,11 @@ class VirtualTerminal private constructor(initialSize: Size,
 
     init {
         dirtyTerminalCells.add(getCursorPosition())
+    }
+
+    @Synchronized
+    override fun draw(drawable: Drawable, offset: Position) {
+        drawable.drawOnto(this, offset)
     }
 
     @Synchronized
@@ -90,22 +96,6 @@ class VirtualTerminal private constructor(initialSize: Size,
                     .backgroundColor(getBackgroundColor())
                     .modifiers(getActiveModifiers())
                     .build())
-        }
-    }
-
-    @Synchronized
-    internal fun putCharacter(textCharacter: TextCharacter) {
-        checkCursorPosition()
-        textBuffer.setCharacter(getCursorPosition(), textCharacter)
-        dirtyTerminalCells.add(getCursorPosition())
-        setCursorPosition(getCursorPosition().withRelativeColumn(1))
-        checkCursorPosition()
-        dirtyTerminalCells.add(getCursorPosition())
-    }
-
-    private fun checkCursorPosition() {
-        if (cursorIsAtTheEndOfTheLine()) {
-            moveCursorToNextLine()
         }
     }
 
@@ -174,6 +164,23 @@ class VirtualTerminal private constructor(initialSize: Size,
         textBuffer.forEachCell(fn)
     }
 
+    override fun isDirty() = wholeBufferDirty.or(dirtyTerminalCells.isNotEmpty())
+
+    @Synchronized
+    private fun putCharacter(textCharacter: TextCharacter) {
+        checkCursorPosition()
+        textBuffer.setCharacter(getCursorPosition(), textCharacter)
+        dirtyTerminalCells.add(getCursorPosition())
+        setCursorPosition(getCursorPosition().withRelativeColumn(1))
+        checkCursorPosition()
+        dirtyTerminalCells.add(getCursorPosition())
+    }
+
+    private fun checkCursorPosition() {
+        if (cursorIsAtTheEndOfTheLine()) {
+            moveCursorToNextLine()
+        }
+    }
 
     private fun moveCursorToNextLine() {
         setCursorPosition(getCursorPosition().withColumn(0).withRelativeRow(1))
@@ -186,8 +193,6 @@ class VirtualTerminal private constructor(initialSize: Size,
         wholeBufferDirty = true
         dirtyTerminalCells.clear()
     }
-
-    override fun isDirty() = wholeBufferDirty.or(dirtyTerminalCells.isNotEmpty())
 
     private fun cursorIsAtTheEndOfTheLine() = getCursorPosition().column == terminalSize.columns
 }

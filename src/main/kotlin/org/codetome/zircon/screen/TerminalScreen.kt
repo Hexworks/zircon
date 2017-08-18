@@ -100,7 +100,7 @@ class TerminalScreen constructor(private val terminal: Terminal)
                     terminal.putCharacter(character.getCharacter())
                 }
             }
-            backBuffer.copyTo(frontBuffer)
+            backBuffer.drawOnto(frontBuffer)
             terminal.flush()
         }
         println("Rendering took: ${time / 1000 / 1000} ms.")

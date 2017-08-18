@@ -16,7 +16,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
 
-class DefaultVirtualTerminalTest {
+class VirtualTerminalTest {
 
     lateinit var target: VirtualTerminal
 
@@ -105,7 +105,7 @@ class DefaultVirtualTerminalTest {
     @Test
     fun shouldClearScreenWhenClearScreenIsCalled() {
         var cellCount = 0
-        target.putCharacter(TextCharacter.builder().build())
+        target.putCharacter(' ')
 
         target.clear()
 
@@ -127,7 +127,7 @@ class DefaultVirtualTerminalTest {
         val tc = TextCharacter.builder()
                 .character('a')
                 .build()
-        target.putCharacter(tc)
+        target.putCharacter('a')
         assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(tc)
     }
@@ -159,7 +159,7 @@ class DefaultVirtualTerminalTest {
 
     @Test
     fun shouldBeDirtyAfterResize() {
-        target.putCharacter(TextCharacterBuilder.DEFAULT_CHARACTER)
+        target.putCharacter(' ')
         target.forEachDirtyCell {  }
         target.setSize(SIZE.withRelativeColumns(1))
 

@@ -1,13 +1,13 @@
 package org.codetome.zircon.graphics
 
-import org.codetome.zircon.DrawSurface
 import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.behavior.Boundable
+import org.codetome.zircon.behavior.DrawSurface
+import org.codetome.zircon.behavior.Drawable
 import org.codetome.zircon.behavior.impl.DefaultBoundable
-import org.codetome.zircon.graphics.shape.DrawOverflowStrategy
 import org.codetome.zircon.graphics.style.DefaultStyleSet
 import org.codetome.zircon.graphics.style.StyleSet
 import java.util.*
@@ -32,8 +32,8 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
                     size = size))
 
 
-    private val buffer = (0..getBoundableSize().rows - 1).map {
-        (0..getBoundableSize().columns - 1).map { filler }.toTypedArray()
+    private val buffer = (0 until getBoundableSize().rows).map {
+        (0 until getBoundableSize().columns).map { filler }.toTypedArray()
     }.toTypedArray()
 
     init {
@@ -47,15 +47,15 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
     }
 
     override fun toString(): String {
-        return (0..getBoundableSize().rows - 1).map { row ->
-            (0..getBoundableSize().columns - 1).map { col ->
+        return (0 until getBoundableSize().rows).map { row ->
+            (0 until getBoundableSize().columns).map { col ->
                 buffer[row][col].getCharacter()
             }.joinToString("").plus("\n")
         }.joinToString("")
     }
 
-    override fun drawOnto(offset: Position, target: DrawSurface, overflowStrategy: DrawOverflowStrategy) {
-        TODO()
+    override fun draw(drawable: Drawable, offset: Position) {
+        drawable.drawOnto(this, offset)
     }
 
     override fun resize(newSize: Size, filler: TextCharacter): DefaultTextImage {
@@ -88,12 +88,12 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
         }
     }
 
-    override fun copyTo(destination: TextImage) {
-        copyTo(destination, 0, buffer.size, 0, buffer[0].size, 0, 0)
+    override fun drawOnto(surface: DrawSurface, offset: Position) {
+        drawOnto(surface, 0, buffer.size, 0, buffer[0].size, 0, 0)
     }
 
-    override fun copyTo(
-            destination: TextImage,
+    override fun drawOnto(
+            destination: DrawSurface,
             startRowIndex: Int,
             rows: Int,
             startColumnIndex: Int,

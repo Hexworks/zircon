@@ -45,11 +45,11 @@ interface Screen : InputProvider, InputConsumer, Closeable, Clearable, Layerable
     fun display()
 
     /**
-     * This method will take the content from the back-buffer and move it into the front-buffer, making the changes
-     * visible to the terminal in the process.
+     * This method will take the content from the back-buffer and move it into the front-buffer,
+     * making the changes visible to the terminal in the process.
      * <strong>Note that</strong> this method will compare the back-buffer to the frond-buffer and only
-     * overwrite characters which are different in the two buffers. This will cause graphical artifacts if you
-     * have multiple [Screen]s attached to the same [org.codetome.zircon.terminal.Terminal]!
+     * overwrite characters which are different in the two buffers. This will cause graphical artifacts
+     * if you have multiple [Screen]s attached to the same [org.codetome.zircon.terminal.Terminal]!
      * In this case consider using [Screen.display] instead!
      */
     fun refresh()
