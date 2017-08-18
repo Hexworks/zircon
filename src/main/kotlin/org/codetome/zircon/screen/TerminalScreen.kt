@@ -3,8 +3,10 @@ package org.codetome.zircon.screen
 import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.api.TextCharacterBuilder.Companion.DEFAULT_CHARACTER
 import org.codetome.zircon.behavior.CursorHolder
+import org.codetome.zircon.behavior.Drawable
 import org.codetome.zircon.behavior.Layerable
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.InputProvider
@@ -19,7 +21,8 @@ import java.util.*
  * some other simpler states.
  */
 class TerminalScreen constructor(private val terminal: Terminal)
-    : Screen, CursorHolder by terminal,
+    : Screen,
+        CursorHolder by terminal,
         InputProvider by terminal,
         Layerable by terminal {
 
@@ -54,9 +57,19 @@ class TerminalScreen constructor(private val terminal: Terminal)
         return getCharacterFromBuffer(position, backBuffer)
     }
 
+    override fun getCharacterAt(position: Position) = getBackCharacter(position)
+
+    override fun setCharacterAt(position: Position, character: Char): Boolean {
+        return setCharacterAt(position, TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter(character))
+    }
+
+    override fun draw(drawable: Drawable, offset: Position) {
+        backBuffer.draw(drawable, offset)
+    }
+
     @Synchronized
-    override fun setCharacter(position: Position, screenCharacter: TextCharacter) {
-        backBuffer.setCharacterAt(position, screenCharacter)
+    override fun setCharacterAt(position: Position, character: TextCharacter): Boolean {
+        return backBuffer.setCharacterAt(position, character)
     }
 
     override fun display() {

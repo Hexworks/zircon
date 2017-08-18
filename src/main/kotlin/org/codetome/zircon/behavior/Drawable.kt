@@ -1,7 +1,7 @@
 package org.codetome.zircon.behavior
 
 import org.codetome.zircon.Position
-import org.codetome.zircon.graphics.TextImage
+import org.codetome.zircon.graphics.image.TextImage
 
 /**
  * Represents an object which can be drawn upon a [DrawSurface].

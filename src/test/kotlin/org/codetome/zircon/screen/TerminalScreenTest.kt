@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.api.TextCharacterBuilder
-import org.codetome.zircon.api.TextImageBuilder
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import org.junit.Before
@@ -42,7 +41,7 @@ class TerminalScreenTest {
 
     @Test
     fun shouldNotBeDrawnWhenCharacterSetButNotRefreshed() {
-        target.setCharacter(Position.OFFSET_1x1, CHAR)
+        target.setCharacterAt(Position.OFFSET_1x1, CHAR)
 
         assertThat(target.getBackCharacter(Position.OFFSET_1x1).get())
                 .isEqualTo(CHAR)
@@ -53,7 +52,7 @@ class TerminalScreenTest {
 
     @Test
     fun shouldBeDrawnWhenCharacterSetAndRefreshed() {
-        target.setCharacter(Position.OFFSET_1x1, CHAR)
+        target.setCharacterAt(Position.OFFSET_1x1, CHAR)
 
         target.refresh()
 
@@ -66,7 +65,7 @@ class TerminalScreenTest {
 
     @Test
     fun shouldClearProperlyWhenClearIsCalled() {
-        target.setCharacter(Position.OFFSET_1x1, CHAR)
+        target.setCharacterAt(Position.OFFSET_1x1, CHAR)
         target.display()
 
         target.clear()

@@ -1,4 +1,4 @@
-package org.codetome.zircon.graphics
+package org.codetome.zircon.graphics.image
 
 import org.codetome.zircon.Position
 import org.codetome.zircon.Size
@@ -89,7 +89,7 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
     }
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
-        drawOnto(surface, 0, buffer.size, 0, buffer[0].size, 0, 0)
+        drawOnto(surface, 0, buffer.size, 0, buffer[0].size, offset.row, offset.column)
     }
 
     override fun drawOnto(

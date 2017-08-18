@@ -1,4 +1,4 @@
-package org.codetome.zircon.graphics
+package org.codetome.zircon.graphics.image
 
 import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter

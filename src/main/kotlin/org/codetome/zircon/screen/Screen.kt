@@ -4,6 +4,7 @@ import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.behavior.Clearable
 import org.codetome.zircon.behavior.CursorHolder
+import org.codetome.zircon.behavior.DrawSurface
 import org.codetome.zircon.behavior.Layerable
 import org.codetome.zircon.input.InputConsumer
 import org.codetome.zircon.input.InputProvider
@@ -20,7 +21,8 @@ import java.util.*
  * [org.codetome.zircon.terminal.Terminal]. If you want a [Screen] to be displayed use the
  * [Screen.display] method.
  */
-interface Screen : InputProvider, InputConsumer, Closeable, Clearable, Layerable, CursorHolder {
+interface Screen
+    : InputProvider, InputConsumer, Closeable, Clearable, Layerable, CursorHolder, DrawSurface {
 
     /**
      * Reads a character and its associated meta-data from the front-buffer and returns it encapsulated as a
@@ -33,11 +35,6 @@ interface Screen : InputProvider, InputConsumer, Closeable, Clearable, Layerable
      * [TextCharacter].
      */
     fun getBackCharacter(position: Position): Optional<TextCharacter>
-
-    /**
-     * Sets a character in the back-buffer to a specified value with specified colors and modifiers.
-     */
-    fun setCharacter(position: Position, screenCharacter: TextCharacter)
 
     /**
      * Same as [Screen.refresh] but forces a redraw of each character regardless of its changes.

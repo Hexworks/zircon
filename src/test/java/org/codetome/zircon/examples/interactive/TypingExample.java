@@ -59,7 +59,7 @@ public class TypingExample {
                 } else {
                     if (key.isKeyStroke()) {
                         final KeyStroke ks = key.asKeyStroke();
-                        screen.setCharacter(pos, TEXT_CHAR_TEMPLATE.withCharacter(ks.getCharacter()));
+                        screen.setCharacterAt(pos, TEXT_CHAR_TEMPLATE.withCharacter(ks.getCharacter()));
                         if (pos.getColumn() == TERMINAL_WIDTH) {
                             screen.setCursorPosition(pos.withRelativeRow(1).withColumn(0));
                         } else {

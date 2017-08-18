@@ -61,12 +61,12 @@ public class TilesetExample {
         final Random random = new Random();
         for (int y = 0; y < TERMINAL_HEIGHT; y++) {
             for (int x = 0; x < TERMINAL_WIDTH; x++) {
-                screen.setCharacter(Position.of(x, y), GRASSES[random.nextInt(3)]);
+                screen.setCharacterAt(Position.of(x, y), GRASSES[random.nextInt(3)]);
             }
         }
         final String text = "Tileset Example";
         for (int i = 0; i < text.length(); i++) {
-            screen.setCharacter(Position.of(i + 2, 1),
+            screen.setCharacterAt(Position.of(i + 2, 1),
                     TextCharacter.builder()
                             .character(text.charAt(i))
                             .foregroundColor(TEXT_COLOR)

@@ -22,14 +22,14 @@ public class LayersExample {
 
         final String firstRow = "This is white text on black";
         for (int x = 0; x < firstRow.length(); x++) {
-            screen.setCharacter(
+            screen.setCharacterAt(
                     Position.of(x + 1, 1),
                     buildWhiteOnBlack(firstRow.charAt(x)));
         }
 
         final String secondRow = "Like the row above but with blue overlay.";
         for (int x = 0; x < secondRow.length(); x++) {
-            screen.setCharacter(
+            screen.setCharacterAt(
                     Position.of(x + 1, 2),
                     buildWhiteOnBlack(secondRow.charAt(x)));
         }

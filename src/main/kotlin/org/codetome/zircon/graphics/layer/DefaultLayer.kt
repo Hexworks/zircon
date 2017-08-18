@@ -5,7 +5,7 @@ import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.TextImageBuilder
 import org.codetome.zircon.behavior.Boundable
-import org.codetome.zircon.graphics.TextImage
+import org.codetome.zircon.graphics.image.TextImage
 import java.awt.Point
 import java.awt.Rectangle
 
