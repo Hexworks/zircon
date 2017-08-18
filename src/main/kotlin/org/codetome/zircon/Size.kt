@@ -5,7 +5,7 @@ package org.codetome.zircon
  * This class is immutable and cannot change its internal state after creation.
  */
 data class Size(val columns: Int,
-                                    val rows: Int) {
+                val rows: Int) {
 
     init {
         require(columns >= 0) {
@@ -20,8 +20,8 @@ data class Size(val columns: Int,
      * Creates a list of [Position]s in the order in which they should
      * be iterated when drawing (from left to right, then top to bottom).
      */
-    fun fetchPositions(): List<Position> = (0..rows - 1).flatMap { row ->
-        (0..columns - 1).map { column ->
+    fun fetchPositions(): List<Position> = (0 until rows).flatMap { row ->
+        (0 until columns).map { column ->
             Position.of(column, row)
         }
     }
@@ -106,6 +106,15 @@ data class Size(val columns: Int,
             return this
         }
         return size
+    }
+
+    /**
+     * Tells whether `size` fits within this [Size]
+     * meaning that nor the `columns`, nor the `rows` of
+     * `size` is bigger compared to the values of this [Size].
+     */
+    fun fitsWithin(size: Size): Boolean {
+        return size.columns <= columns && size.rows <= rows
     }
 
     private fun returnZeroIfZero(size: Size): Size {

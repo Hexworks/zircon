@@ -155,7 +155,7 @@ can create one by hand using the [BasicTextImage] class. [TextImage]s are basica
 on one and you will be presented by a [TextGraphics] object which is backed by the in-memory [TextImage].
 When you are done drawing use `drawImage(TerminalPosition topLeft, TextImageimage)` on a [TextGraphics]
 which is backed by a [Terminal] instance to draw the image on your screen. You can also copy images
-to other [TextImage] objects using the `copyTo` method.
+to other [TextImage] objects using the `drawOnto` method.
 
 ## Screens
 

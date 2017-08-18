@@ -20,7 +20,7 @@ object RectangleFactory : ShapeFactory<RectangleParameters> {
      * Creates the points for the outline of a rectangle.
      *
      * For example, calling this method with size being the size of a terminal and top-left
-     * value being the terminals top-left (0x0) corner will create a shape which can be drawed
+     * value being the terminals top-left (0x0) corner will create a shape which can be drawn
      * as a border for the terminal.
      */
     @JvmStatic
@@ -30,7 +30,7 @@ object RectangleFactory : ShapeFactory<RectangleParameters> {
      * Creates the points for the outline of a rectangle.
      *
      * For example, calling this method with size being the size of a terminal and top-left
-     * value being the terminals top-left (0x0) corner will create a shape which can be drawed
+     * value being the terminals top-left (0x0) corner will create a shape which can be drawn
      * as a border for the terminal.
      */
     @JvmStatic

@@ -1,13 +1,10 @@
 package org.codetome.zircon.terminal.swing
 
-import org.codetome.zircon.font.Font
 import org.codetome.zircon.Size
+import org.codetome.zircon.font.Font
 import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.terminal.virtual.VirtualTerminal
-import java.awt.AWTKeyStroke
-import java.awt.Dimension
-import java.awt.Graphics2D
-import java.awt.KeyboardFocusManager
+import java.awt.*
 import java.awt.event.HierarchyEvent
 import java.awt.event.MouseEvent
 import java.awt.image.BufferStrategy
