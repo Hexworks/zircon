@@ -1,7 +1,10 @@
 package org.codetome.zircon.terminal.virtual
 
+import org.codetome.zircon.Cell
 import org.codetome.zircon.Position
+import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.behavior.CursorHolder
 import org.codetome.zircon.behavior.Layerable
 import org.codetome.zircon.behavior.impl.DefaultCursorHolder
@@ -9,9 +12,6 @@ import org.codetome.zircon.behavior.impl.DefaultLayerable
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.terminal.AbstractTerminal
-import org.codetome.zircon.Cell
-import org.codetome.zircon.Size
-import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.terminal.IterableTerminal
 import org.codetome.zircon.util.TextUtils
 import java.util.*
@@ -125,14 +125,28 @@ class VirtualTerminal private constructor(initialSize: Size,
     }
 
     @Synchronized
-    override fun getCharacter(position: Position): TextCharacter {
-        return textBuffer.getCharacter(position)
-    }
+    override fun getCharacterAt(position: Position) =
+            if (containsPosition(position)) {
+                Optional.of(textBuffer.getCharacter(position))
+            } else {
+                Optional.empty()
+            }
 
     @Synchronized
-    override fun setCharacter(position: Position, textCharacter: TextCharacter) {
-        textBuffer.setCharacter(position, textCharacter)
-    }
+    override fun setCharacterAt(position: Position, textCharacter: TextCharacter) =
+            if (containsPosition(position)) {
+                textBuffer.setCharacter(position, textCharacter)
+                true
+            } else {
+                false
+            }
+
+    @Synchronized
+    override fun setCharacterAt(position: Position, character: Char)
+            = setCharacterAt(position, TextCharacterBuilder.newBuilder()
+            .character(character)
+            .styleSet(toStyleSet())
+            .build())
 
     @Synchronized
     override fun forEachDirtyCell(fn: (Cell) -> Unit) {
@@ -149,7 +163,7 @@ class VirtualTerminal private constructor(initialSize: Size,
                 fn(Cell(pos, textBuffer.getCharacter(pos)))
             }
         }
-        val blinkingChars = dirtyTerminalCells.filter { getCharacter(it).isBlinking() }
+        val blinkingChars = dirtyTerminalCells.filter { getCharacterAt(it).get().isBlinking() }
         dirtyTerminalCells.clear()
         dirtyTerminalCells.addAll(blinkingChars)
         this.lastDrawnCursorPosition = getCursorPosition()
@@ -159,7 +173,6 @@ class VirtualTerminal private constructor(initialSize: Size,
     override fun forEachCell(fn: (Cell) -> Unit) {
         textBuffer.forEachCell(fn)
     }
-
 
 
     private fun moveCursorToNextLine() {

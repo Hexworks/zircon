@@ -1,4 +1,4 @@
-package org.codetome.zircon.graphics.shape.test
+package org.codetome.zircon.graphics.shape.factory
 
 import org.codetome.zircon.Position
 import org.codetome.zircon.Size

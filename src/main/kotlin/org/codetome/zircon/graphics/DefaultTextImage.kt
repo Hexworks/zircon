@@ -7,8 +7,6 @@ import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.behavior.Boundable
 import org.codetome.zircon.behavior.impl.DefaultBoundable
-import org.codetome.zircon.graphics.box.BoxRenderer
-import org.codetome.zircon.graphics.box.DefaultBoxRenderer
 import org.codetome.zircon.graphics.shape.DrawOverflowStrategy
 import org.codetome.zircon.graphics.style.DefaultStyleSet
 import org.codetome.zircon.graphics.style.StyleSet
@@ -22,8 +20,7 @@ import java.util.*
 class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
                                            filler: TextCharacter,
                                            boundable: Boundable,
-                                           styleSet: StyleSet = DefaultStyleSet(),
-                                           private val boxRenderer: BoxRenderer = DefaultBoxRenderer())
+                                           styleSet: StyleSet = DefaultStyleSet())
     : TextImage, Boundable by boundable, StyleSet by styleSet {
 
     constructor(size: Size,
@@ -58,7 +55,7 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
     }
 
     override fun drawOnto(offset: Position, target: DrawSurface, overflowStrategy: DrawOverflowStrategy) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO()
     }
 
     override fun resize(newSize: Size, filler: TextCharacter): DefaultTextImage {

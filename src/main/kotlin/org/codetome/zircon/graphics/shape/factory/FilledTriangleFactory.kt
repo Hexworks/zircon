@@ -1,4 +1,4 @@
-package org.codetome.zircon.graphics.shape.test
+package org.codetome.zircon.graphics.shape.factory
 
 import org.codetome.zircon.Position
 import org.codetome.zircon.graphics.shape.DefaultShape
@@ -6,9 +6,9 @@ import org.codetome.zircon.graphics.shape.Shape
 import org.codetome.zircon.graphics.shape.ShapeFactory
 import java.util.*
 
-object FilledTriangleBuilder : ShapeBuilder<TriangleParameters> {
+object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
 
-    override fun buildShape(shapeParameters: TriangleParameters) = shapeParameters.let { (p1, p2, p3) ->
+    override fun createShape(shapeParameters: TriangleParameters) = shapeParameters.let { (p1, p2, p3) ->
 
         // The algorithm described here is used
         // http://www-users.mat.uni.torun.pl/~wrona/3d_tutor/tri_fillers.html
@@ -43,7 +43,7 @@ object FilledTriangleBuilder : ShapeBuilder<TriangleParameters> {
         startY = points[0].row.toFloat()
         if (dx1 > dx2) {
             while (startY <= points[1].row) {
-                result += ShapeFactory.createLine(
+                result += LineFactory.buildLine(
                         fromPoint = Position.of(startX.toInt(), startY.toInt()),
                         toPoint = Position.of(endX.toInt(), startY.toInt()))
                 startY++
@@ -52,7 +52,7 @@ object FilledTriangleBuilder : ShapeBuilder<TriangleParameters> {
             }
             endX = points[1].column.toFloat()
             while (startY <= points[2].row) {
-                result += LineBuilder.buildLine(
+                result += LineFactory.buildLine(
                         fromPoint = Position.of(startX.toInt(), startY.toInt()),
                         toPoint = Position.of(endX.toInt(), startY.toInt()))
                 startY++
@@ -61,7 +61,7 @@ object FilledTriangleBuilder : ShapeBuilder<TriangleParameters> {
             }
         } else {
             while (startY <= points[1].row) {
-                result += ShapeFactory.createLine(
+                result += LineFactory.buildLine(
                         fromPoint = Position.of(startX.toInt(), startY.toInt()),
                         toPoint = Position.of(endX.toInt(), startY.toInt()))
                 startY++
@@ -71,7 +71,7 @@ object FilledTriangleBuilder : ShapeBuilder<TriangleParameters> {
             startX = points[1].column.toFloat()
             startY = points[1].row.toFloat()
             while (startY <= points[2].row) {
-                result += LineBuilder.buildLine(
+                result += LineFactory.buildLine(
                         fromPoint = Position.of(startX.toInt(), startY.toInt()),
                         toPoint = Position.of(endX.toInt(), startY.toInt()))
                 startY++
@@ -83,7 +83,7 @@ object FilledTriangleBuilder : ShapeBuilder<TriangleParameters> {
     }
 
     @JvmStatic
-    fun buildFilledTriangle(params: TriangleParameters) = buildShape(params)
+    fun buildFilledTriangle(params: TriangleParameters) = createShape(params)
 
     @JvmStatic
     fun buildFilledTriangle(p1: Position,

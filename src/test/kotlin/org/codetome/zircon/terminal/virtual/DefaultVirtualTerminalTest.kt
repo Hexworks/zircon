@@ -128,7 +128,7 @@ class DefaultVirtualTerminalTest {
                 .character('a')
                 .build()
         target.putCharacter(tc)
-        assertThat(target.getCharacter(DEFAULT_POSITION))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(tc)
     }
 
@@ -180,9 +180,9 @@ class DefaultVirtualTerminalTest {
     @Test
     fun shouldBeAbleToSetCharacter() {
         val expectedChar = TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x')
-        target.setCharacter(OFFSET_1x1, expectedChar)
+        target.setCharacterAt(OFFSET_1x1, expectedChar)
 
-        assertThat(target.getCharacter(OFFSET_1x1))
+        assertThat(target.getCharacterAt(OFFSET_1x1).get())
                 .isEqualTo(expectedChar)
     }
 
@@ -190,7 +190,7 @@ class DefaultVirtualTerminalTest {
     fun shouldStartInNewLineWhenAddingTextAtTheEndOfTheLine() {
         target.setCursorPosition(DEFAULT_POSITION.withRelativeColumn(Int.MAX_VALUE))
         target.putCharacter('a')
-        assertThat(target.getCharacter(DEFAULT_POSITION.withRelativeRow(1)))
+        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)).get())
                 .isEqualTo(TextCharacter.builder().character('a').build())
     }
 

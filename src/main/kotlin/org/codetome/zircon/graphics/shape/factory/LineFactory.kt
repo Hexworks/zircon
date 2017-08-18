@@ -1,12 +1,13 @@
-package org.codetome.zircon.graphics.shape.test
+package org.codetome.zircon.graphics.shape.factory
 
 import org.codetome.zircon.Position
 import org.codetome.zircon.graphics.shape.DefaultShape
 import org.codetome.zircon.graphics.shape.Shape
+import org.codetome.zircon.graphics.shape.ShapeFactory
 
-object LineBuilder : ShapeBuilder<LineParameters> {
+object LineFactory : ShapeFactory<LineParameters> {
 
-    override fun buildShape(shapeParameters: LineParameters): Shape {
+    override fun createShape(shapeParameters: LineParameters): Shape {
         var p1 = shapeParameters.fromPoint
         var p2 = shapeParameters.toPoint
         //http://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
@@ -78,7 +79,7 @@ object LineBuilder : ShapeBuilder<LineParameters> {
     }
 
     @JvmStatic
-    fun buildLine(shapeParameters: LineParameters) = buildShape(shapeParameters)
+    fun buildLine(lineParams: LineParameters) = createShape(lineParams)
 
     @JvmStatic
     fun buildLine(fromPoint: Position, toPoint: Position) = buildLine(LineParameters(fromPoint, toPoint))
