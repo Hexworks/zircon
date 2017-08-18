@@ -41,10 +41,13 @@ class SwingTerminalCanvas(
 
     override fun addInput(input: Input) = terminal.addInput(input)
 
-    override fun getCharacter(position: Position) = terminal.getCharacter(position)
+    override fun getCharacterAt(position: Position) = terminal.getCharacterAt(position)
 
-    override fun setCharacter(position: Position, textCharacter: TextCharacter)
-            = terminal.setCharacter(position, textCharacter)
+    override fun setCharacterAt(position: Position, character: TextCharacter)
+            = terminal.setCharacterAt(position, character)
+
+    override fun setCharacterAt(position: Position, character: Char)
+            = terminal.setCharacterAt(position, character)
 
     override fun toStyleSet() = terminal.toStyleSet()
 

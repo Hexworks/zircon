@@ -2,12 +2,14 @@
 
 package org.codetome.zircon.terminal
 
+import org.codetome.zircon.DrawSurface
 import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.behavior.Clearable
 import org.codetome.zircon.behavior.CursorHolder
 import org.codetome.zircon.behavior.Layerable
+import org.codetome.zircon.graphics.TextImage
 import org.codetome.zircon.graphics.style.StyleSet
 import org.codetome.zircon.input.InputConsumer
 import org.codetome.zircon.input.InputProvider
@@ -27,7 +29,8 @@ import java.io.Closeable
  * If you want to write an application that has a very precise control of the terminal, this is the
  * interface you should be programming against.
  */
-interface Terminal : InputProvider, InputConsumer, Closeable, Clearable, StyleSet, CursorHolder, Layerable {
+interface Terminal
+    : InputProvider, InputConsumer, Closeable, Clearable, StyleSet, CursorHolder, Layerable, DrawSurface {
 
     /**
      * Prints one character to the terminal at the current cursor location.
@@ -39,6 +42,15 @@ interface Terminal : InputProvider, InputConsumer, Closeable, Clearable, StyleSe
      * If you try to print non-printable control characters, the terminal will ignore them.
      */
     fun putCharacter(c: Char)
+
+    /**
+     * Sets the character at a specific position in the [DrawSurface] to a particular [TextCharacter].
+     * If the position is outside of the [DrawSurface]'s size, this method has no side effect.
+     * **Note that** this method will use the style information which is present in this [Terminal ]
+     * when it sets the given `character` as a [TextCharacter].
+     * @return true if the character was set, false if the position is outside of the [DrawSurface].
+     */
+    fun setCharacterAt(position: Position, character: Char): Boolean
 
     /**
      * Adds a [TerminalResizeListener] to be called when the terminal has changed size.
@@ -65,16 +77,6 @@ interface Terminal : InputProvider, InputConsumer, Closeable, Clearable, StyleSe
      * doesn't do anything as it doesn't really apply to them.
      */
     fun flush()
-
-    /**
-     * Returns a character from the viewport at the specified coordinates.
-     */
-    fun getCharacter(position: Position): TextCharacter
-
-    /**
-     * Sets the character at a given position.
-     */
-    fun setCharacter(position: Position, textCharacter: TextCharacter)
 
 }
 
