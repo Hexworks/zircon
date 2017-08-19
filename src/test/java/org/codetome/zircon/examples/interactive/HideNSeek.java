@@ -11,7 +11,7 @@ import org.codetome.zircon.color.ANSITextColor;
 import org.codetome.zircon.color.TextColor;
 import org.codetome.zircon.graphics.layer.DefaultLayer;
 import org.codetome.zircon.graphics.layer.Layer;
-import org.codetome.zircon.graphics.shape.factory.FilledRectangleFactory;
+import org.codetome.zircon.api.shape.FilledRectangleFactory;
 import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.screen.Screen;

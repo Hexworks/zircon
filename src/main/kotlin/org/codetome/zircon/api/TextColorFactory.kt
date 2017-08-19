@@ -34,14 +34,16 @@ object TextColorFactory {
      * Creates a [TextColor] from an awt [Color].
      */
     @JvmStatic
-    fun fromAWTColor(color: Color) = DefaultTextColor(color.red, color.green, color.blue, color.alpha)
+    fun fromAWTColor(color: Color): TextColor
+            = DefaultTextColor(color.red, color.green, color.blue, color.alpha)
 
     /**
      * Creates a [TextColor] from a <code>red</code>, <code>green</code>, <code>blue</code> triple.
      */
     @JvmStatic
     @JvmOverloads
-    fun fromRGB(red: Int, green: Int, blue: Int, alpha: Int = 255) = DefaultTextColor(red, green, blue, alpha)
+    fun fromRGB(red: Int, green: Int, blue: Int, alpha: Int = 255): TextColor
+            = DefaultTextColor(red, green, blue, alpha)
 
     /**
      * Parses a string into a color. Formats:

@@ -4,6 +4,7 @@ import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.graphics.layer.DefaultLayer
+import org.codetome.zircon.graphics.layer.Layer
 
 class LayerBuilder {
 
@@ -35,7 +36,7 @@ class LayerBuilder {
         this.offset = offset
     }
 
-    fun build() = DefaultLayer(
+    fun build(): Layer = DefaultLayer(
             size = size,
             filler = filler,
             offset = offset)

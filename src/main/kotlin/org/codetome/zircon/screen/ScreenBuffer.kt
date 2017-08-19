@@ -12,7 +12,7 @@ import org.codetome.zircon.Size
  * A [ScreenBuffer] is essentially a two-dimensional array of [TextCharacter]s with some utility
  * methods to inspect and manipulate it in a safe way.
  */
-class ScreenBuffer private constructor(private val backend: DefaultTextImage) : TextImage by backend {
+class ScreenBuffer private constructor(private val backend: TextImage) : TextImage by backend {
 
     constructor(size: Size, filler: TextCharacter) : this(TextImageBuilder.newBuilder()
             .size(size)

@@ -3,6 +3,7 @@ package org.codetome.zircon.api
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.color.TextColor
 import org.codetome.zircon.graphics.style.DefaultStyleSet
+import org.codetome.zircon.graphics.style.StyleSet
 
 class StyleSetBuilder {
 
@@ -26,7 +27,7 @@ class StyleSetBuilder {
         this.modifiers = modifiers.toSet()
     }
 
-    fun build() = DefaultStyleSet(
+    fun build(): StyleSet = DefaultStyleSet(
             foregroundColor = foregroundColor,
             backgroundColor = backgroundColor,
             modifiers = modifiers.toSet())

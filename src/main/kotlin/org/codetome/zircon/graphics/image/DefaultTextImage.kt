@@ -58,6 +58,16 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
         drawable.drawOnto(this, offset)
     }
 
+    override fun putText(text: String, position: Position) {
+        text.forEachIndexed { col, char ->
+            setCharacterAt(position.withRelativeColumn(col), TextCharacterBuilder
+                    .newBuilder()
+                    .styleSet(toStyleSet())
+                    .character(char)
+                    .build())
+        }
+    }
+
     override fun resize(newSize: Size, filler: TextCharacter): DefaultTextImage {
         if (newSize.rows == buffer.size && (buffer.isEmpty() || newSize.columns == buffer[0].size)) {
             return this

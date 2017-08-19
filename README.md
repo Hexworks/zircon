@@ -35,7 +35,7 @@ compile("org.codetome.zircon:zircon:2017.1.0")
 ### Creating a Terminal
 
 ```java
-// First you have to create a terminal factory
+shape
 final DefaultTerminalFactory factory = new DefaultTerminalFactory();
 
 // Then set a size for your terminal (in characters)

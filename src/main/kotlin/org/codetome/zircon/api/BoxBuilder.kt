@@ -2,6 +2,7 @@ package org.codetome.zircon.api
 
 import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.graphics.box.Box
 import org.codetome.zircon.graphics.box.BoxType
 import org.codetome.zircon.graphics.box.DefaultBox
 import org.codetome.zircon.graphics.style.StyleSet
@@ -43,7 +44,7 @@ class BoxBuilder {
         this.boxType = boxType
     }
 
-    fun build() = DefaultBox(
+    fun build(): Box = DefaultBox(
             size = size,
             filler = TextCharacterBuilder.newBuilder()
                     .styleSet(style)

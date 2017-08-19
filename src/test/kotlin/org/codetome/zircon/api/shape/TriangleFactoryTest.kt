@@ -1,8 +1,7 @@
-package org.codetome.zircon.graphics.shape.factory
+package org.codetome.zircon.api.shape
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
-import org.codetome.zircon.api.TextCharacterBuilder
 import org.junit.Test
 
 class TriangleFactoryTest {

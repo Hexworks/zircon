@@ -1,8 +1,9 @@
 package org.codetome.zircon.api
 
+import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.graphics.image.DefaultTextImage
-import org.codetome.zircon.Size
+import org.codetome.zircon.graphics.image.TextImage
 
 /**
  * Creates [org.codetome.zircon.graphics.TextImage]s.
@@ -43,7 +44,7 @@ class TextImageBuilder {
         this.filler = filler
     }
 
-    fun build() = DefaultTextImage(
+    fun build(): TextImage = DefaultTextImage(
             size = size,
             toCopy = toCopy,
             filler = filler)
