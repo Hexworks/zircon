@@ -1,4 +1,4 @@
-package org.codetome.zircon.font.cache
+package org.codetome.zircon.font.impl.cache
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import org.codetome.zircon.TextCharacter

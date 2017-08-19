@@ -1,6 +1,7 @@
-package org.codetome.zircon.color
+package org.codetome.zircon.color.impl
 
 import org.codetome.zircon.api.TextColorFactory.DEFAULT_ALPHA
+import org.codetome.zircon.color.TextColor
 import java.awt.Color
 
 enum class ANSITextColor(private val red: Int,

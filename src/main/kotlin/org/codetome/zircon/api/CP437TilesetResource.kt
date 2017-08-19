@@ -1,11 +1,11 @@
 package org.codetome.zircon.api
 
 import org.codetome.zircon.font.CharacterMetadata
-import org.codetome.zircon.font.Java2DFont
-import org.codetome.zircon.font.cache.CP437TilesetCachingStrategy
-import org.codetome.zircon.font.cache.DefaultFontRegionCache
-import org.codetome.zircon.font.transformer.Java2DFontRegionCloner
-import org.codetome.zircon.font.transformer.Java2DFontRegionColorizer
+import org.codetome.zircon.font.impl.Java2DFont
+import org.codetome.zircon.font.impl.cache.CP437TilesetCachingStrategy
+import org.codetome.zircon.font.impl.cache.DefaultFontRegionCache
+import org.codetome.zircon.font.impl.transformer.Java2DFontRegionCloner
+import org.codetome.zircon.font.impl.transformer.Java2DFontRegionColorizer
 import java.io.InputStream
 import javax.imageio.ImageIO
 

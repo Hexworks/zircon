@@ -3,6 +3,7 @@ package org.codetome.zircon.screen
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.api.TextImageBuilder
 import org.codetome.zircon.Size
+import org.codetome.zircon.screen.impl.ScreenBuffer
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations

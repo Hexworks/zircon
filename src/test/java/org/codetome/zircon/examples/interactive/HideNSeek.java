@@ -7,7 +7,7 @@ import org.codetome.zircon.api.CP437TilesetResource;
 import org.codetome.zircon.api.TerminalBuilder;
 import org.codetome.zircon.api.TextCharacterBuilder;
 import org.codetome.zircon.api.TextColorFactory;
-import org.codetome.zircon.color.ANSITextColor;
+import org.codetome.zircon.color.impl.ANSITextColor;
 import org.codetome.zircon.color.TextColor;
 import org.codetome.zircon.graphics.layer.DefaultLayer;
 import org.codetome.zircon.graphics.layer.Layer;

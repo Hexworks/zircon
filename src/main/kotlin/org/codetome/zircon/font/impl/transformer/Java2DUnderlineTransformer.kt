@@ -1,4 +1,4 @@
-package org.codetome.zircon.font.transformer
+package org.codetome.zircon.font.impl.transformer
 
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.font.FontRegionTransformer

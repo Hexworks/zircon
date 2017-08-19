@@ -1,10 +1,13 @@
-package org.codetome.zircon.font
+package org.codetome.zircon.font.impl
 
 import org.codetome.zircon.Modifier
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.extensions.isNotPresent
-import org.codetome.zircon.font.cache.DefaultFontRegionCache
-import org.codetome.zircon.font.transformer.*
+import org.codetome.zircon.font.CharacterMetadata
+import org.codetome.zircon.font.Font
+import org.codetome.zircon.font.FontRegionTransformer
+import org.codetome.zircon.font.impl.cache.DefaultFontRegionCache
+import org.codetome.zircon.font.impl.transformer.*
 import java.awt.image.BufferedImage
 
 /**

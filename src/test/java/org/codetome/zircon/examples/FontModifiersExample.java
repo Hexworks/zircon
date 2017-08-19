@@ -5,7 +5,7 @@ import org.codetome.zircon.api.TerminalBuilder;
 import org.codetome.zircon.terminal.Terminal;
 
 import static org.codetome.zircon.Modifier.*;
-import static org.codetome.zircon.color.ANSITextColor.*;
+import static org.codetome.zircon.color.impl.ANSITextColor.*;
 
 public class FontModifiersExample {
 

@@ -1,4 +1,4 @@
-package org.codetome.zircon.screen
+package org.codetome.zircon.screen.impl
 
 import org.codetome.zircon.Position
 import org.codetome.zircon.Size
@@ -11,6 +11,7 @@ import org.codetome.zircon.behavior.Layerable
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.InputProvider
 import org.codetome.zircon.input.InputType
+import org.codetome.zircon.screen.Screen
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
 import java.util.*

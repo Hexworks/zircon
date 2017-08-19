@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.codetome.zircon.color.ANSITextColor.BLACK;
-import static org.codetome.zircon.color.ANSITextColor.RED;
+import static org.codetome.zircon.color.impl.ANSITextColor.BLACK;
+import static org.codetome.zircon.color.impl.ANSITextColor.RED;
 import static org.codetome.zircon.input.InputType.Enter;
 
 public class TypingExample {

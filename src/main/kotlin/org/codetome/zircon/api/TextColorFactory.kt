@@ -1,7 +1,7 @@
 package org.codetome.zircon.api
 
-import org.codetome.zircon.color.ANSITextColor
-import org.codetome.zircon.color.DefaultTextColor
+import org.codetome.zircon.color.impl.ANSITextColor
+import org.codetome.zircon.color.impl.DefaultTextColor
 import org.codetome.zircon.color.TextColor
 import java.awt.Color
 import java.util.regex.Pattern
