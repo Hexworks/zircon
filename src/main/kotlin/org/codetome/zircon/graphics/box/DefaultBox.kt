@@ -6,7 +6,7 @@ import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.api.TextImageBuilder
 import org.codetome.zircon.graphics.image.TextImage
-import org.codetome.zircon.graphics.shape.factory.LineFactory
+import org.codetome.zircon.api.shape.LineFactory
 import org.codetome.zircon.graphics.style.StyleSet
 
 class DefaultBox private constructor(size: Size,

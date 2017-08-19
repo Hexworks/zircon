@@ -1,4 +1,4 @@
-package org.codetome.zircon.graphics.shape.factory
+package org.codetome.zircon.api.shape
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
@@ -37,7 +37,6 @@ class FilledTriangleFactoryTest {
                         Position(column=5, row=4))
     }
 
-    @Ignore
     @Test
     fun shouldProperlyFillIrregularTriangle() {
         // TODO: fix triangle fill algo

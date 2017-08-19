@@ -1,5 +1,6 @@
 package org.codetome.zircon.graphics.image
 
+import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.behavior.DrawSurface
@@ -20,5 +21,10 @@ interface TextImage : DrawSurface, StyleSet, Drawable {
      * invoked on, so modifying one will not affect the other.
      */
     fun resize(newSize: Size, filler: TextCharacter): TextImage
+
+    /**
+     * Writes the given `text` at the given `position`.
+     */
+    fun putText(text: String, position: Position)
 
 }

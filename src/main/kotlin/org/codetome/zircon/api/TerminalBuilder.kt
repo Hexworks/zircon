@@ -24,7 +24,7 @@ class TerminalBuilder {
     private var initialSize: Size = Size.DEFAULT
     private var title: String = "Zircon Terminal"
     private var deviceConfiguration = DeviceConfigurationBuilder.getDefault()
-    // TODO: refactor this to abstract factory when libgdx implementation comes
+    // TODO: refactor this to abstract shape when libgdx implementation comes
     private var font: Font<BufferedImage> = PhysicalFontResource.ROBOTO_MONO.asPhysicalFont()
 
     /**
@@ -56,14 +56,14 @@ class TerminalBuilder {
 
 
     /**
-     * Sets the title to use on created [Terminal]s created by this factory.
+     * Sets the title to use on created [Terminal]s created by this shape.
      */
     fun title(title: String) = also {
         this.title = title
     }
 
     /**
-     * Sets the device configuration to use on created [SwingTerminalFrame] created by this factory.
+     * Sets the device configuration to use on created [SwingTerminalFrame] created by this shape.
      */
     fun deviceConfiguration(deviceConfiguration: DeviceConfiguration) = also {
         this.deviceConfiguration = deviceConfiguration

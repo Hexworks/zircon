@@ -1,6 +1,6 @@
 package org.codetome.zircon.graphics.shape
 
-import org.codetome.zircon.graphics.shape.factory.ShapeParameters
+import org.codetome.zircon.api.shape.ShapeParameters
 
 /**
  * A [ShapeFactory] is responsible for creating a single
