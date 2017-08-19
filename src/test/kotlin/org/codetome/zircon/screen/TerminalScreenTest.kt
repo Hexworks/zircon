@@ -5,6 +5,7 @@ import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.input.KeyStroke
+import org.codetome.zircon.screen.impl.TerminalScreen
 import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import org.junit.Before
 import org.junit.Test

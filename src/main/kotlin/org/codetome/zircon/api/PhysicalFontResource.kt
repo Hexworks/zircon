@@ -1,8 +1,8 @@
 package org.codetome.zircon.api
 
-import org.codetome.zircon.font.PhysicalFont
-import org.codetome.zircon.font.cache.DefaultFontRegionCache
-import org.codetome.zircon.font.cache.PhysicalFontCachingStrategy
+import org.codetome.zircon.font.impl.PhysicalFont
+import org.codetome.zircon.font.impl.cache.DefaultFontRegionCache
+import org.codetome.zircon.font.impl.cache.PhysicalFontCachingStrategy
 import org.codetome.zircon.util.FontUtils
 import java.awt.Font
 import java.awt.GraphicsEnvironment

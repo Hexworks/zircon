@@ -3,7 +3,7 @@ package org.codetome.zircon.api
 import org.codetome.zircon.Size
 import org.codetome.zircon.font.Font
 import org.codetome.zircon.screen.Screen
-import org.codetome.zircon.screen.TerminalScreen
+import org.codetome.zircon.screen.impl.TerminalScreen
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.terminal.swing.SwingTerminalFrame
