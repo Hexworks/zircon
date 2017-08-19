@@ -14,7 +14,8 @@ public class LayersExample {
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
         final Screen screen = TerminalBuilder.newBuilder()
-                .font(PhysicalFontResource.SOURCE_CODE_PRO.asPhysicalFont(18))
+                .initialTerminalSize(Size.of(45, 10))
+                .font(CP437TilesetResource.TAFFER_20X20.asJava2DFont())
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .build())
                 .buildScreen();
