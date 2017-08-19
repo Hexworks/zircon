@@ -1,9 +1,11 @@
 package org.codetome.zircon.examples.interactive;
 
 import org.codetome.zircon.Position;
+import org.codetome.zircon.Size;
 import org.codetome.zircon.TextCharacter;
 import org.codetome.zircon.api.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.TerminalBuilder;
+import org.codetome.zircon.api.TextColorFactory;
 import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.input.KeyStroke;
@@ -20,11 +22,11 @@ import static org.codetome.zircon.input.InputType.Enter;
 
 public class TypingExample {
 
-    private static final int TERMINAL_WIDTH = 80;
+    private static final int TERMINAL_WIDTH = 40;
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
     private static final TextCharacter TEXT_CHAR_TEMPLATE = TextCharacter.builder()
-            .foregroundColor(RED)
+            .foregroundColor(TextColorFactory.fromString("# F7923A"))
             .backgroundColor(BLACK)
             .build();
 
@@ -35,6 +37,7 @@ public class TypingExample {
 
     public static void main(String[] args) {
         TerminalBuilder builder = TerminalBuilder.newBuilder()
+                .initialTerminalSize(Size.of(TERMINAL_WIDTH, 10))
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorBlinking(true)
                         .build());

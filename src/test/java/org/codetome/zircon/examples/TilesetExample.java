@@ -34,21 +34,21 @@ public class TilesetExample {
     private static final int TERMINAL_HEIGHT = 40;
     private static final TextCharacter GRASS_0 =TextCharacter.of(
             ',',
-            TextColorFactory.fromString("#22bb33"),
+            TextColorFactory.fromString("#33cc44"),
             TextColorFactory.fromString("#114911"),
             new HashSet<>());
     private static final TextCharacter GRASS_1 = TextCharacter.of(
             '`',
-            TextColorFactory.fromString("#22aa33"),
+            TextColorFactory.fromString("#33bb44"),
             TextColorFactory.fromString("#114511"),
             new HashSet<>());
     private static final TextCharacter GRASS_2 = TextCharacter.of(
             '\'',
-            TextColorFactory.fromString("#229933"),
+            TextColorFactory.fromString("#33aa44"),
             TextColorFactory.fromString("#114011"),
             new HashSet<>());
     private static final TextCharacter[] GRASSES = new TextCharacter[]{GRASS_0, GRASS_1, GRASS_2};
-    private static final TextColor TEXT_COLOR = TextColorFactory.fromString("#bb4422");
+    private static final TextColor TEXT_COLOR = TextColorFactory.fromString("#dd6644");
     private static final TextColor TEXT_BG_COLOR = TextColorFactory.fromString("#00ff00");
 
     public static void main(String[] args) {

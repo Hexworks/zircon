@@ -1,6 +1,8 @@
 package org.codetome.zircon.examples;
 
+import org.codetome.zircon.Size;
 import org.codetome.zircon.api.DeviceConfigurationBuilder;
+import org.codetome.zircon.api.PhysicalFontResource;
 import org.codetome.zircon.api.TerminalBuilder;
 import org.codetome.zircon.api.TextColorFactory;
 import org.codetome.zircon.terminal.Terminal;
@@ -11,7 +13,9 @@ public class CursorExample {
     public static void main(String[] args) {
         // we create a new terminal using TerminalBuilder
         final Terminal terminal = TerminalBuilder.newBuilder()
-                // we only override the parts which we need, in this case the device config
+                .initialTerminalSize(Size.of(30, 8))
+                .font(PhysicalFontResource.SOURCE_CODE_PRO.asPhysicalFont())
+                // we only override the device config
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorColor(TextColorFactory.fromString("#ff8844"))
                         .cursorStyle(CursorStyle.UNDER_BAR)
