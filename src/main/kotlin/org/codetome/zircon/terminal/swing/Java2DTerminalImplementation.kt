@@ -5,7 +5,10 @@ import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.TextColorFactory
+import org.codetome.zircon.event.EventBus
+import org.codetome.zircon.event.EventType
 import org.codetome.zircon.font.Font
+import org.codetome.zircon.graphics.image.TextImage
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.terminal.IterableTerminal
 import org.codetome.zircon.terminal.config.CursorStyle.*
@@ -72,6 +75,9 @@ abstract class Java2DTerminalImplementation(
             }
         }, deviceConfiguration.blinkLengthInMilliSeconds, deviceConfiguration.blinkLengthInMilliSeconds)
         enableInput = true
+        EventBus.subscribe<Unit>(EventType.DRAW, {
+            draw()
+        })
     }
 
     @Synchronized
@@ -119,6 +125,8 @@ abstract class Java2DTerminalImplementation(
             graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
             graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED)
 
+            val componentImage = terminal.drawComponentsToImage()
+
             terminal.forEachDirtyCell { (position, textCharacter) ->
                 val atCursorLocation = cursorPosition == position
                 val characterWidth = getFontWidth()
@@ -131,6 +139,7 @@ abstract class Java2DTerminalImplementation(
                 }
 
                 drawCharacter(graphics,
+                        componentImage,
                         textCharacter,
                         position.column,
                         position.row,
@@ -167,6 +176,7 @@ abstract class Java2DTerminalImplementation(
 
     private fun drawCharacter(
             graphics: Graphics,
+            componentImage: TextImage,
             character: TextCharacter,
             columnIndex: Int,
             rowIndex: Int,
@@ -184,9 +194,16 @@ abstract class Java2DTerminalImplementation(
 
         // TODO:    add smart refresh for layers (`charDiffersInBuffers` should
         // TODO:    check z level intersections of layers)
+        // TODO:    same stands for component character
 
         if (fixedChar.isNotEmpty()) {
             graphics.drawImage(font.fetchRegionForChar(fixedChar), x, y, null)
+        }
+
+        val componentChar = componentImage.getCharacterAt(Position.of(columnIndex, rowIndex))
+        if (componentChar.isPresent) {
+            graphics.drawImage(font
+                    .fetchRegionForChar(componentChar.get()), x, y, null)
         }
 
         fetchOverlayZIntersection(Position.of(columnIndex, rowIndex)).forEach {

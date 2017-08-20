@@ -7,6 +7,7 @@ import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.awt.*
 import java.awt.event.HierarchyEvent
 import java.awt.event.MouseEvent
+import java.awt.event.MouseMotionListener
 import java.awt.image.BufferStrategy
 import java.awt.image.BufferedImage
 import javax.swing.SwingUtilities
@@ -17,13 +18,14 @@ import javax.swing.SwingUtilities
 class SwingTerminalImplementation(
         private val canvas: SwingTerminalCanvas,
         val font: Font<BufferedImage>,
-        private val initialSize: Size,
+        initialSize: Size,
         deviceConfiguration: DeviceConfiguration)
 
     : Java2DTerminalImplementation(
         deviceConfiguration = deviceConfiguration,
         font = font,
-        terminal = VirtualTerminal(initialSize)) {
+        terminal = VirtualTerminal(
+                initialSize = initialSize)) {
 
     private var firstDraw = true
 
@@ -35,7 +37,7 @@ class SwingTerminalImplementation(
         canvas.addKeyListener(TerminalInputListener(
                 terminal = this,
                 deviceConfiguration = deviceConfiguration))
-        canvas.addMouseListener(object : TerminalMouseListener(
+        val listener = object : TerminalMouseListener(
                 virtualTerminal = this,
                 deviceConfiguration = deviceConfiguration,
                 fontWidth = getFontWidth(),
@@ -44,7 +46,10 @@ class SwingTerminalImplementation(
                 super.mouseClicked(e)
                 this@SwingTerminalImplementation.canvas.requestFocusInWindow()
             }
-        })
+        }
+        canvas.addMouseListener(listener)
+        canvas.addMouseMotionListener(listener)
+        canvas.addMouseWheelListener(listener)
         canvas.addHierarchyListener { e ->
             if (e.changeFlags == HierarchyEvent.DISPLAYABILITY_CHANGED.toLong()) {
                 if (e.changed.isDisplayable) {

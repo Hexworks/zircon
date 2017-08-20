@@ -3,7 +3,6 @@ package org.codetome.zircon.api
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
 import org.codetome.zircon.Size
-import org.codetome.zircon.graphics.layer.DefaultLayer
 import org.junit.Before
 import org.junit.Test
 
@@ -27,7 +26,7 @@ class LayerBuilderTest {
         assertThat(result.getBoundableSize())
                 .isEqualTo(SIZE)
 
-        assertThat(result.getOffset())
+        assertThat(result.getPosition())
                 .isEqualTo(OFFSET)
 
         assertThat(result.getCharacterAt(OFFSET).get())

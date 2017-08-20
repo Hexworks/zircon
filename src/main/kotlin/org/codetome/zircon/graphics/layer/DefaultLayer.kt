@@ -22,25 +22,25 @@ class DefaultLayer private constructor(offset: Position, private val textImage: 
                     .filler(filler)
                     .build())
 
-    private var offset: Position
+    private var position: Position
     private var rect: Rectangle
 
     init {
-        this.offset = offset
+        this.position = offset
         this.rect = refreshRect()
     }
 
-    override fun getOffset() = offset
+    override fun getPosition() = position
 
-    override fun setOffset(offset: Position) {
-        this.offset = offset
+    override fun moveTo(position: Position) {
+        this.position = position
         this.rect = refreshRect()
     }
 
     override fun intersects(boundable: Boundable) = rect.intersects(
             Rectangle(
-                    boundable.getOffset().column,
-                    boundable.getOffset().row,
+                    boundable.getPosition().column,
+                    boundable.getPosition().row,
                     boundable.getBoundableSize().columns,
                     boundable.getBoundableSize().rows))
 
@@ -50,18 +50,18 @@ class DefaultLayer private constructor(offset: Position, private val textImage: 
 
     override fun containsBoundable(boundable: Boundable) = rect.contains(
             Rectangle(
-                    offset.column,
-                    offset.row,
+                    position.column,
+                    position.row,
                     boundable.getBoundableSize().columns,
                     boundable.getBoundableSize().rows))
 
-    override fun getCharacterAt(position: Position) = textImage.getCharacterAt(position - offset)
+    override fun getCharacterAt(position: Position) = textImage.getCharacterAt(position - this.position)
 
     override fun setCharacterAt(position: Position, character: TextCharacter): Boolean {
-        return textImage.setCharacterAt(position - offset, character)
+        return textImage.setCharacterAt(position - this.position, character)
     }
 
     private fun refreshRect(): Rectangle {
-        return Rectangle(offset.column, offset.row, getBoundableSize().columns, getBoundableSize().rows)
+        return Rectangle(position.column, position.row, getBoundableSize().columns, getBoundableSize().rows)
     }
 }

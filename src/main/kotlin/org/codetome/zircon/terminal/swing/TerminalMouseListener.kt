@@ -18,6 +18,7 @@ open class TerminalMouseListener(private val virtualTerminal: Terminal,
                             private val deviceConfiguration: DeviceConfiguration,
                             private val fontWidth: Int,
                             private val fontHeight: Int) : MouseAdapter() {
+
     override fun mouseClicked(e: MouseEvent) {
         if (MouseInfo.getNumberOfButtons() > 2 &&
                 e.button == MouseEvent.BUTTON2 &&

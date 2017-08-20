@@ -49,7 +49,6 @@ open class DefaultStyleSet(
         enableModifiers(modifier)
     }
 
-
     @Synchronized
     override fun disableModifiers(vararg modifiers: Modifier) {
         modifiers.forEach {

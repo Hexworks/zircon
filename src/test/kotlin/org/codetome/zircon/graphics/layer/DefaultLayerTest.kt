@@ -5,7 +5,6 @@ import org.codetome.zircon.Position
 import org.codetome.zircon.behavior.impl.DefaultBoundable
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.Size
-import org.codetome.zircon.TextCharacter
 import org.junit.Before
 import org.junit.Test
 
@@ -24,8 +23,8 @@ class DefaultLayerTest {
     @Test
     fun shouldProperlySetOffset() {
         val expectedOffset = Position.DEFAULT_POSITION
-        target.setOffset(expectedOffset)
-        assertThat(target.getOffset())
+        target.moveTo(expectedOffset)
+        assertThat(target.getPosition())
                 .isEqualTo(expectedOffset)
     }
 

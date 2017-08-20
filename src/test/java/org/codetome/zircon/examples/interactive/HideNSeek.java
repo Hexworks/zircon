@@ -102,16 +102,16 @@ public class HideNSeek {
                     System.exit(0);
                 } else {
                     if (InputType.ArrowUp == key.getInputType()) {
-                        player.setOffset(player.getOffset().withRelativeRow(-1));
+                        player.moveTo(player.getPosition().withRelativeRow(-1));
                     }
                     if (InputType.ArrowDown == key.getInputType()) {
-                        player.setOffset(player.getOffset().withRelativeRow(1));
+                        player.moveTo(player.getPosition().withRelativeRow(1));
                     }
                     if (InputType.ArrowLeft == key.getInputType()) {
-                        player.setOffset(player.getOffset().withRelativeColumn(-1));
+                        player.moveTo(player.getPosition().withRelativeColumn(-1));
                     }
                     if (InputType.ArrowRight == key.getInputType()) {
-                        player.setOffset(player.getOffset().withRelativeColumn(1));
+                        player.moveTo(player.getPosition().withRelativeColumn(1));
                     }
                     screen.display();
                 }

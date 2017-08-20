@@ -4,10 +4,12 @@ import org.codetome.zircon.*
 import org.codetome.zircon.behavior.Boundable
 import org.codetome.zircon.behavior.Drawable
 import org.codetome.zircon.color.TextColor
+import org.codetome.zircon.component.Container
 import org.codetome.zircon.font.Font
 import org.codetome.zircon.graphics.layer.Layer
 import org.codetome.zircon.graphics.style.StyleSet
 import org.codetome.zircon.input.Input
+import org.codetome.zircon.input.InputProvider
 import org.codetome.zircon.terminal.IterableTerminal
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
@@ -39,6 +41,15 @@ class SwingTerminalCanvas(
     init {
         background = Color.BLACK
     }
+
+    override fun getContainer() = terminal.getContainer()
+
+    override fun setContainer(container: Container) = terminal.setContainer(container)
+
+    override fun drawComponentsToImage() = terminal.drawComponentsToImage()
+
+    override fun setInputProvider(inputProvider: InputProvider)
+            = terminal.setInputProvider(inputProvider)
 
     override fun draw(drawable: Drawable, offset: Position)
             = terminal.draw(drawable, offset)
