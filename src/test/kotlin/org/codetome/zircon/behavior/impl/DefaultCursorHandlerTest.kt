@@ -2,16 +2,17 @@ package org.codetome.zircon.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
+import org.codetome.zircon.Size
 import org.junit.Before
 import org.junit.Test
 
-class DefaultCursorHolderTest {
+class DefaultCursorHandlerTest {
 
-    lateinit var target: DefaultCursorHolder
+    lateinit var target: DefaultCursorHandler
 
     @Before
     fun setUp() {
-        target = DefaultCursorHolder()
+        target = DefaultCursorHandler(SIZE)
     }
 
     @Test
@@ -22,7 +23,7 @@ class DefaultCursorHolderTest {
 
     @Test
     fun shouldSetPositionCorrectly() {
-        target.setCursorPosition(Position.OFFSET_1x1)
+        target.putCursorAt(Position.OFFSET_1x1)
 
         assertThat(target.getCursorPosition())
                 .isEqualTo(Position.OFFSET_1x1)
@@ -42,19 +43,17 @@ class DefaultCursorHolderTest {
                 .isFalse()
     }
 
-    @Test
-    fun shouldFixNegativeCursorRow() {
-        target.setCursorPosition(Position.DEFAULT_POSITION.withRow(-1))
-        assertThat(target.getCursorPosition())
-                .isEqualTo(Position.DEFAULT_POSITION)
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldThrowExceptionOnNegativeCursorRow() {
+        target.putCursorAt(Position.DEFAULT_POSITION.withRow(-1))
     }
 
-    @Test
-    fun shouldFixNegativeCursorColumn() {
-        target.setCursorPosition(Position.DEFAULT_POSITION.withColumn(-1))
-        assertThat(target.getCursorPosition())
-                .isEqualTo(Position.DEFAULT_POSITION)
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldThrowExceptionOnNegativeCursorColumn() {
+        target.putCursorAt(Position.DEFAULT_POSITION.withColumn(-1))
     }
 
-
+    companion object {
+        val SIZE = Size.of(5, 5)
+    }
 }

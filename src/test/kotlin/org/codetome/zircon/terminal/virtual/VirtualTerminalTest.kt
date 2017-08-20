@@ -5,7 +5,6 @@ import org.codetome.zircon.*
 import org.codetome.zircon.Position.Companion.DEFAULT_POSITION
 import org.codetome.zircon.Position.Companion.OFFSET_1x1
 import org.codetome.zircon.api.TextCharacterBuilder
-import org.codetome.zircon.input.KeyStroke.Companion.EOF_STROKE
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
 import org.junit.Before
@@ -25,14 +24,14 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldCapCursorColumnsWhenSetToBiggerThanTerminalSize() {
-        target.setCursorPosition(DEFAULT_POSITION.withRelativeColumn(Int.MAX_VALUE))
+        target.putCursorAt(DEFAULT_POSITION.withRelativeColumn(Int.MAX_VALUE))
         assertThat(target.getCursorPosition())
-                .isEqualTo(DEFAULT_POSITION.withColumn(target.getBoundableSize().columns))
+                .isEqualTo(DEFAULT_POSITION.withColumn(target.getBoundableSize().columns - 1))
     }
 
     @Test
     fun shouldCapCursorRowsWhenSetToBiggerThanTerminalSize() {
-        target.setCursorPosition(DEFAULT_POSITION.withRelativeRow(Int.MAX_VALUE))
+        target.putCursorAt(DEFAULT_POSITION.withRelativeRow(Int.MAX_VALUE))
         assertThat(target.getCursorPosition())
                 .isEqualTo(DEFAULT_POSITION.withRow(target.getBoundableSize().rows - 1))
     }
@@ -62,15 +61,15 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldResetCursorWhenColsAreLessAfterResize() {
-        target.setCursorPosition(DEFAULT_POSITION.withColumn(Int.MAX_VALUE))
+        target.putCursorAt(DEFAULT_POSITION.withColumn(Int.MAX_VALUE))
         val originalCursorPos = target.getCursorPosition()
         target.setSize(NEW_LESS_COLS_SIZE)
-        assertThat(target.getCursorPosition()).isEqualTo(originalCursorPos.withRelativeColumn(-1))
+        assertThat(target.getCursorPosition()).isEqualTo(originalCursorPos.withColumn(NEW_LESS_COLS_SIZE.columns - 1))
     }
 
     @Test
     fun shouldResetCursorWhenRowsAreLessAfterResize() {
-        target.setCursorPosition(DEFAULT_POSITION.withRow(Int.MAX_VALUE))
+        target.putCursorAt(DEFAULT_POSITION.withRow(Int.MAX_VALUE))
         val originalCursorPos = target.getCursorPosition()
         target.setSize(NEW_LESS_ROWS_SIZE)
         assertThat(target.getCursorPosition()).isEqualTo(originalCursorPos.withRelativeRow(-1))
@@ -85,7 +84,7 @@ class VirtualTerminalTest {
     @Test
     fun shouldProperlySetCursorPositionWhenSetCursorPositionIsCalled() {
         val pos = Position(4, 5)
-        target.setCursorPosition(pos)
+        target.putCursorAt(pos)
 
         assertThat(target.getCursorPosition()).isEqualTo(pos)
     }
@@ -99,15 +98,11 @@ class VirtualTerminalTest {
     }
 
     @Test
-    fun shouldClearScreenWhenClearScreenIsCalled() {
-        var cellCount = 0
-        target.putCharacter(' ')
-
+    fun shouldClearScreenWhenClearIsCalled() {
         target.clear()
-
-        target.forEachCell { cellCount++ }
-
-        assertThat(cellCount).isEqualTo(0)
+        target.forEachCell {
+            assertThat(it.character).isEqualTo(TextCharacterBuilder.DEFAULT_CHARACTER)
+        }
         assertThat(target.getCursorPosition()).isEqualTo(Position.DEFAULT_POSITION)
     }
 
@@ -168,24 +163,11 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldBeDirtyAfterResize() {
-        target.setCursorPosition(DEFAULT_POSITION)
-        target.putCharacter('x')
-        target.forEachDirtyCell { }
-        target.setSize(SIZE.withRelativeColumns(1))
+        target.setSize(SIZE.withRelativeColumns(-8).withRelativeRows(-18))
 
-        val dirtyCells = mutableListOf<Cell>()
+        val dirtyCells = target.drainDirtyPositions()
 
-        target.forEachDirtyCell {
-            dirtyCells.add(it)
-        }
-
-        assertThat(dirtyCells).hasSize(201)
-        dirtyCells.clear()
-        target.forEachDirtyCell {
-            dirtyCells.add(it)
-        }
-        assertThat(dirtyCells).hasSize(1)
-        assertThat(dirtyCells).hasSize(1)
+        assertThat(dirtyCells).hasSize(4)
     }
 
     @Test
@@ -203,17 +185,8 @@ class VirtualTerminalTest {
     }
 
     @Test
-    fun shouldStartInNewLineWhenAddingTextAtTheEndOfTheLine() {
-        target.setCursorPosition(DEFAULT_POSITION.withRelativeColumn(Int.MAX_VALUE))
-        target.putCharacter('a')
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)).get())
-                .isEqualTo(TextCharacter.builder().character('a').build())
-    }
-
-    @Test
     fun shouldSetCursorPositionToNewLineWhenWritingAtTheEndOfTheLine() {
-        target.setCursorPosition(DEFAULT_POSITION.withRelativeColumn(Int.MAX_VALUE))
-        target.setCursorPosition(target.getCursorPosition().withRelativeColumn(-1))
+        target.putCursorAt(DEFAULT_POSITION.withRelativeColumn(Int.MAX_VALUE))
         target.putCharacter('a')
 
         assertThat(target.getCursorPosition())

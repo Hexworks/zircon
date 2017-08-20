@@ -17,7 +17,7 @@ import java.util.*
  * [Screen.display] method.
  */
 interface Screen
-    : Closeable, Clearable, Layerable, CursorHolder, DrawSurface, ContainerHolder, InputEmitter {
+    : Closeable, Clearable, Layerable, CursorHandler, DrawSurface, ContainerHolder, InputEmitter {
 
     /**
      * Reads a character and its associated meta-data from the front-buffer and returns it encapsulated as a

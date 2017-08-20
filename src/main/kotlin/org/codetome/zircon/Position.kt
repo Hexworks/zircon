@@ -8,6 +8,12 @@ package org.codetome.zircon
 data class Position(val column: Int,
                     val row: Int) : Comparable<Position> {
 
+    init {
+        require(column >= 0 && row >= 0) {
+            "A position must have a column and a row number which is greater than 0!"
+        }
+    }
+
     /**
      * Returns a new [Position] which is the sum of `column` and `row` in both [Position]s.
      * so `Position(column = 1, row = 1).plus(Position(column = 2, row = 2))` will be

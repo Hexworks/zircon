@@ -4,7 +4,6 @@ import org.codetome.zircon.*
 import org.codetome.zircon.behavior.Boundable
 import org.codetome.zircon.behavior.Drawable
 import org.codetome.zircon.color.TextColor
-import org.codetome.zircon.component.Container
 import org.codetome.zircon.font.Font
 import org.codetome.zircon.graphics.layer.Layer
 import org.codetome.zircon.graphics.style.StyleSet
@@ -42,11 +41,13 @@ class SwingTerminalCanvas(
         background = Color.BLACK
     }
 
-    override fun getContainer() = terminal.getContainer()
+    override fun setPositionDirty(position: Position) = terminal.setPositionDirty(position)
 
-    override fun setContainer(container: Container) = terminal.setContainer(container)
+    override fun drainDirtyPositions() = terminal.drainDirtyPositions()
 
-    override fun drawComponentsToImage() = terminal.drawComponentsToImage()
+    override fun advanceCursor() = terminal.advanceCursor()
+
+    override fun resizeCursorSpace(size: Size) = terminal.resizeCursorSpace(size)
 
     override fun draw(drawable: Drawable, offset: Position)
             = terminal.draw(drawable, offset)
@@ -112,7 +113,7 @@ class SwingTerminalCanvas(
 
     override fun getCursorPosition() = terminal.getCursorPosition()
 
-    override fun setCursorPosition(cursorPosition: Position) = terminal.setCursorPosition(cursorPosition)
+    override fun putCursorAt(cursorPosition: Position) = terminal.putCursorAt(cursorPosition)
 
     override fun isCursorVisible() = terminal.isCursorVisible()
 

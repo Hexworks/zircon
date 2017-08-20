@@ -4,10 +4,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
 import org.codetome.zircon.Position.Companion.DEFAULT_POSITION
 import org.codetome.zircon.Position.Companion.OFFSET_1x1
+import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.graphics.image.DefaultTextImage
-import org.codetome.zircon.Size
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
@@ -68,7 +68,6 @@ class DefaultTextImageTest {
     @Test
     fun shouldNotSetAnythingWhenSetCharAtIsCalledWithOutOfBounds() {
         fetchOutOfBoundsPositions().forEach {
-
             target.setCharacterAt(it, SET_ALL_CHAR)
             assertThat(fetchTargetChars().filter { it == SET_ALL_CHAR }).isEmpty()
         }
@@ -251,10 +250,9 @@ class DefaultTextImageTest {
     }
 
     private fun fetchOutOfBoundsPositions(): List<Position> {
-        return listOf(Position(Int.MAX_VALUE, Int.MAX_VALUE),
-                Position(Int.MIN_VALUE, Int.MAX_VALUE),
-                Position(Int.MAX_VALUE, Int.MIN_VALUE),
-                Position(Int.MIN_VALUE, Int.MIN_VALUE))
+        return listOf(Position(SIZE.columns -1 , Int.MAX_VALUE),
+                Position(Int.MAX_VALUE, SIZE.columns -1 ),
+                Position(Int.MAX_VALUE, Int.MAX_VALUE))
     }
 
     companion object {

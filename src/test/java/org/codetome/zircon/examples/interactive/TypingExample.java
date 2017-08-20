@@ -6,7 +6,6 @@ import org.codetome.zircon.TextCharacter;
 import org.codetome.zircon.api.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.TerminalBuilder;
 import org.codetome.zircon.api.TextColorFactory;
-import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.input.KeyStroke;
 import org.codetome.zircon.screen.Screen;
@@ -14,7 +13,6 @@ import org.codetome.zircon.terminal.Terminal;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.codetome.zircon.color.impl.ANSITextColor.BLACK;
 import static org.codetome.zircon.color.impl.ANSITextColor.RED;
@@ -26,7 +24,7 @@ public class TypingExample {
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
     private static final TextCharacter TEXT_CHAR_TEMPLATE = TextCharacter.builder()
-            .foregroundColor(TextColorFactory.fromString("# F7923A"))
+            .foregroundColor(TextColorFactory.fromString("#F7923A"))
             .backgroundColor(BLACK)
             .build();
 
@@ -44,8 +42,8 @@ public class TypingExample {
         final Terminal terminal = builder.buildTerminal();
         final Screen screen = builder.createScreenFor(terminal);
 
-        startTypingSupportForScreen(screen);
-//        startTypingSupportForTerminal(terminal);
+//        startTypingSupportForScreen(screen);
+        startTypingSupportForTerminal(terminal);
     }
 
     private static void startTypingSupportForScreen(Screen screen) {
@@ -54,16 +52,16 @@ public class TypingExample {
             if (EXIT_CONDITIONS.contains(input.getInputType())) {
                 System.exit(0);
             } else if (input.inputTypeIs(Enter)) {
-                screen.setCursorPosition(pos.withRelativeRow(1).withColumn(0));
+                screen.putCursorAt(pos.withRelativeRow(1).withColumn(0));
                 screen.refresh();
             } else {
                 if (input.isKeyStroke()) {
                     final KeyStroke ks = input.asKeyStroke();
                     screen.setCharacterAt(pos, TEXT_CHAR_TEMPLATE.withCharacter(ks.getCharacter()));
                     if (pos.getColumn() == TERMINAL_WIDTH) {
-                        screen.setCursorPosition(pos.withRelativeRow(1).withColumn(0));
+                        screen.putCursorAt(pos.withRelativeRow(1).withColumn(0));
                     } else {
-                        screen.setCursorPosition(pos.withRelativeColumn(1));
+                        screen.putCursorAt(pos.withRelativeColumn(1));
                     }
                     screen.refresh();
                 }
@@ -77,7 +75,7 @@ public class TypingExample {
             if (EXIT_CONDITIONS.contains(input.getInputType())) {
                 System.exit(0);
             } else if (input.inputTypeIs(Enter)) {
-                terminal.setCursorPosition(pos.withRelativeRow(1).withColumn(0));
+                terminal.putCursorAt(pos.withRelativeRow(1).withColumn(0));
                 terminal.flush();
             } else {
                 if (input.isKeyStroke()) {

@@ -126,8 +126,6 @@ abstract class Java2DTerminalImplementation(
             graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
             graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED)
 
-            val componentImage = terminal.drawComponentsToImage()
-
             terminal.forEachDirtyCell { (position, textCharacter) ->
                 val atCursorLocation = cursorPosition == position
                 val characterWidth = getFontWidth()
@@ -140,7 +138,6 @@ abstract class Java2DTerminalImplementation(
                 }
 
                 drawCharacter(graphics,
-                        componentImage,
                         textCharacter,
                         position.column,
                         position.row,
@@ -177,7 +174,6 @@ abstract class Java2DTerminalImplementation(
 
     private fun drawCharacter(
             graphics: Graphics,
-            componentImage: TextImage,
             character: TextCharacter,
             columnIndex: Int,
             rowIndex: Int,
@@ -193,18 +189,8 @@ abstract class Java2DTerminalImplementation(
                 .withBackgroundColor(TextColorFactory.fromAWTColor(backgroundColor))
                 .withForegroundColor(TextColorFactory.fromAWTColor(foregroundColor))
 
-        // TODO:    add smart refresh for layers (`charDiffersInBuffers` should
-        // TODO:    check z level intersections of layers)
-        // TODO:    same stands for component character
-
         if (fixedChar.isNotEmpty()) {
             graphics.drawImage(font.fetchRegionForChar(fixedChar), x, y, null)
-        }
-
-        val componentChar = componentImage.getCharacterAt(Position.of(columnIndex, rowIndex))
-        if (componentChar.isPresent) {
-            graphics.drawImage(font
-                    .fetchRegionForChar(componentChar.get()), x, y, null)
         }
 
         fetchOverlayZIntersection(Position.of(columnIndex, rowIndex)).forEach {
