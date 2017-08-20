@@ -1,8 +1,10 @@
 package org.codetome.zircon.component
 
+import org.codetome.zircon.Position
 import org.codetome.zircon.behavior.Drawable
 import org.codetome.zircon.behavior.Positionable
 import org.codetome.zircon.component.listener.MouseListener
+import java.util.*
 
 /**
  * A [Component] is a GUI element which is used either to display information to the user
@@ -15,6 +17,21 @@ import org.codetome.zircon.component.listener.MouseListener
  * display information is a [Component].
  */
 interface Component : Drawable, Positionable {
+
+    /**
+     * Returns the unique identifier of this [Component].
+     */
+    fun getId(): UUID
+
+    /**
+     * Returns the innermost [Component] for a given [Position].
+     * This means that if you call this method on a [Container] and it
+     * contains a [Component] which intersects with `position` the
+     * component will be returned instead of the container itself.
+     * If no [Component] intersects with the given `position` an
+     * empty [Optional] is returned.
+     */
+    fun fetchComponentByPosition(position: Position): Optional<out Component>
 
     /**
      * Adds a [MouseListener] to this [Component] which will

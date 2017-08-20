@@ -31,7 +31,7 @@ public class ComponentsExample {
                                 .backgroundColor(TextColorFactory.fromString("#445566"))
                                 .build(),
                         StyleSetBuilder.newBuilder()
-                                .backgroundColor(TextColorFactory.fromString("#667788"))
+                                .backgroundColor(TextColorFactory.fromString("#aabbcc"))
                                 .build(),
                         StyleSetBuilder.EMPTY)));
 
@@ -43,11 +43,11 @@ public class ComponentsExample {
                                 .backgroundColor(TextColorFactory.fromString("#665544"))
                                 .build(),
                         StyleSetBuilder.newBuilder()
-                                .backgroundColor(TextColorFactory.fromString("#887766"))
+                                .backgroundColor(TextColorFactory.fromString("#ccbbaa"))
                                 .build(),
                         StyleSetBuilder.EMPTY)));
 
-        container.addComponent(new DefaultContainer(
+        Container nestedContainer = new DefaultContainer(
                 Size.of(5, 5),
                 Position.of(2, 7),
                 new ComponentStyles(
@@ -55,10 +55,23 @@ public class ComponentsExample {
                                 .backgroundColor(TextColorFactory.fromString("#555555"))
                                 .build(),
                         StyleSetBuilder.newBuilder()
-                                .backgroundColor(TextColorFactory.fromString("#777777"))
+                                .backgroundColor(TextColorFactory.fromString("#bbbbbb"))
                                 .build(),
-                        StyleSetBuilder.EMPTY)
-        ));
+                        StyleSetBuilder.EMPTY));
+
+        nestedContainer.addComponent(new DefaultComponent(
+                Size.of(2, 2),
+                Position.of(3, 8),
+                new ComponentStyles(
+                        StyleSetBuilder.newBuilder()
+                                .backgroundColor(TextColorFactory.fromString("#446644"))
+                                .build(),
+                        StyleSetBuilder.newBuilder()
+                                .backgroundColor(TextColorFactory.fromString("#aaffaa"))
+                                .build(),
+                        StyleSetBuilder.EMPTY)));
+
+        container.addComponent(nestedContainer);
 
         screen.display();
     }

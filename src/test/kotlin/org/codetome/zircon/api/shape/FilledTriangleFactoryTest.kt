@@ -12,11 +12,6 @@ class FilledTriangleFactoryTest {
     @Test
     fun shouldProperlyFillTriangle() {
         // TODO: fix algo!
-        println(FilledTriangleFactory.buildFilledTriangle(
-                p1 = Position.OFFSET_1x1,
-                p2 = Position(5, 1),
-                p3 = Position(5, 5))
-                .toTextImage(TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x')))
         assertThat(FilledTriangleFactory.buildFilledTriangle(
                 p1 = Position.OFFSET_1x1,
                 p2 = Position(5, 1),
@@ -40,11 +35,6 @@ class FilledTriangleFactoryTest {
     @Test
     fun shouldProperlyFillIrregularTriangle() {
         // TODO: fix triangle fill algo
-        println(FilledTriangleFactory.buildFilledTriangle(
-                p1 = Position.OFFSET_1x1,
-                p2 = Position(4, 2),
-                p3 = Position(3, 6))
-                .toTextImage(TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x')))
         assertThat(FilledTriangleFactory.buildFilledTriangle(
                 p1 = Position.OFFSET_1x1,
                 p2 = Position(4, 2),

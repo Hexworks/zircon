@@ -68,6 +68,14 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
         }
     }
 
+    @Synchronized
+    override fun applyStyle(styleSet: StyleSet) {
+        setStyleFrom(styleSet)
+        getBoundableSize().fetchPositions().forEach { pos ->
+            setCharacterAt(pos, getCharacterAt(pos).get().withStyle(styleSet))
+        }
+    }
+
     override fun resize(newSize: Size, filler: TextCharacter): DefaultTextImage {
         if (newSize.rows == buffer.size && (buffer.isEmpty() || newSize.columns == buffer[0].size)) {
             return this

@@ -220,18 +220,6 @@ class VirtualTerminalTest {
                 .isEqualTo(DEFAULT_POSITION.withRelativeRow(1))
     }
 
-    @Test
-    fun shouldReturnEmptyInputWhenNoneIsPresent() {
-        val result = target.pollInput()
-        assertThat(result.isPresent).isFalse()
-    }
-
-    @Test
-    fun shouldReturnNonEmptyInputWhenInputIsAdded() {
-        target.addInput(EOF_STROKE)
-        assertThat(target.pollInput().get()).isEqualTo(EOF_STROKE)
-    }
-
     private fun addCharAndFetchDirtyCells(char: Char): MutableList<Cell> {
         val dirtyCells = mutableListOf<Cell>()
         target.putCharacter(char)

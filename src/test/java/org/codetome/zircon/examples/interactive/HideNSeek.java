@@ -7,18 +7,16 @@ import org.codetome.zircon.api.CP437TilesetResource;
 import org.codetome.zircon.api.TerminalBuilder;
 import org.codetome.zircon.api.TextCharacterBuilder;
 import org.codetome.zircon.api.TextColorFactory;
-import org.codetome.zircon.color.impl.ANSITextColor;
+import org.codetome.zircon.api.shape.FilledRectangleFactory;
 import org.codetome.zircon.color.TextColor;
+import org.codetome.zircon.color.impl.ANSITextColor;
 import org.codetome.zircon.graphics.layer.DefaultLayer;
 import org.codetome.zircon.graphics.layer.Layer;
-import org.codetome.zircon.api.shape.FilledRectangleFactory;
-import org.codetome.zircon.input.Input;
 import org.codetome.zircon.input.InputType;
 import org.codetome.zircon.screen.Screen;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class HideNSeek {
 
@@ -94,28 +92,24 @@ public class HideNSeek {
     }
 
     private static void enableMovement(Screen screen, Layer player) {
-        while (true) {
-            final Optional<Input> opKey = screen.pollInput();
-            if (opKey.isPresent()) {
-                final Input key = opKey.get();
-                if (EXIT_CONDITIONS.contains(key.getInputType())) {
-                    System.exit(0);
-                } else {
-                    if (InputType.ArrowUp == key.getInputType()) {
-                        player.moveTo(player.getPosition().withRelativeRow(-1));
-                    }
-                    if (InputType.ArrowDown == key.getInputType()) {
-                        player.moveTo(player.getPosition().withRelativeRow(1));
-                    }
-                    if (InputType.ArrowLeft == key.getInputType()) {
-                        player.moveTo(player.getPosition().withRelativeColumn(-1));
-                    }
-                    if (InputType.ArrowRight == key.getInputType()) {
-                        player.moveTo(player.getPosition().withRelativeColumn(1));
-                    }
-                    screen.display();
+        screen.subscribe((input) -> {
+            if (EXIT_CONDITIONS.contains(input.getInputType())) {
+                System.exit(0);
+            } else {
+                if (InputType.ArrowUp == input.getInputType()) {
+                    player.moveTo(player.getPosition().withRelativeRow(-1));
                 }
+                if (InputType.ArrowDown == input.getInputType()) {
+                    player.moveTo(player.getPosition().withRelativeRow(1));
+                }
+                if (InputType.ArrowLeft == input.getInputType()) {
+                    player.moveTo(player.getPosition().withRelativeColumn(-1));
+                }
+                if (InputType.ArrowRight == input.getInputType()) {
+                    player.moveTo(player.getPosition().withRelativeColumn(1));
+                }
+                screen.display();
             }
-        }
+        });
     }
 }

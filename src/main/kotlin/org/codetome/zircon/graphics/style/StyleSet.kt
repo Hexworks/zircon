@@ -75,5 +75,7 @@ interface StyleSet {
      * Copies colors and modifiers from another style.
      */
     fun setStyleFrom(source: StyleSet)
+
+
 }
 

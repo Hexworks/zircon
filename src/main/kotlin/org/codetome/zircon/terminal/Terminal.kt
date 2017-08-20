@@ -5,8 +5,6 @@ package org.codetome.zircon.terminal
 import org.codetome.zircon.Size
 import org.codetome.zircon.behavior.*
 import org.codetome.zircon.graphics.style.StyleSet
-import org.codetome.zircon.input.InputConsumer
-import org.codetome.zircon.input.InputProvider
 import java.io.Closeable
 
 /**
@@ -24,8 +22,7 @@ import java.io.Closeable
  * interface you should be programming against.
  */
 interface Terminal
-    : InputProvider, InputConsumer, Closeable, Clearable,
-        StyleSet, CursorHolder, Layerable, DrawSurface, ContainerHolder {
+    : Closeable, Clearable, StyleSet, CursorHolder, Layerable, DrawSurface, ContainerHolder, InputEmitter {
 
     /**
      * Prints one character to the terminal at the current cursor location.

@@ -1,5 +1,7 @@
 package org.codetome.zircon.terminal.swing
 
+import org.codetome.zircon.event.EventBus
+import org.codetome.zircon.event.EventType
 import org.codetome.zircon.input.InputType
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.terminal.Terminal
@@ -35,7 +37,7 @@ class TerminalInputListener(private val terminal: Terminal,
             if (!altDown && ctrlDown && shiftDown && character == 'V' && deviceConfiguration.isClipboardAvailable) {
                 pasteClipboardContent()
             } else {
-                terminal.addInput(KeyStroke(
+                EventBus.emit(EventType.INPUT, KeyStroke(
                         character = character,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
@@ -54,25 +56,25 @@ class TerminalInputListener(private val terminal: Terminal,
             if (!altDown && !ctrlDown && shiftDown && deviceConfiguration.isClipboardAvailable) {
                 pasteClipboardContent()
             } else {
-                terminal.addInput(KeyStroke(it = InputType.Insert,
+                EventBus.emit(EventType.INPUT, KeyStroke(it = InputType.Insert,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
                         shiftDown = shiftDown))
             }
         } else if (e.keyCode == KeyEvent.VK_TAB) {
             if (e.isShiftDown) {
-                terminal.addInput(KeyStroke(it = InputType.ReverseTab,
+                EventBus.emit(EventType.INPUT, KeyStroke(it = InputType.ReverseTab,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
                         shiftDown = shiftDown))
             } else {
-                terminal.addInput(KeyStroke(it = InputType.Tab,
+                EventBus.emit(EventType.INPUT, KeyStroke(it = InputType.Tab,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
                         shiftDown = shiftDown))
             }
         } else if (KEY_EVENT_TO_KEY_TYPE_LOOKUP.containsKey(e.keyCode)) {
-            terminal.addInput(KeyStroke(it = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
+            EventBus.emit(EventType.INPUT, KeyStroke(it = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
                     ctrlDown = ctrlDown,
                     altDown = altDown,
                     shiftDown = shiftDown))
@@ -83,7 +85,7 @@ class TerminalInputListener(private val terminal: Terminal,
                 if (!shiftDown) {
                     character = Character.toLowerCase(character)
                 }
-                terminal.addInput(KeyStroke(
+                EventBus.emit(EventType.INPUT, KeyStroke(
                         character = character,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
@@ -104,7 +106,7 @@ class TerminalInputListener(private val terminal: Terminal,
                     TextUtils.isPrintableCharacter(it)
                 }
                 .forEach {
-                    terminal.addInput(KeyStroke(character = it))
+                    EventBus.emit(EventType.INPUT, KeyStroke(character = it))
                 }
     }
 

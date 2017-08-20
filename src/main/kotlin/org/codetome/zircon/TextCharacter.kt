@@ -3,6 +3,7 @@ package org.codetome.zircon
 import org.codetome.zircon.Modifier.*
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.color.TextColor
+import org.codetome.zircon.graphics.style.StyleSet
 
 /**
  * Represents a single character with additional metadata such as colors and modifiers. This class is immutable and
@@ -98,6 +99,10 @@ data class TextCharacter(
         return copy(modifiers = newSet)
     }
 
+    fun withStyle(styleSet: StyleSet) = TextCharacterBuilder.newBuilder()
+            .styleSet(styleSet)
+            .character(getCharacter())
+            .build()
 
     companion object {
 

@@ -7,7 +7,6 @@ import org.codetome.zircon.terminal.virtual.VirtualTerminal
 import java.awt.*
 import java.awt.event.HierarchyEvent
 import java.awt.event.MouseEvent
-import java.awt.event.MouseMotionListener
 import java.awt.image.BufferStrategy
 import java.awt.image.BufferedImage
 import javax.swing.SwingUtilities
@@ -38,7 +37,6 @@ class SwingTerminalImplementation(
                 terminal = this,
                 deviceConfiguration = deviceConfiguration))
         val listener = object : TerminalMouseListener(
-                virtualTerminal = this,
                 deviceConfiguration = deviceConfiguration,
                 fontWidth = getFontWidth(),
                 fontHeight = getFontHeight()) {
@@ -89,7 +87,7 @@ class SwingTerminalImplementation(
     }
 
     private fun drawAndDispose(bs: BufferStrategy, gc: Graphics2D) {
-        if(firstDraw) {
+        if (firstDraw) {
             firstDraw = false
             gc.color = Color.BLACK
             gc.fillRect(0, 0, getWidth(), getHeight())

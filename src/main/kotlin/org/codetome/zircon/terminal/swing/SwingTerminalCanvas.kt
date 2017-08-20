@@ -9,7 +9,6 @@ import org.codetome.zircon.font.Font
 import org.codetome.zircon.graphics.layer.Layer
 import org.codetome.zircon.graphics.style.StyleSet
 import org.codetome.zircon.input.Input
-import org.codetome.zircon.input.InputProvider
 import org.codetome.zircon.terminal.IterableTerminal
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
@@ -17,6 +16,7 @@ import org.codetome.zircon.terminal.config.DeviceConfiguration
 import java.awt.Canvas
 import java.awt.Color
 import java.awt.image.BufferedImage
+import java.util.function.Consumer
 
 /**
  * This class provides an Swing implementation of the [Terminal] interface that
@@ -48,13 +48,10 @@ class SwingTerminalCanvas(
 
     override fun drawComponentsToImage() = terminal.drawComponentsToImage()
 
-    override fun setInputProvider(inputProvider: InputProvider)
-            = terminal.setInputProvider(inputProvider)
-
     override fun draw(drawable: Drawable, offset: Position)
             = terminal.draw(drawable, offset)
 
-    override fun addInput(input: Input) = terminal.addInput(input)
+    override fun subscribe(inputCallback: Consumer<Input>) = terminal.subscribe(inputCallback)
 
     override fun getCharacterAt(position: Position) = terminal.getCharacterAt(position)
 
@@ -136,8 +133,6 @@ class SwingTerminalCanvas(
     override fun flush() = terminal.draw()
 
     override fun close() = terminal.close()
-
-    override fun pollInput() = terminal.pollInput()
 
     override fun addResizeListener(listener: TerminalResizeListener) = terminal.addResizeListener(listener)
 

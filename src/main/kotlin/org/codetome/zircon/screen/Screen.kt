@@ -3,9 +3,6 @@ package org.codetome.zircon.screen
 import org.codetome.zircon.Position
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.behavior.*
-import org.codetome.zircon.component.Container
-import org.codetome.zircon.input.InputConsumer
-import org.codetome.zircon.input.InputProvider
 import java.io.Closeable
 import java.util.*
 
@@ -20,7 +17,7 @@ import java.util.*
  * [Screen.display] method.
  */
 interface Screen
-    : InputProvider, InputConsumer, Closeable, Clearable, Layerable, CursorHolder, DrawSurface, ContainerHolder {
+    : Closeable, Clearable, Layerable, CursorHolder, DrawSurface, ContainerHolder, InputEmitter {
 
     /**
      * Reads a character and its associated meta-data from the front-buffer and returns it encapsulated as a

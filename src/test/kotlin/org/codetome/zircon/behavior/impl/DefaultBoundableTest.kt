@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.api.LayerBuilder
-import org.codetome.zircon.graphics.layer.DefaultLayer
 import org.junit.Before
 import org.junit.Test
 
@@ -15,7 +14,8 @@ class DefaultBoundableTest {
     @Before
     fun setUp() {
         target = DefaultBoundable(
-                size = DEFAULT_SIZE)
+                size = TARGET_SIZE,
+                position = Position.DEFAULT_POSITION)
     }
 
     @Test
@@ -25,35 +25,37 @@ class DefaultBoundableTest {
     }
 
     @Test
-    fun shouldNotContainPositionWhenThereIsNoOffsetAndSizeIsSmallerThanPos() {
-        assertThat(target.containsPosition(Position(100, 100)))
+    fun shouldNotContainPositionWhenPositionIsOutOfBounds() {
+        assertThat(target.containsPosition(target.getPosition()
+                        .withRelative(Position.of(TARGET_SIZE.rows, TARGET_SIZE.columns))))
                 .isFalse()
     }
 
     @Test
     fun shouldKnowItsSizeCorrectly() {
         assertThat(target.getBoundableSize())
-                .isEqualTo(DEFAULT_SIZE)
+                .isEqualTo(TARGET_SIZE)
     }
 
     @Test
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundable() {
-        assertThat(target.intersects(DefaultBoundable(DEFAULT_SIZE)))
+        assertThat(target.intersects(DefaultBoundable(TARGET_SIZE)))
                 .isTrue()
     }
 
     @Test
-    fun shouldIntersectWhenIntersectIsCalledWithNonIntersectingBoundable() {
+    fun shouldNotIntersectWhenIntersectIsCalledWithNonIntersectingBoundable() {
         assertThat(target.intersects(LayerBuilder.newBuilder()
                 .offset(NON_INTERSECTING_OFFSET)
                 .build()))
-                .isTrue()
+                .isFalse()
     }
 
     @Test
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundableWithOffset() {
         assertThat(target.intersects(LayerBuilder.newBuilder()
                 .offset(INTERSECTION_OFFSET)
+                .size(Size.ONE)
                 .build()))
                 .isTrue()
     }
@@ -73,8 +75,8 @@ class DefaultBoundableTest {
     companion object {
         val DEFAULT_COLS = 10
         val DEFAULT_ROWS = 10
-        val DEFAULT_SIZE = Size(DEFAULT_COLS, DEFAULT_ROWS)
-        val INTERSECTION_OFFSET = Position.DEFAULT_POSITION
+        val TARGET_SIZE = Size(DEFAULT_COLS, DEFAULT_ROWS)
+        val INTERSECTION_OFFSET = Position.OFFSET_1x1
         val NON_INTERSECTING_OFFSET = Position(20, 20)
     }
 }

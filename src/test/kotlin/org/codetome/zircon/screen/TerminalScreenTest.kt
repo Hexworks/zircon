@@ -24,16 +24,6 @@ class TerminalScreenTest {
     }
 
     @Test
-    fun shouldDrainInputQueueWhenClosed() {
-        target.addInput(KeyStroke(
-                character = 'x'
-        ))
-        target.close()
-        assertThat(target.pollInput().isPresent)
-                .isFalse()
-    }
-
-    @Test
     fun shouldResizeOnResize() {
         val expectedSize = Size(5, 5)
         terminal.setSize(expectedSize)

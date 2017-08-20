@@ -1,5 +1,9 @@
 package org.codetome.zircon.event
 
 enum class EventType {
-    DRAW
+    DRAW,
+    INPUT,
+    MOUSE_ACTION,
+    HOVER,
+    HOVER_REFRESH
 }

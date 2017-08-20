@@ -6,7 +6,6 @@ import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.StyleSetBuilder
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.api.TextCharacterBuilder.Companion.DEFAULT_CHARACTER
-import org.codetome.zircon.api.TextColorFactory
 import org.codetome.zircon.behavior.ContainerHolder
 import org.codetome.zircon.behavior.CursorHolder
 import org.codetome.zircon.behavior.Drawable
@@ -15,12 +14,11 @@ import org.codetome.zircon.behavior.impl.DefaultContainerHolder
 import org.codetome.zircon.component.ComponentStyles
 import org.codetome.zircon.component.impl.DefaultContainer
 import org.codetome.zircon.input.Input
-import org.codetome.zircon.input.InputProvider
-import org.codetome.zircon.input.InputType
 import org.codetome.zircon.screen.Screen
 import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.TerminalResizeListener
 import java.util.*
+import java.util.function.Consumer
 
 /**
  * This class implements the logic defined in the [Screen] interface.
@@ -31,7 +29,6 @@ class TerminalScreen constructor(private val terminal: Terminal,
                                  private val containerHolder: ContainerHolder)
     : Screen,
         CursorHolder by terminal,
-        InputProvider by terminal,
         Layerable by terminal,
         ContainerHolder by containerHolder {
 
@@ -52,16 +49,12 @@ class TerminalScreen constructor(private val terminal: Terminal,
                 resize()
             }
         })
-        containerHolder.setInputProvider(this)
+        
     }
 
     override fun setCursorPosition(cursorPosition: Position) {
         this.lastKnownCursorPosition = cursorPosition
         terminal.setCursorPosition(cursorPosition)
-    }
-
-    override fun addInput(input: Input) {
-        terminal.addInput(input)
     }
 
     @Synchronized
@@ -99,11 +92,10 @@ class TerminalScreen constructor(private val terminal: Terminal,
     }
 
     override fun close() {
-        //Drain the input queue
-        var input: Optional<Input>
-        do {
-            input = pollInput()
-        } while (input.isPresent && input.get().getInputType() !== InputType.EOF)
+    }
+
+    override fun subscribe(inputCallback: Consumer<Input>) {
+        terminal.subscribe(inputCallback)
     }
 
     @Synchronized

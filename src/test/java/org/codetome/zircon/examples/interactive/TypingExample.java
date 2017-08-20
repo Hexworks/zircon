@@ -49,54 +49,46 @@ public class TypingExample {
     }
 
     private static void startTypingSupportForScreen(Screen screen) {
-        while (true) {
-            final Optional<Input> opKey = screen.pollInput();
-            if (opKey.isPresent()) {
-                final Input key = opKey.get();
-                final Position pos = screen.getCursorPosition();
-                if (EXIT_CONDITIONS.contains(key.getInputType())) {
-                    System.exit(0);
-                } else if (key.inputTypeIs(Enter)) {
-                    screen.setCursorPosition(pos.withRelativeRow(1).withColumn(0));
-                    screen.refresh();
-                } else {
-                    if (key.isKeyStroke()) {
-                        final KeyStroke ks = key.asKeyStroke();
-                        screen.setCharacterAt(pos, TEXT_CHAR_TEMPLATE.withCharacter(ks.getCharacter()));
-                        if (pos.getColumn() == TERMINAL_WIDTH) {
-                            screen.setCursorPosition(pos.withRelativeRow(1).withColumn(0));
-                        } else {
-                            screen.setCursorPosition(pos.withRelativeColumn(1));
-                        }
-                        screen.refresh();
+        screen.subscribe((input) -> {
+            final Position pos = screen.getCursorPosition();
+            if (EXIT_CONDITIONS.contains(input.getInputType())) {
+                System.exit(0);
+            } else if (input.inputTypeIs(Enter)) {
+                screen.setCursorPosition(pos.withRelativeRow(1).withColumn(0));
+                screen.refresh();
+            } else {
+                if (input.isKeyStroke()) {
+                    final KeyStroke ks = input.asKeyStroke();
+                    screen.setCharacterAt(pos, TEXT_CHAR_TEMPLATE.withCharacter(ks.getCharacter()));
+                    if (pos.getColumn() == TERMINAL_WIDTH) {
+                        screen.setCursorPosition(pos.withRelativeRow(1).withColumn(0));
+                    } else {
+                        screen.setCursorPosition(pos.withRelativeColumn(1));
                     }
+                    screen.refresh();
                 }
             }
-        }
+        });
     }
 
     private static void startTypingSupportForTerminal(Terminal terminal) {
-        while (true) {
-            final Optional<Input> opKey = terminal.pollInput();
-            if (opKey.isPresent()) {
-                final Input key = opKey.get();
-                final Position pos = terminal.getCursorPosition();
-                if (EXIT_CONDITIONS.contains(key.getInputType())) {
-                    System.exit(0);
-                } else if (key.inputTypeIs(Enter)) {
-                    terminal.setCursorPosition(pos.withRelativeRow(1).withColumn(0));
+        terminal.subscribe((input) -> {
+            final Position pos = terminal.getCursorPosition();
+            if (EXIT_CONDITIONS.contains(input.getInputType())) {
+                System.exit(0);
+            } else if (input.inputTypeIs(Enter)) {
+                terminal.setCursorPosition(pos.withRelativeRow(1).withColumn(0));
+                terminal.flush();
+            } else {
+                if (input.isKeyStroke()) {
+                    final KeyStroke ks = input.asKeyStroke();
+                    terminal.setBackgroundColor(BLACK);
+                    terminal.setForegroundColor(RED);
+                    terminal.putCharacter(ks.getCharacter());
+                    terminal.resetColorsAndModifiers();
                     terminal.flush();
-                } else {
-                    if (key.isKeyStroke()) {
-                        final KeyStroke ks = key.asKeyStroke();
-                        terminal.setBackgroundColor(BLACK);
-                        terminal.setForegroundColor(RED);
-                        terminal.putCharacter(ks.getCharacter());
-                        terminal.resetColorsAndModifiers();
-                        terminal.flush();
-                    }
                 }
             }
-        }
+        });
     }
 }

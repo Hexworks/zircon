@@ -15,6 +15,8 @@ import org.codetome.zircon.behavior.impl.DefaultCursorHolder
 import org.codetome.zircon.behavior.impl.DefaultLayerable
 import org.codetome.zircon.component.ComponentStyles
 import org.codetome.zircon.component.impl.DefaultContainer
+import org.codetome.zircon.event.EventBus
+import org.codetome.zircon.event.EventType
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.terminal.AbstractTerminal
@@ -22,6 +24,7 @@ import org.codetome.zircon.terminal.IterableTerminal
 import org.codetome.zircon.util.TextUtils
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
+import java.util.function.Consumer
 
 class VirtualTerminal private constructor(initialSize: Size,
                                           private val cursorHolder: CursorHolder,
@@ -53,7 +56,6 @@ class VirtualTerminal private constructor(initialSize: Size,
 
     init {
         dirtyTerminalCells.add(getCursorPosition())
-        containerHolder.setInputProvider(this)
     }
 
     @Synchronized
@@ -91,6 +93,12 @@ class VirtualTerminal private constructor(initialSize: Size,
         }
     }
 
+    override fun subscribe(inputCallback: Consumer<Input>) {
+        EventBus.subscribe<Input>(EventType.INPUT, {(input) ->
+            inputCallback.accept(input)
+        })
+    }
+
     @Synchronized
     override fun clear() {
         textBuffer.clear()
@@ -118,13 +126,6 @@ class VirtualTerminal private constructor(initialSize: Size,
     override fun close() {
         inputQueue.add(KeyStroke.EOF_STROKE)
         listeners.forEach { it.onClose() }
-    }
-
-    @Synchronized
-    override fun pollInput() = Optional.ofNullable(inputQueue.poll())
-
-    override fun addInput(input: Input) {
-        inputQueue.add(input)
     }
 
     @Synchronized
