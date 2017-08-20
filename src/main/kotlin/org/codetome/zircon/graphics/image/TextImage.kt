@@ -27,4 +27,11 @@ interface TextImage : DrawSurface, StyleSet, Drawable {
      */
     fun putText(text: String, position: Position)
 
+    /**
+     * Sets the [StyleSet] of this [TextImage]
+     * and also applies it to all currently present
+     * [TextCharacter]s.
+     */
+    fun applyStyle(styleSet: StyleSet)
+
 }

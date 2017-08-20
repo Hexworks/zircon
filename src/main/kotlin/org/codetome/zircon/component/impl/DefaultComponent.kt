@@ -4,17 +4,26 @@ import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.api.TextImageBuilder
+import org.codetome.zircon.behavior.Boundable
 import org.codetome.zircon.behavior.DrawSurface
 import org.codetome.zircon.behavior.Drawable
+import org.codetome.zircon.behavior.impl.DefaultBoundable
 import org.codetome.zircon.component.Component
 import org.codetome.zircon.component.ComponentStyles
 import org.codetome.zircon.component.listener.MouseListener
+import org.codetome.zircon.event.EventBus
+import org.codetome.zircon.event.EventType
 import org.codetome.zircon.graphics.image.TextImage
+import java.util.*
 
 class DefaultComponent private constructor(private val backend: TextImage,
+                                           private val boundable: Boundable,
                                            private val position: Position,
                                            private val componentStyles: ComponentStyles)
     : Component, Drawable by backend {
+
+    private val id: UUID = UUID.randomUUID()
+    private var lastHoveredId = UUID.randomUUID()
 
     constructor(initialSize: Size,
                 position: Position,
@@ -25,12 +34,35 @@ class DefaultComponent private constructor(private val backend: TextImage,
                             .build())
                     .size(initialSize)
                     .build(),
+            boundable = DefaultBoundable(
+                    size = initialSize,
+                    position = position),
             position = position,
             componentStyles = componentStyles)
 
     init {
         backend.setStyleFrom(componentStyles.defaultStyle)
+        EventBus.subscribe<UUID>(EventType.HOVER, { (hoveredComponentId) ->
+            if(hoveredComponentId == id) {
+                backend.applyStyle(componentStyles.hoverStyle)
+                EventBus.emit(EventType.HOVER_REFRESH, Unit)
+            } else if(lastHoveredId == id) {
+                backend.applyStyle(componentStyles.defaultStyle)
+                EventBus.emit(EventType.HOVER_REFRESH, Unit)
+            }
+            lastHoveredId = hoveredComponentId
+        })
     }
+
+    override fun getBoundableSize() = boundable.getBoundableSize()
+
+    override fun containsBoundable(boundable: Boundable) = this.boundable.containsBoundable(boundable)
+
+    override fun containsPosition(position: Position) = boundable.containsPosition(position)
+
+    override fun intersects(boundable: Boundable) = this.boundable.intersects(boundable)
+
+    override fun getId() = id
 
     override fun getPosition() = position
 
@@ -49,6 +81,13 @@ class DefaultComponent private constructor(private val backend: TextImage,
                 destinationRowOffset, destinationColumnOffset)
     }
 
+    override fun fetchComponentByPosition(position: Position) =
+            if (containsPosition(position)) {
+                Optional.of(this)
+            } else {
+                Optional.empty<Component>()
+            }
+
     override fun addMouseListener(mouseListener: MouseListener) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -56,4 +95,25 @@ class DefaultComponent private constructor(private val backend: TextImage,
     override fun setComponentStyles(componentStyles: ComponentStyles) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override fun toString(): String {
+        return "${javaClass.simpleName}(id=${id.toString().substring(0, 4)})"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as DefaultComponent
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+
+
 }

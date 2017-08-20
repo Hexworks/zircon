@@ -2,7 +2,6 @@ package org.codetome.zircon.behavior
 
 import org.codetome.zircon.component.Container
 import org.codetome.zircon.graphics.image.TextImage
-import org.codetome.zircon.input.InputProvider
 
 /**
  * Represents an object which can holds gui [org.codetome.zircon.component.Component]s.
@@ -27,10 +26,4 @@ interface ContainerHolder {
      * which this [ContainerHolder] is holding.
      */
     fun drawComponentsToImage(): TextImage
-
-    /**
-     * Sets an [InputProvider] from which the components will receive
-     * events.
-     */
-    fun setInputProvider(inputProvider: InputProvider)
 }

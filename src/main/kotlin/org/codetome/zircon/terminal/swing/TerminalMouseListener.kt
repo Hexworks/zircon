@@ -1,10 +1,11 @@
 package org.codetome.zircon.terminal.swing
 
 import org.codetome.zircon.Position
+import org.codetome.zircon.event.EventBus
+import org.codetome.zircon.event.EventType
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.input.MouseAction
 import org.codetome.zircon.input.MouseActionType
-import org.codetome.zircon.terminal.Terminal
 import org.codetome.zircon.terminal.config.DeviceConfiguration
 import org.codetome.zircon.util.TextUtils
 import java.awt.MouseInfo
@@ -14,10 +15,9 @@ import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
 
-open class TerminalMouseListener(private val virtualTerminal: Terminal,
-                            private val deviceConfiguration: DeviceConfiguration,
-                            private val fontWidth: Int,
-                            private val fontHeight: Int) : MouseAdapter() {
+open class TerminalMouseListener(private val deviceConfiguration: DeviceConfiguration,
+                                 private val fontWidth: Int,
+                                 private val fontHeight: Int) : MouseAdapter() {
 
     override fun mouseClicked(e: MouseEvent) {
         if (MouseInfo.getNumberOfButtons() > 2 &&
@@ -64,13 +64,16 @@ open class TerminalMouseListener(private val virtualTerminal: Terminal,
     }
 
     private fun addActionToKeyQueue(actionType: MouseActionType, e: MouseEvent) {
-        virtualTerminal.addInput(MouseAction(
+        MouseAction(
                 actionType = actionType,
                 button = e.button,
                 position = Position.of(
                         column = e.x.div(fontWidth),
                         row = e.y.div(fontHeight))
-        ))
+        ).let {
+            EventBus.emit(EventType.INPUT, it)
+            EventBus.emit(EventType.MOUSE_ACTION, it)
+        }
     }
 
     private fun pasteSelectionContent() {
@@ -85,7 +88,7 @@ open class TerminalMouseListener(private val virtualTerminal: Terminal,
                     TextUtils.isPrintableCharacter(it)
                 }
                 .forEach {
-                    virtualTerminal.addInput(KeyStroke(character = it))
+                    EventBus.emit(EventType.INPUT, KeyStroke(character = it))
                 }
     }
 

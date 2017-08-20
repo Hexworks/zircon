@@ -76,13 +76,14 @@ abstract class Java2DTerminalImplementation(
         }, deviceConfiguration.blinkLengthInMilliSeconds, deviceConfiguration.blinkLengthInMilliSeconds)
         enableInput = true
         EventBus.subscribe<Unit>(EventType.DRAW, {
+            println("draw")
             draw()
         })
     }
 
     @Synchronized
     fun onDestroyed() {
-        terminal.addInput(KeyStroke.EOF_STROKE)
+        EventBus.emit(EventType.INPUT, KeyStroke.EOF_STROKE)
         blinkTimer.cancel()
         enableInput = false
     }

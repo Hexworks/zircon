@@ -1,14 +1,12 @@
 package org.codetome.zircon.event
 
-import kotlin.reflect.KClass
-
 @Suppress("UNCHECKED_CAST")
-internal object EventBus {
+object EventBus {
 
     @PublishedApi
     internal class Subscription<T : Any>(val keys: Set<String>,
                                          val callback: (Event<T>) -> Unit,
-                                         val dataType: KClass<T>)
+                                         val dataType: Class<T>)
 
     @PublishedApi
     internal val subscriptions: Map<EventType, MutableList<Subscription<*>>>
@@ -16,19 +14,23 @@ internal object EventBus {
             .map { Pair(it, mutableListOf<Subscription<*>>()) }
             .toMap()
 
+    @JvmStatic
     inline fun <reified T : Any> subscribe(type: EventType,
                                            noinline callback: (Event<T>) -> Unit,
                                            keys: Set<String> = setOf()) {
         subscriptions[type]?.add(Subscription(
                 keys = keys,
                 callback = callback,
-                dataType = T::class
+                dataType = T::class.java
         ))
     }
 
+    @JvmStatic
     inline fun <reified T : Any> emit(type: EventType, data: T, keys: Set<String> = setOf()) {
         val toNotify = subscriptions[type]
-                ?.filter { it.dataType == T::class }
+                ?.filter {
+                    it.dataType.isAssignableFrom(T::class.java)
+                }
                 ?.filter {
                     subscriberKeysIntersectsWithEventKeys(it, keys)
                             .or(subscriberHasNoKeys(it))

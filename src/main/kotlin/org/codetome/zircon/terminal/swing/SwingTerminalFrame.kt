@@ -49,11 +49,4 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
         dispose()
     }
 
-    override fun pollInput(): Optional<Input> {
-        if (disposed) {
-            return Optional.of(KeyStroke(it = InputType.EOF))
-        }
-        return swingTerminal.pollInput()
-    }
-
 }

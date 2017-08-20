@@ -32,7 +32,7 @@ class DefaultBoundable(private val size: Size,
 
     override fun containsBoundable(boundable: Boundable) = rect.contains(
             Rectangle(
-                    boundable.getPosition().column, // TODO: regression test this!
+                    boundable.getPosition().column,
                     boundable.getPosition().row,
                     boundable.getBoundableSize().columns,
                     boundable.getBoundableSize().rows))

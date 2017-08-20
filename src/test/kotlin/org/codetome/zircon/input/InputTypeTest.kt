@@ -1,20 +1,24 @@
 package org.codetome.zircon.input
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.terminal.virtual.VirtualTerminal
+import org.codetome.zircon.event.EventBus
+import org.codetome.zircon.event.EventType
 import org.junit.Test
 
 class InputTypeTest {
 
     @Test
     fun test() {
-        val terminal = VirtualTerminal()
         InputType.values().forEach {
-            terminal.addInput(KeyStroke(
+            val inputs = mutableListOf<Input>()
+            EventBus.subscribe<Input>(EventType.INPUT, { (input) ->
+                inputs.add(input)
+            })
+            EventBus.emit(EventType.INPUT, KeyStroke(
                     character = ' ',
                     it = it
             ))
-            assertThat(terminal.pollInput().get().getInputType())
+            assertThat(inputs.map { it.getInputType() }.first())
                     .isEqualTo(it)
         }
     }
