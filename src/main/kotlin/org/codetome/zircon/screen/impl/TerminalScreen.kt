@@ -3,11 +3,17 @@ package org.codetome.zircon.screen.impl
 import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.api.StyleSetBuilder
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.api.TextCharacterBuilder.Companion.DEFAULT_CHARACTER
+import org.codetome.zircon.api.TextColorFactory
+import org.codetome.zircon.behavior.ContainerHolder
 import org.codetome.zircon.behavior.CursorHolder
 import org.codetome.zircon.behavior.Drawable
 import org.codetome.zircon.behavior.Layerable
+import org.codetome.zircon.behavior.impl.DefaultContainerHolder
+import org.codetome.zircon.component.ComponentStyles
+import org.codetome.zircon.component.impl.DefaultContainer
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.InputProvider
 import org.codetome.zircon.input.InputType
@@ -21,15 +27,24 @@ import java.util.*
  * It keeps data structures for the front- and back buffers, the cursor location and
  * some other simpler states.
  */
-class TerminalScreen constructor(private val terminal: Terminal)
+class TerminalScreen constructor(private val terminal: Terminal,
+                                 private val containerHolder: ContainerHolder)
     : Screen,
         CursorHolder by terminal,
         InputProvider by terminal,
-        Layerable by terminal {
+        Layerable by terminal,
+        ContainerHolder by containerHolder {
 
     private var backBuffer: ScreenBuffer = ScreenBuffer(terminal.getBoundableSize(), DEFAULT_CHARACTER)
     private var frontBuffer: ScreenBuffer = ScreenBuffer(terminal.getBoundableSize(), DEFAULT_CHARACTER)
     private var lastKnownCursorPosition = Position.DEFAULT_POSITION
+
+    constructor(terminal: Terminal) : this(
+            terminal = terminal,
+            containerHolder = DefaultContainerHolder(DefaultContainer(
+                    initialSize = terminal.getBoundableSize(),
+                    position = Position.DEFAULT_POSITION,
+                    componentStyles = ComponentStyles(StyleSetBuilder.EMPTY))))
 
     init {
         this.terminal.addResizeListener(object : TerminalResizeListener {
@@ -37,6 +52,7 @@ class TerminalScreen constructor(private val terminal: Terminal)
                 resize()
             }
         })
+        containerHolder.setInputProvider(this)
     }
 
     override fun setCursorPosition(cursorPosition: Position) {
@@ -74,6 +90,7 @@ class TerminalScreen constructor(private val terminal: Terminal)
     }
 
     override fun display() {
+        terminal.setContainer(containerHolder.getContainer())
         flipBuffers(true)
     }
 

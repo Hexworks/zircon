@@ -4,12 +4,17 @@ import org.codetome.zircon.Cell
 import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.api.StyleSetBuilder
 import org.codetome.zircon.api.TextCharacterBuilder
+import org.codetome.zircon.behavior.ContainerHolder
 import org.codetome.zircon.behavior.CursorHolder
 import org.codetome.zircon.behavior.Drawable
 import org.codetome.zircon.behavior.Layerable
+import org.codetome.zircon.behavior.impl.DefaultContainerHolder
 import org.codetome.zircon.behavior.impl.DefaultCursorHolder
 import org.codetome.zircon.behavior.impl.DefaultLayerable
+import org.codetome.zircon.component.ComponentStyles
+import org.codetome.zircon.component.impl.DefaultContainer
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.terminal.AbstractTerminal
@@ -20,10 +25,12 @@ import java.util.concurrent.LinkedBlockingQueue
 
 class VirtualTerminal private constructor(initialSize: Size,
                                           private val cursorHolder: CursorHolder,
-                                          private val layerable: Layerable)
+                                          private val layerable: Layerable,
+                                          private val containerHolder: ContainerHolder)
     : AbstractTerminal(), IterableTerminal,
         CursorHolder by cursorHolder,
-        Layerable by layerable {
+        Layerable by layerable,
+        ContainerHolder by containerHolder {
 
     private var terminalSize = initialSize
     private var wholeBufferDirty = false
@@ -38,10 +45,15 @@ class VirtualTerminal private constructor(initialSize: Size,
             initialSize = initialSize,
             cursorHolder = DefaultCursorHolder(),
             layerable = DefaultLayerable(
-                    size = initialSize))
+                    size = initialSize),
+            containerHolder = DefaultContainerHolder(DefaultContainer(
+                    initialSize = initialSize,
+                    position = Position.DEFAULT_POSITION,
+                    componentStyles = ComponentStyles(StyleSetBuilder.EMPTY))))
 
     init {
         dirtyTerminalCells.add(getCursorPosition())
+        containerHolder.setInputProvider(this)
     }
 
     @Synchronized
