@@ -11,8 +11,4 @@ interface IterableTerminal : Terminal {
 
     fun forEachCell(fn: (Cell) -> Unit)
 
-    /**
-     * Tells whether this [Terminal] was changed since the last [Terminal.flush].
-     */
-    fun isDirty(): Boolean
 }

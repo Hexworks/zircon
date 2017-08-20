@@ -22,7 +22,7 @@ import java.io.Closeable
  * interface you should be programming against.
  */
 interface Terminal
-    : Closeable, Clearable, StyleSet, CursorHolder, Layerable, DrawSurface, ContainerHolder, InputEmitter {
+    : Closeable, Clearable, StyleSet, CursorHandler, Layerable, DrawSurface, InputEmitter {
 
     /**
      * Prints one character to the terminal at the current cursor location.

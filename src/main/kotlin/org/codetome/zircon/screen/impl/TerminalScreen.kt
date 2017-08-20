@@ -7,7 +7,7 @@ import org.codetome.zircon.api.StyleSetBuilder
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.api.TextCharacterBuilder.Companion.DEFAULT_CHARACTER
 import org.codetome.zircon.behavior.ContainerHolder
-import org.codetome.zircon.behavior.CursorHolder
+import org.codetome.zircon.behavior.CursorHandler
 import org.codetome.zircon.behavior.Drawable
 import org.codetome.zircon.behavior.Layerable
 import org.codetome.zircon.behavior.impl.DefaultContainerHolder
@@ -28,7 +28,7 @@ import java.util.function.Consumer
 class TerminalScreen constructor(private val terminal: Terminal,
                                  private val containerHolder: ContainerHolder)
     : Screen,
-        CursorHolder by terminal,
+        CursorHandler by terminal,
         Layerable by terminal,
         ContainerHolder by containerHolder {
 
@@ -52,9 +52,9 @@ class TerminalScreen constructor(private val terminal: Terminal,
         
     }
 
-    override fun setCursorPosition(cursorPosition: Position) {
+    override fun putCursorAt(cursorPosition: Position) {
         this.lastKnownCursorPosition = cursorPosition
-        terminal.setCursorPosition(cursorPosition)
+        terminal.putCursorAt(cursorPosition)
     }
 
     @Synchronized
@@ -83,11 +83,12 @@ class TerminalScreen constructor(private val terminal: Terminal,
     }
 
     override fun display() {
-        terminal.setContainer(containerHolder.getContainer())
+        // TODO: add layers to terminal
         flipBuffers(true)
     }
 
     override fun refresh() {
+        // TODO: add layers to terminal
         flipBuffers(false)
     }
 

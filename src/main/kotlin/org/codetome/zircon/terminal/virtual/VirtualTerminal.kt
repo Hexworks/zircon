@@ -4,17 +4,13 @@ import org.codetome.zircon.Cell
 import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
-import org.codetome.zircon.api.StyleSetBuilder
 import org.codetome.zircon.api.TextCharacterBuilder
-import org.codetome.zircon.behavior.ContainerHolder
-import org.codetome.zircon.behavior.CursorHolder
+import org.codetome.zircon.api.TextImageBuilder
+import org.codetome.zircon.behavior.CursorHandler
 import org.codetome.zircon.behavior.Drawable
 import org.codetome.zircon.behavior.Layerable
-import org.codetome.zircon.behavior.impl.DefaultContainerHolder
-import org.codetome.zircon.behavior.impl.DefaultCursorHolder
+import org.codetome.zircon.behavior.impl.DefaultCursorHandler
 import org.codetome.zircon.behavior.impl.DefaultLayerable
-import org.codetome.zircon.component.ComponentStyles
-import org.codetome.zircon.component.impl.DefaultContainer
 import org.codetome.zircon.event.EventBus
 import org.codetome.zircon.event.EventType
 import org.codetome.zircon.input.Input
@@ -22,55 +18,34 @@ import org.codetome.zircon.input.KeyStroke
 import org.codetome.zircon.terminal.AbstractTerminal
 import org.codetome.zircon.terminal.IterableTerminal
 import org.codetome.zircon.util.TextUtils
-import java.util.*
-import java.util.concurrent.LinkedBlockingQueue
 import java.util.function.Consumer
 
 class VirtualTerminal private constructor(initialSize: Size,
-                                          private val cursorHolder: CursorHolder,
-                                          private val layerable: Layerable,
-                                          private val containerHolder: ContainerHolder)
+                                          private val cursorHandler: CursorHandler,
+                                          private val layerable: Layerable)
     : AbstractTerminal(), IterableTerminal,
-        CursorHolder by cursorHolder,
-        Layerable by layerable,
-        ContainerHolder by containerHolder {
+        CursorHandler by cursorHandler,
+        Layerable by layerable {
 
     private var terminalSize = initialSize
-    private var wholeBufferDirty = false
-    private var lastDrawnCursorPosition: Position = Position.UNKNOWN
-    private val textBuffer: TextCharacterBuffer = TextCharacterBuffer(initialSize)
-    private val dirtyTerminalCells = TreeSet<Position>()
+    private var backend = createBackend(terminalSize)
     private val listeners = mutableListOf<VirtualTerminalListener>()
-    private val inputQueue = LinkedBlockingQueue<Input>()
 
     constructor(initialSize: Size = Size.DEFAULT)
             : this(
             initialSize = initialSize,
-            cursorHolder = DefaultCursorHolder(),
+            cursorHandler = DefaultCursorHandler(
+                    cursorSpace = initialSize),
             layerable = DefaultLayerable(
-                    size = initialSize),
-            containerHolder = DefaultContainerHolder(DefaultContainer(
-                    initialSize = initialSize,
-                    position = Position.DEFAULT_POSITION,
-                    componentStyles = ComponentStyles(StyleSetBuilder.EMPTY))))
-
-    init {
-        dirtyTerminalCells.add(getCursorPosition())
-    }
+                    size = initialSize))
 
     @Synchronized
     override fun draw(drawable: Drawable, offset: Position) {
         drawable.drawOnto(this, offset)
-        setWholeBufferDirty() // TODO: this can be optimized later
-    }
-
-    @Synchronized
-    override fun setCursorPosition(cursorPosition: Position) {
-        cursorHolder.setCursorPosition(cursorPosition
-                // this is not a bug! the cursor can extend beyond the last row
-                .withColumn(Math.min(cursorPosition.column, terminalSize.columns))
-                .withRow(Math.min(cursorPosition.row, terminalSize.rows - 1)))
-        dirtyTerminalCells.add(getCursorPosition())
+        // TODO: this can be optimized later
+        terminalSize.fetchPositions().forEach {
+            setPositionDirty(it)
+        }
     }
 
     override fun getBoundableSize(): Size = terminalSize
@@ -79,31 +54,31 @@ class VirtualTerminal private constructor(initialSize: Size,
     override fun setSize(newSize: Size) {
         if (newSize != terminalSize) {
             this.terminalSize = newSize
-            textBuffer.resize(newSize)
-            getCursorPosition().let { (cursorCol, cursorRow) ->
-                if (cursorRow >= newSize.rows || cursorCol >= newSize.columns) {
-                    setCursorPosition(Position.of(
-                            column = Math.min(newSize.columns, cursorCol),
-                            row = Math.min(newSize.rows, cursorRow)))
-                }
+            backend = backend.resize(newSize, TextCharacterBuilder.DEFAULT_CHARACTER)
+            resizeCursorSpace(newSize)
+            // TODO: this can be optimized later
+            terminalSize.fetchPositions().forEach {
+                setPositionDirty(it)
             }
-            setWholeBufferDirty() // TODO: this can be optimized later
             listeners.forEach { it.onResized(this, terminalSize) }
             super.onResized(newSize)
         }
     }
 
     override fun subscribe(inputCallback: Consumer<Input>) {
-        EventBus.subscribe<Input>(EventType.INPUT, {(input) ->
+        EventBus.subscribe<Input>(EventType.INPUT, { (input) ->
             inputCallback.accept(input)
         })
     }
 
     @Synchronized
     override fun clear() {
-        textBuffer.clear()
-        setWholeBufferDirty()
-        setCursorPosition(Position.DEFAULT_POSITION)
+        backend = createBackend(terminalSize)
+        // TODO: this can be optimized later
+        terminalSize.fetchPositions().forEach {
+            setPositionDirty(it)
+        }
+        putCursorAt(Position.DEFAULT_POSITION)
     }
 
     @Synchronized
@@ -124,94 +99,73 @@ class VirtualTerminal private constructor(initialSize: Size,
     override fun flush() = listeners.forEach { it.onFlush() }
 
     override fun close() {
-        inputQueue.add(KeyStroke.EOF_STROKE)
+        EventBus.emit(EventType.INPUT, KeyStroke.EOF_STROKE)
         listeners.forEach { it.onClose() }
     }
 
     @Synchronized
     override fun getCharacterAt(position: Position) =
-            if (containsPosition(position)) {
-                Optional.of(textBuffer.getCharacter(position))
-            } else {
-                Optional.empty()
-            }
+            backend.getCharacterAt(position)
+
+    @Synchronized
+    override fun setCharacterAt(position: Position, character: Char) =
+            setCharacterAt(position, TextCharacterBuilder.newBuilder()
+                    .character(character)
+                    .styleSet(toStyleSet())
+                    .build())
 
     @Synchronized
     override fun setCharacterAt(position: Position, character: TextCharacter) =
             if (containsPosition(position)) {
-                textBuffer.setCharacter(position, character)
-                dirtyTerminalCells.add(position)
+                backend.setCharacterAt(position, character)
+                setPositionDirty(position)
                 true
             } else {
                 false
             }
 
     @Synchronized
-    override fun setCharacterAt(position: Position, character: Char)
-            = setCharacterAt(position, TextCharacterBuilder.newBuilder()
-            .character(character)
-            .styleSet(toStyleSet())
-            .build())
-
-    @Synchronized
     override fun forEachDirtyCell(fn: (Cell) -> Unit) {
-        if (lastDrawnCursorPosition != getCursorPosition()
-                && lastDrawnCursorPosition != Position.UNKNOWN) {
-            dirtyTerminalCells.add(lastDrawnCursorPosition)
-        }
-        if (wholeBufferDirty) {
-            textBuffer.forEachCell(fn)
-            fn(Cell(getCursorPosition(), textBuffer.getCharacter(getCursorPosition())))
-            wholeBufferDirty = false
-        } else {
-            dirtyTerminalCells.forEach { pos ->
-                fn(Cell(pos, textBuffer.getCharacter(pos)))
+        val dirtyPositions = drainDirtyPositions()
+        dirtyPositions.forEach { pos ->
+            val char = backend.getCharacterAt(pos)
+            if (char.isPresent.not()) {
+                println("pos: $pos, backend size: ${backend.getBoundableSize()}")
+            } else {
+                fn(Cell(pos, char.get()))
             }
         }
-        val blinkingChars = dirtyTerminalCells.filter {
+        val blinkingChars = dirtyPositions.filter {
             getCharacterAt(it).let { char ->
                 char.isPresent && char.get().isBlinking()
             }
         }
-        dirtyTerminalCells.clear()
-        dirtyTerminalCells.addAll(blinkingChars)
-        this.lastDrawnCursorPosition = getCursorPosition()
-        dirtyTerminalCells.add(getCursorPosition())
+        blinkingChars.forEach {
+            setPositionDirty(it)
+        }
     }
 
     override fun forEachCell(fn: (Cell) -> Unit) {
-        textBuffer.forEachCell(fn)
+        terminalSize.fetchPositions().forEach {
+            fn(Cell(it, getCharacterAt(it).get()))
+        }
     }
-
-    override fun isDirty() = wholeBufferDirty.or(dirtyTerminalCells.isNotEmpty())
 
     @Synchronized
     private fun putCharacter(textCharacter: TextCharacter) {
-        checkCursorPosition()
-        textBuffer.setCharacter(getCursorPosition(), textCharacter)
-        dirtyTerminalCells.add(getCursorPosition())
-        setCursorPosition(getCursorPosition().withRelativeColumn(1))
-        checkCursorPosition()
-        dirtyTerminalCells.add(getCursorPosition())
-    }
-
-    private fun checkCursorPosition() {
-        if (cursorIsAtTheEndOfTheLine()) {
-            moveCursorToNextLine()
-        }
+        backend.setCharacterAt(getCursorPosition(), textCharacter)
+        setPositionDirty(getCursorPosition())
+        advanceCursor()
     }
 
     private fun moveCursorToNextLine() {
-        setCursorPosition(getCursorPosition().withColumn(0).withRelativeRow(1))
-        if (getCursorPosition().row >= textBuffer.getLineCount()) {
-            textBuffer.newLine()
-        }
+        putCursorAt(getCursorPosition().withRelativeRow(1).withColumn(0))
     }
 
-    private fun setWholeBufferDirty() {
-        wholeBufferDirty = true
-        dirtyTerminalCells.clear()
-    }
+    private fun createBackend(initialSize: Size) =
+            TextImageBuilder.newBuilder()
+                    .size(initialSize)
+                    .filler(TextCharacterBuilder.DEFAULT_CHARACTER)
+                    .build()
 
-    private fun cursorIsAtTheEndOfTheLine() = getCursorPosition().column == terminalSize.columns
 }

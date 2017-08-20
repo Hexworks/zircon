@@ -71,14 +71,14 @@ class PositionTest {
 
     @Test
     fun shouldProperlyAddTwoPositions() {
-        assertThat(Position(5, -4) + Position(-1, 3))
-                .isEqualTo(Position(4, -1))
+        assertThat(Position(5, 4) + Position(1, 3))
+                .isEqualTo(Position(6, 7))
     }
 
     @Test
     fun shouldProperlySubtractTwoPositions() {
-        assertThat(Position(5, -4) - Position(-1, 3))
-                .isEqualTo(Position(6, -7))
+        assertThat(Position(5, 4) - Position(4, 3))
+                .isEqualTo(Position(1, 1))
     }
 
     @Test

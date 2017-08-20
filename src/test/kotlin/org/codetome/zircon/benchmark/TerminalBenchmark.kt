@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
             .buildTerminal()
     terminal.setCursorVisible(false)
 
-    val charCount = 60 * 30
+    val charCount = WIDTH * HEIGHT
     val chars = listOf('a', 'b')
     val bgColors = listOf(TextColorFactory.fromString("#223344"), TextColorFactory.fromString("#112233"))
     val fgColors = listOf(TextColorFactory.fromString("#ffaaff"), TextColorFactory.fromString("#aaffaa"))
@@ -30,7 +30,7 @@ fun main(args: Array<String>) {
             terminal.putCharacter(chars[currIdx])
         }
         terminal.flush()
-        terminal.setCursorPosition(Position.DEFAULT_POSITION)
+        terminal.putCursorAt(Position.DEFAULT_POSITION)
         currIdx = if (currIdx == 0) 1 else 0
         loopCount++
         val end = System.nanoTime()
@@ -48,4 +48,6 @@ fun main(args: Array<String>) {
     }
 }
 
-val SIZE = Size(84, 20)
+val WIDTH = 60
+val HEIGHT = 30
+val SIZE = Size(WIDTH, HEIGHT)
