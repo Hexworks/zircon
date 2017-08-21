@@ -8,27 +8,14 @@ import java.io.InputStream
 class REXPaintResource(rexFile: File) {
     private val rx = rexFile
 
-    fun info() {
-        println("File version: "+ this.rx.version)
-        println("Number of layers: "+ this.rx.numOfLayers)
-        for (layer in this.rx.layers) {
-            println("Layer: ${layer.width}*${layer.height}, Cells: ${layer.cells.size}")
-        }
-    }
-
     fun toLayerList(): List<Layer> {
-        val layers: MutableList<Layer> = mutableListOf()
-        for (layer in this.rx.layers) {
-            layers.add(layer.toDefaultLayer())
-        }
-        return layers.toList()
+        return this.rx.getLayers().map { it.toZirconLayer() }.toList()
     }
 
     companion object {
         @JvmStatic
         fun loadREXFile(source: InputStream): REXPaintResource {
-            val decompressed = decompressGZIPByteArray(source.readBytes())
-            return REXPaintResource(File.fromByteArray(decompressed))
+            return REXPaintResource(File.fromByteArray(decompressGZIPByteArray(source.readBytes())))
         }
     }
 }
