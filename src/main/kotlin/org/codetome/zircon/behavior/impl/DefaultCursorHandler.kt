@@ -14,7 +14,7 @@ class DefaultCursorHandler private constructor(private var cursorSpace: Size,
             dirtiable = DefaultDirtiable())
 
     private var cursorPosition = Position.DEFAULT_POSITION
-    private var cursorVisible = true
+    private var cursorVisible = false
 
     init {
         setPositionDirty(cursorPosition)

@@ -11,19 +11,27 @@ import org.codetome.zircon.component.Container;
 import org.codetome.zircon.component.impl.DefaultComponent;
 import org.codetome.zircon.component.impl.DefaultContainer;
 import org.codetome.zircon.screen.Screen;
+import org.codetome.zircon.terminal.Terminal;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ComponentsExample {
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
-        final Screen screen = TerminalBuilder.newBuilder()
+        final Terminal terminal = TerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(40, 20))
                 .font(CP437TilesetResource.TAFFER_20X20.asJava2DFont())
-                .buildScreen();
-        screen.setCursorVisible(false);
-        final Container container = screen.getContainer();
+                .buildTerminal();
 
-        container.addComponent(new DefaultComponent(
+        Screen screen0 = TerminalBuilder.newBuilder().createScreenFor(terminal);
+        Screen screen1 = TerminalBuilder.newBuilder().createScreenFor(terminal);
+
+        final Container container0 = screen0.getContainer();
+        final Container container1 = screen1.getContainer();
+
+
+        container0.addComponent(new DefaultComponent(
                 Size.of(3, 4),
                 Position.of(2, 2),
                 new ComponentStyles(
@@ -35,7 +43,7 @@ public class ComponentsExample {
                                 .build(),
                         StyleSetBuilder.EMPTY)));
 
-        container.addComponent(new DefaultComponent(
+        container0.addComponent(new DefaultComponent(
                 Size.of(3, 4),
                 Position.of(7, 2),
                 new ComponentStyles(
@@ -71,9 +79,19 @@ public class ComponentsExample {
                                 .build(),
                         StyleSetBuilder.EMPTY)));
 
-        container.addComponent(nestedContainer);
+        container1.addComponent(nestedContainer);
 
-        screen.display();
+        final Screen[] screens = new Screen[]{screen0, screen1};
+        final AtomicInteger currentScreen = new AtomicInteger(0);
+
+        terminal.addInputListener((input) -> {
+            if(input.isKeyStroke() && input.asKeyStroke().getCharacter() == 'x') {
+                currentScreen.set(currentScreen.get() == 0 ? 1 : 0);
+                screens[currentScreen.get()].display();
+            }
+        });
+
+        screen0.display();
     }
 
 }

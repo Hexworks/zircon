@@ -30,26 +30,11 @@ class TerminalScreenTest {
         assertThat(terminal.getBoundableSize()).isEqualTo(expectedSize)
     }
 
-    @Test
-    fun shouldNotBeDrawnWhenCharacterSetButNotRefreshed() {
-        target.setCharacterAt(Position.OFFSET_1x1, CHAR)
-
-        assertThat(target.getBackCharacter(Position.OFFSET_1x1).get())
-                .isEqualTo(CHAR)
-        assertThat(target.getFrontCharacter(Position.OFFSET_1x1).get())
-                .isNotEqualTo(CHAR)
-
-    }
 
     @Test
-    fun shouldBeDrawnWhenCharacterSetAndRefreshed() {
+    fun shouldBeDrawnWhenCharacterSet() {
         target.setCharacterAt(Position.OFFSET_1x1, CHAR)
-
-        target.refresh()
-
-        assertThat(target.getBackCharacter(Position.OFFSET_1x1).get())
-                .isEqualTo(CHAR)
-        assertThat(target.getFrontCharacter(Position.OFFSET_1x1).get())
+        assertThat(target.getCharacterAt(Position.OFFSET_1x1).get())
                 .isEqualTo(CHAR)
 
     }
@@ -61,7 +46,7 @@ class TerminalScreenTest {
 
         target.clear()
 
-        assertThat(target.getBackCharacter(Position.OFFSET_1x1))
+        assertThat(target.getCharacterAt(Position.OFFSET_1x1))
                 .isNotEqualTo(CHAR)
     }
 

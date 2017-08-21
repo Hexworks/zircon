@@ -1,11 +1,8 @@
 package org.codetome.zircon.screen
 
-import org.codetome.zircon.Position
-import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.behavior.*
 import org.codetome.zircon.component.ContainerHandler
 import java.io.Closeable
-import java.util.*
 
 /**
  * [Screen] is a fundamental layer presenting the terminal as a bitmap-like surface where you can perform
@@ -17,20 +14,7 @@ import java.util.*
  * [org.codetome.zircon.terminal.Terminal]. If you want a [Screen] to be displayed use the
  * [Screen.display] method.
  */
-interface Screen
-    : Closeable, Clearable, Layerable, CursorHandler, DrawSurface, ContainerHandler, InputEmitter, Identifiable {
-
-    /**
-     * Reads a character and its associated meta-data from the front-buffer and returns it encapsulated as a
-     * [TextCharacter].
-     */
-    fun getFrontCharacter(position: Position): Optional<TextCharacter>
-
-    /**
-     * Reads a character and its associated meta-data from the back-buffer and returns it encapsulated as a
-     * [TextCharacter].
-     */
-    fun getBackCharacter(position: Position): Optional<TextCharacter>
+interface Screen : Closeable, Clearable, Layerable, CursorHandler, DrawSurface, ContainerHandler, InputEmitter, Identifiable {
 
     /**
      * Same as [Screen.refresh] but forces a redraw of each character regardless of its changes.
