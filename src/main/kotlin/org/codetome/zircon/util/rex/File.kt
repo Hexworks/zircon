@@ -3,24 +3,38 @@ package org.codetome.zircon.util.rex
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-data class File(val version: Int, val numOfLayers: Int, val layers: List<Layer>) {
+/**
+ * Represents a REX Paint File, which contains version and [Layer] information.
+ */
+data class File(private val version: Int,
+                private val numberOfLayers: Int,
+                private val layers: List<Layer>) {
+
+    fun getVersion() = version
+
+    fun getNumberOfLayers() = numberOfLayers
+
+    fun getLayers() = layers
 
     companion object {
+
+        /**
+         * Factory method for [File]. It takes an uncompressed [ByteArray] argument and reads out the REX Paint [File]
+         * object as defined in the <a href="http://www.gridsagegames.com/rexpaint/manual.txt">REX Paint manual</a>.
+         */
         fun fromByteArray(data: ByteArray): File {
             val buffer = ByteBuffer.wrap(data)
             buffer.order(ByteOrder.LITTLE_ENDIAN)
 
             val version = buffer.int
-            val numOfLayers = buffer.int
+            val numberOfLayers = buffer.int
 
             val layers: MutableList<Layer> = mutableListOf()
-            var currentLayer = 0
-            while (currentLayer < numOfLayers) {
+            for (i in 0 until numberOfLayers) {
                 layers.add(Layer.fromByteBuffer(buffer))
-                currentLayer++
             }
 
-            return File(version, numOfLayers, layers)
+            return File(version, numberOfLayers, layers)
         }
     }
 }

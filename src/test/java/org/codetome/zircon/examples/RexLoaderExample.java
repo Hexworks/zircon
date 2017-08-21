@@ -17,10 +17,9 @@ public class RexLoaderExample {
 
     public static void main(String[] args) {
         REXPaintResource rex = REXPaintResource.loadREXFile(RESOURCE);
-        rex.info();
 
         final Screen screen = TerminalBuilder.newBuilder()
-                .font(PhysicalFontResource.ROBOTO_MONO.asPhysicalFont())
+                .font(PhysicalFontResource.UBUNTU_MONO.asPhysicalFont())
                 .initialTerminalSize(Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT))
                 .buildScreen();
         screen.setCursorVisible(false);

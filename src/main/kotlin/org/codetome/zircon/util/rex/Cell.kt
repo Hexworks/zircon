@@ -2,12 +2,29 @@ package org.codetome.zircon.util.rex
 
 import java.awt.Color
 import java.nio.ByteBuffer
+import java.nio.charset.Charset
 
-data class Cell(val character: Char, val foregroundColor: Color, val backgroundColor: Color) {
+/**
+ * Represents a CP437 character on a REX Paint [Layer].
+ */
+data class Cell(private val character: Char,
+                private val foregroundColor: Color,
+                private val backgroundColor: Color) {
+
+    fun getCharacter() = character
+
+    fun getForegroundColor() = foregroundColor
+
+    fun getBackgroundColor() = backgroundColor
 
     companion object {
+        private val CHARACTER_BYTES = 4
+
+        /**
+         * Factory method for [Cell], which reads out Cell information from a [ByteBuffer].
+         */
         fun fromByteBuffer(buffer: ByteBuffer): Cell {
-            val character = buffer.int.toChar()
+            val character = getCP437Char(buffer)
             val fgRed = buffer.get().toInt()
             val fgGreen = buffer.get().toInt()
             val fgBlue = buffer.get().toInt()
@@ -21,6 +38,18 @@ data class Cell(val character: Char, val foregroundColor: Color, val backgroundC
             )
         }
 
+        /**
+         * Reads out a 32-bit character information from a [ByteBuffer] and returns it as a CP437 character.
+         */
+        private fun getCP437Char(buffer: ByteBuffer): Char {
+            val b = ByteArray(CHARACTER_BYTES)
+            buffer[b, 0, CHARACTER_BYTES]
+            return String(b, Charset.forName("CP437"))[0]
+        }
+
+        /**
+         * Encodes RGB and alpha data into a single 32-bit [Int].
+         */
         private fun pack(r: Int, g: Int, b: Int, a: Int): Int {
             return ((a and 0xFF) shl 24) or
                     ((r and 0xFF) shl 16) or

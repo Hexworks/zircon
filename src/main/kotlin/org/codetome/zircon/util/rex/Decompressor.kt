@@ -5,6 +5,9 @@ import java.io.ByteArrayOutputStream
 import java.io.File as JFile
 import java.util.zip.GZIPInputStream
 
+/**
+ * Takes a GZIP-compressed [ByteArray] and returns it decompressed.
+ */
 fun decompressGZIPByteArray(compressedInput: ByteArray): ByteArray {
     val gzipInputStream = GZIPInputStream(ByteArrayInputStream(compressedInput))
     val outputStream = ByteArrayOutputStream(compressedInput.size)
