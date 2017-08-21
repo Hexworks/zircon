@@ -44,14 +44,14 @@ public class LayersExample {
     }
 
     private static void addOverlayAt(Screen screen, Position offset, Size size, TextColor color) {
-        screen.addOverlay(new DefaultLayer(
-                size,
-                TextCharacterBuilder.newBuilder()
+        screen.addLayer(new LayerBuilder()
+                .offset(offset)
+                .size(size)
+                .filler(TextCharacterBuilder.newBuilder()
                         .backgroundColor(color)
                         .character(' ')
-                        .build(),
-                offset
-        ));
+                        .build())
+                .build());
     }
 
     @NotNull

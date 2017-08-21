@@ -2,6 +2,7 @@ package org.codetome.zircon.component
 
 import org.codetome.zircon.Position
 import org.codetome.zircon.behavior.Drawable
+import org.codetome.zircon.behavior.Identifiable
 import org.codetome.zircon.behavior.Positionable
 import org.codetome.zircon.component.listener.MouseListener
 import java.util.*
@@ -16,12 +17,7 @@ import java.util.*
  * like a label or a check box is a [Container] while a label which is only intended to
  * display information is a [Component].
  */
-interface Component : Drawable, Positionable {
-
-    /**
-     * Returns the unique identifier of this [Component].
-     */
-    fun getId(): UUID
+interface Component : Drawable, Positionable, Identifiable {
 
     /**
      * Returns the innermost [Component] for a given [Position].

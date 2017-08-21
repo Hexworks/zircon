@@ -2,7 +2,6 @@ package org.codetome.zircon.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.Position
-import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.graphics.layer.DefaultLayer
 import org.codetome.zircon.Size
@@ -24,7 +23,7 @@ class DefaultLayerableTest {
 
         val layer = DefaultLayer(Size.ONE, DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
 
-        target.addOverlay(layer)
+        target.addLayer(layer)
 
         assertThat(target.fetchOverlayZIntersection(Position.TOP_LEFT_CORNER))
                 .isNotEmpty
@@ -36,7 +35,7 @@ class DefaultLayerableTest {
 
         val layer = DefaultLayer(Size.ONE, DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
 
-        target.addOverlay(layer)
+        target.addLayer(layer)
         target.removeLayer(layer)
 
         assertThat(target.fetchOverlayZIntersection(Position.TOP_LEFT_CORNER))
@@ -49,8 +48,8 @@ class DefaultLayerableTest {
 
         val layer = DefaultLayer(Size.ONE, DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
 
-        target.addOverlay(layer)
-        val result = target.popOverlay()
+        target.addLayer(layer)
+        val result = target.popLayer()
 
         assertThat(target.fetchOverlayZIntersection(Position.TOP_LEFT_CORNER))
                 .isEmpty()
@@ -69,8 +68,8 @@ class DefaultLayerableTest {
                 .character('2')
                 .build(), Position(2, 2))
 
-        target.addOverlay(offset1x1layer)
-        target.addOverlay(offset2x2layer)
+        target.addLayer(offset1x1layer)
+        target.addLayer(offset2x2layer)
 
         val result = target.fetchOverlayZIntersection(Position.OFFSET_1x1)
 
@@ -87,8 +86,8 @@ class DefaultLayerableTest {
         val offset1x1layer = DefaultLayer(Size.ONE, expectedChar, Position.OFFSET_1x1)
         val offset2x2layer = DefaultLayer(Size.ONE, expectedChar, Position.OFFSET_1x1)
 
-        target.addOverlay(offset1x1layer)
-        target.addOverlay(offset2x2layer)
+        target.addLayer(offset1x1layer)
+        target.addLayer(offset2x2layer)
 
         val result = target.fetchOverlayZIntersection(Position.OFFSET_1x1)
 

@@ -14,13 +14,13 @@ class DefaultLayer private constructor(offset: Position, private val textImage: 
 
     constructor(size: Size,
                 filler: TextCharacter,
-                offset: Position)
-            : this(
-            offset = offset,
-            textImage = TextImageBuilder.newBuilder()
-                    .size(size)
-                    .filler(filler)
-                    .build())
+                offset: Position,
+                textImage: TextImage = TextImageBuilder.newBuilder()
+                        .size(size)
+                        .filler(filler)
+                        .build())
+            : this(offset = offset, textImage = textImage)
+
 
     private var position: Position
     private var rect: Rectangle

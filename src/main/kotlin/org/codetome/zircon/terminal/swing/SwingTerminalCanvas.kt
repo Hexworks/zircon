@@ -41,6 +41,8 @@ class SwingTerminalCanvas(
         background = Color.BLACK
     }
 
+    override fun drainLayers() = terminal.drainLayers()
+
     override fun setPositionDirty(position: Position) = terminal.setPositionDirty(position)
 
     override fun drainDirtyPositions() = terminal.drainDirtyPositions()
@@ -52,7 +54,7 @@ class SwingTerminalCanvas(
     override fun draw(drawable: Drawable, offset: Position)
             = terminal.draw(drawable, offset)
 
-    override fun subscribe(inputCallback: Consumer<Input>) = terminal.subscribe(inputCallback)
+    override fun addInputListener(listener: Consumer<Input>) = terminal.addInputListener(listener)
 
     override fun getCharacterAt(position: Position) = terminal.getCharacterAt(position)
 
@@ -71,11 +73,11 @@ class SwingTerminalCanvas(
 
     override fun forEachCell(fn: (Cell) -> Unit) = terminal.forEachCell(fn)
 
-    override fun addOverlay(layer: Layer) = terminal.addOverlay(layer)
+    override fun addLayer(layer: Layer) = terminal.addLayer(layer)
 
     override fun intersects(boundable: Boundable) = terminal.intersects(boundable)
 
-    override fun popOverlay() = terminal.popOverlay()
+    override fun popLayer() = terminal.popLayer()
 
     override fun containsPosition(position: Position) = terminal.containsPosition(position)
 

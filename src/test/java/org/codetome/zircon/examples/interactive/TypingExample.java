@@ -47,7 +47,7 @@ public class TypingExample {
     }
 
     private static void startTypingSupportForScreen(Screen screen) {
-        screen.subscribe((input) -> {
+        screen.addInputListener((input) -> {
             final Position pos = screen.getCursorPosition();
             if (EXIT_CONDITIONS.contains(input.getInputType())) {
                 System.exit(0);
@@ -70,7 +70,7 @@ public class TypingExample {
     }
 
     private static void startTypingSupportForTerminal(Terminal terminal) {
-        terminal.subscribe((input) -> {
+        terminal.addInputListener((input) -> {
             final Position pos = terminal.getCursorPosition();
             if (EXIT_CONDITIONS.contains(input.getInputType())) {
                 System.exit(0);

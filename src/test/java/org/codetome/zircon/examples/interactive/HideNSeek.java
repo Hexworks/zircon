@@ -3,10 +3,7 @@ package org.codetome.zircon.examples.interactive;
 import org.codetome.zircon.Position;
 import org.codetome.zircon.Size;
 import org.codetome.zircon.Symbols;
-import org.codetome.zircon.api.CP437TilesetResource;
-import org.codetome.zircon.api.TerminalBuilder;
-import org.codetome.zircon.api.TextCharacterBuilder;
-import org.codetome.zircon.api.TextColorFactory;
+import org.codetome.zircon.api.*;
 import org.codetome.zircon.api.shape.FilledRectangleFactory;
 import org.codetome.zircon.color.TextColor;
 import org.codetome.zircon.color.impl.ANSITextColor;
@@ -43,22 +40,29 @@ public class HideNSeek {
                         .build())
                 .drawOnto(screen, Position.TOP_LEFT_CORNER);
 
-        final Layer player = new DefaultLayer(Size.ONE,
-                TextCharacterBuilder.newBuilder()
+        final Layer player = new LayerBuilder()
+                .filler(TextCharacterBuilder.newBuilder()
                         .character('@')
                         .backgroundColor(TextColorFactory.fromRGB(0, 0, 0, 0))
                         .foregroundColor(ANSITextColor.WHITE)
-                        .build(),
-                Position.of(size.getColumns() / 2, size.getRows() / 2));
+                        .build())
+                .offset(Position.of(size.getColumns() / 2, size.getRows() / 2))
+                .size(Size.ONE)
+                .build();
 
-        screen.addOverlay(player);
+        screen.addLayer(player);
         screen.display();
         drawBuilding(screen, Position.of(5, 10));
         enableMovement(screen, player);
     }
 
     private static void drawBuilding(Screen screen, Position position) {
-        Layer building = new DefaultLayer(Size.of(4, 4), TextCharacterBuilder.DEFAULT_CHARACTER, position);
+        Layer building = new LayerBuilder()
+                .filler(TextCharacterBuilder.DEFAULT_CHARACTER)
+                .offset(position)
+                .size(Size.of(4, 4))
+                .build();
+
         TextColor windowColor = TextColorFactory.fromString("#808080");
         for (int y = 0; y < 2; y++) {
             for (int x = 0; x < 5; x++) {
@@ -78,7 +82,7 @@ public class HideNSeek {
         drawCharAt(building, Position.of(2, 3).plus(position), Symbols.SINGLE_LINE_T_UP);
         drawCharAt(building, Position.of(3, 3).plus(position), Symbols.SINGLE_LINE_BOTTOM_RIGHT_CORNER);
         screen.display();
-        screen.addOverlay(building);
+        screen.addLayer(building);
     }
 
     private static void drawCharAt(Layer building, Position position, char c) {
@@ -92,7 +96,7 @@ public class HideNSeek {
     }
 
     private static void enableMovement(Screen screen, Layer player) {
-        screen.subscribe((input) -> {
+        screen.addInputListener((input) -> {
             if (EXIT_CONDITIONS.contains(input.getInputType())) {
                 System.exit(0);
             } else {
