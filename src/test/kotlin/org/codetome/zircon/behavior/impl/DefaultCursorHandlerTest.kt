@@ -30,9 +30,9 @@ class DefaultCursorHandlerTest {
     }
 
     @Test
-    fun defaultCursorVisibilityShouldBeTrue() {
+    fun defaultCursorVisibilityShouldBeFalse() {
         assertThat(target.isCursorVisible())
-                .isTrue()
+                .isFalse()
     }
 
     @Test
