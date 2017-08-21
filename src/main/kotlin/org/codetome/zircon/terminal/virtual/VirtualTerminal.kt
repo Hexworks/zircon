@@ -65,9 +65,9 @@ class VirtualTerminal private constructor(initialSize: Size,
         }
     }
 
-    override fun subscribe(inputCallback: Consumer<Input>) {
+    override fun addInputListener(listener: Consumer<Input>) {
         EventBus.subscribe<Input>(EventType.INPUT, { (input) ->
-            inputCallback.accept(input)
+            listener.accept(input)
         })
     }
 

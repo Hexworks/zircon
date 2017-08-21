@@ -76,7 +76,6 @@ abstract class Java2DTerminalImplementation(
         }, deviceConfiguration.blinkLengthInMilliSeconds, deviceConfiguration.blinkLengthInMilliSeconds)
         enableInput = true
         EventBus.subscribe<Unit>(EventType.DRAW, {
-            println("draw")
             draw()
         })
     }

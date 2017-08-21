@@ -43,12 +43,12 @@ class DefaultComponent private constructor(private val backend: TextImage,
     init {
         backend.setStyleFrom(componentStyles.defaultStyle)
         EventBus.subscribe<UUID>(EventType.HOVER, { (hoveredComponentId) ->
-            if(hoveredComponentId == id) {
+            if (hoveredComponentId == id) {
                 backend.applyStyle(componentStyles.hoverStyle)
-                EventBus.emit(EventType.HOVER_REFRESH, Unit)
+                EventBus.emit(EventType.COMPONENT_CHANGE, Unit)
             } else if(lastHoveredId == id) {
                 backend.applyStyle(componentStyles.defaultStyle)
-                EventBus.emit(EventType.HOVER_REFRESH, Unit)
+                EventBus.emit(EventType.COMPONENT_CHANGE, Unit)
             }
             lastHoveredId = hoveredComponentId
         })
@@ -103,17 +103,12 @@ class DefaultComponent private constructor(private val backend: TextImage,
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
-
         other as DefaultComponent
-
         if (id != other.id) return false
-
         return true
     }
 
     override fun hashCode(): Int {
         return id.hashCode()
     }
-
-
 }

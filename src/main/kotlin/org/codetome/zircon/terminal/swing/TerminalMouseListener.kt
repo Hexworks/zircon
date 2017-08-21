@@ -64,15 +64,20 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
     }
 
     private fun addActionToKeyQueue(actionType: MouseActionType, e: MouseEvent) {
-        MouseAction(
-                actionType = actionType,
-                button = e.button,
-                position = Position.of(
-                        column = e.x.div(fontWidth),
-                        row = e.y.div(fontHeight))
-        ).let {
-            EventBus.emit(EventType.INPUT, it)
-            EventBus.emit(EventType.MOUSE_ACTION, it)
+        try {
+            val position = Position.of(
+                    column = e.x.div(fontWidth),
+                    row = e.y.div(fontHeight))
+            MouseAction(
+                    actionType = actionType,
+                    button = e.button,
+                    position = position
+            ).let {
+                EventBus.emit(EventType.INPUT, it)
+                EventBus.emit(EventType.MOUSE_ACTION, it)
+            }
+        } catch (e: Exception) {
+            println("position for mouse event '$e' was out of bounds. It is dropped.")
         }
     }
 

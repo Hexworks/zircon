@@ -1,16 +1,14 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.*;
-import org.codetome.zircon.api.TerminalBuilder;
-import org.codetome.zircon.api.TextCharacterBuilder;
-import org.codetome.zircon.api.TextColorFactory;
-import org.codetome.zircon.api.CP437TilesetResource;
-import org.codetome.zircon.color.impl.ANSITextColor;
+import org.codetome.zircon.Position;
+import org.codetome.zircon.Size;
+import org.codetome.zircon.Symbols;
+import org.codetome.zircon.TextCharacter;
+import org.codetome.zircon.api.*;
 import org.codetome.zircon.color.TextColor;
-import org.codetome.zircon.graphics.layer.DefaultLayer;
+import org.codetome.zircon.color.impl.ANSITextColor;
 import org.codetome.zircon.graphics.layer.Layer;
 import org.codetome.zircon.screen.Screen;
-import org.codetome.zircon.Size;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -32,7 +30,7 @@ public class TilesetExample {
 
     private static final int TERMINAL_WIDTH = 40;
     private static final int TERMINAL_HEIGHT = 40;
-    private static final TextCharacter GRASS_0 =TextCharacter.of(
+    private static final TextCharacter GRASS_0 = TextCharacter.of(
             ',',
             TextColorFactory.fromString("#33cc44"),
             TextColorFactory.fromString("#114911"),
@@ -77,8 +75,11 @@ public class TilesetExample {
         final int charCount = RANDOM_CHARS.length;
         final int ansiCount = ANSITextColor.values().length;
 
-        final Layer overlay = new DefaultLayer(screen.getBoundableSize(), TextCharacterBuilder.EMPTY
-                .withBackgroundColor(TextColorFactory.fromRGB(0, 0, 0, 50)), Position.of(0, 0));
+        final Layer overlay = new LayerBuilder()
+                .size(screen.getBoundableSize())
+                .filler(TextCharacterBuilder.EMPTY
+                        .withBackgroundColor(TextColorFactory.fromRGB(0, 0, 0, 50)))
+                .build();
 
         for (int i = 0; i < RANDOM_CHAR_COUNT; i++) {
             overlay.setCharacterAt(
@@ -91,7 +92,7 @@ public class TilesetExample {
                             .backgroundColor(TextColorFactory.TRANSPARENT)
                             .build());
         }
-        screen.addOverlay(overlay);
+        screen.addLayer(overlay);
         screen.display();
     }
 }

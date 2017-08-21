@@ -3,16 +3,19 @@ package org.codetome.zircon.screen.impl
 import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
+import org.codetome.zircon.api.LayerBuilder
 import org.codetome.zircon.api.StyleSetBuilder
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.api.TextCharacterBuilder.Companion.DEFAULT_CHARACTER
-import org.codetome.zircon.behavior.ContainerHolder
+import org.codetome.zircon.component.ContainerHandler
 import org.codetome.zircon.behavior.CursorHandler
 import org.codetome.zircon.behavior.Drawable
 import org.codetome.zircon.behavior.Layerable
-import org.codetome.zircon.behavior.impl.DefaultContainerHolder
+import org.codetome.zircon.component.impl.DefaultContainerHandler
 import org.codetome.zircon.component.ComponentStyles
 import org.codetome.zircon.component.impl.DefaultContainer
+import org.codetome.zircon.event.EventBus
+import org.codetome.zircon.event.EventType
 import org.codetome.zircon.input.Input
 import org.codetome.zircon.screen.Screen
 import org.codetome.zircon.terminal.Terminal
@@ -26,19 +29,20 @@ import java.util.function.Consumer
  * some other simpler states.
  */
 class TerminalScreen constructor(private val terminal: Terminal,
-                                 private val containerHolder: ContainerHolder)
+                                 private val containerHandler: ContainerHandler)
     : Screen,
         CursorHandler by terminal,
         Layerable by terminal,
-        ContainerHolder by containerHolder {
+        ContainerHandler by containerHandler {
 
+    private val id: UUID = UUID.randomUUID()
     private var backBuffer: ScreenBuffer = ScreenBuffer(terminal.getBoundableSize(), DEFAULT_CHARACTER)
     private var frontBuffer: ScreenBuffer = ScreenBuffer(terminal.getBoundableSize(), DEFAULT_CHARACTER)
     private var lastKnownCursorPosition = Position.DEFAULT_POSITION
 
     constructor(terminal: Terminal) : this(
             terminal = terminal,
-            containerHolder = DefaultContainerHolder(DefaultContainer(
+            containerHandler = DefaultContainerHandler(DefaultContainer(
                     initialSize = terminal.getBoundableSize(),
                     position = Position.DEFAULT_POSITION,
                     componentStyles = ComponentStyles(StyleSetBuilder.EMPTY))))
@@ -49,8 +53,19 @@ class TerminalScreen constructor(private val terminal: Terminal,
                 resize()
             }
         })
-        
+        EventBus.subscribe<UUID>(EventType.SCREEN_SWITCH, {(screenId) ->
+            if(id != screenId) {
+                deactivate()
+            }
+        })
+        EventBus.subscribe<Unit>(EventType.COMPONENT_CHANGE, {
+            if(isActive()) {
+                display()
+            }
+        })
     }
+
+    override fun getId() = id
 
     override fun putCursorAt(cursorPosition: Position) {
         this.lastKnownCursorPosition = cursorPosition
@@ -83,20 +98,19 @@ class TerminalScreen constructor(private val terminal: Terminal,
     }
 
     override fun display() {
-        // TODO: add layers to terminal
         flipBuffers(true)
+        activate()
     }
 
     override fun refresh() {
-        // TODO: add layers to terminal
         flipBuffers(false)
     }
 
     override fun close() {
     }
 
-    override fun subscribe(inputCallback: Consumer<Input>) {
-        terminal.subscribe(inputCallback)
+    override fun addInputListener(listener: Consumer<Input>) {
+        terminal.addInputListener(listener)
     }
 
     @Synchronized
@@ -122,6 +136,10 @@ class TerminalScreen constructor(private val terminal: Terminal,
             }
         }
         frontBuffer.draw(backBuffer)
+        terminal.drainLayers()
+        terminal.addLayer(LayerBuilder.newBuilder()
+                .textImage(drawComponentsToImage())
+                .build())
         terminal.flush()
     }
 
