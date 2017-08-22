@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.graphics
 
+import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.behavior.Layerable
 import org.codetome.zircon.api.behavior.Movable
 import org.codetome.zircon.api.graphics.TextImage
@@ -10,4 +11,11 @@ import org.codetome.zircon.api.graphics.TextImage
  * the way it is handled. It can be repositioned relative to its
  * parent while a [TextImage] cannot.
  */
-interface Layer : TextImage, Movable
+interface Layer : TextImage, Movable {
+
+    /**
+     * Fetches all the (absolute) [Position]s which this
+     * [Layer] occupies.
+     */
+    fun fetchPositions(): Set<Position>
+}

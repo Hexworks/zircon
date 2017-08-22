@@ -2,18 +2,18 @@ package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Drawable
-import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
+import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.component.listener.MouseListener
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
-import org.codetome.zircon.api.graphics.TextImage
 import java.util.*
 
 class DefaultComponent private constructor(private val backend: TextImage,
@@ -23,7 +23,6 @@ class DefaultComponent private constructor(private val backend: TextImage,
     : Component, Drawable by backend {
 
     private val id: UUID = UUID.randomUUID()
-    private var lastHoveredId = UUID.randomUUID()
 
     constructor(initialSize: Size,
                 position: Position,
@@ -42,15 +41,13 @@ class DefaultComponent private constructor(private val backend: TextImage,
 
     init {
         backend.setStyleFrom(componentStyles.defaultStyle)
-        EventBus.subscribe<UUID>(EventType.Hover, { (hoveredComponentId) ->
-            if (hoveredComponentId == id) {
-                backend.applyStyle(componentStyles.hoverStyle)
-                EventBus.emit(EventType.ComponentChange, Unit)
-            } else if(lastHoveredId == id) {
-                backend.applyStyle(componentStyles.defaultStyle)
-                EventBus.emit(EventType.ComponentChange, Unit)
-            }
-            lastHoveredId = hoveredComponentId
+        EventBus.subscribe(EventType.MouseOver(id), {
+            backend.applyStyle(componentStyles.hoverStyle)
+            EventBus.emit(EventType.ComponentChange)
+        })
+        EventBus.subscribe(EventType.MouseOut(id), {
+            backend.applyStyle(componentStyles.defaultStyle)
+            EventBus.emit(EventType.ComponentChange)
         })
     }
 

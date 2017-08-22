@@ -71,8 +71,6 @@ class SwingTerminalCanvas(
     override fun forEachDirtyCell(fn: (Cell) -> Unit)
             = terminal.forEachDirtyCell(fn)
 
-    override fun forEachCell(fn: (Cell) -> Unit) = terminal.forEachCell(fn)
-
     override fun addLayer(layer: Layer) = terminal.addLayer(layer)
 
     override fun intersects(boundable: Boundable) = terminal.intersects(boundable)

@@ -10,6 +10,4 @@ interface IterableTerminal : Terminal {
 
     fun forEachDirtyCell(fn: (Cell) -> Unit)
 
-    fun forEachCell(fn: (Cell) -> Unit)
-
 }

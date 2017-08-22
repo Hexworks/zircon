@@ -25,12 +25,7 @@ class TerminalScreen private constructor(private val terminal: Terminal,
                                          private val backend: VirtualTerminal,
                                          private val containerHandler: ContainerHandler)
     : Screen,
-        Closeable by backend,
-        Clearable by backend,
-        Layerable by backend,
-        CursorHandler by backend,
-        DrawSurface by backend,
-        InputEmitter by backend,
+        Terminal by backend,
         ContainerHandler by containerHandler {
 
     private val id: UUID = UUID.randomUUID()
@@ -51,20 +46,10 @@ class TerminalScreen private constructor(private val terminal: Terminal,
         })
         EventBus.subscribe<Unit>(EventType.ComponentChange, {
             if (isActive()) {
-                display()
+                refresh()
             }
         })
     }
-
-    override fun containsBoundable(boundable: Boundable) = backend.containsBoundable(boundable)
-
-    override fun intersects(boundable: Boundable) = backend.intersects(boundable)
-
-    override fun containsPosition(position: Position) = backend.containsPosition(position)
-
-    override fun getBoundableSize() = backend.getBoundableSize()
-
-    override fun getPosition() = backend.getPosition()
 
     override fun getId() = id
 
@@ -89,6 +74,7 @@ class TerminalScreen private constructor(private val terminal: Terminal,
             val character = backend.getCharacterAt(position).get()
             terminal.setCharacterAt(position, character)
         }
+        // TODO: only do this when forceRedraw is true
         terminal.drainLayers()
         terminal.addLayer(LayerBuilder.newBuilder()
                 .textImage(drawComponentsToImage())
