@@ -11,9 +11,9 @@ package org.codetome.zircon.playground
 //import com.badlogic.gdx.graphics.g2d.TextureRegion
 //import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 //import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-//import org.codetome.zircon.api.TextCharacterBuilder
-//import org.codetome.zircon.api.TextColorFactory
-//import org.codetome.zircon.api.CP437TilesetResource
+//import org.codetome.zircon.api.builder.TextCharacterBuilder
+//import org.codetome.zircon.api.factory.TextColorFactory
+//import org.codetome.zircon.api.resource.CP437TilesetResource
 //import java.awt.Canvas
 //import java.awt.Dimension
 //import java.awt.Graphics2D

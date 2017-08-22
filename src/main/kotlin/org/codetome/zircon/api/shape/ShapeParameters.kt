@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.shape
 
-import org.codetome.zircon.Position
-import org.codetome.zircon.Size
+import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.Size
 
 sealed class ShapeParameters
 

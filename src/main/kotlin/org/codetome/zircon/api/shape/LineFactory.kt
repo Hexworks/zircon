@@ -1,9 +1,9 @@
 package org.codetome.zircon.api.shape
 
-import org.codetome.zircon.Position
-import org.codetome.zircon.graphics.shape.DefaultShape
-import org.codetome.zircon.graphics.shape.Shape
-import org.codetome.zircon.graphics.shape.ShapeFactory
+import org.codetome.zircon.api.Position
+import org.codetome.zircon.internal.graphics.DefaultShape
+import org.codetome.zircon.api.graphics.Shape
+import org.codetome.zircon.internal.graphics.ShapeFactory
 
 object LineFactory : ShapeFactory<LineParameters> {
 

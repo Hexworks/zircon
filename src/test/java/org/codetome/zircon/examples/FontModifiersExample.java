@@ -1,18 +1,18 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.api.CP437TilesetResource;
-import org.codetome.zircon.api.TerminalBuilder;
-import org.codetome.zircon.terminal.Terminal;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.terminal.Terminal;
 
-import static org.codetome.zircon.Modifier.*;
-import static org.codetome.zircon.color.impl.ANSITextColor.*;
+import static org.codetome.zircon.api.Modifier.*;
+import static org.codetome.zircon.api.color.ANSITextColor.*;
 
 public class FontModifiersExample {
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalBuilder.newBuilder()
-                .font(CP437TilesetResource.WANDERLUST_16X16.asJava2DFont())
+                .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .buildTerminal();
         terminal.setCursorVisible(false); // we don't want the cursor right now
 
