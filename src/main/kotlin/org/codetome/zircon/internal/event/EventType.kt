@@ -1,5 +1,7 @@
 package org.codetome.zircon.internal.event
 
+import java.util.*
+
 sealed class EventType {
     /**
      * A redraw should be performed.
@@ -16,7 +18,11 @@ sealed class EventType {
     /**
      * A component was hovered over.
      */
-    object Hover : EventType()
+    data class MouseOver(val componentId: UUID) : EventType()
+    /**
+     * A component is no longer hovered.
+     */
+    data class MouseOut(val componentId: UUID) : EventType()
     /**
      * A [org.codetome.zircon.screen.Screen] has been switched to
      * (eg: the `display` function has been called on a Screen object).

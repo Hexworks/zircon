@@ -13,6 +13,12 @@ object EventBus {
     @PublishedApi
     internal val subscriptions = ConcurrentHashMap<EventType, MutableList<Subscription<*>>>()
 
+    fun subscribe(type: EventType, callback: () -> Unit) {
+        subscribe<Unit>(type, {
+            callback()
+        })
+    }
+
     @JvmStatic
     inline fun <reified T : Any> subscribe(type: EventType,
                                            noinline callback: (Event<T>) -> Unit,
@@ -21,6 +27,13 @@ object EventBus {
                 keys = keys,
                 callback = callback,
                 dataType = T::class.java))
+    }
+
+    /**
+     * Emits an [Event] which contains no data.
+     */
+    fun emit(type: EventType) {
+        emit(type, Unit)
     }
 
     @JvmStatic

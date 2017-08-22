@@ -4,20 +4,20 @@ import org.codetome.zircon.api.Cell
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.behavior.CursorHandler
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.Layerable
+import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.TextImageBuilder
+import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.input.KeyStroke
+import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
-import org.codetome.zircon.api.input.Input
-import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.internal.terminal.AbstractTerminal
 import org.codetome.zircon.internal.terminal.IterableTerminal
-import org.codetome.zircon.api.util.TextUtils
 import java.util.function.Consumer
 
 class VirtualTerminal private constructor(initialSize: Size,
@@ -37,6 +37,24 @@ class VirtualTerminal private constructor(initialSize: Size,
                     cursorSpace = initialSize),
             layerable = DefaultLayerable(
                     size = initialSize))
+
+    override fun drainDirtyPositions() =
+            cursorHandler.drainDirtyPositions().plus(layerable.drainDirtyPositions()).also { dirtyPositions ->
+                val blinkingChars = dirtyPositions.filter {
+                    getCharacterAt(it).let { char ->
+                        char.isPresent && char.get().isBlinking() // TODO: check layers too
+                    }
+                }
+                blinkingChars.forEach {
+                    setPositionDirty(it)
+                }
+            }
+
+    override fun isDirty() = cursorHandler.isDirty().or(layerable.isDirty())
+
+    override fun setPositionDirty(position: Position) {
+        layerable.setPositionDirty(position)
+    }
 
     @Synchronized
     override fun draw(drawable: Drawable, offset: Position) {
@@ -133,20 +151,6 @@ class VirtualTerminal private constructor(initialSize: Size,
             } else {
                 fn(Cell(pos, char.get()))
             }
-        }
-        val blinkingChars = dirtyPositions.filter {
-            getCharacterAt(it).let { char ->
-                char.isPresent && char.get().isBlinking()
-            }
-        }
-        blinkingChars.forEach {
-            setPositionDirty(it)
-        }
-    }
-
-    override fun forEachCell(fn: (Cell) -> Unit) {
-        terminalSize.fetchPositions().forEach {
-            fn(Cell(it, getCharacterAt(it).get()))
         }
     }
 

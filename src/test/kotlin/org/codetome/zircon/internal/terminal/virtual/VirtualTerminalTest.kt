@@ -102,15 +102,6 @@ class VirtualTerminalTest {
     }
 
     @Test
-    fun shouldClearScreenWhenClearIsCalled() {
-        target.clear()
-        target.forEachCell {
-            assertThat(it.character).isEqualTo(TextCharacterBuilder.DEFAULT_CHARACTER)
-        }
-        assertThat(target.getCursorPosition()).isEqualTo(Position.DEFAULT_POSITION)
-    }
-
-    @Test
     fun shouldMoveCursorToNextLineWhenNewLineIsPut() {
         target.putCharacter('\n')
         assertThat(target.getCursorPosition())

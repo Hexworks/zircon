@@ -3,8 +3,8 @@ package org.codetome.zircon.internal.graphics
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.behavior.Boundable
+import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TextImage
 import java.awt.Point
@@ -30,6 +30,10 @@ class DefaultLayer private constructor(offset: Position, private val textImage: 
         this.position = offset
         this.rect = refreshRect()
     }
+
+    override fun fetchPositions() = getBoundableSize().fetchPositions()
+            .map { it + position }
+            .toSet()
 
     override fun getPosition() = position
 

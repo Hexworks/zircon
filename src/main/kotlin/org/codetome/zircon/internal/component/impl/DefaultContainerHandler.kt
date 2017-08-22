@@ -56,8 +56,9 @@ class DefaultContainerHandler(private var container: Container) : ContainerHandl
                         lastHoveredComponentId != it.getId()
                     }
                     .map {
+                        EventBus.emit(EventType.MouseOut(lastHoveredComponentId))
                         lastHoveredComponentId = it.getId()
-                        EventBus.emit(EventType.Hover, it.getId())
+                        EventBus.emit(EventType.MouseOver(it.getId()))
                     }
         }
     }
