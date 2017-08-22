@@ -1,26 +1,28 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.Position;
-import org.codetome.zircon.Size;
-import org.codetome.zircon.api.*;
+import org.codetome.zircon.api.Position;
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.builder.BoxBuilder;
+import org.codetome.zircon.api.builder.StyleSetBuilder;
+import org.codetome.zircon.api.builder.TextCharacterBuilder;
+import org.codetome.zircon.api.factory.TextColorFactory;
 import org.codetome.zircon.api.shape.FilledRectangleFactory;
-import org.codetome.zircon.color.TextColor;
-import org.codetome.zircon.graphics.box.Box;
-import org.codetome.zircon.graphics.box.BoxType;
-import org.codetome.zircon.graphics.box.DefaultBox;
-import org.codetome.zircon.screen.Screen;
+import org.codetome.zircon.api.color.TextColor;
+import org.codetome.zircon.api.graphics.Box;
+import org.codetome.zircon.internal.graphics.BoxType;
+import org.codetome.zircon.api.screen.Screen;
 
 public class PanelDrawingExample {
 
     private static final int TERMINAL_WIDTH = 30;
     private static final int TERMINAL_HEIGHT = 20;
-    private static final TextColor BACKGROUND_COLOR = TextColorFactory.fromString("#223344");
+    private static final TextColor BACKGROUND_COLOR = org.codetome.zircon.api.factory.TextColorFactory.fromString("#223344");
     private static final TextColor PANEL_BG_COLOR = TextColorFactory.fromString("#666666");
     private static final TextColor PANEL_FG_COLOR = TextColorFactory.fromString("#ffffff");
 
     public static void main(String[] args) {
-        final Screen screen = TerminalBuilder.newBuilder()
-                .font(CP437TilesetResource.WANDERLUST_16X16.asJava2DFont())
+        final Screen screen = org.codetome.zircon.api.builder.TerminalBuilder.newBuilder()
+                .font(org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .initialTerminalSize(Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT))
                 .buildScreen();
         screen.setCursorVisible(false);

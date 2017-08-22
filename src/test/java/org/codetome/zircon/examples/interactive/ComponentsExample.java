@@ -1,17 +1,17 @@
 package org.codetome.zircon.examples.interactive;
 
-import org.codetome.zircon.Position;
-import org.codetome.zircon.Size;
-import org.codetome.zircon.api.CP437TilesetResource;
-import org.codetome.zircon.api.StyleSetBuilder;
-import org.codetome.zircon.api.TerminalBuilder;
-import org.codetome.zircon.api.TextColorFactory;
-import org.codetome.zircon.component.ComponentStyles;
-import org.codetome.zircon.component.Container;
-import org.codetome.zircon.component.impl.DefaultComponent;
-import org.codetome.zircon.component.impl.DefaultContainer;
-import org.codetome.zircon.screen.Screen;
-import org.codetome.zircon.terminal.Terminal;
+import org.codetome.zircon.api.Position;
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.builder.StyleSetBuilder;
+import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.factory.TextColorFactory;
+import org.codetome.zircon.api.component.ComponentStyles;
+import org.codetome.zircon.api.component.Container;
+import org.codetome.zircon.internal.component.impl.DefaultComponent;
+import org.codetome.zircon.internal.component.impl.DefaultContainer;
+import org.codetome.zircon.api.screen.Screen;
+import org.codetome.zircon.api.terminal.Terminal;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -21,7 +21,7 @@ public class ComponentsExample {
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(40, 20))
-                .font(CP437TilesetResource.TAFFER_20X20.asJava2DFont())
+                .font(CP437TilesetResource.TAFFER_20X20.toFont())
                 .buildTerminal();
 
         Screen screen0 = TerminalBuilder.newBuilder().createScreenFor(terminal);

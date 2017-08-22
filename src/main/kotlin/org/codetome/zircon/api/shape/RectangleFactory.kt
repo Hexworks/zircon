@@ -1,8 +1,8 @@
 package org.codetome.zircon.api.shape
 
-import org.codetome.zircon.Position
-import org.codetome.zircon.Size
-import org.codetome.zircon.graphics.shape.ShapeFactory
+import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.Size
+import org.codetome.zircon.internal.graphics.ShapeFactory
 
 object RectangleFactory : ShapeFactory<RectangleParameters> {
 

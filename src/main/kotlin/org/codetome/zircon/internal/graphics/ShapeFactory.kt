@@ -1,0 +1,18 @@
+package org.codetome.zircon.internal.graphics
+
+import org.codetome.zircon.api.graphics.Shape
+import org.codetome.zircon.api.shape.ShapeParameters
+
+/**
+ * A [ShapeFactory] is responsible for creating a single
+ * kind of shape (like a rectangle or a triangle) using
+ * a specialized version of [ShapeParameters].
+ */
+interface ShapeFactory<in T : ShapeParameters> {
+
+    /**
+     * Creates the [Shape] this [ShapeFactory] is responsible for building.
+     * Note that all [Shape]s are offset to the (0x0) position!
+     */
+    fun createShape(shapeParameters: T): Shape
+}

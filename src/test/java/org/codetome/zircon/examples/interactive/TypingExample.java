@@ -1,22 +1,22 @@
 package org.codetome.zircon.examples.interactive;
 
-import org.codetome.zircon.Position;
-import org.codetome.zircon.Size;
-import org.codetome.zircon.TextCharacter;
-import org.codetome.zircon.api.DeviceConfigurationBuilder;
-import org.codetome.zircon.api.TerminalBuilder;
-import org.codetome.zircon.api.TextColorFactory;
-import org.codetome.zircon.input.InputType;
-import org.codetome.zircon.input.KeyStroke;
-import org.codetome.zircon.screen.Screen;
-import org.codetome.zircon.terminal.Terminal;
+import org.codetome.zircon.api.Position;
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.TextCharacter;
+import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
+import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.factory.TextColorFactory;
+import org.codetome.zircon.api.input.InputType;
+import org.codetome.zircon.api.input.KeyStroke;
+import org.codetome.zircon.api.screen.Screen;
+import org.codetome.zircon.api.terminal.Terminal;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.codetome.zircon.color.impl.ANSITextColor.BLACK;
-import static org.codetome.zircon.color.impl.ANSITextColor.RED;
-import static org.codetome.zircon.input.InputType.Enter;
+import static org.codetome.zircon.api.color.ANSITextColor.BLACK;
+import static org.codetome.zircon.api.color.ANSITextColor.RED;
+import static org.codetome.zircon.api.input.InputType.Enter;
 
 public class TypingExample {
 

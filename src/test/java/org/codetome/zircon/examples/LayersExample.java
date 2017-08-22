@@ -1,21 +1,23 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.Position;
-import org.codetome.zircon.Size;
-import org.codetome.zircon.TextCharacter;
-import org.codetome.zircon.api.*;
-import org.codetome.zircon.color.TextColor;
-import org.codetome.zircon.graphics.layer.DefaultLayer;
-import org.codetome.zircon.screen.Screen;
+import org.codetome.zircon.api.Position;
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.TextCharacter;
+import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
+import org.codetome.zircon.api.builder.LayerBuilder;
+import org.codetome.zircon.api.builder.TextCharacterBuilder;
+import org.codetome.zircon.api.factory.TextColorFactory;
+import org.codetome.zircon.api.color.TextColor;
+import org.codetome.zircon.api.screen.Screen;
 import org.jetbrains.annotations.NotNull;
 
 public class LayersExample {
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
-        final Screen screen = TerminalBuilder.newBuilder()
+        final Screen screen = org.codetome.zircon.api.builder.TerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(45, 10))
-                .font(CP437TilesetResource.TAFFER_20X20.asJava2DFont())
+                .font(org.codetome.zircon.api.resource.CP437TilesetResource.TAFFER_20X20.toFont())
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .build())
                 .buildScreen();
@@ -38,7 +40,7 @@ public class LayersExample {
         addOverlayAt(screen,
                 Position.of(1, 2),
                 Size.of(secondRow.length(), 1),
-                TextColorFactory.fromRGB(50, 50, 200, 127));
+                org.codetome.zircon.api.factory.TextColorFactory.fromRGB(50, 50, 200, 127));
 
         screen.display();
     }

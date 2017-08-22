@@ -1,16 +1,17 @@
 package org.codetome.zircon.examples.interactive;
 
-import org.codetome.zircon.Position;
-import org.codetome.zircon.Size;
-import org.codetome.zircon.Symbols;
-import org.codetome.zircon.api.*;
+import org.codetome.zircon.api.Position;
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.Symbols;
+import org.codetome.zircon.api.builder.LayerBuilder;
+import org.codetome.zircon.api.builder.TextCharacterBuilder;
+import org.codetome.zircon.api.factory.TextColorFactory;
 import org.codetome.zircon.api.shape.FilledRectangleFactory;
-import org.codetome.zircon.color.TextColor;
-import org.codetome.zircon.color.impl.ANSITextColor;
-import org.codetome.zircon.graphics.layer.DefaultLayer;
-import org.codetome.zircon.graphics.layer.Layer;
-import org.codetome.zircon.input.InputType;
-import org.codetome.zircon.screen.Screen;
+import org.codetome.zircon.api.color.TextColor;
+import org.codetome.zircon.api.color.ANSITextColor;
+import org.codetome.zircon.api.graphics.Layer;
+import org.codetome.zircon.api.input.InputType;
+import org.codetome.zircon.api.screen.Screen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,16 +27,16 @@ public class HideNSeek {
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
-        final Screen screen = TerminalBuilder.newBuilder()
+        final Screen screen = org.codetome.zircon.api.builder.TerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(40, 20))
-                .font(CP437TilesetResource.TAFFER_20X20.asJava2DFont())
+                .font(org.codetome.zircon.api.resource.CP437TilesetResource.TAFFER_20X20.toFont())
                 .buildScreen();
         Size size = screen.getBoundableSize();
         screen.setCursorVisible(false); // we don't want the cursor right now
         FilledRectangleFactory
                 .buildFilledRectangle(Position.TOP_LEFT_CORNER, screen.getBoundableSize())
                 .toTextImage(TextCharacterBuilder.newBuilder()
-                        .backgroundColor(TextColorFactory.fromString("#665233"))
+                        .backgroundColor(org.codetome.zircon.api.factory.TextColorFactory.fromString("#665233"))
                         .character(' ')
                         .build())
                 .drawOnto(screen, Position.TOP_LEFT_CORNER);

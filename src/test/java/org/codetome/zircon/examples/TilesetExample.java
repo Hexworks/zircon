@@ -1,14 +1,16 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.Position;
-import org.codetome.zircon.Size;
-import org.codetome.zircon.Symbols;
-import org.codetome.zircon.TextCharacter;
-import org.codetome.zircon.api.*;
-import org.codetome.zircon.color.TextColor;
-import org.codetome.zircon.color.impl.ANSITextColor;
-import org.codetome.zircon.graphics.layer.Layer;
-import org.codetome.zircon.screen.Screen;
+import org.codetome.zircon.api.Position;
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.Symbols;
+import org.codetome.zircon.api.TextCharacter;
+import org.codetome.zircon.api.builder.LayerBuilder;
+import org.codetome.zircon.api.builder.TextCharacterBuilder;
+import org.codetome.zircon.api.factory.TextColorFactory;
+import org.codetome.zircon.api.color.TextColor;
+import org.codetome.zircon.api.color.ANSITextColor;
+import org.codetome.zircon.api.graphics.Layer;
+import org.codetome.zircon.api.screen.Screen;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -32,7 +34,7 @@ public class TilesetExample {
     private static final int TERMINAL_HEIGHT = 40;
     private static final TextCharacter GRASS_0 = TextCharacter.of(
             ',',
-            TextColorFactory.fromString("#33cc44"),
+            org.codetome.zircon.api.factory.TextColorFactory.fromString("#33cc44"),
             TextColorFactory.fromString("#114911"),
             new HashSet<>());
     private static final TextCharacter GRASS_1 = TextCharacter.of(
@@ -50,8 +52,8 @@ public class TilesetExample {
     private static final TextColor TEXT_BG_COLOR = TextColorFactory.fromString("#00ff00");
 
     public static void main(String[] args) {
-        final Screen screen = TerminalBuilder.newBuilder()
-                .font(CP437TilesetResource.WANDERLUST_16X16.asJava2DFont())
+        final Screen screen = org.codetome.zircon.api.builder.TerminalBuilder.newBuilder()
+                .font(org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .initialTerminalSize(Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT))
                 .buildScreen();
         screen.setCursorVisible(false);
