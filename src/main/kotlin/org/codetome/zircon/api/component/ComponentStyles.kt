@@ -2,6 +2,17 @@ package org.codetome.zircon.api.component
 
 import org.codetome.zircon.api.graphics.StyleSet
 
-data class ComponentStyles(val defaultStyle: StyleSet,
-                           val hoverStyle: StyleSet = defaultStyle,
-                           val activeStyle: StyleSet = defaultStyle)
+interface ComponentStyles {
+
+    fun getCurrentStyle(): StyleSet
+
+    fun mouseOver(): StyleSet
+
+    fun activate(): StyleSet
+
+    fun giveFocus(): StyleSet
+
+    fun disable(): StyleSet
+
+    fun reset(): StyleSet
+}

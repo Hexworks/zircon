@@ -84,5 +84,4 @@ open class DefaultStyleSet(
         setForegroundColor(source.getForegroundColor())
         setModifiers(source.getActiveModifiers().toSet())
     }
-
 }

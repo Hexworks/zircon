@@ -9,7 +9,7 @@ import org.codetome.zircon.api.component.Container
 import org.codetome.zircon.internal.component.listener.MouseListener
 import java.util.*
 
-class DefaultContainer private constructor(private val backend: Component,
+class DefaultContainer private constructor(private val backend: DefaultComponent,
                                            private val position: Position,
                                            private val componentStyles: ComponentStyles)
     : Container, Component by backend {
@@ -25,6 +25,8 @@ class DefaultContainer private constructor(private val backend: Component,
                     componentStyles = componentStyles),
             position = position,
             componentStyles = componentStyles)
+
+    fun getBackend() = backend
 
     override fun addComponent(component: Component) {
         require(components.none { it.intersects(component) }) {

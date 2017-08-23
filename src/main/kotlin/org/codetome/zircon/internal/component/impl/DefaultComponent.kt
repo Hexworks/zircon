@@ -10,15 +10,17 @@ import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.component.listener.MouseListener
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import java.util.*
+import java.util.function.Consumer
 
 class DefaultComponent private constructor(private val backend: TextImage,
                                            private val boundable: Boundable,
-                                           private val position: Position,
+                                           private var position: Position,
                                            private val componentStyles: ComponentStyles)
     : Component, Drawable by backend {
 
@@ -29,7 +31,7 @@ class DefaultComponent private constructor(private val backend: TextImage,
                 componentStyles: ComponentStyles) : this(
             backend = TextImageBuilder.newBuilder()
                     .filler(TextCharacterBuilder.newBuilder()
-                            .styleSet(componentStyles.defaultStyle)
+                            .styleSet(componentStyles.getCurrentStyle())
                             .build())
                     .size(initialSize)
                     .build(),
@@ -40,16 +42,18 @@ class DefaultComponent private constructor(private val backend: TextImage,
             componentStyles = componentStyles)
 
     init {
-        backend.setStyleFrom(componentStyles.defaultStyle)
+        backend.setStyleFrom(componentStyles.getCurrentStyle())
         EventBus.subscribe(EventType.MouseOver(id), {
-            backend.applyStyle(componentStyles.hoverStyle)
+            backend.applyStyle(componentStyles.mouseOver())
             EventBus.emit(EventType.ComponentChange)
         })
         EventBus.subscribe(EventType.MouseOut(id), {
-            backend.applyStyle(componentStyles.defaultStyle)
+            backend.applyStyle(componentStyles.reset())
             EventBus.emit(EventType.ComponentChange)
         })
     }
+
+    fun getBackend() = backend
 
     override fun getBoundableSize() = boundable.getBoundableSize()
 

@@ -1,10 +1,9 @@
 package org.codetome.zircon.internal.screen
 
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.behavior.*
+import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.LayerBuilder
-import org.codetome.zircon.api.builder.StyleSetBuilder
-import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.internal.component.impl.DefaultComponentStyles
 import org.codetome.zircon.internal.component.ContainerHandler
 import org.codetome.zircon.internal.component.impl.DefaultContainer
 import org.codetome.zircon.internal.component.impl.DefaultContainerHandler
@@ -13,7 +12,6 @@ import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
-import java.io.Closeable
 import java.util.*
 
 /**
@@ -36,7 +34,7 @@ class TerminalScreen private constructor(private val terminal: Terminal,
             containerHandler = DefaultContainerHandler(DefaultContainer(
                     initialSize = terminal.getBoundableSize(),
                     position = Position.DEFAULT_POSITION,
-                    componentStyles = ComponentStyles(StyleSetBuilder.EMPTY))))
+                    componentStyles = ComponentStylesBuilder.DEFAULT)))
 
     init {
         EventBus.subscribe<UUID>(EventType.ScreenSwitch, { (screenId) ->
