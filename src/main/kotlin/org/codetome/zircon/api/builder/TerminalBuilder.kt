@@ -22,7 +22,7 @@ import java.awt.image.BufferedImage
  */
 class TerminalBuilder {
 
-    private var initialSize: Size = Size.DEFAULT
+    private var initialSize: Size = Size.DEFAULT_TERMINAL_SIZE
     private var title: String = "Zircon Terminal"
     private var deviceConfiguration = DeviceConfigurationBuilder.getDefault()
     // TODO: refactor this to abstract shape when libgdx implementation comes

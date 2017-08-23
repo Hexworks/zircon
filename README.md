@@ -146,7 +146,7 @@ or a `MouseAction` (click, press, move, etc).
 ### Text graphics
 
 You can create [TextGraphics] objects by calling `newTextGraphics()` on a [Terminal] instance. A
-[TextGraphics] is basically a group of text characters which form a quasi-graphical object (like a
+[TextGraphics] is basically a group of title characters which form a quasi-graphical object (like a
 panel or a simple rectangle). A [TextGraphics] object is always backed by a [Terminal]. Drawing operations
 like `createLine(TerminalPosition fromPoint, TerminalPosition toPoint, Char character)` will result in
 them displayed on your screen. A [TextImage] on an other hand is an in-memory group of characters. You

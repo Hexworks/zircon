@@ -8,54 +8,81 @@ import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.Component
+import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.graphics.TextImage
-import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
+import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.listener.MouseListener
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import java.util.*
-import java.util.function.Consumer
 
-class DefaultComponent private constructor(private val backend: TextImage,
-                                           private val boundable: Boundable,
-                                           private var position: Position,
-                                           private val componentStyles: ComponentStyles)
-    : Component, Drawable by backend {
+abstract class DefaultComponent private constructor(private var position: Position,
+                                                    private var componentStyles: ComponentStyles,
+                                                    private val drawSurface: TextImage,
+                                                    private val boundable: Boundable,
+                                                    private val wrappers: Iterable<WrappingStrategy>)
+    : Component, Drawable by drawSurface {
 
     private val id: UUID = UUID.randomUUID()
+    private var currentOffset = Position.DEFAULT_POSITION
 
     constructor(initialSize: Size,
                 position: Position,
-                componentStyles: ComponentStyles) : this(
-            backend = TextImageBuilder.newBuilder()
-                    .filler(TextCharacterBuilder.newBuilder()
-                            .styleSet(componentStyles.getCurrentStyle())
-                            .build())
+                componentStyles: ComponentStyles,
+                wrappers: Iterable<WrappingStrategy>) : this(
+            drawSurface = TextImageBuilder.newBuilder()
+                    .filler(TextCharacterBuilder.EMPTY)
                     .size(initialSize)
                     .build(),
             boundable = DefaultBoundable(
                     size = initialSize,
                     position = position),
             position = position,
-            componentStyles = componentStyles)
+            componentStyles = componentStyles,
+            wrappers = wrappers)
 
     init {
-        backend.setStyleFrom(componentStyles.getCurrentStyle())
+        drawSurface.setStyleFrom(componentStyles.getCurrentStyle())
+        var currSize = getEffectiveSize()
+        currentOffset = Position.DEFAULT_POSITION
+        wrappers.forEach {
+            currSize += it.getOccupiedSize()
+            it.apply(drawSurface, currSize, componentStyles.getCurrentStyle())
+            currentOffset += it.getOffset()
+        }
         EventBus.subscribe(EventType.MouseOver(id), {
-            backend.applyStyle(componentStyles.mouseOver())
-            EventBus.emit(EventType.ComponentChange)
+            if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.MOUSE_OVER)) {
+                drawSurface.applyStyle(componentStyles.mouseOver())
+                EventBus.emit(EventType.ComponentChange)
+            }
         })
         EventBus.subscribe(EventType.MouseOut(id), {
-            backend.applyStyle(componentStyles.reset())
-            EventBus.emit(EventType.ComponentChange)
+            if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.DEFAULT)) {
+                drawSurface.applyStyle(componentStyles.reset())
+                EventBus.emit(EventType.ComponentChange)
+            }
         })
     }
 
-    fun getBackend() = backend
+    fun getDrawSurface() = drawSurface
 
-    override fun getBoundableSize() = boundable.getBoundableSize()
+    fun getWrappersSize() = wrappers.map { it.getOccupiedSize() }.fold(Size.ZERO) { acc, size -> acc + size }
+
+    fun getEffectiveSize() = getBoundableSize() - getWrappersSize()
+
+    fun getEffectivePosition() = getPosition() + getOffset()
+
+    fun getOffset() = wrappers.map { it.getOffset() }.fold(Position.TOP_LEFT_CORNER) { acc, position -> acc + position }
+
+    fun getCurrentOffset() = currentOffset
+
+    fun setPosition(position: Position) {
+        this.position = position
+    }
+
+    final override fun getBoundableSize() = boundable.getBoundableSize()
 
     override fun containsBoundable(boundable: Boundable) = this.boundable.containsBoundable(boundable)
 
@@ -68,7 +95,7 @@ class DefaultComponent private constructor(private val backend: TextImage,
     override fun getPosition() = position
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
-        surface.draw(backend, position)
+        surface.draw(drawSurface, position)
     }
 
     override fun drawOnto(destination: DrawSurface,
@@ -78,7 +105,7 @@ class DefaultComponent private constructor(private val backend: TextImage,
                           columns: Int,
                           destinationRowOffset: Int,
                           destinationColumnOffset: Int) {
-        backend.drawOnto(destination, startRowIndex, rows, startColumnIndex, columns,
+        drawSurface.drawOnto(destination, startRowIndex, rows, startColumnIndex, columns,
                 destinationRowOffset, destinationColumnOffset)
     }
 
@@ -93,8 +120,10 @@ class DefaultComponent private constructor(private val backend: TextImage,
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun getComponentStyles() = componentStyles
+
     override fun setComponentStyles(componentStyles: ComponentStyles) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        this.componentStyles = componentStyles
     }
 
     override fun toString(): String {

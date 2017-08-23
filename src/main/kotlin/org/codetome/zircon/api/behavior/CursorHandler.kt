@@ -12,7 +12,7 @@ interface CursorHandler : Dirtiable {
     fun getCursorPosition(): Position
 
     /**
-     * Moves the text cursor to a new location on the terminal.
+     * Moves the title cursor to a new location on the terminal.
      */
     fun putCursorAt(cursorPosition: Position)
 
@@ -29,7 +29,7 @@ interface CursorHandler : Dirtiable {
     fun isCursorVisible(): Boolean
 
     /**
-     * Hides or shows the text cursor.
+     * Hides or shows the title cursor.
      */
     fun setCursorVisible(cursorVisible: Boolean)
 

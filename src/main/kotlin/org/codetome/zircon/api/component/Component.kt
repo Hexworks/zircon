@@ -28,6 +28,11 @@ interface Component : Drawable, Positionable, Identifiable {
     fun addMouseListener(mouseListener: MouseListener)
 
     /**
+     * Gets the styles this [Component] uses.
+     */
+    fun getComponentStyles() : ComponentStyles
+
+    /**
      * Sets the styles this [Component] should use.
      */
     fun setComponentStyles(componentStyles: ComponentStyles)

@@ -6,9 +6,8 @@ import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.component.Button
 import org.codetome.zircon.api.component.ComponentStyles
-import org.codetome.zircon.api.component.Label
+import org.codetome.zircon.internal.component.impl.ButtonWrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultButton
-import org.codetome.zircon.internal.component.impl.DefaultLabel
 
 class ButtonBuilder : Builder<Button> {
 
@@ -36,8 +35,8 @@ class ButtonBuilder : Builder<Button> {
                 text = text,
                 initialSize = Size.of(text.length + 2, 1),
                 position = position,
-                componentStyles = componentStyles
-        )
+                componentStyles = componentStyles,
+                wrappers = listOf(ButtonWrappingStrategy()))
     }
 
     companion object {

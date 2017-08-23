@@ -71,35 +71,35 @@ class SizeTest {
 
     @Test
     fun shouldReturnItselfWhenWithColumnsIsCalledAndColumnsAreTheSame() {
-        val target = Size.DEFAULT
+        val target = Size.DEFAULT_TERMINAL_SIZE
         val result = target.withColumns(target.columns)
         assertThat(target).isSameAs(result)
     }
 
     @Test
     fun shouldReturnItselfWhenWithRowsIsCalledAndRowsAreTheSame() {
-        val target = Size.DEFAULT
+        val target = Size.DEFAULT_TERMINAL_SIZE
         val result = target.withRows(target.rows)
         assertThat(target).isSameAs(result)
     }
 
     @Test
     fun shouldReturnItselfWhenWithRelativeColumnsIsCalledAndColumnsAreTheSame() {
-        val target = Size.DEFAULT
+        val target = Size.DEFAULT_TERMINAL_SIZE
         val result = target.withRelativeColumns(0)
         assertThat(target).isSameAs(result)
     }
 
     @Test
     fun shouldReturnItselfWhenWithRelativeRowsIsCalledAndRowsAreTheSame() {
-        val target = Size.DEFAULT
+        val target = Size.DEFAULT_TERMINAL_SIZE
         val result = target.withRelativeRows(0)
         assertThat(target).isSameAs(result)
     }
 
     @Test
     fun shouldReturnItselfWhenWithIsCalledAndRowsAndColumnsAreTheSame() {
-        val target = Size.DEFAULT
+        val target = Size.DEFAULT_TERMINAL_SIZE
         val result = target.with(target)
         assertThat(target).isSameAs(result)
     }
