@@ -23,6 +23,16 @@ class DefaultContainerHandler(private var container: Container) : ContainerHandl
             if (state == ACTIVE) {
                 if (mouseAction.actionType == MouseActionType.MOUSE_MOVED) {
                     handleMouseMoved(mouseAction)
+                } else if(mouseAction.actionType == MouseActionType.MOUSE_PRESSED) {
+                    container.fetchComponentByPosition(mouseAction.position)
+                            .map {
+                                EventBus.emit(EventType.MousePressed(it.getId()), mouseAction)
+                            }
+                } else if(mouseAction.actionType == MouseActionType.MOUSE_RELEASED) {
+                    container.fetchComponentByPosition(mouseAction.position)
+                            .map {
+                                EventBus.emit(EventType.MouseReleased(it.getId()), mouseAction)
+                            }
                 }
             }
         })

@@ -8,7 +8,7 @@ import org.codetome.zircon.internal.graphics.DefaultLayer
 import org.codetome.zircon.api.graphics.Layer
 import java.util.*
 
-class LayerBuilder {
+class LayerBuilder : Builder<Layer> {
 
     private var size: Size = Size.ONE
     private var filler: TextCharacter = TextCharacterBuilder.EMPTY
@@ -43,7 +43,7 @@ class LayerBuilder {
         this.textImage = Optional.of(textImage)
     }
 
-    fun build(): Layer = if (textImage.isPresent) {
+    override fun build(): Layer = if (textImage.isPresent) {
         DefaultLayer(size = size,
                 filler = filler,
                 offset = offset,
