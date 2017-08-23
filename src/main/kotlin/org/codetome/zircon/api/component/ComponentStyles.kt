@@ -6,6 +6,8 @@ interface ComponentStyles {
 
     fun getCurrentStyle(): StyleSet
 
+    fun getStyleFor(state: ComponentState): StyleSet
+
     fun mouseOver(): StyleSet
 
     fun activate(): StyleSet

@@ -1,6 +1,7 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.Container
 import org.codetome.zircon.internal.component.ContainerHandler

@@ -16,6 +16,10 @@ data class Size(val columns: Int,
         }
     }
 
+    operator fun plus(other: Size) = Size.of(columns + other.columns, rows + other.rows)
+
+    operator fun minus(other: Size) = Size.of(columns - other.columns, rows - other.rows)
+
     /**
      * Creates a list of [Position]s in the order in which they should
      * be iterated when drawing (from left to right, then top to bottom).
@@ -126,11 +130,12 @@ data class Size(val columns: Int,
     }
 
     companion object {
+
         @JvmField
         val UNKNOWN = Size(Int.MAX_VALUE, Int.MAX_VALUE)
 
         @JvmField
-        val DEFAULT = Size(80, 24)
+        val DEFAULT_TERMINAL_SIZE = Size(80, 24)
 
         @JvmField
         val ZERO = Size(0, 0)

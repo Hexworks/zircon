@@ -30,7 +30,7 @@ class VirtualTerminal private constructor(initialSize: Size,
     private var terminalSize = initialSize
     private var backend = createBackend(terminalSize)
 
-    constructor(initialSize: Size = Size.DEFAULT)
+    constructor(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE)
             : this(
             initialSize = initialSize,
             cursorHandler = DefaultCursorHandler(

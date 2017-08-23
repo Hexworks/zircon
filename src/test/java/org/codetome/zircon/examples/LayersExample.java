@@ -23,7 +23,7 @@ public class LayersExample {
                 .buildScreen();
         screen.setCursorVisible(false); // we don't want the cursor right now
 
-        final String firstRow = "This is white text on black";
+        final String firstRow = "This is white title on black";
         for (int x = 0; x < firstRow.length(); x++) {
             screen.setCharacterAt(
                     Position.of(x + 1, 1),

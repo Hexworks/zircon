@@ -28,7 +28,7 @@ class TextImageBuilder {
 
     /**
      * 2d array of [TextCharacter]s to copy into the new [org.codetome.zircon.graphics.TextImage].
-     * If <code>toCopy</code> is bigger than the new text image only the relevant parts will
+     * If <code>toCopy</code> is bigger than the new title image only the relevant parts will
      * be copied. If it is smaller the remaining cells will be filled by the <code>filler</code> char.
      * Default is an empty array.
      */
