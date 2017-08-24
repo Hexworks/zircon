@@ -3,6 +3,8 @@ package org.codetome.zircon.terminal.swing
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
+import org.codetome.zircon.internal.terminal.swing.TerminalKeyListener
+import org.codetome.zircon.internal.terminal.swing.TerminalMouseListener
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import java.awt.*
 import java.awt.event.HierarchyEvent
@@ -33,7 +35,7 @@ class SwingTerminalImplementation(
         canvas.minimumSize = Dimension(font.getWidth(), font.getHeight())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
-        canvas.addKeyListener(TerminalInputListener(
+        canvas.addKeyListener(TerminalKeyListener(
                 terminal = this,
                 deviceConfiguration = deviceConfiguration))
         val listener = object : TerminalMouseListener(

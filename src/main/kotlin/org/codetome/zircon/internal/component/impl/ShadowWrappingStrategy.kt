@@ -19,7 +19,7 @@ class ShadowWrappingStrategy(private val shadowChar: Char = Symbols.BLOCK_SPARSE
     override fun apply(textImage: TextImage, size: Size, style: StyleSet) {
         val tc = TextCharacterBuilder.newBuilder()
                 .backgroundColor(TextColorFactory.TRANSPARENT)
-                .foregroundColor(TextColorFactory.fromString("#666666"))
+                .foregroundColor(TextColorFactory.fromString("#555555"))
                 .character(shadowChar)
                 .build()
         LineFactory.buildLine(

@@ -1,4 +1,4 @@
-package org.codetome.zircon.terminal.swing
+package org.codetome.zircon.internal.terminal.swing
 
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
@@ -14,8 +14,8 @@ import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.util.*
 
-class TerminalInputListener(private val terminal: Terminal,
-                            private val deviceConfiguration: DeviceConfiguration) : KeyAdapter() {
+class TerminalKeyListener(private val terminal: Terminal,
+                          private val deviceConfiguration: DeviceConfiguration) : KeyAdapter() {
 
     override fun keyTyped(e: KeyEvent) {
         var character = e.keyChar
