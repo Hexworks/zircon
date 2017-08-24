@@ -1,5 +1,7 @@
 package org.codetome.zircon.api
 
+import org.codetome.zircon.api.component.Component
+
 /**
  * A 2D position in terminal space. Please note that the coordinates are 0-indexed, meaning 0x0 is the top left
  * corner of the terminal. This object is immutable so you cannot change it after it has been created. Instead, you
@@ -88,6 +90,58 @@ data class Position(val column: Int,
      */
     fun withRelative(translate: Position): Position {
         return withRelativeRow(translate.row).withRelativeColumn(translate.column)
+    }
+
+    /**
+     * Creates a [Position] which is relative to the top of the given [Component].
+     * The column coordinate is used to shift right
+     * The row coordinate is used to shift up
+     */
+    fun relativeToTopOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
+        require(row > 0) {
+            "If you your position is relative to the top of a component you can't use negative rows since it wouldn't be `top` relative to the Component!"
+        }
+        Position.of(compCol + column, compRow - row)
+    }
+
+    /**
+     * Creates a [Position] which is relative to the right of the given [Component].
+     * The column coordinate is used to shift right
+     * The row coordinate is used to shift down
+     */
+    fun relativeToRightOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
+        require(column > 0) {
+            "If you your position is relative to the right of a component you can't use negative columns since it wouldn't be `right` relative to the Component!"
+        }
+        Position.of(
+                column = compCol + component.getBoundableSize().columns + column,
+                row = compRow + row)
+    }
+
+    /**
+     * Creates a [Position] which is relative to the bottom of the given [Component].
+     * The column coordinate is used to shift right
+     * The row coordinate is used to shift down
+     */
+    fun relativeToBottomOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
+        require(row > 0) {
+            "If you your position is relative to the bottom of a component you can't use negative rows since it wouldn't be `bottom` relative to the Component!"
+        }
+        Position.of(
+                column = compCol + column,
+                row = compRow + component.getBoundableSize().rows + row)
+    }
+
+    /**
+     * Creates a [Position] which is relative to the left of the given [Component].
+     * The column coordinate is used to shift left
+     * The row coordinate is used to shift down
+     */
+    fun relativeToLeftOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
+        require(column > 0) {
+            "If you your position is relative to the left of a component you can't use negative columns since it wouldn't be `left` relative to the Component!"
+        }
+        Position.of(compCol - column, compRow + row)
     }
 
     override fun compareTo(other: Position): Int {

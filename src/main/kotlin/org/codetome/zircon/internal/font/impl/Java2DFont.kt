@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font.impl
 
-import org.codetome.zircon.api.Modifier
+import org.codetome.zircon.api.Modifier.*
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
@@ -65,12 +65,12 @@ class Java2DFont(private val source: BufferedImage,
 
     companion object {
         val MODIFIER_TRANSFORMER_LOOKUP = mapOf(
-                Pair(Modifier.UNDERLINE, Java2DUnderlineTransformer()),
-                Pair(Modifier.VERTICAL_FLIP, Java2DVerticalFlipper()),
-                Pair(Modifier.HORIZONTAL_FLIP, Java2DHorizontalFlipper()),
-                Pair(Modifier.CROSSED_OUT, Java2DCrossedOutTransformer()),
-                Pair(Modifier.BLINK, NoOpTransformer()),
-                Pair(Modifier.HIDDEN, Java2DHiddenTransformer())
+                Pair(UNDERLINE, Java2DUnderlineTransformer()),
+                Pair(VERTICAL_FLIP, Java2DVerticalFlipper()),
+                Pair(HORIZONTAL_FLIP, Java2DHorizontalFlipper()),
+                Pair(CROSSED_OUT, Java2DCrossedOutTransformer()),
+                Pair(BLINK, NoOpTransformer()),
+                Pair(HIDDEN, Java2DHiddenTransformer())
 
         ).toMap()
     }

@@ -5,13 +5,13 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.factory.TextColorFactory
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.KeyStroke
-import org.codetome.zircon.internal.terminal.IterableTerminal
 import org.codetome.zircon.api.terminal.config.CursorStyle.*
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
+import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.terminal.IterableTerminal
 import java.awt.*
 import java.awt.image.BufferedImage
 import java.util.*
@@ -186,11 +186,7 @@ abstract class Java2DTerminalImplementation(
         val fixedChar = character
                 .withBackgroundColor(TextColorFactory.fromAWTColor(backgroundColor))
                 .withForegroundColor(TextColorFactory.fromAWTColor(foregroundColor))
-
-        if (fixedChar.isNotEmpty()) {
-            graphics.drawImage(font.fetchRegionForChar(fixedChar), x, y, null)
-        }
-
+        graphics.drawImage(font.fetchRegionForChar(fixedChar), x, y, null)
         fetchOverlayZIntersection(Position.of(columnIndex, rowIndex)).forEach {
             if (it.isNotEmpty()) {
                 graphics.drawImage(font.fetchRegionForChar(it), x, y, null)

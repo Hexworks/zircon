@@ -28,7 +28,6 @@ class DefaultContainerHandler(private var container: Container) : ContainerHandl
     override fun activate() {
         state = ACTIVE
         val subscription = EventBus.subscribe<MouseAction>(EventType.MouseAction, { (mouseAction) ->
-            println("${System.currentTimeMillis()}: Container handler active. Event consumed.")
             when {
                 mouseAction.actionType == MouseActionType.MOUSE_MOVED ->
                     handleMouseMoved(mouseAction)

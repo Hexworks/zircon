@@ -81,7 +81,6 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                 if (mouseMovedToNewPosition(actionType, position)
                         .or(isNotMoveEvent(actionType))) {
                     lastMouseLocation = position
-                    println("${System.currentTimeMillis()}: --- Mouse event received from Swing: $it")
                     EventBus.emit(EventType.Input, it)
                     EventBus.emit(EventType.MouseAction, it)
                 }
