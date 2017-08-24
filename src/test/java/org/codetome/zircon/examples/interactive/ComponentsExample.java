@@ -6,16 +6,14 @@ import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.builder.ComponentStylesBuilder;
 import org.codetome.zircon.api.builder.StyleSetBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
-import org.codetome.zircon.api.component.Button;
-import org.codetome.zircon.api.component.ComponentStyles;
-import org.codetome.zircon.api.component.Container;
-import org.codetome.zircon.api.component.Panel;
+import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.builder.ButtonBuilder;
 import org.codetome.zircon.api.component.builder.LabelBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.factory.TextColorFactory;
 import org.codetome.zircon.api.graphics.StyleSet;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.resource.PhysicalFontResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.internal.graphics.BoxType;
@@ -29,19 +27,20 @@ public class ComponentsExample {
     private static final Size TERMINAL_SIZE = Size.of(50, 28);
 
     private static final StyleSet PANEL_STYLE = StyleSetBuilder.newBuilder()
-            .backgroundColor(TextColorFactory.fromString("#881100"))
+            .backgroundColor(TextColorFactory.fromString("#268bd2"))
+            .foregroundColor(TextColorFactory.fromString("#b58900"))
             .build();
 
     private static final StyleSet BUTTON_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-            .backgroundColor(TextColorFactory.fromString("#118800"))
+            .backgroundColor(TextColorFactory.fromString("#859900"))
             .build();
 
     private static final StyleSet BUTTON_MOUSE_STYLE = StyleSetBuilder.newBuilder()
-            .backgroundColor(TextColorFactory.fromString("#229911"))
+            .backgroundColor(TextColorFactory.fromString("#a5b920"))
             .build();
 
     private static final StyleSet BUTTON_ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-            .backgroundColor(TextColorFactory.fromString("#33bb22"))
+            .backgroundColor(TextColorFactory.fromString("#c5d940"))
             .build();
 
     private static final ComponentStyles BUTTON_STYLES = ComponentStylesBuilder.newBuilder()
@@ -50,9 +49,9 @@ public class ComponentsExample {
             .activeStyle(BUTTON_ACTIVE_STYLE)
             .build();
 
-    private static final ComponentStyles PANEL_BG_STYLES = ComponentStylesBuilder.newBuilder()
+    private static final ComponentStyles SCREEN_BG_STYLES = ComponentStylesBuilder.newBuilder()
             .defaultStyle(StyleSetBuilder.newBuilder()
-                    .backgroundColor(TextColorFactory.fromString("#330000"))
+                    .backgroundColor(TextColorFactory.fromString("#002b36"))
                     .build())
             .build();
 
@@ -71,6 +70,7 @@ public class ComponentsExample {
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalBuilder.newBuilder()
                 .initialTerminalSize(TERMINAL_SIZE)
+//                .font(PhysicalFontResource.UBUNTU_MONO.toFont())
                 .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .buildTerminal();
 
@@ -80,7 +80,7 @@ public class ComponentsExample {
         final List<Screen> screens = Arrays.asList(panelsScreen, buttonsScreen, radioAndCheckScreen);
 
         final Container panelsScreenContainer = panelsScreen.getContainer();
-        panelsScreenContainer.setComponentStyles(PANEL_BG_STYLES);
+        panelsScreenContainer.setComponentStyles(SCREEN_BG_STYLES);
 
         addScreenTitle(panelsScreenContainer, "Panels");
 
@@ -88,9 +88,21 @@ public class ComponentsExample {
             addNavigation(screens.get(i).getContainer(), screens, i);
         }
 
+        final Panel simplePanel = PanelBuilder.newBuilder()
+                .position(Position.of(2, 4))
+                .size(PANEL_SIZE)
+                .componentStyles(PANEL_STYLES)
+                .build();
+        simplePanel.addComponent(LabelBuilder.newBuilder()
+                .text("Simple panel")
+                .position(Position.of(1, 1))
+                .componentStyles(PANEL_STYLES)
+                .build());
+        panelsScreenContainer.addComponent(simplePanel);
+
         final Panel borderedPanel = PanelBuilder.newBuilder()
                 .title("Panel")
-                .position(Position.of(2, 4))
+                .position(Position.of(0, 2).relativeToBottomOf(simplePanel))
                 .size(PANEL_SIZE)
                 .wrapInBox()
                 .boxType(BoxType.DOUBLE)
@@ -103,21 +115,8 @@ public class ComponentsExample {
         panelsScreenContainer.addComponent(borderedPanel);
 
 
-        final Panel simplePanel = PanelBuilder.newBuilder()
-                .position(Position.of(2, 16))
-                .size(PANEL_SIZE)
-                .componentStyles(PANEL_STYLES)
-                .build();
-        simplePanel.addComponent(LabelBuilder.newBuilder()
-                .text("Simple panel")
-                .position(Position.of(1, 1))
-                .componentStyles(PANEL_STYLES)
-                .build());
-        panelsScreenContainer.addComponent(simplePanel);
-
-
         final Panel panelWithShadow = PanelBuilder.newBuilder()
-                .position(Position.of(27, 4))
+                .position(Position.of(4, 0).relativeToRightOf(simplePanel))
                 .size(PANEL_SIZE)
                 .addShadow()
                 .componentStyles(PANEL_STYLES)
@@ -131,7 +130,7 @@ public class ComponentsExample {
 
 
         final Panel panelWithShadowAndBorder = PanelBuilder.newBuilder()
-                .position(Position.of(27, 16))
+                .position(Position.of(0, 2).relativeToBottomOf(panelWithShadow))
                 .size(PANEL_SIZE)
                 .addShadow()
                 .wrapInBox()
@@ -146,7 +145,6 @@ public class ComponentsExample {
                 .position(Position.of(0, 1))
                 .componentStyles(PANEL_STYLES)
                 .build());
-
         panelsScreenContainer.addComponent(panelWithShadowAndBorder);
 
         panelsScreen.display();
