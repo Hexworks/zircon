@@ -3,7 +3,6 @@ package org.codetome.zircon.internal.screen
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.LayerBuilder
-import org.codetome.zircon.internal.component.impl.DefaultComponentStyles
 import org.codetome.zircon.internal.component.ContainerHandler
 import org.codetome.zircon.internal.component.impl.DefaultContainer
 import org.codetome.zircon.internal.component.impl.DefaultContainerHandler
@@ -74,9 +73,9 @@ class TerminalScreen private constructor(private val terminal: Terminal,
         }
         // TODO: only do this when forceRedraw is true
         terminal.drainLayers()
-        terminal.addLayer(LayerBuilder.newBuilder()
-                .textImage(drawComponentsToImage())
-                .build())
+        transformComponentsToLayers().forEach {
+            terminal.addLayer(it)
+        }
         backend.drainLayers().forEach {
             terminal.addLayer(it)
         }

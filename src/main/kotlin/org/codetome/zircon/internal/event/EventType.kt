@@ -36,4 +36,8 @@ sealed class EventType {
      * A component changed on a screen.
      */
     object ComponentChange : EventType()
+
+    override fun toString(): String {
+        return "EventType.${javaClass.simpleName}"
+    }
 }

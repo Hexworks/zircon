@@ -20,12 +20,13 @@ import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.internal.graphics.BoxType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ListIterator;
 
 public class ComponentsExample {
+
+    private static final Size PANEL_SIZE = Size.of(21, 10);
+    private static final Size TERMINAL_SIZE = Size.of(50, 28);
 
     private static final StyleSet PANEL_STYLE = StyleSetBuilder.newBuilder()
             .backgroundColor(TextColorFactory.fromString("#881100"))
@@ -49,9 +50,16 @@ public class ComponentsExample {
             .activeStyle(BUTTON_ACTIVE_STYLE)
             .build();
 
-    private static final ComponentStyles BG_STYLES = ComponentStylesBuilder.newBuilder()
+    private static final ComponentStyles PANEL_BG_STYLES = ComponentStylesBuilder.newBuilder()
             .defaultStyle(StyleSetBuilder.newBuilder()
-                    .backgroundColor(TextColorFactory.fromString("#881100"))
+                    .backgroundColor(TextColorFactory.fromString("#330000"))
+                    .build())
+            .build();
+
+    private static final ComponentStyles HEADER_STYLES = ComponentStylesBuilder.newBuilder()
+            .defaultStyle(StyleSetBuilder.newBuilder()
+                    .foregroundColor(TextColorFactory.fromString("#cb4b16"))
+                    .backgroundColor(TextColorFactory.TRANSPARENT)
                     .build())
             .build();
 
@@ -62,7 +70,7 @@ public class ComponentsExample {
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.of(50, 25))
+                .initialTerminalSize(TERMINAL_SIZE)
                 .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .buildTerminal();
 
@@ -72,6 +80,7 @@ public class ComponentsExample {
         final List<Screen> screens = Arrays.asList(panelsScreen, buttonsScreen, radioAndCheckScreen);
 
         final Container panelsScreenContainer = panelsScreen.getContainer();
+        panelsScreenContainer.setComponentStyles(PANEL_BG_STYLES);
 
         addScreenTitle(panelsScreenContainer, "Panels");
 
@@ -81,8 +90,8 @@ public class ComponentsExample {
 
         final Panel borderedPanel = PanelBuilder.newBuilder()
                 .title("Panel")
-                .position(Position.of(1, 4))
-                .size(Size.of(20, 5))
+                .position(Position.of(2, 4))
+                .size(PANEL_SIZE)
                 .wrapInBox()
                 .boxType(BoxType.DOUBLE)
                 .componentStyles(PANEL_STYLES)
@@ -95,8 +104,8 @@ public class ComponentsExample {
 
 
         final Panel simplePanel = PanelBuilder.newBuilder()
-                .position(Position.of(1, 11))
-                .size(Size.of(20, 4))
+                .position(Position.of(2, 16))
+                .size(PANEL_SIZE)
                 .componentStyles(PANEL_STYLES)
                 .build();
         simplePanel.addComponent(LabelBuilder.newBuilder()
@@ -108,8 +117,8 @@ public class ComponentsExample {
 
 
         final Panel panelWithShadow = PanelBuilder.newBuilder()
-                .position(Position.of(1, 17))
-                .size(Size.of(20, 4))
+                .position(Position.of(27, 4))
+                .size(PANEL_SIZE)
                 .addShadow()
                 .componentStyles(PANEL_STYLES)
                 .build();
@@ -122,8 +131,8 @@ public class ComponentsExample {
 
 
         final Panel panelWithShadowAndBorder = PanelBuilder.newBuilder()
-                .position(Position.of(24, 4))
-                .size(Size.of(20, 8))
+                .position(Position.of(27, 16))
+                .size(PANEL_SIZE)
                 .addShadow()
                 .wrapInBox()
                 .componentStyles(PANEL_STYLES)
@@ -147,7 +156,7 @@ public class ComponentsExample {
         if (currIdx > 0) {
             final Button prev = ButtonBuilder.newBuilder()
                     .text(Symbols.TRIANGLE_LEFT_POINTING_BLACK + " Prev")
-                    .position(Position.of(32, 1))
+                    .position(Position.of(31, 1))
                     .componentStyles(BUTTON_STYLES)
                     .build();
             prev.onMouseReleased((a) -> screens.get(currIdx - 1).display());
@@ -156,7 +165,7 @@ public class ComponentsExample {
         if (currIdx < screens.size() - 1) {
             final Button next = ButtonBuilder.newBuilder()
                     .text("Next " + Symbols.TRIANGLE_RIGHT_POINTING_BLACK)
-                    .position(Position.of(41, 1))
+                    .position(Position.of(40, 1))
                     .componentStyles(BUTTON_STYLES)
                     .build();
             next.onMouseReleased((a) -> screens.get(currIdx + 1).display());
@@ -167,7 +176,8 @@ public class ComponentsExample {
     private static void addScreenTitle(Container container, String title) {
         container.addComponent(LabelBuilder.newBuilder()
                 .text(title)
-                .position(Position.of(1, 1))
+                .componentStyles(HEADER_STYLES)
+                .position(Position.of(2, 1))
                 .build());
     }
 

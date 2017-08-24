@@ -1,6 +1,7 @@
 package org.codetome.zircon.internal.component
 
 import org.codetome.zircon.api.component.Container
+import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TextImage
 
 /**
@@ -34,9 +35,10 @@ interface ContainerHandler {
     fun deactivate()
 
     /**
-     * Creates a [TextImage] of the current contents of the [Container]
-     * which this [ContainerHandler] is holding.
+     * Creates a list of [Layer]s out of the current components
+     * this container is holding. The [Layer]s are ordered from
+     * bottom to top to make it easy to render them.
      */
-    fun drawComponentsToImage(): TextImage
+    fun transformComponentsToLayers(): List<Layer>
 
 }

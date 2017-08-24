@@ -1,32 +1,30 @@
 package org.codetome.zircon.internal.event
 
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 @Suppress("UNCHECKED_CAST")
 object EventBus {
 
-    @PublishedApi
-    internal class Subscription<T : Any>(val keys: Set<String>,
-                                         val callback: (Event<T>) -> Unit,
-                                         val dataType: Class<T>)
+    val subscriptions = ConcurrentHashMap<EventType, MutableList<Subscription<*>>>()
 
-    @PublishedApi
-    internal val subscriptions = ConcurrentHashMap<EventType, MutableList<Subscription<*>>>()
-
-    fun subscribe(type: EventType, callback: () -> Unit) {
-        subscribe<Unit>(type, {
+    fun subscribe(type: EventType, callback: () -> Unit): Subscription<Unit> {
+        return subscribe<Unit>(type, {
             callback()
         })
     }
 
-    @JvmStatic
     inline fun <reified T : Any> subscribe(type: EventType,
                                            noinline callback: (Event<T>) -> Unit,
-                                           keys: Set<String> = setOf()) {
-        subscriptions.getOrPut(type, { mutableListOf() })?.add(Subscription(
+                                           keys: Set<String> = setOf()): Subscription<T> {
+        val subscription = Subscription(
                 keys = keys,
                 callback = callback,
-                dataType = T::class.java))
+                dataType = T::class.java,
+                eventType = type)
+        log("Subscribing callback to event type: '$type'. Subscription: $subscription")
+        subscriptions.getOrPut(type, { mutableListOf() })?.add(subscription)
+        return subscription
     }
 
     /**
@@ -36,8 +34,8 @@ object EventBus {
         emit(type, Unit)
     }
 
-    @JvmStatic
     inline fun <reified T : Any> emit(type: EventType, data: T, keys: Set<String> = setOf()) {
+        log("+++ Emitting event of type '$type' with data: '$data'.")
         subscriptions[type]?.filter {
             it.dataType.isAssignableFrom(T::class.java)
         }?.filter {
@@ -52,10 +50,16 @@ object EventBus {
         }
     }
 
-    @PublishedApi
-    internal fun subscriberHasNoKeys(it: Subscription<*>) = it.keys.isEmpty()
+    fun unsubscribe(subscription: Subscription<*>) {
+        subscriptions[subscription.eventType]?.remove(subscription)
+    }
 
-    @PublishedApi
-    internal fun subscriberKeysIntersectsWithEventKeys(it: Subscription<*>, keys: Set<String>)
+    fun subscriberHasNoKeys(it: Subscription<*>) = it.keys.isEmpty()
+
+    fun subscriberKeysIntersectsWithEventKeys(it: Subscription<*>, keys: Set<String>)
             = it.keys.minus(keys).size < it.keys.size
+
+    fun log(text: String) {
+//        println("${System.currentTimeMillis()}: $text")
+    }
 }

@@ -5,11 +5,13 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Drawable
+import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.component.WrappingStrategy
@@ -82,6 +84,12 @@ abstract class DefaultComponent private constructor(private var position: Positi
         this.position = position
     }
 
+    open fun transformToLayers() =
+            listOf(LayerBuilder.newBuilder()
+                    .textImage(drawSurface)
+                    .offset(getPosition())
+                    .build())
+
     final override fun getBoundableSize() = boundable.getBoundableSize()
 
     override fun containsBoundable(boundable: Boundable) = this.boundable.containsBoundable(boundable)
@@ -124,6 +132,7 @@ abstract class DefaultComponent private constructor(private var position: Positi
 
     override fun setComponentStyles(componentStyles: ComponentStyles) {
         this.componentStyles = componentStyles
+        drawSurface.applyStyle(componentStyles.getCurrentStyle())
     }
 
     override fun toString(): String {

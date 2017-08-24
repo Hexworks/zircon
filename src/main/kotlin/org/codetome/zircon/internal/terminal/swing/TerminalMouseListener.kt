@@ -1,13 +1,15 @@
-package org.codetome.zircon.terminal.swing
+package org.codetome.zircon.internal.terminal.swing
 
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
+import org.codetome.zircon.api.input.MouseActionType.*
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import org.codetome.zircon.api.util.TextUtils
+import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.event.EventType
+import org.slf4j.LoggerFactory
 import java.awt.MouseInfo
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
@@ -19,44 +21,47 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                                  private val fontWidth: Int,
                                  private val fontHeight: Int) : MouseAdapter() {
 
+    private val logger = LoggerFactory.getLogger(javaClass)
+    private var lastMouseLocation = Position.UNKNOWN
+
     override fun mouseClicked(e: MouseEvent) {
         if (MouseInfo.getNumberOfButtons() > 2 &&
                 e.button == MouseEvent.BUTTON2 &&
                 deviceConfiguration.isClipboardAvailable) {
             pasteSelectionContent()
         }
-        addActionToKeyQueue(MouseActionType.MOUSE_CLICKED, e)
+        addActionToKeyQueue(MOUSE_CLICKED, e)
     }
 
     override fun mouseReleased(e: MouseEvent) {
-        addActionToKeyQueue(MouseActionType.MOUSE_RELEASED, e)
+        addActionToKeyQueue(MOUSE_RELEASED, e)
     }
 
     override fun mouseMoved(e: MouseEvent) {
-        addActionToKeyQueue(MouseActionType.MOUSE_MOVED, e)
+        addActionToKeyQueue(MOUSE_MOVED, e)
     }
 
     override fun mouseEntered(e: MouseEvent) {
-        addActionToKeyQueue(MouseActionType.MOUSE_ENTERED, e)
+        addActionToKeyQueue(MOUSE_ENTERED, e)
     }
 
     override fun mouseExited(e: MouseEvent) {
-        addActionToKeyQueue(MouseActionType.MOUSE_EXITED, e)
+        addActionToKeyQueue(MOUSE_EXITED, e)
     }
 
     override fun mouseDragged(e: MouseEvent) {
-        addActionToKeyQueue(MouseActionType.MOUSE_DRAGGED, e)
+        addActionToKeyQueue(MOUSE_DRAGGED, e)
     }
 
     override fun mousePressed(e: MouseEvent) {
-        addActionToKeyQueue(MouseActionType.MOUSE_PRESSED, e)
+        addActionToKeyQueue(MOUSE_PRESSED, e)
     }
 
     override fun mouseWheelMoved(e: MouseWheelEvent) {
         val actionType = if (e.preciseWheelRotation > 0) {
-            MouseActionType.MOUSE_WHEEL_ROTATED_DOWN
+            MOUSE_WHEEL_ROTATED_DOWN
         } else {
-            MouseActionType.MOUSE_WHEEL_ROTATED_UP
+            MOUSE_WHEEL_ROTATED_UP
         }
         (0..e.preciseWheelRotation.toInt()).forEach {
             addActionToKeyQueue(actionType, e)
@@ -73,13 +78,23 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                     button = e.button,
                     position = position
             ).let {
-                EventBus.emit(EventType.Input, it)
-                EventBus.emit(EventType.MouseAction, it)
+                if (mouseMovedToNewPosition(actionType, position)
+                        .or(isNotMoveEvent(actionType))) {
+                    lastMouseLocation = position
+                    println("${System.currentTimeMillis()}: --- Mouse event received from Swing: $it")
+                    EventBus.emit(EventType.Input, it)
+                    EventBus.emit(EventType.MouseAction, it)
+                }
             }
         } catch (e: Exception) {
             println("position for mouse event '$e' was out of bounds. It is dropped.")
         }
     }
+
+    private fun isNotMoveEvent(actionType: MouseActionType) = actionType != MOUSE_MOVED
+
+    private fun mouseMovedToNewPosition(actionType: MouseActionType, position: Position) =
+            actionType == MOUSE_MOVED && position != lastMouseLocation
 
     private fun pasteSelectionContent() {
         Toolkit.getDefaultToolkit().systemSelection?.let {

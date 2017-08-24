@@ -2,9 +2,9 @@ package org.codetome.zircon.examples;
 
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
-import org.codetome.zircon.api.resource.PhysicalFontResource;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.factory.TextColorFactory;
+import org.codetome.zircon.api.resource.PhysicalFontResource;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
 
@@ -30,5 +30,6 @@ public class CursorExample {
         for (int i = 0; i < text.length(); i++) {
             terminal.putCharacter(text.charAt(i));
         }
+
     }
 }

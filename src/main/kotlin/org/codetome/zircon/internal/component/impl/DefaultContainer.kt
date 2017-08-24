@@ -4,19 +4,21 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
+import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Container
+import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.listener.MouseListener
 import java.awt.Point
 import java.awt.Rectangle
 import java.util.*
 
-open class DefaultContainer (initialSize: Size,
-                        position: Position,
-                        componentStyles: ComponentStyles,
-                        wrappers: Iterable<WrappingStrategy> = listOf())
+open class DefaultContainer(initialSize: Size,
+                            position: Position,
+                            componentStyles: ComponentStyles,
+                            wrappers: Iterable<WrappingStrategy> = listOf())
     : DefaultComponent(initialSize = initialSize,
         position = position,
         componentStyles = componentStyles,
@@ -37,6 +39,15 @@ open class DefaultContainer (initialSize: Size,
             (component as? DefaultComponent)?.setPosition(component.getPosition() + getEffectivePosition()) ?:
                     throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
         })
+    }
+
+    override fun transformToLayers(): List<Layer> {
+        return mutableListOf(LayerBuilder.newBuilder()
+                .textImage(getDrawSurface())
+                .offset(getPosition())
+                .build()).also {
+            it.addAll(components.flatMap { (it as DefaultComponent).transformToLayers() })
+        }
     }
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
