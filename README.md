@@ -184,10 +184,16 @@ Here are some features which are either under way or planned:
 Zircon is made available under the [MIT License](http://www.opensource.org/licenses/mit-license.php).
 
 ## Credits
-Zircon is created and maintained by Adam Arold
+Zircon is created and maintained by Adam Arold, Milan Boleradszky and Gergely Lukacsy
 
-*I'm open to suggestions, feel free to comment or to send me a message.
+*We're open to suggestions, feel free to comment or to send me a message.
 Pull requests are also welcome!*
+
+Zircon is powered by:
+
+[![][idea img]][idea]
+[![][kotlin img]][kotlin]
+
 
 [circleci]:https://circleci.com/gh/Hexworks/zircon
 [circleci img]:https://circleci.com/gh/Hexworks/zircon/tree/master.svg?style=shield
@@ -209,3 +215,9 @@ Pull requests are also welcome!*
 [TextImage]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/graphics/TextImage.kt
 [BasicTextImage]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/graphics/impl/DefaultTextImage.kt
 [Screen]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/screen/Screen.kt
+
+[kotlin]:https://kotlinlang.org/
+[kotlin img]:https://github.com/Hexworks/zircon/blob/master/images/kotlin_logo.png
+
+[idea]:https://www.jetbrains.com/idea/
+[idea img]:https://github.com/Hexworks/zircon/blob/master/images/idea_logo.png
