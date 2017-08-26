@@ -3,13 +3,13 @@ package org.codetome.zircon.internal.graphics
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Drawable
-import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
+import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import java.util.*
 
 /**
@@ -69,10 +69,12 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
     }
 
     @Synchronized
-    override fun applyStyle(styleSet: StyleSet) {
+    override fun applyStyle(styleSet: StyleSet, offset: Position, size: Size) {
         setStyleFrom(styleSet)
-        getBoundableSize().fetchPositions().forEach { pos ->
-            setCharacterAt(pos, getCharacterAt(pos).get().withStyle(styleSet))
+        size.fetchPositions().forEach { pos ->
+            pos.plus(offset).let { fixedPos ->
+                setCharacterAt(fixedPos, getCharacterAt(fixedPos).get().withStyle(styleSet))
+            }
         }
     }
 

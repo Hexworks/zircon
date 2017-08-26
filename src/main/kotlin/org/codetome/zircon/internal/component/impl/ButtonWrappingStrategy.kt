@@ -17,4 +17,6 @@ class ButtonWrappingStrategy : WrappingStrategy {
         textImage.setCharacterAt(Position.DEFAULT_POSITION.withRelativeColumn(textImage.getBoundableSize().columns - 1), ']')
     }
 
+    override fun isThemeNeutral() = false
+
 }

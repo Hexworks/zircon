@@ -16,4 +16,9 @@ interface WrappingStrategy {
     fun getOffset(): Position
 
     fun apply(textImage: TextImage, size: Size, style: StyleSet)
+
+    /**
+     * Themes don't apply to this wrapper.
+     */
+    fun isThemeNeutral(): Boolean
 }

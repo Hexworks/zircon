@@ -4,10 +4,13 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
+import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.LayerBuilder
+import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Container
+import org.codetome.zircon.api.component.Theme
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.listener.MouseListener
@@ -92,6 +95,20 @@ open class DefaultContainer(initialSize: Size,
 
     override fun containsBoundable(boundable: Boundable) = rect.contains(
             createOtherRectangle(boundable))
+
+    override fun applyTheme(theme: Theme) {
+        setComponentStyles(ComponentStylesBuilder.newBuilder()
+                .defaultStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getDarkForegroundColor())
+                        .backgroundColor(theme.getDarkBackgroundColor())
+                        .build())
+                .build())
+        components.forEach {
+            it.applyTheme(theme)
+        }
+    }
+
+    fun getComponents() = components
 
     private fun createOtherRectangle(boundable: Boundable): Rectangle {
         return Rectangle(

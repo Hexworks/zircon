@@ -23,4 +23,6 @@ class BoxWrappingStrategy(private val boxType: BoxType) : WrappingStrategy {
                     .drawOnto(textImage)
     }
 
+    override fun isThemeNeutral() = false
+
 }
