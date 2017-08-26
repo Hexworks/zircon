@@ -1,11 +1,11 @@
 package org.codetome.zircon.util.rex
 
-import org.codetome.zircon.Position
-import org.codetome.zircon.Size
-import org.codetome.zircon.api.TextCharacterBuilder
-import org.codetome.zircon.api.TextColorFactory
-import org.codetome.zircon.graphics.layer.DefaultLayer
-import org.codetome.zircon.graphics.layer.Layer
+import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.graphics.Layer
+import org.codetome.zircon.internal.graphics.DefaultLayer
 import java.awt.Color
 import java.nio.ByteBuffer
 

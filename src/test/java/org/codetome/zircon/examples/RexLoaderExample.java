@@ -1,11 +1,11 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.Size;
-import org.codetome.zircon.api.PhysicalFontResource;
 import org.codetome.zircon.api.REXPaintResource;
-import org.codetome.zircon.api.TerminalBuilder;
-import org.codetome.zircon.graphics.layer.Layer;
-import org.codetome.zircon.screen.Screen;
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.graphics.Layer;
+import org.codetome.zircon.api.resource.PhysicalFontResource;
+import org.codetome.zircon.api.screen.Screen;
 
 import java.io.InputStream;
 import java.util.List;
@@ -19,13 +19,13 @@ public class RexLoaderExample {
         REXPaintResource rex = REXPaintResource.loadREXFile(RESOURCE);
 
         final Screen screen = TerminalBuilder.newBuilder()
-                .font(PhysicalFontResource.UBUNTU_MONO.asPhysicalFont())
+                .font(PhysicalFontResource.UBUNTU_MONO.toFont())
                 .initialTerminalSize(Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT))
                 .buildScreen();
         screen.setCursorVisible(false);
         List<Layer> layers = rex.toLayerList();
         for (Layer layer: layers) {
-            screen.addOverlay(layer);
+            screen.addLayer(layer);
         }
         screen.display();
     }
