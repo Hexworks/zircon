@@ -38,6 +38,11 @@ interface Component : Drawable, Positionable, Identifiable {
     fun setComponentStyles(componentStyles: ComponentStyles)
 
     /**
+     * Applies the [Theme] to this component and recursively to all its children (if any).
+     */
+    fun applyTheme(theme: Theme)
+
+    /**
      * Returns the innermost [Component] for a given [Position].
      * This means that if you call this method on a [Container] and it
      * contains a [Component] which intersects with `position` the

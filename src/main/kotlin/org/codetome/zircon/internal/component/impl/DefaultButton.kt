@@ -2,10 +2,13 @@ package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.Button
 import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.api.component.Theme
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.shape.FilledRectangleFactory
 import org.codetome.zircon.internal.component.WrappingStrategy
@@ -34,16 +37,33 @@ class DefaultButton(private val text: String,
                 offset = getOffset())
 
         EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), {
-            getDrawSurface().applyStyle(componentStyles.activate())
+            getDrawSurface().applyStyle(getComponentStyles().activate())
             EventBus.emit(EventType.ComponentChange)
         })
         EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), {
-            getDrawSurface().applyStyle(componentStyles.mouseOver())
+            getDrawSurface().applyStyle(getComponentStyles().mouseOver())
             EventBus.emit(EventType.ComponentChange)
         })
     }
 
     override fun getText() = text
+
+    override fun applyTheme(theme: Theme) {
+        setComponentStyles(ComponentStylesBuilder.newBuilder()
+                .defaultStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getAccentColor())
+                        .backgroundColor(theme.getDarkBackgroundColor())
+                        .build())
+                .mouseOverStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getAccentColor())
+                        .backgroundColor(theme.getBrightBackgroundColor())
+                        .build())
+                .activeStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getAccentColor())
+                        .backgroundColor(theme.getDarkForegroundColor())
+                        .build())
+                .build())
+    }
 
     override fun onMousePressed(callback: Consumer<MouseAction>) {
         EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), { (mouseAction) ->

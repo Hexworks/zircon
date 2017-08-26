@@ -2,9 +2,12 @@ package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.component.Component
+import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Label
+import org.codetome.zircon.api.component.Theme
+import org.codetome.zircon.api.factory.TextColorFactory
 
 class DefaultLabel (private val text: String,
                     initialSize: Size,
@@ -21,4 +24,13 @@ class DefaultLabel (private val text: String,
     }
 
     override fun getText() = text
+
+    override fun applyTheme(theme: Theme) {
+        setComponentStyles(ComponentStylesBuilder.newBuilder()
+                .defaultStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getDarkForegroundColor())
+                        .backgroundColor(TextColorFactory.TRANSPARENT)
+                        .build())
+                .build())
+    }
 }

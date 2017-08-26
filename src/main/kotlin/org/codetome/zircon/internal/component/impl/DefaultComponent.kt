@@ -70,13 +70,42 @@ abstract class DefaultComponent private constructor(private var position: Positi
 
     fun getDrawSurface() = drawSurface
 
+    /**
+     * Calculate the size taken by all the wrappers.
+     */
     fun getWrappersSize() = wrappers.map { it.getOccupiedSize() }.fold(Size.ZERO) { acc, size -> acc + size }
 
+    /**
+     * Returns the size of all wrappers which are themeable
+     */
+    fun getThemedWrappersSize() = wrappers
+            .filter { it.isThemeNeutral() }
+            .map { it.getOccupiedSize() }
+            .fold(Size.ZERO) { acc, size -> acc + size }
+
+    /**
+     * Returns the size which this component takes up without its wrappers.
+     */
     fun getEffectiveSize() = getBoundableSize() - getWrappersSize()
 
+    fun getEffectiveThemeableSize() = getBoundableSize() - getThemedWrappersSize()
+
+    /**
+     * Returns the position of this component offset by the wrappers it has.
+     */
     fun getEffectivePosition() = getPosition() + getOffset()
 
+    fun getEffectiveThemeablePosition() = getPosition() + getThemeableOffset()
+
+    /**
+     * Returns the offset which is caused by the wrappers of this component.
+     */
     fun getOffset() = wrappers.map { it.getOffset() }.fold(Position.TOP_LEFT_CORNER) { acc, position -> acc + position }
+
+    fun getThemeableOffset() = wrappers
+            .filter { it.isThemeNeutral() }
+            .map { it.getOffset() }
+            .fold(Position.TOP_LEFT_CORNER) { acc, position -> acc + position }
 
     fun getCurrentOffset() = currentOffset
 
@@ -132,7 +161,7 @@ abstract class DefaultComponent private constructor(private var position: Positi
 
     override fun setComponentStyles(componentStyles: ComponentStyles) {
         this.componentStyles = componentStyles
-        drawSurface.applyStyle(componentStyles.getCurrentStyle())
+        drawSurface.applyStyle(componentStyles.getCurrentStyle(), getThemeableOffset(), getEffectiveThemeableSize())
     }
 
     override fun toString(): String {

@@ -34,4 +34,6 @@ class ShadowWrappingStrategy(private val shadowChar: Char = Symbols.BLOCK_SPARSE
                 .drawOnto(textImage, Position.of(size.columns - 1, 1))
     }
 
+    override fun isThemeNeutral() = true
+
 }

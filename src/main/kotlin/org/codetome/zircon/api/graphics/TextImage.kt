@@ -5,7 +5,6 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Drawable
-import org.codetome.zircon.api.graphics.StyleSet
 
 /**
  * An image built from [TextCharacter]s with color and style information.
@@ -30,8 +29,11 @@ interface TextImage : DrawSurface, StyleSet, Drawable {
     /**
      * Sets the [StyleSet] of this [TextImage]
      * and also applies it to all currently present
-     * [TextCharacter]s.
+     * [TextCharacter]s within the bounds delimited by `offset` and `size`.
+     * Offset is used to offset the starting position from the top left position
+     * while size is used to determine the region (down and right) to overwrite
+     * relative to `offset`.
      */
-    fun applyStyle(styleSet: StyleSet)
+    fun applyStyle(styleSet: StyleSet, offset: Position = Position.DEFAULT_POSITION, size: Size = getBoundableSize())
 
 }
