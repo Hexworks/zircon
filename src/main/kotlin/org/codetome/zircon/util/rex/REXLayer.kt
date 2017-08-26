@@ -5,16 +5,16 @@ import org.codetome.zircon.Size
 import org.codetome.zircon.api.TextCharacterBuilder
 import org.codetome.zircon.api.TextColorFactory
 import org.codetome.zircon.graphics.layer.DefaultLayer
-import org.codetome.zircon.graphics.layer.Layer as ZirconLayer
+import org.codetome.zircon.graphics.layer.Layer
 import java.awt.Color
 import java.nio.ByteBuffer
 
 /**
- * Represents a REX Paint Layer, which contains its size information (width, height) and a [List] of [Cell]s.
+ * Represents a REX Paint Layer, which contains its size information (width, height) and a [List] of [REXCell]s.
  */
-data class Layer(private val width: Int,
-                 private val height: Int,
-                 private val cells: List<Cell>) {
+data class REXLayer(private val width: Int,
+                    private val height: Int,
+                    private val cells: List<REXCell>) {
 
     fun getWidth() = width
 
@@ -23,9 +23,9 @@ data class Layer(private val width: Int,
     fun getCells() = cells
 
     /**
-     * Returns itself as a [Layer].
+     * Returns itself as a [REXLayer].
      */
-    fun toZirconLayer(): ZirconLayer {
+    fun toLayer(): Layer {
         val layer = DefaultLayer(
                 Size(width, height),
                 TextCharacterBuilder.newBuilder()
@@ -59,19 +59,19 @@ data class Layer(private val width: Int,
         val TRANSPARENT_BACKGROUND = Color(255, 0, 255)
 
         /**
-         * Factory method for [Layer], which reads out Layer information from a [ByteBuffer].
-         * This automatically generates [Cell] objects from the data provided.
+         * Factory method for [REXLayer], which reads out Layer information from a [ByteBuffer].
+         * This automatically generates [REXCell] objects from the data provided.
          */
-        fun fromByteBuffer(buffer: ByteBuffer): Layer {
+        fun fromByteBuffer(buffer: ByteBuffer): REXLayer {
             val width = buffer.int
             val height = buffer.int
 
-            val cells: MutableList<Cell> = mutableListOf()
+            val cells: MutableList<REXCell> = mutableListOf()
             for (i in 0 until width*height) {
-                cells.add(Cell.fromByteBuffer(buffer))
+                cells.add(REXCell.fromByteBuffer(buffer))
             }
 
-            return Layer(width, height, cells)
+            return REXLayer(width, height, cells)
         }
     }
 }

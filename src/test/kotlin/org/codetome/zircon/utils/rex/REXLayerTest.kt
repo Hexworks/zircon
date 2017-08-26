@@ -5,12 +5,12 @@ import org.codetome.zircon.Position
 import org.codetome.zircon.Size
 import org.codetome.zircon.TextCharacter
 import org.codetome.zircon.color.impl.DefaultTextColor
-import org.codetome.zircon.util.rex.Layer
+import org.codetome.zircon.util.rex.REXLayer
 import org.junit.Test
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-class LayerTest {
+class REXLayerTest {
 
     @Test
     fun test() {
@@ -34,26 +34,26 @@ class LayerTest {
         val buffer = ByteBuffer.wrap(ba)
         buffer.order(ByteOrder.LITTLE_ENDIAN)
 
-        val zirconLayer = Layer.fromByteBuffer(buffer).toZirconLayer()
-        assertThat(zirconLayer.getBoundableSize()).isEqualTo(Size(2, 1))
+        val layer = REXLayer.fromByteBuffer(buffer).toLayer()
+        assertThat(layer.getBoundableSize()).isEqualTo(Size(2, 1))
 
         assertChar(
                 'A',
                 DefaultTextColor(85,85,85,255),
                 DefaultTextColor(170,170,170,255),
-                zirconLayer.getCharacterAt(Position.of(0, 0)).get()
+                layer.getCharacterAt(Position.of(0, 0)).get()
         )
         assertChar(
                 'B',
                 DefaultTextColor(35,35,35,255),
                 DefaultTextColor(133,133,133,255),
-                zirconLayer.getCharacterAt(Position.of(1, 0)).get()
+                layer.getCharacterAt(Position.of(1, 0)).get()
         )
     }
 
-    private fun assertChar(expChar: Char, expBgColor: DefaultTextColor, expFgColog: DefaultTextColor, textChar: TextCharacter) {
+    private fun assertChar(expChar: Char, expBgColor: DefaultTextColor, expFgColor: DefaultTextColor, textChar: TextCharacter) {
         assertThat(textChar.getCharacter()).isEqualTo(expChar)
         assertThat(textChar.getBackgroundColor()).isEqualTo(expBgColor)
-        assertThat(textChar.getForegroundColor()).isEqualTo(expFgColog)
+        assertThat(textChar.getForegroundColor()).isEqualTo(expFgColor)
     }
 }

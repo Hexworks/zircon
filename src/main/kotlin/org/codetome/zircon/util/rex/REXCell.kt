@@ -5,11 +5,11 @@ import java.nio.ByteBuffer
 import java.nio.charset.Charset
 
 /**
- * Represents a CP437 character on a REX Paint [Layer].
+ * Represents a CP437 character on a REX Paint [REXLayer].
  */
-data class Cell(private val character: Char,
-                private val foregroundColor: Color,
-                private val backgroundColor: Color) {
+data class REXCell(private val character: Char,
+                   private val foregroundColor: Color,
+                   private val backgroundColor: Color) {
 
     fun getCharacter() = character
 
@@ -21,9 +21,9 @@ data class Cell(private val character: Char,
         private val CHARACTER_BYTES = 4
 
         /**
-         * Factory method for [Cell], which reads out Cell information from a [ByteBuffer].
+         * Factory method for [REXCell], which reads out Cell information from a [ByteBuffer].
          */
-        fun fromByteBuffer(buffer: ByteBuffer): Cell {
+        fun fromByteBuffer(buffer: ByteBuffer): REXCell {
             val character = getCP437Char(buffer)
             val fgRed = buffer.get().toInt()
             val fgGreen = buffer.get().toInt()
@@ -32,7 +32,7 @@ data class Cell(private val character: Char,
             val bgGreen = buffer.get().toInt()
             val bgBlue = buffer.get().toInt()
 
-            return Cell(character,
+            return REXCell(character,
                         Color(pack(fgRed, fgGreen, fgBlue, 0)),
                         Color(pack(bgRed, bgGreen, bgBlue, 0))
             )

@@ -1,10 +1,10 @@
 package org.codetome.zircon.utils.rex
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.util.rex.File
+import org.codetome.zircon.util.rex.REXFile
 import org.junit.Test
 
-class FileTest {
+class REXFileTest {
 
     @Test
     fun test() {
@@ -40,7 +40,7 @@ class FileTest {
             ba[i] = b.toByte()
         }
 
-        val file = File.fromByteArray(ba)
+        val file = REXFile.fromByteArray(ba)
 
         assertThat(file.getVersion()).isEqualTo(1)
         assertThat(file.getLayers().size).isEqualTo(file.getNumberOfLayers())
