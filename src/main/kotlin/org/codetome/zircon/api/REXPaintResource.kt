@@ -1,6 +1,6 @@
 package org.codetome.zircon.api
 
-import org.codetome.zircon.graphics.layer.Layer
+import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.util.rex.REXFile
 import org.codetome.zircon.util.rex.decompressGZIPByteArray
 import java.io.InputStream
