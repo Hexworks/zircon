@@ -1,4 +1,4 @@
-package org.codetome.zircon.util.rex
+package org.codetome.zircon.internal.util.rex
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
