@@ -5,7 +5,6 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.internal.color.DefaultTextColor
-import org.codetome.zircon.util.rex.REXLayer
 import org.junit.Test
 import java.nio.ByteBuffer
 import java.nio.ByteOrder

@@ -1,7 +1,6 @@
 package org.codetome.zircon.internal.util.rex
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.util.rex.REXCell
 import org.junit.Test
 import java.awt.Color
 import java.nio.ByteBuffer

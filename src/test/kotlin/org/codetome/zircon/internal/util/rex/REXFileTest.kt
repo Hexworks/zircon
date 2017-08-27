@@ -1,7 +1,6 @@
 package org.codetome.zircon.internal.util.rex
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.util.rex.REXFile
 import org.junit.Test
 
 class REXFileTest {
