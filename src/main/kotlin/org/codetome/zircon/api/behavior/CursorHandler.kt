@@ -34,8 +34,13 @@ interface CursorHandler : Dirtiable {
     fun setCursorVisible(cursorVisible: Boolean)
 
     /**
+     * Returns the [Size] of the (virtual) space the cursor can occupy.
+     */
+    fun getCursorSpaceSize(): Size
+
+    /**
      * Sets the 2d space which bounds the cursor.
-     * For example in the case of a [org.codetome.zircon.terminal.Terminal]
+     * For example in the case of a [org.codetome.zircon.api.terminal.Terminal]
      * it will be the terminal's size.
      */
     fun resizeCursorSpace(size: Size)

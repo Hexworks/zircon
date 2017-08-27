@@ -4,9 +4,9 @@ import org.codetome.zircon.api.Cell
 import org.codetome.zircon.api.terminal.Terminal
 
 /**
- * This interface exposes [Cell] iteration functions for a [Terminal].
+ * This is the internal API of a [Terminal]
  */
-interface IterableTerminal : Terminal {
+interface InternalTerminal : Terminal {
 
     fun forEachDirtyCell(fn: (Cell) -> Unit)
 

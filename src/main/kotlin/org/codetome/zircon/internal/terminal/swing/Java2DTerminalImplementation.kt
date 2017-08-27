@@ -11,7 +11,7 @@ import org.codetome.zircon.api.terminal.config.CursorStyle.*
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
-import org.codetome.zircon.internal.terminal.IterableTerminal
+import org.codetome.zircon.internal.terminal.InternalTerminal
 import java.awt.*
 import java.awt.image.BufferedImage
 import java.util.*
@@ -25,8 +25,8 @@ import java.util.*
 abstract class Java2DTerminalImplementation(
         private val deviceConfiguration: DeviceConfiguration,
         private val font: Font<BufferedImage>,
-        private val terminal: IterableTerminal)
-    : IterableTerminal by terminal {
+        private val terminal: InternalTerminal)
+    : InternalTerminal by terminal {
 
     private var enableInput = false
     private var hasBlinkingText = deviceConfiguration.isCursorBlinking

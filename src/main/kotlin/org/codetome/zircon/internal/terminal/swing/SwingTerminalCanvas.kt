@@ -8,7 +8,7 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.input.Input
-import org.codetome.zircon.internal.terminal.IterableTerminal
+import org.codetome.zircon.internal.terminal.InternalTerminal
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.TerminalResizeListener
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
@@ -26,7 +26,7 @@ class SwingTerminalCanvas(
         initialSize: Size,
         deviceConfiguration: DeviceConfiguration,
         font: Font<BufferedImage>)
-    : Canvas(), IterableTerminal {
+    : Canvas(), InternalTerminal {
 
     // this ugly hack of delegation is necessary because of the lack of multiple inheritance
     // the delegation feature of Kotlin does not work either because we can't pass `this` in
@@ -48,6 +48,8 @@ class SwingTerminalCanvas(
     override fun drainDirtyPositions() = terminal.drainDirtyPositions()
 
     override fun advanceCursor() = terminal.advanceCursor()
+
+    override fun getCursorSpaceSize() = terminal.getCursorSpaceSize()
 
     override fun resizeCursorSpace(size: Size) = terminal.resizeCursorSpace(size)
 

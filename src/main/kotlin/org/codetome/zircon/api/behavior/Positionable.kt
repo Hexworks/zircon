@@ -4,9 +4,9 @@ import org.codetome.zircon.api.Position
 
 /**
  * Represents an object which is positionable within its parent.
- * For example a [org.codetome.zircon.component.Component] can be positioned
- * relative to is parent or an [org.codetome.zircon.graphics.layer.Layer]
- * can be positioned within a [org.codetome.zircon.terminal.Terminal].
+ * For example a [org.codetome.zircon.api.component.Component] can be positioned
+ * relative to is parent or an [org.codetome.zircon.api.graphics.Layer]
+ * can be positioned within a [org.codetome.zircon.api.terminal.Terminal].
  * Note that once positioned a [Positionable] can't be moved.
  * @see [Movable]
  */

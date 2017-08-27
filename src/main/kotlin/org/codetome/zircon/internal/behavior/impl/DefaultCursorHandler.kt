@@ -51,6 +51,8 @@ class DefaultCursorHandler private constructor(private var cursorSpace: Size,
         })
     }
 
+    override fun getCursorSpaceSize() = cursorSpace
+
     override fun resizeCursorSpace(size: Size) {
         this.cursorSpace = size
         putCursorAt(getCursorPosition())
