@@ -14,6 +14,7 @@ import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.factory.TextColorFactory;
 import org.codetome.zircon.api.graphics.StyleSet;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.resource.PhysicalFontResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.internal.graphics.BoxType;
@@ -26,45 +27,6 @@ public class ComponentsExample {
     private static final Size PANEL_SIZE = Size.of(21, 10);
     private static final Size TERMINAL_SIZE = Size.of(50, 28);
 
-    private static final StyleSet PANEL_STYLE = StyleSetBuilder.newBuilder()
-            .backgroundColor(TextColorFactory.fromString("#073642"))
-            .foregroundColor(TextColorFactory.fromString("#b58900"))
-            .build();
-
-    private static final StyleSet BUTTON_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-            .backgroundColor(TextColorFactory.fromString("#cb4b16"))
-            .build();
-
-    private static final StyleSet BUTTON_MOUSE_STYLE = StyleSetBuilder.newBuilder()
-            .backgroundColor(TextColorFactory.fromString("#db5b26"))
-            .build();
-
-    private static final StyleSet BUTTON_ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-            .backgroundColor(TextColorFactory.fromString("#eb6b36"))
-            .build();
-
-    private static final ComponentStyles BUTTON_STYLES = ComponentStylesBuilder.newBuilder()
-            .defaultStyle(BUTTON_DEFAULT_STYLE)
-            .mouseOverStyle(BUTTON_MOUSE_STYLE)
-            .activeStyle(BUTTON_ACTIVE_STYLE)
-            .build();
-
-    private static final ComponentStyles SCREEN_BG_STYLES = ComponentStylesBuilder.newBuilder()
-            .defaultStyle(StyleSetBuilder.newBuilder()
-                    .backgroundColor(TextColorFactory.fromString("#001b16"))
-                    .build())
-            .build();
-
-    private static final ComponentStyles HEADER_STYLES = ComponentStylesBuilder.newBuilder()
-            .defaultStyle(StyleSetBuilder.newBuilder()
-                    .foregroundColor(TextColorFactory.fromString("#cb4b16"))
-                    .backgroundColor(TextColorFactory.TRANSPARENT)
-                    .build())
-            .build();
-
-    private static final ComponentStyles PANEL_STYLES = ComponentStylesBuilder.newBuilder()
-            .defaultStyle(PANEL_STYLE)
-            .build();
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
@@ -90,7 +52,6 @@ public class ComponentsExample {
         final Panel simplePanel = PanelBuilder.newBuilder()
                 .position(Position.of(2, 4))
                 .size(PANEL_SIZE)
-                .componentStyles(PANEL_STYLES)
                 .build();
         simplePanel.addComponent(LabelBuilder.newBuilder()
                 .text("Simple panel")
@@ -138,7 +99,7 @@ public class ComponentsExample {
                 .build());
         panelsScreenContainer.addComponent(panelWithShadowAndBorder);
 
-        panelsScreenContainer.applyTheme(ThemeRepository.SOLARIZED_DARK_ORANGE.getTheme());
+        panelsScreenContainer.applyTheme(ThemeRepository.GAMEBOOKERS.getTheme());
         panelsScreen.display();
     }
 
@@ -167,5 +128,4 @@ public class ComponentsExample {
                 .position(Position.of(2, 1))
                 .build());
     }
-
 }

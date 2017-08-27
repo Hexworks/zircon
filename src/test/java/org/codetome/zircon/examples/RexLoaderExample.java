@@ -1,6 +1,6 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.api.REXPaintResource;
+import org.codetome.zircon.api.resource.REXPaintResource;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.graphics.Layer;

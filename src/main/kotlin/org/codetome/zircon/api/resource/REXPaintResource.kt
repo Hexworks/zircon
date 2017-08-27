@@ -1,8 +1,8 @@
-package org.codetome.zircon.api
+package org.codetome.zircon.api.resource
 
 import org.codetome.zircon.api.graphics.Layer
-import org.codetome.zircon.util.rex.REXFile
-import org.codetome.zircon.util.rex.decompressGZIPByteArray
+import org.codetome.zircon.internal.util.rex.REXFile
+import org.codetome.zircon.internal.util.rex.decompressGZIPByteArray
 import java.io.InputStream
 
 class REXPaintResource(rexFile: REXFile) {

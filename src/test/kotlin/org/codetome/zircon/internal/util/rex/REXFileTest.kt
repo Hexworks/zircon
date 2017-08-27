@@ -1,4 +1,4 @@
-package org.codetome.zircon.utils.rex
+package org.codetome.zircon.internal.util.rex
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.util.rex.REXFile

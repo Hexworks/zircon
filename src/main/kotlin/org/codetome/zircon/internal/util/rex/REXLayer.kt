@@ -1,4 +1,4 @@
-package org.codetome.zircon.util.rex
+package org.codetome.zircon.internal.util.rex
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
