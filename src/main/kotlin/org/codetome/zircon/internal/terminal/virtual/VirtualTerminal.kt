@@ -17,13 +17,13 @@ import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.terminal.AbstractTerminal
-import org.codetome.zircon.internal.terminal.IterableTerminal
+import org.codetome.zircon.internal.terminal.InternalTerminal
 import java.util.function.Consumer
 
 class VirtualTerminal private constructor(initialSize: Size,
                                           private val cursorHandler: CursorHandler,
                                           private val layerable: Layerable)
-    : AbstractTerminal(), IterableTerminal,
+    : AbstractTerminal(), InternalTerminal,
         CursorHandler by cursorHandler,
         Layerable by layerable {
 
