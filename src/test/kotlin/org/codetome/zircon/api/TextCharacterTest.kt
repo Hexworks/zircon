@@ -2,8 +2,6 @@ package org.codetome.zircon.api
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.color.ANSITextColor.*
-import org.codetome.zircon.api.Modifier.*
-import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.junit.Test
@@ -21,27 +19,27 @@ class TextCharacterTest {
 
     @Test
     fun boldModifierShouldBeBold() {
-        assertThat(TextCharacter.builder().modifier(BOLD).build().isBold()).isTrue()
+        assertThat(TextCharacter.builder().modifier(Modifiers.BOLD).build().isBold()).isTrue()
     }
 
     @Test
     fun underlinedModifierShouldBeUnderlined() {
-        assertThat(TextCharacter.builder().modifier(UNDERLINE).build().isUnderlined()).isTrue()
+        assertThat(TextCharacter.builder().modifier(Modifiers.UNDERLINE).build().isUnderlined()).isTrue()
     }
 
     @Test
     fun crossedOutModifierShouldBeCrossedOut() {
-        assertThat(TextCharacter.builder().modifier(CROSSED_OUT).build().isCrossedOut()).isTrue()
+        assertThat(TextCharacter.builder().modifier(Modifiers.CROSSED_OUT).build().isCrossedOut()).isTrue()
     }
 
     @Test
     fun italicModifierShouldBeItalic() {
-        assertThat(TextCharacter.builder().modifier(ITALIC).build().isItalic()).isTrue()
+        assertThat(TextCharacter.builder().modifier(Modifiers.ITALIC).build().isItalic()).isTrue()
     }
 
     @Test
     fun blinkingModifierShouldBeBlinking() {
-        assertThat(TextCharacter.builder().modifier(BLINK).build().isBlinking()).isTrue()
+        assertThat(TextCharacter.builder().modifier(Modifiers.BLINK).build().isBlinking()).isTrue()
     }
 
     @Test
@@ -83,7 +81,7 @@ class TextCharacterTest {
                 character = EXPECTED_CHAR,
                 foregroundColor = EXPECTED_FG_COLOR,
                 backgroundColor = EXPECTED_BG_COLOR,
-                modifiers = setOf(BLINK))
+                modifiers = setOf(Modifiers.BLINK))
                 .withModifiers(EXPECTED_MODIFIERS))
                 .isEqualTo(EXPECTED_TEXT_CHARACTER)
     }
@@ -94,8 +92,8 @@ class TextCharacterTest {
                 character = EXPECTED_CHAR,
                 foregroundColor = EXPECTED_FG_COLOR,
                 backgroundColor = EXPECTED_BG_COLOR,
-                modifiers = setOf(BOLD))
-                .withModifier(ITALIC))
+                modifiers = setOf(Modifiers.BOLD))
+                .withModifier(Modifiers.ITALIC))
                 .isEqualTo(EXPECTED_TEXT_CHARACTER)
     }
 
@@ -105,8 +103,8 @@ class TextCharacterTest {
                 character = EXPECTED_CHAR,
                 foregroundColor = EXPECTED_FG_COLOR,
                 backgroundColor = EXPECTED_BG_COLOR,
-                modifiers = setOf(BOLD, ITALIC, BLINK))
-                .withoutModifier(BLINK))
+                modifiers = setOf(Modifiers.BOLD, Modifiers.ITALIC, Modifiers.BLINK))
+                .withoutModifier(Modifiers.BLINK))
                 .isEqualTo(EXPECTED_TEXT_CHARACTER)
     }
 
@@ -130,7 +128,7 @@ class TextCharacterTest {
 
     @Test
     fun shouldReturnSameTextCharacterWhenWithModifierIsCalledWithSameModifier() {
-        assertThat(EXPECTED_TEXT_CHARACTER.withModifier(BOLD))
+        assertThat(EXPECTED_TEXT_CHARACTER.withModifier(Modifiers.BOLD))
                 .isSameAs(EXPECTED_TEXT_CHARACTER)
     }
 
@@ -142,7 +140,7 @@ class TextCharacterTest {
 
     @Test
     fun shouldReturnSameTextCharacterWhenWithoutModifierIsCalledWithNonPresentModifier() {
-        assertThat(EXPECTED_TEXT_CHARACTER.withoutModifier(CROSSED_OUT))
+        assertThat(EXPECTED_TEXT_CHARACTER.withoutModifier(Modifiers.CROSSED_OUT))
                 .isSameAs(EXPECTED_TEXT_CHARACTER)
     }
 
@@ -150,7 +148,7 @@ class TextCharacterTest {
         val EXPECTED_CHAR = 'x'
         val EXPECTED_FG_COLOR = TextColorFactory.fromString("#aabbcc")
         val EXPECTED_BG_COLOR = TextColorFactory.fromString("#223344")
-        val EXPECTED_MODIFIERS = setOf(BOLD, ITALIC)
+        val EXPECTED_MODIFIERS = setOf(Modifiers.BOLD, Modifiers.ITALIC)
 
         val EXPECTED_TEXT_CHARACTER = TextCharacter.of(
                 character = EXPECTED_CHAR,

@@ -164,6 +164,10 @@ abstract class DefaultComponent private constructor(private var position: Positi
         drawSurface.applyStyle(componentStyles.getCurrentStyle(), getThemeableOffset(), getEffectiveThemeableSize())
     }
 
+    override fun focus() {
+        componentStyles.giveFocus()
+    }
+
     override fun toString(): String {
         return "${javaClass.simpleName}(id=${id.toString().substring(0, 4)})"
     }

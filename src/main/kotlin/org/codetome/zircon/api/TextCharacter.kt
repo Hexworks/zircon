@@ -1,6 +1,6 @@
 package org.codetome.zircon.api
 
-import org.codetome.zircon.api.Modifier.*
+import org.codetome.zircon.api.Modifiers.*
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
@@ -24,15 +24,19 @@ data class TextCharacter(
 
     fun getModifiers() = modifiers
 
-    fun isBold() = modifiers.contains(BOLD)
+    fun isBold() = modifiers.contains(Bold)
 
-    fun isUnderlined() = modifiers.contains(UNDERLINE)
+    fun isUnderlined() = modifiers.contains(Underline)
 
-    fun isCrossedOut() = modifiers.contains(CROSSED_OUT)
+    fun isCrossedOut() = modifiers.contains(CrossedOut)
 
-    fun isItalic() = modifiers.contains(ITALIC)
+    fun isItalic() = modifiers.contains(Italic)
 
-    fun isBlinking() = modifiers.contains(BLINK)
+    fun isBlinking() = modifiers.contains(Blink)
+
+    fun hasBorder() = modifiers.any { it is Border }
+
+    fun fetchBorderData() = modifiers.first { it is Border } as Border
 
     fun isNotEmpty() = this != TextCharacterBuilder.EMPTY
 

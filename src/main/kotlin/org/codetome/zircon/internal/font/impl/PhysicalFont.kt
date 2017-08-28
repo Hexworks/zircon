@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font.impl
 
-import org.codetome.zircon.api.Modifier.*
+import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
@@ -70,7 +70,7 @@ class PhysicalFont(private val source: java.awt.Font,
             maybeRegion.get()
         }
         textCharacter.getModifiers().forEach {
-            region = MODIFIER_TRANSFORMER_LOOKUP[it]!!.transform(region, textCharacter)
+            region = MODIFIER_TRANSFORMER_LOOKUP[it]?.transform(region, textCharacter) ?: region
         }
         return region
     }
@@ -79,12 +79,12 @@ class PhysicalFont(private val source: java.awt.Font,
 
     companion object {
         val MODIFIER_TRANSFORMER_LOOKUP = mapOf(
-                Pair(UNDERLINE, Java2DUnderlineTransformer()),
-                Pair(VERTICAL_FLIP, Java2DVerticalFlipper()),
-                Pair(HORIZONTAL_FLIP, Java2DHorizontalFlipper()),
-                Pair(CROSSED_OUT, Java2DCrossedOutTransformer()),
-                Pair(BLINK, NoOpTransformer()),
-                Pair(HIDDEN, Java2DHiddenTransformer())
+                Pair(Modifiers.UNDERLINE, Java2DUnderlineTransformer()),
+                Pair(Modifiers.VERTICAL_FLIP, Java2DVerticalFlipper()),
+                Pair(Modifiers.HORIZONTAL_FLIP, Java2DHorizontalFlipper()),
+                Pair(Modifiers.CROSSED_OUT, Java2DCrossedOutTransformer()),
+                Pair(Modifiers.BLINK, NoOpTransformer()),
+                Pair(Modifiers.HIDDEN, Java2DHiddenTransformer())
         ).toMap()
     }
 }

@@ -1,10 +1,13 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.terminal.Terminal;
 
-import static org.codetome.zircon.api.Modifier.*;
+import static org.codetome.zircon.api.Modifiers.*;
+import static org.codetome.zircon.api.Modifiers.BorderPosition.*;
+import static org.codetome.zircon.api.Modifiers.BorderType.SOLID;
 import static org.codetome.zircon.api.color.ANSITextColor.*;
 
 public class FontModifiersExample {
@@ -12,6 +15,7 @@ public class FontModifiersExample {
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalBuilder.newBuilder()
+                .initialTerminalSize(Size.of(20, 10))
                 .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .buildTerminal();
         terminal.setCursorVisible(false); // we don't want the cursor right now
@@ -51,7 +55,7 @@ public class FontModifiersExample {
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(HIDDEN);
+        terminal.enableModifiers(Blink.INSTANCE);
         terminal.setBackgroundColor(CYAN);
         terminal.setForegroundColor(YELLOW);
         terminal.putCharacter('F');
@@ -62,6 +66,13 @@ public class FontModifiersExample {
         terminal.setBackgroundColor(BLUE);
         terminal.setForegroundColor(WHITE);
         terminal.putCharacter('G');
+
+        putEmptySpace(terminal);
+
+        terminal.enableModifiers(BORDER.of(SOLID, TOP, LEFT, RIGHT, BOTTOM));
+        terminal.setBackgroundColor(WHITE);
+        terminal.setForegroundColor(BLUE);
+        terminal.putCharacter('H');
 
         terminal.flush();
     }

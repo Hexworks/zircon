@@ -1,9 +1,6 @@
 package org.codetome.zircon.terminal.swing
 
-import org.codetome.zircon.api.Modifier
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.*
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.KeyStroke
@@ -131,7 +128,7 @@ abstract class Java2DTerminalImplementation(
                 val backgroundColor = deriveTrueBackgroundColor(textCharacter, atCursorLocation)
                 val drawCursor = atCursorLocation && (!deviceConfiguration.isCursorBlinking || //Always draw if the cursor isn't blinking
                         deviceConfiguration.isCursorBlinking && blinkOn)    //If the cursor is blinking, only draw when blinkOn is true
-                if (textCharacter.getModifiers().contains(Modifier.BLINK)) {
+                if (textCharacter.getModifiers().contains(Modifiers.BLINK)) {
                     foundBlinkingCharacters = true
                 }
 

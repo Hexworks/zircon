@@ -2,6 +2,7 @@ package org.codetome.zircon.api.component
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.behavior.Drawable
+import org.codetome.zircon.api.behavior.Focusable
 import org.codetome.zircon.api.behavior.Positionable
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.behavior.Identifiable
@@ -19,7 +20,7 @@ import java.util.function.Consumer
  * like a label or a check box is a [Container] while a label which is only intended to
  * display information is a [Component].
  */
-interface Component : Drawable, Positionable, Identifiable {
+interface Component : Drawable, Positionable, Identifiable, Focusable {
 
     /**
      * Adds a [MouseListener] to this [Component] which will
