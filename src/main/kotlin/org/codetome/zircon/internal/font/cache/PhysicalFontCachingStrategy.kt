@@ -9,5 +9,6 @@ class PhysicalFontCachingStrategy : ImageCachingStrategy {
     override fun generateCacheKeyFor(textCharacter: TextCharacter) = Objects.hash(
             textCharacter.getCharacter(),
             textCharacter.getBackgroundColor(),
-            textCharacter.getForegroundColor())
+            textCharacter.getForegroundColor(),
+            textCharacter.getModifiers())
 }

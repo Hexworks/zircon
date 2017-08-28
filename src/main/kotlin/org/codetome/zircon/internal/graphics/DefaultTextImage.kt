@@ -70,10 +70,14 @@ class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
 
     @Synchronized
     override fun applyStyle(styleSet: StyleSet, offset: Position, size: Size) {
+        styleSet.clearModifiers()
         setStyleFrom(styleSet)
         size.fetchPositions().forEach { pos ->
             pos.plus(offset).let { fixedPos ->
-                setCharacterAt(fixedPos, getCharacterAt(fixedPos).get().withStyle(styleSet))
+                getCharacterAt(fixedPos).map { char ->
+                    styleSet.setModifiers(char.getModifiers())
+                    setCharacterAt(fixedPos, char.withStyle(styleSet))
+                }
             }
         }
     }

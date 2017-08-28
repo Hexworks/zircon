@@ -15,7 +15,13 @@ interface WrappingStrategy {
 
     fun getOffset(): Position
 
-    fun apply(textImage: TextImage, size: Size, style: StyleSet)
+    /**
+     * Applies the [WrappingStrategy] to a [TextImage] at the given offset (position)
+     * and in a given [Size] using the given style. The offset/size is necessary because
+     * if you apply border and shadow as well you need to know where the border should
+     * end and the shadow should start.
+     */
+    fun apply(textImage: TextImage, size: Size, offset: Position, style: StyleSet)
 
     /**
      * Themes don't apply to this wrapper.

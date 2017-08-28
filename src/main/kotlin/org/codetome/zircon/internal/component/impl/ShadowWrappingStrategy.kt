@@ -16,7 +16,7 @@ class ShadowWrappingStrategy(private val shadowChar: Char = Symbols.BLOCK_SPARSE
 
     override fun getOffset() = Position.TOP_LEFT_CORNER
 
-    override fun apply(textImage: TextImage, size: Size, style: StyleSet) {
+    override fun apply(textImage: TextImage, size: Size, offset: Position, style: StyleSet) {
         val tc = TextCharacterBuilder.newBuilder()
                 .backgroundColor(TextColorFactory.TRANSPARENT)
                 .foregroundColor(TextColorFactory.fromString("#555555"))

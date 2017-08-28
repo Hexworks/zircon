@@ -14,13 +14,13 @@ class BoxWrappingStrategy(private val boxType: BoxType) : WrappingStrategy {
 
     override fun getOffset() = Position.OFFSET_1x1
 
-    override fun apply(textImage: TextImage, size: Size, style: StyleSet) {
+    override fun apply(textImage: TextImage, size: Size, offset: Position, style: StyleSet) {
             BoxBuilder.newBuilder()
                     .boxType(boxType)
                     .size(size)
                     .style(style)
                     .build()
-                    .drawOnto(textImage)
+                    .drawOnto(textImage, offset)
     }
 
     override fun isThemeNeutral() = false

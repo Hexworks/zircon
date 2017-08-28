@@ -1,5 +1,7 @@
 package org.codetome.zircon.api
 
+import org.codetome.zircon.api.shape.RectangleFactory
+
 /**
  * Terminal dimensions in 2D space, measured in number of rows and columns.
  * This class is immutable and cannot change its internal state after creation.
@@ -29,6 +31,26 @@ data class Size(val columns: Int,
             Position.of(column, row)
         }
     }
+
+    /**
+     * Creates a list of [Position]s which represent the
+     * bounding box of this size. So for example a size of (3x3)
+     * will have a bounding box of
+     * `[(0, 0), (1, 0), (2, 0), (0, 1), (2, 1), (0, 2), (1, 2), (2, 2)]`
+     */
+    fun fetchBoundingBoxPositions(): Set<Position> {
+        return RectangleFactory
+                .buildRectangle(Position.DEFAULT_POSITION, this)
+                .getPositions()
+    }
+
+    fun fetchTopLeftPosition() = Position.TOP_LEFT_CORNER
+
+    fun fetchTopRightPosition() = Position.of(columns -1, 0)
+
+    fun fetchBottomLeftPosition() = Position.of(0, rows - 1)
+
+    fun fetchBottomRightPosition() = Position.of(columns -1, rows -1)
 
     /**
      * Creates a new size based on this size, but with a different width.
