@@ -3,6 +3,7 @@ package org.codetome.zircon.internal.graphics
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.Modifier.*
+import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.junit.Before
 import org.junit.Test
@@ -35,7 +36,7 @@ class DefaultStyleSetTest {
 
     @Test
     fun shouldProperlyEnableModifier() {
-        val modifier = BOLD
+        val modifier = Modifiers.BOLD
 
         target.enableModifier(modifier)
 
@@ -44,7 +45,7 @@ class DefaultStyleSetTest {
 
     @Test
     fun shouldProperlyDisableModifier() {
-        val modifier = BOLD
+        val modifier = Modifiers.BOLD
 
         target.enableModifier(modifier)
         target.disableModifier(modifier)
@@ -54,7 +55,7 @@ class DefaultStyleSetTest {
 
     @Test
     fun shouldProperlyEnableModifiers() {
-        val modifiers = setOf(BOLD, CROSSED_OUT).toTypedArray()
+        val modifiers = setOf(Modifiers.BOLD, Modifiers.CROSSED_OUT).toTypedArray()
 
         target.enableModifiers(*modifiers)
 
@@ -63,7 +64,7 @@ class DefaultStyleSetTest {
 
     @Test
     fun shouldProperlySetModifiers() {
-        val modifiers = setOf(BOLD, CROSSED_OUT)
+        val modifiers = setOf(Modifiers.BOLD, Modifiers.CROSSED_OUT)
 
         target.setModifiers(modifiers)
 
@@ -72,7 +73,7 @@ class DefaultStyleSetTest {
 
     @Test
     fun shouldProperlyClearModifiers() {
-        target.enableModifier(BOLD)
+        target.enableModifier(Modifiers.BOLD)
 
         target.clearModifiers()
 
@@ -83,7 +84,7 @@ class DefaultStyleSetTest {
     companion object {
         val EXPECTED_BG_COLOR = ANSITextColor.YELLOW
         val EXPECTED_FG_COLOR = ANSITextColor.CYAN
-        val EXPECTED_MODIFIERS = setOf(CROSSED_OUT, BLINK)
+        val EXPECTED_MODIFIERS = setOf(Modifiers.CROSSED_OUT, Modifiers.BLINK)
 
         val OTHER_STYLE = DefaultStyleSet(
                 foregroundColor = EXPECTED_FG_COLOR,

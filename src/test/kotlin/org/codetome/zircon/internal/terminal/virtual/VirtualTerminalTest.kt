@@ -1,13 +1,9 @@
 package org.codetome.zircon.internal.terminal.virtual
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Cell
-import org.codetome.zircon.api.Modifier
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.*
 import org.codetome.zircon.api.Position.Companion.DEFAULT_POSITION
 import org.codetome.zircon.api.Position.Companion.OFFSET_1x1
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.TerminalResizeListener
@@ -95,7 +91,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldEnableModifiersWhenEnableModifiersIsCalled() {
-        val modifiers = setOf(Modifier.BLINK, Modifier.BOLD)
+        val modifiers = setOf(Modifiers.BLINK, Modifiers.BOLD)
         target.enableModifiers(*modifiers.toTypedArray())
 
         assertThat(target.getActiveModifiers()).containsExactlyInAnyOrder(*modifiers.toTypedArray())

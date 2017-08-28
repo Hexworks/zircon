@@ -2,8 +2,8 @@ package org.codetome.zircon.api.builder
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Modifier
+import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.junit.Test
 
@@ -30,6 +30,6 @@ class TextCharacterBuilderTest {
         val BG_COLOR = TextColorFactory.fromString("#aabbcc")
         val FG_COLOR = TextColorFactory.fromString("#ccbbaa")
         val CHAR = 'a'
-        val MODIFIER = Modifier.BOLD
+        val MODIFIER = Modifiers.BOLD
     }
 }
