@@ -1,17 +1,19 @@
 package org.codetome.zircon.api.component.builder
 
+import org.codetome.zircon.api.Modifiers.Border
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.Symbols
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Panel
 import org.codetome.zircon.internal.component.WrappingStrategy
+import org.codetome.zircon.internal.component.impl.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.BoxWrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultPanel
 import org.codetome.zircon.internal.component.impl.ShadowWrappingStrategy
 import org.codetome.zircon.internal.graphics.BoxType
+import java.util.*
 
 class PanelBuilder : Builder<Panel> {
 
@@ -22,6 +24,7 @@ class PanelBuilder : Builder<Panel> {
     private var size = Size.UNKNOWN
     private var drawBox = false
     private var drawShadow = false
+    private var border = Optional.empty<Border>()
 
     fun wrapInBox() = also {
         drawBox = true
@@ -29,6 +32,10 @@ class PanelBuilder : Builder<Panel> {
 
     fun addShadow() = also {
         drawShadow = true
+    }
+
+    fun addBorder(border: Border) = also {
+        this.border = Optional.of(border)
     }
 
     fun boxType(boxType: BoxType) = also {
@@ -58,6 +65,9 @@ class PanelBuilder : Builder<Panel> {
         val wrappers = mutableListOf<WrappingStrategy>()
         if(drawBox) {
             wrappers.add(BoxWrappingStrategy(boxType))
+        }
+        if(border.isPresent) {
+            wrappers.add(BorderWrappingStrategy(border.get()))
         }
         if(drawShadow) {
             wrappers.add(ShadowWrappingStrategy())

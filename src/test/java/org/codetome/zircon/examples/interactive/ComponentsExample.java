@@ -1,5 +1,7 @@
 package org.codetome.zircon.examples.interactive;
 
+import org.codetome.zircon.api.Modifiers;
+import org.codetome.zircon.api.Modifiers.BorderType;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
@@ -22,10 +24,15 @@ import org.codetome.zircon.internal.graphics.BoxType;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.codetome.zircon.api.Modifiers.BorderPosition.*;
+import static org.codetome.zircon.api.Modifiers.BorderType.DASHED;
+import static org.codetome.zircon.api.Modifiers.BorderType.DOTTED;
+import static org.codetome.zircon.api.Modifiers.BorderType.SOLID;
+
 public class ComponentsExample {
 
-    private static final Size PANEL_SIZE = Size.of(21, 10);
-    private static final Size TERMINAL_SIZE = Size.of(50, 28);
+    private static final Size PANEL_SIZE = Size.of(22, 6);
+    private static final Size TERMINAL_SIZE = Size.of(52, 28);
 
 
     public static void main(String[] args) {
@@ -59,17 +66,17 @@ public class ComponentsExample {
                 .build());
         panelsScreenContainer.addComponent(simplePanel);
 
-        final Panel borderedPanel = PanelBuilder.newBuilder()
+        final Panel boxedPanel = PanelBuilder.newBuilder()
                 .title("Panel")
                 .position(Position.of(0, 2).relativeToBottomOf(simplePanel))
                 .size(PANEL_SIZE)
                 .wrapInBox()
                 .boxType(BoxType.DOUBLE)
                 .build();
-        borderedPanel.addComponent(LabelBuilder.newBuilder()
-                .text("Bordered panel")
+        boxedPanel.addComponent(LabelBuilder.newBuilder()
+                .text("Boxed panel")
                 .build());
-        panelsScreenContainer.addComponent(borderedPanel);
+        panelsScreenContainer.addComponent(boxedPanel);
 
 
         final Panel panelWithShadow = PanelBuilder.newBuilder()
@@ -84,20 +91,46 @@ public class ComponentsExample {
         panelsScreenContainer.addComponent(panelWithShadow);
 
 
-        final Panel panelWithShadowAndBorder = PanelBuilder.newBuilder()
+        final Panel panelWithShadowAndBox = PanelBuilder.newBuilder()
                 .position(Position.of(0, 2).relativeToBottomOf(panelWithShadow))
                 .size(PANEL_SIZE)
                 .addShadow()
                 .wrapInBox()
                 .build();
-        panelWithShadowAndBorder.addComponent(LabelBuilder.newBuilder()
+        panelWithShadowAndBox.addComponent(LabelBuilder.newBuilder()
                 .text("Panel with shadow")
                 .build());
-        panelWithShadowAndBorder.addComponent(LabelBuilder.newBuilder()
-                .text("and border")
+        panelWithShadowAndBox.addComponent(LabelBuilder.newBuilder()
+                .text("and box")
                 .position(Position.of(0, 1))
                 .build());
-        panelsScreenContainer.addComponent(panelWithShadowAndBorder);
+        panelsScreenContainer.addComponent(panelWithShadowAndBox);
+
+
+        final Panel borderedPanel = PanelBuilder.newBuilder()
+                .title("Bordered panel")
+                .position(Position.of(0, 2).relativeToBottomOf(boxedPanel))
+                .size(PANEL_SIZE)
+                .addBorder(Modifiers.BORDER.of(SOLID))
+                .build();
+        borderedPanel.addComponent(LabelBuilder.newBuilder()
+                .text("Bordered panel")
+                .position(Position.OFFSET_1x1)
+                .build());
+        panelsScreenContainer.addComponent(borderedPanel);
+
+        final Panel borderedPanelWithShadow = PanelBuilder.newBuilder()
+                .title("Bordered panel")
+                .position(Position.of(0, 2).relativeToBottomOf(panelWithShadowAndBox))
+                .size(PANEL_SIZE)
+                .addBorder(Modifiers.BORDER.of(DOTTED))
+                .addShadow()
+                .build();
+        borderedPanelWithShadow.addComponent(LabelBuilder.newBuilder()
+                .text("Border+shadow panel")
+                .position(Position.OFFSET_1x1)
+                .build());
+        panelsScreenContainer.addComponent(borderedPanelWithShadow);
 
         panelsScreenContainer.applyTheme(ThemeRepository.GAMEBOOKERS.getTheme());
         panelsScreen.display();
@@ -107,7 +140,7 @@ public class ComponentsExample {
         if (currIdx > 0) {
             final Button prev = ButtonBuilder.newBuilder()
                     .text(Symbols.TRIANGLE_LEFT_POINTING_BLACK + " Prev")
-                    .position(Position.of(31, 1))
+                    .position(Position.of(33, 1))
                     .build();
             prev.onMouseReleased((a) -> screens.get(currIdx - 1).display());
             panelsScreenContainer.addComponent(prev);
@@ -115,7 +148,7 @@ public class ComponentsExample {
         if (currIdx < screens.size() - 1) {
             final Button next = ButtonBuilder.newBuilder()
                     .text("Next " + Symbols.TRIANGLE_RIGHT_POINTING_BLACK)
-                    .position(Position.of(40, 1))
+                    .position(Position.of(42, 1))
                     .build();
             next.onMouseReleased((a) -> screens.get(currIdx + 1).display());
             panelsScreenContainer.addComponent(next);

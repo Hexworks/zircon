@@ -51,7 +51,7 @@ abstract class DefaultComponent private constructor(private var position: Positi
         currentOffset = Position.DEFAULT_POSITION
         wrappers.forEach {
             currSize += it.getOccupiedSize()
-            it.apply(drawSurface, currSize, componentStyles.getCurrentStyle())
+            it.apply(drawSurface, currSize, currentOffset, componentStyles.getCurrentStyle())
             currentOffset += it.getOffset()
         }
         EventBus.subscribe(EventType.MouseOver(id), {
@@ -161,6 +161,7 @@ abstract class DefaultComponent private constructor(private var position: Positi
 
     override fun setComponentStyles(componentStyles: ComponentStyles) {
         this.componentStyles = componentStyles
+
         drawSurface.applyStyle(componentStyles.getCurrentStyle(), getThemeableOffset(), getEffectiveThemeableSize())
     }
 

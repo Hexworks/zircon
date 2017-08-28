@@ -1,5 +1,8 @@
 package org.codetome.zircon.api
 
+import org.codetome.zircon.api.Modifiers.BorderPosition.*
+import org.codetome.zircon.api.Modifiers.BorderType.*
+
 sealed class Modifiers : Modifier {
 
     object Underline : Modifiers()
@@ -16,7 +19,7 @@ sealed class Modifiers : Modifier {
                       val borderPositions: Set<BorderPosition>) : Modifiers()
 
     enum class BorderType {
-        SOLID
+        SOLID, DOTTED, DASHED
     }
 
     enum class BorderPosition {
@@ -25,7 +28,9 @@ sealed class Modifiers : Modifier {
 
     object BorderFactory {
 
-        fun of(borderType: BorderType, vararg borderPositions: BorderPosition) =
+        @JvmOverloads
+        fun of(borderType: BorderType = SOLID,
+               vararg borderPositions: BorderPosition = listOf(TOP, RIGHT, BOTTOM, LEFT).toTypedArray()) =
                 Border(borderType, borderPositions.toSet())
     }
 

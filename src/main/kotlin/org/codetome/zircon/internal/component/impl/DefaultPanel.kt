@@ -21,19 +21,6 @@ class DefaultPanel(private val title: String,
         componentStyles = componentStyles,
         wrappers = wrappers) {
 
-
-    init {
-        FilledRectangleFactory.buildFilledRectangle(
-                topLeft = Position.DEFAULT_POSITION,
-                size = getEffectiveSize())
-                .toTextImage(TextCharacterBuilder.newBuilder()
-                        .styleSet(getComponentStyles().getCurrentStyle())
-                        .build())
-                .drawOnto(
-                        surface = getDrawSurface(),
-                        offset = getOffset())
-    }
-
     override fun getTitle() = title
 
     override fun applyTheme(theme: Theme) {
