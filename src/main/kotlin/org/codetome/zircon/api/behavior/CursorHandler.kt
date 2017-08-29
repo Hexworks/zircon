@@ -21,7 +21,14 @@ interface CursorHandler : Dirtiable {
      * of bound regards to columns, the cursor will be moved the the 0th position
      * in the next row.
      */
-    fun advanceCursor()
+    fun moveCursorForward()
+
+    /**
+     * Moves the cursor one [Position] to the left. If the [Position] would be out
+     * of bound regards to columns, the cursor will be moved the the last position
+     * in the previous row.
+     */
+    fun moveCursorBackward()
 
     /**
      * Checks if the terminal cursor is visible or not.

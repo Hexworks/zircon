@@ -17,7 +17,6 @@ import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
-import org.codetome.zircon.internal.behavior.impl.DefaultScrollable;
 import org.codetome.zircon.internal.component.impl.DefaultTextBox;
 import org.codetome.zircon.internal.graphics.BoxType;
 
@@ -42,7 +41,7 @@ public class ComponentsExample {
                 .font(CP437TilesetResource.TAFFER_20X20.toFont())
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorBlinking(true)
-                        .cursorStyle(CursorStyle.REVERSED)
+                        .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
                         .cursorColor(TextColorFactory.fromString("#ff00ff"))
                         .build())
                 .buildTerminal();

@@ -1,4 +1,4 @@
-package org.codetome.zircon.terminal.swing
+package org.codetome.zircon.internal.terminal.swing
 
 import org.codetome.zircon.api.*
 import org.codetome.zircon.api.behavior.Boundable
@@ -47,7 +47,9 @@ class SwingTerminalCanvas(
 
     override fun drainDirtyPositions() = terminal.drainDirtyPositions()
 
-    override fun advanceCursor() = terminal.advanceCursor()
+    override fun moveCursorForward() = terminal.moveCursorForward()
+
+    override fun moveCursorBackward() = terminal.moveCursorBackward()
 
     override fun getCursorSpaceSize() = terminal.getCursorSpaceSize()
 

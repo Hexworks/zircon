@@ -5,7 +5,6 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
-import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.Button
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Theme
@@ -28,7 +27,7 @@ class DefaultButton(private val text: String,
         wrappers = wrappers) {
 
     init {
-        getDrawSurface().putText(text, getOffset())
+        getDrawSurface().putText(text, getWrapperOffset())
 
         EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), {
             getDrawSurface().applyStyle(getComponentStyles().activate())
@@ -60,7 +59,7 @@ class DefaultButton(private val text: String,
 //            if(it === BOX_HIGHLIGHT) {
 //                it.remove(getDrawSurface(), currSize, currentOffset, getComponentStyles().getCurrentStyle())
 //            }
-//            currentOffset += it.getOffset()
+//            currentOffset += it.getWrapperOffset()
 //        }
 //        wrappers.remove(BOX_HIGHLIGHT)
     }

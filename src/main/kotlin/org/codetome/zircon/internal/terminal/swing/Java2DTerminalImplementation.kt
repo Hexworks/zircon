@@ -1,7 +1,9 @@
-package org.codetome.zircon.terminal.swing
+package org.codetome.zircon.internal.terminal.swing
 
-import org.codetome.zircon.api.*
-import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.Modifiers
+import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.terminal.config.CursorStyle.*
@@ -106,11 +108,9 @@ abstract class Java2DTerminalImplementation(
             terminal.setSize(terminalSize)
             needToRedraw = true
         }
-
         if (isDirty()) {
             needToRedraw = true
         }
-
         if (needToRedraw) {
             val cursorPosition = terminal.getCursorPosition()
             var foundBlinkingCharacters = deviceConfiguration.isCursorBlinking
@@ -124,24 +124,17 @@ abstract class Java2DTerminalImplementation(
             terminal.forEachDirtyCell { (position, textCharacter) ->
                 val atCursorLocation = cursorPosition == position
                 val characterWidth = getFontWidth()
-                val foregroundColor = deriveTrueForegroundColor(textCharacter)
-                val backgroundColor = deriveTrueBackgroundColor(textCharacter, atCursorLocation)
-                val drawCursor = atCursorLocation && (!deviceConfiguration.isCursorBlinking || //Always draw if the cursor isn't blinking
-                        deviceConfiguration.isCursorBlinking && blinkOn)    //If the cursor is blinking, only draw when blinkOn is true
+                val drawCursor = shouldDrawCursor(atCursorLocation)
                 if (textCharacter.getModifiers().contains(Modifiers.BLINK)) {
                     foundBlinkingCharacters = true
                 }
-
                 drawCharacter(graphics,
                         textCharacter,
                         position.column,
                         position.row,
-                        foregroundColor,
-                        backgroundColor,
                         characterWidth,
                         drawCursor)
             }
-
             this.hasBlinkingText = foundBlinkingCharacters || deviceConfiguration.isCursorBlinking
         }
 
@@ -151,6 +144,43 @@ abstract class Java2DTerminalImplementation(
         this.lastComponentHeight = getHeight()
         graphics.dispose()
     }
+
+    private fun drawCharacter(
+            graphics: Graphics,
+            character: TextCharacter,
+            columnIndex: Int,
+            rowIndex: Int,
+            characterWidth: Int,
+            drawCursor: Boolean) {
+
+        val x = columnIndex * getFontWidth()
+        val y = rowIndex * getFontHeight()
+
+        graphics.drawImage(font.fetchRegionForChar(character), x, y, null)
+        fetchOverlayZIntersection(Position.of(columnIndex, rowIndex)).forEach {
+            if (it.isNotEmpty()) {
+                graphics.drawImage(font.fetchRegionForChar(it), x, y, null)
+            }
+        }
+
+        if (drawCursor) {
+            graphics.color = deviceConfiguration.cursorColor.toAWTColor()
+            when (deviceConfiguration.cursorStyle) {
+                USE_CHARACTER_FOREGROUND -> {
+                    graphics.color = character.getForegroundColor().toAWTColor()
+                    graphics.fillRect(x, y, getFontWidth(), getFontHeight())
+                }
+                FIXED_BACKGROUND -> graphics.fillRect(x, y, getFontWidth(), getFontHeight())
+                UNDER_BAR -> graphics.fillRect(x, y + getFontHeight() - 3, characterWidth, 2)
+                VERTICAL_BAR -> graphics.fillRect(x, y + 1, 2, getFontHeight() - 2)
+            }
+        }
+    }
+
+    private fun shouldDrawCursor(atCursorLocation: Boolean) = atCursorLocation
+            && isCursorVisible()                                 // User settings override everything
+            && (!deviceConfiguration.isCursorBlinking ||         // Always draw if the cursor isn't blinking
+            deviceConfiguration.isCursorBlinking && blinkOn)     // If the cursor is blinking, only draw when blinkOn is true
 
     private fun fillLeftoverSpaceWithBlack(graphics: Graphics) {
         // Take care of the left-over area at the bottom and right of the component where no character can fit
@@ -164,70 +194,6 @@ abstract class Java2DTerminalImplementation(
         val leftoverHeight = getHeight() % getFontHeight()
         if (leftoverHeight > 0) {
             graphics.fillRect(0, getHeight() - leftoverHeight, getWidth(), leftoverHeight)
-        }
-    }
-
-    private fun drawCharacter(
-            graphics: Graphics,
-            character: TextCharacter,
-            columnIndex: Int,
-            rowIndex: Int,
-            foregroundColor: Color,
-            backgroundColor: Color,
-            characterWidth: Int,
-            drawCursor: Boolean) {
-
-        val x = columnIndex * getFontWidth()
-        val y = rowIndex * getFontHeight()
-
-        val fixedChar = character
-                .withBackgroundColor(TextColorFactory.fromAWTColor(backgroundColor))
-                .withForegroundColor(TextColorFactory.fromAWTColor(foregroundColor))
-        graphics.drawImage(font.fetchRegionForChar(fixedChar), x, y, null)
-        fetchOverlayZIntersection(Position.of(columnIndex, rowIndex)).forEach {
-            if (it.isNotEmpty()) {
-                graphics.drawImage(font.fetchRegionForChar(it), x, y, null)
-            }
-        }
-
-        if (drawCursor) {
-            graphics.color = deviceConfiguration.cursorColor.toAWTColor()
-            if (deviceConfiguration.cursorStyle === UNDER_BAR) {
-                graphics.fillRect(x, y + getFontHeight() - 3, characterWidth, 2)
-            } else if (deviceConfiguration.cursorStyle === VERTICAL_BAR) {
-                graphics.fillRect(x, y + 1, 2, getFontHeight() - 2)
-            }
-        }
-    }
-
-
-    private fun deriveTrueForegroundColor(character: TextCharacter): Color {
-        val foregroundColor = character.getForegroundColor()
-        val backgroundColor = character.getBackgroundColor()
-        val blink = character.isBlinking()
-
-        if (blink && blinkOn) {
-            return backgroundColor.toAWTColor()
-        } else {
-            return foregroundColor.toAWTColor()
-        }
-    }
-
-    private fun deriveTrueBackgroundColor(character: TextCharacter, atCursorLocation: Boolean): Color {
-        val foregroundColor = character.getForegroundColor()
-        var backgroundColor = character.getBackgroundColor()
-        var reverse = false
-        if (isCursorVisible() && atCursorLocation) {
-            if (deviceConfiguration.cursorStyle === REVERSED && (!deviceConfiguration.isCursorBlinking || !blinkOn)) {
-                reverse = true
-            } else if (deviceConfiguration.cursorStyle === FIXED_BACKGROUND) {
-                backgroundColor = deviceConfiguration.cursorColor
-            }
-        }
-        if (reverse) {
-            return foregroundColor.toAWTColor()
-        } else {
-            return backgroundColor.toAWTColor()
         }
     }
 
