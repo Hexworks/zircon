@@ -158,7 +158,7 @@ class VirtualTerminal private constructor(initialSize: Size,
     private fun putCharacter(textCharacter: TextCharacter) {
         backend.setCharacterAt(getCursorPosition(), textCharacter)
         setPositionDirty(getCursorPosition())
-        advanceCursor()
+        moveCursorForward()
     }
 
     private fun moveCursorToNextLine() {

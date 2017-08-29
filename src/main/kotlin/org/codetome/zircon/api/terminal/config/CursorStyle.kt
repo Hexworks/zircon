@@ -1,13 +1,13 @@
 package org.codetome.zircon.api.terminal.config
 
 /**
- * Different cursor styles supported by [org.codetome.zircon.terminal.Terminal].
+ * Different cursor styles supported by [org.codetome.zircon.api.terminal.Terminal].
  */
 enum class CursorStyle {
     /**
-     * The cursor is drawn by inverting the front- and background colors of the cursor position.
+     * The cursor is drawn by using the character's color at the cursor's location.
      */
-    REVERSED,
+    USE_CHARACTER_FOREGROUND,
     /**
      * The cursor is drawn by using the cursor color as the background color for the character at the cursor position.
      */

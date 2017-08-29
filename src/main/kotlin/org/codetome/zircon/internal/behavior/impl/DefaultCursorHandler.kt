@@ -41,10 +41,24 @@ class DefaultCursorHandler private constructor(private var cursorSpace: Size,
         setPositionDirty(this.cursorPosition)
     }
 
-    override fun advanceCursor() {
+    override fun moveCursorForward() {
         putCursorAt(getCursorPosition().let { (column) ->
             if (cursorIsAtTheEndOfTheLine(column)) {
                 getCursorPosition().withColumn(0).withRelativeRow(1)
+            } else {
+                getCursorPosition().withRelativeColumn(1)
+            }
+        })
+    }
+
+    override fun moveCursorBackward() {
+        putCursorAt(getCursorPosition().let { (column) ->
+            if (cursorIsAtTheStartOfTheLine(column)) {
+                if (getCursorPosition().row > 0) {
+                    getCursorPosition().withColumn(cursorSpace.columns - 1).withRelativeRow(-1)
+                } else {
+                    getCursorPosition()
+                }
             } else {
                 getCursorPosition().withRelativeColumn(1)
             }
@@ -59,4 +73,6 @@ class DefaultCursorHandler private constructor(private var cursorSpace: Size,
     }
 
     private fun cursorIsAtTheEndOfTheLine(column: Int) = column + 1 == cursorSpace.columns
+
+    private fun cursorIsAtTheStartOfTheLine(column: Int) = column == 0
 }

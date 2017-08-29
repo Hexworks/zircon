@@ -14,6 +14,9 @@ interface Positionable {
 
     /**
      * Returns the offset of this [Positionable]. Default is (0, 0).
+     * The `offset` of a position is its position relative to the
+     * text gui window's top left corner. An offset of (0, 0) denotes
+     * that corner.
      * Only override the default if it is applicable in your context
      * (in [org.codetome.zircon.api.graphics.Layer] for example).
      */

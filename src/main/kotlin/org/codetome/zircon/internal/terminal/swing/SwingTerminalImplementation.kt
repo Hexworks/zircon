@@ -1,10 +1,8 @@
-package org.codetome.zircon.terminal.swing
+package org.codetome.zircon.internal.terminal.swing
 
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
-import org.codetome.zircon.internal.terminal.swing.TerminalKeyListener
-import org.codetome.zircon.internal.terminal.swing.TerminalMouseListener
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import java.awt.*
 import java.awt.event.HierarchyEvent

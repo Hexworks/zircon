@@ -48,13 +48,13 @@ class TerminalScreen private constructor(private val terminal: Terminal,
         EventBus.subscribe<Position>(EventType.RequestCursorAt, { (position) ->
             if (isActive()) {
                 println("putting cursor at $position")
-                backend.setCursorVisible(true)
-                putCursorAt(position)
+                terminal.setCursorVisible(true)
+                terminal.putCursorAt(position)
             }
         })
         EventBus.subscribe(EventType.HideCursor, {
             if (isActive()) {
-                backend.setCursorVisible(false)
+                terminal.setCursorVisible(false)
             }
         })
     }

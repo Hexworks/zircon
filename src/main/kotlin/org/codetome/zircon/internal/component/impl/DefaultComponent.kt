@@ -11,7 +11,6 @@ import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyles
-import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.component.WrappingStrategy
@@ -70,9 +69,9 @@ abstract class DefaultComponent private constructor(private var position: Positi
     fun getWrappersSize() = wrappers.map { it.getOccupiedSize() }.fold(Size.ZERO) { acc, size -> acc + size }
 
     /**
-     * Returns the size of all wrappers which are themeable
+     * Returns the size of all wrappers which are not themeable.
      */
-    fun getThemedWrappersSize() = wrappers
+    fun getNonThemedWrapperSize() = wrappers
             .filter { it.isThemeNeutral() }
             .map { it.getOccupiedSize() }
             .fold(Size.ZERO) { acc, size -> acc + size }
@@ -82,26 +81,32 @@ abstract class DefaultComponent private constructor(private var position: Positi
      */
     fun getEffectiveSize() = getBoundableSize() - getWrappersSize()
 
-    fun getEffectiveThemeableSize() = getBoundableSize() - getThemedWrappersSize()
+    /**
+     * Returns the size which this component takes up with only its themeable wrappers.
+     */
+    fun getEffectiveThemeableSize() = getBoundableSize() - getNonThemedWrapperSize()
 
     /**
      * Returns the position of this component offset by the wrappers it has.
      */
-    fun getEffectivePosition() = getPosition() + getOffset()
+    fun getEffectivePosition() = getPosition() + getWrapperOffset()
 
-    fun getEffectiveThemeablePosition() = getPosition() + getThemeableOffset()
+    /**
+     * Returns the position from which themes should be applied.
+     */
+    fun getEffectiveThemeablePosition() = getPosition() + getNonThemeableOffset()
 
     /**
      * Returns the offset which is caused by the wrappers of this component.
+     * So basically this is the value of the component's position (`getPosition()`)
+     * plus the space which is taken up by the wrappers.
      */
-    fun getOffset() = wrappers.map { it.getOffset() }.fold(Position.TOP_LEFT_CORNER) { acc, position -> acc + position }
+    fun getWrapperOffset() = wrappers.map { it.getOffset() }.fold(Position.TOP_LEFT_CORNER) { acc, position -> acc + position }
 
-    fun getThemeableOffset() = wrappers
+    fun getNonThemeableOffset() = wrappers
             .filter { it.isThemeNeutral() }
             .map { it.getOffset() }
             .fold(Position.TOP_LEFT_CORNER) { acc, position -> acc + position }
-
-    fun getCurrentOffset() = currentOffset
 
     fun setPosition(position: Position) {
         this.position = position
@@ -166,7 +171,7 @@ abstract class DefaultComponent private constructor(private var position: Positi
     override fun setComponentStyles(componentStyles: ComponentStyles) {
         this.componentStyles = componentStyles
 
-        drawSurface.applyStyle(componentStyles.getCurrentStyle(), getThemeableOffset(), getEffectiveThemeableSize())
+        drawSurface.applyStyle(componentStyles.getCurrentStyle(), getNonThemeableOffset(), getEffectiveThemeableSize())
     }
 
     override fun toString(): String {
