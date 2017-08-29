@@ -22,7 +22,7 @@ import org.codetome.zircon.api.input.InputType.*
  * respectively.
  */
 sealed class Input(private val inputType: InputType,
-                   private val eventTime: Long) {
+                   private val eventTime: Long = System.currentTimeMillis()) {
 
     fun getInputType() = inputType
 
@@ -42,11 +42,10 @@ sealed class Input(private val inputType: InputType,
 
 data class KeyStroke(
         private val character: Char = ' ',
-        private val it: InputType = InputType.Character,
+        private val type: InputType = InputType.Character,
         private val ctrlDown: Boolean = false,
         private val altDown: Boolean = false,
-        private val shiftDown: Boolean = false,
-        private val timestamp: Long = System.currentTimeMillis()) : Input(it, timestamp) {
+        private val shiftDown: Boolean = false) : Input(type) {
 
     fun isCtrlDown() = ctrlDown
 
@@ -68,18 +67,17 @@ data class KeyStroke(
     companion object {
         val EOF_STROKE = KeyStroke(
                 character = ' ',
-                it = EOF)
+                type = EOF)
     }
 }
 
 /**
- * MouseAction, a Input in disguise, this class containsPosition the information of a single mouse action event.
+ * MouseAction, a Input in disguise, this class contains the information of a single mouse action event.
  */
 data class MouseAction(
         val actionType: MouseActionType,
         val button: Int,
         val position: Position)
     : Input(
-        inputType = InputType.MouseEvent,
-        eventTime = System.currentTimeMillis())
+        inputType = InputType.MouseEvent)
 

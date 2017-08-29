@@ -1,9 +1,6 @@
 package org.codetome.zircon.api.input
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.input.Input
-import org.codetome.zircon.api.input.InputType
-import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.junit.Test
@@ -19,7 +16,7 @@ class InputTypeTest {
             })
             EventBus.emit(EventType.Input, KeyStroke(
                     character = ' ',
-                    it = it
+                    type = it
             ))
             assertThat(inputs.map { it.getInputType() }.first())
                     .isEqualTo(it)
