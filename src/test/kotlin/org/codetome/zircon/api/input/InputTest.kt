@@ -48,13 +48,6 @@ class InputTest {
     }
 
     @Test
-    fun shouldProperlyReportEventTime() {
-        val expectedTime = System.currentTimeMillis()
-
-        assertThat(KeyStroke(timestamp = expectedTime).getEventTime()).isEqualTo(expectedTime)
-    }
-
-    @Test
     fun shouldBeAbleToGetKeyStrokeAsKeyStroke() {
         val input: Input = KeyStroke.EOF_STROKE
         input.asKeyStroke()

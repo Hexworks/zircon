@@ -56,25 +56,25 @@ class TerminalKeyListener(private val terminal: Terminal,
             if (!altDown && !ctrlDown && shiftDown && deviceConfiguration.isClipboardAvailable) {
                 pasteClipboardContent()
             } else {
-                EventBus.emit(EventType.Input, KeyStroke(it = InputType.Insert,
+                EventBus.emit(EventType.Input, KeyStroke(type = InputType.Insert,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
                         shiftDown = shiftDown))
             }
         } else if (e.keyCode == KeyEvent.VK_TAB) {
             if (e.isShiftDown) {
-                EventBus.emit(EventType.Input, KeyStroke(it = InputType.ReverseTab,
+                EventBus.emit(EventType.Input, KeyStroke(type = InputType.ReverseTab,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
                         shiftDown = shiftDown))
             } else {
-                EventBus.emit(EventType.Input, KeyStroke(it = InputType.Tab,
+                EventBus.emit(EventType.Input, KeyStroke(type = InputType.Tab,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
                         shiftDown = shiftDown))
             }
         } else if (KEY_EVENT_TO_KEY_TYPE_LOOKUP.containsKey(e.keyCode)) {
-            EventBus.emit(EventType.Input, KeyStroke(it = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
+            EventBus.emit(EventType.Input, KeyStroke(type = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
                     ctrlDown = ctrlDown,
                     altDown = altDown,
                     shiftDown = shiftDown))

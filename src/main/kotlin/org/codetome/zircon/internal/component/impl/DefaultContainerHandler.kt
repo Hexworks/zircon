@@ -1,11 +1,11 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.component.Button
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.Theme
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.input.InputType.*
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType.*
@@ -21,10 +21,17 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Contain
     private var lastMousePosition = Position.DEFAULT_POSITION
     private var lastHoveredComponentId = UUID.randomUUID()
     private var lastFocusedComponentId = container.getId()
+    private var lastFocusedComponent = Optional.empty<Component>()
     private var state = UNKNOWN
     private val subscriptions = mutableListOf<Subscription<*>>()
     private var nextsLookup = mutableMapOf<UUID, Component>(Pair(container.getId(), container))
     private var prevsLookup = mutableMapOf<UUID, Component>(Pair(container.getId(), container))
+
+    private val keyStrokeHandlers = mapOf(
+            Pair(NEXT_FOCUS_STROKE, this::focusNext),
+            Pair(PREV_FOCUS_STROKE, this::focusPrevious),
+            Pair(CLICK_STROKE, this::clickFocused))
+            .toMap()
 
     override fun addComponent(component: Component) {
         container.addComponent(component)
@@ -45,35 +52,21 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Contain
     override fun activate() {
         state = ACTIVE
         subscriptions.add(EventBus.subscribe<Input>(EventType.Input, { (input) ->
-            when (input) {
-                is MouseAction -> {
-                    when (input.actionType) {
-                        MOUSE_MOVED -> handleMouseMoved(input)
 
-                        MOUSE_PRESSED -> container
-                                .fetchComponentByPosition(input.position)
-                                .map {
-                                    EventBus.emit(EventType.MousePressed(it.getId()), input)
-                                }
+            keyStrokeHandlers[input]?.invoke()
 
-                        MOUSE_RELEASED -> container
-                                .fetchComponentByPosition(input.position)
-                                .map {
-                                    EventBus.emit(EventType.MouseReleased(it.getId()), input)
-                                }
-                        else -> {
-                        }
-                    }
-                }
-                is KeyStroke -> {
-                    if(input.getCharacter() == '\t') {
-                        nextsLookup[lastFocusedComponentId]?.let { next ->
-                            lastFocusedComponentId = next.getId()
-                            prevsLookup[next.getId()]?.takeFocus()
-                            println(lastFocusedComponentId)
-                            next.giveFocus()
-                        }
-                    }
+            if (input is MouseAction) {
+                when (input.actionType) {
+                    MOUSE_MOVED -> handleMouseMoved(input)
+
+                    MOUSE_PRESSED -> container
+                            .fetchComponentByPosition(input.position)
+                            .map { EventBus.emit(EventType.MousePressed(it.getId()), input) }
+
+                    MOUSE_RELEASED -> container
+                            .fetchComponentByPosition(input.position)
+                            .map { EventBus.emit(EventType.MouseReleased(it.getId()), input) }
+                    else -> { }
                 }
             }
         }))
@@ -89,6 +82,32 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Contain
 
     override fun transformComponentsToLayers(): List<Layer> {
         return container.transformToLayers()
+    }
+
+    private fun clickFocused() {
+        lastFocusedComponent.map {
+            EventBus.emit(
+                    type = EventType.MouseReleased(it.getId()),
+                    data = MouseAction(MOUSE_RELEASED, 1, it.getPosition()))
+        }
+    }
+
+    private fun focusNext() {
+        nextsLookup[lastFocusedComponentId]?.let { next ->
+            lastFocusedComponentId = next.getId()
+            lastFocusedComponent = Optional.of(next)
+            prevsLookup[next.getId()]?.takeFocus()
+            next.giveFocus()
+        }
+    }
+
+    private fun focusPrevious() {
+        prevsLookup[lastFocusedComponentId]?.let { prev ->
+            lastFocusedComponentId = prev.getId()
+            lastFocusedComponent = Optional.of(prev)
+            nextsLookup[prev.getId()]?.takeFocus()
+            prev.giveFocus()
+        }
     }
 
     private fun refreshFocusableLookup() {
@@ -131,5 +150,9 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Contain
         }
     }
 
-    private data class Node<out T>(val curr: T, val next: T)
+    companion object {
+        val NEXT_FOCUS_STROKE = KeyStroke(type = Tab)
+        val PREV_FOCUS_STROKE = KeyStroke(shiftDown = true, type = ReverseTab)
+        val CLICK_STROKE = KeyStroke(type = Character, character = ' ')
+    }
 }
