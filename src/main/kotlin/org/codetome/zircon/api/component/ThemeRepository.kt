@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.component
 
+import org.codetome.zircon.api.component.ThemeRepository.SolarizedBase.*
 import org.codetome.zircon.api.component.builder.ThemeBuilder
 import org.codetome.zircon.api.factory.TextColorFactory
 
@@ -174,31 +175,89 @@ enum class ThemeRepository(private val theme: Theme) {
             .build()),
 
     /**
-     * Taken from
+     * All Solarized themes are taken from:
      * http://www.zovirl.com/2011/07/22/solarized_cheat_sheet/
      */
-    SOLARIZED_DARK_ORANGE(ThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#cb4b16"))
-            .brightForegroundColor(TextColorFactory.fromString("#fdf6e3"))
-            .darkForegroundColor(TextColorFactory.fromString("#eee8d5"))
-            .brightBackgroundColor(TextColorFactory.fromString("#586e75"))
-            .darkBackgroundColor(TextColorFactory.fromString("#002b36"))
+    SOLARIZED_DARK_YELLOW(SOLARIZED_DARK_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#b58900"))
             .build()),
 
-    /**
-     * Taken from
-     * http://www.zovirl.com/2011/07/22/solarized_cheat_sheet/
-     */
-    SOLARIZED_DARK_YELLOW(ThemeBuilder.newBuilder()
+    SOLARIZED_DARK_ORANGE(SOLARIZED_DARK_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#cb4b16"))
+            .build()),
+
+    SOLARIZED_DARK_RED(SOLARIZED_DARK_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#dc322f"))
+            .build()),
+
+    SOLARIZED_DARK_MAGENTA(SOLARIZED_DARK_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#d33682"))
+            .build()),
+
+    SOLARIZED_DARK_VIOLET(SOLARIZED_DARK_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#6c71c4"))
+            .build()),
+
+    SOLARIZED_DARK_BLUE(SOLARIZED_DARK_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#268bd2"))
+            .build()),
+
+    SOLARIZED_DARK_CYAN(SOLARIZED_DARK_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#2aa198"))
+            .build()),
+
+    SOLARIZED_DARK_GREEN(SOLARIZED_DARK_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#859900"))
+            .build()),
+
+    SOLARIZED_LIGHT_YELLOW(SOLARIZED_LIGHT_BASE.themeBuilder.copy()
             .accentColor(TextColorFactory.fromString("#b58900"))
-            .brightForegroundColor(TextColorFactory.fromString("#fdf6e3"))
-            .darkForegroundColor(TextColorFactory.fromString("#eee8d5"))
-            .brightBackgroundColor(TextColorFactory.fromString("#586e75"))
-            .darkBackgroundColor(TextColorFactory.fromString("#002b36"))
-            .build())
+            .build()),
+
+    SOLARIZED_LIGHT_ORANGE(SOLARIZED_LIGHT_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#cb4b16"))
+            .build()),
+
+    SOLARIZED_LIGHT_RED(SOLARIZED_LIGHT_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#dc322f"))
+            .build()),
+
+    SOLARIZED_LIGHT_MAGENTA(SOLARIZED_LIGHT_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#d33682"))
+            .build()),
+
+    SOLARIZED_LIGHT_VIOLET(SOLARIZED_LIGHT_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#6c71c4"))
+            .build()),
+
+    SOLARIZED_LIGHT_BLUE(SOLARIZED_LIGHT_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#268bd2"))
+            .build()),
+
+    SOLARIZED_LIGHT_CYAN(SOLARIZED_LIGHT_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#2aa198"))
+            .build()),
+
+    SOLARIZED_LIGHT_GREEN(SOLARIZED_LIGHT_BASE.themeBuilder.copy()
+            .accentColor(TextColorFactory.fromString("#859900"))
+            .build()),
 
 
     ;
 
     fun getTheme() = theme
+
+    enum class SolarizedBase(val themeBuilder: ThemeBuilder) {
+        SOLARIZED_DARK_BASE(ThemeBuilder.newBuilder()
+                .brightForegroundColor(TextColorFactory.fromString("#93a1a1"))
+                .darkForegroundColor(TextColorFactory.fromString("#839496"))
+                .brightBackgroundColor(TextColorFactory.fromString("#073642"))
+                .darkBackgroundColor(TextColorFactory.fromString("#002b36"))),
+
+        SOLARIZED_LIGHT_BASE(ThemeBuilder.newBuilder()
+                .brightForegroundColor(TextColorFactory.fromString("#657b83"))
+                .darkForegroundColor(TextColorFactory.fromString("#586e75"))
+                .brightBackgroundColor(TextColorFactory.fromString("#fdf6e3"))
+                .darkBackgroundColor(TextColorFactory.fromString("#eee8d5")))
+    }
 }

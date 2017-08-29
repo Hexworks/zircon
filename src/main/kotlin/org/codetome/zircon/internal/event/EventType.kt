@@ -11,10 +11,6 @@ sealed class EventType {
      * A new input arrived into the system.
      */
     object Input : EventType()
-    /**
-     * A mouse action happened.
-     */
-    object MouseAction : EventType()
 
     data class MousePressed(val componentId: UUID) : EventType()
 

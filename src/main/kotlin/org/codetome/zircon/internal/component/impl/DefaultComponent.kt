@@ -47,13 +47,7 @@ abstract class DefaultComponent private constructor(private var position: Positi
 
     init {
         drawSurface.setStyleFrom(componentStyles.getCurrentStyle())
-        var currSize = getEffectiveSize()
-        currentOffset = Position.DEFAULT_POSITION
-        wrappers.forEach {
-            currSize += it.getOccupiedSize()
-            it.apply(drawSurface, currSize, currentOffset, componentStyles.getCurrentStyle())
-            currentOffset += it.getOffset()
-        }
+        applyWrappers()
         EventBus.subscribe(EventType.MouseOver(id), {
             if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.MOUSE_OVER)) {
                 drawSurface.applyStyle(componentStyles.mouseOver())
@@ -113,6 +107,16 @@ abstract class DefaultComponent private constructor(private var position: Positi
         this.position = position
     }
 
+    fun applyWrappers() {
+        var currSize = getEffectiveSize()
+        currentOffset = Position.DEFAULT_POSITION
+        wrappers.forEach {
+            currSize += it.getOccupiedSize()
+            it.apply(drawSurface, currSize, currentOffset, componentStyles.getCurrentStyle())
+            currentOffset += it.getOffset()
+        }
+    }
+
     open fun transformToLayers() =
             listOf(LayerBuilder.newBuilder()
                     .textImage(drawSurface)
@@ -163,10 +167,6 @@ abstract class DefaultComponent private constructor(private var position: Positi
         this.componentStyles = componentStyles
 
         drawSurface.applyStyle(componentStyles.getCurrentStyle(), getThemeableOffset(), getEffectiveThemeableSize())
-    }
-
-    override fun focus() {
-        componentStyles.giveFocus()
     }
 
     override fun toString(): String {

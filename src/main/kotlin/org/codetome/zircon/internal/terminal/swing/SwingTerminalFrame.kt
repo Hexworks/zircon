@@ -31,7 +31,7 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
         swingTerminal.createBufferStrategy(2)
         swingTerminal.isFocusable = true
 
-        // Put input focus on the terminal component by default
+        // Put input giveFocus on the terminal component by default
         swingTerminal.requestFocusInWindow()
         swingTerminal.preferredSize = swingTerminal.preferredSize
     }

@@ -16,7 +16,15 @@ sealed class Modifiers : Modifier {
 
     object Italic : Modifiers()
     data class Border(val borderType: BorderType,
-                      val borderPositions: Set<BorderPosition>) : Modifiers()
+                      val borderPositions: Set<BorderPosition>) : Modifiers() {
+
+        /**
+         * Creates a new [Border] which has its border positions added to this border.
+         */
+        operator fun plus(other: Border): Border {
+            return Border(borderType, borderPositions.plus(other.borderPositions))
+        }
+    }
 
     enum class BorderType {
         SOLID, DOTTED, DASHED

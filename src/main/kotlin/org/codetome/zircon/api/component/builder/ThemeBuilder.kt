@@ -4,13 +4,12 @@ import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.internal.component.DefaultTheme
 
-class ThemeBuilder {
+data class ThemeBuilder(private var brightForegroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
+                        private var brightBackgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
+                        private var darkForegroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
+                        private var darkBackgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
+                        private var accentColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR) {
 
-    private var brightForegroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR
-    private var brightBackgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR
-    private var darkForegroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR
-    private var darkBackgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR
-    private var accentColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR
 
     fun brightForegroundColor(brightForegroundColor: TextColor) = also {
         this.brightForegroundColor = brightForegroundColor

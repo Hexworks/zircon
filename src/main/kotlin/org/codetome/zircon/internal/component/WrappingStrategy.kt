@@ -24,6 +24,13 @@ interface WrappingStrategy {
     fun apply(textImage: TextImage, size: Size, offset: Position, style: StyleSet)
 
     /**
+     * Removes the last change made by this [WrappingStrategy].
+     */
+    fun remove(textImage: TextImage, size: Size, offset: Position, style: StyleSet): Unit {
+
+    }
+
+    /**
      * Themes don't apply to this wrapper.
      */
     fun isThemeNeutral(): Boolean

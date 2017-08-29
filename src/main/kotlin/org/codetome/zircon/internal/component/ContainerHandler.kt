@@ -1,6 +1,8 @@
 package org.codetome.zircon.internal.component
 
+import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.Container
+import org.codetome.zircon.api.component.Theme
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TextImage
 
@@ -13,9 +15,24 @@ import org.codetome.zircon.api.graphics.TextImage
 interface ContainerHandler {
 
     /**
-     * Returns the [Container] this [ContainerHandler] is holding.
+     * Adds a sibling [Component] to this [Container]. It can either be
+     * a leaf component (like a label) or another container which can itself
+     * contain components within itself.
      */
-    fun getContainer(): Container
+    fun addComponent(component: Component)
+
+    /**
+     * Removes the given [Component] from this [Container].
+     * *Note that* this function is applied recursively until
+     * it either traverses the whole component tree or finds
+     * the component to remove.
+     */
+    fun removeComponent(component: Component)
+
+    /**
+     * Applies the [Theme] to this component and recursively to all its children (if any).
+     */
+    fun applyTheme(theme: Theme)
 
     /**
      * Tells whether this [ContainerHandler] is active or not.

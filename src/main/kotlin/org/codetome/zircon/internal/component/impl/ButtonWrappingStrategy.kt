@@ -13,8 +13,8 @@ class ButtonWrappingStrategy : WrappingStrategy {
     override fun getOffset() = Position.of(1, 0)
 
     override fun apply(textImage: TextImage, size: Size, offset: Position, style: StyleSet) {
-        textImage.setCharacterAt(Position.DEFAULT_POSITION, '[')
-        textImage.setCharacterAt(Position.DEFAULT_POSITION.withRelativeColumn(textImage.getBoundableSize().columns - 1), ']')
+        textImage.setCharacterAt(offset, '[')
+        textImage.setCharacterAt(offset.withRelativeColumn(size.columns - 1), ']')
     }
 
     override fun isThemeNeutral() = false

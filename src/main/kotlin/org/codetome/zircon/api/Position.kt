@@ -12,7 +12,7 @@ data class Position(val column: Int,
 
     init {
         require(column >= 0 && row >= 0) {
-            "A position must have a column and a row number which is greater than 0!"
+            "A position must have a column and a row number which is greater than or equal to 0!"
         }
     }
 

@@ -17,7 +17,7 @@ class Java2DBorderTransformer : FontRegionTransformer<BufferedImage> {
             it.graphics.apply {
                 color = textCharacter.getForegroundColor().toAWTColor()
                 if (textCharacter.hasBorder()) {
-                    textCharacter.fetchBorderData().let { border ->
+                    textCharacter.fetchBorderData().forEach { border ->
                         border.borderPositions.forEach { pos ->
                             FILLER_LOOKUP[pos]?.invoke(region, this as Graphics2D, border.borderType)
                         }

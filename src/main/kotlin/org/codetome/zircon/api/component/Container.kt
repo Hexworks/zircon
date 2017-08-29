@@ -14,4 +14,12 @@ interface Container : Component {
      * contain components within itself.
      */
     fun addComponent(component: Component)
+
+    /**
+     * Removes the given [Component] from this [Container].
+     * *Note that* this function is applied recursively until
+     * it either traverses the whole component tree or finds
+     * the component to remove.
+     */
+    fun removeComponent(component: Component)
 }

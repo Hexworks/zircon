@@ -36,7 +36,7 @@ data class TextCharacter(
 
     fun hasBorder() = modifiers.any { it is Border }
 
-    fun fetchBorderData() = modifiers.first { it is Border } as Border
+    fun fetchBorderData() = modifiers.filter { it is Border }.map { it as Border }.toSet()
 
     fun isNotEmpty() = this != TextCharacterBuilder.EMPTY
 
@@ -100,6 +100,20 @@ data class TextCharacter(
             return this
         }
         val newSet = this.modifiers.minus(modifier)
+        return copy(modifiers = newSet)
+    }
+
+    /**
+     * Returns a copy of this [TextCharacter] with a [Modifier] removed. All of the currently active [Modifier]s
+     * will be carried over to the copy, except for the one specified. If the current [TextCharacter] doesn't have the
+     * [Modifier] specified, it will return itself.
+     */
+    fun withoutModifiers(modifiers: Set<Modifier>): TextCharacter {
+        if (this.modifiers.none { modifiers.contains(it) }) {
+            return this
+        }
+        val newSet = this.modifiers.toMutableSet()
+        newSet.removeAll(modifiers)
         return copy(modifiers = newSet)
     }
 
