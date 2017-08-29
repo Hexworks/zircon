@@ -15,7 +15,7 @@ interface Positionable {
     /**
      * Returns the offset of this [Positionable]. Default is (0, 0).
      * Only override the default if it is applicable in your context
-     * (in [org.codetome.zircon.graphics.layer.Layer] for example).
+     * (in [org.codetome.zircon.api.graphics.Layer] for example).
      */
     fun getPosition(): Position = Position.DEFAULT_POSITION
 

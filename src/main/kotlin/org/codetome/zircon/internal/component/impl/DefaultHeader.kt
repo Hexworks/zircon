@@ -6,6 +6,8 @@ import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.*
 import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.input.Input
+import java.util.*
 
 class DefaultHeader (private val text: String,
                     initialSize: Size,
@@ -27,11 +29,11 @@ class DefaultHeader (private val text: String,
         return false
     }
 
-    override fun giveFocus(): Boolean {
+    override fun giveFocus(input: Optional<Input>): Boolean {
         return false
     }
 
-    override fun takeFocus() {
+    override fun takeFocus(input: Optional<Input>) {
 
     }
 

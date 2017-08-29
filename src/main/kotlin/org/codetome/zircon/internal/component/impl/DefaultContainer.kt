@@ -12,6 +12,7 @@ import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Container
 import org.codetome.zircon.api.component.Theme
 import org.codetome.zircon.api.graphics.Layer
+import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.listener.MouseListener
 import java.awt.Point
@@ -48,11 +49,11 @@ open class DefaultContainer(initialSize: Size,
         return false
     }
 
-    override fun giveFocus(): Boolean {
+    override fun giveFocus(input: Optional<Input>): Boolean {
         return false
     }
 
-    override fun takeFocus() {
+    override fun takeFocus(input: Optional<Input>) {
     }
 
     override fun removeComponent(component: Component) {

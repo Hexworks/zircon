@@ -8,6 +8,8 @@ import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Label
 import org.codetome.zircon.api.component.Theme
 import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.input.Input
+import java.util.*
 
 class DefaultLabel (private val text: String,
                     initialSize: Size,
@@ -29,11 +31,11 @@ class DefaultLabel (private val text: String,
         return false
     }
 
-    override fun giveFocus(): Boolean {
+    override fun giveFocus(input: Optional<Input>): Boolean {
         return false
     }
 
-    override fun takeFocus() {
+    override fun takeFocus(input: Optional<Input>) {
 
     }
 

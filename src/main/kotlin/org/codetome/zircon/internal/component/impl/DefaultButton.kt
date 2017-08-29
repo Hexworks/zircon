@@ -9,6 +9,7 @@ import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.Button
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Theme
+import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
@@ -43,13 +44,13 @@ class DefaultButton(private val text: String,
         return true
     }
 
-    override fun giveFocus(): Boolean {
+    override fun giveFocus(input: Optional<Input>): Boolean {
         getDrawSurface().applyStyle(getComponentStyles().giveFocus())
         EventBus.emit(EventType.ComponentChange)
         return true
     }
 
-    override fun takeFocus() {
+    override fun takeFocus(input: Optional<Input>) {
         getDrawSurface().applyStyle(getComponentStyles().reset())
         EventBus.emit(EventType.ComponentChange)
 //        var currSize = getEffectiveSize()

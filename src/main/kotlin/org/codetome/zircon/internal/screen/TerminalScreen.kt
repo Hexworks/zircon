@@ -2,14 +2,13 @@ package org.codetome.zircon.internal.screen
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
-import org.codetome.zircon.api.builder.LayerBuilder
+import org.codetome.zircon.api.screen.Screen
+import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.internal.component.ContainerHandler
 import org.codetome.zircon.internal.component.impl.DefaultContainer
 import org.codetome.zircon.internal.component.impl.DefaultContainerHandler
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
-import org.codetome.zircon.api.screen.Screen
-import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import java.util.*
 
@@ -44,6 +43,18 @@ class TerminalScreen private constructor(private val terminal: Terminal,
         EventBus.subscribe<Unit>(EventType.ComponentChange, {
             if (isActive()) {
                 refresh()
+            }
+        })
+        EventBus.subscribe<Position>(EventType.RequestCursorAt, { (position) ->
+            if (isActive()) {
+                println("putting cursor at $position")
+                backend.setCursorVisible(true)
+                putCursorAt(position)
+            }
+        })
+        EventBus.subscribe(EventType.HideCursor, {
+            if (isActive()) {
+                backend.setCursorVisible(false)
             }
         })
     }
