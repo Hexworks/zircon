@@ -1,5 +1,6 @@
 package org.codetome.zircon.internal.event
 
+import org.codetome.zircon.api.Position
 import java.util.*
 
 sealed class EventType {
@@ -23,6 +24,15 @@ sealed class EventType {
      * A component is no longer hovered.
      */
     data class MouseOut(val componentId: UUID) : EventType()
+
+    /**
+     * Cursor is requested at the given `position`.
+     */
+    object RequestCursorAt : EventType()
+    /**
+     * Hides the cursor
+     */
+    object HideCursor : EventType()
     /**
      * A [org.codetome.zircon.screen.Screen] has been switched to
      * (eg: the `display` function has been called on a Screen object).

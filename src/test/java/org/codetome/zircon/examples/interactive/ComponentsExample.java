@@ -4,15 +4,21 @@ import org.codetome.zircon.api.Modifiers;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
+import org.codetome.zircon.api.builder.ComponentStylesBuilder;
+import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.builder.ButtonBuilder;
 import org.codetome.zircon.api.component.builder.HeaderBuilder;
 import org.codetome.zircon.api.component.builder.LabelBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
+import org.codetome.zircon.api.factory.TextColorFactory;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.terminal.config.CursorStyle;
+import org.codetome.zircon.internal.behavior.impl.DefaultScrollable;
+import org.codetome.zircon.internal.component.impl.DefaultTextBox;
 import org.codetome.zircon.internal.graphics.BoxType;
 
 import java.util.Arrays;
@@ -34,12 +40,20 @@ public class ComponentsExample {
                 .initialTerminalSize(TERMINAL_SIZE)
 //                .font(PhysicalFontResource.UBUNTU_MONO.toFont())
                 .font(CP437TilesetResource.TAFFER_20X20.toFont())
+                .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
+                        .cursorBlinking(true)
+                        .cursorStyle(CursorStyle.REVERSED)
+                        .cursorColor(TextColorFactory.fromString("#ff00ff"))
+                        .build())
                 .buildTerminal();
 
         Screen panelsScreen = TerminalBuilder.newBuilder().createScreenFor(terminal);
-        Screen buttonsScreen = TerminalBuilder.newBuilder().createScreenFor(terminal);
+        Screen buttonsAndTextBoxesScreen = TerminalBuilder.newBuilder().createScreenFor(terminal);
         Screen radioAndCheckScreen = TerminalBuilder.newBuilder().createScreenFor(terminal);
-        final List<Screen> screens = Arrays.asList(panelsScreen, buttonsScreen, radioAndCheckScreen);
+        final List<Screen> screens = Arrays.asList(
+                panelsScreen,
+                buttonsAndTextBoxesScreen,
+                radioAndCheckScreen);
 
         addScreenTitle(panelsScreen, "Panels");
 
@@ -47,14 +61,19 @@ public class ComponentsExample {
             addNavigation(screens.get(i), screens, i);
         }
 
+        // panels screen
+
         final Panel simplePanel = PanelBuilder.newBuilder()
                 .position(Position.of(2, 4))
                 .size(PANEL_SIZE)
                 .build();
-        simplePanel.addComponent(LabelBuilder.newBuilder()
-                .text("Simple panel")
-                .position(Position.of(1, 1))
-                .build());
+        simplePanel.addComponent(new DefaultTextBox(
+                "Simple panel with editable text box",
+                Size.of(13, 3),
+                Size.of(13, 3),
+                Position.of(1, 1),
+                ComponentStylesBuilder.DEFAULT
+        ));
         panelsScreen.addComponent(simplePanel);
 
         final Panel boxedPanel = PanelBuilder.newBuilder()
@@ -124,7 +143,17 @@ public class ComponentsExample {
         panelsScreen.addComponent(borderedPanelWithShadow);
 
         panelsScreen.applyTheme(PANELS_THEME);
-        buttonsScreen.applyTheme(BUTTONS_THEME);
+
+        // buttons screen
+
+        buttonsAndTextBoxesScreen.addComponent(new DefaultTextBox(
+                "fooooooooooo",
+                Size.of(5, 5),
+                Size.of(3, 3),
+                Position.of(1, 1),
+                ComponentStylesBuilder.DEFAULT
+        ));
+        buttonsAndTextBoxesScreen.applyTheme(BUTTONS_THEME);
         panelsScreen.display();
     }
 
