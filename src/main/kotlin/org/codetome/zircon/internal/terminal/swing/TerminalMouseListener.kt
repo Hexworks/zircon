@@ -82,7 +82,6 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                         .or(isNotMoveEvent(actionType))) {
                     lastMouseLocation = position
                     EventBus.emit(EventType.Input, it)
-                    EventBus.emit(EventType.MouseAction, it)
                 }
             }
         } catch (e: Exception) {

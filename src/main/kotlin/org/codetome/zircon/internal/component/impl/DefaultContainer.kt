@@ -44,6 +44,25 @@ open class DefaultContainer(initialSize: Size,
         })
     }
 
+    override fun acceptsFocus(): Boolean {
+        return false
+    }
+
+    override fun giveFocus(): Boolean {
+        return false
+    }
+
+    override fun takeFocus() {
+    }
+
+    override fun removeComponent(component: Component) {
+        if(components.remove(component).not()) {
+            components
+                    .filter { it is Container }
+                    .forEach { (it as Container).removeComponent(component) }
+        }
+    }
+
     override fun transformToLayers(): List<Layer> {
         return mutableListOf(LayerBuilder.newBuilder()
                 .textImage(getDrawSurface())
@@ -109,6 +128,17 @@ open class DefaultContainer(initialSize: Size,
     }
 
     fun getComponents() = components
+
+    fun fetchFlattenedComponentTree(): List<Component> {
+        val result = mutableListOf<Component>()
+        components.forEach {
+            result.add(it)
+            if(it is DefaultContainer) {
+                result.addAll(it.fetchFlattenedComponentTree())
+            }
+        }
+        return result
+    }
 
     private fun createOtherRectangle(boundable: Boundable): Rectangle {
         return Rectangle(

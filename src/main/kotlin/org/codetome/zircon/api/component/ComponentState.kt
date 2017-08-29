@@ -10,7 +10,7 @@ enum class ComponentState {
      */
     MOUSE_OVER,
     /**
-     * This component has focus.
+     * This component has giveFocus.
      */
     FOCUSED,
     /**

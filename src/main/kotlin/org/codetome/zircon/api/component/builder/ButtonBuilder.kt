@@ -6,8 +6,10 @@ import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.component.Button
 import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.ButtonWrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultButton
+import java.util.*
 
 class ButtonBuilder : Builder<Button> {
 
@@ -29,14 +31,16 @@ class ButtonBuilder : Builder<Button> {
 
     override fun build(): Button {
         require(text.isNotBlank()) {
-            "A Label can't be blank!"
+            "A Button can't be blank!"
         }
+        val wrappers = LinkedList<WrappingStrategy>()
+        wrappers.add(ButtonWrappingStrategy())
         return DefaultButton(
                 text = text,
                 initialSize = Size.of(text.length + 2, 1),
                 position = position,
                 componentStyles = componentStyles,
-                wrappers = listOf(ButtonWrappingStrategy()))
+                wrappers = wrappers)
     }
 
     companion object {

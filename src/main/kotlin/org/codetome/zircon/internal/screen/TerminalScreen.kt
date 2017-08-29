@@ -50,17 +50,18 @@ class TerminalScreen private constructor(private val terminal: Terminal,
 
     override fun getId() = id
 
+    @Synchronized
     override fun display() {
         EventBus.emit(EventType.ScreenSwitch, id)
         flipBuffers(true)
         activate()
     }
 
+    @Synchronized
     override fun refresh() {
         flipBuffers(false)
     }
 
-    @Synchronized
     private fun flipBuffers(forceRedraw: Boolean) {
         val positions = if (forceRedraw) {
             getBoundableSize().fetchPositions()

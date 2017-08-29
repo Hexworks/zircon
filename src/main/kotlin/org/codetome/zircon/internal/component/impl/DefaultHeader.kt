@@ -23,6 +23,18 @@ class DefaultHeader (private val text: String,
 
     override fun getText() = text
 
+    override fun acceptsFocus(): Boolean {
+        return false
+    }
+
+    override fun giveFocus(): Boolean {
+        return false
+    }
+
+    override fun takeFocus() {
+
+    }
+
     override fun applyTheme(theme: Theme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
