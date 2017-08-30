@@ -59,6 +59,7 @@ dependencies {
     compile("org.slf4j:slf4j-simple:${slf4jVersion}")
 
     compile("com.github.ben-manes.caffeine:caffeine:2.5.4")
+    compile("org.yaml:snakeyaml:1.18")
 
     testCompile("junit:junit:${junitVersion}")
     testCompile("org.mockito:mockito-all:${mockitoVersion}")

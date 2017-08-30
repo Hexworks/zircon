@@ -1,0 +1,2692 @@
+# Nethack tileset ported to the Zircon tileset format
+---
+name: Nethack
+size: 16
+tilesPerRow: 40
+files:
+    - name: tiles.png
+      tiles:
+        -   name: Giant ant
+            tags: [animal, ant, giant]        # Optional. All unique words in name will be saved as tags ('giant' and 'ant' in this case
+            char: a                           # Optional. If not present the first character of the name will be used
+            description: It is big.           # Optional. If not present it will be empty
+        -   name: Killer bee
+            tags: []
+        -   name: Soldier ant # TODO: multi tile fix. see "explosions" here: https://nethackwiki.com/wiki/Tileset
+            tags: []
+        -   name: Fire ant
+            tags: []
+        -   name: Giant beetle
+            tags: []
+        -   name: Queen bee
+            tags: []
+        -   name: Acid blob
+            tags: []
+        -   name: Quivering blob
+            tags: []
+        -   name: Gelatinous cube
+            tags: []
+        -   name: Chickatrice
+            tags: []
+        -   name: Cockatrice
+            tags: []
+        -   name: Pyrolisk
+            tags: []
+        -   name: Jackal
+            tags: []
+        -   name: Fox
+            tags: []
+        -   name: Coyote
+            tags: []
+        -   name: Werejackal
+            tags: []
+        -   name: Little dog
+            tags: []
+        -   name: Dingo
+            tags: []
+        -   name: Dog
+            tags: []
+        -   name: Large dog
+            tags: []
+        -   name: Wolf
+            tags: []
+        -   name: Werewolf
+            tags: []
+        -   name: Winter wolf cub
+            tags: []
+        -   name: Warg
+            tags: []
+        -   name: Winter wolf
+            tags: []
+        -   name: Hell hound pup
+            tags: []
+        -   name: Hell hound
+            tags: []
+        -   name: Cerberus
+            tags: []
+        -   name: Gas spore
+            tags: []
+        -   name: Floating eye
+            tags: []
+        -   name: Freezing sphere
+            tags: []
+        -   name: Flaming sphere
+            tags: []
+        -   name: Shocking sphere
+            tags: []
+        -   name: Beholder
+            tags: []
+        -   name: Kitten
+            tags: []
+        -   name: Housecat
+            tags: []
+        -   name: Jaguar
+            tags: []
+        -   name: Lynx
+            tags: []
+        -   name: Panther
+            tags: []
+        -   name: Large cat
+            tags: []
+        -   name: Tiger
+            tags: []
+        -   name: Gremlin
+            tags: []
+        -   name: Gargoyle
+            tags: []
+        -   name: Winged gargoyle
+            tags: []
+        -   name: Hobbit
+            tags: []
+        -   name: Dwarf (monster)
+            tags: []
+        -   name: Bugbear
+            tags: []
+        -   name: Dwarf lord
+            tags: []
+        -   name: Dwarf king
+            tags: []
+        -   name: Mind flayer
+            tags: []
+        -   name: Master mind flayer
+            tags: []
+        -   name: Manes
+            tags: []
+        -   name: Homunculus
+            tags: []
+        -   name: Imp
+            tags: []
+        -   name: Lemure
+            tags: []
+        -   name: Quasit
+            tags: []
+        -   name: Tengu
+            tags: []
+        -   name: Blue jelly
+            tags: []
+        -   name: Spotted jelly
+            tags: []
+        -   name: Ochre jelly
+            tags: []
+        -   name: Kobold
+            tags: []
+        -   name: Large kobold
+            tags: []
+        -   name: Kobold lord
+            tags: []
+        -   name: Kobold shaman
+            tags: []
+        -   name: Leprechaun
+            tags: []
+        -   name: Small mimic
+            tags: []
+        -   name: Large mimic
+            tags: []
+        -   name: Giant mimic
+            tags: []
+        -   name: Wood nymph
+            tags: []
+        -   name: Water nymph
+            tags: []
+        -   name: Mountain nymph
+            tags: []
+        -   name: Goblin
+            tags: []
+        -   name: Hobgoblin
+            tags: []
+        -   name: Orc
+            tags: []
+        -   name: Hill orc
+            tags: []
+        -   name: Mordor orc
+            tags: []
+        -   name: Uruk-hai
+            tags: []
+        -   name: Orc shaman
+            tags: []
+        -   name: Orc-captain
+            tags: []
+        -   name: Rock piercer
+            tags: []
+        -   name: Iron piercer
+            tags: []
+        -   name: Glass piercer
+            tags: []
+        -   name: Rothe
+            tags: []
+        -   name: Mumak
+            tags: []
+        -   name: Leocrotta
+            tags: []
+        -   name: Wumpus
+            tags: []
+        -   name: Titanothere
+            tags: []
+        -   name: Baluchitherium
+            tags: []
+        -   name: Mastodon
+            tags: []
+        -   name: Sewer rat
+            tags: []
+        -   name: Giant rat
+            tags: []
+        -   name: Rabid rat
+            tags: []
+        -   name: Wererat
+            tags: []
+        -   name: Rock mole
+            tags: []
+        -   name: Woodchuck
+            tags: []
+        -   name: Cave spider
+            tags: []
+        -   name: Centipede
+            tags: []
+        -   name: Giant spider
+            tags: []
+        -   name: Scorpion
+            tags: []
+        -   name: Lurker above
+            tags: []
+        -   name: Trapper
+            tags: []
+        -   name: Pony
+            tags: []
+        -   name: White unicorn
+            tags: []
+        -   name: Gray unicorn
+            tags: []
+        -   name: Black unicorn
+            tags: []
+        -   name: Horse
+            tags: []
+        -   name: Warhorse
+            tags: []
+        -   name: Fog cloud
+            tags: []
+        -   name: Dust vortex
+            tags: []
+        -   name: Ice vortex
+            tags: []
+        -   name: Energy vortex
+            tags: []
+        -   name: Steam vortex
+            tags: []
+        -   name: Fire vortex
+            tags: []
+        -   name: Baby long worm
+            tags: []
+        -   name: Baby purple worm
+            tags: []
+        -   name: Long worm
+            tags: []
+        -   name: Purple worm
+            tags: []
+        -   name: Grid bug
+            tags: []
+        -   name: Xan
+            tags: []
+        -   name: Yellow light
+            tags: []
+        -   name: Black light
+            tags: []
+        -   name: Zruty
+            tags: []
+        -   name: Couatl
+            tags: []
+        -   name: Aleax
+            tags: []
+        -   name: Angel
+            tags: []
+        -   name: Ki-rin
+            tags: []
+        -   name: Archon
+            tags: []
+        -   name: Bat
+            tags: []
+        -   name: Giant bat
+            tags: []
+        -   name: Raven
+            tags: []
+        -   name: Vampire bat
+            tags: []
+        -   name: Plains centaur
+            tags: []
+        -   name: Forest centaur
+            tags: []
+        -   name: Mountain centaur
+            tags: []
+        -   name: Baby gray dragon
+            tags: []
+        -   name: Baby silver dragon
+            tags: []
+        -   name: Baby shimmering dragon
+            tags: []
+        -   name: Baby red dragon
+            tags: []
+        -   name: Baby white dragon
+            tags: []
+        -   name: Baby orange dragon
+            tags: []
+        -   name: Baby black dragon
+            tags: []
+        -   name: Baby blue dragon
+            tags: []
+        -   name: Baby green dragon
+            tags: []
+        -   name: Baby yellow dragon
+            tags: []
+        -   name: Gray dragon
+            tags: []
+        -   name: Silver dragon
+            tags: []
+        -   name: Shimmering dragon
+            tags: []
+        -   name: Red dragon
+            tags: []
+        -   name: White dragon
+            tags: []
+        -   name: Orange dragon
+            tags: []
+        -   name: Black dragon
+            tags: []
+        -   name: Blue dragon
+            tags: []
+        -   name: Green dragon
+            tags: []
+        -   name: Yellow dragon
+            tags: []
+        -   name: Stalker
+            tags: []
+        -   name: Air elemental
+            tags: []
+        -   name: Fire elemental
+            tags: []
+        -   name: Earth elemental
+            tags: []
+        -   name: Water elemental
+            tags: []
+        -   name: Lichen
+            tags: []
+        -   name: Brown mold
+            tags: []
+        -   name: Yellow mold
+            tags: []
+        -   name: Green mold
+            tags: []
+        -   name: Red mold
+            tags: []
+        -   name: Shrieker
+            tags: []
+        -   name: Violet fungus
+            tags: []
+        -   name: Gnome (monster)
+            tags: []
+        -   name: Gnome lord
+            tags: []
+        -   name: Gnomish wizard
+            tags: []
+        -   name: Gnome king
+            tags: []
+        -   name: Giant
+            tags: []
+        -   name: Stone giant
+            tags: []
+        -   name: Hill giant
+            tags: []
+        -   name: Fire giant
+            tags: []
+        -   name: Frost giant
+            tags: []
+        -   name: Ettin
+            tags: []
+        -   name: Storm giant
+            tags: []
+        -   name: Titan
+            tags: []
+        -   name: Minotaur
+            tags: []
+        -   name: Jabberwock
+            tags: []
+        -   name: Vorpal jabberwock
+            tags: []
+        -   name: Keystone Kop
+            tags: []
+        -   name: Kop Sergeant
+            tags: []
+        -   name: Kop Lieutenant
+            tags: []
+        -   name: Kop Kaptain
+            tags: []
+        -   name: Lich
+            tags: []
+        -   name: Demilich
+            tags: []
+        -   name: Master lich
+            tags: []
+        -   name: Arch-lich
+            tags: []
+        -   name: Kobold mummy
+            tags: []
+        -   name: Gnome mummy
+            tags: []
+        -   name: Orc mummy
+            tags: []
+        -   name: Dwarf mummy
+            tags: []
+        -   name: Elf mummy
+            tags: []
+        -   name: Human mummy
+            tags: []
+        -   name: Ettin mummy
+            tags: []
+        -   name: Giant mummy
+            tags: []
+        -   name: Red naga hatchling
+            tags: []
+        -   name: Black naga hatchling
+            tags: []
+        -   name: Golden naga hatchling
+            tags: []
+        -   name: Guardian naga hatchling
+            tags: []
+        -   name: Red naga
+            tags: []
+        -   name: Black naga
+            tags: []
+        -   name: Golden naga
+            tags: []
+        -   name: Guardian naga
+            tags: []
+        -   name: Ogre
+            tags: []
+        -   name: Ogre lord
+            tags: []
+        -   name: Ogre king
+            tags: []
+        -   name: Gray ooze
+            tags: []
+        -   name: Brown pudding
+            tags: []
+        -   name: Green slime
+            tags: []
+        -   name: Black pudding
+            tags: []
+        -   name: Quantum mechanic
+            tags: []
+        -   name: Rust monster
+            tags: []
+        -   name: Disenchanter
+            tags: []
+        -   name: Garter snake
+            tags: []
+        -   name: Snake
+            tags: []
+        -   name: Water moccasin
+            tags: []
+        -   name: Python
+            tags: []
+        -   name: Pit viper
+            tags: []
+        -   name: Cobra
+            tags: []
+        -   name: Troll
+            tags: []
+        -   name: Ice troll
+            tags: []
+        -   name: Rock troll
+            tags: []
+        -   name: Water troll
+            tags: []
+        -   name: Olog-hai
+            tags: []
+        -   name: Umber hulk
+            tags: []
+        -   name: Vampire
+            tags: []
+        -   name: Vampire lord
+            tags: []
+        -   name: Vampire mage
+            tags: []
+        -   name: Vlad the Impaler
+            tags: []
+        -   name: Barrow wight
+            tags: []
+        -   name: Wraith
+            tags: []
+        -   name: Nazgul
+            tags: []
+        -   name: Xorn
+            tags: []
+        -   name: Monkey
+            tags: []
+        -   name: Ape
+            tags: []
+        -   name: Owlbear
+            tags: []
+        -   name: Yeti
+            tags: []
+        -   name: Carnivorous ape
+            tags: []
+        -   name: Sasquatch
+            tags: []
+        -   name: Kobold zombie
+            tags: []
+        -   name: Gnome zombie
+            tags: []
+        -   name: Orc zombie
+            tags: []
+        -   name: Dwarf zombie
+            tags: []
+        -   name: Elf zombie
+            tags: []
+        -   name: Human zombie
+            tags: []
+        -   name: Ettin zombie
+            tags: []
+        -   name: Ghoul
+            tags: []
+        -   name: Giant zombie
+            tags: []
+        -   name: Skeleton
+            tags: []
+        -   name: Straw golem
+            tags: []
+        -   name: Paper golem
+            tags: []
+        -   name: Rope golem
+            tags: []
+        -   name: Gold golem
+            tags: []
+        -   name: Leather golem
+            tags: []
+        -   name: Wood golem
+            tags: []
+        -   name: Flesh golem
+            tags: []
+        -   name: Clay golem
+            tags: []
+        -   name: Stone golem
+            tags: []
+        -   name: Glass golem
+            tags: []
+        -   name: Iron golem
+            tags: []
+        -   name: Human (monster)
+            tags: []
+        -   name: Wererat
+            tags: []
+        -   name: Werejackal
+            tags: []
+        -   name: Werewolf
+            tags: []
+        -   name: Elf (monster)
+            tags: []
+        -   name: Woodland-elf
+            tags: []
+        -   name: Green-elf
+            tags: []
+        -   name: Grey-elf
+            tags: []
+        -   name: Elf-lord
+            tags: []
+        -   name: Elvenking
+            tags: []
+        -   name: Doppelganger
+            tags: []
+        -   name: Shopkeeper
+            tags: []
+        -   name: Guard
+            tags: []
+        -   name: Prisoner
+            tags: []
+        -   name: Oracle
+            tags: []
+        -   name: Aligned priest
+            tags: []
+        -   name: High priest
+            tags: []
+        -   name: Soldier
+            tags: []
+        -   name: Sergeant
+            tags: []
+        -   name: Nurse
+            tags: []
+        -   name: Lieutenant
+            tags: []
+        -   name: Captain
+            tags: []
+        -   name: Watchman
+            tags: []
+        -   name: Watch captain
+            tags: []
+        -   name: Medusa
+            tags: []
+        -   name: Wizard of Yendor
+            tags: []
+        -   name: Croesus
+            tags: []
+        -   name: Charon
+            tags: []
+        -   name: Ghost
+            tags: []
+        -   name: Shade
+            tags: []
+        -   name: Water demon
+            tags: []
+        -   name: Succubus
+            tags: []
+        -   name: Horned devil
+            tags: []
+        -   name: Incubus
+            tags: []
+        -   name: Erinys
+            tags: []
+        -   name: Barbed devil
+            tags: []
+        -   name: Marilith
+            tags: []
+        -   name: Vrock
+            tags: []
+        -   name: Hezrou
+            tags: []
+        -   name: Bone devil
+            tags: []
+        -   name: Ice devil
+            tags: []
+        -   name: Nalfeshnee
+            tags: []
+        -   name: Pit fiend
+            tags: []
+        -   name: Sandestin
+            tags: []
+        -   name: Balrog
+            tags: []
+        -   name: Juiblex
+            tags: []
+        -   name: Yeenoghu
+            tags: []
+        -   name: Orcus
+            tags: []
+        -   name: Geryon
+            tags: []
+        -   name: Dispater
+            tags: []
+        -   name: Baalzebub
+            tags: []
+        -   name: Asmodeus
+            tags: []
+        -   name: Demogorgon
+            tags: []
+        -   name: Death (monster)
+            tags: []
+        -   name: Pestilence
+            tags: []
+        -   name: Famine
+            tags: []
+        -   name: Mail daemon
+            tags: []
+        -   name: Djinni
+            tags: []
+        -   name: Jellyfish
+            tags: []
+        -   name: Piranha
+            tags: []
+        -   name: Shark
+            tags: []
+        -   name: Giant eel
+            tags: []
+        -   name: Electric eel
+            tags: []
+        -   name: Kraken
+            tags: []
+        -   name: Newt
+            tags: []
+        -   name: Gecko
+            tags: []
+        -   name: Iguana
+            tags: []
+        -   name: Baby crocodile
+            tags: []
+        -   name: Lizard
+            tags: []
+        -   name: Chameleon
+            tags: []
+        -   name: Crocodile
+            tags: []
+        -   name: Salamander
+            tags: []
+        -   name: Long worm tail
+            tags: []
+        -   name: archeologist
+            tags: []
+        -   name: barbarian
+            tags: []
+        -   name: caveman
+            tags: []
+        -   name: cavewoman
+            tags: []
+        -   name: healer
+            tags: []
+        -   name: knight
+            tags: []
+        -   name: monk
+            tags: []
+        -   name: priest
+            tags: []
+        -   name: priestess
+            tags: []
+        -   name: ranger
+            tags: []
+        -   name: rogue
+            tags: []
+        -   name: samurai
+            tags: []
+        -   name: tourist
+            tags: []
+        -   name: valkyrie
+            tags: []
+        -   name: wizard
+            tags: []
+        -   name: Lord Carnarvon
+            tags: []
+        -   name: Pelias
+            tags: []
+        -   name: Shaman Karnov
+            tags: []
+        -   name: Earendil
+            tags: []
+        -   name: Elwing
+            tags: []
+        -   name: Hippocrates
+            tags: []
+        -   name: King Arthur
+            tags: []
+        -   name: Grand Master
+            tags: []
+        -   name: Arch Priest
+            tags: []
+        -   name: Orion
+            tags: []
+        -   name: Master of Thieves
+            tags: []
+        -   name: Lord Sato
+            tags: []
+        -   name: Twoflower
+            tags: []
+        -   name: Norn
+            tags: []
+        -   name: Neferet the Green
+            tags: []
+        -   name: Minion of Huhetotl
+            tags: []
+        -   name: Thoth Amon
+            tags: []
+        -   name: Chromatic Dragon
+            tags: []
+        -   name: Goblin King
+            tags: []
+        -   name: Cyclops
+            tags: []
+        -   name: Ixoth
+            tags: []
+        -   name: Master Kaen
+            tags: []
+        -   name: Nalzok
+            tags: []
+        -   name: Scorpius
+            tags: []
+        -   name: Master Assassin
+            tags: []
+        -   name: Ashikaga Takauji
+            tags: []
+        -   name: Lord Surtur
+            tags: []
+        -   name: Dark One
+            tags: []
+        -   name: Student
+            tags: []
+        -   name: Chieftain
+            tags: []
+        -   name: Neanderthal
+            tags: []
+        -   name: High-elf
+            tags: []
+        -   name: Attendant
+            tags: []
+        -   name: Page
+            tags: []
+        -   name: Abbot
+            tags: []
+        -   name: Acolyte
+            tags: []
+        -   name: Hunter
+            tags: []
+        -   name: Thug
+            tags: []
+        -   name: Ninja
+            tags: []
+        -   name: Roshi
+            tags: []
+        -   name: Guide
+            tags: []
+        -   name: Warrior
+            tags: []
+        -   name: Apprentice
+            tags: []
+        -   name: invisible monster
+            tags: []
+        -   name: Strange object
+            tags: []
+        -   name: Arrow
+            tags: []
+        -   name: runed arrow
+            tags: []
+        -   name: crude arrow
+            tags: []
+        -   name: Silver arrow
+            tags: []
+        -   name: bamboo arrow
+            tags: []
+        -   name: Crossbow bolt
+            tags: []
+        -   name: Dart
+            tags: []
+        -   name: throwing star
+            tags: []
+        -   name: Boomerang
+            tags: []
+        -   name: Spear
+            tags: []
+        -   name: runed spear
+            tags: []
+        -   name: crude spear
+            tags: []
+        -   name: stout spear
+            tags: []
+        -   name: Silver spear
+            tags: []
+        -   name: throwing spear
+            tags: []
+        -   name: Trident
+            tags: []
+        -   name: Dagger
+            tags: []
+        -   name: runed dagger
+            tags: []
+        -   name: crude dagger
+            tags: []
+        -   name: Silver dagger
+            tags: []
+        -   name: Athame
+            tags: []
+        -   name: Scalpel
+            tags: []
+        -   name: Knife
+            tags: []
+        -   name: Stiletto
+            tags: []
+        -   name: Worm tooth
+            tags: []
+        -   name: Crysknife
+            tags: []
+        -   name: Axe
+            tags: []
+        -   name: double-headed axe
+            tags: []
+        -   name: Short sword
+            tags: []
+        -   name: runed short sword
+            tags: []
+        -   name: crude short sword
+            tags: []
+        -   name: broad short sword
+            tags: []
+        -   name: curved sword
+            tags: []
+        -   name: Silver saber
+            tags: []
+        -   name: Broadsword
+            tags: []
+        -   name: runed broadsword
+            tags: []
+        -   name: Long sword
+            tags: []
+        -   name: Two-handed sword
+            tags: []
+        -   name: samurai sword
+            tags: []
+        -   name: long samurai sword
+            tags: []
+        -   name: runed broadsword
+            tags: []
+        -   name: vulgar polearm
+            tags: []
+        -   name: hilted polearm
+            tags: []
+        -   name: forked polearm
+            tags: []
+        -   name: single-edged polearm
+            tags: []
+        -   name: Lance
+            tags: []
+        -   name: angled poleaxe
+            tags: []
+        -   name: long poleaxe
+            tags: []
+        -   name: pole cleaver
+            tags: []
+        -   name: broad pick
+            tags: []
+        -   name: pole sickle
+            tags: []
+        -   name: pruning hook
+            tags: []
+        -   name: hooked polearm
+            tags: []
+        -   name: pronged polearm
+            tags: []
+        -   name: beaked polearm
+            tags: []
+        -   name: Mace
+            tags: []
+        -   name: Morning star
+            tags: []
+        -   name: War hammer
+            tags: []
+        -   name: Club
+            tags: []
+        -   name: Rubber hose
+            tags: []
+        -   name: staff
+            tags: []
+        -   name: thonged club
+            tags: []
+        -   name: Flail
+            tags: []
+        -   name: Bullwhip
+            tags: []
+        -   name: Bow
+            tags: []
+        -   name: runed bow
+            tags: []
+        -   name: crude bow
+            tags: []
+        -   name: Long bow
+            tags: []
+        -   name: Sling
+            tags: []
+        -   name: Crossbow
+            tags: []
+        -   name: leather hat
+            tags: []
+        -   name: iron skull cap
+            tags: []
+        -   name: hard hat
+            tags: []
+        -   name: Fedora
+            tags: []
+        -   name: conical hat
+            tags: []
+        -   name: conical hat
+            tags: []
+        -   name: Dented pot
+            tags: []
+        -   name: plumed helmet
+            tags: []
+        -   name: etched helmet
+            tags: []
+        -   name: crested helmet
+            tags: []
+        -   name: visored helmet
+            tags: []
+        -   name: Gray dragon scale mail
+            tags: []
+        -   name: Silver dragon scale mail
+            tags: []
+        -   name: Shimmering dragon scale mail
+            tags: []
+        -   name: Red dragon scale mail
+            tags: []
+        -   name: White dragon scale mail
+            tags: []
+        -   name: Orange dragon scale mail
+            tags: []
+        -   name: Black dragon scale mail
+            tags: []
+        -   name: Blue dragon scale mail
+            tags: []
+        -   name: Green dragon scale mail
+            tags: []
+        -   name: Yellow dragon scale mail
+            tags: []
+        -   name: Gray dragon scales
+            tags: []
+        -   name: Silver dragon scales
+            tags: []
+        -   name: Shimmering dragon scales
+            tags: []
+        -   name: Red dragon scales
+            tags: []
+        -   name: White dragon scales
+            tags: []
+        -   name: Orange dragon scales
+            tags: []
+        -   name: Black dragon scales
+            tags: []
+        -   name: Blue dragon scales
+            tags: []
+        -   name: Green dragon scales
+            tags: []
+        -   name: Yellow dragon scales
+            tags: []
+        -   name: Plate mail
+            tags: []
+        -   name: Crystal plate mail
+            tags: []
+        -   name: Bronze plate mail
+            tags: []
+        -   name: Splint mail
+            tags: []
+        -   name: Banded mail
+            tags: []
+        -   name: Dwarvish mithril-coat
+            tags: []
+        -   name: Elven mithril-coat
+            tags: []
+        -   name: Chain mail
+            tags: []
+        -   name: crude chain mail
+            tags: []
+        -   name: Scale mail
+            tags: []
+        -   name: Studded leather armor
+            tags: []
+        -   name: Ring mail
+            tags: []
+        -   name: crude ring mail
+            tags: []
+        -   name: Leather armor
+            tags: []
+        -   name: Leather jacket
+            tags: []
+        -   name: Hawaiian shirt
+            tags: []
+        -   name: T-shirt
+            tags: []
+        -   name: Mummy wrapping
+            tags: []
+        -   name: faded pall
+            tags: []
+        -   name: coarse mantelet
+            tags: []
+        -   name: hooded cloak
+            tags: []
+        -   name: slippery cloak
+            tags: []
+        -   name: Robe
+            tags: []
+        -   name: apron
+            tags: []
+        -   name: Leather cloak
+            tags: []
+        -   name: tattered cape
+            tags: []
+        -   name: opera cloak
+            tags: []
+        -   name: ornamental cope
+            tags: []
+        -   name: piece of cloth
+            tags: []
+        -   name: Small shield
+            tags: []
+        -   name: blue and green shield
+            tags: []
+        -   name: white-handed shield
+            tags: []
+        -   name: red-eyed shield
+            tags: []
+        -   name: Large shield
+            tags: []
+        -   name: large round shield
+            tags: []
+        -   name: polished silver shield
+            tags: []
+        -   name: old gloves
+            tags: []
+        -   name: padded gloves
+            tags: []
+        -   name: riding gloves
+            tags: []
+        -   name: fencing gloves
+            tags: []
+        -   name: walking shoes
+            tags: []
+        -   name: hard shoes
+            tags: []
+        -   name: jackboots
+            tags: []
+        -   name: combat boots
+            tags: []
+        -   name: jungle boots
+            tags: []
+        -   name: hiking boots
+            tags: []
+        -   name: mud boots
+            tags: []
+        -   name: buckled boots
+            tags: []
+        -   name: riding boots
+            tags: []
+        -   name: snow boots
+            tags: []
+        -   name: wooden ring
+            tags: []
+        -   name: granite ring
+            tags: []
+        -   name: opal ring
+            tags: []
+        -   name: clay ring
+            tags: []
+        -   name: coral ring
+            tags: []
+        -   name: black onyx ring
+            tags: []
+        -   name: moonstone ring
+            tags: []
+        -   name: tiger eye ring
+            tags: []
+        -   name: jade ring
+            tags: []
+        -   name: bronze ring
+            tags: []
+        -   name: agate ring
+            tags: []
+        -   name: topaz ring
+            tags: []
+        -   name: sapphire ring
+            tags: []
+        -   name: ruby ring
+            tags: []
+        -   name: diamond ring
+            tags: []
+        -   name: pearl ring
+            tags: []
+        -   name: iron ring
+            tags: []
+        -   name: brass ring
+            tags: []
+        -   name: copper ring
+            tags: []
+        -   name: twisted ring
+            tags: []
+        -   name: steel ring
+            tags: []
+        -   name: silver ring
+            tags: []
+        -   name: gold ring
+            tags: []
+        -   name: ivory ring
+            tags: []
+        -   name: emerald ring
+            tags: []
+        -   name: wire ring
+            tags: []
+        -   name: engagement ring
+            tags: []
+        -   name: shiny ring
+            tags: []
+        -   name: circular amulet
+            tags: []
+        -   name: spherical amulet
+            tags: []
+        -   name: oval amulet
+            tags: []
+        -   name: triangular amulet
+            tags: []
+        -   name: pyramidal amulet
+            tags: []
+        -   name: square amulet
+            tags: []
+        -   name: concave amulet
+            tags: []
+        -   name: hexagonal amulet
+            tags: []
+        -   name: octagonal amulet
+            tags: []
+        -   name: Cheap plastic imitation of the Amulet of Yendor
+            tags: []
+        -   name: Amulet of Yendor
+            tags: []
+        -   name: Large box
+            tags: []
+        -   name: Chest
+            tags: []
+        -   name: Ice box
+            tags: []
+        -   name: bag
+            tags: []
+        -   name: bag
+            tags: []
+        -   name: bag
+            tags: []
+        -   name: bag
+            tags: []
+        -   name: key
+            tags: []
+        -   name: Lock pick
+            tags: []
+        -   name: Credit card
+            tags: []
+        -   name: candle
+            tags: []
+        -   name: candle
+            tags: []
+        -   name: Brass lantern
+            tags: []
+        -   name: lamp
+            tags: []
+        -   name: lamp
+            tags: []
+        -   name: Expensive camera
+            tags: []
+        -   name: looking glass
+            tags: []
+        -   name: glass orb
+            tags: []
+        -   name: Lenses
+            tags: []
+        -   name: Blindfold
+            tags: []
+        -   name: Towel
+            tags: []
+        -   name: Saddle
+            tags: []
+        -   name: Leash
+            tags: []
+        -   name: Stethoscope
+            tags: []
+        -   name: Tinning kit
+            tags: []
+        -   name: Tin opener
+            tags: []
+        -   name: Can of grease
+            tags: []
+        -   name: Figurine
+            tags: []
+        -   name: Magic marker
+            tags: []
+        -   name: Land mine
+            tags: []
+        -   name: Beartrap
+            tags: []
+        -   name: whistle
+            tags: []
+        -   name: whistle
+            tags: []
+        -   name: flute
+            tags: []
+        -   name: flute
+            tags: []
+        -   name: horn
+            tags: []
+        -   name: horn
+            tags: []
+        -   name: horn
+            tags: []
+        -   name: horn
+            tags: []
+        -   name: harp
+            tags: []
+        -   name: harp
+            tags: []
+        -   name: Bell
+            tags: []
+        -   name: Bugle
+            tags: []
+        -   name: drum
+            tags: []
+        -   name: drum
+            tags: []
+        -   name: Pick-axe
+            tags: []
+        -   name: iron hook
+            tags: []
+        -   name: Unicorn horn
+            tags: []
+        -   name: candelabrum
+            tags: []
+        -   name: silver bell
+            tags: []
+        -   name: Tripe ration
+            tags: []
+        -   name: Corpse
+            tags: []
+        -   name: Egg
+            tags: []
+        -   name: Meatball
+            tags: []
+        -   name: Meat stick
+            tags: []
+        -   name: Huge chunk of meat
+            tags: []
+        -   name: Meat ring
+            tags: []
+        -   name: glob of gray ooze
+            tags: []
+        -   name: glob of brown pudding
+            tags: []
+        -   name: glob of green slime
+            tags: []
+        -   name: glob of black pudding
+            tags: []
+        -   name: Kelp frond
+            tags: []
+        -   name: Eucalyptus leaf
+            tags: []
+        -   name: Apple
+            tags: []
+        -   name: Orange
+            tags: []
+        -   name: Pear
+            tags: []
+        -   name: Melon
+            tags: []
+        -   name: Banana
+            tags: []
+        -   name: Carrot
+            tags: []
+        -   name: Sprig of wolfsbane
+            tags: []
+        -   name: Clove of garlic
+            tags: []
+        -   name: Slime mold
+            tags: []
+        -   name: Lump of royal jelly
+            tags: []
+        -   name: Cream pie
+            tags: []
+        -   name: Candy bar
+            tags: []
+        -   name: Fortune cookie
+            tags: []
+        -   name: Pancake
+            tags: []
+        -   name: Lembas wafer
+            tags: []
+        -   name: Cram ration
+            tags: []
+        -   name: Food ration
+            tags: []
+        -   name: K-ration
+            tags: []
+        -   name: C-ration
+            tags: []
+        -   name: Tin
+            tags: []
+        -   name: ruby potion
+            tags: []
+        -   name: pink potion
+            tags: []
+        -   name: orange potion
+            tags: []
+        -   name: yellow potion
+            tags: []
+        -   name: emerald potion
+            tags: []
+        -   name: dark green potion
+            tags: []
+        -   name: cyan potion
+            tags: []
+        -   name: sky blue potion
+            tags: []
+        -   name: brilliant blue potion
+            tags: []
+        -   name: magenta potion
+            tags: []
+        -   name: purple-red potion
+            tags: []
+        -   name: puce potion
+            tags: []
+        -   name: milky potion
+            tags: []
+        -   name: swirly potion
+            tags: []
+        -   name: bubbly potion
+            tags: []
+        -   name: smoky potion
+            tags: []
+        -   name: cloudy potion
+            tags: []
+        -   name: effervescent potion
+            tags: []
+        -   name: black potion
+            tags: []
+        -   name: golden potion
+            tags: []
+        -   name: brown potion
+            tags: []
+        -   name: fizzy potion
+            tags: []
+        -   name: dark potion
+            tags: []
+        -   name: white potion
+            tags: []
+        -   name: murky potion
+            tags: []
+        -   name: Potion of water
+            tags: []
+        -   name: scroll labeled ZELGO MER
+            tags: []
+        -   name: scroll labeled JUYED AWK YACC
+            tags: []
+        -   name: scroll labeled NR 9
+            tags: []
+        -   name: scroll labeled XIXAXA XOXAXA XUXAXA
+            tags: []
+        -   name: scroll labeled PRATYAVAYAH
+            tags: []
+        -   name: scroll labeled DAIYEN FOOELS
+            tags: []
+        -   name: scroll labeled LEP GEX VEN ZEA
+            tags: []
+        -   name: scroll labeled PRIRUTSENIE
+            tags: []
+        -   name: scroll labeled ELBIB YLOH
+            tags: []
+        -   name: scroll labeled VERR YED HORRE
+            tags: []
+        -   name: scroll labeled VENZAR BORGAVVE
+            tags: []
+        -   name: scroll labeled THARR
+            tags: []
+        -   name: scroll labeled YUM YUM
+            tags: []
+        -   name: scroll labeled KERNOD WEL
+            tags: []
+        -   name: scroll labeled ELAM EBOW
+            tags: []
+        -   name: scroll labeled DUAM XNAHT
+            tags: []
+        -   name: scroll labeled ANDOVA BEGARIN
+            tags: []
+        -   name: scroll labeled KIRJE
+            tags: []
+        -   name: scroll labeled VE FORBRYDERNE
+            tags: []
+        -   name: scroll labeled HACKEM MUCHE
+            tags: []
+        -   name: scroll labeled VELOX NEB
+            tags: []
+        -   name: scroll labeled FOOBIE BLETCH
+            tags: []
+        -   name: scroll labeled TEMOV
+            tags: []
+        -   name: scroll labeled GARVEN DEH
+            tags: []
+        -   name: scroll labeled READ ME
+            tags: []
+        -   name: scroll labeled ETAOIN SHRDLU
+            tags: []
+        -   name: scroll labeled LOREM IPSUM
+            tags: []
+        -   name: scroll labeled FNORD
+            tags: []
+        -   name: scroll labeled KO BATE
+            tags: []
+        -   name: scroll labeled ABRA KA DABRA
+            tags: []
+        -   name: scroll labeled ASHPD SODALG
+            tags: []
+        -   name: scroll labeled ZLORFIK
+            tags: []
+        -   name: scroll labeled GNIK SISI VLE
+            tags: []
+        -   name: scroll labeled HAPAX LEGOMENON
+            tags: []
+        -   name: scroll labeled EIRIS SAZUN IDISI
+            tags: []
+        -   name: scroll labeled PHOL ENDE WODAN
+            tags: []
+        -   name: scroll labeled GHOTI
+            tags: []
+        -   name: scroll labeled MAPIRO MAHAMA DIROMAT
+            tags: []
+        -   name: scroll labeled VAS CORP BET MANI
+            tags: []
+        -   name: scroll labeled XOR OTA
+            tags: []
+        -   name: scroll labeled STRC PRST SKRZ KRK
+            tags: []
+        -   name: Scroll of mail
+            tags: []
+        -   name: Scroll of blank paper
+            tags: []
+        -   name: parchment spellbook
+            tags: []
+        -   name: vellum spellbook
+            tags: []
+        -   name: ragged spellbook
+            tags: []
+        -   name: dog eared spellbook
+            tags: []
+        -   name: mottled spellbook
+            tags: []
+        -   name: stained spellbook
+            tags: []
+        -   name: cloth spellbook
+            tags: []
+        -   name: leathery spellbook
+            tags: []
+        -   name: white spellbook
+            tags: []
+        -   name: pink spellbook
+            tags: []
+        -   name: red spellbook
+            tags: []
+        -   name: orange spellbook
+            tags: []
+        -   name: yellow spellbook
+            tags: []
+        -   name: velvet spellbook
+            tags: []
+        -   name: light green spellbook
+            tags: []
+        -   name: dark green spellbook
+            tags: []
+        -   name: turquoise spellbook
+            tags: []
+        -   name: cyan spellbook
+            tags: []
+        -   name: light blue spellbook
+            tags: []
+        -   name: dark blue spellbook
+            tags: []
+        -   name: indigo spellbook
+            tags: []
+        -   name: magenta spellbook
+            tags: []
+        -   name: purple spellbook
+            tags: []
+        -   name: violet spellbook
+            tags: []
+        -   name: tan spellbook
+            tags: []
+        -   name: plaid spellbook
+            tags: []
+        -   name: light brown spellbook
+            tags: []
+        -   name: dark brown spellbook
+            tags: []
+        -   name: gray spellbook
+            tags: []
+        -   name: wrinkled spellbook
+            tags: []
+        -   name: dusty spellbook
+            tags: []
+        -   name: bronze spellbook
+            tags: []
+        -   name: copper spellbook
+            tags: []
+        -   name: silver spellbook
+            tags: []
+        -   name: gold spellbook
+            tags: []
+        -   name: glittering spellbook
+            tags: []
+        -   name: shining spellbook
+            tags: []
+        -   name: dull spellbook
+            tags: []
+        -   name: thin spellbook
+            tags: []
+        -   name: thick spellbook
+            tags: []
+        -   name: Spellbook of blank paper
+            tags: []
+        -   name: paperback
+            tags: []
+        -   name: Book of the Dead
+            tags: []
+        -   name: glass wand
+            tags: []
+        -   name: balsa wand
+            tags: []
+        -   name: crystal wand
+            tags: []
+        -   name: maple wand
+            tags: []
+        -   name: pine wand
+            tags: []
+        -   name: oak wand
+            tags: []
+        -   name: ebony wand
+            tags: []
+        -   name: marble wand
+            tags: []
+        -   name: tin wand
+            tags: []
+        -   name: brass wand
+            tags: []
+        -   name: copper wand
+            tags: []
+        -   name: silver wand
+            tags: []
+        -   name: platinum wand
+            tags: []
+        -   name: iridium wand
+            tags: []
+        -   name: zinc wand
+            tags: []
+        -   name: aluminum wand
+            tags: []
+        -   name: uranium wand
+            tags: []
+        -   name: iron wand
+            tags: []
+        -   name: steel wand
+            tags: []
+        -   name: hexagonal wand
+            tags: []
+        -   name: short wand
+            tags: []
+        -   name: runed wand
+            tags: []
+        -   name: long wand
+            tags: []
+        -   name: curved wand
+            tags: []
+        -   name: forked wand
+            tags: []
+        -   name: spiked wand
+            tags: []
+        -   name: jeweled wand
+            tags: []
+        -   name: Gold piece
+            tags: []
+        -   name: white gem
+            tags: []
+        -   name: white gem
+            tags: []
+        -   name: red gem
+            tags: []
+        -   name: orange gem
+            tags: []
+        -   name: blue gem
+            tags: []
+        -   name: black gem
+            tags: []
+        -   name: green gem
+            tags: []
+        -   name: green gem
+            tags: []
+        -   name: yellow gem
+            tags: []
+        -   name: green gem
+            tags: []
+        -   name: yellowish brown gem
+            tags: []
+        -   name: yellowish brown gem
+            tags: []
+        -   name: black gem
+            tags: []
+        -   name: white gem
+            tags: []
+        -   name: yellow gem
+            tags: []
+        -   name: red gem
+            tags: []
+        -   name: violet gem
+            tags: []
+        -   name: red gem
+            tags: []
+        -   name: violet gem
+            tags: []
+        -   name: black gem
+            tags: []
+        -   name: orange gem
+            tags: []
+        -   name: green gem
+            tags: []
+        -   name: Worthless piece of white glass
+            tags: []
+        -   name: Worthless piece of blue glass
+            tags: []
+        -   name: Worthless piece of red glass
+            tags: []
+        -   name: Worthless piece of yellowish brown glass
+            tags: []
+        -   name: Worthless piece of orange glass
+            tags: []
+        -   name: Worthless piece of yellow glass
+            tags: []
+        -   name: Worthless piece of black glass
+            tags: []
+        -   name: Worthless piece of green glass
+            tags: []
+        -   name: Worthless piece of violet glass
+            tags: []
+        -   name: gray stone
+            tags: []
+        -   name: gray stone
+            tags: []
+        -   name: gray stone
+            tags: []
+        -   name: gray stone
+            tags: []
+        -   name: Rock
+            tags: []
+        -   name: Boulder
+            tags: []
+        -   name: Statue
+            tags: []
+        -   name: Heavy iron ball
+            tags: []
+        -   name: Iron chain
+            tags: []
+        -   name: splash of venom
+            tags: []
+        -   name: splash of venom
+            tags: []
+        -   name: Dark part of a room
+            tags: []
+        -   name: Normal dungeon wall
+            tags: []
+        -   name: Normal dungeon wall
+            tags: []
+        -   name: Normal dungeon wall
+            tags: []
+        -   name: Normal dungeon wall
+            tags: []
+        -   name: Normal dungeon wall
+            tags: []
+        -   name: Normal dungeon wall
+            tags: []
+        -   name: Normal dungeon wall
+            tags: []
+        -   name: Normal dungeon wall
+            tags: []
+        -   name: Normal dungeon wall
+            tags: []
+        -   name: Normal dungeon wall
+            tags: []
+        -   name: Normal dungeon wall
+            tags: []
+        -   name: Doorway
+            tags: []
+        -   name: open door
+            tags: []
+        -   name: closed door
+            tags: []
+        -   name: Iron bars
+            tags: []
+        -   name: Tree
+            tags: []
+        -   name: floor of a room
+            tags: []
+        -   name: darkened part of the floor
+            tags: []
+        -   name: Corridor
+            tags: []
+        -   name: Lit corridor
+            tags: []
+        -   name: staircase up
+            tags: []
+        -   name: staircase down
+            tags: []
+        -   name: ladder up
+            tags: []
+        -   name: ladder down
+            tags: []
+        -   name: Altar
+            tags: []
+        -   name: Grave
+            tags: []
+        -   name: opulent throne
+            tags: []
+        -   name: Sink
+            tags: []
+        -   name: Fountain
+            tags: []
+        -   name: Water
+            tags: []
+        -   name: Ice
+            tags: []
+        -   name: molten lava
+            tags: []
+        -   name: lowered drawbridge
+            tags: []
+        -   name: raised drawbridge
+            tags: []
+        -   name: Air
+            tags: []
+        -   name: Cloud
+            tags: []
+        -   name: Water
+            tags: []
+        -   name: Arrow trap
+            tags: []
+        -   name: Dart trap
+            tags: []
+        -   name: Falling rock trap
+            tags: []
+        -   name: Squeaky board
+            tags: []
+        -   name: Bear trap
+            tags: []
+        -   name: Land mine
+            tags: []
+        -   name: Rolling boulder trap
+            tags: []
+        -   name: Sleeping gas trap
+            tags: []
+        -   name: Rust trap
+            tags: []
+        -   name: Fire trap
+            tags: []
+        -   name: Pit
+            tags: []
+        -   name: Spiked pit
+            tags: []
+        -   name: Hole
+            tags: []
+        -   name: Trap door
+            tags: []
+        -   name: Teleportation trap
+            tags: []
+        -   name: Level teleporter
+            tags: []
+        -   name: Magic portal
+            tags: []
+        -   name: Web
+            tags: []
+        -   name: statue trap
+            tags: []
+        -   name: Magic trap
+            tags: []
+        -   name: Anti-magic field
+            tags: []
+        -   name: Polymorph trap
+            tags: []
+        -   name: Vibrating square
+            tags: []
+        -   name: Zap beam
+            tags: []
+        -   name: Digging beam
+            tags: []
+        -   name: Camera flash
+            tags: []
+        -   name: Boomerang in flight
+            tags: []
+        -   name: Shield effect
+            tags: []
+        -   name: Poison cloud
+            tags: []
+        -   name: Valid position
+            tags: []
+        -   name: Engulfing
+            tags: []
+        -   name: dark explosion
+            tags: []
+        -   name: noxious explosion
+            tags: []
+        -   name: muddy explosion
+            tags: []
+        -   name: muddy explosion
+            tags: []
+        -   name: wet explosion
+            tags: []
+        -   name: magical explosion
+            tags: []
+        -   name: fiery explosion
+            tags: []
+        -   name: frosty explosion
+            tags: []
+        -   name: Magic missile
+            tags: []
+        -   name: Fire
+            tags: []
+        -   name: Cold
+            tags: []
+        -   name: Sleep
+            tags: []
+        -   name: Death ray
+            tags: []
+        -   name: Lightning
+            tags: []
+        -   name: Poison gas
+            tags: []
+        -   name: Acid
+            tags: []
+        -   name: Warning level 0
+            tags: []
+        -   name: Warning level 1
+            tags: []
+        -   name: Warning level 2
+            tags: []
+        -   name: Warning level 3
+            tags: []
+        -   name: Warning level 4
+            tags: []
+        -   name: Warning level 5
+            tags: []
+        -   name: Gnomish Mines wall
+            tags: []
+        -   name: Gnomish Mines wall
+            tags: []
+        -   name: Gehennom wall
+            tags: []
+        -   name: Fort Ludios wall
+            tags: []
+        -   name: Sokoban wall
+            tags: []
+        -   name: Sokoban wall
+            tags: []
+        -   name: statue of a giant ant
+            tags: []
+        -   name: statue of a killer bee
+            tags: []
+        -   name: statue of a soldier ant
+            tags: []
+        -   name: statue of a fire ant
+            tags: []
+        -   name: statue of a giant beetle
+            tags: []
+        -   name: statue of a queen bee
+            tags: []
+        -   name: statue of an acid blob
+            tags: []
+        -   name: statue of a quivering blob
+            tags: []
+        -   name: statue of a gelatinous cube
+            tags: []
+        -   name: statue of a chickatrice
+            tags: []
+        -   name: statue of a cockatrice
+            tags: []
+        -   name: statue of a pyrolisk
+            tags: []
+        -   name: statue of a jackal
+            tags: []
+        -   name: statue of a fox
+            tags: []
+        -   name: statue of a coyote
+            tags: []
+        -   name: statue of a werejackal
+            tags: []
+        -   name: statue of a little dog
+            tags: []
+        -   name: statue of a dingo
+            tags: []
+        -   name: statue of a dog
+            tags: []
+        -   name: statue of a large dog
+            tags: []
+        -   name: statue of a wolf
+            tags: []
+        -   name: statue of a werewolf
+            tags: []
+        -   name: statue of a winter wolf cub
+            tags: []
+        -   name: statue of a warg
+            tags: []
+        -   name: statue of a winter wolf
+            tags: []
+        -   name: statue of a hell hound pup
+            tags: []
+        -   name: statue of a hell hound
+            tags: []
+        -   name: statue of Cerberus
+            tags: []
+        -   name: statue of a gas spore
+            tags: []
+        -   name: statue of a floating eye
+            tags: []
+        -   name: statue of a freezing sphere
+            tags: []
+        -   name: statue of a flaming sphere
+            tags: []
+        -   name: statue of a shocking sphere
+            tags: []
+        -   name: statue of a beholder
+            tags: []
+        -   name: statue of a kitten
+            tags: []
+        -   name: statue of a housecat
+            tags: []
+        -   name: statue of a jaguar
+            tags: []
+        -   name: statue of a lynx
+            tags: []
+        -   name: statue of a panther
+            tags: []
+        -   name: statue of a large cat
+            tags: []
+        -   name: statue of a tiger
+            tags: []
+        -   name: statue of a gremlin
+            tags: []
+        -   name: statue of a gargoyle
+            tags: []
+        -   name: statue of a winged gargoyle
+            tags: []
+        -   name: statue of a hobbit
+            tags: []
+        -   name: statue of a dwarf
+            tags: []
+        -   name: statue of a bugbear
+            tags: []
+        -   name: statue of a dwarf lord
+            tags: []
+        -   name: statue of a dwarf king
+            tags: []
+        -   name: statue of a mind flayer
+            tags: []
+        -   name: statue of a master mind flayer
+            tags: []
+        -   name: statue of a manes
+            tags: []
+        -   name: statue of a homunculus
+            tags: []
+        -   name: statue of an imp
+            tags: []
+        -   name: statue of a lemure
+            tags: []
+        -   name: statue of a quasit
+            tags: []
+        -   name: statue of a tengu
+            tags: []
+        -   name: statue of a blue jelly
+            tags: []
+        -   name: statue of a spotted jelly
+            tags: []
+        -   name: statue of an ochre jelly
+            tags: []
+        -   name: statue of a kobold
+            tags: []
+        -   name: statue of a large kobold
+            tags: []
+        -   name: statue of a kobold lord
+            tags: []
+        -   name: statue of a kobold shaman
+            tags: []
+        -   name: statue of a leprechaun
+            tags: []
+        -   name: statue of a small mimic
+            tags: []
+        -   name: statue of a large mimic
+            tags: []
+        -   name: statue of a giant mimic
+            tags: []
+        -   name: statue of a wood nymph
+            tags: []
+        -   name: statue of a water nymph
+            tags: []
+        -   name: statue of a mountain nymph
+            tags: []
+        -   name: statue of a goblin
+            tags: []
+        -   name: statue of a hobgoblin
+            tags: []
+        -   name: statue of an orc
+            tags: []
+        -   name: statue of a hill orc
+            tags: []
+        -   name: statue of a Mordor orc
+            tags: []
+        -   name: statue of an Uruk-hai
+            tags: []
+        -   name: statue of an orc shaman
+            tags: []
+        -   name: statue of an orc-captain
+            tags: []
+        -   name: statue of a rock piercer
+            tags: []
+        -   name: statue of an iron piercer
+            tags: []
+        -   name: statue of a glass piercer
+            tags: []
+        -   name: statue of a rothe
+            tags: []
+        -   name: statue of a mumak
+            tags: []
+        -   name: statue of a leocrotta
+            tags: []
+        -   name: statue of a wumpus
+            tags: []
+        -   name: statue of a titanothere
+            tags: []
+        -   name: statue of a baluchitherium
+            tags: []
+        -   name: statue of a mastodon
+            tags: []
+        -   name: statue of a sewer rat
+            tags: []
+        -   name: statue of a giant rat
+            tags: []
+        -   name: statue of a rabid rat
+            tags: []
+        -   name: statue of a wererat
+            tags: []
+        -   name: statue of a rock mole
+            tags: []
+        -   name: statue of a woodchuck
+            tags: []
+        -   name: statue of a cave spider
+            tags: []
+        -   name: statue of a centipede
+            tags: []
+        -   name: statue of a giant spider
+            tags: []
+        -   name: statue of a scorpion
+            tags: []
+        -   name: statue of a lurker above
+            tags: []
+        -   name: statue of a trapper
+            tags: []
+        -   name: statue of a pony
+            tags: []
+        -   name: statue of a white unicorn
+            tags: []
+        -   name: statue of a gray unicorn
+            tags: []
+        -   name: statue of a black unicorn
+            tags: []
+        -   name: statue of a horse
+            tags: []
+        -   name: statue of a warhorse
+            tags: []
+        -   name: statue of a fog cloud
+            tags: []
+        -   name: statue of a dust vortex
+            tags: []
+        -   name: statue of an ice vortex
+            tags: []
+        -   name: statue of an energy vortex
+            tags: []
+        -   name: statue of a steam vortex
+            tags: []
+        -   name: statue of a fire vortex
+            tags: []
+        -   name: statue of a baby long worm
+            tags: []
+        -   name: statue of a baby purple worm
+            tags: []
+        -   name: statue of a long worm
+            tags: []
+        -   name: statue of a purple worm
+            tags: []
+        -   name: statue of a grid bug
+            tags: []
+        -   name: statue of a xan
+            tags: []
+        -   name: statue of a yellow light
+            tags: []
+        -   name: statue of a black light
+            tags: []
+        -   name: statue of a zruty
+            tags: []
+        -   name: statue of a couatl
+            tags: []
+        -   name: statue of an Aleax
+            tags: []
+        -   name: statue of an Angel
+            tags: []
+        -   name: statue of a ki-rin
+            tags: []
+        -   name: statue of an Archon
+            tags: []
+        -   name: statue of a bat
+            tags: []
+        -   name: statue of a giant bat
+            tags: []
+        -   name: statue of a raven
+            tags: []
+        -   name: statue of a vampire bat
+            tags: []
+        -   name: statue of a plains centaur
+            tags: []
+        -   name: statue of a forest centaur
+            tags: []
+        -   name: statue of a mountain centaur
+            tags: []
+        -   name: statue of a baby gray dragon
+            tags: []
+        -   name: statue of a baby silver dragon
+            tags: []
+        -   name: statue of a baby shimmering dragon
+            tags: []
+        -   name: statue of a baby red dragon
+            tags: []
+        -   name: statue of a baby white dragon
+            tags: []
+        -   name: statue of a baby orange dragon
+            tags: []
+        -   name: statue of a baby black dragon
+            tags: []
+        -   name: statue of a baby blue dragon
+            tags: []
+        -   name: statue of a baby green dragon
+            tags: []
+        -   name: statue of a baby yellow dragon
+            tags: []
+        -   name: statue of a gray dragon
+            tags: []
+        -   name: statue of a silver dragon
+            tags: []
+        -   name: statue of a shimmering dragon
+            tags: []
+        -   name: statue of a red dragon
+            tags: []
+        -   name: statue of a white dragon
+            tags: []
+        -   name: statue of an orange dragon
+            tags: []
+        -   name: statue of a black dragon
+            tags: []
+        -   name: statue of a blue dragon
+            tags: []
+        -   name: statue of a green dragon
+            tags: []
+        -   name: statue of a yellow dragon
+            tags: []
+        -   name: statue of a stalker
+            tags: []
+        -   name: statue of an air elemental
+            tags: []
+        -   name: statue of a fire elemental
+            tags: []
+        -   name: statue of an earth elemental
+            tags: []
+        -   name: statue of a water elemental
+            tags: []
+        -   name: statue of a lichen
+            tags: []
+        -   name: statue of a brown mold
+            tags: []
+        -   name: statue of a yellow mold
+            tags: []
+        -   name: statue of a green mold
+            tags: []
+        -   name: statue of a red mold
+            tags: []
+        -   name: statue of a shrieker
+            tags: []
+        -   name: statue of a violet fungus
+            tags: []
+        -   name: statue of a gnome
+            tags: []
+        -   name: statue of a gnome lord
+            tags: []
+        -   name: statue of a gnomish wizard
+            tags: []
+        -   name: statue of a gnome king
+            tags: []
+        -   name: statue of a giant
+            tags: []
+        -   name: statue of a stone giant
+            tags: []
+        -   name: statue of a hill giant
+            tags: []
+        -   name: statue of a fire giant
+            tags: []
+        -   name: statue of a frost giant
+            tags: []
+        -   name: statue of an ettin
+            tags: []
+        -   name: statue of a storm giant
+            tags: []
+        -   name: statue of a titan
+            tags: []
+        -   name: statue of a minotaur
+            tags: []
+        -   name: statue of a jabberwock
+            tags: []
+        -   name: statue of a vorpal jabberwock
+            tags: []
+        -   name: statue of a Keystone Kop
+            tags: []
+        -   name: statue of a Kop Sergeant
+            tags: []
+        -   name: statue of a Kop Lieutenant
+            tags: []
+        -   name: statue of a Kop Kaptain
+            tags: []
+        -   name: statue of a lich
+            tags: []
+        -   name: statue of a demilich
+            tags: []
+        -   name: statue of a master lich
+            tags: []
+        -   name: statue of an arch-lich
+            tags: []
+        -   name: statue of a kobold mummy
+            tags: []
+        -   name: statue of a gnome mummy
+            tags: []
+        -   name: statue of an orc mummy
+            tags: []
+        -   name: statue of a dwarf mummy
+            tags: []
+        -   name: statue of an elf mummy
+            tags: []
+        -   name: statue of a human mummy
+            tags: []
+        -   name: statue of an ettin mummy
+            tags: []
+        -   name: statue of a giant mummy
+            tags: []
+        -   name: statue of a red naga hatchling
+            tags: []
+        -   name: statue of a black naga hatchling
+            tags: []
+        -   name: statue of a golden naga hatchling
+            tags: []
+        -   name: statue of a guardian naga hatchling
+            tags: []
+        -   name: statue of a red naga
+            tags: []
+        -   name: statue of a black naga
+            tags: []
+        -   name: statue of a golden naga
+            tags: []
+        -   name: statue of a guardian naga
+            tags: []
+        -   name: statue of an ogre
+            tags: []
+        -   name: statue of an ogre lord
+            tags: []
+        -   name: statue of an ogre king
+            tags: []
+        -   name: statue of a gray ooze
+            tags: []
+        -   name: statue of a brown pudding
+            tags: []
+        -   name: statue of a green slime
+            tags: []
+        -   name: statue of a black pudding
+            tags: []
+        -   name: statue of a quantum mechanic
+            tags: []
+        -   name: statue of a rust monster
+            tags: []
+        -   name: statue of a disenchanter
+            tags: []
+        -   name: statue of a garter snake
+            tags: []
+        -   name: statue of a snake
+            tags: []
+        -   name: statue of a water moccasin
+            tags: []
+        -   name: statue of a python
+            tags: []
+        -   name: statue of a pit viper
+            tags: []
+        -   name: statue of a cobra
+            tags: []
+        -   name: statue of a troll
+            tags: []
+        -   name: statue of an ice troll
+            tags: []
+        -   name: statue of a rock troll
+            tags: []
+        -   name: statue of a water troll
+            tags: []
+        -   name: statue of an Olog-hai
+            tags: []
+        -   name: statue of an umber hulk
+            tags: []
+        -   name: statue of a vampire
+            tags: []
+        -   name: statue of a vampire lord
+            tags: []
+        -   name: statue of a vampire mage
+            tags: []
+        -   name: statue of Vlad the Impaler
+            tags: []
+        -   name: statue of a barrow wight
+            tags: []
+        -   name: statue of a wraith
+            tags: []
+        -   name: statue of a Nazgul
+            tags: []
+        -   name: statue of a xorn
+            tags: []
+        -   name: statue of a monkey
+            tags: []
+        -   name: statue of an ape
+            tags: []
+        -   name: statue of an owlbear
+            tags: []
+        -   name: statue of a yeti
+            tags: []
+        -   name: statue of a carnivorous ape
+            tags: []
+        -   name: statue of a sasquatch
+            tags: []
+        -   name: statue of a kobold zombie
+            tags: []
+        -   name: statue of a gnome zombie
+            tags: []
+        -   name: statue of an orc zombie
+            tags: []
+        -   name: statue of a dwarf zombie
+            tags: []
+        -   name: statue of an elf zombie
+            tags: []
+        -   name: statue of a human zombie
+            tags: []
+        -   name: statue of an ettin zombie
+            tags: []
+        -   name: statue of a ghoul
+            tags: []
+        -   name: statue of a giant zombie
+            tags: []
+        -   name: statue of a skeleton
+            tags: []
+        -   name: statue of a straw golem
+            tags: []
+        -   name: statue of a paper golem
+            tags: []
+        -   name: statue of a rope golem
+            tags: []
+        -   name: statue of a gold golem
+            tags: []
+        -   name: statue of a leather golem
+            tags: []
+        -   name: statue of a wood golem
+            tags: []
+        -   name: statue of a flesh golem
+            tags: []
+        -   name: statue of a clay golem
+            tags: []
+        -   name: statue of a stone golem
+            tags: []
+        -   name: statue of a glass golem
+            tags: []
+        -   name: statue of an iron golem
+            tags: []
+        -   name: statue of a human
+            tags: []
+        -   name: statue of a wererat
+            tags: []
+        -   name: statue of a werejackal
+            tags: []
+        -   name: statue of a werewolf
+            tags: []
+        -   name: statue of an elf
+            tags: []
+        -   name: statue of a Woodland-elf
+            tags: []
+        -   name: statue of a Green-elf
+            tags: []
+        -   name: statue of a Grey-elf
+            tags: []
+        -   name: statue of an elf-lord
+            tags: []
+        -   name: statue of an Elvenking
+            tags: []
+        -   name: statue of a doppelganger
+            tags: []
+        -   name: statue of a shopkeeper
+            tags: []
+        -   name: statue of a guard
+            tags: []
+        -   name: statue of a prisoner
+            tags: []
+        -   name: statue of the Oracle
+            tags: []
+        -   name: statue of an aligned priest
+            tags: []
+        -   name: statue of a high priest
+            tags: []
+        -   name: statue of a soldier
+            tags: []
+        -   name: statue of a sergeant
+            tags: []
+        -   name: statue of a nurse
+            tags: []
+        -   name: statue of a lieutenant
+            tags: []
+        -   name: statue of a captain
+            tags: []
+        -   name: statue of a watchman
+            tags: []
+        -   name: statue of a watch captain
+            tags: []
+        -   name: statue of Medusa
+            tags: []
+        -   name: statue of the Wizard of Yendor
+            tags: []
+        -   name: statue of Croesus
+            tags: []
+        -   name: statue of Charon
+            tags: []
+        -   name: statue of a ghost
+            tags: []
+        -   name: statue of a shade
+            tags: []
+        -   name: statue of a water demon
+            tags: []
+        -   name: statue of a succubus
+            tags: []
+        -   name: statue of a horned devil
+            tags: []
+        -   name: statue of an incubus
+            tags: []
+        -   name: statue of an erinys
+            tags: []
+        -   name: statue of a barbed devil
+            tags: []
+        -   name: statue of a marilith
+            tags: []
+        -   name: statue of a vrock
+            tags: []
+        -   name: statue of a hezrou
+            tags: []
+        -   name: statue of a bone devil
+            tags: []
+        -   name: statue of an ice devil
+            tags: []
+        -   name: statue of a nalfeshnee
+            tags: []
+        -   name: statue of a pit fiend
+            tags: []
+        -   name: statue of a sandestin
+            tags: []
+        -   name: statue of a balrog
+            tags: []
+        -   name: statue of Juiblex
+            tags: []
+        -   name: statue of Yeenoghu
+            tags: []
+        -   name: statue of Orcus
+            tags: []
+        -   name: statue of Geryon
+            tags: []
+        -   name: statue of Dispater
+            tags: []
+        -   name: statue of Baalzebub
+            tags: []
+        -   name: statue of Asmodeus
+            tags: []
+        -   name: statue of Demogorgon
+            tags: []
+        -   name: statue of Death
+            tags: []
+        -   name: statue of Pestilence
+            tags: []
+        -   name: statue of Famine
+            tags: []
+        -   name: statue of a mail daemon
+            tags: []
+        -   name: statue of a djinni
+            tags: []
+        -   name: statue of a jellyfish
+            tags: []
+        -   name: statue of a piranha
+            tags: []
+        -   name: statue of a shark
+            tags: []
+        -   name: statue of a giant eel
+            tags: []
+        -   name: statue of an electric eel
+            tags: []
+        -   name: statue of a kraken
+            tags: []
+        -   name: statue of a newt
+            tags: []
+        -   name: statue of a gecko
+            tags: []
+        -   name: statue of an iguana
+            tags: []
+        -   name: statue of a baby crocodile
+            tags: []
+        -   name: statue of a lizard
+            tags: []
+        -   name: statue of a chameleon
+            tags: []
+        -   name: statue of a crocodile
+            tags: []
+        -   name: statue of a salamander
+            tags: []
+        -   name: statue of a long worm tail
+            tags: []
+        -   name: statue of an archeologist
+            tags: []
+        -   name: statue of a barbarian
+            tags: []
+        -   name: statue of a caveman
+            tags: []
+        -   name: statue of a cavewoman
+            tags: []
+        -   name: statue of a healer
+            tags: []
+        -   name: statue of a knight
+            tags: []
+        -   name: statue of a monk
+            tags: []
+        -   name: statue of a priest
+            tags: []
+        -   name: statue of a priestess
+            tags: []
+        -   name: statue of a ranger
+            tags: []
+        -   name: statue of a rogue
+            tags: []
+        -   name: statue of a samurai
+            tags: []
+        -   name: statue of a tourist
+            tags: []
+        -   name: statue of a valkyrie
+            tags: []
+        -   name: statue of a wizard
+            tags: []
+        -   name: statue of Lord Carnarvon
+            tags: []
+        -   name: statue of Pelias
+            tags: []
+        -   name: statue of Shaman Karnov
+            tags: []
+        -   name: statue of Earendil
+            tags: []
+        -   name: statue of Elwing
+            tags: []
+        -   name: statue of Hippocrates
+            tags: []
+        -   name: statue of King Arthur
+            tags: []
+        -   name: statue of the Grand Master
+            tags: []
+        -   name: statue of the Arch Priest
+            tags: []
+        -   name: statue of Orion
+            tags: []
+        -   name: statue of the Master of Thieves
+            tags: []
+        -   name: statue of Lord Sato
+            tags: []
+        -   name: statue of Twoflower
+            tags: []
+        -   name: statue of the Norn
+            tags: []
+        -   name: statue of Neferet the Green
+            tags: []
+        -   name: statue of the Minion of Huhetotl
+            tags: []
+        -   name: statue of Thoth Amon
+            tags: []
+        -   name: statue of the Chromatic Dragon
+            tags: []
+        -   name: statue of the Goblin King
+            tags: []
+        -   name: statue of the Cyclops
+            tags: []
+        -   name: statue of Ixoth
+            tags: []
+        -   name: statue of Master Kaen
+            tags: []
+        -   name: statue of Nalzok
+            tags: []
+        -   name: statue of Scorpius
+            tags: []
+        -   name: statue of the Master Assassin
+            tags: []
+        -   name: statue of Ashikaga Takauji
+            tags: []
+        -   name: statue of Lord Surtur
+            tags: []
+        -   name: statue of the Dark One
+            tags: []
+        -   name: statue of a student
+            tags: []
+        -   name: statue of a chieftain
+            tags: []
+        -   name: statue of a neanderthal
+            tags: []
+        -   name: statue of a High-elf
+            tags: []
+        -   name: statue of an attendant
+            tags: []
+        -   name: statue of a page
+            tags: []
+        -   name: statue of an abbot
+            tags: []
+        -   name: statue of an acolyte
+            tags: []
+        -   name: statue of a hunter
+            tags: []
+        -   name: statue of a thug
+            tags: []
+        -   name: statue of a ninja
+            tags: []
+        -   name: statue of a roshi
+            tags: []
+        -   name: statue of a guide
+            tags: []
+        -   name: statue of a warrior
+            tags: []
+        -   name: statue of an apprentice
+            tags: []
+        -   name: statue of an invisible monster
+            tags: []
