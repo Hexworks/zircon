@@ -1,49 +1,51 @@
-package org.codetome.zircon.terminal.swing
+package org.codetome.zircon.internal.terminal.swing
 
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
-import org.codetome.zircon.internal.terminal.swing.SwingTerminalCanvas
-import java.awt.Color
+import java.awt.Canvas
 import java.awt.image.BufferedImage
 import javax.swing.JFrame
 
-
+/**
+ * This class provides a swing frame for a zircon terminal.
+ */
 class SwingTerminalFrame(title: String = "ZirconTerminal",
                          size: Size,
                          deviceConfiguration: DeviceConfiguration = DeviceConfigurationBuilder.getDefault(),
                          font: Font<BufferedImage>,
-                         private val swingTerminal: SwingTerminalCanvas = SwingTerminalCanvas(size, deviceConfiguration, font))
+                         private val canvas: Canvas = createCanvas(),
+                         private val swingTerminal: SwingTerminal =
+                         SwingTerminal(
+                                 canvas = canvas,
+                                 font = font,
+                                 initialSize = size,
+                                 deviceConfiguration = deviceConfiguration))
     : JFrame(title), Terminal by swingTerminal {
 
-    private var disposed = false
-
     init {
+        add(canvas)
+        canvas.preferredSize = swingTerminal.getPreferredSize()
         defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-        add(swingTerminal)
-        // isResizable = false
-        background = Color.BLACK //This will reduce white flicker when resizing the window
         pack()
         setLocationRelativeTo(null)
-
-        swingTerminal.ignoreRepaint = true
-        swingTerminal.createBufferStrategy(2)
-        swingTerminal.isFocusable = true
-
-        // Put input giveFocus on the terminal component by default
-        swingTerminal.requestFocusInWindow()
-        swingTerminal.preferredSize = swingTerminal.preferredSize
+        canvas.ignoreRepaint = true
+        canvas.createBufferStrategy(2)
+        canvas.isFocusable = true
+        canvas.requestFocusInWindow()
     }
 
     override fun dispose() {
         super.dispose()
-        disposed = true
     }
 
     override fun close() {
         dispose()
     }
 
+    companion object {
+        private fun createCanvas() = Canvas()
+    }
 }

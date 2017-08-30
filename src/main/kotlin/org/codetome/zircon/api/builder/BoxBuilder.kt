@@ -14,7 +14,7 @@ class BoxBuilder : Builder<Box> {
     private var filler: Char = TextCharacterBuilder.EMPTY.getCharacter()
 
     /**
-     * Sets the size for the new [org.codetome.zircon.graphics.box.Box].
+     * Sets the size for the new [org.codetome.zircon.api.graphics.Box].
      * Default is 3x3.
      */
     fun size(size: Size) = also {
@@ -22,14 +22,14 @@ class BoxBuilder : Builder<Box> {
     }
 
     /**
-     * Sets the style for the resulting [org.codetome.zircon.graphics.box.Box].
+     * Sets the style for the resulting [org.codetome.zircon.api.graphics.Box].
      */
     fun style(style: StyleSet) = also {
         this.style = style
     }
 
     /**
-     * The new [org.codetome.zircon.graphics.box.Box] will be filled by this [Char].
+     * The new [org.codetome.zircon.api.graphics.Box] will be filled by this [Char].
      * Defaults to `EMPTY` character.
      */
     fun filler(filler: Char) = also {
@@ -37,7 +37,7 @@ class BoxBuilder : Builder<Box> {
     }
 
     /**
-     * Sets the [BoxType] for the resulting [org.codetome.zircon.graphics.box.Box].
+     * Sets the [BoxType] for the resulting [org.codetome.zircon.api.graphics.Box].
      */
     fun boxType(boxType: BoxType) = also {
         this.boxType = boxType
@@ -55,7 +55,7 @@ class BoxBuilder : Builder<Box> {
     companion object {
 
         /**
-         * Creates a new [BoxBuilder] to build [org.codetome.zircon.graphics.box.Box]es.
+         * Creates a new [BoxBuilder] to build [org.codetome.zircon.api.graphics.Box]es.
          */
         @JvmStatic
         fun newBuilder() = BoxBuilder()

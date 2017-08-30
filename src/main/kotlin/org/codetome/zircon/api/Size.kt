@@ -73,8 +73,9 @@ data class Size(val columns: Int,
     }
 
     /**
-     * Creates a new [Size] object representing a size with the same number of rows, but with a column size offset by a
-     * supplied value. Calling this method with delta 0 will return this, calling it with a positive delta will return
+     * Creates a new [Size] object representing a size with the same number of rows, but with
+     * a column size offset by a supplied value. Calling this method with delta 0 will return this,
+     * calling it with a positive delta will return
      * a terminal size <code>delta</code> number of columns wider and for negative numbers shorter.
      */
     fun withRelativeColumns(delta: Int): Size {
@@ -85,8 +86,9 @@ data class Size(val columns: Int,
     }
 
     /**
-     * Creates a new [Size] object representing a size with the same number of columns, but with a row size offset by a
-     * supplied value. Calling this method with delta 0 will return this, calling it with a positive delta will return
+     * Creates a new [Size] object representing a size with the same number of columns, but with a row
+     * size offset by a supplied value. Calling this method with delta 0 will return this, calling
+     * it with a positive delta will return
      * a terminal size <code>delta</code> number of rows longer and for negative numbers shorter.
      */
     fun withRelativeRows(delta: Int): Size {
@@ -123,8 +125,9 @@ data class Size(val columns: Int,
     }
 
     /**
-     * Returns itself if it is equal to the supplied size, otherwise the supplied size. You can use this if you have a
-     * size field which is frequently recalculated but often resolves to the same size; it will keep the same object
+     * Returns itself if it is equal to the supplied size, otherwise the supplied size.
+     * You can use this if you have a size field which is frequently recalculated but often resolves
+     * to the same size; it will keep the same object
      * in memory instead of swapping it out every cycle.
      */
     fun with(size: Size): Size {

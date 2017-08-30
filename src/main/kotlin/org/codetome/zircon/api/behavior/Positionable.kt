@@ -7,13 +7,13 @@ import org.codetome.zircon.api.Position
  * For example a [org.codetome.zircon.api.component.Component] can be positioned
  * relative to is parent or an [org.codetome.zircon.api.graphics.Layer]
  * can be positioned within a [org.codetome.zircon.api.terminal.Terminal].
- * Note that once positioned a [Positionable] can't be moved.
- * @see [Movable]
+ * Note that once positioned a [Positionable] can't be moved. If you want
+ * re-positionable objects @see [Movable]
  */
 interface Positionable {
 
     /**
-     * Returns the offset of this [Positionable]. Default is (0, 0).
+     * Returns the (absolute) offset of this [Positionable]. Default is (0, 0).
      * The `offset` of a position is its position relative to the
      * text gui window's top left corner. An offset of (0, 0) denotes
      * that corner.

@@ -11,8 +11,8 @@ class Java2DFontRegionColorizer : FontRegionTransformer<BufferedImage> {
         val g = textCharacter.getForegroundColor().getGreen().toFloat() / 255
         val b = textCharacter.getForegroundColor().getBlue().toFloat() / 255
 
-        (0..region.width - 1).forEach { x ->
-            (0..region.height - 1).forEach { y ->
+        (0 until region.width).forEach { x ->
+            (0 until region.height).forEach { y ->
                 val ax = region.colorModel.getAlpha(region.raster.getDataElements(x, y, null))
                 var rx = region.colorModel.getRed(region.raster.getDataElements(x, y, null))
                 var gx = region.colorModel.getGreen(region.raster.getDataElements(x, y, null))

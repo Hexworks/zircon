@@ -2,8 +2,8 @@ package org.codetome.zircon.api.builder
 
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.api.color.TextColor
+import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
 
 /**
@@ -76,7 +76,7 @@ class TextCharacterBuilder {
                 .build()
 
         /**
-         * Shorthand for the default character which is:
+         * Shorthand for an empty character which is:
          * - a space character
          * - with transparent foreground
          * - and transparent background

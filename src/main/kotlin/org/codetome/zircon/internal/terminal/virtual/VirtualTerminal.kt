@@ -12,20 +12,23 @@ import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.util.TextUtils
+import org.codetome.zircon.internal.InternalLayerable
+import org.codetome.zircon.internal.behavior.InternalCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.terminal.AbstractTerminal
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import java.util.function.Consumer
 
 class VirtualTerminal private constructor(initialSize: Size,
-                                          private val cursorHandler: CursorHandler,
-                                          private val layerable: Layerable)
+                                          private val cursorHandler: InternalCursorHandler,
+                                          private val layerable: InternalLayerable)
     : AbstractTerminal(), InternalTerminal,
-        CursorHandler by cursorHandler,
-        Layerable by layerable {
+        InternalCursorHandler by cursorHandler,
+        InternalLayerable by layerable {
 
     private var terminalSize = initialSize
     private var backend = createBackend(terminalSize)
@@ -90,7 +93,6 @@ class VirtualTerminal private constructor(initialSize: Size,
     @Synchronized
     override fun clear() {
         backend = createBackend(terminalSize)
-        // TODO: this can be optimized later
         terminalSize.fetchPositions().forEach {
             setPositionDirty(it)
         }
@@ -146,7 +148,7 @@ class VirtualTerminal private constructor(initialSize: Size,
         val dirtyPositions = drainDirtyPositions()
         dirtyPositions.forEach { pos ->
             val char = backend.getCharacterAt(pos)
-            if (char.isPresent.not()) {
+            if (char.isNotPresent()) {
                 println("pos: $pos, backend size: ${backend.getBoundableSize()}")
             } else {
                 fn(Cell(pos, char.get()))

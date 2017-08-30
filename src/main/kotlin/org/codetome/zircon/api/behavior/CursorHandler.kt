@@ -2,41 +2,45 @@ package org.codetome.zircon.api.behavior
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.internal.behavior.Dirtiable
 
-interface CursorHandler : Dirtiable {
+/**
+ * Represents an object which manipulates a cursor (a [org.codetome.zircon.api.terminal.Terminal]
+ * or a [org.codetome.zircon.api.component.TextBox] for example.
+ * All operations which work with [Position]s are relative to the [CursorHandler]'s position!
+ */
+interface CursorHandler {
 
     /**
-     * Returns the position of the cursor, as reported by the terminal.
+     * Returns the position of the cursor.
      */
     fun getCursorPosition(): Position
 
     /**
-     * Moves the title cursor to a new location on the terminal.
+     * Moves the title cursor to a new location on this [CursorHandler].
      */
     fun putCursorAt(cursorPosition: Position)
 
     /**
      * Moves the cursor one [Position] to the right. If the [Position] would be out
      * of bound regards to columns, the cursor will be moved the the 0th position
-     * in the next row.
+     * in the next row or left where it was if there is no next row.
      */
     fun moveCursorForward()
 
     /**
      * Moves the cursor one [Position] to the left. If the [Position] would be out
      * of bound regards to columns, the cursor will be moved the the last position
-     * in the previous row.
+     * in the previous row or left where it was if there is no previous row.
      */
     fun moveCursorBackward()
 
     /**
-     * Checks if the terminal cursor is visible or not.
+     * Tells whether the cursor is visible or not.
      */
     fun isCursorVisible(): Boolean
 
     /**
-     * Hides or shows the title cursor.
+     * Hides or shows the cursor.
      */
     fun setCursorVisible(cursorVisible: Boolean)
 

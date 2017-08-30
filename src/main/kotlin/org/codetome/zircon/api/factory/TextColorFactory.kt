@@ -6,6 +6,9 @@ import org.codetome.zircon.api.color.TextColor
 import java.awt.Color
 import java.util.regex.Pattern
 
+/**
+ * Use this factory to create [TextColor]s.
+ */
 object TextColorFactory {
 
     /**

@@ -6,6 +6,10 @@ import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.internal.component.impl.DefaultComponentStyles
 import javax.swing.text.html.CSS
 
+/**
+ * Use this to build [StyleSet]s for your [org.codetome.zircon.api.component.Component]s.
+ * They will be used accordingly when the component's state changes.
+ */
 class ComponentStylesBuilder {
 
     private val styles = mutableMapOf<ComponentState, StyleSet>()

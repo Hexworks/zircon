@@ -58,11 +58,7 @@ public class TypingExample {
                 if (input.isKeyStroke()) {
                     final KeyStroke ks = input.asKeyStroke();
                     screen.setCharacterAt(pos, TEXT_CHAR_TEMPLATE.withCharacter(ks.getCharacter()));
-                    if (pos.getColumn() == TERMINAL_WIDTH) {
-                        screen.putCursorAt(pos.withRelativeRow(1).withColumn(0));
-                    } else {
-                        screen.putCursorAt(pos.withRelativeColumn(1));
-                    }
+                    screen.moveCursorForward();
                     screen.refresh();
                 }
             }
@@ -71,11 +67,10 @@ public class TypingExample {
 
     private static void startTypingSupportForTerminal(Terminal terminal) {
         terminal.addInputListener((input) -> {
-            final Position pos = terminal.getCursorPosition();
             if (EXIT_CONDITIONS.contains(input.getInputType())) {
                 System.exit(0);
             } else if (input.inputTypeIs(Enter)) {
-                terminal.putCursorAt(pos.withRelativeRow(1).withColumn(0));
+                terminal.moveCursorForward();
                 terminal.flush();
             } else {
                 if (input.isKeyStroke()) {

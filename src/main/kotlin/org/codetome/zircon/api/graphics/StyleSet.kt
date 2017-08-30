@@ -3,6 +3,13 @@ package org.codetome.zircon.api.graphics
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.color.TextColor
 
+/**
+ * Represents style information which is handled by Zircon like
+ * - background color
+ * - foreground color and
+ * - modifiers
+ * and a set of useful operations on them.
+ */
 interface StyleSet {
 
     /**

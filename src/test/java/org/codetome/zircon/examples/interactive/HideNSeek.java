@@ -55,6 +55,7 @@ public class HideNSeek {
         screen.display();
         drawBuilding(screen, Position.of(5, 10));
         enableMovement(screen, player);
+        screen.display();
     }
 
     private static void drawBuilding(Screen screen, Position position) {
@@ -82,7 +83,6 @@ public class HideNSeek {
         drawCharAt(building, Position.of(1, 3).plus(position), Symbols.SINGLE_LINE_T_UP);
         drawCharAt(building, Position.of(2, 3).plus(position), Symbols.SINGLE_LINE_T_UP);
         drawCharAt(building, Position.of(3, 3).plus(position), Symbols.SINGLE_LINE_BOTTOM_RIGHT_CORNER);
-        screen.display();
         screen.addLayer(building);
     }
 

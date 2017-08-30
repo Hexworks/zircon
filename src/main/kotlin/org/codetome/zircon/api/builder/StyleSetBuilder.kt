@@ -6,6 +6,10 @@ import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.internal.graphics.DefaultStyleSet
 import org.codetome.zircon.api.graphics.StyleSet
 
+/**
+ * Builder used to create [StyleSet]s. Uses the default colors from
+ * [TextColorFactory]. Modifiers are empty by default.
+ */
 class StyleSetBuilder {
 
     private var foregroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR
@@ -36,7 +40,7 @@ class StyleSetBuilder {
     companion object {
 
         /**
-         * Creates a new [StyleSetBuilder] for creating [org.codetome.zircon.graphics.style.StyleSet]s.
+         * Creates a new [StyleSetBuilder] for creating [org.codetome.zircon.api.graphics.StyleSet]s.
          */
         @JvmStatic
         fun newBuilder() = StyleSetBuilder()

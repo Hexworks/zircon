@@ -24,7 +24,7 @@ object RectangleFactory : ShapeFactory<RectangleParameters> {
      * value being the terminals top-left (0x0) corner will create a shape which when drawn
      * will outline the borders of the terminal.
      * **Note that** all resulting shapes will be offset to the top left (0x0) position!
-     * @see [org.codetome.zircon.graphics.shape.Shape.offsetToDefaultPosition] for more info!
+     * @see [org.codetome.zircon.api.graphics.Shape.offsetToDefaultPosition] for more info!
      */
     @JvmStatic
     fun buildRectangle(rectParams: RectangleParameters) = createShape(rectParams)
@@ -36,7 +36,7 @@ object RectangleFactory : ShapeFactory<RectangleParameters> {
      * value being the terminals top-left (0x0) corner will create a shape which when drawn
      * will outline the borders of the terminal.
      * **Note that** all resulting shapes will be offset to the top left (0x0) position!
-     * @see [org.codetome.zircon.graphics.shape.Shape.offsetToDefaultPosition] for more info!
+     * @see [org.codetome.zircon.api.graphics.Shape.offsetToDefaultPosition] for more info!
      */
     @JvmStatic
     fun buildRectangle(topLeft: Position, size: Size) = buildRectangle(RectangleParameters(topLeft, size))

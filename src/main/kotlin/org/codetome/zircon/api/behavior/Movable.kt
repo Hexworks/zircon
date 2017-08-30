@@ -9,7 +9,7 @@ import org.codetome.zircon.api.Position
 interface Movable : Positionable {
 
     /**
-     * Sets the position of this [Movable] relative to its parent.
+     * Sets the (absolute) position of this [Movable].
      */
     fun moveTo(position: Position)
 }

@@ -3,7 +3,6 @@ package org.codetome.zircon.api.graphics
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.behavior.Layerable
 import org.codetome.zircon.api.behavior.Movable
-import org.codetome.zircon.api.graphics.TextImage
 
 /**
  * A [Layer] is a specialized [TextImage] which is drawn upon a

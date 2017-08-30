@@ -1,4 +1,4 @@
-package org.codetome.zircon.api.behavior
+package org.codetome.zircon.internal.behavior
 
 import org.codetome.zircon.api.input.Input
 import java.util.*
@@ -8,6 +8,9 @@ import java.util.*
  */
 interface Focusable {
 
+    /**
+     * Tells whether this GUI element accepts focus right now.
+     */
     fun acceptsFocus(): Boolean
 
     /**

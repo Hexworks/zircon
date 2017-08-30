@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.behavior.impl
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.CursorHandler
-import org.codetome.zircon.api.behavior.Scrollable
+import org.codetome.zircon.internal.behavior.Scrollable
 
 class DefaultScrollable private constructor(private val cursorHandler: CursorHandler,
                                             private val visibleSpaceSize: Size)

@@ -9,14 +9,14 @@ import org.codetome.zircon.api.input.InputType.*
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType.*
-import org.codetome.zircon.internal.component.ContainerHandler
+import org.codetome.zircon.internal.component.InternalContainerHandler
 import org.codetome.zircon.internal.component.ContainerHandlerState.*
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.event.Subscription
 import java.util.*
 
-class DefaultContainerHandler(private var container: DefaultContainer) : ContainerHandler {
+class DefaultContainerHandler(private var container: DefaultContainer) : InternalContainerHandler {
 
     private var lastMousePosition = Position.DEFAULT_POSITION
     private var lastHoveredComponentId = UUID.randomUUID()

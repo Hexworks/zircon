@@ -7,7 +7,7 @@ import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.internal.screen.TerminalScreen
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
-import org.codetome.zircon.terminal.swing.SwingTerminalFrame
+import org.codetome.zircon.internal.terminal.swing.SwingTerminalFrame
 import java.awt.Toolkit
 import java.awt.image.BufferedImage
 
@@ -17,7 +17,7 @@ import java.awt.image.BufferedImage
  * Defaults are:
  * - default `initialSize` is 80x24
  * - default `title` is "Zircon Terminal"
- * - default `font` is `ROBOTO_MONO`
+ * - default `font` is `UBUNTU_MONO` (because it is cp437 compliant)
  * @see DeviceConfigurationBuilder for the defaults for `deviceConfiguration`
  */
 class TerminalBuilder {
@@ -26,7 +26,7 @@ class TerminalBuilder {
     private var title: String = "Zircon Terminal"
     private var deviceConfiguration = DeviceConfigurationBuilder.getDefault()
     // TODO: refactor this to abstract shape when libgdx implementation comes
-    private var font: Font<BufferedImage> = PhysicalFontResource.ROBOTO_MONO.toFont()
+    private var font: Font<BufferedImage> = PhysicalFontResource.UBUNTU_MONO.toFont()
 
     /**
      * Builds a [Terminal] based on the properties of this [TerminalBuilder].
@@ -50,6 +50,7 @@ class TerminalBuilder {
 
     /**
      * Sets the initial terminal [Size].
+     * Default is 80x24.
      */
     fun initialTerminalSize(initialSize: Size) = also {
         this.initialSize = initialSize
@@ -58,6 +59,7 @@ class TerminalBuilder {
 
     /**
      * Sets the title to use on created [Terminal]s created by this shape.
+     * Default is "Zircon Terminal"
      */
     fun title(title: String) = also {
         this.title = title
@@ -72,7 +74,7 @@ class TerminalBuilder {
 
     /**
      * Sets a [Font] for this api.
-     * @see CP437TilesetResource and
+     * @see [org.codetome.zircon.api.resource.CP437TilesetResource] and
      * @see PhysicalFontResource
      */
     fun font(font: Font<BufferedImage>) = also {
@@ -80,16 +82,16 @@ class TerminalBuilder {
     }
 
     /**
-     * Creates a (default) [Terminal] and immediately wraps it up in a [Screen].
+     * Creates a [Terminal] using this builder's settings and immediately wraps it up in a [Screen].
      */
     fun buildScreen(): Screen {
         return TerminalScreen(buildTerminal())
     }
 
     /**
-     * Creates a [org.codetome.zircon.screen.Screen] for the given [Terminal].
+     * Creates a [org.codetome.zircon.api.screen.Screen] for the given [Terminal].
      */
-    fun createScreenFor(terminal: Terminal): TerminalScreen {
+    fun createScreenFor(terminal: Terminal): Screen {
         return TerminalScreen(terminal)
     }
 
