@@ -3,9 +3,9 @@ package org.codetome.zircon.api
 import org.codetome.zircon.api.component.Component
 
 /**
- * A 2D position in terminal space. Please note that the coordinates are 0-indexed, meaning 0x0 is the top left
- * corner of the terminal. This object is immutable so you cannot change it after it has been created. Instead, you
- * can easily create modified clones by using the `with*` methods.
+ * A 2D position in terminal space. Please note that the coordinates are 0-indexed, meaning 0x0 is the
+ * top left corner of the terminal. This object is immutable so you cannot change it after it has been created.
+ * Instead, you can easily create modified clones by using the `with*` methods.
  */
 data class Position(val column: Int,
                     val row: Int) : Comparable<Position> {
@@ -62,8 +62,9 @@ data class Position(val column: Int,
 
     /**
      * Creates a new [Position] object representing a position on the same row, but with a column offset by a
-     * supplied value. Calling this method with delta 0 will return this, calling it with a positive delta will return
-     * a terminal position <code>delta</code> number of columns to the right and for negative numbers the same to the left.
+     * supplied value. Calling this method with delta 0 will return this, calling it with a positive
+     * delta will return a terminal position <code>delta</code> number of columns to the right and
+     * for negative numbers the same to the left.
      */
     fun withRelativeColumn(delta: Int): Position {
         if (delta == 0) {
@@ -74,8 +75,9 @@ data class Position(val column: Int,
 
     /**
      * Creates a new [Position] object representing a position on the same column, but with a row offset by a
-     * supplied value. Calling this method with delta 0 will return this, calling it with a positive delta will return
-     * a terminal position <code>delta</code> number of rows to the down and for negative numbers the same up.
+     * supplied value. Calling this method with delta 0 will return this, calling it with a positive delta
+     * will return a terminal position <code>delta</code> number of rows to the down and for negative
+     * numbers the same up.
      */
     fun withRelativeRow(delta: Int): Position {
         if (delta == 0) {
@@ -99,7 +101,8 @@ data class Position(val column: Int,
      */
     fun relativeToTopOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
         require(row > 0) {
-            "If you your position is relative to the top of a component you can't use negative rows since it wouldn't be `top` relative to the Component!"
+            "If you your position is relative to the top of a component you can't use negative rows since " +
+                    "it wouldn't be `top` relative to the Component!"
         }
         Position.of(compCol + column, compRow - row)
     }
@@ -111,7 +114,8 @@ data class Position(val column: Int,
      */
     fun relativeToRightOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
         require(column > 0) {
-            "If you your position is relative to the right of a component you can't use negative columns since it wouldn't be `right` relative to the Component!"
+            "If you your position is relative to the right of a component you can't use negative columns " +
+                    "since it wouldn't be `right` relative to the Component!"
         }
         Position.of(
                 column = compCol + component.getBoundableSize().columns + column,
@@ -125,7 +129,8 @@ data class Position(val column: Int,
      */
     fun relativeToBottomOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
         require(row > 0) {
-            "If you your position is relative to the bottom of a component you can't use negative rows since it wouldn't be `bottom` relative to the Component!"
+            "If you your position is relative to the bottom of a component you can't use negative rows" +
+                    " since it wouldn't be `bottom` relative to the Component!"
         }
         Position.of(
                 column = compCol + column,
@@ -139,7 +144,8 @@ data class Position(val column: Int,
      */
     fun relativeToLeftOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
         require(column > 0) {
-            "If you your position is relative to the left of a component you can't use negative columns since it wouldn't be `left` relative to the Component!"
+            "If you your position is relative to the left of a component you can't use negative columns " +
+                    "since it wouldn't be `left` relative to the Component!"
         }
         Position.of(compCol - column, compRow + row)
     }

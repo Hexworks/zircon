@@ -1,16 +1,13 @@
 package org.codetome.zircon.api.behavior
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.graphics.Layer
-import org.codetome.zircon.internal.behavior.Dirtiable
 import java.util.*
 
 /**
- * Represents an object which can contain multiple [org.codetome.zircon.graphics.layer.Layer]s
- * (which are specialized [org.codetome.zircon.graphics.TextImage]s) overlays above the terminal.
+ * Represents an object which can contain multiple [org.codetome.zircon.api.graphics.Layer]s
+ * which are specialized [org.codetome.zircon.api.graphics.TextImage] overlays above the terminal.
  */
-interface Layerable : Boundable, Dirtiable {
+interface Layerable : Boundable {
 
     /**
      * Adds a layer on top of the currently present layers.
@@ -19,6 +16,7 @@ interface Layerable : Boundable, Dirtiable {
 
     /**
      * Removes and returns the layer which is at the top of the currently present layers.
+     * (if any)
      */
     fun popLayer(): Optional<Layer>
 
@@ -28,17 +26,12 @@ interface Layerable : Boundable, Dirtiable {
     fun removeLayer(layer: Layer)
 
     /**
+     * Returns a list of [Layer]s which are currently present in this [Layerable].
+     */
+    fun getLayers(): List<Layer>
+
+    /**
      * Removes all [Layer]s from this [Layerable] and returns them.
      */
     fun drainLayers(): List<Layer>
-
-    /**
-     * Fetches the Z Intersection of the currently present layers
-     * relative to its parent [Layerable].
-     * A Z intersection is a list of characters present at the same absolute
-     * position in a 3d space of [Layer]s ordered from bottom to top.
-     */
-    fun fetchOverlayZIntersection(absolutePosition: Position) : List<TextCharacter>
-
-    // TODO: add dirty checking when adding / removing / popping layers
 }

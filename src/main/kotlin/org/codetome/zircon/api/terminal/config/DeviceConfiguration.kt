@@ -5,7 +5,7 @@ import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
 
 /**
  * Object that encapsulates the configuration parameters for the terminal device that a
- * [org.codetome.zircon.terminal.Terminal] is emulating.
+ * [org.codetome.zircon.api.terminal.Terminal] is emulating.
  * This includes properties such as the shape of the cursor, the color of the cursor
  * and if the cursor should blink or not.
  */

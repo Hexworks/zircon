@@ -8,6 +8,13 @@ import org.codetome.zircon.internal.graphics.DefaultLayer
 import org.codetome.zircon.api.graphics.Layer
 import java.util.*
 
+/**
+ * Use this to build [Layer]s. Defaults are:
+ * - size: [Size.ONE]
+ * - filler: [TextCharacterBuilder.EMPTY]
+ * - offset: [Position.DEFAULT_POSITION]
+ * - has no text image by default
+ */
 class LayerBuilder : Builder<Layer> {
 
     private var size: Size = Size.ONE
@@ -39,6 +46,9 @@ class LayerBuilder : Builder<Layer> {
         this.offset = offset
     }
 
+    /**
+     * Uses the given [TextImage] and converts it to a [Layer].
+     */
     fun textImage(textImage: TextImage) = also {
         this.textImage = Optional.of(textImage)
     }

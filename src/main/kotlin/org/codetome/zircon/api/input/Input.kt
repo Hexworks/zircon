@@ -5,7 +5,7 @@ import org.codetome.zircon.api.input.InputType.*
 
 
 /**
- * Represents the user pressing a key on the keyboard.
+ * Represents a keyboard or a mouse event.
  *
  * Use the <code>inputType</code> field to determine what kind of key was pressed.
  * For ordinary letters, numbers and symbols, the <code>inputType</code> will be <code>InputType.Character</code>

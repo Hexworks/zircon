@@ -17,7 +17,7 @@ object TriangleFactory : ShapeFactory<TriangleParameters> {
      * `p1` to `p2` to `p3` and back to `p1` from there.
      *
      * *Note that** all resulting shapes will be offset to the top left (0x0) position!
-     * @see [org.codetome.zircon.graphics.shape.Shape.offsetToDefaultPosition] for more info!
+     * @see [org.codetome.zircon.api.graphics.Shape.offsetToDefaultPosition] for more info!
      */
     @JvmStatic
     fun buildTriangle(params: TriangleParameters) = createShape(params)
@@ -27,7 +27,7 @@ object TriangleFactory : ShapeFactory<TriangleParameters> {
      * `p1` to `p2` to `p3` and back to `p1` from there.
      *
      * *Note that** all resulting shapes will be offset to the top left (0x0) position!
-     * @see [org.codetome.zircon.graphics.shape.Shape.offsetToDefaultPosition] for more info!
+     * @see [org.codetome.zircon.api.graphics.Shape.offsetToDefaultPosition] for more info!
      */
     @JvmStatic
     fun buildTriangle(p1: Position,

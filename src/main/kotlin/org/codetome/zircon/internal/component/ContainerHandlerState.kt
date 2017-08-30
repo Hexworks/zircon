@@ -1,19 +1,19 @@
 package org.codetome.zircon.internal.component
 
 /**
- * Represents the possible states a [ContainerHandler] can be in.
+ * Represents the possible states a [InternalContainerHandler] can be in.
  */
 enum class ContainerHandlerState {
     /**
-     * The [ContainerHandler] is was just created.
+     * The [InternalContainerHandler] is was just created.
      */
     UNKNOWN,
     /**
-     * The [ContainerHandler] is active.
+     * The [InternalContainerHandler] is active.
      */
     ACTIVE,
     /**
-     * The [ContainerHandler] is intactive.
+     * The [InternalContainerHandler] is intactive.
      */
     DEACTIVATED
 }

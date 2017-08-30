@@ -3,8 +3,9 @@ package org.codetome.zircon.internal.behavior
 import org.codetome.zircon.api.Position
 
 /**
- * Represents **any** object, component or data structure which can change
- * over time thus become **dirty**. This interface exposes means to query
+ * Represents **any** object, component or data structure which holds
+ * data about a [Position], can change over time thus can become **dirty**.
+ * This interface exposes means to query
  * and manipulate the dirty parts.
  */
 interface Dirtiable {

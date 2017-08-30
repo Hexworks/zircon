@@ -12,10 +12,11 @@ import java.awt.image.BufferedImage
 import javax.swing.SwingUtilities
 
 /**
- * Concrete implementation of [Java2DTerminalImplementation] that adapts it to Swing.
+ * Concrete implementation of [Java2DTerminalImplementation] that adapts it to Swing
+ * and wraps a [Canvas].
  */
-class SwingTerminalImplementation(
-        private val canvas: SwingTerminalCanvas,
+class SwingTerminal(
+        private val canvas: Canvas,
         val font: Font<BufferedImage>,
         initialSize: Size,
         deviceConfiguration: DeviceConfiguration)
@@ -34,7 +35,6 @@ class SwingTerminalImplementation(
         canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.addKeyListener(TerminalKeyListener(
-                terminal = this,
                 deviceConfiguration = deviceConfiguration))
         val listener = object : TerminalMouseListener(
                 deviceConfiguration = deviceConfiguration,
@@ -42,7 +42,7 @@ class SwingTerminalImplementation(
                 fontHeight = getFontHeight()) {
             override fun mouseClicked(e: MouseEvent) {
                 super.mouseClicked(e)
-                this@SwingTerminalImplementation.canvas.requestFocusInWindow()
+                this@SwingTerminal.canvas.requestFocusInWindow()
             }
         }
         canvas.addMouseListener(listener)

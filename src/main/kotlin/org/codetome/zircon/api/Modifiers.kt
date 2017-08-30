@@ -3,6 +3,9 @@ package org.codetome.zircon.api
 import org.codetome.zircon.api.Modifiers.BorderPosition.*
 import org.codetome.zircon.api.Modifiers.BorderType.*
 
+/**
+ * Represents the built-in modifiers supported by zircon.
+ */
 sealed class Modifiers : Modifier {
 
     object Underline : Modifiers()

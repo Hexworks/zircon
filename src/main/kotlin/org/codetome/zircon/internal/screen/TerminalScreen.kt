@@ -4,25 +4,28 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.api.terminal.Terminal
-import org.codetome.zircon.internal.component.ContainerHandler
+import org.codetome.zircon.internal.component.InternalContainerHandler
 import org.codetome.zircon.internal.component.impl.DefaultContainer
 import org.codetome.zircon.internal.component.impl.DefaultContainerHandler
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.terminal.InternalTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import java.util.*
 
 /**
  * This class implements the logic defined in the [Screen] interface.
- * It keeps data structures for the front- and back buffers, the cursor location and
- * some other simpler states.
+ * A [TerminalScreen] wraps a [Terminal] and uses a [VirtualTerminal] as a backend
+ * for its changes. When `refresh` or `display` is called the changes are written to
+ * the [Terminal] this [TerminalScreen] wraps. This means that a [TerminalScreen] acts
+ * as a double buffer for the wrapped [Terminal].
  */
 class TerminalScreen private constructor(private val terminal: Terminal,
                                          private val backend: VirtualTerminal,
-                                         private val containerHandler: ContainerHandler)
-    : Screen,
-        Terminal by backend,
-        ContainerHandler by containerHandler {
+                                         private val containerHandler: InternalContainerHandler)
+    : InternalScreen,
+        InternalTerminal by backend,
+        InternalContainerHandler by containerHandler {
 
     private val id: UUID = UUID.randomUUID()
 
@@ -88,7 +91,7 @@ class TerminalScreen private constructor(private val terminal: Terminal,
         transformComponentsToLayers().forEach {
             terminal.addLayer(it)
         }
-        backend.drainLayers().forEach {
+        backend.getLayers().forEach { // TODO: regression test drain here <--
             terminal.addLayer(it)
         }
         terminal.flush()

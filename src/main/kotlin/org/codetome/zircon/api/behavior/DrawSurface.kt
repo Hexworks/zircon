@@ -28,8 +28,8 @@ interface DrawSurface : Boundable {
      * Sets the character at a specific position in the [DrawSurface] to a particular [TextCharacter].
      * If the position is outside of the [DrawSurface]'s size, this method has no side effect.
      * **Note that** this method will use the style information if the [DrawSurface] implements
-     * [org.codetome.zircon.graphics.style.StyleSet].
-     * If not it will use [org.codetome.zircon.api.TextCharacterBuilder.DEFAULT_CHARACTER]
+     * [org.codetome.zircon.api.graphics.StyleSet].
+     * If not it will use [org.codetome.zircon.api.builder.TextCharacterBuilder.DEFAULT_CHARACTER]
      * when it sets the given `character` as a [TextCharacter].
      * @return true if the character was set, false if the position is outside of the [DrawSurface].
      */

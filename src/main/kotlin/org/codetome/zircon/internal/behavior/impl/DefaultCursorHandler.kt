@@ -2,12 +2,12 @@ package org.codetome.zircon.internal.behavior.impl
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.behavior.CursorHandler
 import org.codetome.zircon.internal.behavior.Dirtiable
+import org.codetome.zircon.internal.behavior.InternalCursorHandler
 
 class DefaultCursorHandler private constructor(private var cursorSpace: Size,
                                                private val dirtiable: Dirtiable)
-    : CursorHandler, Dirtiable by dirtiable {
+    : InternalCursorHandler, Dirtiable by dirtiable {
 
     constructor(cursorSpace: Size) : this(
             cursorSpace = cursorSpace,

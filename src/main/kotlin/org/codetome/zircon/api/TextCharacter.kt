@@ -6,8 +6,10 @@ import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 
 /**
- * Represents a single character with additional metadata such as colors and modifiers. This class is immutable and
- * cannot be modified after creation.
+ * Represents a single character with additional metadata such as colors and modifiers.
+ * This class is immutable and cannot be modified after creation.
+ *
+ * Use the with* methods to create new instances based on this one.
  */
 @Suppress("DataClassPrivateConstructor")
 data class TextCharacter(

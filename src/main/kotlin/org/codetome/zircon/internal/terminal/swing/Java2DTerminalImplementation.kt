@@ -16,7 +16,7 @@ import java.awt.image.BufferedImage
 import java.util.*
 
 /**
- * This is the class that does the heavy lifting for [SwingTerminalCanvas]. It maintains
+ * This is the class implements the [InternalTerminal] for the java 2d world. It maintains
  * most of the external terminal state and also the main back buffer that is copied to the component
  * area on draw operations.
  */
@@ -88,6 +88,7 @@ abstract class Java2DTerminalImplementation(
     /**
      * Calculates the preferred size of this terminal.
      */
+    @Synchronized
     fun getPreferredSize() = Dimension(
             getFontWidth() * terminal.getBoundableSize().columns,
             getFontHeight() * terminal.getBoundableSize().rows)
@@ -156,10 +157,16 @@ abstract class Java2DTerminalImplementation(
         val x = columnIndex * getFontWidth()
         val y = rowIndex * getFontHeight()
 
-        graphics.drawImage(font.fetchRegionForChar(character), x, y, null)
-        fetchOverlayZIntersection(Position.of(columnIndex, rowIndex)).forEach {
+        listOf(character).plus(fetchOverlayZIntersection(Position.of(columnIndex, rowIndex))).forEach {
             if (it.isNotEmpty()) {
-                graphics.drawImage(font.fetchRegionForChar(it), x, y, null)
+                if (it.isBlinking() && blinkOn) {
+                    it.withForegroundColor(it.getBackgroundColor())
+                            .withBackgroundColor(it.getForegroundColor())
+                } else {
+                    it
+                }.let { fixedChar ->
+                    graphics.drawImage(font.fetchRegionForChar(fixedChar), x, y, null)
+                }
             }
         }
 
@@ -179,7 +186,7 @@ abstract class Java2DTerminalImplementation(
 
     private fun shouldDrawCursor(atCursorLocation: Boolean) = atCursorLocation
             && isCursorVisible()                                 // User settings override everything
-            && (!deviceConfiguration.isCursorBlinking ||         // Always draw if the cursor isn't blinking
+            && (!deviceConfiguration.isCursorBlinking || // Always draw if the cursor isn't blinking
             deviceConfiguration.isCursorBlinking && blinkOn)     // If the cursor is blinking, only draw when blinkOn is true
 
     private fun fillLeftoverSpaceWithBlack(graphics: Graphics) {
