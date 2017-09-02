@@ -9,6 +9,7 @@ import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.TextBox
 import org.codetome.zircon.api.component.Theme
 import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
@@ -33,6 +34,9 @@ class DefaultTextBox @JvmOverloads constructor(private var text: String,
                     character = it)
             moveCursorForward()
         }
+        EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), {
+            EventBus.emit(EventType.RequestFocusAt, getId())
+        })
     }
 
     override fun getText() = text

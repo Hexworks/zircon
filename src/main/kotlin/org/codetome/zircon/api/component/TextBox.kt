@@ -2,7 +2,7 @@ package org.codetome.zircon.api.component
 
 import org.codetome.zircon.internal.behavior.Scrollable
 
-interface TextBox : Component, Scrollable {
+interface TextBox : Component {
 
     fun getText(): String
 
