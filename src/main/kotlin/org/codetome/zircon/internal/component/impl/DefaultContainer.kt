@@ -85,7 +85,7 @@ open class DefaultContainer(initialSize: Size,
                 Optional.empty()
             } else {
                 components.map {
-                    it.fetchComponentByPosition(position)
+                    it.fetchComponentByPosition(position - getPosition())
                 }.filter {
                     it.isPresent
                 }.let { hits ->
