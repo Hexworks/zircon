@@ -9,8 +9,8 @@ import org.codetome.zircon.api.input.InputType.*
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType.*
-import org.codetome.zircon.internal.component.InternalContainerHandler
 import org.codetome.zircon.internal.component.ContainerHandlerState.*
+import org.codetome.zircon.internal.component.InternalContainerHandler
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.event.Subscription
@@ -66,9 +66,13 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
                     MOUSE_RELEASED -> container
                             .fetchComponentByPosition(input.position)
                             .map { EventBus.emit(EventType.MouseReleased(it.getId()), input) }
-                    else -> { }
+                    else -> {
+                    }
                 }
             }
+        }))
+        subscriptions.add(EventBus.subscribe<UUID>(EventType.RequestFocusAt, { (componentId) ->
+            focusComponent(componentId)
         }))
     }
 
@@ -90,6 +94,11 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
                     type = EventType.MouseReleased(it.getId()),
                     data = MouseAction(MOUSE_RELEASED, 1, it.getPosition()))
         }
+    }
+
+    private fun focusComponent(componentId: UUID) {
+        lastFocusedComponentId = prevsLookup[componentId]!!.getId()
+        focusNext()
     }
 
     private fun focusNext() {
