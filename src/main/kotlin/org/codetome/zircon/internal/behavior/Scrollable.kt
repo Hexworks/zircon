@@ -29,7 +29,11 @@ interface Scrollable : CursorHandler {
 
     fun scrollOneRight()
 
+    fun scrollRightTo(position: Int)
+
     fun scrollOneLeft()
+
+    fun scrollLeftTo(position: Int)
 
     fun scrollOneUp()
 

@@ -60,15 +60,17 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
         subscriptions.add(EventBus.subscribe<KeyStroke>(EventType.KeyPressed, { (keyStroke) ->
             val cursorPos = getCursorPosition()
             val (offsetCols, offsetRows) = getVisibleOffset()
-            val bufferRowIdx = cursorPos.row + offsetRows
-            val bufferColIdx = cursorPos.column + offsetCols
+            val currColIdx = cursorPos.column + offsetCols
+            val prevColIdx = Math.max(currColIdx - 1, 0)
+            val currRowIdx = cursorPos.row + offsetRows
             val prevRowIdx = offsetRows + cursorPos.row - 1
-            val prevRow = textBuffer.getRow(prevRowIdx)
             val nextRowIdx = offsetRows + cursorPos.row + 1
-            val nextRow = textBuffer.getRow(nextRowIdx)
-            val prevColIdx = Math.max(bufferColIdx - 1, 0)
+            val maybePrevRow = textBuffer.getRow(prevRowIdx)
+            val maybeNextRow = textBuffer.getRow(nextRowIdx)
+            val maybeCurrRow = textBuffer.getRow(currRowIdx)
             val nextChar = textBuffer.getCharAt(getVisibleOffset() + getCursorPosition())
-
+            // TODO: this should be a state machine
+            // refactor this later
             if (keyStroke.inputTypeIs(InputType.ArrowRight)) {
                 if (nextChar.isPresent) {
                     if (isCursorAtTheEndOfTheLine()) {
@@ -79,75 +81,99 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
                     }
                 }
             } else if (keyStroke.inputTypeIs(InputType.ArrowLeft)) {
-                if (isCursorAtTheStartOfTheLine() && getVisibleOffset().column > 0) {
-                    scrollOneLeft()
-                    refreshDrawSurface()
+                if (isCursorAtTheStartOfTheLine()) {
+                    if (getVisibleOffset().column > 0) {
+                        // we can still scroll left because there are hidden parts of the left section
+                        scrollOneLeft()
+                        refreshDrawSurface()
+                    } else if (maybePrevRow.isPresent) {
+                        scrollUpToEndOfPreviousLine(maybePrevRow.get())
+                    }
                 } else {
                     moveCursorBackward()
                 }
             } else if (keyStroke.inputTypeIs(InputType.ArrowDown)) {
-                if (nextRow.isPresent) {
+                maybeNextRow.map { nextRow ->
                     if (isCursorAtTheLastRow()) {
                         scrollOneDown()
                     } else {
                         putCursorAt(getCursorPosition().withRelativeRow(1))
                     }
-                    putCursorAt(getCursorPosition().withColumn(Math.min(nextRow.get().length, cursorPos.column)))
-                    refreshDrawSurface()
+                    scrollLeftToRowEnd(nextRow)
                 }
             } else if (keyStroke.inputTypeIs(InputType.ArrowUp)) {
-                if (prevRow.isPresent) {
-                    if (isCursorAtTheFirstRow()) {
-                        scrollOneUp()
-                    } else {
-                        putCursorAt(getCursorPosition().withRelativeRow(-1))
-                    }
-                    putCursorAt(getCursorPosition().withColumn(Math.min(prevRow.get().length, cursorPos.column)))
-                    refreshDrawSurface()
+                maybePrevRow.map { prevRow ->
+                    scrollCursorOrScrollableOneUp()
+                    scrollLeftToRowEnd(prevRow)
                 }
             } else if (keyStroke.inputTypeIs(InputType.Delete)) {
-                textBuffer.getRow(bufferRowIdx).map {
-                    if (it.isBlank()) {
-                        deleteRowIfNotLast(bufferRowIdx)
-                        refreshDrawSurface()
-                        refreshVirtualSpaceSize()
+                textBuffer.getRow(currRowIdx).map { row ->
+                    if (currColIdx == row.length) { // end of the line
+                        // this is necessary because if there is no next row and we
+                        // delete the current row we won't be able to type anything (since the row is deleted)
+                        maybeNextRow.map { nextRow ->
+                            val nextRowContent = nextRow.toString()
+                            if (row.isBlank()) {
+                                deleteRowIfNotLast(currRowIdx)
+                            } else {
+                                deleteRowIfNotLast(nextRowIdx)
+                            }
+                            row.append(nextRowContent)
+                        }
+                    } else {
+                        row.deleteCharAt(currColIdx)
                     }
-                    if (bufferColIdx < it.length) {
-                        it.deleteCharAt(bufferColIdx)
-                        refreshDrawSurface()
-                        refreshVirtualSpaceSize()
-                    }
+                    refreshDrawSurface()
+                    refreshVirtualSpaceSize()
                 }
             } else if (keyStroke.inputTypeIs(InputType.Backspace)) {
-                textBuffer.getRow(bufferRowIdx).map {
-                    if (it.isBlank()) {
-                        deleteRowIfNotLast(bufferRowIdx)
-                        refreshDrawSurface()
-                        refreshVirtualSpaceSize()
-                    }
-                    if (bufferColIdx != 0 && prevColIdx < it.length) {
-                        it.deleteCharAt(prevColIdx)
-                        if (isCursorAtTheStartOfTheLine()) {
-                            scrollOneLeft()
-                        } else {
-                            moveCursorBackward()
+                textBuffer.getRow(currRowIdx).map { row ->
+                    if (currColIdx == 0) { // start of the line
+                        maybePrevRow.map { prevRow ->
+                            val currRowContent = row.toString()
+                            deleteRowIfNotLast(currRowIdx)
+                            scrollUpToEndOfPreviousLine(prevRow)
+                            prevRow.append(currRowContent)
                         }
-                        refreshDrawSurface()
-                        refreshVirtualSpaceSize()
+                    } else {
+                        row.deleteCharAt(currColIdx - 1)
+                        scrollCursorOrScrollableOneLeft()
                     }
+                    refreshDrawSurface()
+                    refreshVirtualSpaceSize()
                 }
             } else if (keyStroke.inputTypeIs(InputType.Enter)) {
-                textBuffer.addNewRowAt(bufferRowIdx + 1)
+                val newRowIdx = currRowIdx + 1
+                textBuffer.addNewRowAt(newRowIdx)
+                textBuffer.getRow(currRowIdx).map { oldRow ->
+                    textBuffer.getRow(newRowIdx).map { newRow ->
+                        newRow.append(oldRow.substring(currColIdx).trim())
+                    }
+                    oldRow.delete(currColIdx, oldRow.length)
+                }
                 refreshVirtualSpaceSize()
-                refreshDrawSurface()
                 if (isCursorAtTheLastRow()) {
                     scrollOneDown()
                 } else {
                     putCursorAt(getCursorPosition().withRelativeRow(1))
                 }
+                scrollLeftTo(0)
+                putCursorAt(getCursorPosition().withColumn(0))
+                refreshDrawSurface()
+            } else if (keyStroke.inputTypeIs(InputType.Home)) {
+                scrollLeftTo(0)
+                putCursorAt(getCursorPosition().withColumn(0))
+            } else if (keyStroke.inputTypeIs(InputType.End)) {
+                scrollRightToRowEnd(maybeCurrRow.get())
+                putCursorAt(getCursorPosition().withColumn(getBoundableSize().columns - 1))
             } else if (TextUtils.isPrintableCharacter(keyStroke.getCharacter())) {
-                textBuffer.getRow(bufferRowIdx).map {
-                    it.insert(bufferColIdx, keyStroke.getCharacter())
+                textBuffer.getRow(currRowIdx).map {
+                    if (isCursorAtTheEndOfTheLine()) {
+                        it.append(keyStroke.getCharacter())
+                    } else {
+                        it.insert(currColIdx, keyStroke.getCharacter())
+                    }
+                    refreshDrawSurface()
                     refreshVirtualSpaceSize()
                     if (isCursorAtTheEndOfTheLine()) {
                         scrollOneRight()
@@ -161,6 +187,53 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
             EventBus.emit(EventType.ComponentChange)
         }))
         return true
+    }
+
+    private fun scrollUpToEndOfPreviousLine(prevRow: StringBuilder) {
+        // we move the cursor up
+        scrollCursorOrScrollableOneUp()
+        // we set the position to be able to see the end of the row
+        scrollRightToRowEnd(prevRow)
+        // we fix the cursor if the row does not fill the visible space
+        putCursorAt(getCursorPosition()
+                .withColumn(Math.min(prevRow.length, getCursorPosition().column)))
+        refreshDrawSurface()
+        refreshVirtualSpaceSize()
+    }
+
+    private fun scrollCursorOrScrollableOneLeft() {
+        if (isCursorAtTheStartOfTheLine()) {
+            scrollOneLeft()
+        } else {
+            moveCursorBackward()
+        }
+    }
+
+    private fun scrollCursorOrScrollableOneUp() {
+        if (isCursorAtTheFirstRow()) {
+            scrollOneUp()
+        } else {
+            putCursorAt(getCursorPosition().withRelativeRow(-1))
+        }
+    }
+
+    private fun scrollLeftToRowEnd(row: StringBuilder) {
+        val visibleCharCount = row.length - getVisibleOffset().column
+        if (row.length > getVisibleOffset().column) {
+            if (visibleCharCount < getCursorPosition().column) {
+                putCursorAt(getCursorPosition().withColumn(row.length - getVisibleOffset().column))
+            }
+        } else {
+            scrollLeftTo(row.length)
+            putCursorAt(getCursorPosition().withColumn(0))
+        }
+        refreshDrawSurface()
+    }
+
+    private fun scrollRightToRowEnd(row: StringBuilder) {
+        scrollRightTo(Math.max(0, row.length - getBoundableSize().columns))
+        putCursorAt(getCursorPosition().withColumn(getBoundableSize().columns - 1))
+        refreshDrawSurface()
     }
 
     private fun deleteRowIfNotLast(bufferRowIdx: Int) {

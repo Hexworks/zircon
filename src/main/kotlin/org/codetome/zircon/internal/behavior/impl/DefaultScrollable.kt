@@ -30,9 +30,21 @@ class DefaultScrollable private constructor(private val cursorHandler: CursorHan
         }
     }
 
+    override fun scrollRightTo(position: Int) {
+        if(position in 0 .. virtualSpaceSize.columns) {
+            offset = offset.withColumn(position)
+        }
+    }
+
     override fun scrollOneLeft() {
         if(offset.column > 0) {
             offset = offset.withRelativeColumn(-1)
+        }
+    }
+
+    override fun scrollLeftTo(position: Int) {
+        if(position in 0 .. offset.column) {
+            offset = offset.withColumn(position)
         }
     }
 
