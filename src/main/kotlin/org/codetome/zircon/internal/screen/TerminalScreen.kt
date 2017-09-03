@@ -66,6 +66,8 @@ class TerminalScreen private constructor(private val terminal: Terminal,
     @Synchronized
     override fun display() {
         EventBus.emit(EventType.ScreenSwitch, id)
+        setCursorVisible(false)
+        putCursorAt(Position.DEFAULT_POSITION)
         flipBuffers(true)
         activate()
     }

@@ -14,7 +14,7 @@ class TextBuffer(text: String) {
 
     fun getBoundingBoxSize() = Size.of(currentText.map { it.length }.max() ?: 0, currentText.size)
 
-    fun getText() = currentText.map { it.toString() }.joinToString(System.lineSeparator())
+    fun getText() = currentText.joinToString(System.lineSeparator()) { it.toString() }
 
     fun getSize() = currentText.size
 
@@ -22,12 +22,12 @@ class TextBuffer(text: String) {
             if (row < currentText.size && row >= 0) {
                 Optional.of(currentText[row])
             } else {
-                Optional.empty<StringBuilder>()
+                Optional.empty()
             }
 
     fun getCharAt(position: Position) =
             if (position.row >= currentText.size || currentText[position.row].length <= position.column) {
-                Optional.empty<Char>()
+                Optional.empty()
             } else {
                 Optional.of(currentText[position.row][position.column])
             }
