@@ -55,13 +55,20 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
 
             keyStrokeHandlers[input]?.invoke()
 
+            if(input is KeyStroke) {
+                EventBus.emit(EventType.KeyPressed, input)
+            }
+
             if (input is MouseAction) {
                 when (input.actionType) {
                     MOUSE_MOVED -> handleMouseMoved(input)
 
                     MOUSE_PRESSED -> container
                             .fetchComponentByPosition(input.position)
-                            .map { EventBus.emit(EventType.MousePressed(it.getId()), input) }
+                            .map {
+                                println("pressed on ${it.getId()}")
+                                EventBus.emit(EventType.MousePressed(it.getId()), input)
+                            }
 
                     MOUSE_RELEASED -> container
                             .fetchComponentByPosition(input.position)

@@ -22,7 +22,7 @@ import java.util.*
 abstract class DefaultComponent private constructor(private var position: Position,
                                                     private var componentStyles: ComponentStyles,
                                                     private val drawSurface: TextImage,
-                                                    private val boundable: Boundable,
+                                                    private var boundable: Boundable,
                                                     private val wrappers: Iterable<WrappingStrategy>)
     : Component, Drawable by drawSurface {
 
@@ -110,6 +110,9 @@ abstract class DefaultComponent private constructor(private var position: Positi
 
     fun setPosition(position: Position) {
         this.position = position
+        this.boundable = DefaultBoundable(
+                size = getBoundableSize(),
+                position = position)
     }
 
     fun applyWrappers() {

@@ -39,6 +39,14 @@ interface CursorHandler {
      */
     fun isCursorVisible(): Boolean
 
+    fun isCursorAtTheEndOfTheLine(): Boolean
+
+    fun isCursorAtTheStartOfTheLine(): Boolean
+
+    fun isCursorAtTheFirstRow(): Boolean
+
+    fun isCursorAtTheLastRow(): Boolean
+
     /**
      * Hides or shows the cursor.
      */

@@ -11,6 +11,10 @@ sealed class EventType {
      * A new input arrived into the system.
      */
     object Input : EventType()
+    /**
+     * A key was pressed.
+     */
+    object KeyPressed : EventType()
 
     data class MousePressed(val componentId: UUID) : EventType()
 

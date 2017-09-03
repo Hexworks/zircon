@@ -13,17 +13,25 @@ import org.codetome.zircon.api.behavior.CursorHandler
 interface Scrollable : CursorHandler {
 
     /**
-     * Returns the [Size] of the visible space this [Scrollable] occupies.
+     * Returns the [Size] of the virtual space this [Scrollable] can scroll through.
      */
-    fun getVisibleSpaceSize(): Size
+    fun getVirtualSpaceSize(): Size
+
+    /**
+     * Sets the [Size] of the virtual space this [Scrollable] can scroll through.
+     */
+    fun setVirtualSpaceSize(size: Size)
 
     /**
      * Returns the offset where the visible part of this [Scrollable] starts.
      */
     fun getVisibleOffset(): Position
 
-    /**
-     * Sets the offset where the visible part of this [Scrollable] starts.
-     */
-    fun setVisibleOffset(offset: Position)
+    fun scrollOneRight()
+
+    fun scrollOneLeft()
+
+    fun scrollOneUp()
+
+    fun scrollOneDown()
 }

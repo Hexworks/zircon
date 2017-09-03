@@ -60,7 +60,7 @@ class DefaultCursorHandler private constructor(private var cursorSpace: Size,
                     getCursorPosition()
                 }
             } else {
-                getCursorPosition().withRelativeColumn(1)
+                getCursorPosition().withRelativeColumn(-1)
             }
         })
     }
@@ -71,6 +71,14 @@ class DefaultCursorHandler private constructor(private var cursorSpace: Size,
         this.cursorSpace = size
         putCursorAt(getCursorPosition())
     }
+
+    override fun isCursorAtTheEndOfTheLine() = cursorPosition.column == cursorSpace.columns - 1
+
+    override fun isCursorAtTheStartOfTheLine() = cursorPosition.column == 0
+
+    override fun isCursorAtTheFirstRow() = cursorPosition.row == 0
+
+    override fun isCursorAtTheLastRow() = cursorPosition.row == cursorSpace.rows - 1
 
     private fun cursorIsAtTheEndOfTheLine(column: Int) = column + 1 == cursorSpace.columns
 
