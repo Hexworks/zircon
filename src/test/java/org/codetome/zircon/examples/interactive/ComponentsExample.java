@@ -56,7 +56,7 @@ public class ComponentsExample {
 
         addScreenTitle(panelsScreen, "Panels");
 
-        for(int i = 0; i < screens.size(); i++) {
+        for (int i = 0; i < screens.size(); i++) {
             addNavigation(screens.get(i), screens, i);
         }
 
@@ -67,8 +67,7 @@ public class ComponentsExample {
                 .size(PANEL_SIZE)
                 .build();
         simplePanel.addComponent(new DefaultTextBox(
-                "Simple panel with editable text box",
-                Size.of(13, 3),
+                "Simple panel" + System.lineSeparator() + "with editable text box" + System.lineSeparator() + "...",
                 Size.of(13, 3),
                 Position.of(1, 1),
                 ComponentStylesBuilder.DEFAULT
@@ -148,7 +147,6 @@ public class ComponentsExample {
         buttonsAndTextBoxesScreen.addComponent(new DefaultTextBox(
                 "fooooooooooo",
                 Size.of(5, 5),
-                Size.of(3, 3),
                 Position.of(1, 1),
                 ComponentStylesBuilder.DEFAULT
         ));

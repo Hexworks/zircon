@@ -28,7 +28,7 @@ class TextUtilsTest {
 
     @Test
     fun shouldReturnTrueWhenIsPrintableCharacterCalledAndNewLine() {
-        assertThat(TextUtils.isPrintableCharacter('\n')).isTrue()
+        assertThat(TextUtils.isPrintableCharacter('\n')).isFalse()
     }
 
     @Test

@@ -6,7 +6,7 @@ import org.codetome.zircon.api.behavior.CursorHandler
 import org.codetome.zircon.internal.behavior.Scrollable
 
 class DefaultScrollable private constructor(private val cursorHandler: CursorHandler,
-                                            private val visibleSpaceSize: Size)
+                                            private var virtualSpaceSize: Size)
     : Scrollable, CursorHandler by cursorHandler {
 
     private var offset = Position.DEFAULT_POSITION
@@ -14,13 +14,37 @@ class DefaultScrollable private constructor(private val cursorHandler: CursorHan
     constructor(cursorSpaceSize: Size,
                 visibleSpaceSize: Size) : this(
             cursorHandler = DefaultCursorHandler(cursorSpaceSize),
-            visibleSpaceSize = visibleSpaceSize)
+            virtualSpaceSize = visibleSpaceSize)
 
-    override fun getVisibleSpaceSize() = visibleSpaceSize
+    override fun getVirtualSpaceSize() = virtualSpaceSize
+
+    override fun setVirtualSpaceSize(size: Size) {
+        this.virtualSpaceSize = size
+    }
 
     override fun getVisibleOffset() = offset
 
-    override fun setVisibleOffset(offset: Position) {
-        this.offset = offset
+    override fun scrollOneRight() {
+        if(getCursorSpaceSize().columns  + offset.column + 1 <= virtualSpaceSize.columns) {
+            this.offset = offset.withRelativeColumn(1)
+        }
+    }
+
+    override fun scrollOneLeft() {
+        if(offset.column > 0) {
+            offset = offset.withRelativeColumn(-1)
+        }
+    }
+
+    override fun scrollOneUp() {
+        if(offset.row > 0) {
+            offset = offset.withRelativeRow(-1)
+        }
+    }
+
+    override fun scrollOneDown() {
+        if(getCursorSpaceSize().rows  + offset.row + 1 <= virtualSpaceSize.rows) {
+            this.offset = offset.withRelativeRow(1)
+        }
     }
 }
