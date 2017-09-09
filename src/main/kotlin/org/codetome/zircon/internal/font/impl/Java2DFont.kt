@@ -57,9 +57,11 @@ class Java2DFont(private val source: BufferedImage,
         require(hasDataForChar(textCharacter.getCharacter())) {
             "No metadata exists for '${textCharacter.getCharacter()}'!"
         }
-        return metadataPickingStrategy.pickMetadata(metadata[textCharacter.getCharacter()]!!.filter {
-            it.tags.containsAll(tags.toList())
-        })
+        val filtered = metadata[textCharacter.getCharacter()]!!.filter { it.tags.containsAll(tags.toList()) }
+        require(filtered.isNotEmpty()) {
+            "No metadata found for tag(s): ${tags.joinToString()}"
+        }
+        return metadataPickingStrategy.pickMetadata(filtered)
     }
 
     companion object {
