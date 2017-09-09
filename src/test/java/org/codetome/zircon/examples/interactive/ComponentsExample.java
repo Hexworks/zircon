@@ -140,7 +140,7 @@ public class ComponentsExample {
                 .build());
         panelsScreen.addComponent(borderedPanelWithShadow);
 
-        panelsScreen.applyTheme(PANELS_THEME);
+        panelsScreen.applyTheme(ThemeRepository.LET_THEM_EAT_CAKE.getTheme());
 
         // buttons screen
 

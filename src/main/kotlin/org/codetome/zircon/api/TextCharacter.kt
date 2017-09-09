@@ -16,7 +16,8 @@ data class TextCharacter(
         private val character: Char,
         private val foregroundColor: TextColor,
         private val backgroundColor: TextColor,
-        private val modifiers: Set<Modifier>) {
+        private val modifiers: Set<Modifier>,
+        private val tags: Set<String>) {
 
     fun getCharacter() = character
 
@@ -25,6 +26,8 @@ data class TextCharacter(
     fun getBackgroundColor() = backgroundColor
 
     fun getModifiers() = modifiers
+
+    fun getTags() = tags
 
     fun isBold() = modifiers.contains(Bold)
 
@@ -137,14 +140,17 @@ data class TextCharacter(
          * because a defensive copy of `modifiers` needs to be forced.
          */
         @JvmStatic
+        @JvmOverloads
         fun of(character: Char,
                foregroundColor: TextColor,
                backgroundColor: TextColor,
-               modifiers: Set<Modifier>) = TextCharacter(
+               modifiers: Set<Modifier> = setOf(),
+               tags: Set<String> = setOf()) = TextCharacter(
                 character = character,
                 foregroundColor = foregroundColor,
                 backgroundColor = backgroundColor,
-                modifiers = modifiers.toSet())
+                modifiers = modifiers.toSet(),
+                tags = tags)
     }
 
 }

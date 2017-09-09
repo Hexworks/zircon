@@ -6,6 +6,7 @@ import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.font.FontRegionTransformer
+import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
 import org.codetome.zircon.internal.font.transformer.*
 import java.awt.image.BufferedImage
@@ -18,7 +19,9 @@ class Java2DFont(private val source: BufferedImage,
                  private val width: Int,
                  private val height: Int,
                  private val regionTransformers: List<FontRegionTransformer<BufferedImage>>,
-                 private val cache: DefaultFontRegionCache<BufferedImage>) : Font<BufferedImage> {
+                 private val cache: DefaultFontRegionCache<BufferedImage>,
+                 private val metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy())
+    : Font<BufferedImage> {
 
     override fun getWidth() = width
 
@@ -33,8 +36,8 @@ class Java2DFont(private val source: BufferedImage,
     override fun fetchRegionForChar(textCharacter: TextCharacter, vararg tags: String): BufferedImage {
         val meta = fetchMetaFor(textCharacter, tags)
         val maybeRegion = cache.retrieveIfPresent(textCharacter)
-        
-        var region = if(maybeRegion.isNotPresent()) {
+
+        var region = if (maybeRegion.isNotPresent()) {
             var image = source.getSubimage(meta.x * width, meta.y * height, width, height)
             regionTransformers.forEach {
                 image = it.transform(image, textCharacter)
@@ -54,13 +57,9 @@ class Java2DFont(private val source: BufferedImage,
         require(hasDataForChar(textCharacter.getCharacter())) {
             "No metadata exists for '${textCharacter.getCharacter()}'!"
         }
-        val metas = metadata[textCharacter.getCharacter()]!!.filter {
+        return metadataPickingStrategy.pickMetadata(metadata[textCharacter.getCharacter()]!!.filter {
             it.tags.containsAll(tags.toList())
-        }
-        require(metas.size == 1) {
-            "There are more than 1 metadata entries for char: '${textCharacter.getCharacter()}' and tags: '${tags.toList().joinToString()}'"
-        }
-        return metas.first()
+        })
     }
 
     companion object {

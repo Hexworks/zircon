@@ -19,6 +19,7 @@ class TextCharacterBuilder {
     private var foregroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR
     private var backgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR
     private var modifiers: Set<Modifier> = setOf()
+    private var tags: Set<String> = setOf()
 
     fun character(character: Char) = also {
         this.character = character
@@ -50,11 +51,20 @@ class TextCharacterBuilder {
         this.modifiers = modifiers.toSet()
     }
 
+    fun tag(vararg tags: String) = also {
+        this.tags = tags.toSet()
+    }
+
+    fun tags(tags: Set<String>) = also {
+        this.tags = tags
+    }
+
     fun build() = TextCharacter.of(
             character = character,
             foregroundColor = foregroundColor,
             backgroundColor = backgroundColor,
-            modifiers = modifiers)
+            modifiers = modifiers,
+            tags = tags)
 
     companion object {
 
