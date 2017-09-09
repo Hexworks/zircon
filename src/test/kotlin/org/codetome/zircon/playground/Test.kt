@@ -10,19 +10,6 @@ import java.util.function.UnaryOperator
 class Test {
 
     @Test
-    fun asdf() {
-        this.javaClass.classLoader.getResourceAsStream("tileinfo.yml").bufferedReader().useLines {
-            it.forEach { line ->
-                if (line.endsWith(":")) {
-                    println(line.substring(0, line.length - 1))
-                } else {
-                    println(line)
-                }
-            }
-        }
-    }
-
-    @Test
     fun test() {
         val list = mutableListOf(
                 Pojo("name0", "foo0"),
