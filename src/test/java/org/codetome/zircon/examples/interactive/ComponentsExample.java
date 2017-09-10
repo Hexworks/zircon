@@ -4,17 +4,16 @@ import org.codetome.zircon.api.Modifiers;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
-import org.codetome.zircon.api.builder.ComponentStylesBuilder;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.builder.*;
 import org.codetome.zircon.api.factory.TextColorFactory;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.resource.PhysicalFontResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
-import org.codetome.zircon.internal.component.impl.DefaultTextBox;
 import org.codetome.zircon.internal.graphics.BoxType;
 
 import java.util.Arrays;
@@ -29,6 +28,7 @@ public class ComponentsExample {
     private static final Size TERMINAL_SIZE = Size.of(52, 28);
     private static final Theme PANELS_THEME = ThemeRepository.GHOST_OF_A_CHANCE.getTheme();
     private static final Theme BUTTONS_THEME = ThemeRepository.SOLARIZED_LIGHT_VIOLET.getTheme();
+    private static final PanelBuilder PANEL_TEMPLATE = PanelBuilder.newBuilder().size(PANEL_SIZE);
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
@@ -52,6 +52,7 @@ public class ComponentsExample {
                 radioAndCheckScreen);
 
         addScreenTitle(panelsScreen, "Panels");
+        addScreenTitle(buttonsAndTextBoxesScreen, "Input controls");
 
         for (int i = 0; i < screens.size(); i++) {
             addNavigation(screens.get(i), screens, i);
@@ -59,33 +60,26 @@ public class ComponentsExample {
 
         // panels screen
 
-        final Panel simplePanel = PanelBuilder.newBuilder()
+        final Panel simplePanel = PANEL_TEMPLATE.createCopy()
                 .position(Position.of(2, 4))
-                .size(PANEL_SIZE)
                 .build();
-        simplePanel.addComponent(TextBoxBuilder.newBuilder()
-                .text("Simple panel" + System.lineSeparator() + "with editable text box" + System.lineSeparator() + "...")
-                .size(Size.of(13, 3))
-                .position(Position.of(1, 1))
+        simplePanel.addComponent(LabelBuilder.newBuilder()
+                .position(Position.OFFSET_1x1)
+                .text("Simple panel")
                 .build());
         panelsScreen.addComponent(simplePanel);
 
-        final Panel boxedPanel = PanelBuilder.newBuilder()
-                .title("Panel")
+        final Panel boxedPanel = PANEL_TEMPLATE.createCopy()
+                .title("Boxed panel")
                 .position(Position.of(0, 2).relativeToBottomOf(simplePanel))
-                .size(PANEL_SIZE)
                 .wrapInBox()
                 .boxType(BoxType.DOUBLE)
                 .build();
-        boxedPanel.addComponent(LabelBuilder.newBuilder()
-                .text("Boxed panel")
-                .build());
         panelsScreen.addComponent(boxedPanel);
 
 
-        final Panel panelWithShadow = PanelBuilder.newBuilder()
+        final Panel panelWithShadow = PANEL_TEMPLATE.createCopy()
                 .position(Position.of(4, 0).relativeToRightOf(simplePanel))
-                .size(PANEL_SIZE)
                 .addShadow()
                 .build();
         panelWithShadow.addComponent(LabelBuilder.newBuilder()
@@ -95,26 +89,22 @@ public class ComponentsExample {
         panelsScreen.addComponent(panelWithShadow);
 
 
-        final Panel panelWithShadowAndBox = PanelBuilder.newBuilder()
+        final Panel panelWithShadowAndBox = PANEL_TEMPLATE.createCopy()
                 .position(Position.of(0, 2).relativeToBottomOf(panelWithShadow))
-                .size(PANEL_SIZE)
                 .addShadow()
+                .title("Panel with shadow")
                 .wrapInBox()
                 .build();
         panelWithShadowAndBox.addComponent(LabelBuilder.newBuilder()
-                .text("Panel with shadow")
-                .build());
-        panelWithShadowAndBox.addComponent(LabelBuilder.newBuilder()
                 .text("and box")
-                .position(Position.of(0, 1))
+                .position(Position.of(0, 0))
                 .build());
         panelsScreen.addComponent(panelWithShadowAndBox);
 
 
-        final Panel borderedPanel = PanelBuilder.newBuilder()
+        final Panel borderedPanel = PANEL_TEMPLATE.createCopy()
                 .title("Bordered panel")
                 .position(Position.of(0, 2).relativeToBottomOf(boxedPanel))
-                .size(PANEL_SIZE)
                 .addBorder(Modifiers.BORDER.of(SOLID))
                 .build();
         borderedPanel.addComponent(LabelBuilder.newBuilder()
@@ -123,10 +113,9 @@ public class ComponentsExample {
                 .build());
         panelsScreen.addComponent(borderedPanel);
 
-        final Panel borderedPanelWithShadow = PanelBuilder.newBuilder()
+        final Panel borderedPanelWithShadow = PANEL_TEMPLATE.createCopy()
                 .title("Bordered panel")
                 .position(Position.of(0, 2).relativeToBottomOf(panelWithShadowAndBox))
-                .size(PANEL_SIZE)
                 .addBorder(Modifiers.BORDER.of(DOTTED))
                 .addShadow()
                 .build();
@@ -140,11 +129,51 @@ public class ComponentsExample {
 
         // buttons screen
 
-        buttonsAndTextBoxesScreen.addComponent(TextBoxBuilder.newBuilder()
-                .text("I am a" + System.lineSeparator() + "TextBox")
-                .size(Size.of(10, 3))
-                .position(Position.of(1, 1))
+        final Panel checkBoxesPanel = PANEL_TEMPLATE.createCopy()
+                .position(Position.of(2, 4))
+                .wrapInBox()
+                .title("Check boxes")
+                .addShadow()
+                .build();
+        for (int i = 0; i < 2; i++) {
+            checkBoxesPanel.addComponent(CheckBoxBuilder.newBuilder()
+                    .position(Position.of(0, i))
+                    .text("Check " + (i + 1))
+                    .build());
+        }
+        checkBoxesPanel.addComponent(CheckBoxBuilder.newBuilder()
+                .position(Position.of(0, 2))
+                .text("Too long text for this checkbox")
+                .width(19)
                 .build());
+        buttonsAndTextBoxesScreen.addComponent(checkBoxesPanel);
+
+        final Panel textBoxesPanel = PANEL_TEMPLATE.createCopy()
+                .position(Position.of(0, 2).relativeToBottomOf(checkBoxesPanel))
+                .wrapInBox()
+                .title("Text boxes")
+                .addShadow()
+                .build();
+        textBoxesPanel.addComponent(TextBoxBuilder.newBuilder()
+                .text("Panel" + System.lineSeparator() + "with editable text box" + System.lineSeparator() + "...")
+                .size(Size.of(13, 3))
+                .build());
+        buttonsAndTextBoxesScreen.addComponent(textBoxesPanel);
+
+        final Panel buttonsPanel = PANEL_TEMPLATE.createCopy()
+                .position(Position.of(0, 2).relativeToBottomOf(textBoxesPanel))
+                .wrapInBox()
+                .title("Buttons")
+                .addShadow()
+                .build();
+        for(int i = 0; i < 3; i++) {
+            buttonsPanel.addComponent(ButtonBuilder.newBuilder()
+                    .position(Position.of(0, i))
+                    .text("Button " + i)
+                    .build());
+        }
+        buttonsAndTextBoxesScreen.addComponent(buttonsPanel);
+
         buttonsAndTextBoxesScreen.applyTheme(BUTTONS_THEME);
         panelsScreen.display();
     }
