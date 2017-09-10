@@ -8,10 +8,7 @@ import org.codetome.zircon.api.builder.ComponentStylesBuilder;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.component.*;
-import org.codetome.zircon.api.component.builder.ButtonBuilder;
-import org.codetome.zircon.api.component.builder.HeaderBuilder;
-import org.codetome.zircon.api.component.builder.LabelBuilder;
-import org.codetome.zircon.api.component.builder.PanelBuilder;
+import org.codetome.zircon.api.component.builder.*;
 import org.codetome.zircon.api.factory.TextColorFactory;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
@@ -30,7 +27,7 @@ public class ComponentsExample {
 
     private static final Size PANEL_SIZE = Size.of(22, 6);
     private static final Size TERMINAL_SIZE = Size.of(52, 28);
-    private static final Theme PANELS_THEME = ThemeRepository.SOLARIZED_DARK_ORANGE.getTheme();
+    private static final Theme PANELS_THEME = ThemeRepository.GHOST_OF_A_CHANCE.getTheme();
     private static final Theme BUTTONS_THEME = ThemeRepository.SOLARIZED_LIGHT_VIOLET.getTheme();
 
     public static void main(String[] args) {
@@ -66,12 +63,11 @@ public class ComponentsExample {
                 .position(Position.of(2, 4))
                 .size(PANEL_SIZE)
                 .build();
-        simplePanel.addComponent(new DefaultTextBox(
-                "Simple panel" + System.lineSeparator() + "with editable text box" + System.lineSeparator() + "...",
-                Size.of(13, 3),
-                Position.of(1, 1),
-                ComponentStylesBuilder.DEFAULT
-        ));
+        simplePanel.addComponent(TextBoxBuilder.newBuilder()
+                .text("Simple panel" + System.lineSeparator() + "with editable text box" + System.lineSeparator() + "...")
+                .size(Size.of(13, 3))
+                .position(Position.of(1, 1))
+                .build());
         panelsScreen.addComponent(simplePanel);
 
         final Panel boxedPanel = PanelBuilder.newBuilder()
@@ -140,16 +136,15 @@ public class ComponentsExample {
                 .build());
         panelsScreen.addComponent(borderedPanelWithShadow);
 
-        panelsScreen.applyTheme(ThemeRepository.LET_THEM_EAT_CAKE.getTheme());
+        panelsScreen.applyTheme(PANELS_THEME);
 
         // buttons screen
 
-        buttonsAndTextBoxesScreen.addComponent(new DefaultTextBox(
-                "fooooooooooo",
-                Size.of(5, 5),
-                Position.of(1, 1),
-                ComponentStylesBuilder.DEFAULT
-        ));
+        buttonsAndTextBoxesScreen.addComponent(TextBoxBuilder.newBuilder()
+                .text("I am a" + System.lineSeparator() + "TextBox")
+                .size(Size.of(10, 3))
+                .position(Position.of(1, 1))
+                .build());
         buttonsAndTextBoxesScreen.applyTheme(BUTTONS_THEME);
         panelsScreen.display();
     }
