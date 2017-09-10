@@ -54,6 +54,7 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
     }
 
     override fun giveFocus(input: Optional<Input>): Boolean {
+        clearSubscriptions()
         getDrawSurface().applyStyle(getComponentStyles().giveFocus())
         EventBus.emit(EventType.RequestCursorAt, getCursorPosition().withRelative(getPosition()))
         EventBus.emit(EventType.ComponentChange)
@@ -167,6 +168,7 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
                 scrollRightToRowEnd(maybeCurrRow.get())
                 putCursorAt(getCursorPosition().withColumn(getBoundableSize().columns - 1))
             } else if (TextUtils.isPrintableCharacter(keyStroke.getCharacter())) {
+                println("char")
                 textBuffer.getRow(currRowIdx).map {
                     if (isCursorAtTheEndOfTheLine()) {
                         it.append(keyStroke.getCharacter())
@@ -243,13 +245,16 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
     }
 
     override fun takeFocus(input: Optional<Input>) {
+        getDrawSurface().applyStyle(getComponentStyles().reset())
+        EventBus.emit(EventType.HideCursor)
+        EventBus.emit(EventType.ComponentChange)
+    }
+
+    private fun clearSubscriptions() {
         subscriptions.forEach {
             EventBus.unsubscribe(it)
         }
         subscriptions.clear()
-        getDrawSurface().applyStyle(getComponentStyles().reset())
-        EventBus.emit(EventType.HideCursor)
-        EventBus.emit(EventType.ComponentChange)
     }
 
     override fun applyTheme(theme: Theme) {
