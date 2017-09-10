@@ -6,12 +6,10 @@ import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.internal.graphics.BoxType
 import org.codetome.zircon.internal.graphics.DefaultBox
 
-class BoxBuilder : Builder<Box> {
-
-    private var size: Size = Size(3, 3)
-    private var style: StyleSet = StyleSetBuilder.DEFAULT_STYLE
-    private var boxType: BoxType = BoxType.BASIC
-    private var filler: Char = TextCharacterBuilder.EMPTY.getCharacter()
+data class BoxBuilder(private var size: Size = Size(3, 3),
+        private var style: StyleSet = StyleSetBuilder.DEFAULT_STYLE,
+        private var boxType: BoxType = BoxType.BASIC,
+        private var filler: Char = TextCharacterBuilder.EMPTY.getCharacter()) : Builder<Box> {
 
     /**
      * Sets the size for the new [org.codetome.zircon.api.graphics.Box].
@@ -51,6 +49,8 @@ class BoxBuilder : Builder<Box> {
                     .build(),
             styleSet = style,
             boxType = boxType)
+
+    override fun createCopy() = copy()
 
     companion object {
 

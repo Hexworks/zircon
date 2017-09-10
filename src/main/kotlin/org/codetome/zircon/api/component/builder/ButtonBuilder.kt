@@ -11,11 +11,10 @@ import org.codetome.zircon.internal.component.impl.ButtonWrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultButton
 import java.util.*
 
-class ButtonBuilder : Builder<Button> {
-
-    private var text = ""
-    private var position = Position.DEFAULT_POSITION
-    private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT
+data class ButtonBuilder(
+        private var text: String = "",
+        private var position: Position = Position.DEFAULT_POSITION,
+        private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT) : Builder<Button> {
 
     fun text(text: String) = also {
         this.text = text
@@ -42,6 +41,8 @@ class ButtonBuilder : Builder<Button> {
                 componentStyles = componentStyles,
                 wrappers = wrappers)
     }
+
+    override fun createCopy() = copy()
 
     companion object {
 

@@ -1,19 +1,19 @@
 package org.codetome.zircon.api.component.builder
 
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.component.CheckBox
 import org.codetome.zircon.api.component.ComponentStyles
-import org.codetome.zircon.api.component.Header
-import org.codetome.zircon.api.component.Label
-import org.codetome.zircon.internal.component.impl.DefaultHeader
-import org.codetome.zircon.internal.component.impl.DefaultLabel
+import org.codetome.zircon.internal.component.WrappingStrategy
+import org.codetome.zircon.internal.component.impl.DefaultCheckBox
+import java.util.*
 
-data class HeaderBuilder(
+data class CheckBoxBuilder(
         private var text: String = "",
         private var position: Position = Position.DEFAULT_POSITION,
-        private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT) : Builder<Header> {
+        private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT,
+        private var width: Int = -1) : Builder<CheckBox> {
 
     fun text(text: String) = also {
         this.text = text
@@ -27,16 +27,17 @@ data class HeaderBuilder(
         this.componentStyles = componentStyles
     }
 
-    override fun build(): Header {
-        require(text.isNotBlank()) {
-            "A Header can't be blank!"
-        }
-        return DefaultHeader(
+    fun width(width: Int) = also {
+        this.width = width
+    }
+
+    override fun build(): CheckBox {
+        return DefaultCheckBox(
                 text = text,
-                initialSize = Size.of(text.length, 1),
+                width = if (width == -1) text.length + 4 else width,
                 position = position,
-                componentStyles = componentStyles
-        )
+                componentStyles = componentStyles,
+                wrappers = LinkedList<WrappingStrategy>())
     }
 
     override fun createCopy() = copy()
@@ -44,6 +45,6 @@ data class HeaderBuilder(
     companion object {
 
         @JvmStatic
-        fun newBuilder() = HeaderBuilder()
+        fun newBuilder() = CheckBoxBuilder()
     }
 }

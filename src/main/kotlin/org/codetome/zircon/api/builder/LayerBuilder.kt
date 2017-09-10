@@ -3,9 +3,9 @@ package org.codetome.zircon.api.builder
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.graphics.DefaultLayer
-import org.codetome.zircon.api.graphics.Layer
 import java.util.*
 
 /**
@@ -15,12 +15,10 @@ import java.util.*
  * - offset: [Position.DEFAULT_POSITION]
  * - has no text image by default
  */
-class LayerBuilder : Builder<Layer> {
-
-    private var size: Size = Size.ONE
-    private var filler: TextCharacter = TextCharacterBuilder.EMPTY
-    private var offset: Position = Position.DEFAULT_POSITION
-    private var textImage: Optional<TextImage> = Optional.empty()
+data class LayerBuilder(private var size: Size = Size.ONE,
+                        private var filler: TextCharacter = TextCharacterBuilder.EMPTY,
+                        private var offset: Position = Position.DEFAULT_POSITION,
+                        private var textImage: Optional<TextImage> = Optional.empty()) : Builder<Layer> {
 
     /**
      * Sets the size for the new [org.codetome.zircon.graphics.layer.Layer].
@@ -64,6 +62,8 @@ class LayerBuilder : Builder<Layer> {
                 filler = filler,
                 offset = offset)
     }
+
+    override fun createCopy() = copy()
 
     companion object {
 

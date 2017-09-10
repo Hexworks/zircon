@@ -15,16 +15,15 @@ import org.codetome.zircon.internal.component.impl.ShadowWrappingStrategy
 import org.codetome.zircon.internal.graphics.BoxType
 import java.util.*
 
-class PanelBuilder : Builder<Panel> {
+data class PanelBuilder(private var boxType: BoxType = BoxType.SINGLE,
+                        private var title: String = "",
+                        private var position: Position = Position.DEFAULT_POSITION,
+                        private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT,
+                        private var size: Size = Size.UNKNOWN,
+                        private var drawBox: Boolean = false,
+                        private var drawShadow: Boolean = false,
+                        private var border: Optional<Border> = Optional.empty()) : Builder<Panel> {
 
-    private var boxType = BoxType.SINGLE
-    private var title = ""
-    private var position = Position.DEFAULT_POSITION
-    private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT
-    private var size = Size.UNKNOWN
-    private var drawBox = false
-    private var drawShadow = false
-    private var border = Optional.empty<Border>()
 
     fun wrapInBox() = also {
         drawBox = true
@@ -63,24 +62,26 @@ class PanelBuilder : Builder<Panel> {
             "You must set a size for a Panel!"
         }
         val wrappers = mutableListOf<WrappingStrategy>()
-        if(drawBox) {
-            wrappers.add(BoxWrappingStrategy(boxType))
+        if (drawBox) {
+            wrappers.add(BoxWrappingStrategy(
+                    boxType = boxType,
+                    title = if (title.isNotBlank()) Optional.of(title) else Optional.empty()))
         }
-        if(border.isPresent) {
+        if (border.isPresent) {
             wrappers.add(BorderWrappingStrategy(border.get()))
         }
-        if(drawShadow) {
+        if (drawShadow) {
             wrappers.add(ShadowWrappingStrategy())
         }
-        val panel = DefaultPanel(
+        return DefaultPanel(
                 title = title,
                 initialSize = size,
                 position = position,
                 componentStyles = componentStyles,
                 wrappers = wrappers)
-
-        return panel
     }
+
+    override fun createCopy() = this.copy()
 
     companion object {
 

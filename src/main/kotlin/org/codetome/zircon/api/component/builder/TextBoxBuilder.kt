@@ -8,12 +8,11 @@ import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.TextBox
 import org.codetome.zircon.internal.component.impl.DefaultTextBox
 
-class TextBoxBuilder : Builder<TextBox> {
-
-    private var text = ""
-    private var position = Position.DEFAULT_POSITION
-    private var size = Size.ONE
-    private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT
+data class TextBoxBuilder(
+        private var text: String = "",
+        private var position: Position = Position.DEFAULT_POSITION,
+        private var size: Size = Size.ONE,
+        private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT) : Builder<TextBox> {
 
     fun text(text: String) = also {
         this.text = text
@@ -38,6 +37,8 @@ class TextBoxBuilder : Builder<TextBox> {
                 position = position,
                 componentStyles = componentStyles)
     }
+
+    override fun createCopy() = copy()
 
     companion object {
 

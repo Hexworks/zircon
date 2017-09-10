@@ -1,6 +1,8 @@
 package org.codetome.zircon.api.component
 
-interface Button : Component {
+interface CheckBox : Component {
 
     fun getText(): String
+
+    fun isChecked(): Boolean
 }

@@ -1,13 +1,10 @@
 package org.codetome.zircon.api.component
 
-import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.behavior.Boundable
-import org.codetome.zircon.api.behavior.Drawable
-import org.codetome.zircon.internal.behavior.Focusable
 import org.codetome.zircon.api.behavior.Positionable
+import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.behavior.Identifiable
-import org.codetome.zircon.internal.component.listener.MouseListener
-import java.util.*
+import java.util.function.Consumer
 
 /**
  * A [Component] is a GUI element which is used either to display information to the user
@@ -21,11 +18,9 @@ import java.util.*
  */
 interface Component : Positionable, Identifiable, Boundable {
 
-    /**
-     * Adds a [MouseListener] to this [Component] which will
-     * be fired when mouse events happen within its bounds.
-     */
-    fun addMouseListener(mouseListener: MouseListener)
+    fun onMousePressed(callback: Consumer<MouseAction>)
+
+    fun onMouseReleased(callback: Consumer<MouseAction>)
 
     /**
      * Gets the styles this [Component] uses.

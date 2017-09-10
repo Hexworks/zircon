@@ -24,7 +24,7 @@ interface TextImage : DrawSurface, StyleSet, Drawable {
     /**
      * Writes the given `text` at the given `position`.
      */
-    fun putText(text: String, position: Position)
+    fun putText(text: String, position: Position = Position.DEFAULT_POSITION)
 
     /**
      * Sets the [StyleSet] of this [TextImage]
