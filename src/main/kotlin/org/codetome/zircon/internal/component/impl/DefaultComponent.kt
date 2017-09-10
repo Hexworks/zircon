@@ -12,13 +12,17 @@ import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.listener.MouseListener
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import java.util.*
+import java.util.function.Consumer
 
 abstract class DefaultComponent private constructor(private var position: Position,
                                                     private var componentStyles: ComponentStyles,
@@ -166,8 +170,16 @@ abstract class DefaultComponent private constructor(private var position: Positi
                 Optional.empty<InternalComponent>()
             }
 
-    override fun addMouseListener(mouseListener: MouseListener) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onMousePressed(callback: Consumer<MouseAction>) {
+        EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), { (mouseAction) ->
+            callback.accept(mouseAction)
+        })
+    }
+
+    override fun onMouseReleased(callback: Consumer<MouseAction>) {
+        EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), { (mouseAction) ->
+            callback.accept(mouseAction)
+        })
     }
 
     override fun getComponentStyles() = componentStyles

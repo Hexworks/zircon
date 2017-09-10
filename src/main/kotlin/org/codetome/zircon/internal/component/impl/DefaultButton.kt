@@ -8,6 +8,7 @@ import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.Button
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Theme
+import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.component.WrappingStrategy
@@ -52,6 +53,16 @@ class DefaultButton(private val text: String,
     override fun takeFocus(input: Optional<Input>) {
         getDrawSurface().applyStyle(getComponentStyles().reset())
         EventBus.emit(EventType.ComponentChange)
+//        var currSize = getEffectiveSize()
+//        var currentOffset = Position.DEFAULT_POSITION
+//        wrappers.forEach {
+//            currSize += it.getOccupiedSize()
+//            if(it === BOX_HIGHLIGHT) {
+//                it.remove(getDrawSurface(), currSize, currentOffset, getComponentStyles().getCurrentStyle())
+//            }
+//            currentOffset += it.getWrapperOffset()
+//        }
+//        wrappers.remove(BOX_HIGHLIGHT)
     }
 
     override fun getText() = text
@@ -60,33 +71,21 @@ class DefaultButton(private val text: String,
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(theme.getAccentColor())
-                        .backgroundColor(theme.getDarkBackgroundColor())
+                        .backgroundColor(TextColorFactory.TRANSPARENT)
                         .build())
                 .mouseOverStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getAccentColor())
-                        .backgroundColor(theme.getBrightBackgroundColor())
+                        .foregroundColor(theme.getDarkBackgroundColor())
+                        .backgroundColor(theme.getAccentColor())
                         .build())
                 .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getAccentColor())
-                        .backgroundColor(theme.getBrightBackgroundColor())
+                        .foregroundColor(theme.getDarkBackgroundColor())
+                        .backgroundColor(theme.getAccentColor())
                         .build())
                 .activeStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getAccentColor())
-                        .backgroundColor(theme.getDarkForegroundColor())
+                        .foregroundColor(theme.getBrightBackgroundColor())
+                        .backgroundColor(theme.getAccentColor())
                         .build())
                 .build())
-    }
-
-    override fun onMousePressed(callback: Consumer<MouseAction>) {
-        EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), { (mouseAction) ->
-            callback.accept(mouseAction)
-        })
-    }
-
-    override fun onMouseReleased(callback: Consumer<MouseAction>) {
-        EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), { (mouseAction) ->
-            callback.accept(mouseAction)
-        })
     }
 
     companion object {

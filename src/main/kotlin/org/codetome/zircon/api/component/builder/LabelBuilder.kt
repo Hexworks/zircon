@@ -8,11 +8,10 @@ import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Label
 import org.codetome.zircon.internal.component.impl.DefaultLabel
 
-class LabelBuilder : Builder<Label> {
-
-    private var text = ""
-    private var position = Position.DEFAULT_POSITION
-    private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT
+data class LabelBuilder(
+        private var text: String = "",
+        private var position: Position = Position.DEFAULT_POSITION,
+        private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT) : Builder<Label> {
 
     fun text(text: String) = also {
         this.text = text
@@ -37,6 +36,8 @@ class LabelBuilder : Builder<Label> {
                 componentStyles = componentStyles
         )
     }
+
+    override fun createCopy() = copy()
 
     companion object {
 

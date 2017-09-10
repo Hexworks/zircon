@@ -100,10 +100,6 @@ open class DefaultContainer(initialSize: Size,
             }
 
 
-    override fun addMouseListener(mouseListener: MouseListener) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun toString(): String {
         return "${javaClass.simpleName}(id=${getId().toString().substring(0, 4)})"
     }

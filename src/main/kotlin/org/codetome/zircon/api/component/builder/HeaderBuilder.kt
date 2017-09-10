@@ -10,11 +10,10 @@ import org.codetome.zircon.api.component.Label
 import org.codetome.zircon.internal.component.impl.DefaultHeader
 import org.codetome.zircon.internal.component.impl.DefaultLabel
 
-class HeaderBuilder : Builder<Header> {
-
-    private var text = ""
-    private var position = Position.DEFAULT_POSITION
-    private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT
+data class HeaderBuilder(
+        private var text: String = "",
+        private var position: Position = Position.DEFAULT_POSITION,
+        private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT) : Builder<Header> {
 
     fun text(text: String) = also {
         this.text = text
@@ -39,6 +38,8 @@ class HeaderBuilder : Builder<Header> {
                 componentStyles = componentStyles
         )
     }
+
+    override fun createCopy() = copy()
 
     companion object {
 

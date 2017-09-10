@@ -1,6 +1,5 @@
 package org.codetome.zircon.internal.event
 
-import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 @Suppress("UNCHECKED_CAST")

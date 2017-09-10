@@ -67,7 +67,6 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
                     MOUSE_PRESSED -> container
                             .fetchComponentByPosition(input.position)
                             .map {
-                                println("pressed on ${it.getId()}")
                                 EventBus.emit(EventType.MousePressed(it.getId()), input)
                             }
 
