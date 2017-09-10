@@ -5,6 +5,7 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.internal.graphics.DefaultLayer
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder.Companion.DEFAULT_CHARACTER
 import org.junit.Before
 import org.junit.Test
@@ -75,6 +76,25 @@ class DefaultLayerableTest {
 
 
         assertThat(result).containsExactly(expectedChar)
+    }
+
+    @Test
+    fun shouldProperlyMarkDrainedLayerPositionsDirtyWhenLayersAreDrained() {
+        val dirty0 = Position.of(1, 2)
+        val dirty1 = Position.of(3, 4)
+
+        target.addLayer(LayerBuilder.newBuilder()
+                .offset(dirty0)
+                .build())
+
+        target.addLayer(LayerBuilder.newBuilder()
+                .offset(dirty1)
+                .build())
+
+        target.drainLayers()
+        assertThat(target.drainDirtyPositions())
+                .containsExactlyInAnyOrder(dirty0, dirty1)
+
     }
 
     @Test
