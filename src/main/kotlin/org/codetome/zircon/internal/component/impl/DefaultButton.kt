@@ -52,16 +52,6 @@ class DefaultButton(private val text: String,
     override fun takeFocus(input: Optional<Input>) {
         getDrawSurface().applyStyle(getComponentStyles().reset())
         EventBus.emit(EventType.ComponentChange)
-//        var currSize = getEffectiveSize()
-//        var currentOffset = Position.DEFAULT_POSITION
-//        wrappers.forEach {
-//            currSize += it.getOccupiedSize()
-//            if(it === BOX_HIGHLIGHT) {
-//                it.remove(getDrawSurface(), currSize, currentOffset, getComponentStyles().getCurrentStyle())
-//            }
-//            currentOffset += it.getWrapperOffset()
-//        }
-//        wrappers.remove(BOX_HIGHLIGHT)
     }
 
     override fun getText() = text
