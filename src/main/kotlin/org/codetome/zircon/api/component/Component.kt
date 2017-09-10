@@ -1,6 +1,7 @@
 package org.codetome.zircon.api.component
 
 import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.internal.behavior.Focusable
 import org.codetome.zircon.api.behavior.Positionable
@@ -18,7 +19,7 @@ import java.util.*
  * like a label or a check box is a [Container] while a label which is only intended to
  * display information is a [Component].
  */
-interface Component : Drawable, Positionable, Identifiable, Focusable {
+interface Component : Positionable, Identifiable, Boundable {
 
     /**
      * Adds a [MouseListener] to this [Component] which will
@@ -40,15 +41,5 @@ interface Component : Drawable, Positionable, Identifiable, Focusable {
      * Applies the [Theme] to this component and recursively to all its children (if any).
      */
     fun applyTheme(theme: Theme)
-
-    /**
-     * Returns the innermost [Component] for a given [Position].
-     * This means that if you call this method on a [Container] and it
-     * contains a [Component] which intersects with `position` the
-     * component will be returned instead of the container itself.
-     * If no [Component] intersects with the given `position` an
-     * empty [Optional] is returned.
-     */
-    fun fetchComponentByPosition(position: Position): Optional<out Component>
 
 }

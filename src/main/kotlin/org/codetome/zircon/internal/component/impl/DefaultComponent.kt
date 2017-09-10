@@ -13,6 +13,7 @@ import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
+import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.listener.MouseListener
 import org.codetome.zircon.internal.event.EventBus
@@ -24,7 +25,7 @@ abstract class DefaultComponent private constructor(private var position: Positi
                                                     private val drawSurface: TextImage,
                                                     private var boundable: Boundable,
                                                     private val wrappers: Iterable<WrappingStrategy>)
-    : Component, Drawable by drawSurface {
+    : InternalComponent, Drawable by drawSurface {
 
     private val id: UUID = UUID.randomUUID()
     private var currentOffset = Position.DEFAULT_POSITION
@@ -162,7 +163,7 @@ abstract class DefaultComponent private constructor(private var position: Positi
             if (containsPosition(position)) {
                 Optional.of(this)
             } else {
-                Optional.empty<Component>()
+                Optional.empty<InternalComponent>()
             }
 
     override fun addMouseListener(mouseListener: MouseListener) {
