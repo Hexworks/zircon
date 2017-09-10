@@ -10,6 +10,7 @@ import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType.*
 import org.codetome.zircon.internal.component.ContainerHandlerState.*
+import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.InternalContainerHandler
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
@@ -21,11 +22,11 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
     private var lastMousePosition = Position.DEFAULT_POSITION
     private var lastHoveredComponentId = UUID.randomUUID()
     private var lastFocusedComponentId = container.getId()
-    private var lastFocusedComponent = Optional.empty<Component>()
+    private var lastFocusedComponent = Optional.empty<InternalComponent>()
     private var state = UNKNOWN
     private val subscriptions = mutableListOf<Subscription<*>>()
-    private var nextsLookup = mutableMapOf<UUID, Component>(Pair(container.getId(), container))
-    private var prevsLookup = mutableMapOf<UUID, Component>(Pair(container.getId(), container))
+    private var nextsLookup = mutableMapOf<UUID, InternalComponent>(Pair(container.getId(), container))
+    private var prevsLookup = mutableMapOf<UUID, InternalComponent>(Pair(container.getId(), container))
 
     private val keyStrokeHandlers = mapOf(
             Pair(NEXT_FOCUS_STROKE, this::focusNext),

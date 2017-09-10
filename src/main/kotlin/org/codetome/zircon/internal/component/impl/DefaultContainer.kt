@@ -13,6 +13,7 @@ import org.codetome.zircon.api.component.Container
 import org.codetome.zircon.api.component.Theme
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.listener.MouseListener
 import java.awt.Point
@@ -28,7 +29,7 @@ open class DefaultContainer(initialSize: Size,
         componentStyles = componentStyles,
         wrappers = wrappers), Container {
 
-    private val components = mutableListOf<Component>()
+    private val components = mutableListOf<InternalComponent>()
     private val rect = Rectangle(getEffectivePosition().column, getEffectivePosition().row, getEffectiveSize().columns, getEffectiveSize().rows)
 
     override fun addComponent(component: Component) {
@@ -39,10 +40,11 @@ open class DefaultContainer(initialSize: Size,
         require(containsBoundable(component)) {
             "You can't add a component to a container which is not within its bounds!"
         }
-        components.add(component.also {
-            (component as? DefaultComponent)?.setPosition(component.getPosition() + getEffectivePosition()) ?:
-                    throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
-        })
+        (component as? DefaultComponent)?.let { dc ->
+            components.add(dc).also {
+                dc.setPosition(component.getPosition() + getEffectivePosition())
+            }
+        } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
     }
 
     override fun acceptsFocus(): Boolean {
@@ -130,8 +132,8 @@ open class DefaultContainer(initialSize: Size,
 
     fun getComponents() = components
 
-    fun fetchFlattenedComponentTree(): List<Component> {
-        val result = mutableListOf<Component>()
+    fun fetchFlattenedComponentTree(): List<InternalComponent> {
+        val result = mutableListOf<InternalComponent>()
         components.forEach {
             result.add(it)
             if(it is DefaultContainer) {
