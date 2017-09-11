@@ -15,7 +15,6 @@ import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
-import org.codetome.zircon.internal.component.listener.MouseListener
 import java.awt.Point
 import java.awt.Rectangle
 import java.util.*
@@ -30,20 +29,18 @@ open class DefaultContainer(initialSize: Size,
         wrappers = wrappers), Container {
 
     private val components = mutableListOf<InternalComponent>()
-    private val rect = Rectangle(getEffectivePosition().column, getEffectivePosition().row, getEffectiveSize().columns, getEffectiveSize().rows)
 
     override fun addComponent(component: Component) {
-        require(components.none { it.intersects(component) }) {
-            "You can't add a component to a container which intersects with other components!"
-        }
-        // TODO: if the component has the same size and position it adds it!!!
-        require(containsBoundable(component)) {
-            "You can't add a component to a container which is not within its bounds!"
-        }
         (component as? DefaultComponent)?.let { dc ->
-            components.add(dc).also {
-                dc.setPosition(component.getPosition() + getEffectivePosition())
+            dc.setPosition(dc.getPosition() + getEffectivePosition())
+            require(components.none { it.intersects(component) }) {
+                "You can't add a component to a container which intersects with other components!"
             }
+            // TODO: if the component has the same size and position it adds it!!!
+            require(containsBoundable(component)) {
+                "You can't add a component to a container which is not within its bounds!"
+            }
+            components.add(dc)
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
     }
 
@@ -59,7 +56,7 @@ open class DefaultContainer(initialSize: Size,
     }
 
     override fun removeComponent(component: Component) {
-        if(components.remove(component).not()) {
+        if (components.remove(component).not()) {
             components
                     .filter { it is Container }
                     .forEach { (it as Container).removeComponent(component) }
@@ -104,16 +101,6 @@ open class DefaultContainer(initialSize: Size,
         return "${javaClass.simpleName}(id=${getId().toString().substring(0, 4)})"
     }
 
-    override fun intersects(boundable: Boundable) = rect.intersects(
-            createOtherRectangle(boundable))
-
-    override fun containsPosition(position: Position): Boolean {
-        return rect.contains(Point(position.column, position.row))
-    }
-
-    override fun containsBoundable(boundable: Boundable) = rect.contains(
-            createOtherRectangle(boundable))
-
     override fun applyTheme(theme: Theme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
@@ -132,18 +119,10 @@ open class DefaultContainer(initialSize: Size,
         val result = mutableListOf<InternalComponent>()
         components.forEach {
             result.add(it)
-            if(it is DefaultContainer) {
+            if (it is DefaultContainer) {
                 result.addAll(it.fetchFlattenedComponentTree())
             }
         }
         return result
-    }
-
-    private fun createOtherRectangle(boundable: Boundable): Rectangle {
-        return Rectangle(
-                boundable.getPosition().column + getEffectivePosition().column,
-                boundable.getPosition().row + getEffectivePosition().row,
-                boundable.getBoundableSize().columns,
-                boundable.getBoundableSize().rows)
     }
 }
