@@ -165,7 +165,6 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
                 scrollRightToRowEnd(maybeCurrRow.get())
                 putCursorAt(getCursorPosition().withColumn(getBoundableSize().columns - 1))
             } else if (TextUtils.isPrintableCharacter(keyStroke.getCharacter())) {
-                println("char")
                 textBuffer.getRow(currRowIdx).map {
                     if (isCursorAtTheEndOfTheLine()) {
                         it.append(keyStroke.getCharacter())
@@ -186,6 +185,28 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
             EventBus.emit(EventType.ComponentChange)
         }))
         return true
+    }
+
+    override fun takeFocus(input: Optional<Input>) {
+        subscriptions.forEach {
+            EventBus.unsubscribe(it)
+        }
+        getDrawSurface().applyStyle(getComponentStyles().reset())
+        EventBus.emit(EventType.HideCursor)
+        EventBus.emit(EventType.ComponentChange)
+    }
+
+    override fun applyTheme(theme: Theme) {
+        setComponentStyles(ComponentStylesBuilder.newBuilder()
+                .defaultStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getDarkBackgroundColor())
+                        .backgroundColor(theme.getDarkForegroundColor())
+                        .build())
+                .focusedStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getBrightBackgroundColor())
+                        .backgroundColor(theme.getBrightForegroundColor())
+                        .build())
+                .build())
     }
 
     private fun scrollUpToEndOfPreviousLine(prevRow: StringBuilder) {
@@ -241,30 +262,11 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
         }
     }
 
-    override fun takeFocus(input: Optional<Input>) {
-        getDrawSurface().applyStyle(getComponentStyles().reset())
-        EventBus.emit(EventType.HideCursor)
-        EventBus.emit(EventType.ComponentChange)
-    }
-
     private fun clearSubscriptions() {
         subscriptions.forEach {
             EventBus.unsubscribe(it)
         }
         subscriptions.clear()
-    }
-
-    override fun applyTheme(theme: Theme) {
-        setComponentStyles(ComponentStylesBuilder.newBuilder()
-                .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getDarkBackgroundColor())
-                        .backgroundColor(theme.getDarkForegroundColor())
-                        .build())
-                .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getBrightBackgroundColor())
-                        .backgroundColor(theme.getBrightForegroundColor())
-                        .build())
-                .build())
     }
 
     private fun refreshDrawSurface() {

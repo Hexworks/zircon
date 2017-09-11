@@ -108,18 +108,22 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
 
     private fun focusNext() {
         nextsLookup[lastFocusedComponentId]?.let { next ->
+            lastFocusedComponent.map {
+                it.takeFocus()
+            }
             lastFocusedComponentId = next.getId()
             lastFocusedComponent = Optional.of(next)
-            prevsLookup[next.getId()]?.takeFocus()
             next.giveFocus()
         }
     }
 
     private fun focusPrevious() {
         prevsLookup[lastFocusedComponentId]?.let { prev ->
+            lastFocusedComponent.map {
+                it.takeFocus()
+            }
             lastFocusedComponentId = prev.getId()
             lastFocusedComponent = Optional.of(prev)
-            nextsLookup[prev.getId()]?.takeFocus()
             prev.giveFocus()
         }
     }

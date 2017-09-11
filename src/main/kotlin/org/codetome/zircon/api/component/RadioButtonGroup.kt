@@ -5,7 +5,7 @@ import java.util.*
 
 interface RadioButtonGroup : Component, Scrollable {
 
-    fun addOption(key: String, value: String)
+    fun addOption(key: String, text: String)
 
     fun removeOption(key: String)
 
