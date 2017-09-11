@@ -1,27 +1,14 @@
 package org.codetome.zircon.api.component
 
 import org.codetome.zircon.internal.behavior.Scrollable
+import java.util.*
 
 interface RadioButtonGroup : Component, Scrollable {
 
-    fun getText(): String
+    fun addOption(key: String, value: String)
 
-    fun setText(text: String)
+    fun removeOption(key: String)
 
-    /**
-     * Enables this [Component] which means that its functionality will
-     * work from now on (has no effect if the component was already enabled.
-     */
-    fun enable(): Unit {
-
-    }
-
-    /**
-     * Disables this [Component] and its functionality will no longer work.
-     * has no effect if this component was already disabled.
-     */
-    fun disable(): Unit {
-
-    }
+    fun getSelectedOption(): Optional<String>
 
 }

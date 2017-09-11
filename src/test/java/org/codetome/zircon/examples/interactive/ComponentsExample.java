@@ -4,6 +4,7 @@ import org.codetome.zircon.api.Modifiers;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
+import org.codetome.zircon.api.builder.ComponentStylesBuilder;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.component.*;
@@ -14,9 +15,12 @@ import org.codetome.zircon.api.resource.PhysicalFontResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
+import org.codetome.zircon.internal.component.impl.DefaultRadioButton;
+import org.codetome.zircon.internal.component.impl.DefaultRadioButtonGroup;
 import org.codetome.zircon.internal.graphics.BoxType;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.codetome.zircon.api.Modifiers.BorderType.DOTTED;
@@ -173,6 +177,21 @@ public class ComponentsExample {
                     .build());
         }
         buttonsAndTextBoxesScreen.addComponent(buttonsPanel);
+
+        final Panel radioPanel = PANEL_TEMPLATE.createCopy()
+                .position(Position.of(2, 0).relativeToRightOf(checkBoxesPanel))
+                .wrapInBox()
+                .title("Radio buttons")
+                .addShadow()
+                .build();
+        radioPanel.addComponent(new DefaultRadioButton(
+                "text",
+                new LinkedList<>(),
+                15,
+                Position.DEFAULT_POSITION,
+                ComponentStylesBuilder.DEFAULT));
+
+        buttonsAndTextBoxesScreen.addComponent(radioPanel);
 
         buttonsAndTextBoxesScreen.applyTheme(BUTTONS_THEME);
         panelsScreen.display();
