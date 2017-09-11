@@ -1,6 +1,5 @@
 package org.codetome.zircon.examples.interactive;
 
-import javafx.geometry.Pos;
 import org.codetome.zircon.api.Modifiers;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
@@ -12,11 +11,9 @@ import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.builder.*;
 import org.codetome.zircon.api.factory.TextColorFactory;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
-import org.codetome.zircon.api.resource.PhysicalFontResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
-import org.codetome.zircon.internal.component.impl.DefaultRadioButton;
 import org.codetome.zircon.internal.component.impl.DefaultRadioButtonGroup;
 import org.codetome.zircon.internal.graphics.BoxType;
 
