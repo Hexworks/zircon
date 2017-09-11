@@ -27,12 +27,6 @@ sealed class EventType {
      * A component is no longer hovered.
      */
     data class MouseOut(val componentId: UUID) : EventType()
-
-    /**
-     * Focus is requested for the given component.
-     */
-    object RequestFocusAt : EventType()
-
     /**
      * Cursor is requested at the given `position`.
      */

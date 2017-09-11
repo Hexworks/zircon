@@ -15,6 +15,8 @@ class TextCharacterBuilderTest {
                 .backgroundColor(BG_COLOR)
                 .foregroundColor(FG_COLOR)
                 .character(CHAR)
+                .tag(*TAGS.toTypedArray())
+                .tags(TAGS)
                 .modifier(MODIFIER)
                 .build()
 
@@ -22,6 +24,7 @@ class TextCharacterBuilderTest {
                 TextCharacter.of(
                         character = CHAR,
                         foregroundColor = FG_COLOR,
+                        tags = TAGS,
                         backgroundColor = BG_COLOR,
                         modifiers = setOf(MODIFIER)))
     }
@@ -29,6 +32,7 @@ class TextCharacterBuilderTest {
     companion object {
         val BG_COLOR = TextColorFactory.fromString("#aabbcc")
         val FG_COLOR = TextColorFactory.fromString("#ccbbaa")
+        val TAGS = setOf("TAG1", "TAG2")
         val CHAR = 'a'
         val MODIFIER = Modifiers.BOLD
     }

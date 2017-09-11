@@ -38,9 +38,6 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
         setText(text)
         refreshDrawSurface()
         refreshVirtualSpaceSize()
-        EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), {
-            EventBus.emit(EventType.RequestFocusAt, getId())
-        })
     }
 
     override fun getText() = textBuffer.getText() // TODO: line sep?
