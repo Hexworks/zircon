@@ -1,0 +1,119 @@
+package org.codetome.zircon.internal.component.impl
+
+import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.api.component.RadioButton
+import org.codetome.zircon.api.component.Theme
+import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.input.MouseAction
+import org.codetome.zircon.internal.component.WrappingStrategy
+import org.codetome.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
+import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.event.EventType
+import java.util.*
+
+class DefaultRadioButton(private val text: String,
+                         wrappers: Deque<WrappingStrategy>,
+                         width: Int,
+                         position: Position,
+                         componentStyles: ComponentStyles)
+    : RadioButton, DefaultComponent(initialSize = Size.of(width, 1),
+        position = position,
+        componentStyles = componentStyles,
+        wrappers = wrappers) {
+
+    private val maxTextLength = width - BUTTON_WIDTH - 1
+    private val clearedText = if (text.length > maxTextLength) {
+        text.substring(0, maxTextLength - 3).plus("...")
+    } else {
+        text
+    }
+
+    private var state = NOT_SELECTED
+
+    init {
+        redrawContent()
+
+        EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), {
+            getDrawSurface().applyStyle(getComponentStyles().activate())
+            state = PRESSED
+            redrawContent()
+            EventBus.emit(EventType.ComponentChange)
+        })
+        EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), {
+            getDrawSurface().applyStyle(getComponentStyles().mouseOver())
+            state = SELECTED
+            redrawContent()
+            EventBus.emit(EventType.ComponentChange)
+        })
+    }
+
+    private fun redrawContent() {
+        getDrawSurface().putText("${STATES[state]} $clearedText")
+    }
+
+    override fun isSelected() = state == SELECTED
+
+    override fun acceptsFocus(): Boolean {
+        return true
+    }
+
+    override fun giveFocus(input: Optional<Input>): Boolean {
+        getDrawSurface().applyStyle(getComponentStyles().giveFocus())
+        EventBus.emit(EventType.ComponentChange)
+        return true
+    }
+
+    override fun takeFocus(input: Optional<Input>) {
+        getDrawSurface().applyStyle(getComponentStyles().reset())
+        EventBus.emit(EventType.ComponentChange)
+    }
+
+    override fun getText() = text
+
+    override fun applyTheme(theme: Theme) {
+        setComponentStyles(ComponentStylesBuilder.newBuilder()
+                .defaultStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getAccentColor())
+                        .backgroundColor(TextColorFactory.TRANSPARENT)
+                        .build())
+                .mouseOverStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getBrightBackgroundColor())
+                        .backgroundColor(theme.getAccentColor())
+                        .build())
+                .focusedStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getBrightBackgroundColor())
+                        .backgroundColor(theme.getAccentColor())
+                        .build())
+                .activeStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getBrightBackgroundColor())
+                        .backgroundColor(theme.getAccentColor())
+                        .build())
+                .build())
+    }
+
+    enum class RadioButtonState {
+        PRESSED,
+        SELECTED,
+        NOT_SELECTED
+    }
+
+    companion object {
+
+        private val PRESSED_BUTTON = "<o>"
+        private val SELECTED_BUTTON = "<O>"
+        private val NOT_SELECTED_BUTTON = "< >"
+
+        private val BUTTON_WIDTH = NOT_SELECTED_BUTTON.length
+
+        private val STATES = mapOf(
+                Pair(PRESSED, PRESSED_BUTTON),
+                Pair(SELECTED, SELECTED_BUTTON),
+                Pair(NOT_SELECTED, NOT_SELECTED_BUTTON))
+
+    }
+}
