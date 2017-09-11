@@ -67,6 +67,7 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
                     MOUSE_PRESSED -> container
                             .fetchComponentByPosition(input.position)
                             .map {
+                                focusComponent(it.getId())
                                 EventBus.emit(EventType.MousePressed(it.getId()), input)
                             }
 
@@ -77,9 +78,6 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
                     }
                 }
             }
-        }))
-        subscriptions.add(EventBus.subscribe<UUID>(EventType.RequestFocusAt, { (componentId) ->
-            focusComponent(componentId)
         }))
     }
 

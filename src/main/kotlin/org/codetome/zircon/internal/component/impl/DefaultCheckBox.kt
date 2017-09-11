@@ -13,7 +13,6 @@ import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventBus.subscribe
 import org.codetome.zircon.internal.event.EventType
 import java.util.*
 
@@ -39,13 +38,13 @@ class DefaultCheckBox(private val text: String,
     init {
         redrawContent()
 
-        subscribe<MouseAction>(EventType.MousePressed(getId()), {
+        EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), {
             getDrawSurface().applyStyle(getComponentStyles().activate())
             checkBoxState = PRESSED
             redrawContent()
             EventBus.emit(EventType.ComponentChange)
         })
-        subscribe<MouseAction>(EventType.MouseReleased(getId()), {
+        EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), {
             getDrawSurface().applyStyle(getComponentStyles().mouseOver())
             checkBoxState = if (checked) UNCHECKED else CHECKED
             checked = checked.not()
