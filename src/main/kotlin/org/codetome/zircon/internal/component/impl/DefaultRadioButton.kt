@@ -45,10 +45,7 @@ class DefaultRadioButton(private val text: String,
             EventBus.emit(EventType.ComponentChange)
         })
         EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), {
-            getDrawSurface().applyStyle(getComponentStyles().mouseOver())
-            state = SELECTED
-            redrawContent()
-            EventBus.emit(EventType.ComponentChange)
+            select()
         })
     }
 
@@ -57,6 +54,20 @@ class DefaultRadioButton(private val text: String,
     }
 
     override fun isSelected() = state == SELECTED
+
+    override fun select() {
+        getDrawSurface().applyStyle(getComponentStyles().mouseOver())
+        state = SELECTED
+        redrawContent()
+        EventBus.emit(EventType.ComponentChange)
+    }
+
+    override fun removeSelection() {
+        getDrawSurface().applyStyle(getComponentStyles().reset())
+        state = NOT_SELECTED
+        redrawContent()
+        EventBus.emit(EventType.ComponentChange)
+    }
 
     override fun acceptsFocus(): Boolean {
         return true
@@ -76,24 +87,7 @@ class DefaultRadioButton(private val text: String,
     override fun getText() = text
 
     override fun applyTheme(theme: Theme) {
-        setComponentStyles(ComponentStylesBuilder.newBuilder()
-                .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getAccentColor())
-                        .backgroundColor(TextColorFactory.TRANSPARENT)
-                        .build())
-                .mouseOverStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getBrightBackgroundColor())
-                        .backgroundColor(theme.getAccentColor())
-                        .build())
-                .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getBrightBackgroundColor())
-                        .backgroundColor(theme.getAccentColor())
-                        .build())
-                .activeStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getBrightBackgroundColor())
-                        .backgroundColor(theme.getAccentColor())
-                        .build())
-                .build())
+
     }
 
     enum class RadioButtonState {

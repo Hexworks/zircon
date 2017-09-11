@@ -1,5 +1,6 @@
 package org.codetome.zircon.examples.interactive;
 
+import javafx.geometry.Pos;
 import org.codetome.zircon.api.Modifiers;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
@@ -184,12 +185,15 @@ public class ComponentsExample {
                 .title("Radio buttons")
                 .addShadow()
                 .build();
-        radioPanel.addComponent(new DefaultRadioButton(
-                "text",
-                new LinkedList<>(),
-                15,
+        final RadioButtonGroup radios = new DefaultRadioButtonGroup(
+            new LinkedList<>(),
+                Size.of(15, 3),
                 Position.DEFAULT_POSITION,
-                ComponentStylesBuilder.DEFAULT));
+                ComponentStylesBuilder.DEFAULT);
+        radioPanel.addComponent(radios);
+        radios.addOption("foo", "Bar");
+        radios.addOption("bar", "Baz");
+
 
         buttonsAndTextBoxesScreen.addComponent(radioPanel);
 
