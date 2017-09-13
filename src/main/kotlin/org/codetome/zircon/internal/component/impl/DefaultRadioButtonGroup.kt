@@ -72,41 +72,25 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
     override fun getSelectedOption() = selectedItem
 
     override fun acceptsFocus(): Boolean {
-        return true
+        return false
     }
 
     override fun giveFocus(input: Optional<Input>): Boolean {
-        getDrawSurface().applyStyle(getComponentStyles().giveFocus())
-        EventBus.emit(EventType.ComponentChange)
-        return true
+        return false
     }
 
     override fun takeFocus(input: Optional<Input>) {
-        getDrawSurface().applyStyle(getComponentStyles().reset())
-        EventBus.emit(EventType.ComponentChange)
+
     }
 
     override fun applyTheme(theme: Theme) {
-        val styles = ComponentStylesBuilder.newBuilder()
+        setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getAccentColor())
+                        .foregroundColor(TextColorFactory.TRANSPARENT)
                         .backgroundColor(TextColorFactory.TRANSPARENT)
                         .build())
-                .mouseOverStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getBrightBackgroundColor())
-                        .backgroundColor(theme.getAccentColor())
-                        .build())
-                .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getBrightBackgroundColor())
-                        .backgroundColor(theme.getAccentColor())
-                        .build())
-                .activeStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getBrightBackgroundColor())
-                        .backgroundColor(theme.getAccentColor())
-                        .build())
-                .build()
-        setComponentStyles(styles)
-        getComponents().forEach { it.setComponentStyles(styles) }
+                .build())
+        getComponents().forEach { it.applyTheme(theme) }
     }
 
     private fun refreshContent() {
