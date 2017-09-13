@@ -87,7 +87,24 @@ class DefaultRadioButton(private val text: String,
     override fun getText() = text
 
     override fun applyTheme(theme: Theme) {
-
+        setComponentStyles(ComponentStylesBuilder.newBuilder()
+                .defaultStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getAccentColor())
+                        .backgroundColor(TextColorFactory.TRANSPARENT)
+                        .build())
+                .mouseOverStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getBrightBackgroundColor())
+                        .backgroundColor(theme.getAccentColor())
+                        .build())
+                .focusedStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getBrightBackgroundColor())
+                        .backgroundColor(theme.getAccentColor())
+                        .build())
+                .activeStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(theme.getBrightBackgroundColor())
+                        .backgroundColor(theme.getAccentColor())
+                        .build())
+                .build())
     }
 
     enum class RadioButtonState {

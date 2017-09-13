@@ -82,7 +82,7 @@ class DefaultButton(private val text: String,
                         .backgroundColor(theme.getAccentColor())
                         .build())
                 .activeStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getBrightBackgroundColor())
+                        .foregroundColor(theme.getDarkForegroundColor())
                         .backgroundColor(theme.getAccentColor())
                         .build())
                 .build())
