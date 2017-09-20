@@ -7,7 +7,7 @@ import org.codetome.zircon.api.shape.RectangleFactory
  * This class is immutable and cannot change its internal state after creation.
  */
 data class Size(val columns: Int,
-                val rows: Int) {
+                val rows: Int) : Comparable<Size> {
 
     init {
         require(columns >= 0) {
@@ -21,6 +21,8 @@ data class Size(val columns: Int,
     operator fun plus(other: Size) = Size.of(columns + other.columns, rows + other.rows)
 
     operator fun minus(other: Size) = Size.of(columns - other.columns, rows - other.rows)
+
+    override fun compareTo(other: Size) = (this.columns * this.rows).compareTo(other.columns * other.rows)
 
     /**
      * Creates a list of [Position]s in the order in which they should
