@@ -8,6 +8,8 @@ import org.codetome.zircon.api.builder.LayerBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.factory.TextColorFactory;
 import org.codetome.zircon.api.color.TextColor;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.resource.PhysicalFontResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +19,8 @@ public class LayersExample {
         // for this example we only need a default terminal (no extra config)
         final Screen screen = org.codetome.zircon.api.builder.TerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(45, 10))
-                .font(org.codetome.zircon.api.resource.CP437TilesetResource.TAFFER_20X20.toFont())
+//                .font(CP437TilesetResource.TAFFER_20X20.toFont())
+                .font(PhysicalFontResource.UBUNTU_MONO.toFont())
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .build())
                 .buildScreen();
