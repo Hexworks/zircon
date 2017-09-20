@@ -4,6 +4,7 @@ import org.codetome.zircon.api.Modifiers.*
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
+import org.codetome.zircon.api.util.TextUtils
 
 /**
  * Represents a single character with additional metadata such as colors and modifiers.
@@ -18,6 +19,12 @@ data class TextCharacter(
         private val backgroundColor: TextColor,
         private val modifiers: Set<Modifier>,
         private val tags: Set<String>) {
+
+    init {
+        require(TextUtils.isPrintableCharacter(character)) {
+            "Trying to create a TextCharacter out of a non-printable character: '${character.toInt()}'"
+        }
+    }
 
     fun getCharacter() = character
 
