@@ -40,7 +40,7 @@ interface StyleSet {
     /**
      * Adds zero or more modifiers to the set of currently active modifiers.
      */
-    fun enableModifiers(vararg modifiers: Modifier)
+    fun enableModifiers(modifiers: Set<Modifier>)
 
     /**
      * Activates a [Modifier]. This code modifies a state inside the terminal
@@ -51,7 +51,7 @@ interface StyleSet {
     /**
      * Removes zero or more modifiers from the set of currently active modifiers.
      */
-    fun disableModifiers(vararg modifiers: Modifier)
+    fun disableModifiers(modifiers: Set<Modifier>)
 
     /**
      * Deactivates a [Modifier] which has previously been activated.

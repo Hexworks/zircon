@@ -100,11 +100,7 @@ data class Position(val column: Int,
      * The row coordinate is used to shift up
      */
     fun relativeToTopOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
-        require(row > 0) {
-            "If you your position is relative to the top of a component you can't use negative rows since " +
-                    "it wouldn't be `top` relative to the Component!"
-        }
-        Position.of(compCol + column, compRow - row)
+        Position.of(compCol + column, maxOf(compRow - row, 0))
     }
 
     /**
@@ -113,10 +109,6 @@ data class Position(val column: Int,
      * The row coordinate is used to shift down
      */
     fun relativeToRightOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
-        require(column > 0) {
-            "If you your position is relative to the right of a component you can't use negative columns " +
-                    "since it wouldn't be `right` relative to the Component!"
-        }
         Position.of(
                 column = compCol + component.getBoundableSize().columns + column,
                 row = compRow + row)
@@ -128,10 +120,6 @@ data class Position(val column: Int,
      * The row coordinate is used to shift down
      */
     fun relativeToBottomOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
-        require(row > 0) {
-            "If you your position is relative to the bottom of a component you can't use negative rows" +
-                    " since it wouldn't be `bottom` relative to the Component!"
-        }
         Position.of(
                 column = compCol + column,
                 row = compRow + component.getBoundableSize().rows + row)
@@ -143,11 +131,7 @@ data class Position(val column: Int,
      * The row coordinate is used to shift down
      */
     fun relativeToLeftOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
-        require(column > 0) {
-            "If you your position is relative to the left of a component you can't use negative columns " +
-                    "since it wouldn't be `left` relative to the Component!"
-        }
-        Position.of(compCol - column, compRow + row)
+        Position.of(maxOf(compCol - column, 0), compRow + row)
     }
 
     override fun compareTo(other: Position): Int {

@@ -28,6 +28,11 @@ class SizeTest {
     }
 
     @Test
+    fun shouldProperlyAddTwoSizes() {
+        assertThat(Size.of(1, 2) + Size.of(2, 1)).isEqualTo(Size.of(3, 3))
+    }
+
+    @Test
     fun shouldCreateNewSizeWithProperRelativeColumnsWhenWithRelativeColumnsIsCalled() {
         assertThat(Size(
                 columns = EXPECTED_COL - 1,
@@ -116,6 +121,34 @@ class SizeTest {
         val wide = Size(5, 2)
         val tall = Size(2, 5)
         assertThat(wide.max(tall)).isEqualTo(Size(5, 5))
+    }
+
+    @Test
+    fun shouldProperlyFetchBoundingBoxPositions() {
+        val target = Size.of(3, 3)
+        assertThat(target.fetchBoundingBoxPositions())
+                .containsExactlyInAnyOrder(Position.of(0, 0), Position.of(1, 0), Position.of(2, 0),
+                        Position.of(0, 1), Position.of(2, 1), Position.of(0, 2), Position.of(1, 2), Position.of(2, 2))
+    }
+
+    @Test
+    fun shouldProperlyFetchTopLeftPosition() {
+        assertThat(Size.of(3, 3).fetchTopLeftPosition()).isEqualTo(Position.of(0, 0))
+    }
+
+    @Test
+    fun shouldProperlyFetchTopRightPosition() {
+        assertThat(Size.of(3, 3).fetchTopRightPosition()).isEqualTo(Position.of(2, 0))
+    }
+
+    @Test
+    fun shouldProperlyFetchBottomLeftPosition() {
+        assertThat(Size.of(3, 3).fetchBottomLeftPosition()).isEqualTo(Position.of(0, 2))
+    }
+
+    @Test
+    fun shouldProperlyFetchBottomRightPosition() {
+        assertThat(Size.of(3, 3).fetchBottomRightPosition()).isEqualTo(Position.of(2, 2))
     }
 
     @Test

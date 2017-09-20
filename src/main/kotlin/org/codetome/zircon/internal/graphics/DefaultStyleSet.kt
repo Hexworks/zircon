@@ -5,6 +5,7 @@ import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.atomic.AtomicReference
 
 open class DefaultStyleSet(
@@ -15,24 +16,24 @@ open class DefaultStyleSet(
 
     private var foregroundColor = AtomicReference<TextColor>(foregroundColor)
     private var backgroundColor = AtomicReference<TextColor>(backgroundColor)
-    private val modifiers = ConcurrentHashMap<Modifier, Unit>()
+    private val modifiers = mutableSetOf<Modifier>()
 
     init {
         modifiers.forEach {
-            this.modifiers.put(it, Unit)
+            this.modifiers.add(it)
         }
     }
 
     override fun toStyleSet() = DefaultStyleSet(
             foregroundColor = foregroundColor.get(),
             backgroundColor = backgroundColor.get(),
-            modifiers = modifiers.keys.toSet())
+            modifiers = modifiers.toSet())
 
     override fun getForegroundColor(): TextColor = foregroundColor.get()
 
     override fun getBackgroundColor(): TextColor = backgroundColor.get()
 
-    override fun getActiveModifiers() = modifiers.keys.toSet()
+    override fun getActiveModifiers() = modifiers.toSet()
 
     override fun setBackgroundColor(backgroundColor: TextColor) {
         this.backgroundColor.set(backgroundColor)
@@ -42,29 +43,27 @@ open class DefaultStyleSet(
         this.foregroundColor.set(foregroundColor)
     }
 
-    override fun enableModifiers(vararg modifiers: Modifier) {
-        this.modifiers.putAll(modifiers.map { Pair(it, Unit) })
+    override fun enableModifiers(modifiers: Set<Modifier>) {
+        this.modifiers.addAll(modifiers)
     }
 
     override fun enableModifier(modifier: Modifier) {
-        enableModifiers(modifier)
+        modifiers.add(modifier)
     }
 
     @Synchronized
-    override fun disableModifiers(vararg modifiers: Modifier) {
-        modifiers.forEach {
-            this.modifiers.remove(it)
-        }
+    override fun disableModifiers(modifiers: Set<Modifier>) {
+        this.modifiers.removeAll(modifiers)
     }
 
     override fun disableModifier(modifier: Modifier) {
-        disableModifiers(modifier)
+        this.modifiers.remove(modifier)
     }
 
     @Synchronized
     override fun setModifiers(modifiers: Set<Modifier>) {
         this.modifiers.clear()
-        enableModifiers(*modifiers.toTypedArray())
+        enableModifiers(modifiers)
     }
 
     override fun clearModifiers() {

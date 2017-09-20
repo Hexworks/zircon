@@ -139,15 +139,6 @@ data class Size(val columns: Int,
         return size
     }
 
-    /**
-     * Tells whether `size` fits within this [Size]
-     * meaning that nor the `columns`, nor the `rows` of
-     * `size` is bigger compared to the values of this [Size].
-     */
-    fun fitsWithin(size: Size): Boolean {
-        return size.columns <= columns && size.rows <= rows
-    }
-
     private fun returnZeroIfZero(size: Size): Size {
         return if (size.columns == 0 || size.rows == 0) {
             ZERO
