@@ -5,7 +5,7 @@ import org.codetome.zircon.internal.util.rex.REXFile
 import org.codetome.zircon.internal.util.rex.decompressGZIPByteArray
 import java.io.InputStream
 
-class REXPaintResource(rexFile: REXFile) {
+class REXPaintResource private constructor(rexFile: REXFile) {
     private val rex = rexFile
 
     fun toLayerList(): List<Layer> {

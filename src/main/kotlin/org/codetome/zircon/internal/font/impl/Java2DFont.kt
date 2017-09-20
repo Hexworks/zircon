@@ -55,7 +55,7 @@ class Java2DFont(private val source: BufferedImage,
 
     private fun fetchMetaFor(textCharacter: TextCharacter, tags: Array<out String>): CharacterMetadata {
         require(hasDataForChar(textCharacter.getCharacter())) {
-            "No metadata exists for '${textCharacter.getCharacter()}'!"
+            "No metadata exists for character: '${textCharacter.getCharacter().toInt()}'!"
         }
         val filtered = metadata[textCharacter.getCharacter()]!!.filter { it.tags.containsAll(tags.toList()) }
         require(filtered.isNotEmpty()) {

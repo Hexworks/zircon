@@ -1,6 +1,7 @@
 package org.codetome.zircon.api.resource
 
 import org.assertj.core.api.Assertions.assertThat
+import org.codetome.zircon.api.Symbols
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.junit.Test
 
@@ -17,6 +18,12 @@ class CP437TilesetResourceTest {
                 throw IllegalStateException("Tileset resource '${it.path}' failed to load!", e)
             }
         }
+    }
+
+    @Test
+    fun shouldProperlyConvertCpToUnicode() {
+        assertThat(CP437TilesetResource.convertCp437toUnicode(1).toInt())
+                .isEqualTo(Symbols.FACE_WHITE.toInt())
     }
 
     @Test
