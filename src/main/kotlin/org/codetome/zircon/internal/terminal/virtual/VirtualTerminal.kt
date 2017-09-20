@@ -20,23 +20,15 @@ import org.codetome.zircon.internal.terminal.AbstractTerminal
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import java.util.function.Consumer
 
-class VirtualTerminal private constructor(initialSize: Size,
-                                          private val cursorHandler: InternalCursorHandler,
-                                          private val layerable: InternalLayerable)
+class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
+                      private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(cursorSpace = initialSize),
+                      private val layerable: InternalLayerable = DefaultLayerable(size = initialSize))
     : AbstractTerminal(), InternalTerminal,
         InternalCursorHandler by cursorHandler,
         InternalLayerable by layerable {
 
     private var terminalSize = initialSize
     private var backend = createBackend(terminalSize)
-
-    constructor(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE)
-            : this(
-            initialSize = initialSize,
-            cursorHandler = DefaultCursorHandler(
-                    cursorSpace = initialSize),
-            layerable = DefaultLayerable(
-                    size = initialSize))
 
     override fun drainDirtyPositions() =
             cursorHandler.drainDirtyPositions().plus(layerable.drainDirtyPositions()).also { dirtyPositions ->
@@ -59,9 +51,8 @@ class VirtualTerminal private constructor(initialSize: Size,
     @Synchronized
     override fun draw(drawable: Drawable, offset: Position) {
         drawable.drawOnto(this, offset)
-        // TODO: this can be optimized later
-        terminalSize.fetchPositions().forEach {
-            setPositionDirty(it)
+        drawable.getBoundableSize().fetchPositions().forEach {
+            setPositionDirty(it + offset)
         }
     }
 
