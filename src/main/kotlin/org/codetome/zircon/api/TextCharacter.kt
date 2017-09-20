@@ -129,10 +129,10 @@ data class TextCharacter(
         return copy(modifiers = newSet)
     }
 
-    fun withStyle(styleSet: StyleSet) = TextCharacterBuilder.newBuilder()
-            .styleSet(styleSet)
-            .character(getCharacter())
-            .build()
+    fun withStyle(styleSet: StyleSet) = copy(
+            foregroundColor = styleSet.getForegroundColor(),
+            backgroundColor = styleSet.getBackgroundColor(),
+            modifiers = styleSet.getActiveModifiers())
 
     companion object {
 

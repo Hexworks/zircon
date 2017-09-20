@@ -7,6 +7,7 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
+import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.util.TextUtils
@@ -28,7 +29,7 @@ class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
         InternalLayerable by layerable {
 
     private var terminalSize = initialSize
-    private var backend = createBackend(terminalSize)
+    private var backend: TextImage = createBackend(terminalSize)
 
     override fun drainDirtyPositions() =
             cursorHandler.drainDirtyPositions().plus(layerable.drainDirtyPositions()).also { dirtyPositions ->

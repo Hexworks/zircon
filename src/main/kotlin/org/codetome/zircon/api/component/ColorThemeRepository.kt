@@ -240,10 +240,7 @@ enum class ColorThemeRepository(private val colorTheme: ColorTheme) {
 
     SOLARIZED_LIGHT_GREEN(SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
             .accentColor(TextColorFactory.fromString("#859900"))
-            .build()),
-
-
-    ;
+            .build());
 
     fun getTheme() = colorTheme
 

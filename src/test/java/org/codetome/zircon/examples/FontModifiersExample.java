@@ -5,6 +5,9 @@ import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.terminal.Terminal;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static org.codetome.zircon.api.Modifiers.*;
 import static org.codetome.zircon.api.Modifiers.BorderPosition.*;
 import static org.codetome.zircon.api.Modifiers.BorderType.SOLID;
@@ -27,49 +30,49 @@ public class FontModifiersExample {
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(CROSSED_OUT);
+        terminal.enableModifier(CROSSED_OUT);
         terminal.setBackgroundColor(RED);
         terminal.setForegroundColor(GREEN);
         terminal.putCharacter('B');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(BLINK);
+        terminal.enableModifier(BLINK);
         terminal.setBackgroundColor(RED);
         terminal.setForegroundColor(WHITE);
         terminal.putCharacter('C');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(UNDERLINE);
+        terminal.enableModifier(UNDERLINE);
         terminal.setBackgroundColor(BLUE);
         terminal.setForegroundColor(CYAN);
         terminal.putCharacter('D');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(HORIZONTAL_FLIP);
+        terminal.enableModifier(HORIZONTAL_FLIP);
         terminal.setBackgroundColor(BLACK);
         terminal.setForegroundColor(YELLOW);
         terminal.putCharacter('E');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(Blink.INSTANCE);
+        terminal.enableModifier(Blink.INSTANCE);
         terminal.setBackgroundColor(CYAN);
         terminal.setForegroundColor(YELLOW);
         terminal.putCharacter('F');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(HORIZONTAL_FLIP, VERTICAL_FLIP, BLINK);
+        terminal.enableModifiers(Stream.of(HORIZONTAL_FLIP, VERTICAL_FLIP, BLINK).collect(Collectors.toSet()));
         terminal.setBackgroundColor(BLUE);
         terminal.setForegroundColor(WHITE);
         terminal.putCharacter('G');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(BORDER.of(SOLID, TOP, LEFT, RIGHT, BOTTOM));
+        terminal.enableModifier(BORDER.of(SOLID, TOP, LEFT, RIGHT, BOTTOM));
         terminal.setBackgroundColor(WHITE);
         terminal.setForegroundColor(BLUE);
         terminal.putCharacter('H');

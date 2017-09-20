@@ -1,8 +1,10 @@
 package org.codetome.zircon.api
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.color.ANSITextColor.*
+import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.color.ANSITextColor
+import org.codetome.zircon.api.color.ANSITextColor.*
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.junit.Test
 
@@ -15,6 +17,63 @@ class TextCharacterTest {
         assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.getBackgroundColor()).isEqualTo(BLACK)
         assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.getForegroundColor()).isEqualTo(WHITE)
         assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.getModifiers()).isEmpty()
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldThrowExceptionIfTryingToCreateTextCharacterFromUnprintableCharacter() {
+        TextCharacterBuilder.newBuilder()
+                .character(4.toChar())
+                .build()
+    }
+
+    @Test
+    fun shouldProperlyReportHavingABorderWhenThereIsBorder() {
+        assertThat(TextCharacterBuilder.newBuilder()
+                .modifier(Modifiers.BorderFactory.of())
+                .build().hasBorder()).isTrue()
+    }
+
+    @Test
+    fun shouldProperlyReportHavingABorderWhenThereIsNoBorder() {
+        assertThat(TextCharacterBuilder.newBuilder()
+                .build().hasBorder()).isFalse()
+    }
+
+    @Test
+    fun shouldNotBeEmptyWhenNotEmpty() {
+        assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.isNotEmpty()).isTrue()
+    }
+
+    @Test
+    fun shouldBeEmptyWhenEmpty() {
+        assertThat(TextCharacterBuilder.EMPTY.isNotEmpty()).isFalse()
+    }
+
+    @Test
+    fun shouldProperlyRemoveModifiersWhenWithoutModifiersIsCalled() {
+        assertThat(TextCharacterBuilder.newBuilder()
+                .modifier(Modifiers.Bold)
+                .build()
+                .withoutModifiers(setOf(Modifiers.Bold))
+                .getModifiers())
+                .isEmpty()
+    }
+
+    @Test
+    fun shouldProperlyCreateCopyWithStyleWhenWithStyleIsCalled() {
+        val style = StyleSetBuilder.newBuilder()
+                .foregroundColor(ANSITextColor.BLUE)
+                .backgroundColor(ANSITextColor.CYAN)
+                .modifier(Modifiers.Bold)
+                .build()
+
+        val copy = TextCharacterBuilder.newBuilder()
+                .build()
+                .withStyle(style)
+
+        assertThat(copy.getModifiers()).isEqualTo(style.getActiveModifiers())
+        assertThat(copy.getBackgroundColor()).isEqualTo(style.getBackgroundColor())
+        assertThat(copy.getForegroundColor()).isEqualTo(style.getForegroundColor())
     }
 
     @Test

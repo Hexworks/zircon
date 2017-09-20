@@ -5,11 +5,18 @@ import org.codetome.zircon.api.*
 import org.codetome.zircon.api.Position.Companion.DEFAULT_POSITION
 import org.codetome.zircon.api.Position.Companion.OFFSET_1x1
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.TextImageBuilder
+import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.TerminalResizeListener
+import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.event.EventType
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
+import java.util.concurrent.atomic.AtomicReference
+import java.util.function.Consumer
 
 class VirtualTerminalTest {
 
@@ -91,10 +98,9 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldEnableModifiersWhenEnableModifiersIsCalled() {
-        val modifiers = setOf(Modifiers.BLINK, Modifiers.BOLD)
-        target.enableModifiers(*modifiers.toTypedArray())
+        target.enableModifiers(setOf(Modifiers.BLINK, Modifiers.BOLD))
 
-        assertThat(target.getActiveModifiers()).containsExactlyInAnyOrder(*modifiers.toTypedArray())
+        assertThat(target.getActiveModifiers()).containsExactlyInAnyOrder(Modifiers.BLINK, Modifiers.BOLD)
     }
 
     @Test
@@ -176,6 +182,99 @@ class VirtualTerminalTest {
     }
 
     @Test
+    fun shouldProperlyMarkBlinkingCharactersAsDirtyAfterADirtyDrain() {
+        target.setCharacterAt(DEFAULT_POSITION, TextCharacterBuilder.newBuilder()
+                .modifier(Modifiers.BLINK)
+                .build())
+
+        target.drainDirtyPositions()
+
+        val result = target.drainDirtyPositions()
+        assertThat(result).containsExactly(DEFAULT_POSITION)
+    }
+
+    @Test
+    fun shouldProperlyClearWhenClearIsCalled() {
+        val tc = TextCharacterBuilder.newBuilder().character('x').build()
+        SIZE.fetchPositions().forEach {
+            target.setCharacterAt(it, tc)
+        }
+        target.putCursorAt(Position.of(5, 5))
+        target.drainDirtyPositions()
+
+        target.clear()
+
+        val positions = SIZE.fetchPositions().map {
+            assertThat(target.getCharacterAt(it).get()).isEqualTo(TextCharacterBuilder.DEFAULT_CHARACTER)
+            it
+        }
+        assertThat(target.getCursorPosition()).isEqualTo(Position.DEFAULT_POSITION)
+        assertThat(target.drainDirtyPositions()).containsExactlyInAnyOrder(*positions.toTypedArray())
+    }
+
+    @Test
+    fun shouldProperlyDrawToTerminalWhenDrawCalled() {
+        val cursorPos = Position.of(5, 5)
+        target.putCursorAt(cursorPos)
+        val size = Size.of(2, 2)
+        val offset = Position.of(1, 1)
+        val tc = TextCharacterBuilder.newBuilder()
+                .character(TEST_CHAR)
+                .build()
+        val image = TextImageBuilder.newBuilder()
+                .size(size)
+                .filler(tc)
+                .build()
+        target.drainDirtyPositions()
+
+        target.draw(image, offset)
+
+        val positions = size.fetchPositions().map {
+            val realPos = it + offset
+            assertThat(target.getCharacterAt(realPos).get()).isEqualTo(tc)
+            realPos
+        }.plus(cursorPos).toList()
+
+        assertThat(target.drainDirtyPositions()).containsExactlyInAnyOrder(*positions.toTypedArray())
+    }
+
+    @Test
+    fun shouldProperlyListenToInputEvents() {
+        val input = AtomicReference<Input>()
+        target.addInputListener(Consumer<Input> {
+            input.set(it)
+        })
+
+        EventBus.emit(EventType.Input, KeyStroke.EOF_STROKE)
+
+        assertThat(input.get()).isEqualTo(KeyStroke.EOF_STROKE)
+    }
+
+    @Test
+    fun closeShouldProperlyEmitEofStroke() {
+        val input = AtomicReference<Input>()
+        target.addInputListener(Consumer<Input> {
+            input.set(it)
+        })
+
+        target.close()
+
+        assertThat(input.get()).isEqualTo(KeyStroke.EOF_STROKE)
+    }
+
+    @Test
+    fun shouldProperlyIgnoreSettingACharWhichIsOutOfBounds() {
+        target.drainDirtyPositions()
+        val cursorPos = target.getCursorPosition()
+
+        val result = target.setCharacterAt(Position.of(Int.MAX_VALUE, Int.MAX_VALUE), 'x')
+
+        assertThat(result).isFalse()
+        assertThat(target.drainDirtyPositions()).containsExactly(cursorPos)
+    }
+
+
+    @Test
     fun shouldSetCursorPositionToNewLineWhenWritingAtTheEndOfTheLine() {
         target.putCursorAt(DEFAULT_POSITION.withRelativeColumn(Int.MAX_VALUE))
         target.putCharacter('a')
@@ -194,6 +293,7 @@ class VirtualTerminalTest {
     }
 
     companion object {
+        val TEST_CHAR = 'o'
         val SIZE = Size(10, 20)
         val NEW_BIGGER_SIZE = Size(30, 40)
         val NEW_LESS_ROWS_SIZE = SIZE.withRelativeRows(-1)
