@@ -17,4 +17,6 @@ interface Layer : TextImage, Movable {
      * [Layer] occupies.
      */
     fun fetchPositions(): Set<Position>
+
+    fun createCopy(): Layer
 }

@@ -4,9 +4,7 @@ import org.codetome.zircon.api.Cell
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.behavior.CursorHandler
 import org.codetome.zircon.api.behavior.Drawable
-import org.codetome.zircon.api.behavior.Layerable
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.input.Input
@@ -18,7 +16,6 @@ import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
-import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.terminal.AbstractTerminal
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import java.util.function.Consumer
@@ -148,9 +145,7 @@ class VirtualTerminal private constructor(initialSize: Size,
         val dirtyPositions = drainDirtyPositions()
         dirtyPositions.forEach { pos ->
             val char = backend.getCharacterAt(pos)
-            if (char.isNotPresent()) {
-                println("pos: $pos, backend size: ${backend.getBoundableSize()}")
-            } else {
+            if (char.isPresent) {
                 fn(Cell(pos, char.get()))
             }
         }
