@@ -33,10 +33,10 @@ object EventBus {
         emit(type, Unit)
     }
 
-    inline fun <reified T : Any> emit(type: EventType, data: T, keys: Set<String> = setOf()) {
+    fun <T : Any> emit(type: EventType, data: T, keys: Set<String> = setOf()) {
         log("+++ Emitting event of type '$type' with data: '$data'.")
         subscriptions[type]?.filter {
-            it.dataType.isAssignableFrom(T::class.java)
+            it.dataType.isAssignableFrom(data.javaClass)
         }?.filter {
             subscriberKeysIntersectsWithEventKeys(it, keys)
                     .or(subscriberHasNoKeys(it))
