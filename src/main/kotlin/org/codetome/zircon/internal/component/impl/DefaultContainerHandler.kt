@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.ColorTheme
+import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType.*
@@ -56,7 +56,7 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
 
             keyStrokeHandlers[input]?.invoke()
 
-            if(input is KeyStroke) {
+            if (input is KeyStroke) {
                 EventBus.emit(EventType.KeyPressed, input)
             }
 

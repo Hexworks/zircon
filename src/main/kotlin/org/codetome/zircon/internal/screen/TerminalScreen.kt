@@ -20,22 +20,17 @@ import java.util.*
  * the [Terminal] this [TerminalScreen] wraps. This means that a [TerminalScreen] acts
  * as a double buffer for the wrapped [Terminal].
  */
-class TerminalScreen private constructor(private val terminal: Terminal,
-                                         private val backend: VirtualTerminal,
-                                         private val containerHandler: InternalContainerHandler)
+class TerminalScreen(private val terminal: Terminal,
+                     private val backend: VirtualTerminal = VirtualTerminal(terminal.getBoundableSize()),
+                     private val containerHandler: InternalContainerHandler = DefaultContainerHandler(DefaultContainer(
+                             initialSize = terminal.getBoundableSize(),
+                             position = Position.DEFAULT_POSITION,
+                             componentStyles = ComponentStylesBuilder.DEFAULT)))
     : InternalScreen,
         InternalTerminal by backend,
         InternalContainerHandler by containerHandler {
 
     private val id: UUID = UUID.randomUUID()
-
-    constructor(terminal: Terminal) : this(
-            terminal = terminal,
-            backend = VirtualTerminal(terminal.getBoundableSize()),
-            containerHandler = DefaultContainerHandler(DefaultContainer(
-                    initialSize = terminal.getBoundableSize(),
-                    position = Position.DEFAULT_POSITION,
-                    componentStyles = ComponentStylesBuilder.DEFAULT)))
 
     init {
         EventBus.subscribe<UUID>(EventType.ScreenSwitch, { (screenId) ->
@@ -92,7 +87,8 @@ class TerminalScreen private constructor(private val terminal: Terminal,
         transformComponentsToLayers().forEach {
             terminal.addLayer(it)
         }
-        backend.getLayers().forEach { // TODO: regression test drain here <--
+        backend.getLayers().forEach {
+            // TODO: regression test drain here <--
             terminal.addLayer(it)
         }
         terminal.flush()

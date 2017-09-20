@@ -21,7 +21,6 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                                  private val fontWidth: Int,
                                  private val fontHeight: Int) : MouseAdapter() {
 
-    private val logger = LoggerFactory.getLogger(javaClass)
     private var lastMouseLocation = Position.UNKNOWN
 
     override fun mouseClicked(e: MouseEvent) {

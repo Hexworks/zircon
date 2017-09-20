@@ -9,7 +9,7 @@ import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.api.input.Input
 import java.util.*
 
-class DefaultHeader (private val text: String,
+class DefaultHeader(private val text: String,
                     initialSize: Size,
                     position: Position,
                     componentStyles: ComponentStyles) : Header, DefaultComponent(
