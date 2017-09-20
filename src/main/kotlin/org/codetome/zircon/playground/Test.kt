@@ -2,14 +2,12 @@ package org.codetome.zircon.playground
 
 import org.codetome.zircon.playground.Test.ObservableList.ModificationType.ADDITION
 import org.codetome.zircon.playground.Test.ObservableList.ModificationType.REMOVAL
-import org.junit.Test
 import java.util.function.Consumer
 import java.util.function.Predicate
 import java.util.function.UnaryOperator
 
 class Test {
 
-    @Test
     fun test() {
         val list = mutableListOf(
                 Pojo("name0", "foo0"),
