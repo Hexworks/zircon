@@ -21,9 +21,9 @@ class DefaultAnimationTest {
     }
 
     companion object {
-        val EXPECTED_FRAME_COUNT = 43
-        val EXPECTED_LENGTH = 94
-        val EXPECTED_TICK = 66
+        val EXPECTED_FRAME_COUNT = 58
+        val EXPECTED_LENGTH = 90
+        val EXPECTED_TICK = 66L
         val EXPECTED_LOOP_COUNT = 1
 
     }
