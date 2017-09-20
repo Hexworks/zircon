@@ -6,26 +6,19 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.graphics.Box
+import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.shape.LineFactory
-import org.codetome.zircon.api.graphics.StyleSet
 
-class DefaultBox private constructor(size: Size,
-                                     styleSet: StyleSet,
-                                     boxType: BoxType,
-                                     private val backend: TextImage) : Box, TextImage by backend {
-
-    constructor(size: Size,
-                filler: TextCharacter,
-                styleSet: StyleSet,
-                boxType: BoxType) : this(
-            size = size,
-            backend = TextImageBuilder.newBuilder()
-                    .size(size)
-                    .filler(filler)
-                    .build(),
-            styleSet = styleSet,
-            boxType = boxType)
+class DefaultBox(size: Size,
+                 filler: TextCharacter,
+                 styleSet: StyleSet,
+                 boxType: BoxType,
+                 private val backend: TextImage = TextImageBuilder.newBuilder()
+                         .size(size)
+                         .filler(filler)
+                         .build())
+    : Box, TextImage by backend {
 
     init {
         setStyleFrom(styleSet)

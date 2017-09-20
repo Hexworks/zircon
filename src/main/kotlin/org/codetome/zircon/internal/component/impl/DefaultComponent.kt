@@ -8,46 +8,33 @@ import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
-import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.graphics.TextImage
-import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
-import org.codetome.zircon.internal.component.listener.MouseListener
-import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import java.util.*
 import java.util.function.Consumer
 
-abstract class DefaultComponent private constructor(private var position: Position,
-                                                    private var componentStyles: ComponentStyles,
-                                                    private val drawSurface: TextImage,
-                                                    private var boundable: Boundable,
-                                                    private val wrappers: Iterable<WrappingStrategy>)
+abstract class DefaultComponent(initialSize: Size,
+                                private var position: Position,
+                                private val drawSurface: TextImage = TextImageBuilder.newBuilder()
+                                        .filler(TextCharacterBuilder.EMPTY)
+                                        .size(initialSize)
+                                        .build(),
+                                private var boundable: Boundable = DefaultBoundable(
+                                        size = initialSize,
+                                        position = position),
+                                private var componentStyles: ComponentStyles,
+                                private val wrappers: Iterable<WrappingStrategy>)
     : InternalComponent, Drawable by drawSurface {
 
     private val id: UUID = UUID.randomUUID()
     private var currentOffset = Position.DEFAULT_POSITION
-
-    constructor(initialSize: Size,
-                position: Position,
-                componentStyles: ComponentStyles,
-                wrappers: Iterable<WrappingStrategy>) : this(
-            drawSurface = TextImageBuilder.newBuilder()
-                    .filler(TextCharacterBuilder.EMPTY)
-                    .size(initialSize)
-                    .build(),
-            boundable = DefaultBoundable(
-                    size = initialSize,
-                    position = position),
-            position = position,
-            componentStyles = componentStyles,
-            wrappers = wrappers)
 
     init {
         drawSurface.setStyleFrom(componentStyles.getCurrentStyle())

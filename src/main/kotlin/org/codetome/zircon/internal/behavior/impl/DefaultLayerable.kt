@@ -11,13 +11,10 @@ import java.util.*
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
 
-class DefaultLayerable private constructor(boundable: Boundable,
-                                           dirtiable: Dirtiable)
+class DefaultLayerable(size: Size,
+                       boundable: Boundable = DefaultBoundable(size),
+                       dirtiable: Dirtiable = DefaultDirtiable())
     : InternalLayerable, Boundable by boundable, Dirtiable by dirtiable {
-
-    constructor(size: Size) : this(
-            boundable = DefaultBoundable(size),
-            dirtiable = DefaultDirtiable())
 
     private val layers: BlockingQueue<Layer> = LinkedBlockingQueue()
 
@@ -39,7 +36,7 @@ class DefaultLayerable private constructor(boundable: Boundable,
 
     override fun drainLayers() = mutableListOf<Layer>().also {
         layers.drainTo(it)
-        it.forEach{
+        it.forEach {
             markLayerPositionsDirty(it)
         }
     }

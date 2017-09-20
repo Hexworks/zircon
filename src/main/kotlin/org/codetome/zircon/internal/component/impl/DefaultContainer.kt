@@ -6,10 +6,10 @@ import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Container
-import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.internal.component.InternalComponent

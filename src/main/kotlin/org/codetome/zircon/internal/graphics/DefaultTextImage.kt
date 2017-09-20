@@ -17,20 +17,13 @@ import java.util.*
  * Copy operations between two [DefaultTextImage] classes are semi-optimized by using [System.arraycopy]
  * instead of iterating over each character and copying them over one by one.
  */
-class DefaultTextImage private constructor(toCopy: Array<Array<TextCharacter>>,
-                                           filler: TextCharacter,
-                                           boundable: Boundable,
-                                           styleSet: StyleSet = DefaultStyleSet())
+class DefaultTextImage(size: Size,
+                       toCopy: Array<Array<TextCharacter>>,
+                       filler: TextCharacter,
+                       boundable: Boundable = DefaultBoundable(
+                               size = size),
+                       styleSet: StyleSet = DefaultStyleSet())
     : TextImage, Boundable by boundable, StyleSet by styleSet {
-
-    constructor(size: Size,
-                toCopy: Array<Array<TextCharacter>>,
-                filler: TextCharacter) : this(
-            toCopy = toCopy,
-            filler = filler,
-            boundable = DefaultBoundable(
-                    size = size))
-
 
     private val buffer = (0 until getBoundableSize().rows).map {
         (0 until getBoundableSize().columns).map { filler }.toTypedArray()
