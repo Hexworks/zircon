@@ -2,13 +2,8 @@ package org.codetome.zircon.internal.component
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.behavior.Drawable
-import org.codetome.zircon.api.behavior.Positionable
 import org.codetome.zircon.api.component.Component
-import org.codetome.zircon.api.component.ComponentStyles
-import org.codetome.zircon.api.component.Theme
 import org.codetome.zircon.internal.behavior.Focusable
-import org.codetome.zircon.internal.behavior.Identifiable
-import org.codetome.zircon.internal.component.listener.MouseListener
 import java.util.*
 
 /**

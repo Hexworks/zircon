@@ -7,7 +7,7 @@ import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.Button
 import org.codetome.zircon.api.component.ComponentStyles
-import org.codetome.zircon.api.component.Theme
+import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
@@ -15,7 +15,6 @@ import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import java.util.*
-import java.util.function.Consumer
 
 class DefaultButton(private val text: String,
                     private val wrappers: Deque<WrappingStrategy>,
@@ -67,23 +66,23 @@ class DefaultButton(private val text: String,
 
     override fun getText() = text
 
-    override fun applyTheme(theme: Theme) {
+    override fun applyTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getAccentColor())
+                        .foregroundColor(colorTheme.getAccentColor())
                         .backgroundColor(TextColorFactory.TRANSPARENT)
                         .build())
                 .mouseOverStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getDarkBackgroundColor())
-                        .backgroundColor(theme.getAccentColor())
+                        .foregroundColor(colorTheme.getDarkBackgroundColor())
+                        .backgroundColor(colorTheme.getAccentColor())
                         .build())
                 .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getDarkBackgroundColor())
-                        .backgroundColor(theme.getAccentColor())
+                        .foregroundColor(colorTheme.getDarkBackgroundColor())
+                        .backgroundColor(colorTheme.getAccentColor())
                         .build())
                 .activeStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getDarkForegroundColor())
-                        .backgroundColor(theme.getAccentColor())
+                        .foregroundColor(colorTheme.getDarkForegroundColor())
+                        .backgroundColor(colorTheme.getAccentColor())
                         .build())
                 .build())
     }

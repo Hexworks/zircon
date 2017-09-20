@@ -33,8 +33,8 @@ interface Component : Positionable, Identifiable, Boundable {
     fun setComponentStyles(componentStyles: ComponentStyles)
 
     /**
-     * Applies the [Theme] to this component and recursively to all its children (if any).
+     * Applies the [ColorTheme] to this component and recursively to all its children (if any).
      */
-    fun applyTheme(theme: Theme)
+    fun applyTheme(colorTheme: ColorTheme)
 
 }

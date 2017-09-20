@@ -24,8 +24,8 @@ interface ContainerHandler {
     fun removeComponent(component: Component)
 
     /**
-     * Applies the [Theme] to this component and recursively to all its children (if any).
+     * Applies the [ColorTheme] to this component and recursively to all its children (if any).
      */
-    fun applyTheme(theme: Theme)
+    fun applyTheme(colorTheme: ColorTheme)
 
 }

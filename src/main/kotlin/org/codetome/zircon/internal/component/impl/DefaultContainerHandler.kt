@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.component.Component
-import org.codetome.zircon.api.component.Theme
+import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType.*
@@ -44,8 +44,8 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
         refreshFocusableLookup()
     }
 
-    override fun applyTheme(theme: Theme) {
-        container.applyTheme(theme)
+    override fun applyTheme(colorTheme: ColorTheme) {
+        container.applyTheme(colorTheme)
     }
 
     override fun isActive() = state == ACTIVE

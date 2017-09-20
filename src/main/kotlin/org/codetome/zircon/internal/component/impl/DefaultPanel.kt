@@ -4,11 +4,9 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Panel
-import org.codetome.zircon.api.component.Theme
-import org.codetome.zircon.api.shape.FilledRectangleFactory
+import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.internal.component.WrappingStrategy
 
 class DefaultPanel(private val title: String,
@@ -23,15 +21,15 @@ class DefaultPanel(private val title: String,
 
     override fun getTitle() = title
 
-    override fun applyTheme(theme: Theme) {
+    override fun applyTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getBrightForegroundColor())
-                        .backgroundColor(theme.getBrightBackgroundColor())
+                        .foregroundColor(colorTheme.getBrightForegroundColor())
+                        .backgroundColor(colorTheme.getBrightBackgroundColor())
                         .build())
                 .build())
         getComponents().forEach {
-            it.applyTheme(theme)
+            it.applyTheme(colorTheme)
         }
     }
 }

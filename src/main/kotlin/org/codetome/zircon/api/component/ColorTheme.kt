@@ -2,7 +2,7 @@ package org.codetome.zircon.api.component
 
 import org.codetome.zircon.api.color.TextColor
 
-interface Theme {
+interface ColorTheme {
 
     fun getBrightForegroundColor(): TextColor
 

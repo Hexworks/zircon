@@ -7,7 +7,7 @@ import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.RadioButton
 import org.codetome.zircon.api.component.RadioButtonGroup
-import org.codetome.zircon.api.component.Theme
+import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
@@ -83,14 +83,14 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
 
     }
 
-    override fun applyTheme(theme: Theme) {
+    override fun applyTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(TextColorFactory.TRANSPARENT)
                         .backgroundColor(TextColorFactory.TRANSPARENT)
                         .build())
                 .build())
-        getComponents().forEach { it.applyTheme(theme) }
+        getComponents().forEach { it.applyTheme(colorTheme) }
     }
 
     private fun refreshContent() {

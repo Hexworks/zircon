@@ -2,7 +2,6 @@ package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.LayerBuilder
@@ -10,13 +9,11 @@ import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Container
-import org.codetome.zircon.api.component.Theme
+import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
-import java.awt.Point
-import java.awt.Rectangle
 import java.util.*
 
 open class DefaultContainer(initialSize: Size,
@@ -101,15 +98,15 @@ open class DefaultContainer(initialSize: Size,
         return "${javaClass.simpleName}(id=${getId().toString().substring(0, 4)})"
     }
 
-    override fun applyTheme(theme: Theme) {
+    override fun applyTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getDarkForegroundColor())
-                        .backgroundColor(theme.getDarkBackgroundColor())
+                        .foregroundColor(colorTheme.getDarkForegroundColor())
+                        .backgroundColor(colorTheme.getDarkBackgroundColor())
                         .build())
                 .build())
         components.forEach {
-            it.applyTheme(theme)
+            it.applyTheme(colorTheme)
         }
     }
 
