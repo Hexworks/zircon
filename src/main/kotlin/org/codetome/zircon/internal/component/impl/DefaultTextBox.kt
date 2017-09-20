@@ -6,11 +6,10 @@ import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.TextBox
-import org.codetome.zircon.api.component.Theme
+import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke
-import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.behavior.Scrollable
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
@@ -196,15 +195,15 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
         EventBus.emit(EventType.ComponentChange)
     }
 
-    override fun applyTheme(theme: Theme) {
+    override fun applyTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getDarkBackgroundColor())
-                        .backgroundColor(theme.getDarkForegroundColor())
+                        .foregroundColor(colorTheme.getDarkBackgroundColor())
+                        .backgroundColor(colorTheme.getDarkForegroundColor())
                         .build())
                 .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getBrightBackgroundColor())
-                        .backgroundColor(theme.getBrightForegroundColor())
+                        .foregroundColor(colorTheme.getBrightBackgroundColor())
+                        .backgroundColor(colorTheme.getBrightForegroundColor())
                         .build())
                 .build())
     }

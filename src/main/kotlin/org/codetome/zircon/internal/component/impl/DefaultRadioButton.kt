@@ -6,7 +6,7 @@ import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.RadioButton
-import org.codetome.zircon.api.component.Theme
+import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
@@ -86,23 +86,23 @@ class DefaultRadioButton(private val text: String,
 
     override fun getText() = text
 
-    override fun applyTheme(theme: Theme) {
+    override fun applyTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getAccentColor())
+                        .foregroundColor(colorTheme.getAccentColor())
                         .backgroundColor(TextColorFactory.TRANSPARENT)
                         .build())
                 .mouseOverStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getBrightBackgroundColor())
-                        .backgroundColor(theme.getAccentColor())
+                        .foregroundColor(colorTheme.getBrightBackgroundColor())
+                        .backgroundColor(colorTheme.getAccentColor())
                         .build())
                 .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getBrightBackgroundColor())
-                        .backgroundColor(theme.getAccentColor())
+                        .foregroundColor(colorTheme.getBrightBackgroundColor())
+                        .backgroundColor(colorTheme.getAccentColor())
                         .build())
                 .activeStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getBrightBackgroundColor())
-                        .backgroundColor(theme.getAccentColor())
+                        .foregroundColor(colorTheme.getBrightBackgroundColor())
+                        .backgroundColor(colorTheme.getAccentColor())
                         .build())
                 .build())
     }

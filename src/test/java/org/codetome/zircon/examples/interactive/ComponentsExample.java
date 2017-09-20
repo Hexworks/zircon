@@ -28,8 +28,8 @@ public class ComponentsExample {
 
     private static final Size PANEL_SIZE = Size.of(22, 6);
     private static final Size TERMINAL_SIZE = Size.of(52, 28);
-    private static final Theme PANELS_THEME = ThemeRepository.GHOST_OF_A_CHANCE.getTheme();
-    private static final Theme BUTTONS_THEME = ThemeRepository.SOLARIZED_LIGHT_VIOLET.getTheme();
+    private static final ColorTheme PANELS_THEME = ColorThemeRepository.SOLARIZED_LIGHT_RED.getTheme();
+    private static final ColorTheme BUTTONS_THEME = ColorThemeRepository.HEADACHE.getTheme();
     private static final PanelBuilder PANEL_TEMPLATE = PanelBuilder.newBuilder().size(PANEL_SIZE);
 
     public static void main(String[] args) {

@@ -37,10 +37,10 @@ class DefaultHeader (private val text: String,
 
     }
 
-    override fun applyTheme(theme: Theme) {
+    override fun applyTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(theme.getBrightForegroundColor())
+                        .foregroundColor(colorTheme.getBrightForegroundColor())
                         .backgroundColor(TextColorFactory.TRANSPARENT)
                         .build())
                 .build())

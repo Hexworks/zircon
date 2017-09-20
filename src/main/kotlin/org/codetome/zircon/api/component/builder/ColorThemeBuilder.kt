@@ -2,13 +2,13 @@ package org.codetome.zircon.api.component.builder
 
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.factory.TextColorFactory
-import org.codetome.zircon.internal.component.DefaultTheme
+import org.codetome.zircon.internal.component.DefaultColorTheme
 
-data class ThemeBuilder(private var brightForegroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
-                        private var brightBackgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
-                        private var darkForegroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
-                        private var darkBackgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
-                        private var accentColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR) {
+data class ColorThemeBuilder(private var brightForegroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
+                             private var brightBackgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
+                             private var darkForegroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
+                             private var darkBackgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
+                             private var accentColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR) {
 
 
     fun brightForegroundColor(brightForegroundColor: TextColor) = also {
@@ -31,7 +31,7 @@ data class ThemeBuilder(private var brightForegroundColor: TextColor = TextColor
         this.accentColor = accentColor
     }
 
-    fun build() = DefaultTheme(
+    fun build() = DefaultColorTheme(
             brightForegroundColor = brightForegroundColor,
             brightBackgroundColor = brightBackgroundColor,
             darkForegroundColor = darkForegroundColor,
@@ -40,6 +40,6 @@ data class ThemeBuilder(private var brightForegroundColor: TextColor = TextColor
 
     companion object {
 
-        fun newBuilder() = ThemeBuilder()
+        fun newBuilder() = ColorThemeBuilder()
     }
 }
