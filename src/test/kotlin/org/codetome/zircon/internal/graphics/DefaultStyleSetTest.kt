@@ -3,6 +3,7 @@ package org.codetome.zircon.internal.graphics
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.Modifiers
+import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.junit.Before
 import org.junit.Test
@@ -76,5 +77,10 @@ class DefaultStyleSetTest {
 
         assertThat(target.getActiveModifiers())
                 .isEmpty()
+    }
+
+    @Test
+    fun twoIdenticalStyleSetsShouldBeEqual() {
+        assertThat(StyleSetBuilder.DEFAULT_STYLE).isEqualTo(StyleSetBuilder.DEFAULT_STYLE.toStyleSet())
     }
 }
