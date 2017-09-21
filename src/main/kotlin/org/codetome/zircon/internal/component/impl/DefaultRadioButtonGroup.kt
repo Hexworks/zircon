@@ -35,7 +35,7 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
     init {
         refreshContent()
         EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), { (mouseAction) ->
-            getDrawSurface().applyStyle(getComponentStyles().mouseOver())
+            getDrawSurface().applyColorsFromStyle(getComponentStyles().mouseOver())
             val row = mouseAction.position - getPosition()
             println("Row is: $row")
             refreshContent()

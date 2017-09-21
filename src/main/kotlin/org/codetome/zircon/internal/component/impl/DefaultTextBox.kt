@@ -51,7 +51,7 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
 
     override fun giveFocus(input: Optional<Input>): Boolean {
         clearSubscriptions()
-        getDrawSurface().applyStyle(getComponentStyles().giveFocus())
+        getDrawSurface().applyColorsFromStyle(getComponentStyles().giveFocus())
         EventBus.emit(EventType.RequestCursorAt, getCursorPosition().withRelative(getPosition()))
         EventBus.emit(EventType.ComponentChange)
         subscriptions.add(EventBus.subscribe<KeyStroke>(EventType.KeyPressed, { (keyStroke) ->
@@ -190,7 +190,7 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
         subscriptions.forEach {
             EventBus.unsubscribe(it)
         }
-        getDrawSurface().applyStyle(getComponentStyles().reset())
+        getDrawSurface().applyColorsFromStyle(getComponentStyles().reset())
         EventBus.emit(EventType.HideCursor)
         EventBus.emit(EventType.ComponentChange)
     }

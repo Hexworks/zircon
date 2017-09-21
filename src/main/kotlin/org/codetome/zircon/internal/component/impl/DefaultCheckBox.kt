@@ -39,13 +39,13 @@ class DefaultCheckBox(private val text: String,
         redrawContent()
 
         EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), {
-            getDrawSurface().applyStyle(getComponentStyles().activate())
+            getDrawSurface().applyColorsFromStyle(getComponentStyles().activate())
             checkBoxState = PRESSED
             redrawContent()
             EventBus.emit(EventType.ComponentChange)
         })
         EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), {
-            getDrawSurface().applyStyle(getComponentStyles().mouseOver())
+            getDrawSurface().applyColorsFromStyle(getComponentStyles().mouseOver())
             checkBoxState = if (checked) UNCHECKED else CHECKED
             checked = checked.not()
             redrawContent()
@@ -64,13 +64,13 @@ class DefaultCheckBox(private val text: String,
     }
 
     override fun giveFocus(input: Optional<Input>): Boolean {
-        getDrawSurface().applyStyle(getComponentStyles().giveFocus())
+        getDrawSurface().applyColorsFromStyle(getComponentStyles().giveFocus())
         EventBus.emit(EventType.ComponentChange)
         return true
     }
 
     override fun takeFocus(input: Optional<Input>) {
-        getDrawSurface().applyStyle(getComponentStyles().reset())
+        getDrawSurface().applyColorsFromStyle(getComponentStyles().reset())
         EventBus.emit(EventType.ComponentChange)
     }
 
