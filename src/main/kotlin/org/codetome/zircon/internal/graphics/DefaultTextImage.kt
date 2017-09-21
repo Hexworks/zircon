@@ -62,14 +62,14 @@ class DefaultTextImage(size: Size,
     }
 
     @Synchronized
-    override fun applyStyle(styleSet: StyleSet, offset: Position, size: Size) {
-        styleSet.clearModifiers()
-        setStyleFrom(styleSet)
+    override fun applyColorsFromStyle(styleSet: StyleSet, offset: Position, size: Size) {
+        val bg = styleSet.getBackgroundColor()
+        val fg = styleSet.getForegroundColor()
+        setStyleFrom(styleSet.toStyleSet().apply { clearModifiers() })
         size.fetchPositions().forEach { pos ->
             pos.plus(offset).let { fixedPos ->
                 getCharacterAt(fixedPos).map { char ->
-                    styleSet.setModifiers(char.getModifiers())
-                    setCharacterAt(fixedPos, char.withStyle(styleSet))
+                    setCharacterAt(fixedPos, char.withForegroundColor(fg).withBackgroundColor(bg))
                 }
             }
         }
