@@ -41,13 +41,13 @@ abstract class DefaultComponent(initialSize: Size,
         applyWrappers()
         EventBus.subscribe(EventType.MouseOver(id), {
             if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.MOUSE_OVER)) {
-                drawSurface.applyStyle(componentStyles.mouseOver())
+                drawSurface.applyColorsFromStyle(componentStyles.mouseOver())
                 EventBus.emit(EventType.ComponentChange)
             }
         })
         EventBus.subscribe(EventType.MouseOut(id), {
             if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.DEFAULT)) {
-                drawSurface.applyStyle(componentStyles.reset())
+                drawSurface.applyColorsFromStyle(componentStyles.reset())
                 EventBus.emit(EventType.ComponentChange)
             }
         })
@@ -174,7 +174,7 @@ abstract class DefaultComponent(initialSize: Size,
     override fun setComponentStyles(componentStyles: ComponentStyles) {
         this.componentStyles = componentStyles
 
-        drawSurface.applyStyle(componentStyles.getCurrentStyle(), getNonThemeableOffset(), getEffectiveThemeableSize())
+        drawSurface.applyColorsFromStyle(componentStyles.getCurrentStyle(), getNonThemeableOffset(), getEffectiveThemeableSize())
     }
 
     override fun toString(): String {

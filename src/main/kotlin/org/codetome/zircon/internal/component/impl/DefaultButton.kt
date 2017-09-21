@@ -17,7 +17,7 @@ import org.codetome.zircon.internal.event.EventType
 import java.util.*
 
 class DefaultButton(private val text: String,
-                    private val wrappers: Deque<WrappingStrategy>,
+                    wrappers: Deque<WrappingStrategy>,
                     initialSize: Size,
                     position: Position,
                     componentStyles: ComponentStyles)
@@ -30,11 +30,11 @@ class DefaultButton(private val text: String,
         getDrawSurface().putText(text, getWrapperOffset())
 
         EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), {
-            getDrawSurface().applyStyle(getComponentStyles().activate())
+            getDrawSurface().applyColorsFromStyle(getComponentStyles().activate())
             EventBus.emit(EventType.ComponentChange)
         })
         EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), {
-            getDrawSurface().applyStyle(getComponentStyles().mouseOver())
+            getDrawSurface().applyColorsFromStyle(getComponentStyles().mouseOver())
             EventBus.emit(EventType.ComponentChange)
         })
     }
@@ -44,24 +44,14 @@ class DefaultButton(private val text: String,
     }
 
     override fun giveFocus(input: Optional<Input>): Boolean {
-        getDrawSurface().applyStyle(getComponentStyles().giveFocus())
+        getDrawSurface().applyColorsFromStyle(getComponentStyles().giveFocus())
         EventBus.emit(EventType.ComponentChange)
         return true
     }
 
     override fun takeFocus(input: Optional<Input>) {
-        getDrawSurface().applyStyle(getComponentStyles().reset())
+        getDrawSurface().applyColorsFromStyle(getComponentStyles().reset())
         EventBus.emit(EventType.ComponentChange)
-//        var currSize = getEffectiveSize()
-//        var currentOffset = Position.DEFAULT_POSITION
-//        wrappers.forEach {
-//            currSize += it.getOccupiedSize()
-//            if(it === BOX_HIGHLIGHT) {
-//                it.remove(getDrawSurface(), currSize, currentOffset, getComponentStyles().getCurrentStyle())
-//            }
-//            currentOffset += it.getWrapperOffset()
-//        }
-//        wrappers.remove(BOX_HIGHLIGHT)
     }
 
     override fun getText() = text
