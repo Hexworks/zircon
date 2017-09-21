@@ -8,6 +8,7 @@ Currently only a Swing implementation is present but there other GUI platforms o
 *Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna) and parts of its codebase were ported to serve as a basis for this library.
 
 [![][circleci img]][circleci]
+[![codecov](https://codecov.io/gh/Hexworks/zircon/branch/master/graph/badge.svg)](https://codecov.io/gh/Hexworks/zircon)
 [![][license img]][license]
 
 ## Getting Started
