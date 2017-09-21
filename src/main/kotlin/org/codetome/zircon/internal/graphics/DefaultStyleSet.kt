@@ -4,19 +4,12 @@ import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentSkipListSet
-import java.util.concurrent.atomic.AtomicReference
 
-open class DefaultStyleSet(
-        foregroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
-        backgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
-        modifiers: Set<Modifier> = setOf()
+data class DefaultStyleSet(
+        private var foregroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
+        private var backgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
+        private val modifiers: MutableSet<Modifier> = mutableSetOf()
 ) : StyleSet {
-
-    private var foregroundColor = AtomicReference<TextColor>(foregroundColor)
-    private var backgroundColor = AtomicReference<TextColor>(backgroundColor)
-    private val modifiers = mutableSetOf<Modifier>()
 
     init {
         modifiers.forEach {
@@ -25,22 +18,22 @@ open class DefaultStyleSet(
     }
 
     override fun toStyleSet() = DefaultStyleSet(
-            foregroundColor = foregroundColor.get(),
-            backgroundColor = backgroundColor.get(),
-            modifiers = modifiers.toSet())
+            foregroundColor = foregroundColor,
+            backgroundColor = backgroundColor,
+            modifiers = modifiers.toMutableSet())
 
-    override fun getForegroundColor(): TextColor = foregroundColor.get()
+    override fun getForegroundColor(): TextColor = foregroundColor
 
-    override fun getBackgroundColor(): TextColor = backgroundColor.get()
+    override fun getBackgroundColor(): TextColor = backgroundColor
 
     override fun getActiveModifiers() = modifiers.toSet()
 
     override fun setBackgroundColor(backgroundColor: TextColor) {
-        this.backgroundColor.set(backgroundColor)
+        this.backgroundColor = backgroundColor
     }
 
     override fun setForegroundColor(foregroundColor: TextColor) {
-        this.foregroundColor.set(foregroundColor)
+        this.foregroundColor = foregroundColor
     }
 
     override fun enableModifiers(modifiers: Set<Modifier>) {
@@ -73,8 +66,8 @@ open class DefaultStyleSet(
     @Synchronized
     override fun resetColorsAndModifiers() {
         modifiers.clear()
-        foregroundColor.set(TextColorFactory.DEFAULT_FOREGROUND_COLOR)
-        backgroundColor.set(TextColorFactory.DEFAULT_BACKGROUND_COLOR)
+        foregroundColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR
+        backgroundColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR
     }
 
     @Synchronized

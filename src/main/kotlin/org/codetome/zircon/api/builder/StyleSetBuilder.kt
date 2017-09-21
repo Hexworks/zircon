@@ -35,7 +35,7 @@ class StyleSetBuilder {
     fun build(): StyleSet = DefaultStyleSet(
             foregroundColor = foregroundColor,
             backgroundColor = backgroundColor,
-            modifiers = modifiers.toSet())
+            modifiers = modifiers.toMutableSet())
 
     companion object {
 
