@@ -10,8 +10,6 @@ import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.ColorThemeRepository
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.factory.TextColorFactory
-import org.codetome.zircon.api.input.MouseAction
-import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.junit.Before
@@ -102,40 +100,6 @@ class DefaultRadioButtonTest {
     }
 
     @Test
-    fun shouldProperlyHandleMousePress() {
-        target.applyTheme(THEME)
-        val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
-            componentChanged.set(true)
-        })
-
-        EventBus.emit(
-                type = EventType.MousePressed(target.getId()),
-                data = MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.DEFAULT_POSITION))
-
-        assertThat(getButtonChar()).isEqualTo('o')
-        assertThat(componentChanged.get()).isTrue()
-        assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_ACTIVE_STYLE)
-    }
-
-    @Test
-    fun shouldProperlyHandleMouseRelease() {
-        target.applyTheme(THEME)
-        val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
-            componentChanged.set(true)
-        })
-
-        EventBus.emit(
-                type = EventType.MouseReleased(target.getId()),
-                data = MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.DEFAULT_POSITION))
-
-        assertThat(componentChanged.get()).isTrue()
-        assertThat(target.isSelected()).isTrue()
-        assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
-    }
-
-    @Test
     fun shouldProperlySelect() {
         val componentChanged = AtomicBoolean(false)
         EventBus.subscribe(EventType.ComponentChange, {
@@ -148,6 +112,18 @@ class DefaultRadioButtonTest {
         assertThat(componentChanged.get()).isTrue()
         assertThat(target.isSelected()).isTrue()
         assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
+    }
+
+    @Test
+    fun shouldSelectOnlyWhenNotAlreadySelected() {
+        target.select()
+        val componentChanged = AtomicBoolean(false)
+        EventBus.subscribe(EventType.ComponentChange, {
+            componentChanged.set(true)
+        })
+        target.select()
+
+        assertThat(componentChanged.get()).isFalse()
     }
 
     @Test
@@ -164,6 +140,17 @@ class DefaultRadioButtonTest {
         assertThat(componentChanged.get()).isTrue()
         assertThat(target.isSelected()).isFalse()
         assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
+    }
+
+    @Test
+    fun shouldDeselectOnlyWhenSelected() {
+        val componentChanged = AtomicBoolean(false)
+        EventBus.subscribe(EventType.ComponentChange, {
+            componentChanged.set(true)
+        })
+        target.removeSelection()
+
+        assertThat(componentChanged.get()).isFalse()
     }
 
     private fun getButtonChar() = target.getDrawSurface().getCharacterAt(Position.of(1, 0)).get().getCharacter()
@@ -193,12 +180,12 @@ class DefaultRadioButtonTest {
                 .build()
 
         val EXPECTED_FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.getBrightBackgroundColor())
+                .foregroundColor(THEME.getDarkBackgroundColor())
                 .backgroundColor(THEME.getAccentColor())
                 .build()
 
         val EXPECTED_ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.getBrightBackgroundColor())
+                .foregroundColor(THEME.getDarkForegroundColor())
                 .backgroundColor(THEME.getAccentColor())
                 .build()
     }
