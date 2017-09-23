@@ -28,4 +28,5 @@ interface InternalComponent : Component, Drawable, Focusable {
      */
     fun fetchComponentByPosition(position: Position): Optional<out InternalComponent>
 
+    fun setPosition(position: Position)
 }

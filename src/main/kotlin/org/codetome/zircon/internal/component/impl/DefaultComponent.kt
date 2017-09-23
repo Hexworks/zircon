@@ -100,13 +100,6 @@ abstract class DefaultComponent(initialSize: Size,
             .map { it.getOffset() }
             .fold(Position.TOP_LEFT_CORNER) { acc, position -> acc + position }
 
-    fun setPosition(position: Position) {
-        this.position = position
-        this.boundable = DefaultBoundable(
-                size = getBoundableSize(),
-                position = position)
-    }
-
     fun applyWrappers() {
         var currSize = getEffectiveSize()
         currentOffset = Position.DEFAULT_POSITION
@@ -124,6 +117,13 @@ abstract class DefaultComponent(initialSize: Size,
                     .build())
 
     final override fun getBoundableSize() = boundable.getBoundableSize()
+
+    override fun setPosition(position: Position) {
+        this.position = position
+        this.boundable = DefaultBoundable(
+                size = getBoundableSize(),
+                position = position)
+    }
 
     override fun containsBoundable(boundable: Boundable) = this.boundable.containsBoundable(boundable)
 
