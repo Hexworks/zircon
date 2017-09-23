@@ -151,7 +151,7 @@ class DefaultButtonTest {
                 .build()
 
         val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.getDarkBackgroundColor())
+                .foregroundColor(THEME.getBrightBackgroundColor())
                 .backgroundColor(THEME.getAccentColor())
                 .build()
 

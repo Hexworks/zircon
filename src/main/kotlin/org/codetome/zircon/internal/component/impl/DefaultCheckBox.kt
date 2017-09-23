@@ -38,12 +38,15 @@ class DefaultCheckBox(private val text: String,
     init {
         redrawContent()
 
-        EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), {
-            getDrawSurface().applyColorsFromStyle(getComponentStyles().activate())
-            checkBoxState = PRESSED
-            redrawContent()
-            EventBus.emit(EventType.ComponentChange)
-        })
+        // TODO: re-enable in next release and fix the bug when the mouse is moved
+        // TODO: after it is pressed and released on another component
+        // TODO: the pressed state persists
+//        EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), {
+//            getDrawSurface().applyColorsFromStyle(getComponentStyles().activate())
+//            checkBoxState = PRESSED
+//            redrawContent()
+//            EventBus.emit(EventType.ComponentChange)
+//        })
         EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), {
             getDrawSurface().applyColorsFromStyle(getComponentStyles().mouseOver())
             checkBoxState = if (checked) UNCHECKED else CHECKED
@@ -87,11 +90,11 @@ class DefaultCheckBox(private val text: String,
                         .backgroundColor(colorTheme.getAccentColor())
                         .build())
                 .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getBrightBackgroundColor())
+                        .foregroundColor(colorTheme.getDarkBackgroundColor())
                         .backgroundColor(colorTheme.getAccentColor())
                         .build())
                 .activeStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getBrightBackgroundColor())
+                        .foregroundColor(colorTheme.getDarkForegroundColor())
                         .backgroundColor(colorTheme.getAccentColor())
                         .build())
                 .build())

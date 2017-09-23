@@ -14,6 +14,7 @@ import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.InternalContainerHandler
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.EventType.*
 import org.codetome.zircon.internal.event.Subscription
 import java.util.*
 
@@ -21,12 +22,11 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
 
     private var lastMousePosition = Position.DEFAULT_POSITION
     private var lastHoveredComponentId = UUID.randomUUID()
-    private var lastFocusedComponentId = container.getId()
-    private var lastFocusedComponent = Optional.empty<InternalComponent>()
+    private var lastFocusedComponent: InternalComponent = container
     private var state = UNKNOWN
     private val subscriptions = mutableListOf<Subscription<*>>()
-    private var nextsLookup = mutableMapOf<UUID, InternalComponent>(Pair(container.getId(), container))
-    private var prevsLookup = mutableMapOf<UUID, InternalComponent>(Pair(container.getId(), container))
+    private val nextsLookup = mutableMapOf<UUID, InternalComponent>(Pair(container.getId(), container))
+    private val prevsLookup = nextsLookup.toMutableMap()
 
     private val keyStrokeHandlers = mapOf(
             Pair(NEXT_FOCUS_STROKE, this::focusNext),
@@ -34,30 +34,38 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
             Pair(CLICK_STROKE, this::clickFocused))
             .toMap()
 
+    @Synchronized
     override fun addComponent(component: Component) {
         container.addComponent(component)
         refreshFocusableLookup()
+        EventBus.emit(ComponentChange)
     }
 
+    @Synchronized
     override fun removeComponent(component: Component) {
         container.removeComponent(component)
         refreshFocusableLookup()
+        EventBus.emit(ComponentChange)
     }
 
+    @Synchronized
     override fun applyTheme(colorTheme: ColorTheme) {
         container.applyTheme(colorTheme)
+        EventBus.emit(ComponentChange)
     }
 
     override fun isActive() = state == ACTIVE
 
+    @Synchronized
     override fun activate() {
         state = ACTIVE
-        subscriptions.add(EventBus.subscribe<Input>(EventType.Input, { (input) ->
+        refreshFocusableLookup()
+        subscriptions.add(EventBus.subscribe<Input>(Input, { (input) ->
 
             keyStrokeHandlers[input]?.invoke()
 
             if (input is KeyStroke) {
-                EventBus.emit(EventType.KeyPressed, input)
+                EventBus.emit(KeyPressed, input)
             }
 
             if (input is MouseAction) {
@@ -66,21 +74,32 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
 
                     MOUSE_PRESSED -> container
                             .fetchComponentByPosition(input.position)
-                            .map {
-                                focusComponent(it.getId())
-                                EventBus.emit(EventType.MousePressed(it.getId()), input)
+                            .map { component ->
+                                focusComponent(component)
+                                EventBus.emit(MousePressed(component.getId()), input)
                             }
 
                     MOUSE_RELEASED -> container
                             .fetchComponentByPosition(input.position)
-                            .map { EventBus.emit(EventType.MouseReleased(it.getId()), input) }
+                            .map { component ->
+                                focusComponent(component)
+                                EventBus.emit(MouseReleased(component.getId()), input)
+                            }
                     else -> {
+                        // we don't handle other actions yet
                     }
                 }
             }
         }))
+        subscriptions.add(EventBus.subscribe(ComponentAddition, {
+            refreshFocusableLookup()
+        }))
+        subscriptions.add(EventBus.subscribe(ComponentRemoval, {
+            refreshFocusableLookup()
+        }))
     }
 
+    @Synchronized
     override fun deactivate() {
         subscriptions.forEach {
             EventBus.unsubscribe(it)
@@ -94,43 +113,30 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
     }
 
     private fun clickFocused() {
-        lastFocusedComponent.map {
-            EventBus.emit(
-                    type = EventType.MouseReleased(it.getId()),
-                    data = MouseAction(MOUSE_RELEASED, 1, it.getPosition()))
+        EventBus.emit(
+                type = MouseReleased(lastFocusedComponent.getId()),
+                data = MouseAction(MOUSE_RELEASED, 1, lastFocusedComponent.getPosition()))
+    }
+
+    private fun focusComponent(component: InternalComponent) {
+        if (component.acceptsFocus() && isNotAlreadyFocused(component)) {
+            lastFocusedComponent.takeFocus()
+            lastFocusedComponent = component
+            component.giveFocus()
         }
     }
 
-    private fun focusComponent(componentId: UUID) {
-        lastFocusedComponentId = prevsLookup[componentId]!!.getId()
-        focusNext()
-    }
+    private fun focusNext() = nextsLookup[lastFocusedComponent.getId()]?.let { focusComponent(it) }
 
-    private fun focusNext() {
-        nextsLookup[lastFocusedComponentId]?.let { next ->
-            lastFocusedComponent.map {
-                it.takeFocus()
-            }
-            lastFocusedComponentId = next.getId()
-            lastFocusedComponent = Optional.of(next)
-            next.giveFocus()
-        }
-    }
+    private fun focusPrevious() = prevsLookup[lastFocusedComponent.getId()]?.let { focusComponent(it) }
 
-    private fun focusPrevious() {
-        prevsLookup[lastFocusedComponentId]?.let { prev ->
-            lastFocusedComponent.map {
-                it.takeFocus()
-            }
-            lastFocusedComponentId = prev.getId()
-            lastFocusedComponent = Optional.of(prev)
-            prev.giveFocus()
-        }
-    }
+    private fun isNotAlreadyFocused(component: InternalComponent) =
+            lastFocusedComponent.getId() != component.getId()
 
     private fun refreshFocusableLookup() {
         nextsLookup.clear()
         prevsLookup.clear()
+
         val tree = container.fetchFlattenedComponentTree().filter { it.acceptsFocus() }
         if (tree.isNotEmpty()) {
             val first = tree.first()
@@ -149,7 +155,7 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
             }
             nextsLookup[prev.getId()] = container
             prevsLookup[container.getId()] = prev
-            lastFocusedComponentId = container.getId()
+            lastFocusedComponent = container
         }
     }
 
@@ -161,9 +167,9 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
                         lastHoveredComponentId != it.getId()
                     }
                     .map {
-                        EventBus.emit(EventType.MouseOut(lastHoveredComponentId))
+                        EventBus.emit(MouseOut(lastHoveredComponentId))
                         lastHoveredComponentId = it.getId()
-                        EventBus.emit(EventType.MouseOver(it.getId()))
+                        EventBus.emit(MouseOver(it.getId()))
                     }
         }
     }

@@ -63,7 +63,7 @@ class DefaultButton(private val text: String,
                         .backgroundColor(TextColorFactory.TRANSPARENT)
                         .build())
                 .mouseOverStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getDarkBackgroundColor())
+                        .foregroundColor(colorTheme.getBrightBackgroundColor())
                         .backgroundColor(colorTheme.getAccentColor())
                         .build())
                 .focusedStyle(StyleSetBuilder.newBuilder()

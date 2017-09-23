@@ -14,6 +14,8 @@ import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
+import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.event.EventType
 import java.util.*
 
 open class DefaultContainer(initialSize: Size,
@@ -35,9 +37,11 @@ open class DefaultContainer(initialSize: Size,
             }
             // TODO: if the component has the same size and position it adds it!!!
             require(containsBoundable(component)) {
-                "You can't add a component to a container which is not within its bounds!"
+                "You can't add a component to a container which is not within its bounds " +
+                        "(target size: ${getEffectiveSize()}, component size: ${component.getBoundableSize()})!"
             }
             components.add(dc)
+            EventBus.emit(EventType.ComponentAddition)
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
     }
 
@@ -49,8 +53,7 @@ open class DefaultContainer(initialSize: Size,
         return false
     }
 
-    override fun takeFocus(input: Optional<Input>) {
-    }
+    override fun takeFocus(input: Optional<Input>) {}
 
     override fun removeComponent(component: Component) {
         if (components.remove(component).not()) {
@@ -58,6 +61,7 @@ open class DefaultContainer(initialSize: Size,
                     .filter { it is Container }
                     .forEach { (it as Container).removeComponent(component) }
         }
+        EventBus.emit(EventType.ComponentRemoval)
     }
 
     override fun transformToLayers(): List<Layer> {
