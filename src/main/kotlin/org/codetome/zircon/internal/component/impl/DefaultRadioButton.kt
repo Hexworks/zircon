@@ -37,16 +37,6 @@ class DefaultRadioButton(private val text: String,
 
     init {
         redrawContent()
-
-        EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), {
-            getDrawSurface().applyColorsFromStyle(getComponentStyles().activate())
-            state = PRESSED
-            redrawContent()
-            EventBus.emit(EventType.ComponentChange)
-        })
-        EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), {
-            select()
-        })
     }
 
     private fun redrawContent() {
@@ -56,17 +46,21 @@ class DefaultRadioButton(private val text: String,
     override fun isSelected() = state == SELECTED
 
     override fun select() {
-        getDrawSurface().applyColorsFromStyle(getComponentStyles().mouseOver())
-        state = SELECTED
-        redrawContent()
-        EventBus.emit(EventType.ComponentChange)
+        if (state != SELECTED) {
+            getDrawSurface().applyColorsFromStyle(getComponentStyles().mouseOver())
+            state = SELECTED
+            redrawContent()
+            EventBus.emit(EventType.ComponentChange)
+        }
     }
 
     override fun removeSelection() {
-        getDrawSurface().applyColorsFromStyle(getComponentStyles().reset())
-        state = NOT_SELECTED
-        redrawContent()
-        EventBus.emit(EventType.ComponentChange)
+        if (state != NOT_SELECTED) {
+            getDrawSurface().applyColorsFromStyle(getComponentStyles().reset())
+            state = NOT_SELECTED
+            redrawContent()
+            EventBus.emit(EventType.ComponentChange)
+        }
     }
 
     override fun acceptsFocus(): Boolean {
@@ -97,11 +91,11 @@ class DefaultRadioButton(private val text: String,
                         .backgroundColor(colorTheme.getAccentColor())
                         .build())
                 .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getBrightBackgroundColor())
+                        .foregroundColor(colorTheme.getDarkBackgroundColor())
                         .backgroundColor(colorTheme.getAccentColor())
                         .build())
                 .activeStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getBrightBackgroundColor())
+                        .foregroundColor(colorTheme.getDarkForegroundColor())
                         .backgroundColor(colorTheme.getAccentColor())
                         .build())
                 .build())
@@ -115,7 +109,7 @@ class DefaultRadioButton(private val text: String,
 
     companion object {
 
-        private val PRESSED_BUTTON = "<o>"
+        private val PRESSED_BUTTON = "<o>" // TODO: not used now
         private val SELECTED_BUTTON = "<O>"
         private val NOT_SELECTED_BUTTON = "< >"
 
