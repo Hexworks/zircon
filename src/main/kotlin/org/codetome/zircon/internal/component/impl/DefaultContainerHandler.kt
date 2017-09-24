@@ -105,6 +105,8 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
             EventBus.unsubscribe(it)
         }
         subscriptions.clear()
+        lastFocusedComponent.takeFocus()
+        lastFocusedComponent = container
         state = DEACTIVATED
     }
 
