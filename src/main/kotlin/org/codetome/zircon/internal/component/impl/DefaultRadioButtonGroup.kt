@@ -24,6 +24,7 @@ import kotlin.collections.LinkedHashMap
 
 class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<WrappingStrategy>,
                                                         private val size: Size,
+                                                        private val spacing: Int,
                                                         position: Position,
                                                         componentStyles: ComponentStyles,
                                                         scrollable: Scrollable = DefaultScrollable(size, size))
@@ -60,7 +61,7 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
                     text = text,
                     wrappers = LinkedList(),
                     width = size.columns,
-                    position = Position.of(0, items.size),
+                    position = Position.of(0, items.size * spacing),
                     componentStyles = getComponentStyles()).let { button ->
                 items[key] = button
                 addComponent(button)
