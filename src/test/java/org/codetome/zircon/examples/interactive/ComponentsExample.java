@@ -32,10 +32,11 @@ public class ComponentsExample {
 
     private static final Size PANEL_SIZE = Size.of(22, 6);
     private static final Size TERMINAL_SIZE = Size.of(52, 28);
-    private static final ColorTheme PANELS_THEME = ColorThemeRepository.SOLARIZED_LIGHT_ORANGE.getTheme();
+    private static final ColorTheme PANELS_THEME = ColorThemeRepository.TECH_LIGHT.getTheme();
     private static final ColorTheme INPUTS_THEME = ColorThemeRepository.SOLARIZED_DARK_GREEN.getTheme();
     private static final ColorTheme ADD_REMOVE_THEME = ColorThemeRepository.GHOST_OF_A_CHANCE.getTheme();
-    private static final Font<BufferedImage> FONT = CP437TilesetResource.YOBBO_20X20.toFont();
+    private static final ColorThemeRepository THEME_PICKER_THEME = ColorThemeRepository.GAMEBOOKERS;
+    private static final Font<BufferedImage> FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont();
 
     private static final PanelBuilder PANEL_TEMPLATE = PanelBuilder.newBuilder().size(PANEL_SIZE);
 
@@ -201,6 +202,7 @@ public class ComponentsExample {
         final RadioButtonGroup radios = new DefaultRadioButtonGroup(
                 new LinkedList<>(),
                 Size.of(15, 3),
+                1,
                 Position.DEFAULT_POSITION,
                 ComponentStylesBuilder.DEFAULT);
         radioPanel.addComponent(radios);
@@ -278,7 +280,7 @@ public class ComponentsExample {
         // add/remove screen
         // ==============
 
-        AtomicReference<ColorThemeRepository> currentTheme = new AtomicReference<>(ColorThemeRepository.ADRIFT_IN_DREAMS);
+        AtomicReference<ColorThemeRepository> currentTheme = new AtomicReference<>(THEME_PICKER_THEME);
         AtomicReference<Label> currentThemeLabel = new AtomicReference<>(createLabelForTheme(currentTheme.get()));
 
         final Panel infoPanel = PanelBuilder.newBuilder()
