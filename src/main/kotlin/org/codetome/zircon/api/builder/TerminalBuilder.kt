@@ -22,6 +22,7 @@ import java.awt.image.BufferedImage
  */
 class TerminalBuilder {
 
+    private var fullScreen: Boolean = false
     private var initialSize: Size = Size.DEFAULT_TERMINAL_SIZE
     private var title: String = "Zircon Terminal"
     private var deviceConfiguration = DeviceConfigurationBuilder.getDefault()
@@ -43,6 +44,7 @@ class TerminalBuilder {
                 title = title,
                 size = initialSize,
                 deviceConfiguration = deviceConfiguration,
+                fullScreen = fullScreen,
                 font = font).apply {
             isVisible = true
         }
@@ -63,6 +65,10 @@ class TerminalBuilder {
      */
     fun title(title: String) = also {
         this.title = title
+    }
+
+    fun fullScreen() = also {
+        fullScreen = true
     }
 
     /**
@@ -97,10 +103,10 @@ class TerminalBuilder {
 
     private fun checkScreenSize() {
         val screenSize = Toolkit.getDefaultToolkit().screenSize
-        require(screenSize.width > font.getWidth() * initialSize.columns) {
+        require(screenSize.width >= font.getWidth() * initialSize.columns) {
             "The requested column count '${initialSize.columns}' for font width '${font.getWidth()}' won't fit on the screen (width: ${screenSize.width}"
         }
-        require(screenSize.height > font.getHeight() * initialSize.rows) {
+        require(screenSize.height >= font.getHeight() * initialSize.rows) {
             "The requested row count '${initialSize.rows}' for font height '${font.getHeight()}' won't fit on the screen (height: ${screenSize.height}"
         }
     }
