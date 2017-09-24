@@ -13,7 +13,12 @@ import java.util.*
 data class RadioButtonGroupBuilder(
         private var position: Position = Position.DEFAULT_POSITION,
         private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT,
-        private var size: Size = Size.ONE) : Builder<RadioButtonGroup> {
+        private var size: Size = Size.ONE,
+        private var spacing: Int = 1) : Builder<RadioButtonGroup> {
+
+    fun spacing(spacing: Int) = also {
+        this.spacing = spacing
+    }
 
     fun position(position: Position) = also {
         this.position = position
@@ -29,6 +34,7 @@ data class RadioButtonGroupBuilder(
 
     override fun build(): RadioButtonGroup {
         return DefaultRadioButtonGroup(
+                spacing = spacing,
                 wrappers = LinkedList<WrappingStrategy>(),
                 size = size,
                 position = position,
