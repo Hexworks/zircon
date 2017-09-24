@@ -38,7 +38,8 @@ open class DefaultContainer(initialSize: Size,
             // TODO: if the component has the same size and position it adds it!!!
             require(containsBoundable(component)) {
                 "You can't add a component to a container which is not within its bounds " +
-                        "(target size: ${getEffectiveSize()}, component size: ${component.getBoundableSize()})!"
+                        "(target size: ${getEffectiveSize()}, component size: ${component.getBoundableSize()}" +
+                        ", position: ${component.getPosition()})!"
             }
             components.add(dc)
             EventBus.emit(EventType.ComponentAddition)
