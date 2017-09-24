@@ -5,7 +5,6 @@ import org.codetome.zircon.api.component.builder.ColorThemeBuilder
 import org.codetome.zircon.api.factory.TextColorFactory
 
 enum class ColorThemeRepository(private val colorTheme: ColorTheme) {
-
     /**
      * Taken from
      * http://www.colourlovers.com/palette/580974/Adrift_in_Dreams
@@ -17,7 +16,6 @@ enum class ColorThemeRepository(private val colorTheme: ColorTheme) {
             .brightBackgroundColor(TextColorFactory.fromString("#3B8686"))
             .darkBackgroundColor(TextColorFactory.fromString("#0B486B"))
             .build()),
-
     /**
      * Taken from
      * http://www.colourlovers.com/palette/49963/let_them_eat_cake
@@ -29,7 +27,6 @@ enum class ColorThemeRepository(private val colorTheme: ColorTheme) {
             .brightBackgroundColor(TextColorFactory.fromString("#E08E79"))
             .darkBackgroundColor(TextColorFactory.fromString("#774F38"))
             .build()),
-
     /**
      * Taken from
      * http://www.colourlovers.com/palette/559428/lucky_bubble_gum
@@ -41,7 +38,6 @@ enum class ColorThemeRepository(private val colorTheme: ColorTheme) {
             .brightBackgroundColor(TextColorFactory.fromString("#67917A"))
             .darkBackgroundColor(TextColorFactory.fromString("#170409"))
             .build()),
-
     /**
      * Taken from
      * http://www.colourlovers.com/palette/15/tech_light
@@ -53,19 +49,6 @@ enum class ColorThemeRepository(private val colorTheme: ColorTheme) {
             .brightBackgroundColor(TextColorFactory.fromString("#26ADE4"))
             .darkBackgroundColor(TextColorFactory.fromString("#000000"))
             .build()),
-
-    /**
-     * Taken from
-     * http://www.colourlovers.com/palette/940086/mystery_machine
-     */
-    MYSTERY_MACHINE(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#F77825"))
-            .brightForegroundColor(TextColorFactory.fromString("#F1EFA5"))
-            .darkForegroundColor(TextColorFactory.fromString("#D3CE3D"))
-            .brightBackgroundColor(TextColorFactory.fromString("#60B99A"))
-            .darkBackgroundColor(TextColorFactory.fromString("#554236"))
-            .build()),
-
     /**
      * Taken from
      * http://www.colourlovers.com/palette/953498/Headache
@@ -77,19 +60,6 @@ enum class ColorThemeRepository(private val colorTheme: ColorTheme) {
             .brightBackgroundColor(TextColorFactory.fromString("#80BCA3"))
             .darkBackgroundColor(TextColorFactory.fromString("#655643"))
             .build()),
-
-    /**
-     * Taken from
-     * http://www.colourlovers.com/palette/46688/fresh_cut_day
-     */
-    FRESH_CUT_DAY(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#F9F2E7"))
-            .brightForegroundColor(TextColorFactory.fromString("#8FBE00"))
-            .darkForegroundColor(TextColorFactory.fromString("#AEE239"))
-            .brightBackgroundColor(TextColorFactory.fromString("#40C0CB"))
-            .darkBackgroundColor(TextColorFactory.fromString("#00A8C6"))
-            .build()),
-
     /**
      * Taken from
      * http://www.colourlovers.com/palette/148712/Gamebookers
@@ -101,7 +71,6 @@ enum class ColorThemeRepository(private val colorTheme: ColorTheme) {
             .brightBackgroundColor(TextColorFactory.fromString("#3299BB"))
             .darkBackgroundColor(TextColorFactory.fromString("#424242"))
             .build()),
-
     /**
      * Taken from
      * http://www.colourlovers.com/palette/903157/Entrapped_InAPalette
@@ -113,19 +82,6 @@ enum class ColorThemeRepository(private val colorTheme: ColorTheme) {
             .brightBackgroundColor(TextColorFactory.fromString("#493736"))
             .darkBackgroundColor(TextColorFactory.fromString("#2A2829"))
             .build()),
-
-    /**
-     * Taken from
-     * http://www.colourlovers.com/palette/444487/Curiosity_Killed
-     */
-    CURIOSITY_KILLED(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#99173C"))
-            .brightForegroundColor(TextColorFactory.fromString("#EFFFCD"))
-            .darkForegroundColor(TextColorFactory.fromString("#DCE9BE"))
-            .brightBackgroundColor(TextColorFactory.fromString("#555152"))
-            .darkBackgroundColor(TextColorFactory.fromString("#2E2633"))
-            .build()),
-
     /**
      * Taken from
      * http://www.colourlovers.com/palette/678929/War
@@ -137,19 +93,6 @@ enum class ColorThemeRepository(private val colorTheme: ColorTheme) {
             .brightBackgroundColor(TextColorFactory.fromString("#82B3AE"))
             .darkBackgroundColor(TextColorFactory.fromString("#230F2B"))
             .build()),
-
-    /**
-     * Taken from
-     * http://www.colourlovers.com/palette/634148/Thumbelina
-     */
-    THUMBELINA(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#AB526B"))
-            .brightForegroundColor(TextColorFactory.fromString("#F0E2A4"))
-            .darkForegroundColor(TextColorFactory.fromString("#F4EBC3"))
-            .brightBackgroundColor(TextColorFactory.fromString("#C5CEAE"))
-            .darkBackgroundColor(TextColorFactory.fromString("#BCA297"))
-            .build()),
-
     /**
      * Taken from
      * http://www.colourlovers.com/palette/557832/Captured_By_Pirates
@@ -161,7 +104,6 @@ enum class ColorThemeRepository(private val colorTheme: ColorTheme) {
             .brightBackgroundColor(TextColorFactory.fromString("#7A6248"))
             .darkBackgroundColor(TextColorFactory.fromString("#030506"))
             .build()),
-
     /**
      * Taken from
      * http://www.colourlovers.com/palette/4454375/ghost_of_a_chance
@@ -173,7 +115,61 @@ enum class ColorThemeRepository(private val colorTheme: ColorTheme) {
             .brightBackgroundColor(TextColorFactory.fromString("#7F7C69"))
             .darkBackgroundColor(TextColorFactory.fromString("#29210A"))
             .build()),
-
+    /**
+     * Taken from
+     * http://www.colourlovers.com/palette/1585870/after_the_heist
+     */
+    AFTER_THE_HEIST(ColorThemeBuilder.newBuilder()
+            .accentColor(TextColorFactory.fromString("#b86A6A"))
+            .brightForegroundColor(TextColorFactory.fromString("#F8EDD1"))
+            .darkForegroundColor(TextColorFactory.fromString("#C5CFC6"))
+            .brightBackgroundColor(TextColorFactory.fromString("#9D9D93"))
+            .darkBackgroundColor(TextColorFactory.fromString("#474843"))
+            .build()),
+    /**
+     * Taken from
+     * http://www.colourlovers.com/palette/731302/pablo_neruda
+     */
+    PABLO_NERUDA(ColorThemeBuilder.newBuilder()
+            .accentColor(TextColorFactory.fromString("#E6324B"))
+            .brightForegroundColor(TextColorFactory.fromString("#F2E3C6"))
+            .darkForegroundColor(TextColorFactory.fromString("#FFC6A5"))
+            .brightBackgroundColor(TextColorFactory.fromString("#353634"))
+            .darkBackgroundColor(TextColorFactory.fromString("#2B2B2B"))
+            .build()),
+    /**
+     * Taken from
+     * http://www.colourlovers.com/palette/27905/threadless
+     */
+    THREADLESS(ColorThemeBuilder.newBuilder()
+            .accentColor(TextColorFactory.fromString("#b24C2F"))
+            .brightForegroundColor(TextColorFactory.fromString("#E9F2F9"))
+            .darkForegroundColor(TextColorFactory.fromString("#9CC4E4"))
+            .brightBackgroundColor(TextColorFactory.fromString("#3A89C9"))
+            .darkBackgroundColor(TextColorFactory.fromString("#1B325F"))
+            .build()),
+    /**
+     * Taken from
+     * http://www.colourlovers.com/palette/38562/Hands_On
+     */
+    HANDS_ON(ColorThemeBuilder.newBuilder()
+            .accentColor(TextColorFactory.fromString("#94BA65"))
+            .brightForegroundColor(TextColorFactory.fromString("#2790B0"))
+            .darkForegroundColor(TextColorFactory.fromString("#4B6E92"))
+            .brightBackgroundColor(TextColorFactory.fromString("#4E4D4A"))
+            .darkBackgroundColor(TextColorFactory.fromString("#353432"))
+            .build()),
+    /**
+     * Taken from
+     * http://www.colourlovers.com/palette/2031222/Olive_Leaf_Tea
+     */
+    OLIVE_LEAF_TEA(ColorThemeBuilder.newBuilder()
+            .accentColor(TextColorFactory.fromString("#e99A44"))
+            .brightForegroundColor(TextColorFactory.fromString("#EAE7D1"))
+            .darkForegroundColor(TextColorFactory.fromString("#CCC58E"))
+            .brightBackgroundColor(TextColorFactory.fromString("#7B8455"))
+            .darkBackgroundColor(TextColorFactory.fromString("#485C2B"))
+            .build()),
     /**
      * All Solarized themes are taken from:
      * http://www.zovirl.com/2011/07/22/solarized_cheat_sheet/
