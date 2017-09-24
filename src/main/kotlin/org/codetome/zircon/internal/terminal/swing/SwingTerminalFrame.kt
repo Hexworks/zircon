@@ -16,6 +16,7 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
                          size: Size,
                          deviceConfiguration: DeviceConfiguration = DeviceConfigurationBuilder.getDefault(),
                          font: Font<BufferedImage>,
+                         fullScreen: Boolean,
                          private val canvas: Canvas = createCanvas(),
                          private val swingTerminal: SwingTerminal =
                          SwingTerminal(
@@ -29,6 +30,10 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
         add(canvas)
         canvas.preferredSize = swingTerminal.getPreferredSize()
         defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+        if(fullScreen) {
+            extendedState = JFrame.MAXIMIZED_BOTH
+            isUndecorated = true
+        }
         pack()
         setLocationRelativeTo(null)
         canvas.ignoreRepaint = true
