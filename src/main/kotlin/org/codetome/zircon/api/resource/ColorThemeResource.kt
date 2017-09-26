@@ -1,10 +1,12 @@
-package org.codetome.zircon.api.component
+package org.codetome.zircon.api.resource
 
-import org.codetome.zircon.api.component.ColorThemeRepository.SolarizedBase.*
+import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.builder.ColorThemeBuilder
 import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.resource.ColorThemeResource.SolarizedBase.SOLARIZED_DARK_BASE
+import org.codetome.zircon.api.resource.ColorThemeResource.SolarizedBase.SOLARIZED_LIGHT_BASE
 
-enum class ColorThemeRepository(private val colorTheme: ColorTheme) {
+enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     /**
      * Taken from
      * http://www.colourlovers.com/palette/580974/Adrift_in_Dreams
