@@ -7,7 +7,7 @@ import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.component.Button
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.internal.component.WrappingStrategy
-import org.codetome.zircon.internal.component.impl.ButtonWrappingStrategy
+import org.codetome.zircon.internal.component.impl.wrapping.ButtonWrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultButton
 import java.util.*
 

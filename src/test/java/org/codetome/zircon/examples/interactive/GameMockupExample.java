@@ -15,6 +15,7 @@ import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.component.builder.RadioButtonGroupBuilder;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
@@ -43,7 +44,7 @@ public class GameMockupExample {
     private static final int PANEL_SPACING = 2;
     private static final int FONT_SIZE = 16;
     private static final Size TERMINAL_SIZE;
-    private static final ColorTheme THEME = ColorThemeRepository.SOLARIZED_DARK_CYAN.getTheme();
+    private static final ColorTheme THEME = ColorThemeResource.SOLARIZED_DARK_YELLOW.getTheme();
     private static final Font<BufferedImage> FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont();
 
     static {
