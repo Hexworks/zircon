@@ -27,17 +27,11 @@ class DefaultLabel(private val text: String,
 
     override fun getText() = text
 
-    override fun acceptsFocus(): Boolean {
-        return false
-    }
+    override fun acceptsFocus() = false
 
-    override fun giveFocus(input: Optional<Input>): Boolean {
-        return false
-    }
+    override fun giveFocus(input: Optional<Input>) = false
 
-    override fun takeFocus(input: Optional<Input>) {
-
-    }
+    override fun takeFocus(input: Optional<Input>) {}
 
     override fun applyTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
