@@ -52,13 +52,18 @@ open class DefaultContainer(initialSize: Size,
 
     override fun takeFocus(input: Optional<Input>) {}
 
-    override fun removeComponent(component: Component) {
-        if (components.remove(component).not()) {
-            components
+    override fun removeComponent(component: Component): Boolean {
+        var removalHappened = components.remove(component)
+        if (removalHappened.not()) {
+            removalHappened = components
                     .filter { it is Container }
-                    .forEach { (it as Container).removeComponent(component) }
+                    .map { (it as Container).removeComponent(component) }
+                    .reduce(Boolean::or)
         }
-        EventBus.emit(EventType.ComponentRemoval)
+        if(removalHappened) {
+            EventBus.emit(EventType.ComponentRemoval)
+        }
+        return removalHappened
     }
 
     override fun transformToLayers(): List<Layer> {

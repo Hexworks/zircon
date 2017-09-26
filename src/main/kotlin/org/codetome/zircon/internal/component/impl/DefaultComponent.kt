@@ -81,8 +81,7 @@ abstract class DefaultComponent(initialSize: Size,
                           columns: Int,
                           destinationRowOffset: Int,
                           destinationColumnOffset: Int) {
-        drawSurface.drawOnto(destination, startRowIndex, rows, startColumnIndex, columns,
-                destinationRowOffset, destinationColumnOffset)
+        throw UnsupportedOperationException()
     }
 
     override fun fetchComponentByPosition(position: Position) =
