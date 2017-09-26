@@ -22,15 +22,15 @@ import java.util.function.Consumer
 
 abstract class DefaultComponent(initialSize: Size,
                                 private var position: Position,
+                                private var componentStyles: ComponentStyles,
+                                private val wrappers: Iterable<WrappingStrategy>,
                                 private val drawSurface: TextImage = TextImageBuilder.newBuilder()
                                         .filler(TextCharacterBuilder.EMPTY)
                                         .size(initialSize)
                                         .build(),
                                 private var boundable: Boundable = DefaultBoundable(
                                         size = initialSize,
-                                        position = position),
-                                private var componentStyles: ComponentStyles,
-                                private val wrappers: Iterable<WrappingStrategy>)
+                                        position = position))
     : InternalComponent, Drawable by drawSurface {
 
     private val id: UUID = UUID.randomUUID()
@@ -52,71 +52,6 @@ abstract class DefaultComponent(initialSize: Size,
             }
         })
     }
-
-    fun getDrawSurface() = drawSurface
-
-    /**
-     * Calculate the size taken by all the wrappers.
-     */
-    fun getWrappersSize() = wrappers.map { it.getOccupiedSize() }.fold(Size.ZERO) { acc, size -> acc + size }
-
-    /**
-     * Returns the size of all wrappers which are not themeable.
-     */
-    fun getNonThemedWrapperSize() = wrappers
-            .filter { it.isThemeNeutral() }
-            .map { it.getOccupiedSize() }
-            .fold(Size.ZERO) { acc, size -> acc + size }
-
-    /**
-     * Returns the size which this component takes up without its wrappers.
-     */
-    fun getEffectiveSize() = getBoundableSize() - getWrappersSize()
-
-    /**
-     * Returns the size which this component takes up with only its themeable wrappers.
-     */
-    fun getEffectiveThemeableSize() = getBoundableSize() - getNonThemedWrapperSize()
-
-    /**
-     * Returns the position of this component offset by the wrappers it has.
-     */
-    fun getEffectivePosition() = getPosition() + getWrapperOffset()
-
-    /**
-     * Returns the position from which themes should be applied.
-     */
-    fun getEffectiveThemeablePosition() = getPosition() + getNonThemeableOffset()
-
-    /**
-     * Returns the offset which is caused by the wrappers of this component.
-     * So basically this is the value of the component's position (`getPosition()`)
-     * plus the space which is taken up by the wrappers.
-     */
-    fun getWrapperOffset() = wrappers.map { it.getOffset() }.fold(Position.TOP_LEFT_CORNER) { acc, position -> acc + position }
-
-    fun getNonThemeableOffset() = wrappers
-            .filter { it.isThemeNeutral() }
-            .map { it.getOffset() }
-            .fold(Position.TOP_LEFT_CORNER) { acc, position -> acc + position }
-
-    fun applyWrappers() {
-        var currSize = getEffectiveSize()
-        currentOffset = Position.DEFAULT_POSITION
-        wrappers.forEach {
-            currSize += it.getOccupiedSize()
-            it.apply(drawSurface, currSize, currentOffset, componentStyles.getCurrentStyle())
-            currentOffset += it.getOffset()
-        }
-    }
-
-    open fun transformToLayers() =
-            listOf(LayerBuilder.newBuilder()
-                    .textImage(drawSurface)
-                    .offset(getPosition())
-                    .build())
-
-    final override fun getBoundableSize() = boundable.getBoundableSize()
 
     override fun setPosition(position: Position) {
         this.position = position
@@ -176,6 +111,71 @@ abstract class DefaultComponent(initialSize: Size,
 
         drawSurface.applyColorsFromStyle(componentStyles.getCurrentStyle(), getNonThemeableOffset(), getEffectiveThemeableSize())
     }
+
+    fun getDrawSurface() = drawSurface
+
+    /**
+     * Calculate the size taken by all the wrappers.
+     */
+    fun getWrappersSize() = wrappers.map { it.getOccupiedSize() }.fold(Size.ZERO) { acc, size -> acc + size }
+
+    /**
+     * Returns the size of all wrappers which are not themeable.
+     */
+    fun getNonThemedWrapperSize() = wrappers
+            .filter { it.isThemeNeutral() }
+            .map { it.getOccupiedSize() }
+            .fold(Size.ZERO) { acc, size -> acc + size }
+
+    /**
+     * Returns the size which this component takes up without its wrappers.
+     */
+    fun getEffectiveSize() = getBoundableSize() - getWrappersSize()
+
+    /**
+     * Returns the size which this component takes up with only its themeable wrappers.
+     */
+    fun getEffectiveThemeableSize() = getBoundableSize() - getNonThemedWrapperSize()
+
+    /**
+     * Returns the position of this component offset by the wrappers it has.
+     */
+    fun getEffectivePosition() = getPosition() + getWrapperOffset()
+
+    /**
+     * Returns the position from which themes should be applied.
+     */
+    fun getEffectiveThemeablePosition() = getPosition() + getNonThemeableOffset()
+
+    /**
+     * Returns the offset which is caused by the wrappers of this component.
+     * So basically this is the value of the component's position (`getPosition()`)
+     * plus the space which is taken up by the wrappers.
+     */
+    fun getWrapperOffset() = wrappers.map { it.getOffset() }.fold(Position.TOP_LEFT_CORNER) { acc, position -> acc + position }
+
+    fun getNonThemeableOffset() = wrappers
+            .filter { it.isThemeNeutral() }
+            .map { it.getOffset() }
+            .fold(Position.TOP_LEFT_CORNER) { acc, position -> acc + position }
+
+    open fun transformToLayers() =
+            listOf(LayerBuilder.newBuilder()
+                    .textImage(drawSurface)
+                    .offset(getPosition())
+                    .build())
+
+    private fun applyWrappers() {
+        var currSize = getEffectiveSize()
+        currentOffset = Position.DEFAULT_POSITION
+        wrappers.forEach {
+            currSize += it.getOccupiedSize()
+            it.apply(drawSurface, currSize, currentOffset, componentStyles.getCurrentStyle())
+            currentOffset += it.getOffset()
+        }
+    }
+
+    final override fun getBoundableSize() = boundable.getBoundableSize()
 
     override fun toString(): String {
         return "${javaClass.simpleName}(id=${id.toString().substring(0, 4)})"

@@ -7,7 +7,7 @@ import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.api.component.ColorThemeRepository
+import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.internal.event.EventBus
@@ -156,7 +156,7 @@ class DefaultRadioButtonTest {
     private fun getButtonChar() = target.getDrawSurface().getCharacterAt(Position.of(1, 0)).get().getCharacter()
 
     companion object {
-        val THEME = ColorThemeRepository.ADRIFT_IN_DREAMS.getTheme()
+        val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
         val WIDTH = 20
         val POSITION = Position.of(4, 5)

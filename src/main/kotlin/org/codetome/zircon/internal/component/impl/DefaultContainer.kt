@@ -46,13 +46,9 @@ open class DefaultContainer(initialSize: Size,
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
     }
 
-    override fun acceptsFocus(): Boolean {
-        return false
-    }
+    override fun acceptsFocus() = false
 
-    override fun giveFocus(input: Optional<Input>): Boolean {
-        return false
-    }
+    override fun giveFocus(input: Optional<Input>) = false
 
     override fun takeFocus(input: Optional<Input>) {}
 

@@ -7,7 +7,7 @@ import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.api.component.ColorThemeRepository
+import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.builder.ButtonBuilder
 import org.codetome.zircon.api.factory.TextColorFactory
@@ -133,7 +133,7 @@ class DefaultButtonTest {
     }
 
     companion object {
-        val THEME = ColorThemeRepository.ADRIFT_IN_DREAMS.getTheme()
+        val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
         val POSITION = Position.of(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
