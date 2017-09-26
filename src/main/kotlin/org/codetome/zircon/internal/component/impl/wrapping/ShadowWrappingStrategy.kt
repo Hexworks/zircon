@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal.component.impl
+package org.codetome.zircon.internal.component.impl.wrapping
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
@@ -10,7 +10,7 @@ import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.shape.LineFactory
 import org.codetome.zircon.internal.component.WrappingStrategy
 
-class ShadowWrappingStrategy(private val shadowChar: Char = Symbols.BLOCK_SPARSE) : WrappingStrategy {
+class ShadowWrappingStrategy(private val shadowChar: Char = DEFAULT_SHADOW_CHAR) : WrappingStrategy {
 
     override fun getOccupiedSize() = Size.of(1, 1)
 
@@ -36,4 +36,7 @@ class ShadowWrappingStrategy(private val shadowChar: Char = Symbols.BLOCK_SPARSE
 
     override fun isThemeNeutral() = true
 
+    companion object {
+        val DEFAULT_SHADOW_CHAR = Symbols.BLOCK_SPARSE
+    }
 }

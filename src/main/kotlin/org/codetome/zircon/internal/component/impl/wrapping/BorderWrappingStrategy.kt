@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal.component.impl
+package org.codetome.zircon.internal.component.impl.wrapping
 
 import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Modifiers.Border

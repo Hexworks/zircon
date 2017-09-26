@@ -8,10 +8,10 @@ import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Panel
 import org.codetome.zircon.internal.component.WrappingStrategy
-import org.codetome.zircon.internal.component.impl.BorderWrappingStrategy
-import org.codetome.zircon.internal.component.impl.BoxWrappingStrategy
+import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
+import org.codetome.zircon.internal.component.impl.wrapping.BoxWrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultPanel
-import org.codetome.zircon.internal.component.impl.ShadowWrappingStrategy
+import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.graphics.BoxType
 import java.util.*
 

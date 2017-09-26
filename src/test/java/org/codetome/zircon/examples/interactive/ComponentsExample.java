@@ -6,7 +6,6 @@ import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.builder.ComponentStylesBuilder;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
-import org.codetome.zircon.api.builder.LayerBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection;
@@ -14,6 +13,7 @@ import org.codetome.zircon.api.component.builder.*;
 import org.codetome.zircon.api.factory.TextColorFactory;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
@@ -32,10 +32,10 @@ public class ComponentsExample {
 
     private static final Size PANEL_SIZE = Size.of(22, 6);
     private static final Size TERMINAL_SIZE = Size.of(52, 28);
-    private static final ColorTheme PANELS_THEME = ColorThemeRepository.TECH_LIGHT.getTheme();
-    private static final ColorTheme INPUTS_THEME = ColorThemeRepository.SOLARIZED_DARK_GREEN.getTheme();
-    private static final ColorTheme ADD_REMOVE_THEME = ColorThemeRepository.GHOST_OF_A_CHANCE.getTheme();
-    private static final ColorThemeRepository THEME_PICKER_THEME = ColorThemeRepository.GAMEBOOKERS;
+    private static final ColorTheme PANELS_THEME = ColorThemeResource.TECH_LIGHT.getTheme();
+    private static final ColorTheme INPUTS_THEME = ColorThemeResource.SOLARIZED_DARK_GREEN.getTheme();
+    private static final ColorTheme ADD_REMOVE_THEME = ColorThemeResource.GHOST_OF_A_CHANCE.getTheme();
+    private static final ColorThemeResource THEME_PICKER_THEME = ColorThemeResource.GAMEBOOKERS;
     private static final Font<BufferedImage> FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont();
 
     private static final PanelBuilder PANEL_TEMPLATE = PanelBuilder.newBuilder().size(PANEL_SIZE);
@@ -280,7 +280,7 @@ public class ComponentsExample {
         // add/remove screen
         // ==============
 
-        AtomicReference<ColorThemeRepository> currentTheme = new AtomicReference<>(THEME_PICKER_THEME);
+        AtomicReference<ColorThemeResource> currentTheme = new AtomicReference<>(THEME_PICKER_THEME);
         AtomicReference<Label> currentThemeLabel = new AtomicReference<>(createLabelForTheme(currentTheme.get()));
 
         final Panel infoPanel = PanelBuilder.newBuilder()
@@ -322,13 +322,13 @@ public class ComponentsExample {
         colorThemesScreen.addComponent(solarizedDarkPanel);
         colorThemesScreen.addComponent(otherPanel);
 
-        final List<ColorThemeRepository> solarizedLightOptions = Arrays.stream(ColorThemeRepository.values())
+        final List<ColorThemeResource> solarizedLightOptions = Arrays.stream(ColorThemeResource.values())
                 .filter((option) -> option.name().startsWith("SOLARIZED_LIGHT"))
                 .collect(Collectors.toList());
-        final List<ColorThemeRepository> solarizedDarkOptions = Arrays.stream(ColorThemeRepository.values())
+        final List<ColorThemeResource> solarizedDarkOptions = Arrays.stream(ColorThemeResource.values())
                 .filter((option) -> option.name().startsWith("SOLARIZED_DARK"))
                 .collect(Collectors.toList());
-        final List<ColorThemeRepository> otherOptions = Arrays.stream(ColorThemeRepository.values())
+        final List<ColorThemeResource> otherOptions = Arrays.stream(ColorThemeResource.values())
                 .filter((option) -> !option.name().startsWith("SOLARIZED"))
                 .collect(Collectors.toList());
 
@@ -386,18 +386,18 @@ public class ComponentsExample {
     }
 
     private static void refreshTheme(Screen screen,
-                                     AtomicReference<ColorThemeRepository> themeRef,
+                                     AtomicReference<ColorThemeResource> themeRef,
                                      AtomicReference<Label> labelRef,
                                      Panel infoPanel,
                                      Selection selection) {
-        themeRef.set(ColorThemeRepository.valueOf(selection.getKey()));
+        themeRef.set(ColorThemeResource.valueOf(selection.getKey()));
         infoPanel.removeComponent(labelRef.get());
         labelRef.set(createLabelForTheme(themeRef.get()));
         infoPanel.addComponent(labelRef.get());
         screen.applyTheme(themeRef.get().getTheme());
     }
 
-    private static Label createLabelForTheme(ColorThemeRepository currentTheme) {
+    private static Label createLabelForTheme(ColorThemeResource currentTheme) {
         return LabelBuilder.newBuilder()
                 .text(currentTheme.name())
                 .build();
