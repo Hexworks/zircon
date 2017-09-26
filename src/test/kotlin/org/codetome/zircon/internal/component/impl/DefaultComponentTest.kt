@@ -4,11 +4,13 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
-import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.builder.*
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.input.MouseAction
+import org.codetome.zircon.api.input.MouseActionType
+import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
@@ -17,6 +19,7 @@ import org.junit.Before
 import org.junit.Test
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.function.Consumer
 
 class DefaultComponentTest {
 
@@ -84,9 +87,135 @@ class DefaultComponentTest {
         assertThat(componentChanged.get()).isTrue()
     }
 
+    @Test
+    fun shouldProperlySetNewPosition() {
+        target.setPosition(NEW_POSITION)
+
+        assertThat(target.getPosition()).isEqualTo(NEW_POSITION)
+    }
+
+    @Test
+    fun shouldContainBoundableWhichIsContained() {
+        assertThat(target.containsBoundable(DefaultBoundable(SIZE - Size.ONE, POSITION))).isTrue()
+    }
+
+    @Test
+    fun shouldNotContainBoundableWhichIsContained() {
+        assertThat(target.containsBoundable(DefaultBoundable(SIZE + Size.ONE, POSITION))).isFalse()
+    }
+
+    @Test
+    fun shouldContainPositionWhichIsContained() {
+        assertThat(target.containsPosition(POSITION)).isTrue()
+    }
+
+    @Test
+    fun shouldNotContainPositionWhichIsContained() {
+        assertThat(target.containsPosition(POSITION - Position.OFFSET_1x1)).isFalse()
+    }
+
+    @Test
+    fun shouldProperlyDrawOntoTextImage() {
+        val image = TextImageBuilder.newBuilder()
+                .size(SIZE + Size.of(POSITION.column, POSITION.row))
+                .build()
+        target.drawOnto(image)
+
+        assertThat(image.getCharacterAt(POSITION - Position.OFFSET_1x1).get())
+                .isEqualTo(TextCharacterBuilder.EMPTY)
+
+        target.getBoundableSize().fetchPositions().forEach {
+            assertThat(image.getCharacterAt(it + POSITION).get())
+                    .isEqualTo(target.getDrawSurface().getCharacterAt(it).get())
+        }
+    }
+
+    @Test(expected = UnsupportedOperationException::class)
+    fun shouldNotSupportSpecialDrawing() {
+        val image = TextImageBuilder.newBuilder()
+                .size(SIZE)
+                .build()
+        target.drawOnto(
+                destination = image,
+                startRowIndex = 0,
+                startColumnIndex = 0)
+    }
+
+    @Test
+    fun shouldProperlyFetchByPositionWhenContainsPosition() {
+        assertThat(target.fetchComponentByPosition(POSITION).get()).isEqualTo(target)
+    }
+
+    @Test
+    fun shouldNotFetchByPositionWhenDoesNotContainPosition() {
+        assertThat(target.fetchComponentByPosition(Position.of(100, 100))).isNotPresent
+    }
+
+    @Test
+    fun shouldProperlyListenToMousePress() {
+        val pressed = AtomicBoolean(false)
+        target.onMousePressed(Consumer {
+            pressed.set(true)
+        })
+
+        EventBus.emit(EventType.MousePressed(target.getId()), MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION))
+
+        assertThat(pressed.get()).isTrue()
+    }
+
+    @Test
+    fun shouldNotListenToMousePressOnOtherComponents() {
+        val pressed = AtomicBoolean(false)
+        target.onMousePressed(Consumer {
+            pressed.set(true)
+        })
+
+        EventBus.emit(EventType.MousePressed(UUID.randomUUID()), MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION))
+
+        assertThat(pressed.get()).isFalse()
+    }
+
+    @Test
+    fun shouldProperlyListenToMouseRelease() {
+        val pressed = AtomicBoolean(false)
+        target.onMouseReleased(Consumer {
+            pressed.set(true)
+        })
+
+        EventBus.emit(EventType.MouseReleased(target.getId()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+
+        assertThat(pressed.get()).isTrue()
+    }
+
+    @Test
+    fun shouldNotListenToMouseReleaseOnOtherComponents() {
+        val pressed = AtomicBoolean(false)
+        target.onMouseReleased(Consumer {
+            pressed.set(true)
+        })
+
+        EventBus.emit(EventType.MouseReleased(UUID.randomUUID()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+
+        assertThat(pressed.get()).isFalse()
+    }
+
+    @Test
+    fun shouldProperlyTransformToLayers() {
+        val result = target.transformToLayers()
+        assertThat(result).hasSize(1)
+        assertThat(result.first().getBoundableSize()).isEqualTo(target.getBoundableSize())
+        assertThat(result.first().getPosition()).isEqualTo(target.getPosition())
+    }
+
+    @Test
+    fun shouldBeEqualToItself() {
+        assertThat(target).isEqualTo(target)
+    }
+
     companion object {
         val SIZE = Size.of(4, 4)
         val POSITION = Position.of(2, 3)
+        val NEW_POSITION = Position.of(6, 7)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITextColor.BLUE)
                 .foregroundColor(ANSITextColor.RED)

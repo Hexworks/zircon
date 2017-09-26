@@ -20,6 +20,7 @@ interface Container : Component {
      * *Note that* this function is applied recursively until
      * it either traverses the whole component tree or finds
      * the component to remove.
+     * @return true if a removal happened
      */
-    fun removeComponent(component: Component)
+    fun removeComponent(component: Component): Boolean
 }
