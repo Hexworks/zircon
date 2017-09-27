@@ -9,7 +9,8 @@ Currently only a Swing implementation is present but we are working on a libGDX 
  for this library.
 
 [![][circleci img]][circleci]
-[![codecov](https://codecov.io/gh/Hexworks/zircon/branch/master/graph/badge.svg)](https://codecov.io/gh/Hexworks/zircon)
+[![][maven img]][maven]
+[![][codecov img]][codecov]
 [![][license img]][license]
 
 ## A little Crash Course
@@ -213,8 +214,13 @@ Zircon is powered by:
 [license]:https://github.com/Hexworks/zircon/blob/master/LICENSE
 [license img]:https://img.shields.io/badge/License-MIT-green.svg
 
+[maven]:https://mvnrepository.com/artifact/org.codetome.zircon/zircon/2017.1.0
+[maven img]:https://maven-badges.herokuapp.com/maven-central/org.codetome.zircon/zircon/badge.svg
+
+
 [tilesetFont modifiers img]:https://github.com/Hexworks/zircon/blob/master/src/main/resources/modifiers_example.png
 [button img]:https://github.com/Hexworks/zircon/blob/master/src/main/resources/button.png
+
 
 [Layerable]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/behavior/Layerable.kt
 [Layer]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/graphics/Layer.kt
