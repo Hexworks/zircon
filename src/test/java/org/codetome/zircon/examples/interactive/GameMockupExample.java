@@ -42,18 +42,10 @@ public class GameMockupExample {
     private static final int MAIN_MENU_PANEL_HEIGHT = 10;
     private static final int PANEL_SPACING = 2;
     private static final int FONT_SIZE = 16;
-    private static final Size TERMINAL_SIZE;
     private static final ColorTheme THEME = ColorThemeResource.SOLARIZED_DARK_YELLOW.getTheme();
     private static final Font<BufferedImage> FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont();
 
     private static boolean headless = false;
-
-    static {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double columns = screenSize.getWidth() / FONT_SIZE;
-        double rows = screenSize.getHeight() / FONT_SIZE;
-        TERMINAL_SIZE = Size.of((int) columns, (int) rows);
-    }
 
     @Test
     public void checkSetup() {
@@ -64,9 +56,14 @@ public class GameMockupExample {
         if(args.length > 0) {
             headless = true;
         }
+        Dimension screenSize = headless ? new Dimension(1920, 1080) : Toolkit.getDefaultToolkit().getScreenSize();
+        double columns = screenSize.getWidth() / FONT_SIZE;
+        double rows = screenSize.getHeight() / FONT_SIZE;
+        Size terminalSize = Size.of((int) columns, (int) rows);
+
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalBuilder.newBuilder()
-                .initialTerminalSize(TERMINAL_SIZE)
+                .initialTerminalSize(terminalSize)
                 .fullScreen()
                 .font(FONT)
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
@@ -81,8 +78,8 @@ public class GameMockupExample {
 
         Screen mainMenuScreen = buildScreen(terminal);
         Position menuPosition = Position.of(
-                (TERMINAL_SIZE.getColumns() - MAIN_MENU_PANEL_WIDTH) / 2,
-                (TERMINAL_SIZE.getRows() - MAIN_MENU_PANEL_HEIGHT) / 2);
+                (terminalSize.getColumns() - MAIN_MENU_PANEL_WIDTH) / 2,
+                (terminalSize.getRows() - MAIN_MENU_PANEL_HEIGHT) / 2);
         Label mainMenuLabel = LabelBuilder.newBuilder()
                 .text(MAIN_MENU_LABEL)
                 .position(menuPosition.withRelativeRow(-3).withRelativeColumn(4))
@@ -127,7 +124,7 @@ public class GameMockupExample {
                 .text(BACK_LABEL)
                 .position(Position.of(
                         PANEL_SPACING,
-                        TERMINAL_SIZE.getRows() - PANEL_SPACING))
+                        terminalSize.getRows() - PANEL_SPACING))
                 .build();
         optionsScreen.addComponent(backButton);
 
@@ -138,7 +135,7 @@ public class GameMockupExample {
         optionsScreen.addComponent(applyButton);
 
         Panel difficultyPanel = PanelBuilder.newBuilder()
-                .size(Size.of((TERMINAL_SIZE.getColumns() - PANEL_SPACING) / 3, 9))
+                .size(Size.of((terminalSize.getColumns() - PANEL_SPACING) / 3, 9))
                 .position(Position.of(PANEL_SPACING, PANEL_SPACING))
                 .wrapInBox()
                 .boxType(BoxType.LEFT_RIGHT_DOUBLE)

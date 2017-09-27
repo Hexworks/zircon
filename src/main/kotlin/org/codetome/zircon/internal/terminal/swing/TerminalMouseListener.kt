@@ -9,7 +9,7 @@ import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
-import org.slf4j.LoggerFactory
+import java.awt.GraphicsEnvironment
 import java.awt.MouseInfo
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
@@ -24,7 +24,8 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
     private var lastMouseLocation = Position.UNKNOWN
 
     override fun mouseClicked(e: MouseEvent) {
-        if (MouseInfo.getNumberOfButtons() > 2 &&
+        if (GraphicsEnvironment.isHeadless().not() &&
+                MouseInfo.getNumberOfButtons() > 2 &&
                 e.button == MouseEvent.BUTTON2 &&
                 deviceConfiguration.isClipboardAvailable) {
             pasteSelectionContent()
