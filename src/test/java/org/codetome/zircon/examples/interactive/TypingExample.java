@@ -40,7 +40,7 @@ public class TypingExample {
                         .cursorBlinking(true)
                         .build());
         final Terminal terminal = builder.buildTerminal();
-        final Screen screen = builder.createScreenFor(terminal);
+        final Screen screen = TerminalBuilder.createScreenFor(terminal);
 
 //        startTypingSupportForScreen(screen);
         startTypingSupportForTerminal(terminal);

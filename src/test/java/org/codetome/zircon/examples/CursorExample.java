@@ -4,16 +4,24 @@ import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.factory.TextColorFactory;
+import org.codetome.zircon.api.font.Font;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.PhysicalFontResource;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
 
+import java.awt.image.BufferedImage;
+
 public class CursorExample {
+
+    private static final int TERMINAL_WIDTH = 16;
+    private static final int TERMINAL_HEIGHT = 16;
+    private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
 
     public static void main(String[] args) {
         // we create a new terminal using TerminalBuilder
         final Terminal terminal = TerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.of(30, 8))
+                .initialTerminalSize(SIZE)
                 .font(PhysicalFontResource.SOURCE_CODE_PRO.toFont())
                 // we only override the device config
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()

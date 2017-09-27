@@ -4,21 +4,32 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.builder.LayerBuilder;
+import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.factory.TextColorFactory;
+import org.codetome.zircon.api.font.Font;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.shape.FilledRectangleFactory;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.screen.Screen;
+import org.codetome.zircon.api.terminal.Terminal;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.codetome.zircon.api.resource.CP437TilesetResource.*;
 
 public class HideNSeek {
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
+    private static final int TERMINAL_WIDTH = 16;
+    private static final int TERMINAL_HEIGHT = 16;
+    private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
+    private static final Font<BufferedImage> FONT = CP437TilesetResource.TAFFER_20X20.toFont();
 
     static {
         EXIT_CONDITIONS.add(InputType.Escape);
@@ -27,10 +38,11 @@ public class HideNSeek {
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
-        final Screen screen = org.codetome.zircon.api.builder.TerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.of(40, 20))
-                .font(org.codetome.zircon.api.resource.CP437TilesetResource.TAFFER_20X20.toFont())
-                .buildScreen();
+        final Terminal terminal = TerminalBuilder.newBuilder()
+                .font(FONT)
+                .initialTerminalSize(SIZE)
+                .buildTerminal();
+        final Screen screen = TerminalBuilder.createScreenFor(terminal);
         Size size = screen.getBoundableSize();
         screen.setCursorVisible(false); // we don't want the cursor right now
         FilledRectangleFactory

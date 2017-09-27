@@ -5,15 +5,23 @@ import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.TextCharacter;
 import org.codetome.zircon.api.builder.LayerBuilder;
+import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.factory.TextColorFactory;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.color.ANSITextColor;
+import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Layer;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
+import org.codetome.zircon.api.terminal.Terminal;
+import org.junit.Test;
 
+import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Random;
+
+import static org.codetome.zircon.api.resource.CP437TilesetResource.*;
 
 public class TilesetExample {
 
@@ -32,9 +40,11 @@ public class TilesetExample {
 
     private static final int TERMINAL_WIDTH = 40;
     private static final int TERMINAL_HEIGHT = 40;
+    private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
+    private static final Font<BufferedImage> FONT = WANDERLUST_16X16.toFont();
     private static final TextCharacter GRASS_0 = TextCharacter.of(
             ',',
-            org.codetome.zircon.api.factory.TextColorFactory.fromString("#33cc44"),
+            TextColorFactory.fromString("#33cc44"),
             TextColorFactory.fromString("#114911"),
             new HashSet<>());
     private static final TextCharacter GRASS_1 = TextCharacter.of(
@@ -51,11 +61,17 @@ public class TilesetExample {
     private static final TextColor TEXT_COLOR = TextColorFactory.fromString("#dd6644");
     private static final TextColor TEXT_BG_COLOR = TextColorFactory.fromString("#00ff00");
 
+    @Test
+    public void checkSetup() {
+        main(new String[]{"test"});
+    }
+
     public static void main(String[] args) {
-        final Screen screen = org.codetome.zircon.api.builder.TerminalBuilder.newBuilder()
-                .font(org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16.toFont())
-                .initialTerminalSize(Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT))
-                .buildScreen();
+        final Terminal terminal = TerminalBuilder.newBuilder()
+                .font(FONT)
+                .initialTerminalSize(SIZE)
+                .buildTerminal(args.length > 0);
+        final Screen screen = TerminalBuilder.createScreenFor(terminal);
         screen.setCursorVisible(false);
 
         final Random random = new Random();

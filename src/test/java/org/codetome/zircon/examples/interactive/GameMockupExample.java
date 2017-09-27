@@ -166,7 +166,7 @@ public class GameMockupExample {
     }
 
     private static Screen buildScreen(Terminal terminal) {
-        Screen result = TerminalBuilder.newBuilder().createScreenFor(terminal);
+        Screen result = TerminalBuilder.createScreenFor(terminal);
         return result;
     }
 }
