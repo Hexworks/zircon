@@ -1,19 +1,55 @@
 # Zircon
 
-Zircon is a terminal emulator which targets multiple GUI platforms and designed specifically for game developers.
+Zircon is a Text GUI library which targets multiple platforms and designed specifically for game developers.
 It is usable out of the box for all JVM languages including Java.
 
-Currently only a Swing implementation is present but there other GUI platforms on the road map.
+Currently only a Swing implementation is present but we are working on a libGDX one.
 
-*Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna) and parts of its codebase were ported to serve as a basis for this library.
+*Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna) and parts of its codebase were ported to serve as a basis
+ for this library.
 
 [![][circleci img]][circleci]
 [![codecov](https://codecov.io/gh/Hexworks/zircon/branch/master/graph/badge.svg)](https://codecov.io/gh/Hexworks/zircon)
 [![][license img]][license]
 
+## A little Crash Course
+
+In order to work with Zircon you should get familiar with the core concepts. Zircon provides multiple layers of abstractions and it depends on
+your needs which one you should pick.
+
+### Terminal
+At the lowest level Zircon provides the [Terminal] interface. This provides you with a surface on which you can draw [TextCharacter]s.
+A [TextCharacter] is basically a character (like an `x`) with additional metadata like `foregroundColor` and `backgroundColor`.
+This surface sits on top of a GUI layer and completely abstracts away how that layer works.
+For example the default implementation of the [Terminal] interface uses Swing under the hood.
+The main advantage of using [Terminal]s is that by implementing all its methods you can swap Swing with something else (like SWT) and use **all** higher
+level abstractions on top of it (like [Screen]s) which depend on [Terminal] (more on [Screen]s later).
+Working with [Terminal]s is *very* simple but somewhat limited. A [Terminal] is responsible for:
+
+- drawing characters (by position or by cursor) on the screen
+- handling inputs (keyboard and mouse) which are emitted by the GUI layer
+- handling the cursor which is visible to the user
+- handling [Layer]ing
+- storing style information
+- drawing [TextImage]s on top of it
+
+This seems like a lot of things to do at once so you might ask "How is this [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design))?". Zircon
+solves this problem with composition: All of the above mentioned categories are handled by an object within a [Terminal] which is responsible for only
+one thing. For example [Terminal] implements the [Layerable] interface and internally all operations defined by it are delegated to an object
+which implements [Layerable] only. You can peruse these [here](https://github.com/Hexworks/zircon/tree/master/src/main/kotlin/org/codetome/zircon/api/behavior).
+
+## Modifiers
+When working with [TextCharacter]s apart from giving them color you might want to apply some special [Modifier] to them like `UNDERLINE` or `VERTICAL_FLIP`.
+You can do this by picking the right [Modifier] from the [Modifiers] class. You can set any number of [Modifier]s to each [TextCharacter] individually and when
+you refresh your [Terminal] by calling `flush` on it you will see them applied.
+
+## TextImages
+A [TextImage] is an in-memory object on which you can draw [TextCharacter]s and later you can draw the [TextImage] itself on your [Terminal]. This is useful
+to create ASCII art for example and paste it on your [Terminal] multiple times or save it for later use.
+
 ## Getting Started
 
-If you want to work with Zircon you can add it to your project as a dependency
+If you want to work with Zircon you can add it to your project as a dependency.
 
 from Maven:
 
@@ -31,6 +67,11 @@ or you can also use Gradle:
 compile("org.codetome.zircon:zircon:2017.1.0")
 
 ```
+
+
+
+
+
 
 ### Creating a Terminal
 
@@ -211,8 +252,13 @@ Zircon is powered by:
 [tilesetFont modifiers img]:https://github.com/Hexworks/zircon/blob/master/src/main/resources/modifiers_example.png
 [button img]:https://github.com/Hexworks/zircon/blob/master/src/main/resources/button.png
 
+[Layerable]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/behavior/Layerable.kt
+[Layer]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/graphics/Layer.kt
+[TextColor]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/color/TextColor.kt
+[TextCharacter]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/TextCharacter.kt
 [Terminal]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/terminal/Terminal.kt
 [Modifier]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/Modifier.kt
+[Modifiers]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/Modifiers.kt
 [InputProvider]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/input/InputProvider.kt
 [Input]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/input/Input.kt
 [TextGraphics]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/graphics/TextGraphics.kt
