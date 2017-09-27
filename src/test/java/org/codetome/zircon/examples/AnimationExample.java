@@ -30,7 +30,6 @@ public class AnimationExample {
         main(new String[]{"test"});
     }
 
-
     public static void main(String[] args) {
         final Terminal terminal = TerminalBuilder.newBuilder()
                 .font(FONT)

@@ -19,6 +19,7 @@ import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
 import org.codetome.zircon.internal.component.impl.DefaultRadioButtonGroup;
 import org.codetome.zircon.internal.graphics.BoxType;
+import org.junit.Test;
 
 import java.awt.image.BufferedImage;
 import java.util.*;
@@ -40,6 +41,11 @@ public class ComponentsExample {
 
     private static final PanelBuilder PANEL_TEMPLATE = PanelBuilder.newBuilder().size(PANEL_SIZE);
 
+    @Test
+    public void checkSetup() {
+        main(new String[]{"test"});
+    }
+
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalBuilder.newBuilder()
@@ -51,12 +57,12 @@ public class ComponentsExample {
                         .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
                         .cursorColor(TextColorFactory.fromString("#ff00ff"))
                         .build())
-                .buildTerminal();
+                .buildTerminal(args.length > 0);
 
-        Screen panelsScreen = TerminalBuilder.newBuilder().createScreenFor(terminal);
-        Screen inputsScreen = TerminalBuilder.newBuilder().createScreenFor(terminal);
-        Screen addAndRemoveScreen = TerminalBuilder.newBuilder().createScreenFor(terminal);
-        Screen colorThemesScreen = TerminalBuilder.newBuilder().createScreenFor(terminal);
+        Screen panelsScreen = TerminalBuilder.createScreenFor(terminal);
+        Screen inputsScreen = TerminalBuilder.createScreenFor(terminal);
+        Screen addAndRemoveScreen = TerminalBuilder.createScreenFor(terminal);
+        Screen colorThemesScreen = TerminalBuilder.createScreenFor(terminal);
         final List<Screen> screens = Arrays.asList(
                 panelsScreen,
                 inputsScreen,

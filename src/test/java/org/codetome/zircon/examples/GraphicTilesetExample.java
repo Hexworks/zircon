@@ -6,8 +6,10 @@ import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.resource.GraphicTilesetResource;
+import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy;
+import org.junit.Test;
 
 import java.awt.image.BufferedImage;
 import java.util.Random;
@@ -22,6 +24,10 @@ public class GraphicTilesetExample {
     private static final char[] CHARS = new char[]{'a', 'b', 'c'};
     private static final Random RANDOM = new Random();
 
+    @Test
+    public void checkSetup() {
+        main(new String[]{"test"});
+    }
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
@@ -29,8 +35,7 @@ public class GraphicTilesetExample {
         final Terminal terminal = TerminalBuilder.newBuilder()
                 .font(FONT)
                 .initialTerminalSize(SIZE)
-                .buildTerminal();
-        final org.codetome.zircon.api.screen.Screen screen = TerminalBuilder.createScreenFor(terminal);
+                .buildTerminal(args.length > 0);
         terminal.setCursorVisible(false); // we don't want the cursor right now
 
         for (int row = 0; row < TERMINAL_HEIGHT; row++) {

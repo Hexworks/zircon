@@ -6,6 +6,7 @@ import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.junit.Test;
 
 import java.awt.image.BufferedImage;
 import java.util.stream.Collectors;
@@ -24,12 +25,17 @@ public class FontModifiersExample {
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static final Font<BufferedImage> FONT = WANDERLUST_16X16.toFont();
 
+    @Test
+    public void checkSetup() {
+        main(new String[]{"test"});
+    }
+
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalBuilder.newBuilder()
                 .font(FONT)
                 .initialTerminalSize(SIZE)
-                .buildTerminal();
+                .buildTerminal(args.length > 0);
         terminal.setCursorVisible(false); // we don't want the cursor right now
 
         terminal.enableModifier(VERTICAL_FLIP);

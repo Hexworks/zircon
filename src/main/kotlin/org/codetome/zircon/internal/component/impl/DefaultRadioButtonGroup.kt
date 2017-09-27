@@ -39,10 +39,8 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
 
     init {
         refreshContent()
-        EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), { (mouseAction) ->
+        EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), { (_) ->
             getDrawSurface().applyColorsFromStyle(getComponentStyles().mouseOver())
-            val row = mouseAction.position - getPosition()
-            println("Row is: $row")
             refreshContent()
             EventBus.emit(EventType.ComponentChange)
         })
@@ -55,31 +53,32 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
         }
     }
 
-    override fun addOption(key: String, text: String) {
-        if (items.size < size.columns) {
-            DefaultRadioButton(
-                    text = text,
-                    wrappers = LinkedList(),
-                    width = size.columns,
-                    position = Position.of(0, items.size * spacing),
-                    componentStyles = getComponentStyles()).let { button ->
-                items[key] = button
-                addComponent(button)
-                EventBus.subscribe<MouseAction>(EventType.MouseReleased(button.getId()), {
-                    selectedItem.map { lastSelected ->
-                        if (lastSelected != key) {
-                            items[lastSelected]?.removeSelection()
-                        }
+    override fun addOption(key: String, text: String): RadioButton {
+        require(items.size * spacing + spacing + 1 < size.columns) {
+            "This RadioButtonGroup does not have enough space for another option!"
+        }
+        return DefaultRadioButton(
+                text = text,
+                wrappers = LinkedList(),
+                width = size.columns,
+                position = Position.of(0, items.size * spacing),
+                componentStyles = getComponentStyles()).also { button ->
+            items[key] = button
+            addComponent(button)
+            EventBus.subscribe<MouseAction>(EventType.MouseReleased(button.getId()), {
+                selectedItem.map { lastSelected ->
+                    if (lastSelected != key) {
+                        items[lastSelected]?.removeSelection()
                     }
-                    selectedItem = Optional.of(key)
-                    items[key]?.let { button ->
-                        button.select()
-                        selectionListeners.forEach {
-                            it.accept(DefaultSelection(key, button.getText()))
-                        }
+                }
+                selectedItem = Optional.of(key)
+                items[key]?.let { button ->
+                    button.select()
+                    selectionListeners.forEach {
+                        it.accept(DefaultSelection(key, button.getText()))
                     }
-                })
-            }
+                }
+            })
         }
     }
 

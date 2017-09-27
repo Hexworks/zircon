@@ -14,6 +14,7 @@ import org.codetome.zircon.api.graphics.Box;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.internal.graphics.BoxType;
 import org.codetome.zircon.api.screen.Screen;
+import org.junit.Test;
 
 import java.awt.image.BufferedImage;
 
@@ -29,11 +30,16 @@ public class PanelDrawingExample {
     private static final TextColor PANEL_BG_COLOR = TextColorFactory.fromString("#666666");
     private static final TextColor PANEL_FG_COLOR = TextColorFactory.fromString("#ffffff");
 
+    @Test
+    public void checkSetup() {
+        main(new String[]{"test"});
+    }
+
     public static void main(String[] args) {
         final Terminal terminal = TerminalBuilder.newBuilder()
                 .font(FONT)
                 .initialTerminalSize(SIZE)
-                .buildTerminal();
+                .buildTerminal(args.length > 0);
         final Screen screen = TerminalBuilder.createScreenFor(terminal);
         screen.setCursorVisible(false);
 
