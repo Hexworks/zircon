@@ -3,39 +3,40 @@ package org.codetome.zircon.examples;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.AnimationBuilder;
-import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.component.builder.LabelBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
+import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Animation;
-import org.codetome.zircon.api.graphics.AnimationFrame;
 import org.codetome.zircon.api.graphics.AnimationHandler;
 import org.codetome.zircon.api.resource.AnimationResource;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
+import org.codetome.zircon.api.terminal.Terminal;
+import org.junit.Test;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.awt.image.BufferedImage;
 
 public class AnimationExample {
 
+    private static final Font<BufferedImage> FONT = CP437TilesetResource.YOBBO_20X20.toFont();
     private static final Size TERMINAL_SIZE = Size.of(50, 30);
     private static final Position LEFT_POS = Position.of(8, 5);
     private static final Position RIGHT_POS = Position.of(29, 5);
 
+    @Test
+    public void checkSetup() {
+        main(new String[]{"test"});
+    }
+
+
     public static void main(String[] args) {
-        final Screen screen = TerminalBuilder.newBuilder()
+        final Terminal terminal = TerminalBuilder.newBuilder()
+                .font(FONT)
                 .initialTerminalSize(TERMINAL_SIZE)
-                .font(CP437TilesetResource.YOBBO_20X20.toFont())
-                .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
-                        .build())
-                .buildScreen();
+                .buildTerminal(args.length > 0);
+        final Screen screen = TerminalBuilder.createScreenFor(terminal);
         screen.setCursorVisible(false);
 
         final Panel panel = PanelBuilder.newBuilder()
@@ -55,7 +56,6 @@ public class AnimationExample {
         screen.addComponent(panel);
 
         screen.display();
-
 
 
         AnimationBuilder first = AnimationResource.loadAnimationFromFile("src/test/resources/animations/skull.zap");

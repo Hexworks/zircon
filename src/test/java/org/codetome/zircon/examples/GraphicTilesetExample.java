@@ -14,28 +14,31 @@ import java.util.Random;
 
 public class GraphicTilesetExample {
 
-    private static final int ROWS = 24;
-    private static final int COLS = 80;
+    private static final int TERMINAL_WIDTH = 80;
+    private static final int TERMINAL_HEIGHT = 24;
+    private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
+    private static final PickRandomMetaStrategy RANDOM_STRATEGY = new PickRandomMetaStrategy();
+    private static final Font<BufferedImage> FONT = GraphicTilesetResource.NETHACK_16X16.toFont(RANDOM_STRATEGY);
     private static final char[] CHARS = new char[]{'a', 'b', 'c'};
     private static final Random RANDOM = new Random();
 
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
-        final PickRandomMetaStrategy randomStrategy = new PickRandomMetaStrategy();
-        final Font<BufferedImage> tileFont = GraphicTilesetResource.NETHACK_16X16.toFont(randomStrategy);
+
         final Terminal terminal = TerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.of(COLS, ROWS))
-                .font(tileFont)
+                .font(FONT)
+                .initialTerminalSize(SIZE)
                 .buildTerminal();
+        final org.codetome.zircon.api.screen.Screen screen = TerminalBuilder.createScreenFor(terminal);
         terminal.setCursorVisible(false); // we don't want the cursor right now
 
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLS; col++) {
+        for (int row = 0; row < TERMINAL_HEIGHT; row++) {
+            for (int col = 0; col < TERMINAL_WIDTH; col++) {
                 final char c = CHARS[RANDOM.nextInt(CHARS.length)];
                 terminal.setCharacterAt(Position.of(col, row), TextCharacterBuilder.newBuilder()
                         .character(c)
-                        .tags(randomStrategy.pickMetadata(tileFont.fetchMetadataForChar(c)).getTags())
+                        .tags(RANDOM_STRATEGY.pickMetadata(FONT.fetchMetadataForChar(c)).getTags())
                         .build());
             }
         }

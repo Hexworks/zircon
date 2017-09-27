@@ -8,6 +8,7 @@ import org.codetome.zircon.internal.screen.TerminalScreen
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import org.codetome.zircon.internal.terminal.swing.SwingTerminalFrame
+import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import java.awt.Toolkit
 import java.awt.image.BufferedImage
 
@@ -32,7 +33,14 @@ class TerminalBuilder {
     /**
      * Builds a [Terminal] based on the properties of this [TerminalBuilder].
      */
-    fun buildTerminal(): Terminal = buildSwingTerminal()
+    @JvmOverloads
+    fun buildTerminal(headless: Boolean = false): Terminal =
+            if(headless) {
+                VirtualTerminal(
+                        initialSize = initialSize)
+            } else {
+                buildSwingTerminal()
+            }
 
     /**
      * Builds a terminal which is backed by a Swing canvas. Currently this is the only
@@ -94,13 +102,6 @@ class TerminalBuilder {
         return TerminalScreen(buildTerminal())
     }
 
-    /**
-     * Creates a [org.codetome.zircon.api.screen.Screen] for the given [Terminal].
-     */
-    fun createScreenFor(terminal: Terminal): Screen {
-        return TerminalScreen(terminal)
-    }
-
     private fun checkScreenSize() {
         val screenSize = Toolkit.getDefaultToolkit().screenSize
         require(screenSize.width >= font.getWidth() * initialSize.columns) {
@@ -124,5 +125,13 @@ class TerminalBuilder {
          */
         @JvmStatic
         fun newBuilder() = TerminalBuilder()
+
+        /**
+         * Creates a [org.codetome.zircon.api.screen.Screen] for the given [Terminal].
+         */
+        @JvmStatic
+        fun createScreenFor(terminal: Terminal): Screen {
+            return TerminalScreen(terminal)
+        }
     }
 }

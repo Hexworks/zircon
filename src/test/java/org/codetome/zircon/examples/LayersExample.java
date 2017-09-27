@@ -5,25 +5,36 @@ import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.TextCharacter;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.builder.LayerBuilder;
+import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.factory.TextColorFactory;
 import org.codetome.zircon.api.color.TextColor;
+import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.PhysicalFontResource;
 import org.codetome.zircon.api.screen.Screen;
+import org.codetome.zircon.api.terminal.Terminal;
 import org.jetbrains.annotations.NotNull;
+
+import java.awt.image.BufferedImage;
+
+import static org.codetome.zircon.api.builder.TerminalBuilder.*;
+import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16;
 
 public class LayersExample {
 
+    private static final int TERMINAL_WIDTH = 50;
+    private static final int TERMINAL_HEIGHT = 6;
+    private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
+    private static final Font<BufferedImage> FONT = WANDERLUST_16X16.toFont();
+
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
-        final Screen screen = org.codetome.zircon.api.builder.TerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.of(45, 10))
-//                .font(CP437TilesetResource.TAFFER_20X20.toFont())
-                .font(PhysicalFontResource.UBUNTU_MONO.toFont())
-                .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
-                        .build())
-                .buildScreen();
+        final Terminal terminal = TerminalBuilder.newBuilder()
+                .font(FONT)
+                .initialTerminalSize(SIZE)
+                .buildTerminal();
+        final Screen screen = TerminalBuilder.createScreenFor(terminal);
         screen.setCursorVisible(false); // we don't want the cursor right now
 
         final String firstRow = "This is white title on black";
