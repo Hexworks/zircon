@@ -47,6 +47,14 @@ you refresh your [Terminal] by calling `flush` on it you will see them applied.
 A [TextImage] is an in-memory object on which you can draw [TextCharacter]s and later you can draw the [TextImage] itself on your [Terminal]. This is useful
 to create ASCII art for example and paste it on your [Terminal] multiple times or save it for later use.
 
+## Screens
+
+[Screen]s are a bitmap-like in-memory representations of your [Terminal]. They are double buffered
+which means that you write to a back-textBuffer and when you `refresh` your [Screen] only the changes will
+be written to the backing [Terminal] instance. Multiple [Screen]s can be attached to the same [Terminal]
+object which means that you can have multiple screens in your app and you can switch between them
+simultaneously by using the `display` method.
+
 ## Getting Started
 
 If you want to work with Zircon you can add it to your project as a dependency.
@@ -67,11 +75,6 @@ or you can also use Gradle:
 compile("org.codetome.zircon:zircon:2017.1.0")
 
 ```
-
-
-
-
-
 
 ### Creating a Terminal
 
@@ -167,45 +170,6 @@ and you'll have this:
 
 You can check out more examples [here](https://github.com/Hexworks/zircon/blob/master/src/testRendering/java/org/codetome/zircon/examples)
 
-## How Zircon works
-
-Terminal emulation means that when you use this library you don't write to a real terminal but to
-a virtual one. This makes a lot of extras possible compared to a real terminal like being able to use
-mouse events and put characters at arbitrary locations. *Note that* currently Zircon only supports
-a Swing-based virtual terminal.
-
-### The Terminal interface
-
-Zircon gives you a rather low-level [Terminal] interface which lets you put characters on the screen
-with [Modifier]s applied (like `BOLD` or `BLINK`) by using `putCharacter(Character char)`
-and `enableModifier(Modifier modifier)` respectively. You can also set background and foreground colors.
-
-A [Terminal] is also an [InputProvider] which means that you can listen to user input from a [Terminal]
-by using `pollInput()` or `readInput`. An [Input] can be either a `KeyStroke` (a key press on the keyboard)
-or a `MouseAction` (click, press, move, etc).
-
-### Text graphics
-
-You can create [TextGraphics] objects by calling `newTextGraphics()` on a [Terminal] instance. A
-[TextGraphics] is basically a group of title characters which form a quasi-graphical object (like a
-panel or a simple rectangle). A [TextGraphics] object is always backed by a [Terminal]. Drawing operations
-like `createLine(TerminalPosition fromPoint, TerminalPosition toPoint, Char character)` will result in
-them displayed on your screen. A [TextImage] on an other hand is an in-memory group of characters. You
-can create one by hand using the [BasicTextImage] class. [TextImage]s are basically blueprints for
-[TextGraphics] objects. If you want to use draw operations on a [TextImage] you can call `newTextGraphics()`
-on one and you will be presented by a [TextGraphics] object which is backed by the in-memory [TextImage].
-When you are done drawing use `drawImage(TerminalPosition topLeft, TextImageimage)` on a [TextGraphics]
-which is backed by a [Terminal] instance to draw the image on your screen. You can also copy images
-to other [TextImage] objects using the `drawOnto` method.
-
-## Screens
-
-[Screen]s are a bitmap-like in-memory representations of your [Terminal]. They are double buffered
-which means that you write to a back-textBuffer and when you `refresh` your [Screen] only the changes will
-be written to the backing [Terminal] instance. Multiple [Screen]s can be attached to the same [Terminal]
-object which means that you can have multiple screens in your app and you can switch between them
-simultaneously by using the `display` method. 
-
 ## Road map
 
 If you want to see a new feature feel free to [create a new Issue](https://github.com/Hexworks/zircon/issues/new).
@@ -227,7 +191,7 @@ Zircon is made available under the [MIT License](http://www.opensource.org/licen
 ## Credits
 Zircon is created and maintained by Adam Arold, Milan Boleradszki and Gergely Lukacsy
 
-*We're open to suggestions, feel free to comment or to send me a message.
+*We're open to suggestions, feel free to comment or to send us a message.
 Pull requests are also welcome!*
 
 Zircon is powered by:
@@ -256,12 +220,12 @@ Zircon is powered by:
 [Layer]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/graphics/Layer.kt
 [TextColor]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/color/TextColor.kt
 [TextCharacter]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/TextCharacter.kt
-[Terminal]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/terminal/Terminal.kt
+[Terminal]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/terminal/Terminal.kt
 [Modifier]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/Modifier.kt
 [Modifiers]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/Modifiers.kt
 [InputProvider]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/input/InputProvider.kt
 [Input]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/input/Input.kt
 [TextGraphics]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/graphics/TextGraphics.kt
-[TextImage]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/graphics/TextImage.kt
+[TextImage]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/graphics/TextImage.kt
 [BasicTextImage]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/graphics/impl/DefaultTextImage.kt
-[Screen]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/screen/Screen.kt
+[Screen]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/screen/Screen.kt
