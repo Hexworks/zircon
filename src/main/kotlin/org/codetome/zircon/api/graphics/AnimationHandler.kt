@@ -2,6 +2,7 @@ package org.codetome.zircon.api.graphics
 
 import org.codetome.zircon.api.screen.Screen
 import java.io.Closeable
+import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
@@ -21,10 +22,14 @@ class AnimationHandler(private val screen: Screen) : Closeable {
     }
 
     fun addAnimation(animation: Animation) {
-        if (jobResult.isDone && running) {
-            restartAnimatorJob()
+        if (running) {
+            if (jobResult.isDone) {
+                restartAnimatorJob()
+            }
+            job.addAnimation(animation)
+        } else {
+            throw IllegalStateException("This AnimationHandler is not running anymore!")
         }
-        job.addAnimation(animation)
     }
 
     override fun close() {

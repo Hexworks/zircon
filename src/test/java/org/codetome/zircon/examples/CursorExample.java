@@ -9,6 +9,7 @@ import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.PhysicalFontResource;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
+import org.junit.Test;
 
 import java.awt.image.BufferedImage;
 
@@ -17,6 +18,11 @@ public class CursorExample {
     private static final int TERMINAL_WIDTH = 16;
     private static final int TERMINAL_HEIGHT = 16;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
+
+    @Test
+    public void checkSetup() {
+        main(new String[]{"test"});
+    }
 
     public static void main(String[] args) {
         // we create a new terminal using TerminalBuilder
@@ -29,7 +35,7 @@ public class CursorExample {
                         .cursorStyle(CursorStyle.UNDER_BAR)
                         .cursorBlinking(true)
                         .build())
-                .buildTerminal(); // then we build the terminal
+                .buildTerminal(args.length > 0); // then we build the terminal
 
         // for this example we need the cursor to be visible
         terminal.setCursorVisible(true);

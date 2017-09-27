@@ -6,7 +6,7 @@ import java.util.function.Consumer
 
 interface RadioButtonGroup : Component, Scrollable {
 
-    fun addOption(key: String, text: String)
+    fun addOption(key: String, text: String): RadioButton
 
     fun getSelectedOption(): Optional<String>
 
@@ -15,8 +15,8 @@ interface RadioButtonGroup : Component, Scrollable {
     fun clearSelection()
 
     interface Selection {
-        fun getKey() : String
-        fun getValue() : String
+        fun getKey(): String
+        fun getValue(): String
     }
 
 }

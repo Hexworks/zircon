@@ -20,6 +20,7 @@ import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
 import org.codetome.zircon.internal.graphics.BoxType;
+import org.junit.Test;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -35,8 +36,6 @@ public class GameMockupExample {
     private static final String BACK_LABEL = Symbols.ARROW_LEFT + " B A C K";
     private static final String APPLY_LABEL = "A P P L Y";
 
-
-
     private static final String[] DIFFICULTIES = new String[]{"TINGLE", "ANXIETY", "HORROR"};
 
     private static final int MAIN_MENU_PANEL_WIDTH = 25;
@@ -47,6 +46,8 @@ public class GameMockupExample {
     private static final ColorTheme THEME = ColorThemeResource.SOLARIZED_DARK_YELLOW.getTheme();
     private static final Font<BufferedImage> FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont();
 
+    private static boolean headless = false;
+
     static {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double columns = screenSize.getWidth() / FONT_SIZE;
@@ -54,7 +55,15 @@ public class GameMockupExample {
         TERMINAL_SIZE = Size.of((int) columns, (int) rows);
     }
 
+    @Test
+    public void checkSetup() {
+        main(new String[]{"test"});
+    }
+
     public static void main(String[] args) {
+        if(args.length > 0) {
+            headless = true;
+        }
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalBuilder.newBuilder()
                 .initialTerminalSize(TERMINAL_SIZE)
@@ -64,7 +73,7 @@ public class GameMockupExample {
                         .cursorBlinking(true)
                         .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
                         .build())
-                .buildTerminal();
+                .buildTerminal(args.length > 0);
 
         // ==========
         // MAIN MENU
@@ -154,7 +163,11 @@ public class GameMockupExample {
 
         // INTERACTIONS
 
-        quitButton.onMouseReleased((mouseAction -> System.exit(0)));
+        quitButton.onMouseReleased((mouseAction -> {
+            if(!headless) {
+                System.exit(0);
+            }
+        }));
 
         optionsButton.onMouseReleased((mouseAction -> optionsScreen.display()));
 

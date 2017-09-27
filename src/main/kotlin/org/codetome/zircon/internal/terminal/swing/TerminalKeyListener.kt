@@ -21,16 +21,15 @@ class TerminalKeyListener(private val deviceConfiguration: DeviceConfiguration) 
         val ctrlDown = e.modifiersEx and InputEvent.CTRL_DOWN_MASK != 0
         val shiftDown = e.modifiersEx and InputEvent.SHIFT_DOWN_MASK != 0
 
-        if (!TYPED_KEYS_TO_IGNORE.contains(character)) {
-            //We need to re-adjust alphabet characters if ctrl was pressed, just like for the AnsiTerminal
+        if (TYPED_KEYS_TO_IGNORE.contains(character).not()) {
             if (ctrlDown && character.toInt() > 0 && character.toInt() < 0x1a) {
-                character = ('a' - 1 + character.toInt()).toChar()
+                character = ('a' - 1 + character.toInt())
                 if (shiftDown) {
                     character = Character.toUpperCase(character)
                 }
             }
 
-            // Check if clipboard is avavilable and this was a paste (ctrl + shift + v) before
+            // Check if clipboard is available and this was a paste (ctrl + shift + v) before
             // adding the key to the input queue
             if (!altDown && ctrlDown && shiftDown && character == 'V' && deviceConfiguration.isClipboardAvailable) {
                 pasteClipboardContent()
@@ -109,6 +108,7 @@ class TerminalKeyListener(private val deviceConfiguration: DeviceConfiguration) 
     companion object {
 
         private val TYPED_KEYS_TO_IGNORE = HashSet(Arrays.asList('\n', '\t', '\r', '\b', '\u001b', 127.toChar()))
+
         private val KEY_EVENT_TO_KEY_TYPE_LOOKUP = mapOf(
                 Pair(KeyEvent.VK_ENTER, InputType.Enter), Pair(KeyEvent.VK_ESCAPE, InputType.Escape),
                 Pair(KeyEvent.VK_BACK_SPACE, InputType.Backspace), Pair(KeyEvent.VK_LEFT, InputType.ArrowLeft),

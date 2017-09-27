@@ -14,11 +14,4 @@ data class DeviceConfiguration(
         val cursorStyle: CursorStyle,
         val cursorColor: TextColor,
         val isCursorBlinking: Boolean,
-        val isClipboardAvailable: Boolean) {
-
-    companion object {
-
-        @JvmStatic
-        fun builder() = DeviceConfigurationBuilder.newBuilder()
-    }
-}
+        val isClipboardAvailable: Boolean)

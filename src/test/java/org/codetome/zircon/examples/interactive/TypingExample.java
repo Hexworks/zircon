@@ -10,6 +10,7 @@ import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.input.KeyStroke;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,18 +29,28 @@ public class TypingExample {
             .backgroundColor(BLACK)
             .build();
 
+    private static boolean headless = false;
+
     static {
         EXIT_CONDITIONS.add(InputType.Escape);
         EXIT_CONDITIONS.add(InputType.EOF);
     }
 
+    @Test
+    public void checkSetup() {
+        main(new String[]{"test"});
+    }
+
     public static void main(String[] args) {
+        if(args.length > 0) {
+            headless = true;
+        }
         TerminalBuilder builder = TerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(TERMINAL_WIDTH, 10))
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorBlinking(true)
                         .build());
-        final Terminal terminal = builder.buildTerminal();
+        final Terminal terminal = builder.buildTerminal(args.length > 0);
         final Screen screen = TerminalBuilder.createScreenFor(terminal);
 
 //        startTypingSupportForScreen(screen);
@@ -49,7 +60,7 @@ public class TypingExample {
     private static void startTypingSupportForScreen(Screen screen) {
         screen.addInputListener((input) -> {
             final Position pos = screen.getCursorPosition();
-            if (EXIT_CONDITIONS.contains(input.getInputType())) {
+            if (EXIT_CONDITIONS.contains(input.getInputType()) && !headless) {
                 System.exit(0);
             } else if (input.inputTypeIs(Enter)) {
                 screen.putCursorAt(pos.withRelativeRow(1).withColumn(0));
@@ -67,7 +78,7 @@ public class TypingExample {
 
     private static void startTypingSupportForTerminal(Terminal terminal) {
         terminal.addInputListener((input) -> {
-            if (EXIT_CONDITIONS.contains(input.getInputType())) {
+            if (EXIT_CONDITIONS.contains(input.getInputType()) && !headless) {
                 System.exit(0);
             } else if (input.inputTypeIs(Enter)) {
                 terminal.moveCursorForward();

@@ -16,6 +16,7 @@ import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.junit.Test;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -30,10 +31,16 @@ public class HideNSeek {
     private static final int TERMINAL_HEIGHT = 16;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static final Font<BufferedImage> FONT = CP437TilesetResource.TAFFER_20X20.toFont();
+    private static boolean headless = false;
 
     static {
         EXIT_CONDITIONS.add(InputType.Escape);
         EXIT_CONDITIONS.add(InputType.EOF);
+    }
+
+    @Test
+    public void checkSetup() {
+        main(new String[]{"test"});
     }
 
     public static void main(String[] args) {
@@ -41,7 +48,10 @@ public class HideNSeek {
         final Terminal terminal = TerminalBuilder.newBuilder()
                 .font(FONT)
                 .initialTerminalSize(SIZE)
-                .buildTerminal();
+                .buildTerminal(args.length > 0);
+        if(args.length > 0) {
+            headless = true;
+        }
         final Screen screen = TerminalBuilder.createScreenFor(terminal);
         Size size = screen.getBoundableSize();
         screen.setCursorVisible(false); // we don't want the cursor right now
@@ -110,7 +120,7 @@ public class HideNSeek {
 
     private static void enableMovement(Screen screen, Layer player) {
         screen.addInputListener((input) -> {
-            if (EXIT_CONDITIONS.contains(input.getInputType())) {
+            if (EXIT_CONDITIONS.contains(input.getInputType()) && !headless) {
                 System.exit(0);
             } else {
                 if (InputType.ArrowUp == input.getInputType()) {
