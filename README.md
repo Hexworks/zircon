@@ -39,16 +39,16 @@ solves this problem with composition: All of the above mentioned categories are 
 one thing. For example [Terminal] implements the [Layerable] interface and internally all operations defined by it are delegated to an object
 which implements [Layerable] only. You can peruse these [here](https://github.com/Hexworks/zircon/tree/master/src/main/kotlin/org/codetome/zircon/api/behavior).
 
-## Modifiers
+### Modifiers
 When working with [TextCharacter]s apart from giving them color you might want to apply some special [Modifier] to them like `UNDERLINE` or `VERTICAL_FLIP`.
 You can do this by picking the right [Modifier] from the [Modifiers] class. You can set any number of [Modifier]s to each [TextCharacter] individually and when
 you refresh your [Terminal] by calling `flush` on it you will see them applied.
 
-## TextImages
+### TextImages
 A [TextImage] is an in-memory object on which you can draw [TextCharacter]s and later you can draw the [TextImage] itself on your [Terminal]. This is useful
 to create ASCII art for example and paste it on your [Terminal] multiple times or save it for later use.
 
-## Screens
+### Screens
 
 [Screen]s are a bitmap-like in-memory representations of your [Terminal]. They are double buffered
 which means that you write to a back-textBuffer and when you `refresh` your [Screen] only the changes will
