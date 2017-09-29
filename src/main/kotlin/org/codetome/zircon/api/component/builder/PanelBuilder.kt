@@ -1,16 +1,17 @@
 package org.codetome.zircon.api.component.builder
 
-import org.codetome.zircon.api.Modifiers.Border
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Panel
+import org.codetome.zircon.internal.BuiltInModifiers
+import org.codetome.zircon.internal.BuiltInModifiers.Border
 import org.codetome.zircon.internal.component.WrappingStrategy
+import org.codetome.zircon.internal.component.impl.DefaultPanel
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.BoxWrappingStrategy
-import org.codetome.zircon.internal.component.impl.DefaultPanel
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.graphics.BoxType
 import java.util.*

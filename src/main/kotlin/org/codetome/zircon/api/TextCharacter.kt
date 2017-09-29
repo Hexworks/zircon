@@ -1,163 +1,93 @@
 package org.codetome.zircon.api
 
-import org.codetome.zircon.api.Modifiers.*
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
-import org.codetome.zircon.api.util.TextUtils
+import org.codetome.zircon.internal.BuiltInModifiers.Border
 
 /**
  * Represents a single character with additional metadata such as colors and modifiers.
  * This class is immutable and cannot be modified after creation.
  *
- * Use the with* methods to create new instances based on this one.
+ * Note that you can only of [TextCharacter]s out of printable characters (No tabs for
+ * example)!
+ *
+ * Use the with* methods to of new instances based on this one.
  */
-@Suppress("DataClassPrivateConstructor")
-data class TextCharacter(
-        private val character: Char,
-        private val foregroundColor: TextColor,
-        private val backgroundColor: TextColor,
-        private val modifiers: Set<Modifier>,
-        private val tags: Set<String>) {
+interface TextCharacter {
 
-    init {
-        require(TextUtils.isPrintableCharacter(character)) {
-            "Trying to create a TextCharacter out of a non-printable character: '${character.toInt()}'"
-        }
-    }
+    fun getCharacter(): Char
 
-    fun getCharacter() = character
+    fun getForegroundColor(): TextColor
 
-    fun getForegroundColor() = foregroundColor
+    fun getBackgroundColor(): TextColor
 
-    fun getBackgroundColor() = backgroundColor
+    fun getModifiers(): Set<Modifier>
 
-    fun getModifiers() = modifiers
+    fun getTags(): Set<String>
 
-    fun getTags() = tags
+    fun isBold(): Boolean
 
-    fun isBold() = modifiers.contains(Bold)
+    fun isUnderlined(): Boolean
 
-    fun isUnderlined() = modifiers.contains(Underline)
+    fun isCrossedOut(): Boolean
 
-    fun isCrossedOut() = modifiers.contains(CrossedOut)
+    fun isItalic(): Boolean
 
-    fun isItalic() = modifiers.contains(Italic)
+    fun isBlinking(): Boolean
 
-    fun isBlinking() = modifiers.contains(Blink)
+    fun hasBorder(): Boolean
 
-    fun hasBorder() = modifiers.any { it is Border }
+    fun fetchBorderData(): Set<Border>
 
-    fun fetchBorderData() = modifiers.filter { it is Border }.map { it as Border }.toSet()
-
-    fun isNotEmpty() = this != TextCharacterBuilder.EMPTY
+    fun isNotEmpty(): Boolean = this != TextCharacterBuilder.EMPTY
 
     /**
-     * Returns a new TextCharacter with the same colors and modifiers but a different underlying character.
+     * Returns a copy of this [TextCharacter] with the specified character.
      */
-    fun withCharacter(character: Char): TextCharacter {
-        if (this.character == character) {
-            return this
-        }
-        return copy(character = character)
-    }
-
-    fun withForegroundColor(foregroundColor: TextColor): TextCharacter {
-        if (this.foregroundColor == foregroundColor) {
-            return this
-        }
-        return copy(foregroundColor = foregroundColor)
-    }
+    fun withCharacter(character: Char): TextCharacter
 
     /**
-     * Returns a copy of this [TextCharacter] with a specified background color
+     * Returns a copy of this [TextCharacter] with the specified foreground color.
      */
-    fun withBackgroundColor(backgroundColor: TextColor): TextCharacter {
-        if (this.backgroundColor == backgroundColor) {
-            return this
-        }
-        return copy(backgroundColor = backgroundColor)
-    }
+    fun withForegroundColor(foregroundColor: TextColor): TextCharacter
 
     /**
-     * Returns a copy of this [TextCharacter] with specified list of [Modifier]s. None of the currently active [Modifier]s
-     * will be carried over to the copy, only those in the passed in value.
+     * Returns a copy of this [TextCharacter] with the specified background color.
      */
-    fun withModifiers(modifiers: Set<Modifier>): TextCharacter {
-        if (this.modifiers == modifiers) {
-            return this
-        }
-        return copy(modifiers = modifiers.toSet())
-    }
+    fun withBackgroundColor(backgroundColor: TextColor): TextCharacter
 
     /**
-     * Returns a copy of this [TextCharacter] with an additional [Modifier]. All of the currently active [Modifier]s
-     * will be carried over to the copy, in addition to the one specified.
+     * Returns a copy of this [TextCharacter] with the specified style.
      */
-    fun withModifier(modifier: Modifier): TextCharacter {
-        if (modifiers.contains(modifier)) {
-            return this
-        }
-        val newSet = this.modifiers.plus(modifier)
-        return copy(modifiers = newSet)
-    }
+    fun withStyle(styleSet: StyleSet): TextCharacter
 
     /**
-     * Returns a copy of this [TextCharacter] with a [Modifier] removed. All of the currently active [Modifier]s
-     * will be carried over to the copy, except for the one specified. If the current [TextCharacter] doesn't have the
-     * [Modifier] specified, it will return itself.
+     * Returns a copy of this [TextCharacter] with additional [Modifier](s).
+     * The currently active [Modifier]s will be carried over to the copy,
+     * in addition to the one specified.
      */
-    fun withoutModifier(modifier: Modifier): TextCharacter {
-        if (!modifiers.contains(modifier)) {
-            return this
-        }
-        val newSet = this.modifiers.minus(modifier)
-        return copy(modifiers = newSet)
-    }
+    fun withModifiers(vararg modifiers: Modifier): TextCharacter
 
     /**
-     * Returns a copy of this [TextCharacter] with a [Modifier] removed. All of the currently active [Modifier]s
-     * will be carried over to the copy, except for the one specified. If the current [TextCharacter] doesn't have the
-     * [Modifier] specified, it will return itself.
+     * Returns a copy of this [TextCharacter] with additional [Modifier](s).
+     * The currently active [Modifier]s will be carried over to the copy,
+     * in addition to the one(s) specified.
      */
-    fun withoutModifiers(modifiers: Set<Modifier>): TextCharacter {
-        if (this.modifiers.none { modifiers.contains(it) }) {
-            return this
-        }
-        val newSet = this.modifiers.toMutableSet()
-        newSet.removeAll(modifiers)
-        return copy(modifiers = newSet)
-    }
+    fun withModifiers(modifiers: Set<Modifier>): TextCharacter
 
-    fun withStyle(styleSet: StyleSet) = copy(
-            foregroundColor = styleSet.getForegroundColor(),
-            backgroundColor = styleSet.getBackgroundColor(),
-            modifiers = styleSet.getActiveModifiers())
+    /**
+     * Returns a copy of this [TextCharacter] with [Modifier] (s) removed.
+     * The currently active [Modifier]s will be carried over to the copy, except for the one(s) specified.
+     * If the current [TextCharacter] doesn't have the [Modifier] (s) specified, it will return itself.
+     */
+    fun withoutModifiers(vararg modifiers: Modifier): TextCharacter
 
-    companion object {
-
-        /**
-         * Creates a new [TextCharacterBuilder] for creating [TextCharacter]s.
-         */
-        @JvmStatic
-        fun builder() = TextCharacterBuilder()
-
-        /**
-         * Creates a new [TextCharacter]. This method is necessary
-         * because a defensive copy of `modifiers` needs to be forced.
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun of(character: Char,
-               foregroundColor: TextColor,
-               backgroundColor: TextColor,
-               modifiers: Set<Modifier> = setOf(),
-               tags: Set<String> = setOf()) = TextCharacter(
-                character = character,
-                foregroundColor = foregroundColor,
-                backgroundColor = backgroundColor,
-                modifiers = modifiers.toSet(),
-                tags = tags)
-    }
+    /**
+     * Returns a copy of this [TextCharacter] with [Modifier] (s) removed.
+     * The currently active [Modifier]s will be carried over to the copy, except for the one(s) specified.
+     * If the current [TextCharacter] doesn't have the [Modifier] (s) specified, it will return itself.
+     */
+    fun withoutModifiers(modifiers: Set<Modifier>): TextCharacter
 
 }

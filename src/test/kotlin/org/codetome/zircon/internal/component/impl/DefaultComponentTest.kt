@@ -245,6 +245,6 @@ class DefaultComponentTest {
                 .build()
         val WRAPPERS = listOf(
                 ShadowWrappingStrategy(),
-                BorderWrappingStrategy(Modifiers.BORDER.of()))
+                BorderWrappingStrategy(Modifiers.BORDER.create()))
     }
 }

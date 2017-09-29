@@ -1,13 +1,14 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Modifiers
+import org.codetome.zircon.api.Modifiers.BorderType.*
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.Button
-import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.ColorTheme
+import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
@@ -80,6 +81,6 @@ class DefaultButton(private val text: String,
 
     companion object {
         // TODO: fix this later
-        val BOX_HIGHLIGHT = BorderWrappingStrategy(Modifiers.BORDER.of(Modifiers.BorderType.DOTTED))
+        val BOX_HIGHLIGHT = BorderWrappingStrategy(Modifiers.BORDER.create(DOTTED))
     }
 }

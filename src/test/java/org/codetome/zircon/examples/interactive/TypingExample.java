@@ -5,6 +5,7 @@ import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.TextCharacter;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.factory.TextColorFactory;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.input.KeyStroke;
@@ -24,7 +25,7 @@ public class TypingExample {
     private static final int TERMINAL_WIDTH = 40;
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
-    private static final TextCharacter TEXT_CHAR_TEMPLATE = TextCharacter.builder()
+    private static final TextCharacter TEXT_CHAR_TEMPLATE = TextCharacterBuilder.newBuilder()
             .foregroundColor(TextColorFactory.fromString("#F7923A"))
             .backgroundColor(BLACK)
             .build();

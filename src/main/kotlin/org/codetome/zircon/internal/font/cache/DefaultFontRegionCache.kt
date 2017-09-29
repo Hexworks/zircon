@@ -4,7 +4,6 @@ import com.github.benmanes.caffeine.cache.Caffeine
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.internal.font.FontRegionCache
 import org.codetome.zircon.internal.font.ImageCachingStrategy
-import java.awt.image.BufferedImage
 import java.util.*
 import java.util.concurrent.TimeUnit
 

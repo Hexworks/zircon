@@ -128,7 +128,7 @@ public class ComponentsExample {
         final Panel borderedPanel = PANEL_TEMPLATE.createCopy()
                 .title("Bordered panel")
                 .position(Position.of(0, 2).relativeToBottomOf(boxedPanel))
-                .addBorder(Modifiers.BORDER.of(SOLID))
+                .addBorder(Modifiers.BORDER.create(SOLID))
                 .build();
         borderedPanel.addComponent(LabelBuilder.newBuilder()
                 .text("Bordered panel")
@@ -139,7 +139,7 @@ public class ComponentsExample {
         final Panel borderedPanelWithShadow = PANEL_TEMPLATE.createCopy()
                 .title("Bordered panel")
                 .position(Position.of(0, 2).relativeToBottomOf(panelWithShadowAndBox))
-                .addBorder(Modifiers.BORDER.of(DOTTED))
+                .addBorder(Modifiers.BORDER.create(DOTTED))
                 .addShadow()
                 .build();
         borderedPanelWithShadow.addComponent(LabelBuilder.newBuilder()
@@ -413,7 +413,7 @@ public class ComponentsExample {
         Panel result = PanelBuilder.newBuilder()
                 .size(Size.of(8, 6))
                 .position(position)
-                .addBorder(Modifiers.BORDER.of())
+                .addBorder(Modifiers.BORDER.create())
                 .build();
         result.applyTheme(ADD_REMOVE_THEME);
         return result;
