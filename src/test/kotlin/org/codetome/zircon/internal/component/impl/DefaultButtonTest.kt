@@ -10,7 +10,7 @@ import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.builder.ButtonBuilder
-import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.internal.event.EventBus

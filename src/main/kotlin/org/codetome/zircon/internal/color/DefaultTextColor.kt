@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.color
 
-import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.color.TextColor
 import java.awt.Color
 

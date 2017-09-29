@@ -8,9 +8,9 @@ import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.component.builder.LabelBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.font.Font;
-import org.codetome.zircon.api.graphics.Animation;
-import org.codetome.zircon.api.graphics.AnimationHandler;
-import org.codetome.zircon.api.resource.AnimationResource;
+import org.codetome.zircon.api.beta.animation.Animation;
+import org.codetome.zircon.api.beta.animation.AnimationHandler;
+import org.codetome.zircon.api.beta.animation.AnimationResource;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
@@ -36,7 +36,7 @@ public class AnimationExample {
                 .initialTerminalSize(TERMINAL_SIZE)
                 .buildTerminal(args.length > 0);
         final Screen screen = TerminalBuilder.createScreenFor(terminal);
-        screen.setCursorVisible(false);
+        screen.setCursorVisibility(false);
 
         final Panel panel = PanelBuilder.newBuilder()
                 .wrapInBox()

@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.color
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.internal.color.DefaultTextColor
 import org.junit.Test

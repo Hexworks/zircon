@@ -15,12 +15,6 @@ data class DefaultTextCharacter(
         private val modifiers: Set<Modifier>,
         private val tags: Set<String>) : TextCharacter {
 
-    init {
-        require(TextUtils.isPrintableCharacter(character)) {
-            "Can't create a TextCharacter out create a non-printable character: '${character.toInt()}'"
-        }
-    }
-
     override fun getCharacter(): Char = character
 
     override fun getForegroundColor(): TextColor = foregroundColor
@@ -79,8 +73,7 @@ data class DefaultTextCharacter(
         if (this.modifiers == modifiers) {
             return this
         }
-        val newSet = this.modifiers.plus(modifiers)
-        return copy(modifiers = newSet)
+        return copy(modifiers = modifiers.toSet())
     }
 
     override fun withoutModifiers(vararg modifiers: Modifier): DefaultTextCharacter {

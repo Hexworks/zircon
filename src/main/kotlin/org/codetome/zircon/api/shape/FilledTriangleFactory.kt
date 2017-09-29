@@ -3,7 +3,6 @@ package org.codetome.zircon.api.shape
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.internal.graphics.DefaultShape
 import org.codetome.zircon.api.graphics.Shape
-import org.codetome.zircon.internal.graphics.ShapeFactory
 import java.util.*
 
 object FilledTriangleFactory : ShapeFactory<TriangleParameters> {

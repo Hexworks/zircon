@@ -84,7 +84,7 @@ class VirtualTerminalTest {
 
     @Test
     fun cursorShouldBeVisibleWhenSetVisibleIsCalledWithTrue() {
-        target.setCursorVisible(true)
+        target.setCursorVisibility(true)
         assertThat(target.isCursorVisible()).isTrue()
     }
 

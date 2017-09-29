@@ -92,8 +92,13 @@ class DefaultTextImage(size: Size,
         if (positionIsOutOfBounds(column, row)) {
             false
         } else {
-            buffer[row][column] = character
-            true
+            val oldChar = buffer[row][column]
+            return if (oldChar == character) {
+                false //
+            } else {
+                buffer[row][column] = character
+                true
+            }
         }
     }
 

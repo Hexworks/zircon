@@ -9,7 +9,7 @@ package org.codetome.zircon.api.component
 interface Container : Component {
 
     /**
-     * Adds a sibling [Component] to this [Container]. It can either be
+     * Adds a child [Component] to this [Container]. It can either be
      * a leaf component (like a label) or another container which can itself
      * contain components within itself.
      */

@@ -9,7 +9,7 @@ import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.Button
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
-import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.component.WrappingStrategy

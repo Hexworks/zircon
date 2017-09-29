@@ -7,7 +7,7 @@ import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.RadioButton
-import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.component.WrappingStrategy
@@ -45,7 +45,7 @@ class DefaultRadioButton(private val text: String,
 
     override fun isSelected() = state == SELECTED
 
-    override fun select() {
+    fun select() {
         if (state != SELECTED) {
             getDrawSurface().applyColorsFromStyle(getComponentStyles().mouseOver())
             state = SELECTED
@@ -54,7 +54,7 @@ class DefaultRadioButton(private val text: String,
         }
     }
 
-    override fun removeSelection() {
+    fun removeSelection() {
         if (state != NOT_SELECTED) {
             getDrawSurface().applyColorsFromStyle(getComponentStyles().reset())
             state = NOT_SELECTED

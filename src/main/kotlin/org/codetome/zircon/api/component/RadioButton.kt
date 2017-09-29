@@ -6,8 +6,4 @@ interface RadioButton : Component {
 
     fun isSelected(): Boolean
 
-    fun select()
-
-    fun removeSelection()
-
 }

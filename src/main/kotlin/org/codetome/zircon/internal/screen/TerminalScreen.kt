@@ -45,13 +45,13 @@ class TerminalScreen(private val terminal: Terminal,
         })
         EventBus.subscribe<Position>(EventType.RequestCursorAt, { (position) ->
             if (isActive()) {
-                terminal.setCursorVisible(true)
+                terminal.setCursorVisibility(true)
                 terminal.putCursorAt(position)
             }
         })
         EventBus.subscribe(EventType.HideCursor, {
             if (isActive()) {
-                terminal.setCursorVisible(false)
+                terminal.setCursorVisibility(false)
             }
         })
     }
@@ -61,7 +61,7 @@ class TerminalScreen(private val terminal: Terminal,
     @Synchronized
     override fun display() {
         EventBus.emit(EventType.ScreenSwitch, id)
-        setCursorVisible(false)
+        setCursorVisibility(false)
         putCursorAt(Position.DEFAULT_POSITION)
         flipBuffers(true)
         activate()

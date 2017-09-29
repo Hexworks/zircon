@@ -1,6 +1,7 @@
-package org.codetome.zircon.api.resource
+package org.codetome.zircon.api.beta.animation
 
 import org.codetome.zircon.api.builder.AnimationBuilder
+import org.codetome.zircon.api.resource.REXPaintResource
 import org.codetome.zircon.internal.graphics.AnimationMetadata
 import org.codetome.zircon.internal.graphics.DefaultAnimationFrame
 import org.codetome.zircon.internal.util.rex.unZipIt

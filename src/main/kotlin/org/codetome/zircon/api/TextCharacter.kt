@@ -63,16 +63,12 @@ interface TextCharacter {
     fun withStyle(styleSet: StyleSet): TextCharacter
 
     /**
-     * Returns a copy of this [TextCharacter] with additional [Modifier](s).
-     * The currently active [Modifier]s will be carried over to the copy,
-     * in addition to the one specified.
+     * Returns a copy of this [TextCharacter] with the specified modifiers.
      */
     fun withModifiers(vararg modifiers: Modifier): TextCharacter
 
     /**
-     * Returns a copy of this [TextCharacter] with additional [Modifier](s).
-     * The currently active [Modifier]s will be carried over to the copy,
-     * in addition to the one(s) specified.
+     * Returns a copy of this [TextCharacter] with the specified modifiers.
      */
     fun withModifiers(modifiers: Set<Modifier>): TextCharacter
 

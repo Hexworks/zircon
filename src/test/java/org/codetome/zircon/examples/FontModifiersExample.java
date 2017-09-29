@@ -18,8 +18,8 @@ import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_1
 
 public class FontModifiersExample {
 
-    private static final int TERMINAL_WIDTH = 40;
-    private static final int TERMINAL_HEIGHT = 40;
+    private static final int TERMINAL_WIDTH = 16;
+    private static final int TERMINAL_HEIGHT = 3;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static final Font<BufferedImage> FONT = WANDERLUST_16X16.toFont();
 
@@ -34,7 +34,7 @@ public class FontModifiersExample {
                 .font(FONT)
                 .initialTerminalSize(SIZE)
                 .buildTerminal(args.length > 0);
-        terminal.setCursorVisible(false); // we don't want the cursor right now
+        terminal.setCursorVisibility(false); // we don't want the cursor right now
 
         terminal.enableModifier(VERTICAL_FLIP);
         terminal.setBackgroundColor(BLUE);

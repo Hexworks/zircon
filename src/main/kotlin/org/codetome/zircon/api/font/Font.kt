@@ -5,12 +5,18 @@ import org.codetome.zircon.api.TextCharacter
 /**
  * A font is an abstract representation of a resource which is capable of
  * representing fonts. This can be some physical font (like a .ttf file)
- * or a sprite sheet.
+ * or a sprite sheet for example.
  */
 interface Font<out R> {
 
+    /**
+     * Returns the width of a character in pixels.
+     */
     fun getWidth(): Int
 
+    /**
+     * Returns the height of a character in pixels.
+     */
     fun getHeight(): Int
 
     /**

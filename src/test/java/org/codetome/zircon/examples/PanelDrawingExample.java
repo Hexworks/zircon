@@ -6,7 +6,7 @@ import org.codetome.zircon.api.builder.BoxBuilder;
 import org.codetome.zircon.api.builder.StyleSetBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
-import org.codetome.zircon.api.factory.TextColorFactory;
+import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.shape.FilledRectangleFactory;
 import org.codetome.zircon.api.color.TextColor;
@@ -22,11 +22,11 @@ import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_1
 
 public class PanelDrawingExample {
 
-    private static final int TERMINAL_WIDTH = 30;
-    private static final int TERMINAL_HEIGHT = 20;
+    private static final int TERMINAL_WIDTH = 19;
+    private static final int TERMINAL_HEIGHT = 12;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static final Font<BufferedImage> FONT = WANDERLUST_16X16.toFont();
-    private static final TextColor BACKGROUND_COLOR = org.codetome.zircon.api.factory.TextColorFactory.fromString("#223344");
+    private static final TextColor BACKGROUND_COLOR = TextColorFactory.fromString("#223344");
     private static final TextColor PANEL_BG_COLOR = TextColorFactory.fromString("#666666");
     private static final TextColor PANEL_FG_COLOR = TextColorFactory.fromString("#ffffff");
 
@@ -41,7 +41,7 @@ public class PanelDrawingExample {
                 .initialTerminalSize(SIZE)
                 .buildTerminal(args.length > 0);
         final Screen screen = TerminalBuilder.createScreenFor(terminal);
-        screen.setCursorVisible(false);
+        screen.setCursorVisibility(false);
 
         FilledRectangleFactory
                 .buildFilledRectangle(Position.DEFAULT_POSITION, screen.getBoundableSize())
@@ -63,7 +63,7 @@ public class PanelDrawingExample {
                 BoxType.TOP_BOTTOM_DOUBLE.getConnectorLeft());
         box.setCharacterAt(Position.DEFAULT_POSITION.withRelativeColumn(10),
                 BoxType.TOP_BOTTOM_DOUBLE.getConnectorRight());
-        screen.draw(box, Position.of(6, 2));
+        screen.draw(box, Position.of(2, 2));
         screen.display();
     }
 }

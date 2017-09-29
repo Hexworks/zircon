@@ -6,7 +6,7 @@ import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.builder.LayerBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
-import org.codetome.zircon.api.factory.TextColorFactory;
+import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.shape.FilledRectangleFactory;
@@ -21,8 +21,6 @@ import org.junit.Test;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.codetome.zircon.api.resource.CP437TilesetResource.*;
 
 public class HideNSeek {
 
@@ -54,11 +52,11 @@ public class HideNSeek {
         }
         final Screen screen = TerminalBuilder.createScreenFor(terminal);
         Size size = screen.getBoundableSize();
-        screen.setCursorVisible(false); // we don't want the cursor right now
+        screen.setCursorVisibility(false); // we don't want the cursor right now
         FilledRectangleFactory
                 .buildFilledRectangle(Position.TOP_LEFT_CORNER, screen.getBoundableSize())
                 .toTextImage(TextCharacterBuilder.newBuilder()
-                        .backgroundColor(org.codetome.zircon.api.factory.TextColorFactory.fromString("#665233"))
+                        .backgroundColor(TextColorFactory.fromString("#665233"))
                         .character(' ')
                         .build())
                 .drawOnto(screen, Position.TOP_LEFT_CORNER);

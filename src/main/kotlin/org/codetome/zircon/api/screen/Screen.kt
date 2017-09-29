@@ -15,11 +15,12 @@ import java.io.Closeable
  * [org.codetome.zircon.api.terminal.Terminal]. If you want a [Screen] to be displayed without
  * tracking the changes use the [Screen.display] function.
  */
-interface Screen : Closeable, Clearable, Layerable, CursorHandler, ContainerHandler, DrawSurface, InputEmitter, Identifiable {
+interface Screen
+    : Closeable, Clearable, Layerable, CursorHandler, ContainerHandler, DrawSurface, InputEmitter, Identifiable {
 
     /**
-     * This function will take the content from the back-buffer and move it into the front-buffer,
-     * making the changes visible to the terminal in the process.
+     * This function will take the content from the back-buffer and move it into the front-buffer
+     * (a Terminal for example), making the changes visible in the process.
      * <strong>Note that</strong> this function will use the tracked changes since the last refresh/display
      * operation and only overwrite characters which were changed. This will cause graphical artifacts
      * if you have multiple [Screen]s attached to the same [org.codetome.zircon.api.terminal.Terminal]!

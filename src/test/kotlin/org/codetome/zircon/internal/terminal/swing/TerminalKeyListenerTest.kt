@@ -10,6 +10,7 @@ import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import java.awt.Component
 import java.awt.event.InputEvent

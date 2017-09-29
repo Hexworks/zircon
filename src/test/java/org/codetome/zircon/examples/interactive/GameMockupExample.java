@@ -124,7 +124,7 @@ public class GameMockupExample {
                 .text(BACK_LABEL)
                 .position(Position.of(
                         PANEL_SPACING,
-                        terminalSize.getRows() - PANEL_SPACING))
+                        terminalSize.getRows() - (PANEL_SPACING * 2)))
                 .build();
         optionsScreen.addComponent(backButton);
 
