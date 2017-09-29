@@ -1,9 +1,9 @@
 package org.codetome.zircon.internal.font.impl
 
-import org.codetome.zircon.api.Modifiers.*
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.internal.BuiltInModifiers.*
 import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.MetadataPickingStrategy

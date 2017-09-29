@@ -1,9 +1,8 @@
 package org.codetome.zircon.api.builder
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.Modifiers
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.internal.DefaultTextCharacter
 import org.codetome.zircon.api.factory.TextColorFactory
 import org.junit.Test
 
@@ -21,7 +20,7 @@ class TextCharacterBuilderTest {
                 .build()
 
         assertThat(result).isEqualTo(
-                TextCharacter.of(
+                DefaultTextCharacter.of(
                         character = CHAR,
                         foregroundColor = FG_COLOR,
                         tags = TAGS,

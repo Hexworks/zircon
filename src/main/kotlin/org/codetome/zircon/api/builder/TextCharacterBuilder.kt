@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.builder
 
+import org.codetome.zircon.internal.DefaultTextCharacter
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.color.TextColor
@@ -14,12 +15,12 @@ import org.codetome.zircon.api.graphics.StyleSet
  * also
  * @see TextColorFactory to check default colors
  */
-class TextCharacterBuilder {
-    private var character: Char = ' '
-    private var foregroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR
-    private var backgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR
-    private var modifiers: Set<Modifier> = setOf()
-    private var tags: Set<String> = setOf()
+data class TextCharacterBuilder(
+        private var character: Char = ' ',
+        private var foregroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
+        private var backgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
+        private var modifiers: Set<Modifier> = setOf(),
+        private var tags: Set<String> = setOf()) : Builder<TextCharacter> {
 
     fun character(character: Char) = also {
         this.character = character
@@ -32,7 +33,7 @@ class TextCharacterBuilder {
     fun styleSet(styleSet: StyleSet) = also {
         backgroundColor = styleSet.getBackgroundColor()
         foregroundColor = styleSet.getForegroundColor()
-        modifiers = styleSet.getActiveModifiers().toSet()
+        modifiers = styleSet.getActiveModifiers().toSet() // TODO: test defensive copy
     }
 
     fun foregroundColor(foregroundColor: TextColor) = also {
@@ -59,12 +60,16 @@ class TextCharacterBuilder {
         this.tags = tags
     }
 
-    fun build() = TextCharacter.of(
+    override fun build(): TextCharacter = DefaultTextCharacter.of(
             character = character,
             foregroundColor = foregroundColor,
             backgroundColor = backgroundColor,
             modifiers = modifiers,
             tags = tags)
+
+    override fun createCopy() = copy(
+            modifiers = modifiers.toSet(),
+            tags = tags.toSet()) // TODO: test defensive copy
 
     companion object {
 
@@ -82,8 +87,7 @@ class TextCharacterBuilder {
          * - and no modifiers.
          */
         @JvmField
-        val DEFAULT_CHARACTER = TextCharacter.builder()
-                .build()
+        val DEFAULT_CHARACTER = TextCharacterBuilder.newBuilder().build()
 
         /**
          * Shorthand for an empty character which is:
@@ -93,7 +97,7 @@ class TextCharacterBuilder {
          * - and no modifiers.
          */
         @JvmField
-        val EMPTY = TextCharacter.builder()
+        val EMPTY = TextCharacterBuilder.newBuilder()
                 .backgroundColor(TextColorFactory.TRANSPARENT)
                 .foregroundColor(TextColorFactory.TRANSPARENT)
                 .character(' ')

@@ -112,7 +112,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldPutCharacterWhenPutCharacterIsCalled() {
-        val tc = TextCharacter.builder()
+        val tc = TextCharacterBuilder.newBuilder()
                 .character('a')
                 .build()
         target.putCharacter('a')
@@ -147,12 +147,12 @@ class VirtualTerminalTest {
         assertThat(dirtyCells).containsExactly(
                 Cell(
                         position = DEFAULT_POSITION,
-                        character = TextCharacter.builder()
+                        character = TextCharacterBuilder.newBuilder()
                                 .character('a')
                                 .build()),
                 Cell(
                         position = DEFAULT_POSITION.withRelativeColumn(1),
-                        character = TextCharacter.builder()
+                        character = TextCharacterBuilder.newBuilder()
                                 .character(' ')
                                 .build())
         )

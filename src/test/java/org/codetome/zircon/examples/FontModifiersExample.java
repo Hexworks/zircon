@@ -3,8 +3,6 @@ package org.codetome.zircon.examples;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.font.Font;
-import org.codetome.zircon.api.resource.CP437TilesetResource;
-import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.junit.Test;
 
@@ -73,7 +71,7 @@ public class FontModifiersExample {
 
         putEmptySpace(terminal);
 
-        terminal.enableModifier(Blink.INSTANCE);
+        terminal.enableModifier(BLINK);
         terminal.setBackgroundColor(CYAN);
         terminal.setForegroundColor(YELLOW);
         terminal.putCharacter('F');
@@ -87,7 +85,7 @@ public class FontModifiersExample {
 
         putEmptySpace(terminal);
 
-        terminal.enableModifier(BORDER.of(SOLID, TOP, LEFT, RIGHT, BOTTOM));
+        terminal.enableModifier(BORDER.create(SOLID, TOP, LEFT, RIGHT, BOTTOM));
         terminal.setBackgroundColor(WHITE);
         terminal.setForegroundColor(BLUE);
         terminal.putCharacter('H');

@@ -24,7 +24,7 @@ class DefaultPanelTest {
                 .addShadow()
                 .boxType(BOX_TYPE)
                 .title(TITLE)
-                .addBorder(Modifiers.BORDER.of(DASHED))
+                .addBorder(Modifiers.BORDER.create(DASHED))
                 .size(SIZE)
                 .wrapInBox()
                 .position(POSITION)

@@ -3,7 +3,7 @@ package org.codetome.zircon.examples;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
-import org.codetome.zircon.api.TextCharacter;
+import org.codetome.zircon.internal.DefaultTextCharacter;
 import org.codetome.zircon.api.builder.LayerBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
@@ -12,7 +12,6 @@ import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Layer;
-import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.junit.Test;
@@ -42,22 +41,22 @@ public class TilesetExample {
     private static final int TERMINAL_HEIGHT = 40;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static final Font<BufferedImage> FONT = WANDERLUST_16X16.toFont();
-    private static final TextCharacter GRASS_0 = TextCharacter.of(
+    private static final DefaultTextCharacter GRASS_0 = DefaultTextCharacter.of(
             ',',
             TextColorFactory.fromString("#33cc44"),
             TextColorFactory.fromString("#114911"),
             new HashSet<>());
-    private static final TextCharacter GRASS_1 = TextCharacter.of(
+    private static final DefaultTextCharacter GRASS_1 = DefaultTextCharacter.of(
             '`',
             TextColorFactory.fromString("#33bb44"),
             TextColorFactory.fromString("#114511"),
             new HashSet<>());
-    private static final TextCharacter GRASS_2 = TextCharacter.of(
+    private static final DefaultTextCharacter GRASS_2 = DefaultTextCharacter.of(
             '\'',
             TextColorFactory.fromString("#33aa44"),
             TextColorFactory.fromString("#114011"),
             new HashSet<>());
-    private static final TextCharacter[] GRASSES = new TextCharacter[]{GRASS_0, GRASS_1, GRASS_2};
+    private static final DefaultTextCharacter[] GRASSES = new DefaultTextCharacter[]{GRASS_0, GRASS_1, GRASS_2};
     private static final TextColor TEXT_COLOR = TextColorFactory.fromString("#dd6644");
     private static final TextColor TEXT_BG_COLOR = TextColorFactory.fromString("#00ff00");
 
@@ -83,7 +82,7 @@ public class TilesetExample {
         final String text = "Tileset Example";
         for (int i = 0; i < text.length(); i++) {
             screen.setCharacterAt(Position.of(i + 2, 1),
-                    TextCharacter.builder()
+                    TextCharacterBuilder.newBuilder()
                             .character(text.charAt(i))
                             .foregroundColor(TEXT_COLOR)
                             .backgroundColor(TEXT_BG_COLOR)
@@ -104,7 +103,7 @@ public class TilesetExample {
                     Position.of(
                             random.nextInt(TERMINAL_WIDTH),
                             random.nextInt(TERMINAL_HEIGHT - 2) + 2),
-                    TextCharacter.builder()
+                    TextCharacterBuilder.newBuilder()
                             .character(RANDOM_CHARS[random.nextInt(charCount)])
                             .foregroundColor(ANSITextColor.values()[random.nextInt(ansiCount)])
                             .backgroundColor(TextColorFactory.TRANSPARENT)
