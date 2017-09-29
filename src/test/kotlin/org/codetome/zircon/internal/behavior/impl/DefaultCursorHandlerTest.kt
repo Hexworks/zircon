@@ -37,7 +37,7 @@ class DefaultCursorHandlerTest {
 
     @Test
     fun shouldSetVisibilityCorrectly() {
-        target.setCursorVisible(false)
+        target.setCursorVisibility(false)
 
         assertThat(target.isCursorVisible())
                 .isFalse()

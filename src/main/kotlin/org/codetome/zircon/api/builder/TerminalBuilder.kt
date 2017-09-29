@@ -1,12 +1,12 @@
 package org.codetome.zircon.api.builder
 
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.resource.PhysicalFontResource
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.resource.PhysicalFontResource
 import org.codetome.zircon.api.screen.Screen
-import org.codetome.zircon.internal.screen.TerminalScreen
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
+import org.codetome.zircon.internal.screen.TerminalScreen
 import org.codetome.zircon.internal.terminal.swing.SwingTerminalFrame
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import java.awt.Toolkit
@@ -21,21 +21,27 @@ import java.awt.image.BufferedImage
  * - default `font` is `UBUNTU_MONO` (because it is cp437 compliant)
  * @see DeviceConfigurationBuilder for the defaults for `deviceConfiguration`
  */
-class TerminalBuilder {
+data class TerminalBuilder(
+        private var fullScreen: Boolean = false,
+        private var initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
+        private var title: String = "Zircon Terminal",
+        private var deviceConfiguration: DeviceConfiguration = DeviceConfigurationBuilder.getDefault(),
+        // TODO: refactor this to abstract shape when libgdx implementation comes
+        private var font: Font<BufferedImage> = PhysicalFontResource.UBUNTU_MONO.toFont()
+) : Builder<Terminal> {
 
-    private var fullScreen: Boolean = false
-    private var initialSize: Size = Size.DEFAULT_TERMINAL_SIZE
-    private var title: String = "Zircon Terminal"
-    private var deviceConfiguration = DeviceConfigurationBuilder.getDefault()
-    // TODO: refactor this to abstract shape when libgdx implementation comes
-    private var font: Font<BufferedImage> = PhysicalFontResource.UBUNTU_MONO.toFont()
+
+    override fun build(): Terminal {
+        return buildTerminal(false)
+    }
+
+    override fun createCopy() = copy()
 
     /**
      * Builds a [Terminal] based on the properties of this [TerminalBuilder].
      */
-    @JvmOverloads
     fun buildTerminal(headless: Boolean = false): Terminal =
-            if(headless) {
+            if (headless) {
                 VirtualTerminal(
                         initialSize = initialSize)
             } else {

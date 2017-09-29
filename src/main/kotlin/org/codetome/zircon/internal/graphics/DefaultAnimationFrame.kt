@@ -2,10 +2,8 @@ package org.codetome.zircon.internal.graphics
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.behavior.Layerable
-import org.codetome.zircon.api.graphics.AnimationFrame
+import org.codetome.zircon.api.beta.animation.AnimationFrame
 import org.codetome.zircon.api.graphics.Layer
-import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 
 data class DefaultAnimationFrame(private val size: Size,
                                  private val layers: List<Layer>,

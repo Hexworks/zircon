@@ -10,6 +10,9 @@ interface Movable : Positionable {
 
     /**
      * Sets the (absolute) position of this [Movable].
+     * Note that if the supplied `position` is same as the [Movable]'s current
+     * position nothing will change.
+     * @return true if the position was changed false otherwise
      */
-    fun moveTo(position: Position)
+    fun moveTo(position: Position): Boolean
 }

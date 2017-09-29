@@ -4,7 +4,7 @@ import org.codetome.zircon.internal.DefaultTextCharacter
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
 
 /**

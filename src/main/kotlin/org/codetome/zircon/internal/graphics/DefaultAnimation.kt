@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.graphics
 
-import org.codetome.zircon.api.graphics.Animation
-import org.codetome.zircon.api.graphics.AnimationFrame
+import org.codetome.zircon.api.beta.animation.Animation
+import org.codetome.zircon.api.beta.animation.AnimationFrame
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 

@@ -1,6 +1,7 @@
 package org.codetome.zircon.api.resource
 
 import org.assertj.core.api.Assertions
+import org.codetome.zircon.api.beta.animation.AnimationResource
 import org.junit.Test
 
 class AnimationResourceTest {

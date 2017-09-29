@@ -5,7 +5,7 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.*
-import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.input.Input
 import java.util.*
 

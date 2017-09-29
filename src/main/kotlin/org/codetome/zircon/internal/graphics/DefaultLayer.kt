@@ -35,10 +35,14 @@ class DefaultLayer(size: Size,
 
     override fun getPosition() = position
 
-    override fun moveTo(position: Position) {
-        this.position = position
-        this.rect = refreshRect()
-    }
+    override fun moveTo(position: Position) =
+            if (this.position == position) {
+                false
+            } else {
+                this.position = position
+                this.rect = refreshRect()
+                true
+            }
 
     override fun intersects(boundable: Boundable) = rect.intersects(
             Rectangle(

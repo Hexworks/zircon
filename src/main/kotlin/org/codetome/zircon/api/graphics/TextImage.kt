@@ -34,6 +34,8 @@ interface TextImage : DrawSurface, StyleSet, Drawable {
      * while size is used to determine the region (down and right) to overwrite
      * relative to `offset`.
      */
-    fun applyColorsFromStyle(styleSet: StyleSet, offset: Position = Position.DEFAULT_POSITION, size: Size = getBoundableSize())
+    fun applyColorsFromStyle(styleSet: StyleSet,
+                             offset: Position = Position.DEFAULT_POSITION,
+                             size: Size = getBoundableSize())
 
 }

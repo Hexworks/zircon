@@ -1,4 +1,4 @@
-package org.codetome.zircon.api.graphics
+package org.codetome.zircon.api.beta.animation
 
 import org.codetome.zircon.internal.behavior.Identifiable
 import java.util.*

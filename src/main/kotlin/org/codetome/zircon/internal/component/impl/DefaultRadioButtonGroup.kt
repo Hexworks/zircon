@@ -9,7 +9,7 @@ import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.RadioButton
 import org.codetome.zircon.api.component.RadioButtonGroup
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection
-import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.behavior.Scrollable
@@ -33,7 +33,7 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
         componentStyles = componentStyles,
         wrappers = wrappers) {
 
-    private val items = LinkedHashMap<String, RadioButton>()
+    private val items = LinkedHashMap<String, DefaultRadioButton>()
     private val selectionListeners = mutableListOf<Consumer<Selection>>()
     private var selectedItem: Optional<String> = Optional.empty()
 

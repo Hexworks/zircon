@@ -1,17 +1,18 @@
 package org.codetome.zircon.api.builder
 
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.graphics.Animation
-import org.codetome.zircon.api.graphics.AnimationFrame
+import org.codetome.zircon.api.beta.animation.Animation
+import org.codetome.zircon.api.beta.animation.AnimationFrame
 import org.codetome.zircon.internal.graphics.DefaultAnimation
 import org.codetome.zircon.internal.graphics.DefaultAnimationFrame
 
-data class AnimationBuilder private constructor(private val animationFrames: MutableList<AnimationFrame> = mutableListOf(),
-                                                private val positions: MutableList<Position> = mutableListOf(),
-                                                private var tick: Long = 1000L / DEFAULT_FPS,
-                                                private var loopCount: Int = 1,
-                                                private var frameCount: Int = -1,
-                                                private var length: Int = -1)
+data class AnimationBuilder private constructor(
+        private val animationFrames: MutableList<AnimationFrame> = mutableListOf(),
+        private val positions: MutableList<Position> = mutableListOf(),
+        private var tick: Long = 1000L / DEFAULT_FPS,
+        private var loopCount: Int = 1,
+        private var frameCount: Int = -1,
+        private var length: Int = -1)
     : Builder<Animation> {
 
     fun getLength() = length

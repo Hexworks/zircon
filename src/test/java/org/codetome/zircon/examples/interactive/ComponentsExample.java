@@ -10,7 +10,7 @@ import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection;
 import org.codetome.zircon.api.component.builder.*;
-import org.codetome.zircon.api.factory.TextColorFactory;
+import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;

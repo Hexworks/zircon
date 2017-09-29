@@ -13,13 +13,16 @@ import java.util.*
 interface DrawSurface : Boundable {
 
     /**
-     * Returns the character stored at a particular position in this image
+     * Returns the character stored at a particular position on this [DrawSurface].
+     * Returns an empty [Optional] if no [TextCharacter] is present at the given [Position].
      */
     fun getCharacterAt(position: Position): Optional<TextCharacter>
 
     /**
      * Sets the character at a specific position in the [DrawSurface] to a particular [TextCharacter].
      * If the position is outside of the [DrawSurface]'s size, this method has no side effect.
+     * Note that if this [DrawSurface] already has the given [TextCharacter] on the supplied [Position]
+     * nothing will change and this method will return `false`.
      * @return true if the character was set, false if the position is outside of the [DrawSurface].
      */
     fun setCharacterAt(position: Position, character: TextCharacter): Boolean
@@ -31,7 +34,8 @@ interface DrawSurface : Boundable {
      * [org.codetome.zircon.api.graphics.StyleSet].
      * If not it will use [org.codetome.zircon.api.builder.TextCharacterBuilder.DEFAULT_CHARACTER]
      * when it sets the given `character` as a [TextCharacter].
-     * @return true if the character was set, false if the position is outside of the [DrawSurface].
+     * @return true if the character was set, false if the position is outside of the [DrawSurface]
+     * or if no change happened.
      */
     fun setCharacterAt(position: Position, character: Char): Boolean
 

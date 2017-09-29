@@ -6,7 +6,7 @@ import org.codetome.zircon.api.TextCharacter;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
-import org.codetome.zircon.api.factory.TextColorFactory;
+import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.input.KeyStroke;
 import org.codetome.zircon.api.screen.Screen;
@@ -54,8 +54,8 @@ public class TypingExample {
         final Terminal terminal = builder.buildTerminal(args.length > 0);
         final Screen screen = TerminalBuilder.createScreenFor(terminal);
 
-//        startTypingSupportForScreen(screen);
-        startTypingSupportForTerminal(terminal);
+        startTypingSupportForScreen(screen);
+//        startTypingSupportForTerminal(terminal);
     }
 
     private static void startTypingSupportForScreen(Screen screen) {
@@ -79,10 +79,11 @@ public class TypingExample {
 
     private static void startTypingSupportForTerminal(Terminal terminal) {
         terminal.addInputListener((input) -> {
+            final Position pos = terminal.getCursorPosition();
             if (EXIT_CONDITIONS.contains(input.getInputType()) && !headless) {
                 System.exit(0);
             } else if (input.inputTypeIs(Enter)) {
-                terminal.moveCursorForward();
+                terminal.putCursorAt(pos.withRelativeRow(1).withColumn(0));
                 terminal.flush();
             } else {
                 if (input.isKeyStroke()) {

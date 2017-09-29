@@ -2,7 +2,6 @@ package org.codetome.zircon.api.shape
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.graphics.Shape
-import org.codetome.zircon.internal.graphics.ShapeFactory
 import org.codetome.zircon.api.shape.LineFactory.buildLine
 
 object TriangleFactory : ShapeFactory<TriangleParameters> {

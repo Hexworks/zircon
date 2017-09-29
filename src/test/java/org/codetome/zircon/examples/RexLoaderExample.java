@@ -33,7 +33,7 @@ public class RexLoaderExample {
                 .initialTerminalSize(SIZE)
                 .buildTerminal(args.length > 0);
         final Screen screen = TerminalBuilder.createScreenFor(terminal);
-        screen.setCursorVisible(false);
+        screen.setCursorVisibility(false);
         List<Layer> layers = rex.toLayerList();
         for (Layer layer: layers) {
             screen.addLayer(layer);

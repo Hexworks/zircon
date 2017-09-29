@@ -3,7 +3,6 @@ package org.codetome.zircon.api.shape
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.internal.graphics.DefaultShape
-import org.codetome.zircon.internal.graphics.ShapeFactory
 
 object FilledRectangleFactory : ShapeFactory<RectangleParameters> {
 

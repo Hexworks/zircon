@@ -55,12 +55,16 @@ open class DefaultContainer(initialSize: Size,
     override fun removeComponent(component: Component): Boolean {
         var removalHappened = components.remove(component)
         if (removalHappened.not()) {
-            removalHappened = components
+            val childResults = components
                     .filter { it is Container }
                     .map { (it as Container).removeComponent(component) }
-                    .reduce(Boolean::or)
+            removalHappened = if (childResults.isEmpty()) {
+                false
+            } else {
+                childResults.reduce(Boolean::or)
+            }
         }
-        if(removalHappened) {
+        if (removalHappened) {
             EventBus.emit(EventType.ComponentRemoval)
         }
         return removalHappened

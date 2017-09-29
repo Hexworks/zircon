@@ -1,7 +1,8 @@
-package org.codetome.zircon.api.graphics
+package org.codetome.zircon.api.beta.animation
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.graphics.Layer
 
 interface AnimationFrame {
 

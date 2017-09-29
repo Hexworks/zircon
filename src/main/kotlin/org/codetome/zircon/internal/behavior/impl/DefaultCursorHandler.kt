@@ -16,6 +16,7 @@ class DefaultCursorHandler(private var cursorSpace: Size,
         setPositionDirty(cursorPosition)
     }
 
+    @Synchronized
     override fun drainDirtyPositions(): Set<Position> {
         return dirtiable.drainDirtyPositions().also {
             setPositionDirty(cursorPosition)
@@ -24,19 +25,27 @@ class DefaultCursorHandler(private var cursorSpace: Size,
 
     override fun isCursorVisible() = cursorVisible
 
-    override fun setCursorVisible(cursorVisible: Boolean) {
+    override fun setCursorVisibility(cursorVisible: Boolean) {
         this.cursorVisible = cursorVisible
     }
 
     override fun getCursorPosition(): Position = cursorPosition
 
-    override fun putCursorAt(cursorPosition: Position) {
-        this.cursorPosition = cursorPosition
+    @Synchronized
+    override fun putCursorAt(cursorPosition: Position): Boolean {
+        val newCursorPos = cursorPosition
                 .withColumn(Math.min(cursorPosition.column, cursorSpace.columns - 1))
                 .withRow(Math.min(cursorPosition.row, cursorSpace.rows - 1))
-        setPositionDirty(this.cursorPosition)
+        return if (this.cursorPosition == newCursorPos) {
+            false
+        } else {
+            this.cursorPosition = newCursorPos
+            setPositionDirty(this.cursorPosition)
+            true
+        }
     }
 
+    @Synchronized
     override fun moveCursorForward() {
         putCursorAt(getCursorPosition().let { (column) ->
             if (cursorIsAtTheEndOfTheLine(column)) {
@@ -47,6 +56,7 @@ class DefaultCursorHandler(private var cursorSpace: Size,
         })
     }
 
+    @Synchronized
     override fun moveCursorBackward() {
         putCursorAt(getCursorPosition().let { (column) ->
             if (cursorIsAtTheStartOfTheLine(column)) {
@@ -63,6 +73,7 @@ class DefaultCursorHandler(private var cursorSpace: Size,
 
     override fun getCursorSpaceSize() = cursorSpace
 
+    @Synchronized
     override fun resizeCursorSpace(size: Size) {
         this.cursorSpace = size
         putCursorAt(getCursorPosition())

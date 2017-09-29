@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.color
 
-import org.codetome.zircon.api.factory.TextColorFactory.DEFAULT_ALPHA
+import org.codetome.zircon.api.color.TextColorFactory.DEFAULT_ALPHA
 import org.codetome.zircon.api.color.TextColor
 import java.awt.Color
 

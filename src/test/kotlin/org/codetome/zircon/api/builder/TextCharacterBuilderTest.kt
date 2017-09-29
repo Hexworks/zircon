@@ -3,7 +3,7 @@ package org.codetome.zircon.api.builder
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.internal.DefaultTextCharacter
-import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColorFactory
 import org.junit.Test
 
 class TextCharacterBuilderTest {

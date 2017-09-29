@@ -5,7 +5,7 @@ import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.ANSITextColor.*
-import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.internal.BuiltInModifiers
 import org.codetome.zircon.internal.DefaultTextCharacter
 import org.junit.Test
@@ -19,13 +19,6 @@ class DefaultTextCharacterTest {
         assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.getBackgroundColor()).isEqualTo(BLACK)
         assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.getForegroundColor()).isEqualTo(WHITE)
         assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.getModifiers()).isEmpty()
-    }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun shouldThrowExceptionIfTryingToCreateTextCharacterFromUnprintableCharacter() {
-        TextCharacterBuilder.newBuilder()
-                .character(4.toChar())
-                .build()
     }
 
     @Test
@@ -143,19 +136,22 @@ class DefaultTextCharacterTest {
                 foregroundColor = EXPECTED_FG_COLOR,
                 backgroundColor = EXPECTED_BG_COLOR,
                 modifiers = setOf(Modifiers.BLINK))
-                .withModifiers(EXPECTED_MODIFIERS))
-                .isEqualTo(EXPECTED_TEXT_CHARACTER)
+                .withModifiers(EXPECTED_MODIFIERS)).isEqualTo(EXPECTED_TEXT_CHARACTER)
     }
 
     @Test
-    fun shouldBeSameButWithModifierAddedWhenWithModifierIsCalled() {
+    fun shouldBeSameButWithModifierRemovedWhenWithModifierIsCalled() {
         assertThat(DefaultTextCharacter.of(
                 character = EXPECTED_CHAR,
                 foregroundColor = EXPECTED_FG_COLOR,
                 backgroundColor = EXPECTED_BG_COLOR,
                 modifiers = setOf(Modifiers.BOLD))
-                .withModifiers(Modifiers.ITALIC))
-                .isEqualTo(EXPECTED_TEXT_CHARACTER)
+                .withModifiers(Modifiers.ITALIC)).isEqualTo(
+                DefaultTextCharacter.of(
+                        character = EXPECTED_CHAR,
+                        foregroundColor = EXPECTED_FG_COLOR,
+                        backgroundColor = EXPECTED_BG_COLOR,
+                        modifiers = setOf(Modifiers.ITALIC)))
     }
 
     @Test
@@ -189,7 +185,7 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldReturnSameTextCharacterWhenWithModifierIsCalledWithSameModifier() {
-        assertThat(EXPECTED_TEXT_CHARACTER.withModifiers(Modifiers.BOLD))
+        assertThat(EXPECTED_TEXT_CHARACTER.withModifiers(Modifiers.BOLD, Modifiers.ITALIC))
                 .isSameAs(EXPECTED_TEXT_CHARACTER)
     }
 

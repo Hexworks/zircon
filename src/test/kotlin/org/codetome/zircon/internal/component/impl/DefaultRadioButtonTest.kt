@@ -9,7 +9,7 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.component.ComponentState
-import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.junit.Before

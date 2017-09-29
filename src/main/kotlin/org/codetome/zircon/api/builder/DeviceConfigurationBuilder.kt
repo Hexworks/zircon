@@ -1,20 +1,28 @@
 package org.codetome.zircon.api.builder
 
-import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.api.color.TextColor
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.terminal.config.CursorStyle
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 
 /**
  * Builder for [org.codetome.zircon.api.terminal.config.DeviceConfiguration]s.
  */
-class DeviceConfigurationBuilder {
+data class DeviceConfigurationBuilder(
+        private var blinkLengthInMilliSeconds: Long = 500,
+        private var cursorStyle: CursorStyle = CursorStyle.USE_CHARACTER_FOREGROUND,
+        private var cursorColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
+        private var cursorBlinking: Boolean = false,
+        private var clipboardAvailable: Boolean = true) : Builder<DeviceConfiguration> {
 
-    private var blinkLengthInMilliSeconds: Long = 500
-    private var cursorStyle: CursorStyle = CursorStyle.USE_CHARACTER_FOREGROUND
-    private var cursorColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR
-    private var cursorBlinking: Boolean = false
-    private var clipboardAvailable: Boolean = true
+    override fun build() = DeviceConfiguration(
+            blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
+            cursorStyle = cursorStyle,
+            cursorColor = cursorColor,
+            isCursorBlinking = cursorBlinking,
+            isClipboardAvailable = clipboardAvailable)
+
+    override fun createCopy() = copy()
 
     /**
      * Sets the length of a blink. All blinking characters will use this setting.
@@ -51,13 +59,6 @@ class DeviceConfigurationBuilder {
     fun clipboardAvailable(clipboardAvailable: Boolean) = also {
         this.clipboardAvailable = clipboardAvailable
     }
-
-    fun build() = DeviceConfiguration(
-            blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
-            cursorStyle = cursorStyle,
-            cursorColor = cursorColor,
-            isCursorBlinking = cursorBlinking,
-            isClipboardAvailable = clipboardAvailable)
 
     companion object {
 

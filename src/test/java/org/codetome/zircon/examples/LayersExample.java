@@ -6,7 +6,7 @@ import org.codetome.zircon.api.TextCharacter;
 import org.codetome.zircon.api.builder.LayerBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
-import org.codetome.zircon.api.factory.TextColorFactory;
+import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.screen.Screen;
@@ -20,8 +20,8 @@ import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_1
 
 public class LayersExample {
 
-    private static final int TERMINAL_WIDTH = 50;
-    private static final int TERMINAL_HEIGHT = 6;
+    private static final int TERMINAL_WIDTH = 45;
+    private static final int TERMINAL_HEIGHT = 5;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static final Font<BufferedImage> FONT = WANDERLUST_16X16.toFont();
 
@@ -37,7 +37,7 @@ public class LayersExample {
                 .initialTerminalSize(SIZE)
                 .buildTerminal(args.length > 0);
         final Screen screen = TerminalBuilder.createScreenFor(terminal);
-        screen.setCursorVisible(false); // we don't want the cursor right now
+        screen.setCursorVisibility(false); // we don't want the cursor right now
 
         final String firstRow = "This is white title on black";
         for (int x = 0; x < firstRow.length(); x++) {
@@ -56,7 +56,7 @@ public class LayersExample {
         addOverlayAt(screen,
                 Position.of(1, 2),
                 Size.of(secondRow.length(), 1),
-                org.codetome.zircon.api.factory.TextColorFactory.fromRGB(50, 50, 200, 127));
+                TextColorFactory.fromRGB(50, 50, 200, 127));
 
         screen.display();
     }

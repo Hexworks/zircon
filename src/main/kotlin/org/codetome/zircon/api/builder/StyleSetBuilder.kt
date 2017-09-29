@@ -1,20 +1,28 @@
 package org.codetome.zircon.api.builder
 
 import org.codetome.zircon.api.Modifier
-import org.codetome.zircon.api.factory.TextColorFactory
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.internal.graphics.DefaultStyleSet
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
+import org.codetome.zircon.internal.graphics.DefaultStyleSet
 
 /**
  * Builder used to create [StyleSet]s. Uses the default colors from
  * [TextColorFactory]. Modifiers are empty by default.
  */
-class StyleSetBuilder {
+data class StyleSetBuilder(
+        private var foregroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
+        private var backgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
+        private var modifiers: Set<Modifier> = setOf()) : Builder<StyleSet> {
 
-    private var foregroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR
-    private var backgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR
-    private var modifiers: Set<Modifier> = setOf()
+    override fun build(): StyleSet = DefaultStyleSet(
+            foregroundColor = foregroundColor,
+            backgroundColor = backgroundColor,
+            modifiers = modifiers.toMutableSet())
+
+    override fun createCopy() = copy(
+            modifiers = modifiers.toSet())
+
 
     fun foregroundColor(foregroundColor: TextColor) = also {
         this.foregroundColor = foregroundColor
@@ -31,11 +39,6 @@ class StyleSetBuilder {
     fun modifier(vararg modifiers: Modifier) = also {
         this.modifiers = modifiers.toSet()
     }
-
-    fun build(): StyleSet = DefaultStyleSet(
-            foregroundColor = foregroundColor,
-            backgroundColor = backgroundColor,
-            modifiers = modifiers.toMutableSet())
 
     companion object {
 

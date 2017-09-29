@@ -2,14 +2,14 @@ package org.codetome.zircon.api.component
 
 /**
  * Represents an object which can hold gui [org.codetome.zircon.api.component.Component]s.
- * **Note that** a [ContainerHandler] **will always** hold a [Container]
+ * **Note that** a [ContainerHandler] **will always** hold a "root" [Container]
  * which will have the [org.codetome.zircon.api.Size] of its parent.
  * @see org.codetome.zircon.api.component.Component for more info
  */
 interface ContainerHandler {
 
     /**
-     * Adds a sibling [Component] to this [Container]. It can either be
+     * Adds a child [Component] to this [Container]. It can either be
      * a leaf component (like a label) or another container which can itself
      * contain components within itself.
      */

@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.util.rex
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.graphics.DefaultLayer

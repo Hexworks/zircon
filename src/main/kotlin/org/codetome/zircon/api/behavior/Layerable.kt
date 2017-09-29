@@ -5,7 +5,8 @@ import java.util.*
 
 /**
  * Represents an object which can contain multiple [org.codetome.zircon.api.graphics.Layer]s
- * which are specialized [org.codetome.zircon.api.graphics.TextImage] overlays above a terminal.
+ * which are specialized [org.codetome.zircon.api.graphics.TextImage] overlays displayed
+ * above the [Layerable] object.
  */
 interface Layerable : Boundable {
 
@@ -15,8 +16,8 @@ interface Layerable : Boundable {
     fun addLayer(layer: Layer)
 
     /**
-     * Removes and returns the layer which is at the top of the currently present layers.
-     * (if any)
+     * Removes and returns the layer which is at the top of the currently present layers
+     * (if any).
      */
     fun popLayer(): Optional<Layer>
 

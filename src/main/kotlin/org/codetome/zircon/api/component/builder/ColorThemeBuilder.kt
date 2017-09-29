@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.component.builder
 
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.api.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.internal.component.DefaultColorTheme
 
 data class ColorThemeBuilder(private var brightForegroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,

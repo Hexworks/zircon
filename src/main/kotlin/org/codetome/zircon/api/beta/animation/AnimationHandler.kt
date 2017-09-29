@@ -1,5 +1,6 @@
-package org.codetome.zircon.api.graphics
+package org.codetome.zircon.api.beta.animation
 
+import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.screen.Screen
 import java.io.Closeable
 import java.lang.IllegalStateException

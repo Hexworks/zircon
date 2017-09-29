@@ -18,8 +18,16 @@ import java.util.function.Consumer
  */
 interface Component : Positionable, Identifiable, Boundable {
 
+    /**
+     * Adds a callback to this [Component] which will be called
+     * when the mouse is pressed on this component.
+     */
     fun onMousePressed(callback: Consumer<MouseAction>)
 
+    /**
+     * Adds a callback to this [Component] which will be called
+     * when the mouse is released on this component.
+     */
     fun onMouseReleased(callback: Consumer<MouseAction>)
 
     /**
@@ -33,7 +41,7 @@ interface Component : Positionable, Identifiable, Boundable {
     fun setComponentStyles(componentStyles: ComponentStyles)
 
     /**
-     * Applies the [ColorTheme] to this component and recursively to all its children (if any).
+     * Applies a [ColorTheme] to this component and recursively to all its children (if any).
      */
     fun applyTheme(colorTheme: ColorTheme)
 
