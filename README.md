@@ -120,6 +120,7 @@ Before we start there are some guidelines which can help you if you are stuck:
 - Anything in the `api.beta` package is considered a *BETA* feature and is subject to change.
 - You can use *anything* you can find in the [API][api] package and they will not change (so your code won't break). The
   [internal][internal] package however is considered private to Zircon so don't depend on anything in it.
+- If you want to see some example code look [here][examples].  
 - If all else fails read the javadoc. API classes are rather well documented.
 - If you have any problems which are not answered here feel free to ask us at the [Hexworks Discord server][discord]. 
   
