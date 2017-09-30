@@ -452,6 +452,11 @@ If interested you can read more about how this works [here][color-themes].
 ### Animations (BETA)
 Animationsn are a beta feature. More info [here][animations].
 
+### The API
+
+If you just want to peruse the Zircon API just navigate [here](https://github.com/Hexworks/zircon/tree/master/src/main/kotlin/org/codetome/zircon/api).
+Everything which is intented to be the public API is there.
+
 ## Road map
 
 If you want to see a new feature feel free to [create a new Issue](https://github.com/Hexworks/zircon/issues/new)
