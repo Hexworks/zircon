@@ -30,7 +30,6 @@ interface Drawable : Boundable {
      * @param destinationRowOffset Offset (in number of rows) in the target image where we want to first copied row to be
      * @param destinationColumnOffset Offset (in number of columns) in the target image where we want to first copied column to be
      */
-    @Deprecated("This method will be removed in the next release")
     fun drawOnto(
             destination: DrawSurface,
             startRowIndex: Int = 0,
