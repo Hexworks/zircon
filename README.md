@@ -7,6 +7,9 @@ Currently only a Swing implementation is present but we are working on a libGDX 
 
 *Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna) and parts of its codebase were ported to serve as a basis
  for this library.
+ 
+ *If you have any questions which are unanswered in the README or the Wiki feel free to ask away on the
+ [official Discord server](https://discordapp.com/invite/p2vSMFc)*!
 
 [![][circleci img]][circleci]
 [![][maven img]][maven]
@@ -15,15 +18,16 @@ Currently only a Swing implementation is present but we are working on a libGDX 
 
 ## A little Crash Course
 
-In order to work with Zircon you should get familiar with the core concepts. Zircon provides multiple layers of abstractions and it depends on
-your needs which one you should pick.
+In order to work with Zircon you should get familiar with the core concepts. 
+Zircon provides multiple layers of abstractions and it depends on your needs which one you should pick.
 
 ### Terminal
-At the lowest level Zircon provides the [Terminal] interface. This provides you with a surface on which you can draw [TextCharacter]s.
-A [TextCharacter] is basically a character (like an `x`) with additional metadata like `foregroundColor` and `backgroundColor`.
-This surface sits on top of a GUI layer and completely abstracts away how that layer works.
-For example the default implementation of the [Terminal] interface uses Swing under the hood.
-The main advantage of using [Terminal]s is that by implementing all its methods you can swap Swing with something else (like SWT) and use **all** higher
+At the lowest level Zircon provides the [Terminal] interface. This provides you with a surface on which 
+you can draw [TextCharacter]s. A [TextCharacter] is basically a character (like an `x`) with additional
+metadata like `foregroundColor` and `backgroundColor`. This surface sits on top of a GUI layer and
+completely abstracts away how that layer works. For example the default implementation of the [Terminal] 
+interface uses Swing under the hood. The main advantage of using [Terminal]s is that by implementing all
+its methods you can swap Swing with something else (like SWT) and use **all** higher
 level abstractions on top of it (like [Screen]s) which depend on [Terminal] (more on [Screen]s later).
 Working with [Terminal]s is *very* simple but somewhat limited. A [Terminal] is responsible for:
 
@@ -34,27 +38,38 @@ Working with [Terminal]s is *very* simple but somewhat limited. A [Terminal] is 
 - storing style information
 - drawing [TextImage]s on top of it
 
-This seems like a lot of things to do at once so you might ask "How is this [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design))?". Zircon
-solves this problem with composition: All of the above mentioned categories are handled by an object within a [Terminal] which is responsible for only
-one thing. For example [Terminal] implements the [Layerable] interface and internally all operations defined by it are delegated to an object
-which implements [Layerable] only. You can peruse these [here](https://github.com/Hexworks/zircon/tree/master/src/main/kotlin/org/codetome/zircon/api/behavior).
+This seems like a lot of things to do at once so you might ask "How is this [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design))?".
+Zircon solves this problem with composition: All of the above mentioned categories are handled by an object 
+within a [Terminal] which is responsible for only one thing.
+For example [Terminal] implements the [Layerable] interface and internally all operations defined by it are 
+delegated to an object which implements [Layerable] only.
+You can peruse these [here](https://github.com/Hexworks/zircon/tree/master/src/main/kotlin/org/codetome/zircon/api/behavior).
 
 ### Modifiers
-When working with [TextCharacter]s apart from giving them color you might want to apply some special [Modifier] to them like `UNDERLINE` or `VERTICAL_FLIP`.
-You can do this by picking the right [Modifier] from the [Modifiers] class. You can set any number of [Modifier]s to each [TextCharacter] individually and when
+When working with [TextCharacter]s apart from giving them color you might want to apply some special
+[Modifier] to them like `UNDERLINE` or `VERTICAL_FLIP`.
+You can do this by picking the right [Modifier] from the [Modifiers] class.
+You can set any number of [Modifier]s to each [TextCharacter] individually and when
 you refresh your [Terminal] by calling `flush` on it you will see them applied.
 
 ### TextImages
-A [TextImage] is an in-memory object on which you can draw [TextCharacter]s and later you can draw the [TextImage] itself on your [Terminal]. This is useful
-to create ASCII art for example and paste it on your [Terminal] multiple times or save it for later use.
+An image built from [TextCharacter]s with color and style information. 
+These are completely in memory and not visible, but can be used when drawing on other [DrawSurface]s,
+like a [Screen] or a [Terminal]. In other words [TextImage]s are like real images but composed of
+[TextCharacter]s to create ASCII art and the like. 
 
-### Screens
+### Screens 
 
 [Screen]s are a bitmap-like in-memory representations of your [Terminal]. They are double buffered
 which means that you write to a back-textBuffer and when you `refresh` your [Screen] only the changes will
 be written to the backing [Terminal] instance. Multiple [Screen]s can be attached to the same [Terminal]
 object which means that you can have multiple screens in your app and you can switch between them
-simultaneously by using the `display` method.
+simultaneously by using the `display` method. [Screen]s also let you use [Component]s like [Button]s
+and [Panel]s.
+
+> If you want to read more about the design philosophy behind Zircon check [this][design-philosophy] page on Wiki!
+
+Now that we got the basics out of the way, let's see how this all works in practice.
 
 ## Getting Started
 
@@ -66,125 +81,327 @@ from Maven:
 <dependency>
     <groupId>org.codetome.zircon</groupId>
     <artifactId>zircon</artifactId>
-    <version>2017.1.0</version>
+    <version>2017.2.0</version>
 </dependency>
 ```
 
 or you can also use Gradle:
 
 ```groovy
-compile("org.codetome.zircon:zircon:2017.1.0")
+compile("org.codetome.zircon:zircon:2017.2.0")
 
 ```
 
 ### Creating a Terminal
 
+In Zircon almost every object you might want to use has a `Builder` for it.
+This is the same for [Terminal]s as well so let's create one using a [TerminalBuilder]:
+
 ```java
-shape
-final DefaultTerminalFactory factory = new DefaultTerminalFactory();
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.terminal.Terminal;
 
-// Then set a size for your terminal (in characters)
-factory.initialSize(new TerminalSize(84, 32));
+public class Playground {
 
-// And finally create a new Terminal
-final Terminal terminal = factory.createTerminal();
+    public static void main(String[] args) {
+
+        final Terminal terminal = TerminalBuilder.newBuilder()
+                .initialTerminalSize(Size.of(32, 16))
+                .build();
+
+        terminal.flush();
+
+    }
+}
 ```
 
-Adding content to your [Terminal] is also very simple:
+Running this snippet will result in this screen:
+
+![](https://cdn.discordapp.com/attachments/363771631727804416/363772871115538454/image.png)
+
+Adding and formatting content is also very simple:
 
 ```java
-// Enable a modifier (means that any following characters will have this modifier)
-terminal.enableModifier(Modifier.CROSSED_OUT);
+import org.codetome.zircon.api.Modifiers;
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.color.ANSITextColor;
+import org.codetome.zircon.api.terminal.Terminal;
 
-// set a background for the following characters
-terminal.setBackgroundColor(TextColor.ANSI.BLUE);
+public class Playground {
 
-// set a foreground
-terminal.setForegroundColor(TextColor.ANSI.YELLOW);
+    public static void main(String[] args) {
 
-// and finally put a character on the screen
-terminal.putCharacter('A');
+        final Terminal terminal = TerminalBuilder.newBuilder()
+                .initialTerminalSize(Size.of(20, 8))
+                .build();
+
+        terminal.enableModifier(Modifiers.VERTICAL_FLIP);
+        terminal.setForegroundColor(ANSITextColor.CYAN);
+        terminal.putCharacter('a');
+        terminal.resetColorsAndModifiers();
+
+        terminal.setForegroundColor(ANSITextColor.GREEN);
+        terminal.enableModifier(Modifiers.HORIZONTAL_FLIP);
+        terminal.putCharacter('b');
+        terminal.resetColorsAndModifiers();
+
+        terminal.setForegroundColor(ANSITextColor.RED);
+        terminal.enableModifier(Modifiers.CROSSED_OUT);
+        terminal.putCharacter('c');
+        terminal.flush();
+    }
+}
 ```      
-  
-Let's add some more content!
+
+Running the above code will result in something like this:
+
+![](https://cdn.discordapp.com/attachments/363771631727804416/363774881298644995/image.png)
+
+> You can do a lot of fancy stuff with [Modifier]s, like this:
+>  
+> ![](https://cdn.discordapp.com/attachments/277739394641690625/347280659263389696/modifiers_anim.gif)
+> 
+> If interested check out the code examples [here][examples].
+
+You might have noticed that the default font is not very nice looking, so let's see what else the [TerminalBuilder] can do for us:
 
 ```java
-terminal.resetColorsAndModifiers();
-terminal.putCharacter(' ');
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
+import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.color.ANSITextColor;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.terminal.config.CursorStyle;
 
-terminal.enableModifiers(Modifier.BOLD, Modifier.ITALIC);
-terminal.setBackgroundColor(TextColor.ANSI.GREEN);
-terminal.setForegroundColor(TextColor.ANSI.YELLOW);
-terminal.putCharacter('B');
+public class Playground {
 
-terminal.resetColorsAndModifiers();
-terminal.putCharacter(' ');
+    private static final String TEXT = "Hello Zircon!";
 
-terminal.enableModifiers(Modifier.BLINK);
-terminal.setBackgroundColor(TextColor.ANSI.RED);
-terminal.setForegroundColor(TextColor.ANSI.WHITE);
-terminal.putCharacter('C');
+    public static void main(String[] args) {
+
+        final Terminal terminal = TerminalBuilder.newBuilder()
+                .initialTerminalSize(Size.of(20, 8))
+                .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
+                        .cursorColor(ANSITextColor.RED)
+                        .cursorStyle(CursorStyle.VERTICAL_BAR)
+                        .cursorBlinking(true)
+                        .blinkLengthInMilliSeconds(500)
+                        .clipboardAvailable(true)
+                        .build())
+                .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
+                .title(TEXT)
+                .build();
+
+        terminal.setForegroundColor(ANSITextColor.GREEN);
+        terminal.setCursorVisibility(true);
+        TEXT.chars().forEach((c) -> terminal.putCharacter((char)c));
+
+        terminal.flush();
+    }
+}
 ```
-And the result is:
 
-![][tilesetFont modifiers img]
+![](https://cdn.discordapp.com/attachments/363771631727804416/363778863488303107/image.png)
+ 
+> Font (and by extension resource) handling in Zircon is very simple and if you are interested in how to load your custom fonts and other resources
+take a look at the [Resource handling wiki page][resource-handling].
 
 ### Working with Screens
 
-[Terminal]s alone won't suffice since they are rather rudimentary and hard to use. Let's use a [Screen]!
+[Terminal]s alone won't suffice if you want to get any serious work done since they are rather rudimentary.
+
+Let's create a [Screen] and fill it up with some stuff:
+
 
 ```java
-final DefaultTerminalFactory factory = new DefaultTerminalFactory();
-factory.setTerminalFontConfiguration(TerminalFontConfiguration.Companion.buildDefault());
-factory.initialSize(new TerminalSize(84, 32));
-final Terminal terminal = factory.createTerminal();
+import org.codetome.zircon.api.Position;
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.builder.TextCharacterBuilder;
+import org.codetome.zircon.api.builder.TextImageBuilder;
+import org.codetome.zircon.api.component.ColorTheme;
+import org.codetome.zircon.api.graphics.TextImage;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.resource.ColorThemeResource;
+import org.codetome.zircon.api.screen.Screen;
+import org.codetome.zircon.api.terminal.Terminal;
 
-final TerminalScreen screen = new TerminalScreen(terminal);
+public class Playground {
+
+
+    public static void main(String[] args) {
+
+        final Terminal terminal = TerminalBuilder.newBuilder()
+                .initialTerminalSize(Size.of(20, 8))
+                .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
+                .build();
+        final Screen screen = TerminalBuilder.createScreenFor(terminal);
+
+        final ColorTheme theme = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme();
+
+        final TextImage image = TextImageBuilder.newBuilder()
+                .size(terminal.getBoundableSize())
+                .filler(TextCharacterBuilder.newBuilder()
+                        .foregroundColor(theme.getBrightForegroundColor())
+                        .backgroundColor(theme.getBrightBackgroundColor())
+                        .character('~')
+                        .build())
+                .build();
+
+        screen.draw(image, Position.DEFAULT_POSITION);
+
+        screen.display();
+    }
+}
 ```
 
-now draw some background on it:
+and we've got a nice ocean:
+
+![](https://cdn.discordapp.com/attachments/363771631727804416/363797686639394817/image.png)
+
+What happens here is that we:
+
+- Create a [Screen]
+- Fetch a nice [ColorTheme] which has colors we need
+- Create a [TextImage] with the colors added and fill it with `~`s
+- Draw the image onto the [Screen]
+
+> You can do so much more with [Screen]s. If interested then check out [A primer on Screens][screen-primer] on the Wiki! 
+
+### Components
+
+Zircon supports a bunch of [Component]s out of the box:
+
+- Button: A simple clickable component with corresponding event listeners
+- CheckBox: Like a button but with checked / unchecked state
+- Label: Simple component with text
+- Header: Like a label but this one has emphasis (useful when using [ColorTheme]s)
+- Panel: A [Container] which can hold multiple [Components]
+- RadioButtonGroup and RadioButton: Like a CheckBox but only one can be selected at a time
+- TextBox
+
+Let's look at an example (notes about how it works in comments):
 
 ```java
-final TextGraphics graphics = screen.newTextGraphics();
-graphics.setBackgroundColor(TextColor.Companion.fromString("#223344"));
-graphics.fill(' ');
+import org.codetome.zircon.api.Position;
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.component.Button;
+import org.codetome.zircon.api.component.CheckBox;
+import org.codetome.zircon.api.component.Header;
+import org.codetome.zircon.api.component.Panel;
+import org.codetome.zircon.api.component.builder.ButtonBuilder;
+import org.codetome.zircon.api.component.builder.CheckBoxBuilder;
+import org.codetome.zircon.api.component.builder.HeaderBuilder;
+import org.codetome.zircon.api.component.builder.PanelBuilder;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.resource.ColorThemeResource;
+import org.codetome.zircon.api.screen.Screen;
+import org.codetome.zircon.api.terminal.Terminal;
+
+public class Playground {
+
+
+    public static void main(String[] args) {
+
+        final Terminal terminal = TerminalBuilder.newBuilder()
+                .initialTerminalSize(Size.of(34, 18))
+                .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
+                .build();
+        final Screen screen = TerminalBuilder.createScreenFor(terminal);
+
+        // We create a Panel which will hold our components
+        // Note that you can add components to the screen without a panel as well
+        Panel panel = PanelBuilder.newBuilder()
+                .title("Panel") // if a panel is wrapped in a box a title can be displayed
+                // panels can be wrapped in a box
+                .wrapInBox()
+                .addShadow() // shadow can be added
+                .size(Size.of(32, 16)) // the size must be smaller than the parent's size
+                .position(Position.OFFSET_1x1) // position is always relative to the parent
+                .build();
+
+        final Header header = HeaderBuilder.newBuilder()
+                // this will be 1x1 left and down from the top left
+                // corner of the panel
+                .position(Position.OFFSET_1x1)
+                .text("Header")
+                .build();
+
+        final CheckBox checkBox = CheckBoxBuilder.newBuilder()
+                .text("Check me!")
+                .position(Position.of(0, 1)
+                        // the position class has some convenience methods
+                        // for you to specify your component's position as
+                        // relative to another one
+                        .relativeToBottomOf(header))
+                .build();
+
+        final Button left = ButtonBuilder.newBuilder()
+                .position(Position.of(0, 1)
+                        .relativeToBottomOf(checkBox))
+                .text("Left")
+                .build();
+
+        final Button right = ButtonBuilder.newBuilder()
+                .position(Position.of(1, 0)
+                        .relativeToRightOf(left))
+                .text("Right")
+                .build();
+
+        panel.addComponent(header);
+        panel.addComponent(checkBox);
+        panel.addComponent(left);
+        panel.addComponent(right);
+
+        screen.addComponent(panel);
+
+        // we can apply color themes to a screen
+        screen.applyColorTheme(ColorThemeResource.TECH_LIGHT.getTheme());
+
+        // this is how you can define interactions with a component
+        left.onMouseReleased((mouseAction -> {
+            screen.applyColorTheme(ColorThemeResource.ADRIFT_IN_DREAMS.getTheme());
+        }));
+
+        right.onMouseReleased((mouseAction -> {
+            screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_ORANGE.getTheme());
+        }));
+
+        // in order to see the changes you need to display your screen.
+        screen.display();
+    }
+}
 ```
 
-and add a simple button:
+And the result will look like this:
 
-```java
-final TextGraphics textGraphics = screen.newTextGraphics();
-textGraphics.setBackgroundColor(TextColor.ANSI.BLUE);
-textGraphics.setForegroundColor(TextColor.ANSI.CYAN);
-textGraphics.putString(new TerminalPosition(10, 10), String.format("<%s>", "OK"), Collections.emptySet());
-```
+![](https://cdn.discordapp.com/attachments/363771631727804416/363813193488924673/image.png)
 
-display it:
+You can check out more examples [here][examples]. Here are some
+screenshots of them:
 
-```java
-screen.display();
-```
+#### Tileset example:
+![](https://cdn.discordapp.com/attachments/277739394641690625/348400285879894018/image.png)
 
-and you'll have this:
+#### Animations:
+![](https://cdn.discordapp.com/attachments/277739394641690625/360086607380086807/GIF.gif)
 
-![][button img]
-
-You can check out more examples [here](https://github.com/Hexworks/zircon/blob/master/src/testRendering/java/org/codetome/zircon/examples)
+#### Components:
+![](https://cdn.discordapp.com/attachments/335444788167966720/361297190863241218/GIF.gif)
 
 ## Road map
 
 If you want to see a new feature feel free to [create a new Issue](https://github.com/Hexworks/zircon/issues/new).
 Here are some features which are either under way or planned:
 
-- More sophisticated [TextGraphics] and [TextImage] interfacing
-- A simple component system which is able to compose contols like
-  - Buttons
-  - Text fields
-  - Radio buttons
-  - Tables
-  - etc...
-- Components for games like map display
-- Support for custom fonts (like Dwarf Fortress tilesets)
+- libGDX support
+- Layouts for Components with resizing support
+- Components for games like MapDisplay
+- Multi-Font support
 
 ## License
 Zircon is made available under the [MIT License](http://www.opensource.org/licenses/mit-license.php).
@@ -192,8 +409,8 @@ Zircon is made available under the [MIT License](http://www.opensource.org/licen
 ## Credits
 Zircon is created and maintained by Adam Arold, Milan Boleradszki and Gergely Lukacsy
 
-*We're open to suggestions, feel free to comment or to send us a message.
-Pull requests are also welcome!*
+*We're open to suggestions, feel free to message us on [Discord][discord] or open an issue.*
+*Pull requests are also welcome!*
 
 Zircon is powered by:
 
@@ -217,11 +434,23 @@ Zircon is powered by:
 [maven]:https://mvnrepository.com/artifact/org.codetome.zircon/zircon/2017.1.0
 [maven img]:https://maven-badges.herokuapp.com/maven-central/org.codetome.zircon/zircon/badge.svg
 
-
 [tilesetFont modifiers img]:https://github.com/Hexworks/zircon/blob/master/src/main/resources/modifiers_example.png
 [button img]:https://github.com/Hexworks/zircon/blob/master/src/main/resources/button.png
 
+[resource-handling]:https://github.com/Hexworks/zircon/wiki/Resource-Handling
+[design-philosophy]:https://github.com/Hexworks/zircon/wiki/The-design-philosophy-behind-Zircon
+[color-themes]:https://github.com/Hexworks/zircon/wiki/Working-with-color-themes
+[text-images]:https://github.com/Hexworks/zircon/wiki/How-to-work-with-TextImages
+[screen-primer]:https://github.com/Hexworks/zircon/wiki/A-primer-on-Screens
 
+[discord]:https://discord.gg/p2vSMFc
+[examples]:https://github.com/Hexworks/zircon/tree/master/src/test/java/org/codetome/zircon/examples
+
+[Component]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/component/Component.kt
+[TerminalBuilder]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/builder/TerminalBuilder.kt
+[Button]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/component/Button.kt
+[Panel]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/component/Panel.kt
+[DrawSurface]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/behavior/DrawSurface.kt
 [Layerable]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/behavior/Layerable.kt
 [Layer]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/graphics/Layer.kt
 [TextColor]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/color/TextColor.kt
