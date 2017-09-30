@@ -106,6 +106,23 @@ compile("org.codetome.zircon:zircon:2017.2.0")
 
 ```
 
+### Some rules of thumb
+
+Before we start there are some guidelines which can help you if you are stuck:
+
+- If you want to build something (a `TextImage`, a `Component` or anything which is part of the public API) it is almost
+  sure that there is a `Builder` or a `*Factory` for it. If you want to build a `TextImage` you can use the `TextImageBuilder` to do so.
+  Always look for a `Builder` or a `Factory` (in case of `TextColor`s for example) to create the desired object. Your IDE
+  will help you with that
+- If you want to work with external files like tilesets or REXPaint files check the [resource package](https://github.com/Hexworks/zircon/tree/master/src/main/kotlin/org/codetome/zircon/api/resource).
+  There are a bunch of built-in tilesets for example which you can choose from but you can also load your own. The rule of thumb
+  is that if you need something external there is probably a `*Resource` for it (like the [REXPaintResource]).
+- Anything in the `api.beta` package is considered a *BETA* feature and is subject to change.
+- You can use *anything* you can find in the [API][api] package and they will not change (so your code won't break). The
+  [internal][internal] package however is considered private to Zircon so don't depend on anything in it.
+- If you have any problems which are not answered here feel free to ask us at the [Hexworks Discord server][discord]  
+  
+
 ### Creating a Terminal
 
 In Zircon almost every object you might want to use has a `Builder` for it.
@@ -454,7 +471,7 @@ Animationsn are a beta feature. More info [here][animations].
 
 ### The API
 
-If you just want to peruse the Zircon API just navigate [here](https://github.com/Hexworks/zircon/tree/master/src/main/kotlin/org/codetome/zircon/api).
+If you just want to peruse the Zircon API just navigate [here][api].
 Everything which is intented to be the public API is there.
 
 ## Road map
@@ -515,7 +532,10 @@ Zircon is powered by:
 
 [discord]:https://discord.gg/p2vSMFc
 [examples]:https://github.com/Hexworks/zircon/tree/master/src/test/java/org/codetome/zircon/examples
+[api]:https://github.com/Hexworks/zircon/tree/master/src/main/kotlin/org/codetome/zircon/api
+[internal]:https://github.com/Hexworks/zircon/tree/master/src/main/kotlin/org/codetome/zircon/internal
 
+[REXPaintResource]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/resource/REXPaintResource.kt
 [Shape]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/graphics/Shape.kt
 [ShapeFactory]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/shape/ShapeFactory.kt
 [ColorTheme]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/component/ColorTheme.kt
