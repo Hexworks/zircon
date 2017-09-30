@@ -6,6 +6,7 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import java.awt.Canvas
+import java.awt.Color
 import java.awt.image.BufferedImage
 import javax.swing.JFrame
 

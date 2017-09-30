@@ -102,7 +102,7 @@ class DefaultCheckBoxTest {
 
 //    @Test TODO: re-enable in next release
 //    fun shouldProperlyHandleMousePress() {
-//        target.applyTheme(THEME)
+//        target.applyColorTheme(THEME)
 //        val componentChanged = AtomicBoolean(false)
 //        EventBus.subscribe(EventType.ComponentChange, {
 //            componentChanged.set(true)

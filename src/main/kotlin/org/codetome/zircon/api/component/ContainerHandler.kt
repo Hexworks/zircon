@@ -26,6 +26,6 @@ interface ContainerHandler {
     /**
      * Applies the [ColorTheme] to this component and recursively to all its children (if any).
      */
-    fun applyTheme(colorTheme: ColorTheme)
+    fun applyColorTheme(colorTheme: ColorTheme)
 
 }

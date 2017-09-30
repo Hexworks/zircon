@@ -148,7 +148,7 @@ public class ComponentsExample {
                 .build());
         panelsScreen.addComponent(borderedPanelWithShadow);
 
-        panelsScreen.applyTheme(PANELS_THEME);
+        panelsScreen.applyColorTheme(PANELS_THEME);
 
         // ==============
         // inputs screen
@@ -217,7 +217,7 @@ public class ComponentsExample {
 
 
         inputsScreen.addComponent(radioPanel);
-        inputsScreen.applyTheme(INPUTS_THEME);
+        inputsScreen.applyColorTheme(INPUTS_THEME);
 
         // ==============
         // add/remove screen
@@ -238,7 +238,7 @@ public class ComponentsExample {
         addAndRemovePanel.addComponent(addButton);
         addAndRemovePanel.addComponent(clearButton);
         addAndRemoveScreen.addComponent(addAndRemovePanel);
-        addAndRemoveScreen.applyTheme(ADD_REMOVE_THEME);
+        addAndRemoveScreen.applyColorTheme(ADD_REMOVE_THEME);
 
         final Deque<Position> remainingPositions = new LinkedList<>();
         final Deque<Position> usedPositions = new LinkedList<>();
@@ -384,7 +384,7 @@ public class ComponentsExample {
             sdOptions.clearSelection();
         }));
 
-        colorThemesScreen.applyTheme(currentTheme.get().getTheme());
+        colorThemesScreen.applyColorTheme(currentTheme.get().getTheme());
         // ==============
         // display the first screen
         // ==============
@@ -400,7 +400,7 @@ public class ComponentsExample {
         infoPanel.removeComponent(labelRef.get());
         labelRef.set(createLabelForTheme(themeRef.get()));
         infoPanel.addComponent(labelRef.get());
-        screen.applyTheme(themeRef.get().getTheme());
+        screen.applyColorTheme(themeRef.get().getTheme());
     }
 
     private static Label createLabelForTheme(ColorThemeResource currentTheme) {

@@ -49,7 +49,7 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
     }
 
     @Synchronized
-    override fun applyTheme(colorTheme: ColorTheme) {
+    override fun applyColorTheme(colorTheme: ColorTheme) {
         container.applyTheme(colorTheme)
         EventBus.emit(ComponentChange)
     }
