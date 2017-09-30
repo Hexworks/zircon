@@ -112,7 +112,7 @@ public class GameMockupExample {
         menuPanel.addComponent(quitButton);
 
         mainMenuScreen.addComponent(menuPanel);
-        mainMenuScreen.applyTheme(THEME);
+        mainMenuScreen.applyColorTheme(THEME);
 
         // ==========
         // OPTIONS
@@ -156,7 +156,7 @@ public class GameMockupExample {
         optionsScreen.addComponent(difficultyPanel);
 
 
-        optionsScreen.applyTheme(THEME);
+        optionsScreen.applyColorTheme(THEME);
 
         // INTERACTIONS
 

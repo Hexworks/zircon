@@ -67,6 +67,7 @@ data class LayerBuilder(private var size: Size = Size.ONE,
 
     companion object {
 
+        @JvmStatic
         fun newBuilder() = LayerBuilder()
     }
 }
