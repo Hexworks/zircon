@@ -44,6 +44,18 @@ within a [Terminal] which is responsible for only one thing.
 For example [Terminal] implements the [Layerable] interface and internally all operations defined by it are 
 delegated to an object which implements [Layerable] only.
 You can peruse these [here](https://github.com/Hexworks/zircon/tree/master/src/main/kotlin/org/codetome/zircon/api/behavior).
+In this sense you can consider a [Terminal] as a [Facade](https://en.wikipedia.org/wiki/Facade_pattern).
+
+### Colors and StyleSets
+
+Objects like [TextCharacter]s can have foreground and background colors. You can either use the [ANSITextColor]
+`enum` to pick a pre-defined [TextColor] or you can create a new one by using [TextColorFactory]. This class
+has some useful factory methods for this like: `fromAWTColor`, `fromRGB` and `fromString`. The latter can be
+called with simple CSS-like strings (eg: `#334455`).
+
+If you don't want to set all these colors by hand or you want to have a color template and use it to set colors to
+multiple things you can use a [StyleSet] which is basically a [Value Object](https://martinfowler.com/bliki/ValueObject.html)
+which holds fore/background colors and modifiers.
 
 ### Modifiers
 When working with [TextCharacter]s apart from giving them color you might want to apply some special
@@ -60,16 +72,18 @@ like a [Screen] or a [Terminal]. In other words [TextImage]s are like real image
 
 ### Screens 
 
-[Screen]s are a bitmap-like in-memory representations of your [Terminal]. They are double buffered
-which means that you write to a back-textBuffer and when you `refresh` your [Screen] only the changes will
+[Screen]s are in-memory representations of your [Terminal]. They are double buffered
+which means that you write to a back-buffer and when you `refresh` your [Screen] only the changes will
 be written to the backing [Terminal] instance. Multiple [Screen]s can be attached to the same [Terminal]
-object which means that you can have multiple screens in your app and you can switch between them
+object which means that you can have more than one screen in your app and you can switch between them
 simultaneously by using the `display` method. [Screen]s also let you use [Component]s like [Button]s
 and [Panel]s.
 
 > If you want to read more about the design philosophy behind Zircon check [this][design-philosophy] page on Wiki!
+> 
+> If you are interested in how components work then [this][components] Wiki page can help you.
 
-Now that we got the basics out of the way, let's see how this all works in practice.
+Now that we got the basics covered, let's see how this all works in practice.
 
 ## Getting Started
 
@@ -283,7 +297,14 @@ Zircon supports a bunch of [Component]s out of the box:
 - RadioButtonGroup and RadioButton: Like a CheckBox but only one can be selected at a time
 - TextBox
 
-Let's look at an example (notes about how it works in comments):
+These components are rather simple and you can expect them to work in a way you might be familiar with:
+
+- You can click on them (press and release are different events)
+- You can attach event listeners on them
+- Zircon implements focus handling so you can navigate between the components using the `[Tab]` key (forwards) or the `[Shift]+[Tab]` key stroke (backwards).
+- Components can be hovered and they can change their styling when you do so
+
+Let's look at an example (notes about how it works are in the comments):
 
 ```java
 import org.codetome.zircon.api.Position;
@@ -316,9 +337,8 @@ public class Playground {
         // We create a Panel which will hold our components
         // Note that you can add components to the screen without a panel as well
         Panel panel = PanelBuilder.newBuilder()
+                .wrapInBox() // panels can be wrapped in a box
                 .title("Panel") // if a panel is wrapped in a box a title can be displayed
-                // panels can be wrapped in a box
-                .wrapInBox()
                 .addShadow() // shadow can be added
                 .size(Size.of(32, 16)) // the size must be smaller than the parent's size
                 .position(Position.OFFSET_1x1) // position is always relative to the parent
@@ -341,13 +361,13 @@ public class Playground {
                 .build();
 
         final Button left = ButtonBuilder.newBuilder()
-                .position(Position.of(0, 1)
+                .position(Position.of(0, 1) // this means 1 row below the check box
                         .relativeToBottomOf(checkBox))
                 .text("Left")
                 .build();
 
         final Button right = ButtonBuilder.newBuilder()
-                .position(Position.of(1, 0)
+                .position(Position.of(1, 0) // 1 column right relative to the left button
                         .relativeToRightOf(left))
                 .text("Right")
                 .build();
@@ -393,9 +413,49 @@ screenshots of them:
 #### Components:
 ![](https://cdn.discordapp.com/attachments/335444788167966720/361297190863241218/GIF.gif)
 
+## Additional features
+
+There are a bunch of other stuff Zircon can do which are not detailed in this README but you can read about them
+in either the source code or the [Wiki](https://github.com/Hexworks/zircon/wiki):
+
+### Layering
+Both the [Terminal] and the [Screen] interfaces implement [Layerable] which means that you can add [Layer]s on top of
+them. Every [Layerable] can have an arbitrary amount of [Layer]s. [Layer]s are like [TextImage]s and you can also have
+transparency in them which can be used to create fancy effects. Look at the [LayerBuilder] to see how to use them.
+For more details check the [layers][layers] Wiki page.
+
+### Input handling
+Both the [Terminal] and the [Screen] interfaces implement [InputEmitter] which means that they re-emit all inputs from
+your users (key strokes and mouse actions) and you can listen on them. There is a [Wiki page][inputs] with more info.
+
+### Shape and box drawing
+You can draw [Shape]s like rectangles and triangles by using one of the [ShapeFactory] implementations.
+Check the corresponding [Wiki page][shapes] for more info.
+
+### Fonts and tilesets
+Zircon comes with a bunch of built-in fonts and tilesets. These come in 3 flavors:
+
+- Physical fonts
+- CP437 tilesets
+- and Graphic tilesets
+
+Read more about them in the [resource handling Wiki page][resource-handling] if you want to know more
+or if you want to use your own tilesets and fonts.
+
+### REXPaint file loading
+REXPaint files (`.xp`) can be loaded into Zircon `Layer`s. Read about this feature [here][resource-handling].
+
+### Color themes
+Zircon comes with a bunch of built-in color themes which you can apply to your components.
+If interested you can read more about how this works [here][color-themes].
+
+### Animations (BETA)
+Animationsn are a beta feature. More info [here][animations].
+
 ## Road map
 
-If you want to see a new feature feel free to [create a new Issue](https://github.com/Hexworks/zircon/issues/new).
+If you want to see a new feature feel free to [create a new Issue](https://github.com/Hexworks/zircon/issues/new)
+or discuss it with us on [discord][discord].
 Here are some features which are either under way or planned:
 
 - libGDX support
@@ -442,25 +502,37 @@ Zircon is powered by:
 [color-themes]:https://github.com/Hexworks/zircon/wiki/Working-with-color-themes
 [text-images]:https://github.com/Hexworks/zircon/wiki/How-to-work-with-TextImages
 [screen-primer]:https://github.com/Hexworks/zircon/wiki/A-primer-on-Screens
+[components]:https://github.com/Hexworks/zircon/wiki/The-component-system
+[layers]:https://github.com/Hexworks/zircon/wiki/How-Layers-work
+[inputs]:https://github.com/Hexworks/zircon/wiki/Input-handling
+[shapes]:https://github.com/Hexworks/zircon/wiki/Shapes
+[animations]:https://github.com/Hexworks/zircon/wiki/Animation-support
 
 [discord]:https://discord.gg/p2vSMFc
 [examples]:https://github.com/Hexworks/zircon/tree/master/src/test/java/org/codetome/zircon/examples
 
+[Shape]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/graphics/Shape.kt
+[ShapeFactory]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/shape/ShapeFactory.kt
+[ColorTheme]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/component/ColorTheme.kt
+[StyleSet]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/graphics/StyleSet.kt  
 [Component]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/component/Component.kt
+[LayerBuilder]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/builder/LayerBuilder.kt
 [TerminalBuilder]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/builder/TerminalBuilder.kt
 [Button]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/component/Button.kt
 [Panel]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/component/Panel.kt
 [DrawSurface]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/behavior/DrawSurface.kt
+[InputEmitter]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/behavior/InputEmitter.kt
 [Layerable]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/behavior/Layerable.kt
 [Layer]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/graphics/Layer.kt
+[ANSITextColor]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/color/ANSITextColor.kt
+[TextColorFactory]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/color/TextColorFactory.kt
 [TextColor]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/color/TextColor.kt
 [TextCharacter]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/TextCharacter.kt
 [Terminal]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/terminal/Terminal.kt
-[Modifier]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/Modifier.kt
-[Modifiers]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/Modifiers.kt
+[Modifier]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/Modifier.kt
+[Modifiers]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/Modifiers.kt
 [InputProvider]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/input/InputProvider.kt
 [Input]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/input/Input.kt
-[TextGraphics]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/graphics/TextGraphics.kt
 [TextImage]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/graphics/TextImage.kt
 [BasicTextImage]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/graphics/impl/DefaultTextImage.kt
 [Screen]:https://github.com/Hexworks/zircon/blob/master/src/main/kotlin/org/codetome/zircon/api/screen/Screen.kt
