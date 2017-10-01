@@ -4,12 +4,12 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.RadioButton
 import org.codetome.zircon.api.component.RadioButtonGroup
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection
-import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.behavior.Scrollable
@@ -90,11 +90,12 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
 
     override fun takeFocus(input: Optional<Input>) {}
 
-    override fun clearSelection() {
-        selectedItem.map {
-            items[it]?.removeSelection()
-        }
-    }
+    override fun clearSelection() =
+            if (selectedItem.isPresent) {
+                items[selectedItem.get()]?.removeSelection() ?: false
+            } else {
+                false
+            }
 
     override fun applyTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()

@@ -71,7 +71,7 @@ public class HideNSeek {
                 .size(Size.ONE)
                 .build();
 
-        screen.addLayer(player);
+        screen.pushLayer(player);
         screen.display();
         drawBuilding(screen, Position.of(5, 10));
         enableMovement(screen, player);
@@ -103,7 +103,7 @@ public class HideNSeek {
         drawCharAt(building, Position.of(1, 3).plus(position), Symbols.SINGLE_LINE_T_UP);
         drawCharAt(building, Position.of(2, 3).plus(position), Symbols.SINGLE_LINE_T_UP);
         drawCharAt(building, Position.of(3, 3).plus(position), Symbols.SINGLE_LINE_BOTTOM_RIGHT_CORNER);
-        screen.addLayer(building);
+        screen.pushLayer(building);
     }
 
     private static void drawCharAt(Layer building, Position position, char c) {
@@ -117,7 +117,7 @@ public class HideNSeek {
     }
 
     private static void enableMovement(Screen screen, Layer player) {
-        screen.addInputListener((input) -> {
+        screen.onInput((input) -> {
             if (EXIT_CONDITIONS.contains(input.getInputType()) && !headless) {
                 System.exit(0);
             } else {

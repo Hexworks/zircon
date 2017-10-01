@@ -23,7 +23,8 @@ interface DrawSurface : Boundable {
      * If the position is outside of the [DrawSurface]'s size, this method has no side effect.
      * Note that if this [DrawSurface] already has the given [TextCharacter] on the supplied [Position]
      * nothing will change and this method will return `false`.
-     * @return true if the character was set, false if the position is outside of the [DrawSurface].
+     * @return true if the character was set, false if the position is outside of the [DrawSurface]
+     * or if no change happened.
      */
     fun setCharacterAt(position: Position, character: TextCharacter): Boolean
 

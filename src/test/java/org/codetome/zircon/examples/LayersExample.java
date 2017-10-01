@@ -62,7 +62,7 @@ public class LayersExample {
     }
 
     private static void addOverlayAt(Screen screen, Position offset, Size size, TextColor color) {
-        screen.addLayer(new LayerBuilder()
+        screen.pushLayer(new LayerBuilder()
                 .offset(offset)
                 .size(size)
                 .filler(TextCharacterBuilder.newBuilder()

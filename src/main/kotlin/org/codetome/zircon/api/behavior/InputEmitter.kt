@@ -14,5 +14,5 @@ interface InputEmitter {
      * It will be notified when an [Input] is consumed
      * by this object.
      */
-    fun addInputListener(listener: Consumer<Input>)
+    fun onInput(listener: Consumer<Input>)
 }

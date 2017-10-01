@@ -12,6 +12,7 @@ import org.codetome.zircon.internal.graphics.DefaultTextImage
  * - Default `toCopy` is an empty array
  * - Default `filler` is an `EMPTY` character
  */
+@Suppress("ArrayInDataClass")
 data class TextImageBuilder(
         private var size: Size = Size.ONE,
         private var toCopy: Array<Array<TextCharacter>> = arrayOf(),

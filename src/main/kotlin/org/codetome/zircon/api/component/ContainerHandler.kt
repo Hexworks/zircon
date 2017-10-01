@@ -1,10 +1,10 @@
 package org.codetome.zircon.api.component
 
 /**
- * Represents an object which can hold gui [org.codetome.zircon.api.component.Component]s.
+ * Represents an object which can hold gui [Component]s.
  * **Note that** a [ContainerHandler] **will always** hold a "root" [Container]
  * which will have the [org.codetome.zircon.api.Size] of its parent.
- * @see org.codetome.zircon.api.component.Component for more info
+ * @see Component for more info
  */
 interface ContainerHandler {
 
@@ -20,8 +20,9 @@ interface ContainerHandler {
      * *Note that* this function is applied recursively until
      * it either traverses the whole component tree or finds
      * the component to remove.
+     * @return `true` if change happened, `false` if not
      */
-    fun removeComponent(component: Component)
+    fun removeComponent(component: Component): Boolean
 
     /**
      * Applies the [ColorTheme] to this component and recursively to all its children (if any).

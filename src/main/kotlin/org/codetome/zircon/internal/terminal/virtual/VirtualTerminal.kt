@@ -11,7 +11,7 @@ import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.util.TextUtils
-import org.codetome.zircon.internal.InternalLayerable
+import org.codetome.zircon.internal.behavior.InternalLayerable
 import org.codetome.zircon.internal.behavior.InternalCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
@@ -73,7 +73,7 @@ class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
         }
     }
 
-    override fun addInputListener(listener: Consumer<Input>) {
+    override fun onInput(listener: Consumer<Input>) {
         EventBus.subscribe<Input>(EventType.Input, { (input) ->
             listener.accept(input)
         })

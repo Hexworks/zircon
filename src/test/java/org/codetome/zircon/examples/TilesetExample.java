@@ -109,7 +109,7 @@ public class TilesetExample {
                             .backgroundColor(TextColorFactory.TRANSPARENT)
                             .build());
         }
-        screen.addLayer(overlay);
+        screen.pushLayer(overlay);
         screen.display();
     }
 }

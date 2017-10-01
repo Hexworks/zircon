@@ -5,7 +5,7 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.graphics.Layer
-import org.codetome.zircon.internal.InternalLayerable
+import org.codetome.zircon.internal.behavior.InternalLayerable
 import org.codetome.zircon.internal.behavior.Dirtiable
 import java.util.*
 import java.util.concurrent.BlockingQueue
@@ -18,7 +18,7 @@ class DefaultLayerable(size: Size,
 
     private val layers: BlockingQueue<Layer> = LinkedBlockingQueue()
 
-    override fun addLayer(layer: Layer) {
+    override fun pushLayer(layer: Layer) {
         layers.add(layer)
         markLayerPositionsDirty(layer)
     }
