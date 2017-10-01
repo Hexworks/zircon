@@ -310,7 +310,7 @@ What happens here is that we:
 Zircon supports a bunch of [Component]s out of the box:
 
 - Button: A simple clickable component with corresponding event listeners
-- CheckBox: Like a button but with checked / unchecked state
+- CheckBox: Like a BUTTON but with checked / unchecked state
 - Label: Simple component with text
 - Header: Like a label but this one has emphasis (useful when using [ColorTheme]s)
 - Panel: A [Container] which can hold multiple [Components]
@@ -387,7 +387,7 @@ public class Playground {
                 .build();
 
         final Button right = ButtonBuilder.newBuilder()
-                .position(Position.of(1, 0) // 1 column right relative to the left button
+                .position(Position.of(1, 0) // 1 column right relative to the left BUTTON
                         .relativeToRightOf(left))
                 .text("Right")
                 .build();
@@ -518,9 +518,6 @@ Zircon is powered by:
 
 [maven]:https://mvnrepository.com/artifact/org.codetome.zircon/zircon/2017.1.0
 [maven img]:https://maven-badges.herokuapp.com/maven-central/org.codetome.zircon/zircon/badge.svg
-
-[tilesetFont modifiers img]:https://github.com/Hexworks/zircon/blob/master/src/main/resources/modifiers_example.png
-[button img]:https://github.com/Hexworks/zircon/blob/master/src/main/resources/button.png
 
 [resource-handling]:https://github.com/Hexworks/zircon/wiki/Resource-Handling
 [design-philosophy]:https://github.com/Hexworks/zircon/wiki/The-design-philosophy-behind-Zircon

@@ -8,7 +8,9 @@ import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.behavior.InternalLayerable
 import org.codetome.zircon.internal.behavior.Dirtiable
 import java.util.*
+import java.util.concurrent.BlockingDeque
 import java.util.concurrent.BlockingQueue
+import java.util.concurrent.LinkedBlockingDeque
 import java.util.concurrent.LinkedBlockingQueue
 
 class DefaultLayerable(size: Size,
@@ -16,14 +18,15 @@ class DefaultLayerable(size: Size,
                        dirtiable: Dirtiable = DefaultDirtiable())
     : InternalLayerable, Boundable by boundable, Dirtiable by dirtiable {
 
-    private val layers: BlockingQueue<Layer> = LinkedBlockingQueue()
+    private val layers: BlockingDeque<Layer> = LinkedBlockingDeque()
 
     override fun pushLayer(layer: Layer) {
         layers.add(layer)
         markLayerPositionsDirty(layer)
     }
 
-    override fun popLayer() = Optional.ofNullable(layers.poll()).also {
+    // TODO: regression test this!
+    override fun popLayer() = Optional.ofNullable(layers.pollLast()).also {
         it.map { markLayerPositionsDirty(it) }
     }
 

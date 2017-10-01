@@ -2,11 +2,16 @@ package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.builder.TextBoxBuilder
+import org.codetome.zircon.api.input.InputType
+import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.ColorThemeResource
+import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.event.EventType
 import org.junit.Before
 import org.junit.Test
 
@@ -18,6 +23,7 @@ class DefaultTextBoxTest {
     fun setUp() {
         target = TextBoxBuilder.newBuilder()
                 .componentStyles(COMPONENT_STYLES)
+                .size(SIZE)
                 .position(POSITION)
                 .text(TEXT)
                 .build() as DefaultTextBox
@@ -26,6 +32,45 @@ class DefaultTextBoxTest {
     @Test
     fun shouldProperlyReturnText() {
         assertThat(target.getText()).isEqualTo(TEXT)
+    }
+
+    @Test
+    fun shouldProperlyHandleRightArrowWhenFocused() {
+        target.giveFocus()
+
+        EventBus.emit(EventType.KeyPressed, KeyStroke(type = InputType.ArrowRight))
+
+        assertThat(target.getCursorPosition()).isEqualTo(Position.DEFAULT_POSITION.withRelativeColumn(1))
+    }
+
+    @Test
+    fun shouldProperlyHandleLeftArrowWhenFocusedAndMustScrollToEndOfPrevLine() {
+        target.setText("Foo${System.lineSeparator()}bar")
+        target.giveFocus()
+
+        target.putCursorAt(Position.of(0, 1))
+        EventBus.emit(EventType.KeyPressed, KeyStroke(type = InputType.ArrowLeft))
+
+        assertThat(target.getCursorPosition()).isEqualTo(Position.of(3, 0))
+    }
+
+    @Test
+    fun shouldProperlyHandleLeftArrowWhenFocusedAndCanMoveLeftInLine() {
+        target.giveFocus()
+
+        target.putCursorAt(Position.of(1, 0))
+        EventBus.emit(EventType.KeyPressed, KeyStroke(type = InputType.ArrowLeft))
+
+        assertThat(target.getCursorPosition()).isEqualTo(Position.DEFAULT_POSITION)
+    }
+
+    @Test
+    fun shouldProperlyTakeFocus() {
+        target.giveFocus()
+
+        target.takeFocus()
+
+        // TODO: assert
     }
 
     @Test
@@ -46,7 +91,8 @@ class DefaultTextBoxTest {
 
     companion object {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
-        val TEXT = "Button text"
+        val TEXT = "text"
+        val SIZE = Size.of(10, 6)
         val POSITION = Position.of(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.getDarkBackgroundColor())

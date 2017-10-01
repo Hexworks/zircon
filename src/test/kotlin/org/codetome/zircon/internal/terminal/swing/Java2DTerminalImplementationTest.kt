@@ -1,17 +1,19 @@
 package org.codetome.zircon.internal.terminal.swing
 
-import org.assertj.core.api.Assertions
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.api.terminal.config.CursorStyle
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import org.junit.Before
 import org.junit.Test
 import java.awt.Dimension
+import java.awt.image.BufferedImage
 import java.util.concurrent.atomic.AtomicBoolean
+
 
 class Java2DTerminalImplementationTest {
 
@@ -59,9 +61,30 @@ class Java2DTerminalImplementationTest {
         assertThat(target.getPreferredSize()).isEqualTo(Dimension(target.getWidth(), target.getHeight()))
     }
 
+    @Test
+    fun flushShouldTriggerDraw() {
+        target.flush()
+
+        assertThat(drawn.get()).isTrue()
+    }
+
+    @Test
+    fun shouldProperlyDraw() {
+        val image = BufferedImage(target.getWidth(), target.getHeight(), BufferedImage.TYPE_INT_RGB)
+
+        target.setCursorVisibility(true)
+
+        target.draw(image.createGraphics())
+
+        // TODO: asssert
+    }
+
     companion object {
         val SIZE = Size.of(10, 20)
-        val CONFIG = DeviceConfigurationBuilder.getDefault()
+        val CONFIG = DeviceConfigurationBuilder.newBuilder()
+                .cursorBlinking(true)
+                .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
+                .build()
         val FONT = CP437TilesetResource.WANDERLUST_16X16.toFont()
     }
 }
