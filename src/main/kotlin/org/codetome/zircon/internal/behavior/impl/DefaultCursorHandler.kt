@@ -25,9 +25,14 @@ class DefaultCursorHandler(private var cursorSpace: Size,
 
     override fun isCursorVisible() = cursorVisible
 
-    override fun setCursorVisibility(cursorVisible: Boolean) {
-        this.cursorVisible = cursorVisible
-    }
+    @Synchronized
+    override fun setCursorVisibility(cursorVisible: Boolean) =
+            if (this.cursorVisible == cursorVisible) {
+                false
+            } else {
+                this.cursorVisible = cursorVisible
+                true
+            }
 
     override fun getCursorPosition(): Position = cursorPosition
 
@@ -46,30 +51,28 @@ class DefaultCursorHandler(private var cursorSpace: Size,
     }
 
     @Synchronized
-    override fun moveCursorForward() {
-        putCursorAt(getCursorPosition().let { (column) ->
-            if (cursorIsAtTheEndOfTheLine(column)) {
-                getCursorPosition().withColumn(0).withRelativeRow(1)
-            } else {
-                getCursorPosition().withRelativeColumn(1)
-            }
-        })
-    }
+    override fun moveCursorForward() =
+            putCursorAt(getCursorPosition().let { (column) ->
+                if (cursorIsAtTheEndOfTheLine(column)) {
+                    getCursorPosition().withColumn(0).withRelativeRow(1)
+                } else {
+                    getCursorPosition().withRelativeColumn(1)
+                }
+            })
 
     @Synchronized
-    override fun moveCursorBackward() {
-        putCursorAt(getCursorPosition().let { (column) ->
-            if (cursorIsAtTheStartOfTheLine(column)) {
-                if (getCursorPosition().row > 0) {
-                    getCursorPosition().withColumn(cursorSpace.columns - 1).withRelativeRow(-1)
+    override fun moveCursorBackward() =
+            putCursorAt(getCursorPosition().let { (column) ->
+                if (cursorIsAtTheStartOfTheLine(column)) {
+                    if (getCursorPosition().row > 0) {
+                        getCursorPosition().withColumn(cursorSpace.columns - 1).withRelativeRow(-1)
+                    } else {
+                        getCursorPosition()
+                    }
                 } else {
-                    getCursorPosition()
+                    getCursorPosition().withRelativeColumn(-1)
                 }
-            } else {
-                getCursorPosition().withRelativeColumn(-1)
-            }
-        })
-    }
+            })
 
     override fun getCursorSpaceSize() = cursorSpace
 
