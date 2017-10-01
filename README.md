@@ -487,6 +487,7 @@ Here are some features which are either under way or planned:
 - Layouts for Components with resizing support
 - Components for games like MapDisplay
 - Multi-Font support
+- Next to `ColorTheme`s we'll introduce `ComponentTheme`s as well (custom look and feel for your components)
 
 ## License
 Zircon is made available under the [MIT License](http://www.opensource.org/licenses/mit-license.php).
