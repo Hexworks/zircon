@@ -517,7 +517,7 @@ Zircon is powered by:
 [license]:https://github.com/Hexworks/zircon/blob/master/LICENSE
 [license img]:https://img.shields.io/badge/License-MIT-green.svg
 
-[maven]:https://mvnrepository.com/artifact/org.codetome.zircon/zircon/2017.1.0
+[maven]:https://mvnrepository.com/artifact/org.codetome.zircon/zircon/2017.2.0
 [maven img]:https://maven-badges.herokuapp.com/maven-central/org.codetome.zircon/zircon/badge.svg
 
 [resource-handling]:https://github.com/Hexworks/zircon/wiki/Resource-Handling
