@@ -111,73 +111,25 @@ class DefaultTextImage(size: Size,
     }
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
-        drawOnto(surface, 0, buffer.size, 0, buffer[0].size, offset.row, offset.column)
-    }
-
-    override fun drawOnto(
-            destination: DrawSurface,
-            startRowIndex: Int,
-            rows: Int,
-            startColumnIndex: Int,
-            columns: Int,
-            destinationRowOffset: Int,
-            destinationColumnOffset: Int) {
-        var startRowIdx = startRowIndex
-        var rowsToCopy = rows
-        var startColumnIdx = startColumnIndex
-        var columnsToCopy = columns
-        var destRowOffset = destinationRowOffset
-        var destColumnOffset = destinationColumnOffset
-
-        // If the source sprite position is negative, offset the whole sprite
-        if (startColumnIdx < 0) {
-            destColumnOffset += -startColumnIdx
-            columnsToCopy += startColumnIdx
-            startColumnIdx = 0
-        }
-        if (startRowIdx < 0) {
-            destRowOffset += -startRowIdx
-            rowsToCopy += startRowIdx
-            startRowIdx = 0
-        }
-
-        // If the destination offset is negative, adjust the source start indexes
-        if (destColumnOffset < 0) {
-            startColumnIdx -= destColumnOffset
-            columnsToCopy += destColumnOffset
-            destColumnOffset = 0
-        }
-        if (destRowOffset < 0) {
-            startRowIdx -= destRowOffset
-            rowsToCopy += destRowOffset
-            destRowOffset = 0
-        }
-
-        //Make sure we can't copy more than is available
-        columnsToCopy = Math.min(buffer[0].size - startColumnIdx, columnsToCopy)
-        rowsToCopy = Math.min(buffer.size - startRowIdx, rowsToCopy)
-
-        //Adjust target lengths as well
-        columnsToCopy = Math.min(destination.getBoundableSize().columns - destColumnOffset, columnsToCopy)
-        rowsToCopy = Math.min(destination.getBoundableSize().rows - destRowOffset, rowsToCopy)
-
-        if (columnsToCopy <= 0 || rowsToCopy <= 0) {
-            return
-        }
-
-        val destinationSize = destination.getBoundableSize()
-        if (destination is DefaultTextImage) {
+        val surfaceSize = surface.getBoundableSize()
+        val startRowIdx = 0
+        val rows: Int = getBoundableSize().rows
+        val startColumnIdx = 0
+        val columns: Int = getBoundableSize().columns
+        val destRowOffset = offset.row
+        val destColumnOffset = offset.column
+        if (surface is DefaultTextImage) {
             var targetRow = destRowOffset
             var y = startRowIdx
-            while (y < startRowIdx + rowsToCopy && targetRow < destinationSize.rows) {
-                System.arraycopy(buffer[y], startColumnIdx, destination.buffer[targetRow++], destColumnOffset, columnsToCopy)
+            while (y < startRowIdx + rows && targetRow < surfaceSize.rows) {
+                System.arraycopy(buffer[y], startColumnIdx, surface.buffer[targetRow++], destColumnOffset, columns)
                 y++
             }
         } else {
             //Manually copy character by character
-            for (y in startRowIdx..startRowIdx + rowsToCopy - 1) {
-                for (x in startColumnIdx..startColumnIdx + columnsToCopy - 1) {
-                    destination.setCharacterAt(
+            for (y in startRowIdx until startRowIdx + rows) {
+                for (x in startColumnIdx until startColumnIdx + columns) {
+                    surface.setCharacterAt(
                             Position.of(x - startColumnIdx + destColumnOffset,
                                     y - startRowIdx + destRowOffset),
                             buffer[y][x])
