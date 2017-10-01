@@ -111,24 +111,16 @@ class DefaultTextImage(size: Size,
     }
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
-        val surfaceSize = surface.getBoundableSize()
         val startRowIdx = 0
         val rows: Int = getBoundableSize().rows
         val startColumnIdx = 0
         val columns: Int = getBoundableSize().columns
         val destRowOffset = offset.row
         val destColumnOffset = offset.column
-        if (surface is DefaultTextImage) {
-            var targetRow = destRowOffset
-            var y = startRowIdx
-            while (y < startRowIdx + rows && targetRow < surfaceSize.rows) {
-                System.arraycopy(buffer[y], startColumnIdx, surface.buffer[targetRow++], destColumnOffset, columns)
-                y++
-            }
-        } else {
-            //Manually copy character by character
-            for (y in startRowIdx until startRowIdx + rows) {
-                for (x in startColumnIdx until startColumnIdx + columns) {
+        // TODO: some other operation involving Cells?
+        (startRowIdx until startRowIdx + rows).forEach { y ->
+            (startColumnIdx until startColumnIdx + columns).forEach { x ->
+                if (buffer[y][x] != TextCharacterBuilder.EMPTY) {
                     surface.setCharacterAt(
                             Position.of(x - startColumnIdx + destColumnOffset,
                                     y - startRowIdx + destRowOffset),
