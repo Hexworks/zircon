@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.screen
 
 import org.codetome.zircon.api.screen.Screen
-import org.codetome.zircon.internal.InternalLayerable
+import org.codetome.zircon.internal.behavior.InternalLayerable
 import org.codetome.zircon.internal.component.InternalContainerHandler
 
 /**

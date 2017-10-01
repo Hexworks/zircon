@@ -6,6 +6,7 @@ import org.codetome.zircon.api.Position.Companion.DEFAULT_POSITION
 import org.codetome.zircon.api.Position.Companion.OFFSET_1x1
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.junit.Before
 import org.junit.Test
@@ -27,9 +28,19 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldContainToCopyWhenCreated() {
+        checkGetCharacter(target)
+    }
+
+    @Test
+    fun shouldProperlyImplementGetCharacter() {
+        checkGetCharacter<DrawSurface>(target)
+    }
+
+    private fun <T: DrawSurface> checkGetCharacter(target: T) {
         assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(TO_COPY_CHAR)
     }
+
 
     @Test
     fun shouldContainFillerWhenCreated() {

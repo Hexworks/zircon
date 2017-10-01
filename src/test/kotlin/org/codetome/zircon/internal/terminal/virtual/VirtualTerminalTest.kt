@@ -241,7 +241,7 @@ class VirtualTerminalTest {
     @Test
     fun shouldProperlyListenToInputEvents() {
         val input = AtomicReference<Input>()
-        target.addInputListener(Consumer<Input> {
+        target.onInput(Consumer<Input> {
             input.set(it)
         })
 
@@ -253,7 +253,7 @@ class VirtualTerminalTest {
     @Test
     fun closeShouldProperlyEmitEofStroke() {
         val input = AtomicReference<Input>()
-        target.addInputListener(Consumer<Input> {
+        target.onInput(Consumer<Input> {
             input.set(it)
         })
 

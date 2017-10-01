@@ -4,9 +4,9 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.TextBox
-import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke
@@ -41,9 +41,13 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
 
     override fun getText() = textBuffer.getText() // TODO: line sep?
 
-    override fun setText(text: String) {
-        textBuffer.setText(text)
-    }
+    override fun setText(text: String) =
+            if (this.textBuffer.toString() == text) {
+                false
+            } else {
+                textBuffer.setText(text)
+                true
+            }
 
     override fun acceptsFocus(): Boolean {
         return true

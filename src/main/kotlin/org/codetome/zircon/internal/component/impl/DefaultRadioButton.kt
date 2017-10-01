@@ -4,12 +4,11 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.RadioButton
-import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.input.Input
-import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 import org.codetome.zircon.internal.event.EventBus
@@ -54,14 +53,16 @@ class DefaultRadioButton(private val text: String,
         }
     }
 
-    fun removeSelection() {
-        if (state != NOT_SELECTED) {
-            getDrawSurface().applyColorsFromStyle(getComponentStyles().reset())
-            state = NOT_SELECTED
-            redrawContent()
-            EventBus.emit(EventType.ComponentChange)
-        }
-    }
+    fun removeSelection() =
+            if (state != NOT_SELECTED) {
+                getDrawSurface().applyColorsFromStyle(getComponentStyles().reset())
+                state = NOT_SELECTED
+                redrawContent()
+                EventBus.emit(EventType.ComponentChange)
+                true
+            } else {
+                false
+            }
 
     override fun acceptsFocus(): Boolean {
         return true

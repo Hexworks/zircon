@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal
+package org.codetome.zircon.internal.behavior
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.TextCharacter

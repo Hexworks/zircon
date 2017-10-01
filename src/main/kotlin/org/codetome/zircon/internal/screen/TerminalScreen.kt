@@ -85,11 +85,11 @@ class TerminalScreen(private val terminal: Terminal,
         // TODO: only do this when forceRedraw is true
         terminal.drainLayers()
         transformComponentsToLayers().forEach {
-            terminal.addLayer(it)
+            terminal.pushLayer(it)
         }
         backend.getLayers().forEach {
             // TODO: regression test drain here <--
-            terminal.addLayer(it)
+            terminal.pushLayer(it)
         }
         terminal.flush()
     }

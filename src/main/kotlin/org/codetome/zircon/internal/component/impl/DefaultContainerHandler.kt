@@ -13,7 +13,6 @@ import org.codetome.zircon.internal.component.ContainerHandlerState.*
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.InternalContainerHandler
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.event.EventType.*
 import org.codetome.zircon.internal.event.Subscription
 import java.util.*
@@ -42,11 +41,11 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
     }
 
     @Synchronized
-    override fun removeComponent(component: Component) {
-        container.removeComponent(component)
-        refreshFocusableLookup()
-        EventBus.emit(ComponentChange)
-    }
+    override fun removeComponent(component: Component) =
+            container.removeComponent(component).also {
+                refreshFocusableLookup()
+                EventBus.emit(ComponentChange)
+            }
 
     @Synchronized
     override fun applyColorTheme(colorTheme: ColorTheme) {

@@ -6,6 +6,10 @@ interface TextBox : Component, Scrollable {
 
     fun getText(): String
 
-    fun setText(text: String)
+    /**
+     * Sets the text of this [TextBox].
+     * @return `true` if the box was changed `false` if the old text was the same as the new
+     */
+    fun setText(text: String): Boolean
 
 }

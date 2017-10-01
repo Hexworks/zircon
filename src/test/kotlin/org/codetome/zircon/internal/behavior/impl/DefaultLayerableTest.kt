@@ -24,7 +24,7 @@ class DefaultLayerableTest {
 
         val layer = DefaultLayer(Size.ONE, DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
 
-        target.addLayer(layer)
+        target.pushLayer(layer)
 
         assertThat(target.fetchOverlayZIntersection(Position.TOP_LEFT_CORNER))
                 .isNotEmpty
@@ -36,7 +36,7 @@ class DefaultLayerableTest {
 
         val layer = DefaultLayer(Size.ONE, DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
 
-        target.addLayer(layer)
+        target.pushLayer(layer)
         target.removeLayer(layer)
 
         assertThat(target.fetchOverlayZIntersection(Position.TOP_LEFT_CORNER))
@@ -49,7 +49,7 @@ class DefaultLayerableTest {
 
         val layer = DefaultLayer(Size.ONE, DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
 
-        target.addLayer(layer)
+        target.pushLayer(layer)
         val result = target.popLayer()
 
         assertThat(target.fetchOverlayZIntersection(Position.TOP_LEFT_CORNER))
@@ -69,8 +69,8 @@ class DefaultLayerableTest {
                 .character('2')
                 .build(), Position(2, 2))
 
-        target.addLayer(offset1x1layer)
-        target.addLayer(offset2x2layer)
+        target.pushLayer(offset1x1layer)
+        target.pushLayer(offset2x2layer)
 
         val result = target.fetchOverlayZIntersection(Position.OFFSET_1x1)
 
@@ -83,11 +83,11 @@ class DefaultLayerableTest {
         val dirty0 = Position.of(1, 2)
         val dirty1 = Position.of(3, 4)
 
-        target.addLayer(LayerBuilder.newBuilder()
+        target.pushLayer(LayerBuilder.newBuilder()
                 .offset(dirty0)
                 .build())
 
-        target.addLayer(LayerBuilder.newBuilder()
+        target.pushLayer(LayerBuilder.newBuilder()
                 .offset(dirty1)
                 .build())
 
@@ -106,8 +106,8 @@ class DefaultLayerableTest {
         val offset1x1layer = DefaultLayer(Size.ONE, expectedChar, Position.OFFSET_1x1)
         val offset2x2layer = DefaultLayer(Size.ONE, expectedChar, Position.OFFSET_1x1)
 
-        target.addLayer(offset1x1layer)
-        target.addLayer(offset2x2layer)
+        target.pushLayer(offset1x1layer)
+        target.pushLayer(offset2x2layer)
 
         val result = target.fetchOverlayZIntersection(Position.OFFSET_1x1)
 

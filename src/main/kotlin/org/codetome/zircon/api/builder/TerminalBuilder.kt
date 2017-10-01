@@ -121,12 +121,6 @@ data class TerminalBuilder(
     companion object {
 
         /**
-         * Creates a [Terminal] with default settings for all options.
-         */
-        @JvmStatic
-        fun buildDefault() = newBuilder().buildTerminal()
-
-        /**
          * Creates a new [Terminal] api.
          */
         @JvmStatic

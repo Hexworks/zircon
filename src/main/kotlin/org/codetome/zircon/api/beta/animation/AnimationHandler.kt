@@ -63,7 +63,7 @@ class AnimationHandler(private val screen: Screen) : Closeable {
                         animation.fetchNextFrame().map { frame ->
                             frame.getLayers().forEach { layer ->
                                 layer.moveTo(frame.getPosition())
-                                screen.addLayer(layer)
+                                screen.pushLayer(layer)
                             }
                             screen.refresh()
                             Optional.empty<Any>()

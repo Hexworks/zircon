@@ -13,7 +13,7 @@ interface Layerable : Boundable {
     /**
      * Adds a layer on top of the currently present layers.
      */
-    fun addLayer(layer: Layer)
+    fun pushLayer(layer: Layer)
 
     /**
      * Removes and returns the layer which is at the top of the currently present layers

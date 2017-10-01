@@ -21,7 +21,7 @@ data class LayerBuilder(private var size: Size = Size.ONE,
                         private var textImage: Optional<TextImage> = Optional.empty()) : Builder<Layer> {
 
     /**
-     * Sets the size for the new [org.codetome.zircon.graphics.layer.Layer].
+     * Sets the size for the new [org.codetome.zircon.api.graphics.Layer].
      * Default is 1x1.
      */
     fun size(size: Size) = also {
@@ -29,7 +29,7 @@ data class LayerBuilder(private var size: Size = Size.ONE,
     }
 
     /**
-     * The new [org.codetome.zircon.graphics.layer.Layer] will be filled by this [TextCharacter].
+     * The new [org.codetome.zircon.api.graphics.Layer] will be filled by this [TextCharacter].
      * Defaults to `EMPTY`.
      */
     fun filler(filler: TextCharacter) = also {
@@ -37,7 +37,7 @@ data class LayerBuilder(private var size: Size = Size.ONE,
     }
 
     /**
-     * Sets the `offset` for the new [org.codetome.zircon.graphics.layer.Layer].
+     * Sets the `offset` for the new [org.codetome.zircon.api.graphics.Layer].
      * Default is 0x0.
      */
     fun offset(offset: Position) = also {

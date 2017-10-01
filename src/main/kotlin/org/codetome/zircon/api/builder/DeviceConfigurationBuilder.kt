@@ -6,7 +6,7 @@ import org.codetome.zircon.api.terminal.config.CursorStyle
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 
 /**
- * Builder for [org.codetome.zircon.api.terminal.config.DeviceConfiguration]s.
+ * Builder for [DeviceConfiguration]s.
  */
 data class DeviceConfigurationBuilder(
         private var blinkLengthInMilliSeconds: Long = 500,
