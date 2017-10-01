@@ -35,10 +35,42 @@ class TextBufferTest {
         assertThat(target.getTextSection(Position.of(4, 0), Size.ONE)).containsExactly("")
     }
 
+    @Test
+    fun shouldReturnEmptyOptionalWhenRowIndexIsOutOfBounds() {
+        val target = TextBuffer(EXPECTED_MULTI_LINE_TEXT)
+        assertThat(target.getRow(Int.MAX_VALUE)).isNotPresent
+    }
+
+    @Test
+    fun shouldReturnLineProperlyWhenLineExists() {
+        val target = TextBuffer(VARIABLE_WIDTH_LINES)
+        assertThat(target.getRow(1).get().toString()).isEqualTo(LINE_1)
+    }
+
+    @Test
+    fun shouldProperlyReturnSize() {
+        val target = TextBuffer(VARIABLE_WIDTH_LINES)
+        assertThat(target.getSize()).isEqualTo(VARIABLE_WIDTH_LINES.split(SEP).size)
+    }
+
+    @Test
+    fun shouldProperlyAddRowAt() {
+        val target = TextBuffer(EXPECTED_MULTI_LINE_TEXT)
+        target.addNewRowAt(1)
+        assertThat(target.getRow(1).get().toString()).isEqualTo("")
+    }
+
+    @Test
+    fun shouldProperlyDeleteAt() {
+        val target = TextBuffer(VARIABLE_WIDTH_LINES)
+        target.deleteRowAt(1)
+        assertThat(target.getText()).isEqualTo("$LINE_0$SEP$LINE_2")
+    }
 
     companion object {
         val SEP = System.lineSeparator()
-        val EXPECTED_MULTI_LINE_TEXT = "asdf${SEP}asdf"
+        val TEXT = "asdf"
+        val EXPECTED_MULTI_LINE_TEXT = "$TEXT$SEP$TEXT"
 
         val LINE_0 = "asdf"
         val LINE_1 = "a"
