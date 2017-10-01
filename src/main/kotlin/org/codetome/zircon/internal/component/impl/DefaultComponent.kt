@@ -74,16 +74,6 @@ abstract class DefaultComponent(initialSize: Size,
         surface.draw(drawSurface, position)
     }
 
-    override fun drawOnto(destination: DrawSurface,
-                          startRowIndex: Int,
-                          rows: Int,
-                          startColumnIndex: Int,
-                          columns: Int,
-                          destinationRowOffset: Int,
-                          destinationColumnOffset: Int) {
-        throw UnsupportedOperationException()
-    }
-
     override fun fetchComponentByPosition(position: Position) =
             if (containsPosition(position)) {
                 Optional.of(this)

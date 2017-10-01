@@ -3,12 +3,13 @@ package org.codetome.zircon.internal.behavior.impl
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.CursorHandler
+import org.codetome.zircon.internal.behavior.InternalCursorHandler
 import org.codetome.zircon.internal.behavior.Scrollable
 
 class DefaultScrollable(cursorSpaceSize: Size,
                         private var virtualSpaceSize: Size,
-                        private val cursorHandler: CursorHandler = DefaultCursorHandler(cursorSpaceSize))
-    : Scrollable, CursorHandler by cursorHandler {
+                        private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(cursorSpaceSize))
+    : Scrollable, InternalCursorHandler by cursorHandler {
 
     private var offset = Position.DEFAULT_POSITION
 

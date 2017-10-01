@@ -130,17 +130,6 @@ class DefaultComponentTest {
         }
     }
 
-    @Test(expected = UnsupportedOperationException::class)
-    fun shouldNotSupportSpecialDrawing() {
-        val image = TextImageBuilder.newBuilder()
-                .size(SIZE)
-                .build()
-        target.drawOnto(
-                destination = image,
-                startRowIndex = 0,
-                startColumnIndex = 0)
-    }
-
     @Test
     fun shouldProperlyFetchByPositionWhenContainsPosition() {
         assertThat(target.fetchComponentByPosition(POSITION).get()).isEqualTo(target)
