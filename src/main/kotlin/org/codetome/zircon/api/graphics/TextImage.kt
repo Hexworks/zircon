@@ -5,13 +5,14 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Drawable
+import org.codetome.zircon.api.behavior.Styleable
 
 /**
  * An image built from [TextCharacter]s with color and style information.
  * These are completely in memory and not visible,
  * but can be used when drawing on other [DrawSurface]s.
  */
-interface TextImage : DrawSurface, StyleSet, Drawable {
+interface TextImage : DrawSurface, Styleable, Drawable {
 
     /**
      * Returns a copy of this image resized to a new size and using a specified filler character

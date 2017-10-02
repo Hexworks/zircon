@@ -16,16 +16,18 @@ class TextCharacterBuilderTest {
                 .character(CHAR)
                 .tag(*TAGS.toTypedArray())
                 .tags(TAGS)
-                .modifier(MODIFIER)
+                .modifiers(MODIFIER)
                 .build()
 
         assertThat(result).isEqualTo(
                 DefaultTextCharacter.of(
                         character = CHAR,
-                        foregroundColor = FG_COLOR,
                         tags = TAGS,
-                        backgroundColor = BG_COLOR,
-                        modifiers = setOf(MODIFIER)))
+                        styleSet = StyleSetBuilder.newBuilder()
+                                .foregroundColor(FG_COLOR)
+                                .backgroundColor(BG_COLOR)
+                                .modifiers(MODIFIER)
+                                .build()))
     }
 
     companion object {

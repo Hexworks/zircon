@@ -36,42 +36,42 @@ public class FontModifiersExample {
                 .buildTerminal(args.length > 0);
         terminal.setCursorVisibility(false); // we don't want the cursor right now
 
-        terminal.enableModifier(VERTICAL_FLIP);
+        terminal.enableModifiers(VERTICAL_FLIP);
         terminal.setBackgroundColor(BLUE);
         terminal.setForegroundColor(YELLOW);
         terminal.putCharacter('A');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifier(CROSSED_OUT);
+        terminal.enableModifiers(CROSSED_OUT);
         terminal.setBackgroundColor(RED);
         terminal.setForegroundColor(GREEN);
         terminal.putCharacter('B');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifier(BLINK);
+        terminal.enableModifiers(BLINK);
         terminal.setBackgroundColor(RED);
         terminal.setForegroundColor(WHITE);
         terminal.putCharacter('C');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifier(UNDERLINE);
+        terminal.enableModifiers(UNDERLINE);
         terminal.setBackgroundColor(BLUE);
         terminal.setForegroundColor(CYAN);
         terminal.putCharacter('D');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifier(HORIZONTAL_FLIP);
+        terminal.enableModifiers(HORIZONTAL_FLIP);
         terminal.setBackgroundColor(BLACK);
         terminal.setForegroundColor(YELLOW);
         terminal.putCharacter('E');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifier(BLINK);
+        terminal.enableModifiers(BLINK);
         terminal.setBackgroundColor(CYAN);
         terminal.setForegroundColor(YELLOW);
         terminal.putCharacter('F');
@@ -85,7 +85,7 @@ public class FontModifiersExample {
 
         putEmptySpace(terminal);
 
-        terminal.enableModifier(BORDER.create(SOLID, TOP, LEFT, RIGHT, BOTTOM));
+        terminal.enableModifiers(BORDER.create(SOLID, TOP, LEFT, RIGHT, BOTTOM));
         terminal.setBackgroundColor(WHITE);
         terminal.setForegroundColor(BLUE);
         terminal.putCharacter('H');

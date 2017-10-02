@@ -5,75 +5,33 @@ import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
 
-data class DefaultStyleSet(
-        private var foregroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
-        private var backgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
-        private val modifiers: MutableSet<Modifier> = mutableSetOf()
-) : StyleSet {
+data class DefaultStyleSet(private var foregroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
+                           private var backgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
+                           private val modifiers: Set<Modifier> = setOf()) : StyleSet {
 
-    init {
-        modifiers.forEach {
-            this.modifiers.add(it)
-        }
-    }
+    override fun getForegroundColor() = foregroundColor
 
-    override fun toStyleSet() = DefaultStyleSet(
-            foregroundColor = foregroundColor,
-            backgroundColor = backgroundColor,
-            modifiers = modifiers.toMutableSet())
+    override fun getBackgroundColor() = backgroundColor
 
-    override fun getForegroundColor(): TextColor = foregroundColor
+    override fun getModifiers() = modifiers
 
-    override fun getBackgroundColor(): TextColor = backgroundColor
+    override fun createCopy() = copy()
 
-    override fun getActiveModifiers() = modifiers.toSet()
+    override fun withBackgroundColor(backgroundColor: TextColor) = copy(backgroundColor = backgroundColor)
 
-    override fun setBackgroundColor(backgroundColor: TextColor) {
-        this.backgroundColor = backgroundColor
-    }
+    override fun withForegroundColor(foregroundColor: TextColor) = copy(foregroundColor = foregroundColor)
 
-    override fun setForegroundColor(foregroundColor: TextColor) {
-        this.foregroundColor = foregroundColor
-    }
+    override fun withAddedModifiers(modifiers: Set<Modifier>) = copy(modifiers = this.modifiers.plus(modifiers))
 
-    override fun enableModifiers(modifiers: Set<Modifier>) {
-        this.modifiers.addAll(modifiers)
-    }
+    override fun withAddedModifiers(vararg modifiers: Modifier) = withAddedModifiers(modifiers.toSet())
 
-    override fun enableModifier(modifier: Modifier) {
-        modifiers.add(modifier)
-    }
+    override fun withRemovedModifiers(modifiers: Set<Modifier>) = copy(modifiers = this.modifiers.minus(modifiers))
 
-    @Synchronized
-    override fun disableModifiers(modifiers: Set<Modifier>) {
-        this.modifiers.removeAll(modifiers)
-    }
+    override fun withRemovedModifiers(vararg modifiers: Modifier) = withRemovedModifiers(modifiers.toSet())
 
-    override fun disableModifier(modifier: Modifier) {
-        this.modifiers.remove(modifier)
-    }
+    override fun withModifiers(modifiers: Set<Modifier>) = copy(modifiers = modifiers)
 
-    @Synchronized
-    override fun setModifiers(modifiers: Set<Modifier>) {
-        this.modifiers.clear()
-        enableModifiers(modifiers)
-    }
+    override fun withModifiers(vararg modifiers: Modifier) = withModifiers(modifiers.toSet())
 
-    override fun clearModifiers() {
-        this.modifiers.clear()
-    }
-
-    @Synchronized
-    override fun resetColorsAndModifiers() {
-        modifiers.clear()
-        foregroundColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR
-        backgroundColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR
-    }
-
-    @Synchronized
-    override fun setStyleFrom(source: StyleSet) {
-        setBackgroundColor(source.getBackgroundColor())
-        setForegroundColor(source.getForegroundColor())
-        setModifiers(source.getActiveModifiers().toSet())
-    }
+    override fun withoutModifiers() = copy(modifiers = setOf())
 }

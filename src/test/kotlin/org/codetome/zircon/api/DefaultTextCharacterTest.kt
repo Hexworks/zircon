@@ -6,7 +6,7 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.ANSITextColor.*
 import org.codetome.zircon.api.color.TextColorFactory
-import org.codetome.zircon.internal.BuiltInModifiers
+import org.codetome.zircon.internal.BuiltInModifiers.*
 import org.codetome.zircon.internal.DefaultTextCharacter
 import org.junit.Test
 
@@ -24,7 +24,7 @@ class DefaultTextCharacterTest {
     @Test
     fun shouldProperlyReportHavingABorderWhenThereIsBorder() {
         assertThat(TextCharacterBuilder.newBuilder()
-                .modifier(BuiltInModifiers.BorderFactory.create())
+                .modifiers(BorderFactory.create())
                 .build().hasBorder()).isTrue()
     }
 
@@ -47,7 +47,7 @@ class DefaultTextCharacterTest {
     @Test
     fun shouldProperlyRemoveModifiersWhenWithoutModifiersIsCalled() {
         assertThat(TextCharacterBuilder.newBuilder()
-                .modifier(Modifiers.BOLD)
+                .modifiers(Modifiers.BOLD)
                 .build()
                 .withoutModifiers(setOf(Modifiers.BOLD))
                 .getModifiers())
@@ -59,50 +59,52 @@ class DefaultTextCharacterTest {
         val style = StyleSetBuilder.newBuilder()
                 .foregroundColor(ANSITextColor.BLUE)
                 .backgroundColor(ANSITextColor.CYAN)
-                .modifier(Modifiers.BOLD)
+                .modifiers(Modifiers.BOLD)
                 .build()
 
         val copy = TextCharacterBuilder.newBuilder()
                 .build()
                 .withStyle(style)
 
-        assertThat(copy.getModifiers()).isEqualTo(style.getActiveModifiers())
+        assertThat(copy.getModifiers()).isEqualTo(style.getModifiers())
         assertThat(copy.getBackgroundColor()).isEqualTo(style.getBackgroundColor())
         assertThat(copy.getForegroundColor()).isEqualTo(style.getForegroundColor())
     }
 
     @Test
     fun boldModifierShouldBeBold() {
-        assertThat(TextCharacterBuilder.newBuilder().modifier(Modifiers.BOLD).build().isBold()).isTrue()
+        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.BOLD).build().isBold()).isTrue()
     }
 
     @Test
     fun underlinedModifierShouldBeUnderlined() {
-        assertThat(TextCharacterBuilder.newBuilder().modifier(Modifiers.UNDERLINE).build().isUnderlined()).isTrue()
+        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.UNDERLINE).build().isUnderlined()).isTrue()
     }
 
     @Test
     fun crossedOutModifierShouldBeCrossedOut() {
-        assertThat(TextCharacterBuilder.newBuilder().modifier(Modifiers.CROSSED_OUT).build().isCrossedOut()).isTrue()
+        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.CROSSED_OUT).build().isCrossedOut()).isTrue()
     }
 
     @Test
     fun italicModifierShouldBeItalic() {
-        assertThat(TextCharacterBuilder.newBuilder().modifier(Modifiers.ITALIC).build().isItalic()).isTrue()
+        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.ITALIC).build().isItalic()).isTrue()
     }
 
     @Test
     fun blinkingModifierShouldBeBlinking() {
-        assertThat(TextCharacterBuilder.newBuilder().modifier(Modifiers.BLINK).build().isBlinking()).isTrue()
+        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.BLINK).build().isBlinking()).isTrue()
     }
 
     @Test
     fun shouldBeSameButWithCharChangedWhenWithCharIsCalled() {
         assertThat(DefaultTextCharacter.of(
                 character = 'a',
-                foregroundColor = EXPECTED_FG_COLOR,
-                backgroundColor = EXPECTED_BG_COLOR,
-                modifiers = EXPECTED_MODIFIERS)
+                styleSet = StyleSetBuilder.newBuilder()
+                        .foregroundColor(EXPECTED_FG_COLOR)
+                        .backgroundColor(EXPECTED_BG_COLOR)
+                        .modifiers(EXPECTED_MODIFIERS)
+                        .build())
                 .withCharacter(EXPECTED_CHAR))
                 .isEqualTo(EXPECTED_TEXT_CHARACTER)
     }
@@ -111,9 +113,11 @@ class DefaultTextCharacterTest {
     fun shouldBeSameButWithFGChangedWhenWithForegroundColorIsCalled() {
         assertThat(DefaultTextCharacter.of(
                 character = EXPECTED_CHAR,
-                foregroundColor = GREEN,
-                backgroundColor = EXPECTED_BG_COLOR,
-                modifiers = EXPECTED_MODIFIERS)
+                styleSet = StyleSetBuilder.newBuilder()
+                        .foregroundColor(GREEN)
+                        .backgroundColor(EXPECTED_BG_COLOR)
+                        .modifiers(EXPECTED_MODIFIERS)
+                        .build())
                 .withForegroundColor(EXPECTED_FG_COLOR))
                 .isEqualTo(EXPECTED_TEXT_CHARACTER)
     }
@@ -122,9 +126,11 @@ class DefaultTextCharacterTest {
     fun shouldBeSameButWithBGChangedWhenWithBackgroundColorIsCalled() {
         assertThat(DefaultTextCharacter.of(
                 character = EXPECTED_CHAR,
-                foregroundColor = EXPECTED_FG_COLOR,
-                backgroundColor = RED,
-                modifiers = EXPECTED_MODIFIERS)
+                styleSet = StyleSetBuilder.newBuilder()
+                        .foregroundColor(EXPECTED_FG_COLOR)
+                        .backgroundColor(RED)
+                        .modifiers(EXPECTED_MODIFIERS)
+                        .build())
                 .withBackgroundColor(EXPECTED_BG_COLOR))
                 .isEqualTo(EXPECTED_TEXT_CHARACTER)
     }
@@ -133,9 +139,11 @@ class DefaultTextCharacterTest {
     fun shouldBeSameButWithModifiersChangedWhenWithModifiersIsCalled() {
         assertThat(DefaultTextCharacter.of(
                 character = EXPECTED_CHAR,
-                foregroundColor = EXPECTED_FG_COLOR,
-                backgroundColor = EXPECTED_BG_COLOR,
-                modifiers = setOf(Modifiers.BLINK))
+                styleSet = StyleSetBuilder.newBuilder()
+                        .foregroundColor(EXPECTED_FG_COLOR)
+                        .backgroundColor(EXPECTED_BG_COLOR)
+                        .modifiers(setOf(Blink))
+                        .build())
                 .withModifiers(EXPECTED_MODIFIERS)).isEqualTo(EXPECTED_TEXT_CHARACTER)
     }
 
@@ -143,24 +151,30 @@ class DefaultTextCharacterTest {
     fun shouldBeSameButWithModifierRemovedWhenWithModifierIsCalled() {
         assertThat(DefaultTextCharacter.of(
                 character = EXPECTED_CHAR,
-                foregroundColor = EXPECTED_FG_COLOR,
-                backgroundColor = EXPECTED_BG_COLOR,
-                modifiers = setOf(Modifiers.BOLD))
+                styleSet = StyleSetBuilder.newBuilder()
+                        .foregroundColor(EXPECTED_FG_COLOR)
+                        .backgroundColor(EXPECTED_BG_COLOR)
+                        .modifiers(setOf(Bold))
+                        .build())
                 .withModifiers(Modifiers.ITALIC)).isEqualTo(
                 DefaultTextCharacter.of(
                         character = EXPECTED_CHAR,
-                        foregroundColor = EXPECTED_FG_COLOR,
-                        backgroundColor = EXPECTED_BG_COLOR,
-                        modifiers = setOf(Modifiers.ITALIC)))
+                        styleSet = StyleSetBuilder.newBuilder()
+                                .foregroundColor(EXPECTED_FG_COLOR)
+                                .backgroundColor(EXPECTED_BG_COLOR)
+                                .modifiers(setOf(Italic))
+                                .build()))
     }
 
     @Test
     fun shouldBeSameButWithModifierRemovedWhenWithoutModifierIsCalled() {
         assertThat(DefaultTextCharacter.of(
                 character = EXPECTED_CHAR,
-                foregroundColor = EXPECTED_FG_COLOR,
-                backgroundColor = EXPECTED_BG_COLOR,
-                modifiers = setOf(Modifiers.BOLD, Modifiers.ITALIC, Modifiers.BLINK))
+                styleSet = StyleSetBuilder.newBuilder()
+                        .foregroundColor(EXPECTED_FG_COLOR)
+                        .backgroundColor(EXPECTED_BG_COLOR)
+                        .modifiers(setOf(Modifiers.BOLD, Modifiers.ITALIC, Modifiers.BLINK))
+                        .build())
                 .withoutModifiers(Modifiers.BLINK))
                 .isEqualTo(EXPECTED_TEXT_CHARACTER)
     }
@@ -209,9 +223,11 @@ class DefaultTextCharacterTest {
 
         val EXPECTED_TEXT_CHARACTER = DefaultTextCharacter.of(
                 character = EXPECTED_CHAR,
-                foregroundColor = EXPECTED_FG_COLOR,
-                backgroundColor = EXPECTED_BG_COLOR,
-                modifiers = EXPECTED_MODIFIERS)
+                styleSet = StyleSetBuilder.newBuilder()
+                        .foregroundColor(EXPECTED_FG_COLOR)
+                        .backgroundColor(EXPECTED_BG_COLOR)
+                        .modifiers(EXPECTED_MODIFIERS)
+                        .build())
     }
 
 }

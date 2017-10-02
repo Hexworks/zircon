@@ -139,7 +139,7 @@ class DefaultButtonTest {
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITextColor.RED)
                 .foregroundColor(ANSITextColor.GREEN)
-                .modifier(Modifiers.CROSSED_OUT)
+                .modifiers(Modifiers.CROSSED_OUT)
                 .build()
         val COMPONENT_STYLES = ComponentStylesBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)

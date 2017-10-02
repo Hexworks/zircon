@@ -36,7 +36,7 @@ data class StyleSetBuilder(
         this.modifiers = modifiers.toSet()
     }
 
-    fun modifier(vararg modifiers: Modifier) = also {
+    fun modifiers(vararg modifiers: Modifier) = also {
         this.modifiers = modifiers.toSet()
     }
 

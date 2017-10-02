@@ -6,11 +6,15 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Drawable
+import org.codetome.zircon.api.behavior.Styleable
+import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
+import org.codetome.zircon.internal.behavior.impl.DefaultStyleable
 import java.util.*
+import java.util.concurrent.atomic.AtomicReference
 
 /**
  * Simple implementation of [TextImage] that keeps the content as a two-dimensional [TextCharacter] array.
@@ -20,10 +24,10 @@ import java.util.*
 class DefaultTextImage(size: Size,
                        toCopy: Array<Array<TextCharacter>>,
                        filler: TextCharacter,
-                       boundable: Boundable = DefaultBoundable(
-                               size = size),
-                       styleSet: StyleSet = DefaultStyleSet())
-    : TextImage, Boundable by boundable, StyleSet by styleSet {
+                       styleSet: StyleSet = StyleSetBuilder.DEFAULT_STYLE,
+                       boundable: Boundable = DefaultBoundable(size = size),
+                       styleable: Styleable = DefaultStyleable(AtomicReference(styleSet)))
+    : TextImage, Boundable by boundable, Styleable by styleable {
 
     private val buffer = (0 until getBoundableSize().rows).map {
         (0 until getBoundableSize().columns).map { filler }.toTypedArray()
@@ -65,7 +69,7 @@ class DefaultTextImage(size: Size,
     override fun applyColorsFromStyle(styleSet: StyleSet, offset: Position, size: Size) {
         val bg = styleSet.getBackgroundColor()
         val fg = styleSet.getForegroundColor()
-        setStyleFrom(styleSet.toStyleSet().apply { clearModifiers() })
+        setStyleFrom(styleSet.withoutModifiers())
         size.fetchPositions().forEach { pos ->
             pos.plus(offset).let { fixedPos ->
                 getCharacterAt(fixedPos).map { char ->

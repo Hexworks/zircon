@@ -27,7 +27,7 @@ class Java2DUnderlineTransformerTest {
         val WIDTH = 10
         val HEIGHT = 10
         val CHAR = TextCharacterBuilder.newBuilder()
-                .modifier(Modifiers.UNDERLINE)
+                .modifiers(Modifiers.UNDERLINE)
                 .build()
     }
 }

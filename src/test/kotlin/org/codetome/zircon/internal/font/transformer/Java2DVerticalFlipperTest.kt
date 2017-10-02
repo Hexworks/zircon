@@ -27,7 +27,7 @@ class Java2DVerticalFlipperTest {
         val WIDTH = 10
         val HEIGHT = 10
         val CHAR = TextCharacterBuilder.newBuilder()
-                .modifier(Modifiers.VERTICAL_FLIP)
+                .modifiers(Modifiers.VERTICAL_FLIP)
                 .build()
     }
 }
