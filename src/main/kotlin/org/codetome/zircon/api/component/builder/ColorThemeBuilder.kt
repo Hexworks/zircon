@@ -40,6 +40,7 @@ data class ColorThemeBuilder(private var brightForegroundColor: TextColor = Text
 
     companion object {
 
+        @JvmStatic
         fun newBuilder() = ColorThemeBuilder()
     }
 }

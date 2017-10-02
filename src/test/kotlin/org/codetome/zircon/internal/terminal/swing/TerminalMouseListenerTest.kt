@@ -56,7 +56,7 @@ class TerminalMouseListenerTest {
         val X = POSITION.column * FONT_SIZE
         val Y = POSITION.row * FONT_SIZE
         val BUTTON = 2
-        val CONFIG = DeviceConfigurationBuilder.getDefault()
+        val CONFIG = DeviceConfigurationBuilder.DEFAULT
         val DUMMY_COMPONENT = object : Component() {}
         val MOUSE_EVENT = MouseEvent(DUMMY_COMPONENT, 1, 1, 1, X, Y, 1, true, BUTTON)
     }

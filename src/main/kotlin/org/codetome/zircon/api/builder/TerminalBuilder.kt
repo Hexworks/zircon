@@ -25,7 +25,7 @@ data class TerminalBuilder(
         private var fullScreen: Boolean = false,
         private var initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
         private var title: String = "Zircon Terminal",
-        private var deviceConfiguration: DeviceConfiguration = DeviceConfigurationBuilder.getDefault(),
+        private var deviceConfiguration: DeviceConfiguration = DeviceConfigurationBuilder.DEFAULT,
         // TODO: refactor this to abstract shape when libgdx implementation comes
         private var font: Font<BufferedImage> = PhysicalFontResource.UBUNTU_MONO.toFont()
 ) : Builder<Terminal> {

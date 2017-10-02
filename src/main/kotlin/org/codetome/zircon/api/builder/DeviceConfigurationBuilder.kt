@@ -65,7 +65,7 @@ data class DeviceConfigurationBuilder(
         @JvmStatic
         fun newBuilder() = DeviceConfigurationBuilder()
 
-        @JvmStatic
-        fun getDefault() = newBuilder().build()
+        @JvmField
+        val DEFAULT = newBuilder().build()
     }
 }
