@@ -23,6 +23,19 @@ interface TextImage : DrawSurface, Styleable, Drawable {
     fun resize(newSize: Size, filler: TextCharacter): TextImage
 
     /**
+     * Combines this text image with another one. This method creates a new
+     * [TextImage] which is the combination of `this` one and the supplied `textImage`.
+     * *Note that* if there are two [Position]s which are present in both [TextImage]s
+     * **and** at none of those positions is an `EMPTY` [TextCharacter] then the
+     * [TextCharacter] in the supplied `textImage` will be used.
+     * This method creates a new object and **both** original [TextImage]s are left
+     * untouched!
+     * @param textImage the image which will be drawn onto `this` image
+     * @param offset The position on the target image where the `textImage`'s top left corner will be
+     */
+    fun combineWith(textImage: TextImage, offset: Position): TextImage
+
+    /**
      * Writes the given `text` at the given `position`.
      */
     fun putText(text: String, position: Position = Position.DEFAULT_POSITION)
