@@ -27,7 +27,7 @@ class Java2DBorderTransformerTest {
         val WIDTH = 10
         val HEIGHT = 10
         val CHAR = TextCharacterBuilder.newBuilder()
-                .modifier(Modifiers.BORDER.create())
+                .modifiers(Modifiers.BORDER.create())
                 .build()
     }
 }

@@ -13,76 +13,68 @@ import org.codetome.zircon.api.color.TextColor
 interface StyleSet {
 
     /**
-     * Returns a copy of the style information stored in this [StyleSet].
-     */
-    fun toStyleSet(): StyleSet
-
-    /**
-     * Returns the current background color.
-     */
-    fun getBackgroundColor(): TextColor
-
-    /**
-     * Updates the current background color.
-     */
-    fun setBackgroundColor(backgroundColor: TextColor)
-
-    /**
-     * Returns the current foreground color.
+     * Returns the foreground color.
      */
     fun getForegroundColor(): TextColor
 
     /**
-     * Updates the current foreground color.
+     * Returns the background color.
      */
-    fun setForegroundColor(foregroundColor: TextColor)
+    fun getBackgroundColor(): TextColor
 
     /**
-     * Adds zero or more modifiers to the set of currently active modifiers.
+     * Returns the modifiers.
      */
-    fun enableModifiers(modifiers: Set<Modifier>)
+    fun getModifiers(): Set<Modifier>
 
     /**
-     * Activates a [Modifier]. This code modifies a state inside the terminal
-     * that will apply to all characters written afterwards, such as bold and italic.
+     * Returns a copy of the style information stored in this [StyleSet].
      */
-    fun enableModifier(modifier: Modifier)
+    fun createCopy(): StyleSet
 
     /**
-     * Removes zero or more modifiers from the set of currently active modifiers.
+     * Creates a copy of this [StyleSet] with the given background color.
      */
-    fun disableModifiers(modifiers: Set<Modifier>)
+    fun withBackgroundColor(backgroundColor: TextColor): StyleSet
 
     /**
-     * Deactivates a [Modifier] which has previously been activated.
+     * Creates a copy of this [StyleSet] with the given foreground color.
      */
-    fun disableModifier(modifier: Modifier)
+    fun withForegroundColor(foregroundColor: TextColor): StyleSet
 
     /**
-     * Sets the active modifiers to exactly the set passed in to this method.
+     * Creates a copy of this [StyleSet] with the given modifiers added.
      */
-    fun setModifiers(modifiers: Set<Modifier>)
+    fun withAddedModifiers(modifiers: Set<Modifier>): StyleSet
 
     /**
-     * Removes all active modifiers.
+     * Creates a copy of this [StyleSet] with the given modifiers added.
      */
-    fun clearModifiers()
+    fun withAddedModifiers(vararg modifiers: Modifier): StyleSet
 
     /**
-     * Removes all currently active [Modifier]s and sets foreground and background colors back to default.
+     * Creates a copy of this [StyleSet] with the given modifiers removed.
      */
-    fun resetColorsAndModifiers()
+    fun withRemovedModifiers(modifiers: Set<Modifier>): StyleSet
 
     /**
-     * Returns the currently active modifiers.
+     * Creates a copy of this [StyleSet] with the given modifiers removed.
      */
-    fun getActiveModifiers(): Set<Modifier>
+    fun withRemovedModifiers(vararg modifiers: Modifier): StyleSet
 
     /**
-     * Copies colors and modifiers from another style.
+     * Creates a copy of this [StyleSet] with the given modifiers.
      */
-    fun setStyleFrom(source: StyleSet)
+    fun withModifiers(modifiers: Set<Modifier>): StyleSet
+    /**
+     * Creates a copy of this [StyleSet] with the given modifiers.
+     */
+    fun withModifiers(vararg modifiers: Modifier): StyleSet
 
+    /**
+     * Creates a copy of this [StyleSet] with no modifiers.
+     */
+    fun withoutModifiers(): StyleSet
 
 }
 

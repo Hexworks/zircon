@@ -31,7 +31,7 @@ data class ComponentStylesBuilder(
     }
 
     override fun createCopy() = copy(
-            styles = styles.map { Pair(it.key, it.value.toStyleSet()) }
+            styles = styles.map { Pair(it.key, it.value) }
                     .toMap().toMutableMap())
 
     fun defaultStyle(styleSet: StyleSet) = also {

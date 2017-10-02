@@ -1,11 +1,11 @@
 package org.codetome.zircon.api.builder
 
-import org.codetome.zircon.internal.DefaultTextCharacter
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
+import org.codetome.zircon.internal.DefaultTextCharacter
 
 /**
  * Builds [TextCharacter]s.
@@ -17,9 +17,7 @@ import org.codetome.zircon.api.graphics.StyleSet
  */
 data class TextCharacterBuilder(
         private var character: Char = ' ',
-        private var foregroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
-        private var backgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
-        private var modifiers: Set<Modifier> = setOf(),
+        private var styleSet: StyleSet = StyleSetBuilder.DEFAULT_STYLE,
         private var tags: Set<String> = setOf()) : Builder<TextCharacter> {
 
     fun character(character: Char) = also {
@@ -31,26 +29,22 @@ data class TextCharacterBuilder(
      * `styleSet`.
      */
     fun styleSet(styleSet: StyleSet) = also {
-        backgroundColor = styleSet.getBackgroundColor()
-        foregroundColor = styleSet.getForegroundColor()
-        modifiers = styleSet.getActiveModifiers().toSet() // TODO: test defensive copy
+        this.styleSet = styleSet
     }
 
     fun foregroundColor(foregroundColor: TextColor) = also {
-        this.foregroundColor = foregroundColor
+        this.styleSet = styleSet.withForegroundColor(foregroundColor)
     }
 
     fun backgroundColor(backgroundColor: TextColor) = also {
-        this.backgroundColor = backgroundColor
+        this.styleSet = styleSet.withBackgroundColor(backgroundColor)
     }
 
     fun modifiers(modifiers: Set<Modifier>) = also {
-        this.modifiers = modifiers.toSet()
+        this.styleSet = styleSet.withModifiers(modifiers)
     }
 
-    fun modifier(vararg modifiers: Modifier) = also {
-        this.modifiers = modifiers.toSet()
-    }
+    fun modifiers(vararg modifiers: Modifier): TextCharacterBuilder = modifiers(modifiers.toSet())
 
     fun tag(vararg tags: String) = also {
         this.tags = tags.toSet()
@@ -62,14 +56,10 @@ data class TextCharacterBuilder(
 
     override fun build(): TextCharacter = DefaultTextCharacter.of(
             character = character,
-            foregroundColor = foregroundColor,
-            backgroundColor = backgroundColor,
-            modifiers = modifiers,
+            styleSet = styleSet,
             tags = tags)
 
-    override fun createCopy() = copy(
-            modifiers = modifiers.toSet(),
-            tags = tags.toSet()) // TODO: test defensive copy
+    override fun createCopy() = copy()
 
     companion object {
 

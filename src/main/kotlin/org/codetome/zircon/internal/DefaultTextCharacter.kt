@@ -2,6 +2,7 @@ package org.codetome.zircon.internal
 
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
@@ -10,34 +11,32 @@ import org.codetome.zircon.internal.BuiltInModifiers.*
 
 data class DefaultTextCharacter(
         private val character: Char,
-        private val foregroundColor: TextColor,
-        private val backgroundColor: TextColor,
-        private val modifiers: Set<Modifier>,
+        private val styleSet: StyleSet,
         private val tags: Set<String>) : TextCharacter {
 
     override fun getCharacter(): Char = character
 
-    override fun getForegroundColor(): TextColor = foregroundColor
+    override fun getForegroundColor(): TextColor = styleSet.getForegroundColor()
 
-    override fun getBackgroundColor(): TextColor = backgroundColor
+    override fun getBackgroundColor(): TextColor = styleSet.getBackgroundColor()
 
-    override fun getModifiers(): Set<Modifier> = modifiers
+    override fun getModifiers(): Set<Modifier> = styleSet.getModifiers()
 
     override fun getTags(): Set<String> = tags
 
-    override fun isBold(): Boolean = modifiers.contains(Bold)
+    override fun isBold(): Boolean = getModifiers().contains(Bold)
 
-    override fun isUnderlined(): Boolean = modifiers.contains(Underline)
+    override fun isUnderlined(): Boolean = getModifiers().contains(Underline)
 
-    override fun isCrossedOut(): Boolean = modifiers.contains(CrossedOut)
+    override fun isCrossedOut(): Boolean = getModifiers().contains(CrossedOut)
 
-    override fun isItalic(): Boolean = modifiers.contains(Italic)
+    override fun isItalic(): Boolean = getModifiers().contains(Italic)
 
-    override fun isBlinking(): Boolean = modifiers.contains(Blink)
+    override fun isBlinking(): Boolean = getModifiers().contains(Blink)
 
-    override fun hasBorder(): Boolean = modifiers.any { it is Border }
+    override fun hasBorder(): Boolean = getModifiers().any { it is Border }
 
-    override fun fetchBorderData(): Set<BuiltInModifiers.Border> = modifiers
+    override fun fetchBorderData(): Set<BuiltInModifiers.Border> = getModifiers()
             .filter { it is Border }
             .map { it as Border }
             .toSet()
@@ -52,17 +51,17 @@ data class DefaultTextCharacter(
     }
 
     override fun withForegroundColor(foregroundColor: TextColor): DefaultTextCharacter {
-        if (this.foregroundColor == foregroundColor) {
+        if (this.styleSet.getForegroundColor() == foregroundColor) {
             return this
         }
-        return copy(foregroundColor = foregroundColor)
+        return copy(styleSet = styleSet.withForegroundColor(foregroundColor))
     }
 
     override fun withBackgroundColor(backgroundColor: TextColor): DefaultTextCharacter {
-        if (this.backgroundColor == backgroundColor) {
+        if (this.styleSet.getBackgroundColor() == backgroundColor) {
             return this
         }
-        return copy(backgroundColor = backgroundColor)
+        return copy(styleSet = styleSet.withBackgroundColor(backgroundColor))
     }
 
     override fun withModifiers(vararg modifiers: Modifier): DefaultTextCharacter {
@@ -70,10 +69,10 @@ data class DefaultTextCharacter(
     }
 
     override fun withModifiers(modifiers: Set<Modifier>): DefaultTextCharacter {
-        if (this.modifiers == modifiers) {
+        if (this.styleSet.getModifiers() == modifiers) {
             return this
         }
-        return copy(modifiers = modifiers.toSet())
+        return copy(styleSet = styleSet.withModifiers(modifiers))
     }
 
     override fun withoutModifiers(vararg modifiers: Modifier): DefaultTextCharacter {
@@ -81,18 +80,13 @@ data class DefaultTextCharacter(
     }
 
     override fun withoutModifiers(modifiers: Set<Modifier>): DefaultTextCharacter {
-        if (this.modifiers.none { modifiers.contains(it) }) {
+        if (this.styleSet.getModifiers().none { modifiers.contains(it) }) {
             return this
         }
-        val newSet = this.modifiers.toMutableSet()
-        newSet.removeAll(modifiers)
-        return copy(modifiers = newSet.toSet()) // TODO: test defensive copying!
+        return copy(styleSet = styleSet.withRemovedModifiers(modifiers))
     }
 
-    override fun withStyle(styleSet: StyleSet): TextCharacter = copy(
-            foregroundColor = styleSet.getForegroundColor(),
-            backgroundColor = styleSet.getBackgroundColor(),
-            modifiers = styleSet.getActiveModifiers().toSet())
+    override fun withStyle(styleSet: StyleSet) = copy(styleSet = styleSet)
 
     companion object {
 
@@ -103,14 +97,10 @@ data class DefaultTextCharacter(
         @JvmStatic
         @JvmOverloads
         fun of(character: Char,
-               foregroundColor: TextColor,
-               backgroundColor: TextColor,
-               modifiers: Set<Modifier> = setOf(),
+               styleSet: StyleSet,
                tags: Set<String> = setOf()) = DefaultTextCharacter(
                 character = character,
-                foregroundColor = foregroundColor,
-                backgroundColor = backgroundColor,
-                modifiers = modifiers.toSet(),
+                styleSet = styleSet,
                 tags = tags)
     }
 

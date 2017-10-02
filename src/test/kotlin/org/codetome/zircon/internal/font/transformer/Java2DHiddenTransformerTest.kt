@@ -26,7 +26,7 @@ class Java2DHiddenTransformerTest {
         val WIDTH = 10
         val HEIGHT = 10
         val CHAR = TextCharacterBuilder.newBuilder()
-                .modifier(Modifiers.HIDDEN)
+                .modifiers(Modifiers.HIDDEN)
                 .build()
     }
 }

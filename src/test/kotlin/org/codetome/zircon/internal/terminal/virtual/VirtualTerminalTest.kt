@@ -184,7 +184,7 @@ class VirtualTerminalTest {
     @Test
     fun shouldProperlyMarkBlinkingCharactersAsDirtyAfterADirtyDrain() {
         target.setCharacterAt(DEFAULT_POSITION, TextCharacterBuilder.newBuilder()
-                .modifier(Modifiers.BLINK)
+                .modifiers(Modifiers.BLINK)
                 .build())
 
         target.drainDirtyPositions()
