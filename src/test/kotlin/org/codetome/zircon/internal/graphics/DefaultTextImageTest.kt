@@ -8,9 +8,11 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.TextImageBuilder
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
+import java.util.function.Consumer
 
 class DefaultTextImageTest {
 
@@ -36,7 +38,7 @@ class DefaultTextImageTest {
         checkGetCharacter<DrawSurface>(target)
     }
 
-    private fun <T: DrawSurface> checkGetCharacter(target: T) {
+    private fun <T : DrawSurface> checkGetCharacter(target: T) {
         assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(TO_COPY_CHAR)
     }
@@ -109,6 +111,39 @@ class DefaultTextImageTest {
 
         assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(SET_ALL_CHAR)
+    }
+
+    @Test
+    fun shouldProperlyCombineTwoImages() {
+        val sourceChar = TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x')
+        val imageChar = TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('+')
+        val filler = TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('_')
+
+        val source = TextImageBuilder.newBuilder()
+                .size(Size.of(3, 3))
+                .filler(filler)
+                .build()
+
+        val image = TextImageBuilder.newBuilder()
+                .size(Size.of(2, 2))
+                .filler(filler)
+                .build()
+
+        source.setCharacterAt(Position.of(0, 0), sourceChar)
+        source.setCharacterAt(Position.of(1, 0), sourceChar)
+        source.setCharacterAt(Position.of(0, 1), sourceChar)
+        source.setCharacterAt(Position.of(1, 1), sourceChar)
+
+        image.getBoundableSize().fetchPositions().forEach(Consumer {
+            image.setCharacterAt(it, imageChar)
+        })
+
+        val result = source.combineWith(image, OFFSET_1x1)
+
+        assertThat(result.getCharacterAt(OFFSET_1x1).get()).isEqualTo(imageChar)
+        assertThat(result.getBoundableSize()).isEqualTo(source.getBoundableSize())
+        assertThat(source.getCharacterAt(OFFSET_1x1).get()).isEqualTo(sourceChar)
+        assertThat(image.getCharacterAt(OFFSET_1x1).get()).isEqualTo(imageChar)
     }
 
     private fun fetchTargetChars(): List<TextCharacter> {

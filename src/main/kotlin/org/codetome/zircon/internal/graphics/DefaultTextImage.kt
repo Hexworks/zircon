@@ -9,6 +9,7 @@ import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.Styleable
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
@@ -29,19 +30,7 @@ class DefaultTextImage(size: Size,
                        styleable: Styleable = DefaultStyleable(AtomicReference(styleSet)))
     : TextImage, Boundable by boundable, Styleable by styleable {
 
-    private val buffer = (0 until getBoundableSize().rows).map {
-        (0 until getBoundableSize().columns).map { filler }.toTypedArray()
-    }.toTypedArray()
-
-    init {
-        getBoundableSize().fetchPositions().forEach { (col, row) ->
-            if (row < toCopy.size && col < toCopy[row].size) {
-                buffer[row][col] = toCopy[row][col]
-            } else {
-                buffer[row][col] = filler
-            }
-        }
-    }
+    private val buffer: Array<Array<TextCharacter>> = copyArray(toCopy, getBoundableSize(), filler)
 
     override fun toString(): String {
         return (0 until getBoundableSize().rows).map { row ->
@@ -84,6 +73,16 @@ class DefaultTextImage(size: Size,
             return this
         }
         return DefaultTextImage(newSize, buffer, filler)
+    }
+
+    @Synchronized
+    override fun combineWith(textImage: TextImage, offset: Position): TextImage {
+        val surface = TextImageBuilder.newBuilder()
+                .size(getBoundableSize())
+                .toCopy(copyArray(buffer, getBoundableSize(), TextCharacterBuilder.EMPTY))
+                .build()
+        surface.draw(textImage, offset)
+        return surface
     }
 
     override fun setCharacterAt(position: Position, character: Char)
@@ -132,6 +131,20 @@ class DefaultTextImage(size: Size,
                 }
             }
         }
+    }
+
+    private fun copyArray(toCopy: Array<Array<TextCharacter>>, size: Size, filler: TextCharacter): Array<Array<TextCharacter>> {
+        val result = (0 until size.rows).map {
+            (0 until size.columns).map { filler }.toTypedArray()
+        }.toTypedArray()
+        size.fetchPositions().forEach { (col, row) ->
+            if (row < toCopy.size && col < toCopy[row].size) {
+                result[row][col] = toCopy[row][col]
+            } else {
+                result[row][col] = filler
+            }
+        }
+        return result
     }
 
     private fun positionIsOutOfBounds(column: Int, row: Int)
