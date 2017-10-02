@@ -96,7 +96,7 @@ class TerminalKeyListenerTest {
         val X = POSITION.column * FONT_SIZE
         val Y = POSITION.row * FONT_SIZE
         val BUTTON = 2
-        val CONFIG = DeviceConfigurationBuilder.getDefault()
+        val CONFIG = DeviceConfigurationBuilder.DEFAULT
         val DUMMY_COMPONENT = object : Component() {}
     }
 }
