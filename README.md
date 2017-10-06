@@ -5,11 +5,11 @@ It is usable out of the box for all JVM languages including Java.
 
 Currently only a Swing implementation is present but we are working on a libGDX one.
 
-*Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna) and parts of its codebase were ported to serve as a basis
- for this library.
+*Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna) and parts of its codebase were ported to serve as a basis for this library.
  
- *If you have any questions which are unanswered in the README or the Wiki feel free to ask away on the
- [official Discord server](https://discordapp.com/invite/p2vSMFc)*!
+---
+Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki) | Have a problem? [Create an issue](https://github.com/Hexworks/zircon/issues/new) | Want to check our progress? See the [Board](https://github.com/Hexworks/zircon/projects/2) | Still have questions? [Ask us on Discord][discord]
+---
 
 [![][circleci img]][circleci]
 [![][maven img]][maven]
