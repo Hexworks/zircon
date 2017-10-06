@@ -9,7 +9,7 @@ Currently only a Swing implementation is present but we are working on a libGDX 
  
 ---
 
-[Wiki](https://github.com/Hexworks/zircon/wiki) | [Create an issue](https://github.com/Hexworks/zircon/issues/new) | [Our project Board](https://github.com/Hexworks/zircon/projects/2) | [Ask us on Discord][discord]
+Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki) | or [Create an issue](https://github.com/Hexworks/zircon/issues/new) | Check [our project Board](https://github.com/Hexworks/zircon/projects/2) | [Ask us on Discord][discord]
 
 ---
 
