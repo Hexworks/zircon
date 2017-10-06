@@ -11,14 +11,11 @@ Currently only a Swing implementation is present but we are working on a libGDX 
 
 Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki) | or [Create an issue](https://github.com/Hexworks/zircon/issues/new) | Check [our project Board](https://github.com/Hexworks/zircon/projects/2) | [Ask us on Discord][discord]
 
----
-
 [![][circleci img]][circleci]
 [![][maven img]][maven]
 [![][codecov img]][codecov]
 [![][license img]][license]
 
----
 
 ## A little Crash Course
 
