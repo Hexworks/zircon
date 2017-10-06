@@ -6,7 +6,9 @@ It is usable out of the box for all JVM languages including Java.
 Currently only a Swing implementation is present but we are working on a libGDX one.
 
 *Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna) and parts of its codebase were ported to serve as a basis for this library.
- 
+
+---
+
 Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki) | or [Create an issue](https://github.com/Hexworks/zircon/issues/new) | Check [our project Board](https://github.com/Hexworks/zircon/projects/2) | [Ask us on Discord][discord]
 
 [![][circleci img]][circleci]
