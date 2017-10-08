@@ -43,6 +43,7 @@ enum class GraphicTilesetResource(private val tilesetName: String,
          * *Note that* it is your responsibility to supply the proper parameters for
          * this method!
          */
+        @JvmStatic
         fun loadGraphicTileset(sourceZipPath: String,
                                metadataPickingStrategy: MetadataPickingStrategy): Font<BufferedImage> {
             val files = unZipIt(sourceZipPath, createTempDir())
