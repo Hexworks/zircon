@@ -19,7 +19,7 @@ class AnimationResource {
         @JvmStatic
         fun loadAnimationFromFile(sourceZipPath: String): AnimationBuilder {
             val files = unZipIt(sourceZipPath, createTempDir())
-            val tileInfoSource = files.filter { it.name == "animation.yml" }.first().bufferedReader().use {
+            val tileInfoSource = files.first { it.name == "animation.yml" }.bufferedReader().use {
                 it.readText()
             }
             val animDataFile = Yaml(Constructor(AnimationMetadata::class.java))
