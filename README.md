@@ -472,7 +472,7 @@ Zircon comes with a bunch of built-in color themes which you can apply to your c
 If interested you can read more about how this works [here][color-themes].
 
 ### Animations (BETA)
-Animationsn are a beta feature. More info [here][animations].
+Animations are a beta feature. More info [here][animations].
 
 ### The API
 
