@@ -5,31 +5,43 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.Drawable
+import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.util.TextUtils
-import org.codetome.zircon.internal.behavior.InternalLayerable
 import org.codetome.zircon.internal.behavior.InternalCursorHandler
+import org.codetome.zircon.internal.behavior.InternalLayerable
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
+import org.codetome.zircon.internal.behavior.impl.DefaultFontOverride
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.terminal.AbstractTerminal
 import org.codetome.zircon.internal.terminal.InternalTerminal
+import java.awt.image.BufferedImage
 import java.util.function.Consumer
 
 class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
-                      private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(cursorSpace = initialSize),
-                      private val layerable: InternalLayerable = DefaultLayerable(size = initialSize))
+                      initialFont: Font<BufferedImage>,
+                      private val fontOverride: FontOverride<BufferedImage> = DefaultFontOverride(
+                              initialFont = initialFont),
+                      private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
+                              cursorSpace = initialSize),
+                      private val layerable: InternalLayerable = DefaultLayerable(
+                              size = initialSize,
+                              supportedFontSize = initialFont.getSize()))
     : AbstractTerminal(), InternalTerminal,
         InternalCursorHandler by cursorHandler,
-        InternalLayerable by layerable {
+        InternalLayerable by layerable,
+        FontOverride<BufferedImage> by fontOverride {
 
     private var terminalSize = initialSize
     private var backend: TextImage = createBackend(terminalSize)
+
 
     override fun drainDirtyPositions() =
             cursorHandler.drainDirtyPositions().plus(layerable.drainDirtyPositions()).also { dirtyPositions ->

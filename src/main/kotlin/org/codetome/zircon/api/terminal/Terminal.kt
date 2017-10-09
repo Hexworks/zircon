@@ -5,6 +5,7 @@ package org.codetome.zircon.api.terminal
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.*
 import org.codetome.zircon.api.graphics.StyleSet
+import java.awt.image.BufferedImage
 import java.io.Closeable
 
 /**
@@ -23,8 +24,8 @@ import java.io.Closeable
  * interface you should be programming against.
  */
 interface Terminal
-    : Closeable, Clearable, Styleable, CursorHandler, Layerable, DrawSurface, InputEmitter {
-
+    : Closeable, Clearable, Styleable, CursorHandler, Layerable, DrawSurface, InputEmitter, FontOverride<BufferedImage> {
+    // TODO: font override generics!
     /**
      * Prints one character to the terminal at the current cursor location.
      * Please note that the cursor will then move one column to the right, so multiple calls to

@@ -2,6 +2,7 @@ package org.codetome.zircon.internal.screen
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.internal.component.InternalContainerHandler
@@ -11,6 +12,7 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
+import java.awt.image.BufferedImage
 import java.util.*
 
 /**
@@ -20,8 +22,11 @@ import java.util.*
  * the [Terminal] this [TerminalScreen] wraps. This means that a [TerminalScreen] acts
  * as a double buffer for the wrapped [Terminal].
  */
-class TerminalScreen(private val terminal: Terminal,
-                     private val backend: VirtualTerminal = VirtualTerminal(terminal.getBoundableSize()),
+class TerminalScreen(initialFont: Font<BufferedImage>,
+                     private val terminal: InternalTerminal,
+                     private val backend: VirtualTerminal = VirtualTerminal(
+                             initialSize = terminal.getBoundableSize(),
+                             initialFont = initialFont),
                      private val containerHandler: InternalContainerHandler = DefaultContainerHandler(DefaultContainer(
                              initialSize = terminal.getBoundableSize(),
                              position = Position.DEFAULT_POSITION,

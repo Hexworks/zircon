@@ -3,9 +3,11 @@ package org.codetome.zircon.api.builder
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.graphics.DefaultLayer
+import java.awt.image.BufferedImage
 import java.util.*
 
 /**
@@ -15,10 +17,19 @@ import java.util.*
  * - offset: [Position.DEFAULT_POSITION]
  * - has no text image by default
  */
-data class LayerBuilder(private var size: Size = Size.ONE,
+data class LayerBuilder(private var font: Font<BufferedImage> = Font.DEFAULT_FONT,
+                        private var size: Size = Size.ONE,
                         private var filler: TextCharacter = TextCharacterBuilder.EMPTY,
                         private var offset: Position = Position.DEFAULT_POSITION,
                         private var textImage: Optional<TextImage> = Optional.empty()) : Builder<Layer> {
+
+
+    /**
+     * Sets the [Font] to use with the resulting [Layer].
+     */
+    fun font(font: Font<BufferedImage>) = also {
+        this.font = font
+    }
 
     /**
      * Sets the size for the new [org.codetome.zircon.api.graphics.Layer].
@@ -55,12 +66,14 @@ data class LayerBuilder(private var size: Size = Size.ONE,
         DefaultLayer(size = size,
                 filler = filler,
                 offset = offset,
-                textImage = textImage.get())
+                textImage = textImage.get(),
+                initialFont = font)
     } else {
         DefaultLayer(
                 size = size,
                 filler = filler,
-                offset = offset)
+                offset = offset,
+                initialFont = font)
     }
 
     override fun createCopy() = copy()

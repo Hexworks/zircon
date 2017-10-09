@@ -4,21 +4,26 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.Boundable
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.behavior.InternalLayerable
 import org.codetome.zircon.internal.behavior.Dirtiable
+import java.awt.image.BufferedImage
 import java.util.*
 import java.util.concurrent.BlockingDeque
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingDeque
 import java.util.concurrent.LinkedBlockingQueue
 
-class DefaultLayerable(size: Size,
+class DefaultLayerable(private val supportedFontSize: Size,
+                       size: Size,
                        boundable: Boundable = DefaultBoundable(size),
                        dirtiable: Dirtiable = DefaultDirtiable())
     : InternalLayerable, Boundable by boundable, Dirtiable by dirtiable {
 
     private val layers: BlockingDeque<Layer> = LinkedBlockingDeque()
+
+    override fun getSupportedFontSize() = supportedFontSize
 
     override fun pushLayer(layer: Layer) {
         layers.add(layer)
@@ -44,15 +49,15 @@ class DefaultLayerable(size: Size,
         }
     }
 
-    override fun fetchOverlayZIntersection(absolutePosition: Position): List<TextCharacter> {
+    override fun fetchOverlayZIntersection(absolutePosition: Position): List<Pair<Font<BufferedImage>, TextCharacter>> {
         return fetchZIntersectionFor(layers, absolutePosition)
     }
 
-    private fun fetchZIntersectionFor(queue: Queue<Layer>, position: Position): List<TextCharacter> {
+    private fun fetchZIntersectionFor(queue: Queue<Layer>, position: Position): List<Pair<Font<BufferedImage>, TextCharacter>> {
         return queue.filter { layer ->
             layer.containsPosition(position)
         }.map { layer ->
-            layer.getCharacterAt(position).get()
+            Pair(layer.getCurrentFont(), layer.getCharacterAt(position).get())
         }
     }
 

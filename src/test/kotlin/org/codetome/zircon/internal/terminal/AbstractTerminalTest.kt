@@ -2,6 +2,7 @@ package org.codetome.zircon.internal.terminal
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.TerminalResizeListener
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
@@ -17,13 +18,13 @@ class AbstractTerminalTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        target = VirtualTerminal()
+        target = VirtualTerminal(initialFont = FONT)
     }
 
     @Test
     fun shouldAddResizeListenerWhenAddIsCalled() {
         var resized = false
-        target.addResizeListener(object: TerminalResizeListener {
+        target.addResizeListener(object : TerminalResizeListener {
             override fun onResized(terminal: Terminal, newSize: Size) {
                 resized = true
             }
@@ -36,7 +37,7 @@ class AbstractTerminalTest {
     fun shouldNotResizeWhenSizeIsTheSame() {
         var resized = false
         target.setSize(Size(5, 5))
-        target.addResizeListener(object: TerminalResizeListener {
+        target.addResizeListener(object : TerminalResizeListener {
             override fun onResized(terminal: Terminal, newSize: Size) {
                 resized = true
             }
@@ -48,7 +49,7 @@ class AbstractTerminalTest {
     @Test
     fun shouldRemoveListenerWhenRemoveisCalled() {
         var resized = false
-        val listener = object: TerminalResizeListener {
+        val listener = object : TerminalResizeListener {
             override fun onResized(terminal: Terminal, newSize: Size) {
                 resized = true
             }
@@ -59,5 +60,8 @@ class AbstractTerminalTest {
         assertThat(resized).isFalse()
     }
 
+    companion object {
+        val FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont()
+    }
 
 }

@@ -1,13 +1,17 @@
 package org.codetome.zircon.internal.terminal.virtual
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.*
+import org.codetome.zircon.api.Cell
+import org.codetome.zircon.api.Modifiers
+import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Position.Companion.DEFAULT_POSITION
 import org.codetome.zircon.api.Position.Companion.OFFSET_1x1
+import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.TerminalResizeListener
 import org.codetome.zircon.internal.event.EventBus
@@ -26,7 +30,9 @@ class VirtualTerminalTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        target = VirtualTerminal(SIZE)
+        target = VirtualTerminal(
+                initialSize = SIZE,
+                initialFont = FONT)
     }
 
     @Test
@@ -295,6 +301,7 @@ class VirtualTerminalTest {
     companion object {
         val TEST_CHAR = 'o'
         val SIZE = Size(10, 20)
+        val FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont()
         val NEW_BIGGER_SIZE = Size(30, 40)
         val NEW_LESS_ROWS_SIZE = SIZE.withRelativeRows(-1)
         val NEW_LESS_COLS_SIZE = SIZE.withRelativeColumns(-1)
