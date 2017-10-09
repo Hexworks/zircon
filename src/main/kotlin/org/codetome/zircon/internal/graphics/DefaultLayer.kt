@@ -4,21 +4,28 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.Boundable
+import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.internal.behavior.impl.DefaultFontOverride
 import java.awt.Point
 import java.awt.Rectangle
+import java.awt.image.BufferedImage
 
 class DefaultLayer(size: Size,
                    filler: TextCharacter,
                    offset: Position,
+                   initialFont: Font<BufferedImage>,
+                   private val fontOverride: FontOverride<BufferedImage> = DefaultFontOverride(
+                           initialFont = initialFont),
                    private val textImage: TextImage = TextImageBuilder.newBuilder()
                            .size(size)
                            .filler(filler)
                            .build())
-    : Layer, TextImage by textImage {
+    : Layer, TextImage by textImage, FontOverride<BufferedImage> by fontOverride {
 
 
     private var position: Position
@@ -72,6 +79,7 @@ class DefaultLayer(size: Size,
             size = textImage.getBoundableSize(),
             filler = TextCharacterBuilder.EMPTY,
             offset = getPosition(),
+            initialFont = getCurrentFont(),
             textImage = textImage)
 
     private fun refreshRect(): Rectangle {

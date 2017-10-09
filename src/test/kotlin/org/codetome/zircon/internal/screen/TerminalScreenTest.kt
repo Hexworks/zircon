@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import org.junit.Before
 import org.junit.Test
@@ -12,13 +13,15 @@ import org.mockito.MockitoAnnotations
 class TerminalScreenTest {
 
     lateinit var target: TerminalScreen
-    val terminal = VirtualTerminal(SIZE)
+    val terminal = VirtualTerminal(
+            initialSize = SIZE,
+            initialFont = FONT)
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        target = TerminalScreen(terminal)
+        target = TerminalScreen(FONT, terminal)
     }
 
     @Test
@@ -51,6 +54,7 @@ class TerminalScreenTest {
 
     companion object {
         val SIZE = Size(10, 10)
+        val FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont()
         val CHAR = TextCharacterBuilder.newBuilder()
                 .character('x')
                 .build()

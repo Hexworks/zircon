@@ -3,10 +3,9 @@ package org.codetome.zircon.internal.terminal.swing
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
+import org.codetome.zircon.internal.terminal.InternalTerminal
 import java.awt.Canvas
-import java.awt.Color
 import java.awt.image.BufferedImage
 import javax.swing.JFrame
 
@@ -22,10 +21,10 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
                          private val swingTerminal: SwingTerminal =
                          SwingTerminal(
                                  canvas = canvas,
-                                 font = font,
+                                 initialFont = font,
                                  initialSize = size,
                                  deviceConfiguration = deviceConfiguration))
-    : JFrame(title), Terminal by swingTerminal {
+    : JFrame(title), InternalTerminal by swingTerminal {
 
     init {
         add(canvas)

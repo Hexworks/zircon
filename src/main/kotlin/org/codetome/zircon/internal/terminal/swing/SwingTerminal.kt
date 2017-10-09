@@ -17,29 +17,29 @@ import javax.swing.SwingUtilities
  */
 class SwingTerminal(
         private val canvas: Canvas,
-        val font: Font<BufferedImage>,
+        initialFont: Font<BufferedImage>,
         initialSize: Size,
         deviceConfiguration: DeviceConfiguration)
 
     : Java2DTerminalImplementation(
         deviceConfiguration = deviceConfiguration,
-        font = font,
         terminal = VirtualTerminal(
-                initialSize = initialSize)) {
+                initialSize = initialSize,
+                initialFont = initialFont)) {
 
     private var firstDraw = true
 
     init {
         //Prevent us from shrinking beyond one character
-        canvas.minimumSize = Dimension(font.getWidth(), font.getHeight())
+        canvas.minimumSize = Dimension(initialFont.getWidth(), initialFont.getHeight())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.addKeyListener(TerminalKeyListener(
                 deviceConfiguration = deviceConfiguration))
         val listener = object : TerminalMouseListener(
                 deviceConfiguration = deviceConfiguration,
-                fontWidth = getFontWidth(),
-                fontHeight = getFontHeight()) {
+                fontWidth = getSupportedFontSize().columns,
+                fontHeight = getSupportedFontSize().rows) {
             override fun mouseClicked(e: MouseEvent) {
                 super.mouseClicked(e)
                 this@SwingTerminal.canvas.requestFocusInWindow()
@@ -58,10 +58,6 @@ class SwingTerminal(
             }
         }
     }
-
-    override fun getFontHeight() = font.getHeight()
-
-    override fun getFontWidth() = font.getWidth()
 
     override fun getHeight() = canvas.height
 

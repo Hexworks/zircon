@@ -2,12 +2,15 @@ package org.codetome.zircon.internal.util.rex
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.graphics.DefaultLayer
 import java.awt.Color
+import java.awt.image.BufferedImage
 import java.nio.ByteBuffer
 
 /**
@@ -26,15 +29,13 @@ data class REXLayer(private val width: Int,
     /**
      * Returns itself as a [REXLayer].
      */
-    fun toLayer(): Layer {
-        val layer = DefaultLayer(
-                Size(width, height),
-                TextCharacterBuilder.newBuilder()
-                        .backgroundColor(TextColorFactory.fromRGB(0, 0, 0, 0))
-                        .character(' ')
-                        .build(),
-                Position.of(0, 0)
-        )
+    fun toLayer(font: Font<BufferedImage> = Font.DEFAULT_FONT): Layer {
+        val layer = LayerBuilder.newBuilder()
+                .size(Size(width, height))
+                .filler(TextCharacterBuilder.EMPTY)
+                .font(font)
+                .build()
+
         for (y in 0 until height) {
             for (x in 0 until width) {
                 // Have to swap x and y due to how image data is stored

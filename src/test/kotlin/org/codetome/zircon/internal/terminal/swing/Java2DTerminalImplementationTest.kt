@@ -25,12 +25,9 @@ class Java2DTerminalImplementationTest {
     fun setUp() {
         target = object : Java2DTerminalImplementation(
                 deviceConfiguration = CONFIG,
-                font = FONT,
                 terminal = VirtualTerminal(
-                        initialSize = SIZE)) {
-            override fun getFontHeight() = FONT.getHeight()
-
-            override fun getFontWidth() = FONT.getWidth()
+                        initialSize = SIZE,
+                        initialFont = FONT)) {
 
             override fun getHeight() = SIZE.rows * FONT.getHeight()
 

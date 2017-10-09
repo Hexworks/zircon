@@ -2,10 +2,9 @@ package org.codetome.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.internal.graphics.DefaultLayer
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.LayerBuilder
+import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder.Companion.DEFAULT_CHARACTER
 import org.junit.Before
 import org.junit.Test
@@ -16,13 +15,19 @@ class DefaultLayerableTest {
 
     @Before
     fun setUp() {
-        target = DefaultLayerable(SIZE)
+        target = DefaultLayerable(
+                size = SIZE,
+                supportedFontSize = FONT_SIZE)
     }
 
     @Test
     fun shouldContainLayerWhenLayerIsAdded() {
 
-        val layer = DefaultLayer(Size.ONE, DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
+        val layer = LayerBuilder.newBuilder()
+                .size(Size.ONE)
+                .filler(DEFAULT_CHARACTER)
+                .offset(Position.TOP_LEFT_CORNER)
+                .build()
 
         target.pushLayer(layer)
 
@@ -34,7 +39,11 @@ class DefaultLayerableTest {
     @Test
     fun shouldNotContainLayerWhenLayerIsAddedThenRemoved() {
 
-        val layer = DefaultLayer(Size.ONE, DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
+        val layer = LayerBuilder.newBuilder()
+                .size(Size.ONE)
+                .filler(DEFAULT_CHARACTER)
+                .offset(Position.TOP_LEFT_CORNER)
+                .build()
 
         target.pushLayer(layer)
         target.removeLayer(layer)
@@ -47,7 +56,11 @@ class DefaultLayerableTest {
     @Test
     fun shouldNotContainLayerWhenLayerIsAddedThenPopped() {
 
-        val layer = DefaultLayer(Size.ONE, DEFAULT_CHARACTER, Position.TOP_LEFT_CORNER)
+        val layer = LayerBuilder.newBuilder()
+                .size(Size.ONE)
+                .filler(DEFAULT_CHARACTER)
+                .offset(Position.TOP_LEFT_CORNER)
+                .build()
 
         target.pushLayer(layer)
         val result = target.popLayer()
@@ -64,10 +77,19 @@ class DefaultLayerableTest {
                 .character('1')
                 .build()
 
-        val offset1x1layer = DefaultLayer(Size.ONE, expectedChar, Position.OFFSET_1x1)
-        val offset2x2layer = DefaultLayer(Size.ONE, TextCharacterBuilder.newBuilder()
-                .character('2')
-                .build(), Position(2, 2))
+        val offset1x1layer = LayerBuilder.newBuilder()
+                .size(Size.ONE)
+                .filler(expectedChar)
+                .offset(Position.OFFSET_1x1)
+                .build()
+        val offset2x2layer = LayerBuilder.newBuilder()
+                .size(Size.ONE)
+                .filler(TextCharacterBuilder.newBuilder()
+                        .character('2')
+                        .build())
+                .offset(Position(2, 2))
+                .build()
+
 
         target.pushLayer(offset1x1layer)
         target.pushLayer(offset2x2layer)
@@ -75,7 +97,7 @@ class DefaultLayerableTest {
         val result = target.fetchOverlayZIntersection(Position.OFFSET_1x1)
 
 
-        assertThat(result).containsExactly(expectedChar)
+        assertThat(result.map { it.second }).containsExactly(expectedChar)
     }
 
     @Test
@@ -103,8 +125,17 @@ class DefaultLayerableTest {
                 .character('1')
                 .build()
 
-        val offset1x1layer = DefaultLayer(Size.ONE, expectedChar, Position.OFFSET_1x1)
-        val offset2x2layer = DefaultLayer(Size.ONE, expectedChar, Position.OFFSET_1x1)
+        val offset1x1layer = LayerBuilder.newBuilder()
+                .size(Size.ONE)
+                .filler(expectedChar)
+                .offset(Position.OFFSET_1x1)
+                .build()
+
+        val offset2x2layer = LayerBuilder.newBuilder()
+                .size(Size.ONE)
+                .filler(expectedChar)
+                .offset(Position.OFFSET_1x1)
+                .build()
 
         target.pushLayer(offset1x1layer)
         target.pushLayer(offset2x2layer)
@@ -112,10 +143,11 @@ class DefaultLayerableTest {
         val result = target.fetchOverlayZIntersection(Position.OFFSET_1x1)
 
 
-        assertThat(result).containsExactly(expectedChar, expectedChar)
+        assertThat(result.map { it.second }).containsExactly(expectedChar, expectedChar)
     }
 
     companion object {
         val SIZE = Size(10, 10)
+        val FONT_SIZE = Size.of(16, 16)
     }
 }

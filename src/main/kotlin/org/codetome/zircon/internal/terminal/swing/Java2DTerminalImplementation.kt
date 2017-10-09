@@ -23,7 +23,6 @@ import java.util.*
 @Suppress("unused")
 abstract class Java2DTerminalImplementation(
         private val deviceConfiguration: DeviceConfiguration,
-        private val font: Font<BufferedImage>,
         private val terminal: InternalTerminal)
     : InternalTerminal by terminal {
 
@@ -35,16 +34,6 @@ abstract class Java2DTerminalImplementation(
     private var lastComponentHeight: Int = 0
 
     private var blinkTimer = Timer("BlinkTimer", true)
-
-    /**
-     * Used to find out the oldfont height, in pixels.
-     */
-    abstract fun getFontHeight(): Int
-
-    /**
-     * Used to find out the oldfont width, in pixels.
-     */
-    abstract fun getFontWidth(): Int
 
     /**
      * Used when requiring the total height of the terminal component, in pixels.
@@ -90,8 +79,8 @@ abstract class Java2DTerminalImplementation(
      */
     @Synchronized
     fun getPreferredSize() = Dimension(
-            getFontWidth() * terminal.getBoundableSize().columns,
-            getFontHeight() * terminal.getBoundableSize().rows)
+            getSupportedFontSize().columns * terminal.getBoundableSize().columns,
+            getSupportedFontSize().rows * terminal.getBoundableSize().rows)
 
     /**
      * Updates the back buffer (if necessary) and draws it to the component's surface.
@@ -99,13 +88,14 @@ abstract class Java2DTerminalImplementation(
     @Synchronized
     fun draw(graphics: Graphics2D) {
         var needToRedraw = hasBlinkingText
+        val font = getCurrentFont() // we get the font at the start because it might be changed by external force
 
         // Detect resize
         if (resizeHappened()) {
             fillLeftoverSpaceWithBlack(graphics)
             val terminalSize = Size.of(
-                    columns = getWidth() / getFontWidth(),
-                    rows = getHeight() / getFontHeight())
+                    columns = getWidth() / getSupportedFontSize().columns,
+                    rows = getHeight() / getSupportedFontSize().rows)
             terminal.setSize(terminalSize)
             needToRedraw = true
         }
@@ -124,17 +114,19 @@ abstract class Java2DTerminalImplementation(
 
             terminal.forEachDirtyCell { (position, textCharacter) ->
                 val atCursorLocation = cursorPosition == position
-                val characterWidth = getFontWidth()
+                val characterWidth = getSupportedFontSize().columns
                 val drawCursor = shouldDrawCursor(atCursorLocation)
                 if (textCharacter.getModifiers().contains(Modifiers.BLINK)) {
                     foundBlinkingCharacters = true
                 }
-                drawCharacter(graphics,
-                        textCharacter,
-                        position.column,
-                        position.row,
-                        characterWidth,
-                        drawCursor)
+                drawCharacter(
+                        graphics = graphics,
+                        character = textCharacter,
+                        columnIndex = position.column,
+                        rowIndex = position.row,
+                        characterWidth = characterWidth,
+                        font = font,
+                        drawCursor = drawCursor)
             }
             this.hasBlinkingText = foundBlinkingCharacters || deviceConfiguration.isCursorBlinking
         }
@@ -152,20 +144,23 @@ abstract class Java2DTerminalImplementation(
             columnIndex: Int,
             rowIndex: Int,
             characterWidth: Int,
+            font: Font<BufferedImage>,
             drawCursor: Boolean) {
 
-        val x = columnIndex * getFontWidth()
-        val y = rowIndex * getFontHeight()
+        val x = columnIndex * getSupportedFontSize().columns
+        val y = rowIndex * getSupportedFontSize().rows
 
-        listOf(character).plus(fetchOverlayZIntersection(Position.of(columnIndex, rowIndex))).forEach {
-            if (it.isNotEmpty()) {
-                if (it.isBlinking() && blinkOn) {
-                    it.withForegroundColor(it.getBackgroundColor())
-                            .withBackgroundColor(it.getForegroundColor())
+        listOf(Pair(font, character))
+                .plus(fetchOverlayZIntersection(Position.of(columnIndex, rowIndex)))
+                .forEach { (currentFont, tc) ->
+            if (tc.isNotEmpty()) {
+                if (tc.isBlinking() && blinkOn) {
+                    tc.withForegroundColor(tc.getBackgroundColor())
+                            .withBackgroundColor(tc.getForegroundColor())
                 } else {
-                    it
+                    tc
                 }.let { fixedChar ->
-                    graphics.drawImage(font.fetchRegionForChar(fixedChar), x, y, null)
+                    graphics.drawImage(currentFont.fetchRegionForChar(fixedChar), x, y, null)
                 }
             }
         }
@@ -175,11 +170,11 @@ abstract class Java2DTerminalImplementation(
             when (deviceConfiguration.cursorStyle) {
                 USE_CHARACTER_FOREGROUND -> {
                     graphics.color = character.getForegroundColor().toAWTColor()
-                    graphics.fillRect(x, y, getFontWidth(), getFontHeight())
+                    graphics.fillRect(x, y, getSupportedFontSize().columns, getSupportedFontSize().rows)
                 }
-                FIXED_BACKGROUND -> graphics.fillRect(x, y, getFontWidth(), getFontHeight())
-                UNDER_BAR -> graphics.fillRect(x, y + getFontHeight() - 3, characterWidth, 2)
-                VERTICAL_BAR -> graphics.fillRect(x, y + 1, 2, getFontHeight() - 2)
+                FIXED_BACKGROUND -> graphics.fillRect(x, y, getSupportedFontSize().columns, getSupportedFontSize().rows)
+                UNDER_BAR -> graphics.fillRect(x, y + getSupportedFontSize().rows - 3, characterWidth, 2)
+                VERTICAL_BAR -> graphics.fillRect(x, y + 1, 2, getSupportedFontSize().rows - 2)
             }
         }
     }
@@ -193,12 +188,12 @@ abstract class Java2DTerminalImplementation(
         // Take care of the left-over area at the bottom and right of the component where no character can fit
         graphics.color = Color.BLACK
 
-        val leftoverWidth = getWidth() % getFontWidth()
+        val leftoverWidth = getWidth() % getSupportedFontSize().columns
         if (leftoverWidth > 0) {
             graphics.fillRect(getWidth() - leftoverWidth, 0, leftoverWidth, getHeight())
         }
 
-        val leftoverHeight = getHeight() % getFontHeight()
+        val leftoverHeight = getHeight() % getSupportedFontSize().rows
         if (leftoverHeight > 0) {
             graphics.fillRect(0, getHeight() - leftoverHeight, getWidth(), leftoverHeight)
         }

@@ -7,6 +7,7 @@ import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import org.codetome.zircon.internal.screen.TerminalScreen
+import org.codetome.zircon.internal.terminal.InternalTerminal
 import org.codetome.zircon.internal.terminal.swing.SwingTerminalFrame
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import java.awt.Toolkit
@@ -40,10 +41,13 @@ data class TerminalBuilder(
     /**
      * Builds a [Terminal] based on the properties of this [TerminalBuilder].
      */
-    fun buildTerminal(headless: Boolean = false): Terminal =
+    fun buildTerminal(headless: Boolean = false): Terminal = buildInternalTerminal(headless)
+
+    private fun buildInternalTerminal(headless: Boolean = false): InternalTerminal =
             if (headless) {
                 VirtualTerminal(
-                        initialSize = initialSize)
+                        initialSize = initialSize,
+                        initialFont = font)
             } else {
                 buildSwingTerminal()
             }
@@ -52,7 +56,7 @@ data class TerminalBuilder(
      * Builds a terminal which is backed by a Swing canvas. Currently this is the only
      * option.
      */
-    fun buildSwingTerminal(): SwingTerminalFrame {
+    private fun buildSwingTerminal(): SwingTerminalFrame {
         checkScreenSize()
         return SwingTerminalFrame(
                 title = title,
@@ -105,7 +109,10 @@ data class TerminalBuilder(
      * Creates a [Terminal] using this builder's settings and immediately wraps it up in a [Screen].
      */
     fun buildScreen(): Screen {
-        return TerminalScreen(buildTerminal())
+        val terminal = buildInternalTerminal()
+        return TerminalScreen(
+                initialFont = terminal.getCurrentFont(),
+                terminal = terminal)
     }
 
     private fun checkScreenSize() {
@@ -131,7 +138,10 @@ data class TerminalBuilder(
          */
         @JvmStatic
         fun createScreenFor(terminal: Terminal): Screen {
-            return TerminalScreen(terminal)
+            val font = terminal.getCurrentFont()
+            return TerminalScreen(
+                    initialFont = font,
+                    terminal = terminal as InternalTerminal)
         }
     }
 }
