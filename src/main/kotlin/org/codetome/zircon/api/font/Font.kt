@@ -1,6 +1,8 @@
 package org.codetome.zircon.api.font
 
+import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.resource.CP437TilesetResource
 
 /**
  * A font is an abstract representation of a resource which is capable of
@@ -37,4 +39,13 @@ interface Font<out R> {
      * Returns all the [CharacterMetadata] for a [Char] which is known by this [Font].
      */
     fun fetchMetadataForChar(char: Char): List<CharacterMetadata>
+
+    /**
+     * Returns the `Size` of this `Font` (width, height)
+     */
+    fun getSize(): Size = Size.of(getWidth(), getHeight())
+
+    companion object {
+        val DEFAULT_FONT = CP437TilesetResource.WANDERLUST_16X16.toFont()
+    }
 }
