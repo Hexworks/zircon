@@ -37,7 +37,7 @@ class Java2DFontTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotBeAbleToFetchRegionWithTags() {
-        target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER, "foo")
+        target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER.withTags("foo"))
     }
 
     @Test

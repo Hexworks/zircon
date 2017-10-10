@@ -88,6 +88,10 @@ data class DefaultTextCharacter(
 
     override fun withStyle(styleSet: StyleSet) = copy(styleSet = styleSet)
 
+    override fun withTags(vararg tags: String) = withTags(tags.toSet())
+
+    override fun withTags(tags: Set<String>) = copy(tags = tags)
+
     companion object {
 
         /**
