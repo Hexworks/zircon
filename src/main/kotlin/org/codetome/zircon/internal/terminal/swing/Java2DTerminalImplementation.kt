@@ -10,6 +10,7 @@ import org.codetome.zircon.api.terminal.config.CursorStyle.*
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import java.awt.*
 import java.awt.image.BufferedImage
@@ -152,7 +153,13 @@ abstract class Java2DTerminalImplementation(
 
         listOf(Pair(font, character))
                 .plus(fetchOverlayZIntersection(Position.of(columnIndex, rowIndex)))
-                .forEach { (currentFont, tc) ->
+                .forEach { (fontOverride, tc) ->
+            // TODO: test this
+            val fontToUse = if(fontOverride === FontSettings.NO_FONT) {
+                font
+            } else {
+                fontOverride
+            }
             if (tc.isNotEmpty()) {
                 if (tc.isBlinking() && blinkOn) {
                     tc.withForegroundColor(tc.getBackgroundColor())
@@ -160,7 +167,7 @@ abstract class Java2DTerminalImplementation(
                 } else {
                     tc
                 }.let { fixedChar ->
-                    graphics.drawImage(currentFont.fetchRegionForChar(fixedChar), x, y, null)
+                    graphics.drawImage(fontToUse.fetchRegionForChar(fixedChar), x, y, null)
                 }
             }
         }

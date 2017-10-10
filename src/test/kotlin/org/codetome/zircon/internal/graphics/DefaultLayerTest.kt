@@ -6,6 +6,7 @@ import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.internal.font.impl.FontSettings
 import org.junit.Before
 import org.junit.Test
 
@@ -19,7 +20,7 @@ class DefaultLayerTest {
                 filler = TextCharacterBuilder.DEFAULT_CHARACTER,
                 size = SIZE,
                 offset = OFFSET,
-                initialFont = Font.DEFAULT_FONT)
+                initialFont = FontSettings.NO_FONT)
     }
 
     @Test

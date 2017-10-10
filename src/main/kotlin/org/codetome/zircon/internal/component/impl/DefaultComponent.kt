@@ -5,25 +5,32 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Drawable
+import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
+import org.codetome.zircon.internal.behavior.impl.DefaultFontOverride
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import java.awt.image.BufferedImage
 import java.util.*
 import java.util.function.Consumer
 
 abstract class DefaultComponent(initialSize: Size,
+                                initialFont: Font<BufferedImage>,
                                 private var position: Position,
                                 private var componentStyles: ComponentStyles,
                                 private val wrappers: Iterable<WrappingStrategy>,
+                                private val fontOverride: FontOverride<BufferedImage> = DefaultFontOverride(
+                                        initialFont = initialFont),
                                 private val drawSurface: TextImage = TextImageBuilder.newBuilder()
                                         .filler(TextCharacterBuilder.EMPTY)
                                         .size(initialSize)
@@ -31,7 +38,7 @@ abstract class DefaultComponent(initialSize: Size,
                                 private var boundable: Boundable = DefaultBoundable(
                                         size = initialSize,
                                         position = position))
-    : InternalComponent, Drawable by drawSurface {
+    : InternalComponent, Drawable by drawSurface, FontOverride<BufferedImage> by fontOverride {
 
     private val id: UUID = UUID.randomUUID()
     private var currentOffset = Position.DEFAULT_POSITION
@@ -152,6 +159,7 @@ abstract class DefaultComponent(initialSize: Size,
             listOf(LayerBuilder.newBuilder()
                     .textImage(drawSurface)
                     .offset(getPosition())
+                    .font(getCurrentFont())
                     .build())
 
     private fun applyWrappers() {

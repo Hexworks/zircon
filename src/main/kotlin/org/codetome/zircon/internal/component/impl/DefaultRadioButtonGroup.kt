@@ -10,6 +10,7 @@ import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.RadioButton
 import org.codetome.zircon.api.component.RadioButtonGroup
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.behavior.Scrollable
@@ -18,12 +19,14 @@ import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import java.awt.image.BufferedImage
 import java.util.*
 import java.util.function.Consumer
 import kotlin.collections.LinkedHashMap
 
 class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<WrappingStrategy>,
                                                         private val size: Size,
+                                                        initialFont: Font<BufferedImage>,
                                                         private val spacing: Int,
                                                         position: Position,
                                                         componentStyles: ComponentStyles,
@@ -31,7 +34,8 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
     : RadioButtonGroup, Scrollable by scrollable, DefaultContainer(initialSize = size,
         position = position,
         componentStyles = componentStyles,
-        wrappers = wrappers) {
+        wrappers = wrappers,
+        initialFont = initialFont) {
 
     private val items = LinkedHashMap<String, DefaultRadioButton>()
     private val selectionListeners = mutableListOf<Consumer<Selection>>()
@@ -62,7 +66,8 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
                 wrappers = LinkedList(),
                 width = size.columns,
                 position = Position.of(0, items.size * spacing),
-                componentStyles = getComponentStyles()).also { button ->
+                componentStyles = getComponentStyles(),
+                initialFont = getCurrentFont()).also { button ->
             items[key] = button
             addComponent(button)
             EventBus.subscribe<MouseAction>(EventType.MouseReleased(button.getId()), {

@@ -6,6 +6,8 @@ import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Panel
+import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.BuiltInModifiers
 import org.codetome.zircon.internal.BuiltInModifiers.Border
 import org.codetome.zircon.internal.component.WrappingStrategy
@@ -13,10 +15,13 @@ import org.codetome.zircon.internal.component.impl.DefaultPanel
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.BoxWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
+import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.graphics.BoxType
+import java.awt.image.BufferedImage
 import java.util.*
 
-data class PanelBuilder(private var boxType: BoxType = BoxType.SINGLE,
+data class PanelBuilder(private var font: Font<BufferedImage> = FontSettings.NO_FONT,
+                        private var boxType: BoxType = BoxType.SINGLE,
                         private var title: String = "",
                         private var position: Position = Position.DEFAULT_POSITION,
                         private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT,
@@ -25,6 +30,12 @@ data class PanelBuilder(private var boxType: BoxType = BoxType.SINGLE,
                         private var drawShadow: Boolean = false,
                         private var border: Optional<Border> = Optional.empty()) : Builder<Panel> {
 
+    /**
+     * Sets the [Font] to use with the resulting [Layer].
+     */
+    fun font(font: Font<BufferedImage>) = also {
+        this.font = font
+    }
 
     fun wrapInBox() = also {
         drawBox = true
@@ -79,7 +90,8 @@ data class PanelBuilder(private var boxType: BoxType = BoxType.SINGLE,
                 initialSize = size,
                 position = position,
                 componentStyles = componentStyles,
-                wrappers = wrappers)
+                wrappers = wrappers,
+                initialFont = font)
     }
 
     override fun createCopy() = this.copy()

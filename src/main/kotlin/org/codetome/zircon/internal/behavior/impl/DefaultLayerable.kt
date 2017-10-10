@@ -6,14 +6,12 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
-import org.codetome.zircon.internal.behavior.InternalLayerable
 import org.codetome.zircon.internal.behavior.Dirtiable
+import org.codetome.zircon.internal.behavior.InternalLayerable
 import java.awt.image.BufferedImage
 import java.util.*
 import java.util.concurrent.BlockingDeque
-import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingDeque
-import java.util.concurrent.LinkedBlockingQueue
 
 class DefaultLayerable(private val supportedFontSize: Size,
                        size: Size,
@@ -25,7 +23,15 @@ class DefaultLayerable(private val supportedFontSize: Size,
 
     override fun getSupportedFontSize() = supportedFontSize
 
+    @Synchronized
     override fun pushLayer(layer: Layer) {
+        // TODO: test this!
+        if (layer.hasOverrideFont()) {
+            require(getSupportedFontSize() == layer.getCurrentFont().getSize()) {
+                "Can't add Layer to Layerable with unsupported font size! Supported size: " +
+                        "${getSupportedFontSize()}, layer font size: ${layer.getCurrentFont().getSize()}"
+            }
+        }
         layers.add(layer)
         markLayerPositionsDirty(layer)
     }

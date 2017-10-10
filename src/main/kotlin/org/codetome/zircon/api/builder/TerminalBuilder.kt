@@ -137,8 +137,8 @@ data class TerminalBuilder(
          * Creates a [org.codetome.zircon.api.screen.Screen] for the given [Terminal].
          */
         @JvmStatic
-        fun createScreenFor(terminal: Terminal): Screen {
-            val font = terminal.getCurrentFont()
+        @JvmOverloads
+        fun createScreenFor(terminal: Terminal, font: Font<BufferedImage> = terminal.getCurrentFont()): Screen {
             return TerminalScreen(
                     initialFont = font,
                     terminal = terminal as InternalTerminal)

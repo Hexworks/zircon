@@ -8,22 +8,26 @@ import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.RadioButton
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import java.awt.image.BufferedImage
 import java.util.*
 
 class DefaultRadioButton(private val text: String,
                          wrappers: Deque<WrappingStrategy>,
                          width: Int,
+                         initialFont: Font<BufferedImage>,
                          position: Position,
                          componentStyles: ComponentStyles)
     : RadioButton, DefaultComponent(initialSize = Size.of(width, 1),
         position = position,
         componentStyles = componentStyles,
-        wrappers = wrappers) {
+        wrappers = wrappers,
+        initialFont = initialFont) {
 
     private val maxTextLength = width - BUTTON_WIDTH - 1
     private val clearedText = if (text.length > maxTextLength) {

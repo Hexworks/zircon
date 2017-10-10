@@ -8,6 +8,7 @@ import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.graphics.DefaultLayer
 import java.awt.Color
 import java.awt.image.BufferedImage
@@ -29,7 +30,7 @@ data class REXLayer(private val width: Int,
     /**
      * Returns itself as a [REXLayer].
      */
-    fun toLayer(font: Font<BufferedImage> = Font.DEFAULT_FONT): Layer {
+    fun toLayer(font: Font<BufferedImage> = FontSettings.NO_FONT): Layer {
         val layer = LayerBuilder.newBuilder()
                 .size(Size(width, height))
                 .filler(TextCharacterBuilder.EMPTY)

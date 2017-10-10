@@ -10,22 +10,26 @@ import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Container
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import java.awt.image.BufferedImage
 import java.util.*
 
 open class DefaultContainer(initialSize: Size,
                             position: Position,
+                            initialFont: Font<BufferedImage>,
                             componentStyles: ComponentStyles,
                             wrappers: Iterable<WrappingStrategy> = listOf())
     : DefaultComponent(initialSize = initialSize,
         position = position,
         componentStyles = componentStyles,
-        wrappers = wrappers), Container {
+        wrappers = wrappers,
+        initialFont = initialFont), Container {
 
     private val components = mutableListOf<InternalComponent>()
 
