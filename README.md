@@ -108,6 +108,8 @@ compile("org.codetome.zircon:zircon:2017.3.0")
 
 ```
 
+Want to use a `SNAPSHOT`? Check [this Wiki page](https://github.com/Hexworks/zircon/wiki/The-release-process-and-versioning-scheme)
+
 ### Some rules of thumb
 
 Before we start there are some guidelines which can help you if you are stuck:
