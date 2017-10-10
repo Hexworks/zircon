@@ -13,6 +13,7 @@ import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.font.impl.FontSettings
 import org.junit.Before
 import org.junit.Test
 import java.util.*
@@ -30,7 +31,8 @@ class DefaultRadioButtonGroupTest {
                 size = SIZE,
                 spacing = 2,
                 position = POSITION,
-                componentStyles = COMPONENT_STYLES)
+                componentStyles = COMPONENT_STYLES,
+                initialFont = FontSettings.NO_FONT)
     }
 
     @Test

@@ -6,14 +6,24 @@ import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Header
-import org.codetome.zircon.api.component.Label
+import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.component.impl.DefaultHeader
-import org.codetome.zircon.internal.component.impl.DefaultLabel
+import org.codetome.zircon.internal.font.impl.FontSettings
+import java.awt.image.BufferedImage
 
 data class HeaderBuilder(
+        private var font: Font<BufferedImage> = FontSettings.NO_FONT,
         private var text: String = "",
         private var position: Position = Position.DEFAULT_POSITION,
         private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT) : Builder<Header> {
+
+    /**
+     * Sets the [Font] to use with the resulting [Layer].
+     */
+    fun font(font: Font<BufferedImage>) = also {
+        this.font = font
+    }
 
     fun text(text: String) = also {
         this.text = text
@@ -35,8 +45,8 @@ data class HeaderBuilder(
                 text = text,
                 initialSize = Size.of(text.length, 1),
                 position = position,
-                componentStyles = componentStyles
-        )
+                componentStyles = componentStyles,
+                initialFont = font)
     }
 
     override fun createCopy() = copy()

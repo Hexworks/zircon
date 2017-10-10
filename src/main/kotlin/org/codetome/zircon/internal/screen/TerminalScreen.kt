@@ -30,7 +30,8 @@ class TerminalScreen(initialFont: Font<BufferedImage>,
                      private val containerHandler: InternalContainerHandler = DefaultContainerHandler(DefaultContainer(
                              initialSize = terminal.getBoundableSize(),
                              position = Position.DEFAULT_POSITION,
-                             componentStyles = ComponentStylesBuilder.DEFAULT)))
+                             componentStyles = ComponentStylesBuilder.DEFAULT,
+                             initialFont = initialFont)))
     : InternalScreen,
         InternalTerminal by backend,
         InternalContainerHandler by containerHandler {
@@ -95,6 +96,10 @@ class TerminalScreen(initialFont: Font<BufferedImage>,
         backend.getLayers().forEach {
             // TODO: regression test drain here <--
             terminal.pushLayer(it)
+        }
+        // TODO: test this
+        if(hasOverrideFont()) {
+            terminal.useFont(getCurrentFont())
         }
         terminal.flush()
     }

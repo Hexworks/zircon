@@ -1,9 +1,11 @@
 package org.codetome.zircon.api.component
 
 import org.codetome.zircon.api.behavior.Boundable
+import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.behavior.Positionable
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.behavior.Identifiable
+import java.awt.image.BufferedImage
 import java.util.function.Consumer
 
 /**
@@ -16,7 +18,7 @@ import java.util.function.Consumer
  * like a label or a check box is a [Container] while a label which is only intended to
  * display information is a [Component].
  */
-interface Component : Positionable, Identifiable, Boundable {
+interface Component : Positionable, Identifiable, Boundable, FontOverride<BufferedImage> {
 
     /**
      * Adds a callback to this [Component] which will be called

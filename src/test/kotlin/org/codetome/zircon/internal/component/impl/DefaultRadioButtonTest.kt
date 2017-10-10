@@ -12,6 +12,7 @@ import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.font.impl.FontSettings
 import org.junit.Before
 import org.junit.Test
 import java.util.*
@@ -28,7 +29,8 @@ class DefaultRadioButtonTest {
                 wrappers = LinkedList(),
                 width = WIDTH,
                 position = POSITION,
-                componentStyles = COMPONENT_STYLES)
+                componentStyles = COMPONENT_STYLES,
+                initialFont = FontSettings.NO_FONT)
     }
 
     @Test

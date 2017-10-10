@@ -4,25 +4,40 @@ import org.codetome.zircon.api.Modifiers;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
-import org.codetome.zircon.api.builder.ComponentStylesBuilder;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
-import org.codetome.zircon.api.component.*;
-import org.codetome.zircon.api.component.RadioButtonGroup.Selection;
-import org.codetome.zircon.api.component.builder.*;
 import org.codetome.zircon.api.color.TextColorFactory;
+import org.codetome.zircon.api.component.Button;
+import org.codetome.zircon.api.component.ColorTheme;
+import org.codetome.zircon.api.component.Header;
+import org.codetome.zircon.api.component.Label;
+import org.codetome.zircon.api.component.Panel;
+import org.codetome.zircon.api.component.RadioButtonGroup;
+import org.codetome.zircon.api.component.RadioButtonGroup.Selection;
+import org.codetome.zircon.api.component.builder.ButtonBuilder;
+import org.codetome.zircon.api.component.builder.CheckBoxBuilder;
+import org.codetome.zircon.api.component.builder.HeaderBuilder;
+import org.codetome.zircon.api.component.builder.LabelBuilder;
+import org.codetome.zircon.api.component.builder.PanelBuilder;
+import org.codetome.zircon.api.component.builder.RadioButtonGroupBuilder;
+import org.codetome.zircon.api.component.builder.TextBoxBuilder;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
-import org.codetome.zircon.internal.component.impl.DefaultRadioButtonGroup;
 import org.codetome.zircon.internal.graphics.BoxType;
 import org.junit.Test;
 
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -37,7 +52,7 @@ public class ComponentsExample {
     private static final ColorTheme INPUTS_THEME = ColorThemeResource.SOLARIZED_DARK_GREEN.getTheme();
     private static final ColorTheme ADD_REMOVE_THEME = ColorThemeResource.GHOST_OF_A_CHANCE.getTheme();
     private static final ColorThemeResource THEME_PICKER_THEME = ColorThemeResource.GAMEBOOKERS;
-    private static final Font<BufferedImage> FONT = CP437TilesetResource.REX_PAINT_20X20.toFont();
+    private static final Font<BufferedImage> FONT = CP437TilesetResource.TAFFER_20X20.toFont();
 
     private static final PanelBuilder PANEL_TEMPLATE = PanelBuilder.newBuilder().size(PANEL_SIZE);
 
@@ -59,10 +74,10 @@ public class ComponentsExample {
                         .build())
                 .buildTerminal(args.length > 0);
 
-        Screen panelsScreen = TerminalBuilder.createScreenFor(terminal);
-        Screen inputsScreen = TerminalBuilder.createScreenFor(terminal);
-        Screen addAndRemoveScreen = TerminalBuilder.createScreenFor(terminal);
-        Screen colorThemesScreen = TerminalBuilder.createScreenFor(terminal);
+        Screen panelsScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.BISASAM_20X20.toFont());
+        Screen inputsScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.TAFFER_20X20.toFont());
+        Screen addAndRemoveScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.YOBBO_20X20.toFont());
+        Screen colorThemesScreen = TerminalBuilder.createScreenFor(terminal, FONT);
         final List<Screen> screens = Arrays.asList(
                 panelsScreen,
                 inputsScreen,
@@ -205,12 +220,9 @@ public class ComponentsExample {
                 .title("Radio buttons")
                 .addShadow()
                 .build();
-        final RadioButtonGroup radios = new DefaultRadioButtonGroup(
-                new LinkedList<>(),
-                Size.of(15, 3),
-                1,
-                Position.DEFAULT_POSITION,
-                ComponentStylesBuilder.DEFAULT);
+        final RadioButtonGroup radios = RadioButtonGroupBuilder.newBuilder()
+                .size(Size.of(15, 3))
+                .build();
         radioPanel.addComponent(radios);
         radios.addOption("bar", "Bar");
         radios.addOption("baz", "Baz");

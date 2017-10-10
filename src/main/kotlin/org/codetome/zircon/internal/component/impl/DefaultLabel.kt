@@ -8,17 +8,21 @@ import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Label
 import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
+import java.awt.image.BufferedImage
 import java.util.*
 
 class DefaultLabel(private val text: String,
                    initialSize: Size,
+                   initialFont: Font<BufferedImage>,
                    position: Position,
                    componentStyles: ComponentStyles) : Label, DefaultComponent(
         initialSize = initialSize,
         position = position,
         componentStyles = componentStyles,
-        wrappers = listOf()) {
+        wrappers = listOf(),
+        initialFont = initialFont) {
 
 
     init {

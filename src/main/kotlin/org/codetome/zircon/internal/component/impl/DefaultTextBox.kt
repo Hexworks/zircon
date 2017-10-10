@@ -7,6 +7,7 @@ import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.TextBox
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke
@@ -17,10 +18,12 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.event.Subscription
 import org.codetome.zircon.internal.util.TextBuffer
+import java.awt.image.BufferedImage
 import java.util.*
 
 class DefaultTextBox @JvmOverloads constructor(text: String,
                                                initialSize: Size,
+                                               initialFont: Font<BufferedImage>,
                                                position: Position,
                                                componentStyles: ComponentStyles,
                                                scrollable: Scrollable = DefaultScrollable(initialSize, initialSize))
@@ -28,7 +31,8 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
         initialSize = initialSize,
         position = position,
         componentStyles = componentStyles,
-        wrappers = listOf()) {
+        wrappers = listOf(),
+        initialFont = initialFont) {
 
     private val textBuffer = TextBuffer(text)
     private val subscriptions = mutableListOf<Subscription<*>>()

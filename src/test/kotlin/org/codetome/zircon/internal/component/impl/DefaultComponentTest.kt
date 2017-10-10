@@ -15,6 +15,7 @@ import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrate
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.font.impl.FontSettings
 import org.junit.Before
 import org.junit.Test
 import java.util.*
@@ -31,7 +32,8 @@ class DefaultComponentTest {
                 initialSize = SIZE,
                 position = POSITION,
                 componentStyles = STYLES,
-                wrappers = WRAPPERS) {
+                wrappers = WRAPPERS,
+                initialFont = FontSettings.NO_FONT) {
             override fun applyTheme(colorTheme: ColorTheme) {
                 TODO("not implemented")
             }

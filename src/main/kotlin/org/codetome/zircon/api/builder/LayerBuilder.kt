@@ -6,6 +6,7 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.graphics.DefaultLayer
 import java.awt.image.BufferedImage
 import java.util.*
@@ -17,7 +18,7 @@ import java.util.*
  * - offset: [Position.DEFAULT_POSITION]
  * - has no text image by default
  */
-data class LayerBuilder(private var font: Font<BufferedImage> = Font.DEFAULT_FONT,
+data class LayerBuilder(private var font: Font<BufferedImage> = FontSettings.NO_FONT,
                         private var size: Size = Size.ONE,
                         private var filler: TextCharacter = TextCharacterBuilder.EMPTY,
                         private var offset: Position = Position.DEFAULT_POSITION,
