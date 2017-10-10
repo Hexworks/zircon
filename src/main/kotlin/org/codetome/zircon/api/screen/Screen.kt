@@ -3,6 +3,7 @@ package org.codetome.zircon.api.screen
 import org.codetome.zircon.api.behavior.*
 import org.codetome.zircon.api.component.ContainerHandler
 import org.codetome.zircon.internal.behavior.Identifiable
+import java.awt.image.BufferedImage
 import java.io.Closeable
 
 /**
@@ -16,7 +17,7 @@ import java.io.Closeable
  * tracking the changes use the [Screen.display] function.
  */
 interface Screen
-    : Closeable, Clearable, Layerable, CursorHandler, ContainerHandler, DrawSurface, InputEmitter, Identifiable {
+    : Closeable, Clearable, Layerable, CursorHandler, ContainerHandler, DrawSurface, InputEmitter, Identifiable, FontOverride<BufferedImage> {
 
     /**
      * This function will take the content from the back-buffer and move it into the front-buffer

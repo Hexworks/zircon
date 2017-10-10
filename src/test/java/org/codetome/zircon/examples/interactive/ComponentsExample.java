@@ -5,39 +5,25 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
+import org.codetome.zircon.api.builder.LayerBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.color.TextColorFactory;
-import org.codetome.zircon.api.component.Button;
-import org.codetome.zircon.api.component.ColorTheme;
-import org.codetome.zircon.api.component.Header;
-import org.codetome.zircon.api.component.Label;
-import org.codetome.zircon.api.component.Panel;
-import org.codetome.zircon.api.component.RadioButtonGroup;
+import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection;
-import org.codetome.zircon.api.component.builder.ButtonBuilder;
-import org.codetome.zircon.api.component.builder.CheckBoxBuilder;
-import org.codetome.zircon.api.component.builder.HeaderBuilder;
-import org.codetome.zircon.api.component.builder.LabelBuilder;
-import org.codetome.zircon.api.component.builder.PanelBuilder;
-import org.codetome.zircon.api.component.builder.RadioButtonGroupBuilder;
-import org.codetome.zircon.api.component.builder.TextBoxBuilder;
-import org.codetome.zircon.api.font.Font;
+import org.codetome.zircon.api.component.builder.*;
+import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
+import org.codetome.zircon.api.resource.GraphicTilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
+import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy;
 import org.codetome.zircon.internal.graphics.BoxType;
 import org.junit.Test;
 
-import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -52,7 +38,6 @@ public class ComponentsExample {
     private static final ColorTheme INPUTS_THEME = ColorThemeResource.SOLARIZED_DARK_GREEN.getTheme();
     private static final ColorTheme ADD_REMOVE_THEME = ColorThemeResource.GHOST_OF_A_CHANCE.getTheme();
     private static final ColorThemeResource THEME_PICKER_THEME = ColorThemeResource.GAMEBOOKERS;
-    private static final Font<BufferedImage> FONT = CP437TilesetResource.TAFFER_20X20.toFont();
 
     private static final PanelBuilder PANEL_TEMPLATE = PanelBuilder.newBuilder().size(PANEL_SIZE);
 
@@ -66,7 +51,7 @@ public class ComponentsExample {
         final Terminal terminal = TerminalBuilder.newBuilder()
                 .initialTerminalSize(TERMINAL_SIZE)
 //                .font(PhysicalFontResource.UBUNTU_MONO.toFont())
-                .font(FONT)
+                .font(CP437TilesetResource.ROGUE_YUN_16X16.toFont())
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorBlinking(true)
                         .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
@@ -74,20 +59,23 @@ public class ComponentsExample {
                         .build())
                 .buildTerminal(args.length > 0);
 
-        Screen panelsScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.BISASAM_20X20.toFont());
-        Screen inputsScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.TAFFER_20X20.toFont());
-        Screen addAndRemoveScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.YOBBO_20X20.toFont());
-        Screen colorThemesScreen = TerminalBuilder.createScreenFor(terminal, FONT);
+        Screen panelsScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.ROGUE_YUN_16X16.toFont());
+        Screen inputsScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.WANDERLUST_16X16.toFont());
+        Screen addAndRemoveScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.BISASAM_16X16.toFont());
+        Screen colorThemesScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.ROGUE_YUN_16X16.toFont());
+        Screen multiFontScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.REX_PAINT_16X16.toFont());
         final List<Screen> screens = Arrays.asList(
                 panelsScreen,
                 inputsScreen,
                 addAndRemoveScreen,
-                colorThemesScreen);
+                colorThemesScreen,
+                multiFontScreen);
 
         addScreenTitle(panelsScreen, "Panels");
         addScreenTitle(inputsScreen, "Input controls");
         addScreenTitle(addAndRemoveScreen, "Add and remove panels");
         addScreenTitle(colorThemesScreen, "Color themes");
+        addScreenTitle(multiFontScreen, "Multi-font");
 
 
         for (int i = 0; i < screens.size(); i++) {
@@ -311,7 +299,6 @@ public class ComponentsExample {
         infoPanel.addComponent(currentThemeLabel.get());
 
 
-
         colorThemesScreen.addComponent(infoPanel);
 
 
@@ -397,10 +384,57 @@ public class ComponentsExample {
         }));
 
         colorThemesScreen.applyColorTheme(currentTheme.get().getTheme());
+
         // ==============
-        // display the first screen
+        // multi font screen
         // ==============
-        colorThemesScreen.display();
+
+
+        final Panel exampleComponentsPanel = PanelBuilder.newBuilder()
+                .wrapInBox()
+                .title("Example components")
+                .size(Size.of(48, 22))
+                .position(Position.of(2, 4))
+                .build();
+
+        Label aLabel = LabelBuilder.newBuilder()
+                .position(Position.of(2, 1))
+                .text("Something with 'a'!")
+                .build();
+        final Layer aIcon = LayerBuilder.newBuilder()
+                .size(Size.of(1, 1))
+                .offset(exampleComponentsPanel.getPosition().plus(Position.of(2, 2)))
+                .font(GraphicTilesetResource.NETHACK_16X16.toFont(new PickRandomMetaStrategy()))
+                .build();
+        exampleComponentsPanel.addComponent(aLabel);
+        multiFontScreen.pushLayer(aIcon);
+        refreshIcon(aIcon, 'a');
+
+        Label bLabel = LabelBuilder.newBuilder()
+                .position(Position.of(2, 2))
+                .text("Something with 'b'!")
+                .build();
+        final Layer bIcon = LayerBuilder.newBuilder()
+                .size(Size.of(1, 1))
+                .offset(exampleComponentsPanel.getPosition().plus(Position.of(2, 3)))
+                .font(GraphicTilesetResource.NETHACK_16X16.toFont(new PickRandomMetaStrategy()))
+                .build();
+        exampleComponentsPanel.addComponent(bLabel);
+        multiFontScreen.pushLayer(bIcon);
+        refreshIcon(bIcon, 'b');
+
+
+        multiFontScreen.addComponent(exampleComponentsPanel);
+        multiFontScreen.applyColorTheme(currentTheme.get().getTheme());
+
+        multiFontScreen.display();
+    }
+
+    private static void refreshIcon(Layer icon, char c) {
+        icon.setRelativeCharacterAt(Position.DEFAULT_POSITION, TextCharacterBuilder.newBuilder()
+                .character(c)
+                .backgroundColor(TextColorFactory.TRANSPARENT)
+                .build());
     }
 
     private static void refreshTheme(Screen screen,
