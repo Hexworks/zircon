@@ -63,6 +63,16 @@ interface TextCharacter {
     fun withStyle(styleSet: StyleSet): TextCharacter
 
     /**
+     * Returns a copy of this [TextCharacter] with the specified tags.
+     */
+    fun withTags(tags: Set<String>): TextCharacter
+
+    /**
+     * Returns a copy of this [TextCharacter] with the specified tags.
+     */
+    fun withTags(vararg tags: String): TextCharacter
+
+    /**
      * Returns a copy of this [TextCharacter] with the specified modifiers.
      */
     fun withModifiers(vararg modifiers: Modifier): TextCharacter
