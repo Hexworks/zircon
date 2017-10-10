@@ -71,8 +71,14 @@ class DefaultLayer(size: Size,
 
     override fun getCharacterAt(position: Position) = textImage.getCharacterAt(position - this.position)
 
+    override fun getRelativeCharacterAt(position: Position) = textImage.getCharacterAt(position)
+
     override fun setCharacterAt(position: Position, character: TextCharacter): Boolean {
         return textImage.setCharacterAt(position - this.position, character)
+    }
+
+    override fun setRelativeCharacterAt(position: Position, character: TextCharacter): Boolean {
+        return textImage.setCharacterAt(position, character)
     }
 
     override fun createCopy() = DefaultLayer(

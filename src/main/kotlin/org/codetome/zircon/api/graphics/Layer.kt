@@ -1,10 +1,12 @@
 package org.codetome.zircon.api.graphics
 
 import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.behavior.Layerable
 import org.codetome.zircon.api.behavior.Movable
 import java.awt.image.BufferedImage
+import java.util.*
 
 /**
  * A [Layer] is a specialized [TextImage] which is drawn upon a
@@ -24,4 +26,14 @@ interface Layer : TextImage, Movable, FontOverride<BufferedImage> {
      * Copies this [Layer].
      */
     fun createCopy(): Layer
+
+    /**
+     * Same as [Layer.getCharacterAt] but will not use the offset of this [Layer] (eg: just position instead of position - offset).
+     */
+    fun getRelativeCharacterAt(position: Position): Optional<TextCharacter>
+
+    /**
+     * Same as [Layer.setCharacterAt] but will not use the offset of this [Layer] (eg: just position instead of position - offset).
+     */
+    fun setRelativeCharacterAt(position: Position, character: TextCharacter): Boolean
 }
