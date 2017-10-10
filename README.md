@@ -466,6 +466,8 @@ Zircon comes with a bunch of built-in fonts and tilesets. These come in 3 flavor
 Read more about them in the [resource handling Wiki page][resource-handling] if you want to know more
 or if you want to use your own tilesets and fonts.
 
+Zircon also comes with **its own tileset format (`ztf`: Zircon Tileset Format)** which is **very easy to use**. Its usage is detailed [here](https://github.com/Hexworks/zircon/wiki/Resource-Handling#graphic-tilesets).
+
 ### REXPaint file loading
 REXPaint files (`.xp`) can be loaded into Zircon `Layer`s. Read about this feature [here](https://github.com/Hexworks/zircon/wiki/Resource-Handling#rexpaint-files).
 
