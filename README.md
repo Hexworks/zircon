@@ -467,7 +467,7 @@ Read more about them in the [resource handling Wiki page][resource-handling] if 
 or if you want to use your own tilesets and fonts.
 
 ### REXPaint file loading
-REXPaint files (`.xp`) can be loaded into Zircon `Layer`s. Read about this feature [here][resource-handling].
+REXPaint files (`.xp`) can be loaded into Zircon `Layer`s. Read about this feature [here](https://github.com/Hexworks/zircon/wiki/Resource-Handling#rexpaint-files).
 
 ### Color themes
 Zircon comes with a bunch of built-in color themes which you can apply to your components.
