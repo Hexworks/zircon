@@ -34,7 +34,7 @@ class Java2DFont(private val source: BufferedImage,
     }
 
     override fun fetchRegionForChar(textCharacter: TextCharacter, vararg tags: String): BufferedImage {
-        val meta = fetchMetaFor(textCharacter, tags)
+        val meta = fetchMetaFor(textCharacter)
         val maybeRegion = cache.retrieveIfPresent(textCharacter)
 
         var region = if (maybeRegion.isNotPresent()) {
@@ -53,7 +53,8 @@ class Java2DFont(private val source: BufferedImage,
         return region
     }
 
-    private fun fetchMetaFor(textCharacter: TextCharacter, tags: Array<out String>): CharacterMetadata {
+    private fun fetchMetaFor(textCharacter: TextCharacter): CharacterMetadata {
+        val tags = textCharacter.getTags()
         require(hasDataForChar(textCharacter.getCharacter())) {
             "No metadata exists for character: '${textCharacter.getCharacter().toInt()}'!"
         }
