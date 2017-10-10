@@ -459,9 +459,9 @@ Check the corresponding [Wiki page][shapes] for more info.
 ### Fonts and tilesets
 Zircon comes with a bunch of built-in fonts and tilesets. These come in 3 flavors:
 
-- Physical fonts
-- CP437 tilesets
-- and Graphic tilesets
+- Physical fonts *(Want to use physical fonts? Check how to use them [here](https://github.com/Hexworks/zircon/wiki/Resource-Handling#physical-fonts))*
+- CP437 tilesets *(More on using them [here](https://github.com/Hexworks/zircon/wiki/Resource-Handling#cp437-tilesets))*
+- and Graphic tilesets *(Usage info [here](https://github.com/Hexworks/zircon/wiki/Resource-Handling#graphic-tilesets))*
 
 Read more about them in the [resource handling Wiki page][resource-handling] if you want to know more
 or if you want to use your own tilesets and fonts.
