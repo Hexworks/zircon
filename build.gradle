@@ -62,6 +62,10 @@ dependencies {
     compile("com.github.ben-manes.caffeine:caffeine:2.5.4")
     compile("org.yaml:snakeyaml:1.18")
 
+    testCompile group: 'com.badlogicgames.gdx', name: 'gdx', version: '1.9.6'
+    testCompile group: 'com.badlogicgames.gdx', name: 'gdx-backend-lwjgl', version: '1.9.6'
+
+
     testCompile("junit:junit:${junitVersion}")
     testCompile("org.mockito:mockito-all:${mockitoVersion}")
     testCompile("org.assertj:assertj-core:${assertjVersion}")
