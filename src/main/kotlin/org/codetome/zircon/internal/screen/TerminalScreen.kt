@@ -10,6 +10,7 @@ import org.codetome.zircon.internal.component.impl.DefaultContainer
 import org.codetome.zircon.internal.component.impl.DefaultContainerHandler
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import java.awt.image.BufferedImage
@@ -22,16 +23,15 @@ import java.util.*
  * the [Terminal] this [TerminalScreen] wraps. This means that a [TerminalScreen] acts
  * as a double buffer for the wrapped [Terminal].
  */
-class TerminalScreen(initialFont: Font<BufferedImage>,
-                     private val terminal: InternalTerminal,
+class TerminalScreen(private val terminal: InternalTerminal,
                      private val backend: VirtualTerminal = VirtualTerminal(
                              initialSize = terminal.getBoundableSize(),
-                             initialFont = initialFont),
+                             initialFont = terminal.getCurrentFont()),
                      private val containerHandler: InternalContainerHandler = DefaultContainerHandler(DefaultContainer(
                              initialSize = terminal.getBoundableSize(),
                              position = Position.DEFAULT_POSITION,
                              componentStyles = ComponentStylesBuilder.DEFAULT,
-                             initialFont = initialFont)))
+                             initialFont = terminal.getCurrentFont())))
     : InternalScreen,
         InternalTerminal by backend,
         InternalContainerHandler by containerHandler {
@@ -88,16 +88,14 @@ class TerminalScreen(initialFont: Font<BufferedImage>,
             val character = backend.getCharacterAt(position).get()
             terminal.setCharacterAt(position, character)
         }
-        // TODO: only do this when forceRedraw is true
+        // TODO: optimize this
         terminal.drainLayers()
         transformComponentsToLayers().forEach {
             terminal.pushLayer(it)
         }
         backend.getLayers().forEach {
-            // TODO: regression test drain here <--
             terminal.pushLayer(it)
         }
-        // TODO: test this
         if(hasOverrideFont()) {
             terminal.useFont(getCurrentFont())
         }

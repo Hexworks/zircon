@@ -13,6 +13,7 @@ import org.codetome.zircon.api.component.builder.CheckBoxBuilder
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.junit.Before
@@ -27,6 +28,7 @@ class DefaultCheckBoxTest {
     fun setUp() {
         target = CheckBoxBuilder.newBuilder()
                 .componentStyles(COMPONENT_STYLES)
+                .font(FONT)
                 .position(POSITION)
                 .text(TEXT)
                 .build() as DefaultCheckBox
@@ -43,6 +45,12 @@ class DefaultCheckBoxTest {
                             .styleSet(DEFAULT_STYLE)
                             .build())
         }
+    }
+
+    @Test
+    fun shouldUseProperFont() {
+        Assertions.assertThat(target.getCurrentFont().getId())
+                .isEqualTo(FONT.getId())
     }
 
     @Test
@@ -136,6 +144,7 @@ class DefaultCheckBoxTest {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
         val POSITION = Position.of(4, 5)
+        val FONT = CP437TilesetResource.WANDERLUST_16X16.toFont()
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITextColor.RED)
                 .foregroundColor(ANSITextColor.GREEN)

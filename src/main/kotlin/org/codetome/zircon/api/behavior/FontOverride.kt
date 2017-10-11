@@ -23,4 +23,9 @@ interface FontOverride<R> {
      * Sets the [Font] to use.
      */
     fun useFont(font: Font<R>)
+
+    /**
+     * Sets the override [Font] to its default value (which is `NO_FONT`).
+     */
+    fun resetFont()
 }

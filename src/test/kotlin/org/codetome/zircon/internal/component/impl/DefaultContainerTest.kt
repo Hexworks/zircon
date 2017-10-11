@@ -9,6 +9,7 @@ import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.builder.LabelBuilder
 import org.codetome.zircon.api.component.builder.PanelBuilder
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
@@ -29,7 +30,15 @@ class DefaultContainerTest {
                 position = POSITION,
                 componentStyles = STYLES,
                 wrappers = WRAPPERS,
-                initialFont = FontSettings.NO_FONT)
+                initialFont = GOOD_FONT)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldThrowExceptionIfComponentWithUnsupportedFontSizeIsAdded() {
+        target.addComponent(LabelBuilder.newBuilder()
+                .text("foo")
+                .font(BAD_FONT)
+                .build())
     }
 
     @Test
@@ -44,6 +53,13 @@ class DefaultContainerTest {
         val otherComp = LabelBuilder.newBuilder().position(pos + pos).text("text").build()
         target.addComponent(comp)
         target.addComponent(otherComp)
+    }
+
+    @Test
+    fun shouldSetCurrentFontToAddedComponentWithNoFont() {
+        val comp = LabelBuilder.newBuilder().text("foo").build()
+        target.addComponent(comp)
+        assertThat(comp.getCurrentFont().getId()).isEqualTo(GOOD_FONT.getId())
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -95,6 +111,8 @@ class DefaultContainerTest {
     }
 
     companion object {
+        val GOOD_FONT = CP437TilesetResource.AESOMATICA_16X16.toFont()
+        val BAD_FONT = CP437TilesetResource.BISASAM_20X20.toFont()
         val SIZE = Size.of(4, 4)
         val POSITION = Position.of(2, 3)
         val NEW_POSITION = Position.of(6, 7)

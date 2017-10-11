@@ -6,6 +6,7 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder.Companion.DEFAULT_CHARACTER
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.junit.Before
 import org.junit.Test
 
@@ -20,9 +21,21 @@ class DefaultLayerableTest {
                 supportedFontSize = FONT_SIZE)
     }
 
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldThrowExceptionWhenLayerUsesUnsupportedFontSize() {
+        val layer = LayerBuilder.newBuilder()
+                .size(Size.ONE)
+                .filler(DEFAULT_CHARACTER)
+                .font(CP437TilesetResource.BISASAM_20X20.toFont())
+                .offset(Position.TOP_LEFT_CORNER)
+                .build()
+
+
+        target.pushLayer(layer)
+    }
+
     @Test
     fun shouldContainLayerWhenLayerIsAdded() {
-
         val layer = LayerBuilder.newBuilder()
                 .size(Size.ONE)
                 .filler(DEFAULT_CHARACTER)
@@ -38,7 +51,6 @@ class DefaultLayerableTest {
 
     @Test
     fun shouldNotContainLayerWhenLayerIsAddedThenRemoved() {
-
         val layer = LayerBuilder.newBuilder()
                 .size(Size.ONE)
                 .filler(DEFAULT_CHARACTER)
@@ -55,7 +67,6 @@ class DefaultLayerableTest {
 
     @Test
     fun shouldNotContainLayerWhenLayerIsAddedThenPopped() {
-
         val layer = LayerBuilder.newBuilder()
                 .size(Size.ONE)
                 .filler(DEFAULT_CHARACTER)
@@ -148,6 +159,7 @@ class DefaultLayerableTest {
 
     companion object {
         val SIZE = Size(10, 10)
-        val FONT_SIZE = Size.of(16, 16)
+        val FONT = CP437TilesetResource.WANDERLUST_16X16.toFont()
+        val FONT_SIZE = FONT.getSize()
     }
 }

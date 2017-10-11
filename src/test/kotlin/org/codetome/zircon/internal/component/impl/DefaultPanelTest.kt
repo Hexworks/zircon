@@ -9,6 +9,7 @@ import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.builder.LabelBuilder
 import org.codetome.zircon.api.component.builder.PanelBuilder
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.graphics.BoxType
 import org.junit.Before
@@ -24,6 +25,7 @@ class DefaultPanelTest {
                 .addShadow()
                 .boxType(BOX_TYPE)
                 .title(TITLE)
+                .font(FONT)
                 .addBorder(Modifiers.BORDER.create(DASHED))
                 .size(SIZE)
                 .wrapInBox()
@@ -34,6 +36,12 @@ class DefaultPanelTest {
     @Test
     fun shouldHaveProperTitle() {
         assertThat(target.getTitle()).isEqualTo(TITLE)
+    }
+
+    @Test
+    fun shouldUseProperFont() {
+        assertThat(target.getCurrentFont().getId())
+                .isEqualTo(FONT.getId())
     }
 
     @Test
@@ -70,6 +78,7 @@ class DefaultPanelTest {
     companion object {
         val BOX_TYPE = BoxType.LEFT_RIGHT_DOUBLE
         val TITLE = "TITLE"
+        val FONT = CP437TilesetResource.WANDERLUST_16X16.toFont()
         val SIZE = Size.of(5, 6)
         val POSITION = Position.of(2, 3)
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()

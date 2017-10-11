@@ -25,7 +25,6 @@ class DefaultLayerable(private val supportedFontSize: Size,
 
     @Synchronized
     override fun pushLayer(layer: Layer) {
-        // TODO: test this!
         if (layer.hasOverrideFont()) {
             require(getSupportedFontSize() == layer.getCurrentFont().getSize()) {
                 "Can't add Layer to Layerable with unsupported font size! Supported size: " +
