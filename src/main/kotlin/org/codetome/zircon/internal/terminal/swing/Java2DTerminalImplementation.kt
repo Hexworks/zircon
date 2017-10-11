@@ -154,7 +154,7 @@ abstract class Java2DTerminalImplementation(
         listOf(Pair(font, character))
                 .plus(fetchOverlayZIntersection(Position.of(columnIndex, rowIndex)))
                 .forEach { (fontOverride, tc) ->
-            // TODO: test this
+            // TODO: test font
             val fontToUse = if(fontOverride === FontSettings.NO_FONT) {
                 font
             } else {

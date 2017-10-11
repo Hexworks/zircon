@@ -111,11 +111,11 @@ data class TerminalBuilder(
     fun buildScreen(): Screen {
         val terminal = buildInternalTerminal()
         return TerminalScreen(
-                initialFont = terminal.getCurrentFont(),
                 terminal = terminal)
     }
 
     private fun checkScreenSize() {
+        // TODO: externalize screen size check
         val screenSize = Toolkit.getDefaultToolkit().screenSize
         require(screenSize.width >= font.getWidth() * initialSize.columns) {
             "The requested column count '${initialSize.columns}' for font width '${font.getWidth()}' won't fit on the screen (width: ${screenSize.width}"
@@ -140,7 +140,6 @@ data class TerminalBuilder(
         @JvmOverloads
         fun createScreenFor(terminal: Terminal, font: Font<BufferedImage> = terminal.getCurrentFont()): Screen {
             return TerminalScreen(
-                    initialFont = font,
                     terminal = terminal as InternalTerminal)
         }
     }

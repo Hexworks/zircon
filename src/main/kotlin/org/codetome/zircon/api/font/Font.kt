@@ -2,8 +2,7 @@ package org.codetome.zircon.api.font
 
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.resource.CP437TilesetResource
-import java.awt.image.BufferedImage
+import org.codetome.zircon.internal.behavior.Identifiable
 
 /**
  * A font is an abstract representation of a resource which is capable of
@@ -11,7 +10,7 @@ import java.awt.image.BufferedImage
  * or a sprite sheet for example.
  * @param R the type of the object which represents a text character (like `BufferedImage` or `TextureRegion`)
  */
-interface Font<out R> {
+interface Font<out R>: Identifiable {
 
     /**
      * Returns the width of a character in pixels.

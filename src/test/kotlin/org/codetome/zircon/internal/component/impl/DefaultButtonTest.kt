@@ -13,6 +13,7 @@ import org.codetome.zircon.api.component.builder.ButtonBuilder
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.junit.Before
@@ -28,6 +29,7 @@ class DefaultButtonTest {
         target = ButtonBuilder.newBuilder()
                 .componentStyles(COMPONENT_STYLES)
                 .position(POSITION)
+                .font(FONT)
                 .text(TEXT)
                 .build() as DefaultButton
     }
@@ -43,6 +45,12 @@ class DefaultButtonTest {
                             .styleSet(DEFAULT_STYLE)
                             .build())
         }
+    }
+
+    @Test
+    fun shouldUseProperFont() {
+        assertThat(target.getCurrentFont().getId())
+                .isEqualTo(FONT.getId())
     }
 
     @Test
@@ -136,6 +144,7 @@ class DefaultButtonTest {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
         val POSITION = Position.of(4, 5)
+        val FONT = CP437TilesetResource.WANDERLUST_16X16.toFont()
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITextColor.RED)
                 .foregroundColor(ANSITextColor.GREEN)

@@ -10,6 +10,7 @@ import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
 import org.codetome.zircon.internal.font.transformer.*
 import java.awt.image.BufferedImage
+import java.util.*
 
 /**
  * Represents a font which is backed by a sprite sheet.
@@ -22,6 +23,10 @@ class Java2DFont(private val source: BufferedImage,
                  private val cache: DefaultFontRegionCache<BufferedImage>,
                  private val metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy())
     : Font<BufferedImage> {
+
+    private val id = UUID.randomUUID()
+
+    override fun getId(): UUID = id
 
     override fun getWidth() = width
 

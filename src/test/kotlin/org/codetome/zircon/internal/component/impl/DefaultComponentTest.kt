@@ -4,12 +4,16 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.*
+import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
@@ -33,7 +37,7 @@ class DefaultComponentTest {
                 position = POSITION,
                 componentStyles = STYLES,
                 wrappers = WRAPPERS,
-                initialFont = FontSettings.NO_FONT) {
+                initialFont = FONT) {
             override fun applyTheme(colorTheme: ColorTheme) {
                 TODO("not implemented")
             }
@@ -49,6 +53,14 @@ class DefaultComponentTest {
             override fun takeFocus(input: Optional<Input>) {
                 TODO("not implemented")
             }
+        }
+    }
+
+    @Test
+    fun shouldUseFontFromComponentWhenTransformingToLayer() {
+        val result = target.transformToLayers()
+        result.forEach{
+            assertThat(it.getCurrentFont().getId()).isEqualTo(FONT.getId())
         }
     }
 
@@ -204,6 +216,7 @@ class DefaultComponentTest {
     }
 
     companion object {
+        val FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont()
         val SIZE = Size.of(4, 4)
         val POSITION = Position.of(2, 3)
         val NEW_POSITION = Position.of(6, 7)

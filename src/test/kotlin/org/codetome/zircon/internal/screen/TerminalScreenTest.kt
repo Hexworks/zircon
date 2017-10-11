@@ -21,7 +21,27 @@ class TerminalScreenTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        target = TerminalScreen(FONT, terminal)
+        target = TerminalScreen(terminal)
+    }
+
+    @Test
+    fun shouldUseTerminalsFontWhenCreating() {
+        assertThat(target.getCurrentFont().getId())
+                .isEqualTo(terminal.getCurrentFont().getId())
+    }
+
+    @Test
+    fun shouldProperlyOverrideTerminalFontWhenHasOverrideFontAndDisplayIsCalled() {
+        val expectedFont = CP437TilesetResource.AESOMATICA_16X16.toFont()
+        target.useFont(expectedFont)
+        target.display()
+        assertThat(target.getCurrentFont().getId()).isEqualTo(expectedFont.getId())
+        assertThat(terminal.getCurrentFont().getId()).isEqualTo(expectedFont.getId())
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldProperlyThrowExceptionWhenTyringToSetNonCompatibleFont() {
+        target.useFont(CP437TilesetResource.BISASAM_20X20.toFont())
     }
 
     @Test

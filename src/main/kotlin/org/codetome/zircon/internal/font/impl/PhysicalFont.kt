@@ -11,6 +11,7 @@ import org.codetome.zircon.internal.font.transformer.*
 import java.awt.Graphics2D
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
+import java.util.*
 
 /**
  * Represents a physical font which is backed by [java.awt.Font].
@@ -21,11 +22,15 @@ class PhysicalFont(private val source: java.awt.Font,
                    private val cache: DefaultFontRegionCache<BufferedImage>,
                    private val withAntiAlias: Boolean) : Font<BufferedImage> {
 
+    private val id = UUID.randomUUID()
+
     init {
         require(FontUtils.isFontMonospaced(source)) {
             "Font '${source.name} is not monospaced!"
         }
     }
+
+    override fun getId(): UUID = id
 
     override fun getWidth() = width
 

@@ -17,6 +17,7 @@ import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.font.impl.FontSettings
 import java.awt.image.BufferedImage
 import java.util.*
 
@@ -38,6 +39,14 @@ open class DefaultContainer(initialSize: Size,
             dc.setPosition(dc.getPosition() + getEffectivePosition())
             require(components.none { it.intersects(component) }) {
                 "You can't add a component to a container which intersects with other components!"
+            }
+            if (component.getCurrentFont() === FontSettings.NO_FONT) {
+                component.useFont(getCurrentFont())
+            } else {
+                require(getCurrentFont().getSize() == component.getCurrentFont().getSize()) {
+                    "Trying to add component with incompatible font size '${component.getCurrentFont().getSize()}' to" +
+                            "container with font size: '${getCurrentFont().getSize()}'!"
+                }
             }
             // TODO: if the component has the same size and position it adds it!!!
             require(containsBoundable(component)) {

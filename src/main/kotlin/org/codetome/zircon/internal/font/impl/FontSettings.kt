@@ -4,9 +4,15 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import java.awt.image.BufferedImage
+import java.util.*
 
 object FontSettings {
     val NO_FONT = object : Font<BufferedImage> {
+
+        private val id = UUID.randomUUID()
+
+        override fun getId() = id
+
         override fun getWidth(): Int {
             TODO()
         }

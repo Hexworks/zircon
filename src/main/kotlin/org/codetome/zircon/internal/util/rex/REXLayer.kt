@@ -30,11 +30,11 @@ data class REXLayer(private val width: Int,
     /**
      * Returns itself as a [REXLayer].
      */
-    fun toLayer(font: Font<BufferedImage> = FontSettings.NO_FONT): Layer {
+    fun toLayer(): Layer {
         val layer = LayerBuilder.newBuilder()
                 .size(Size(width, height))
                 .filler(TextCharacterBuilder.EMPTY)
-                .font(font)
+                .font(FontSettings.NO_FONT)
                 .build()
 
         for (y in 0 until height) {
