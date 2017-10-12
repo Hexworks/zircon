@@ -3,6 +3,7 @@ package org.codetome.zircon.internal.font.impl
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.BuiltInModifiers.*
 import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.font.FontRegionTransformer
@@ -19,10 +20,10 @@ class Java2DFont(private val source: BufferedImage,
                  private val metadata: Map<Char, List<CharacterMetadata>>,
                  private val width: Int,
                  private val height: Int,
-                 private val regionTransformers: List<FontRegionTransformer<BufferedImage>>,
-                 private val cache: DefaultFontRegionCache<BufferedImage>,
+                 private val regionTransformers: List<FontRegionTransformer>,
+                 private val cache: DefaultFontRegionCache<FontTextureRegion>,
                  private val metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy())
-    : Font<BufferedImage> {
+    : Font {
 
     private val id = UUID.randomUUID()
 
@@ -38,12 +39,12 @@ class Java2DFont(private val source: BufferedImage,
         return metadata[char] ?: listOf()
     }
 
-    override fun fetchRegionForChar(textCharacter: TextCharacter, vararg tags: String): BufferedImage {
+    override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion {
         val meta = fetchMetaFor(textCharacter)
         val maybeRegion = cache.retrieveIfPresent(textCharacter)
 
         var region = if (maybeRegion.isNotPresent()) {
-            var image = source.getSubimage(meta.x * width, meta.y * height, width, height)
+            var image: FontTextureRegion = Java2DFontTextureRegion(source.getSubimage(meta.x * width, meta.y * height, width, height))
             regionTransformers.forEach {
                 image = it.transform(image, textCharacter)
             }

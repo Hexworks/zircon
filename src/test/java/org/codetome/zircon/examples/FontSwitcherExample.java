@@ -23,8 +23,8 @@ public class FontSwitcherExample {
     private static final int TERMINAL_WIDTH = 30;
     private static final int TERMINAL_HEIGHT = 8;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final Font<BufferedImage> FONT = WANDERLUST_16X16.toFont();
-    private static final List<Font<BufferedImage>> FONTS = new ArrayList<>();
+    private static final Font FONT = WANDERLUST_16X16.toFont();
+    private static final List<Font> FONTS = new ArrayList<>();
 
     static {
         FONTS.add(CP437TilesetResource.ADU_DHABI_16X16.toFont());

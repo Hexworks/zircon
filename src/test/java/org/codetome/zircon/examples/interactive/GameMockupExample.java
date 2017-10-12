@@ -43,7 +43,7 @@ public class GameMockupExample {
     private static final int PANEL_SPACING = 2;
     private static final int FONT_SIZE = 16;
     private static final ColorTheme THEME = ColorThemeResource.SOLARIZED_DARK_YELLOW.getTheme();
-    private static final Font<BufferedImage> FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont();
+    private static final Font FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont();
 
     private static boolean headless = false;
 

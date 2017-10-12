@@ -19,7 +19,7 @@ public class GraphicTilesetExample {
     private static final int TERMINAL_HEIGHT = 24;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static final PickRandomMetaStrategy RANDOM_STRATEGY = new PickRandomMetaStrategy();
-    private static final Font<BufferedImage> FONT = GraphicTilesetResource.NETHACK_16X16.toFont(RANDOM_STRATEGY);
+    private static final Font FONT = GraphicTilesetResource.NETHACK_16X16.toFont(RANDOM_STRATEGY);
     private static final char[] CHARS = new char[]{'a', 'b', 'c'};
     private static final Random RANDOM = new Random();
 

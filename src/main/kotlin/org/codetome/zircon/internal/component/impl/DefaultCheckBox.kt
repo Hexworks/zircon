@@ -21,7 +21,7 @@ import java.util.*
 class DefaultCheckBox(private val text: String,
                       wrappers: Deque<WrappingStrategy>,
                       width: Int,
-                      initialFont: Font<BufferedImage>,
+                      initialFont: Font,
                       position: Position,
                       componentStyles: ComponentStyles)
     : CheckBox, DefaultComponent(initialSize = Size.of(width, 1),

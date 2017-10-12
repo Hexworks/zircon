@@ -23,7 +23,7 @@ public class LayersExample {
     private static final int TERMINAL_WIDTH = 45;
     private static final int TERMINAL_HEIGHT = 5;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final Font<BufferedImage> FONT = WANDERLUST_16X16.toFont();
+    private static final Font FONT = WANDERLUST_16X16.toFont();
 
     @Test
     public void checkSetup() {

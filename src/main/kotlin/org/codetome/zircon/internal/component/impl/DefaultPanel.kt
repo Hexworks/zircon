@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage
 class DefaultPanel(private val title: String,
                    initialSize: Size,
                    position: Position,
-                   initialFont: Font<BufferedImage>,
+                   initialFont: Font,
                    componentStyles: ComponentStyles,
                    wrappers: Iterable<WrappingStrategy> = listOf())
     : Panel, DefaultContainer(initialSize = initialSize,

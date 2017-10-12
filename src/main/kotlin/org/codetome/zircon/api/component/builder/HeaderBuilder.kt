@@ -13,7 +13,7 @@ import org.codetome.zircon.internal.font.impl.FontSettings
 import java.awt.image.BufferedImage
 
 data class HeaderBuilder(
-        private var font: Font<BufferedImage> = FontSettings.NO_FONT,
+        private var font: Font = FontSettings.NO_FONT,
         private var text: String = "",
         private var position: Position = Position.DEFAULT_POSITION,
         private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT) : Builder<Header> {
@@ -21,7 +21,7 @@ data class HeaderBuilder(
     /**
      * Sets the [Font] to use with the resulting [Layer].
      */
-    fun font(font: Font<BufferedImage>) = also {
+    fun font(font: Font) = also {
         this.font = font
     }
 
