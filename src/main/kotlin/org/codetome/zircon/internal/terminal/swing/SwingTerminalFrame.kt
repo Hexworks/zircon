@@ -6,8 +6,11 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import java.awt.Canvas
-import java.awt.image.BufferedImage
+import java.awt.Dimension
+import java.awt.event.ComponentAdapter
+import java.awt.event.ComponentEvent
 import javax.swing.JFrame
+
 
 /**
  * This class provides a swing frame for a zircon terminal.
@@ -27,23 +30,17 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
     : JFrame(title), InternalTerminal by swingTerminal {
 
     init {
+        isResizable = false // TODO: implement proper resizing
         add(canvas)
-        canvas.preferredSize = swingTerminal.getPreferredSize()
         defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-        if(fullScreen) {
+        if (fullScreen) {
             extendedState = JFrame.MAXIMIZED_BOTH
             isUndecorated = true
         }
         pack()
         setLocationRelativeTo(null)
-        canvas.ignoreRepaint = true
         canvas.createBufferStrategy(2)
-        canvas.isFocusable = true
-        canvas.requestFocusInWindow()
-    }
-
-    override fun dispose() {
-        super.dispose()
+        swingTerminal.initializeBufferStrategy()
     }
 
     override fun close() {

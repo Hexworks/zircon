@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.font
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import java.awt.image.BufferedImage
 
 /**
@@ -9,4 +10,6 @@ import java.awt.image.BufferedImage
 interface FontTextureRegion {
 
     fun getJava2DBackend(): BufferedImage
+
+    fun getGdxBackend(): TextureRegion
 }

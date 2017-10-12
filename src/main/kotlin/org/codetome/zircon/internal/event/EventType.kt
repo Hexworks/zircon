@@ -4,10 +4,6 @@ import java.util.*
 
 sealed class EventType {
     /**
-     * A redraw should be performed.
-     */
-    object Draw : EventType()
-    /**
      * A new input arrived into the system.
      */
     object Input : EventType()

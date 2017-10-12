@@ -5,36 +5,35 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.terminal.config.CursorStyle.*
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.terminal.ApplicationListener
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import java.awt.*
-import java.awt.image.BufferedImage
 import java.util.*
 
 /**
  * This is the class implements the [InternalTerminal] for the java 2d world. It maintains
  * most of the external terminal state and also the main back buffer that is copied to the component
- * area on draw operations.
+ * area on doRender operations.
  */
 @Suppress("unused")
-abstract class Java2DTerminalImplementation(
+abstract class ApplicationTerminal(
         private val deviceConfiguration: DeviceConfiguration,
         private val terminal: InternalTerminal)
-    : InternalTerminal by terminal {
+    : InternalTerminal by terminal, ApplicationListener {
 
     private var enableInput = false
     private var hasBlinkingText = deviceConfiguration.isCursorBlinking
     private var blinkOn = true
     private var lastBufferUpdateScrollPosition: Int = 0
-    private var lastComponentWidth: Int = 0
-    private var lastComponentHeight: Int = 0
-
     private var blinkTimer = Timer("BlinkTimer", true)
+    private var resizeHappened = false
 
     /**
      * Used when requiring the total height of the terminal component, in pixels.
@@ -46,60 +45,43 @@ abstract class Java2DTerminalImplementation(
      */
     abstract fun getWidth(): Int
 
-    /**
-     * Called by the terminal implementation when it would like the OS to schedule a draw of the
-     * window.
-     */
-    abstract fun draw()
+    abstract fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion, x: Int, y: Int)
+
+    abstract fun drawCursor(character: TextCharacter, x: Int, y: Int)
 
     @Synchronized
-    fun onCreated() {
+    override fun doCreate() {
         blinkTimer.schedule(object : TimerTask() {
             override fun run() {
                 blinkOn = !blinkOn
                 if (hasBlinkingText) {
-                    draw()
+                    doRender()
                 }
             }
         }, deviceConfiguration.blinkLengthInMilliSeconds, deviceConfiguration.blinkLengthInMilliSeconds)
         enableInput = true
-        EventBus.subscribe(EventType.Draw, {
-            draw()
-        })
     }
 
     @Synchronized
-    fun onDestroyed() {
+    override fun doDispose() {
         EventBus.emit(EventType.Input, KeyStroke.EOF_STROKE)
         blinkTimer.cancel()
         enableInput = false
     }
 
-    /**
-     * Calculates the preferred size of this terminal.
-     */
-    @Synchronized
-    fun getPreferredSize() = Dimension(
-            getSupportedFontSize().columns * terminal.getBoundableSize().columns,
-            getSupportedFontSize().rows * terminal.getBoundableSize().rows)
+    override fun doResize(width: Int, height: Int) {
+        val terminalSize = Size.of(
+                columns = width / getSupportedFontSize().columns,
+                rows = height / getSupportedFontSize().rows)
+        terminal.setSize(terminalSize)
+        resizeHappened = true
+    }
 
-    /**
-     * Updates the back buffer (if necessary) and draws it to the component's surface.
-     */
     @Synchronized
-    fun draw(graphics: Graphics2D) {
-        var needToRedraw = hasBlinkingText
+    override fun doRender() {
+        var needToRedraw = hasBlinkingText.or(resizeHappened)
         val font = getCurrentFont() // we get the font at the start because it might be changed by external force
 
-        // Detect resize
-        if (resizeHappened()) {
-            fillLeftoverSpaceWithBlack(graphics)
-            val terminalSize = Size.of(
-                    columns = getWidth() / getSupportedFontSize().columns,
-                    rows = getHeight() / getSupportedFontSize().rows)
-            terminal.setSize(terminalSize)
-            needToRedraw = true
-        }
         if (isDirty()) {
             needToRedraw = true
         }
@@ -107,44 +89,27 @@ abstract class Java2DTerminalImplementation(
             val cursorPosition = terminal.getCursorPosition()
             var foundBlinkingCharacters = deviceConfiguration.isCursorBlinking
 
-            graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED)
-            graphics.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE)
-            graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY)
-            graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
-            graphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED)
-
             terminal.forEachDirtyCell { (position, textCharacter) ->
                 val atCursorLocation = cursorPosition == position
-                val characterWidth = getSupportedFontSize().columns
                 val drawCursor = shouldDrawCursor(atCursorLocation)
                 if (textCharacter.getModifiers().contains(Modifiers.BLINK)) {
                     foundBlinkingCharacters = true
                 }
                 drawCharacter(
-                        graphics = graphics,
                         character = textCharacter,
                         columnIndex = position.column,
                         rowIndex = position.row,
-                        characterWidth = characterWidth,
                         font = font,
                         drawCursor = drawCursor)
             }
             this.hasBlinkingText = foundBlinkingCharacters || deviceConfiguration.isCursorBlinking
         }
-
-        fillLeftoverSpaceWithBlack(graphics)
-
-        this.lastComponentWidth = getWidth()
-        this.lastComponentHeight = getHeight()
-        graphics.dispose()
     }
 
     private fun drawCharacter(
-            graphics: Graphics,
             character: TextCharacter,
             columnIndex: Int,
             rowIndex: Int,
-            characterWidth: Int,
             font: Font,
             drawCursor: Boolean) {
 
@@ -167,50 +132,18 @@ abstract class Java2DTerminalImplementation(
                 } else {
                     tc
                 }.let { fixedChar ->
-                    graphics.drawImage(fontToUse.fetchRegionForChar(fixedChar).getJava2DBackend(), x, y, null)
+                    drawFontTextureRegion(fontToUse.fetchRegionForChar(fixedChar), x, y)
                 }
             }
         }
 
         if (drawCursor) {
-            graphics.color = deviceConfiguration.cursorColor.toAWTColor()
-            when (deviceConfiguration.cursorStyle) {
-                USE_CHARACTER_FOREGROUND -> {
-                    graphics.color = character.getForegroundColor().toAWTColor()
-                    graphics.fillRect(x, y, getSupportedFontSize().columns, getSupportedFontSize().rows)
-                }
-                FIXED_BACKGROUND -> graphics.fillRect(x, y, getSupportedFontSize().columns, getSupportedFontSize().rows)
-                UNDER_BAR -> graphics.fillRect(x, y + getSupportedFontSize().rows - 3, characterWidth, 2)
-                VERTICAL_BAR -> graphics.fillRect(x, y + 1, 2, getSupportedFontSize().rows - 2)
-            }
+            drawCursor(character, x, y)
         }
     }
 
     private fun shouldDrawCursor(atCursorLocation: Boolean) = atCursorLocation
             && isCursorVisible()                                 // User settings override everything
-            && (!deviceConfiguration.isCursorBlinking || // Always draw if the cursor isn't blinking
-            deviceConfiguration.isCursorBlinking && blinkOn)     // If the cursor is blinking, only draw when blinkOn is true
-
-    private fun fillLeftoverSpaceWithBlack(graphics: Graphics) {
-        // Take care of the left-over area at the bottom and right of the component where no character can fit
-        graphics.color = Color.BLACK
-
-        val leftoverWidth = getWidth() % getSupportedFontSize().columns
-        if (leftoverWidth > 0) {
-            graphics.fillRect(getWidth() - leftoverWidth, 0, leftoverWidth, getHeight())
-        }
-
-        val leftoverHeight = getHeight() % getSupportedFontSize().rows
-        if (leftoverHeight > 0) {
-            graphics.fillRect(0, getHeight() - leftoverHeight, getWidth(), leftoverHeight)
-        }
-    }
-
-    @Synchronized
-    override fun flush() {
-        draw()
-    }
-
-    private fun resizeHappened() = getWidth() != lastComponentWidth || getHeight() != lastComponentHeight
-
+            && (!deviceConfiguration.isCursorBlinking || // Always doRender if the cursor isn't blinking
+            deviceConfiguration.isCursorBlinking && blinkOn)     // If the cursor is blinking, only doRender when blinkOn is true
 }

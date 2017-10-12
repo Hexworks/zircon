@@ -10,9 +10,9 @@ class EventBusTest {
 
     @Test
     fun shouldBeProperlyNotifiedWhenSubscribedEventIsEmitted() {
-        EventBus.subscribe(EventType.Draw, this::callback, KEYS)
+        EventBus.subscribe(EventType.HideCursor, this::callback, KEYS)
 
-        EventBus.emit(EventType.Draw, OBJ, KEYS)
+        EventBus.emit(EventType.HideCursor, OBJ, KEYS)
 
         assertThat(event.get()).isEqualToComparingFieldByField(EVENT)
     }
@@ -26,6 +26,6 @@ class EventBusTest {
     companion object {
         val KEYS = setOf("key")
         val OBJ = Obj("foo")
-        val EVENT = Event(OBJ, EventType.Draw, KEYS)
+        val EVENT = Event(OBJ, EventType.HideCursor, KEYS)
     }
 }
