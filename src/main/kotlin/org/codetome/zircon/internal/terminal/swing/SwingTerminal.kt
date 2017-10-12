@@ -17,7 +17,7 @@ import javax.swing.SwingUtilities
  */
 class SwingTerminal(
         private val canvas: Canvas,
-        initialFont: Font<BufferedImage>,
+        initialFont: Font,
         initialSize: Size,
         deviceConfiguration: DeviceConfiguration)
 

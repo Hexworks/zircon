@@ -20,7 +20,7 @@ import org.codetome.zircon.internal.graphics.BoxType
 import java.awt.image.BufferedImage
 import java.util.*
 
-data class PanelBuilder(private var font: Font<BufferedImage> = FontSettings.NO_FONT,
+data class PanelBuilder(private var font: Font = FontSettings.NO_FONT,
                         private var boxType: BoxType = BoxType.SINGLE,
                         private var title: String = "",
                         private var position: Position = Position.DEFAULT_POSITION,
@@ -33,7 +33,7 @@ data class PanelBuilder(private var font: Font<BufferedImage> = FontSettings.NO_
     /**
      * Sets the [Font] to use with the resulting [Layer].
      */
-    fun font(font: Font<BufferedImage>) = also {
+    fun font(font: Font) = also {
         this.font = font
     }
 

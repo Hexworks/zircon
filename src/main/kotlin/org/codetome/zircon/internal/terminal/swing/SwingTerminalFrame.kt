@@ -15,7 +15,7 @@ import javax.swing.JFrame
 class SwingTerminalFrame(title: String = "ZirconTerminal",
                          size: Size,
                          deviceConfiguration: DeviceConfiguration = DeviceConfigurationBuilder.DEFAULT,
-                         font: Font<BufferedImage>,
+                         font: Font,
                          fullScreen: Boolean,
                          private val canvas: Canvas = createCanvas(),
                          private val swingTerminal: SwingTerminal =

@@ -145,7 +145,7 @@ abstract class Java2DTerminalImplementation(
             columnIndex: Int,
             rowIndex: Int,
             characterWidth: Int,
-            font: Font<BufferedImage>,
+            font: Font,
             drawCursor: Boolean) {
 
         val x = columnIndex * getSupportedFontSize().columns
@@ -167,7 +167,7 @@ abstract class Java2DTerminalImplementation(
                 } else {
                     tc
                 }.let { fixedChar ->
-                    graphics.drawImage(fontToUse.fetchRegionForChar(fixedChar), x, y, null)
+                    graphics.drawImage(fontToUse.fetchRegionForChar(fixedChar).getJava2DBackend(), x, y, null)
                 }
             }
         }

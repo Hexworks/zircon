@@ -27,8 +27,7 @@ data class TerminalBuilder(
         private var initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
         private var title: String = "Zircon Terminal",
         private var deviceConfiguration: DeviceConfiguration = DeviceConfigurationBuilder.DEFAULT,
-        // TODO: refactor this to abstract shape when libgdx implementation comes
-        private var font: Font<BufferedImage> = PhysicalFontResource.UBUNTU_MONO.toFont()
+        private var font: Font = PhysicalFontResource.UBUNTU_MONO.toFont()
 ) : Builder<Terminal> {
 
 
@@ -101,7 +100,7 @@ data class TerminalBuilder(
      * @see [org.codetome.zircon.api.resource.CP437TilesetResource] and
      * @see PhysicalFontResource
      */
-    fun font(font: Font<BufferedImage>) = also {
+    fun font(font: Font) = also {
         this.font = font
     }
 
@@ -138,7 +137,7 @@ data class TerminalBuilder(
          */
         @JvmStatic
         @JvmOverloads
-        fun createScreenFor(terminal: Terminal, font: Font<BufferedImage> = terminal.getCurrentFont()): Screen {
+        fun createScreenFor(terminal: Terminal, font: Font = terminal.getCurrentFont()): Screen {
             return TerminalScreen(
                     terminal = terminal as InternalTerminal)
         }

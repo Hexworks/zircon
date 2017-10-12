@@ -23,7 +23,7 @@ import java.util.*
 
 open class DefaultContainer(initialSize: Size,
                             position: Position,
-                            initialFont: Font<BufferedImage>,
+                            initialFont: Font,
                             componentStyles: ComponentStyles,
                             wrappers: Iterable<WrappingStrategy> = listOf())
     : DefaultComponent(initialSize = initialSize,

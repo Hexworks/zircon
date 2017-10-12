@@ -22,7 +22,7 @@ interface InternalLayerable : Layerable, Dirtiable, FontOverrideSupport {
      * A Z intersection is a list of characters present at the same absolute
      * position in a 3d space of [Layer]s ordered from bottom to top.
      */
-    fun fetchOverlayZIntersection(absolutePosition: Position) : List<Pair<Font<BufferedImage>, TextCharacter>>
+    fun fetchOverlayZIntersection(absolutePosition: Position) : List<Pair<Font, TextCharacter>>
 
     // TODO: add dirty checking when adding / removing / popping layers
 }

@@ -4,6 +4,7 @@ import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.util.FontUtils
 import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
@@ -19,8 +20,8 @@ import java.util.*
 class PhysicalFont(private val source: java.awt.Font,
                    private val width: Int,
                    private val height: Int,
-                   private val cache: DefaultFontRegionCache<BufferedImage>,
-                   private val withAntiAlias: Boolean) : Font<BufferedImage> {
+                   private val cache: DefaultFontRegionCache<FontTextureRegion>,
+                   private val withAntiAlias: Boolean) : Font {
 
     private val id = UUID.randomUUID()
 
@@ -38,11 +39,11 @@ class PhysicalFont(private val source: java.awt.Font,
 
     override fun hasDataForChar(char: Char) = source.canDisplay(char)
 
-    override fun fetchRegionForChar(textCharacter: TextCharacter, vararg tags: String): BufferedImage {
+    override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion {
 
-        val maybeRegion = cache.retrieveIfPresent(textCharacter)
+        val maybeRegion: Optional<FontTextureRegion> = cache.retrieveIfPresent(textCharacter)
 
-        var region = if (maybeRegion.isNotPresent()) {
+        var region: FontTextureRegion = if (maybeRegion.isNotPresent()) {
             val image = BufferedImage(width, height, BufferedImage.TRANSLUCENT)
             val g = image.graphics as Graphics2D
             g.color = textCharacter.getBackgroundColor().toAWTColor()
@@ -69,8 +70,9 @@ class PhysicalFont(private val source: java.awt.Font,
 
             g.drawString(str, x, y)
             g.dispose()
-            cache.store(textCharacter, image)
-            image
+            val region = Java2DFontTextureRegion(image)
+            cache.store(textCharacter, region)
+            region
         } else {
             maybeRegion.get()
         }

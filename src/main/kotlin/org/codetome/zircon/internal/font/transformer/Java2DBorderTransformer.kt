@@ -4,26 +4,29 @@ import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Modifiers.BorderPosition.*
 import org.codetome.zircon.api.Modifiers.BorderType.*
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import java.awt.BasicStroke
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
 
-class Java2DBorderTransformer : FontRegionTransformer<BufferedImage> {
+class Java2DBorderTransformer : FontRegionTransformer {
 
-    override fun transform(region: BufferedImage, textCharacter: TextCharacter): BufferedImage {
+    override fun transform(region: FontTextureRegion, textCharacter: TextCharacter): FontTextureRegion {
         return region.also {
-            it.graphics.apply {
-                color = textCharacter.getForegroundColor().toAWTColor()
-                if (textCharacter.hasBorder()) {
-                    textCharacter.fetchBorderData().forEach { border ->
-                        border.borderPositions.forEach { pos ->
-                            FILLER_LOOKUP[pos]?.invoke(region, this as Graphics2D, border.borderType)
+            it.getJava2DBackend().let { backend ->
+                backend.graphics.apply {
+                    color = textCharacter.getForegroundColor().toAWTColor()
+                    if (textCharacter.hasBorder()) {
+                        textCharacter.fetchBorderData().forEach { border ->
+                            border.borderPositions.forEach { pos ->
+                                FILLER_LOOKUP[pos]?.invoke(backend, this as Graphics2D, border.borderType)
+                            }
                         }
                     }
+                    dispose()
                 }
-                dispose()
             }
         }
     }

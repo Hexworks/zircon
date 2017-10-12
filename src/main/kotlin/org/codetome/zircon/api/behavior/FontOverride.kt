@@ -7,7 +7,7 @@ import org.codetome.zircon.internal.font.impl.FontSettings
  * Interface which adds functionality for overriding [Font]s used
  * in its implementors (components, layers, etc).
  */
-interface FontOverride<R> {
+interface FontOverride {
 
     /**
      * Tells whether there is currently an override [Font] present or not.
@@ -17,12 +17,12 @@ interface FontOverride<R> {
     /**
      * Returns the currently used [Font].
      */
-    fun getCurrentFont(): Font<R>
+    fun getCurrentFont(): Font
 
     /**
      * Sets the [Font] to use.
      */
-    fun useFont(font: Font<R>)
+    fun useFont(font: Font)
 
     /**
      * Sets the override [Font] to its default value (which is `NO_FONT`).

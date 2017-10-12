@@ -17,7 +17,7 @@ import java.io.Closeable
  * tracking the changes use the [Screen.display] function.
  */
 interface Screen
-    : Closeable, Clearable, Layerable, CursorHandler, ContainerHandler, DrawSurface, InputEmitter, Identifiable, FontOverride<BufferedImage> {
+    : Closeable, Clearable, Layerable, CursorHandler, ContainerHandler, DrawSurface, InputEmitter, Identifiable, FontOverride {
 
     /**
      * This function will take the content from the back-buffer and move it into the front-buffer

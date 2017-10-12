@@ -8,9 +8,8 @@ import org.codetome.zircon.internal.behavior.Identifiable
  * A font is an abstract representation of a resource which is capable of
  * representing fonts. This can be some physical font (like a .ttf file)
  * or a sprite sheet for example.
- * @param R the type of the object which represents a text character (like `BufferedImage` or `TextureRegion`)
  */
-interface Font<out R>: Identifiable {
+interface Font: Identifiable {
 
     /**
      * Returns the width of a character in pixels.
@@ -29,11 +28,11 @@ interface Font<out R>: Identifiable {
 
     /**
      * Returns a region (graphical representation of a [TextCharacter]) for a character.
-     * If `tags` are supplied, than this method will try to filter for them.
+     * If `tags` are supplied in `textCharacter`, than this method will try to filter for them.
      * *Note that* this is only useful for graphical tilesets which have multiple
      * regions for a given [TextCharacter]!
      */
-    fun fetchRegionForChar(textCharacter: TextCharacter, vararg tags: String): R
+    fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion
 
     /**
      * Returns all the [CharacterMetadata] for a [Char] which is known by this [Font].
