@@ -23,7 +23,7 @@ import java.util.*
 
 class DefaultTextBox @JvmOverloads constructor(text: String,
                                                initialSize: Size,
-                                               initialFont: Font<BufferedImage>,
+                                               initialFont: Font,
                                                position: Position,
                                                componentStyles: ComponentStyles,
                                                scrollable: Scrollable = DefaultScrollable(initialSize, initialSize))

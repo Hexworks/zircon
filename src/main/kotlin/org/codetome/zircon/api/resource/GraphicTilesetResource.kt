@@ -45,7 +45,7 @@ enum class GraphicTilesetResource(private val tilesetName: String,
          */
         @JvmStatic
         fun loadGraphicTileset(sourceZipPath: String,
-                               metadataPickingStrategy: MetadataPickingStrategy): Font<BufferedImage> {
+                               metadataPickingStrategy: MetadataPickingStrategy): Font {
             val files = unZipIt(sourceZipPath, createTempDir())
             val tileInfoSource = files.filter { it.name == "tileinfo.yml" }.first().bufferedReader().use {
                 it.readText()

@@ -1,29 +1,31 @@
 package org.codetome.zircon.internal.font.transformer
 
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import java.awt.image.BufferedImage
 
-class Java2DFontRegionColorizer : FontRegionTransformer<BufferedImage> {
+class Java2DFontRegionColorizer : FontRegionTransformer {
 
-    override fun transform(region: BufferedImage, textCharacter: TextCharacter): BufferedImage {
+    override fun transform(region: FontTextureRegion, textCharacter: TextCharacter): FontTextureRegion {
         val r = textCharacter.getForegroundColor().getRed().toFloat() / 255
         val g = textCharacter.getForegroundColor().getGreen().toFloat() / 255
         val b = textCharacter.getForegroundColor().getBlue().toFloat() / 255
 
-        (0 until region.width).forEach { x ->
-            (0 until region.height).forEach { y ->
-                val ax = region.colorModel.getAlpha(region.raster.getDataElements(x, y, null))
-                var rx = region.colorModel.getRed(region.raster.getDataElements(x, y, null))
-                var gx = region.colorModel.getGreen(region.raster.getDataElements(x, y, null))
-                var bx = region.colorModel.getBlue(region.raster.getDataElements(x, y, null))
+        val backend = region.getJava2DBackend()
+        (0 until backend.width).forEach { x ->
+            (0 until backend.height).forEach { y ->
+                val ax = backend.colorModel.getAlpha(backend.raster.getDataElements(x, y, null))
+                var rx = backend.colorModel.getRed(backend.raster.getDataElements(x, y, null))
+                var gx = backend.colorModel.getGreen(backend.raster.getDataElements(x, y, null))
+                var bx = backend.colorModel.getBlue(backend.raster.getDataElements(x, y, null))
                 rx = (rx * r).toInt()
                 gx = (gx * g).toInt()
                 bx = (bx * b).toInt()
                 if (ax < 50) {
-                    region.setRGB(x, y, textCharacter.getBackgroundColor().toAWTColor().rgb)
+                    backend.setRGB(x, y, textCharacter.getBackgroundColor().toAWTColor().rgb)
                 } else {
-                    region.setRGB(x, y, (ax shl 24) or (rx shl 16) or (gx shl 8) or (bx shl 0))
+                    backend.setRGB(x, y, (ax shl 24) or (rx shl 16) or (gx shl 8) or (bx shl 0))
                 }
             }
         }

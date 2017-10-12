@@ -25,11 +25,11 @@ import java.util.*
 import java.util.function.Consumer
 
 abstract class DefaultComponent(initialSize: Size,
-                                initialFont: Font<BufferedImage>,
+                                initialFont: Font,
                                 private var position: Position,
                                 private var componentStyles: ComponentStyles,
                                 private val wrappers: Iterable<WrappingStrategy>,
-                                private val fontOverride: FontOverride<BufferedImage> = DefaultFontOverride(
+                                private val fontOverride: FontOverride = DefaultFontOverride(
                                         initialFont = initialFont),
                                 private val drawSurface: TextImage = TextImageBuilder.newBuilder()
                                         .filler(TextCharacterBuilder.EMPTY)
@@ -38,7 +38,7 @@ abstract class DefaultComponent(initialSize: Size,
                                 private var boundable: Boundable = DefaultBoundable(
                                         size = initialSize,
                                         position = position))
-    : InternalComponent, Drawable by drawSurface, FontOverride<BufferedImage> by fontOverride {
+    : InternalComponent, Drawable by drawSurface, FontOverride by fontOverride {
 
     private val id: UUID = UUID.randomUUID()
     private var currentOffset = Position.DEFAULT_POSITION

@@ -18,7 +18,7 @@ import java.util.function.Consumer
  * like a label or a check box is a [Container] while a label which is only intended to
  * display information is a [Component].
  */
-interface Component : Positionable, Identifiable, Boundable, FontOverride<BufferedImage> {
+interface Component : Positionable, Identifiable, Boundable, FontOverride {
 
     /**
      * Adds a callback to this [Component] which will be called

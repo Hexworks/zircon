@@ -3,11 +3,12 @@ package org.codetome.zircon.internal.font.impl
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.font.FontTextureRegion
 import java.awt.image.BufferedImage
 import java.util.*
 
 object FontSettings {
-    val NO_FONT = object : Font<BufferedImage> {
+    val NO_FONT = object : Font {
 
         private val id = UUID.randomUUID()
 
@@ -25,7 +26,7 @@ object FontSettings {
             TODO()
         }
 
-        override fun fetchRegionForChar(textCharacter: TextCharacter, vararg tags: String): BufferedImage {
+        override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion {
             TODO()
         }
 

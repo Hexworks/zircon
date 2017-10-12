@@ -20,7 +20,7 @@ import java.awt.image.BufferedImage;
 
 public class AnimationExample {
 
-    private static final Font<BufferedImage> FONT = CP437TilesetResource.YOBBO_20X20.toFont();
+    private static final Font FONT = CP437TilesetResource.YOBBO_20X20.toFont();
     private static final Size TERMINAL_SIZE = Size.of(50, 30);
     private static final Position LEFT_POS = Position.of(8, 5);
     private static final Position RIGHT_POS = Position.of(29, 5);
