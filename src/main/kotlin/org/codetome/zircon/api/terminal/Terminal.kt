@@ -24,7 +24,7 @@ import java.io.Closeable
  * interface you should be programming against.
  */
 interface Terminal
-    : Closeable, Clearable, Styleable, CursorHandler, Layerable, DrawSurface, InputEmitter, FontOverride<BufferedImage> {
+    : Closeable, Clearable, Styleable, CursorHandler, Layerable, DrawSurface, InputEmitter, FontOverride {
     // TODO: font override generics!
     /**
      * Prints one character to the terminal at the current cursor location.

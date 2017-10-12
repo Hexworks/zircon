@@ -14,7 +14,7 @@ import java.util.*
  * the way it is handled. It can be repositioned relative to its
  * parent while a [TextImage] cannot.
  */
-interface Layer : TextImage, Movable, FontOverride<BufferedImage> {
+interface Layer : TextImage, Movable, FontOverride {
 
     /**
      * Fetches all the (absolute) [Position]s which this

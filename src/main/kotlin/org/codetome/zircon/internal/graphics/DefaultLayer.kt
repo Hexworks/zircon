@@ -18,14 +18,14 @@ import java.awt.image.BufferedImage
 class DefaultLayer(size: Size,
                    filler: TextCharacter,
                    offset: Position,
-                   initialFont: Font<BufferedImage>,
-                   private val fontOverride: FontOverride<BufferedImage> = DefaultFontOverride(
+                   initialFont: Font,
+                   private val fontOverride: FontOverride = DefaultFontOverride(
                            initialFont = initialFont),
                    private val textImage: TextImage = TextImageBuilder.newBuilder()
                            .size(size)
                            .filler(filler)
                            .build())
-    : Layer, TextImage by textImage, FontOverride<BufferedImage> by fontOverride {
+    : Layer, TextImage by textImage, FontOverride by fontOverride {
 
 
     private var position: Position

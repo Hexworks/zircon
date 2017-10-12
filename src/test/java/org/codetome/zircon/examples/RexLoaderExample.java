@@ -18,7 +18,7 @@ public class RexLoaderExample {
     private static final int TERMINAL_WIDTH = 16;
     private static final int TERMINAL_HEIGHT = 16;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final Font<BufferedImage> FONT = CP437TilesetResource.TAFFER_20X20.toFont();
+    private static final Font FONT = CP437TilesetResource.TAFFER_20X20.toFont();
     private static final InputStream RESOURCE = RexLoaderExample.class.getResourceAsStream("/rex_files/cp437_table.xp");
 
     @Test

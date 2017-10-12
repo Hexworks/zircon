@@ -70,7 +70,7 @@ enum class CP437TilesetResource(private val tilesetName: String,
          * this method!
          */
         @JvmStatic
-        fun loadCP437Tileset(width: Int, height: Int, source: InputStream): Font<BufferedImage> {
+        fun loadCP437Tileset(width: Int, height: Int, source: InputStream): Font {
             val metadata = UNICODE_TO_CP437_LOOKUP.map { (char, index) ->
                 val x = index.rem(16)
                 val y = index.div(16)

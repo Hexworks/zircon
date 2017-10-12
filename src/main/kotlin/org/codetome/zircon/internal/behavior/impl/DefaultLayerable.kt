@@ -54,11 +54,11 @@ class DefaultLayerable(private val supportedFontSize: Size,
         }
     }
 
-    override fun fetchOverlayZIntersection(absolutePosition: Position): List<Pair<Font<BufferedImage>, TextCharacter>> {
+    override fun fetchOverlayZIntersection(absolutePosition: Position): List<Pair<Font, TextCharacter>> {
         return fetchZIntersectionFor(layers, absolutePosition)
     }
 
-    private fun fetchZIntersectionFor(queue: Queue<Layer>, position: Position): List<Pair<Font<BufferedImage>, TextCharacter>> {
+    private fun fetchZIntersectionFor(queue: Queue<Layer>, position: Position): List<Pair<Font, TextCharacter>> {
         return queue.filter { layer ->
             layer.containsPosition(position)
         }.map { layer ->

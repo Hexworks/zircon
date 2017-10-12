@@ -15,7 +15,7 @@ import java.util.*
 
 class DefaultLabel(private val text: String,
                    initialSize: Size,
-                   initialFont: Font<BufferedImage>,
+                   initialFont: Font,
                    position: Position,
                    componentStyles: ComponentStyles) : Label, DefaultComponent(
         initialSize = initialSize,

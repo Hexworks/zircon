@@ -13,7 +13,7 @@ import java.util.*
 
 class DefaultHeader(private val text: String,
                     initialSize: Size,
-                    initialFont: Font<BufferedImage>,
+                    initialFont: Font,
                     position: Position,
                     componentStyles: ComponentStyles) : Header, DefaultComponent(
         initialSize = initialSize,

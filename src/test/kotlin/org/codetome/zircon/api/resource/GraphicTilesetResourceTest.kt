@@ -16,10 +16,10 @@ class GraphicTilesetResourceTest {
         val region = result.fetchRegionForChar(
                 textCharacter = TextCharacterBuilder.newBuilder()
                         .character(meta.char)
+                        .tags(meta.tags)
                         .foregroundColor(TextColorFactory.DEFAULT_FOREGROUND_COLOR)
                         .backgroundColor(TextColorFactory.DEFAULT_BACKGROUND_COLOR)
-                        .build(),
-                tags = *meta.tags.toTypedArray())
+                        .build())
     }
 }
 

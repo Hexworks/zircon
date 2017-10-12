@@ -26,7 +26,7 @@ import kotlin.collections.LinkedHashMap
 
 class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<WrappingStrategy>,
                                                         private val size: Size,
-                                                        initialFont: Font<BufferedImage>,
+                                                        initialFont: Font,
                                                         private val spacing: Int,
                                                         position: Position,
                                                         componentStyles: ComponentStyles,

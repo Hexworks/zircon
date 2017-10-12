@@ -50,7 +50,7 @@ enum class PhysicalFontResource(private val fontName: String,
          */
         @JvmOverloads
         @JvmStatic
-        fun loadPhysicalFont(size: Float = 18f, withAntiAlias: Boolean = true, source: InputStream): org.codetome.zircon.api.font.Font<BufferedImage> {
+        fun loadPhysicalFont(size: Float = 18f, withAntiAlias: Boolean = true, source: InputStream): org.codetome.zircon.api.font.Font {
             val font = Font.createFont(Font.TRUETYPE_FONT, source).deriveFont(size)
             val ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
             ge.registerFont(font)

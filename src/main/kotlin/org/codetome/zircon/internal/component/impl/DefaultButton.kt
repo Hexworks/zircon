@@ -21,7 +21,7 @@ import java.awt.image.BufferedImage
 import java.util.*
 
 class DefaultButton(private val text: String,
-                    initialFont: Font<BufferedImage>,
+                    initialFont: Font,
                     wrappers: Deque<WrappingStrategy>,
                     initialSize: Size,
                     position: Position,

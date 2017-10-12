@@ -26,8 +26,8 @@ import java.awt.image.BufferedImage
 import java.util.function.Consumer
 
 class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
-                      initialFont: Font<BufferedImage>,
-                      private val fontOverride: FontOverride<BufferedImage> = DefaultFontOverride(
+                      initialFont: Font,
+                      private val fontOverride: FontOverride = DefaultFontOverride(
                               initialFont = initialFont),
                       private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                               cursorSpace = initialSize),
@@ -37,7 +37,7 @@ class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
     : AbstractTerminal(), InternalTerminal,
         InternalCursorHandler by cursorHandler,
         InternalLayerable by layerable,
-        FontOverride<BufferedImage> by fontOverride {
+        FontOverride by fontOverride {
 
     private var terminalSize = initialSize
     private var backend: TextImage = createBackend(terminalSize)

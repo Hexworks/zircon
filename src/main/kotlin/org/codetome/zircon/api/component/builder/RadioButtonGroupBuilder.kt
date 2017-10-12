@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage
 import java.util.*
 
 data class RadioButtonGroupBuilder(
-        private var font: Font<BufferedImage> = FontSettings.NO_FONT,
+        private var font: Font = FontSettings.NO_FONT,
         private var position: Position = Position.DEFAULT_POSITION,
         private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT,
         private var size: Size = Size.ONE,
@@ -24,7 +24,7 @@ data class RadioButtonGroupBuilder(
     /**
      * Sets the [Font] to use with the resulting [Layer].
      */
-    fun font(font: Font<BufferedImage>) = also {
+    fun font(font: Font) = also {
         this.font = font
     }
 
