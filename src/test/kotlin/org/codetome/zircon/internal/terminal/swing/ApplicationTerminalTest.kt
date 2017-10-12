@@ -5,15 +5,16 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.api.font.FontTextureRegion
+import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.config.CursorStyle
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.terminal.application.ApplicationTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import org.junit.Before
 import org.junit.Test
-import java.awt.Dimension
-import java.awt.image.BufferedImage
 import java.util.concurrent.atomic.AtomicBoolean
 
 
@@ -21,7 +22,9 @@ class ApplicationTerminalTest {
 
     lateinit var target: ApplicationTerminal
 
-    val drawn = AtomicBoolean(false)
+    val fontTextureDraws = mutableListOf<Triple<FontTextureRegion, Int, Int>>()
+    val cursorDraws = mutableListOf<Triple<TextCharacter, Int, Int>>()
+    var rendered = AtomicBoolean(false)
 
     @Before
     fun setUp() {
@@ -31,11 +34,11 @@ class ApplicationTerminalTest {
                         initialSize = SIZE,
                         initialFont = FONT)) {
             override fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion, x: Int, y: Int) {
-                TODO("not implemented")
+                fontTextureDraws.add(Triple(fontTextureRegion, x, y))
             }
 
             override fun drawCursor(character: TextCharacter, x: Int, y: Int) {
-                TODO("not implemented")
+                cursorDraws.add(Triple(character, x, y))
             }
 
             override fun getHeight() = SIZE.rows * FONT.getHeight()
@@ -43,27 +46,42 @@ class ApplicationTerminalTest {
             override fun getWidth() = SIZE.columns * FONT.getWidth()
 
             override fun doRender() {
-                drawn.set(true)
+                super.doRender()
+                rendered.set(true)
             }
         }
     }
 
 
     @Test
-    fun shouldProperlyDraw() {
-        val image = BufferedImage(target.getWidth(), target.getHeight(), BufferedImage.TYPE_INT_RGB)
+    fun shouldRenderAfterCreateIfCursorBlinksAndEnoughTimePassed() {
+        target.doCreate()
+        Thread.sleep(50)
 
-        target.setCursorVisibility(true)
-
-        target.doRender()
-
-        // TODO: asssert ?
+        assertThat(rendered.get()).isTrue()
     }
+
+    @Test
+    fun shouldSendEofOnDispose() {
+        val eofReceived = AtomicBoolean(false)
+        EventBus.subscribe<Input>(EventType.Input, {
+            if (it.data == KeyStroke.EOF_STROKE) {
+                eofReceived.set(true)
+            }
+        })
+
+        target.doDispose()
+
+        assertThat(eofReceived.get()).isTrue()
+    }
+
 
     companion object {
         val SIZE = Size.of(10, 20)
+        val BLINK_LEN_MS = 2L
         val CONFIG = DeviceConfigurationBuilder.newBuilder()
                 .cursorBlinking(true)
+                .blinkLengthInMilliSeconds(BLINK_LEN_MS)
                 .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
                 .build()
         val FONT = CP437TilesetResource.WANDERLUST_16X16.toFont()

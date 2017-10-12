@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal.terminal.swing
+package org.codetome.zircon.internal.terminal.application
 
 import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
@@ -7,20 +7,18 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.input.KeyStroke
-import org.codetome.zircon.api.terminal.config.CursorStyle.*
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.terminal.ApplicationListener
 import org.codetome.zircon.internal.terminal.InternalTerminal
-import java.awt.*
 import java.util.*
 
 /**
  * This is the class implements the [InternalTerminal] for the java 2d world. It maintains
  * most of the external terminal state and also the main back buffer that is copied to the component
- * area on doRender operations.
+ * area on render operations.
  */
 @Suppress("unused")
 abstract class ApplicationTerminal(
@@ -28,10 +26,8 @@ abstract class ApplicationTerminal(
         private val terminal: InternalTerminal)
     : InternalTerminal by terminal, ApplicationListener {
 
-    private var enableInput = false
     private var hasBlinkingText = deviceConfiguration.isCursorBlinking
     private var blinkOn = true
-    private var lastBufferUpdateScrollPosition: Int = 0
     private var blinkTimer = Timer("BlinkTimer", true)
     private var resizeHappened = false
 
@@ -53,20 +49,22 @@ abstract class ApplicationTerminal(
     override fun doCreate() {
         blinkTimer.schedule(object : TimerTask() {
             override fun run() {
-                blinkOn = !blinkOn
-                if (hasBlinkingText) {
-                    doRender()
+                try {
+                    blinkOn = !blinkOn
+                    if (hasBlinkingText) {
+                        doRender()
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
         }, deviceConfiguration.blinkLengthInMilliSeconds, deviceConfiguration.blinkLengthInMilliSeconds)
-        enableInput = true
     }
 
     @Synchronized
     override fun doDispose() {
         EventBus.emit(EventType.Input, KeyStroke.EOF_STROKE)
         blinkTimer.cancel()
-        enableInput = false
     }
 
     override fun doResize(width: Int, height: Int) {
@@ -80,6 +78,7 @@ abstract class ApplicationTerminal(
     @Synchronized
     override fun doRender() {
         var needToRedraw = hasBlinkingText.or(resizeHappened)
+        resizeHappened = false
         val font = getCurrentFont() // we get the font at the start because it might be changed by external force
 
         if (isDirty()) {
@@ -119,23 +118,23 @@ abstract class ApplicationTerminal(
         listOf(Pair(font, character))
                 .plus(fetchOverlayZIntersection(Position.of(columnIndex, rowIndex)))
                 .forEach { (fontOverride, tc) ->
-            // TODO: test font
-            val fontToUse = if(fontOverride === FontSettings.NO_FONT) {
-                font
-            } else {
-                fontOverride
-            }
-            if (tc.isNotEmpty()) {
-                if (tc.isBlinking() && blinkOn) {
-                    tc.withForegroundColor(tc.getBackgroundColor())
-                            .withBackgroundColor(tc.getForegroundColor())
-                } else {
-                    tc
-                }.let { fixedChar ->
-                    drawFontTextureRegion(fontToUse.fetchRegionForChar(fixedChar), x, y)
+                    // TODO: test font
+                    val fontToUse = if (fontOverride === FontSettings.NO_FONT) {
+                        font
+                    } else {
+                        fontOverride
+                    }
+                    if (tc.isNotEmpty()) {
+                        if (tc.isBlinking() && blinkOn) {
+                            tc.withForegroundColor(tc.getBackgroundColor())
+                                    .withBackgroundColor(tc.getForegroundColor())
+                        } else {
+                            tc
+                        }.let { fixedChar ->
+                            drawFontTextureRegion(fontToUse.fetchRegionForChar(fixedChar), x, y)
+                        }
+                    }
                 }
-            }
-        }
 
         if (drawCursor) {
             drawCursor(character, x, y)
@@ -144,6 +143,6 @@ abstract class ApplicationTerminal(
 
     private fun shouldDrawCursor(atCursorLocation: Boolean) = atCursorLocation
             && isCursorVisible()                                 // User settings override everything
-            && (!deviceConfiguration.isCursorBlinking || // Always doRender if the cursor isn't blinking
-            deviceConfiguration.isCursorBlinking && blinkOn)     // If the cursor is blinking, only doRender when blinkOn is true
+            && (!deviceConfiguration.isCursorBlinking ||         // Always render if the cursor isn't blinking
+            deviceConfiguration.isCursorBlinking && blinkOn)     // If the cursor is blinking, only render when blinkOn is true
 }
