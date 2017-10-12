@@ -19,7 +19,7 @@ interface ApplicationListener {
     fun doResize(width: Int, height: Int)
 
     /**
-     *  Called when the application should doRender itself.
+     *  Called when the application should render itself.
      */
     fun doRender()
 

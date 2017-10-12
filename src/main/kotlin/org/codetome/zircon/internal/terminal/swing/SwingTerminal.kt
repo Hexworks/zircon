@@ -6,6 +6,7 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.terminal.config.CursorStyle
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
+import org.codetome.zircon.internal.terminal.application.ApplicationTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import java.awt.*
 import java.awt.event.ComponentAdapter
