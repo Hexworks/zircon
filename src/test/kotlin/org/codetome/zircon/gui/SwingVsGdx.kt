@@ -15,7 +15,10 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.internal.font.impl.GdxFontTextureRegion
+import java.io.File
 import java.util.*
 
 object Config {
@@ -31,7 +34,7 @@ object Config {
 class GdxFont(private val source: Texture,
               private val width: Int,
               private val height: Int,
-              private val id: UUID = UUID.randomUUID()) : Font<TextureRegion> {
+              private val id: UUID = UUID.randomUUID()) : Font {
 
     override fun getWidth() = width
 
@@ -41,11 +44,11 @@ class GdxFont(private val source: Texture,
         return true
     }
 
-    override fun fetchRegionForChar(textCharacter: TextCharacter, vararg tags: String): TextureRegion {
+    override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion {
         val cp437Idx = CP437TilesetResource.fetchCP437IndexForChar(textCharacter.getCharacter())
         val x = cp437Idx.rem(16) * width
         val y = cp437Idx.div(16) * height
-        return TextureRegion(source, x, y, width, height)
+        return GdxFontTextureRegion(TextureRegion(source, x, y, width, height))
     }
 
     override fun fetchMetadataForChar(char: Char): List<CharacterMetadata> {
@@ -81,23 +84,22 @@ class GdxExample : ApplicationAdapter() {
         val width = Config.TILESET.width.toFloat()
         val height = Config.TILESET.height.toFloat()
         val font = GdxFont(
-                source = Texture(Config.TILESET.path),
+                source = Texture(Config.TILESET.path.substring(1)),
                 width = Config.TILESET.width,
                 height = Config.TILESET.height)
-        val result = Pixmap(Config.PIXEL_WIDTH, Config.PIXEL_HEIGHT, Pixmap.Format.RGBA8888)
             (0..Config.HEIGHT).forEach { row ->
                 (0..Config.WIDTH).forEach { column ->
 
                     val region = font.fetchRegionForChar(
                             TextCharacterBuilder.newBuilder().character(chars[currIdx]).build())
-                    val drawable = TextureRegionDrawable(region)
+                    val drawable = TextureRegionDrawable(region.getGdxBackend())
                     val tinted = drawable.tint(com.badlogic.gdx.graphics.Color(0.5f, 0.5f, 0f, 1f)) as SpriteDrawable
                     tinted.draw(batch,
                             column * width,
                             row * height + height,
                             width,
                             height)
-//                    batch.draw(oldfont.fetchRegionForChar(
+//                    batch.doRender(oldfont.fetchRegionForChar(
 //                            chars[currIdx]),
 //                            column * width,
 //                            row * height + height)

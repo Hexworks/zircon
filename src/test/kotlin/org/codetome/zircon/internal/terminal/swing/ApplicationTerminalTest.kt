@@ -2,7 +2,9 @@ package org.codetome.zircon.internal.terminal.swing
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
+import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.config.CursorStyle
 import org.codetome.zircon.internal.event.EventBus
@@ -15,55 +17,37 @@ import java.awt.image.BufferedImage
 import java.util.concurrent.atomic.AtomicBoolean
 
 
-class Java2DTerminalImplementationTest {
+class ApplicationTerminalTest {
 
-    lateinit var target: Java2DTerminalImplementation
+    lateinit var target: ApplicationTerminal
 
     val drawn = AtomicBoolean(false)
 
     @Before
     fun setUp() {
-        target = object : Java2DTerminalImplementation(
+        target = object : ApplicationTerminal(
                 deviceConfiguration = CONFIG,
                 terminal = VirtualTerminal(
                         initialSize = SIZE,
                         initialFont = FONT)) {
+            override fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion, x: Int, y: Int) {
+                TODO("not implemented")
+            }
+
+            override fun drawCursor(character: TextCharacter, x: Int, y: Int) {
+                TODO("not implemented")
+            }
 
             override fun getHeight() = SIZE.rows * FONT.getHeight()
 
             override fun getWidth() = SIZE.columns * FONT.getWidth()
 
-            override fun draw() {
+            override fun doRender() {
                 drawn.set(true)
             }
         }
     }
 
-    @Test
-    fun shouldSubscribeToDrawWhenCreated() {
-        val drawTriggered = AtomicBoolean(false)
-        EventBus.subscribe(EventType.Draw, {
-            drawTriggered.set(true)
-        })
-
-        target.onCreated()
-
-        EventBus.emit(EventType.Draw)
-
-        assertThat(drawTriggered.get()).isTrue()
-    }
-
-    @Test
-    fun shouldProperlyCalculatePreferredSize() {
-        assertThat(target.getPreferredSize()).isEqualTo(Dimension(target.getWidth(), target.getHeight()))
-    }
-
-    @Test
-    fun flushShouldTriggerDraw() {
-        target.flush()
-
-        assertThat(drawn.get()).isTrue()
-    }
 
     @Test
     fun shouldProperlyDraw() {
@@ -71,9 +55,9 @@ class Java2DTerminalImplementationTest {
 
         target.setCursorVisibility(true)
 
-        target.draw(image.createGraphics())
+        target.doRender()
 
-        // TODO: asssert
+        // TODO: asssert ?
     }
 
     companion object {
