@@ -16,7 +16,14 @@ import org.codetome.zircon.api.behavior.Drawable
  *
  * [TextCharacterString] comes with its own builder and you can create them in a simple way from plain Java [String]s.
  */
-interface TextCharacterString : Drawable {
+interface TextCharacterString : Drawable, Collection<TextCharacter> {
 
     fun getTextCharacters(): List<TextCharacter>
+
+    /**
+     * Creates a new [TextCharacterString] which contains the contents of `this` string and the `other` string.
+     * The original strings are left untouched. So if you `plus` `[x, y]` to `[a, b]`, you'll get `[a, b, x, y]`
+     * **Note that** the [TextWrap] form the original (`this`) string will be used in the resulting string!
+     */
+    operator fun plus(other: TextCharacterString): TextCharacterString
 }
