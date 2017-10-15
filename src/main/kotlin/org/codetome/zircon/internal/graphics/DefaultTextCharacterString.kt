@@ -14,7 +14,7 @@ data class DefaultTextCharacterString(private val textChars: List<TextCharacter>
                                       private val textWrap: TextWrap,
                                       private val boundable: Boundable = DefaultBoundable(
                                               size = Size.of(textChars.size, 1)))
-    : TextCharacterString, Boundable by boundable {
+    : TextCharacterString, Boundable by boundable, Collection<TextCharacter> by textChars {
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
         val (cols, rows) = surface.getBoundableSize()
@@ -29,7 +29,7 @@ data class DefaultTextCharacterString(private val textChars: List<TextCharacter>
         cursorHandler.putCursorAt(offset)
         surface.setCharacterAt(cursorHandler.getCursorPosition(), charIter.next())
 
-        if (cursorIsNotAtBottomRightCorner(cursorHandler)) {
+        if (cursorIsNotAtBottomRightCorner(cursorHandler) && charIter.hasNext()) {
             do {
                 cursorHandler.moveCursorForward()
                 surface.setCharacterAt(cursorHandler.getCursorPosition(), charIter.next())
@@ -44,8 +44,12 @@ data class DefaultTextCharacterString(private val textChars: List<TextCharacter>
         }
     }
 
+    override fun getTextCharacters() = textChars
+
+    override fun plus(other: TextCharacterString) = DefaultTextCharacterString(
+            textChars = textChars.plus(other.getTextCharacters()),
+            textWrap = textWrap)
+
     private fun cursorIsNotAtBottomRightCorner(cursorHandler: DefaultCursorHandler) =
             (cursorHandler.isCursorAtTheLastRow() && cursorHandler.isCursorAtTheEndOfTheLine()).not()
-
-    override fun getTextCharacters() = textChars
 }

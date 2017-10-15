@@ -8,6 +8,7 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextCharacterStringBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.color.ANSITextColor
+import org.codetome.zircon.api.graphics.TextCharacterString
 import org.codetome.zircon.api.graphics.TextWrap
 import org.junit.Before
 import org.junit.Test
@@ -77,7 +78,7 @@ class DefaultTextCharacterStringTest {
     }
 
     @Test
-    fun shouldProperlyWriteNoWrapStringToTextImage() {
+    fun shouldProperlyWriteNoWrapOverlappingStringToTextImage() {
         val surface = TextImageBuilder.newBuilder()
                 .size(Size.of(2, 2))
                 .build()
@@ -95,8 +96,6 @@ class DefaultTextCharacterStringTest {
                 .isEqualTo(' ')
         assertThat(surface.getCharacterAt(Position.of(1, 1)).get().getCharacter())
                 .isEqualTo(' ')
-
-
     }
 
     @Test
@@ -164,6 +163,70 @@ class DefaultTextCharacterStringTest {
                 .isEqualTo('X')
 
 
+    }
+
+    @Test
+    fun shouldProperlyWriteStringToTextImageWhenLengthIs1() {
+        val surface = TextImageBuilder.newBuilder()
+                .size(Size.of(2, 2))
+                .build()
+
+        TextCharacterStringBuilder.newBuilder()
+                .text("T")
+                .build().drawOnto(surface, Position.of(0, 0))
+
+        assertThat(surface.getCharacterAt(Position.of(0, 0)).get().getCharacter())
+                .isEqualTo('T')
+        assertThat(surface.getCharacterAt(Position.of(1, 0)).get().getCharacter())
+                .isEqualTo(' ')
+        assertThat(surface.getCharacterAt(Position.of(0, 1)).get().getCharacter())
+                .isEqualTo(' ')
+        assertThat(surface.getCharacterAt(Position.of(1, 1)).get().getCharacter())
+                .isEqualTo(' ')
+
+
+    }
+
+    @Test
+    fun shouldProperlyTruncateStringWhenDoesNotFitOnTextImage() {
+        val surface = TextImageBuilder.newBuilder()
+                .size(Size.of(2, 2))
+                .build()
+
+        TextCharacterStringBuilder.newBuilder()
+                .text("TEXTTEXT")
+                .build().drawOnto(surface, Position.of(0, 0))
+
+        assertThat(surface.getCharacterAt(Position.of(0, 0)).get().getCharacter())
+                .isEqualTo('T')
+        assertThat(surface.getCharacterAt(Position.of(1, 0)).get().getCharacter())
+                .isEqualTo('E')
+        assertThat(surface.getCharacterAt(Position.of(0, 1)).get().getCharacter())
+                .isEqualTo('X')
+        assertThat(surface.getCharacterAt(Position.of(1, 1)).get().getCharacter())
+                .isEqualTo('T')
+
+
+    }
+
+    @Test
+    fun shouldAddTwoStringsTogetherProperly() {
+
+        val string = TextCharacterStringBuilder.newBuilder()
+                .text("TE")
+                .build()
+
+        val other = TextCharacterStringBuilder.newBuilder()
+                .text("XT")
+                .build()
+
+        val template = TextCharacterBuilder.newBuilder().build()
+
+        assertThat(string.plus(other).getTextCharacters()).containsExactly(
+                template.withCharacter('T'),
+                template.withCharacter('E'),
+                template.withCharacter('X'),
+                template.withCharacter('T'))
     }
 
     companion object {

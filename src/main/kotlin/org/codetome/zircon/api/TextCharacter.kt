@@ -13,6 +13,11 @@ import org.codetome.zircon.internal.BuiltInModifiers.Border
  * example)!
  *
  * Use the with* methods to of new instances based on this one.
+ *
+ * Two [TextCharacter]s are considered `equal` if they have the same:
+ * - character,
+ * - styleSet and
+ * tags!
  */
 interface TextCharacter {
 
