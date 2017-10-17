@@ -3,7 +3,6 @@ package org.codetome.zircon.api.resource
 import org.codetome.zircon.api.util.FontUtils
 import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
 import org.codetome.zircon.internal.font.cache.NoFontRegionCache
-import org.codetome.zircon.internal.font.cache.PhysicalFontCachingStrategy
 import org.codetome.zircon.internal.font.impl.PhysicalFont
 import java.awt.Font
 import java.awt.GraphicsEnvironment
@@ -65,8 +64,7 @@ enum class PhysicalFontResource(private val fontName: String,
                     width = FontUtils.getFontWidth(font),
                     height = FontUtils.getFontHeight(font),
                     cache = if(cacheFonts) {
-                        DefaultFontRegionCache(
-                                imageCachingStrategy = PhysicalFontCachingStrategy())
+                        DefaultFontRegionCache()
                     } else {
                         NoFontRegionCache()
                     },

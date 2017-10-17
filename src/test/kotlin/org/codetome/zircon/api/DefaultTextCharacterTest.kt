@@ -1,6 +1,7 @@
 package org.codetome.zircon.api
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.fail
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
@@ -12,6 +13,20 @@ import org.junit.Test
 
 @Suppress("UsePropertyAccessSyntax")
 class DefaultTextCharacterTest {
+
+    @Test
+    fun shouldGenerateProperCacheKey() {
+        val result = TextCharacterBuilder.newBuilder()
+                .character('x')
+                .backgroundColor(ANSITextColor.GREEN)
+                .foregroundColor(TextColorFactory.fromString("#aabbcc"))
+                .modifiers(Bold)
+                .tag("foo", "bar")
+                .build()
+                .generateCacheKey()
+
+        assertThat(result).isEqualTo("x170187204255GREENBoldfoobar")
+    }
 
     @Test
     fun defaultCharacterShouldBeEmptyStringWithBlackAndWhiteAndNoModifiers() {

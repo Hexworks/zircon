@@ -4,6 +4,7 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.internal.BuiltInModifiers.Border
+import org.codetome.zircon.internal.behavior.Cacheable
 
 /**
  * Represents a single character with additional metadata such as colors and modifiers.
@@ -19,7 +20,7 @@ import org.codetome.zircon.internal.BuiltInModifiers.Border
  * - styleSet and
  * tags!
  */
-interface TextCharacter {
+interface TextCharacter : Cacheable {
 
     fun getCharacter(): Char
 

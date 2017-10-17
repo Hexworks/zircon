@@ -2,6 +2,7 @@ package org.codetome.zircon.api.graphics
 
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.color.TextColor
+import org.codetome.zircon.internal.behavior.Cacheable
 
 /**
  * Represents style information which is handled by Zircon like
@@ -10,7 +11,7 @@ import org.codetome.zircon.api.color.TextColor
  * - modifiers
  * and a set of useful operations on them.
  */
-interface StyleSet {
+interface StyleSet : Cacheable {
 
     /**
      * Returns the foreground color.

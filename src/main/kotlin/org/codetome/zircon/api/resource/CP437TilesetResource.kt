@@ -2,13 +2,11 @@ package org.codetome.zircon.api.resource
 
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.internal.font.cache.CP437TilesetCachingStrategy
 import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
 import org.codetome.zircon.internal.font.cache.NoFontRegionCache
 import org.codetome.zircon.internal.font.impl.Java2DFont
 import org.codetome.zircon.internal.font.transformer.Java2DFontRegionCloner
 import org.codetome.zircon.internal.font.transformer.Java2DFontRegionColorizer
-import java.awt.image.BufferedImage
 import java.io.InputStream
 import javax.imageio.ImageIO
 
@@ -92,7 +90,7 @@ enum class CP437TilesetResource(private val tilesetName: String,
                     width = width,
                     height = height,
                     cache = if(cacheFonts) {
-                        DefaultFontRegionCache(CP437TilesetCachingStrategy())
+                        DefaultFontRegionCache()
                     } else {
                         NoFontRegionCache()
                     },

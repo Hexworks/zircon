@@ -7,6 +7,13 @@ import org.junit.Test
 class DefaultTextColorTest {
 
     @Test
+    fun shouldGenerateProperCacheKey() {
+        val result = DefaultTextColor(RED, GREEN, BLUE, 123).generateCacheKey()
+
+        assertThat(result).isEqualTo("51015123")
+    }
+
+    @Test
     fun shouldCreateDefaultTextColorWithProperDefaultAlpha() {
         val result = DefaultTextColor(RED, GREEN, BLUE)
 

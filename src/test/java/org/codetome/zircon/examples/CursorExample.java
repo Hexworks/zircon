@@ -41,5 +41,7 @@ public class CursorExample {
             terminal.putCharacter(text.charAt(i));
         }
 
+        terminal.flush();
+
     }
 }

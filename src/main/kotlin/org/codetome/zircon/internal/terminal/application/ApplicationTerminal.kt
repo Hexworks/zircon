@@ -53,6 +53,7 @@ abstract class ApplicationTerminal(
                     blinkOn = !blinkOn
                     if (hasBlinkingText) {
                         doRender()
+                        flush()
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()

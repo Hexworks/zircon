@@ -1,11 +1,26 @@
 package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
+import org.codetome.zircon.api.Modifiers
+import org.codetome.zircon.api.Modifiers.BorderPosition.*
+import org.codetome.zircon.api.Modifiers.BorderType.*
 import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.color.ANSITextColor
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.internal.BuiltInModifiers.*
 import org.junit.Test
 
 class DefaultStyleSetTest {
+
+    @Test
+    fun shouldBuildProperCacheKey() {
+        val result = StyleSetBuilder.newBuilder()
+                .backgroundColor(ANSITextColor.WHITE)
+                .foregroundColor(TextColorFactory.fromString("#aabbcc"))
+                .modifiers(Modifiers.CROSSED_OUT, Modifiers.BORDER.create(SOLID, TOP))
+                .build().generateCacheKey()
+        assertThat(result).isEqualTo("170187204255WHITECrossedOutBorderSOLIDTOP")
+    }
 
     @Test
     fun shouldAddModifiersProperly() {

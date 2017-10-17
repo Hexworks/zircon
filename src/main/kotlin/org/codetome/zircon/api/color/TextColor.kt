@@ -1,6 +1,8 @@
 package org.codetome.zircon.api.color
 
-interface TextColor {
+import org.codetome.zircon.internal.behavior.Cacheable
+
+interface TextColor : Cacheable {
 
     fun toAWTColor(): java.awt.Color
 

@@ -9,6 +9,12 @@ data class DefaultStyleSet(private var foregroundColor: TextColor = TextColorFac
                            private var backgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
                            private val modifiers: Set<Modifier> = setOf()) : StyleSet {
 
+    private val cacheKey = StringBuilder().apply {
+        append(foregroundColor.generateCacheKey())
+        append(backgroundColor.generateCacheKey())
+        append(modifiers.joinToString(separator = "", transform = {it.generateCacheKey()}))
+    }.toString()
+
     override fun getForegroundColor() = foregroundColor
 
     override fun getBackgroundColor() = backgroundColor
@@ -34,4 +40,6 @@ data class DefaultStyleSet(private var foregroundColor: TextColor = TextColorFac
     override fun withModifiers(vararg modifiers: Modifier) = withModifiers(modifiers.toSet())
 
     override fun withoutModifiers() = copy(modifiers = setOf())
+
+    override fun generateCacheKey() = cacheKey
 }
