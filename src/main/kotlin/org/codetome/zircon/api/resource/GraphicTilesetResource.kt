@@ -4,7 +4,6 @@ import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
-import org.codetome.zircon.internal.font.cache.GraphicTilesetCachingStrategy
 import org.codetome.zircon.internal.font.cache.NoFontRegionCache
 import org.codetome.zircon.internal.font.impl.Java2DFont
 import org.codetome.zircon.internal.font.transformer.Java2DFontRegionCloner
@@ -83,7 +82,7 @@ enum class GraphicTilesetResource(private val tilesetName: String,
                     width = tileInfo.size,
                     height = tileInfo.size,
                     cache = if (cacheFonts) {
-                        DefaultFontRegionCache(GraphicTilesetCachingStrategy())
+                        DefaultFontRegionCache()
                     } else {
                         NoFontRegionCache()
                     },

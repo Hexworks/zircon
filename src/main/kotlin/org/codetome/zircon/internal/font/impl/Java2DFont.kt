@@ -9,7 +9,6 @@ import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.font.FontRegionCache
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
-import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
 import org.codetome.zircon.internal.font.transformer.*
 import java.awt.image.BufferedImage
 import java.util.*
