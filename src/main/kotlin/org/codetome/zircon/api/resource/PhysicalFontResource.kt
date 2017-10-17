@@ -2,11 +2,11 @@ package org.codetome.zircon.api.resource
 
 import org.codetome.zircon.api.util.FontUtils
 import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
+import org.codetome.zircon.internal.font.cache.NoFontRegionCache
 import org.codetome.zircon.internal.font.cache.PhysicalFontCachingStrategy
 import org.codetome.zircon.internal.font.impl.PhysicalFont
 import java.awt.Font
 import java.awt.GraphicsEnvironment
-import java.awt.image.BufferedImage
 import java.io.InputStream
 
 /**
@@ -38,7 +38,9 @@ enum class PhysicalFontResource(private val fontName: String,
      * Loads a built-in [PhysicalFont].
      */
     @JvmOverloads
-    fun toFont(size: Float = 18f, withAntiAlias: Boolean = true)
+    fun toFont(size: Float = 18f,
+               withAntiAlias: Boolean = true,
+               cacheFonts: Boolean = true)
             = loadPhysicalFont(size, withAntiAlias, this.javaClass.getResourceAsStream(path))
 
     companion object {
@@ -50,7 +52,10 @@ enum class PhysicalFontResource(private val fontName: String,
          */
         @JvmOverloads
         @JvmStatic
-        fun loadPhysicalFont(size: Float = 18f, withAntiAlias: Boolean = true, source: InputStream): org.codetome.zircon.api.font.Font {
+        fun loadPhysicalFont(size: Float = 18f,
+                             withAntiAlias: Boolean = true,
+                             source: InputStream,
+                             cacheFonts: Boolean = true): org.codetome.zircon.api.font.Font {
             val font = Font.createFont(Font.TRUETYPE_FONT, source).deriveFont(size)
             val ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
             ge.registerFont(font)
@@ -59,8 +64,12 @@ enum class PhysicalFontResource(private val fontName: String,
                     source = font,
                     width = FontUtils.getFontWidth(font),
                     height = FontUtils.getFontHeight(font),
-                    cache = DefaultFontRegionCache(
-                            imageCachingStrategy = PhysicalFontCachingStrategy()),
+                    cache = if(cacheFonts) {
+                        DefaultFontRegionCache(
+                                imageCachingStrategy = PhysicalFontCachingStrategy())
+                    } else {
+                        NoFontRegionCache()
+                    },
                     withAntiAlias = withAntiAlias)
         }
     }
