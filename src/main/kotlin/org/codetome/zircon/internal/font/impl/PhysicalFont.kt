@@ -7,6 +7,7 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.util.FontUtils
 import org.codetome.zircon.internal.extensions.isNotPresent
+import org.codetome.zircon.internal.font.FontRegionCache
 import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
 import org.codetome.zircon.internal.font.transformer.*
 import java.awt.Graphics2D
@@ -20,7 +21,7 @@ import java.util.*
 class PhysicalFont(private val source: java.awt.Font,
                    private val width: Int,
                    private val height: Int,
-                   private val cache: DefaultFontRegionCache<FontTextureRegion>,
+                   private val cache: FontRegionCache<FontTextureRegion>,
                    private val withAntiAlias: Boolean) : Font {
 
     private val id = UUID.randomUUID()

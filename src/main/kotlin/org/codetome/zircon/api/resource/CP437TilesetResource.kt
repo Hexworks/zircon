@@ -4,6 +4,7 @@ import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.internal.font.cache.CP437TilesetCachingStrategy
 import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
+import org.codetome.zircon.internal.font.cache.NoFontRegionCache
 import org.codetome.zircon.internal.font.impl.Java2DFont
 import org.codetome.zircon.internal.font.transformer.Java2DFontRegionCloner
 import org.codetome.zircon.internal.font.transformer.Java2DFontRegionColorizer
@@ -47,10 +48,12 @@ enum class CP437TilesetResource(private val tilesetName: String,
     /**
      * Loads this built-in tileset as a [Java2DFont].
      */
-    fun toFont() = loadCP437Tileset(
+    @JvmOverloads
+    fun toFont(cacheFonts: Boolean = true) = loadCP437Tileset(
             width = width,
             height = height,
-            source = this.javaClass.getResourceAsStream(path))
+            source = this.javaClass.getResourceAsStream(path),
+            cacheFonts = cacheFonts)
 
     companion object {
 
@@ -70,7 +73,11 @@ enum class CP437TilesetResource(private val tilesetName: String,
          * this method!
          */
         @JvmStatic
-        fun loadCP437Tileset(width: Int, height: Int, source: InputStream): Font {
+        @JvmOverloads
+        fun loadCP437Tileset(width: Int,
+                             height: Int,
+                             source: InputStream,
+                             cacheFonts: Boolean = true): Font {
             val metadata = UNICODE_TO_CP437_LOOKUP.map { (char, index) ->
                 val x = index.rem(16)
                 val y = index.div(16)
@@ -84,7 +91,11 @@ enum class CP437TilesetResource(private val tilesetName: String,
                     metadata = metadata,
                     width = width,
                     height = height,
-                    cache = DefaultFontRegionCache(CP437TilesetCachingStrategy()),
+                    cache = if(cacheFonts) {
+                        DefaultFontRegionCache(CP437TilesetCachingStrategy())
+                    } else {
+                        NoFontRegionCache()
+                    },
                     regionTransformers = DF_TILESET_TRANSFORMERS)
         }
 

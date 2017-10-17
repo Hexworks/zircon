@@ -6,6 +6,7 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.BuiltInModifiers.*
 import org.codetome.zircon.internal.extensions.isNotPresent
+import org.codetome.zircon.internal.font.FontRegionCache
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
@@ -21,7 +22,7 @@ class Java2DFont(private val source: BufferedImage,
                  private val width: Int,
                  private val height: Int,
                  private val regionTransformers: List<FontRegionTransformer>,
-                 private val cache: DefaultFontRegionCache<FontTextureRegion>,
+                 private val cache: FontRegionCache<FontTextureRegion>,
                  private val metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy())
     : Font {
 
