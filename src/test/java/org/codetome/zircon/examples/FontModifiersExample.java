@@ -6,7 +6,6 @@ import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.junit.Test;
 
-import java.awt.image.BufferedImage;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

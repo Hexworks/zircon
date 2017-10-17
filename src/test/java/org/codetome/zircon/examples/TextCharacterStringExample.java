@@ -11,15 +11,8 @@ import org.codetome.zircon.api.graphics.TextCharacterString;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.junit.Test;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.codetome.zircon.api.Modifiers.*;
-import static org.codetome.zircon.api.Modifiers.BorderPosition.*;
-import static org.codetome.zircon.api.Modifiers.BorderType.SOLID;
 import static org.codetome.zircon.api.color.ANSITextColor.*;
 import static org.codetome.zircon.api.resource.CP437TilesetResource.TAFFER_20X20;
-import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16;
 
 public class TextCharacterStringExample {
 

@@ -22,7 +22,6 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.terminal.AbstractTerminal
 import org.codetome.zircon.internal.terminal.InternalTerminal
-import java.awt.image.BufferedImage
 import java.util.function.Consumer
 
 class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
@@ -102,15 +101,22 @@ class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
 
     @Synchronized
     override fun putCharacter(c: Char) {
-        if (c == '\n') {
+        putTextCharacter(TextCharacterBuilder.newBuilder()
+                .character(c)
+                .foregroundColor(getForegroundColor())
+                .backgroundColor(getBackgroundColor())
+                .modifiers(getActiveModifiers())
+                .build())
+    }
+
+    @Synchronized
+    override fun putTextCharacter(tc: TextCharacter) {
+        if (tc.getCharacter() == '\n') {
             moveCursorToNextLine()
-        } else if (TextUtils.isPrintableCharacter(c)) {
-            putCharacter(TextCharacterBuilder.newBuilder()
-                    .character(c)
-                    .foregroundColor(getForegroundColor())
-                    .backgroundColor(getBackgroundColor())
-                    .modifiers(getActiveModifiers())
-                    .build())
+        } else if (TextUtils.isPrintableCharacter(tc.getCharacter())) {
+            backend.setCharacterAt(getCursorPosition(), tc)
+            setPositionDirty(getCursorPosition())
+            moveCursorForward()
         }
     }
 
@@ -153,13 +159,6 @@ class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
                 fn(Cell(pos, char.get()))
             }
         }
-    }
-
-    @Synchronized
-    private fun putCharacter(textCharacter: TextCharacter) {
-        backend.setCharacterAt(getCursorPosition(), textCharacter)
-        setPositionDirty(getCursorPosition())
-        moveCursorForward()
     }
 
     private fun moveCursorToNextLine() {
