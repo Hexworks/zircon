@@ -127,6 +127,16 @@ class VirtualTerminalTest {
     }
 
     @Test
+    fun shouldPutTextCharacterWhenPutTextCharacterIsCalled() {
+        val tc = TextCharacterBuilder.newBuilder()
+                .character('a')
+                .build()
+        target.putTextCharacter(tc)
+        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
+                .isEqualTo(tc)
+    }
+
+    @Test
     fun shouldNotPutWhenNonPrintableCharacterIsPut() {
         target.putCharacter(1.toChar())
         var count = 0

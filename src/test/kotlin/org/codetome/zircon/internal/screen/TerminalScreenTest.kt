@@ -25,6 +25,22 @@ class TerminalScreenTest {
     }
 
     @Test
+    fun shouldBeAbleToPutCharacterWhenPutCharacterIsCalled() {
+        val char = 'x'
+        val expected = TextCharacterBuilder.newBuilder()
+                .styleSet(target.toStyleSet())
+                .character(char)
+                .build()
+        val currCursorPos = target.getCursorPosition()
+
+        target.putCharacter(char)
+
+        assertThat(target.getCharacterAt(currCursorPos).get()).isEqualTo(expected)
+        assertThat(target.getCursorPosition()).isEqualTo(currCursorPos.withRelativeColumn(1))
+
+    }
+
+    @Test
     fun shouldUseTerminalsFontWhenCreating() {
         assertThat(target.getCurrentFont().getId())
                 .isEqualTo(terminal.getCurrentFont().getId())
