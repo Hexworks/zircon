@@ -175,18 +175,18 @@ public class Playground {
                 .initialTerminalSize(Size.of(20, 8))
                 .build();
 
-        terminal.enableModifier(Modifiers.VERTICAL_FLIP);
+        terminal.enableModifiers(Modifiers.VERTICAL_FLIP);
         terminal.setForegroundColor(ANSITextColor.CYAN);
         terminal.putCharacter('a');
         terminal.resetColorsAndModifiers();
 
         terminal.setForegroundColor(ANSITextColor.GREEN);
-        terminal.enableModifier(Modifiers.HORIZONTAL_FLIP);
+        terminal.enableModifiers(Modifiers.HORIZONTAL_FLIP);
         terminal.putCharacter('b');
         terminal.resetColorsAndModifiers();
 
         terminal.setForegroundColor(ANSITextColor.RED);
-        terminal.enableModifier(Modifiers.CROSSED_OUT);
+        terminal.enableModifiers(Modifiers.CROSSED_OUT);
         terminal.putCharacter('c');
         terminal.flush();
     }
