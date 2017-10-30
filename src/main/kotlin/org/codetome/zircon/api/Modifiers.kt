@@ -1,6 +1,7 @@
 package org.codetome.zircon.api
 
-import org.codetome.zircon.internal.BuiltInModifiers.*
+import org.codetome.zircon.api.modifier.BorderBuilder
+import org.codetome.zircon.internal.SimpleModifiers.*
 
 /**
  * Represents the built-in modifiers supported by zircon.
@@ -24,8 +25,6 @@ object Modifiers {
     @JvmField
     val HIDDEN = Hidden
 
-    @JvmField
-    val BORDER = BorderFactory
 
     @JvmField
     val BOLD = Bold
@@ -33,11 +32,12 @@ object Modifiers {
     @JvmField
     val ITALIC = Italic
 
-    enum class BorderType {
-        SOLID, DOTTED, DASHED
-    }
-
-    enum class BorderPosition {
-        TOP, RIGHT, BOTTOM, LEFT
-    }
+    /**
+     * Shorthand for the default border which is:
+     * - a simple border
+     * - on all sides (top, right, bottom, left)
+     * @see BorderBuilder if you want to create custom borders
+     */
+    @JvmField
+    val BORDER = BorderBuilder.DEFAULT_BORDER
 }

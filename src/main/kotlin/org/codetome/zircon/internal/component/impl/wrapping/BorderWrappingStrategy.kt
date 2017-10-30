@@ -1,14 +1,14 @@
 package org.codetome.zircon.internal.component.impl.wrapping
 
-import org.codetome.zircon.api.Modifiers
-import org.codetome.zircon.api.Modifiers.BorderPosition
-import org.codetome.zircon.api.Modifiers.BorderPosition.*
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.modifier.Border
+import org.codetome.zircon.api.modifier.BorderBuilder
+import org.codetome.zircon.api.modifier.BorderPosition
+import org.codetome.zircon.api.modifier.BorderPosition.*
 import org.codetome.zircon.api.shape.LineFactory
-import org.codetome.zircon.internal.BuiltInModifiers.Border
 import org.codetome.zircon.internal.component.WrappingStrategy
 
 class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
@@ -23,10 +23,10 @@ class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
         val drawLeft = border.borderPositions.contains(LEFT)
         val drawRight = border.borderPositions.contains(RIGHT)
 
-        val topLeftBorders = mutableListOf<BorderPosition>()
-        val topRightBorders = mutableListOf<BorderPosition>()
-        val bottomLeftBorders = mutableListOf<BorderPosition>()
-        val bottomRightBorders = mutableListOf<BorderPosition>()
+        val topLeftBorders = mutableSetOf<BorderPosition>()
+        val topRightBorders = mutableSetOf<BorderPosition>()
+        val bottomLeftBorders = mutableSetOf<BorderPosition>()
+        val bottomRightBorders = mutableSetOf<BorderPosition>()
 
         if (drawTop) {
             topLeftBorders.add(TOP)
@@ -53,33 +53,37 @@ class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
         if (drawTop.or(drawLeft)) {
             textImage.getCharacterAt(topLeftPos).map { char ->
                 textImage.setCharacterAt(topLeftPos, char
-                        .withModifiers(Modifiers.BORDER.create(
-                                borderType = border.borderType,
-                                borderPositions = *topLeftBorders.toTypedArray())))
+                        .withModifiers(BorderBuilder.newBuilder()
+                                        .borderType(border.borderType)
+                                        .borderPositions(topLeftBorders)
+                                        .build()))
             }
         }
         if (drawTop.or(drawRight)) {
             textImage.getCharacterAt(topRightPos).map { char ->
                 textImage.setCharacterAt(topRightPos, char
-                        .withModifiers(Modifiers.BORDER.create(
-                                borderType = border.borderType,
-                                borderPositions = *topRightBorders.toTypedArray())))
+                        .withModifiers(BorderBuilder.newBuilder()
+                                .borderType(border.borderType)
+                                .borderPositions(topRightBorders)
+                                .build()))
             }
         }
         if (drawLeft.or(drawBottom)) {
             textImage.getCharacterAt(bottomLeftPos).map { char ->
                 textImage.setCharacterAt(bottomLeftPos, char
-                        .withModifiers(Modifiers.BORDER.create(
-                                borderType = border.borderType,
-                                borderPositions = *bottomLeftBorders.toTypedArray())))
+                        .withModifiers(BorderBuilder.newBuilder()
+                                .borderType(border.borderType)
+                                .borderPositions(bottomLeftBorders)
+                                .build()))
             }
         }
         if (drawRight.or(drawBottom)) {
             textImage.getCharacterAt(bottomRightPos).map { char ->
                 textImage.setCharacterAt(bottomRightPos, char
-                        .withModifiers(Modifiers.BORDER.create(
-                                borderType = border.borderType,
-                                borderPositions = *bottomRightBorders.toTypedArray())))
+                        .withModifiers(BorderBuilder.newBuilder()
+                                .borderType(border.borderType)
+                                .borderPositions(bottomRightBorders)
+                                .build()))
             }
         }
         if (size.columns > 2) {
@@ -90,7 +94,10 @@ class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
                         val topOffset = it.withRelativeColumn(1).withRelative(offset)
                         textImage.getCharacterAt(topOffset).map { char ->
                             textImage.setCharacterAt(topOffset, char
-                                    .withModifiers(Modifiers.BORDER.create(border.borderType, TOP)))
+                                    .withModifiers(BorderBuilder.newBuilder()
+                                            .borderType(border.borderType)
+                                            .borderPositions(TOP)
+                                            .build()))
                         }
                     }
                     if (drawBottom) {
@@ -98,7 +105,10 @@ class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
                                 .withRelativeRow(size.rows - 1)
                         textImage.getCharacterAt(bottomOffset).map { char ->
                             textImage.setCharacterAt(bottomOffset, char
-                                    .withModifiers(Modifiers.BORDER.create(border.borderType, BOTTOM)))
+                                    .withModifiers(BorderBuilder.newBuilder()
+                                            .borderType(border.borderType)
+                                            .borderPositions(BOTTOM)
+                                            .build()))
                         }
                     }
                 }
@@ -112,7 +122,10 @@ class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
                         val leftOffset = it.withRelativeRow(1).withRelative(offset)
                         textImage.getCharacterAt(leftOffset).map { char ->
                             textImage.setCharacterAt(leftOffset, char
-                                    .withModifiers(Modifiers.BORDER.create(border.borderType, LEFT)))
+                                    .withModifiers(BorderBuilder.newBuilder()
+                                            .borderType(border.borderType)
+                                            .borderPositions(LEFT)
+                                            .build()))
                         }
                     }
                     if (drawRight) {
@@ -120,7 +133,10 @@ class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
                                 .withRelativeColumn(size.columns - 1)
                         textImage.getCharacterAt(rightOffset).map { char ->
                             textImage.setCharacterAt(rightOffset, char
-                                    .withModifiers(Modifiers.BORDER.create(border.borderType, RIGHT)))
+                                    .withModifiers(BorderBuilder.newBuilder()
+                                            .borderType(border.borderType)
+                                            .borderPositions(RIGHT)
+                                            .build()))
                         }
                     }
                 }

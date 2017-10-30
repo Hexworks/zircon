@@ -1,14 +1,14 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Modifiers
-import org.codetome.zircon.api.Modifiers.BorderType.DASHED
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.builder.LabelBuilder
 import org.codetome.zircon.api.component.builder.PanelBuilder
+import org.codetome.zircon.api.modifier.BorderBuilder
+import org.codetome.zircon.api.modifier.BorderType
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.graphics.BoxType
@@ -26,7 +26,7 @@ class DefaultPanelTest {
                 .boxType(BOX_TYPE)
                 .title(TITLE)
                 .font(FONT)
-                .addBorder(Modifiers.BORDER.create(DASHED))
+                .addBorder(BorderBuilder.newBuilder().borderType(BorderType.DASHED).build())
                 .size(SIZE)
                 .wrapInBox()
                 .position(POSITION)

@@ -245,6 +245,6 @@ class DefaultContainerHandlerTest {
                 .build()
         val WRAPPERS = listOf(
                 ShadowWrappingStrategy(),
-                BorderWrappingStrategy(Modifiers.BORDER.create()))
+                BorderWrappingStrategy(Modifiers.BORDER))
     }
 }
