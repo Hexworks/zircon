@@ -1,4 +1,4 @@
-package org.codetome.zircon.beta
+package org.codetome.zircon.api.beta.component
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
@@ -43,6 +43,4 @@ class MapComponent(mapSegment: MapSegment, textImage: TextImage) : TextImage by 
                 green = (color.getGreen() * (1f - percentage)).toInt(),
                 blue = (color.getBlue() * (1f - percentage)).toInt())
     }
-
-
 }

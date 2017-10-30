@@ -1,4 +1,4 @@
-package org.codetome.zircon.beta
+package org.codetome.zircon.api.beta.component
 
 import org.codetome.zircon.api.TextCharacter
 

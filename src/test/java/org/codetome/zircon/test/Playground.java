@@ -2,56 +2,89 @@ package org.codetome.zircon.test;
 
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.builder.BoxBuilder;
-import org.codetome.zircon.api.builder.StyleSetBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
-import org.codetome.zircon.api.builder.TextImageBuilder;
-import org.codetome.zircon.api.color.ANSITextColor;
-import org.codetome.zircon.api.color.TextColorFactory;
-import org.codetome.zircon.api.graphics.TextImage;
+import org.codetome.zircon.api.component.Button;
+import org.codetome.zircon.api.component.CheckBox;
+import org.codetome.zircon.api.component.Header;
+import org.codetome.zircon.api.component.Panel;
+import org.codetome.zircon.api.component.builder.ButtonBuilder;
+import org.codetome.zircon.api.component.builder.CheckBoxBuilder;
+import org.codetome.zircon.api.component.builder.HeaderBuilder;
+import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
+import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.internal.graphics.BoxType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Playground {
 
+    private static final String TEXT = "Hello Zircon!";
+
     public static void main(String[] args) {
         final Terminal terminal = TerminalBuilder.newBuilder()
-                .font(CP437TilesetResource.REX_PAINT_20X20.toFont())
-                .initialTerminalSize(Size.of(10, 5))
+                .initialTerminalSize(Size.of(34, 18))
+                .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
+                .build();
+        final Screen screen = TerminalBuilder.createScreenFor(terminal);
+
+        // We create a Panel which will hold our components
+        // Note that you can add components to the screen without a panel as well
+        Panel panel = PanelBuilder.newBuilder()
+                .wrapInBox() // panels can be wrapped in a box
+                .title("Panel") // if a panel is wrapped in a box a title can be displayed
+                .addShadow() // shadow can be added
+                .size(Size.of(32, 16)) // the size must be smaller than the parent's size
+                .position(Position.OFFSET_1x1) // position is always relative to the parent
                 .build();
 
-        final TextImage img = TextImageBuilder.newBuilder()
-                .size(Size.of(10, 5))
-                .build(); // we create a new image to draw onto the terminal
+        final Header header = HeaderBuilder.newBuilder()
+                // this will be 1x1 left and down from the top left
+                // corner of the panel
+                .position(Position.OFFSET_1x1)
+                .text("Header")
+                .build();
 
-        img.setForegroundColor(ANSITextColor.WHITE);
-        img.setBackgroundColor(TextColorFactory.TRANSPARENT); // `putText` will use these
+        final CheckBox checkBox = CheckBoxBuilder.newBuilder()
+                .text("Check me!")
+                .position(Position.of(0, 1)
+                        // the position class has some convenience methods
+                        // for you to specify your component's position as
+                        // relative to another one
+                        .relativeToBottomOf(header))
+                .build();
 
-        BoxBuilder.newBuilder()
-                .boxType(BoxType.DOUBLE)
-                .size(Size.of(10, 5))
-                .style(StyleSetBuilder.newBuilder()
-                        .foregroundColor(ANSITextColor.CYAN)
-                        .backgroundColor(ANSITextColor.BLUE)
-                        .build())
-                .build()
-                .drawOnto(img, Position.DEFAULT_POSITION); // we create a box and draw it onto the image
+        final Button left = ButtonBuilder.newBuilder()
+                .position(Position.of(0, 1) // this means 1 row below the check box
+                        .relativeToBottomOf(checkBox))
+                .text("Left")
+                .build();
 
-        final List<String> logElements = new ArrayList<>();
-        logElements.add("foo");
-        logElements.add("bar"); // our log entries
+        final Button right = ButtonBuilder.newBuilder()
+                .position(Position.of(1, 0) // 1 column right relative to the left BUTTON
+                        .relativeToRightOf(left))
+                .text("Right")
+                .build();
 
-        for(int i = 0; i < logElements.size(); i++) {
-            img.putText(logElements.get(i), Position.OFFSET_1x1.withRelativeRow(i)); // we have to offset because of the box
-        }
+        panel.addComponent(header);
+        panel.addComponent(checkBox);
+        panel.addComponent(left);
+        panel.addComponent(right);
 
-        terminal.draw(img, Position.DEFAULT_POSITION); // you have to draw each time the image changes
+        screen.addComponent(panel);
 
-        terminal.flush();
+        // we can apply color themes to a screen
+        screen.applyColorTheme(ColorThemeResource.TECH_LIGHT.getTheme());
+
+        // this is how you can define interactions with a component
+        left.onMouseReleased((mouseAction -> {
+            screen.applyColorTheme(ColorThemeResource.ADRIFT_IN_DREAMS.getTheme());
+        }));
+
+        right.onMouseReleased((mouseAction -> {
+            screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_ORANGE.getTheme());
+        }));
+
+        // in order to see the changes you need to display your screen.
+        screen.display();
     }
 }

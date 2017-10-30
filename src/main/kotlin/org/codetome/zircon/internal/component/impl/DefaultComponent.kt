@@ -100,6 +100,12 @@ abstract class DefaultComponent(initialSize: Size,
         })
     }
 
+    override fun onMouseMoved(callback: Consumer<MouseAction>) {
+        EventBus.subscribe<MouseAction>(EventType.MouseMoved(getId()), { (mouseAction) ->
+            callback.accept(mouseAction)
+        })
+    }
+
     override fun getComponentStyles() = componentStyles
 
     override fun setComponentStyles(componentStyles: ComponentStyles) {
@@ -139,7 +145,7 @@ abstract class DefaultComponent(initialSize: Size,
                     .font(getCurrentFont())
                     .build())
 
-    final override fun getBoundableSize() = boundable.getBoundableSize()
+    override fun getBoundableSize() = boundable.getBoundableSize()
 
     override fun toString(): String {
         return "${javaClass.simpleName}(id=${id.toString().substring(0, 4)})"

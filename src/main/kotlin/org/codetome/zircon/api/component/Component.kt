@@ -33,6 +33,12 @@ interface Component : Positionable, Identifiable, Boundable, FontOverride {
     fun onMouseReleased(callback: Consumer<MouseAction>)
 
     /**
+     * Adds a callback to this [Component] which will be called
+     * when the mouse is moved over this component (to a new [org.codetome.zircon.api.Position]).
+     */
+    fun onMouseMoved(callback: Consumer<MouseAction>)
+
+    /**
      * Gets the styles this [Component] uses.
      */
     fun getComponentStyles() : ComponentStyles
