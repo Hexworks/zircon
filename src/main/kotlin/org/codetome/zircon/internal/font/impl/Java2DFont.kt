@@ -5,6 +5,7 @@ import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.modifier.Border
+import org.codetome.zircon.api.modifier.RayShade
 import org.codetome.zircon.internal.SimpleModifiers.*
 import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.font.FontRegionCache
@@ -80,8 +81,9 @@ class Java2DFont(private val source: BufferedImage,
                 Pair(CrossedOut::class, Java2DCrossedOutTransformer()),
                 Pair(Border::class, Java2DBorderTransformer()),
                 Pair(Blink::class, NoOpTransformer()),
-                Pair(Hidden::class, Java2DHiddenTransformer())
-
+                Pair(Hidden::class, Java2DHiddenTransformer()),
+                Pair(RayShade::class, Java2DRayShaderTransformer()),
+                Pair(Glow::class, Java2DGlowTransformer())
         ).toMap()
     }
 }

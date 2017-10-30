@@ -4,6 +4,7 @@ import org.codetome.zircon.api.Modifiers;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.font.Font;
+import org.codetome.zircon.api.modifier.RayShade;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.junit.Test;
 
@@ -87,6 +88,20 @@ public class FontModifiersExample {
         terminal.setBackgroundColor(WHITE);
         terminal.setForegroundColor(BLUE);
         terminal.putCharacter('H');
+
+        putEmptySpace(terminal);
+
+        terminal.enableModifiers(new RayShade());
+        terminal.setBackgroundColor(WHITE);
+        terminal.setForegroundColor(BLUE);
+        terminal.putCharacter('I');
+
+        putEmptySpace(terminal);
+
+        terminal.enableModifiers(Modifiers.GLOW);
+        terminal.setBackgroundColor(WHITE);
+        terminal.setForegroundColor(BLUE);
+        terminal.putCharacter('J');
 
         terminal.flush();
     }
