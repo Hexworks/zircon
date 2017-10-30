@@ -12,7 +12,7 @@ import org.codetome.zircon.api.builder.Builder
 data class BorderBuilder(
         private var borderType: BorderType = BorderType.SOLID,
         private var borderPositions: Set<BorderPosition> = BorderPosition.values().toSet())
-    : Builder<Modifier> {
+    : Builder<Border> {
 
     override fun build(): Border = Border(
             borderType = borderType,

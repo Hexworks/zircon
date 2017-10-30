@@ -25,12 +25,14 @@ object Modifiers {
     @JvmField
     val HIDDEN = Hidden
 
-
     @JvmField
     val BOLD = Bold
 
     @JvmField
     val ITALIC = Italic
+
+    @JvmField
+    val GLOW = Glow
 
     /**
      * Shorthand for the default border which is:
