@@ -164,13 +164,16 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
         if (mouseAction.position != lastMousePosition) {
             lastMousePosition = mouseAction.position
             container.fetchComponentByPosition(lastMousePosition)
-                    .filter {
-                        lastHoveredComponentId != it.getId()
-                    }
-                    .map {
-                        EventBus.emit(MouseOut(lastHoveredComponentId))
-                        lastHoveredComponentId = it.getId()
-                        EventBus.emit(MouseOver(it.getId()))
+                    .map { currComponent ->
+                        if(lastHoveredComponentId == currComponent.getId()) {
+                            if(lastFocusedComponent.getId() == currComponent.getId()) {
+                                EventBus.emit(MouseMoved(currComponent.getId()), mouseAction)
+                            }
+                        } else {
+                            EventBus.emit(MouseOut(lastHoveredComponentId))
+                            lastHoveredComponentId = currComponent.getId()
+                            EventBus.emit(MouseOver(currComponent.getId()))
+                        }
                     }
         }
     }

@@ -134,6 +134,13 @@ data class Position(val column: Int,
         Position.of(maxOf(compCol - column, 0), compRow + row)
     }
 
+    /**
+     * Transforms this [Position] to a [Size] so if
+     * this position is Position(column=2, row=3) it will become
+     * Size(columns=2, rows=3).
+     */
+    fun toSize() = Size.of(column, row)
+
     override fun compareTo(other: Position): Int {
         if (row < other.row) {
             return -1

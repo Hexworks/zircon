@@ -35,8 +35,11 @@ class DefaultShape(private val positions: Set<Position> = setOf())
         require(positions.isNotEmpty()) {
             "You can't transform a Shape with zero points!"
         }
-        return DefaultShape(positions.minBy { it }!!.let { topLeft ->
-            positions.map { it - topLeft }
-        }.toSet())
+        val offset = Position.of(
+                column = positions.minBy { it.column }!!.column,
+                row = positions.minBy { it.row }!!.row
+        )
+        return DefaultShape(positions.map { it - offset }
+                .toSet())
     }
 }

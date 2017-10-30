@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.graphics
 
+import org.codetome.zircon.api.Cell
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
@@ -15,12 +16,34 @@ import org.codetome.zircon.api.behavior.Styleable
 interface TextImage : DrawSurface, Styleable, Drawable {
 
     /**
+     * Returns a part of this [TextImage] as a new [TextImage].
+     * @param offset the position from which copying will start
+     * @param size the size of the newly created image.
+     * If the new image would overflow an exception is thrown
+     */
+    fun toSubImage(offset: Position, size: Size): TextImage
+
+    /**
      * Returns a copy of this image resized to a new size and using a specified filler character
      * if the new size is larger than the old and we need to fill in empty areas.
      * The copy will be independent from the one this method is
      * invoked on, so modifying one will not affect the other.
      */
     fun resize(newSize: Size, filler: TextCharacter): TextImage
+
+    /**
+     * Returns all the [Cell]s ([TextCharacter]s with associated [Position] information)
+     * of this [TextImage].
+     */
+    fun fetchCells(): Iterable<Cell>
+
+    /**
+     * Returns the [Cell]s in this [TextImage] from the given `offset`
+     * position and area.
+     * Throws an exception if either `offset` or `size` would overlap
+     * with this [TextImage].
+     */
+    fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell>
 
     /**
      * Combines this text image with another one. This method creates a new

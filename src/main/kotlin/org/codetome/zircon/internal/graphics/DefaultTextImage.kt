@@ -1,5 +1,6 @@
 package org.codetome.zircon.internal.graphics
 
+import org.codetome.zircon.api.Cell
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
@@ -68,11 +69,38 @@ class DefaultTextImage(size: Size,
         }
     }
 
-    override fun resize(newSize: Size, filler: TextCharacter): DefaultTextImage {
+    override fun resize(newSize: Size, filler: TextCharacter): TextImage {
         if (newSize.rows == buffer.size && (buffer.isEmpty() || newSize.columns == buffer[0].size)) {
             return this
         }
         return DefaultTextImage(newSize, buffer, filler)
+    }
+
+    @Synchronized
+    override fun toSubImage(offset: Position, size: Size): TextImage {
+        require(offset.toSize() + size <= getBoundableSize()) {
+            "The bounds supplied are overlapping with this image! this image size: '${getBoundableSize()}'," +
+                    " offset: '$offset', requested size: '$size'"
+        }
+        return TextImageBuilder.newBuilder()
+                .size(size)
+                .toCopy(copyArray(buffer, size, TextCharacterBuilder.EMPTY, offset))
+                .build()
+    }
+
+    override fun fetchCells(): Iterable<Cell> {
+        return fetchCellsBy(Position.DEFAULT_POSITION, getBoundableSize())
+    }
+
+    @Synchronized
+    override fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell> {
+        require(offset.toSize() + size <= getBoundableSize()) {
+            "The bounds supplied are overlapping with this image! this image size: '${getBoundableSize()}'," +
+                    " offset: '$offset', requested size: '$size'"
+        }
+        return size.fetchPositions().map {
+            Cell(it, getCharacterAt(it + offset).get())
+        }
     }
 
     @Synchronized
@@ -133,13 +161,16 @@ class DefaultTextImage(size: Size,
         }
     }
 
-    private fun copyArray(toCopy: Array<Array<TextCharacter>>, size: Size, filler: TextCharacter): Array<Array<TextCharacter>> {
+    private fun copyArray(toCopy: Array<Array<TextCharacter>>,
+                          size: Size,
+                          filler: TextCharacter,
+                          offset: Position = Position.DEFAULT_POSITION): Array<Array<TextCharacter>> {
         val result = (0 until size.rows).map {
             (0 until size.columns).map { filler }.toTypedArray()
         }.toTypedArray()
         size.fetchPositions().forEach { (col, row) ->
             if (row < toCopy.size && col < toCopy[row].size) {
-                result[row][col] = toCopy[row][col]
+                result[row][col] = toCopy[row + offset.row][col + offset.column]
             } else {
                 result[row][col] = filler
             }

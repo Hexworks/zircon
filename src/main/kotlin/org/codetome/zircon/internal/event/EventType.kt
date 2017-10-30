@@ -15,6 +15,8 @@ sealed class EventType {
     data class MousePressed(val componentId: UUID) : EventType()
 
     data class MouseReleased(val componentId: UUID) : EventType()
+
+    data class MouseMoved(val componentId: UUID): EventType()
     /**
      * A component was hovered over.
      */
