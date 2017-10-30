@@ -1,13 +1,12 @@
 package org.codetome.zircon.api
 
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.fail
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.ANSITextColor.*
 import org.codetome.zircon.api.color.TextColorFactory
-import org.codetome.zircon.internal.BuiltInModifiers.*
+import org.codetome.zircon.internal.SimpleModifiers.*
 import org.codetome.zircon.internal.DefaultTextCharacter
 import org.junit.Test
 
@@ -39,7 +38,7 @@ class DefaultTextCharacterTest {
     @Test
     fun shouldProperlyReportHavingABorderWhenThereIsBorder() {
         assertThat(TextCharacterBuilder.newBuilder()
-                .modifiers(BorderFactory.create())
+                .modifiers(Modifiers.BORDER)
                 .build().hasBorder()).isTrue()
     }
 

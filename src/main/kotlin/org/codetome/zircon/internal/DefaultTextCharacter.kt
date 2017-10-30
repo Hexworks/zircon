@@ -2,12 +2,11 @@ package org.codetome.zircon.internal
 
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
-import org.codetome.zircon.api.util.TextUtils
-import org.codetome.zircon.internal.BuiltInModifiers.*
+import org.codetome.zircon.api.modifier.Border
+import org.codetome.zircon.internal.SimpleModifiers.*
 
 data class DefaultTextCharacter(
         private val character: Char,
@@ -42,7 +41,7 @@ data class DefaultTextCharacter(
 
     override fun hasBorder(): Boolean = getModifiers().any { it is Border }
 
-    override fun fetchBorderData(): Set<BuiltInModifiers.Border> = getModifiers()
+    override fun fetchBorderData(): Set<Border> = getModifiers()
             .filter { it is Border }
             .map { it as Border }
             .toSet()

@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.font.transformer
 
-import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.modifier.BorderBuilder
 import org.codetome.zircon.internal.font.impl.Java2DFontTextureRegion
 import org.junit.Before
 import org.junit.Test
@@ -28,7 +28,7 @@ class Java2DBorderTransformerTest {
         val WIDTH = 10
         val HEIGHT = 10
         val CHAR = TextCharacterBuilder.newBuilder()
-                .modifiers(Modifiers.BORDER.create())
+                .modifiers(BorderBuilder.DEFAULT_BORDER)
                 .build()
     }
 }

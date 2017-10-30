@@ -1,5 +1,6 @@
 package org.codetome.zircon.examples;
 
+import org.codetome.zircon.api.Modifiers;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.font.Font;
@@ -10,8 +11,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.codetome.zircon.api.Modifiers.*;
-import static org.codetome.zircon.api.Modifiers.BorderPosition.*;
-import static org.codetome.zircon.api.Modifiers.BorderType.SOLID;
 import static org.codetome.zircon.api.color.ANSITextColor.*;
 import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16;
 
@@ -84,7 +83,7 @@ public class FontModifiersExample {
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(BORDER.create(SOLID, TOP, LEFT, RIGHT, BOTTOM));
+        terminal.enableModifiers(Modifiers.BORDER);
         terminal.setBackgroundColor(WHITE);
         terminal.setForegroundColor(BLUE);
         terminal.putCharacter('H');

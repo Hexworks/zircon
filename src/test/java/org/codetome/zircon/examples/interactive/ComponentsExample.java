@@ -13,6 +13,8 @@ import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection;
 import org.codetome.zircon.api.component.builder.*;
 import org.codetome.zircon.api.graphics.Layer;
+import org.codetome.zircon.api.modifier.BorderBuilder;
+import org.codetome.zircon.api.modifier.BorderType;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.resource.GraphicTilesetResource;
@@ -26,9 +28,6 @@ import org.junit.Test;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-
-import static org.codetome.zircon.api.Modifiers.BorderType.DOTTED;
-import static org.codetome.zircon.api.Modifiers.BorderType.SOLID;
 
 public class ComponentsExample {
 
@@ -131,7 +130,7 @@ public class ComponentsExample {
         final Panel borderedPanel = PANEL_TEMPLATE.createCopy()
                 .title("Bordered panel")
                 .position(Position.of(0, 2).relativeToBottomOf(boxedPanel))
-                .addBorder(Modifiers.BORDER.create(SOLID))
+                .addBorder(Modifiers.BORDER)
                 .build();
         borderedPanel.addComponent(LabelBuilder.newBuilder()
                 .text("Bordered panel")
@@ -142,7 +141,7 @@ public class ComponentsExample {
         final Panel borderedPanelWithShadow = PANEL_TEMPLATE.createCopy()
                 .title("Bordered panel")
                 .position(Position.of(0, 2).relativeToBottomOf(panelWithShadowAndBox))
-                .addBorder(Modifiers.BORDER.create(DOTTED))
+                .addBorder(BorderBuilder.newBuilder().borderType(BorderType.DOTTED).build())
                 .addShadow()
                 .build();
         borderedPanelWithShadow.addComponent(LabelBuilder.newBuilder()
@@ -459,7 +458,7 @@ public class ComponentsExample {
         Panel result = PanelBuilder.newBuilder()
                 .size(Size.of(8, 6))
                 .position(position)
-                .addBorder(Modifiers.BORDER.create())
+                .addBorder(Modifiers.BORDER)
                 .build();
         result.applyTheme(ADD_REMOVE_THEME);
         return result;

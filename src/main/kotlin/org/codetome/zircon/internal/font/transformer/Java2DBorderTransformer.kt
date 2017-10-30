@@ -1,10 +1,10 @@
 package org.codetome.zircon.internal.font.transformer
 
-import org.codetome.zircon.api.Modifiers
-import org.codetome.zircon.api.Modifiers.BorderPosition.*
-import org.codetome.zircon.api.Modifiers.BorderType.*
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.FontTextureRegion
+import org.codetome.zircon.api.modifier.BorderPosition.*
+import org.codetome.zircon.api.modifier.BorderType
+import org.codetome.zircon.api.modifier.BorderType.*
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import java.awt.BasicStroke
 import java.awt.Graphics2D
@@ -40,16 +40,16 @@ class Java2DBorderTransformer : FontRegionTransformer {
         ).toMap()
 
         private val FILLER_LOOKUP = mapOf(
-                Pair(TOP, { region: BufferedImage, graphics: Graphics2D, borderType: Modifiers.BorderType ->
+                Pair(TOP, { region: BufferedImage, graphics: Graphics2D, borderType: BorderType ->
                     BORDER_TYPE_LOOKUP[borderType]?.invoke(graphics, 0, 1, region.width, 1)
                 }),
-                Pair(BOTTOM, { region: BufferedImage, graphics: Graphics2D, borderType: Modifiers.BorderType ->
+                Pair(BOTTOM, { region: BufferedImage, graphics: Graphics2D, borderType: BorderType ->
                     BORDER_TYPE_LOOKUP[borderType]?.invoke(graphics, 0, region.height - 1, region.width, region.height - 1)
                 }),
-                Pair(LEFT, { region: BufferedImage, graphics: Graphics2D, borderType: Modifiers.BorderType ->
+                Pair(LEFT, { region: BufferedImage, graphics: Graphics2D, borderType: BorderType ->
                     BORDER_TYPE_LOOKUP[borderType]?.invoke(graphics, 1, 0, 1, region.height)
                 }),
-                Pair(RIGHT, { region: BufferedImage, graphics: Graphics2D, borderType: Modifiers.BorderType ->
+                Pair(RIGHT, { region: BufferedImage, graphics: Graphics2D, borderType: BorderType ->
                     BORDER_TYPE_LOOKUP[borderType]?.invoke(graphics, region.width - 1, 0, region.width - 1, region.height)
                 }))
                 .toMap()

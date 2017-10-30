@@ -4,7 +4,8 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
-import org.codetome.zircon.internal.BuiltInModifiers.*
+import org.codetome.zircon.api.modifier.Border
+import org.codetome.zircon.internal.SimpleModifiers.*
 import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.font.FontRegionCache
 import org.codetome.zircon.internal.font.FontRegionTransformer

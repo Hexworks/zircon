@@ -2,12 +2,12 @@ package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Modifiers
-import org.codetome.zircon.api.Modifiers.BorderPosition.*
-import org.codetome.zircon.api.Modifiers.BorderType.*
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColorFactory
-import org.codetome.zircon.internal.BuiltInModifiers.*
+import org.codetome.zircon.api.modifier.BorderBuilder
+import org.codetome.zircon.api.modifier.BorderPosition
+import org.codetome.zircon.internal.SimpleModifiers.*
 import org.junit.Test
 
 class DefaultStyleSetTest {
@@ -17,7 +17,7 @@ class DefaultStyleSetTest {
         val result = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITextColor.WHITE)
                 .foregroundColor(TextColorFactory.fromString("#aabbcc"))
-                .modifiers(Modifiers.CROSSED_OUT, Modifiers.BORDER.create(SOLID, TOP))
+                .modifiers(Modifiers.CROSSED_OUT, BorderBuilder.newBuilder().borderPositions(BorderPosition.TOP).build())
                 .build().generateCacheKey()
         assertThat(result).isEqualTo("170187204255WHITECrossedOutBorderSOLIDTOP")
     }

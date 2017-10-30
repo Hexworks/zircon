@@ -3,7 +3,7 @@ package org.codetome.zircon.api
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
-import org.codetome.zircon.internal.BuiltInModifiers.Border
+import org.codetome.zircon.api.modifier.Border
 import org.codetome.zircon.internal.behavior.Cacheable
 
 /**
