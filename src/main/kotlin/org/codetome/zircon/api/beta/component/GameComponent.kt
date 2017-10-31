@@ -2,10 +2,13 @@ package org.codetome.zircon.api.beta.component
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.Layerable
+import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.internal.behavior.Scrollable
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
@@ -20,11 +23,14 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
                                               initialFont: Font,
                                               position: Position,
                                               componentStyles: ComponentStyles,
-                                              scrollable: Scrollable = DefaultScrollable(
+                                              private val scrollable: Scrollable = DefaultScrollable(
                                                       cursorSpaceSize = visibleSize,
-                                                      virtualSpaceSize = gameArea.getSize()))
+                                                      virtualSpaceSize = gameArea.getSize()),
+                                              private val layerable: Layerable = DefaultLayerable(
+                                                      supportedFontSize = initialFont.getSize(),
+                                                      size = visibleSize))
 
-    : Scrollable by scrollable, DefaultComponent(
+    : Scrollable by scrollable, Layerable by layerable, DefaultComponent(
         initialSize = visibleSize,
         position = position,
         componentStyles = componentStyles,
@@ -48,6 +54,15 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
     override fun applyTheme(colorTheme: ColorTheme) {
     }
 
+    override fun transformToLayers(): List<Layer> {
+        return mutableListOf(LayerBuilder.newBuilder()
+                .textImage(getDrawSurface())
+                .offset(getPosition())
+                .build()).also {
+            it.addAll(layerable.getLayers())
+        }
+    }
+
     private fun refreshDrawSurface() {
         getBoundableSize().fetchPositions().forEach { pos ->
             val fixedPos = pos + getVisibleOffset()
@@ -57,6 +72,26 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
 
     private fun refreshVirtualSpaceSize() {
         setVirtualSpaceSize(gameArea.getSize())
+    }
+
+    override fun containsBoundable(boundable: Boundable): Boolean {
+        return getBoundable().containsBoundable(boundable)
+    }
+
+    override fun containsPosition(position: Position): Boolean {
+        return getBoundable().containsPosition(position)
+    }
+
+    override fun getBoundableSize(): Size {
+        return getBoundable().getBoundableSize()
+    }
+
+    override fun getPosition(): Position {
+        return getBoundable().getPosition()
+    }
+
+    override fun intersects(boundable: Boundable): Boolean {
+        return getBoundable().intersects(boundable)
     }
 
 }

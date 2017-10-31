@@ -114,6 +114,8 @@ abstract class DefaultComponent(initialSize: Size,
         drawSurface.applyColorsFromStyle(componentStyles.getCurrentStyle(), getNonThemeableOffset(), getEffectiveThemeableSize())
     }
 
+    fun getBoundable() = boundable
+
     fun getDrawSurface() = drawSurface
 
     /**

@@ -2,33 +2,38 @@ package org.codetome.zircon.examples.interactive;
 
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.Symbols;
-import org.codetome.zircon.api.builder.LayerBuilder;
-import org.codetome.zircon.api.builder.TerminalBuilder;
-import org.codetome.zircon.api.builder.TextCharacterBuilder;
-import org.codetome.zircon.api.color.TextColorFactory;
-import org.codetome.zircon.api.font.Font;
-import org.codetome.zircon.api.resource.CP437TilesetResource;
-import org.codetome.zircon.api.shape.FilledRectangleFactory;
-import org.codetome.zircon.api.color.TextColor;
+import org.codetome.zircon.api.beta.component.GameComponent;
+import org.codetome.zircon.api.beta.component.TextImageGameArea;
+import org.codetome.zircon.api.builder.*;
 import org.codetome.zircon.api.color.ANSITextColor;
+import org.codetome.zircon.api.color.TextColorFactory;
+import org.codetome.zircon.api.component.Button;
+import org.codetome.zircon.api.component.Label;
+import org.codetome.zircon.api.component.Panel;
+import org.codetome.zircon.api.component.builder.ButtonBuilder;
+import org.codetome.zircon.api.component.builder.PanelBuilder;
+import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Layer;
+import org.codetome.zircon.api.graphics.TextImage;
 import org.codetome.zircon.api.input.InputType;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
+import org.codetome.zircon.api.shape.FilledRectangleFactory;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.internal.graphics.BoxType;
 import org.junit.Test;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HideNSeek {
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
-    private static final int TERMINAL_WIDTH = 16;
-    private static final int TERMINAL_HEIGHT = 16;
+    private static final int TERMINAL_WIDTH = 60;
+    private static final int TERMINAL_HEIGHT = 30;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final Font FONT = CP437TilesetResource.TAFFER_20X20.toFont();
+    private static final Font FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont();
     private static boolean headless = false;
 
     static {
@@ -47,19 +52,56 @@ public class HideNSeek {
                 .font(FONT)
                 .initialTerminalSize(SIZE)
                 .buildTerminal(args.length > 0);
-        if(args.length > 0) {
+        if (args.length > 0) {
             headless = true;
         }
         final Screen screen = TerminalBuilder.createScreenFor(terminal);
         Size size = screen.getBoundableSize();
         screen.setCursorVisibility(false); // we don't want the cursor right now
-        FilledRectangleFactory
-                .buildFilledRectangle(Position.TOP_LEFT_CORNER, screen.getBoundableSize())
-                .toTextImage(TextCharacterBuilder.newBuilder()
-                        .backgroundColor(TextColorFactory.fromString("#665233"))
-                        .character(' ')
+
+        Panel actions = PanelBuilder.newBuilder()
+                .size(screen.getBoundableSize().withColumns(20))
+                .wrapInBox()
+                .title("Actions")
+                .boxType(BoxType.TOP_BOTTOM_DOUBLE)
+                .build();
+        Button wait = ButtonBuilder.newBuilder()
+                .text("Wait")
+                .build();
+        Button sleep = ButtonBuilder.newBuilder()
+                .text("Sleep")
+                .position(Position.DEFAULT_POSITION.withRelativeRow(1))
+                .build();
+        actions.addComponent(wait);
+        actions.addComponent(sleep);
+        screen.addComponent(actions);
+
+
+        final Panel gamePanel = PanelBuilder.newBuilder()
+                .size(screen.getBoundableSize().withColumns(40))
+                .position(Position.DEFAULT_POSITION.relativeToRightOf(actions))
+                .title("Game area")
+                .wrapInBox()
+                .boxType(BoxType.TOP_BOTTOM_DOUBLE)
+                .build();
+
+        final Size visibleGameAreaSize = gamePanel.getBoundableSize().minus(Size.of(2, 2));
+
+        final TextImage gameField = TextImageBuilder.newBuilder()
+                .size(visibleGameAreaSize)
+                .filler(TextCharacterBuilder.newBuilder()
+                        .backgroundColor(ANSITextColor.BLACK)
                         .build())
-                .drawOnto(screen, Position.TOP_LEFT_CORNER);
+                .build();
+
+        final GameComponent gameComponent = new GameComponent(
+                new TextImageGameArea(gameField),
+                gameField.getBoundableSize(),
+                CP437TilesetResource.PHOEBUS_16X16.toFont(),
+                Position.DEFAULT_POSITION,
+                ComponentStylesBuilder.DEFAULT);
+        screen.addComponent(gamePanel);
+        gamePanel.addComponent(gameComponent);
 
         final Layer player = new LayerBuilder()
                 .filler(TextCharacterBuilder.newBuilder()
@@ -67,73 +109,43 @@ public class HideNSeek {
                         .backgroundColor(TextColorFactory.fromRGB(0, 0, 0, 0))
                         .foregroundColor(ANSITextColor.WHITE)
                         .build())
-                .offset(Position.of(size.getColumns() / 2, size.getRows() / 2))
+                .offset(Position.of(visibleGameAreaSize.getColumns() / 2, visibleGameAreaSize.getRows() / 2))
                 .size(Size.ONE)
                 .build();
 
-        screen.pushLayer(player);
-        screen.display();
-        drawBuilding(screen, Position.of(5, 10));
+        gameComponent.pushLayer(player);
+
         enableMovement(screen, player);
+        screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_CYAN.getTheme());
         screen.display();
     }
 
-    private static void drawBuilding(Screen screen, Position position) {
-        Layer building = new LayerBuilder()
-                .filler(TextCharacterBuilder.DEFAULT_CHARACTER)
-                .offset(position)
-                .size(Size.of(4, 4))
-                .build();
-
-        TextColor windowColor = TextColorFactory.fromString("#808080");
-        for (int y = 0; y < 2; y++) {
-            for (int x = 0; x < 5; x++) {
-                building.setCharacterAt(Position.of(x, y).plus(position), TextCharacterBuilder.newBuilder()
-                        .backgroundColor(windowColor)
-                        .character(' ')
-                        .build());
-            }
-        }
-
-        drawCharAt(building, Position.of(0, 2).plus(position), Symbols.SINGLE_LINE_TOP_LEFT_CORNER);
-        drawCharAt(building, Position.of(1, 2).plus(position), Symbols.SINGLE_LINE_T_DOWN);
-        drawCharAt(building, Position.of(2, 2).plus(position), Symbols.SINGLE_LINE_T_DOWN);
-        drawCharAt(building, Position.of(3, 2).plus(position), Symbols.SINGLE_LINE_TOP_RIGHT_CORNER);
-        drawCharAt(building, Position.of(0, 3).plus(position), Symbols.SINGLE_LINE_BOTTOM_LEFT_CORNER);
-        drawCharAt(building, Position.of(1, 3).plus(position), Symbols.SINGLE_LINE_T_UP);
-        drawCharAt(building, Position.of(2, 3).plus(position), Symbols.SINGLE_LINE_T_UP);
-        drawCharAt(building, Position.of(3, 3).plus(position), Symbols.SINGLE_LINE_BOTTOM_RIGHT_CORNER);
-        screen.pushLayer(building);
-    }
-
-    private static void drawCharAt(Layer building, Position position, char c) {
-        TextColor wallColor = TextColorFactory.fromString("#333333");
-        TextColor windowColor = TextColorFactory.fromString("#808080");
-        building.setCharacterAt(position, TextCharacterBuilder.newBuilder()
-                .backgroundColor(wallColor)
-                .foregroundColor(windowColor)
-                .character(c)
-                .build());
-    }
-
-    private static void enableMovement(Screen screen, Layer player) {
+    private static void enableMovement(final Screen screen, final Layer player) {
         screen.onInput((input) -> {
             if (EXIT_CONDITIONS.contains(input.getInputType()) && !headless) {
                 System.exit(0);
             } else {
+                Position newPos = player.getPosition();
                 if (InputType.ArrowUp == input.getInputType()) {
-                    player.moveTo(player.getPosition().withRelativeRow(-1));
+                    if (player.getPosition().getRow() > 0) {
+                        newPos = player.getPosition().withRelativeRow(-1);
+                    }
                 }
                 if (InputType.ArrowDown == input.getInputType()) {
-                    player.moveTo(player.getPosition().withRelativeRow(1));
+                    newPos = player.getPosition().withRelativeRow(1);
                 }
                 if (InputType.ArrowLeft == input.getInputType()) {
-                    player.moveTo(player.getPosition().withRelativeColumn(-1));
+                    if (player.getPosition().getColumn() > 0) {
+                        newPos = player.getPosition().withRelativeColumn(-1);
+                    }
                 }
                 if (InputType.ArrowRight == input.getInputType()) {
-                    player.moveTo(player.getPosition().withRelativeColumn(1));
+                    newPos = player.getPosition().withRelativeColumn(1);
                 }
-                screen.display();
+                if (screen.containsPosition(newPos)) {
+                    player.moveTo(newPos);
+                }
+                screen.refresh();
             }
         });
     }
