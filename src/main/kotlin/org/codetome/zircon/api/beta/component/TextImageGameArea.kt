@@ -18,4 +18,7 @@ class TextImageGameArea(private val backend: TextImage)
 
     override fun getSegment(offset: Position, size: Size) =
             backend.fetchCellsBy(offset, size)
+
+    override fun getSegmentImage(offset: Position, size: Size) =
+            backend.toSubImage(offset, size)
 }

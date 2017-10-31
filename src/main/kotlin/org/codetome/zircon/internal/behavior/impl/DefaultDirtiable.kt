@@ -6,7 +6,7 @@ import java.util.concurrent.LinkedBlockingQueue
 
 class DefaultDirtiable : Dirtiable {
 
-    val dirtyPositions = LinkedBlockingQueue<Position>()
+    private val dirtyPositions = LinkedBlockingQueue<Position>()
 
     override fun isDirty() = dirtyPositions.isEmpty().not()
 

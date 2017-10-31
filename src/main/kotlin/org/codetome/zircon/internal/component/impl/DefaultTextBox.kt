@@ -203,7 +203,7 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
         EventBus.emit(EventType.ComponentChange)
     }
 
-    override fun applyTheme(colorTheme: ColorTheme) {
+    override fun applyColorTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getDarkBackgroundColor())

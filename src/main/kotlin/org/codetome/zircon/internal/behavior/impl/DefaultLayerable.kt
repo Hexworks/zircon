@@ -15,8 +15,8 @@ import java.util.concurrent.LinkedBlockingDeque
 
 class DefaultLayerable(private val supportedFontSize: Size,
                        size: Size,
-                       boundable: Boundable = DefaultBoundable(size),
-                       dirtiable: Dirtiable = DefaultDirtiable())
+                       private val boundable: Boundable = DefaultBoundable(size),
+                       private val dirtiable: Dirtiable = DefaultDirtiable())
     : InternalLayerable, Boundable by boundable, Dirtiable by dirtiable {
 
     private val layers: BlockingDeque<Layer> = LinkedBlockingDeque()
@@ -31,6 +31,7 @@ class DefaultLayerable(private val supportedFontSize: Size,
                         "${getSupportedFontSize()}, layer font size: ${layer.getCurrentFont().getSize()}"
             }
         }
+        layer.moveTo(layer.getPosition() + boundable.getPosition())
         layers.add(layer)
         markLayerPositionsDirty(layer)
     }

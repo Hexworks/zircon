@@ -60,7 +60,7 @@ class DefaultButtonTest {
 
     @Test
     fun shouldProperlyApplyTheme() {
-        target.applyTheme(THEME)
+        target.applyColorTheme(THEME)
         val styles = target.getComponentStyles()
         assertThat(styles.getStyleFor(ComponentState.DEFAULT))
                 .isEqualTo(EXPECTED_DEFAULT_STYLE)
@@ -81,7 +81,7 @@ class DefaultButtonTest {
 
     @Test
     fun shouldProperlyGiveFocus() {
-        target.applyTheme(THEME)
+        target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
         EventBus.subscribe(EventType.ComponentChange, {
             componentChanged.set(true)
@@ -96,7 +96,7 @@ class DefaultButtonTest {
 
     @Test
     fun shouldProperlyTakeFocus() {
-        target.applyTheme(THEME)
+        target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
         EventBus.subscribe(EventType.ComponentChange, {
             componentChanged.set(true)
@@ -110,7 +110,7 @@ class DefaultButtonTest {
 
     @Test
     fun shouldProperlyHandleMousePress() {
-        target.applyTheme(THEME)
+        target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
         EventBus.subscribe(EventType.ComponentChange, {
             componentChanged.set(true)
@@ -126,7 +126,7 @@ class DefaultButtonTest {
 
     @Test
     fun shouldProperlyHandleMouseRelease() {
-        target.applyTheme(THEME)
+        target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
         EventBus.subscribe(EventType.ComponentChange, {
             componentChanged.set(true)

@@ -19,7 +19,6 @@ import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
-import java.awt.image.BufferedImage
 import java.util.*
 import java.util.function.Consumer
 import kotlin.collections.LinkedHashMap
@@ -102,14 +101,14 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
                 false
             }
 
-    override fun applyTheme(colorTheme: ColorTheme) {
+    override fun applyColorTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(TextColorFactory.TRANSPARENT)
                         .backgroundColor(TextColorFactory.TRANSPARENT)
                         .build())
                 .build())
-        getComponents().forEach { it.applyTheme(colorTheme) }
+        getComponents().forEach { it.applyColorTheme(colorTheme) }
     }
 
     override fun onSelection(callback: Consumer<Selection>) {

@@ -53,7 +53,7 @@ class DefaultRadioButtonTest {
 
     @Test
     fun shouldProperlyApplyTheme() {
-        target.applyTheme(THEME)
+        target.applyColorTheme(THEME)
         val styles = target.getComponentStyles()
         assertThat(styles.getStyleFor(ComponentState.DEFAULT))
                 .isEqualTo(EXPECTED_DEFAULT_STYLE)
@@ -74,7 +74,7 @@ class DefaultRadioButtonTest {
 
     @Test
     fun shouldProperlyGiveFocus() {
-        target.applyTheme(THEME)
+        target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
         EventBus.subscribe(EventType.ComponentChange, {
             componentChanged.set(true)
@@ -89,7 +89,7 @@ class DefaultRadioButtonTest {
 
     @Test
     fun shouldProperlyTakeFocus() {
-        target.applyTheme(THEME)
+        target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
         EventBus.subscribe(EventType.ComponentChange, {
             componentChanged.set(true)
@@ -107,7 +107,7 @@ class DefaultRadioButtonTest {
         EventBus.subscribe(EventType.ComponentChange, {
             componentChanged.set(true)
         })
-        target.applyTheme(THEME)
+        target.applyColorTheme(THEME)
         target.select()
 
         assertThat(getButtonChar()).isEqualTo('O')
@@ -134,7 +134,7 @@ class DefaultRadioButtonTest {
         EventBus.subscribe(EventType.ComponentChange, {
             componentChanged.set(true)
         })
-        target.applyTheme(THEME)
+        target.applyColorTheme(THEME)
         target.select()
         target.removeSelection()
 

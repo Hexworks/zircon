@@ -35,11 +35,11 @@ data class PanelBuilder(private var font: Font = FontSettings.NO_FONT,
         this.font = font
     }
 
-    fun wrapInBox() = also {
+    fun wrapWithBox() = also {
         drawBox = true
     }
 
-    fun addShadow() = also {
+    fun wrapWithShadow() = also {
         drawShadow = true
     }
 

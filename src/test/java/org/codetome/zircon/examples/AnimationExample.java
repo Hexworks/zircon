@@ -16,8 +16,6 @@ import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.junit.Test;
 
-import java.awt.image.BufferedImage;
-
 public class AnimationExample {
 
     private static final Font FONT = CP437TilesetResource.YOBBO_20X20.toFont();
@@ -39,7 +37,7 @@ public class AnimationExample {
         screen.setCursorVisibility(false);
 
         final Panel panel = PanelBuilder.newBuilder()
-                .wrapInBox()
+                .wrapWithBox()
                 .title("Animation example")
                 .size(TERMINAL_SIZE)
                 .build();

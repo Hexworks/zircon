@@ -37,7 +37,7 @@ class DefaultLabel(private val text: String,
 
     override fun takeFocus(input: Optional<Input>) {}
 
-    override fun applyTheme(colorTheme: ColorTheme) {
+    override fun applyColorTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getDarkForegroundColor())
