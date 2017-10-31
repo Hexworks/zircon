@@ -27,15 +27,45 @@ interface Scrollable : CursorHandler {
      */
     fun getVisibleOffset(): Position
 
-    fun scrollOneRight()
+    /**
+     * Scrolls this [Scrollable] with one column to the right.
+     * If the bounds of the virtual space are already reached this method has no effect.
+     * @return the new visible offset
+     */
+    fun scrollOneRight(): Position
 
-    fun scrollRightTo(position: Int)
+    /**
+     * Scrolls this [Scrollable] with `columns` columns to the right.
+     * If the bounds of the virtual space are already reached this method has no effect.
+     * @return the new visible offset
+     */
+    fun scrollRightTo(columns: Int): Position
 
-    fun scrollOneLeft()
+    /**
+     * Scrolls this [Scrollable] with one column to the left.
+     * If the bounds of the virtual space are already reached this method has no effect.
+     * @return the new visible offset
+     */
+    fun scrollOneLeft(): Position
 
-    fun scrollLeftTo(position: Int)
+    /**
+     * Scrolls this [Scrollable] with `columns` columns to the left.
+     * If the bounds of the virtual space are already reached this method has no effect.
+     * @return the new visible offset
+     */
+    fun scrollLeftTo(position: Int): Position
 
-    fun scrollOneUp()
+    /**
+     * Scrolls this [Scrollable] with one row up.
+     * If the bounds of the virtual space are already reached this method has no effect.
+     * @return the new visible offset
+     */
+    fun scrollOneUp(): Position
 
-    fun scrollOneDown()
+    /**
+     * Scrolls this [Scrollable] with one row down.
+     * If the bounds of the virtual space are already reached this method has no effect.
+     * @return the new visible offset
+     */
+    fun scrollOneDown(): Position
 }

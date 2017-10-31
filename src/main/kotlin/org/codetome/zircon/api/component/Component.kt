@@ -1,5 +1,7 @@
 package org.codetome.zircon.api.component
 
+import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.behavior.Positionable
@@ -19,6 +21,23 @@ import java.util.function.Consumer
  * display information is a [Component].
  */
 interface Component : Positionable, Identifiable, Boundable, FontOverride {
+
+
+    /**
+     * Returns the effective [Size] of this [Component] which is the area remaining
+     * after the area taken up by its wrappers are subtracted from its boundable size.
+     * So if a [Component] has a box around it and it has a boundable size of (5, 5)
+     * its inner size will be (3, 3).
+     */
+    fun getEffectiveSize(): Size
+
+    /**
+     * Returns the effective [Position] of this [Component] which is the component's `position`
+     * offset by the space taken up by its wrappers.
+     * So if a [Component] has a box around it and it has a Position of (2, 3)
+     * its effective position will be (3, 4).
+     */
+    fun getEffectivePosition(): Position
 
     /**
      * Adds a callback to this [Component] which will be called
@@ -51,6 +70,6 @@ interface Component : Positionable, Identifiable, Boundable, FontOverride {
     /**
      * Applies a [ColorTheme] to this component and recursively to all its children (if any).
      */
-    fun applyTheme(colorTheme: ColorTheme)
+    fun applyColorTheme(colorTheme: ColorTheme)
 
 }

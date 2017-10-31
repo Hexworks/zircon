@@ -18,7 +18,6 @@ import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.impl.FontSettings
-import java.awt.image.BufferedImage
 import java.util.*
 
 open class DefaultContainer(initialSize: Size,
@@ -35,6 +34,9 @@ open class DefaultContainer(initialSize: Size,
     private val components = mutableListOf<InternalComponent>()
 
     override fun addComponent(component: Component) {
+        require(component !== this) {
+            "You can't add a component to itself!"
+        }
         (component as? DefaultComponent)?.let { dc ->
             dc.setPosition(dc.getPosition() + getEffectivePosition())
             require(components.none { it.intersects(component) }) {
@@ -121,7 +123,7 @@ open class DefaultContainer(initialSize: Size,
         return "${javaClass.simpleName}(id=${getId().toString().substring(0, 4)})"
     }
 
-    override fun applyTheme(colorTheme: ColorTheme) {
+    override fun applyColorTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getDarkForegroundColor())
@@ -129,7 +131,7 @@ open class DefaultContainer(initialSize: Size,
                         .build())
                 .build())
         components.forEach {
-            it.applyTheme(colorTheme)
+            it.applyColorTheme(colorTheme)
         }
     }
 

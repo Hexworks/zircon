@@ -42,7 +42,7 @@ public class ShootingExample {
     private static final ColorTheme THEME = ColorThemeResource.SOLARIZED_DARK_GREEN.getTheme();
     private static final PanelBuilder PANEL_TEMPLATE = PanelBuilder.newBuilder()
             .boxType(BoxType.TOP_BOTTOM_DOUBLE)
-            .wrapInBox();
+            .wrapWithBox();
     private static final TextColor LINE_COLOR = TextColorFactory.fromRGB(20, 120, 80, 125);
     private static final TextCharacter LINE_CHAR = TextCharacterBuilder.newBuilder()
             .foregroundColor(LINE_COLOR)

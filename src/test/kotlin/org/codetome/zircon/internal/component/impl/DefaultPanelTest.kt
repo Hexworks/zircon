@@ -22,13 +22,13 @@ class DefaultPanelTest {
     @Before
     fun setUp() {
         target = PanelBuilder.newBuilder()
-                .addShadow()
+                .wrapWithShadow()
                 .boxType(BOX_TYPE)
                 .title(TITLE)
                 .font(FONT)
                 .addBorder(BorderBuilder.newBuilder().borderType(BorderType.DASHED).build())
                 .size(SIZE)
-                .wrapInBox()
+                .wrapWithBox()
                 .position(POSITION)
                 .build() as DefaultPanel
     }
@@ -56,7 +56,7 @@ class DefaultPanelTest {
 
     @Test
     fun shouldProperlyApplyTheme() {
-        target.applyTheme(THEME)
+        target.applyColorTheme(THEME)
 
         ComponentState.values().forEach {
             assertThat(target.getComponentStyles().getStyleFor(it)).isEqualTo(EXPECTED_STYLE)
@@ -69,7 +69,7 @@ class DefaultPanelTest {
                 .text("text")
                 .build()
         target.addComponent(component)
-        target.applyTheme(THEME)
+        target.applyColorTheme(THEME)
 
         assertThat(component.getComponentStyles().getCurrentStyle())
                 .isEqualTo(DefaultLabelTest.DEFAULT_STYLE)

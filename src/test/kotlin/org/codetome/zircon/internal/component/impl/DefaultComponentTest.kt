@@ -38,7 +38,7 @@ class DefaultComponentTest {
                 componentStyles = STYLES,
                 wrappers = WRAPPERS,
                 initialFont = FONT) {
-            override fun applyTheme(colorTheme: ColorTheme) {
+            override fun applyColorTheme(colorTheme: ColorTheme) {
                 TODO("not implemented")
             }
 

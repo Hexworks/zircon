@@ -39,7 +39,7 @@ class DefaultLabelTest {
 
     @Test
     fun shouldProperlyApplyTheme() {
-        target.applyTheme(THEME)
+        target.applyColorTheme(THEME)
         val styles = target.getComponentStyles()
         assertThat(styles.getStyleFor(ComponentState.DEFAULT))
                 .isEqualTo(DEFAULT_STYLE)

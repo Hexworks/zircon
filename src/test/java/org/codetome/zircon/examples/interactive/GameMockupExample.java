@@ -23,7 +23,6 @@ import org.codetome.zircon.internal.graphics.BoxType;
 import org.junit.Test;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 public class GameMockupExample {
@@ -88,7 +87,7 @@ public class GameMockupExample {
 
         Panel menuPanel = PanelBuilder.newBuilder()
                 .boxType(BoxType.LEFT_RIGHT_DOUBLE)
-                .wrapInBox()
+                .wrapWithBox()
                 .position(menuPosition)
                 .size(Size.of(MAIN_MENU_PANEL_WIDTH, MAIN_MENU_PANEL_HEIGHT))
                 .build();
@@ -137,7 +136,7 @@ public class GameMockupExample {
         Panel difficultyPanel = PanelBuilder.newBuilder()
                 .size(Size.of((terminalSize.getColumns() - PANEL_SPACING) / 3, 9))
                 .position(Position.of(PANEL_SPACING, PANEL_SPACING))
-                .wrapInBox()
+                .wrapWithBox()
                 .boxType(BoxType.LEFT_RIGHT_DOUBLE)
                 .title(DIFFICULTY_LABEL)
                 .build();

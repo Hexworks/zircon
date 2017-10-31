@@ -26,7 +26,7 @@ import java.util.function.Consumer
 
 abstract class DefaultComponent(initialSize: Size,
                                 initialFont: Font,
-                                private var position: Position,
+                                position: Position,
                                 private var componentStyles: ComponentStyles,
                                 private val wrappers: Iterable<WrappingStrategy>,
                                 private val fontOverride: FontOverride = DefaultFontOverride(
@@ -35,7 +35,7 @@ abstract class DefaultComponent(initialSize: Size,
                                         .filler(TextCharacterBuilder.EMPTY)
                                         .size(initialSize)
                                         .build(),
-                                private var boundable: Boundable = DefaultBoundable(
+                                private val boundable: DefaultBoundable = DefaultBoundable(
                                         size = initialSize,
                                         position = position))
     : InternalComponent, Drawable by drawSurface, FontOverride by fontOverride {
@@ -61,10 +61,7 @@ abstract class DefaultComponent(initialSize: Size,
     }
 
     override fun setPosition(position: Position) {
-        this.position = position
-        this.boundable = DefaultBoundable(
-                size = getBoundableSize(),
-                position = position)
+        boundable.moveTo(position)
     }
 
     override fun containsBoundable(boundable: Boundable) = this.boundable.containsBoundable(boundable)
@@ -75,10 +72,10 @@ abstract class DefaultComponent(initialSize: Size,
 
     override fun getId() = id
 
-    override fun getPosition() = position
+    override fun getPosition() = boundable.getPosition()
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
-        surface.draw(drawSurface, position)
+        surface.draw(drawSurface, boundable.getPosition())
     }
 
     override fun fetchComponentByPosition(position: Position) =
@@ -121,12 +118,12 @@ abstract class DefaultComponent(initialSize: Size,
     /**
      * Returns the size which this component takes up without its wrappers.
      */
-    fun getEffectiveSize() = getBoundableSize() - getWrappersSize()
+    override fun getEffectiveSize() = getBoundableSize() - getWrappersSize()
 
     /**
      * Returns the position of this component offset by the wrappers it has.
      */
-    fun getEffectivePosition() = getPosition() + getWrapperOffset()
+    override fun getEffectivePosition() = getPosition() + getWrapperOffset()
 
     /**
      * Returns the position from which themes should be applied.

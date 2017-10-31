@@ -83,7 +83,7 @@ class DefaultCheckBox(private val text: String,
 
     override fun getText() = text
 
-    override fun applyTheme(colorTheme: ColorTheme) {
+    override fun applyColorTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getAccentColor())

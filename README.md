@@ -361,9 +361,9 @@ public class Playground {
         // We create a Panel which will hold our components
         // Note that you can add components to the screen without a panel as well
         Panel panel = PanelBuilder.newBuilder()
-                .wrapInBox() // panels can be wrapped in a box
+                .wrapWithBox() // panels can be wrapped in a box
                 .title("Panel") // if a panel is wrapped in a box a title can be displayed
-                .addShadow() // shadow can be added
+                .wrapWithShadow() // shadow can be added
                 .size(Size.of(32, 16)) // the size must be smaller than the parent's size
                 .position(Position.OFFSET_1x1) // position is always relative to the parent
                 .build();

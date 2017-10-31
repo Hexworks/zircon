@@ -9,7 +9,6 @@ import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Panel
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.internal.component.WrappingStrategy
-import java.awt.image.BufferedImage
 
 class DefaultPanel(private val title: String,
                    initialSize: Size,
@@ -25,7 +24,7 @@ class DefaultPanel(private val title: String,
 
     override fun getTitle() = title
 
-    override fun applyTheme(colorTheme: ColorTheme) {
+    override fun applyColorTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getBrightForegroundColor())
@@ -33,7 +32,7 @@ class DefaultPanel(private val title: String,
                         .build())
                 .build())
         getComponents().forEach {
-            it.applyTheme(colorTheme)
+            it.applyColorTheme(colorTheme)
         }
     }
 }
