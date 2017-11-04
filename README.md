@@ -14,8 +14,7 @@ It is usable out of the box for all JVM languages including Java, Kotlin and Sca
 - Shape and box drawing
 - Fonts and tilesets
 - REXPaint file loading
-- Color themes
-- And more...
+- Color themes, and more...
 
 *Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna). Check it out if you are looking for a terminal emulator instead
 
