@@ -472,7 +472,7 @@ them. Every [Layerable] can have an arbitrary amount of [Layer]s. [Layer]s are l
 transparency in them which can be used to create fancy effects. Look at the [LayerBuilder] to see how to use them.
 For more details check the [layers][layers] Wiki page.
 
-> Note that when creating `Layer`s you can set its `offset` from the builder but after attaching it to a `Terminal` or `Screen` you can change its positin by calling `moveTo` with a new `Position`.
+> Note that when creating `Layer`s you can set its `offset` from the builder but after attaching it to a `Terminal` or `Screen` you can change its position by calling `moveTo` with a new `Position`.
 
 ### Input handling
 Both the [Terminal] and the [Screen] interfaces implement [InputEmitter] which means that they re-emit all inputs from
