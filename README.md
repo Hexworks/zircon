@@ -5,9 +5,7 @@
 **Do you plan to make a roguelike?** Look no further, Zircon is a right tool for the job.
 
 Zircon is a Text GUI library which targets multiple platforms and designed specifically for game developers.
-It is usable out of the box for all JVM languages including Java, Kotlin and Scala.
-
-### Main highlights:
+It is usable out of the box for all JVM languages including Java, Kotlin and Scala. Things Zircon knows:
 
 - Animations
 - A component system with **built-in components for games**
