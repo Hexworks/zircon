@@ -2,12 +2,24 @@
 
 <img align="left" src="https://cdn.discordapp.com/attachments/277739394641690625/359444547174006795/Zircon_Skull_ascii.gif" />
 
+**Do you plan to make a roguelike?** Look no further, Zircon is a right tool for the job.
+
 Zircon is a Text GUI library which targets multiple platforms and designed specifically for game developers.
-It is usable out of the box for all JVM languages including Java.
+It is usable out of the box for all JVM languages including Java, Kotlin and Scala.
 
-Currently only a Swing implementation is present but we are working on a libGDX one.
+### Main highlights:
 
-*Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna) and parts of its codebase were ported to serve as a basis for this library.
+- Animations
+- A component system with **built-in components for games**
+- Layering
+- Mouse and keyboard input handling
+- Shape and box drawing
+- Fonts and tilesets
+- REXPaint file loading
+- Color themes
+- And more...
+
+*Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna). Check it out if you are looking for a terminal emulator instead
 
 ---
 
