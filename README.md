@@ -1,4 +1,4 @@
-# Zircon
+# Zircon [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Do%20you%20plan%20to%20make%20a%20roguelike%3F%20Look%20no%20further.%20Zircon%20is%20the%20right%20tool%20for%20the%20job.&url=https://github.com/Hexworks/zircon&hashtags=games,roguelikes)
 
 <img src="https://cdn.discordapp.com/attachments/363771631727804416/376372957041393677/Screen_Shot_2017-11-04_at_15.11.08.png" />
 
