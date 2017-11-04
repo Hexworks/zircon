@@ -18,7 +18,6 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.event.Subscription
 import org.codetome.zircon.internal.util.TextBuffer
-import java.awt.image.BufferedImage
 import java.util.*
 
 class DefaultTextBox @JvmOverloads constructor(text: String,
@@ -36,6 +35,8 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
 
     private val textBuffer = TextBuffer(text)
     private val subscriptions = mutableListOf<Subscription<*>>()
+    private var enabled = true
+    private var focused = false
 
     init {
         setText(text)
@@ -53,15 +54,79 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
                 true
             }
 
-    override fun acceptsFocus(): Boolean {
-        return true
+    override fun acceptsFocus() = enabled
+
+    override fun applyColorTheme(colorTheme: ColorTheme) {
+        setComponentStyles(ComponentStylesBuilder.newBuilder()
+                .defaultStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(colorTheme.getDarkBackgroundColor())
+                        .backgroundColor(colorTheme.getDarkForegroundColor())
+                        .build())
+                .disabledStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(colorTheme.getDarkForegroundColor())
+                        .backgroundColor(colorTheme.getDarkBackgroundColor())
+                        .build())
+                .focusedStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(colorTheme.getBrightBackgroundColor())
+                        .backgroundColor(colorTheme.getBrightForegroundColor())
+                        .build())
+                .build())
     }
 
-    override fun giveFocus(input: Optional<Input>): Boolean {
-        clearSubscriptions()
-        getDrawSurface().applyColorsFromStyle(getComponentStyles().giveFocus())
-        EventBus.emit(EventType.RequestCursorAt, getCursorPosition().withRelative(getPosition()))
+    @Synchronized
+    override fun enable() {
+        if (enabled.not()) {
+            enabled = true
+            if (focused) {
+                enableFocusedComponent()
+            }
+        }
+    }
+
+    @Synchronized
+    override fun disable() {
+        if (enabled) {
+            enabled = false
+            if (focused) {
+                disableTyping()
+            }
+        }
+        getDrawSurface().applyColorsFromStyle(getComponentStyles().disable())
         EventBus.emit(EventType.ComponentChange)
+    }
+
+    @Synchronized
+    override fun giveFocus(input: Optional<Input>): Boolean {
+        focused = true
+        if (enabled) {
+            enableFocusedComponent()
+        }
+        return enabled
+    }
+
+    @Synchronized
+    override fun takeFocus(input: Optional<Input>) {
+        focused = false
+        disableTyping()
+        getDrawSurface().applyColorsFromStyle(getComponentStyles().reset())
+        EventBus.emit(EventType.ComponentChange)
+    }
+
+    private fun enableFocusedComponent() {
+        cancelSubscriptions()
+        getDrawSurface().applyColorsFromStyle(getComponentStyles().giveFocus())
+        enableTyping()
+        EventBus.emit(EventType.ComponentChange)
+    }
+
+    private fun disableTyping() {
+        cancelSubscriptions()
+        EventBus.emit(EventType.HideCursor)
+        EventBus.emit(EventType.ComponentChange)
+    }
+
+    private fun enableTyping() {
+        EventBus.emit(EventType.RequestCursorAt, getCursorPosition().withRelative(getPosition()))
         subscriptions.add(EventBus.subscribe<KeyStroke>(EventType.KeyPressed, { (keyStroke) ->
             val cursorPos = getCursorPosition()
             val (offsetCols, offsetRows) = getVisibleOffset()
@@ -191,29 +256,6 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
             EventBus.emit(EventType.RequestCursorAt, getCursorPosition() + getPosition())
             EventBus.emit(EventType.ComponentChange)
         }))
-        return true
-    }
-
-    override fun takeFocus(input: Optional<Input>) {
-        subscriptions.forEach {
-            EventBus.unsubscribe(it)
-        }
-        getDrawSurface().applyColorsFromStyle(getComponentStyles().reset())
-        EventBus.emit(EventType.HideCursor)
-        EventBus.emit(EventType.ComponentChange)
-    }
-
-    override fun applyColorTheme(colorTheme: ColorTheme) {
-        setComponentStyles(ComponentStylesBuilder.newBuilder()
-                .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getDarkBackgroundColor())
-                        .backgroundColor(colorTheme.getDarkForegroundColor())
-                        .build())
-                .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getBrightBackgroundColor())
-                        .backgroundColor(colorTheme.getBrightForegroundColor())
-                        .build())
-                .build())
     }
 
     private fun scrollUpToEndOfPreviousLine(prevRow: StringBuilder) {
@@ -269,7 +311,7 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
         }
     }
 
-    private fun clearSubscriptions() {
+    private fun cancelSubscriptions() {
         subscriptions.forEach {
             EventBus.unsubscribe(it)
         }

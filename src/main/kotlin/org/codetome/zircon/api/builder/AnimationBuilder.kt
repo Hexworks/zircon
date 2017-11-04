@@ -44,6 +44,12 @@ data class AnimationBuilder private constructor(
         recalculateFrameCountAndLength()
     }
 
+    fun setPositionForAll(position: Position) = also {
+        for (i in 0 until length) {
+            addPosition(position)
+        }
+    }
+
     fun addPositions(positions: List<Position>) = also {
         this.positions.addAll(positions)
     }
@@ -53,9 +59,13 @@ data class AnimationBuilder private constructor(
     }
 
     override fun build(): Animation {
-        require(length == positions.size) {
-            "An Animation must have the same amount of positions as frames (one position for each frame)!" +
-                    " length: $length, position count: ${positions.size}"
+        if (positions.size == 0) {
+            setPositionForAll(Position.DEFAULT_POSITION)
+        } else {
+            require(length == positions.size) {
+                "An Animation must have the same amount of positions as frames (one position for each frame)!" +
+                        " length: $length, position count: ${positions.size}"
+            }
         }
         require(frameCount > 0) {
             "An Animation must contain at least one frame!"
