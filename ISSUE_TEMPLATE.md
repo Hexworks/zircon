@@ -4,6 +4,8 @@
 
 > The code blocks (\`x\`) are placeholders which you should fill in
 
+> The blockquotes (\>) and the horizontal rules should be deleted
+
 ---
 
 > BUG template. Only keep the relevant template and delete the others.
