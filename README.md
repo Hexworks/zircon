@@ -1,6 +1,6 @@
 # Zircon
 
-<img align="left" src="https://cdn.discordapp.com/attachments/277739394641690625/359444547174006795/Zircon_Skull_ascii.gif" />
+<img align="right" src="https://cdn.discordapp.com/attachments/277739394641690625/359444547174006795/Zircon_Skull_ascii.gif" />
 
 **Do you plan to make a roguelike?** Look no further, Zircon is a right tool for the job.
 
