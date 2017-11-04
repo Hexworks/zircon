@@ -139,6 +139,13 @@ data class Size(val columns: Int,
         return size
     }
 
+    /**
+     * Converts this [Size] to a [Position] which indicates a cell one column to the right
+     * from the top right of this [Size]. Use this if you want to position something
+     * at the *right* next to something.
+     */
+    fun toRightPosition() = Position.of(columns, 0)
+
     private fun returnZeroIfZero(size: Size): Size {
         return if (size.columns == 0 || size.rows == 0) {
             ZERO

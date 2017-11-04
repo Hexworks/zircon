@@ -12,4 +12,8 @@ interface TextBox : Component, Scrollable {
      */
     fun setText(text: String): Boolean
 
+    fun disable()
+
+    fun enable()
+
 }
