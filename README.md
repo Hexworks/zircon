@@ -1,6 +1,6 @@
 # Zircon
 
-<img src="https://cdn.discordapp.com/attachments/363771631727804416/376343378549276672/image.png" />
+<img src="https://cdn.discordapp.com/attachments/363771631727804416/376344166977765376/Screen_Shot_2017-11-04_at_13.16.48.png" />
 
 
 *Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna). Check it out if you are looking for a terminal emulator instead. 
