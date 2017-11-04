@@ -1,6 +1,6 @@
 # Zircon
 
-<img align="left" src="https://cdn.discordapp.com/attachments/277739394641690625/359444547174006795/Zircon_Skull_ascii.gif" />
+<img align="left" style="max-height: 200px;" src="https://cdn.discordapp.com/attachments/277739394641690625/359444547174006795/Zircon_Skull_ascii.gif" />
 
 Zircon is a Text GUI library which targets multiple platforms and designed specifically for game developers.
 It is usable out of the box for all JVM languages including Java.
