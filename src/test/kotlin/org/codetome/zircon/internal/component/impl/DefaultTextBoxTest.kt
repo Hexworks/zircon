@@ -94,7 +94,7 @@ class DefaultTextBoxTest {
         assertThat(styles.getStyleFor(ComponentState.ACTIVE))
                 .isEqualTo(DEFAULT_STYLE)
         assertThat(styles.getStyleFor(ComponentState.DISABLED))
-                .isEqualTo(DEFAULT_STYLE)
+                .isEqualTo(DISABLED_STYLE)
     }
 
     companion object {
@@ -110,6 +110,10 @@ class DefaultTextBoxTest {
         val FOCUSED_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.getBrightBackgroundColor())
                 .backgroundColor(THEME.getBrightForegroundColor())
+                .build()
+        val DISABLED_STYLE = StyleSetBuilder.newBuilder()
+                .foregroundColor(THEME.getDarkForegroundColor())
+                .backgroundColor(THEME.getDarkBackgroundColor())
                 .build()
         val COMPONENT_STYLES = ComponentStylesBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)
