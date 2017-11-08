@@ -29,7 +29,7 @@ class DefaultScrollable(cursorSpaceSize: Size,
 
     override fun scrollRightTo(columns: Int): Position {
         if (columns in 0..virtualSpaceSize.columns) {
-            offset = offset.withColumn(columns)
+            offset = offset.withColumn(columns) // TODO: is this ok?
         }
         return offset
     }
