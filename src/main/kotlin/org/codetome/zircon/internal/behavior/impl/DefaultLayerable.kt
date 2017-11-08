@@ -60,7 +60,7 @@ class DefaultLayerable(private val supportedFontSize: Size,
     }
 
     private fun fetchZIntersectionFor(queue: Queue<Layer>, position: Position): List<Pair<Font, TextCharacter>> {
-        return queue.filter { layer ->
+        return queue.filter { layer -> // TODO: optimize based on non-transparent backgrounds
             layer.containsPosition(position)
         }.map { layer ->
             Pair(layer.getCurrentFont(), layer.getCharacterAt(position).get())
