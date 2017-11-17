@@ -6,6 +6,7 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.modifier.Border
 import org.codetome.zircon.api.modifier.RayShade
+import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.SimpleModifiers.*
 import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.font.FontRegionCache
@@ -37,9 +38,7 @@ class Java2DFont(private val source: BufferedImage,
 
     override fun hasDataForChar(char: Char) = metadata.containsKey(char)
 
-    override fun fetchMetadataForChar(char: Char): List<CharacterMetadata> {
-        return metadata[char] ?: listOf()
-    }
+    override fun fetchMetadataForChar(char: Char): List<CharacterMetadata> = metadata[char] ?: listOf()
 
     override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion {
         val meta = fetchMetaFor(textCharacter)
@@ -51,6 +50,7 @@ class Java2DFont(private val source: BufferedImage,
                 image = it.transform(image, textCharacter)
             }
             cache.store(textCharacter, image)
+
             image
         } else {
             maybeRegion.get()
@@ -62,15 +62,21 @@ class Java2DFont(private val source: BufferedImage,
     }
 
     private fun fetchMetaFor(textCharacter: TextCharacter): CharacterMetadata {
+        if (!hasDataForChar(textCharacter.getCharacter()))
+            if (TextUtils.isPrintableCharacter(textCharacter.getCharacter()))
+                throw IllegalArgumentException("No texture region exists for printable character: '${textCharacter.getCharacter().toInt()}'!")
+            else
+                throw IllegalArgumentException("No texture region exists for non-printable character: '${textCharacter.getCharacter().toInt()}'!")
+
         val tags = textCharacter.getTags()
-        require(hasDataForChar(textCharacter.getCharacter())) {
-            "No metadata exists for character: '${textCharacter.getCharacter().toInt()}'!"
-        }
         val filtered = metadata[textCharacter.getCharacter()]!!.filter { it.tags.containsAll(tags.toList()) }
+
+
         require(filtered.isNotEmpty()) {
-            "No metadata found for tag(s): ${tags.joinToString()}"
+            "Can't find font texture region for tag(s): ${tags.joinToString()}"
         }
         return metadataPickingStrategy.pickMetadata(filtered)
+
     }
 
     companion object {
