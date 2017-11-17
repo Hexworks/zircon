@@ -40,6 +40,11 @@ class Java2DFontTest {
         target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER.withTags("foo"))
     }
 
+   @Test(expected = IllegalArgumentException::class)
+    fun shouldNotBeAbleToFetchRegionWithChar() {
+        target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter(1.toChar()))
+    }
+
     @Test
     fun shouldProperlyReportSize() {
         val expectedSize = 16
