@@ -19,12 +19,6 @@ Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki) | or [Creat
 
 ## Table of Contents
 
-- [A little Crash Course](https://github.com/Hexworks/zircon#a-little-crash-course)
-  - [Terminal](https://github.com/Hexworks/zircon#terminal)
-  - [Colors and StyleSets](https://github.com/Hexworks/zircon#colors-and-stylesets)
-  - [Modifiers](https://github.com/Hexworks/zircon#modifiers)
-  - [TextImages](https://github.com/Hexworks/zircon#textimages)
-  - [Screens](https://github.com/Hexworks/zircon#screens)
 - [Getting Started](https://github.com/Hexworks/zircon#getting-started)
   - [Some rules of thumb](https://github.com/Hexworks/zircon#some-rules-of-thumb)
   - [Creating a Terminal](https://github.com/Hexworks/zircon#creating-a-terminal)
@@ -39,78 +33,15 @@ Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki) | or [Creat
     - [Color themes](https://github.com/Hexworks/zircon#color-themes)
     - [Animations (BETA)](https://github.com/Hexworks/zircon#animations-beta)
     - [The API](https://github.com/Hexworks/zircon#the-api)
+- [A little Crash Course](https://github.com/Hexworks/zircon#a-little-crash-course)
+  - [Terminal](https://github.com/Hexworks/zircon#terminal)
+  - [Colors and StyleSets](https://github.com/Hexworks/zircon#colors-and-stylesets)
+  - [Modifiers](https://github.com/Hexworks/zircon#modifiers)
+  - [TextImages](https://github.com/Hexworks/zircon#textimages)
+  - [Screens](https://github.com/Hexworks/zircon#screens)
 - [Road map](https://github.com/Hexworks/zircon#road-map)
 - [License](https://github.com/Hexworks/zircon#license)
 - [Credits](https://github.com/Hexworks/zircon#credits)
-
-# A little Crash Course
-
-In order to work with Zircon you should get familiar with the core concepts. 
-Zircon provides multiple layers of abstractions and it depends on your needs which one you should pick.
-
-### Terminal
-At the lowest level Zircon provides the [Terminal] interface. This provides you with a surface on which 
-you can draw [TextCharacter]s. A [TextCharacter] is basically a character (like an `x`) with additional
-metadata like `foregroundColor` and `backgroundColor`. This surface sits on top of a GUI layer and
-completely abstracts away how that layer works. For example the default implementation of the [Terminal] 
-interface uses Swing under the hood. The main advantage of using [Terminal]s is that by implementing all
-its methods you can swap Swing with something else (like SWT) and use **all** higher
-level abstractions on top of it (like [Screen]s) which depend on [Terminal] (more on [Screen]s later).
-Working with [Terminal]s is *very* simple but somewhat limited. A [Terminal] is responsible for:
-
-- drawing characters (by position or by cursor) on the screen
-- handling inputs (keyboard and mouse) which are emitted by the GUI layer
-- handling the cursor which is visible to the user
-- handling [Layer]ing
-- storing style information
-- drawing [TextImage]s on top of it
-
-This seems like a lot of things to do at once so you might ask "How is this [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design))?".
-Zircon solves this problem with composition: All of the above mentioned categories are handled by an object 
-within a [Terminal] which is responsible for only one thing.
-For example [Terminal] implements the [Layerable] interface and internally all operations defined by it are 
-delegated to an object which implements [Layerable] only.
-You can peruse these [here](https://github.com/Hexworks/zircon/tree/master/src/main/kotlin/org/codetome/zircon/api/behavior).
-In this sense you can consider a [Terminal] as a [Facade](https://en.wikipedia.org/wiki/Facade_pattern).
-
-### Colors and StyleSets
-
-Objects like [TextCharacter]s can have foreground and background colors. You can either use the [ANSITextColor]
-`enum` to pick a pre-defined [TextColor] or you can create a new one by using [TextColorFactory]. This class
-has some useful factory methods for this like: `fromAWTColor`, `fromRGB` and `fromString`. The latter can be
-called with simple CSS-like strings (eg: `#334455`).
-
-If you don't want to set all these colors by hand or you want to have a color template and use it to set colors to
-multiple things you can use a [StyleSet] which is basically a [Value Object](https://martinfowler.com/bliki/ValueObject.html)
-which holds fore/background colors and modifiers.
-
-### Modifiers
-When working with [TextCharacter]s apart from giving them color you might want to apply some special
-[Modifier] to them like `UNDERLINE` or `VERTICAL_FLIP`.
-You can do this by picking the right [Modifier] from the [Modifiers] class.
-You can set any number of [Modifier]s to each [TextCharacter] individually and when
-you refresh your [Terminal] by calling `flush` on it you will see them applied.
-
-### TextImages
-An image built from [TextCharacter]s with color and style information. 
-These are completely in memory and not visible, but can be used when drawing on other [DrawSurface]s,
-like a [Screen] or a [Terminal]. In other words [TextImage]s are like real images but composed of
-[TextCharacter]s to create ASCII art and the like. 
-
-### Screens 
-
-[Screen]s are in-memory representations of your [Terminal]. They are double buffered
-which means that you write to a back-buffer and when you `refresh` your [Screen] only the changes will
-be written to the backing [Terminal] instance. Multiple [Screen]s can be attached to the same [Terminal]
-object which means that you can have more than one screen in your app and you can switch between them
-simultaneously by using the `display` method. [Screen]s also let you use [Component]s like [Button]s
-and [Panel]s.
-
-> If you want to read more about the design philosophy behind Zircon check [this][design-philosophy] page on Wiki!
-> 
-> If you are interested in how components work then [this][components] Wiki page can help you.
-
-Now that we got the basics covered, let's see how this all works in practice.
 
 ## Getting Started
 
@@ -509,6 +440,73 @@ Animations are a beta feature. More info [here][animations].
 
 If you just want to peruse the Zircon API just navigate [here][api].
 Everything which is intented to be the public API is there.
+
+## How Zircon works
+
+In order to work with Zircon you should get familiar with the core concepts. 
+Zircon provides multiple layers of abstractions and it depends on your needs which one you should pick.
+
+### Terminal
+At the lowest level Zircon provides the [Terminal] interface. This provides you with a surface on which 
+you can draw [TextCharacter]s. A [TextCharacter] is basically a character (like an `x`) with additional
+metadata like `foregroundColor` and `backgroundColor`. This surface sits on top of a GUI layer and
+completely abstracts away how that layer works. For example the default implementation of the [Terminal] 
+interface uses Swing under the hood. The main advantage of using [Terminal]s is that by implementing all
+its methods you can swap Swing with something else (like SWT) and use **all** higher
+level abstractions on top of it (like [Screen]s) which depend on [Terminal] (more on [Screen]s later).
+Working with [Terminal]s is *very* simple but somewhat limited. A [Terminal] is responsible for:
+
+- drawing characters (by position or by cursor) on the screen
+- handling inputs (keyboard and mouse) which are emitted by the GUI layer
+- handling the cursor which is visible to the user
+- handling [Layer]ing
+- storing style information
+- drawing [TextImage]s on top of it
+
+This seems like a lot of things to do at once so you might ask "How is this [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design))?".
+Zircon solves this problem with composition: All of the above mentioned categories are handled by an object 
+within a [Terminal] which is responsible for only one thing.
+For example [Terminal] implements the [Layerable] interface and internally all operations defined by it are 
+delegated to an object which implements [Layerable] only.
+You can peruse these [here](https://github.com/Hexworks/zircon/tree/master/src/main/kotlin/org/codetome/zircon/api/behavior).
+In this sense you can consider a [Terminal] as a [Facade](https://en.wikipedia.org/wiki/Facade_pattern).
+
+### Colors and StyleSets
+
+Objects like [TextCharacter]s can have foreground and background colors. You can either use the [ANSITextColor]
+`enum` to pick a pre-defined [TextColor] or you can create a new one by using [TextColorFactory]. This class
+has some useful factory methods for this like: `fromAWTColor`, `fromRGB` and `fromString`. The latter can be
+called with simple CSS-like strings (eg: `#334455`).
+
+If you don't want to set all these colors by hand or you want to have a color template and use it to set colors to
+multiple things you can use a [StyleSet] which is basically a [Value Object](https://martinfowler.com/bliki/ValueObject.html)
+which holds fore/background colors and modifiers.
+
+### Modifiers
+When working with [TextCharacter]s apart from giving them color you might want to apply some special
+[Modifier] to them like `UNDERLINE` or `VERTICAL_FLIP`.
+You can do this by picking the right [Modifier] from the [Modifiers] class.
+You can set any number of [Modifier]s to each [TextCharacter] individually and when
+you refresh your [Terminal] by calling `flush` on it you will see them applied.
+
+### TextImages
+An image built from [TextCharacter]s with color and style information. 
+These are completely in memory and not visible, but can be used when drawing on other [DrawSurface]s,
+like a [Screen] or a [Terminal]. In other words [TextImage]s are like real images but composed of
+[TextCharacter]s to create ASCII art and the like. 
+
+### Screens 
+
+[Screen]s are in-memory representations of your [Terminal]. They are double buffered
+which means that you write to a back-buffer and when you `refresh` your [Screen] only the changes will
+be written to the backing [Terminal] instance. Multiple [Screen]s can be attached to the same [Terminal]
+object which means that you can have more than one screen in your app and you can switch between them
+simultaneously by using the `display` method. [Screen]s also let you use [Component]s like [Button]s
+and [Panel]s.
+
+> If you want to read more about the design philosophy behind Zircon check [this][design-philosophy] page on Wiki!
+> 
+> If you are interested in how components work then [this][components] Wiki page can help you.
 
 ## Road map
 
