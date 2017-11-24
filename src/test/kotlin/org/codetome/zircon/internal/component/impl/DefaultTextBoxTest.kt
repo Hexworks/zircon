@@ -97,9 +97,18 @@ class DefaultTextBoxTest {
                 .isEqualTo(DISABLED_STYLE)
     }
 
+    @Test
+    fun shouldRefreshDrawSurfaceIfSetText() {
+        target.setText(UPDATE_TEXT.toString())
+        val character = target.getDrawSurface().getCharacterAt(Position.DEFAULT_POSITION)
+        assertThat(character.get().getCharacter())
+                .isEqualTo(UPDATE_TEXT)
+    }
+
     companion object {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "text"
+        val UPDATE_TEXT = 'U'
         val FONT = CP437TilesetResource.WANDERLUST_16X16.toFont()
         val SIZE = Size.of(10, 6)
         val POSITION = Position.of(4, 5)
