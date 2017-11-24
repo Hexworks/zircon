@@ -46,12 +46,16 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
 
     override fun getText() = textBuffer.getText() // TODO: line sep?
 
-    override fun setText(text: String) =
-            if (this.textBuffer.toString() == text) {
-                false
-            } else {
-                textBuffer.setText(text)
-                true
+    override fun setText(text: String): Boolean {
+                val isChanged = if (this.textBuffer.toString() == text) {
+                    false
+                } else {
+                    textBuffer.setText(text)
+                    true
+                }
+
+                refreshDrawSurface()
+                return isChanged
             }
 
     override fun acceptsFocus() = enabled
