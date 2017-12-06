@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.beta.animation.AnimationResource
+import org.codetome.zircon.api.animation.AnimationResource
 import org.junit.Test
 
 class DefaultAnimationTest {

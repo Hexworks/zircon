@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.graphics
 
-import org.codetome.zircon.api.beta.animation.AnimationHandler
+import org.codetome.zircon.api.animation.AnimationHandler
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.internal.graphics.DefaultAnimation
 import org.junit.Before
