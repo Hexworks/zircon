@@ -1,9 +1,11 @@
-package org.codetome.zircon.api.beta.animation
+package org.codetome.zircon.api.animation
 
+import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.graphics.Layer
 
+@Beta
 interface AnimationFrame {
 
     /**
