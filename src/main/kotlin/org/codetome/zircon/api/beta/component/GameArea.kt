@@ -1,19 +1,30 @@
 package org.codetome.zircon.api.beta.component
 
-import org.codetome.zircon.api.Cell
-import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.graphics.TextImage
-import java.util.*
 
 interface GameArea {
 
-    fun getSize(): Size
+    /**
+     * Returns the size of the 3D space this [GameArea] represents.
+     */
+    fun getSize(): Size3D
 
-    fun getCharacterAt(position: Position): Optional<TextCharacter>
+    /**
+     * Returns the [TextCharacter]s at the given [Position3D].
+     * Since there can be multiple layers on the same height a [List] is returned
+     * instead of a single [TextCharacter].
+     * Note that the returned [TextCharacter]s are ordered from bottom to top.
+     */
+    fun getCharactersAt(position: Position3D): List<TextCharacter>
 
-    fun getSegment(offset: Position, size: Size): Iterable<Cell>
-
-    fun getSegmentImage(offset: Position, size: Size): TextImage
+    /**
+     * Returns a 2D segment of 3D space at a given 3D position and of a given
+     * 2D size.
+     * Since there can be multiple layers on the same height a [List] is returned
+     * instead of a single [TextImage].
+     * Note that the returned [TextImage]s are ordered from bottom to top.
+     */
+    fun getSegmentAt(offset: Position3D, size: Size): List<TextImage>
 }

@@ -17,12 +17,11 @@ import java.util.*
  * - offset: [Position.DEFAULT_POSITION]
  * - has no text image by default
  */
-data class LayerBuilder(private var font: Font = FontSettings.NO_FONT,
-                        private var size: Size = Size.ONE,
-                        private var filler: TextCharacter = TextCharacterBuilder.EMPTY,
+data class LayerBuilder(private var font: Font = DEFAULT_FONT,
+                        private var size: Size = DEFAULT_SIZE,
+                        private var filler: TextCharacter = DEFAULT_FILLER,
                         private var offset: Position = Position.DEFAULT_POSITION,
                         private var textImage: Optional<TextImage> = Optional.empty()) : Builder<Layer> {
-
 
     /**
      * Sets the [Font] to use with the resulting [Layer].
@@ -63,7 +62,7 @@ data class LayerBuilder(private var font: Font = FontSettings.NO_FONT,
     }
 
     override fun build(): Layer = if (textImage.isPresent) {
-        DefaultLayer(size = size,
+        DefaultLayer(size = textImage.get().getBoundableSize(),
                 filler = filler,
                 offset = offset,
                 textImage = textImage.get(),
@@ -79,6 +78,15 @@ data class LayerBuilder(private var font: Font = FontSettings.NO_FONT,
     override fun createCopy() = copy()
 
     companion object {
+
+        @JvmField
+        val DEFAULT_FONT = FontSettings.NO_FONT
+
+        @JvmField
+        val DEFAULT_SIZE = Size.ONE
+
+        @JvmField
+        val DEFAULT_FILLER = TextCharacterBuilder.EMPTY
 
         @JvmStatic
         fun newBuilder() = LayerBuilder()

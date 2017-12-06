@@ -2,6 +2,7 @@ package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.behavior.CursorHandler
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ColorTheme
@@ -13,6 +14,7 @@ import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.behavior.Scrollable
+import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
@@ -25,8 +27,9 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
                                                initialFont: Font,
                                                position: Position,
                                                componentStyles: ComponentStyles,
-                                               scrollable: Scrollable = DefaultScrollable(initialSize, initialSize))
-    : TextBox, Scrollable by scrollable, DefaultComponent(
+                                               scrollable: Scrollable = DefaultScrollable(initialSize, initialSize),
+                                               cursorHandler: CursorHandler = DefaultCursorHandler(initialSize))
+    : TextBox, Scrollable by scrollable, CursorHandler by cursorHandler, DefaultComponent(
         initialSize = initialSize,
         position = position,
         componentStyles = componentStyles,
@@ -135,7 +138,6 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
             val cursorPos = getCursorPosition()
             val (offsetCols, offsetRows) = getVisibleOffset()
             val currColIdx = cursorPos.column + offsetCols
-            val prevColIdx = Math.max(currColIdx - 1, 0)
             val currRowIdx = cursorPos.row + offsetRows
             val prevRowIdx = offsetRows + cursorPos.row - 1
             val nextRowIdx = offsetRows + cursorPos.row + 1
@@ -183,8 +185,8 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
             } else if (keyStroke.inputTypeIs(InputType.Delete)) {
                 textBuffer.getRow(currRowIdx).map { row ->
                     if (currColIdx == row.length) { // end of the line
-                        // this is necessary because if there is no next row and we
-                        // delete the current row we won't be able to type anything (since the row is deleted)
+                        // this is necessary because if there is no next depth and we
+                        // delete the current depth we won't be able to type anything (since the depth is deleted)
                         maybeNextRow.map { nextRow ->
                             val nextRowContent = nextRow.toString()
                             if (row.isBlank()) {
@@ -231,11 +233,11 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
                 } else {
                     putCursorAt(getCursorPosition().withRelativeRow(1))
                 }
-                scrollLeftTo(0)
+                scrollLeftBy(0)
                 putCursorAt(getCursorPosition().withColumn(0))
                 refreshDrawSurface()
             } else if (keyStroke.inputTypeIs(InputType.Home)) {
-                scrollLeftTo(0)
+                scrollLeftBy(0)
                 putCursorAt(getCursorPosition().withColumn(0))
             } else if (keyStroke.inputTypeIs(InputType.End)) {
                 scrollRightToRowEnd(maybeCurrRow.get())
@@ -265,9 +267,9 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
     private fun scrollUpToEndOfPreviousLine(prevRow: StringBuilder) {
         // we move the cursor up
         scrollCursorOrScrollableOneUp()
-        // we set the position to be able to see the end of the row
+        // we set the position to be able to see the end of the depth
         scrollRightToRowEnd(prevRow)
-        // we fix the cursor if the row does not fill the visible space
+        // we fix the cursor if the depth does not fill the visible space
         putCursorAt(getCursorPosition()
                 .withColumn(Math.min(prevRow.length, getCursorPosition().column)))
         refreshDrawSurface()
@@ -297,14 +299,14 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
                 putCursorAt(getCursorPosition().withColumn(row.length - getVisibleOffset().column))
             }
         } else {
-            scrollLeftTo(row.length)
+            scrollLeftBy(row.length)
             putCursorAt(getCursorPosition().withColumn(0))
         }
         refreshDrawSurface()
     }
 
     private fun scrollRightToRowEnd(row: StringBuilder) {
-        scrollRightTo(Math.max(0, row.length - getBoundableSize().columns))
+        scrollRightBy(Math.max(0, row.length - getBoundableSize().columns))
         putCursorAt(getCursorPosition().withColumn(getBoundableSize().columns - 1))
         refreshDrawSurface()
     }
@@ -330,6 +332,10 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
     }
 
     private fun refreshVirtualSpaceSize() {
-        setVirtualSpaceSize(textBuffer.getBoundingBoxSize())
+        val (visibleCols, visibleRows) = getBoundableSize()
+        val (textCols, textRows) = textBuffer.getBoundingBoxSize()
+        if (textCols >= visibleCols && textRows >= visibleRows) {
+            setVirtualSpaceSize(textBuffer.getBoundingBoxSize())
+        }
     }
 }
