@@ -99,10 +99,10 @@ public class ShootingExample {
 //        final TextCharacter player = TextCharacterBuilder.newBuilder()
 //                .character('@')
 //                .build();
-//        final Position playerPos = Position.of(gameField.getBoundableSize().getColumns() / 2, 0);
+//        final Position playerPos = Position.of(gameField.getBoundableSize().getWidth() / 2, 0);
 //        final Position absoluteShootingPos = playerPos
 //                .plus(gameComponent.getPosition())
-//                .withRelativeRow(1);
+//                .withRelativeY(1);
 //        gameField.setCharacterAt(playerPos, player);
 //
 //        final AtomicReference<Layer> lastLayer = new AtomicReference<>();
@@ -115,9 +115,9 @@ public class ShootingExample {
 //                screen.removeLayer(lastLayer.get());
 //            }
 //            Position lineOffset = absoluteShootingPos;
-//            int diff = absoluteShootingPos.getColumn() - mouseAction.getPosition().getColumn();
-//            if(mouseAction.getPosition().getColumn() < absoluteShootingPos.getColumn()) {
-//                lineOffset = absoluteShootingPos.withRelativeColumn(-diff);
+//            int diff = absoluteShootingPos.getWidth() - mouseAction.getPosition().getWidth();
+//            if(mouseAction.getPosition().getWidth() < absoluteShootingPos.getWidth()) {
+//                lineOffset = absoluteShootingPos.withRelativeX(-diff);
 //            }
 //            lastLayer.set(LayerBuilder.newBuilder()
 //                    .textImage(line)

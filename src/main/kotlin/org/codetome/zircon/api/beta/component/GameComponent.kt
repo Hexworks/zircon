@@ -4,9 +4,6 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.builder.LayerBuilder
-import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.font.Font
@@ -29,8 +26,8 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
                                                       size = visibleSize,
                                                       position = position),
                                               private val scrollable: Scrollable = DefaultScrollable(
-                                                      cursorSpaceSize = visibleSize,
-                                                      virtualSpaceSize = gameArea.getSize()))
+                                                      visibleSpaceSize = visibleSize,
+                                                      virtualSpaceSize = gameArea.getSize().to2DSize()))
 
     : Scrollable by scrollable, DefaultComponent(
         initialSize = visibleSize,
@@ -41,7 +38,6 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
         boundable = boundable) {
 
     init {
-        refreshDrawSurface()
         refreshVirtualSpaceSize()
     }
 
@@ -50,7 +46,6 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
     }
 
     override fun giveFocus(input: Optional<Input>): Boolean {
-        refreshDrawSurface()
         refreshVirtualSpaceSize()
         EventBus.emit(EventType.ComponentChange)
         return true
@@ -63,22 +58,20 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
     }
 
     override fun transformToLayers(): List<Layer> {
-        return mutableListOf(LayerBuilder.newBuilder()
-                .textImage(gameArea.getSegmentImage(getVisibleOffset(), getBoundableSize()))
-                .offset(getPosition())
-                .build()).also {
-        }
-    }
-
-    private fun refreshDrawSurface() {
-        getBoundableSize().fetchPositions().forEach { pos ->
-            val fixedPos = pos + getVisibleOffset()
-            getDrawSurface().setCharacterAt(pos, gameArea.getCharacterAt(fixedPos).get())
+        // note that the draw surface which comes from `DefaultComponent` is not used here
+        // since the `GameArea` is used as a backend
+        return gameArea.getSegmentAt(
+                offset = Position3D.from2DPosition(getVisibleOffset()),
+                size = getBoundableSize()).map {
+            LayerBuilder.newBuilder()
+                    .textImage(it)
+                    .offset(getPosition())
+                    .build()
         }
     }
 
     private fun refreshVirtualSpaceSize() {
-        setVirtualSpaceSize(gameArea.getSize())
+        setVirtualSpaceSize(gameArea.getSize().to2DSize())
     }
 
     override fun containsBoundable(boundable: Boundable): Boolean {

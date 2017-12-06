@@ -86,6 +86,7 @@ open class DefaultContainer(initialSize: Size,
     }
 
     override fun transformToLayers(): List<Layer> {
+        // TODO: persistent list here
         return mutableListOf(LayerBuilder.newBuilder()
                 .textImage(getDrawSurface())
                 .offset(getPosition())
