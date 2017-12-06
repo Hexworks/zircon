@@ -2,9 +2,9 @@ package org.codetome.zircon.beta
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.beta.animation.Animation
-import org.codetome.zircon.api.beta.animation.AnimationHandler
-import org.codetome.zircon.api.beta.animation.AnimationResource
+import org.codetome.zircon.api.animation.Animation
+import org.codetome.zircon.api.animation.AnimationHandler
+import org.codetome.zircon.api.animation.AnimationResource
 import org.codetome.zircon.api.builder.TerminalBuilder
 import org.codetome.zircon.api.component.builder.ColorThemeBuilder
 import org.codetome.zircon.api.component.builder.PanelBuilder

@@ -4,10 +4,6 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.TextCharacter;
-import org.codetome.zircon.api.beta.component.GameComponent;
-import org.codetome.zircon.api.beta.component.TextImageGameArea;
-import org.codetome.zircon.api.builder.ComponentStylesBuilder;
-import org.codetome.zircon.api.builder.LayerBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.builder.TextImageBuilder;
@@ -20,17 +16,13 @@ import org.codetome.zircon.api.component.RadioButtonGroup;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.component.builder.RadioButtonGroupBuilder;
 import org.codetome.zircon.api.font.Font;
-import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.graphics.TextImage;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.shape.LineFactory;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.internal.graphics.BoxType;
 import org.junit.Test;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ShootingExample {
 
@@ -95,48 +87,48 @@ public class ShootingExample {
                         .build())
                 .build();
 
-        final GameComponent gameComponent = new GameComponent(
-                new TextImageGameArea(gameField),
-                gameField.getBoundableSize(),
-                CP437TilesetResource.PHOEBUS_16X16.toFont(),
-                Position.DEFAULT_POSITION,
-                ComponentStylesBuilder.DEFAULT);
-        screen.addComponent(gamePanel);
-        gamePanel.addComponent(gameComponent);
+//        final GameComponent gameComponent = new GameComponent(
+//                new TextImageGameArea(gameField),
+//                gameField.getBoundableSize(),
+//                CP437TilesetResource.PHOEBUS_16X16.toFont(),
+//                Position.DEFAULT_POSITION,
+//                ComponentStylesBuilder.DEFAULT);
+//        screen.addComponent(gamePanel);
+//        gamePanel.addComponent(gameComponent);
 
-        final TextCharacter player = TextCharacterBuilder.newBuilder()
-                .character('@')
-                .build();
-        final Position playerPos = Position.of(gameField.getBoundableSize().getColumns() / 2, 0);
-        final Position absoluteShootingPos = playerPos
-                .plus(gameComponent.getPosition())
-                .withRelativeRow(1);
-        gameField.setCharacterAt(playerPos, player);
-
-        final AtomicReference<Layer> lastLayer = new AtomicReference<>();
-
-        gameComponent.onMouseMoved(mouseAction -> {
-            final TextImage line = LineFactory
-                    .buildLine(absoluteShootingPos, mouseAction.getPosition())
-                    .toTextImage(LINE_CHAR);
-            if(lastLayer.get() != null) {
-                screen.removeLayer(lastLayer.get());
-            }
-            Position lineOffset = absoluteShootingPos;
-            int diff = absoluteShootingPos.getColumn() - mouseAction.getPosition().getColumn();
-            if(mouseAction.getPosition().getColumn() < absoluteShootingPos.getColumn()) {
-                lineOffset = absoluteShootingPos.withRelativeColumn(-diff);
-            }
-            lastLayer.set(LayerBuilder.newBuilder()
-                    .textImage(line)
-                    .offset(lineOffset)
-                    .build());
-            screen.pushLayer(lastLayer.get());
-            screen.refresh();
-        });
-        gameComponent.onMouseReleased(mouseAction -> {
-            System.out.println("release at pos: " + mouseAction.getPosition());
-        });
+//        final TextCharacter player = TextCharacterBuilder.newBuilder()
+//                .character('@')
+//                .build();
+//        final Position playerPos = Position.of(gameField.getBoundableSize().getColumns() / 2, 0);
+//        final Position absoluteShootingPos = playerPos
+//                .plus(gameComponent.getPosition())
+//                .withRelativeRow(1);
+//        gameField.setCharacterAt(playerPos, player);
+//
+//        final AtomicReference<Layer> lastLayer = new AtomicReference<>();
+//
+//        gameComponent.onMouseMoved(mouseAction -> {
+//            final TextImage line = LineFactory
+//                    .buildLine(absoluteShootingPos, mouseAction.getPosition())
+//                    .toTextImage(LINE_CHAR);
+//            if(lastLayer.get() != null) {
+//                screen.removeLayer(lastLayer.get());
+//            }
+//            Position lineOffset = absoluteShootingPos;
+//            int diff = absoluteShootingPos.getColumn() - mouseAction.getPosition().getColumn();
+//            if(mouseAction.getPosition().getColumn() < absoluteShootingPos.getColumn()) {
+//                lineOffset = absoluteShootingPos.withRelativeColumn(-diff);
+//            }
+//            lastLayer.set(LayerBuilder.newBuilder()
+//                    .textImage(line)
+//                    .offset(lineOffset)
+//                    .build());
+//            screen.pushLayer(lastLayer.get());
+//            screen.refresh();
+//        });
+//        gameComponent.onMouseReleased(mouseAction -> {
+//            System.out.println("release at pos: " + mouseAction.getPosition());
+//        });
 
         screen.applyColorTheme(THEME);
         screen.display();

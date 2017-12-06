@@ -4,12 +4,9 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.beta.component.GameComponent;
-import org.codetome.zircon.api.beta.component.TextImageGameArea;
-import org.codetome.zircon.api.builder.ComponentStylesBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.builder.TextImageBuilder;
-import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.component.Button;
@@ -20,7 +17,6 @@ import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.TextImage;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
-import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.internal.graphics.BoxType;
@@ -122,18 +118,18 @@ public class HideNSeek {
                     .build());
         }
 
-        final GameComponent gameComponent = new GameComponent(
-                new TextImageGameArea(gameField),
-                visibleGameAreaSize,
-                CP437TilesetResource.PHOEBUS_16X16.toFont(),
-                Position.DEFAULT_POSITION,
-                ComponentStylesBuilder.DEFAULT);
-        screen.addComponent(gamePanel);
-        gamePanel.addComponent(gameComponent);
-
-        enableMovement(screen, gameComponent);
-        screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_CYAN.getTheme());
-        screen.display();
+//        final GameComponent gameComponent = new GameComponent(
+//                new TextImageGameArea(gameField),
+//                visibleGameAreaSize,
+//                CP437TilesetResource.PHOEBUS_16X16.toFont(),
+//                Position.DEFAULT_POSITION,
+//                ComponentStylesBuilder.DEFAULT);
+//        screen.addComponent(gamePanel);
+//        gamePanel.addComponent(gameComponent);
+//
+//        enableMovement(screen, gameComponent);
+//        screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_CYAN.getTheme());
+//        screen.display();
     }
 
     private static void enableMovement(final Screen screen, final GameComponent gameComponent) {
