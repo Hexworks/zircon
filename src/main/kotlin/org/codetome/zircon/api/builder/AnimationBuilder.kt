@@ -1,8 +1,8 @@
 package org.codetome.zircon.api.builder
 
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.beta.animation.Animation
-import org.codetome.zircon.api.beta.animation.AnimationFrame
+import org.codetome.zircon.api.animation.Animation
+import org.codetome.zircon.api.animation.AnimationFrame
 import org.codetome.zircon.internal.graphics.DefaultAnimation
 import org.codetome.zircon.internal.graphics.DefaultAnimationFrame
 

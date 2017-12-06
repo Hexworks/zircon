@@ -1,8 +1,10 @@
-package org.codetome.zircon.api.beta.animation
+package org.codetome.zircon.api.animation
 
+import org.codetome.zircon.api.Beta
 import org.codetome.zircon.internal.behavior.Identifiable
 import java.util.*
 
+@Beta
 interface Animation : Identifiable {
 
     fun getFrameCount(): Int

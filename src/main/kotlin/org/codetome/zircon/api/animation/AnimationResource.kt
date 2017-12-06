@@ -1,5 +1,6 @@
-package org.codetome.zircon.api.beta.animation
+package org.codetome.zircon.api.animation
 
+import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.builder.AnimationBuilder
 import org.codetome.zircon.api.resource.REXPaintResource
 import org.codetome.zircon.internal.graphics.AnimationMetadata
@@ -8,6 +9,7 @@ import org.codetome.zircon.internal.util.rex.unZipIt
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
 
+@Beta
 class AnimationResource {
 
     companion object {
