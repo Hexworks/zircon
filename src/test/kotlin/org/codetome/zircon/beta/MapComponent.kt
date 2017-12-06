@@ -1,4 +1,4 @@
-package org.codetome.zircon.api.beta.component
+package org.codetome.zircon.beta
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
@@ -10,7 +10,7 @@ import org.codetome.zircon.api.graphics.TextImage
 import java.util.*
 
 
-class MapComponent(mapSegment: MapSegment, textImage: TextImage) : TextImage by textImage {
+class MapComponent(mapSegment: org.codetome.zircon.beta.MapSegment, textImage: TextImage) : TextImage by textImage {
 
     private val data = mapSegment.data
     private val size = Size(mapSegment.getColumnCount(), mapSegment.getRowCount())
