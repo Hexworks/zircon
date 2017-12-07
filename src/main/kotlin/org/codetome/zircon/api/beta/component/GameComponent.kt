@@ -62,7 +62,7 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
         // since the `GameArea` is used as a backend
         return gameArea.getSegmentAt(
                 offset = Position3D.from2DPosition(getVisibleOffset()),
-                size = getBoundableSize()).map {
+                size = getBoundableSize()).layers.map {
             LayerBuilder.newBuilder()
                     .textImage(it)
                     .offset(getPosition())

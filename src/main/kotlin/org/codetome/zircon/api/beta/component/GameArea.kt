@@ -22,9 +22,6 @@ interface GameArea {
     /**
      * Returns a 2D segment of 3D space at a given 3D position and of a given
      * 2D size.
-     * Since there can be multiple layers on the same height a [List] is returned
-     * instead of a single [TextImage].
-     * Note that the returned [TextImage]s are ordered from bottom to top.
      */
-    fun getSegmentAt(offset: Position3D, size: Size): List<TextImage>
+    fun getSegmentAt(offset: Position3D, size: Size): GameAreaSegment
 }
