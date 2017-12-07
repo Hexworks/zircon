@@ -8,7 +8,7 @@ import org.codetome.zircon.internal.behavior.Cacheable
 
 /**
  * Represents a single character with additional metadata such as colors and modifiers.
- * This class is immutable and cannot be modified after creation.
+ * **Note that** a [TextCharacter] have to be immutable and cannot be modified after creation.
  *
  * Note that you can only of [TextCharacter]s out of printable characters (No tabs for
  * example)!
