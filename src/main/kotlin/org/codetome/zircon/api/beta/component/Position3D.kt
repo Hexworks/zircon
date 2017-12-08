@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.beta.component
 
+import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.Position
 
 /**
@@ -11,6 +12,7 @@ import org.codetome.zircon.api.Position
  * - `depth: 0` is considered the **closest** position in a 3D space
  * - `height: 0` is considered **bottommost** position in a 3D space
  */
+@Beta
 data class Position3D(private val position: Position,
                       val z: Int) : Comparable<Position3D> {
 

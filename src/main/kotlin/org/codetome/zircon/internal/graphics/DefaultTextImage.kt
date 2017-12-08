@@ -13,6 +13,7 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.sam.TextCharacterTransformer
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultStyleable
 import java.util.*
@@ -101,6 +102,16 @@ class DefaultTextImage(size: Size,
         return size.fetchPositions().map {
             Cell(it, getCharacterAt(it + offset).get())
         }
+    }
+
+    override fun transform(transformer: TextCharacterTransformer): TextImage {
+        val result = TextImageBuilder.newBuilder()
+                .size(getBoundableSize())
+                .build()
+        fetchCells().forEach { (pos, char) ->
+            result.setCharacterAt(pos, transformer.transform(char))
+        }
+        return result
     }
 
     @Synchronized

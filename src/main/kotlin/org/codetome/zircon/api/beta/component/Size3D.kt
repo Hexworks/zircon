@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.beta.component
 
+import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.Size
 
 /**
@@ -7,6 +8,7 @@ import org.codetome.zircon.api.Size
  * with a `height` (z axis) dimension.
  * Width corresponds to the **x** and depth corresponds to the **y** axis.
  */
+@Beta
 data class Size3D(private val size: Size, val height: Int) : Comparable<Size3D> {
 
     val width get() = size.columns

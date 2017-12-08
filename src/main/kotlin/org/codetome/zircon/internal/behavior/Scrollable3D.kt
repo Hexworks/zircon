@@ -12,64 +12,69 @@ import org.codetome.zircon.api.beta.component.Size3D
 interface Scrollable3D {
 
     /**
-     * Returns the [Size3D] of the virtual space this [Scrollable] can scroll through.
+     * Returns the size of the visible part of this [Scrollable3D].
+     */
+    fun getVisibleSpaceSize(): Size3D
+    
+    /**
+     * Returns the [Size3D] of the virtual space this [Scrollable3D] can scroll through.
      */
     fun getVirtualSpaceSize(): Size3D
 
     /**
-     * Sets the [Size3D] of the virtual space this [Scrollable] can scroll through.
+     * Sets the [Size3D] of the virtual space this [Scrollable3D] can scroll through.
      */
     fun setVirtualSpaceSize(size: Size3D)
 
     /**
-     * Returns the offset where the visible part of this [Scrollable] starts.
+     * Returns the offset where the visible part of this [Scrollable3D] starts.
      */
     fun getVisibleOffset(): Position3D
 
     /**
-     * Scrolls this [Scrollable] with one unit to the right (width axis).
+     * Scrolls this [Scrollable3D] with one unit to the right (width axis).
      * If the bounds of the virtual space are already reached this method has no effect.
      * @return the new visible offset
      */
     fun scrollOneRight(): Position3D
 
     /**
-     * Scrolls this [Scrollable] with one unit to the left (width axis).
+     * Scrolls this [Scrollable3D] with one unit to the left (width axis).
      * If the bounds of the virtual space are already reached this method has no effect.
      * @return the new visible offset
      */
     fun scrollOneLeft(): Position3D
 
     /**
-     * Scrolls this [Scrollable] with one unit up (height axis).
+     * Scrolls this [Scrollable3D] with one unit up (height axis).
      * If the bounds of the virtual space are already reached this method has no effect.
      * @return the new visible offset
      */
     fun scrollOneUp(): Position3D
 
     /**
-     * Scrolls this [Scrollable] with one unit down (height axis).
+     * Scrolls this [Scrollable3D] with one unit down (height axis).
      * If the bounds of the virtual space are already reached this method has no effect.
      * @return the new visible offset
      */
     fun scrollOneDown(): Position3D
 
     /**
-     * Scrolls this [Scrollable] with one unit forward (depth axis, away from the observer).
+     * Scrolls this [Scrollable3D] with one unit forward (depth axis, away from the observer).
      * If the bounds of the virtual space are already reached this method has no effect.
      * @return the new visible offset
      */
     fun scrollOneForward(): Position3D
 
     /**
-     * Scrolls this [Scrollable] with one unit backward (depth axis, towards the observer).
+     * Scrolls this [Scrollable3D] with one unit backward (depth axis, towards the observer).
      * If the bounds of the virtual space are already reached this method has no effect.
      * @return the new visible offset
      */
     fun scrollOneBackward(): Position3D
 
     /**
-     * Scrolls this [Scrollable] by `width` units to the right (width axis).
+     * Scrolls this [Scrollable3D] by `width` units to the right (width axis).
      * If the bounds of the virtual space are already reached this method has no effect.
      * @return the new visible offset
      */
@@ -77,14 +82,14 @@ interface Scrollable3D {
 
 
     /**
-     * Scrolls this [Scrollable] with `width` units to the left (width axis).
+     * Scrolls this [Scrollable3D] with `width` units to the left (width axis).
      * If the bounds of the virtual space are already reached this method has no effect.
      * @return the new visible offset
      */
     fun scrollLeftBy(x: Int): Position3D
 
     /**
-     * Scrolls this [Scrollable] by `height` units up (height axis).
+     * Scrolls this [Scrollable3D] by `height` units up (height axis).
      * If the bounds of the virtual space are already reached this method has no effect.
      * @return the new visible offset
      */
@@ -92,14 +97,14 @@ interface Scrollable3D {
 
 
     /**
-     * Scrolls this [Scrollable] with `height` units down (height axis).
+     * Scrolls this [Scrollable3D] with `height` units down (height axis).
      * If the bounds of the virtual space are already reached this method has no effect.
      * @return the new visible offset
      */
     fun scrollDownBy(z: Int): Position3D
 
     /**
-     * Scrolls this [Scrollable] by `depth` units forward (depth axis).
+     * Scrolls this [Scrollable3D] by `depth` units forward (depth axis).
      * If the bounds of the virtual space are already reached this method has no effect.
      * @return the new visible offset
      */
@@ -107,7 +112,7 @@ interface Scrollable3D {
 
 
     /**
-     * Scrolls this [Scrollable] with `depth` units backward (depth axis).
+     * Scrolls this [Scrollable3D] with `depth` units backward (depth axis).
      * If the bounds of the virtual space are already reached this method has no effect.
      * @return the new visible offset
      */

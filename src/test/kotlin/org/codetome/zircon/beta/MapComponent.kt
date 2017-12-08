@@ -7,6 +7,8 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.util.TextColorUtils
+import org.codetome.zircon.api.util.darkenColorByPercent
 import java.util.*
 
 
@@ -29,7 +31,7 @@ class MapComponent(mapSegment: org.codetome.zircon.beta.MapSegment, textImage: T
             Optional.empty()
         } else {
             layersWithContent.first().let {
-                val percent: Float = actualLayer.toFloat() / layerCount.toFloat()
+                val percent: Double = actualLayer.toDouble() / layerCount.toDouble()
                 Optional.of(it
                         .withBackgroundColor(darkenColorByPercent(it.getBackgroundColor(), percent))
                         .withForegroundColor(darkenColorByPercent(it.getForegroundColor(), percent)))
@@ -37,10 +39,5 @@ class MapComponent(mapSegment: org.codetome.zircon.beta.MapSegment, textImage: T
         }
     }
 
-    private fun darkenColorByPercent(color: TextColor, percentage: Float): TextColor {
-        return TextColorFactory.fromRGB(
-                red = (color.getRed() * (1f - percentage)).toInt(),
-                green = (color.getGreen() * (1f - percentage)).toInt(),
-                blue = (color.getBlue() * (1f - percentage)).toInt())
-    }
+
 }

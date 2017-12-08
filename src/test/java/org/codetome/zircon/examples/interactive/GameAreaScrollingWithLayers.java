@@ -3,9 +3,8 @@ package org.codetome.zircon.examples.interactive;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
-import org.codetome.zircon.api.beta.component.GameComponent;
-import org.codetome.zircon.api.beta.component.Size3D;
-import org.codetome.zircon.api.beta.component.TextImageGameArea;
+import org.codetome.zircon.api.TextCharacter;
+import org.codetome.zircon.api.beta.component.*;
 import org.codetome.zircon.api.builder.*;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.color.TextColor;
@@ -26,6 +25,7 @@ import org.codetome.zircon.internal.graphics.BoxType;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameAreaScrollingWithLayers {
 
@@ -85,61 +85,24 @@ public class GameAreaScrollingWithLayers {
                 .boxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build();
 
-        final Size visibleGameAreaSize = gamePanel.getBoundableSize().minus(Size.of(2, 2));
+        final Size3D visibleGameAreaSize = Size3D.from2DSize(gamePanel.getBoundableSize()
+                .minus(Size.of(2, 2)), 5);
         final Size virtualGameAreaSize = Size.of(90, 90);
-
-        final TextColor bgcolor = TextColorFactory.fromString("#332211");
-
-        final Random random = new Random();
-        final TextColor[] colors = new TextColor[]{
-                TextColorFactory.fromString("#884433"),
-                TextColorFactory.fromString("#773322"),
-                TextColorFactory.fromString("#662211"),
-                TextColorFactory.fromString("#553344")
-        };
-        final Character[] blocks = new Character[] {
-                Symbols.BLOCK_DENSE,
-                Symbols.BLOCK_MIDDLE,
-                Symbols.BLOCK_SOLID,
-        };
-
-        final TextImage gameLevel0 = TextImageBuilder.newBuilder()
-                .size(virtualGameAreaSize)
-                .filler(TextCharacterBuilder.newBuilder()
-                        .character(Symbols.BLOCK_SPARSE)
-                        .backgroundColor(bgcolor)
-                        .foregroundColor(TextColorFactory.fromString("#665544"))
-                        .build())
-                .build();
-
-        final TextImage gameLevel1 = TextImageBuilder.newBuilder()
-                .size(virtualGameAreaSize)
-                .filler(TextCharacterBuilder.EMPTY)
-                .build();
-
-        for(int i = 0; i < 40; i++) {
-            Position pos0 = Position.of(random.nextInt(90), random.nextInt(90));
-
-            gameLevel0.setCharacterAt(pos0, TextCharacterBuilder.newBuilder()
-                    .character(blocks[random.nextInt(3)])
-                    .backgroundColor(bgcolor)
-                    .foregroundColor(colors[random.nextInt(4)])
-                    .build());
-            gameLevel1.setCharacterAt(pos0, TextCharacterBuilder.newBuilder()
-                    .character('x')
-                    .backgroundColor(TextColorFactory.TRANSPARENT)
-                    .foregroundColor(ANSITextColor.BLACK)
-                    .build());
-        }
-
 
 
         final Map<Integer, List<TextImage>> levels = new HashMap<>();
-        levels.put(0, Collections.singletonList(gameLevel0));
-        levels.put(1, Collections.singletonList(gameLevel1));
+        final int totalLevels = 10;
+        for(int i = 0; i < totalLevels; i++) {
+            levels.put(i, Collections.singletonList(TextImageBuilder.newBuilder()
+                    .size(virtualGameAreaSize)
+                    .build()));
+        }
+
+        final GameArea gameArea =
+                new TextImageGameArea(Size3D.from2DSize(virtualGameAreaSize, totalLevels), levels);
 
         final GameComponent gameComponent = new GameComponent(
-                new TextImageGameArea(Size3D.from2DSize(gameLevel0.getBoundableSize(), 2), levels),
+                gameArea,
                 visibleGameAreaSize,
                 CP437TilesetResource.PHOEBUS_16X16.toFont(),
                 Position.DEFAULT_POSITION,
@@ -148,8 +111,8 @@ public class GameAreaScrollingWithLayers {
         gamePanel.addComponent(gameComponent);
 
         final Position centerPos = Position.of(
-                visibleGameAreaSize.getColumns() / 2 + gameComponent.getPosition().getColumn(),
-                visibleGameAreaSize.getRows() / 2 + gameComponent.getPosition().getRow());
+                visibleGameAreaSize.getWidth() / 2 + gameComponent.getPosition().getColumn(),
+                visibleGameAreaSize.getDepth() / 2 + gameComponent.getPosition().getRow());
 
         final Layer player = LayerBuilder.newBuilder()
                 .offset(centerPos)
@@ -161,8 +124,33 @@ public class GameAreaScrollingWithLayers {
         screen.pushLayer(player);
 
         enableMovement(screen, gameComponent);
+        generatePyramid(5, Position3D.of(8, 8, 5), gameArea);
         screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_CYAN.getTheme());
         screen.display();
+    }
+
+    private static void generatePyramid(int height, Position3D startPos, GameArea gameArea) {
+        TextCharacter wall = TextCharacterBuilder.newBuilder()
+                .character('#')
+                .build();
+        AtomicInteger currLevel = new AtomicInteger(startPos.getZ());
+        int currSize = 1;
+        for (int i = currSize; i <= height; i++) {
+            if (i == 1) {
+                gameArea.setCharactersAt(startPos, Collections.singletonList(wall));
+            } else {
+                Position levelOffset = startPos.to2DPosition()
+                        .withRelativeColumn(-i)
+                        .withRelativeRow(-i);
+                Size levelSize = Size.of(1 + i * 2, 1 + i * 2);
+                levelSize.fetchPositions().forEach(position -> {
+                    gameArea.setCharactersAt(
+                            Position3D.from2DPosition((position.plus(levelOffset)), currLevel.get()),
+                            Collections.singletonList(wall));
+                });
+            }
+            currLevel.decrementAndGet();
+        }
     }
 
     private static void enableMovement(final Screen screen, final GameComponent gameComponent) {
@@ -171,16 +159,22 @@ public class GameAreaScrollingWithLayers {
                 System.exit(0);
             } else {
                 if (InputType.ArrowUp == input.getInputType()) {
-                    gameComponent.scrollOneUp();
+                    gameComponent.scrollOneBackward();
                 }
                 if (InputType.ArrowDown == input.getInputType()) {
-                    gameComponent.scrollOneDown();
+                    gameComponent.scrollOneForward();
                 }
                 if (InputType.ArrowLeft == input.getInputType()) {
                     gameComponent.scrollOneLeft();
                 }
                 if (InputType.ArrowRight == input.getInputType()) {
                     gameComponent.scrollOneRight();
+                }
+                if (InputType.PageUp == input.getInputType()) {
+                    gameComponent.scrollOneUp();
+                }
+                if (InputType.PageDown == input.getInputType()) {
+                    gameComponent.scrollOneDown();
                 }
                 screen.refresh();
             }
