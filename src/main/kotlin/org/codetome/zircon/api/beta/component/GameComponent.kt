@@ -1,41 +1,48 @@
 package org.codetome.zircon.api.beta.component
 
+import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.builder.LayerBuilder
+import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
-import org.codetome.zircon.internal.behavior.Scrollable
+import org.codetome.zircon.api.sam.TextCharacterTransformer
+import org.codetome.zircon.api.util.darkenColorByPercent
+import org.codetome.zircon.internal.behavior.Scrollable3D
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
-import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
+import org.codetome.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.codetome.zircon.internal.component.impl.DefaultComponent
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import java.util.*
 
+@Beta
 class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
-                                              visibleSize: Size,
+                                              visibleSize: Size3D,
                                               initialFont: Font,
                                               position: Position,
                                               componentStyles: ComponentStyles,
                                               boundable: DefaultBoundable = DefaultBoundable(
-                                                      size = visibleSize,
+                                                      size = visibleSize.to2DSize(),
                                                       position = position),
-                                              private val scrollable: Scrollable = DefaultScrollable(
+                                              private val scrollable: Scrollable3D = DefaultScrollable3D(
                                                       visibleSpaceSize = visibleSize,
-                                                      virtualSpaceSize = gameArea.getSize().to2DSize()))
+                                                      virtualSpaceSize = gameArea.getSize()))
 
-    : Scrollable by scrollable, DefaultComponent(
-        initialSize = visibleSize,
+    : Scrollable3D by scrollable, DefaultComponent(
+        initialSize = visibleSize.to2DSize(),
         position = position,
         componentStyles = componentStyles,
         wrappers = listOf(),
         initialFont = initialFont,
         boundable = boundable) {
+
+    private val visibleLevelCount = Math.min(visibleSize.height, MAX_VISIBLE_LEVEL_COUNT)
 
     init {
         refreshVirtualSpaceSize()
@@ -60,10 +67,25 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
     override fun transformToLayers(): List<Layer> {
         // note that the draw surface which comes from `DefaultComponent` is not used here
         // since the `GameArea` is used as a backend
-        return gameArea.getLevelIndexes().flatMap { levelIdx ->
+        val allLevelCount = scrollable.getVirtualSpaceSize().height
+        val startLevel = scrollable.getVisibleOffset().z
+        val percentage: Double = 1.0.div(visibleLevelCount + 1.0)
+        println("Percentage $percentage")
+        return (startLevel until Math.min(startLevel + visibleLevelCount, allLevelCount)).toList().flatMap { levelIdx ->
+            val currPercentage = percentage.times(levelIdx + 1)
+            println("Curr percentage: $currPercentage")
             gameArea.getSegmentAt(
-                    offset = Position3D.from2DPosition(getVisibleOffset(), levelIdx),
-                    size = getBoundableSize()).layers
+                    offset = Position3D.from2DPosition(getVisibleOffset().to2DPosition(), levelIdx),
+                    size = getBoundableSize()).layers.map {
+                it.transform(TextCharacterTransformer { tc ->
+                    tc.withBackgroundColor(darkenColorByPercent(
+                            tc.getBackgroundColor(),
+                            currPercentage))
+                            .withForegroundColor(
+                                    darkenColorByPercent(tc.getForegroundColor(),
+                                            currPercentage))
+                })
+            }
         }.map {
             LayerBuilder.newBuilder()
                     .textImage(it)
@@ -73,7 +95,7 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
     }
 
     private fun refreshVirtualSpaceSize() {
-        setVirtualSpaceSize(gameArea.getSize().to2DSize())
+        setVirtualSpaceSize(gameArea.getSize())
     }
 
     override fun containsBoundable(boundable: Boundable): Boolean {
@@ -96,4 +118,8 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
         return getBoundable().intersects(boundable)
     }
 
+    companion object {
+
+        val MAX_VISIBLE_LEVEL_COUNT = 5
+    }
 }

@@ -19,6 +19,8 @@ class DefaultScrollable3D(private var visibleSpaceSize: Size3D,
         checkSizes()
     }
 
+    override fun getVisibleSpaceSize() = visibleSpaceSize
+
     override fun getVirtualSpaceSize() = virtualSpaceSize
 
     override fun setVirtualSpaceSize(size: Size3D) {

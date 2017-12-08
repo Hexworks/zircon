@@ -7,6 +7,7 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.Styleable
+import org.codetome.zircon.api.sam.TextCharacterTransformer
 
 /**
  * An image built from [TextCharacter]s with color and style information.
@@ -58,6 +59,11 @@ interface TextImage : DrawSurface, Styleable, Drawable {
      */
     fun combineWith(textImage: TextImage, offset: Position): TextImage
 
+    /**
+     * Transforms all of the [TextCharacter]s in this [TextImage] with the given
+     * `transformer` and returns a new one with the transformed characters.
+     */
+    fun transform(transformer: TextCharacterTransformer): TextImage
     /**
      * Writes the given `text` at the given `position`.
      */
