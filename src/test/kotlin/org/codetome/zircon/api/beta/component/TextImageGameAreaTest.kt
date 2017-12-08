@@ -1,6 +1,7 @@
 package org.codetome.zircon.api.beta.component
 
 import org.assertj.core.api.Assertions.assertThat
+import org.codetome.zircon.api.Cell
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.TextCharacterBuilder
@@ -29,35 +30,68 @@ class TextImageGameAreaTest {
                 .containsExactly(OTHER_CHAR, OTHER_CHAR)
     }
 
+    @Test
+    fun shouldProperlyReturnSegmentFromLevel0() {
+        val result = target.getSegmentAt(
+                offset = Position3D.from2DPosition(OTHER_CHAR_POS, 0),
+                size = Size.of(2, 2))
+        assertThat(result.layers).hasSize(1)
+        assertThat(result.layers.first().fetchCells().toList())
+                .containsExactly(
+                        Cell(Position.of(0, 0), OTHER_CHAR),
+                        Cell(Position.of(1, 0), LEVEL0_FILLER),
+                        Cell(Position.of(0, 1), LEVEL0_FILLER),
+                        Cell(Position.of(1, 1), LEVEL0_FILLER))
+    }
+
+    @Test
+    fun shouldProperlyReturnSegmentFromLevel1() {
+        val result = target.getSegmentAt(
+                offset = Position3D.from2DPosition(OTHER_CHAR_POS, 1),
+                size = Size.of(2, 2))
+        assertThat(result.layers).hasSize(2)
+        assertThat(result.layers[0].fetchCells().toList())
+                .containsExactly(
+                        Cell(Position.of(0, 0), OTHER_CHAR),
+                        Cell(Position.of(1, 0), LEVEL1_0_FILLER),
+                        Cell(Position.of(0, 1), LEVEL1_0_FILLER),
+                        Cell(Position.of(1, 1), LEVEL1_0_FILLER))
+        assertThat(result.layers[1].fetchCells().toList())
+                .containsExactly(
+                        Cell(Position.of(0, 0), OTHER_CHAR),
+                        Cell(Position.of(1, 0), LEVEL1_1_FILLER),
+                        Cell(Position.of(0, 1), LEVEL1_1_FILLER),
+                        Cell(Position.of(1, 1), LEVEL1_1_FILLER))
+    }
 
     companion object {
 
         val OTHER_CHAR = TextCharacterBuilder.newBuilder()
                 .character('z')
                 .build()
-        val OTHER_CHAR_POS = Position.of(2, 3)
+        val OTHER_CHAR_POS = Position.of(1, 2)
         val COLUMNS = 4
         val ROWS = 5
         val LEVEL_SIZE = Size.of(COLUMNS, ROWS)
-        val LEVEL0_FILLER = 'a'
+        val LEVEL0_FILLER = TextCharacterBuilder.newBuilder()
+                .character('a')
+                .build()
         val LEVEL0 = TextImageBuilder.newBuilder()
-                .filler(TextCharacterBuilder.newBuilder()
-                        .character(LEVEL0_FILLER)
-                        .build())
+                .filler(LEVEL0_FILLER)
                 .size(LEVEL_SIZE)
                 .build()
-        val LEVEL1_0_FILLER = 'b'
+        val LEVEL1_0_FILLER = TextCharacterBuilder.newBuilder()
+                .character('b')
+                .build()
         val LEVEL1_0 = TextImageBuilder.newBuilder()
-                .filler(TextCharacterBuilder.newBuilder()
-                        .character(LEVEL1_0_FILLER)
-                        .build())
+                .filler(LEVEL1_0_FILLER)
                 .size(LEVEL_SIZE)
                 .build()
-        val LEVEL1_1_FILLER = 'c'
+        val LEVEL1_1_FILLER = TextCharacterBuilder.newBuilder()
+                .character('c')
+                .build()
         val LEVEL1_1 = TextImageBuilder.newBuilder()
-                .filler(TextCharacterBuilder.newBuilder()
-                        .character(LEVEL1_1_FILLER)
-                        .build())
+                .filler(LEVEL1_1_FILLER)
                 .size(LEVEL_SIZE)
                 .build()
 
