@@ -4,9 +4,10 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.beta.component.GameComponent;
-import org.codetome.zircon.api.builder.TerminalBuilder;
-import org.codetome.zircon.api.builder.TextCharacterBuilder;
-import org.codetome.zircon.api.builder.TextImageBuilder;
+import org.codetome.zircon.api.beta.component.Size3D;
+import org.codetome.zircon.api.beta.component.TextImageGameArea;
+import org.codetome.zircon.api.builder.*;
+import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.component.Button;
@@ -14,19 +15,19 @@ import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.component.builder.ButtonBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.font.Font;
+import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.graphics.TextImage;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.internal.graphics.BoxType;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
-public class HideNSeek {
+public class GameAreaScrollingWithLayers {
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
     private static final int TERMINAL_WIDTH = 60;
@@ -88,14 +89,6 @@ public class HideNSeek {
         final Size virtualGameAreaSize = Size.of(90, 90);
 
         final TextColor bgcolor = TextColorFactory.fromString("#332211");
-        final TextImage gameField = TextImageBuilder.newBuilder()
-                .size(virtualGameAreaSize)
-                .filler(TextCharacterBuilder.newBuilder()
-                        .character(Symbols.BLOCK_SPARSE)
-                        .backgroundColor(bgcolor)
-                        .foregroundColor(TextColorFactory.fromString("#665544"))
-                        .build())
-                .build();
 
         final Random random = new Random();
         final TextColor[] colors = new TextColor[]{
@@ -109,27 +102,67 @@ public class HideNSeek {
                 Symbols.BLOCK_MIDDLE,
                 Symbols.BLOCK_SOLID,
         };
+
+        final TextImage gameLevel0 = TextImageBuilder.newBuilder()
+                .size(virtualGameAreaSize)
+                .filler(TextCharacterBuilder.newBuilder()
+                        .character(Symbols.BLOCK_SPARSE)
+                        .backgroundColor(bgcolor)
+                        .foregroundColor(TextColorFactory.fromString("#665544"))
+                        .build())
+                .build();
+
+        final TextImage gameLevel1 = TextImageBuilder.newBuilder()
+                .size(virtualGameAreaSize)
+                .filler(TextCharacterBuilder.EMPTY)
+                .build();
+
         for(int i = 0; i < 40; i++) {
-            Position pos = Position.of(random.nextInt(90), random.nextInt(90));
-            gameField.setCharacterAt(pos, TextCharacterBuilder.newBuilder()
+            Position pos0 = Position.of(random.nextInt(90), random.nextInt(90));
+
+            gameLevel0.setCharacterAt(pos0, TextCharacterBuilder.newBuilder()
                     .character(blocks[random.nextInt(3)])
                     .backgroundColor(bgcolor)
                     .foregroundColor(colors[random.nextInt(4)])
                     .build());
+            gameLevel1.setCharacterAt(pos0, TextCharacterBuilder.newBuilder()
+                    .character('x')
+                    .backgroundColor(TextColorFactory.TRANSPARENT)
+                    .foregroundColor(ANSITextColor.BLACK)
+                    .build());
         }
 
-//        final GameComponent gameComponent = new GameComponent(
-//                new TextImageGameArea(gameField),
-//                visibleGameAreaSize,
-//                CP437TilesetResource.PHOEBUS_16X16.toFont(),
-//                Position.DEFAULT_POSITION,
-//                ComponentStylesBuilder.DEFAULT);
-//        screen.addComponent(gamePanel);
-//        gamePanel.addComponent(gameComponent);
-//
-//        enableMovement(screen, gameComponent);
-//        screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_CYAN.getTheme());
-//        screen.display();
+
+
+        final Map<Integer, List<TextImage>> levels = new HashMap<>();
+        levels.put(0, Collections.singletonList(gameLevel0));
+        levels.put(1, Collections.singletonList(gameLevel1));
+
+        final GameComponent gameComponent = new GameComponent(
+                new TextImageGameArea(Size3D.from2DSize(gameLevel0.getBoundableSize(), 2), levels),
+                visibleGameAreaSize,
+                CP437TilesetResource.PHOEBUS_16X16.toFont(),
+                Position.DEFAULT_POSITION,
+                ComponentStylesBuilder.DEFAULT);
+        screen.addComponent(gamePanel);
+        gamePanel.addComponent(gameComponent);
+
+        final Position centerPos = Position.of(
+                visibleGameAreaSize.getColumns() / 2 + gameComponent.getPosition().getColumn(),
+                visibleGameAreaSize.getRows() / 2 + gameComponent.getPosition().getRow());
+
+        final Layer player = LayerBuilder.newBuilder()
+                .offset(centerPos)
+                .filler(TextCharacterBuilder.newBuilder()
+                        .character('@')
+                        .build())
+                .build();
+
+        screen.pushLayer(player);
+
+        enableMovement(screen, gameComponent);
+        screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_CYAN.getTheme());
+        screen.display();
     }
 
     private static void enableMovement(final Screen screen, final GameComponent gameComponent) {

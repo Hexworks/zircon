@@ -60,9 +60,11 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
     override fun transformToLayers(): List<Layer> {
         // note that the draw surface which comes from `DefaultComponent` is not used here
         // since the `GameArea` is used as a backend
-        return gameArea.getSegmentAt(
-                offset = Position3D.from2DPosition(getVisibleOffset()),
-                size = getBoundableSize()).layers.map {
+        return gameArea.getLevelIndexes().flatMap { levelIdx ->
+            gameArea.getSegmentAt(
+                    offset = Position3D.from2DPosition(getVisibleOffset(), levelIdx),
+                    size = getBoundableSize()).layers
+        }.map {
             LayerBuilder.newBuilder()
                     .textImage(it)
                     .offset(getPosition())

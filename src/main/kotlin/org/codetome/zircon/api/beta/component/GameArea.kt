@@ -24,4 +24,9 @@ interface GameArea {
      * 2D size.
      */
     fun getSegmentAt(offset: Position3D, size: Size): GameAreaSegment
+
+    /**
+     * Returns the indexes of all levels this [GameArea] has.
+     */
+    fun getLevelIndexes(): List<Int> = (0 until getSize().height).toList()
 }
