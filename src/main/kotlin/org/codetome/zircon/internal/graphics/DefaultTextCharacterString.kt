@@ -5,7 +5,9 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
+import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.graphics.TextCharacterString
+import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.graphics.TextWrap
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
@@ -41,6 +43,14 @@ data class DefaultTextCharacterString(private val textChars: List<TextCharacter>
                     surface.setCharacterAt(cursorHandler.getCursorPosition(), charIter.next())
                 } while (cursorIsNotAtBottomRightCorner(cursorHandler) && charIter.hasNext())
             }
+        }
+    }
+
+    override fun toTextImage() = TextImageBuilder.newBuilder()
+            .size(getBoundableSize())
+            .build().apply {
+        textChars.forEachIndexed { idx, tc ->
+            setCharacterAt(Position.of(idx, 0), tc)
         }
     }
 
