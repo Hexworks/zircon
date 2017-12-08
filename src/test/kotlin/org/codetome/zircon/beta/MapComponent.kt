@@ -4,10 +4,7 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.graphics.TextImage
-import org.codetome.zircon.api.util.TextColorUtils
 import org.codetome.zircon.api.util.darkenColorByPercent
 import java.util.*
 

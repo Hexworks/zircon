@@ -7,20 +7,19 @@ import org.codetome.zircon.api.TextCharacter;
 import org.codetome.zircon.api.beta.component.*;
 import org.codetome.zircon.api.builder.*;
 import org.codetome.zircon.api.color.ANSITextColor;
-import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.component.builder.ButtonBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.font.Font;
-import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.graphics.TextImage;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.util.TextColorUtils;
 import org.codetome.zircon.internal.graphics.BoxType;
 import org.junit.Test;
 
@@ -56,7 +55,6 @@ public class GameAreaScrollingWithLayers {
             headless = true;
         }
         final Screen screen = TerminalBuilder.createScreenFor(terminal);
-        Size size = screen.getBoundableSize();
         screen.setCursorVisibility(false); // we don't want the cursor right now
 
         Panel actions = PanelBuilder.newBuilder()
@@ -92,7 +90,7 @@ public class GameAreaScrollingWithLayers {
 
         final Map<Integer, List<TextImage>> levels = new HashMap<>();
         final int totalLevels = 10;
-        for(int i = 0; i < totalLevels; i++) {
+        for (int i = 0; i < totalLevels; i++) {
             levels.put(i, Collections.singletonList(TextImageBuilder.newBuilder()
                     .size(virtualGameAreaSize)
                     .build()));
@@ -110,45 +108,47 @@ public class GameAreaScrollingWithLayers {
         screen.addComponent(gamePanel);
         gamePanel.addComponent(gameComponent);
 
-        final Position centerPos = Position.of(
-                visibleGameAreaSize.getWidth() / 2 + gameComponent.getPosition().getColumn(),
-                visibleGameAreaSize.getDepth() / 2 + gameComponent.getPosition().getRow());
-
-        final Layer player = LayerBuilder.newBuilder()
-                .offset(centerPos)
-                .filler(TextCharacterBuilder.newBuilder()
-                        .character('@')
-                        .build())
-                .build();
-
-        screen.pushLayer(player);
-
         enableMovement(screen, gameComponent);
-        generatePyramid(5, Position3D.of(8, 8, 5), gameArea);
+        TextImage groundLevel = levels.get(0).get(0);
+        TextCharacter floor = TextCharacterBuilder.newBuilder()
+                .character(Symbols.BLOCK_SPARSE)
+                .backgroundColor(ANSITextColor.BLACK)
+                .foregroundColor(TextColorFactory.fromString("#112233"))
+                .build();
+        groundLevel.fetchCells().forEach(cell -> {
+            groundLevel.setCharacterAt(cell.getPosition(), floor);
+        });
+        generatePyramid(3, Position3D.of(5, 5, 2), gameArea);
+        generatePyramid(6, Position3D.of(15, 9, 5), gameArea);
+        generatePyramid(5, Position3D.of(9, 21, 4), gameArea);
+
+
         screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_CYAN.getTheme());
         screen.display();
     }
 
     private static void generatePyramid(int height, Position3D startPos, GameArea gameArea) {
+        double percent = 1.0 / (height + 1);
+        System.out.println(percent);
         TextCharacter wall = TextCharacterBuilder.newBuilder()
-                .character('#')
+                .character(Symbols.BLOCK_SOLID)
                 .build();
         AtomicInteger currLevel = new AtomicInteger(startPos.getZ());
-        int currSize = 1;
-        for (int i = currSize; i <= height; i++) {
-            if (i == 1) {
-                gameArea.setCharactersAt(startPos, Collections.singletonList(wall));
-            } else {
-                Position levelOffset = startPos.to2DPosition()
-                        .withRelativeColumn(-i)
-                        .withRelativeRow(-i);
-                Size levelSize = Size.of(1 + i * 2, 1 + i * 2);
-                levelSize.fetchPositions().forEach(position -> {
-                    gameArea.setCharactersAt(
-                            Position3D.from2DPosition((position.plus(levelOffset)), currLevel.get()),
-                            Collections.singletonList(wall));
-                });
-            }
+        System.out.println();
+        for (int currSize = 0; currSize < height; currSize++) {
+            final double currPercent = (currSize + 1) * percent;
+            System.out.println(currPercent);
+            Position levelOffset = startPos.to2DPosition()
+                    .withRelativeColumn(-currSize)
+                    .withRelativeRow(-currSize);
+            Size levelSize = Size.of(1 + currSize * 2, 1 + currSize * 2);
+            levelSize.fetchPositions().forEach(position -> {
+                gameArea.setCharactersAt(
+                        Position3D.from2DPosition((position.plus(levelOffset)), currLevel.get()),
+                        Collections.singletonList(wall
+                                .withBackgroundColor(TextColorUtils.darkenColorByPercent(wall.getBackgroundColor(), currPercent))
+                                .withForegroundColor(TextColorUtils.darkenColorByPercent(wall.getForegroundColor(), currPercent))));
+            });
             currLevel.decrementAndGet();
         }
     }
@@ -176,8 +176,20 @@ public class GameAreaScrollingWithLayers {
                 if (InputType.PageDown == input.getInputType()) {
                     gameComponent.scrollOneDown();
                 }
+                screen.drainLayers();
+                Position3D visibleOffset = gameComponent.getVisibleOffset();
+                screen.pushLayer(LayerBuilder.newBuilder()
+                        .textImage(TextCharacterStringBuilder.newBuilder()
+                                .backgroundColor(TextColorFactory.TRANSPARENT)
+                                .foregroundColor(TextColorFactory.fromString("#aaaadd"))
+                                .text(String.format("Position: (x=%s, y=%s, z=%s)", visibleOffset.getX(), visibleOffset.getY(), visibleOffset.getZ()))
+                                .build()
+                                .toTextImage())
+                        .offset(Position.of(21, 1))
+                        .build());
                 screen.refresh();
             }
         });
     }
+
 }

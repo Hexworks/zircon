@@ -20,6 +20,8 @@ interface TextCharacterString : Drawable, Collection<TextCharacter> {
 
     fun getTextCharacters(): List<TextCharacter>
 
+    fun toTextImage(): TextImage
+
     /**
      * Creates a new [TextCharacterString] which contains the contents of `this` string and the `other` string.
      * The original strings are left untouched. So if you `plus` `[x, y]` to `[a, b]`, you'll get `[a, b, x, y]`

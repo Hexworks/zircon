@@ -69,23 +69,14 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
         // since the `GameArea` is used as a backend
         val allLevelCount = scrollable.getVirtualSpaceSize().height
         val startLevel = scrollable.getVisibleOffset().z
-        val percentage: Double = 1.0.div(visibleLevelCount + 1.0)
-        println("Percentage $percentage")
+        val percentage: Double = 1.0.div(visibleLevelCount.toDouble())
+        var levelCount = 1
         return (startLevel until Math.min(startLevel + visibleLevelCount, allLevelCount)).toList().flatMap { levelIdx ->
-            val currPercentage = percentage.times(levelIdx + 1)
-            println("Curr percentage: $currPercentage")
+            val currPercentage = percentage.times(levelCount)
+            levelCount++
             gameArea.getSegmentAt(
                     offset = Position3D.from2DPosition(getVisibleOffset().to2DPosition(), levelIdx),
-                    size = getBoundableSize()).layers.map {
-                it.transform(TextCharacterTransformer { tc ->
-                    tc.withBackgroundColor(darkenColorByPercent(
-                            tc.getBackgroundColor(),
-                            currPercentage))
-                            .withForegroundColor(
-                                    darkenColorByPercent(tc.getForegroundColor(),
-                                            currPercentage))
-                })
-            }
+                    size = getBoundableSize()).layers
         }.map {
             LayerBuilder.newBuilder()
                     .textImage(it)
