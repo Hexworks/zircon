@@ -4,6 +4,7 @@ import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.graphics.TextImage
+import java.util.*
 
 @Beta
 interface GameArea {
@@ -37,4 +38,5 @@ interface GameArea {
      * Returns the number of levels this [GameArea] has.
      */
     fun getLevelCount() = getSize().height
+
 }

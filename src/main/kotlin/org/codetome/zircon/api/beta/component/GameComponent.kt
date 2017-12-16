@@ -10,6 +10,7 @@ import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
+import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.sam.TextCharacterTransformer
 import org.codetome.zircon.api.util.darkenColorByPercent
@@ -27,6 +28,7 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
                                               initialFont: Font,
                                               position: Position,
                                               componentStyles: ComponentStyles,
+                                              private val projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
                                               boundable: DefaultBoundable = DefaultBoundable(
                                                       size = visibleSize.to2DSize(),
                                                       position = position),
@@ -70,19 +72,30 @@ class GameComponent @JvmOverloads constructor(private val gameArea: GameArea,
         val allLevelCount = scrollable.getVirtualSpaceSize().height
         val startLevel = scrollable.getVisibleOffset().z
         val percentage: Double = 1.0.div(visibleLevelCount.toDouble())
-        var levelCount = 1
-        return (startLevel until Math.min(startLevel + visibleLevelCount, allLevelCount)).toList().flatMap { levelIdx ->
-            val currPercentage = percentage.times(levelCount)
-            levelCount++
-            gameArea.getSegmentAt(
+
+        val result = mutableListOf<Layer>()
+
+        // TODO: refactor this to be functional
+        (startLevel until Math.min(startLevel + visibleLevelCount, allLevelCount)).forEach { levelIdx ->
+            val segment = gameArea.getSegmentAt(
                     offset = Position3D.from2DPosition(getVisibleOffset().to2DPosition(), levelIdx),
-                    size = getBoundableSize()).layers
-        }.map {
-            LayerBuilder.newBuilder()
-                    .textImage(it)
-                    .offset(getPosition())
-                    .build()
+                    size = getBoundableSize())
+
+            segment.layers.forEach {
+                val img = if(projectionMode == ProjectionMode.TOP_DOWN) {
+                    it
+                } else {
+                    it.toSubImage(
+                            offset = Position.of(0, levelIdx),
+                            size = it.getBoundableSize().withRelativeRows(-levelIdx))
+                }
+                result.add(LayerBuilder.newBuilder()
+                        .textImage(img)
+                        .offset(getPosition())
+                        .build())
+            }
         }
+        return result
     }
 
     private fun refreshVirtualSpaceSize() {
