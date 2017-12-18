@@ -5,6 +5,10 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.graphics.Layer
 
+/**
+ * Note that this class is in **BETA**!
+ * It's API is subject to change!
+ */
 @Beta
 interface AnimationFrame {
 

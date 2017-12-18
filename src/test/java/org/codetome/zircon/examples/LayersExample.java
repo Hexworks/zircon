@@ -14,8 +14,6 @@ import org.codetome.zircon.api.terminal.Terminal;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
-import java.awt.image.BufferedImage;
-
 import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16;
 
 public class LayersExample {

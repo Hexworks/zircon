@@ -1,11 +1,17 @@
 package org.codetome.zircon.api.builder
 
+import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.animation.Animation
 import org.codetome.zircon.api.animation.AnimationFrame
 import org.codetome.zircon.internal.graphics.DefaultAnimation
 import org.codetome.zircon.internal.graphics.DefaultAnimationFrame
 
+/**
+ * Note that this class is in **BETA**!
+ * It's API is subject to change!
+ */
+@Beta
 data class AnimationBuilder private constructor(
         private val animationFrames: MutableList<AnimationFrame> = mutableListOf(),
         private val positions: MutableList<Position> = mutableListOf(),

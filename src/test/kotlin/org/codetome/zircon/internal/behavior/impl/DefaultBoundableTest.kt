@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.LayerBuilder
-import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.junit.Before
 import org.junit.Test
 

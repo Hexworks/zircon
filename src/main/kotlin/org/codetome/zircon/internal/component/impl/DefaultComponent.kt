@@ -20,7 +20,6 @@ import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
-import java.awt.image.BufferedImage
 import java.util.*
 import java.util.function.Consumer
 

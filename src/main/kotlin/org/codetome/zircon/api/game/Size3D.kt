@@ -1,4 +1,4 @@
-package org.codetome.zircon.api.beta.component
+package org.codetome.zircon.api.game
 
 import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.Size
@@ -15,11 +15,11 @@ data class Size3D(private val size: Size, val height: Int) : Comparable<Size3D> 
 
     val depth get() = size.rows
 
-    operator fun plus(other: Size3D) = Size3D.from2DSize(
+    operator fun plus(other: Size3D) = from2DSize(
             size = size + other.size,
             levels = height + other.height)
 
-    operator fun minus(other: Size3D) = Size3D.from2DSize(
+    operator fun minus(other: Size3D) = from2DSize(
             size = size - other.size,
             levels = height - other.height)
 
@@ -33,6 +33,9 @@ data class Size3D(private val size: Size, val height: Int) : Comparable<Size3D> 
     fun to2DSize() = size
 
     companion object {
+
+        @JvmField
+        val ONE = of(1, 1, 1)
 
         /**
          * Factory method for [Size3D].

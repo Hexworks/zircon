@@ -4,15 +4,19 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.TextCharacter;
-import org.codetome.zircon.api.beta.component.*;
 import org.codetome.zircon.api.builder.*;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.component.builder.ButtonBuilder;
+import org.codetome.zircon.api.component.builder.GameComponentBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.font.Font;
+import org.codetome.zircon.api.game.GameArea;
+import org.codetome.zircon.api.game.Position3D;
+import org.codetome.zircon.api.game.Size3D;
+import org.codetome.zircon.internal.game.TextImageGameArea;
 import org.codetome.zircon.api.graphics.TextImage;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
@@ -20,6 +24,7 @@ import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.util.TextColorUtils;
+import org.codetome.zircon.internal.component.impl.DefaultGameComponent;
 import org.codetome.zircon.internal.graphics.BoxType;
 import org.junit.Test;
 
@@ -99,12 +104,12 @@ public class GameAreaScrollingWithLayers {
         final GameArea gameArea =
                 new TextImageGameArea(Size3D.from2DSize(virtualGameAreaSize, totalLevels), levels);
 
-        final GameComponent gameComponent = new GameComponent(
-                gameArea,
-                visibleGameAreaSize,
-                CP437TilesetResource.PHOEBUS_16X16.toFont(),
-                Position.DEFAULT_POSITION,
-                ComponentStylesBuilder.DEFAULT);
+        final DefaultGameComponent gameComponent = GameComponentBuilder.newBuilder()
+                .gameArea(gameArea)
+                .visibleSize(visibleGameAreaSize)
+                .font(CP437TilesetResource.PHOEBUS_16X16.toFont())
+                .build();
+
         screen.addComponent(gamePanel);
         gamePanel.addComponent(gameComponent);
 
@@ -129,15 +134,12 @@ public class GameAreaScrollingWithLayers {
 
     private static void generatePyramid(int height, Position3D startPos, GameArea gameArea) {
         double percent = 1.0 / (height + 1);
-        System.out.println(percent);
         TextCharacter wall = TextCharacterBuilder.newBuilder()
                 .character(Symbols.BLOCK_SOLID)
                 .build();
         AtomicInteger currLevel = new AtomicInteger(startPos.getZ());
-        System.out.println();
         for (int currSize = 0; currSize < height; currSize++) {
             final double currPercent = (currSize + 1) * percent;
-            System.out.println(currPercent);
             Position levelOffset = startPos.to2DPosition()
                     .withRelativeColumn(-currSize)
                     .withRelativeRow(-currSize);
@@ -153,7 +155,7 @@ public class GameAreaScrollingWithLayers {
         }
     }
 
-    private static void enableMovement(final Screen screen, final GameComponent gameComponent) {
+    private static void enableMovement(final Screen screen, final DefaultGameComponent gameComponent) {
         screen.onInput((input) -> {
             if (EXIT_CONDITIONS.contains(input.getInputType()) && !headless) {
                 System.exit(0);

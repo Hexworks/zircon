@@ -1,2 +1,4 @@
 codecov:
   token: fdad49d8-8aa1-421e-b50b-607d1881a16d
+
+# bash <(curl -s https://codecov.io/bash)

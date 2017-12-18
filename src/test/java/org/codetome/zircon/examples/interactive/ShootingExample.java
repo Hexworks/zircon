@@ -87,7 +87,7 @@ public class ShootingExample {
                         .build())
                 .build();
 
-//        final GameComponent gameComponent = new GameComponent(
+//        final DefaultGameComponent gameComponent = new DefaultGameComponent(
 //                new TextImageGameArea(gameField),
 //                gameField.getBoundableSize(),
 //                CP437TilesetResource.PHOEBUS_16X16.toFont(),

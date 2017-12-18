@@ -21,7 +21,6 @@ object EventBus {
                 callback = callback,
                 dataType = T::class.java,
                 eventType = type)
-        log("Subscribing callback to event type: '$type'. Subscription: $subscription")
         subscriptions.getOrPut(type, { mutableListOf() })?.add(subscription)
         return subscription
     }
@@ -34,7 +33,6 @@ object EventBus {
     }
 
     fun <T : Any> emit(type: EventType, data: T, keys: Set<String> = setOf()) {
-        log("+++ Emitting event of type '$type' with data: '$data'.")
         subscriptions[type]?.filter {
             it.dataType.isAssignableFrom(data.javaClass)
         }?.filter {
@@ -58,7 +56,4 @@ object EventBus {
     fun subscriberKeysIntersectsWithEventKeys(it: Subscription<*>, keys: Set<String>)
             = it.keys.minus(keys).size < it.keys.size
 
-    fun log(text: String) {
-//        println("${System.currentTimeMillis()}: $text")
-    }
 }

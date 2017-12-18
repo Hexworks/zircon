@@ -1,9 +1,7 @@
 package org.codetome.zircon.internal.component
 
-import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ColorTheme
-import org.codetome.zircon.api.graphics.StyleSet
 
 data class DefaultColorTheme(private val brightForegroundColor: TextColor,
                              private val brightBackgroundColor: TextColor,
@@ -20,16 +18,4 @@ data class DefaultColorTheme(private val brightForegroundColor: TextColor,
     override fun getDarkBackgroundColor() = darkBackgroundColor
 
     override fun getAccentColor() = accentColor
-
-    // TODO: test these
-
-    override fun toBrightStyle() = StyleSetBuilder.newBuilder()
-            .backgroundColor(brightBackgroundColor)
-            .foregroundColor(brightForegroundColor)
-            .build()
-
-    override fun toDarkStyle() = StyleSetBuilder.newBuilder()
-            .backgroundColor(darkBackgroundColor)
-            .foregroundColor(darkForegroundColor)
-            .build()
 }
