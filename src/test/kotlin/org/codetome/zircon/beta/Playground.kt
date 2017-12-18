@@ -3,14 +3,12 @@ package org.codetome.zircon.beta
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.Symbols
-import org.codetome.zircon.api.beta.component.GameComponent
-import org.codetome.zircon.api.beta.component.ProjectionMode
-import org.codetome.zircon.api.beta.component.Size3D
-import org.codetome.zircon.api.beta.component.TextImageGameArea
 import org.codetome.zircon.api.builder.*
-import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.api.component.builder.GameComponentBuilder
 import org.codetome.zircon.api.component.builder.PanelBuilder
+import org.codetome.zircon.api.game.ProjectionMode
+import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.resource.CP437TilesetResource
@@ -134,15 +132,22 @@ object Playground {
                     .build()))
         }
 
-        val gameArea = TextImageGameArea(Size3D.from2DSize(gameAreaSize.to2DSize(), LEVEL_COUNT), levels)
+        val gameArea = GameAreaBuilder.newBuilder()
+                .size(Size3D.from2DSize(gameAreaSize.to2DSize(), LEVEL_COUNT))
+                .apply {
+                    levels.forEach { (idx, level) ->
+                        setLevel(idx, level)
+                    }
+                }
+                .build()
 
-        val gameComponent = GameComponent(
-                gameArea = gameArea,
-                visibleSize = gameAreaSize,
-                initialFont = CP437TilesetResource.PHOEBUS_16X16.toFont(),
-                position = Position.DEFAULT_POSITION,
-                componentStyles = ComponentStylesBuilder.DEFAULT,
-                projectionMode = ProjectionMode.ISOMETRIC)
+        val gameComponent = GameComponentBuilder.newBuilder()
+                .gameArea(gameArea)
+                .visibleSize(gameAreaSize)
+                .font(CP437TilesetResource.PHOEBUS_16X16.toFont())
+                .projectionMode(ProjectionMode.ISOMETRIC)
+                .build()
+
         screen.addComponent(gamePanel)
         gamePanel.addComponent(gameComponent)
 

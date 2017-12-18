@@ -11,6 +11,10 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.function.Consumer
 
+/**
+ * Note that this class is in **BETA**!
+ * It's API is subject to change!
+ */
 @Beta
 class AnimationHandler(private val screen: Screen) : Closeable {
 

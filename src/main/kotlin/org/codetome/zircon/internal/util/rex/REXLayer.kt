@@ -5,13 +5,9 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColorFactory
-import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
-import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.font.impl.FontSettings
-import org.codetome.zircon.internal.graphics.DefaultLayer
 import java.awt.Color
-import java.awt.image.BufferedImage
 import java.nio.ByteBuffer
 
 /**

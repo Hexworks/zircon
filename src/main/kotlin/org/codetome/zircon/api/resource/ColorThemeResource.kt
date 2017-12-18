@@ -1,8 +1,9 @@
 package org.codetome.zircon.api.resource
 
 import org.codetome.zircon.api.component.ColorTheme
-import org.codetome.zircon.api.component.builder.ColorThemeBuilder
+import org.codetome.zircon.api.component.builder.GameComponentBuilder
 import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.api.component.builder.ColorThemeBuilder
 import org.codetome.zircon.api.resource.ColorThemeResource.SolarizedBase.SOLARIZED_DARK_BASE
 import org.codetome.zircon.api.resource.ColorThemeResource.SolarizedBase.SOLARIZED_LIGHT_BASE
 

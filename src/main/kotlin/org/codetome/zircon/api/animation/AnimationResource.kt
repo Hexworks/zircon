@@ -9,6 +9,10 @@ import org.codetome.zircon.internal.util.rex.unZipIt
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
 
+/**
+ * Note that this class is in **BETA**!
+ * It's API is subject to change!
+ */
 @Beta
 class AnimationResource {
 

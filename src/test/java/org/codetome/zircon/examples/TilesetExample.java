@@ -14,11 +14,8 @@ import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.internal.DefaultTextCharacter;
 import org.junit.Test;
 
-import java.awt.image.BufferedImage;
-import java.util.HashSet;
 import java.util.Random;
 
 import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16;

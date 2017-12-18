@@ -1,4 +1,4 @@
-package org.codetome.zircon.api.beta.component
+package org.codetome.zircon.api.game
 
 import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.graphics.TextImage

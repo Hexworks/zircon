@@ -1,11 +1,19 @@
-package org.codetome.zircon.api.beta.component
+package org.codetome.zircon.internal.game
 
 import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.game.GameArea
+import org.codetome.zircon.api.game.GameAreaSegment
+import org.codetome.zircon.api.game.Position3D
+import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.api.graphics.TextImage
 
+/**
+ * Note that this class is in **BETA**!
+ * It's API is subject to change!
+ */
 @Beta
 class TextImageGameArea(private val size: Size3D,
                         private val levels: Map<Int, List<TextImage>>) : GameArea {

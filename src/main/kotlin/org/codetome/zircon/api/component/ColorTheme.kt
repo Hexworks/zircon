@@ -14,8 +14,4 @@ interface ColorTheme {
     fun getDarkBackgroundColor(): TextColor
 
     fun getAccentColor(): TextColor
-
-    fun toBrightStyle(): StyleSet
-
-    fun toDarkStyle(): StyleSet
 }

@@ -1,11 +1,14 @@
-package org.codetome.zircon.api.beta.component
+package org.codetome.zircon.api.game
 
 import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.graphics.TextImage
-import java.util.*
 
+/**
+ * Note that this class is in **BETA**!
+ * It's API is subject to change!
+ */
 @Beta
 interface GameArea {
 
