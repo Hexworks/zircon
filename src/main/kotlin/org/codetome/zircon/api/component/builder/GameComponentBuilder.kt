@@ -10,6 +10,7 @@ import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.GameComponent
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.game.*
+import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent
 import org.codetome.zircon.internal.font.impl.FontSettings
 
@@ -67,6 +68,14 @@ data class GameComponentBuilder(private var gameArea: GameArea = NO_GAME_AREA,
     companion object {
 
         private val NO_GAME_AREA = object : GameArea {
+            override fun getLayerAt(level: Int, layerIdx: Int): TextImage {
+                TODO("not implemented")
+            }
+
+            override fun setCharacterAt(position: Position3D, layerIdx: Int, character: TextCharacter) {
+                TODO("not implemented")
+            }
+
             override fun getSize(): Size3D {
                 TODO("not implemented")
             }

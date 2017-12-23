@@ -156,6 +156,12 @@ data class Position3D(private val position: Position,
     companion object {
 
         /**
+         * Position3d(0, 0, 0)
+         */
+        @JvmField
+        val DEFAULT_POSITION = Position3D.of(0, 0, 0)
+
+        /**
          * Factory method for [Position3D].
          */
         @JvmStatic

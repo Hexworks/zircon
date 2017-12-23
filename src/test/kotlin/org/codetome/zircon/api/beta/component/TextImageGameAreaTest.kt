@@ -106,7 +106,7 @@ class TextImageGameAreaTest {
 
         val SIZE = Size3D.of(COLUMNS, ROWS, 2)
         val LEVELS = mapOf(
-                Pair(0, listOf(LEVEL0)),
-                Pair(1, listOf(LEVEL1_0, LEVEL1_1)))
+                Pair(0, mutableListOf(LEVEL0)),
+                Pair(1, mutableListOf(LEVEL1_0, LEVEL1_1)))
     }
 }

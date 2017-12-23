@@ -12,14 +12,14 @@ import org.codetome.zircon.internal.game.TextImageGameArea
  */
 @Beta
 data class GameAreaBuilder(private var size: Size3D = Size3D.ONE,
-                           private var levels: MutableMap<Int, List<TextImage>> = mutableMapOf()) : Builder<GameArea> {
+                           private var levels: MutableMap<Int, MutableList<TextImage>> = mutableMapOf()) : Builder<GameArea> {
 
 
     fun size(size: Size3D) = also {
         this.size = size
         levels = mutableMapOf()
         (0 until size.height).forEach {
-            levels[it] = listOf()
+            levels[it] = mutableListOf()
         }
     }
 
@@ -32,7 +32,7 @@ data class GameAreaBuilder(private var size: Size3D = Size3D.ONE,
         require(images.all { it.getBoundableSize() == size.to2DSize() }) {
             "The supplied image(s) do(es) not match the size of the GameArea (${size.to2DSize()})!"
         }
-        this.levels[level] = images
+        this.levels[level] = images.toMutableList()
     }
 
     override fun build(): GameArea {
