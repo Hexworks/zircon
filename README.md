@@ -53,14 +53,14 @@ from Maven:
 <dependency>
     <groupId>org.codetome.zircon</groupId>
     <artifactId>zircon</artifactId>
-    <version>2017.3.0</version>
+    <version>2017.4.0</version>
 </dependency>
 ```
 
 or you can also use Gradle:
 
 ```groovy
-compile("org.codetome.zircon:zircon:2017.3.0")
+compile("org.codetome.zircon:zircon:2017.4.0")
 
 ```
 
@@ -548,7 +548,7 @@ Zircon is powered by:
 [license]:https://github.com/Hexworks/zircon/blob/master/LICENSE
 [license img]:https://img.shields.io/badge/License-MIT-green.svg
 
-[maven]:https://mvnrepository.com/artifact/org.codetome.zircon/zircon/2017.3.0
+[maven]:https://mvnrepository.com/artifact/org.codetome.zircon/zircon/2017.4.0
 [maven img]:https://maven-badges.herokuapp.com/maven-central/org.codetome.zircon/zircon/badge.svg
 
 [resource-handling]:https://github.com/Hexworks/zircon/wiki/Resource-Handling
