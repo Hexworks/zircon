@@ -17,6 +17,11 @@ import org.codetome.zircon.api.sam.TextCharacterTransformer
 interface TextImage : DrawSurface, Styleable, Drawable {
 
     /**
+     * Returns a copy of this [TextImage] with the exact same content.
+     */
+    fun copyImage(): TextImage = toSubImage(Position.DEFAULT_POSITION, getBoundableSize())
+
+    /**
      * Returns a part of this [TextImage] as a new [TextImage].
      * @param offset the position from which copying will start
      * @param size the size of the newly created image.

@@ -46,19 +46,6 @@ class TextImageGameArea(private val size: Size3D,
         return levels[position.z]!!.map { it.getCharacterAt(position.to2DPosition()).get() }
     }
 
-    override fun setCharactersAt(position: Position3D, characters: List<TextCharacter>) {
-        require(levels.containsKey(position.z)) {
-            "This game area does not have a z level of '${position.z}'!"
-        }
-        levels[position.z]!!.forEachIndexed { idx, image ->
-            image.setCharacterAt(position.to2DPosition(), if(characters.size > idx){
-                characters[idx]
-            } else {
-                TextCharacterBuilder.EMPTY
-            })
-        }
-    }
-
     override fun getSegmentAt(offset: Position3D, size: Size): GameAreaSegment {
         require(levels.containsKey(offset.z)) {
             "This game area does not have a z level of '${offset.z}'!"
@@ -73,4 +60,38 @@ class TextImageGameArea(private val size: Size3D,
                 level = level,
                 layers = levels[level]!!.map { it.toSubImage(pos, size) })
     }
+
+    override fun getLayerAt(level: Int, layerIdx: Int): TextImage {
+        require(levels.containsKey(level)) {
+            "This game area does not have a z level of '$level'!"
+        }
+        require(levels[level]!!.size > layerIdx) {
+            "This game area does not have a layer by index '$layerIdx'."
+        }
+        return levels[level]!![layerIdx]
+    }
+
+    override fun setCharactersAt(position: Position3D, characters: List<TextCharacter>) {
+        require(levels.containsKey(position.z)) {
+            "This game area does not have a z level of '${position.z}'!"
+        }
+        levels[position.z]!!.forEachIndexed { layerIdx, layer ->
+            layer.setCharacterAt(position.to2DPosition(), if(characters.size > layerIdx){
+                characters[layerIdx]
+            } else {
+                TextCharacterBuilder.EMPTY
+            })
+        }
+    }
+
+    override fun setCharacterAt(position: Position3D, layerIdx: Int, character: TextCharacter) {
+        require(levels.containsKey(position.z)) {
+            "This game area does not have a z level of '${position.z}'!"
+        }
+        require(levels[position.z]!!.size > layerIdx) {
+            "This game area does not have a layer by index '$layerIdx'."
+        }
+        levels[position.z]!![layerIdx].setCharacterAt(position.to2DPosition(), character)
+    }
+
 }

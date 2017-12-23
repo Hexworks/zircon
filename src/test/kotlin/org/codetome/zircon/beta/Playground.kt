@@ -1,16 +1,24 @@
+@file:Suppress("MemberVisibilityCanPrivate")
+
 package org.codetome.zircon.beta
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.Symbols
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.*
+import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.component.builder.GameComponentBuilder
 import org.codetome.zircon.api.component.builder.PanelBuilder
+import org.codetome.zircon.api.game.Position3D
 import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.input.InputType
+import org.codetome.zircon.api.modifier.BorderBuilder
+import org.codetome.zircon.api.modifier.BorderPosition
+import org.codetome.zircon.api.modifier.BorderType
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.graphics.BoxType
@@ -29,14 +37,36 @@ object Playground {
 
     val WALL_COLOR = TextColorFactory.fromString("#333333")
     val ROOF_COLOR = TextColorFactory.fromString("#4d4d4d")
+    val FLOOR_COLOR = TextColorFactory.fromString("#999999")
+    val LIGHT_COLOR = TextColorFactory.fromString("#ffff00")
+
     val TC = TextCharacterBuilder.newBuilder()
             .build()
-    val WALL_WITH_FULL_WINDOW = TC.withCharacter(Symbols.SINGLE_LINE_HORIZONTAL)
+
+    val SOUTH_WALL_WITH_FULL_WINDOW = TC.withCharacter(Symbols.SINGLE_LINE_HORIZONTAL)
             .withBackgroundColor(WALL_COLOR)
             .withForegroundColor(ROOF_COLOR)
-    val WALL_WITH_NARROW_WINDOW = TC.withCharacter('-')
+    val SOUTH_WALL_WITH_NARROW_WINDOW = TC.withCharacter('-')
             .withBackgroundColor(WALL_COLOR)
+            .withForegroundColor(LIGHT_COLOR)
+    val NORTH_WALL_WITH_NARROW_WINDOW = SOUTH_WALL_WITH_NARROW_WINDOW
             .withForegroundColor(ROOF_COLOR)
+    val WEST_WALL = TC.withCharacter(' ')
+            .withBackgroundColor(TextColorFactory.TRANSPARENT)
+            .withForegroundColor(WALL_COLOR)
+            .withModifiers(BorderBuilder.newBuilder()
+                    .borderPositions(BorderPosition.LEFT)
+                    .borderType(BorderType.SOLID)
+                    .build())
+    val EAST_WALL = WEST_WALL
+            .withModifiers(BorderBuilder.newBuilder()
+                    .borderPositions(BorderPosition.RIGHT)
+                    .borderType(BorderType.SOLID)
+                    .build())
+
+    val BUILDING_FLOOR = TC.withCharacter(Symbols.BLOCK_SOLID)
+
+            .withForegroundColor(FLOOR_COLOR)
 
     val BUILDING_INSIDE = TC.withCharacter('#')
             .withBackgroundColor(WALL_COLOR)
@@ -50,33 +80,13 @@ object Playground {
     val BUILDING_ROOF_BOT_LEFT = BUILDING_ROOF.withCharacter(Symbols.SINGLE_LINE_BOTTOM_LEFT_CORNER)
     val BUILDING_ROOF_BOT_RIGHT = BUILDING_ROOF.withCharacter(Symbols.SINGLE_LINE_BOTTOM_RIGHT_CORNER)
 
-    val BUILDING_WITH_FULL_WINDOWS_2X2_LEVEL = TextImageBuilder.newBuilder()
-            .toCopy(arrayOf(
-                    arrayOf(BUILDING_INSIDE, BUILDING_INSIDE),
-                    arrayOf(BUILDING_INSIDE, BUILDING_INSIDE),
-                    arrayOf(WALL_WITH_FULL_WINDOW, WALL_WITH_FULL_WINDOW)))
-            .size(Size.of(2, 3))
-            .build()
 
-    val BUILDING_WITH_NARROW_WINDOWS_2X2_LEVEL = TextImageBuilder.newBuilder()
+    val BUILDING_3X3_FLOOR = TextImageBuilder.newBuilder()
             .toCopy(arrayOf(
-                    arrayOf(BUILDING_INSIDE, BUILDING_INSIDE),
-                    arrayOf(BUILDING_INSIDE, BUILDING_INSIDE),
-                    arrayOf(WALL_WITH_NARROW_WINDOW, WALL_WITH_NARROW_WINDOW)))
-            .size(Size.of(2, 3))
-            .build()
-
-    val BUILDING_2X2_ROOF_0 = TextImageBuilder.newBuilder()
-            .toCopy(arrayOf(
-                    arrayOf(BUILDING_ROOF_TOP_LEFT, BUILDING_ROOF_TOP_RIGHT),
-                    arrayOf(BUILDING_ROOF_BOT_LEFT, BUILDING_ROOF_BOT_RIGHT)))
-            .size(Size.of(2, 3))
-            .build()
-    val BUILDING_2X2_ROOF_1 = TextImageBuilder.newBuilder()
-            .toCopy(arrayOf(
-                    arrayOf(BUILDING_ROOF, BUILDING_ROOF),
-                    arrayOf(BUILDING_ROOF, BUILDING_ROOF)))
-            .size(Size.of(2, 3))
+                    arrayOf(BUILDING_FLOOR, BUILDING_FLOOR, BUILDING_FLOOR),
+                    arrayOf(BUILDING_FLOOR, BUILDING_FLOOR, BUILDING_FLOOR),
+                    arrayOf(BUILDING_FLOOR, BUILDING_FLOOR, BUILDING_FLOOR)))
+            .size(Size.of(3, 3))
             .build()
 
     val BASE_STYLE = StyleSetBuilder.newBuilder()
@@ -124,22 +134,60 @@ object Playground {
         val gameAreaSize = Size3D.from2DSize(gamePanel.getBoundableSize()
                 .minus(Size.of(2, 2)), VISIBLE_LEVEL_COUNT)
 
+        val emptyLayer = TextImageBuilder.newBuilder()
+                .size(gameAreaSize.to2DSize())
+                .build()
 
-        val levels = HashMap<Int, List<TextImage>>()
-        for (i in 0 until LEVEL_COUNT) {
-            levels.put(i, listOf(TextImageBuilder.newBuilder()
-                    .size(gameAreaSize.to2DSize())
-                    .build()))
-        }
+        val ground = TextCharacterBuilder.newBuilder()
+                .backgroundColor(TextColorFactory.fromString("#665233"))
+                .foregroundColor(TextColorFactory.TRANSPARENT)
+                .build()
 
         val gameArea = GameAreaBuilder.newBuilder()
                 .size(Size3D.from2DSize(gameAreaSize.to2DSize(), LEVEL_COUNT))
                 .apply {
-                    levels.forEach { (idx, level) ->
-                        setLevel(idx, level)
+                    for (levelIdx in 0 until LEVEL_COUNT) {
+                        setLevel(levelIdx, listOf(
+                                emptyLayer.copyImage(),
+                                emptyLayer.copyImage(),
+                                emptyLayer.copyImage()))
                     }
                 }
                 .build()
+
+        gameAreaSize.to2DSize().fetchPositions().forEach {
+            gameArea.setCharacterAt(Position3D.from2DPosition(it), 0, ground)
+        }
+
+        val pos = Position.of(5, 9)
+        val face = TextCharacterBuilder.newBuilder()
+                .foregroundColor(TextColorFactory.fromString("#2288ff"))
+                .backgroundColor(TextColorFactory.TRANSPARENT)
+                .character(Symbols.FACE_WHITE)
+                .build()
+
+        // level 0
+
+        for (level in 0 until 6) {
+            gameArea.getLayerAt(level, 0).draw(BUILDING_3X3_FLOOR, pos)
+            gameArea.setCharacterAt(Position3D.from2DPosition(pos, level), 1, face)
+            gameArea.setCharacterAt(Position3D.from2DPosition(pos
+                    .withRelativeColumn(2)
+                    .withRelativeRow(1), level), 1, face)
+            gameArea.getLayerAt(level, 2).draw(TextImageBuilder.newBuilder()
+                    .filler(SOUTH_WALL_WITH_NARROW_WINDOW)
+                    .size(Size.of(3, 1))
+                    .build(), pos.withRelativeRow(2))
+            gameArea.getLayerAt(level, 2).draw(TextImageBuilder.newBuilder()
+                    .filler(WEST_WALL)
+                    .size(Size.of(1, 2))
+                    .build(), pos)
+            gameArea.getLayerAt(level, 2).draw(TextImageBuilder.newBuilder()
+                    .filler(EAST_WALL)
+                    .size(Size.of(1, 2))
+                    .build(), pos.withRelativeColumn(2))
+        }
+
 
         val gameComponent = GameComponentBuilder.newBuilder()
                 .gameArea(gameArea)
@@ -150,21 +198,6 @@ object Playground {
 
         screen.addComponent(gamePanel)
         gamePanel.addComponent(gameComponent)
-
-        val level0 = levels[0]!![0]
-        val floor = TextCharacterBuilder.newBuilder()
-                .backgroundColor(TextColorFactory.fromString("#665233"))
-                .foregroundColor(TextColorFactory.TRANSPARENT)
-                .build()
-        level0.fetchCells().forEach { (position) -> level0.setCharacterAt(position, floor) }
-
-        draw2x2Building(levels, Position.of(5, 6))
-        draw2x2Building(levels, Position.of(6, 10))
-        draw2x2Building(levels, Position.of(18, 21))
-        draw2x2Building(levels, Position.of(26, 9))
-        draw2x2Building(levels, Position.of(39, 15))
-        draw2x2Building(levels, Position.of(48, 12))
-
 
         screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_CYAN.getTheme())
         screen.onInput(Consumer { input ->
@@ -188,21 +221,5 @@ object Playground {
             screen.refresh()
         })
         screen.display()
-    }
-
-    private fun draw2x2Building(levels: Map<Int, List<TextImage>>, pos: Position) {
-        val random = Random()
-        var lastLevel = levels[0]!![0]
-        lastLevel.draw(BASE_4X4, pos.withRelativeColumn(-1))
-        val wall = if (random.nextInt(2) == 0) BUILDING_WITH_FULL_WINDOWS_2X2_LEVEL else BUILDING_WITH_NARROW_WINDOWS_2X2_LEVEL
-        (0 until random.nextInt(7) + 1).forEach {
-            val level = levels[it]!![0]
-            level.draw(wall, pos)
-            lastLevel = level
-        }
-        lastLevel.draw(if (random.nextInt(2) == 0) BUILDING_2X2_ROOF_0 else BUILDING_2X2_ROOF_1, pos)
-        if(random.nextInt(2) == 1) {
-            lastLevel.setCharacterAt(pos, SIMPLE_ANTENNA)
-        }
     }
 }
