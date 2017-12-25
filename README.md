@@ -53,15 +53,15 @@ from Maven:
 <dependency>
     <groupId>org.codetome.zircon</groupId>
     <artifactId>zircon</artifactId>
-    <version>2017.4.0</version>
+    <version>2017.4.0-RELEASE</version>
 </dependency>
+
 ```
 
 or you can also use Gradle:
 
 ```groovy
-compile("org.codetome.zircon:zircon:2017.4.0")
-
+compile("org.codetome.zircon:zircon:2017.4.0-RELEASE")
 ```
 
 Want to use a `SNAPSHOT`? Check [this Wiki page](https://github.com/Hexworks/zircon/wiki/The-release-process-and-versioning-scheme)
