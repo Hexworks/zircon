@@ -29,4 +29,14 @@ interface InternalComponent : Component, Drawable, Focusable {
     fun fetchComponentByPosition(position: Position): Optional<out InternalComponent>
 
     fun setPosition(position: Position)
+
+    /**
+     * Tells whether this [Component] is attached to a [org.codetome.zircon.api.component.ContainerHandler] or not.
+     */
+    fun isAttached(): Boolean
+
+    /**
+     * Signals this [Component] that it has been attached to a [org.codetome.zircon.api.component.ContainerHandler].
+     */
+    fun signalAttached()
 }

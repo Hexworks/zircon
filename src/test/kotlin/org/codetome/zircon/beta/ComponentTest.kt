@@ -2,13 +2,9 @@ package org.codetome.zircon.beta
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
-import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TerminalBuilder
-import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.builder.HeaderBuilder
 import org.codetome.zircon.api.component.builder.PanelBuilder
-import org.codetome.zircon.api.component.builder.RadioButtonGroupBuilder
 import org.codetome.zircon.api.resource.CP437TilesetResource
 
 object ComponentTest {
@@ -16,34 +12,42 @@ object ComponentTest {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val screen = TerminalBuilder.newBuilder()
+        val terminal = TerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(40, 25))
                 .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
-                .buildScreen()
+                .buildTerminal(false)
+        val screen = TerminalBuilder.createScreenFor(terminal)
 
-        val panel = PanelBuilder.newBuilder()
+        val panel0 = PanelBuilder.newBuilder()
                 .wrapWithBox()
                 .title("Panel")
                 .size(Size.of(32, 16))
                 .position(Position.OFFSET_1x1)
                 .build()
 
-        val panel2 = PanelBuilder.newBuilder()
+        val panel1 = PanelBuilder.newBuilder()
                 .wrapWithBox()
                 .title("Panel2")
                 .size(Size.of(16, 10))
                 .position(Position.OFFSET_1x1)
                 .build()
-        panel2.addComponent(HeaderBuilder.newBuilder()
-                .text("Header2")
-                .build())
 
-        panel.addComponent(HeaderBuilder.newBuilder()
+        val header0 = HeaderBuilder.newBuilder()
+                .position(Position.of(1, 0))
                 .text("Header")
-                .build())
-        panel.addComponent(panel2)
+                .build()
 
-        screen.addComponent(panel)
+        val header1 = HeaderBuilder.newBuilder()
+                .position(Position.of(1, 0))
+                .text("Header2")
+                .build()
+
+
+        panel1.addComponent(header1)
+        panel0.addComponent(panel1)
+        panel0.addComponent(header0)
+
+        screen.addComponent(panel0)
 
         screen.display()
     }
