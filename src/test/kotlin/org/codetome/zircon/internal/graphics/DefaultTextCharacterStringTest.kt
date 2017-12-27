@@ -99,6 +99,35 @@ class DefaultTextCharacterStringTest {
     }
 
     @Test
+    fun WordWrapShouldWorkCorrectly() {
+        val surface = TextImageBuilder.newBuilder()
+                .size(Size.of(4, 5))
+                .build()
+
+        TextCharacterStringBuilder.newBuilder()
+                .text("a test thghty")
+                .textWrap(TextWrap.NO_WRAPPING)
+                .build().drawOnto(surface)
+        // a and space should fit on the first line
+        assertThat(surface.getCharacterAt(Position.of(0, 0)).get()).isEqualTo('a')
+        assertThat(surface.getCharacterAt(Position.of(0, 1)).get()).isEqualTo(' ')
+
+        //words a, ` ` and test would make up 6 characters so test should wrap to the next line
+        assertThat(surface.getCharacterAt(Position.of(1, 0)).get()).isEqualTo('t')
+        assertThat(surface.getCharacterAt(Position.of(1, 1)).get()).isEqualTo('e')
+        assertThat(surface.getCharacterAt(Position.of(1, 2)).get()).isEqualTo('s')
+        assertThat(surface.getCharacterAt(Position.of(1, 3)).get()).isEqualTo('t')
+        assertThat(surface.getCharacterAt(Position.of(1, 4)).get()).isEqualTo(' ')
+        //thghty makes up 6 characters which is larger then the number of rows. So it should character wrap
+        assertThat(surface.getCharacterAt(Position.of(2, 0)).get()).isEqualTo('t')
+        assertThat(surface.getCharacterAt(Position.of(2, 1)).get()).isEqualTo('h')
+        assertThat(surface.getCharacterAt(Position.of(2, 2)).get()).isEqualTo('g')
+        assertThat(surface.getCharacterAt(Position.of(2, 3)).get()).isEqualTo('h')
+        assertThat(surface.getCharacterAt(Position.of(2, 4)).get()).isEqualTo('t')
+        assertThat(surface.getCharacterAt(Position.of(3, 0)).get()).isEqualTo('y')
+    }
+
+    @Test
     fun shouldProperlyWriteNoWrapStringToTextImageWithOffset() {
         val surface = TextImageBuilder.newBuilder()
                 .size(Size.of(2, 2))

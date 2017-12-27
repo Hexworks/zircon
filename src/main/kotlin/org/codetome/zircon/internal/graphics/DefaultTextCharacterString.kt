@@ -31,6 +31,60 @@ data class DefaultTextCharacterString(private val textChars: List<TextCharacter>
         cursorHandler.putCursorAt(offset)
         surface.setCharacterAt(cursorHandler.getCursorPosition(), charIter.next())
 
+        if (textWrap == TextWrap.WORD_WRAP) {
+            var wordCharacterIterator = WordCharacterIterator(charIter)
+            var rowSize = getBoundableSize().rows;
+
+            if (cursorIsNotAtBottomRightCorner(cursorHandler) && wordCharacterIterator.hasNext()) {
+                do {
+
+                    var nextWord = wordCharacterIterator.next();
+                    var wordSize = nextWord.size;
+                    var spaceRemaining = rowSize - cursorHandler.getCursorPosition().row
+
+                    if (spaceRemaining >= wordSize) {
+                        //this means we can plunk the word on our line
+                        nextWord.forEach({ tc ->
+                            cursorHandler.moveCursorForward()
+                            surface.setCharacterAt(cursorHandler.getCursorPosition(), tc)
+                        })
+                    } else {
+                        //this means we are at the last column and therefore we cannot wrap anymore. Therefore we should
+                        //stop rendering
+                        val column = cursorHandler.getCursorPosition().column
+                        if(column == getBoundableSize().columns){
+                            return
+                        }
+
+                        //as our word couldn't fit on the last line lets move down a column
+                        cursorHandler.putCursorAt(Position(column + 1, 1))
+                        //recalculate our space remaining
+                        spaceRemaining = rowSize - cursorHandler.getCursorPosition().row
+
+                        if (spaceRemaining >= wordSize) {
+                            //this means we can plunk the word on our line
+                            nextWord.forEach({ tc ->
+                                cursorHandler.moveCursorForward()
+                                surface.setCharacterAt(cursorHandler.getCursorPosition(), tc)
+                            })
+                        }else{
+                            //this means our current word is too big for an entire line! therefore we should fall back
+                            //to character wrap
+                            nextWord.forEach({
+                                tc ->
+                                cursorHandler.moveCursorForward()
+                                surface.setCharacterAt(cursorHandler.getCursorPosition(), tc)
+                            })
+
+                        }
+                    }
+
+                } while (cursorIsNotAtBottomRightCorner(cursorHandler) && wordCharacterIterator.hasNext())
+            }
+
+            return
+        }
+
         if (cursorIsNotAtBottomRightCorner(cursorHandler) && charIter.hasNext()) {
             do {
                 cursorHandler.moveCursorForward()
