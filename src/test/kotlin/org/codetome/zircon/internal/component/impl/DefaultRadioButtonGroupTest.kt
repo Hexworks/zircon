@@ -31,7 +31,6 @@ class DefaultRadioButtonGroupTest {
         target = DefaultRadioButtonGroup(
                 wrappers = LinkedList(),
                 size = SIZE,
-                spacing = 2,
                 position = POSITION,
                 componentStyles = COMPONENT_STYLES,
                 initialFont = FONT)

@@ -26,7 +26,6 @@ import kotlin.collections.LinkedHashMap
 class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<WrappingStrategy>,
                                                         private val size: Size,
                                                         initialFont: Font,
-                                                        private val spacing: Int,
                                                         position: Position,
                                                         componentStyles: ComponentStyles,
                                                         scrollable: Scrollable = DefaultScrollable(size, size))
@@ -57,14 +56,14 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
     }
 
     override fun addOption(key: String, text: String): RadioButton {
-        require(items.size * spacing + spacing + 1 < size.columns) {
+        require(items.size + 1 < size.columns) {
             "This RadioButtonGroup does not have enough space for another option!"
         }
         return DefaultRadioButton(
                 text = text,
                 wrappers = LinkedList(),
                 width = size.columns,
-                position = Position.of(0, items.size * spacing),
+                position = Position.of(0, items.size),
                 componentStyles = getComponentStyles(),
                 initialFont = getCurrentFont()).also { button ->
             items[key] = button
@@ -119,7 +118,8 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
         items.values.forEach {
             removeComponent(it)
         }
-        items.forEach { _, comp ->
+        items.values.forEachIndexed { idx, comp ->
+            comp.setPosition(Position.of(0, idx))
             addComponent(comp)
         }
     }
