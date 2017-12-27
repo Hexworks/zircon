@@ -48,13 +48,6 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
         })
     }
 
-    override fun setPosition(position: Position) {
-        super.setPosition(position)
-        items.values.forEach {
-            (it as InternalComponent).setPosition(it.getPosition() + position)
-        }
-    }
-
     override fun addOption(key: String, text: String): RadioButton {
         require(items.size + 1 < size.columns) {
             "This RadioButtonGroup does not have enough space for another option!"

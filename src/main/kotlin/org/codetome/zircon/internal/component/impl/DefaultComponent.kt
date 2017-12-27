@@ -26,6 +26,7 @@ import java.util.function.Consumer
 abstract class DefaultComponent(initialSize: Size,
                                 initialFont: Font,
                                 position: Position,
+                                private var attached: Boolean = false,
                                 private var componentStyles: ComponentStyles,
                                 private val wrappers: Iterable<WrappingStrategy>,
                                 private val fontOverride: FontOverride = DefaultFontOverride(
@@ -57,6 +58,12 @@ abstract class DefaultComponent(initialSize: Size,
                 EventBus.emit(EventType.ComponentChange)
             }
         })
+    }
+
+    override fun isAttached() = attached
+
+    override fun signalAttached() {
+        this.attached = true
     }
 
     override fun setPosition(position: Position) {

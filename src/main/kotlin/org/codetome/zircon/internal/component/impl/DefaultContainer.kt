@@ -38,9 +38,8 @@ open class DefaultContainer(initialSize: Size,
             "You can't add a component to itself!"
         }
         (component as? DefaultComponent)?.let { dc ->
-            dc.setPosition(dc.getPosition() + getEffectivePosition())
-            require(components.none { it.intersects(component) }) {
-                "You can't add a component to a container which intersects with other components!"
+            if(isAttached()) {
+                dc.setPosition(dc.getPosition() + getEffectivePosition())
             }
             if (component.getCurrentFont() === FontSettings.NO_FONT) {
                 component.useFont(getCurrentFont())
@@ -50,15 +49,32 @@ open class DefaultContainer(initialSize: Size,
                             "container with font size: '${getCurrentFont().getSize()}'!"
                 }
             }
-            // TODO: if the component has the same size and position it adds it!!!
-            require(containsBoundable(component)) {
-                "You can't add a component to a container which is not within its bounds " +
-                        "(target size: ${getEffectiveSize()}, component size: ${component.getBoundableSize()}" +
-                        ", position: ${component.getPosition()})!"
+            require(components.none { it.intersects(component) }) {
+                "You can't add a component to a container which intersects with other components!"
             }
             components.add(dc)
             EventBus.emit(EventType.ComponentAddition)
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
+    }
+
+    override fun setPosition(position: Position) {
+        super.setPosition(position)
+        components.forEach {
+            it.setPosition(it.getPosition() + getEffectivePosition())
+            // TODO: if the component has the same size and position it adds it!!!
+            require(containsBoundable(it)) {
+                "You can't add a component to a container which is not within its bounds " +
+                        "(target size: ${getEffectiveSize()}, component size: ${it.getBoundableSize()}" +
+                        ", position: ${it.getPosition()})!"
+            }
+        }
+    }
+
+    override fun signalAttached() {
+        super.signalAttached()
+        components.forEach {
+            it.signalAttached()
+        }
     }
 
     override fun acceptsFocus() = false

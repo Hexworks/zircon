@@ -1,4 +1,4 @@
-package org.codetome.zircon.examples;
+package org.codetome.zircon.examples.interactive;
 
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
