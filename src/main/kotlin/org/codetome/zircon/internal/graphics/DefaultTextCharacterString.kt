@@ -7,7 +7,6 @@ import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.graphics.TextCharacterString
-import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.graphics.TextWrap
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
@@ -31,13 +30,12 @@ data class DefaultTextCharacterString(private val textChars: List<TextCharacter>
         cursorHandler.putCursorAt(offset)
 
         if (textWrap == TextWrap.WORD_WRAP) {
-            var wordCharacterIterator = WordCharacterIterator(charIter)
+            val wordCharacterIterator = WordCharacterIterator(charIter)
 
             if (cursorIsNotAtBottomRightCorner(cursorHandler) && wordCharacterIterator.hasNext()) {
                 do {
-                    var nextWord = wordCharacterIterator.next();
-
-                    var wordSize = nextWord.size;
+                    val nextWord = wordCharacterIterator.next()
+                    val wordSize = nextWord.size
                     var spaceRemaining = cols - cursorHandler.getCursorPosition().column
 
                     //the word is bigger then 1 line when this happens we should character wrap
