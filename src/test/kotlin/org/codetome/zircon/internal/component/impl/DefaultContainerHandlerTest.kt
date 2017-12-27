@@ -8,6 +8,8 @@ import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.builder.ButtonBuilder
+import org.codetome.zircon.api.component.builder.LabelBuilder
+import org.codetome.zircon.api.component.builder.PanelBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke
@@ -53,6 +55,13 @@ class DefaultContainerHandlerTest {
         assertThat(componentChanged.get()).isTrue()
         assertThat(result).isTrue()
         assertThat(target.transformComponentsToLayers()).hasSize(1) // default container
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldNotLetToAddAComponentWhichIsBiggerThanTheContainer() {
+        target.addComponent(PanelBuilder.newBuilder()
+                .size(Size.of(999, 999))
+                .build())
     }
 
     @Test
