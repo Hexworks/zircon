@@ -99,32 +99,95 @@ class DefaultTextCharacterStringTest {
     }
 
     @Test
-    fun WordWrapShouldWorkCorrectly() {
+    fun WordWrapShouldWorkCorrectlyFirstTest() {
         val surface = TextImageBuilder.newBuilder()
-                .size(Size.of(4, 5))
+                .size(Size.of(5, 1))
                 .build()
 
-        TextCharacterStringBuilder.newBuilder()
-                .text("a test thghty")
-                .textWrap(TextWrap.NO_WRAPPING)
-                .build().drawOnto(surface)
+        val textCharacterString = TextCharacterStringBuilder.newBuilder()
+                .text("atest")
+                .textWrap(TextWrap.WORD_WRAP)
+                .build()
+        textCharacterString.drawOnto(surface)
+
         // a and space should fit on the first line
-        assertThat(surface.getCharacterAt(Position.of(0, 0)).get()).isEqualTo('a')
-        assertThat(surface.getCharacterAt(Position.of(0, 1)).get()).isEqualTo(' ')
+        assertThat(surface.getCharacterAt(Position.of(0, 0)).get().getCharacter()).isEqualTo('a')
+        assertThat(surface.getCharacterAt(Position.of(1, 0)).get().getCharacter()).isEqualTo('t')
+        assertThat(surface.getCharacterAt(Position.of(2, 0)).get().getCharacter()).isEqualTo('e')
+        assertThat(surface.getCharacterAt(Position.of(3, 0)).get().getCharacter()).isEqualTo('s')
+        assertThat(surface.getCharacterAt(Position.of(4, 0)).get().getCharacter()).isEqualTo('t')
+    }
+
+    @Test
+    fun WordWrapShouldWorkMultipleWords() {
+        val surface = TextImageBuilder.newBuilder()
+                .size(Size.of(4, 2))
+                .build()
+
+        val textCharacterString = TextCharacterStringBuilder.newBuilder()
+                .text("a test")
+                .textWrap(TextWrap.WORD_WRAP)
+                .build()
+        textCharacterString.drawOnto(surface)
+
+        // a and space should fit on the first line
+        assertThat(surface.getCharacterAt(Position.of(0, 0)).get().getCharacter()).isEqualTo('a')
+        assertThat(surface.getCharacterAt(Position.of(1, 0)).get().getCharacter()).isEqualTo(' ')
+        assertThat(surface.getCharacterAt(Position.of(0, 1)).get().getCharacter()).isEqualTo('t')
+        assertThat(surface.getCharacterAt(Position.of(1, 1)).get().getCharacter()).isEqualTo('e')
+        assertThat(surface.getCharacterAt(Position.of(2, 1)).get().getCharacter()).isEqualTo('s')
+        assertThat(surface.getCharacterAt(Position.of(3, 1)).get().getCharacter()).isEqualTo('t')
+    }
+
+    @Test
+    fun WordWrapShouldWrapAsWordTooBigForSingleColumn() {
+        val surface = TextImageBuilder.newBuilder()
+                .size(Size.of(4, 2))
+                .build()
+
+        val textCharacterString = TextCharacterStringBuilder.newBuilder()
+                .text("atest")
+                .textWrap(TextWrap.WORD_WRAP)
+                .build()
+        textCharacterString.drawOnto(surface)
+
+        // a and space should fit on the first line
+        assertThat(surface.getCharacterAt(Position.of(0, 0)).get().getCharacter()).isEqualTo('a')
+        assertThat(surface.getCharacterAt(Position.of(1, 0)).get().getCharacter()).isEqualTo('t')
+        assertThat(surface.getCharacterAt(Position.of(2, 0)).get().getCharacter()).isEqualTo('e')
+        assertThat(surface.getCharacterAt(Position.of(3, 0)).get().getCharacter()).isEqualTo('s')
+        assertThat(surface.getCharacterAt(Position.of(0, 1)).get().getCharacter()).isEqualTo('t')
+    }
+
+    @Test
+    fun WordWrapShouldWorkCorrectly() {
+        val surface = TextImageBuilder.newBuilder()
+                .size(Size.of(5, 4))
+                .build()
+
+        val textCharacterString = TextCharacterStringBuilder.newBuilder()
+                .text("a test thghty")
+                .textWrap(TextWrap.WORD_WRAP)
+                .build()
+        textCharacterString.drawOnto(surface)
+
+        // a and space should fit on the first line
+        assertThat(surface.getCharacterAt(Position.of(0, 0)).get().getCharacter()).isEqualTo('a')
+        assertThat(surface.getCharacterAt(Position.of(1, 0)).get().getCharacter()).isEqualTo(' ')
 
         //words a, ` ` and test would make up 6 characters so test should wrap to the next line
-        assertThat(surface.getCharacterAt(Position.of(1, 0)).get()).isEqualTo('t')
-        assertThat(surface.getCharacterAt(Position.of(1, 1)).get()).isEqualTo('e')
-        assertThat(surface.getCharacterAt(Position.of(1, 2)).get()).isEqualTo('s')
-        assertThat(surface.getCharacterAt(Position.of(1, 3)).get()).isEqualTo('t')
-        assertThat(surface.getCharacterAt(Position.of(1, 4)).get()).isEqualTo(' ')
+        assertThat(surface.getCharacterAt(Position.of(0, 1)).get().getCharacter()).isEqualTo('t')
+        assertThat(surface.getCharacterAt(Position.of(1, 1)).get().getCharacter()).isEqualTo('e')
+        assertThat(surface.getCharacterAt(Position.of(2, 1)).get().getCharacter()).isEqualTo('s')
+        assertThat(surface.getCharacterAt(Position.of(3, 1)).get().getCharacter()).isEqualTo('t')
+        assertThat(surface.getCharacterAt(Position.of(4, 1)).get().getCharacter()).isEqualTo(' ')
         //thghty makes up 6 characters which is larger then the number of rows. So it should character wrap
-        assertThat(surface.getCharacterAt(Position.of(2, 0)).get()).isEqualTo('t')
-        assertThat(surface.getCharacterAt(Position.of(2, 1)).get()).isEqualTo('h')
-        assertThat(surface.getCharacterAt(Position.of(2, 2)).get()).isEqualTo('g')
-        assertThat(surface.getCharacterAt(Position.of(2, 3)).get()).isEqualTo('h')
-        assertThat(surface.getCharacterAt(Position.of(2, 4)).get()).isEqualTo('t')
-        assertThat(surface.getCharacterAt(Position.of(3, 0)).get()).isEqualTo('y')
+        assertThat(surface.getCharacterAt(Position.of(0, 2)).get().getCharacter()).isEqualTo('t')
+        assertThat(surface.getCharacterAt(Position.of(1, 2)).get().getCharacter()).isEqualTo('h')
+        assertThat(surface.getCharacterAt(Position.of(2, 2)).get().getCharacter()).isEqualTo('g')
+        assertThat(surface.getCharacterAt(Position.of(3, 2)).get().getCharacter()).isEqualTo('h')
+        assertThat(surface.getCharacterAt(Position.of(4, 2)).get().getCharacter()).isEqualTo('t')
+        assertThat(surface.getCharacterAt(Position.of(0, 3)).get().getCharacter()).isEqualTo('y')
     }
 
     @Test

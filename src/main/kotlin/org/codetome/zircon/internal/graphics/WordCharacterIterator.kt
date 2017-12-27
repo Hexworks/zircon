@@ -31,6 +31,11 @@ class WordCharacterIterator(private val textCharacterIterator: Iterator<TextChar
             //this means we have hit the end of a word. Therefore we should store that ending so that we do not
             //lose it and return the word we just got
             if (WORD_ENDINGS.contains(textCharacter.getCharacter())) {
+                //if we have not been storing any word we don't need to do anything
+                if(textCharacters.isEmpty()){
+                    return listOf(textCharacter)
+                }
+
                 characterStore = textCharacter
                 return textCharacters
             }

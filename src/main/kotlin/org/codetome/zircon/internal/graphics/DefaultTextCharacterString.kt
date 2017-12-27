@@ -29,53 +29,51 @@ data class DefaultTextCharacterString(private val textChars: List<TextCharacter>
         val charIter = textChars.iterator()
         val cursorHandler = DefaultCursorHandler(surface.getBoundableSize())
         cursorHandler.putCursorAt(offset)
-        surface.setCharacterAt(cursorHandler.getCursorPosition(), charIter.next())
 
         if (textWrap == TextWrap.WORD_WRAP) {
             var wordCharacterIterator = WordCharacterIterator(charIter)
-            var rowSize = getBoundableSize().rows;
 
             if (cursorIsNotAtBottomRightCorner(cursorHandler) && wordCharacterIterator.hasNext()) {
                 do {
-
                     var nextWord = wordCharacterIterator.next();
-                    var wordSize = nextWord.size;
-                    var spaceRemaining = rowSize - cursorHandler.getCursorPosition().row
 
-                    if (spaceRemaining >= wordSize) {
-                        //this means we can plunk the word on our line
-                        nextWord.forEach({ tc ->
-                            cursorHandler.moveCursorForward()
+                    var wordSize = nextWord.size;
+                    var spaceRemaining = cols - cursorHandler.getCursorPosition().column
+
+                    //the word is bigger then 1 line when this happens we should character wrap
+                    if(wordSize > cols){
+                        nextWord.forEach({
+                            tc ->
                             surface.setCharacterAt(cursorHandler.getCursorPosition(), tc)
+                            cursorHandler.moveCursorForward()
+                        })
+                    }
+
+                    //this means we can plunk the word on our line
+                    if (spaceRemaining >= wordSize) {
+                        nextWord.forEach({ tc ->
+                            surface.setCharacterAt(cursorHandler.getCursorPosition(), tc)
+                            cursorHandler.moveCursorForward()
                         })
                     } else {
-                        //this means we are at the last column and therefore we cannot wrap anymore. Therefore we should
+                        //this means we are at the last row and therefore we cannot wrap anymore. Therefore we should
                         //stop rendering
-                        val column = cursorHandler.getCursorPosition().column
-                        if(column == getBoundableSize().columns){
+                        val row = cursorHandler.getCursorPosition().row
+                        if(row == rows - 1){
                             return
                         }
 
-                        //as our word couldn't fit on the last line lets move down a column
-                        cursorHandler.putCursorAt(Position(column + 1, 1))
+                        //as our word couldn't fit on the last line lets move down a row
+                        cursorHandler.putCursorAt(cursorHandler.getCursorPosition().withRelativeRow(1).withColumn(0))
                         //recalculate our space remaining
-                        spaceRemaining = rowSize - cursorHandler.getCursorPosition().row
+                        spaceRemaining = cols - cursorHandler.getCursorPosition().column
 
                         if (spaceRemaining >= wordSize) {
                             //this means we can plunk the word on our line
                             nextWord.forEach({ tc ->
-                                cursorHandler.moveCursorForward()
                                 surface.setCharacterAt(cursorHandler.getCursorPosition(), tc)
-                            })
-                        }else{
-                            //this means our current word is too big for an entire line! therefore we should fall back
-                            //to character wrap
-                            nextWord.forEach({
-                                tc ->
                                 cursorHandler.moveCursorForward()
-                                surface.setCharacterAt(cursorHandler.getCursorPosition(), tc)
                             })
-
                         }
                     }
 
@@ -85,6 +83,7 @@ data class DefaultTextCharacterString(private val textChars: List<TextCharacter>
             return
         }
 
+        surface.setCharacterAt(cursorHandler.getCursorPosition(), charIter.next())
         if (cursorIsNotAtBottomRightCorner(cursorHandler) && charIter.hasNext()) {
             do {
                 cursorHandler.moveCursorForward()
