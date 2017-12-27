@@ -143,7 +143,6 @@ public class GameMockupExample {
 
         RadioButtonGroup difficultyRadio = RadioButtonGroupBuilder.newBuilder()
                 .position(Position.of(1, 1))
-                .spacing(1)
                 .size(difficultyPanel.getBoundableSize().minus(Size.of(2, 2)))
                 .build();
 

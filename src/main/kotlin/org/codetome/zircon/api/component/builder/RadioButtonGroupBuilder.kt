@@ -18,18 +18,13 @@ data class RadioButtonGroupBuilder(
         private var font: Font = FontSettings.NO_FONT,
         private var position: Position = Position.DEFAULT_POSITION,
         private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT,
-        private var size: Size = Size.ONE,
-        private var spacing: Int = 1) : Builder<RadioButtonGroup> {
+        private var size: Size = Size.ONE) : Builder<RadioButtonGroup> {
 
     /**
      * Sets the [Font] to use with the resulting [Layer].
      */
     fun font(font: Font) = also {
         this.font = font
-    }
-
-    fun spacing(spacing: Int) = also {
-        this.spacing = spacing
     }
 
     fun position(position: Position) = also {
@@ -46,7 +41,6 @@ data class RadioButtonGroupBuilder(
 
     override fun build(): RadioButtonGroup {
         return DefaultRadioButtonGroup(
-                spacing = spacing,
                 wrappers = LinkedList<WrappingStrategy>(),
                 size = size,
                 position = position,
