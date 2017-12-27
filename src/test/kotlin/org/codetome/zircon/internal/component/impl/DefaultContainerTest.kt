@@ -6,7 +6,9 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.builder.TerminalBuilder
 import org.codetome.zircon.api.color.ANSITextColor
+import org.codetome.zircon.api.component.builder.HeaderBuilder
 import org.codetome.zircon.api.component.builder.LabelBuilder
 import org.codetome.zircon.api.component.builder.PanelBuilder
 import org.codetome.zircon.api.resource.CP437TilesetResource
@@ -14,7 +16,6 @@ import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrate
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
-import org.codetome.zircon.internal.font.impl.FontSettings
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -31,6 +32,125 @@ class DefaultContainerTest {
                 componentStyles = STYLES,
                 wrappers = WRAPPERS,
                 initialFont = GOOD_FONT)
+    }
+
+    @Test
+    fun shouldProperlySetPositionsWhenAContainerWithComponentsIsAddedToTheComponentTree() {
+        val terminal = TerminalBuilder.newBuilder()
+                .initialTerminalSize(Size.of(40, 25))
+                .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
+                .buildTerminal(true)
+        val screen = TerminalBuilder.createScreenFor(terminal)
+
+        val panel0 = PanelBuilder.newBuilder()
+                .wrapWithBox()
+                .title("Panel")
+                .size(Size.of(32, 16))
+                .position(Position.OFFSET_1x1)
+                .build()
+
+        val panel1 = PanelBuilder.newBuilder()
+                .wrapWithBox()
+                .title("Panel2")
+                .size(Size.of(16, 10))
+                .position(Position.OFFSET_1x1)
+                .build()
+
+        val header0 = HeaderBuilder.newBuilder()
+                .position(Position.of(1, 0))
+                .text("Header")
+                .build()
+
+        val header1 = HeaderBuilder.newBuilder()
+                .position(Position.of(1, 0))
+                .text("Header2")
+                .build()
+
+
+        panel0.addComponent(header0)
+        panel1.addComponent(header1)
+        panel0.addComponent(panel1)
+
+        screen.addComponent(panel0)
+
+        assertThat(panel0.getPosition()).isEqualTo(Position.of(1, 1))
+        assertThat(panel1.getPosition()).isEqualTo(Position.of(3, 3))
+        assertThat(header0.getPosition()).isEqualTo(Position.of(3, 2))
+        assertThat(header1.getPosition()).isEqualTo(Position.of(5, 4))
+    }
+
+    @Test
+    fun shouldProperlySetPositionsWhenAContainerIsAddedToTheComponentTreeThenComponentsAreAddedToIt() {
+        val terminal = TerminalBuilder.newBuilder()
+                .initialTerminalSize(Size.of(40, 25))
+                .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
+                .buildTerminal(true)
+        val screen = TerminalBuilder.createScreenFor(terminal)
+
+        val panel0 = PanelBuilder.newBuilder()
+                .wrapWithBox()
+                .title("Panel")
+                .size(Size.of(32, 16))
+                .position(Position.OFFSET_1x1)
+                .build()
+
+        val panel1 = PanelBuilder.newBuilder()
+                .wrapWithBox()
+                .title("Panel2")
+                .size(Size.of(16, 10))
+                .position(Position.OFFSET_1x1)
+                .build()
+
+        val header0 = HeaderBuilder.newBuilder()
+                .position(Position.of(1, 0))
+                .text("Header")
+                .build()
+
+        val header1 = HeaderBuilder.newBuilder()
+                .position(Position.of(1, 0))
+                .text("Header2")
+                .build()
+
+
+        panel0.addComponent(panel1)
+        panel0.addComponent(header0)
+        panel1.addComponent(header1)
+
+        screen.addComponent(panel0)
+
+        assertThat(panel0.getPosition()).isEqualTo(Position.of(1, 1))
+        assertThat(panel1.getPosition()).isEqualTo(Position.of(3, 3))
+        assertThat(header0.getPosition()).isEqualTo(Position.of(3, 2))
+        assertThat(header1.getPosition()).isEqualTo(Position.of(5, 4))
+    }
+
+    @Test
+    fun shouldProperlySetPositionsWhenAComponentIsAddedToAContainerAfterItIsAttachedToTheScreen() {
+        val terminal = TerminalBuilder.newBuilder()
+                .initialTerminalSize(Size.of(40, 25))
+                .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
+                .buildTerminal(true)
+        val screen = TerminalBuilder.createScreenFor(terminal)
+
+        val panel0 = PanelBuilder.newBuilder()
+                .wrapWithBox()
+                .title("Panel")
+                .size(Size.of(32, 16))
+                .position(Position.OFFSET_1x1)
+                .build()
+
+        val header0 = HeaderBuilder.newBuilder()
+                .position(Position.of(1, 0))
+                .text("Header")
+                .build()
+
+        screen.addComponent(panel0)
+
+        panel0.addComponent(header0)
+
+
+        assertThat(panel0.getPosition()).isEqualTo(Position.of(1, 1))
+        assertThat(header0.getPosition()).isEqualTo(Position.of(3, 2))
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -50,7 +170,7 @@ class DefaultContainerTest {
     fun shouldNotLetToAddAComponentWhichIntersectsWithAnother() {
         val pos = Position.of(1, 1)
         val comp = LabelBuilder.newBuilder().position(pos).text("text").build()
-        val otherComp = LabelBuilder.newBuilder().position(pos + pos).text("text").build()
+        val otherComp = LabelBuilder.newBuilder().position(pos.withRelativeColumn(1)).text("text").build()
         target.addComponent(comp)
         target.addComponent(otherComp)
     }
@@ -60,13 +180,6 @@ class DefaultContainerTest {
         val comp = LabelBuilder.newBuilder().text("foo").build()
         target.addComponent(comp)
         assertThat(comp.getCurrentFont().getId()).isEqualTo(GOOD_FONT.getId())
-    }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun shouldNotLetToAddAComponentWhichIsBiggerThanTheContainer() {
-        target.addComponent(PanelBuilder.newBuilder()
-                .size(SIZE + SIZE)
-                .build())
     }
 
     @Test

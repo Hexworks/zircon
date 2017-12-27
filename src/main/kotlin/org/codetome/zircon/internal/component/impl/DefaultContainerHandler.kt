@@ -13,8 +13,10 @@ import org.codetome.zircon.internal.component.ContainerHandlerState.*
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.InternalContainerHandler
 import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.event.EventType.*
 import org.codetome.zircon.internal.event.Subscription
+import org.codetome.zircon.internal.font.impl.FontSettings
 import java.util.*
 
 class DefaultContainerHandler(private var container: DefaultContainer) : InternalContainerHandler {
@@ -35,7 +37,20 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
 
     @Synchronized
     override fun addComponent(component: Component) {
-        container.addComponent(component)
+        (component as? DefaultComponent)?.let { dc ->
+            dc.setPosition(dc.getPosition() + container.getEffectivePosition())
+            // TODO: if the component has the same size and position it adds it!!!
+            require(container.containsBoundable(dc)) {
+                "You can't add a component to a container which is not within its bounds " +
+                        "(target size: ${container.getEffectiveSize()}, component size: ${dc.getBoundableSize()}" +
+                        ", position: ${dc.getPosition()})!"
+            }
+            require(container.getComponents().none { it.intersects(dc) }) {
+                "You can't add a component to a container which intersects with other components!"
+            }
+            container.addComponent(dc)
+            dc.signalAttached()
+        } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
         refreshFocusableLookup()
         EventBus.emit(ComponentChange)
     }
