@@ -7,8 +7,11 @@ import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import java.awt.Canvas
 import java.awt.Dimension
+import java.awt.Frame
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
+import java.awt.event.WindowEvent
+import java.awt.event.WindowStateListener
 import javax.swing.JFrame
 
 
@@ -27,7 +30,13 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
                                  initialFont = font,
                                  initialSize = size,
                                  deviceConfiguration = deviceConfiguration))
-    : JFrame(title), InternalTerminal by swingTerminal {
+    : JFrame(title), InternalTerminal by swingTerminal, WindowStateListener {
+
+    override fun windowStateChanged(e: WindowEvent) {
+        if(e.newState == Frame.NORMAL) {
+            swingTerminal.flush()
+        }
+    }
 
     init {
         isResizable = false // TODO: implement proper resizing
@@ -41,6 +50,7 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
         setLocationRelativeTo(null)
         canvas.createBufferStrategy(2)
         swingTerminal.initializeBufferStrategy()
+        addWindowStateListener(this)
     }
 
     override fun close() {
