@@ -59,6 +59,8 @@ interface TextImage : DrawSurface, Styleable, Drawable {
      * [TextCharacter] in the supplied `textImage` will be used.
      * This method creates a new object and **both** original [TextImage]s are left
      * untouched!
+     * The size of the new [TextImage] will be the size of the current [TextImage] UNLESS the offset + `textImage`
+     * would overflow. In that case the new [TextImage] will be resized to fit the new TextImage accordingly
      * @param textImage the image which will be drawn onto `this` image
      * @param offset The position on the target image where the `textImage`'s top left corner will be
      */
