@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Position.Companion.DEFAULT_POSITION
 import org.codetome.zircon.api.Position.Companion.OFFSET_1x1
+import org.codetome.zircon.api.Position.Companion.of
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.DrawSurface
@@ -111,6 +112,43 @@ class DefaultTextImageTest {
 
         assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(SET_ALL_CHAR)
+    }
+
+    @Test
+    fun givenATextImageThatOverFlowsWhenCombinedThenResizeNewTextImage(){
+        val sourceChar = TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x')
+        val imageChar = TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('+')
+
+        val source = TextImageBuilder.newBuilder()
+                .size(Size.of(3, 1))
+                .filler(sourceChar)
+                .build()
+
+        val newImage = TextImageBuilder.newBuilder()
+                .size(Size.of(2, 1))
+                .filler(imageChar)
+                .build()
+
+        val result = source.combineWith(newImage, Position(0, 2))
+        assertThat(result.getBoundableSize()).isEqualTo(Size.of(3, 3))
+
+        //first row should all be x's
+        for(x in 0..2){
+            assertThat(result.getCharacterAt(of(x, 0)).get().getCharacter()).isEqualTo('x')
+        }
+
+        //as the second image was offset by 2 rows there should be nothing here
+        for(x in 0..2){
+            assertThat(result.getCharacterAt(of(x, 1)).get().getCharacter()).isEqualTo(' ')
+        }
+
+        //the 3rd row should be + for the first 2 columns (as that's the size of the second image)
+        for(x in 0..1){
+            assertThat(result.getCharacterAt(of(x, 2)).get().getCharacter()).isEqualTo('+')
+        }
+
+        //the bottom right character should be blank
+        assertThat(result.getCharacterAt(of(2, 2)).get().getCharacter()).isEqualTo(' ')
     }
 
     @Test
