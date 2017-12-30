@@ -116,8 +116,11 @@ class DefaultTextImage(size: Size,
 
     @Synchronized
     override fun combineWith(textImage: TextImage, offset: Position): TextImage {
+        val columns = Math.max(getBoundableSize().columns, offset.column + textImage.getBoundableSize().columns)
+        val rows = Math.max(getBoundableSize().rows, offset.row + textImage.getBoundableSize().rows)
+
         val surface = TextImageBuilder.newBuilder()
-                .size(getBoundableSize())
+                .size(Size.of(columns, rows))
                 .toCopy(copyArray(buffer, getBoundableSize(), TextCharacterBuilder.EMPTY))
                 .build()
         surface.draw(textImage, offset)
