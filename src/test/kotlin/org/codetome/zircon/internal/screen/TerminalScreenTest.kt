@@ -3,12 +3,19 @@ package org.codetome.zircon.internal.screen
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.animation.AnimationHandler
+import org.codetome.zircon.api.animation.AnimationResource
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.function.Consumer
 
 class TerminalScreenTest {
 
@@ -22,6 +29,30 @@ class TerminalScreenTest {
         MockitoAnnotations.initMocks(this)
 
         target = TerminalScreen(terminal)
+    }
+
+    @Test
+    fun givenScreenWithAnimationWhenGivenInputThenFireOnInput() {
+        val animation = AnimationResource.loadAnimationFromFile("src/test/resources/animations/skull.zap")
+                                        .setPositionForAll(Position.of(0, 0))
+                                        .loopCount(0)
+                                        .build()
+
+        val inputFired = AtomicBoolean(false)
+        target.onInput(Consumer { inputFired.set(true) })
+
+        //first of all lets make sure the default behaviour works. if a key is pressed I should get an input fired
+        EventBus.emit(EventType.Input, KeyStroke('a'))
+        assertThat(inputFired.get()).isTrue()
+
+        //now lets add the animation and make sure we can still get input
+        var animationHandler = AnimationHandler(target)
+        animationHandler.addAnimation(animation)
+
+        inputFired.set(false)
+        EventBus.emit(EventType.Input, KeyStroke('a'))
+        assertThat(inputFired.get()).isTrue()
+
     }
 
     @Test
