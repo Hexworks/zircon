@@ -8,7 +8,6 @@ import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.util.FontUtils
 import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.font.FontRegionCache
-import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
 import org.codetome.zircon.internal.font.transformer.*
 import java.awt.Graphics2D
 import java.awt.RenderingHints

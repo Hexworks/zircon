@@ -14,7 +14,6 @@ import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
-import java.awt.image.BufferedImage
 import java.util.*
 
 class DefaultRadioButton(private val text: String,

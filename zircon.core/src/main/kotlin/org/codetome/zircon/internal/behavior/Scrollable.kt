@@ -2,7 +2,6 @@ package org.codetome.zircon.internal.behavior
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.behavior.CursorHandler
 
 /**
  * A [Scrollable] object has a visible 2D space which might be smaller than

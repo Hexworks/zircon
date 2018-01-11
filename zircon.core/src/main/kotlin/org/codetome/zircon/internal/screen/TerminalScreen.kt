@@ -2,7 +2,6 @@ package org.codetome.zircon.internal.screen
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
-import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.internal.component.InternalContainerHandler
@@ -10,10 +9,8 @@ import org.codetome.zircon.internal.component.impl.DefaultContainer
 import org.codetome.zircon.internal.component.impl.DefaultContainerHandler
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
-import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
-import java.awt.image.BufferedImage
 import java.util.*
 
 /**
