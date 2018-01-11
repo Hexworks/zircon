@@ -2,13 +2,9 @@ package org.codetome.zircon.internal.behavior
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.Layerable
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
-import org.codetome.zircon.internal.behavior.Dirtiable
-import java.awt.image.BufferedImage
-import java.util.*
 
 /**
  * Represents an object which can contain multiple [org.codetome.zircon.api.graphics.Layer]s

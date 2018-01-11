@@ -8,7 +8,6 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.behavior.Dirtiable
 import org.codetome.zircon.internal.behavior.InternalLayerable
-import java.awt.image.BufferedImage
 import java.util.*
 import java.util.concurrent.BlockingDeque
 import java.util.concurrent.LinkedBlockingDeque

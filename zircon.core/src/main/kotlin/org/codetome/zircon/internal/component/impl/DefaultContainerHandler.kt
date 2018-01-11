@@ -13,10 +13,8 @@ import org.codetome.zircon.internal.component.ContainerHandlerState.*
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.InternalContainerHandler
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.event.EventType.*
 import org.codetome.zircon.internal.event.Subscription
-import org.codetome.zircon.internal.font.impl.FontSettings
 import java.util.*
 
 class DefaultContainerHandler(private var container: DefaultContainer) : InternalContainerHandler {

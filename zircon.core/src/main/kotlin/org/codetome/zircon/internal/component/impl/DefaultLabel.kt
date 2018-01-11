@@ -4,13 +4,12 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.Label
-import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
-import java.awt.image.BufferedImage
 import java.util.*
 
 class DefaultLabel(private val text: String,

@@ -13,7 +13,6 @@ import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.behavior.impl.DefaultFontOverride
 import java.awt.Point
 import java.awt.Rectangle
-import java.awt.image.BufferedImage
 
 class DefaultLayer(size: Size,
                    filler: TextCharacter,

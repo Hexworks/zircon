@@ -3,7 +3,6 @@ package org.codetome.zircon.internal.behavior.impl
 import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.internal.font.impl.FontSettings
-import java.awt.image.BufferedImage
 import java.util.concurrent.atomic.AtomicReference
 
 class DefaultFontOverride(initialFont: Font) : FontOverride {
