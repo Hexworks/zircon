@@ -42,7 +42,7 @@ class GdxFont(private val source: Texture,
         return true
     }
 
-    override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion {
+    override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<TextureRegion> {
         val cp437Idx = CP437TilesetResource.fetchCP437IndexForChar(textCharacter.getCharacter())
         val x = cp437Idx.rem(16) * width
         val y = cp437Idx.div(16) * height
@@ -90,13 +90,13 @@ class GdxExample : ApplicationAdapter() {
 
                     val region = font.fetchRegionForChar(
                             TextCharacterBuilder.newBuilder().character(chars[currIdx]).build())
-//                    val drawable = TextureRegionDrawable(region.getGdxBackend())
-//                    val tinted = drawable.tint(com.badlogic.gdx.graphics.Color(0.5f, 0.5f, 0f, 1f)) as SpriteDrawable
-//                    tinted.draw(batch,
-//                            column * width,
-//                            row * height + height,
-//                            width,
-//                            height)
+                    val drawable = TextureRegionDrawable(region.getBackend())
+                    val tinted = drawable.tint(com.badlogic.gdx.graphics.Color(0.5f, 0.5f, 0f, 1f)) as SpriteDrawable
+                    tinted.draw(batch,
+                            column * width,
+                            row * height + height,
+                            width,
+                            height)
 //                    batch.doRender(oldfont.fetchRegionForChar(
 //                            chars[currIdx]),
 //                            column * width,
