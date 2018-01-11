@@ -23,8 +23,8 @@ class Java2DFont(private val source: BufferedImage,
                  private val metadata: Map<Char, List<CharacterMetadata>>,
                  private val width: Int,
                  private val height: Int,
-                 private val regionTransformers: List<FontRegionTransformer>,
-                 private val cache: FontRegionCache<FontTextureRegion>,
+                 private val regionTransformers: List<FontRegionTransformer<BufferedImage>>,
+                 private val cache: FontRegionCache<FontTextureRegion<BufferedImage>>,
                  private val metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy())
     : Font {
 
@@ -40,12 +40,12 @@ class Java2DFont(private val source: BufferedImage,
 
     override fun fetchMetadataForChar(char: Char): List<CharacterMetadata> = metadata[char] ?: listOf()
 
-    override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion {
+    override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<BufferedImage> {
         val meta = fetchMetaFor(textCharacter)
         val maybeRegion = cache.retrieveIfPresent(textCharacter)
 
         var region = if (maybeRegion.isNotPresent()) {
-            var image: FontTextureRegion = Java2DFontTextureRegion(source.getSubimage(meta.x * width, meta.y * height, width, height))
+            var image: FontTextureRegion<BufferedImage> = Java2DFontTextureRegion(source.getSubimage(meta.x * width, meta.y * height, width, height))
             regionTransformers.forEach {
                 image = it.transform(image, textCharacter)
             }
