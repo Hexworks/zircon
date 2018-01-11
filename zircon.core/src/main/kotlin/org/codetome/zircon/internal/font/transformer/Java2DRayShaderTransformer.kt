@@ -6,20 +6,21 @@ import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.modifier.RayShade
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.impl.Java2DFontTextureRegion
+import java.awt.image.BufferedImage
 
-class Java2DRayShaderTransformer : FontRegionTransformer {
+class Java2DRayShaderTransformer : FontRegionTransformer<BufferedImage> {
 
-    override fun transform(region: FontTextureRegion, textCharacter: TextCharacter): FontTextureRegion {
+    override fun transform(region: FontTextureRegion<BufferedImage>, textCharacter: TextCharacter): FontTextureRegion<BufferedImage> {
         val rayShade: RayShade = textCharacter.getModifiers().first{ it is RayShade } as RayShade
         return region.also {
-            it.getJava2DBackend().let { backend ->
+            it.getBackend().let { backend ->
                 backend.graphics.apply {
                     val filter = RaysFilter()
                     filter.opacity = rayShade.opacity
                     filter.threshold = rayShade.threshold
                     filter.strength = rayShade.strength
                     filter.raysOnly = rayShade.raysOnly
-                    return Java2DFontTextureRegion(filter.filter(region.getJava2DBackend(), null))
+                    return Java2DFontTextureRegion(filter.filter(region.getBackend(), null))
                 }
             }
         }

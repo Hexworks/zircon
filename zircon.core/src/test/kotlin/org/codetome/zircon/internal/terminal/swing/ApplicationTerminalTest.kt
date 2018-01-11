@@ -22,7 +22,7 @@ class ApplicationTerminalTest {
 
     lateinit var target: ApplicationTerminal
 
-    val fontTextureDraws = mutableListOf<Triple<FontTextureRegion, Int, Int>>()
+    val fontTextureDraws = mutableListOf<Triple<FontTextureRegion<*>, Int, Int>>()
     val cursorDraws = mutableListOf<Triple<TextCharacter, Int, Int>>()
     var rendered = AtomicBoolean(false)
 
@@ -33,7 +33,7 @@ class ApplicationTerminalTest {
                 terminal = VirtualTerminal(
                         initialSize = SIZE,
                         initialFont = FONT)) {
-            override fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion, x: Int, y: Int) {
+            override fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion<*>, x: Int, y: Int) {
                 fontTextureDraws.add(Triple(fontTextureRegion, x, y))
             }
 

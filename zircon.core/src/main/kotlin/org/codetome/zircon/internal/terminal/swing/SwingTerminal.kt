@@ -13,6 +13,7 @@ import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.awt.event.HierarchyEvent
 import java.awt.event.MouseEvent
+import java.awt.image.BufferedImage
 import javax.swing.SwingUtilities
 
 /**
@@ -90,8 +91,8 @@ class SwingTerminal(
         flush()
     }
 
-    override fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion, x: Int, y: Int) {
-        getGraphics2D().drawImage(fontTextureRegion.getJava2DBackend(), x, y, null)
+    override fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion<*>, x: Int, y: Int) {
+        getGraphics2D().drawImage(fontTextureRegion.getBackend() as BufferedImage, x, y, null)
     }
 
     override fun drawCursor(character: TextCharacter, x: Int, y: Int) {

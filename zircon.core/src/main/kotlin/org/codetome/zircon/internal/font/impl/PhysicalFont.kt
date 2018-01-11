@@ -20,7 +20,7 @@ import java.util.*
 class PhysicalFont(private val source: java.awt.Font,
                    private val width: Int,
                    private val height: Int,
-                   private val cache: FontRegionCache<FontTextureRegion>,
+                   private val cache: FontRegionCache<FontTextureRegion<*>>,
                    private val withAntiAlias: Boolean) : Font {
 
     private val id = UUID.randomUUID()
@@ -39,11 +39,11 @@ class PhysicalFont(private val source: java.awt.Font,
 
     override fun hasDataForChar(char: Char) = source.canDisplay(char)
 
-    override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion {
+    override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<*> {
 
-        val maybeRegion: Optional<FontTextureRegion> = cache.retrieveIfPresent(textCharacter)
+        val maybeRegion: Optional<FontTextureRegion<*>> = cache.retrieveIfPresent(textCharacter)
 
-        var region: FontTextureRegion = if (maybeRegion.isNotPresent()) {
+        var region: FontTextureRegion<*> = if (maybeRegion.isNotPresent()) {
             val image = BufferedImage(width, height, BufferedImage.TRANSLUCENT)
             val g = image.graphics as Graphics2D
             g.color = textCharacter.getBackgroundColor().toAWTColor()
@@ -77,7 +77,7 @@ class PhysicalFont(private val source: java.awt.Font,
             maybeRegion.get()
         }
         textCharacter.getModifiers().forEach {
-            region = MODIFIER_TRANSFORMER_LOOKUP[it]?.transform(region, textCharacter) ?: region
+            region = MODIFIER_TRANSFORMER_LOOKUP[it]?.transform(region as FontTextureRegion<BufferedImage>, textCharacter) ?: region
         }
         return region
     }

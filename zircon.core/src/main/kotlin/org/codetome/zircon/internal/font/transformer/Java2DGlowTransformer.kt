@@ -9,16 +9,16 @@ import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
-class Java2DGlowTransformer : FontRegionTransformer {
+class Java2DGlowTransformer : FontRegionTransformer<BufferedImage> {
 
     val cloner = Java2DFontRegionCloner()
 
-    override fun transform(region: FontTextureRegion, textCharacter: TextCharacter): FontTextureRegion {
+    override fun transform(region: FontTextureRegion<BufferedImage>, textCharacter: TextCharacter): FontTextureRegion<BufferedImage> {
         return region.also {
-            it.getJava2DBackend().let { backend ->
+            it.getBackend().let { backend ->
                 backend.graphics.apply {
 
-                    if(textCharacter.getForegroundColor() == textCharacter.getBackgroundColor()) {
+                    if (textCharacter.getForegroundColor() == textCharacter.getBackgroundColor()) {
                         return region
                     }
 
@@ -31,17 +31,17 @@ class Java2DGlowTransformer : FontRegionTransformer {
                     // Generate glow image:
                     val filter = GaussianFilter()
                     filter.radius = 5f
-                    val glowImage = filter.filter(charImage.getJava2DBackend(), null)
+                    val glowImage = filter.filter(charImage.getBackend(), null)
 
                     // Combine images and background:
-                    val image = region.getJava2DBackend()
+                    val image = region.getBackend()
                     val result = BufferedImage(image.width, image.height, BufferedImage.TYPE_INT_ARGB)
                     val gc = result.graphics as Graphics2D
 
                     gc.color = textCharacter.getBackgroundColor().toAWTColor()
                     gc.fillRect(0, 0, result.width, result.height)
                     gc.drawImage(glowImage, 0, 0, null)
-                    gc.drawImage(charImage.getJava2DBackend(), 0, 0, null)
+                    gc.drawImage(charImage.getBackend(), 0, 0, null)
                     gc.dispose()
 
                     return Java2DFontTextureRegion(result)
@@ -50,9 +50,10 @@ class Java2DGlowTransformer : FontRegionTransformer {
         }
     }
 
-    private fun swapColor(region: FontTextureRegion, oldColor: Color, newColor: Color, textCharacter: TextCharacter): FontTextureRegion {
+    private fun swapColor(region: FontTextureRegion<BufferedImage>, oldColor: Color, newColor: Color, textCharacter: TextCharacter)
+            : FontTextureRegion<BufferedImage> {
         val result = cloner.transform(region, textCharacter)
-        val image = result.getJava2DBackend()
+        val image = result.getBackend()
         val newRGB = newColor.rgb
         val oldRGB = oldColor.rgb
 

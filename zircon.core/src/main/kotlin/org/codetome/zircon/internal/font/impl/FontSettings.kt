@@ -26,7 +26,7 @@ object FontSettings {
             TODO()
         }
 
-        override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion {
+        override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<*> {
             TODO()
         }
 

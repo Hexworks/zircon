@@ -6,16 +6,16 @@ import org.codetome.zircon.api.modifier.BorderPosition.*
 import org.codetome.zircon.api.modifier.BorderType
 import org.codetome.zircon.api.modifier.BorderType.*
 import org.codetome.zircon.internal.font.FontRegionTransformer
+import org.codetome.zircon.internal.font.impl.Java2DFontTextureRegion
 import java.awt.BasicStroke
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
 
-class Java2DBorderTransformer : FontRegionTransformer {
-
-    override fun transform(region: FontTextureRegion, textCharacter: TextCharacter): FontTextureRegion {
+class Java2DBorderTransformer : FontRegionTransformer<BufferedImage> {
+    override fun transform(region: FontTextureRegion<BufferedImage>, textCharacter: TextCharacter): FontTextureRegion<BufferedImage> {
         return region.also {
-            it.getJava2DBackend().let { backend ->
+            it.getBackend().let { backend ->
                 backend.graphics.apply {
                     color = textCharacter.getForegroundColor().toAWTColor()
                     if (textCharacter.hasBorder()) {

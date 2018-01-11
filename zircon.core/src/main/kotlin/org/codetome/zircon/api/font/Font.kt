@@ -32,7 +32,7 @@ interface Font: Identifiable {
      * *Note that* this is only useful for graphical tilesets which have multiple
      * regions for a given [TextCharacter]!
      */
-    fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion
+    fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<*>
 
     /**
      * Returns all the [CharacterMetadata] for a [Char] which is known by this [Font].

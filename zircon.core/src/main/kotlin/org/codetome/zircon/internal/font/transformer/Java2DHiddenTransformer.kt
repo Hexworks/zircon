@@ -5,11 +5,11 @@ import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import java.awt.image.BufferedImage
 
-class Java2DHiddenTransformer : FontRegionTransformer {
+class Java2DHiddenTransformer : FontRegionTransformer<BufferedImage> {
 
-    override fun transform(region: FontTextureRegion, textCharacter: TextCharacter): FontTextureRegion {
+    override fun transform(region: FontTextureRegion<BufferedImage>, textCharacter: TextCharacter): FontTextureRegion<BufferedImage> {
         return region.also {
-            it.getJava2DBackend().let { backend ->
+            it.getBackend().let { backend ->
                 backend.graphics.apply {
                     color = textCharacter.getBackgroundColor().toAWTColor()
                     fillRect(0, 0, backend.width, backend.height)

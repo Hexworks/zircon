@@ -41,7 +41,7 @@ abstract class ApplicationTerminal(
      */
     abstract fun getWidth(): Int
 
-    abstract fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion, x: Int, y: Int)
+    abstract fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion<*>, x: Int, y: Int)
 
     abstract fun drawCursor(character: TextCharacter, x: Int, y: Int)
 
