@@ -9,7 +9,7 @@ class DefaultAnimationTest {
 
     @Test
     fun shouldProperlyBuildFromResource() {
-        val builder = AnimationResource.loadAnimationFromFile("src/test/resources/animations/skull.zap")
+        val builder = AnimationResource.loadAnimationFromStream(this.javaClass.getResourceAsStream("/animations/skull.zap"))
         (0 until EXPECTED_LENGTH).forEach {
             builder.addPosition(Position.DEFAULT_POSITION)
         }

@@ -2,16 +2,12 @@ package org.codetome.zircon.api.resource
 
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.internal.font.FontRegistry
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
-import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
-import org.codetome.zircon.internal.font.cache.NoFontRegionCache
-import org.codetome.zircon.internal.font.impl.Java2DFont
-import org.codetome.zircon.internal.font.transformer.Java2DFontRegionCloner
-import org.codetome.zircon.internal.font.transformer.Java2DFontRegionColorizer
 import org.codetome.zircon.internal.util.rex.unZipIt
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
-import javax.imageio.ImageIO
+import java.io.InputStream
 
 
 /**
@@ -25,34 +21,30 @@ enum class GraphicTilesetResource(private val tilesetName: String,
     NETHACK_16X16("nethack", 16);
 
     /**
-     * Loads this built-in tileset as a [Java2DFont].
+     * Loads this built-in tileset as a tiled [Font].
      */
     @JvmOverloads
     fun toFont(metadataPickingStrategy: MetadataPickingStrategy,
                cacheFonts: Boolean = true) =
             loadGraphicTileset(
-                    sourceZipPath = this.javaClass.getResource(path).path,
+                    zipStream = this.javaClass.getResourceAsStream(path),
                     metadataPickingStrategy = metadataPickingStrategy,
                     cacheFonts = cacheFonts)
 
 
     companion object {
 
-        private val GRAPHIC_TILESET_TRANSFORMERS = listOf(
-                Java2DFontRegionCloner(),
-                Java2DFontRegionColorizer())
-
         /**
-         * Loads a tileset from the given `sourceZip` as a [Java2DFont].
+         * Loads a tileset from the given `sourceZip` as a tiled [Font].
          * *Note that* it is your responsibility to supply the proper parameters for
          * this method!
          */
         @JvmStatic
         @JvmOverloads
-        fun loadGraphicTileset(sourceZipPath: String,
+        fun loadGraphicTileset(zipStream: InputStream,
                                metadataPickingStrategy: MetadataPickingStrategy,
                                cacheFonts: Boolean = true): Font {
-            val files = unZipIt(sourceZipPath, createTempDir())
+            val files = unZipIt(zipStream, createTempDir())
             val tileInfoSource = files.first { it.name == "tileinfo.yml" }.bufferedReader().use {
                 it.readText()
             }
@@ -76,17 +68,15 @@ enum class GraphicTilesetResource(private val tilesetName: String,
                         x = tileData.x,
                         y = tileData.y)
             }.groupBy { it.char }
-            return Java2DFont(
-                    source = ImageIO.read(files.first { it.name == file.name }),
-                    metadata = metadata,
+
+            // TODO: figure out something for multi-file tilesets
+
+            return FontRegistry.fetchTiledFont(
                     width = tileInfo.size,
                     height = tileInfo.size,
-                    cache = if (cacheFonts) {
-                        DefaultFontRegionCache()
-                    } else {
-                        NoFontRegionCache()
-                    },
-                    regionTransformers = GRAPHIC_TILESET_TRANSFORMERS,
+                    source = files.first { it.name == file.name }.inputStream(),
+                    cacheFonts = cacheFonts,
+                    metadata = metadata,
                     metadataPickingStrategy = metadataPickingStrategy)
         }
     }

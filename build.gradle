@@ -40,9 +40,7 @@ subprojects {
         compile("com.github.ben-manes.caffeine:caffeine:2.5.4")
         compile("org.yaml:snakeyaml:1.18")
         compile("com.jhlabs:filters:2.0.235-1")
-
-
-
+        compile("org.reflections:reflections:0.9.11")
 
         testCompile("junit:junit:$junitVersion")
         testCompile("org.mockito:mockito-all:$mockitoVersion")

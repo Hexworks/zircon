@@ -1,13 +1,13 @@
-package org.codetome.zircon.internal.font
+package org.codetome.zircon.internal.font.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.resource.PhysicalFontResource
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.junit.Test
 
-class PhysicalFontTest {
+class Java2DTiledFontTest {
 
-    val target = PhysicalFontResource.ANONYMOUS_PRO.toFont()
+    val target = CP437TilesetResource.WANDERLUST_16X16.toFont()
 
     @Test
     fun shouldProperlyCacheFontWhenFetchingRegionTwice() {
@@ -35,8 +35,20 @@ class PhysicalFontTest {
         assertThat(target.hasDataForChar(1.toChar())).isFalse()
     }
 
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldNotBeAbleToFetchRegionWithTags() {
+        target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER.withTags("foo"))
+    }
+
+   @Test(expected = IllegalArgumentException::class)
+    fun shouldNotBeAbleToFetchRegionWithChar() {
+        target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter(1.toChar()))
+    }
+
     @Test
-    fun shouldNotHaveMetadataForAChar() {
-        assertThat(target.fetchMetadataForChar('a')).isEmpty()
+    fun shouldProperlyReportSize() {
+        val expectedSize = 16
+        assertThat(target.getWidth()).isEqualTo(expectedSize)
+        assertThat(target.getHeight()).isEqualTo(expectedSize)
     }
 }
