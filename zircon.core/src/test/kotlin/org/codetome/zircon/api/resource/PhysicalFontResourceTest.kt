@@ -21,13 +21,4 @@ class PhysicalFontResourceTest {
             it.toFont()
         }
     }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun shouldNotLoadNonMonospaceFont() {
-        PhysicalFontResource.loadPhysicalFont(20f, true, this.javaClass.getResourceAsStream(NON_MONOSPACE_FONT_PATH))
-    }
-
-    companion object {
-        val NON_MONOSPACE_FONT_PATH = "/non_mono_font/OpenSans-Regular.ttf"
-    }
 }

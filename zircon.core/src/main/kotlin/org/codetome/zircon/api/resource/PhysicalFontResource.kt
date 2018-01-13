@@ -1,11 +1,7 @@
 package org.codetome.zircon.api.resource
 
-import org.codetome.zircon.api.util.FontUtils
-import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
-import org.codetome.zircon.internal.font.cache.NoFontRegionCache
-import org.codetome.zircon.internal.font.impl.PhysicalFont
+import org.codetome.zircon.internal.font.FontRegistry
 import java.awt.Font
-import java.awt.GraphicsEnvironment
 import java.io.InputStream
 
 /**
@@ -34,42 +30,36 @@ enum class PhysicalFontResource(private val fontName: String,
     VT323("VT323-Regular");
 
     /**
-     * Loads a built-in [PhysicalFont].
+     * Loads a built-in physical [Font].
      */
     @JvmOverloads
     fun toFont(size: Float = 18f,
-               withAntiAlias: Boolean = true,
-               cacheFonts: Boolean = true)
-            = loadPhysicalFont(size, withAntiAlias, this.javaClass.getResourceAsStream(path))
+               cacheFonts: Boolean = true,
+               withAntiAlias: Boolean = true) =
+            loadPhysicalFont(
+                    size = size,
+                    withAntiAlias = withAntiAlias,
+                    source = this.javaClass.getResourceAsStream(path),
+                    cacheFonts = cacheFonts)
 
     companion object {
 
         /**
-         * Loads a physical font from the given `source` as a [PhysicalFont].
+         * Loads a physical font from the given `source` as a physical [org.codetome.zircon.api.font.Font].
          * *Note that* it is your responsibility to supply the proper parameters for
          * this method!
          */
         @JvmOverloads
         @JvmStatic
-        fun loadPhysicalFont(size: Float = 18f,
-                             withAntiAlias: Boolean = true,
+        fun loadPhysicalFont(size: Float,
                              source: InputStream,
-                             cacheFonts: Boolean = true): org.codetome.zircon.api.font.Font {
-            val font = Font.createFont(Font.TRUETYPE_FONT, source).deriveFont(size)
-            val ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
-            ge.registerFont(font)
-
-            return PhysicalFont(
-                    source = font,
-                    width = FontUtils.getFontWidth(font),
-                    height = FontUtils.getFontHeight(font),
-                    cache = if(cacheFonts) {
-                        DefaultFontRegionCache()
-                    } else {
-                        NoFontRegionCache()
-                    },
-                    withAntiAlias = withAntiAlias)
-        }
+                             cacheFonts: Boolean = true,
+                             withAntiAlias: Boolean = true) =
+                FontRegistry.fetchPhysicalFont(
+                        size = size,
+                        source = source,
+                        withAntiAlias = withAntiAlias,
+                        cacheFonts = cacheFonts)
     }
 
 }

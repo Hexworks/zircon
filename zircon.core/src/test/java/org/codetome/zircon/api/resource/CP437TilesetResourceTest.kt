@@ -6,13 +6,13 @@ import org.junit.Test
 class ResourcesTest {
 
     @Test
-    fun shouldBeAbleToAccessStaticMethodsFromJava() {
+    fun shouldBeAbleToLoadResources() {
         REXPaintResource
-                .loadREXFile(this.javaClass.classLoader.getResourceAsStream("rex_files/cp437_table.xp"))
+                .loadREXFile(this.javaClass.getResourceAsStream("/rex_files/cp437_table.xp"))
         PhysicalFontResource
-                .loadPhysicalFont(20f, true, this.javaClass.getResourceAsStream("/monospace_fonts/AnonymousPro-Regular.ttf"))
+                .loadPhysicalFont(20f, this.javaClass.getResourceAsStream("/monospace_fonts/AnonymousPro-Regular.ttf"))
         GraphicTilesetResource
-                .loadGraphicTileset(this.javaClass.getResource("/graphic_tilesets/nethack_16x16.zip").path, PickRandomMetaStrategy())
+                .loadGraphicTileset(this.javaClass.getResourceAsStream("/graphic_tilesets/nethack_16x16.zip"), PickRandomMetaStrategy())
         CP437TilesetResource
                 .loadCP437Tileset(
                         width = 16,

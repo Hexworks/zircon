@@ -19,13 +19,13 @@ import java.util.*
 /**
  * Represents a font which is backed by a sprite sheet.
  */
-class Java2DFont(private val source: BufferedImage,
-                 private val metadata: Map<Char, List<CharacterMetadata>>,
-                 private val width: Int,
-                 private val height: Int,
-                 private val regionTransformers: List<FontRegionTransformer<BufferedImage>>,
-                 private val cache: FontRegionCache<FontTextureRegion<BufferedImage>>,
-                 private val metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy())
+class Java2DTiledFont(private val source: BufferedImage,
+                      private val metadata: Map<Char, List<CharacterMetadata>>,
+                      private val width: Int,
+                      private val height: Int,
+                      private val regionTransformers: List<FontRegionTransformer<BufferedImage>>,
+                      private val cache: FontRegionCache<FontTextureRegion<BufferedImage>>,
+                      private val metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy())
     : Font {
 
     private val id = UUID.randomUUID()

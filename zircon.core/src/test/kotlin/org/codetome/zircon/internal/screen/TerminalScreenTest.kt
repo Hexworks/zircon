@@ -33,7 +33,7 @@ class TerminalScreenTest {
 
     @Test
     fun givenScreenWithAnimationWhenGivenInputThenFireOnInput() {
-        val animation = AnimationResource.loadAnimationFromFile("src/test/resources/animations/skull.zap")
+        val animation = AnimationResource.loadAnimationFromStream(this.javaClass.getResourceAsStream("/animations/skull.zap"))
                                         .setPositionForAll(Position.of(0, 0))
                                         .loopCount(0)
                                         .build()

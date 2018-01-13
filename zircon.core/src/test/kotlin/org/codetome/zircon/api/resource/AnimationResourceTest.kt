@@ -9,7 +9,7 @@ class AnimationResourceTest {
 
     @Test
     fun shouldProperlyLoadAnimationFile() {
-        val result = AnimationResource.loadAnimationFromFile("src/test/resources/animations/skull.zap")
+        val result = AnimationResource.loadAnimationFromStream(this.javaClass.getResourceAsStream("/animations/skull.zap"))
         Assertions.assertThat(result).isNotNull()
     }
 }

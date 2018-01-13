@@ -1,10 +1,7 @@
 package org.codetome.zircon.internal.util.rex
 
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
+import java.io.*
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.util.zip.GZIPInputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
@@ -32,13 +29,13 @@ fun decompressGZIPByteArray(compressedInput: ByteArray): ByteArray {
     return outputStream.toByteArray()
 }
 
-fun unZipIt(zipFilePath: String, outputFolder: File): List<File> {
+fun unZipIt(zipSource: InputStream, outputFolder: File): List<File> {
 
     val buffer = ByteArray(1024)
     val outputFolderPath = outputFolder.absolutePath
     val result = mutableListOf<File>()
 
-    val zis = ZipInputStream(FileInputStream(zipFilePath))
+    val zis = ZipInputStream(zipSource)
     var ze: ZipEntry? = zis.nextEntry
 
     while (ze != null) {

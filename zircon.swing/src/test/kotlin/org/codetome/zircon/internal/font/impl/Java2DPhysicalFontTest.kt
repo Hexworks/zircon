@@ -1,13 +1,13 @@
-package org.codetome.zircon.internal.font
+package org.codetome.zircon.internal.font.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.api.resource.PhysicalFontResource
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.junit.Test
 
-class Java2DFontTest {
+class Java2DPhysicalFontTest {
 
-    val target = CP437TilesetResource.WANDERLUST_16X16.toFont()
+    val target = PhysicalFontResource.ANONYMOUS_PRO.toFont()
 
     @Test
     fun shouldProperlyCacheFontWhenFetchingRegionTwice() {
@@ -35,20 +35,17 @@ class Java2DFontTest {
         assertThat(target.hasDataForChar(1.toChar())).isFalse()
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun shouldNotBeAbleToFetchRegionWithTags() {
-        target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER.withTags("foo"))
-    }
-
-   @Test(expected = IllegalArgumentException::class)
-    fun shouldNotBeAbleToFetchRegionWithChar() {
-        target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter(1.toChar()))
-    }
-
     @Test
-    fun shouldProperlyReportSize() {
-        val expectedSize = 16
-        assertThat(target.getWidth()).isEqualTo(expectedSize)
-        assertThat(target.getHeight()).isEqualTo(expectedSize)
+    fun shouldNotHaveMetadataForAChar() {
+        assertThat(target.fetchMetadataForChar('a')).isEmpty()
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldNotLoadNonMonospaceFont() {
+        PhysicalFontResource.loadPhysicalFont(
+                size = 20f,
+                source = this.javaClass.getResourceAsStream("/non_mono_font/OpenSans-Regular.ttf"),
+                cacheFonts = true,
+                withAntiAlias = true)
     }
 }

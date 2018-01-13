@@ -8,6 +8,7 @@ import org.codetome.zircon.internal.graphics.DefaultAnimationFrame
 import org.codetome.zircon.internal.util.rex.unZipIt
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
+import java.io.InputStream
 
 /**
  * Note that this class is in **BETA**!
@@ -23,8 +24,8 @@ class AnimationResource {
          * [AnimationBuilder] which contains the loaded data.
          */
         @JvmStatic
-        fun loadAnimationFromFile(sourceZipPath: String): AnimationBuilder {
-            val files = unZipIt(sourceZipPath, createTempDir())
+        fun loadAnimationFromStream(zipStream: InputStream): AnimationBuilder {
+            val files = unZipIt(zipStream, createTempDir())
             val tileInfoSource = files.first { it.name == "animation.yml" }.bufferedReader().use {
                 it.readText()
             }

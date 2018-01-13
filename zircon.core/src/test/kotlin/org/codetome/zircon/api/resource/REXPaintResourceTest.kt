@@ -6,6 +6,6 @@ class REXPaintResourceTest {
 
     @Test
     fun test() {
-        REXPaintResource.loadREXFile(this.javaClass.classLoader.getResourceAsStream("rex_files/cp437_table.xp"))
+        REXPaintResource.loadREXFile(this.javaClass.getResourceAsStream("/rex_files/cp437_table.xp"))
     }
 }
