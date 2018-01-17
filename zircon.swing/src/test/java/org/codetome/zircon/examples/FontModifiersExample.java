@@ -6,6 +6,7 @@ import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.modifier.RayShade;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class FontModifiersExample {
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static final Font FONT = WANDERLUST_16X16.toFont();
 
+    @Ignore
     @Test
     public void checkSetup() {
         main(new String[]{"test"});
