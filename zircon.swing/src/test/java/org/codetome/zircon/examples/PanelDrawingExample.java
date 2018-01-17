@@ -14,6 +14,7 @@ import org.codetome.zircon.api.graphics.Box;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.internal.graphics.BoxType;
 import org.codetome.zircon.api.screen.Screen;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.awt.image.BufferedImage;
@@ -30,6 +31,7 @@ public class PanelDrawingExample {
     private static final TextColor PANEL_BG_COLOR = TextColorFactory.fromString("#666666");
     private static final TextColor PANEL_FG_COLOR = TextColorFactory.fromString("#ffffff");
 
+    @Ignore
     @Test
     public void checkSetup() {
         main(new String[]{"test"});

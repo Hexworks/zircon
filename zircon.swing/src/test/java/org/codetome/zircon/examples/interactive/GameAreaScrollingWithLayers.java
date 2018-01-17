@@ -26,6 +26,7 @@ import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.util.TextColorUtils;
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent;
 import org.codetome.zircon.internal.graphics.BoxType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
@@ -45,6 +46,7 @@ public class GameAreaScrollingWithLayers {
         EXIT_CONDITIONS.add(InputType.EOF);
     }
 
+    @Ignore
     @Test
     public void checkSetup() {
         main(new String[]{"test"});

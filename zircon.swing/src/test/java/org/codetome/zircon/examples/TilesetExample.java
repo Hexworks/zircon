@@ -14,6 +14,7 @@ import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Random;
@@ -58,6 +59,7 @@ public class TilesetExample {
     private static final TextColor TEXT_COLOR = TextColorFactory.fromString("#dd6644");
     private static final TextColor TEXT_BG_COLOR = TextColorFactory.fromString("#00ff00");
 
+    @Ignore
     @Test
     public void checkSetup() {
         main(new String[]{"test"});
