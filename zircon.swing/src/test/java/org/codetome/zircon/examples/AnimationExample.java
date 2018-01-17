@@ -13,6 +13,7 @@ import org.codetome.zircon.api.animation.AnimationHandler;
 import org.codetome.zircon.api.animation.AnimationResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.codetome.zircon.api.resource.CP437TilesetResource.*;
@@ -24,6 +25,7 @@ public class AnimationExample {
     private static final Position LEFT_POS = Position.of(8, 5);
     private static final Position RIGHT_POS = Position.of(29, 5);
 
+    @Ignore
     @Test
     public void checkSetup() {
         main(new String[]{"test"});

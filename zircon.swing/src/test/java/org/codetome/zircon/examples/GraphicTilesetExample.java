@@ -8,6 +8,7 @@ import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.resource.GraphicTilesetResource;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.awt.image.BufferedImage;
@@ -23,6 +24,7 @@ public class GraphicTilesetExample {
     private static final char[] CHARS = new char[]{'a', 'b', 'c'};
     private static final Random RANDOM = new Random();
 
+    @Ignore
     @Test
     public void checkSetup() {
         main(new String[]{"test"});
