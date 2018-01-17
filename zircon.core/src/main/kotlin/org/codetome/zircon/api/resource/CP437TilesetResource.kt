@@ -44,7 +44,6 @@ enum class CP437TilesetResource(private val tilesetName: String,
      */
     @JvmOverloads
     fun toFont(cacheFonts: Boolean = true): Font {
-        println("====================================== $path")
         return loadCP437Tileset(
                 width = width,
                 height = height,
