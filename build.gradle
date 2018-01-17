@@ -30,7 +30,6 @@ subprojects {
         maven { url "http://repo1.maven.org/maven2/" }
     }
 
-
     dependencies {
         compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
@@ -46,7 +45,6 @@ subprojects {
         testCompile("org.mockito:mockito-all:$mockitoVersion")
         testCompile("org.assertj:assertj-core:$assertjVersion")
     }
-
 }
 
 project(":zircon.libgdx") {
@@ -55,7 +53,7 @@ project(":zircon.libgdx") {
     }
 }
 
-project(":zircon.application") {
+project(":zircon.swing") {
     dependencies {
         compile project(":zircon.core")
     }

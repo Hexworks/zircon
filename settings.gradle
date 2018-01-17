@@ -1,1 +1,1 @@
-include 'zircon.core', 'zircon.libgdx', 'zircon.application', 'zircon.swing'
+include 'zircon.core', 'zircon.libgdx', 'zircon.swing'

@@ -58,11 +58,11 @@ public class ComponentsExample {
                         .build())
                 .buildTerminal(args.length > 0);
 
-        Screen panelsScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.ROGUE_YUN_16X16.toFont());
-        Screen inputsScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.WANDERLUST_16X16.toFont());
-        Screen addAndRemoveScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.BISASAM_16X16.toFont());
-        Screen colorThemesScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.ROGUE_YUN_16X16.toFont());
-        Screen multiFontScreen = TerminalBuilder.createScreenFor(terminal, CP437TilesetResource.REX_PAINT_16X16.toFont());
+        Screen panelsScreen = TerminalBuilder.createScreenFor(terminal);
+        Screen inputsScreen = TerminalBuilder.createScreenFor(terminal);
+        Screen addAndRemoveScreen = TerminalBuilder.createScreenFor(terminal);
+        Screen colorThemesScreen = TerminalBuilder.createScreenFor(terminal);
+        Screen multiFontScreen = TerminalBuilder.createScreenFor(terminal);
         final List<Screen> screens = Arrays.asList(
                 panelsScreen,
                 inputsScreen,
