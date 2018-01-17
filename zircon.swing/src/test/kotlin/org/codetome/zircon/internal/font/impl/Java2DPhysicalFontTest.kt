@@ -3,8 +3,10 @@ package org.codetome.zircon.internal.font.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.resource.PhysicalFontResource
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.junit.Ignore
 import org.junit.Test
 
+@Ignore
 class Java2DPhysicalFontTest {
 
     val target = PhysicalFontResource.ANONYMOUS_PRO.toFont()
