@@ -8,6 +8,7 @@ import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.REXPaintResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.awt.image.BufferedImage;
@@ -21,6 +22,7 @@ public class RexLoaderExample {
     private static final Font FONT = CP437TilesetResource.TAFFER_20X20.toFont();
     private static final InputStream RESOURCE = RexLoaderExample.class.getResourceAsStream("/rex_files/cp437_table.xp");
 
+    @Ignore
     @Test
     public void checkSetup() {
         main(new String[]{"test"});

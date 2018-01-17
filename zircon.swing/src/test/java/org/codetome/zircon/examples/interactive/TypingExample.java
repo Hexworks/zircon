@@ -11,6 +11,7 @@ import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.input.KeyStroke;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class TypingExample {
         EXIT_CONDITIONS.add(InputType.EOF);
     }
 
+    @Ignore
     @Test
     public void checkSetup() {
         main(new String[]{"test"});

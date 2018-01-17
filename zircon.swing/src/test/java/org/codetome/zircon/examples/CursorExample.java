@@ -15,11 +15,6 @@ public class CursorExample {
     private static final int TERMINAL_HEIGHT = 10;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
 
-    @Test
-    public void checkSetup() {
-        main(new String[]{"test"});
-    }
-
     public static void main(String[] args) {
         // we create a new terminal using TerminalBuilder
         final Terminal terminal = TerminalBuilder.newBuilder()

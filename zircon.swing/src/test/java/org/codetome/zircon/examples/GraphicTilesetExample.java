@@ -13,7 +13,7 @@ import org.junit.Test;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-public class AGraphicTilesetExample {
+public class GraphicTilesetExample {
 
     private static final int TERMINAL_WIDTH = 50;
     private static final int TERMINAL_HEIGHT = 24;

@@ -20,6 +20,7 @@ import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
 import org.codetome.zircon.internal.graphics.BoxType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.awt.*;
@@ -46,6 +47,7 @@ public class GameMockupExample {
 
     private static boolean headless = false;
 
+    @Ignore
     @Test
     public void checkSetup() {
         main(new String[]{"test"});

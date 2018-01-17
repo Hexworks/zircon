@@ -9,6 +9,7 @@ import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.TextCharacterString;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.codetome.zircon.api.color.ANSITextColor.*;
@@ -21,6 +22,7 @@ public class TextCharacterStringExample {
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static final Font FONT = TAFFER_20X20.toFont();
 
+    @Ignore
     @Test
     public void checkSetup() {
         main(new String[]{"test"});

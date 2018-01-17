@@ -23,6 +23,7 @@ import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
 import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy;
 import org.codetome.zircon.internal.graphics.BoxType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
@@ -40,6 +41,7 @@ public class ComponentsExample {
 
     private static final PanelBuilder PANEL_TEMPLATE = PanelBuilder.newBuilder().size(PANEL_SIZE);
 
+    @Ignore
     @Test
     public void checkSetup() {
         main(new String[]{"test"});

@@ -9,6 +9,7 @@ import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class FontSwitcherExample {
         FONTS.add(CP437TilesetResource.BISASAM_16X16.toFont());
     }
 
+    @Ignore
     @Test
     public void checkSetup() {
         main(new String[]{"test"});
