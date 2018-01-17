@@ -9,7 +9,7 @@ import org.codetome.zircon.internal.behavior.Identifiable
  * representing fonts. This can be some physical font (like a .ttf file)
  * or a sprite sheet for example.
  */
-interface Font: Identifiable {
+interface Font : Identifiable {
 
     /**
      * Returns the width of a character in pixels.
