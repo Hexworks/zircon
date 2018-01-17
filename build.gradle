@@ -55,7 +55,7 @@ project(":zircon.libgdx") {
     }
 }
 
-project(":zircon.swing") {
+project(":zircon.application") {
     dependencies {
         compile project(":zircon.core")
     }

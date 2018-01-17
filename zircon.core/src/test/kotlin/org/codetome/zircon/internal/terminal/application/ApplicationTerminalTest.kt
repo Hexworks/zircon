@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal.terminal.swing
+package org.codetome.zircon.internal.terminal.application
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Size
@@ -11,7 +11,6 @@ import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.config.CursorStyle
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
-import org.codetome.zircon.internal.terminal.application.ApplicationTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import org.junit.Before
 import org.junit.Test

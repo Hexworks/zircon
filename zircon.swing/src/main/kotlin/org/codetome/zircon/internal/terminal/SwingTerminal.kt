@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal.terminal.swing
+package org.codetome.zircon.internal.terminal
 
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
