@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal.terminal.swing
+package org.codetome.zircon.internal.terminal
 
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke

@@ -1,10 +1,9 @@
-package org.codetome.zircon.internal.terminal.swing
+package org.codetome.zircon.internal.terminal
 
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
-import org.codetome.zircon.internal.terminal.InternalTerminal
 import java.awt.Canvas
 import java.awt.Frame
 import java.awt.event.WindowEvent
@@ -13,7 +12,7 @@ import javax.swing.JFrame
 
 
 /**
- * This class provides a swing frame for a zircon terminal.
+ * This class provides a application frame for a zircon terminal.
  */
 class SwingTerminalFrame(title: String = "ZirconTerminal",
                          size: Size,

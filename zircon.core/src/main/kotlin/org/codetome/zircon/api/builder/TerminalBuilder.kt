@@ -8,10 +8,8 @@ import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import org.codetome.zircon.internal.screen.TerminalScreen
 import org.codetome.zircon.internal.terminal.InternalTerminal
-import org.codetome.zircon.internal.terminal.swing.SwingTerminalFrame
+import org.codetome.zircon.internal.terminal.TerminalComponentsRegistry
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
-import java.awt.Toolkit
-import java.awt.image.BufferedImage
 
 
 /**
@@ -42,31 +40,6 @@ data class TerminalBuilder(
      */
     fun buildTerminal(headless: Boolean = false): Terminal = buildInternalTerminal(headless)
 
-    private fun buildInternalTerminal(headless: Boolean = false): InternalTerminal =
-            if (headless) {
-                VirtualTerminal(
-                        initialSize = initialSize,
-                        initialFont = font)
-            } else {
-                buildSwingTerminal()
-            }
-
-    /**
-     * Builds a terminal which is backed by a Swing canvas. Currently this is the only
-     * option.
-     */
-    private fun buildSwingTerminal(): SwingTerminalFrame {
-        checkScreenSize()
-        return SwingTerminalFrame(
-                title = title,
-                size = initialSize,
-                deviceConfiguration = deviceConfiguration,
-                fullScreen = fullScreen,
-                font = font).apply {
-            isVisible = true
-        }
-    }
-
     /**
      * Sets the initial terminal [Size].
      * Default is 80x24.
@@ -89,7 +62,7 @@ data class TerminalBuilder(
     }
 
     /**
-     * Sets the device configuration to use on created [SwingTerminalFrame] created by this shape.
+     * Sets the device configuration to use on the [Terminal] being created.
      */
     fun deviceConfiguration(deviceConfiguration: DeviceConfiguration) = also {
         this.deviceConfiguration = deviceConfiguration
@@ -113,14 +86,31 @@ data class TerminalBuilder(
                 terminal = terminal)
     }
 
+    private fun buildInternalTerminal(headless: Boolean = false): InternalTerminal =
+            if (headless) {
+                VirtualTerminal(
+                        initialSize = initialSize,
+                        initialFont = font)
+            } else {
+                checkScreenSize()
+                TerminalComponentsRegistry.buildTerminal(
+                        title = title,
+                        size = initialSize,
+                        deviceConfiguration = deviceConfiguration,
+                        font = font,
+                        fullScreen = fullScreen)
+            }
+
     private fun checkScreenSize() {
         // TODO: externalize screen size check
-        val screenSize = Toolkit.getDefaultToolkit().screenSize
+        val screenSize = TerminalComponentsRegistry.fetchScreenSize()
         require(screenSize.width >= font.getWidth() * initialSize.columns) {
-            "The requested column count '${initialSize.columns}' for font width '${font.getWidth()}' won't fit on the screen (width: ${screenSize.width}"
+            "The requested column count '${initialSize.columns}' for font width '${font.getWidth()}'" +
+                    " won't fit on the screen (width: ${screenSize.width}"
         }
         require(screenSize.height >= font.getHeight() * initialSize.rows) {
-            "The requested row count '${initialSize.rows}' for font height '${font.getHeight()}' won't fit on the screen (height: ${screenSize.height}"
+            "The requested row count '${initialSize.rows}' for font height '${font.getHeight()}'" +
+                    " won't fit on the screen (height: ${screenSize.height}"
         }
     }
 
@@ -136,8 +126,7 @@ data class TerminalBuilder(
          * Creates a [org.codetome.zircon.api.screen.Screen] for the given [Terminal].
          */
         @JvmStatic
-        @JvmOverloads
-        fun createScreenFor(terminal: Terminal, font: Font = terminal.getCurrentFont()): Screen {
+        fun createScreenFor(terminal: Terminal): Screen {
             return TerminalScreen(
                     terminal = terminal as InternalTerminal)
         }
