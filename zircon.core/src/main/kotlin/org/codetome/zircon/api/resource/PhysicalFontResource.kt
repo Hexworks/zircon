@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.resource
 
-import org.codetome.zircon.internal.font.FontRegistry
+import org.codetome.zircon.internal.font.FontLoaderRegistry
 import java.awt.Font
 import java.io.InputStream
 
@@ -55,7 +55,7 @@ enum class PhysicalFontResource(private val fontName: String,
                              source: InputStream,
                              cacheFonts: Boolean = true,
                              withAntiAlias: Boolean = true) =
-                FontRegistry.fetchPhysicalFont(
+                FontLoaderRegistry.getCurrentFontLoader().fetchPhysicalFont(
                         size = size,
                         source = source,
                         withAntiAlias = withAntiAlias,

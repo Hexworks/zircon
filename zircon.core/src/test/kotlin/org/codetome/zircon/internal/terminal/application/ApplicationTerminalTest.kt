@@ -4,13 +4,17 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.config.CursorStyle
+import org.codetome.zircon.internal.component.impl.DefaultLabelTest
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import org.junit.Before
 import org.junit.Test
@@ -20,6 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 class ApplicationTerminalTest {
 
     lateinit var target: ApplicationTerminal
+    lateinit var font: Font
 
     val fontTextureDraws = mutableListOf<Triple<FontTextureRegion<*>, Int, Int>>()
     val cursorDraws = mutableListOf<Triple<TextCharacter, Int, Int>>()
@@ -27,11 +32,13 @@ class ApplicationTerminalTest {
 
     @Before
     fun setUp() {
+        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+        font = DefaultLabelTest.FONT.toFont()
         target = object : ApplicationTerminal(
                 deviceConfiguration = CONFIG,
                 terminal = VirtualTerminal(
                         initialSize = SIZE,
-                        initialFont = FONT)) {
+                        initialFont = font)) {
             override fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion<*>, x: Int, y: Int) {
                 fontTextureDraws.add(Triple(fontTextureRegion, x, y))
             }
@@ -40,9 +47,9 @@ class ApplicationTerminalTest {
                 cursorDraws.add(Triple(character, x, y))
             }
 
-            override fun getHeight() = SIZE.rows * FONT.getHeight()
+            override fun getHeight() = SIZE.rows * font.getHeight()
 
-            override fun getWidth() = SIZE.columns * FONT.getWidth()
+            override fun getWidth() = SIZE.columns * font.getWidth()
 
             override fun doRender() {
                 super.doRender()
@@ -55,7 +62,7 @@ class ApplicationTerminalTest {
     @Test
     fun shouldRenderAfterCreateIfCursorBlinksAndEnoughTimePassed() {
         target.doCreate()
-        Thread.sleep(50)
+        Thread.sleep(100)
 
         assertThat(rendered.get()).isTrue()
     }
@@ -83,6 +90,6 @@ class ApplicationTerminalTest {
                 .blinkLengthInMilliSeconds(BLINK_LEN_MS)
                 .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
                 .build()
-        val FONT = CP437TilesetResource.WANDERLUST_16X16.toFont()
+        val FONT = CP437TilesetResource.WANDERLUST_16X16
     }
 }

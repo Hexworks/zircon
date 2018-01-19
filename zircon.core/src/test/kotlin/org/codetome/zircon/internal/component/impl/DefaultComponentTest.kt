@@ -10,6 +10,7 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.ColorTheme
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
@@ -19,7 +20,9 @@ import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrate
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
 import java.util.*
@@ -29,15 +32,18 @@ import java.util.function.Consumer
 class DefaultComponentTest {
 
     lateinit var target: DefaultComponent
+    lateinit var font: Font
 
     @Before
     fun setUp() {
+        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+        font = FONT.toFont()
         target = object : DefaultComponent(
                 initialSize = SIZE,
                 position = POSITION,
                 componentStyles = STYLES,
                 wrappers = WRAPPERS,
-                initialFont = FONT) {
+                initialFont = font) {
             override fun applyColorTheme(colorTheme: ColorTheme) {
                 TODO("not implemented")
             }
@@ -60,7 +66,7 @@ class DefaultComponentTest {
     fun shouldUseFontFromComponentWhenTransformingToLayer() {
         val result = target.transformToLayers()
         result.forEach{
-            assertThat(it.getCurrentFont().getId()).isEqualTo(FONT.getId())
+            assertThat(it.getCurrentFont().getId()).isEqualTo(font.getId())
         }
     }
 
@@ -216,7 +222,7 @@ class DefaultComponentTest {
     }
 
     companion object {
-        val FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont()
+        val FONT = CP437TilesetResource.ROGUE_YUN_16X16
         val SIZE = Size.of(4, 4)
         val POSITION = Position.of(2, 3)
         val NEW_POSITION = Position.of(6, 7)

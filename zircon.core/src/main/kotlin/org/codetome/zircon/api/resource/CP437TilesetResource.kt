@@ -2,7 +2,7 @@ package org.codetome.zircon.api.resource
 
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.internal.font.FontRegistry
+import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.PickFirstMetaStrategy
 import java.io.InputStream
 
@@ -81,7 +81,7 @@ enum class CP437TilesetResource(private val tilesetName: String,
                              height: Int,
                              source: InputStream,
                              cacheFonts: Boolean = true): Font {
-            return FontRegistry.fetchTiledFont(
+            return FontLoaderRegistry.getCurrentFontLoader().fetchTiledFont(
                     source = source,
                     metadata = CP437_METADATA,
                     width = width,

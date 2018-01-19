@@ -2,9 +2,13 @@ package org.codetome.zircon.internal.terminal
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.TerminalResizeListener
+import org.codetome.zircon.internal.component.impl.DefaultLabelTest
+import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import org.junit.Before
 import org.junit.Test
@@ -13,12 +17,14 @@ import org.mockito.MockitoAnnotations
 class AbstractTerminalTest {
 
     lateinit var target: AbstractTerminal
+    lateinit var font: Font
 
     @Before
     fun setUp() {
+        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+        font = DefaultLabelTest.FONT.toFont()
         MockitoAnnotations.initMocks(this)
-
-        target = VirtualTerminal(initialFont = FONT)
+        target = VirtualTerminal(initialFont = font)
     }
 
     @Test
@@ -61,7 +67,7 @@ class AbstractTerminalTest {
     }
 
     companion object {
-        val FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont()
+        val FONT = CP437TilesetResource.ROGUE_YUN_16X16
     }
 
 }

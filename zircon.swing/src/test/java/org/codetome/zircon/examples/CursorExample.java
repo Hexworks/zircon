@@ -17,7 +17,7 @@ public class CursorExample {
 
     public static void main(String[] args) {
         // we create a new terminal using TerminalBuilder
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .initialTerminalSize(SIZE)
                 .font(PhysicalFontResource.SOURCE_CODE_PRO.toFont())
                 // we only override the device config
@@ -26,7 +26,7 @@ public class CursorExample {
                         .cursorStyle(CursorStyle.UNDER_BAR)
                         .cursorBlinking(true)
                         .build())
-                .buildTerminal(args.length > 0); // then we build the terminal
+                .build(); // then we build the terminal
 
         // for this example we need the cursor to be visible
         terminal.setCursorVisibility(true);

@@ -16,6 +16,7 @@ import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.game.GameArea;
 import org.codetome.zircon.api.game.Position3D;
 import org.codetome.zircon.api.game.Size3D;
+import org.codetome.zircon.examples.TerminalUtils;
 import org.codetome.zircon.internal.game.TextImageGameArea;
 import org.codetome.zircon.api.graphics.TextImage;
 import org.codetome.zircon.api.input.InputType;
@@ -54,14 +55,14 @@ public class GameAreaScrollingWithLayers {
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .font(FONT)
                 .initialTerminalSize(SIZE)
-                .buildTerminal(args.length > 0);
+                .build();
         if (args.length > 0) {
             headless = true;
         }
-        final Screen screen = TerminalBuilder.createScreenFor(terminal);
+        final Screen screen = ScreenBuilder.createScreenFor(terminal);
         screen.setCursorVisibility(false); // we don't want the cursor right now
 
         Panel actions = PanelBuilder.newBuilder()

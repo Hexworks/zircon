@@ -2,7 +2,9 @@ package org.codetome.zircon.beta
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.builder.ScreenBuilder
 import org.codetome.zircon.api.builder.TerminalBuilder
+import org.codetome.zircon.api.builder.VirtualTerminalBuilder
 import org.codetome.zircon.api.component.builder.HeaderBuilder
 import org.codetome.zircon.api.component.builder.PanelBuilder
 import org.codetome.zircon.api.resource.CP437TilesetResource
@@ -12,11 +14,11 @@ object ComponentTest {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val terminal = TerminalBuilder.newBuilder()
+        val terminal = VirtualTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(40, 25))
                 .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
-                .buildTerminal(false)
-        val screen = TerminalBuilder.createScreenFor(terminal)
+                .build()
+        val screen = ScreenBuilder.createScreenFor(terminal)
 
         val panel0 = PanelBuilder.newBuilder()
                 .wrapWithBox()

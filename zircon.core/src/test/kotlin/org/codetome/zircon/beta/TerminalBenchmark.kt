@@ -3,6 +3,7 @@ package org.codetome.zircon.beta
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.TerminalBuilder
+import org.codetome.zircon.api.builder.VirtualTerminalBuilder
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.junit.Test
@@ -11,10 +12,10 @@ import java.util.concurrent.ConcurrentHashMap
 import kotlin.system.measureNanoTime
 
 fun main(args:Array<String>) {
-    val terminal = TerminalBuilder.newBuilder()
+    val terminal = VirtualTerminalBuilder.newBuilder()
             .initialTerminalSize(SIZE)
             .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
-            .buildTerminal()
+            .build()
     terminal.setCursorVisibility(false)
 
     val charCount = 60 * 30

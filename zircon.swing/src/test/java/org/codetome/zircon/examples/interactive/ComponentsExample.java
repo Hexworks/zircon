@@ -4,10 +4,7 @@ import org.codetome.zircon.api.Modifiers;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
-import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
-import org.codetome.zircon.api.builder.LayerBuilder;
-import org.codetome.zircon.api.builder.TerminalBuilder;
-import org.codetome.zircon.api.builder.TextCharacterBuilder;
+import org.codetome.zircon.api.builder.*;
 import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection;
@@ -21,6 +18,7 @@ import org.codetome.zircon.api.resource.GraphicTilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
+import org.codetome.zircon.examples.TerminalUtils;
 import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy;
 import org.codetome.zircon.internal.graphics.BoxType;
 import org.junit.Ignore;
@@ -49,7 +47,7 @@ public class ComponentsExample {
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .initialTerminalSize(TERMINAL_SIZE)
 //                .font(PhysicalFontResource.UBUNTU_MONO.toFont())
                 .font(CP437TilesetResource.ROGUE_YUN_16X16.toFont())
@@ -58,13 +56,13 @@ public class ComponentsExample {
                         .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
                         .cursorColor(TextColorFactory.fromString("#ff00ff"))
                         .build())
-                .buildTerminal(args.length > 0);
+                .build();
 
-        Screen panelsScreen = TerminalBuilder.createScreenFor(terminal);
-        Screen inputsScreen = TerminalBuilder.createScreenFor(terminal);
-        Screen addAndRemoveScreen = TerminalBuilder.createScreenFor(terminal);
-        Screen colorThemesScreen = TerminalBuilder.createScreenFor(terminal);
-        Screen multiFontScreen = TerminalBuilder.createScreenFor(terminal);
+        Screen panelsScreen = ScreenBuilder.createScreenFor(terminal);
+        Screen inputsScreen = ScreenBuilder.createScreenFor(terminal);
+        Screen addAndRemoveScreen = ScreenBuilder.createScreenFor(terminal);
+        Screen colorThemesScreen = ScreenBuilder.createScreenFor(terminal);
+        Screen multiFontScreen = ScreenBuilder.createScreenFor(terminal);
         final List<Screen> screens = Arrays.asList(
                 panelsScreen,
                 inputsScreen,
