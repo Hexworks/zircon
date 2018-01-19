@@ -4,6 +4,7 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.TextCharacter;
 import org.codetome.zircon.api.builder.LayerBuilder;
+import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.color.TextColorFactory;
@@ -32,11 +33,11 @@ public class LayersExample {
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .font(FONT)
                 .initialTerminalSize(SIZE)
-                .buildTerminal(args.length > 0);
-        final Screen screen = TerminalBuilder.createScreenFor(terminal);
+                .build();
+        final Screen screen = ScreenBuilder.createScreenFor(terminal);
         screen.setCursorVisibility(false); // we don't want the cursor right now
 
         final String firstRow = "This is white title on black";

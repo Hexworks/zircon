@@ -2,7 +2,7 @@ package org.codetome.zircon.api.resource
 
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.internal.font.FontRegistry
+import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.util.rex.unZipIt
 import org.yaml.snakeyaml.Yaml
@@ -71,7 +71,7 @@ enum class GraphicTilesetResource(private val tilesetName: String,
 
             // TODO: figure out something for multi-file tilesets
 
-            return FontRegistry.fetchTiledFont(
+            return FontLoaderRegistry.getCurrentFontLoader().fetchTiledFont(
                     width = tileInfo.size,
                     height = tileInfo.size,
                     source = files.first { it.name == file.name }.inputStream(),

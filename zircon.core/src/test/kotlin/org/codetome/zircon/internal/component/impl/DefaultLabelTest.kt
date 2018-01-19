@@ -7,21 +7,27 @@ import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.builder.LabelBuilder
 import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
+import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
 
 class DefaultLabelTest {
 
     lateinit var target: DefaultLabel
+    lateinit var font: Font
 
     @Before
     fun setUp() {
+        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+        font = FONT.toFont()
         target = LabelBuilder.newBuilder()
                 .componentStyles(COMPONENT_STYLES)
                 .position(POSITION)
-                .font(FONT)
+                .font(font)
                 .text(TEXT)
                 .build() as DefaultLabel
     }
@@ -34,7 +40,7 @@ class DefaultLabelTest {
     @Test
     fun shouldUseProperFont() {
         assertThat(target.getCurrentFont().getId())
-                .isEqualTo(FONT.getId())
+                .isEqualTo(font.getId())
     }
 
     @Test
@@ -66,7 +72,7 @@ class DefaultLabelTest {
     companion object {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
-        val FONT = CP437TilesetResource.WANDERLUST_16X16.toFont()
+        val FONT = CP437TilesetResource.WANDERLUST_16X16
         val POSITION = Position.of(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.getDarkForegroundColor())

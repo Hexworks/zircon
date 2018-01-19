@@ -2,10 +2,7 @@ package org.codetome.zircon.examples;
 
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.builder.BoxBuilder;
-import org.codetome.zircon.api.builder.StyleSetBuilder;
-import org.codetome.zircon.api.builder.TerminalBuilder;
-import org.codetome.zircon.api.builder.TextCharacterBuilder;
+import org.codetome.zircon.api.builder.*;
 import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.shape.FilledRectangleFactory;
@@ -38,11 +35,11 @@ public class PanelDrawingExample {
     }
 
     public static void main(String[] args) {
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .font(FONT)
                 .initialTerminalSize(SIZE)
-                .buildTerminal(args.length > 0);
-        final Screen screen = TerminalBuilder.createScreenFor(terminal);
+                .build();
+        final Screen screen = ScreenBuilder.createScreenFor(terminal);
         screen.setCursorVisibility(false);
 
         FilledRectangleFactory

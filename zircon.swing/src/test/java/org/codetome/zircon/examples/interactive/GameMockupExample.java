@@ -4,9 +4,9 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
-import org.codetome.zircon.api.builder.TerminalBuilder;
-import org.codetome.zircon.api.component.*;
+import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.component.Button;
+import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.Label;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.component.builder.ButtonBuilder;
@@ -19,6 +19,7 @@ import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.terminal.config.CursorStyle;
+import org.codetome.zircon.examples.TerminalUtils;
 import org.codetome.zircon.internal.graphics.BoxType;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -63,7 +64,7 @@ public class GameMockupExample {
         Size terminalSize = Size.of((int) columns, (int) rows);
 
         // for this example we only need a default terminal (no extra config)
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .initialTerminalSize(terminalSize)
                 .fullScreen()
                 .font(FONT)
@@ -71,13 +72,13 @@ public class GameMockupExample {
                         .cursorBlinking(true)
                         .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
                         .build())
-                .buildTerminal(args.length > 0);
+                .build();
 
         // ==========
         // MAIN MENU
         // ==========
 
-        Screen mainMenuScreen = buildScreen(terminal);
+        Screen mainMenuScreen = ScreenBuilder.createScreenFor(terminal);
         Position menuPosition = Position.of(
                 (terminalSize.getColumns() - MAIN_MENU_PANEL_WIDTH) / 2,
                 (terminalSize.getRows() - MAIN_MENU_PANEL_HEIGHT) / 2);
@@ -119,7 +120,7 @@ public class GameMockupExample {
         // OPTIONS
         // ==========
 
-        Screen optionsScreen = buildScreen(terminal);
+        Screen optionsScreen = ScreenBuilder.createScreenFor(terminal);
 
         Button backButton = ButtonBuilder.newBuilder()
                 .text(BACK_LABEL)
@@ -173,10 +174,5 @@ public class GameMockupExample {
         // START IT UP
         mainMenuScreen.display();
 
-    }
-
-    private static Screen buildScreen(Terminal terminal) {
-        Screen result = TerminalBuilder.createScreenFor(terminal);
-        return result;
     }
 }

@@ -1,6 +1,7 @@
 package org.codetome.zircon.examples;
 
 import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Layer;
@@ -30,11 +31,11 @@ public class RexLoaderExample {
 
     public static void main(String[] args) {
         REXPaintResource rex = REXPaintResource.loadREXFile(RESOURCE);
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .font(FONT)
                 .initialTerminalSize(SIZE)
-                .buildTerminal(args.length > 0);
-        final Screen screen = TerminalBuilder.createScreenFor(terminal);
+                .build();
+        final Screen screen = ScreenBuilder.createScreenFor(terminal);
         screen.setCursorVisibility(false);
         List<Layer> layers = rex.toLayerList();
         for (Layer layer: layers) {

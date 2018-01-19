@@ -29,10 +29,10 @@ public class TextCharacterStringExample {
     }
 
     public static void main(String[] args) {
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .font(FONT)
                 .initialTerminalSize(SIZE)
-                .buildTerminal(args.length > 0);
+                .build();
         terminal.setCursorVisibility(false);
 
         TextCharacterString tcs = TextCharacterStringBuilder.newBuilder()

@@ -1,12 +1,7 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.api.Position;
-import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.Symbols;
-import org.codetome.zircon.api.TextCharacter;
-import org.codetome.zircon.api.builder.LayerBuilder;
-import org.codetome.zircon.api.builder.TerminalBuilder;
-import org.codetome.zircon.api.builder.TextCharacterBuilder;
+import org.codetome.zircon.api.*;
+import org.codetome.zircon.api.builder.*;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.color.TextColorFactory;
@@ -66,11 +61,11 @@ public class TilesetExample {
     }
 
     public static void main(String[] args) {
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .font(FONT)
                 .initialTerminalSize(SIZE)
-                .buildTerminal(args.length > 0);
-        final Screen screen = TerminalBuilder.createScreenFor(terminal);
+                .build();
+        final Screen screen = ScreenBuilder.createScreenFor(terminal);
         screen.setCursorVisibility(false);
 
         final Random random = new Random();

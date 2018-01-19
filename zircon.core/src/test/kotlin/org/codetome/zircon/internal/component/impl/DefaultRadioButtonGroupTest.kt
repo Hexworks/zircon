@@ -9,13 +9,16 @@ import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.component.builder.RadioButtonGroupBuilder
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
 import java.util.*
@@ -25,15 +28,18 @@ import java.util.function.Consumer
 class DefaultRadioButtonGroupTest {
 
     lateinit var target: DefaultRadioButtonGroup
+    lateinit var font: Font
 
     @Before
     fun setUp() {
+        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+        font = DefaultLabelTest.FONT.toFont()
         target = DefaultRadioButtonGroup(
                 wrappers = LinkedList(),
                 size = SIZE,
                 position = POSITION,
                 componentStyles = COMPONENT_STYLES,
-                initialFont = FONT)
+                initialFont = font)
     }
 
     @Test
@@ -44,7 +50,7 @@ class DefaultRadioButtonGroupTest {
     @Test
     fun shouldUseProperFont() {
         assertThat(target.getCurrentFont().getId())
-                .isEqualTo(FONT.getId())
+                .isEqualTo(font.getId())
     }
 
     @Test
@@ -103,7 +109,7 @@ class DefaultRadioButtonGroupTest {
     companion object {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
-        val FONT = CP437TilesetResource.WANDERLUST_16X16.toFont()
+        val FONT = CP437TilesetResource.WANDERLUST_16X16
         val POSITION = Position.of(4, 5)
         val SIZE = Size.of(10, 20)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()

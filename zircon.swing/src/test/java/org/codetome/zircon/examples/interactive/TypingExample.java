@@ -4,6 +4,7 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.TextCharacter;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
+import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.color.TextColorFactory;
@@ -11,6 +12,7 @@ import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.input.KeyStroke;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.examples.TerminalUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -48,13 +50,13 @@ public class TypingExample {
         if(args.length > 0) {
             headless = true;
         }
-        TerminalBuilder builder = TerminalBuilder.newBuilder()
+        TerminalBuilder builder = TerminalUtils.fetchTerminalBuilder(args)
                 .initialTerminalSize(Size.of(TERMINAL_WIDTH, 10))
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorBlinking(true)
                         .build());
-        final Terminal terminal = builder.buildTerminal(args.length > 0);
-        final Screen screen = TerminalBuilder.createScreenFor(terminal);
+        final Terminal terminal = builder.build();
+        final Screen screen = ScreenBuilder.createScreenFor(terminal);
 
         startTypingSupportForScreen(screen);
 //        startTypingSupportForTerminal(terminal);

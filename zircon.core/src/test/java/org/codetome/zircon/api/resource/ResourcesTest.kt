@@ -1,9 +1,17 @@
 package org.codetome.zircon.api.resource
 
+import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy
+import org.codetome.zircon.internal.font.impl.VirtualFontLoader
+import org.junit.Before
 import org.junit.Test
 
 class ResourcesTest {
+
+    @Before
+    fun setUp() {
+        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+    }
 
     @Test
     fun shouldBeAbleToLoadResources() {

@@ -1,12 +1,10 @@
 package org.codetome.zircon.internal.font.impl
 
-import org.codetome.zircon.api.GUIBackend
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.font.FontLoader
-import org.codetome.zircon.internal.font.FontRegistry
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import java.awt.image.BufferedImage
 import java.awt.image.BufferedImage.TYPE_INT_ARGB
@@ -63,11 +61,5 @@ class VirtualFontLoader : FontLoader {
 
         override fun getId() = uuid
 
-    }
-
-    companion object {
-        init {
-            FontRegistry.registerFontLoader(GUIBackend.HEADLESS, VirtualFontLoader())
-        }
     }
 }

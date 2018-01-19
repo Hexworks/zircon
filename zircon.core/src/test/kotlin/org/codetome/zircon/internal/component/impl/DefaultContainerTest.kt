@@ -4,18 +4,19 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
-import org.codetome.zircon.api.builder.StyleSetBuilder
-import org.codetome.zircon.api.builder.TerminalBuilder
+import org.codetome.zircon.api.builder.*
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.builder.HeaderBuilder
 import org.codetome.zircon.api.component.builder.LabelBuilder
 import org.codetome.zircon.api.component.builder.PanelBuilder
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -23,24 +24,29 @@ import java.util.concurrent.atomic.AtomicBoolean
 class DefaultContainerTest {
 
     lateinit var target: DefaultContainer
+    lateinit var goodFont: Font
+    lateinit var badFont: Font
 
     @Before
     fun setUp() {
+        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+        goodFont = GOOD_FONT.toFont()
+        badFont = BAD_FONT.toFont()
         target = DefaultContainer(
                 initialSize = SIZE,
                 position = POSITION,
                 componentStyles = STYLES,
                 wrappers = WRAPPERS,
-                initialFont = GOOD_FONT)
+                initialFont = goodFont)
     }
 
     @Test
     fun shouldProperlySetPositionsWhenAContainerWithComponentsIsAddedToTheComponentTree() {
-        val terminal = TerminalBuilder.newBuilder()
+        val terminal = VirtualTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(40, 25))
                 .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
-                .buildTerminal(true)
-        val screen = TerminalBuilder.createScreenFor(terminal)
+                .build()
+        val screen = ScreenBuilder.createScreenFor(terminal)
 
         val panel0 = PanelBuilder.newBuilder()
                 .wrapWithBox()
@@ -81,11 +87,11 @@ class DefaultContainerTest {
 
     @Test
     fun shouldProperlySetPositionsWhenAContainerIsAddedToTheComponentTreeThenComponentsAreAddedToIt() {
-        val terminal = TerminalBuilder.newBuilder()
+        val terminal = VirtualTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(40, 25))
                 .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
-                .buildTerminal(true)
-        val screen = TerminalBuilder.createScreenFor(terminal)
+                .build()
+        val screen = ScreenBuilder.createScreenFor(terminal)
 
         val panel0 = PanelBuilder.newBuilder()
                 .wrapWithBox()
@@ -126,11 +132,11 @@ class DefaultContainerTest {
 
     @Test
     fun shouldProperlySetPositionsWhenAComponentIsAddedToAContainerAfterItIsAttachedToTheScreen() {
-        val terminal = TerminalBuilder.newBuilder()
+        val terminal = VirtualTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(40, 25))
                 .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
-                .buildTerminal(true)
-        val screen = TerminalBuilder.createScreenFor(terminal)
+                .build()
+        val screen = ScreenBuilder.createScreenFor(terminal)
 
         val panel0 = PanelBuilder.newBuilder()
                 .wrapWithBox()
@@ -157,7 +163,7 @@ class DefaultContainerTest {
     fun shouldThrowExceptionIfComponentWithUnsupportedFontSizeIsAdded() {
         target.addComponent(LabelBuilder.newBuilder()
                 .text("foo")
-                .font(BAD_FONT)
+                .font(badFont)
                 .build())
     }
 
@@ -179,7 +185,7 @@ class DefaultContainerTest {
     fun shouldSetCurrentFontToAddedComponentWithNoFont() {
         val comp = LabelBuilder.newBuilder().text("foo").build()
         target.addComponent(comp)
-        assertThat(comp.getCurrentFont().getId()).isEqualTo(GOOD_FONT.getId())
+        assertThat(comp.getCurrentFont().getId()).isEqualTo(goodFont.getId())
     }
 
     @Test
@@ -224,8 +230,8 @@ class DefaultContainerTest {
     }
 
     companion object {
-        val GOOD_FONT = CP437TilesetResource.AESOMATICA_16X16.toFont()
-        val BAD_FONT = CP437TilesetResource.BISASAM_20X20.toFont()
+        val GOOD_FONT = CP437TilesetResource.AESOMATICA_16X16
+        val BAD_FONT = CP437TilesetResource.BISASAM_20X20
         val SIZE = Size.of(4, 4)
         val POSITION = Position.of(2, 3)
         val NEW_POSITION = Position.of(6, 7)

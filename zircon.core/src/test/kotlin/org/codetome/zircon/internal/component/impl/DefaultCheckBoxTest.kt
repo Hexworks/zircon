@@ -11,11 +11,14 @@ import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.builder.CheckBoxBuilder
 import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -23,12 +26,15 @@ import java.util.concurrent.atomic.AtomicBoolean
 class DefaultCheckBoxTest {
 
     lateinit var target: DefaultCheckBox
+    lateinit var font: Font
 
     @Before
     fun setUp() {
+        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+        font = FONT.toFont()
         target = CheckBoxBuilder.newBuilder()
                 .componentStyles(COMPONENT_STYLES)
-                .font(FONT)
+                .font(font)
                 .position(POSITION)
                 .text(TEXT)
                 .build() as DefaultCheckBox
@@ -50,7 +56,7 @@ class DefaultCheckBoxTest {
     @Test
     fun shouldUseProperFont() {
         Assertions.assertThat(target.getCurrentFont().getId())
-                .isEqualTo(FONT.getId())
+                .isEqualTo(font.getId())
     }
 
     @Test
@@ -144,7 +150,7 @@ class DefaultCheckBoxTest {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
         val POSITION = Position.of(4, 5)
-        val FONT = CP437TilesetResource.WANDERLUST_16X16.toFont()
+        val FONT = CP437TilesetResource.WANDERLUST_16X16
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITextColor.RED)
                 .foregroundColor(ANSITextColor.GREEN)

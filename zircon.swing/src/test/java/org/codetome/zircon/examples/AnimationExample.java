@@ -3,6 +3,7 @@ package org.codetome.zircon.examples;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.AnimationBuilder;
+import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.component.builder.LabelBuilder;
@@ -32,11 +33,11 @@ public class AnimationExample {
     }
 
     public static void main(String[] args) {
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .font(FONT)
                 .initialTerminalSize(TERMINAL_SIZE)
-                .buildTerminal(args.length > 0);
-        final Screen screen = TerminalBuilder.createScreenFor(terminal);
+                .build();
+        final Screen screen = ScreenBuilder.createScreenFor(terminal);
         screen.setCursorVisibility(false);
 
         final Panel panel = PanelBuilder.newBuilder()

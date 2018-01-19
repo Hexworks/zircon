@@ -5,6 +5,7 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TerminalBuilder
+import org.codetome.zircon.api.builder.VirtualTerminalBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.builder.RadioButtonGroupBuilder
 import org.codetome.zircon.api.component.RadioButtonGroup
@@ -18,7 +19,7 @@ object RadioTest {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val screen = TerminalBuilder.newBuilder()
+        val screen = VirtualTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(40, 25))
                 .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
                 .buildScreen()

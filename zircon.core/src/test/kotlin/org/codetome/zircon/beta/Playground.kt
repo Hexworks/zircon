@@ -117,11 +117,11 @@ object Playground {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val terminal = TerminalBuilder.newBuilder()
+        val terminal = VirtualTerminalBuilder.newBuilder()
                 .font(FONT)
                 .initialTerminalSize(SIZE)
                 .build()
-        val screen = TerminalBuilder.createScreenFor(terminal)
+        val screen = ScreenBuilder.createScreenFor(terminal)
         screen.setCursorVisibility(false) // we don't want the cursor right now
 
         val gamePanel = PanelBuilder.newBuilder()

@@ -9,6 +9,7 @@ import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.examples.TerminalUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -42,10 +43,10 @@ public class FontSwitcherExample {
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .font(FONT)
                 .initialTerminalSize(SIZE)
-                .buildTerminal(args.length > 0);
+                .build();
         terminal.setCursorVisibility(false); // we don't want the cursor right now
 
         final String switchFont = "Press '->' to switch Font!";

@@ -6,10 +6,14 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.animation.AnimationHandler
 import org.codetome.zircon.api.animation.AnimationResource
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.internal.component.impl.DefaultLabelTest
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import org.junit.Before
 import org.junit.Test
@@ -20,23 +24,26 @@ import java.util.function.Consumer
 class TerminalScreenTest {
 
     lateinit var target: TerminalScreen
-    val terminal = VirtualTerminal(
-            initialSize = SIZE,
-            initialFont = FONT)
+    lateinit var font: Font
+    lateinit var terminal: VirtualTerminal
 
     @Before
     fun setUp() {
+        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+        font = DefaultLabelTest.FONT.toFont()
+        terminal = VirtualTerminal(
+                initialSize = SIZE,
+                initialFont = font)
         MockitoAnnotations.initMocks(this)
-
         target = TerminalScreen(terminal)
     }
 
     @Test
     fun givenScreenWithAnimationWhenGivenInputThenFireOnInput() {
         val animation = AnimationResource.loadAnimationFromStream(this.javaClass.getResourceAsStream("/animations/skull.zap"))
-                                        .setPositionForAll(Position.of(0, 0))
-                                        .loopCount(0)
-                                        .build()
+                .setPositionForAll(Position.of(0, 0))
+                .loopCount(0)
+                .build()
 
         val inputFired = AtomicBoolean(false)
         target.onInput(Consumer { inputFired.set(true) })
@@ -121,7 +128,7 @@ class TerminalScreenTest {
 
     companion object {
         val SIZE = Size(10, 10)
-        val FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont()
+        val FONT = CP437TilesetResource.ROGUE_YUN_16X16
         val CHAR = TextCharacterBuilder.newBuilder()
                 .character('x')
                 .build()

@@ -31,10 +31,10 @@ public class FontModifiersExample {
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .font(FONT)
                 .initialTerminalSize(SIZE)
-                .buildTerminal(args.length > 0);
+                .build();
         terminal.setCursorVisibility(false); // we don't want the cursor right now
 
         terminal.enableModifiers(VERTICAL_FLIP);

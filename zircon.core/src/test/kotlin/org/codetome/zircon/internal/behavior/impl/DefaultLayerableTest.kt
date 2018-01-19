@@ -6,19 +6,25 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder.Companion.DEFAULT_CHARACTER
+import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
 
 class DefaultLayerableTest {
 
     lateinit var target: DefaultLayerable
+    lateinit var font: Font
 
     @Before
     fun setUp() {
+        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+        font = FONT.toFont()
         target = DefaultLayerable(
                 size = SIZE,
-                supportedFontSize = FONT_SIZE)
+                supportedFontSize = font.getSize())
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -159,7 +165,6 @@ class DefaultLayerableTest {
 
     companion object {
         val SIZE = Size(10, 10)
-        val FONT = CP437TilesetResource.WANDERLUST_16X16.toFont()
-        val FONT_SIZE = FONT.getSize()
+        val FONT = CP437TilesetResource.WANDERLUST_16X16
     }
 }
