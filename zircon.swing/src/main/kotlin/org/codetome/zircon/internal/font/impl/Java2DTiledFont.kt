@@ -20,25 +20,20 @@ import java.util.*
  * Represents a font which is backed by a sprite sheet.
  */
 class Java2DTiledFont(private val source: BufferedImage,
-                      private val metadata: Map<Char, List<CharacterMetadata>>,
                       private val width: Int,
                       private val height: Int,
                       private val regionTransformers: List<FontRegionTransformer<BufferedImage>>,
                       private val cache: FontRegionCache<FontTextureRegion<BufferedImage>>,
-                      private val metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy())
-    : Font {
-
-    private val id = UUID.randomUUID()
-
-    override fun getId(): UUID = id
+                      metadata: Map<Char, List<CharacterMetadata>>,
+                      metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy())
+    : AbstractTiledFont(
+        metadata = metadata,
+        metadataPickingStrategy = metadataPickingStrategy
+) {
 
     override fun getWidth() = width
 
     override fun getHeight() = height
-
-    override fun hasDataForChar(char: Char) = metadata.containsKey(char)
-
-    override fun fetchMetadataForChar(char: Char): List<CharacterMetadata> = metadata[char] ?: listOf()
 
     override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<BufferedImage> {
         val meta = fetchMetaFor(textCharacter)
@@ -59,24 +54,6 @@ class Java2DTiledFont(private val source: BufferedImage,
             region = MODIFIER_TRANSFORMER_LOOKUP[it::class]?.transform(region, textCharacter) ?: region
         }
         return region
-    }
-
-    private fun fetchMetaFor(textCharacter: TextCharacter): CharacterMetadata {
-        if (!hasDataForChar(textCharacter.getCharacter()))
-            if (TextUtils.isPrintableCharacter(textCharacter.getCharacter()))
-                throw IllegalArgumentException("No texture region exists for printable character: '${textCharacter.getCharacter().toInt()}'!")
-            else
-                throw IllegalArgumentException("No texture region exists for non-printable character: '${textCharacter.getCharacter().toInt()}'!")
-
-        val tags = textCharacter.getTags()
-        val filtered = metadata[textCharacter.getCharacter()]!!.filter { it.tags.containsAll(tags.toList()) }
-
-
-        require(filtered.isNotEmpty()) {
-            "Can't find font texture region for tag(s): ${tags.joinToString()}"
-        }
-        return metadataPickingStrategy.pickMetadata(filtered)
-
     }
 
     companion object {

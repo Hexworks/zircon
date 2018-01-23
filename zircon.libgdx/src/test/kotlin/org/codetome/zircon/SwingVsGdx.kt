@@ -16,7 +16,7 @@ import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.resource.CP437TilesetResource
-import org.codetome.zircon.internal.font.impl.GdxFontTextureRegion
+import org.codetome.zircon.internal.font.impl.LibgdxFontTextureRegion
 import java.util.*
 
 object Config {
@@ -46,7 +46,7 @@ class GdxFont(private val source: Texture,
         val cp437Idx = CP437TilesetResource.fetchCP437IndexForChar(textCharacter.getCharacter())
         val x = cp437Idx.rem(16) * width
         val y = cp437Idx.div(16) * height
-        return GdxFontTextureRegion(TextureRegion(source, x, y, width, height))
+        return LibgdxFontTextureRegion(TextureRegion(source, x, y, width, height))
     }
 
     override fun fetchMetadataForChar(char: Char): List<CharacterMetadata> {
@@ -97,10 +97,6 @@ class GdxExample : ApplicationAdapter() {
                             row * height + height,
                             width,
                             height)
-//                    batch.doRender(oldfont.fetchRegionForChar(
-//                            chars[currIdx]),
-//                            column * width,
-//                            row * height + height)
                 }
             }
             currIdx = if (currIdx == 0) 1 else 0
