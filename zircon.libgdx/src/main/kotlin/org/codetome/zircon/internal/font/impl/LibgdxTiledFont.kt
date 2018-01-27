@@ -32,7 +32,7 @@ class LibgdxTiledFont(private val source: InputStream,
         metadataPickingStrategy = metadataPickingStrategy) {
 
     private val texture: Texture by lazy {
-        val bytes = source.readAllBytes()
+        val bytes = source.readBytes()
         val tex = Texture(Pixmap(bytes, 0, bytes.size))
         if (!tex.textureData.isPrepared) {
             tex.textureData.prepare()
