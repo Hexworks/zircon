@@ -23,20 +23,13 @@ public class PanelDrawingExample {
     private static final int TERMINAL_WIDTH = 19;
     private static final int TERMINAL_HEIGHT = 12;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final Font FONT = WANDERLUST_16X16.toFont();
     private static final TextColor BACKGROUND_COLOR = TextColorFactory.fromString("#223344");
     private static final TextColor PANEL_BG_COLOR = TextColorFactory.fromString("#666666");
     private static final TextColor PANEL_FG_COLOR = TextColorFactory.fromString("#ffffff");
 
-    @Ignore
-    @Test
-    public void checkSetup() {
-        main(new String[]{"test"});
-    }
-
     public static void main(String[] args) {
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
-                .font(FONT)
+                .font(WANDERLUST_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
         final Screen screen = ScreenBuilder.createScreenFor(terminal);
