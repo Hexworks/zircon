@@ -553,7 +553,7 @@ Zircon is powered by:
 
 [resource-handling]:https://github.com/Hexworks/zircon/wiki/Resource-Handling
 [design-philosophy]:https://github.com/Hexworks/zircon/wiki/The-design-philosophy-behind-Zircon
-[color-themes]:https://github.com/Hexworks/zircon/wiki/Working-with-color-themes
+[color-themes]:https://github.com/Hexworks/zircon/wiki/Working-with-ColorThemes
 [text-images]:https://github.com/Hexworks/zircon/wiki/How-to-work-with-TextImages
 [screen-primer]:https://github.com/Hexworks/zircon/wiki/A-primer-on-Screens
 [components]:https://github.com/Hexworks/zircon/wiki/The-component-system
