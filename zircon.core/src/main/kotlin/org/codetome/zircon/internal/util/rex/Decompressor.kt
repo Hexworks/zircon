@@ -6,27 +6,35 @@ import java.util.zip.GZIPInputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.io.File as JFile
+import java.io.ByteArrayOutputStream
+import java.util.zip.Inflater
+import java.io.ByteArrayInputStream
+
+
+
+
 
 
 /**
  * Takes a GZIP-compressed [ByteArray] and returns it decompressed.
  */
-fun decompressGZIPByteArray(compressedInput: ByteArray): ByteArray {
-    val gzipInputStream = GZIPInputStream(ByteArrayInputStream(compressedInput))
-    val outputStream = ByteArrayOutputStream(compressedInput.size)
-    val buffer = ByteArray(1024)
+fun decompressGZIPByteArray(compressedData: ByteArray): ByteArray {
+    ByteArrayInputStream(compressedData).use { bin ->
+        GZIPInputStream(bin).use { gzipper ->
+            val buffer = ByteArray(1024)
+            val out = ByteArrayOutputStream()
 
-    while (gzipInputStream.available() > 0) {
-        val count = gzipInputStream.read(buffer)
-        if (count > 0) {
-            outputStream.write(buffer)
+            var len = gzipper.read(buffer)
+            while (len > 0) {
+                out.write(buffer, 0, len)
+                len = gzipper.read(buffer)
+            }
+
+            gzipper.close()
+            out.close()
+            return out.toByteArray()
         }
     }
-
-    outputStream.close()
-    gzipInputStream.close()
-
-    return outputStream.toByteArray()
 }
 
 fun unZipIt(zipSource: InputStream, outputFolder: File): List<File> {
