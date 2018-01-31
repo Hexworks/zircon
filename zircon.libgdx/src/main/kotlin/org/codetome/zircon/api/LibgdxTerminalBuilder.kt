@@ -17,37 +17,20 @@ class LibgdxTerminalBuilder : VirtualTerminalBuilder() {
     }
 
     override fun build(): LibgdxAdapter {
-        if(font === NO_FONT) {
+        if (font === NO_FONT) {
             font = DEFAULT_FONT.toFont()
         }
-        checkScreenSize()
-//        return SwingTerminalFrame(
-//                title = title,
-//                size = initialSize,
-//                deviceConfiguration = deviceConfiguration,
-//                fullScreen = fullScreen,
-//                font = font).apply {
-//            isVisible = true
-//        }
         val adapter = LibgdxAdapter(
                 initialFont = font,
                 initialSize = initialSize,
                 deviceConfiguration = deviceConfiguration)
         val config = LwjglApplicationConfiguration()
+        val (cols, rows) = initialSize
+        val (width, height) = font.getSize()
+        config.height = height * rows
+        config.width = width * cols
         LwjglApplication(adapter, config)
         return adapter
-    }
-
-    private fun checkScreenSize() {
-        val screenSize = Toolkit.getDefaultToolkit().screenSize
-        require(screenSize.width >= font.getWidth() * initialSize.columns) {
-            "The requested column count '${initialSize.columns}' for font width '${font.getWidth()}'" +
-                    " won't fit on the screen (width: ${screenSize.width}"
-        }
-        require(screenSize.height >= font.getHeight() * initialSize.rows) {
-            "The requested row count '${initialSize.rows}' for font height '${font.getHeight()}'" +
-                    " won't fit on the screen (height: ${screenSize.height}"
-        }
     }
 
     companion object {

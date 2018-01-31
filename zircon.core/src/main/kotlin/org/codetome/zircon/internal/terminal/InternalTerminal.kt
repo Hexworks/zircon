@@ -12,4 +12,5 @@ interface InternalTerminal : Terminal, InternalLayerable, FontOverrideSupport {
 
     fun forEachDirtyCell(fn: (Cell) -> Unit)
 
+    fun forEachCell(fn: (Cell) -> Unit)
 }

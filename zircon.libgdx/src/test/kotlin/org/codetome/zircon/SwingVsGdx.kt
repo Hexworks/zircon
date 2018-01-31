@@ -89,7 +89,7 @@ class GdxExample : ApplicationAdapter() {
                 (0..Config.WIDTH).forEach { column ->
 
                     val region = font.fetchRegionForChar(
-                            TextCharacterBuilder.newBuilder().character(chars[currIdx]).build())
+                            TextCharacterBuilder.newBuilder().character(chars[0]).build())
                     val drawable = TextureRegionDrawable(region.getBackend())
                     val tinted = drawable.tint(com.badlogic.gdx.graphics.Color(0.5f, 0.5f, 0f, 1f)) as SpriteDrawable
                     tinted.draw(batch,

@@ -15,16 +15,14 @@ class LibgdxAdapter(initialFont: Font,
     : ApplicationAdapter(), InternalTerminal by libgdxTerminal {
 
     override fun create() {
-        println("Created")
-        libgdxTerminal.createBatch()
+        libgdxTerminal.doCreate()
     }
 
     override fun render() {
-        libgdxTerminal.render()
+        libgdxTerminal.doRender()
     }
 
     override fun dispose() {
-        println("disposed")
-        libgdxTerminal.disposeBatch()
+        libgdxTerminal.doDispose()
     }
 }

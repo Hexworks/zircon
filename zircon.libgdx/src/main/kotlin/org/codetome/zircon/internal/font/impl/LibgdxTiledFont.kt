@@ -46,23 +46,23 @@ class LibgdxTiledFont(private val source: InputStream,
 
     override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<TextureRegion> {
         val meta = fetchMetaFor(textCharacter)
-//        val maybeRegion = cache.retrieveIfPresent(textCharacter)
-//
-//        var region = if (maybeRegion.isNotPresent()) {
-//            var image: FontTextureRegion<TextureRegion> = LibgdxFontTextureRegion(
-//                    TextureRegion(texture, meta.x * width, meta.y * height, width, height))
-//            regionTransformers.forEach {
-//                image = it.transform(image, textCharacter)
-//            }
-//            cache.store(textCharacter, image)
-//            image
-//        } else {
-//            maybeRegion.get()
-//        }
-//        textCharacter.getModifiers().forEach {
-//            region = MODIFIER_TRANSFORMER_LOOKUP[it::class]?.transform(region, textCharacter) ?: region
-//        }
-        return LibgdxFontTextureRegion(TextureRegion(texture, meta.x * width, meta.y * height, width, height))
+        val maybeRegion = cache.retrieveIfPresent(textCharacter)
+
+        var region = if (maybeRegion.isNotPresent()) {
+            var image: FontTextureRegion<TextureRegion> = LibgdxFontTextureRegion(
+                    TextureRegion(texture, meta.x * width, meta.y * height, width, height))
+            regionTransformers.forEach {
+                image = it.transform(image, textCharacter)
+            }
+            cache.store(textCharacter, image)
+            image
+        } else {
+            maybeRegion.get()
+        }
+        textCharacter.getModifiers().forEach {
+            region = MODIFIER_TRANSFORMER_LOOKUP[it::class]?.transform(region, textCharacter) ?: region
+        }
+        return region
     }
 
     companion object {

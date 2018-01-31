@@ -161,6 +161,10 @@ class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
         }
     }
 
+    override fun forEachCell(fn: (Cell) -> Unit) {
+        backend.fetchCells().forEach(fn)
+    }
+
     private fun moveCursorToNextLine() {
         putCursorAt(getCursorPosition().withRelativeRow(1).withColumn(0))
     }

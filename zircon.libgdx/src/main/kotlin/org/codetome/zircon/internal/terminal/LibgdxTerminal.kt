@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import org.codetome.zircon.api.Cell
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
@@ -28,29 +29,14 @@ class LibgdxTerminal(
         deviceConfiguration = deviceConfiguration,
         terminal = VirtualTerminal(
                 initialSize = initialSize,
-                initialFont = initialFont)) {
+                initialFont = initialFont),
+        checkDirty = false) {
 
     lateinit var batch: SpriteBatch
 
     init {
         // TODO Setup key/mouse listeners here"
         // TODO Setup doCreate/doDispose listeners here
-    }
-
-    fun createBatch() {
-        batch = SpriteBatch()
-    }
-
-    fun render() {
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        batch.begin()
-        doRender()
-        batch.end()
-    }
-
-    fun disposeBatch() {
-        batch.dispose()
     }
 
     override fun getHeight() = getSupportedFontSize().rows * getBoundableSize().rows
@@ -62,18 +48,36 @@ class LibgdxTerminal(
         // no op
     }
 
+    override fun doCreate() {
+        super.doCreate()
+        batch = SpriteBatch()
+    }
+
+    override fun doRender() {
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        batch.begin()
+        super.doRender()
+        batch.end()
+    }
+
+    override fun doDispose() {
+        super.doDispose()
+        batch.dispose()
+    }
+
     override fun doResize(width: Int, height: Int) {
         TODO()
     }
 
     override fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion<*>, x: Int, y: Int) {
+        val (_, rows) = getBoundableSize()
         val font = getCurrentFont()
-        val region = fontTextureRegion.getBackend() as TextureRegion
-        val drawable = TextureRegionDrawable(region)
-        val tinted = drawable.tint(com.badlogic.gdx.graphics.Color(0.5f, 0.5f, 0f, 1f)) as SpriteDrawable
-        tinted.draw(batch,
+        val (_, height) = font.getSize()
+        val fixedY = (height * rows) - y
+        TextureRegionDrawable(fontTextureRegion.getBackend() as TextureRegion).draw(batch,
                 x.toFloat(),
-                y.toFloat(),
+                fixedY.toFloat(),
                 font.getWidth().toFloat(),
                 font.getHeight().toFloat())
     }
