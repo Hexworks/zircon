@@ -77,15 +77,15 @@ interface TextImage : DrawSurface, Styleable, Drawable {
     fun putText(text: String, position: Position = Position.DEFAULT_POSITION)
 
     /**
-     * Sets the colors of this [TextImage] from the given `styleSet`
+     * Sets the style of this [TextImage] from the given `styleSet`
      * and also applies it to all currently present
      * [TextCharacter]s within the bounds delimited by `offset` and `size`.
      * Offset is used to offset the starting position from the top left position
      * while size is used to determine the region (down and right) to overwrite
      * relative to `offset`.
      */
-    fun applyColorsFromStyle(styleSet: StyleSet,
-                             offset: Position = Position.DEFAULT_POSITION,
-                             size: Size = getBoundableSize())
+    fun applyStyle(styleSet: StyleSet,
+                   offset: Position = Position.DEFAULT_POSITION,
+                   size: Size = getBoundableSize())
 
 }

@@ -48,13 +48,13 @@ abstract class DefaultComponent(initialSize: Size,
         applyWrappers()
         EventBus.subscribe(EventType.MouseOver(id), {
             if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.MOUSE_OVER)) {
-                drawSurface.applyColorsFromStyle(componentStyles.mouseOver())
+                drawSurface.applyStyle(componentStyles.mouseOver())
                 EventBus.emit(EventType.ComponentChange)
             }
         })
         EventBus.subscribe(EventType.MouseOut(id), {
             if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.DEFAULT)) {
-                drawSurface.applyColorsFromStyle(componentStyles.reset())
+                drawSurface.applyStyle(componentStyles.reset())
                 EventBus.emit(EventType.ComponentChange)
             }
         })
@@ -114,7 +114,7 @@ abstract class DefaultComponent(initialSize: Size,
     override fun setComponentStyles(componentStyles: ComponentStyles) {
         this.componentStyles = componentStyles
 
-        drawSurface.applyColorsFromStyle(componentStyles.getCurrentStyle(), getNonThemeableOffset(), getEffectiveThemeableSize())
+        drawSurface.applyStyle(componentStyles.getCurrentStyle(), getNonThemeableOffset(), getEffectiveThemeableSize())
     }
 
     fun getBoundable() = boundable

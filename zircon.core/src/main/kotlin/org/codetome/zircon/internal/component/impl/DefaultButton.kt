@@ -35,11 +35,11 @@ class DefaultButton(private val text: String,
         getDrawSurface().putText(text, getWrapperOffset())
 
         EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), {
-            getDrawSurface().applyColorsFromStyle(getComponentStyles().activate())
+            getDrawSurface().applyStyle(getComponentStyles().activate())
             EventBus.emit(EventType.ComponentChange)
         })
         EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), {
-            getDrawSurface().applyColorsFromStyle(getComponentStyles().mouseOver())
+            getDrawSurface().applyStyle(getComponentStyles().mouseOver())
             EventBus.emit(EventType.ComponentChange)
         })
     }
@@ -49,13 +49,13 @@ class DefaultButton(private val text: String,
     }
 
     override fun giveFocus(input: Optional<Input>): Boolean {
-        getDrawSurface().applyColorsFromStyle(getComponentStyles().giveFocus())
+        getDrawSurface().applyStyle(getComponentStyles().giveFocus())
         EventBus.emit(EventType.ComponentChange)
         return true
     }
 
     override fun takeFocus(input: Optional<Input>) {
-        getDrawSurface().applyColorsFromStyle(getComponentStyles().reset())
+        getDrawSurface().applyStyle(getComponentStyles().reset())
         EventBus.emit(EventType.ComponentChange)
     }
 
