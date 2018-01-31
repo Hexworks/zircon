@@ -20,21 +20,15 @@ public class GraphicTilesetExample {
     private static final int TERMINAL_HEIGHT = 24;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static final PickRandomMetaStrategy RANDOM_STRATEGY = new PickRandomMetaStrategy();
-    private static final Font FONT = GraphicTilesetResource.NETHACK_16X16.toFont(RANDOM_STRATEGY);
+    private static final GraphicTilesetResource FONT = GraphicTilesetResource.NETHACK_16X16;
     private static final char[] CHARS = new char[]{'a', 'b', 'c'};
     private static final Random RANDOM = new Random();
-
-    @Ignore
-    @Test
-    public void checkSetup() {
-        main(new String[]{"test"});
-    }
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
 
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
-                .font(FONT)
+                .font(FONT.toFont(RANDOM_STRATEGY))
                 .initialTerminalSize(SIZE)
                 .build();
         terminal.setCursorVisibility(false); // we don't want the cursor right now
@@ -44,7 +38,7 @@ public class GraphicTilesetExample {
                 final char c = CHARS[RANDOM.nextInt(CHARS.length)];
                 terminal.setCharacterAt(Position.of(col, row), TextCharacterBuilder.newBuilder()
                         .character(c)
-                        .tags(RANDOM_STRATEGY.pickMetadata(FONT.fetchMetadataForChar(c)).getTags())
+                        .tags(RANDOM_STRATEGY.pickMetadata(terminal.getCurrentFont().fetchMetadataForChar(c)).getTags())
                         .build());
             }
         }

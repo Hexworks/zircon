@@ -44,15 +44,8 @@ public class GameMockupExample {
     private static final int PANEL_SPACING = 2;
     private static final int FONT_SIZE = 16;
     private static final ColorTheme THEME = ColorThemeResource.SOLARIZED_DARK_YELLOW.getTheme();
-    private static final Font FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont();
 
     private static boolean headless = false;
-
-    @Ignore
-    @Test
-    public void checkSetup() {
-        main(new String[]{"test"});
-    }
 
     public static void main(String[] args) {
         if(args.length > 0) {
@@ -67,7 +60,7 @@ public class GameMockupExample {
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .initialTerminalSize(terminalSize)
                 .fullScreen()
-                .font(FONT)
+                .font(CP437TilesetResource.ROGUE_YUN_16X16.toFont())
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorBlinking(true)
                         .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)

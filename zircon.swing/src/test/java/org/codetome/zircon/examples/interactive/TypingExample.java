@@ -10,6 +10,7 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.input.KeyStroke;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.examples.TerminalUtils;
@@ -40,18 +41,13 @@ public class TypingExample {
         EXIT_CONDITIONS.add(InputType.EOF);
     }
 
-    @Ignore
-    @Test
-    public void checkSetup() {
-        main(new String[]{"test"});
-    }
-
     public static void main(String[] args) {
         if(args.length > 0) {
             headless = true;
         }
         TerminalBuilder builder = TerminalUtils.fetchTerminalBuilder(args)
                 .initialTerminalSize(Size.of(TERMINAL_WIDTH, 10))
+                .font(CP437TilesetResource.ADU_DHABI_16X16.toFont())
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorBlinking(true)
                         .build());

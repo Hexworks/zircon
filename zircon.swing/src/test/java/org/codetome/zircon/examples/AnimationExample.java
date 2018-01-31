@@ -12,6 +12,7 @@ import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.animation.Animation;
 import org.codetome.zircon.api.animation.AnimationHandler;
 import org.codetome.zircon.api.animation.AnimationResource;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.junit.Ignore;
@@ -21,20 +22,13 @@ import static org.codetome.zircon.api.resource.CP437TilesetResource.*;
 
 public class AnimationExample {
 
-    private static final Font FONT = WANDERLUST_16X16.toFont();
     private static final Size TERMINAL_SIZE = Size.of(50, 30);
     private static final Position LEFT_POS = Position.of(8, 5);
     private static final Position RIGHT_POS = Position.of(29, 5);
 
-    @Ignore
-    @Test
-    public void checkSetup() {
-        main(new String[]{"test"});
-    }
-
     public static void main(String[] args) {
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
-                .font(FONT)
+                .font(WANDERLUST_16X16.toFont())
                 .initialTerminalSize(TERMINAL_SIZE)
                 .build();
         final Screen screen = ScreenBuilder.createScreenFor(terminal);
