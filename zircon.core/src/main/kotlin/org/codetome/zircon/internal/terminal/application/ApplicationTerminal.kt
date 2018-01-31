@@ -1,9 +1,6 @@
 package org.codetome.zircon.internal.terminal.application
 
-import org.codetome.zircon.api.Modifiers
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.*
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.input.KeyStroke
@@ -23,7 +20,8 @@ import java.util.*
 @Suppress("unused")
 abstract class ApplicationTerminal(
         private val deviceConfiguration: DeviceConfiguration,
-        private val terminal: InternalTerminal)
+        private val terminal: InternalTerminal,
+        private val checkDirty: Boolean = true)
     : InternalTerminal by terminal, ApplicationListener {
 
     private var hasBlinkingText = deviceConfiguration.isCursorBlinking
@@ -63,20 +61,6 @@ abstract class ApplicationTerminal(
     }
 
     @Synchronized
-    override fun doDispose() {
-        EventBus.emit(EventType.Input, KeyStroke.EOF_STROKE)
-        blinkTimer.cancel()
-    }
-
-    override fun doResize(width: Int, height: Int) {
-        val terminalSize = Size.of(
-                columns = width / getSupportedFontSize().columns,
-                rows = height / getSupportedFontSize().rows)
-        terminal.setSize(terminalSize)
-        resizeHappened = true
-    }
-
-    @Synchronized
     override fun doRender() {
         var needToRedraw = hasBlinkingText.or(resizeHappened)
         resizeHappened = false
@@ -85,11 +69,12 @@ abstract class ApplicationTerminal(
         if (isDirty()) {
             needToRedraw = true
         }
-        if (needToRedraw) {
+        if (needToRedraw.or(checkDirty.not())) {
             val cursorPosition = terminal.getCursorPosition()
             var foundBlinkingCharacters = deviceConfiguration.isCursorBlinking
 
-            terminal.forEachDirtyCell { (position, textCharacter) ->
+            val func = { cell: Cell ->
+                val (position, textCharacter) = cell
                 val atCursorLocation = cursorPosition == position
                 val drawCursor = shouldDrawCursor(atCursorLocation)
                 if (textCharacter.getModifiers().contains(Modifiers.BLINK)) {
@@ -102,8 +87,24 @@ abstract class ApplicationTerminal(
                         font = font,
                         drawCursor = drawCursor)
             }
+
+            if(checkDirty) terminal.forEachDirtyCell(func) else terminal.forEachCell(func)
             this.hasBlinkingText = foundBlinkingCharacters || deviceConfiguration.isCursorBlinking
         }
+    }
+
+    @Synchronized
+    override fun doDispose() {
+        EventBus.emit(EventType.Input, KeyStroke.EOF_STROKE)
+        blinkTimer.cancel()
+    }
+
+    override fun doResize(width: Int, height: Int) {
+        val terminalSize = Size.of(
+                columns = width / getSupportedFontSize().columns,
+                rows = height / getSupportedFontSize().rows)
+        terminal.setSize(terminalSize)
+        resizeHappened = true
     }
 
     private fun drawCharacter(

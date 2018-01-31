@@ -1,7 +1,5 @@
 package org.codetome.zircon.internal.font.impl
 
-import com.badlogic.gdx.graphics.Pixmap
-import com.badlogic.gdx.graphics.Texture
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.internal.font.FontLoader
@@ -32,13 +30,12 @@ class LibgdxFontLoader : FontLoader {
                 metadata = metadata,
                 width = width,
                 height = height,
-                cache = NoFontRegionCache(),
-//                cache = if (cacheFonts) {
-//                    DefaultFontRegionCache()
-//                } else {
-//                    NoFontRegionCache()
-//                },
-                regionTransformers = listOf())
+                cache = if (cacheFonts) {
+                    DefaultFontRegionCache()
+                } else {
+                    NoFontRegionCache()
+                },
+                regionTransformers = TILE_TRANSFORMERS)
     }
 
     companion object {
