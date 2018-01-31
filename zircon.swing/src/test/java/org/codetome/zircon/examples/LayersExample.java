@@ -23,18 +23,11 @@ public class LayersExample {
     private static final int TERMINAL_WIDTH = 45;
     private static final int TERMINAL_HEIGHT = 5;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final Font FONT = WANDERLUST_16X16.toFont();
-
-    @Ignore
-    @Test
-    public void checkSetup() {
-        main(new String[]{"test"});
-    }
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
-                .font(FONT)
+                .font(WANDERLUST_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
         final Screen screen = ScreenBuilder.createScreenFor(terminal);

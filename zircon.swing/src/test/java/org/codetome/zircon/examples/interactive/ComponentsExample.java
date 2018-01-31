@@ -39,12 +39,6 @@ public class ComponentsExample {
 
     private static final PanelBuilder PANEL_TEMPLATE = PanelBuilder.newBuilder().size(PANEL_SIZE);
 
-    @Ignore
-    @Test
-    public void checkSetup() {
-        main(new String[]{"test"});
-    }
-
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)

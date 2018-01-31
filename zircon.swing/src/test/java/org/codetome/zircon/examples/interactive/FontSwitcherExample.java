@@ -24,30 +24,21 @@ public class FontSwitcherExample {
     private static final int TERMINAL_WIDTH = 30;
     private static final int TERMINAL_HEIGHT = 8;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final Font FONT = WANDERLUST_16X16.toFont();
     private static final List<Font> FONTS = new ArrayList<>();
 
-    static {
+    public static void main(String[] args) {
+        // for this example we only need a default terminal (no extra config)
+        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
+                .font(WANDERLUST_16X16.toFont())
+                .initialTerminalSize(SIZE)
+                .build();
+        terminal.setCursorVisibility(false); // we don't want the cursor right now
+
         FONTS.add(CP437TilesetResource.ADU_DHABI_16X16.toFont());
         FONTS.add(CP437TilesetResource.ROGUE_YUN_16X16.toFont());
         FONTS.add(CP437TilesetResource.REX_PAINT_16X16.toFont());
         FONTS.add(CP437TilesetResource.WANDERLUST_16X16.toFont());
         FONTS.add(CP437TilesetResource.BISASAM_16X16.toFont());
-    }
-
-    @Ignore
-    @Test
-    public void checkSetup() {
-        main(new String[]{"test"});
-    }
-
-    public static void main(String[] args) {
-        // for this example we only need a default terminal (no extra config)
-        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
-                .font(FONT)
-                .initialTerminalSize(SIZE)
-                .build();
-        terminal.setCursorVisibility(false); // we don't want the cursor right now
 
         final String switchFont = "Press '->' to switch Font!";
         final String switchLayer = "Press '<-' to switch Layer!";

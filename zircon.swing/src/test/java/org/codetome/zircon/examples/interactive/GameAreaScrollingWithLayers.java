@@ -39,7 +39,6 @@ public class GameAreaScrollingWithLayers {
     private static final int TERMINAL_WIDTH = 60;
     private static final int TERMINAL_HEIGHT = 30;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final Font FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont();
     private static boolean headless = false;
 
     static {
@@ -47,16 +46,10 @@ public class GameAreaScrollingWithLayers {
         EXIT_CONDITIONS.add(InputType.EOF);
     }
 
-    @Ignore
-    @Test
-    public void checkSetup() {
-        main(new String[]{"test"});
-    }
-
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
-                .font(FONT)
+                .font(CP437TilesetResource.ROGUE_YUN_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
         if (args.length > 0) {

@@ -5,6 +5,7 @@ import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.modifier.RayShade;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -21,18 +22,11 @@ public class FontModifiersExample {
     private static final int TERMINAL_WIDTH = 16;
     private static final int TERMINAL_HEIGHT = 3;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final Font FONT = WANDERLUST_16X16.toFont();
-
-    @Ignore
-    @Test
-    public void checkSetup() {
-        main(new String[]{"test"});
-    }
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
-                .font(FONT)
+                .font(WANDERLUST_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
         terminal.setCursorVisibility(false); // we don't want the cursor right now

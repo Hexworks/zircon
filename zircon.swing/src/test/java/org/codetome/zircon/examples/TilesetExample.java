@@ -34,7 +34,6 @@ public class TilesetExample {
     private static final int TERMINAL_WIDTH = 40;
     private static final int TERMINAL_HEIGHT = 40;
     private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final Font FONT = WANDERLUST_16X16.toFont();
     private static final TextCharacter GRASS_0 = TextCharacterBuilder.newBuilder()
             .character(',')
             .foregroundColor(TextColorFactory.fromString("#33cc44"))
@@ -54,15 +53,9 @@ public class TilesetExample {
     private static final TextColor TEXT_COLOR = TextColorFactory.fromString("#dd6644");
     private static final TextColor TEXT_BG_COLOR = TextColorFactory.fromString("#00ff00");
 
-    @Ignore
-    @Test
-    public void checkSetup() {
-        main(new String[]{"test"});
-    }
-
     public static void main(String[] args) {
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
-                .font(FONT)
+                .font(WANDERLUST_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
         final Screen screen = ScreenBuilder.createScreenFor(terminal);
