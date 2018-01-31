@@ -41,7 +41,7 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
     init {
         refreshContent()
         EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), { (_) ->
-            getDrawSurface().applyColorsFromStyle(getComponentStyles().mouseOver())
+            getDrawSurface().applyStyle(getComponentStyles().mouseOver())
             refreshContent()
             EventBus.emit(EventType.ComponentChange)
         })

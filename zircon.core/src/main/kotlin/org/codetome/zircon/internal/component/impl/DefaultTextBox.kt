@@ -98,7 +98,7 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
                 disableTyping()
             }
         }
-        getDrawSurface().applyColorsFromStyle(getComponentStyles().disable())
+        getDrawSurface().applyStyle(getComponentStyles().disable())
         EventBus.emit(EventType.ComponentChange)
     }
 
@@ -115,13 +115,13 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
     override fun takeFocus(input: Optional<Input>) {
         focused = false
         disableTyping()
-        getDrawSurface().applyColorsFromStyle(getComponentStyles().reset())
+        getDrawSurface().applyStyle(getComponentStyles().reset())
         EventBus.emit(EventType.ComponentChange)
     }
 
     private fun enableFocusedComponent() {
         cancelSubscriptions()
-        getDrawSurface().applyColorsFromStyle(getComponentStyles().giveFocus())
+        getDrawSurface().applyStyle(getComponentStyles().giveFocus())
         enableTyping()
         EventBus.emit(EventType.ComponentChange)
     }
