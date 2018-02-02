@@ -17,12 +17,10 @@ buildscript {
 
 subprojects {
     apply plugin: 'kotlin'
-    apply plugin: 'maven'
     apply plugin: 'maven-publish'
 
-    version = "2018.1.4"
-//    group = "org.codetome.zircon"
-    group = 'com.github.Hexworks'
+    version = "2018.1.5"
+    group = "org.codetome.zircon"
     sourceCompatibility = 1.8
 
     repositories {

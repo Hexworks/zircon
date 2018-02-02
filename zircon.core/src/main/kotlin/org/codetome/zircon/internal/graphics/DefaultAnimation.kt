@@ -26,6 +26,8 @@ class DefaultAnimation(private val animationFrames: List<AnimationFrame>,
 
     override fun getLoopCount() = loopCount
 
+    override fun isLoopedIndefinitely() = loopCount == 0
+
     override fun getTick() = tick
 
     override fun hasNextFrame() = infiniteLoop || currentLoopCount > 0
