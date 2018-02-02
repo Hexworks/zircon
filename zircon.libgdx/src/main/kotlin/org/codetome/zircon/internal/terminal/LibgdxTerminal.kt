@@ -45,12 +45,13 @@ class LibgdxTerminal(
 
     @Synchronized
     override fun flush() {
-        // no op
+        Gdx.graphics.requestRendering()
     }
 
     override fun doCreate() {
         super.doCreate()
         batch = SpriteBatch()
+        Gdx.graphics.isContinuousRendering = false
     }
 
     override fun doRender() {
