@@ -25,4 +25,17 @@ data class DefaultTextColor(private val red: Int,
 
     override fun getAlpha() = alpha
 
+    override fun tint(): TextColor {
+        val c = color.brighter()
+        return DefaultTextColor(c.red, c.green, c.blue, c.alpha)
+    }
+
+    override fun shade(): TextColor {
+        val c = color.darker()
+        return DefaultTextColor(c.red, c.green, c.blue, c.alpha)
+    }
+
+    override fun invert(): TextColor {
+        return DefaultTextColor(255-color.red, 255-color.green, 255-color.blue, color.alpha)
+    }
 }
