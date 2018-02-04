@@ -14,4 +14,9 @@ interface TextColor : Cacheable {
 
     fun getBlue(): Int
 
+    fun tint(): TextColor
+
+    fun shade(): TextColor
+
+    fun invert(): TextColor
 }
