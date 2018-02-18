@@ -21,8 +21,6 @@ import org.codetome.zircon.api.terminal.config.CursorStyle;
 import org.codetome.zircon.examples.TerminalUtils;
 import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy;
 import org.codetome.zircon.internal.graphics.BoxType;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -332,8 +330,8 @@ public class ComponentsExample {
 
         final RadioButtonGroup slOptions = RadioButtonGroupBuilder.newBuilder()
                 .size(themePickerSize
-                        .withRows(solarizedLightOptions.size())
-                        .withRelativeColumns(-2))
+                        .withYLength(solarizedLightOptions.size())
+                        .withRelativeXLength(-2))
                 .build();
         solarizedLightOptions.forEach((option) -> slOptions.addOption(
                 option.name(),
@@ -342,8 +340,8 @@ public class ComponentsExample {
 
         final RadioButtonGroup sdOptions = RadioButtonGroupBuilder.newBuilder()
                 .size(themePickerSize
-                        .withRows(solarizedDarkOptions.size())
-                        .withRelativeColumns(-2))
+                        .withYLength(solarizedDarkOptions.size())
+                        .withRelativeXLength(-2))
                 .build();
         solarizedDarkOptions.forEach((option) -> sdOptions.addOption(
                 option.name(),
@@ -352,8 +350,8 @@ public class ComponentsExample {
 
         final RadioButtonGroup othOptions = RadioButtonGroupBuilder.newBuilder()
                 .size(otherPanel.getBoundableSize()
-                        .withRows(otherOptions.size())
-                        .withRelativeColumns(-2))
+                        .withYLength(otherOptions.size())
+                        .withRelativeXLength(-2))
                 .build();
         otherOptions.forEach((option) -> othOptions.addOption(
                 option.name(),

@@ -47,9 +47,9 @@ class ApplicationTerminalTest {
                 cursorDraws.add(Triple(character, x, y))
             }
 
-            override fun getHeight() = SIZE.rows * font.getHeight()
+            override fun getHeight() = SIZE.yLength * font.getHeight()
 
-            override fun getWidth() = SIZE.columns * font.getWidth()
+            override fun getWidth() = SIZE.xLength * font.getWidth()
 
             override fun doRender() {
                 super.doRender()

@@ -24,7 +24,7 @@ class REXLayerTest {
     @Test
     fun shouldProperlyLoadFromByteBuffer() {
         val layer = target.toLayer()
-        assertThat(layer.getBoundableSize()).isEqualTo(Size(2, 1))
+        assertThat(layer.getBoundableSize()).isEqualTo(Size.of(2, 1))
 
         assertChar(
                 'A',
@@ -65,8 +65,8 @@ class REXLayerTest {
     private fun createTestData(): ByteBuffer {
         val raw = arrayOf(
                 // layer size
-                0x02, 0x00, 0x00, 0x00, // width
-                0x01, 0x00, 0x00, 0x00, // height
+                0x02, 0x00, 0x00, 0x00, // xLength
+                0x01, 0x00, 0x00, 0x00, // yLength
                 // cell #1
                 0x41, 0x00, 0x00, 0x00, // character (hex 41 -> dec 65 -> 'A')
                 0xaa, 0xaa, 0xaa,       // foreground

@@ -8,7 +8,6 @@ import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.builder.ButtonBuilder
-import org.codetome.zircon.api.component.builder.LabelBuilder
 import org.codetome.zircon.api.component.builder.PanelBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
@@ -95,7 +94,7 @@ class DefaultContainerHandlerTest {
             componentHovered.set(true)
         })
 
-        EventBus.emit<Input>(EventType.Input, MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION.withRelativeColumn(1)))
+        EventBus.emit<Input>(EventType.Input, MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION.withRelativeX(1)))
 
         assertThat(componentHovered.get()).isFalse()
     }

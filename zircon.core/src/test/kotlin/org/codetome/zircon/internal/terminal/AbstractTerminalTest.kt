@@ -35,20 +35,20 @@ class AbstractTerminalTest {
                 resized = true
             }
         })
-        target.setSize(Size(5, 5))
+        target.setSize(Size.of(5, 5))
         assertThat(resized).isTrue()
     }
 
     @Test
     fun shouldNotResizeWhenSizeIsTheSame() {
         var resized = false
-        target.setSize(Size(5, 5))
+        target.setSize(Size.of(5, 5))
         target.addResizeListener(object : TerminalResizeListener {
             override fun onResized(terminal: Terminal, newSize: Size) {
                 resized = true
             }
         })
-        target.setSize(Size(5, 5))
+        target.setSize(Size.of(5, 5))
         assertThat(resized).isFalse()
     }
 
@@ -62,7 +62,7 @@ class AbstractTerminalTest {
         }
         target.addResizeListener(listener)
         target.removeResizeListener(listener)
-        target.setSize(Size(5, 5))
+        target.setSize(Size.of(5, 5))
         assertThat(resized).isFalse()
     }
 

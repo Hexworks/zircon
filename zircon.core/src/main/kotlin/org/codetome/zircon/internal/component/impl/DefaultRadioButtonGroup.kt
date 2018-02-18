@@ -48,13 +48,13 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
     }
 
     override fun addOption(key: String, text: String): RadioButton {
-        require(items.size + 1 < size.columns) {
+        require(items.size + 1 < size.xLength) {
             "This RadioButtonGroup does not have enough space for another option!"
         }
         return DefaultRadioButton(
                 text = text,
                 wrappers = LinkedList(),
-                width = size.columns,
+                width = size.xLength,
                 position = Position.of(0, items.size),
                 componentStyles = getComponentStyles(),
                 initialFont = getCurrentFont()).also { button ->

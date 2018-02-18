@@ -166,7 +166,7 @@ class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
     }
 
     private fun moveCursorToNextLine() {
-        putCursorAt(getCursorPosition().withRelativeRow(1).withColumn(0))
+        putCursorAt(getCursorPosition().withRelativeY(1).withX(0))
     }
 
     private fun createBackend(initialSize: Size) =

@@ -45,10 +45,10 @@ object PanelDrawingExample {
                         .build())
                 .build()
         box.putText("Title", Position.DEFAULT_POSITION
-                .withRelativeColumn(5))
-        box.setCharacterAt(Position.DEFAULT_POSITION.withRelativeColumn(4),
+                .withRelativeX(5))
+        box.setCharacterAt(Position.DEFAULT_POSITION.withRelativeX(4),
                 BoxType.TOP_BOTTOM_DOUBLE.connectorLeft)
-        box.setCharacterAt(Position.DEFAULT_POSITION.withRelativeColumn(10),
+        box.setCharacterAt(Position.DEFAULT_POSITION.withRelativeX(10),
                 BoxType.TOP_BOTTOM_DOUBLE.connectorRight)
         screen.draw(box, Position.of(2, 2))
         screen.display()

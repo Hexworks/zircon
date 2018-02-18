@@ -4,20 +4,15 @@ import org.codetome.zircon.api.Cell
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
-import org.codetome.zircon.api.behavior.Drawable
-import org.codetome.zircon.api.behavior.Styleable
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.graphics.TextImageBase
 import org.codetome.zircon.api.sam.TextCharacterTransformer
-import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
-import org.codetome.zircon.internal.behavior.impl.DefaultStyleable
 import java.util.*
-import java.util.concurrent.atomic.AtomicReference
 
 /**
  * Simple implementation of [TextImage] that keeps the content as a two-dimensional [TextCharacter] array.
@@ -27,49 +22,21 @@ import java.util.concurrent.atomic.AtomicReference
 class DefaultTextImage(size: Size,
                        toCopy: Array<Array<TextCharacter>>,
                        filler: TextCharacter,
-                       styleSet: StyleSet = StyleSetBuilder.DEFAULT_STYLE,
-                       boundable: Boundable = DefaultBoundable(size = size),
-                       styleable: Styleable = DefaultStyleable(AtomicReference(styleSet)))
-    : TextImage, Boundable by boundable, Styleable by styleable {
+                       styleSet: StyleSet = StyleSetBuilder.DEFAULT_STYLE)
+    : TextImageBase(size = size, styleSet = styleSet) {
 
     private val buffer: Array<Array<TextCharacter>> = copyArray(toCopy, getBoundableSize(), filler)
 
     override fun toString(): String {
-        return (0 until getBoundableSize().rows).map { row ->
-            (0 until getBoundableSize().columns).map { col ->
-                buffer[row][col].getCharacter()
+        return (0 until getBoundableSize().yLength).map { y ->
+            (0 until getBoundableSize().xLength).map { x ->
+                buffer[y][x].getCharacter()
             }.joinToString("").plus("\n")
         }.joinToString("")
     }
 
-    override fun draw(drawable: Drawable, offset: Position) {
-        drawable.drawOnto(this, offset)
-    }
-
-    override fun putText(text: String, position: Position) {
-        text.forEachIndexed { col, char ->
-            setCharacterAt(position.withRelativeColumn(col), TextCharacterBuilder
-                    .newBuilder()
-                    .styleSet(toStyleSet())
-                    .character(char)
-                    .build())
-        }
-    }
-
-    @Synchronized
-    override fun applyStyle(styleSet: StyleSet, offset: Position, size: Size) {
-        setStyleFrom(styleSet)
-        size.fetchPositions().forEach { pos ->
-            pos.plus(offset).let { fixedPos ->
-                getCharacterAt(fixedPos).map { char ->
-                    setCharacterAt(fixedPos, char.withStyle(styleSet))
-                }
-            }
-        }
-    }
-
     override fun resize(newSize: Size, filler: TextCharacter): TextImage {
-        if (newSize.rows == buffer.size && (buffer.isEmpty() || newSize.columns == buffer[0].size)) {
+        if (newSize.yLength == buffer.size && (buffer.isEmpty() || newSize.xLength == buffer[0].size)) {
             return this
         }
         return DefaultTextImage(newSize, buffer, filler)
@@ -114,59 +81,53 @@ class DefaultTextImage(size: Size,
 
     @Synchronized
     override fun combineWith(textImage: TextImage, offset: Position): TextImage {
-        val columns = Math.max(getBoundableSize().columns, offset.column + textImage.getBoundableSize().columns)
-        val rows = Math.max(getBoundableSize().rows, offset.row + textImage.getBoundableSize().rows)
+        val xLength = Math.max(getBoundableSize().xLength, offset.x + textImage.getBoundableSize().xLength)
+        val yLength = Math.max(getBoundableSize().yLength, offset.y + textImage.getBoundableSize().yLength)
 
         val surface = TextImageBuilder.newBuilder()
-                .size(Size.of(columns, rows))
+                .size(Size.of(xLength, yLength))
                 .toCopy(copyArray(buffer, getBoundableSize(), TextCharacterBuilder.EMPTY))
                 .build()
         surface.draw(textImage, offset)
         return surface
     }
 
-    override fun setCharacterAt(position: Position, character: Char)
-            = setCharacterAt(position, TextCharacterBuilder.newBuilder()
-            .character(character)
-            .styleSet(toStyleSet())
-            .build())
-
-    override fun setCharacterAt(position: Position, character: TextCharacter) = position.let { (column, row) ->
-        if (positionIsOutOfBounds(column, row)) {
+    override fun setCharacterAt(position: Position, character: TextCharacter) = position.let { (x, y) ->
+        if (positionIsOutOfBounds(x, y)) {
             false
         } else {
-            val oldChar = buffer[row][column]
+            val oldChar = buffer[y][x]
             return if (oldChar == character) {
                 false //
             } else {
-                buffer[row][column] = character
+                buffer[y][x] = character
                 true
             }
         }
     }
 
-    override fun getCharacterAt(position: Position) = position.let { (column, row) ->
-        if (positionIsOutOfBounds(column, row)) {
+    override fun getCharacterAt(position: Position) = position.let { (x, y) ->
+        if (positionIsOutOfBounds(x, y)) {
             Optional.empty()
         } else {
-            Optional.of(buffer[row][column])
+            Optional.of(buffer[y][x])
         }
     }
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
-        val startRowIdx = 0
-        val rows: Int = getBoundableSize().rows
-        val startColumnIdx = 0
-        val columns: Int = getBoundableSize().columns
-        val destRowOffset = offset.row
-        val destColumnOffset = offset.column
+        val startYIdx = 0
+        val startXIdx = 0
+        val yLength: Int = getBoundableSize().yLength
+        val xLength: Int = getBoundableSize().xLength
+        val destYOffset = offset.y
+        val destXOffset = offset.x
         // TODO: some other operation involving Cells?
-        (startRowIdx until startRowIdx + rows).forEach { y ->
-            (startColumnIdx until startColumnIdx + columns).forEach { x ->
+        (startYIdx until startYIdx + yLength).forEach { y ->
+            (startXIdx until startXIdx + xLength).forEach { x ->
                 if (buffer[y][x] != TextCharacterBuilder.EMPTY) {
                     surface.setCharacterAt(
-                            Position.of(x - startColumnIdx + destColumnOffset,
-                                    y - startRowIdx + destRowOffset),
+                            Position.of(x - startXIdx + destXOffset,
+                                    y - startYIdx + destYOffset),
                             buffer[y][x])
                 }
             }
@@ -177,20 +138,20 @@ class DefaultTextImage(size: Size,
                           size: Size,
                           filler: TextCharacter,
                           offset: Position = Position.DEFAULT_POSITION): Array<Array<TextCharacter>> {
-        val result = (0 until size.rows).map {
-            (0 until size.columns).map { filler }.toTypedArray()
+        val result = (0 until size.yLength).map {
+            (0 until size.xLength).map { filler }.toTypedArray()
         }.toTypedArray()
-        size.fetchPositions().forEach { (col, row) ->
-            if (row < toCopy.size && col < toCopy[row].size) {
-                result[row][col] = toCopy[row + offset.row][col + offset.column]
+        size.fetchPositions().forEach { (x, y) ->
+            if (y < toCopy.size && x < toCopy[y].size) {
+                result[y][x] = toCopy[y + offset.y][x + offset.x]
             } else {
-                result[row][col] = filler
+                result[y][x] = filler
             }
         }
         return result
     }
 
-    private fun positionIsOutOfBounds(column: Int, row: Int)
-            = column < 0 || row < 0 || row >= buffer.size || column >= buffer[0].size
+    private fun positionIsOutOfBounds(x: Int, y: Int)
+            = x < 0 || y < 0 || y >= buffer.size || x >= buffer[0].size
 
 }

@@ -37,8 +37,8 @@ class SwingTerminal(
     init {
         //Prevent us from shrinking beyond one character
         canvas.preferredSize = Dimension(
-                getSupportedFontSize().columns * getBoundableSize().columns,
-                getSupportedFontSize().rows * getBoundableSize().rows)
+                getSupportedFontSize().xLength * getBoundableSize().xLength,
+                getSupportedFontSize().yLength * getBoundableSize().yLength)
         canvas.ignoreRepaint = true
         canvas.isFocusable = true
         canvas.requestFocusInWindow()
@@ -49,8 +49,8 @@ class SwingTerminal(
                 deviceConfiguration = deviceConfiguration))
         val listener = object : TerminalMouseListener(
                 deviceConfiguration = deviceConfiguration,
-                fontWidth = getSupportedFontSize().columns,
-                fontHeight = getSupportedFontSize().rows) {
+                fontWidth = getSupportedFontSize().xLength,
+                fontHeight = getSupportedFontSize().yLength) {
             override fun mouseClicked(e: MouseEvent) {
                 super.mouseClicked(e)
                 this@SwingTerminal.canvas.requestFocusInWindow()
@@ -101,11 +101,11 @@ class SwingTerminal(
         when (deviceConfiguration.cursorStyle) {
             CursorStyle.USE_CHARACTER_FOREGROUND -> {
                 graphics.color = character.getForegroundColor().toAWTColor()
-                graphics.fillRect(x, y, getSupportedFontSize().columns, getSupportedFontSize().rows)
+                graphics.fillRect(x, y, getSupportedFontSize().xLength, getSupportedFontSize().yLength)
             }
-            CursorStyle.FIXED_BACKGROUND -> graphics.fillRect(x, y, getSupportedFontSize().columns, getSupportedFontSize().rows)
-            CursorStyle.UNDER_BAR -> graphics.fillRect(x, y + getSupportedFontSize().rows - 3, getSupportedFontSize().columns, 2)
-            CursorStyle.VERTICAL_BAR -> graphics.fillRect(x, y + 1, 2, getSupportedFontSize().rows - 2)
+            CursorStyle.FIXED_BACKGROUND -> graphics.fillRect(x, y, getSupportedFontSize().xLength, getSupportedFontSize().yLength)
+            CursorStyle.UNDER_BAR -> graphics.fillRect(x, y + getSupportedFontSize().yLength - 3, getSupportedFontSize().xLength, 2)
+            CursorStyle.VERTICAL_BAR -> graphics.fillRect(x, y + 1, 2, getSupportedFontSize().yLength - 2)
         }
     }
 
@@ -153,12 +153,12 @@ class SwingTerminal(
         // Take care of the left-over area at the bottom and right of the component where no character can fit
         graphics.color = Color.BLACK
 
-        val leftoverWidth = getWidth() % getSupportedFontSize().columns
+        val leftoverWidth = getWidth() % getSupportedFontSize().xLength
         if (leftoverWidth > 0) {
             graphics.fillRect(getWidth() - leftoverWidth, 0, leftoverWidth, getHeight())
         }
 
-        val leftoverHeight = getHeight() % getSupportedFontSize().rows
+        val leftoverHeight = getHeight() % getSupportedFontSize().yLength
         if (leftoverHeight > 0) {
             graphics.fillRect(0, getHeight() - leftoverHeight, getWidth(), leftoverHeight)
         }

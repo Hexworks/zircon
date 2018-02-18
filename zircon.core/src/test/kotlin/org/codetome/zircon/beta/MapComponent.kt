@@ -12,7 +12,7 @@ import java.util.*
 class MapComponent(mapSegment: org.codetome.zircon.beta.MapSegment, textImage: TextImage) : TextImage by textImage {
 
     private val data = mapSegment.data
-    private val size = Size(mapSegment.getColumnCount(), mapSegment.getRowCount())
+    private val size = Size.of(mapSegment.getColumnCount(), mapSegment.getRowCount())
     private val layerCount = Math.min(mapSegment.getLayerCount(), 5)
 
     override fun getBoundableSize() = size

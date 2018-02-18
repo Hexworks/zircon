@@ -6,24 +6,24 @@ import org.junit.Test
 class SizeTest {
 
     @Test(expected = IllegalArgumentException::class)
-    fun shouldThrowExceptionWhenTerminalColumnsAreNegative() {
-        Size(
-                columns = -1,
-                rows = 1)
+    fun shouldThrowExceptionWhenTerminalXLengthIsNegative() {
+        Size.of(
+                xLength = -1,
+                yLength = 1)
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun shouldThrowExceptionWhenTerminalRowsAreNegative() {
-        Size(
-                columns = 1,
-                rows = -1)
+    fun shouldThrowExceptionWhenTerminalYLengthIsNegative() {
+        Size.of(
+                xLength = 1,
+                yLength = -1)
     }
 
     @Test
-    fun shouldCreateNewSizeWithProperColumnsWhenWithColumnsIsCalled() {
-        assertThat(Size(
-                columns = Int.MAX_VALUE,
-                rows = EXPECTED_ROW).withColumns(EXPECTED_COL))
+    fun shouldCreateNewSizeWithProperXLengthWhenWithXLengthIsCalled() {
+        assertThat(Size.of(
+                xLength = Int.MAX_VALUE,
+                yLength = EXPECTED_ROW).withXLength(EXPECTED_COL))
                 .isEqualTo(EXPECTED_TERMINAL_SIZE)
     }
 
@@ -33,77 +33,77 @@ class SizeTest {
     }
 
     @Test
-    fun shouldCreateNewSizeWithProperRelativeColumnsWhenWithRelativeColumnsIsCalled() {
-        assertThat(Size(
-                columns = EXPECTED_COL - 1,
-                rows = EXPECTED_ROW).withRelativeColumns(1))
+    fun shouldCreateNewSizeWithProperRelativeXLengthWhenWithRelativeXLengthIsCalled() {
+        assertThat(Size.of(
+                xLength = EXPECTED_COL - 1,
+                yLength = EXPECTED_ROW).withRelativeXLength(1))
                 .isEqualTo(EXPECTED_TERMINAL_SIZE)
     }
 
     @Test
-    fun shouldCreateNewSizeWithProperRowsWhenWithRowsIsCalled() {
-        assertThat(Size(
-                columns = EXPECTED_COL,
-                rows = Int.MAX_VALUE).withRows(EXPECTED_ROW))
+    fun shouldCreateNewSizeWithProperYLengthWhenWithYLengthIsCalled() {
+        assertThat(Size.of(
+                xLength = EXPECTED_COL,
+                yLength = Int.MAX_VALUE).withYLength(EXPECTED_ROW))
                 .isEqualTo(EXPECTED_TERMINAL_SIZE)
     }
 
     @Test
-    fun shouldCreateNewSizeWithProperRelativeRowsWhenWithRelativeRowsIsCalled() {
-        assertThat(Size(
-                columns = EXPECTED_COL,
-                rows = EXPECTED_ROW - 1).withRelativeRows(1))
+    fun shouldCreateNewSizeWithProperRelativeYLengthWhenWithRelativeYLengthIsCalled() {
+        assertThat(Size.of(
+                xLength = EXPECTED_COL,
+                yLength = EXPECTED_ROW - 1).withRelativeYLength(1))
                 .isEqualTo(EXPECTED_TERMINAL_SIZE)
     }
 
     @Test
     fun shouldCreateNewSizeWithProperRelativesWhenWithRelativeIsCalled() {
-        assertThat(Size(
-                columns = EXPECTED_COL - 1,
-                rows = EXPECTED_ROW - 1).withRelative(Size(1, 1)))
+        assertThat(Size.of(
+                xLength = EXPECTED_COL - 1,
+                yLength = EXPECTED_ROW - 1).withRelative(Size.of(1, 1)))
                 .isEqualTo(EXPECTED_TERMINAL_SIZE)
     }
 
     @Test
     fun shouldFetchPositionsInCorrectIterationOrder() {
-        assertThat(Size(2, 2).fetchPositions())
+        assertThat(Size.of(2, 2).fetchPositions())
                 .isEqualTo(listOf(
-                        Position(column = 0, row = 0),
-                        Position(column = 1, row = 0),
-                        Position(column = 0, row = 1),
-                        Position(column = 1, row = 1)))
+                        Position(x = 0, y = 0),
+                        Position(x = 1, y = 0),
+                        Position(x = 0, y = 1),
+                        Position(x = 1, y = 1)))
     }
 
     @Test
-    fun shouldReturnItselfWhenWithColumnsIsCalledAndColumnsAreTheSame() {
+    fun shouldReturnItselfWhenWithXLengthIsCalledAndXLengthIsTheSame() {
         val target = Size.DEFAULT_TERMINAL_SIZE
-        val result = target.withColumns(target.columns)
+        val result = target.withXLength(target.xLength)
         assertThat(target).isSameAs(result)
     }
 
     @Test
-    fun shouldReturnItselfWhenWithRowsIsCalledAndRowsAreTheSame() {
+    fun shouldReturnItselfWhenWithYLengthIsCalledAndYLengthIsTheSame() {
         val target = Size.DEFAULT_TERMINAL_SIZE
-        val result = target.withRows(target.rows)
+        val result = target.withYLength(target.yLength)
         assertThat(target).isSameAs(result)
     }
 
     @Test
-    fun shouldReturnItselfWhenWithRelativeColumnsIsCalledAndColumnsAreTheSame() {
+    fun shouldReturnItselfWhenWithRelativeXLengthIsCalledAndXLengthIsTheSame() {
         val target = Size.DEFAULT_TERMINAL_SIZE
-        val result = target.withRelativeColumns(0)
+        val result = target.withRelativeXLength(0)
         assertThat(target).isSameAs(result)
     }
 
     @Test
-    fun shouldReturnItselfWhenWithRelativeRowsIsCalledAndRowsAreTheSame() {
+    fun shouldReturnItselfWhenWithRelativeYLengthIsCalledAndYLengthIsTheSame() {
         val target = Size.DEFAULT_TERMINAL_SIZE
-        val result = target.withRelativeRows(0)
+        val result = target.withRelativeYLength(0)
         assertThat(target).isSameAs(result)
     }
 
     @Test
-    fun shouldReturnItselfWhenWithIsCalledAndRowsAndColumnsAreTheSame() {
+    fun shouldReturnItselfWhenWithIsCalledAndYLengthAndXLengthIsTheSame() {
         val target = Size.DEFAULT_TERMINAL_SIZE
         val result = target.with(target)
         assertThat(target).isSameAs(result)
@@ -111,16 +111,16 @@ class SizeTest {
 
     @Test
     fun shouldReturnProperMin() {
-        val wide = Size(5, 2)
-        val tall = Size(2, 5)
-        assertThat(wide.min(tall)).isEqualTo(Size(2, 2))
+        val wide = Size.of(5, 2)
+        val tall = Size.of(2, 5)
+        assertThat(wide.min(tall)).isEqualTo(Size.of(2, 2))
     }
 
     @Test
     fun shouldReturnProperMax() {
-        val wide = Size(5, 2)
-        val tall = Size(2, 5)
-        assertThat(wide.max(tall)).isEqualTo(Size(5, 5))
+        val wide = Size.of(5, 2)
+        val tall = Size.of(2, 5)
+        assertThat(wide.max(tall)).isEqualTo(Size.of(5, 5))
     }
 
     @Test
@@ -153,20 +153,20 @@ class SizeTest {
 
     @Test
     fun withShouldReturnProperResult() {
-        assertThat(Size(1, 2).with(Size(2, 3)))
-                .isEqualTo(Size(2, 3))
+        assertThat(Size.of(1, 2).with(Size.of(2, 3)))
+                .isEqualTo(Size.of(2, 3))
     }
 
     @Test
     fun zeroSizeShouldReturnTrueWhenSizeIsZero() {
-        assertThat(Size(5, 0).withColumns(0)).isSameAs(Size.ZERO)
+        assertThat(Size.of(5, 0).withXLength(0)).isSameAs(Size.ZERO)
     }
 
     companion object {
         val EXPECTED_COL = 5
         val EXPECTED_ROW = 5
-        val EXPECTED_TERMINAL_SIZE = Size(
-                columns = EXPECTED_COL,
-                rows = EXPECTED_ROW)
+        val EXPECTED_TERMINAL_SIZE = Size.of(
+                xLength = EXPECTED_COL,
+                yLength = EXPECTED_ROW)
     }
 }

@@ -14,7 +14,7 @@ class ButtonWrappingStrategy : WrappingStrategy {
 
     override fun apply(textImage: TextImage, size: Size, offset: Position, style: StyleSet) {
         textImage.setCharacterAt(offset, '[')
-        textImage.setCharacterAt(offset.withRelativeColumn(size.columns - 1), ']')
+        textImage.setCharacterAt(offset.withRelativeX(size.xLength - 1), ']')
     }
 
     override fun isThemeNeutral() = false

@@ -13,8 +13,8 @@ class LineFactoryTest {
                 toPoint = Position(2, 0)))
                 .containsExactly(
                         Position.DEFAULT_POSITION,
-                        Position.DEFAULT_POSITION.withRelativeColumn(1),
-                        Position.DEFAULT_POSITION.withRelativeColumn(2))
+                        Position.DEFAULT_POSITION.withRelativeX(1),
+                        Position.DEFAULT_POSITION.withRelativeX(2))
     }
 
     @Test
@@ -24,8 +24,8 @@ class LineFactoryTest {
                 toPoint = Position(0, 2)))
                 .containsExactly(
                         Position.DEFAULT_POSITION,
-                        Position.DEFAULT_POSITION.withRelativeRow(1),
-                        Position.DEFAULT_POSITION.withRelativeRow(2))
+                        Position.DEFAULT_POSITION.withRelativeY(1),
+                        Position.DEFAULT_POSITION.withRelativeY(2))
     }
 
     @Test
@@ -34,12 +34,12 @@ class LineFactoryTest {
                 fromPoint = Position(0, 0),
                 toPoint = Position(5, 4)))
                 .containsExactly(
-                        Position(column = 0, row = 0),
-                        Position(column = 1, row = 1),
-                        Position(column = 2, row = 2),
-                        Position(column = 3, row = 2),
-                        Position(column = 4, row = 3),
-                        Position(column = 5, row = 4))
+                        Position(x = 0, y = 0),
+                        Position(x = 1, y = 1),
+                        Position(x = 2, y = 2),
+                        Position(x = 3, y = 2),
+                        Position(x = 4, y = 3),
+                        Position(x = 5, y = 4))
     }
 
     @Test
@@ -48,12 +48,12 @@ class LineFactoryTest {
                 fromPoint = Position(0, 0),
                 toPoint = Position(4, 5)))
                 .containsExactly(
-                        Position(column = 0, row = 0),
-                        Position(column = 1, row = 1),
-                        Position(column = 2, row = 2),
-                        Position(column = 2, row = 3),
-                        Position(column = 3, row = 4),
-                        Position(column = 4, row = 5))
+                        Position(x = 0, y = 0),
+                        Position(x = 1, y = 1),
+                        Position(x = 2, y = 2),
+                        Position(x = 2, y = 3),
+                        Position(x = 3, y = 4),
+                        Position(x = 4, y = 5))
     }
 
 }

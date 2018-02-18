@@ -3,34 +3,35 @@ package org.codetome.zircon.api
 import org.codetome.zircon.api.shape.RectangleFactory
 
 /**
- * Terminal dimensions in 2D space, measured in number of rows and columns.
+ * Dimensions in 2D space.
  * This class is immutable and cannot change its internal state after creation.
  */
-data class Size(val columns: Int,
-                val rows: Int) : Comparable<Size> {
+@Suppress("DataClassPrivateConstructor")
+data class Size private constructor(val xLength: Int,
+                                    val yLength: Int) : Comparable<Size> {
 
     init {
-        require(columns >= 0) {
-            "Size.columns cannot be less than 0!"
+        require(xLength >= 0) {
+            "Size.xLength cannot be less than 0!"
         }
-        require(rows >= 0) {
-            "Size.rows cannot be less than 0!"
+        require(yLength >= 0) {
+            "Size.yLength cannot be less than 0!"
         }
     }
 
-    operator fun plus(other: Size) = Size.of(columns + other.columns, rows + other.rows)
+    operator fun plus(other: Size) = Size.of(xLength + other.xLength, yLength + other.yLength)
 
-    operator fun minus(other: Size) = Size.of(columns - other.columns, rows - other.rows)
+    operator fun minus(other: Size) = Size.of(xLength - other.xLength, yLength - other.yLength)
 
-    override fun compareTo(other: Size) = (this.columns * this.rows).compareTo(other.columns * other.rows)
+    override fun compareTo(other: Size) = (this.xLength * this.yLength).compareTo(other.xLength * other.yLength)
 
     /**
      * Creates a list of [Position]s in the order in which they should
      * be iterated when drawing (from left to right, then top to bottom).
      */
-    fun fetchPositions(): List<Position> = (0 until rows).flatMap { row ->
-        (0 until columns).map { column ->
-            Position.of(column, row)
+    fun fetchPositions(): List<Position> = (0 until yLength).flatMap { y ->
+        (0 until xLength).map { x ->
+            Position.of(x, y)
         }
     }
 
@@ -48,64 +49,64 @@ data class Size(val columns: Int,
 
     fun fetchTopLeftPosition() = Position.TOP_LEFT_CORNER
 
-    fun fetchTopRightPosition() = Position.of(columns -1, 0)
+    fun fetchTopRightPosition() = Position.of(xLength - 1, 0)
 
-    fun fetchBottomLeftPosition() = Position.of(0, rows - 1)
+    fun fetchBottomLeftPosition() = Position.of(0, yLength - 1)
 
-    fun fetchBottomRightPosition() = Position.of(columns -1, rows -1)
+    fun fetchBottomRightPosition() = Position.of(xLength - 1, yLength - 1)
 
     /**
-     * Creates a new size based on this size, but with a different width.
+     * Creates a new size based on this size, but with a different xLength.
      */
-    fun withColumns(columns: Int): Size {
-        if (this.columns == columns) {
+    fun withXLength(xLength: Int): Size {
+        if (this.xLength == xLength) {
             return this
         }
-        return returnZeroIfZero(Size(columns, this.rows))
+        return returnZeroIfZero(Size(xLength, this.yLength))
     }
 
     /**
-     * Creates a new size based on this size, but with a different height.
+     * Creates a new size based on this size, but with a different yLength.
      */
-    fun withRows(rows: Int): Size {
-        if (this.rows == rows) {
+    fun withYLength(yLength: Int): Size {
+        if (this.yLength == yLength) {
             return this
         }
-        return returnZeroIfZero(Size(this.columns, rows))
+        return returnZeroIfZero(Size(this.xLength, yLength))
     }
 
     /**
-     * Creates a new [Size] object representing a size with the same number of rows, but with
-     * a column size offset by a supplied value. Calling this method with delta 0 will return this,
+     * Creates a new [Size] object representing a size with the same number of yLength, but with
+     * a xLength size offset by a supplied value. Calling this method with delta 0 will return this,
      * calling it with a positive delta will return
-     * a terminal size <code>delta</code> number of columns wider and for negative numbers shorter.
+     * a terminal size <code>delta</code> number of xLength wider and for negative numbers shorter.
      */
-    fun withRelativeColumns(delta: Int): Size {
+    fun withRelativeXLength(delta: Int): Size {
         if (delta == 0) {
             return this
         }
-        return withColumns(columns + delta)
+        return withXLength(xLength + delta)
     }
 
     /**
-     * Creates a new [Size] object representing a size with the same number of columns, but with a row
+     * Creates a new [Size] object representing a size with the same number of xLength, but with a yLength
      * size offset by a supplied value. Calling this method with delta 0 will return this, calling
      * it with a positive delta will return
-     * a terminal size <code>delta</code> number of rows longer and for negative numbers shorter.
+     * a terminal size <code>delta</code> number of yLength longer and for negative numbers shorter.
      */
-    fun withRelativeRows(delta: Int): Size {
+    fun withRelativeYLength(delta: Int): Size {
         if (delta == 0) {
             return this
         }
-        return withRows(rows + delta)
+        return withYLength(yLength + delta)
     }
 
     /**
      * Creates a new [Size] object representing a size based on this object's size but with a delta applied.
-     * This is the same as calling `withRelativeColumns(delta.getColumns()).withRelativeRows(delta.getRows())`
+     * This is the same as calling `withRelativeXLength(delta.getXLength()).withRelativeYLength(delta.getYLength())`
      */
     fun withRelative(delta: Size): Size {
-        return withRelativeRows(delta.rows).withRelativeColumns(delta.columns)
+        return withRelativeYLength(delta.yLength).withRelativeXLength(delta.xLength)
     }
 
     /**
@@ -113,8 +114,8 @@ data class Size(val columns: Int,
      * measured separately. So calling 3x5 on a 5x3 will return 5x5.
      */
     fun max(other: Size): Size {
-        return withColumns(Math.max(columns, other.columns))
-                .withRows(Math.max(rows, other.rows))
+        return withXLength(Math.max(xLength, other.xLength))
+                .withYLength(Math.max(yLength, other.yLength))
     }
 
     /**
@@ -122,8 +123,8 @@ data class Size(val columns: Int,
      * measured separately. So calling 3x5 on a 5x3 will return 3x3.
      */
     fun min(other: Size): Size {
-        return withColumns(Math.min(columns, other.columns))
-                .withRows(Math.min(rows, other.rows))
+        return withXLength(Math.min(xLength, other.xLength))
+                .withYLength(Math.min(yLength, other.yLength))
     }
 
     /**
@@ -140,14 +141,54 @@ data class Size(val columns: Int,
     }
 
     /**
-     * Converts this [Size] to a [Position] which indicates a cell one column to the right
-     * from the top right of this [Size]. Use this if you want to position something
-     * at the *right* next to something.
+     * TODO: refactor DefaultBoundable to call to this. Implement other DefaultBoundable methods.
      */
-    fun toRightPosition() = Position.of(columns, 0)
+    fun containsPosition(position: Position) = xLength > position.x && yLength > position.y
+
+    /////////////////////////////
+    /// DEPRECATED ZONE
+    ///
+    /// HERE BE DRAGONS
+    /////////////////////////////
+
+    @Deprecated(message = "This is obsolete, use the value `xLength` instead",
+            replaceWith = ReplaceWith(
+                    expression = "xLength",
+                    imports = ["org.codetome.zircon.api"]))
+    fun getColumns() = xLength
+
+    @Deprecated(message = "This is obsolete, use the value `yLength` instead",
+            replaceWith = ReplaceWith(
+                    expression = "yLength",
+                    imports = ["org.codetome.zircon.api"]))
+    fun getRows() = yLength
+
+    @Deprecated(message = "This is obsolete, use `withY` instead",
+            replaceWith = ReplaceWith(
+                    expression = ".withY",
+                    imports = ["org.codetome.zircon.api"]))
+    fun withRows(row: Int) = withYLength(row)
+
+    @Deprecated(message = "This is obsolete, use `withX` instead",
+            replaceWith = ReplaceWith(
+                    expression = ".withX",
+                    imports = ["org.codetome.zircon.api"]))
+    fun withColumns(column: Int) = withXLength(column)
+
+    @Deprecated(message = "This is obsolete, use `withRelativeX` instead",
+            replaceWith = ReplaceWith(
+                    expression = ".withRelativeX",
+                    imports = ["org.codetome.zircon.api"]))
+    fun withRelativeColumns(delta: Int) = withRelativeXLength(delta)
+
+    @Deprecated(message = "This is obsolete, use `withRelativeY` instead",
+            replaceWith = ReplaceWith(
+                    expression = ".withRelativeY",
+                    imports = ["org.codetome.zircon.api"]))
+    fun withRelativeRows(delta: Int) = withRelativeYLength(delta)
 
     private fun returnZeroIfZero(size: Size): Size {
-        return if (size.columns == 0 || size.rows == 0) {
+        return if (size.xLength == 0 || size.yLength == 0) {
             ZERO
         } else {
             size
@@ -172,6 +213,6 @@ data class Size(val columns: Int,
          * Factory method for [Size].
          */
         @JvmStatic
-        fun of(columns: Int, rows: Int) = Size(columns, rows)
+        fun of(xLength: Int, yLength: Int) = Size(xLength, yLength)
     }
 }

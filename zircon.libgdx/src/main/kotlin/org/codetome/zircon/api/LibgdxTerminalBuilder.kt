@@ -7,8 +7,6 @@ import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.FontSettings.NO_FONT
 import org.codetome.zircon.internal.font.impl.LibgdxFontLoader
 import org.codetome.zircon.internal.terminal.LibgdxAdapter
-import org.codetome.zircon.internal.terminal.LibgdxTerminal
-import java.awt.Toolkit
 
 class LibgdxTerminalBuilder : VirtualTerminalBuilder() {
 

@@ -31,23 +31,23 @@ class DefaultBox(size: Size,
 
         val horizontalLine = LineFactory.buildLine(
                 fromPoint = Position(0, 0),
-                toPoint = Position(size.columns - 3, 0))
+                toPoint = Position(size.xLength - 3, 0))
                 .toTextImage(horizontalChar)
         val verticalLine = LineFactory.buildLine(
                 fromPoint = Position(0, 0),
-                toPoint = Position(0, size.rows - 3))
+                toPoint = Position(0, size.yLength - 3))
                 .toTextImage(verticalChar)
         draw(horizontalLine, Position(1, 0))
-        draw(horizontalLine, Position(1, size.rows - 1))
+        draw(horizontalLine, Position(1, size.yLength - 1))
         draw(verticalLine, Position(0, 1))
-        draw(verticalLine, Position(size.columns - 1, 1))
+        draw(verticalLine, Position(size.xLength - 1, 1))
         setCharacterAt(Position(0, 0),
                 verticalChar.withCharacter(boxType.topLeft))
-        setCharacterAt(Position(size.columns - 1, 0),
+        setCharacterAt(Position(size.xLength - 1, 0),
                 verticalChar.withCharacter(boxType.topRight))
-        setCharacterAt(Position(0, size.rows - 1),
+        setCharacterAt(Position(0, size.yLength - 1),
                 verticalChar.withCharacter(boxType.bottomLeft))
-        setCharacterAt(Position(size.columns - 1, size.rows - 1),
+        setCharacterAt(Position(size.xLength - 1, size.yLength - 1),
                 verticalChar.withCharacter(boxType.bottomRight))
     }
 

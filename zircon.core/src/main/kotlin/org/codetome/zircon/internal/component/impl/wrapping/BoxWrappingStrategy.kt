@@ -23,16 +23,16 @@ class BoxWrappingStrategy(private val boxType: BoxType,
                 .style(style)
                 .build()
                 .drawOnto(textImage, offset)
-        if (size.columns > 4) {
+        if (size.xLength > 4) {
             title.map { titleText ->
-                val cleanText = if (titleText.length > size.columns - 4) {
-                    titleText.substring(0, size.columns - 4)
+                val cleanText = if (titleText.length > size.xLength - 4) {
+                    titleText.substring(0, size.xLength - 4)
                 } else {
                     titleText
                 }
-                textImage.setCharacterAt(offset.withRelativeColumn(1), boxType.connectorLeft)
-                textImage.putText(cleanText, offset.withRelativeColumn(2))
-                textImage.setCharacterAt(offset.withRelativeColumn(2 + cleanText.length), boxType.connectorRight)
+                textImage.setCharacterAt(offset.withRelativeX(1), boxType.connectorLeft)
+                textImage.putText(cleanText, offset.withRelativeX(2))
+                textImage.setCharacterAt(offset.withRelativeX(2 + cleanText.length), boxType.connectorRight)
             }
         }
     }

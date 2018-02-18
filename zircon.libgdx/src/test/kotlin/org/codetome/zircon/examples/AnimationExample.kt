@@ -34,11 +34,11 @@ object AnimationExample {
 
         panel.addComponent(LabelBuilder.newBuilder()
                 .text("Looped:")
-                .position(LEFT_POS.withRelativeRow(-3).withRelativeColumn(-1))
+                .position(LEFT_POS.withRelativeY(-3).withRelativeX(-1))
                 .build())
         panel.addComponent(LabelBuilder.newBuilder()
                 .text("Non-looped:")
-                .position(RIGHT_POS.withRelativeRow(-3).withRelativeColumn(-1))
+                .position(RIGHT_POS.withRelativeY(-3).withRelativeX(-1))
                 .build())
         screen.addComponent(panel)
 

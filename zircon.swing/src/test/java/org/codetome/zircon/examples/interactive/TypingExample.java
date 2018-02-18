@@ -14,8 +14,6 @@ import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.examples.TerminalUtils;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +62,7 @@ public class TypingExample {
             if (EXIT_CONDITIONS.contains(input.getInputType()) && !headless) {
                 System.exit(0);
             } else if (input.inputTypeIs(Enter)) {
-                screen.putCursorAt(pos.withRelativeRow(1).withColumn(0));
+                screen.putCursorAt(pos.withRelativeY(1).withX(0));
                 screen.refresh();
             } else {
                 if (input.isKeyStroke()) {
@@ -83,7 +81,7 @@ public class TypingExample {
             if (EXIT_CONDITIONS.contains(input.getInputType()) && !headless) {
                 System.exit(0);
             } else if (input.inputTypeIs(Enter)) {
-                terminal.putCursorAt(pos.withRelativeRow(1).withColumn(0));
+                terminal.putCursorAt(pos.withRelativeY(1).withX(0));
                 terminal.flush();
             } else {
                 if (input.isKeyStroke()) {

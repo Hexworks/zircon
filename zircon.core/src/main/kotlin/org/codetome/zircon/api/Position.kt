@@ -7,153 +7,176 @@ import org.codetome.zircon.api.component.Component
  * top left corner of the terminal. This object is immutable so you cannot change it after it has been created.
  * Instead, you can easily create modified clones by using the `with*` methods.
  */
-data class Position(val column: Int,
-                    val row: Int) : Comparable<Position> {
+data class Position(
+        /**
+         * Represents the `x` in a terminal.
+         */
+        val x: Int,
+        /**
+         * Represents the `y` in a terminal
+         */
+        val y: Int) {
 
     init {
-        require(column >= 0 && row >= 0) {
-            "A position must have a column and a row number which is greater than or equal to 0!"
+        require(x >= 0 && y >= 0) {
+            "A position must have a x and a y which is greater than or equal to 0!"
         }
     }
 
     /**
-     * Returns a new [Position] which is the sum of `column` and `row` in both [Position]s.
-     * so `Position(column = 1, row = 1).plus(Position(column = 2, row = 2))` will be
-     * `Position(column = 3, row = 3)`.
+     * Returns a new [Position] which is the sum of `x` and `y` in both [Position]s.
+     * so `Position(x = 1, y = 1).plus(Position(x = 2, y = 2))` will be
+     * `Position(x = 3, y = 3)`.
      */
     operator fun plus(position: Position): Position {
         return Position(
-                column = column + position.column,
-                row = row + position.row)
+                x = x + position.x,
+                y = y + position.y)
     }
 
     /**
-     * Returns a new [Position] which is the difference between `column` and `row` in both [Position]s.
-     * so `Position(column = 3, row = 3).minus(Position(column = 2, row = 2))` will be
-     * `Position(column = 1, row = 1)`.
+     * Returns a new [Position] which is the difference between `x` and `y` in both [Position]s.
+     * so `Position(x = 3, y = 3).minus(Position(x = 2, y = 2))` will be
+     * `Position(x = 1, y = 1)`.
      */
     operator fun minus(position: Position): Position {
         return Position(
-                column = column - position.column,
-                row = row - position.row)
+                x = x - position.x,
+                y = y - position.y)
     }
 
     /**
-     * Creates a new [Position] object representing a position with the same column index as this but with a
-     * supplied row index.
+     * Creates a new [Position] object representing a position with the same y index as this but with a
+     * supplied y index.
      */
-    fun withRow(row: Int): Position {
-        if (row == 0 && this.column == 0) {
+    fun withY(y: Int): Position {
+        if (y == 0 && this.x == 0) {
             return TOP_LEFT_CORNER
         }
-        return copy(row = row)
+        return copy(y = y)
     }
 
     /**
-     * Creates a new [Position] object representing a position with the same row index as this but with a
-     * supplied column index.
+     * Creates a new [Position] object representing a position with the same y index as this but with a
+     * supplied x index.
      */
-    fun withColumn(column: Int): Position {
-        if (column == 0 && this.row == 0) {
+    fun withX(x: Int): Position {
+        if (x == 0 && this.y == 0) {
             return TOP_LEFT_CORNER
         }
-        return copy(column = column)
+        return copy(x = x)
     }
 
     /**
-     * Creates a new [Position] object representing a position on the same row, but with a column offset by a
+     * Creates a new [Position] object representing a position on the same y, but with a x offset by a
      * supplied value. Calling this method with delta 0 will return this, calling it with a positive
-     * delta will return a terminal position <code>delta</code> number of columns to the right and
+     * delta will return a terminal position <code>delta</code> number of x to the right and
      * for negative numbers the same to the left.
      */
-    fun withRelativeColumn(delta: Int): Position {
-        if (delta == 0) {
-            return this
-        }
-        return withColumn(column + delta)
-    }
+    fun withRelativeX(delta: Int) = if (delta == 0) this else withX(x + delta)
 
     /**
-     * Creates a new [Position] object representing a position on the same column, but with a row offset by a
+     * Creates a new [Position] object representing a position on the same x, but with a y offset by a
      * supplied value. Calling this method with delta 0 will return this, calling it with a positive delta
-     * will return a terminal position <code>delta</code> number of rows to the down and for negative
+     * will return a terminal position <code>delta</code> number of y to the down and for negative
      * numbers the same up.
      */
-    fun withRelativeRow(delta: Int): Position {
-        if (delta == 0) {
-            return this
-        }
-        return withRow(row + delta)
-    }
+    fun withRelativeY(delta: Int) = if (delta == 0) this else withY(y + delta)
 
     /**
-     * Creates a new [Position] object that is translated by an amount of rows and columns specified by another
-     * [Position]. Same as calling `withRelativeRow(translate.getRow()).withRelativeColumn(translate.getColumn())`.
+     * Creates a new [Position] object that is translated by an amount of y and x specified by another
+     * [Position]. Same as calling `withRelativeY(translate.getYLength()).withRelativeX(translate.getXLength())`.
      */
-    fun withRelative(translate: Position): Position {
-        return withRelativeRow(translate.row).withRelativeColumn(translate.column)
-    }
+    fun withRelative(translate: Position) = withRelativeY(translate.y).withRelativeX(translate.x)
 
     /**
      * Creates a [Position] which is relative to the top of the given [Component].
-     * The column coordinate is used to shift right
-     * The row coordinate is used to shift up
+     * The x coordinate is used to shift right
+     * The y coordinate is used to shift up
      */
-    fun relativeToTopOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
-        Position.of(compCol + column, maxOf(compRow - row, 0))
+    fun relativeToTopOf(component: Component) = component.getPosition().let { (compX, compY) ->
+        Position.of(compX + x, maxOf(compY - y, 0))
     }
 
     /**
      * Creates a [Position] which is relative to the right of the given [Component].
-     * The column coordinate is used to shift right
-     * The row coordinate is used to shift down
+     * The x coordinate is used to shift right
+     * The y coordinate is used to shift down
      */
-    fun relativeToRightOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
+    fun relativeToRightOf(component: Component) = component.getPosition().let { (compX, compY) ->
         Position.of(
-                column = compCol + component.getBoundableSize().columns + column,
-                row = compRow + row)
+                x = compX + component.getBoundableSize().xLength + x,
+                y = compY + y)
     }
 
     /**
      * Creates a [Position] which is relative to the bottom of the given [Component].
-     * The column coordinate is used to shift right
-     * The row coordinate is used to shift down
+     * The x coordinate is used to shift right
+     * The y coordinate is used to shift down
      */
-    fun relativeToBottomOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
+    fun relativeToBottomOf(component: Component) = component.getPosition().let { (compX, compY) ->
         Position.of(
-                column = compCol + column,
-                row = compRow + component.getBoundableSize().rows + row)
+                x = compX + x,
+                y = compY + component.getBoundableSize().yLength + y)
     }
 
     /**
      * Creates a [Position] which is relative to the left of the given [Component].
-     * The column coordinate is used to shift left
-     * The row coordinate is used to shift down
+     * The x coordinate is used to shift left
+     * The y coordinate is used to shift down
      */
-    fun relativeToLeftOf(component: Component) = component.getPosition().let { (compCol, compRow) ->
-        Position.of(maxOf(compCol - column, 0), compRow + row)
+    fun relativeToLeftOf(component: Component) = component.getPosition().let { (compX, compY) ->
+        Position.of(maxOf(compX - x, 0), compY + y)
     }
 
     /**
      * Transforms this [Position] to a [Size] so if
-     * this position is Position(column=2, row=3) it will become
-     * Size(columns=2, rows=3).
+     * this position is Position(x=2, y=3) it will become
+     * Size(x=2, y=3).
      */
-    fun toSize() = Size.of(column, row)
+    fun toSize() = Size.of(x, y)
 
-    override fun compareTo(other: Position): Int {
-        if (row < other.row) {
-            return -1
-        } else if (row == other.row) {
-            if (column < other.column) {
-                return -1
-            } else if (column == other.column) {
-                return 0
-            }
-        }
-        return 1
-    }
+    /////////////////////////////
+    /// DEPRECATED ZONE
+    ///
+    /// HERE BE DRAGONS
+    /////////////////////////////
 
+    @Deprecated(message = "This is obsolete, use the value `x` instead",
+            replaceWith = ReplaceWith(
+                    expression = "x",
+                    imports = ["org.codetome.zircon.api"]))
+    fun getColumn() = x
+
+    @Deprecated(message = "This is obsolete, use the value `y` instead",
+            replaceWith = ReplaceWith(
+                    expression = "y",
+                    imports = ["org.codetome.zircon.api"]))
+    fun getRow() = y
+
+    @Deprecated(message = "This is obsolete, use `withY` instead",
+            replaceWith = ReplaceWith(
+                    expression = ".withY",
+                    imports = ["org.codetome.zircon.api"]))
+    fun withRow(row: Int) = withY(row)
+
+    @Deprecated(message = "This is obsolete, use `withX` instead",
+            replaceWith = ReplaceWith(
+                    expression = ".withX",
+                    imports = ["org.codetome.zircon.api"]))
+    fun withColumn(column: Int) = withX(column)
+
+    @Deprecated(message = "This is obsolete, use `withRelativeX` instead",
+            replaceWith = ReplaceWith(
+                    expression = ".withRelativeX",
+                    imports = ["org.codetome.zircon.api"]))
+    fun withRelativeColumn(delta: Int) = withRelativeX(delta)
+
+    @Deprecated(message = "This is obsolete, use `withRelativeY` instead",
+            replaceWith = ReplaceWith(
+                    expression = ".withRelativeY",
+                    imports = ["org.codetome.zircon.api"]))
+    fun withRelativeRow(delta: Int) = withRelativeY(delta)
 
     companion object {
 
@@ -185,7 +208,7 @@ data class Position(val column: Int,
          * Factory method for [Position].
          */
         @JvmStatic
-        fun of(column: Int, row: Int) = Position(column, row)
+        fun of(x: Int, y: Int) = Position(x, y)
     }
 }
 

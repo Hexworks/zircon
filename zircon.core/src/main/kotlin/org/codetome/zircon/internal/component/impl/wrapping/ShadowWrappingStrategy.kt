@@ -24,14 +24,14 @@ class ShadowWrappingStrategy(private val shadowChar: Char = DEFAULT_SHADOW_CHAR)
                 .build()
         LineFactory.buildLine(
                 fromPoint = Position.of(1, 0),
-                toPoint = Position.of(size.columns - 1, 0))
+                toPoint = Position.of(size.xLength - 1, 0))
                 .toTextImage(tc)
-                .drawOnto(textImage, Position.of(1, size.rows - 1))
+                .drawOnto(textImage, Position.of(1, size.yLength - 1))
         LineFactory.buildLine(
                 fromPoint = Position.of(0, 1),
-                toPoint = Position.of(0, size.rows - 1))
+                toPoint = Position.of(0, size.yLength - 1))
                 .toTextImage(tc)
-                .drawOnto(textImage, Position.of(size.columns - 1, 1))
+                .drawOnto(textImage, Position.of(size.xLength - 1, 1))
     }
 
     override fun isThemeNeutral() = true

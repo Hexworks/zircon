@@ -21,7 +21,6 @@ import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrate
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
@@ -137,7 +136,7 @@ class DefaultComponentTest {
     @Test
     fun shouldProperlyDrawOntoTextImage() {
         val image = TextImageBuilder.newBuilder()
-                .size(SIZE + Size.of(POSITION.column, POSITION.row))
+                .size(SIZE + Size.of(POSITION.x, POSITION.y))
                 .build()
         target.drawOnto(image)
 

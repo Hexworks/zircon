@@ -6,9 +6,9 @@ import org.codetome.zircon.api.Size
 object RectangleFactory : ShapeFactory<RectangleParameters> {
 
     override fun createShape(shapeParameters: RectangleParameters) = shapeParameters.let { (topLeft, size) ->
-        val topRight = topLeft.withRelativeColumn(size.columns - 1)
-        val bottomRight = topRight.withRelativeRow(size.rows - 1)
-        val bottomLeft = topLeft.withRelativeRow(size.rows - 1)
+        val topRight = topLeft.withRelativeX(size.xLength - 1)
+        val bottomRight = topRight.withRelativeY(size.yLength - 1)
+        val bottomLeft = topLeft.withRelativeY(size.yLength - 1)
         LineFactory.buildLine(topLeft, topRight)
                 .plus(LineFactory.buildLine(topRight, bottomRight))
                 .plus(LineFactory.buildLine(bottomRight, bottomLeft))

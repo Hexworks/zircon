@@ -7,9 +7,9 @@ import org.codetome.zircon.internal.graphics.DefaultShape
 object FilledRectangleFactory : ShapeFactory<RectangleParameters> {
 
     override fun createShape(shapeParameters: RectangleParameters) = shapeParameters.let { (topLeft, size) ->
-        DefaultShape((0 until size.rows).flatMap { y ->
-            (0 until size.columns).map { x ->
-                Position.of(topLeft.column + x, topLeft.row + y)
+        DefaultShape((0 until size.yLength).flatMap { y ->
+            (0 until size.xLength).map { x ->
+                Position.of(topLeft.x + x, topLeft.y + y)
             }
         }.toSet()).offsetToDefaultPosition()
     }

@@ -74,7 +74,7 @@ class TerminalScreenTest {
         target.putCharacter(char)
 
         assertThat(target.getCharacterAt(currCursorPos).get()).isEqualTo(expected)
-        assertThat(target.getCursorPosition()).isEqualTo(currCursorPos.withRelativeColumn(1))
+        assertThat(target.getCursorPosition()).isEqualTo(currCursorPos.withRelativeX(1))
 
     }
 
@@ -100,7 +100,7 @@ class TerminalScreenTest {
 
     @Test
     fun shouldResizeOnResize() {
-        val expectedSize = Size(5, 5)
+        val expectedSize = Size.of(5, 5)
         terminal.setSize(expectedSize)
         assertThat(terminal.getBoundableSize()).isEqualTo(expectedSize)
     }
@@ -127,7 +127,7 @@ class TerminalScreenTest {
 
 
     companion object {
-        val SIZE = Size(10, 10)
+        val SIZE = Size.of(10, 10)
         val FONT = CP437TilesetResource.ROGUE_YUN_16X16
         val CHAR = TextCharacterBuilder.newBuilder()
                 .character('x')

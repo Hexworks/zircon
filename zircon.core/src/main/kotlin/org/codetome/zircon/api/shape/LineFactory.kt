@@ -12,13 +12,13 @@ object LineFactory : ShapeFactory<LineParameters> {
         //http://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
         //Implementation from Graphics Programming Black Book by Michael Abrash
         //Available at http://www.gamedev.net/page/resources/_/technical/graphics-programming-and-theory/graphics-programming-black-book-r1698
-        if (p1.row > p2.row) {
+        if (p1.y > p2.y) {
             val temp = p1
             p1 = p2
             p2 = temp
         }
-        var deltaX = p2.column - p1.column
-        val deltaY = p2.row - p1.row
+        var deltaX = p2.x - p1.x
+        val deltaY = p2.y - p1.y
         return if (deltaX > 0) {
             if (deltaX > deltaY) {
                 DefaultShape(createLine0(p1, deltaX, deltaY, true))

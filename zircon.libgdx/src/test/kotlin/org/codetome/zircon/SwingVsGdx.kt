@@ -85,16 +85,16 @@ class GdxExample : ApplicationAdapter() {
                 source = Texture(Config.TILESET.path.substring(1)),
                 width = Config.TILESET.width,
                 height = Config.TILESET.height)
-            (0..Config.HEIGHT).forEach { row ->
-                (0..Config.WIDTH).forEach { column ->
+            (0..Config.HEIGHT).forEach { y ->
+                (0..Config.WIDTH).forEach { x ->
 
                     val region = font.fetchRegionForChar(
                             TextCharacterBuilder.newBuilder().character(chars[0]).build())
                     val drawable = TextureRegionDrawable(region.getBackend())
                     val tinted = drawable.tint(com.badlogic.gdx.graphics.Color(0.5f, 0.5f, 0f, 1f)) as SpriteDrawable
                     tinted.draw(batch,
-                            column * width,
-                            row * height + height,
+                            x * width,
+                            y * height + height,
                             width,
                             height)
                 }

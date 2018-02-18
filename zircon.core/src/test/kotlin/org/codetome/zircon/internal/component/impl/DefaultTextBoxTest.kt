@@ -54,7 +54,7 @@ class DefaultTextBoxTest {
 
         EventBus.emit(EventType.KeyPressed, KeyStroke(type = InputType.ArrowRight))
 
-        assertThat(target.getCursorPosition()).isEqualTo(Position.DEFAULT_POSITION.withRelativeColumn(1))
+        assertThat(target.getCursorPosition()).isEqualTo(Position.DEFAULT_POSITION.withRelativeX(1))
     }
 
     @Test

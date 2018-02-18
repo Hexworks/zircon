@@ -30,32 +30,32 @@ class DefaultScrollable3D(private var visibleSpaceSize: Size3D,
 
     override fun getVisibleOffset() = offset
 
-    override fun scrollOneRight() = Position3D(
+    override fun scrollOneRight() = Position3D.from2DPosition(
             position = scrollable2D.scrollOneRight(),
             z = offset.z).apply {
         offset = this
     }
 
-    override fun scrollOneLeft() = Position3D(
+    override fun scrollOneLeft() = Position3D.from2DPosition(
             position = scrollable2D.scrollOneLeft(),
             z = offset.z).apply {
         offset = this
     }
 
-    override fun scrollOneForward() = Position3D(
+    override fun scrollOneForward() = Position3D.from2DPosition(
             position = scrollable2D.scrollOneDown(),
             z = offset.z).apply {
         offset = this
     }
 
-    override fun scrollOneBackward() = Position3D(
+    override fun scrollOneBackward() = Position3D.from2DPosition(
             position = scrollable2D.scrollOneUp(),
             z = offset.z).apply {
         offset = this
     }
 
     override fun scrollOneUp(): Position3D {
-        if (visibleSpaceSize.height + offset.z < virtualSpaceSize.height) {
+        if (visibleSpaceSize.zLength + offset.z < virtualSpaceSize.zLength) {
             this.offset = offset.withRelativeZ(1)
         }
         return offset
@@ -68,25 +68,25 @@ class DefaultScrollable3D(private var visibleSpaceSize: Size3D,
         return offset
     }
 
-    override fun scrollRightBy(x: Int) = Position3D(
+    override fun scrollRightBy(x: Int) = Position3D.from2DPosition(
             position = scrollable2D.scrollRightBy(x),
             z = offset.z).apply {
         offset = this
     }
 
-    override fun scrollLeftBy(x: Int) = Position3D(
+    override fun scrollLeftBy(x: Int) = Position3D.from2DPosition(
             position = scrollable2D.scrollLeftBy(x),
             z = offset.z).apply {
         offset = this
     }
 
-    override fun scrollForwardBy(y: Int) = Position3D(
+    override fun scrollForwardBy(y: Int) = Position3D.from2DPosition(
             position = scrollable2D.scrollDownBy(y),
             z = offset.z).apply {
         offset = this
     }
 
-    override fun scrollBackwardBy(y: Int) = Position3D(
+    override fun scrollBackwardBy(y: Int) = Position3D.from2DPosition(
             position = scrollable2D.scrollUpBy(y),
             z = offset.z).apply {
         offset = this
@@ -97,7 +97,7 @@ class DefaultScrollable3D(private var visibleSpaceSize: Size3D,
             "You can only scroll up by a positive amount!"
         }
         val levelToScrollTo = offset.z + z
-        val lastScrollableLevel = virtualSpaceSize.height - visibleSpaceSize.height
+        val lastScrollableLevel = virtualSpaceSize.zLength - visibleSpaceSize.zLength
         offset = offset.copy(z = Math.min(levelToScrollTo, lastScrollableLevel))
         return offset
     }
@@ -112,13 +112,13 @@ class DefaultScrollable3D(private var visibleSpaceSize: Size3D,
     }
 
     private fun checkSizes() {
-        require(virtualSpaceSize.width >= visibleSpaceSize.width) {
-            "Can't have a virtual space (${virtualSpaceSize.width}, ${virtualSpaceSize.depth})" +
-                    " with less width than the visible space (${visibleSpaceSize.width}, ${visibleSpaceSize.depth})!"
+        require(virtualSpaceSize.xLength >= visibleSpaceSize.xLength) {
+            "Can't have a virtual space (${virtualSpaceSize.xLength}, ${virtualSpaceSize.zLength})" +
+                    " with less xLength than the visible space (${visibleSpaceSize.xLength}, ${visibleSpaceSize.zLength})!"
         }
-        require(virtualSpaceSize.depth >= visibleSpaceSize.depth) {
-            "Can't have a virtual space (${virtualSpaceSize.width}, ${virtualSpaceSize.depth})" +
-                    " with less depth than the visible space (${visibleSpaceSize.width}, ${visibleSpaceSize.depth})!"
+        require(virtualSpaceSize.zLength >= visibleSpaceSize.zLength) {
+            "Can't have a virtual space (${virtualSpaceSize.xLength}, ${virtualSpaceSize.zLength})" +
+                    " with less yLength than the visible space (${visibleSpaceSize.xLength}, ${visibleSpaceSize.zLength})!"
         }
     }
 }

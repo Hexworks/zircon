@@ -52,21 +52,21 @@ class DefaultLayer(size: Size,
 
     override fun intersects(boundable: Boundable) = rect.intersects(
             Rectangle(
-                    boundable.getPosition().column,
-                    boundable.getPosition().row,
-                    boundable.getBoundableSize().columns,
-                    boundable.getBoundableSize().rows))
+                    boundable.getPosition().x,
+                    boundable.getPosition().y,
+                    boundable.getBoundableSize().xLength,
+                    boundable.getBoundableSize().yLength))
 
     override fun containsPosition(position: Position): Boolean {
-        return rect.contains(Point(position.column, position.row))
+        return rect.contains(Point(position.x, position.y))
     }
 
     override fun containsBoundable(boundable: Boundable) = rect.contains(
             Rectangle(
-                    position.column,
-                    position.row,
-                    boundable.getBoundableSize().columns,
-                    boundable.getBoundableSize().rows))
+                    position.x,
+                    position.y,
+                    boundable.getBoundableSize().xLength,
+                    boundable.getBoundableSize().yLength))
 
     override fun getCharacterAt(position: Position) = textImage.getCharacterAt(position - this.position)
 
@@ -88,6 +88,6 @@ class DefaultLayer(size: Size,
             textImage = textImage)
 
     private fun refreshRect(): Rectangle {
-        return Rectangle(position.column, position.row, getBoundableSize().columns, getBoundableSize().rows)
+        return Rectangle(position.x, position.y, getBoundableSize().xLength, getBoundableSize().yLength)
     }
 }

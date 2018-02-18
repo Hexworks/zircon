@@ -43,7 +43,7 @@ class DefaultButtonTest {
     @Test
     fun shouldProperlyAddButtonText() {
         val surface = target.getDrawSurface()
-        val offset = target.getWrapperOffset().column
+        val offset = target.getWrapperOffset().x
         TEXT.forEachIndexed { i, char ->
             assertThat(surface.getCharacterAt(Position.of(i + offset, 0)).get())
                     .isEqualTo(TextCharacterBuilder.newBuilder()

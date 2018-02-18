@@ -31,13 +31,13 @@ class SwingTerminalBuilder : VirtualTerminalBuilder() {
 
     private fun checkScreenSize() {
         val screenSize = Toolkit.getDefaultToolkit().screenSize
-        require(screenSize.width >= font.getWidth() * initialSize.columns) {
-            "The requested column count '${initialSize.columns}' for font width '${font.getWidth()}'" +
-                    " won't fit on the screen (width: ${screenSize.width}"
+        require(screenSize.width >= font.getWidth() * initialSize.xLength) {
+            "The requested xLength count '${initialSize.xLength}' for font xLength '${font.getWidth()}'" +
+                    " won't fit on the screen (xLength: ${screenSize.width}"
         }
-        require(screenSize.height >= font.getHeight() * initialSize.rows) {
-            "The requested row count '${initialSize.rows}' for font height '${font.getHeight()}'" +
-                    " won't fit on the screen (height: ${screenSize.height}"
+        require(screenSize.height >= font.getHeight() * initialSize.yLength) {
+            "The requested yLength count '${initialSize.yLength}' for font yLength '${font.getHeight()}'" +
+                    " won't fit on the screen (yLength: ${screenSize.height}"
         }
     }
 

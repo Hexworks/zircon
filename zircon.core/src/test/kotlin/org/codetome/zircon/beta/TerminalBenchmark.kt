@@ -43,7 +43,7 @@ fun main(args:Array<String>) {
     }
 }
 
-val SIZE = Size(60, 30)
+val SIZE = Size.of(60, 30)
 
 
 object Stats {

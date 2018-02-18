@@ -5,10 +5,8 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.game.GameArea
-import org.codetome.zircon.api.game.Position3D
 import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.game.Size3D
-import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.GameComponent
@@ -48,7 +46,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
         initialFont = initialFont,
         boundable = boundable) {
 
-    private val visibleLevelCount = visibleSize.height
+    private val visibleLevelCount = visibleSize.zLength
 
     init {
         refreshVirtualSpaceSize()
@@ -73,32 +71,14 @@ class DefaultGameComponent(private val gameArea: GameArea,
     override fun transformToLayers(): List<Layer> {
         // note that the draw surface which comes from `DefaultComponent` is not used here
         // since the `GameArea` is used as a backend
-        val allLevelCount = scrollable.getVirtualSpaceSize().height
+        val allLevelCount = scrollable.getVirtualSpaceSize().zLength
         val startLevel = scrollable.getVisibleOffset().z
         val percentage: Double = 1.0.div(visibleLevelCount.toDouble())
 
         val result = mutableListOf<Layer>()
 
         // TODO: refactor this to be functional
-        (startLevel until Math.min(startLevel + visibleLevelCount, allLevelCount)).forEach { levelIdx ->
-            val segment = gameArea.getSegmentAt(
-                    offset = Position3D.from2DPosition(getVisibleOffset().to2DPosition(), levelIdx),
-                    size = getBoundableSize())
 
-            segment.layers.forEach {
-                val img = if (projectionMode == ProjectionMode.TOP_DOWN) {
-                    it
-                } else {
-                    it.toSubImage(
-                            offset = Position.of(0, levelIdx),
-                            size = it.getBoundableSize().withRelativeRows(-levelIdx))
-                }
-                result.add(LayerBuilder.newBuilder()
-                        .textImage(img)
-                        .offset(getPosition())
-                        .build())
-            }
-        }
         return result
     }
 

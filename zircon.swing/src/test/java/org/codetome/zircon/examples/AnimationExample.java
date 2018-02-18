@@ -4,19 +4,14 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.AnimationBuilder;
 import org.codetome.zircon.api.builder.ScreenBuilder;
-import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.component.builder.LabelBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
-import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.animation.Animation;
 import org.codetome.zircon.api.animation.AnimationHandler;
 import org.codetome.zircon.api.animation.AnimationResource;
-import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import static org.codetome.zircon.api.resource.CP437TilesetResource.*;
 
@@ -42,11 +37,11 @@ public class AnimationExample {
 
         panel.addComponent(LabelBuilder.newBuilder()
                 .text("Looped:")
-                .position(LEFT_POS.withRelativeRow(-3).withRelativeColumn(-1))
+                .position(LEFT_POS.withRelativeY(-3).withRelativeX(-1))
                 .build());
         panel.addComponent(LabelBuilder.newBuilder()
                 .text("Non-looped:")
-                .position(RIGHT_POS.withRelativeRow(-3).withRelativeColumn(-1))
+                .position(RIGHT_POS.withRelativeY(-3).withRelativeX(-1))
                 .build());
         screen.addComponent(panel);
 

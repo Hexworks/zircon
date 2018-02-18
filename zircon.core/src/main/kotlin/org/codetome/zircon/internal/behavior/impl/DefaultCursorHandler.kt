@@ -39,8 +39,8 @@ class DefaultCursorHandler(private var cursorSpace: Size,
     @Synchronized
     override fun putCursorAt(cursorPosition: Position): Boolean {
         val newCursorPos = cursorPosition
-                .withColumn(Math.min(cursorPosition.column, cursorSpace.columns - 1))
-                .withRow(Math.min(cursorPosition.row, cursorSpace.rows - 1))
+                .withX(Math.min(cursorPosition.x, cursorSpace.xLength - 1))
+                .withY(Math.min(cursorPosition.y, cursorSpace.yLength - 1))
         return if (this.cursorPosition == newCursorPos) {
             false
         } else {
@@ -54,9 +54,9 @@ class DefaultCursorHandler(private var cursorSpace: Size,
     override fun moveCursorForward() =
             putCursorAt(getCursorPosition().let { (column) ->
                 if (cursorIsAtTheEndOfTheLine(column)) {
-                    getCursorPosition().withColumn(0).withRelativeRow(1)
+                    getCursorPosition().withX(0).withRelativeY(1)
                 } else {
-                    getCursorPosition().withRelativeColumn(1)
+                    getCursorPosition().withRelativeX(1)
                 }
             })
 
@@ -64,13 +64,13 @@ class DefaultCursorHandler(private var cursorSpace: Size,
     override fun moveCursorBackward() =
             putCursorAt(getCursorPosition().let { (column) ->
                 if (cursorIsAtTheStartOfTheLine(column)) {
-                    if (getCursorPosition().row > 0) {
-                        getCursorPosition().withColumn(cursorSpace.columns - 1).withRelativeRow(-1)
+                    if (getCursorPosition().y > 0) {
+                        getCursorPosition().withX(cursorSpace.xLength - 1).withRelativeY(-1)
                     } else {
                         getCursorPosition()
                     }
                 } else {
-                    getCursorPosition().withRelativeColumn(-1)
+                    getCursorPosition().withRelativeX(-1)
                 }
             })
 
@@ -82,15 +82,15 @@ class DefaultCursorHandler(private var cursorSpace: Size,
         putCursorAt(getCursorPosition())
     }
 
-    override fun isCursorAtTheEndOfTheLine() = cursorPosition.column == cursorSpace.columns - 1
+    override fun isCursorAtTheEndOfTheLine() = cursorPosition.x == cursorSpace.xLength - 1
 
-    override fun isCursorAtTheStartOfTheLine() = cursorPosition.column == 0
+    override fun isCursorAtTheStartOfTheLine() = cursorPosition.x == 0
 
-    override fun isCursorAtTheFirstRow() = cursorPosition.row == 0
+    override fun isCursorAtTheFirstRow() = cursorPosition.y == 0
 
-    override fun isCursorAtTheLastRow() = cursorPosition.row == cursorSpace.rows - 1
+    override fun isCursorAtTheLastRow() = cursorPosition.y == cursorSpace.yLength - 1
 
-    private fun cursorIsAtTheEndOfTheLine(column: Int) = column + 1 == cursorSpace.columns
+    private fun cursorIsAtTheEndOfTheLine(column: Int) = column + 1 == cursorSpace.xLength
 
     private fun cursorIsAtTheStartOfTheLine(column: Int) = column == 0
 }

@@ -7,53 +7,34 @@ import org.codetome.zircon.api.Position.Companion.OFFSET_1x1
 import org.codetome.zircon.api.Position.Companion.of
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.junit.Before
 import org.junit.Test
-import org.mockito.MockitoAnnotations
 import java.util.function.Consumer
 
-class DefaultTextImageTest {
+class MapLikeTextImageTest {
 
-    lateinit var target: DefaultTextImage
+    lateinit var target: MapLikeTextImage
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
-
-        target = DefaultTextImage(
-                size = SIZE,
-                toCopy = TO_COPY,
-                filler = FILLER)
+        target = MapLikeTextImage(SIZE)
     }
 
     @Test
-    fun shouldContainToCopyWhenCreated() {
-        checkGetCharacter(target)
+    fun shouldContainNothingWhenCreated() {
+        assertThat(target.getCharacterAt(EMPTY_BY_DEFAULT_POS))
+                .contains(EMPTY_CHAR)
     }
 
     @Test
     fun shouldProperlyImplementGetCharacter() {
-        checkGetCharacter<DrawSurface>(target)
+        target.setCharacterAt(FILLED_POS, FILLER)
+
+        assertThat(target.getCharacterAt(FILLED_POS)).contains(FILLER)
     }
 
-    private fun <T : DrawSurface> checkGetCharacter(target: T) {
-        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
-                .isEqualTo(TO_COPY_CHAR)
-    }
-
-
-    @Test
-    fun shouldContainFillerWhenCreated() {
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeColumn(1)).get())
-                .isEqualTo(FILLER)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION.withRelativeRow(1)).get())
-                .isEqualTo(FILLER)
-        assertThat(target.getCharacterAt(Position(2, 2)).get())
-                .isEqualTo(FILLER)
-    }
 
     @Test
     fun shouldReportProperSizeWhenGetSizeIsCalled() {
@@ -64,18 +45,11 @@ class DefaultTextImageTest {
     fun shouldProperlyResizeWhenResizeCalledWithDifferentSize() {
         val result = target.resize(Size.of(4, 4), SET_ALL_CHAR)
         assertThat(result.getCharacterAt(DEFAULT_POSITION).get())
-                .isEqualTo(TO_COPY_CHAR)
+                .isEqualTo(EMPTY_CHAR)
         assertThat(result.getCharacterAt(Position(1, 1)).get())
-                .isEqualTo(FILLER)
+                .isEqualTo(EMPTY_CHAR)
         assertThat(result.getCharacterAt(Position(3, 3)).get())
                 .isEqualTo(SET_ALL_CHAR)
-    }
-
-    @Test
-    fun shouldNotResizeWhenResizeIsCalledWithSameSize() {
-        val result = target.resize(target.getBoundableSize(), TO_COPY_CHAR)
-
-        assertThat(result).isSameAs(target)
     }
 
     @Test
@@ -132,17 +106,17 @@ class DefaultTextImageTest {
         val result = source.combineWith(newImage, Position(0, 2))
         assertThat(result.getBoundableSize()).isEqualTo(Size.of(3, 3))
 
-        //first row should all be x's
+        //first yLength should all be xLength's
         for(x in 0..2){
             assertThat(result.getCharacterAt(of(x, 0)).get().getCharacter()).isEqualTo('x')
         }
 
-        //as the second image was offset by 2 rows there should be nothing here
+        //as the second image was offset by 2 yLength there should be nothing here
         for(x in 0..2){
             assertThat(result.getCharacterAt(of(x, 1)).get().getCharacter()).isEqualTo(' ')
         }
 
-        //the 3rd row should be + for the first 2 columns (as that's the size of the second image)
+        //the 3rd yLength should be + for the first 2 xLength (as that's the size of the second image)
         for(x in 0..1){
             assertThat(result.getCharacterAt(of(x, 2)).get().getCharacter()).isEqualTo('+')
         }
@@ -199,6 +173,9 @@ class DefaultTextImageTest {
     }
 
     companion object {
+        val EMPTY_CHAR = TextCharacterBuilder.EMPTY
+        val EMPTY_BY_DEFAULT_POS = Position.of(2, 1)
+        val FILLED_POS = Position.of(1, 2)
         val SIZE = Size.of(3, 3)
         val FILLER = TextCharacterBuilder.newBuilder()
                 .character('a')
@@ -211,6 +188,8 @@ class DefaultTextImageTest {
                 .build()
         val TO_COPY = arrayOf(arrayOf(TO_COPY_CHAR))
         val IMAGE_TO_COPY = DefaultTextImage(Size.ONE, arrayOf(arrayOf()), SET_ALL_CHAR)
+        val IMAGE_TO_COPY_AND_CROP = DefaultTextImage(Size.of(2, 2), arrayOf(arrayOf()), SET_ALL_CHAR)
+
     }
 
 }
