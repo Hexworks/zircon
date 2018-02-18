@@ -4,17 +4,12 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.*;
 import org.codetome.zircon.api.color.TextColorFactory;
-import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.shape.FilledRectangleFactory;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.graphics.Box;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.internal.graphics.BoxType;
 import org.codetome.zircon.api.screen.Screen;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import java.awt.image.BufferedImage;
 
 import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16;
 
@@ -50,10 +45,10 @@ public class PanelDrawingExample {
                         .build())
                 .build();
         box.putText("Title", Position.DEFAULT_POSITION
-                .withRelativeColumn(5));
-        box.setCharacterAt(Position.DEFAULT_POSITION.withRelativeColumn(4),
+                .withRelativeX(5));
+        box.setCharacterAt(Position.DEFAULT_POSITION.withRelativeX(4),
                 BoxType.TOP_BOTTOM_DOUBLE.getConnectorLeft());
-        box.setCharacterAt(Position.DEFAULT_POSITION.withRelativeColumn(10),
+        box.setCharacterAt(Position.DEFAULT_POSITION.withRelativeX(10),
                 BoxType.TOP_BOTTOM_DOUBLE.getConnectorRight());
         screen.draw(box, Position.of(2, 2));
         screen.display();

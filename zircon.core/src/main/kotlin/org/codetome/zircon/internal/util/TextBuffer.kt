@@ -26,16 +26,16 @@ class TextBuffer(text: String) {
             }
 
     fun getCharAt(position: Position) =
-            if (position.row >= currentText.size || currentText[position.row].length <= position.column) {
+            if (position.y >= currentText.size || currentText[position.y].length <= position.x) {
                 Optional.empty()
             } else {
-                Optional.of(currentText[position.row][position.column])
+                Optional.of(currentText[position.y][position.x])
             }
 
     fun getTextSection(position: Position, size: Size): List<String> {
-        val fromRow = position.row
-        val toRow = Math.min(currentText.size - 1, fromRow + size.rows - 1)
-        val fromCol = position.column
+        val fromRow = position.y
+        val toRow = Math.min(currentText.size - 1, fromRow + size.yLength - 1)
+        val fromCol = position.x
         return if (requestedRowsHaveNoIntersectionWithBuffer(fromRow, toRow)) {
             listOf()
         } else {
@@ -43,7 +43,7 @@ class TextBuffer(text: String) {
             val list = mutableListOf<String>()
             do {
                 val row = currentText[rowIdx]
-                val toCol = Math.min(fromCol + size.columns, row.length)
+                val toCol = Math.min(fromCol + size.xLength, row.length)
                 list.add(if (requestedColsHaveNoIntersectionWithBuffer(fromCol, toCol, row)) {
                     ""
                 } else {

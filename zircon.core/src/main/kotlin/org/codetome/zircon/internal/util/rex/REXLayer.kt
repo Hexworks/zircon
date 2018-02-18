@@ -28,7 +28,7 @@ data class REXLayer(private val width: Int,
      */
     fun toLayer(): Layer {
         val layer = LayerBuilder.newBuilder()
-                .size(Size(width, height))
+                .size(Size.of(width, height))
                 .filler(TextCharacterBuilder.EMPTY)
                 .font(FontSettings.NO_FONT)
                 .build()

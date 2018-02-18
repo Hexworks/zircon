@@ -176,7 +176,7 @@ class DefaultContainerTest {
     fun shouldNotLetToAddAComponentWhichIntersectsWithAnother() {
         val pos = Position.of(1, 1)
         val comp = LabelBuilder.newBuilder().position(pos).text("text").build()
-        val otherComp = LabelBuilder.newBuilder().position(pos.withRelativeColumn(1)).text("text").build()
+        val otherComp = LabelBuilder.newBuilder().position(pos.withRelativeX(1)).text("text").build()
         target.addComponent(comp)
         target.addComponent(otherComp)
     }
@@ -196,7 +196,7 @@ class DefaultContainerTest {
     @Test
     fun shouldProperlyRemoveComponentFromSelf() {
         val comp = LabelBuilder.newBuilder()
-                .text("x")
+                .text("xLength")
                 .position(Position.DEFAULT_POSITION)
                 .build()
         target.addComponent(comp)
@@ -212,7 +212,7 @@ class DefaultContainerTest {
     @Test
     fun shouldProperlyRemoveComponentFromChild() {
         val comp = LabelBuilder.newBuilder()
-                .text("x")
+                .text("xLength")
                 .position(Position.DEFAULT_POSITION)
                 .build()
         val panel = PanelBuilder.newBuilder()

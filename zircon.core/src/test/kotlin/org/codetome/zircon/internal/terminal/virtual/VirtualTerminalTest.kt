@@ -43,16 +43,16 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldCapCursorColumnsWhenSetToBiggerThanTerminalSize() {
-        target.putCursorAt(DEFAULT_POSITION.withRelativeColumn(Int.MAX_VALUE))
+        target.putCursorAt(DEFAULT_POSITION.withRelativeX(Int.MAX_VALUE))
         assertThat(target.getCursorPosition())
-                .isEqualTo(DEFAULT_POSITION.withColumn(target.getBoundableSize().columns - 1))
+                .isEqualTo(DEFAULT_POSITION.withX(target.getBoundableSize().xLength - 1))
     }
 
     @Test
     fun shouldCapCursorRowsWhenSetToBiggerThanTerminalSize() {
-        target.putCursorAt(DEFAULT_POSITION.withRelativeRow(Int.MAX_VALUE))
+        target.putCursorAt(DEFAULT_POSITION.withRelativeY(Int.MAX_VALUE))
         assertThat(target.getCursorPosition())
-                .isEqualTo(DEFAULT_POSITION.withRow(target.getBoundableSize().rows - 1))
+                .isEqualTo(DEFAULT_POSITION.withY(target.getBoundableSize().yLength - 1))
     }
 
     @Test
@@ -80,18 +80,18 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldResetCursorWhenColsAreLessAfterResize() {
-        target.putCursorAt(DEFAULT_POSITION.withColumn(Int.MAX_VALUE))
+        target.putCursorAt(DEFAULT_POSITION.withX(Int.MAX_VALUE))
         val originalCursorPos = target.getCursorPosition()
         target.setSize(NEW_LESS_COLS_SIZE)
-        assertThat(target.getCursorPosition()).isEqualTo(originalCursorPos.withColumn(NEW_LESS_COLS_SIZE.columns - 1))
+        assertThat(target.getCursorPosition()).isEqualTo(originalCursorPos.withX(NEW_LESS_COLS_SIZE.xLength - 1))
     }
 
     @Test
     fun shouldResetCursorWhenRowsAreLessAfterResize() {
-        target.putCursorAt(DEFAULT_POSITION.withRow(Int.MAX_VALUE))
+        target.putCursorAt(DEFAULT_POSITION.withY(Int.MAX_VALUE))
         val originalCursorPos = target.getCursorPosition()
         target.setSize(NEW_LESS_ROWS_SIZE)
-        assertThat(target.getCursorPosition()).isEqualTo(originalCursorPos.withRelativeRow(-1))
+        assertThat(target.getCursorPosition()).isEqualTo(originalCursorPos.withRelativeY(-1))
     }
 
     @Test
@@ -119,7 +119,7 @@ class VirtualTerminalTest {
     fun shouldMoveCursorToNextLineWhenNewLineIsPut() {
         target.putCharacter('\n')
         assertThat(target.getCursorPosition())
-                .isEqualTo(Position.DEFAULT_POSITION.withRelativeRow(1))
+                .isEqualTo(Position.DEFAULT_POSITION.withRelativeY(1))
     }
 
     @Test
@@ -173,7 +173,7 @@ class VirtualTerminalTest {
                                 .character('a')
                                 .build()),
                 Cell(
-                        position = DEFAULT_POSITION.withRelativeColumn(1),
+                        position = DEFAULT_POSITION.withRelativeX(1),
                         character = TextCharacterBuilder.newBuilder()
                                 .character(' ')
                                 .build())
@@ -182,7 +182,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldBeDirtyAfterResize() {
-        target.setSize(SIZE.withRelativeColumns(-8).withRelativeRows(-18))
+        target.setSize(SIZE.withRelativeXLength(-8).withRelativeYLength(-18))
 
         val dirtyCells = target.drainDirtyPositions()
 
@@ -298,11 +298,11 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldSetCursorPositionToNewLineWhenWritingAtTheEndOfTheLine() {
-        target.putCursorAt(DEFAULT_POSITION.withRelativeColumn(Int.MAX_VALUE))
+        target.putCursorAt(DEFAULT_POSITION.withRelativeX(Int.MAX_VALUE))
         target.putCharacter('a')
 
         assertThat(target.getCursorPosition())
-                .isEqualTo(DEFAULT_POSITION.withRelativeRow(1))
+                .isEqualTo(DEFAULT_POSITION.withRelativeY(1))
     }
 
     private fun addCharAndFetchDirtyCells(char: Char): MutableList<Cell> {
@@ -316,10 +316,10 @@ class VirtualTerminalTest {
 
     companion object {
         val TEST_CHAR = 'o'
-        val SIZE = Size(10, 20)
+        val SIZE = Size.of(10, 20)
         val FONT = CP437TilesetResource.ROGUE_YUN_16X16
-        val NEW_BIGGER_SIZE = Size(30, 40)
-        val NEW_LESS_ROWS_SIZE = SIZE.withRelativeRows(-1)
-        val NEW_LESS_COLS_SIZE = SIZE.withRelativeColumns(-1)
+        val NEW_BIGGER_SIZE = Size.of(30, 40)
+        val NEW_LESS_ROWS_SIZE = SIZE.withRelativeYLength(-1)
+        val NEW_LESS_COLS_SIZE = SIZE.withRelativeXLength(-1)
     }
 }

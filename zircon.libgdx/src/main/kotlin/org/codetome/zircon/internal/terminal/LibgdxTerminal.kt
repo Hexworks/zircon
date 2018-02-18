@@ -4,18 +4,14 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import org.codetome.zircon.api.Cell
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import org.codetome.zircon.internal.terminal.application.ApplicationTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
-import java.awt.Canvas
 
 /**
  * Concrete implementation of [ApplicationTerminal] that adapts it to libGDX.
@@ -39,9 +35,9 @@ class LibgdxTerminal(
         // TODO Setup doCreate/doDispose listeners here
     }
 
-    override fun getHeight() = getSupportedFontSize().rows * getBoundableSize().rows
+    override fun getHeight() = getSupportedFontSize().yLength * getBoundableSize().yLength
 
-    override fun getWidth() = getSupportedFontSize().columns * getBoundableSize().columns
+    override fun getWidth() = getSupportedFontSize().xLength * getBoundableSize().xLength
 
     @Synchronized
     override fun flush() {

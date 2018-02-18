@@ -164,7 +164,7 @@ class DefaultLayerableTest {
     }
 
     companion object {
-        val SIZE = Size(10, 10)
+        val SIZE = Size.of(10, 10)
         val FONT = CP437TilesetResource.WANDERLUST_16X16
     }
 }

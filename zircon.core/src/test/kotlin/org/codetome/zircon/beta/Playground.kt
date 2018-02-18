@@ -5,16 +5,13 @@ package org.codetome.zircon.beta
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.Symbols
-import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.*
-import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.component.builder.GameComponentBuilder
 import org.codetome.zircon.api.component.builder.PanelBuilder
 import org.codetome.zircon.api.game.Position3D
 import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.game.Size3D
-import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.modifier.BorderBuilder
 import org.codetome.zircon.api.modifier.BorderPosition
@@ -22,7 +19,6 @@ import org.codetome.zircon.api.modifier.BorderType
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.graphics.BoxType
-import java.util.*
 import java.util.function.Consumer
 
 object Playground {
@@ -125,7 +121,7 @@ object Playground {
         screen.setCursorVisibility(false) // we don't want the cursor right now
 
         val gamePanel = PanelBuilder.newBuilder()
-                .size(screen.getBoundableSize().withColumns(60))
+                .size(screen.getBoundableSize().withXLength(60))
                 .title("Game area")
                 .wrapWithBox()
                 .boxType(BoxType.TOP_BOTTOM_DOUBLE)
@@ -172,12 +168,12 @@ object Playground {
             gameArea.getLayerAt(level, 0).draw(BUILDING_3X3_FLOOR, pos)
             gameArea.setCharacterAt(Position3D.from2DPosition(pos, level), 1, face)
             gameArea.setCharacterAt(Position3D.from2DPosition(pos
-                    .withRelativeColumn(2)
-                    .withRelativeRow(1), level), 1, face)
+                    .withRelativeX(2)
+                    .withRelativeY(1), level), 1, face)
             gameArea.getLayerAt(level, 2).draw(TextImageBuilder.newBuilder()
                     .filler(SOUTH_WALL_WITH_NARROW_WINDOW)
                     .size(Size.of(3, 1))
-                    .build(), pos.withRelativeRow(2))
+                    .build(), pos.withRelativeY(2))
             gameArea.getLayerAt(level, 2).draw(TextImageBuilder.newBuilder()
                     .filler(WEST_WALL)
                     .size(Size.of(1, 2))
@@ -185,7 +181,7 @@ object Playground {
             gameArea.getLayerAt(level, 2).draw(TextImageBuilder.newBuilder()
                     .filler(EAST_WALL)
                     .size(Size.of(1, 2))
-                    .build(), pos.withRelativeColumn(2))
+                    .build(), pos.withRelativeX(2))
         }
 
 
@@ -213,7 +209,7 @@ object Playground {
                     .textImage(TextCharacterStringBuilder.newBuilder()
                             .backgroundColor(TextColorFactory.TRANSPARENT)
                             .foregroundColor(TextColorFactory.fromString("#aaaadd"))
-                            .text(String.format("Position: (x=%s, y=%s, z=%s)", visibleOffset.x, visibleOffset.y, visibleOffset.z))
+                            .text(String.format("Position: (xLength=%s, yLength=%s, yLength=%s)", visibleOffset.x, visibleOffset.y, visibleOffset.z))
                             .build()
                             .toTextImage())
                     .offset(Position.of(21, 1))

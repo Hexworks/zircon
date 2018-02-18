@@ -1,36 +1,53 @@
 package org.codetome.zircon.api.game
 
 import org.codetome.zircon.api.Beta
+import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 
 /**
- * Represents the size of a slice of 3D space. Extends [org.codetome.zircon.api.Size]
- * with a `height` (z axis) dimension.
- * Width corresponds to the **x** and depth corresponds to the **y** axis.
+ * Represents the size of a 3D space. Extends [org.codetome.zircon.api.Size]
+ * with a `zLength` (z axis) dimension.
+ * Explanation:
+ *         ^ (zLength, z axis, positive direction)
+ *         \
+ *         \
+ *         \
+ *         \
+ *         O---------> (xLength, x axis, positive direction)
+ *        /
+ *      /
+ *    /
+ *  L
+ * (yLength, y axis, positive direction)
+ *
  */
+@Suppress("DataClassPrivateConstructor")
 @Beta
-data class Size3D(private val size: Size, val height: Int) : Comparable<Size3D> {
+data class Size3D private constructor(val xLength: Int,
+                                      val yLength: Int,
+                                      val zLength: Int) : Comparable<Size3D> {
 
-    val width get() = size.columns
+    operator fun plus(other: Size3D) = Size3D.of(xLength + other.xLength, yLength + other.yLength, zLength + other.zLength)
 
-    val depth get() = size.rows
+    operator fun minus(other: Size3D) = Size3D.of(xLength - other.xLength, yLength - other.yLength, zLength - other.zLength)
 
-    operator fun plus(other: Size3D) = from2DSize(
-            size = size + other.size,
-            levels = height + other.height)
+    override fun compareTo(other: Size3D) = (this.xLength * this.zLength * this.zLength)
+            .compareTo(other.xLength * other.zLength * other.zLength)
 
-    operator fun minus(other: Size3D) = from2DSize(
-            size = size - other.size,
-            levels = height - other.height)
-
-    override fun compareTo(other: Size3D) = (this.width * this.depth * this.height)
-            .compareTo(other.width * other.depth * other.height)
+    /**
+     * Creates a collection of [Position]s in the order in which they should
+     * be iterated when drawing:
+     * - from bottom to top (z axis),
+     * - from furthest to closest (y axis),
+     * - from left to right (x axis)
+     */
+    fun fetchPositions(): Iterable<Position> = TODO()
 
     /**
      * Transforms this [Size3D] to a [Size]. Note that
-     * the `height` component is lost during the conversion!
+     * the `zLength` component is lost during the conversion!
      */
-    fun to2DSize() = size
+    fun to2DSize() = Size.of(xLength, yLength)
 
     companion object {
 
@@ -41,20 +58,20 @@ data class Size3D(private val size: Size, val height: Int) : Comparable<Size3D> 
          * Factory method for [Size3D].
          */
         @JvmStatic
-        fun of(columns: Int, rows: Int, levels: Int) = Size3D(
-                size = Size.of(
-                        columns = columns,
-                        rows = rows),
-                height = levels)
+        fun of(xLength: Int, yLength: Int, zLength: Int) = Size3D(
+                xLength = xLength,
+                yLength = yLength,
+                zLength = zLength)
 
         /**
          * Creates a new [Size3D] from a [Size].
-         * If `height` is not supplied it defaults to `0` (ground height).
+         * If `zLength` is not supplied, it defaults to `0`.
          */
         @JvmOverloads
         @JvmStatic
-        fun from2DSize(size: Size, levels: Int = 0) = Size3D(
-                size = size,
-                height = levels)
+        fun from2DSize(size: Size, zLength: Int = 0) = Size3D(
+                xLength = size.xLength,
+                yLength = size.xLength,
+                zLength = zLength)
     }
 }

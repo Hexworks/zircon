@@ -11,18 +11,18 @@ class FilledRectangleFactoryTest {
     fun shouldProperlyFillRectangle() {
         val result = FilledRectangleFactory.buildFilledRectangle(
                 topLeft = Position.OFFSET_1x1,
-                size = Size(3, 3))
+                size = Size.of(3, 3))
 
         assertThat(result).containsExactly(
-                Position(column = 0, row = 0),
-                Position(column = 1, row = 0),
-                Position(column = 2, row = 0),
-                Position(column = 0, row = 1),
-                Position(column = 1, row = 1),
-                Position(column = 2, row = 1),
-                Position(column = 0, row = 2),
-                Position(column = 1, row = 2),
-                Position(column = 2, row = 2))
+                Position(x = 0, y = 0),
+                Position(x = 1, y = 0),
+                Position(x = 2, y = 0),
+                Position(x = 0, y = 1),
+                Position(x = 1, y = 1),
+                Position(x = 2, y = 1),
+                Position(x = 0, y = 2),
+                Position(x = 1, y = 2),
+                Position(x = 2, y = 2))
     }
 
 

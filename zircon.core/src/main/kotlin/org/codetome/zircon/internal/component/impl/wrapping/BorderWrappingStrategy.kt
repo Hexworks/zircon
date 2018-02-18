@@ -86,12 +86,12 @@ class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
                                 .build()))
             }
         }
-        if (size.columns > 2) {
-            val horizontalLine = LineFactory.buildLine(topLeftPos, topRightPos.withRelativeColumn(-2))
+        if (size.xLength > 2) {
+            val horizontalLine = LineFactory.buildLine(topLeftPos, topRightPos.withRelativeX(-2))
             if (drawTop.or(drawBottom)) {
                 horizontalLine.getPositions().forEach {
                     if (drawTop) {
-                        val topOffset = it.withRelativeColumn(1).withRelative(offset)
+                        val topOffset = it.withRelativeX(1).withRelative(offset)
                         textImage.getCharacterAt(topOffset).map { char ->
                             textImage.setCharacterAt(topOffset, char
                                     .withModifiers(BorderBuilder.newBuilder()
@@ -101,8 +101,8 @@ class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
                         }
                     }
                     if (drawBottom) {
-                        val bottomOffset = it.withRelativeColumn(1)
-                                .withRelativeRow(size.rows - 1)
+                        val bottomOffset = it.withRelativeX(1)
+                                .withRelativeY(size.yLength - 1)
                         textImage.getCharacterAt(bottomOffset).map { char ->
                             textImage.setCharacterAt(bottomOffset, char
                                     .withModifiers(BorderBuilder.newBuilder()
@@ -114,12 +114,12 @@ class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
                 }
             }
         }
-        if (size.rows > 2) {
-            val verticalLine = LineFactory.buildLine(topLeftPos, bottomLeftPos.withRelativeRow(-2))
+        if (size.yLength > 2) {
+            val verticalLine = LineFactory.buildLine(topLeftPos, bottomLeftPos.withRelativeY(-2))
             if (drawLeft.or(drawRight)) {
                 verticalLine.getPositions().forEach {
                     if (drawLeft) {
-                        val leftOffset = it.withRelativeRow(1).withRelative(offset)
+                        val leftOffset = it.withRelativeY(1).withRelative(offset)
                         textImage.getCharacterAt(leftOffset).map { char ->
                             textImage.setCharacterAt(leftOffset, char
                                     .withModifiers(BorderBuilder.newBuilder()
@@ -129,8 +129,8 @@ class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
                         }
                     }
                     if (drawRight) {
-                        val rightOffset = it.withRelativeRow(1)
-                                .withRelativeColumn(size.columns - 1)
+                        val rightOffset = it.withRelativeY(1)
+                                .withRelativeX(size.xLength - 1)
                         textImage.getCharacterAt(rightOffset).map { char ->
                             textImage.setCharacterAt(rightOffset, char
                                     .withModifiers(BorderBuilder.newBuilder()

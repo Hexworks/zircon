@@ -45,24 +45,24 @@ class DefaultCursorHandlerTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionOnNegativeCursorRow() {
-        target.putCursorAt(Position.DEFAULT_POSITION.withRow(-1))
+        target.putCursorAt(Position.DEFAULT_POSITION.withY(-1))
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionOnNegativeCursorColumn() {
-        target.putCursorAt(Position.DEFAULT_POSITION.withColumn(-1))
+        target.putCursorAt(Position.DEFAULT_POSITION.withX(-1))
     }
 
     @Test
     fun shouldReportEndOfLineWhenAtEndOfLine() {
-        target.putCursorAt(Position(SIZE.columns, 0))
+        target.putCursorAt(Position(SIZE.xLength, 0))
 
         assertThat(target.isCursorAtTheEndOfTheLine()).isTrue()
     }
 
     @Test
     fun shouldNotReportEndOfLineWhenNotAtEndOfLine() {
-        target.putCursorAt(Position(SIZE.columns - 2, 0))
+        target.putCursorAt(Position(SIZE.xLength - 2, 0))
 
         assertThat(target.isCursorAtTheEndOfTheLine()).isFalse()
     }
@@ -97,7 +97,7 @@ class DefaultCursorHandlerTest {
 
     @Test
     fun shouldReportAtLastRowWhenAtLastRow() {
-        target.putCursorAt(Position(0, SIZE.rows))
+        target.putCursorAt(Position(0, SIZE.yLength))
 
         assertThat(target.isCursorAtTheLastRow()).isTrue()
     }
@@ -121,7 +121,7 @@ class DefaultCursorHandlerTest {
         target.moveCursorBackward()
 
         assertThat(target.getCursorPosition())
-                .isEqualTo(pos.withRelativeColumn(-1))
+                .isEqualTo(pos.withRelativeX(-1))
     }
 
     @Test
@@ -131,7 +131,7 @@ class DefaultCursorHandlerTest {
         target.moveCursorBackward()
 
         assertThat(target.getCursorPosition())
-                .isEqualTo(Position.of(SIZE.columns - 1, 0))
+                .isEqualTo(Position.of(SIZE.xLength - 1, 0))
     }
 
     @Test

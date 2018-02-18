@@ -82,8 +82,8 @@ abstract class ApplicationTerminal(
                 }
                 drawCharacter(
                         character = textCharacter,
-                        columnIndex = position.column,
-                        rowIndex = position.row,
+                        xIdx = position.x,
+                        yIdx = position.y,
                         font = font,
                         drawCursor = drawCursor)
             }
@@ -101,24 +101,24 @@ abstract class ApplicationTerminal(
 
     override fun doResize(width: Int, height: Int) {
         val terminalSize = Size.of(
-                columns = width / getSupportedFontSize().columns,
-                rows = height / getSupportedFontSize().rows)
+                xLength = width / getSupportedFontSize().xLength,
+                yLength = height / getSupportedFontSize().yLength)
         terminal.setSize(terminalSize)
         resizeHappened = true
     }
 
     private fun drawCharacter(
             character: TextCharacter,
-            columnIndex: Int,
-            rowIndex: Int,
+            xIdx: Int,
+            yIdx: Int,
             font: Font,
             drawCursor: Boolean) {
 
-        val x = columnIndex * getSupportedFontSize().columns
-        val y = rowIndex * getSupportedFontSize().rows
+        val x = xIdx * getSupportedFontSize().xLength
+        val y = yIdx * getSupportedFontSize().yLength
 
         listOf(Pair(font, character))
-                .plus(fetchOverlayZIntersection(Position.of(columnIndex, rowIndex)))
+                .plus(fetchOverlayZIntersection(Position.of(xIdx, yIdx)))
                 .forEach { (fontOverride, tc) ->
                     // TODO: test font
                     val fontToUse = if (fontOverride === FontSettings.NO_FONT) {

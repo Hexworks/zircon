@@ -75,8 +75,8 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
     private fun addActionToKeyQueue(actionType: MouseActionType, e: MouseEvent) {
         try {
             val position = Position.of(
-                    column = Math.max(0, e.x.div(fontWidth)),
-                    row = Math.max(0, e.y.div(fontHeight)))
+                    x = Math.max(0, e.x.div(fontWidth)),
+                    y = Math.max(0, e.y.div(fontHeight)))
             MouseAction(
                     actionType = actionType,
                     button = e.button,

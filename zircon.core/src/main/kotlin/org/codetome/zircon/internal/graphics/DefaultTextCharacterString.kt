@@ -19,11 +19,11 @@ data class DefaultTextCharacterString(private val textChars: List<TextCharacter>
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
         val (cols, rows) = surface.getBoundableSize()
-        require(offset.column < cols) {
-            "Can't draw string at offset column '${offset.column}' because the draw surface is smaller: $cols"
+        require(offset.x < cols) {
+            "Can't draw string at offset xLength '${offset.x}' because the draw surface is smaller: $cols"
         }
-        require(offset.row < rows) {
-            "Can't draw string at offset row '${offset.row}' because the draw surface is smaller: $rows"
+        require(offset.y < rows) {
+            "Can't draw string at offset yLength '${offset.y}' because the draw surface is smaller: $rows"
         }
         val charIter = textChars.iterator()
         val cursorHandler = DefaultCursorHandler(surface.getBoundableSize())
@@ -36,7 +36,7 @@ data class DefaultTextCharacterString(private val textChars: List<TextCharacter>
                 do {
                     val nextWord = wordCharacterIterator.next()
                     val wordSize = nextWord.size
-                    var spaceRemaining = cols - cursorHandler.getCursorPosition().column
+                    var spaceRemaining = cols - cursorHandler.getCursorPosition().x
 
                     //the word is bigger then 1 line when this happens we should character wrap
                     if(wordSize > cols){
@@ -54,17 +54,17 @@ data class DefaultTextCharacterString(private val textChars: List<TextCharacter>
                             cursorHandler.moveCursorForward()
                         })
                     } else {
-                        //this means we are at the last row and therefore we cannot wrap anymore. Therefore we should
+                        //this means we are at the last yLength and therefore we cannot wrap anymore. Therefore we should
                         //stop rendering
-                        val row = cursorHandler.getCursorPosition().row
+                        val row = cursorHandler.getCursorPosition().y
                         if(row == rows - 1){
                             return
                         }
 
-                        //as our word couldn't fit on the last line lets move down a row
-                        cursorHandler.putCursorAt(cursorHandler.getCursorPosition().withRelativeRow(1).withColumn(0))
+                        //as our word couldn't fit on the last line lets move down a yLength
+                        cursorHandler.putCursorAt(cursorHandler.getCursorPosition().withRelativeY(1).withX(0))
                         //recalculate our space remaining
-                        spaceRemaining = cols - cursorHandler.getCursorPosition().column
+                        spaceRemaining = cols - cursorHandler.getCursorPosition().x
 
                         if (spaceRemaining >= wordSize) {
                             //this means we can plunk the word on our line

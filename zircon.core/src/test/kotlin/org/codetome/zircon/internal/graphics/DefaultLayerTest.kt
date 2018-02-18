@@ -5,7 +5,6 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.junit.Before
 import org.junit.Test
@@ -78,15 +77,15 @@ class DefaultLayerTest {
         val CHAR = TextCharacterBuilder.newBuilder()
                 .character('x')
                 .build()
-        val SIZE = Size(10, 10)
+        val SIZE = Size.of(10, 10)
         val OFFSET = Position(5, 5)
-        val INTERSECTING_BOUNDABLE = DefaultBoundable(Size(6, 6))
-        val NON_INTERSECTING_BOUNDABLE = DefaultBoundable(Size(5, 5))
+        val INTERSECTING_BOUNDABLE = DefaultBoundable(Size.of(6, 6))
+        val NON_INTERSECTING_BOUNDABLE = DefaultBoundable(Size.of(5, 5))
         val NON_CONTAINED_BOUNDABLE = DefaultBoundable(SIZE.withRelative(Size.ONE))
         val CONTAINED_POSITION = OFFSET
         val NON_CONTAINED_POSITION = CONTAINED_POSITION
-                .withRelativeColumn(-1)
-                .withRelativeRow(-1)
+                .withRelativeX(-1)
+                .withRelativeY(-1)
     }
 
 }

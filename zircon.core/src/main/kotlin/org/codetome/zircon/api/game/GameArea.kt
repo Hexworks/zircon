@@ -1,13 +1,13 @@
 package org.codetome.zircon.api.game
 
 import org.codetome.zircon.api.Beta
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.Block
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.graphics.TextImage
 
 /**
- * Note that this class is in **BETA**!
- * It's API is subject to change!
+ * A [GameArea] represents the 3D space in which the entities of a
+ * game take place.
  */
 @Beta
 interface GameArea {
@@ -18,28 +18,49 @@ interface GameArea {
     fun getSize(): Size3D
 
     /**
-     * Returns a 2D segment of 3D space at a given 3D position and of a given
-     * 2D size.
+     * Returns a part of this [GameArea] as a sequence of [Block]s.
+     * @param offset the position where the collection of Blocks will start.
+     * @param size the size of the area which you need the blocks from.
+     *
+     * Example: offset=(xLength=2, yLength=4, yLength=8), size=(xLength=9,yLength=4,yLength=3)
+     *<pre>
+     *
+     *
+     *
+     *        ^ (yLength,yLength, positive direction)
+     *        \
+     *        \
+     *        \
+     *        \
+     * (2,4,8)O---------> (xLength,xLength, positive direction)
+     *       /
+     *     /
+     *   /
+     *(yLength,yLength, positive direction)
+     *
+     *         ^^^--this point
+     *</pre>
      */
-    fun getSegmentAt(offset: Position3D, size: Size): GameAreaSegment
+    fun fetchBlocksAt(offset: Position3D, size: Size3D): Iterable<Block>
 
     /**
-     * Returns the [TextCharacter]s at the given [Position3D].
-     * Since there can be multiple layers on the same height a [List] is returned
+     * Returns the layers as a collection of [TextCharacter]s at the given [Position3D].
+     * Since there can be multiple layers on the same position an [Iterable] is returned
      * instead of a single [TextCharacter].
      * Note that the returned [TextCharacter]s are ordered from bottom to top.
      */
-    fun getCharactersAt(position: Position3D): List<TextCharacter>
+    fun getLayersAt(position: Position3D): Iterable<TextCharacter>
 
     /**
-     * Returns the layer as a [TextImage] at a given level and index.
+     * Returns the layer as a [TextImage] at a given `level` (yLength) and `layerIndex`.
      */
     fun getLayerAt(level: Int, layerIdx: Int): TextImage
 
     /**
      * Returns the number of levels this [GameArea] has.
+     * (eg: the `yLength` of the [GameArea])
      */
-    fun getLevelCount() = getSize().height
+    fun getLevelCount() = getSize().zLength
 
 
     /**

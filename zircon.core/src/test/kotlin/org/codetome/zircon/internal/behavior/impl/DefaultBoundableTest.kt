@@ -27,7 +27,7 @@ class DefaultBoundableTest {
     @Test
     fun shouldNotContainPositionWhenPositionIsOutOfBounds() {
         assertThat(target.containsPosition(target.getPosition()
-                        .withRelative(Position.of(TARGET_SIZE.rows, TARGET_SIZE.columns))))
+                        .withRelative(Position.of(TARGET_SIZE.yLength, TARGET_SIZE.xLength))))
                 .isFalse()
     }
 
@@ -68,14 +68,14 @@ class DefaultBoundableTest {
 
     @Test
     fun shouldNotContainBoundableWhenCalledWithNonContainedBoundable() {
-        assertThat(target.containsBoundable(DefaultBoundable(Size(100, 100))))
+        assertThat(target.containsBoundable(DefaultBoundable(Size.of(100, 100))))
                 .isFalse()
     }
 
     companion object {
         val DEFAULT_COLS = 10
         val DEFAULT_ROWS = 10
-        val TARGET_SIZE = Size(DEFAULT_COLS, DEFAULT_ROWS)
+        val TARGET_SIZE = Size.of(DEFAULT_COLS, DEFAULT_ROWS)
         val INTERSECTION_OFFSET = Position.OFFSET_1x1
         val NON_INTERSECTING_OFFSET = Position(20, 20)
     }

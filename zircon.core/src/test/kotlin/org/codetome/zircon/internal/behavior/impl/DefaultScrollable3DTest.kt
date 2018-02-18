@@ -201,12 +201,12 @@ class DefaultScrollable3DTest {
 
     companion object {
         val VIRTUAL_SPACE_SIZE = Size3D.of(
-                columns = 10,
-                rows = 10,
-                levels = 10)
+                xLength = 10,
+                yLength = 10,
+                zLength = 10)
         val VISIBLE_SPACE_SIZE = Size3D.of(
-                columns = 5,
-                rows = 5,
-                levels = 5)
+                xLength = 5,
+                yLength = 5,
+                zLength = 5)
     }
 }

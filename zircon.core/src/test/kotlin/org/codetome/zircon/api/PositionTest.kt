@@ -21,74 +21,62 @@ class PositionTest {
     }
 
     @Test
-    fun shouldProperlyCreateNewPositionWithRowWhenWithRowIsCalled() {
+    fun shouldProperlyCreateNewPositionWithYWhenWithYIsCalled() {
         assertThat(Position(
-                column = EXPECTED_COL,
-                row = Int.MAX_VALUE)
-                .withRow(EXPECTED_ROW))
+                x = EXPECTED_COL,
+                y = Int.MAX_VALUE)
+                .withY(EXPECTED_ROW))
                 .isEqualTo(EXPECTED_TERMINAL_POSITION)
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun shouldThrowExceptionWhenColumnIsLessThanZero() {
+    fun shouldThrowExceptionWhenXIsLessThanZero() {
         Position.of(-1, 0)
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun shouldThrowExceptionWhenRowIsLessThanZero() {
+    fun shouldThrowExceptionWhenYIsLessThanZero() {
         Position.of(0, -1)
     }
 
     @Test
-    fun shouldProperlyCreateNewPositionWithRelativeRowWhenWithRelativeRowIsCalled() {
+    fun shouldProperlyCreateNewPositionWithRelativeYWhenWithRelativeYIsCalled() {
         assertThat(Position(
-                column = EXPECTED_COL,
-                row = EXPECTED_ROW - 1)
-                .withRelativeRow(1))
+                x = EXPECTED_COL,
+                y = EXPECTED_ROW - 1)
+                .withRelativeY(1))
                 .isEqualTo(EXPECTED_TERMINAL_POSITION)
     }
 
     @Test
-    fun shouldProperlyCreateNewPositionWithColWhenWithColumnIsCalled() {
+    fun shouldProperlyCreateNewPositionWithXWhenWithXIsCalled() {
         assertThat(Position(
-                column = Int.MAX_VALUE,
-                row = EXPECTED_ROW)
-                .withColumn(EXPECTED_COL))
+                x = Int.MAX_VALUE,
+                y = EXPECTED_ROW)
+                .withX(EXPECTED_COL))
                 .isEqualTo(EXPECTED_TERMINAL_POSITION)
     }
 
     @Test
-    fun shouldProperlyCreateNewPositionWithRelativeColWhenWithRelativeColumnIsCalled() {
+    fun shouldProperlyCreateNewPositionWithRelativeXWhenWithRelativeXIsCalled() {
         assertThat(Position(
-                column = EXPECTED_COL - 1,
-                row = EXPECTED_ROW)
-                .withRelativeColumn(1))
+                x = EXPECTED_COL - 1,
+                y = EXPECTED_ROW)
+                .withRelativeX(1))
                 .isEqualTo(EXPECTED_TERMINAL_POSITION)
     }
 
     @Test
     fun shouldProperlyCreateNewPositionWithRelativeValuesWhenWithRelativeIsCalled() {
         assertThat(Position(
-                column = EXPECTED_COL - 1,
-                row = EXPECTED_ROW - 1)
+                x = EXPECTED_COL - 1,
+                y = EXPECTED_ROW - 1)
                 .withRelative(Position(1, 1)))
                 .isEqualTo(EXPECTED_TERMINAL_POSITION)
     }
 
     @Test
-    fun shouldCompareToLessWhenRowIsLess() {
-        assertThat(EXPECTED_TERMINAL_POSITION)
-                .isGreaterThan(EXPECTED_TERMINAL_POSITION.withRelativeRow(-1))
-    }
-
-    @Test
-    fun shouldCompareToLessWhenRowIsEqualButColIsLess() {
-        assertThat(EXPECTED_TERMINAL_POSITION)
-                .isGreaterThan(EXPECTED_TERMINAL_POSITION.withRelativeColumn(-1))
-    }
-
-    @Test
-    fun shouldCompareToEqualWhenRowIsEqualAndColIsEqual() {
+    fun shouldCompareToEqualWhenYIsEqualAndXIsEqual() {
         assertThat(EXPECTED_TERMINAL_POSITION)
                 .isEqualTo(EXPECTED_TERMINAL_POSITION)
     }
@@ -106,26 +94,26 @@ class PositionTest {
     }
 
     @Test
-    fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithColumn() {
-        assertThat(Position(1, 0).withColumn(0))
+    fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithX() {
+        assertThat(Position(1, 0).withX(0))
                 .isSameAs(Position.TOP_LEFT_CORNER)
     }
 
     @Test
-    fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithRelativeColumn() {
-        assertThat(Position(1, 0).withRelativeColumn(-1))
+    fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithRelativeX() {
+        assertThat(Position(1, 0).withRelativeX(-1))
                 .isSameAs(Position.TOP_LEFT_CORNER)
     }
 
     @Test
-    fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithRow() {
-        assertThat(Position(0, 1).withRow(0))
+    fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithY() {
+        assertThat(Position(0, 1).withY(0))
                 .isSameAs(Position.TOP_LEFT_CORNER)
     }
 
     @Test
-    fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithRelativeRow() {
-        assertThat(Position(0, 1).withRelativeRow(-1))
+    fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithRelativeY() {
+        assertThat(Position(0, 1).withRelativeY(-1))
                 .isSameAs(Position.TOP_LEFT_CORNER)
     }
 
@@ -183,7 +171,7 @@ class PositionTest {
         val EXPECTED_ROW = 2
         val EXPECTED_COL = 3
         val EXPECTED_TERMINAL_POSITION = Position(
-                column = EXPECTED_COL,
-                row = EXPECTED_ROW)
+                x = EXPECTED_COL,
+                y = EXPECTED_ROW)
     }
 }

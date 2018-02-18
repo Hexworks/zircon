@@ -1,9 +1,6 @@
 package org.codetome.zircon.api.component.builder
 
-import org.codetome.zircon.api.Beta
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.*
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.component.ComponentStyles
@@ -68,29 +65,30 @@ data class GameComponentBuilder(private var gameArea: GameArea = NO_GAME_AREA,
     companion object {
 
         private val NO_GAME_AREA = object : GameArea {
-            override fun getLayerAt(level: Int, layerIdx: Int): TextImage {
-                TODO("not implemented")
-            }
-
-            override fun setCharacterAt(position: Position3D, layerIdx: Int, character: TextCharacter) {
-                TODO("not implemented")
-            }
-
             override fun getSize(): Size3D {
-                TODO("not implemented")
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-            override fun getCharactersAt(position: Position3D): List<TextCharacter> {
-                TODO("not implemented")
+            override fun fetchBlocksAt(offset: Position3D, size: Size3D): Iterable<Block> {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun getLayersAt(position: Position3D): Iterable<TextCharacter> {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun getLayerAt(level: Int, layerIdx: Int): TextImage {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun setCharactersAt(position: Position3D, characters: List<TextCharacter>) {
-                TODO("not implemented")
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-            override fun getSegmentAt(offset: Position3D, size: Size): GameAreaSegment {
-                TODO("not implemented")
+            override fun setCharacterAt(position: Position3D, layerIdx: Int, character: TextCharacter) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
+
         }
 
         @JvmField

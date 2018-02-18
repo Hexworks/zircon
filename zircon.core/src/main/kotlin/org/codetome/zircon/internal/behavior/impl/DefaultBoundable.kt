@@ -31,22 +31,22 @@ class DefaultBoundable(private val size: Size,
 
     override fun intersects(boundable: Boundable) = rect.intersects(
             Rectangle(
-                    boundable.getPosition().column,
-                    boundable.getPosition().row,
-                    boundable.getBoundableSize().columns,
-                    boundable.getBoundableSize().rows))
+                    boundable.getPosition().x,
+                    boundable.getPosition().y,
+                    boundable.getBoundableSize().xLength,
+                    boundable.getBoundableSize().yLength))
 
     override fun containsPosition(position: Position): Boolean {
-        return rect.contains(Point(position.column, position.row))
+        return rect.contains(Point(position.x, position.y))
     }
 
     override fun containsBoundable(boundable: Boundable) = rect.contains(
             Rectangle(
-                    boundable.getPosition().column,
-                    boundable.getPosition().row,
-                    boundable.getBoundableSize().columns,
-                    boundable.getBoundableSize().rows))
+                    boundable.getPosition().x,
+                    boundable.getPosition().y,
+                    boundable.getBoundableSize().xLength,
+                    boundable.getBoundableSize().yLength))
 
     private fun refreshRect() =
-            Rectangle(position.column, position.row, getBoundableSize().columns, getBoundableSize().rows)
+            Rectangle(position.x, position.y, getBoundableSize().xLength, getBoundableSize().yLength)
 }

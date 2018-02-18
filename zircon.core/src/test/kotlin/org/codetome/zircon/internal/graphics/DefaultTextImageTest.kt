@@ -62,7 +62,7 @@ class DefaultTextImageTest {
 
     @Test
     fun shouldProperlyResizeWhenResizeCalledWithDifferentSize() {
-        val result = target.resize(Size(4, 4), SET_ALL_CHAR)
+        val result = target.resize(Size.of(4, 4), SET_ALL_CHAR)
         assertThat(result.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(TO_COPY_CHAR)
         assertThat(result.getCharacterAt(Position(1, 1)).get())
@@ -193,13 +193,13 @@ class DefaultTextImageTest {
     }
 
     private fun fetchOutOfBoundsPositions(): List<Position> {
-        return listOf(Position(SIZE.columns - 1, Int.MAX_VALUE),
-                Position(Int.MAX_VALUE, SIZE.columns - 1),
+        return listOf(Position(SIZE.xLength - 1, Int.MAX_VALUE),
+                Position(Int.MAX_VALUE, SIZE.xLength - 1),
                 Position(Int.MAX_VALUE, Int.MAX_VALUE))
     }
 
     companion object {
-        val SIZE = Size(3, 3)
+        val SIZE = Size.of(3, 3)
         val FILLER = TextCharacterBuilder.newBuilder()
                 .character('a')
                 .build()
@@ -211,8 +211,6 @@ class DefaultTextImageTest {
                 .build()
         val TO_COPY = arrayOf(arrayOf(TO_COPY_CHAR))
         val IMAGE_TO_COPY = DefaultTextImage(Size.ONE, arrayOf(arrayOf()), SET_ALL_CHAR)
-        val IMAGE_TO_COPY_AND_CROP = DefaultTextImage(Size(2, 2), arrayOf(arrayOf()), SET_ALL_CHAR)
-
     }
 
 }

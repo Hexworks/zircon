@@ -36,8 +36,8 @@ class DefaultShape(private val positions: Set<Position> = setOf())
             "You can't transform a Shape with zero points!"
         }
         val offset = Position.of(
-                column = positions.minBy { it.column }!!.column,
-                row = positions.minBy { it.row }!!.row
+                x = positions.minBy { it.x }!!.x,
+                y = positions.minBy { it.y }!!.y
         )
         return DefaultShape(positions.map { it - offset }
                 .toSet())

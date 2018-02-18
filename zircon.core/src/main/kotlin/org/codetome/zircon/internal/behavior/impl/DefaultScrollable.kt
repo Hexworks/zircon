@@ -24,29 +24,29 @@ class DefaultScrollable(private var visibleSpaceSize: Size,
     override fun getVisibleOffset() = offset
 
     override fun scrollOneRight(): Position {
-        if (visibleSpaceSize.columns + offset.column < virtualSpaceSize.columns) {
-            this.offset = offset.withRelativeColumn(1)
+        if (visibleSpaceSize.xLength + offset.x < virtualSpaceSize.xLength) {
+            this.offset = offset.withRelativeX(1)
         }
         return offset
     }
 
     override fun scrollOneDown(): Position {
-        if (visibleSpaceSize.rows + offset.row < virtualSpaceSize.rows) {
-            this.offset = offset.withRelativeRow(1)
+        if (visibleSpaceSize.yLength + offset.y < virtualSpaceSize.yLength) {
+            this.offset = offset.withRelativeY(1)
         }
         return offset
     }
 
     override fun scrollOneLeft(): Position {
-        if (offset.column > 0) {
-            offset = offset.withRelativeColumn(-1)
+        if (offset.x > 0) {
+            offset = offset.withRelativeX(-1)
         }
         return offset
     }
 
     override fun scrollOneUp(): Position {
-        if (offset.row > 0) {
-            offset = offset.withRelativeRow(-1)
+        if (offset.y > 0) {
+            offset = offset.withRelativeY(-1)
         }
         return offset
     }
@@ -55,9 +55,9 @@ class DefaultScrollable(private var visibleSpaceSize: Size,
         require(columns >= 0) {
             "You can only scroll right by a positive amount!"
         }
-        val columnToScrollTo = offset.column + columns
-        val lastScrollableColumn = virtualSpaceSize.columns - visibleSpaceSize.columns
-        offset = offset.copy(column = Math.min(columnToScrollTo, lastScrollableColumn))
+        val columnToScrollTo = offset.x + columns
+        val lastScrollableColumn = virtualSpaceSize.xLength - visibleSpaceSize.xLength
+        offset = offset.copy(x = Math.min(columnToScrollTo, lastScrollableColumn))
         return offset
     }
 
@@ -65,8 +65,8 @@ class DefaultScrollable(private var visibleSpaceSize: Size,
         require(columns >= 0) {
             "You can only scroll left by a positive amount!"
         }
-        val columnToScrollTo = offset.column - columns
-        offset = offset.copy(column = Math.max(0, columnToScrollTo))
+        val columnToScrollTo = offset.x - columns
+        offset = offset.copy(x = Math.max(0, columnToScrollTo))
         return offset
     }
 
@@ -74,8 +74,8 @@ class DefaultScrollable(private var visibleSpaceSize: Size,
         require(rows >= 0) {
             "You can only scroll up by a positive amount!"
         }
-        val rowToScrollTo = offset.row - rows
-        offset = offset.copy(row = Math.max(0, rowToScrollTo))
+        val rowToScrollTo = offset.y - rows
+        offset = offset.copy(y = Math.max(0, rowToScrollTo))
         return offset
     }
 
@@ -83,20 +83,20 @@ class DefaultScrollable(private var visibleSpaceSize: Size,
         require(rows >= 0) {
             "You can only scroll down by a positive amount!"
         }
-        val rowToScrollTo = offset.row + rows
-        val lastScrollableRow = virtualSpaceSize.rows - visibleSpaceSize.rows
-        offset = offset.copy(row = Math.min(rowToScrollTo, lastScrollableRow))
+        val rowToScrollTo = offset.y + rows
+        val lastScrollableRow = virtualSpaceSize.yLength - visibleSpaceSize.yLength
+        offset = offset.copy(y = Math.min(rowToScrollTo, lastScrollableRow))
         return offset
     }
 
     private fun checkSizes() {
-        require(virtualSpaceSize.columns >= visibleSpaceSize.columns) {
-            "Can't have a virtual space (${virtualSpaceSize.columns}, ${virtualSpaceSize.rows})" +
-                    " with less width than the visible space (${visibleSpaceSize.columns}, ${visibleSpaceSize.rows})!"
+        require(virtualSpaceSize.xLength >= visibleSpaceSize.xLength) {
+            "Can't have a virtual space (${virtualSpaceSize.xLength}, ${virtualSpaceSize.yLength})" +
+                    " with less xLength than the visible space (${visibleSpaceSize.xLength}, ${visibleSpaceSize.yLength})!"
         }
-        require(virtualSpaceSize.rows >= visibleSpaceSize.rows) {
-            "Can't have a virtual space (${virtualSpaceSize.columns}, ${virtualSpaceSize.rows})" +
-                    " with less depth than the visible space (${visibleSpaceSize.columns}, ${visibleSpaceSize.rows})!"
+        require(virtualSpaceSize.yLength >= visibleSpaceSize.yLength) {
+            "Can't have a virtual space (${virtualSpaceSize.xLength}, ${virtualSpaceSize.yLength})" +
+                    " with less yLength than the visible space (${visibleSpaceSize.xLength}, ${visibleSpaceSize.yLength})!"
         }
     }
 }
