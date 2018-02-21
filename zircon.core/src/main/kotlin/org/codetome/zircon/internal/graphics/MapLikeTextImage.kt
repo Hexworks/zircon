@@ -15,21 +15,23 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class MapLikeTextImage(size: Size,
-                       styleSet: StyleSet = StyleSetBuilder.DEFAULT_STYLE)
+                       styleSet: StyleSet = StyleSetBuilder.DEFAULT_STYLE,
+                       chars: Map<Position, TextCharacter> = mapOf(),
+                       private val filler: TextCharacter = TextCharacterBuilder.EMPTY)
     : TextImageBase(size = size, styleSet = styleSet) {
 
-    private val backend = ConcurrentHashMap<Position, TextCharacter>()
+    private val backend = ConcurrentHashMap<Position, TextCharacter>(chars)
 
     override fun getCharacterAt(position: Position): Optional<TextCharacter> {
-        return if(getBoundableSize().containsPosition(position)) {
-            Optional.of(backend.getOrDefault(position, TextCharacterBuilder.EMPTY))
+        return if (getBoundableSize().containsPosition(position)) {
+            Optional.of(backend.getOrDefault(position, filler))
         } else {
             Optional.empty()
         }
     }
 
     override fun setCharacterAt(position: Position, character: TextCharacter): Boolean {
-        return if(getBoundableSize().containsPosition(position)) {
+        return if (getBoundableSize().containsPosition(position)) {
             backend[position] = character
             true
         } else {
@@ -41,30 +43,34 @@ class MapLikeTextImage(size: Size,
         val columns = Math.max(getBoundableSize().xLength, offset.x + textImage.getBoundableSize().xLength)
         val rows = Math.max(getBoundableSize().yLength, offset.y + textImage.getBoundableSize().yLength)
 
-        val surface = resize(Size.of(columns, rows), EMPTY_POSITION)
+        val surface = resize(Size.of(columns, rows), filler)
         surface.draw(textImage, offset)
         return surface
     }
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
-        backend.forEach { pos, tc ->
-            surface.setCharacterAt(pos + offset, tc)
+        getBoundableSize().fetchPositions().forEach {
+            surface.setCharacterAt(it + offset, backend.getOrDefault(it, filler))
         }
     }
 
     override fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell> {
         return size.fetchPositions()
                 .map { it + offset }
-                .intersect(getBoundableSize().fetchPositions())
+                .intersect(backend.keys)
                 .map { Cell(it, getCharacterAt(it).get()) }
     }
 
     override fun resize(newSize: Size, filler: TextCharacter): TextImage {
-        val result = MapLikeTextImage(newSize, toStyleSet())
+        val result = MapLikeTextImage(
+                size = newSize,
+                styleSet = toStyleSet(),
+                filler = this.filler)
         backend.filter { (pos) -> newSize.containsPosition(pos) }
                 .forEach { pos, tc ->
                     result.setCharacterAt(pos, tc)
                 }
+
         newSize.fetchPositions().subtract(getBoundableSize().fetchPositions()).forEach {
             result.setCharacterAt(it, filler)
         }
@@ -88,9 +94,5 @@ class MapLikeTextImage(size: Size,
             result.setCharacterAt(pos, transformer.transform(char))
         }
         return result
-    }
-
-    companion object {
-        val EMPTY_POSITION = TextCharacterBuilder.EMPTY
     }
 }

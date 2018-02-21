@@ -1,22 +1,22 @@
 package org.codetome.zircon.api.builder
 
+import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.graphics.TextImage
-import org.codetome.zircon.internal.graphics.DefaultTextImage
+import org.codetome.zircon.internal.graphics.MapLikeTextImage
 
 /**
  * Creates [org.codetome.zircon.api.graphics.TextImage]s.
  * Defaults:
  * - Default [Size] is `ONE` (1x1).
- * - Default `toCopy` is an empty array
  * - Default `filler` is an `EMPTY` character
  */
 @Suppress("ArrayInDataClass")
 data class TextImageBuilder(
         private var size: Size = Size.ONE,
-        private var toCopy: Array<Array<TextCharacter>> = arrayOf(),
-        private var filler: TextCharacter = TextCharacterBuilder.EMPTY) : Builder<TextImage> {
+        private var filler: TextCharacter = TextCharacterBuilder.EMPTY,
+        private val chars: MutableMap<Position, TextCharacter> = mutableMapOf()) : Builder<TextImage> {
 
     /**
      * Sets the size for the new [TextImage].
@@ -27,16 +27,6 @@ data class TextImageBuilder(
     }
 
     /**
-     * 2d array of [TextCharacter]s to copy into the new [TextImage].
-     * If <code>toCopy</code> is bigger than the new title image only the relevant parts will
-     * be copied. If it is smaller the remaining cells will be filled by the <code>filler</code> char.
-     * Default is an empty array.
-     */
-    fun toCopy(toCopy: Array<Array<TextCharacter>>) = also {
-        this.toCopy = toCopy
-    }
-
-    /**
      * The new [TextImage] will be filled by this [TextCharacter].
      * Defaults to `EMPTY`.
      */
@@ -44,10 +34,18 @@ data class TextImageBuilder(
         this.filler = filler
     }
 
-    override fun build(): TextImage = DefaultTextImage(
+    /**
+     * Adds a [TextCharacter] at the given [Position].
+     */
+    fun character(position: Position, textCharacter: TextCharacter) = also {
+        require(size.containsPosition(position))
+        chars[position] = textCharacter
+    }
+
+    override fun build(): TextImage = MapLikeTextImage(
             size = size,
-            toCopy = toCopy,
-            filler = filler)
+            filler = filler,
+            chars = chars)
 
     override fun createCopy() = copy()
 

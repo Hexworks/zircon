@@ -11,7 +11,6 @@ class TextImageBuilderTest {
     fun shouldBuildProperTextImage() {
         val result = TextImageBuilder.newBuilder()
                 .filler(FILLER)
-                .toCopy(arrayOf(arrayOf(COPY_CHAR)))
                 .size(SIZE)
                 .build()
 

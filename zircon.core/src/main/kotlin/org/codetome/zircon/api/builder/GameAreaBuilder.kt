@@ -12,8 +12,12 @@ import org.codetome.zircon.internal.game.InMemoryGameArea
  */
 @Beta
 data class GameAreaBuilder(private var size: Size3D = Size3D.ONE,
+                           private var layersPerBlock: Int = -1,
                            private var levels: MutableMap<Int, MutableList<TextImage>> = mutableMapOf()) : Builder<GameArea> {
 
+    fun layersPerBlock(layersPerBlock: Int) = also {
+        this.layersPerBlock = layersPerBlock
+    }
 
     fun size(size: Size3D) = also {
         this.size = size
@@ -36,7 +40,11 @@ data class GameAreaBuilder(private var size: Size3D = Size3D.ONE,
     }
 
     override fun build(): GameArea {
+        require(layersPerBlock > 0) {
+            "There must be at least 1 layer per block."
+        }
         val gameArea = InMemoryGameArea(
+                layersPerBlock = layersPerBlock,
                 size = size)
         return gameArea
     }

@@ -1,18 +1,17 @@
-package org.codetome.zircon.beta
+package org.codetome.zircon.internal
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.TerminalBuilder
+import org.codetome.zircon.api.SwingTerminalBuilder
 import org.codetome.zircon.api.builder.VirtualTerminalBuilder
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.resource.CP437TilesetResource
-import org.junit.Test
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.system.measureNanoTime
 
 fun main(args:Array<String>) {
-    val terminal = VirtualTerminalBuilder.newBuilder()
+    val terminal = SwingTerminalBuilder.newBuilder()
             .initialTerminalSize(SIZE)
             .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
             .build()
@@ -34,7 +33,7 @@ fun main(args:Array<String>) {
             }
             terminal.flush()
             terminal.putCursorAt(Position.DEFAULT_POSITION)
-            currIdx = if(currIdx == 0) 1 else 0
+            currIdx = if (currIdx == 0) 1 else 0
             loopCount++
         }
         if(loopCount.rem(100) == 0) {
@@ -58,12 +57,6 @@ object Stats {
         println("==================== S T A T S ====================")
         println(getAllStats().joinToString("\n"))
         println("===================================================")
-    }
-
-    @JvmStatic
-    fun addWeightFor(key: String, weight: Long) {
-        addEmptyStatForKeyIfNotPresent(key)
-        stats[key] = stats[key]!!.copy(weight = weight)
     }
 
     @JvmStatic
