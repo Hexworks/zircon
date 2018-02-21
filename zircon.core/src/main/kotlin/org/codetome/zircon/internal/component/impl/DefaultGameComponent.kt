@@ -5,8 +5,10 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.game.GameArea
+import org.codetome.zircon.api.game.Position3D
 import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.game.Size3D
+import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.GameComponent
@@ -78,7 +80,25 @@ class DefaultGameComponent(private val gameArea: GameArea,
         val result = mutableListOf<Layer>()
 
         // TODO: refactor this to be functional
+        (startLevel until Math.min(startLevel + visibleLevelCount, allLevelCount)).forEach { levelIdx ->
+            val segment = gameArea.fetchLayersAt(
+                    offset = Position3D.from2DPosition(getVisibleOffset().to2DPosition(), levelIdx),
+                    size = Size3D.from2DSize(getBoundableSize(), 1))
 
+            segment.forEach {
+                val img = if (projectionMode == ProjectionMode.TOP_DOWN) {
+                    it
+                } else {
+                    it.toSubImage(
+                            offset = Position.of(0, levelIdx),
+                            size = it.getBoundableSize().withRelativeRows(-levelIdx))
+                }
+                result.add(LayerBuilder.newBuilder()
+                        .textImage(img)
+                        .offset(getPosition())
+                        .build())
+            }
+        }
         return result
     }
 

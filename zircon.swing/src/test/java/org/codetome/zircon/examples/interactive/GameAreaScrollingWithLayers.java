@@ -10,6 +10,7 @@ import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.component.builder.ButtonBuilder;
+import org.codetome.zircon.api.component.builder.GameComponentBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.game.GameArea;
 import org.codetome.zircon.api.game.Position3D;
@@ -23,6 +24,7 @@ import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.util.TextColorUtils;
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent;
+import org.codetome.zircon.internal.game.InMemoryGameArea;
 import org.codetome.zircon.internal.graphics.BoxType;
 
 import java.util.*;
@@ -81,7 +83,7 @@ public class GameAreaScrollingWithLayers {
 
         final Size3D visibleGameAreaSize = Size3D.from2DSize(gamePanel.getBoundableSize()
                 .minus(Size.of(2, 2)), 5);
-        final Size virtualGameAreaSize = Size.of(90, 90);
+        final Size virtualGameAreaSize = Size.of(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
 
         final Map<Integer, List<TextImage>> levels = new HashMap<>();
@@ -92,33 +94,25 @@ public class GameAreaScrollingWithLayers {
                     .build()));
         }
 
-        // TODO: fix me
-//        final GameArea gameArea =
-//                new TextImageGameArea(Size3D.from2DSize(virtualGameAreaSize, totalLevels), levels);
-//
-//        final DefaultGameComponent gameComponent = GameComponentBuilder.newBuilder()
-//                .gameArea(gameArea)
-//                .visibleSize(visibleGameAreaSize)
-//                .font(CP437TilesetResource.PHOEBUS_16X16.toFont())
-//                .build();
-//
-//        screen.addComponent(gamePanel);
-//        gamePanel.addComponent(gameComponent);
-//
-//        enableMovement(screen, gameComponent);
-        TextImage groundLevel = levels.get(0).get(0);
-        TextCharacter floor = TextCharacterBuilder.newBuilder()
-                .character(Symbols.BLOCK_SPARSE)
-                .backgroundColor(ANSITextColor.BLACK)
-                .foregroundColor(TextColorFactory.fromString("#112233"))
-                .build();
-        groundLevel.fetchCells().forEach(cell -> {
-            groundLevel.setCharacterAt(cell.getPosition(), floor);
-        });
-//        generatePyramid(3, Position3D.of(5, 5, 2), gameArea);
-//        generatePyramid(6, Position3D.of(15, 9, 5), gameArea);
-//        generatePyramid(5, Position3D.of(9, 21, 4), gameArea);
+        final GameArea gameArea =
+                new InMemoryGameArea(
+                        Size3D.from2DSize(virtualGameAreaSize, totalLevels),
+                        5,
+                        TextCharacterBuilder.EMPTY);
 
+        final DefaultGameComponent gameComponent = GameComponentBuilder.newBuilder()
+                .gameArea(gameArea)
+                .visibleSize(visibleGameAreaSize)
+                .font(CP437TilesetResource.PHOEBUS_16X16.toFont())
+                .build();
+
+        screen.addComponent(gamePanel);
+        gamePanel.addComponent(gameComponent);
+
+        enableMovement(screen, gameComponent);
+        generatePyramid(3, Position3D.of(5, 5, 2), gameArea);
+        generatePyramid(6, Position3D.of(15, 9, 5), gameArea);
+        generatePyramid(5, Position3D.of(9, 21, 4), gameArea);
 
         screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_CYAN.getTheme());
         screen.display();
@@ -137,7 +131,7 @@ public class GameAreaScrollingWithLayers {
                     .withRelativeY(-currSize);
             Size levelSize = Size.of(1 + currSize * 2, 1 + currSize * 2);
             levelSize.fetchPositions().forEach(position -> {
-                gameArea.setCharactersAt(
+                gameArea.setBlockAt(
                         Position3D.from2DPosition((position.plus(levelOffset)), currLevel.get()),
                         Collections.singletonList(wall
                                 .withBackgroundColor(TextColorUtils.darkenColorByPercent(wall.getBackgroundColor(), currPercent))
@@ -176,7 +170,7 @@ public class GameAreaScrollingWithLayers {
                         .textImage(TextCharacterStringBuilder.newBuilder()
                                 .backgroundColor(TextColorFactory.TRANSPARENT)
                                 .foregroundColor(TextColorFactory.fromString("#aaaadd"))
-                                .text(String.format("Position: (xLength=%s, yLength=%s, yLength=%s)", visibleOffset.getX(), visibleOffset.getY(), visibleOffset.getZ()))
+                                .text(String.format("Position: (x=%s, y=%s, z=%s)", visibleOffset.getX(), visibleOffset.getY(), visibleOffset.getZ()))
                                 .build()
                                 .toTextImage())
                         .offset(Position.of(21, 1))

@@ -1,22 +1,25 @@
 package org.codetome.zircon.api.component.builder
 
-import org.codetome.zircon.api.*
+import org.codetome.zircon.api.Beta
+import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.builder.ComponentStylesBuilder
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.GameComponent
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.api.game.*
-import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.game.GameArea
+import org.codetome.zircon.api.game.ProjectionMode
+import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent
 import org.codetome.zircon.internal.font.impl.FontSettings
+import java.util.*
 
 /**
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
 @Beta
-data class GameComponentBuilder(private var gameArea: GameArea = NO_GAME_AREA,
+data class GameComponentBuilder(private var gameArea: Optional<GameArea> = Optional.empty(),
                                 private var projectionMode: ProjectionMode = DEFAULT_PROJECTION_MODE,
                                 private var visibleSize: Size3D = Size3D.ONE,
                                 private var font: Font = FontSettings.NO_FONT,
@@ -26,7 +29,7 @@ data class GameComponentBuilder(private var gameArea: GameArea = NO_GAME_AREA,
     override fun createCopy() = copy()
 
     fun gameArea(gameArea: GameArea) = also {
-        this.gameArea = gameArea
+        this.gameArea = Optional.of(gameArea)
     }
 
     fun projectionMode(projectionMode: ProjectionMode) = also {
@@ -50,11 +53,11 @@ data class GameComponentBuilder(private var gameArea: GameArea = NO_GAME_AREA,
     }
 
     override fun build(): DefaultGameComponent {
-        require(gameArea !== NO_GAME_AREA) {
+        require(gameArea.isPresent) {
             "A GameComponent will only work with a GameArea as backend. Please set one!"
         }
         return DefaultGameComponent(
-                gameArea = gameArea,
+                gameArea = gameArea.get(),
                 projectionMode = projectionMode,
                 visibleSize = visibleSize,
                 initialFont = font,
@@ -63,33 +66,6 @@ data class GameComponentBuilder(private var gameArea: GameArea = NO_GAME_AREA,
     }
 
     companion object {
-
-        private val NO_GAME_AREA = object : GameArea {
-            override fun getSize(): Size3D {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun fetchBlocksAt(offset: Position3D, size: Size3D): Iterable<Block> {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun getLayersAt(position: Position3D): Iterable<TextCharacter> {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun getLayerAt(level: Int, layerIdx: Int): TextImage {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun setCharactersAt(position: Position3D, characters: List<TextCharacter>) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun setCharacterAt(position: Position3D, layerIdx: Int, character: TextCharacter) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-        }
 
         @JvmField
         val DEFAULT_PROJECTION_MODE = ProjectionMode.TOP_DOWN

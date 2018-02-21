@@ -27,7 +27,7 @@ import org.codetome.zircon.api.Position
 @Suppress("DataClassPrivateConstructor")
 data class Position3D private constructor(val x: Int,
                                           val y: Int,
-                                          val z: Int) {
+                                          val z: Int): Comparable<Position3D> {
 
     init {
         require(x >= 0) {
@@ -38,6 +38,28 @@ data class Position3D private constructor(val x: Int,
         }
         require(z >= 0) {
             "A position must have a `z` which is greater than or equal to 0!"
+        }
+    }
+
+    override fun compareTo(other: Position3D): Int {
+        return when {
+            other.z > z -> -1
+            other.z < z -> 1
+            else -> {
+                when {
+                    other.y > y -> -1
+                    other.y < y -> 1
+                    else -> {
+                        when {
+                            other.x > x -> -1
+                            other.x < x -> 1
+                            else -> {
+                                0
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
