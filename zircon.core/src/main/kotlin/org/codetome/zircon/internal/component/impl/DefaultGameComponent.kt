@@ -91,7 +91,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
                 } else {
                     it.toSubImage(
                             offset = Position.of(0, levelIdx),
-                            size = it.getBoundableSize().withRelativeRows(-levelIdx))
+                            size = it.getBoundableSize().withRelativeYLength(-levelIdx))
                 }
                 result.add(LayerBuilder.newBuilder()
                         .textImage(img)

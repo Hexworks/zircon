@@ -131,11 +131,6 @@ class MapLikeTextImageTest {
     }
 
     @Test
-    fun should() {
-        println(Int.MAX_VALUE.toBigInteger())
-    }
-
-    @Test
     fun shouldProperlyCombineTwoImages() {
         val sourceChar = TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x')
         val imageChar = TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('+')
