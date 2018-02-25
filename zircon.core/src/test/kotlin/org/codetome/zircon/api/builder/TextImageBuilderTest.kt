@@ -15,8 +15,6 @@ class TextImageBuilderTest {
                 .build()
 
         assertThat(result.getBoundableSize()).isEqualTo(SIZE)
-        assertThat(result.getCharacterAt(Position.DEFAULT_POSITION).get())
-                .isEqualTo(COPY_CHAR)
 
         assertThat(result.getCharacterAt(Position(SIZE.xLength - 1, SIZE.yLength - 1)).get())
                 .isEqualTo(FILLER)
@@ -24,7 +22,6 @@ class TextImageBuilderTest {
 
     companion object {
         val FILLER = TextCharacterBuilder.newBuilder().character('a').build()
-        val COPY_CHAR = TextCharacterBuilder.newBuilder().character('b').build()
         val SIZE = Size.of(5, 5)
     }
 }

@@ -22,6 +22,14 @@ class MapLikeTextImage(size: Size,
 
     private val backend = ConcurrentHashMap<Position, TextCharacter>(chars)
 
+    override fun toString(): String {
+        return (0 until getBoundableSize().yLength).joinToString("") { y ->
+            (0 until getBoundableSize().xLength).map { x ->
+                backend.getOrDefault(Position.of(x, y), filler).getCharacter()
+            }.joinToString("").plus("\n")
+        }
+    }
+
     override fun getCharacterAt(position: Position): Optional<TextCharacter> {
         return if (getBoundableSize().containsPosition(position)) {
             Optional.of(backend.getOrDefault(position, filler))
@@ -57,7 +65,6 @@ class MapLikeTextImage(size: Size,
     override fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell> {
         return size.fetchPositions()
                 .map { it + offset }
-                .intersect(backend.keys)
                 .map { Cell(it, getCharacterAt(it).get()) }
     }
 
