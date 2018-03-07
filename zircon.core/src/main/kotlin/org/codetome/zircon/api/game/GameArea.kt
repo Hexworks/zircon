@@ -17,6 +17,13 @@ interface GameArea {
     fun getSize(): Size3D
 
     /**
+     * Tells how many layers are in each [Block].
+     * **Note that** front/back/top/bottom characters are not considered
+     * a layer!
+     */
+    fun getLayersPerBlock(): Int
+
+    /**
      * Returns **all** the [Block]s in this [GameArea].
      * Empty positions are **ignored**.
      */

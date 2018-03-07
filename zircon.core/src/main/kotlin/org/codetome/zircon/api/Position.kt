@@ -1,13 +1,19 @@
 package org.codetome.zircon.api
 
 import org.codetome.zircon.api.component.Component
+import org.codetome.zircon.internal.behavior.Cacheable
+import org.codetome.zircon.internal.util.DefaultCache
 
 /**
  * A 2D position in terminal space. Please note that the coordinates are 0-indexed, meaning 0x0 is the
  * top left corner of the terminal. This object is immutable so you cannot change it after it has been created.
  * Instead, you can easily create modified clones by using the `with*` methods.
+ *
+ * **Note that** the `copy` operation is not supported for this class. Use the `of` method to create a new
+ * instance of [Position]!
  */
-data class Position(
+@Suppress("DataClassPrivateConstructor")
+data class Position private constructor(
         /**
          * Represents the `x` in a terminal.
          */
@@ -15,12 +21,21 @@ data class Position(
         /**
          * Represents the `y` in a terminal
          */
-        val y: Int) {
+        val y: Int) : Comparable<Position>, Cacheable {
 
     init {
         require(x >= 0 && y >= 0) {
             "A position must have a x and a y which is greater than or equal to 0!"
         }
+    }
+
+    override fun generateCacheKey() = generateCacheKey(x, y)
+
+    override fun compareTo(other: Position): Int = when {
+        y > other.y -> 1
+        y == other.y && x > other.x -> 1
+        y == other.y && x == other.x -> 0
+        else -> -1
     }
 
     /**
@@ -180,6 +195,11 @@ data class Position(
 
     companion object {
 
+        private fun generateCacheKey(x: Int, y: Int) = "Position-$x-$y"
+        private var hits = 0
+
+        private val cache = DefaultCache<Position>()
+
         /**
          * Constant for the top-left corner (0x0)
          */
@@ -208,7 +228,11 @@ data class Position(
          * Factory method for [Position].
          */
         @JvmStatic
-        fun of(x: Int, y: Int) = Position(x, y)
+        fun of(x: Int, y: Int): Position {
+            return cache.retrieveIfPresent(generateCacheKey(x, y)).orElseGet {
+                cache.store(Position(x, y))
+            }
+        }
     }
 }
 

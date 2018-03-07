@@ -12,16 +12,15 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.junit.Before
 import org.junit.Test
-import java.math.BigInteger
 import java.util.function.Consumer
 
-class MapLikeTextImageTest {
+class InMemoryTextImageTest {
 
-    lateinit var target: MapLikeTextImage
+    lateinit var target: InMemoryTextImage
 
     @Before
     fun setUp() {
-        target = MapLikeTextImage(SIZE_OF_3X3)
+        target = InMemoryTextImage(SIZE_OF_3X3)
     }
 
     @Test
@@ -48,9 +47,9 @@ class MapLikeTextImageTest {
         val result = target.resize(Size.of(4, 4), SET_ALL_CHAR)
         assertThat(result.getCharacterAt(DEFAULT_POSITION).get())
                 .isEqualTo(EMPTY_CHAR)
-        assertThat(result.getCharacterAt(Position(1, 1)).get())
+        assertThat(result.getCharacterAt(Position.of(1, 1)).get())
                 .isEqualTo(EMPTY_CHAR)
-        assertThat(result.getCharacterAt(Position(3, 3)).get())
+        assertThat(result.getCharacterAt(Position.of(3, 3)).get())
                 .isEqualTo(SET_ALL_CHAR)
     }
 
@@ -108,7 +107,7 @@ class MapLikeTextImageTest {
                 .filler(overwriteChar)
                 .build()
 
-        val result = source.combineWith(newImage, Position(0, 2))
+        val result = source.combineWith(newImage, Position.of(0, 2))
         assertThat(result.getBoundableSize()).isEqualTo(Size.of(3, 3))
 
         //first yLength should all be xLength's
@@ -174,15 +173,15 @@ class MapLikeTextImageTest {
     private fun fetchTargetChars(): List<TextCharacter> {
         return (0..2).flatMap { col ->
             (0..2).map { row ->
-                target.getCharacterAt(Position(col, row)).get()
+                target.getCharacterAt(Position.of(col, row)).get()
             }
         }
     }
 
     private fun fetchOutOfBoundsPositions(): List<Position> {
-        return listOf(Position(SIZE_OF_3X3.xLength - 1, Int.MAX_VALUE),
-                Position(Int.MAX_VALUE, SIZE_OF_3X3.xLength - 1),
-                Position(Int.MAX_VALUE, Int.MAX_VALUE))
+        return listOf(Position.of(SIZE_OF_3X3.xLength - 1, Int.MAX_VALUE),
+                Position.of(Int.MAX_VALUE, SIZE_OF_3X3.xLength - 1),
+                Position.of(Int.MAX_VALUE, Int.MAX_VALUE))
     }
 
     companion object {
@@ -200,10 +199,10 @@ class MapLikeTextImageTest {
                 .character('c')
                 .build()
         val TO_COPY = arrayOf(arrayOf(TO_COPY_CHAR))
-        val IMAGE_TO_COPY = MapLikeTextImage(
+        val IMAGE_TO_COPY = InMemoryTextImage(
                 size = Size.ONE,
                 filler = SET_ALL_CHAR)
-        val IMAGE_TO_COPY_AND_CROP = MapLikeTextImage(
+        val IMAGE_TO_COPY_AND_CROP = InMemoryTextImage(
                 size = Size.of(2, 2),
                 filler = SET_ALL_CHAR)
 

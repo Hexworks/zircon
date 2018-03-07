@@ -17,6 +17,11 @@ import org.codetome.zircon.api.sam.TextCharacterTransformer
 interface TextImage : DrawSurface, Styleable, Drawable {
 
     /**
+     * Returns a [List] of [Position]s which are not `EMPTY`.
+     */
+    fun fetchFilledPositions(): List<Position>
+
+    /**
      * Returns a copy of this [TextImage] with the exact same content.
      */
     fun copyImage(): TextImage = toSubImage(Position.DEFAULT_POSITION, getBoundableSize())

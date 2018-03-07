@@ -77,6 +77,6 @@ class DefaultBoundableTest {
         val DEFAULT_ROWS = 10
         val TARGET_SIZE = Size.of(DEFAULT_COLS, DEFAULT_ROWS)
         val INTERSECTION_OFFSET = Position.OFFSET_1x1
-        val NON_INTERSECTING_OFFSET = Position(20, 20)
+        val NON_INTERSECTING_OFFSET = Position.of(20, 20)
     }
 }

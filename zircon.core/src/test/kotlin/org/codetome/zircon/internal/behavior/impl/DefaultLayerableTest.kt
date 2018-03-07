@@ -6,6 +6,7 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder.Companion.DEFAULT_CHARACTER
+import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.font.FontLoaderRegistry
@@ -104,7 +105,7 @@ class DefaultLayerableTest {
                 .filler(TextCharacterBuilder.newBuilder()
                         .character('2')
                         .build())
-                .offset(Position(2, 2))
+                .offset(Position.of(2, 2))
                 .build()
 
 
@@ -124,6 +125,32 @@ class DefaultLayerableTest {
 
         target.pushLayer(LayerBuilder.newBuilder()
                 .offset(dirty0)
+                .textImage(TextImageBuilder.newBuilder()
+                        .size(Size.ONE)
+                        .character(Position.DEFAULT_POSITION, TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x'))
+                        .build())
+                .build())
+
+        target.pushLayer(LayerBuilder.newBuilder()
+                .offset(dirty1)
+                .textImage(TextImageBuilder.newBuilder()
+                        .size(Size.ONE)
+                        .character(Position.DEFAULT_POSITION, TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x'))
+                        .build())
+                .build())
+
+        target.drainLayers()
+        assertThat(target.drainDirtyPositions())
+                .containsExactlyInAnyOrder(dirty0, dirty1)
+    }
+
+    @Test
+    fun shouldProperlyNotMarkDrainedLayerPositionsDirtyWhenTheyAreEmpty() {
+        val dirty0 = Position.of(1, 2)
+        val dirty1 = Position.of(3, 4)
+
+        target.pushLayer(LayerBuilder.newBuilder()
+                .offset(dirty0)
                 .build())
 
         target.pushLayer(LayerBuilder.newBuilder()
@@ -131,9 +158,7 @@ class DefaultLayerableTest {
                 .build())
 
         target.drainLayers()
-        assertThat(target.drainDirtyPositions())
-                .containsExactlyInAnyOrder(dirty0, dirty1)
-
+        assertThat(target.drainDirtyPositions()).isEmpty()
     }
 
     @Test

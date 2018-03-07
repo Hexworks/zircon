@@ -55,56 +55,56 @@ class DefaultCursorHandlerTest {
 
     @Test
     fun shouldReportEndOfLineWhenAtEndOfLine() {
-        target.putCursorAt(Position(SIZE.xLength, 0))
+        target.putCursorAt(Position.of(SIZE.xLength, 0))
 
         assertThat(target.isCursorAtTheEndOfTheLine()).isTrue()
     }
 
     @Test
     fun shouldNotReportEndOfLineWhenNotAtEndOfLine() {
-        target.putCursorAt(Position(SIZE.xLength - 2, 0))
+        target.putCursorAt(Position.of(SIZE.xLength - 2, 0))
 
         assertThat(target.isCursorAtTheEndOfTheLine()).isFalse()
     }
 
     @Test
     fun shouldReportStartOfLineWhenAtStartOfLine() {
-        target.putCursorAt(Position(0, 0))
+        target.putCursorAt(Position.of(0, 0))
 
         assertThat(target.isCursorAtTheStartOfTheLine()).isTrue()
     }
 
     @Test
     fun shouldNotReportStartOfLineWhenNotAtStartOfLine() {
-        target.putCursorAt(Position(1, 0))
+        target.putCursorAt(Position.of(1, 0))
 
         assertThat(target.isCursorAtTheStartOfTheLine()).isFalse()
     }
 
     @Test
     fun shouldReportAtFirstRowWhenAtFirstRow() {
-        target.putCursorAt(Position(0, 0))
+        target.putCursorAt(Position.of(0, 0))
 
         assertThat(target.isCursorAtTheFirstRow()).isTrue()
     }
 
     @Test
     fun shouldNotReportAtFirstRowWhenNotAtFirstRow() {
-        target.putCursorAt(Position(0, 1))
+        target.putCursorAt(Position.of(0, 1))
 
         assertThat(target.isCursorAtTheFirstRow()).isFalse()
     }
 
     @Test
     fun shouldReportAtLastRowWhenAtLastRow() {
-        target.putCursorAt(Position(0, SIZE.yLength))
+        target.putCursorAt(Position.of(0, SIZE.yLength))
 
         assertThat(target.isCursorAtTheLastRow()).isTrue()
     }
 
     @Test
     fun shouldNotReportAtLastRowWhenNotAtLastRow() {
-        target.putCursorAt(Position(0, 0))
+        target.putCursorAt(Position.of(0, 0))
 
         assertThat(target.isCursorAtTheLastRow()).isFalse()
     }

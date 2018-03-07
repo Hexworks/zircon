@@ -35,6 +35,10 @@ class DefaultLayer(size: Size,
         this.rect = refreshRect()
     }
 
+    override fun fetchFilledPositions() = textImage.fetchFilledPositions().map {
+        it + position
+    }
+
     override fun fetchPositions() = getBoundableSize().fetchPositions()
             .map { it + position }
             .toSet()

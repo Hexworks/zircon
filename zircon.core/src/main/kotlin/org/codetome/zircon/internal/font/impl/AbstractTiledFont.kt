@@ -3,13 +3,8 @@ package org.codetome.zircon.internal.font.impl
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.util.TextUtils
-import org.codetome.zircon.internal.extensions.isNotPresent
-import org.codetome.zircon.internal.font.FontRegionCache
-import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
-import java.awt.image.BufferedImage
 import java.util.*
 
 abstract class AbstractTiledFont(private val metadata: Map<Char, List<CharacterMetadata>>,

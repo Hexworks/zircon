@@ -9,6 +9,7 @@ import org.codetome.zircon.internal.component.impl.DefaultContainer
 import org.codetome.zircon.internal.component.impl.DefaultContainerHandler
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import java.util.*
@@ -34,6 +35,7 @@ class TerminalScreen(private val terminal: InternalTerminal,
         InternalContainerHandler by containerHandler {
 
     private val id: UUID = UUID.randomUUID()
+    private var currentScreenId = Optional.empty<UUID>()
 
     init {
         EventBus.subscribe<UUID>(EventType.ScreenSwitch, { (screenId) ->
@@ -63,11 +65,15 @@ class TerminalScreen(private val terminal: InternalTerminal,
 
     @Synchronized
     override fun display() {
+        val oldScreenId = currentScreenId
+        currentScreenId = Optional.of(id)
         EventBus.emit(EventType.ScreenSwitch, id)
         setCursorVisibility(false)
         putCursorAt(Position.DEFAULT_POSITION)
         flipBuffers(true)
-        activate()
+        if (oldScreenId.isNotPresent() || oldScreenId.get() != id) {
+            activate()
+        }
     }
 
     @Synchronized
@@ -93,7 +99,7 @@ class TerminalScreen(private val terminal: InternalTerminal,
         backend.getLayers().forEach {
             terminal.pushLayer(it)
         }
-        if(hasOverrideFont()) {
+        if (hasOverrideFont()) {
             terminal.useFont(getCurrentFont())
         }
         terminal.flush()

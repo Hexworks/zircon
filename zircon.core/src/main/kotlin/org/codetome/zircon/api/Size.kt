@@ -27,11 +27,28 @@ data class Size private constructor(val xLength: Int,
 
     /**
      * Creates a list of [Position]s in the order in which they should
-     * be iterated when drawing (from left to right, then top to bottom).
+     * be iterated when drawing (first rows, then columns in those rows).
      */
-    fun fetchPositions(): List<Position> = (0 until yLength).flatMap { y ->
-        (0 until xLength).map { x ->
-            Position.of(x, y)
+    fun fetchPositions(): Iterable<Position> = Iterable {
+        var currY = 0
+        var currX = 0
+        val endX = xLength
+        val endY = yLength
+        object : Iterator<Position> {
+
+            override fun hasNext() = currY < endY && currX < endX
+
+            override fun next(): Position {
+                return Position.of(currX, currY).also {
+                    currX++
+                    if (currX == endX) {
+                        currY++
+                        if(currY < endY) {
+                            currX = 0
+                        }
+                    }
+                }
+            }
         }
     }
 

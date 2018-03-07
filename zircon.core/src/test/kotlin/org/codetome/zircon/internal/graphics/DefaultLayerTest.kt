@@ -78,7 +78,7 @@ class DefaultLayerTest {
                 .character('x')
                 .build()
         val SIZE = Size.of(10, 10)
-        val OFFSET = Position(5, 5)
+        val OFFSET = Position.of(5, 5)
         val INTERSECTING_BOUNDABLE = DefaultBoundable(Size.of(6, 6))
         val NON_INTERSECTING_BOUNDABLE = DefaultBoundable(Size.of(5, 5))
         val NON_CONTAINED_BOUNDABLE = DefaultBoundable(SIZE.withRelative(Size.ONE))

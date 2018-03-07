@@ -1,6 +1,5 @@
 package org.codetome.zircon.api.modifier
 
-import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.builder.Builder
 
 /**

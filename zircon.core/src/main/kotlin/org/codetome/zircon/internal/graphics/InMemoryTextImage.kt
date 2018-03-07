@@ -14,10 +14,10 @@ import org.codetome.zircon.api.sam.TextCharacterTransformer
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
-class MapLikeTextImage(size: Size,
-                       styleSet: StyleSet = StyleSetBuilder.DEFAULT_STYLE,
-                       chars: Map<Position, TextCharacter> = mapOf(),
-                       private val filler: TextCharacter = TextCharacterBuilder.EMPTY)
+class InMemoryTextImage(size: Size,
+                        styleSet: StyleSet = StyleSetBuilder.DEFAULT_STYLE,
+                        chars: Map<Position, TextCharacter> = mapOf(),
+                        private val filler: TextCharacter = TextCharacterBuilder.EMPTY)
     : TextImageBase(size = size, styleSet = styleSet) {
 
     private val backend = ConcurrentHashMap<Position, TextCharacter>(chars)
@@ -30,9 +30,11 @@ class MapLikeTextImage(size: Size,
         }
     }
 
+    override fun fetchFilledPositions() = backend.keys.sorted()
+
     override fun getCharacterAt(position: Position): Optional<TextCharacter> {
         return if (getBoundableSize().containsPosition(position)) {
-            Optional.of(backend.getOrDefault(position, filler))
+            Optional.ofNullable(backend.getOrDefault(position, filler))
         } else {
             Optional.empty()
         }
@@ -69,7 +71,7 @@ class MapLikeTextImage(size: Size,
     }
 
     override fun resize(newSize: Size, filler: TextCharacter): TextImage {
-        val result = MapLikeTextImage(
+        val result = InMemoryTextImage(
                 size = newSize,
                 styleSet = toStyleSet(),
                 filler = this.filler)
@@ -85,7 +87,7 @@ class MapLikeTextImage(size: Size,
     }
 
     override fun toSubImage(offset: Position, size: Size): TextImage {
-        val result = MapLikeTextImage(size, toStyleSet())
+        val result = InMemoryTextImage(size, toStyleSet())
         size.fetchPositions()
                 .map { it + offset }
                 .intersect(getBoundableSize().fetchPositions())
@@ -96,7 +98,7 @@ class MapLikeTextImage(size: Size,
     }
 
     override fun transform(transformer: TextCharacterTransformer): TextImage {
-        val result = MapLikeTextImage(getBoundableSize(), toStyleSet())
+        val result = InMemoryTextImage(getBoundableSize(), toStyleSet())
         fetchCells().forEach { (pos, char) ->
             result.setCharacterAt(pos, transformer.transform(char))
         }

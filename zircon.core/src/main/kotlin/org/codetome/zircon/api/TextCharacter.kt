@@ -22,6 +22,11 @@ import org.codetome.zircon.internal.behavior.Cacheable
  */
 interface TextCharacter : Cacheable {
 
+    /**
+     * Tells whether this [TextCharacter] is opaque, eg: the background color's alpha is 255.
+     */
+    fun isOpaque() = getBackgroundColor().getAlpha() == 255
+
     fun getCharacter(): Char
 
     fun getForegroundColor(): TextColor

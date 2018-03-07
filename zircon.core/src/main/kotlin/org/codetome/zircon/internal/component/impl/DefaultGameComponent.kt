@@ -9,6 +9,8 @@ import org.codetome.zircon.api.game.Position3D
 import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.api.builder.LayerBuilder
+import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles
 import org.codetome.zircon.api.component.GameComponent
@@ -71,34 +73,70 @@ class DefaultGameComponent(private val gameArea: GameArea,
     }
 
     override fun transformToLayers(): List<Layer> {
-        // note that the draw surface which comes from `DefaultComponent` is not used here
-        // since the `GameArea` is used as a backend
-        val allLevelCount = scrollable.getVirtualSpaceSize().zLength
-        val startLevel = scrollable.getVisibleOffset().z
-        val percentage: Double = 1.0.div(visibleLevelCount.toDouble())
+        val height = scrollable.getVirtualSpaceSize().zLength
+        val fromZ = scrollable.getVisibleOffset().z
+        val screenSize = getVisibleSpaceSize().to2DSize()
 
         val result = mutableListOf<Layer>()
 
-        // TODO: refactor this to be functional
-        (startLevel until Math.min(startLevel + visibleLevelCount, allLevelCount)).forEach { levelIdx ->
-            val segment = gameArea.fetchLayersAt(
-                    offset = Position3D.from2DPosition(getVisibleOffset().to2DPosition(), levelIdx),
-                    size = Size3D.from2DSize(getBoundableSize(), 1))
-
-            segment.forEach {
-                val img = if (projectionMode == ProjectionMode.TOP_DOWN) {
-                    it
-                } else {
-                    it.toSubImage(
-                            offset = Position.of(0, levelIdx),
-                            size = it.getBoundableSize().withRelativeYLength(-levelIdx))
+        if (projectionMode == ProjectionMode.TOP_DOWN) {
+            (fromZ until Math.min(fromZ + visibleLevelCount, height)).forEach { levelIdx ->
+                val segment = gameArea.fetchLayersAt(
+                        offset = Position3D.from2DPosition(getVisibleOffset().to2DPosition(), levelIdx),
+                        size = Size3D.from2DSize(getBoundableSize(), 1))
+                segment.forEach {
+                    result.add(LayerBuilder.newBuilder()
+                            .textImage(it)
+                            .offset(getPosition())
+                            .build())
                 }
-                result.add(LayerBuilder.newBuilder()
-                        .textImage(img)
-                        .offset(getPosition())
-                        .build())
+            }
+        } else {
+            val fixedLayerCount = 4
+            val customLayersPerBlock = gameArea.getLayersPerBlock()
+            val totalLayerCount = fixedLayerCount + customLayersPerBlock
+            val builders = (0 until totalLayerCount * height).map {
+                TextImageBuilder.newBuilder().size(screenSize)
+            }
+            val (fromX, fromY) = getVisibleOffset().to2DPosition()
+            val toX = fromX + getBoundableSize().xLength
+            val toY = fromY + getBoundableSize().yLength
+            (fromZ until Math.min(fromZ + visibleLevelCount, height)).forEach { z ->
+                (fromY until toY).forEach { screenY ->
+                    (fromX until toX).forEach { x ->
+                        val y = screenY + z // we need to add `z` to `y` because of isometric
+                        val maybeBlock = gameArea.fetchBlockAt(Position3D.of(x, y, z))
+                        val maybeNext = gameArea.fetchBlockAt(Position3D.of(x, y + 1, z))
+                        val screenPos = Position.of(x, screenY)
+                        val bottomIdx = z * totalLayerCount
+                        val frondIdx = bottomIdx + customLayersPerBlock + 1
+                        val backIdx = frondIdx + 1
+                        val topIdx = backIdx + 1
+                        maybeBlock.ifPresent { block ->
+                            val bot = block.bottom
+                            val layers = block.layers
+                            val front = block.front
+
+                            builders[bottomIdx].character(screenPos, bot)
+                            layers.forEachIndexed { idx, layer ->
+                                builders[bottomIdx + idx + 1].character(screenPos, layer)
+                            }
+                            builders[frondIdx].character(screenPos, front)
+                        }
+                        maybeNext.ifPresent { block ->
+                            val back = block.back
+                            val top = block.top
+                            builders[backIdx].character(screenPos, back)
+                            builders[topIdx].character(screenPos, top)
+                        }
+                    }
+                }
+            }
+            builders.forEach {
+                result.add(LayerBuilder.newBuilder().textImage(it.build()).build())
             }
         }
+
         return result
     }
 
