@@ -66,12 +66,12 @@ class SizeTest {
 
     @Test
     fun shouldFetchPositionsInCorrectIterationOrder() {
-        assertThat(Size.of(2, 2).fetchPositions())
+        assertThat(Size.of(2, 2).fetchPositions().toList())
                 .isEqualTo(listOf(
-                        Position(x = 0, y = 0),
-                        Position(x = 1, y = 0),
-                        Position(x = 0, y = 1),
-                        Position(x = 1, y = 1)))
+                        Position.of(x = 0, y = 0),
+                        Position.of(x = 1, y = 0),
+                        Position.of(x = 0, y = 1),
+                        Position.of(x = 1, y = 1)))
     }
 
     @Test

@@ -102,7 +102,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldProperlySetCursorPositionWhenSetCursorPositionIsCalled() {
-        val pos = Position(4, 5)
+        val pos = Position.of(4, 5)
         target.putCursorAt(pos)
 
         assertThat(target.getCursorPosition()).isEqualTo(pos)

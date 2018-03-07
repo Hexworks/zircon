@@ -30,24 +30,24 @@ class DefaultBox(size: Size,
                 .withCharacter(boxType.horizontal)
 
         val horizontalLine = LineFactory.buildLine(
-                fromPoint = Position(0, 0),
-                toPoint = Position(size.xLength - 3, 0))
+                fromPoint = Position.of(0, 0),
+                toPoint = Position.of(size.xLength - 3, 0))
                 .toTextImage(horizontalChar)
         val verticalLine = LineFactory.buildLine(
-                fromPoint = Position(0, 0),
-                toPoint = Position(0, size.yLength - 3))
+                fromPoint = Position.of(0, 0),
+                toPoint = Position.of(0, size.yLength - 3))
                 .toTextImage(verticalChar)
-        draw(horizontalLine, Position(1, 0))
-        draw(horizontalLine, Position(1, size.yLength - 1))
-        draw(verticalLine, Position(0, 1))
-        draw(verticalLine, Position(size.xLength - 1, 1))
-        setCharacterAt(Position(0, 0),
+        draw(horizontalLine, Position.of(1, 0))
+        draw(horizontalLine, Position.of(1, size.yLength - 1))
+        draw(verticalLine, Position.of(0, 1))
+        draw(verticalLine, Position.of(size.xLength - 1, 1))
+        setCharacterAt(Position.of(0, 0),
                 verticalChar.withCharacter(boxType.topLeft))
-        setCharacterAt(Position(size.xLength - 1, 0),
+        setCharacterAt(Position.of(size.xLength - 1, 0),
                 verticalChar.withCharacter(boxType.topRight))
-        setCharacterAt(Position(0, size.yLength - 1),
+        setCharacterAt(Position.of(0, size.yLength - 1),
                 verticalChar.withCharacter(boxType.bottomLeft))
-        setCharacterAt(Position(size.xLength - 1, size.yLength - 1),
+        setCharacterAt(Position.of(size.xLength - 1, size.yLength - 1),
                 verticalChar.withCharacter(boxType.bottomRight))
     }
 

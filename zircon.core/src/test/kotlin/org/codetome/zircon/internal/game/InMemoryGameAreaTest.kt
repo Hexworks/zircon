@@ -59,7 +59,7 @@ class InMemoryGameAreaTest {
     @Test
     fun shouldProperlyFetchBlockAtPosition() {
         assertThat(target.fetchBlockAt(LEVEL_7_POS_0).get())
-                .isEqualTo(Block(LEVEL_7_POS_0, BLOCK))
+                .isEqualTo(Block(position = LEVEL_7_POS_0, layers = BLOCK.toMutableList()))
 
     }
 
@@ -67,7 +67,7 @@ class InMemoryGameAreaTest {
     fun shouldProperlySetBlockAtPosition() {
         target.setBlockAt(EMPTY_POSITION, OTHER_BLOCK)
         assertThat(target.fetchBlockAt(EMPTY_POSITION).get())
-                .isEqualTo(Block(EMPTY_POSITION, OTHER_BLOCK.plus(EMPTY).plus(EMPTY)))
+                .isEqualTo(Block(position = EMPTY_POSITION, layers = OTHER_BLOCK.plus(EMPTY).plus(EMPTY).toMutableList()))
 
     }
 

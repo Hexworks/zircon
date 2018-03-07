@@ -22,7 +22,7 @@ class PositionTest {
 
     @Test
     fun shouldProperlyCreateNewPositionWithYWhenWithYIsCalled() {
-        assertThat(Position(
+        assertThat(Position.of(
                 x = EXPECTED_COL,
                 y = Int.MAX_VALUE)
                 .withY(EXPECTED_ROW))
@@ -41,7 +41,7 @@ class PositionTest {
 
     @Test
     fun shouldProperlyCreateNewPositionWithRelativeYWhenWithRelativeYIsCalled() {
-        assertThat(Position(
+        assertThat(Position.of(
                 x = EXPECTED_COL,
                 y = EXPECTED_ROW - 1)
                 .withRelativeY(1))
@@ -50,7 +50,7 @@ class PositionTest {
 
     @Test
     fun shouldProperlyCreateNewPositionWithXWhenWithXIsCalled() {
-        assertThat(Position(
+        assertThat(Position.of(
                 x = Int.MAX_VALUE,
                 y = EXPECTED_ROW)
                 .withX(EXPECTED_COL))
@@ -59,7 +59,7 @@ class PositionTest {
 
     @Test
     fun shouldProperlyCreateNewPositionWithRelativeXWhenWithRelativeXIsCalled() {
-        assertThat(Position(
+        assertThat(Position.of(
                 x = EXPECTED_COL - 1,
                 y = EXPECTED_ROW)
                 .withRelativeX(1))
@@ -68,10 +68,10 @@ class PositionTest {
 
     @Test
     fun shouldProperlyCreateNewPositionWithRelativeValuesWhenWithRelativeIsCalled() {
-        assertThat(Position(
+        assertThat(Position.of(
                 x = EXPECTED_COL - 1,
                 y = EXPECTED_ROW - 1)
-                .withRelative(Position(1, 1)))
+                .withRelative(Position.of(1, 1)))
                 .isEqualTo(EXPECTED_TERMINAL_POSITION)
     }
 
@@ -83,37 +83,37 @@ class PositionTest {
 
     @Test
     fun shouldProperlyAddTwoPositions() {
-        assertThat(Position(5, 4) + Position(1, 3))
-                .isEqualTo(Position(6, 7))
+        assertThat(Position.of(5, 4) + Position.of(1, 3))
+                .isEqualTo(Position.of(6, 7))
     }
 
     @Test
     fun shouldProperlySubtractTwoPositions() {
-        assertThat(Position(5, 4) - Position(4, 3))
-                .isEqualTo(Position(1, 1))
+        assertThat(Position.of(5, 4) - Position.of(4, 3))
+                .isEqualTo(Position.of(1, 1))
     }
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithX() {
-        assertThat(Position(1, 0).withX(0))
+        assertThat(Position.of(1, 0).withX(0))
                 .isSameAs(Position.TOP_LEFT_CORNER)
     }
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithRelativeX() {
-        assertThat(Position(1, 0).withRelativeX(-1))
+        assertThat(Position.of(1, 0).withRelativeX(-1))
                 .isSameAs(Position.TOP_LEFT_CORNER)
     }
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithY() {
-        assertThat(Position(0, 1).withY(0))
+        assertThat(Position.of(0, 1).withY(0))
                 .isSameAs(Position.TOP_LEFT_CORNER)
     }
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithRelativeY() {
-        assertThat(Position(0, 1).withRelativeY(-1))
+        assertThat(Position.of(0, 1).withRelativeY(-1))
                 .isSameAs(Position.TOP_LEFT_CORNER)
     }
 
@@ -170,7 +170,7 @@ class PositionTest {
         val COMPONENT_SIZE = Size.of(4, 5)
         val EXPECTED_ROW = 2
         val EXPECTED_COL = 3
-        val EXPECTED_TERMINAL_POSITION = Position(
+        val EXPECTED_TERMINAL_POSITION = Position.of(
                 x = EXPECTED_COL,
                 y = EXPECTED_ROW)
     }

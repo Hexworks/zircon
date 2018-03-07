@@ -2,11 +2,9 @@ package org.codetome.zircon.internal.font.impl
 
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
-import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.modifier.Border
 import org.codetome.zircon.api.modifier.RayShade
-import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.SimpleModifiers.*
 import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.font.FontRegionCache
@@ -14,7 +12,6 @@ import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.transformer.*
 import java.awt.image.BufferedImage
-import java.util.*
 
 /**
  * Represents a font which is backed by a sprite sheet.

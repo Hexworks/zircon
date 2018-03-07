@@ -67,7 +67,7 @@ class DefaultLayerable(private val supportedFontSize: Size,
     }
 
     private fun markLayerPositionsDirty(layer: Layer) {
-        layer.fetchPositions().forEach {
+        layer.fetchFilledPositions().forEach {
             setPositionDirty(it)
         }
     }

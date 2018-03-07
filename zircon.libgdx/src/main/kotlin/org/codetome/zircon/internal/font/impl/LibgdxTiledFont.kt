@@ -5,9 +5,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
-import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
-import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.SimpleModifiers.Blink
 import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.font.FontRegionCache
@@ -15,7 +13,6 @@ import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.transformer.NoOpTransformer
 import java.io.InputStream
-import java.util.*
 
 /**
  * Represents a font which is backed by a sprite sheet.

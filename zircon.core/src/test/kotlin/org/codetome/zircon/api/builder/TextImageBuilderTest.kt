@@ -16,7 +16,7 @@ class TextImageBuilderTest {
 
         assertThat(result.getBoundableSize()).isEqualTo(SIZE)
 
-        assertThat(result.getCharacterAt(Position(SIZE.xLength - 1, SIZE.yLength - 1)).get())
+        assertThat(result.getCharacterAt(Position.of(SIZE.xLength - 1, SIZE.yLength - 1)).get())
                 .isEqualTo(FILLER)
     }
 

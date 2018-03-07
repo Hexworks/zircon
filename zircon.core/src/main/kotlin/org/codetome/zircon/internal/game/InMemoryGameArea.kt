@@ -1,13 +1,12 @@
 package org.codetome.zircon.internal.game
 
 import org.codetome.zircon.api.Block
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.game.GameArea
 import org.codetome.zircon.api.game.GameArea.BlockFetchMode
+import org.codetome.zircon.api.game.GameModifiers
 import org.codetome.zircon.api.game.Position3D
 import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.api.graphics.TextImage
@@ -18,8 +17,10 @@ class InMemoryGameArea(private val size: Size3D,
                        private val layersPerBlock: Int,
                        private val filler: TextCharacter = TextCharacterBuilder.EMPTY) : GameArea {
 
-    private val emptyBlock = (0 until layersPerBlock).map { filler }
-    private val blocks: MutableMap<Position3D, MutableList<TextCharacter>> = TreeMap()
+    private val emptyBlockLayers = (0 until layersPerBlock).map { filler }
+    private val blocks: MutableMap<Position3D, Block> = TreeMap()
+
+    override fun getLayersPerBlock() = layersPerBlock
 
     override fun getSize() = size
 
@@ -34,7 +35,7 @@ class InMemoryGameArea(private val size: Size3D,
     }
 
     override fun fetchBlocks(): Iterable<Block> {
-        return blocks.map { (key, value) -> Block(key, value.toList()) }
+        return blocks.values.toList()
     }
 
     override fun fetchBlocksAt(offset: Position3D, size: Size3D, fetchMode: BlockFetchMode): Iterable<Block> {
@@ -49,7 +50,7 @@ class InMemoryGameArea(private val size: Size3D,
     override fun fetchBlocksAt(offset: Position3D, size: Size3D): Iterable<Block> {
         return fetchPositionsWithOffset(offset, size)
                 .filter { blocks.containsKey(it) }
-                .map { Block(it, blocks[it]!!.toList()) }
+                .map { blocks[it]!! }
     }
 
     override fun fetchBlocksAt(z: Int, blockFetchMode: BlockFetchMode): Iterable<Block> {
@@ -65,19 +66,15 @@ class InMemoryGameArea(private val size: Size3D,
 
     override fun fetchBlocksAt(z: Int): Iterable<Block> {
         return blocks.keys.filter { it.z == z }
-                .map { Block(it, blocks[it]!!.toList()) }
+                .map { blocks[it]!! }
     }
 
     override fun fetchBlockAt(position: Position3D): Optional<Block> {
-        return if (blocks.containsKey(position)) {
-            Optional.of(Block(position, blocks[position]!!.toList()))
-        } else {
-            Optional.empty()
-        }
+        return Optional.ofNullable(blocks[position])
     }
 
     override fun fetchCharacterAt(position: Position3D, layerIdx: Int): Optional<TextCharacter> {
-        return blocks.getOrDefault(position, mutableListOf()).getIfPresent(layerIdx)
+        return blocks.getOrDefault(position, Block(position)).layers.getIfPresent(layerIdx)
     }
 
     override fun fetchLayersAt(offset: Position3D, size: Size3D): Iterable<TextImage> {
@@ -103,13 +100,29 @@ class InMemoryGameArea(private val size: Size3D,
         require(size.containsPosition(position)) {
             "The supplied position ($position) is not within the size ($size) of this game area."
         }
-        require(characters.size <= layersPerBlock) {
+        val blockChars = characters.groupBy { tc ->
+            var result = GameModifiers.BLOCK_LAYER
+            GameModifiers.values().forEach { gameModifier ->
+                if(tc.getModifiers().contains(gameModifier)) {
+                    result = gameModifier
+                }
+            }
+            result
+        }
+        require(blockChars.getOrDefault(GameModifiers.BLOCK_LAYER, listOf()).size <= layersPerBlock) {
             "The maximum number of layers per block for this game area is $layersPerBlock." +
                     " The supplied characters have a size of ${characters.size}"
         }
-        val block = emptyBlock.toMutableList()
-        characters.forEachIndexed {idx, char -> block[idx] = char}
-        blocks[position] = block
+        val layers = emptyBlockLayers.toMutableList()
+        blockChars.getOrDefault(GameModifiers.BLOCK_LAYER, listOf())
+                .forEachIndexed { idx, char -> layers[idx] = char}
+        blocks[position] = Block(
+                position = position,
+                top = blockChars.getOrDefault(GameModifiers.BLOCK_TOP, listOf(TextCharacterBuilder.EMPTY)).first(),
+                back = blockChars.getOrDefault(GameModifiers.BLOCK_BACK, listOf(TextCharacterBuilder.EMPTY)).first(),
+                front = blockChars.getOrDefault(GameModifiers.BLOCK_FRONT, listOf(TextCharacterBuilder.EMPTY)).first(),
+                bottom = blockChars.getOrDefault(GameModifiers.BLOCK_BOTTOM, listOf(TextCharacterBuilder.EMPTY)).first(),
+                layers = layers)
     }
 
     override fun setCharacterAt(position: Position3D, layerIdx: Int, character: TextCharacter) {
@@ -124,7 +137,7 @@ class InMemoryGameArea(private val size: Size3D,
         }
         blocks.getOrElse(position, {
             throw IllegalArgumentException("Position ($position) is not present.")
-        })[layerIdx] = character
+        }).layers[layerIdx] = character
     }
 
     private fun fetchPositionsWithOffset(offset: Position3D, size: Size3D) =
@@ -132,5 +145,5 @@ class InMemoryGameArea(private val size: Size3D,
                     .map { it.plus(offset) }
 
     private fun fetchBlockAtPosition(position: Position3D) =
-            Block(position, blocks.getOrDefault(position, emptyBlock.toMutableList()).toList())
+            blocks.getOrDefault(position, Block(position = position, layers = emptyBlockLayers.toMutableList()))
 }

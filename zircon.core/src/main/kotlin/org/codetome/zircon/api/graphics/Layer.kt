@@ -18,9 +18,15 @@ interface Layer : TextImage, Movable, FontOverride {
 
     /**
      * Fetches all the (absolute) [Position]s which this
-     * [Layer] occupies.
+     * [Layer] contains.
      */
     fun fetchPositions(): Set<Position>
+
+    /**
+     * Fetches all the (absolute) [Position]s which this
+     * [Layer] contains and is not `EMPTY`.
+     */
+    override fun fetchFilledPositions(): List<Position>
 
     /**
      * Copies this [Layer].
