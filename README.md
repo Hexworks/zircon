@@ -537,7 +537,9 @@ Zircon is powered by:
 <a href="https://kotlinlang.org/">
     <img src="https://github.com/Hexworks/zircon/blob/master/images/kotlin_logo.png" width="40" height="40" />
 </a>
-
+<a href="https://www.yourkit.com/java/profiler/">
+    <img src="https://github.com/Hexworks/zircon/blob/master/images/yklogo.png" width="168" height="40" />
+</a>
 
 [circleci]:https://circleci.com/gh/Hexworks/zircon
 [circleci img]:https://circleci.com/gh/Hexworks/zircon/tree/master.svg?style=shield

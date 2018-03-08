@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.21'
+        kotlinVersion = '1.2.30'
         slf4jVersion = '1.7.24'
         gdxVersion = '1.9.6'
         junitVersion = '4.12'
