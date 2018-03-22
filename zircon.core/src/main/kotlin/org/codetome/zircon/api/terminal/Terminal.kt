@@ -24,7 +24,7 @@ import java.io.Closeable
  * interface you should be programming against.
  */
 interface Terminal
-    : Closeable, Clearable, Styleable, TypingSupport, Layerable, DrawSurface, InputEmitter, FontOverride {
+    : Closeable, Clearable, Styleable, TypingSupport, Layerable, DrawSurface, InputEmitter, FontOverride, ShutdownHook {
 
     /**
      * Adds a [TerminalResizeListener] to be called when the terminal has changed size.
