@@ -45,6 +45,9 @@ abstract class ApplicationTerminal(
 
     @Synchronized
     override fun doCreate() {
+        onShutdown(Runnable {
+            doDispose()
+        })
         blinkTimer.schedule(object : TimerTask() {
             override fun run() {
                 try {
