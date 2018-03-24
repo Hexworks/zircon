@@ -9,6 +9,7 @@ import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection;
 import org.codetome.zircon.api.component.builder.*;
+import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.modifier.BorderBuilder;
 import org.codetome.zircon.api.modifier.BorderType;
@@ -30,6 +31,7 @@ public class ComponentsExample {
 
     private static final Size PANEL_SIZE = Size.of(22, 6);
     private static final Size TERMINAL_SIZE = Size.of(52, 28);
+    private static final Font FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont();
     private static final ColorTheme PANELS_THEME = ColorThemeResource.TECH_LIGHT.getTheme();
     private static final ColorTheme INPUTS_THEME = ColorThemeResource.SOLARIZED_DARK_GREEN.getTheme();
     private static final ColorTheme ADD_REMOVE_THEME = ColorThemeResource.GHOST_OF_A_CHANCE.getTheme();
@@ -41,8 +43,7 @@ public class ComponentsExample {
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .initialTerminalSize(TERMINAL_SIZE)
-//                .font(PhysicalFontResource.UBUNTU_MONO.toFont())
-                .font(CP437TilesetResource.ROGUE_YUN_16X16.toFont())
+                .font(FONT)
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorBlinking(true)
                         .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
