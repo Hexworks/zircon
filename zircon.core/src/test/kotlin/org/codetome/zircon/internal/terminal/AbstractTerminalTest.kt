@@ -8,6 +8,7 @@ import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.TerminalResizeListener
 import org.codetome.zircon.internal.component.impl.DefaultLabelTest
 import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import org.junit.Before
@@ -21,7 +22,7 @@ class AbstractTerminalTest {
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+        FontLoaderRegistry.setFontLoader(TestFontLoader())
         font = DefaultLabelTest.FONT.toFont()
         MockitoAnnotations.initMocks(this)
         target = VirtualTerminal(initialFont = font)

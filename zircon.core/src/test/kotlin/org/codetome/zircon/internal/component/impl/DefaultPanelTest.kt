@@ -13,6 +13,7 @@ import org.codetome.zircon.api.modifier.BorderType
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.codetome.zircon.internal.graphics.BoxType
 import org.junit.Before
@@ -25,7 +26,7 @@ class DefaultPanelTest {
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+        FontLoaderRegistry.setFontLoader(TestFontLoader())
         font = DefaultLabelTest.FONT.toFont()
         target = PanelBuilder.newBuilder()
                 .wrapWithShadow()

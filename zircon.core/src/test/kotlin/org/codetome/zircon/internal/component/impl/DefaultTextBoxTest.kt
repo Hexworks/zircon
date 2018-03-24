@@ -15,6 +15,7 @@ import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
@@ -26,7 +27,7 @@ class DefaultTextBoxTest {
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+        FontLoaderRegistry.setFontLoader(TestFontLoader())
         font = DefaultLabelTest.FONT.toFont()
         target = TextBoxBuilder.newBuilder()
                 .componentStyles(COMPONENT_STYLES)

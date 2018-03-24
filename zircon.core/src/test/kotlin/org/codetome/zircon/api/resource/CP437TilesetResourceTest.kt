@@ -6,6 +6,7 @@ import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
@@ -16,7 +17,7 @@ class CP437TilesetResourceTest {
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+        FontLoaderRegistry.setFontLoader(TestFontLoader())
         target = CP437TilesetResource.WANDERLUST_16X16.toFont()
     }
 
