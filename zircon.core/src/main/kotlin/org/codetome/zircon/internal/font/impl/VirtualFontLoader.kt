@@ -5,6 +5,7 @@ import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.font.FontLoader
+import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import java.awt.image.BufferedImage
 import java.awt.image.BufferedImage.TYPE_INT_ARGB
@@ -13,28 +14,49 @@ import java.util.*
 
 class VirtualFontLoader : FontLoader {
 
+    // TODO: this retard trick is temporary, fix it later
+
     override fun fetchPhysicalFont(size: Float,
                                    source: InputStream,
                                    cacheFonts: Boolean,
-                                   withAntiAlias: Boolean)  = object: Font {
+                                   withAntiAlias: Boolean): Font {
+        return object : Font {
 
-        val uuid = UUID.randomUUID()
+            private var actualFont: Optional<Font> = Optional.empty()
 
-        override fun getWidth() = size.toInt()
+            override fun getWidth() =
+                    tryToGetActualFont().getWidth()
 
-        override fun getHeight() = size.toInt()
+            override fun getHeight() =
+                    tryToGetActualFont().getHeight()
 
-        override fun hasDataForChar(char: Char) = false
+            override fun hasDataForChar(char: Char) =
+                    tryToGetActualFont().hasDataForChar(char)
 
-        override fun fetchRegionForChar(textCharacter: TextCharacter) = object : FontTextureRegion<BufferedImage> {
-            override fun getBackend() = BufferedImage(getWidth(), getHeight(), TYPE_INT_ARGB)
+            override fun fetchRegionForChar(textCharacter: TextCharacter) =
+                    tryToGetActualFont().fetchRegionForChar(textCharacter)
 
+            override fun fetchMetadataForChar(char: Char) =
+                    tryToGetActualFont().fetchMetadataForChar(char)
+
+            override fun getId() =
+                    tryToGetActualFont().getId()
+
+            private fun tryToGetActualFont(): Font {
+                return actualFont.orElseGet {
+                    if (FontLoaderRegistry.getCurrentFontLoader() === this@VirtualFontLoader) {
+                        throw IllegalStateException("No font")
+                    } else {
+                        actualFont = Optional.of(FontLoaderRegistry.getCurrentFontLoader().fetchPhysicalFont(
+                                size = size,
+                                source = source,
+                                cacheFonts = cacheFonts,
+                                withAntiAlias = withAntiAlias))
+                        actualFont.get()
+                    }
+                }
+            }
         }
-
-        override fun fetchMetadataForChar(char: Char) = listOf<CharacterMetadata>()
-
-        override fun getId() = uuid
-
     }
 
     override fun fetchTiledFont(width: Int,
@@ -42,24 +64,45 @@ class VirtualFontLoader : FontLoader {
                                 source: InputStream,
                                 cacheFonts: Boolean,
                                 metadata: Map<Char, List<CharacterMetadata>>,
-                                metadataPickingStrategy: MetadataPickingStrategy)  = object: Font {
+                                metadataPickingStrategy: MetadataPickingStrategy): Font {
+        return object : Font {
 
-        val uuid = UUID.randomUUID()
+            private var actualFont: Optional<Font> = Optional.empty()
 
-        override fun getWidth() = width
+            override fun getWidth() =
+                    tryToGetActualFont().getWidth()
 
-        override fun getHeight() = height
+            override fun getHeight() =
+                    tryToGetActualFont().getHeight()
 
-        override fun hasDataForChar(char: Char) = false
+            override fun hasDataForChar(char: Char) =
+                    tryToGetActualFont().hasDataForChar(char)
 
-        override fun fetchRegionForChar(textCharacter: TextCharacter) = object : FontTextureRegion<BufferedImage> {
-            override fun getBackend() = BufferedImage(getWidth() * 16, getHeight() * 16, TYPE_INT_ARGB)
+            override fun fetchRegionForChar(textCharacter: TextCharacter) =
+                    tryToGetActualFont().fetchRegionForChar(textCharacter)
 
+            override fun fetchMetadataForChar(char: Char) =
+                    tryToGetActualFont().fetchMetadataForChar(char)
+
+            override fun getId() =
+                    tryToGetActualFont().getId()
+
+            private fun tryToGetActualFont(): Font {
+                return actualFont.orElseGet {
+                    if (FontLoaderRegistry.getCurrentFontLoader() === this@VirtualFontLoader) {
+                        throw IllegalStateException("No font")
+                    } else {
+                        actualFont = Optional.of(FontLoaderRegistry.getCurrentFontLoader().fetchTiledFont(
+                                width = width,
+                                height = height,
+                                source = source,
+                                cacheFonts = cacheFonts,
+                                metadataPickingStrategy = metadataPickingStrategy,
+                                metadata = metadata))
+                        actualFont.get()
+                    }
+                }
+            }
         }
-
-        override fun fetchMetadataForChar(char: Char) = metadata[char]!!
-
-        override fun getId() = uuid
-
     }
 }

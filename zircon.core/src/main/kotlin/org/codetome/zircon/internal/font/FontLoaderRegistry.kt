@@ -1,14 +1,14 @@
 package org.codetome.zircon.internal.font
 
-import java.util.*
+import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 
 object FontLoaderRegistry {
 
-    private var currentFontLoader: Optional<FontLoader> = Optional.empty()
+    private var currentFontLoader: FontLoader = VirtualFontLoader()
 
-    fun getCurrentFontLoader() = currentFontLoader.get()
+    fun getCurrentFontLoader() = currentFontLoader
 
     fun setFontLoader(fontLoader: FontLoader) {
-        currentFontLoader = Optional.of(fontLoader)
+        currentFontLoader = fontLoader
     }
 }
