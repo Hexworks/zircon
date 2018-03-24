@@ -4,7 +4,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.*
+import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ScreenBuilder
+import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.builder.VirtualTerminalBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.builder.HeaderBuilder
 import org.codetome.zircon.api.component.builder.LabelBuilder
@@ -16,7 +19,7 @@ import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrate
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
+import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -29,7 +32,6 @@ class DefaultContainerTest {
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
         goodFont = GOOD_FONT.toFont()
         badFont = BAD_FONT.toFont()
         target = DefaultContainer(
@@ -42,6 +44,7 @@ class DefaultContainerTest {
 
     @Test
     fun shouldProperlySetPositionsWhenAContainerWithComponentsIsAddedToTheComponentTree() {
+        FontLoaderRegistry.setFontLoader(TestFontLoader())
         val terminal = VirtualTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(40, 25))
                 .font(CP437TilesetResource.REX_PAINT_16X16.toFont())

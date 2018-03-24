@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
@@ -15,7 +16,7 @@ class DefaultFontOverrideTest {
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
+        FontLoaderRegistry.setFontLoader(TestFontLoader())
         target = DefaultFontOverride(INITIAL_FONT.toFont())
     }
 

@@ -21,10 +21,6 @@ open class VirtualTerminalBuilder(
         protected var font: Font = FontSettings.NO_FONT
 ) : TerminalBuilder {
 
-    init {
-        FontLoaderRegistry.setFontLoader(VirtualFontLoader())
-    }
-
     override fun build(): Terminal {
         font = DEFAULT_FONT.toFont()
         return VirtualTerminal(
