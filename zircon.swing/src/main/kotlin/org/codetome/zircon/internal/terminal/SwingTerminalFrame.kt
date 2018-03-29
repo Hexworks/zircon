@@ -55,11 +55,11 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
         dispose()
     }
 
-    private class TerminalCanvas() : Canvas() {
-        lateinit var swingTerminal: SwingTerminal
+    private class TerminalCanvas : Canvas() {
+        var swingTerminal: SwingTerminal? = null
 
         override fun paint (g: Graphics) {
-            swingTerminal.flush()
+            swingTerminal?.flush()
         }
     }
 }
