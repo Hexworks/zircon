@@ -6,6 +6,7 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import java.awt.Canvas
 import java.awt.Frame
+import java.awt.Graphics
 import java.awt.event.WindowEvent
 import java.awt.event.WindowStateListener
 import javax.swing.JFrame
@@ -19,7 +20,7 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
                          deviceConfiguration: DeviceConfiguration = DeviceConfigurationBuilder.DEFAULT,
                          font: Font,
                          fullScreen: Boolean,
-                         private val canvas: Canvas = createCanvas(),
+                         private val canvas: Canvas = TerminalCanvas(),
                          private val swingTerminal: SwingTerminal =
                          SwingTerminal(
                                  canvas = canvas,
@@ -47,13 +48,18 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
         canvas.createBufferStrategy(2)
         swingTerminal.initializeBufferStrategy()
         addWindowStateListener(this)
+        TerminalCanvas::class.javaObjectType.cast(canvas).swingTerminal = swingTerminal
     }
 
     override fun close() {
         dispose()
     }
 
-    companion object {
-        private fun createCanvas() = Canvas()
+    private class TerminalCanvas() : Canvas() {
+        lateinit var swingTerminal: SwingTerminal
+
+        override fun paint (g: Graphics) {
+            swingTerminal.flush()
+        }
     }
 }

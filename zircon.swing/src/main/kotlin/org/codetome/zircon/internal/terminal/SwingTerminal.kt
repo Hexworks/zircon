@@ -39,7 +39,6 @@ class SwingTerminal(
         canvas.preferredSize = Dimension(
                 getSupportedFontSize().xLength * getBoundableSize().xLength,
                 getSupportedFontSize().yLength * getBoundableSize().yLength)
-        canvas.ignoreRepaint = true
         canvas.isFocusable = true
         canvas.requestFocusInWindow()
         canvas.minimumSize = Dimension(initialFont.getWidth(), initialFont.getHeight())
