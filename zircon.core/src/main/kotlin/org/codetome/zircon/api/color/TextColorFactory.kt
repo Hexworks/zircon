@@ -27,7 +27,7 @@ object TextColorFactory {
     @JvmField
     val TRANSPARENT = DefaultTextColor(0, 0, 0, 0)
 
-    val DEFAULT_ALPHA = 255
+    const val DEFAULT_ALPHA = 255
 
     private val RGB_COLOR_PATTERN = Pattern.compile("#[0-9a-fA-F]{6}")
 
@@ -48,7 +48,7 @@ object TextColorFactory {
 
     /**
      * Parses a string into a color. Formats:
-     *  * *blue* - Constant value from the [ANSI] enum
+     *  * *blue* - Constant value from the [ANSITextColor] enum
      *  * *#1a1a1a* - Hash character followed by three hex-decimal tuples; creates a [DefaultTextColor] color entry by
      *  parsing the tuples as Red, Green and Blue.
      */
@@ -64,7 +64,7 @@ object TextColorFactory {
                 try {
                     ANSITextColor.valueOf(cleanValue.toUpperCase())
                 } catch (e: Exception) {
-                    throw IllegalArgumentException("Unknown color definition \"" + cleanValue + "\"", e)
+                    throw IllegalArgumentException("Unknown color definition '$cleanValue'", e)
                 }
             }
         }

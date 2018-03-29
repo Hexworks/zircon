@@ -15,13 +15,14 @@ class DefaultFontOverride(initialFont: Font) : FontOverride {
 
     override fun getCurrentFont(): Font = font.get()
 
-    override fun useFont(font: Font) {
-        if (this.font.get() !== FontSettings.NO_FONT) {
-            require(getCurrentFont().getSize() == font.getSize()) {
+    override fun useFont(font: Font): Boolean {
+        val currentFont = getCurrentFont()
+        if (currentFont !== FontSettings.NO_FONT) {
+            require(currentFont.getSize() == font.getSize()) {
                 "Can't override previous font with size: ${getCurrentFont().getSize()} with a Font with" +
                         " different size: ${font.getSize()}"
             }
         }
-        this.font.set(font)
+        return this.font.compareAndSet(currentFont, font)
     }
 }

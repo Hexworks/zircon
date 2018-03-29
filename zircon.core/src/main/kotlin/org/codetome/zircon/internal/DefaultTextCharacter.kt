@@ -102,8 +102,7 @@ data class DefaultTextCharacter(
     companion object {
 
         /**
-         * Creates a new [DefaultTextCharacter]. This method is necessary
-         * because a defensive copy create `modifiers` needs to be forced.
+         * Creates a new [DefaultTextCharacter].
          */
         @JvmStatic
         @JvmOverloads

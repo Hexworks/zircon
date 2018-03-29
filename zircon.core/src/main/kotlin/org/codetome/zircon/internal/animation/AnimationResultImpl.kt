@@ -1,5 +1,7 @@
-package org.codetome.zircon.api.animation
+package org.codetome.zircon.internal.animation
 
+import org.codetome.zircon.api.animation.AnimationResult
+import org.codetome.zircon.api.animation.AnimationState
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
 

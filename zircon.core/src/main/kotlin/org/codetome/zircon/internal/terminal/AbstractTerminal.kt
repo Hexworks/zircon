@@ -19,7 +19,6 @@ abstract class AbstractTerminal(styleable: Styleable = DefaultStyleable(AtomicRe
      * has been discovered. It will trigger all resize listeners,
      * but only if the size has changed from before.
      */
-    @Synchronized
     protected fun onResized(newSize: Size) {
         if (lastKnownSize != newSize) {
             lastKnownSize = newSize

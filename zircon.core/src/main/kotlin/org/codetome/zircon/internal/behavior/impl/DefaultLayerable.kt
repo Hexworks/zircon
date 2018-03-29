@@ -22,7 +22,6 @@ class DefaultLayerable(private val supportedFontSize: Size,
 
     override fun getSupportedFontSize() = supportedFontSize
 
-    @Synchronized
     override fun pushLayer(layer: Layer) {
         if (layer.hasOverrideFont()) {
             require(getSupportedFontSize() == layer.getCurrentFont().getSize()) {
