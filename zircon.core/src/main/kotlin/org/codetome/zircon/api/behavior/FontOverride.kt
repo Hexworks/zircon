@@ -21,8 +21,9 @@ interface FontOverride {
 
     /**
      * Sets the [Font] to use.
+     * @return true if successful, false if not (if the font was set from another thread for example).
      */
-    fun useFont(font: Font)
+    fun useFont(font: Font): Boolean
 
     /**
      * Sets the override [Font] to its default value (which is `NO_FONT`).

@@ -1,5 +1,8 @@
 package org.codetome.zircon.api.animation
 
+/**
+ * Represents the states an [Animation] can be in.
+ */
 enum class AnimationState {
 
     /**

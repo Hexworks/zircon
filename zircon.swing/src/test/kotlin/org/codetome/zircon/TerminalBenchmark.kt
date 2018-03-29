@@ -1,21 +1,22 @@
-package org.codetome.zircon.internal
+package org.codetome.zircon
 
+import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.SwingTerminalBuilder
-import org.codetome.zircon.api.builder.VirtualTerminalBuilder
 import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.api.component.builder.PanelBuilder
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.system.measureNanoTime
 
 fun main(args:Array<String>) {
-    val terminal = SwingTerminalBuilder.newBuilder()
+    val screen = SwingTerminalBuilder.newBuilder()
             .initialTerminalSize(SIZE)
             .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
-            .build()
-    terminal.setCursorVisibility(false)
+            .buildScreen()
+    screen.setCursorVisibility(false)
 
     val charCount = 60 * 30
     val chars = listOf('a', 'b')
@@ -26,13 +27,13 @@ fun main(args:Array<String>) {
     var loopCount = 0
     while(true) {
         Stats.addTimedStatFor("terminalBenchmark") {
-            terminal.setBackgroundColor(bgColors[currIdx])
-            terminal.setForegroundColor(fgColors[currIdx])
+            screen.setBackgroundColor(bgColors[currIdx])
+            screen.setForegroundColor(fgColors[currIdx])
             (0..charCount).forEach {
-                terminal.putCharacter(chars[currIdx])
+                screen.putCharacter(chars[currIdx])
             }
-            terminal.flush()
-            terminal.putCursorAt(Position.DEFAULT_POSITION)
+            screen.refresh()
+            screen.putCursorAt(Position.DEFAULT_POSITION)
             currIdx = if (currIdx == 0) 1 else 0
             loopCount++
         }
@@ -94,8 +95,10 @@ object Stats {
                     val weight: Long = 1) {
 
         override fun toString(): String {
+            val ms = avgTimeNs * weight / 1000 / 1000
             return "Stat(name='$name', " +
-                    "avgTimeMs=${avgTimeNs * weight / 1000 / 1000}, " +
+                    "avgTimeMs=$ms, " +
+                    "fps=${1000/ms}" +
                     "measurements=$measurements, " +
                     "weight = $weight)"
         }
