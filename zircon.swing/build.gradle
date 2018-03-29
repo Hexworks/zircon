@@ -1,7 +1,0 @@
-jar {
-    baseName = 'zircon.swing'
-}
-
-dependencies {
-    compile("com.jhlabs:filters:2.0.235-1")
-}

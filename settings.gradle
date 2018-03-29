@@ -1,1 +1,6 @@
-include 'zircon.core', 'zircon.libgdx', 'zircon.swing'
+rootProject.name = 'zircon'
+
+include ':zircon.core'
+include ':zircon.jvm'
+include ':zircon.jvm.swing'
+include ':zircon.jvm.libgdx'

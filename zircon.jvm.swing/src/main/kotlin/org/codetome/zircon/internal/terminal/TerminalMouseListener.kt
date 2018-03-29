@@ -9,8 +9,6 @@ import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.awt.GraphicsEnvironment
 import java.awt.MouseInfo
 import java.awt.Toolkit
@@ -24,8 +22,6 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                                  private val fontHeight: Int) : MouseAdapter() {
 
     private var lastMouseLocation = Position.UNKNOWN
-
-    private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     override fun mouseClicked(e: MouseEvent) {
         if (GraphicsEnvironment.isHeadless().not() &&
@@ -89,7 +85,8 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                 }
             }
         } catch (e: Exception) {
-            logger.error("position for mouse event '$e' was out of bounds. It is dropped.", e)
+            System.err.println("position for mouse event '$e' was out of bounds. It is dropped.")
+            e.printStackTrace()
         }
     }
 

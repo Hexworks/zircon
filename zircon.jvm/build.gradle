@@ -1,0 +1,100 @@
+apply plugin: 'kotlin-platform-jvm'
+
+archivesBaseName = 'zircon.jvm'
+
+dependencies {
+    expectedBy project(':zircon.core')
+    compile libraries.kotlin_stdlib
+
+    compile libraries.caffeine
+    compile libraries.snakeyaml
+
+    testCompile libraries.junit
+    testCompile libraries.mockito
+    testCompile libraries.assertj
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.kotlin
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+//apply plugin: 'maven-publish'
+//
+//task sourcesJar(type: Jar, dependsOn: classes) {
+//    classifier = 'sources'
+//    from sourceSets.main.allSource
+//}
+//
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+//
+//artifacts {
+//    archives sourcesJar
+//    archives javadocJar
+//}
+//
+//publishing {
+//    publications {
+//        mavenJava(MavenPublication) {
+//            from components.java
+//        }
+//    }
+//}
+//apply plugin: 'signing'
+
+//
+//signing {
+//    sign configurations.archives
+//}
+//
+//
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+//
+//            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+//                authentication(userName: ossrhUsername, password: ossrhPassword)
+//            }
+//
+//            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+//                authentication(userName: ossrhUsername, password: ossrhPassword)
+//            }
+//
+//            pom.project {
+//                name 'Zircon'
+//                packaging 'jar'
+//                artifactId 'zircon'
+//                description 'Zircon is a terminal emulator which targets multiple GUI platforms and designed specifically for game developers.'
+//                url 'https://github.com/Hexworks/zircon'
+//                scm {
+//                    connection 'scm:git:https://github.com/Hexworks/zircon.git'
+//                    developerConnection 'scm:git:https://github.com/Hexworks/zircon.git'
+//                    url 'scm:git:https://github.com/Hexworks/zircon.git'
+//                }
+//
+//                licenses {
+//                    license {
+//                        name 'MIT License'
+//                        url 'https://opensource.org/licenses/MIT'
+//                    }
+//                }
+//
+//                developers {
+//                    developer {
+//                        id 'adam-arold'
+//                        name 'Adam Arold'
+//                        email 'arold.adam@gmail.com'
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}

@@ -1,0 +1,13 @@
+apply plugin: 'kotlin'
+
+archivesBaseName = 'zircon.jvm.swing'
+
+dependencies {
+    compile project(':zircon.jvm')
+    compile libraries.kotlin_stdlib
+    compile libraries.filters
+
+    testCompile libraries.junit
+    testCompile libraries.mockito
+    testCompile libraries.assertj
+}
