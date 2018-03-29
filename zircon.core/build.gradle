@@ -1,3 +1,18 @@
-jar {
-    baseName = 'zircon.core'
+apply plugin: 'kotlin-platform-common'
+
+archivesBaseName = 'zircon.core'
+
+dependencies {
+    compile libraries.kotlin_stdlib_common
+    testCompile libraries.kotlin_test_annotations_common
+    testCompile libraries.kotlin_test_common
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.kotlin
+}
+
+artifacts {
+    archives sourcesJar
 }

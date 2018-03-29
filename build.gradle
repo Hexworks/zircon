@@ -1,132 +1,53 @@
+allprojects {
+    group 'org.codetome.zircon'
+    version '2018.1.9-PREVIEW'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.6'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
+
 buildscript {
-    ext {
-        kotlinVersion = '1.2.30'
-        slf4jVersion = '1.7.24'
-        gdxVersion = '1.9.6'
-        junitVersion = '4.12'
-        mockitoVersion = '1.10.19'
-        assertjVersion = '3.6.2'
-    }
+    ext.kotlinVersion = '1.2.30'
     repositories {
+        jcenter()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        classpath "com.eriwen:gradle-js-plugin:2.14.1"
+        classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
+}
+
+ext {
+    gdxVersion = '1.9.6'
+    junitVersion = '4.12'
+    mockitoVersion = '1.10.19'
+    assertjVersion = '3.6.2'
+    caffeineVersion = '2.5.4'
+    snakeyamlVersion = '1.18'
+    filtersVersion = '2.0.235-1'
+    libraries = [
+            kotlin_stdlib                 : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+            kotlin_stdlib_common          : "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion",
+            kotlin_test_annotations_common: "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlinVersion",
+            kotlin_test_common            : "org.jetbrains.kotlin:kotlin-test-common:$kotlinVersion",
+            caffeine                      : "com.github.ben-manes.caffeine:caffeine:$caffeineVersion",
+            snakeyaml                     : "org.yaml:snakeyaml:$snakeyamlVersion",
+            filters                       : "com.jhlabs:filters:$filtersVersion",
+            junit                         : "junit:junit:$junitVersion",
+            mockito                       : "org.mockito:mockito-all:$mockitoVersion",
+            assertj                       : "org.assertj:assertj-core:$assertjVersion",
+
+    ]
 }
 
 subprojects {
-    apply plugin: 'kotlin'
-    apply plugin: 'maven-publish'
-
-    version = "2018.1.9-PREVIEW"
-    group = "org.codetome.zircon"
-    sourceCompatibility = 1.8
-
     repositories {
-        mavenCentral()
         jcenter()
-        maven { url "http://repo1.maven.org/maven2/" }
-    }
-
-    dependencies {
-        compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-
-        compile("org.slf4j:slf4j-api:$slf4jVersion")
-        compile("org.slf4j:slf4j-simple:$slf4jVersion")
-
-        compile("com.github.ben-manes.caffeine:caffeine:2.5.4")
-        compile("org.yaml:snakeyaml:1.18")
-
-        testCompile("junit:junit:$junitVersion")
-        testCompile("org.mockito:mockito-all:$mockitoVersion")
-        testCompile("org.assertj:assertj-core:$assertjVersion")
-    }
-
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
-        from javadoc.destinationDir
-    }
-
-    artifacts {
-        archives sourcesJar
-        archives javadocJar
-    }
-
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-            }
-        }
+        mavenCentral()
     }
 }
-
-project(":zircon.libgdx") {
-    dependencies {
-        compile project(":zircon.core")
-    }
-}
-
-project(":zircon.swing") {
-    dependencies {
-        compile project(":zircon.core")
-    }
-}
-
-//apply plugin: 'signing'
-
-//
-//signing {
-//    sign configurations.archives
-//}
-//
-//
-//uploadArchives {
-//    repositories {
-//        mavenDeployer {
-//            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-//
-//            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-//                authentication(userName: ossrhUsername, password: ossrhPassword)
-//            }
-//
-//            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-//                authentication(userName: ossrhUsername, password: ossrhPassword)
-//            }
-//
-//            pom.project {
-//                name 'Zircon'
-//                packaging 'jar'
-//                artifactId 'zircon'
-//                description 'Zircon is a terminal emulator which targets multiple GUI platforms and designed specifically for game developers.'
-//                url 'https://github.com/Hexworks/zircon'
-//                scm {
-//                    connection 'scm:git:https://github.com/Hexworks/zircon.git'
-//                    developerConnection 'scm:git:https://github.com/Hexworks/zircon.git'
-//                    url 'scm:git:https://github.com/Hexworks/zircon.git'
-//                }
-//
-//                licenses {
-//                    license {
-//                        name 'MIT License'
-//                        url 'https://opensource.org/licenses/MIT'
-//                    }
-//                }
-//
-//                developers {
-//                    developer {
-//                        id 'adam-arold'
-//                        name 'Adam Arold'
-//                        email 'arold.adam@gmail.com'
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
