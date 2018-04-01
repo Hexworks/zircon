@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal.behavior
+package org.codetome.zircon.api.behavior
 
 /**
  * Represents an object which can be cached.

@@ -1,7 +1,6 @@
 package org.codetome.zircon.api.color
 
 import org.codetome.zircon.api.color.TextColorFactory.DEFAULT_ALPHA
-import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.internal.color.DefaultTextColor
 import java.awt.Color
 
@@ -25,8 +24,6 @@ enum class ANSITextColor(private val red: Int,
 
     override fun generateCacheKey() = name
 
-    override fun toAWTColor() = Color(red, green, blue, alpha)
-
     override fun getRed() = red
 
     override fun getGreen() = green
@@ -36,17 +33,14 @@ enum class ANSITextColor(private val red: Int,
     override fun getAlpha() = alpha
 
     override fun tint(): TextColor {
-        val c = this.toAWTColor().brighter()
-        return DefaultTextColor(c.red, c.green, c.blue, c.alpha)
+        return TextColorFactory.fromRGB(red, green, blue, alpha).tint()
     }
 
     override fun shade(): TextColor {
-        val c = this.toAWTColor().darker()
-        return DefaultTextColor(c.red, c.green, c.blue, c.alpha)
+        return TextColorFactory.fromRGB(red, green, blue, alpha).shade()
     }
 
     override fun invert(): TextColor {
-        val c = this.toAWTColor().darker()
-        return DefaultTextColor(255-c.red, 255-c.green, 255-c.blue, c.alpha)
+        return TextColorFactory.fromRGB(red, green, blue, alpha).invert()
     }
 }

@@ -1,6 +1,7 @@
 package org.codetome.zircon.api.color
 
 import org.assertj.core.api.Assertions.assertThat
+import org.codetome.zircon.api.extension.toAWTColor
 import org.junit.Test
 import java.awt.Color
 

@@ -5,12 +5,9 @@ import org.codetome.zircon.api.builder.*;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.color.TextColorFactory;
-import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import java.util.Random;
 
