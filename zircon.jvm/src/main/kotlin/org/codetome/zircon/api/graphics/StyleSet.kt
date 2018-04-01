@@ -1,8 +1,8 @@
 package org.codetome.zircon.api.graphics
 
 import org.codetome.zircon.api.Modifier
+import org.codetome.zircon.api.behavior.Cacheable
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.internal.behavior.Cacheable
 
 /**
  * Represents style information which is handled by Zircon like
@@ -67,6 +67,7 @@ interface StyleSet : Cacheable {
      * Creates a copy of this [StyleSet] with the given modifiers.
      */
     fun withModifiers(modifiers: Set<Modifier>): StyleSet
+
     /**
      * Creates a copy of this [StyleSet] with the given modifiers.
      */

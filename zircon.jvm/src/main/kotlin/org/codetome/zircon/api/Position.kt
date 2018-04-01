@@ -1,7 +1,7 @@
 package org.codetome.zircon.api
 
+import org.codetome.zircon.api.behavior.Cacheable
 import org.codetome.zircon.api.component.Component
-import org.codetome.zircon.internal.behavior.Cacheable
 import org.codetome.zircon.internal.util.DefaultCache
 
 /**
@@ -21,7 +21,7 @@ data class Position private constructor(
         /**
          * Represents the `y` in a terminal
          */
-        val y: Int) : Comparable<Position>, Cacheable {
+        val y: Int) : Comparable<Position>, Cacheable   {
 
     init {
         require(x >= 0 && y >= 0) {

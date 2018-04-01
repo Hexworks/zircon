@@ -1,7 +1,6 @@
 package org.codetome.zircon.api.terminal.config
 
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
 
 /**
  * Object that encapsulates the configuration parameters for the terminal device that a

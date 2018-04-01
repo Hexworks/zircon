@@ -15,8 +15,6 @@ data class DefaultTextColor(private val red: Int,
 
     private val color: Color = Color(red, green, blue, alpha)
 
-    override fun toAWTColor() = color
-
     override fun getRed() = red
 
     override fun getGreen() = green
@@ -36,6 +34,6 @@ data class DefaultTextColor(private val red: Int,
     }
 
     override fun invert(): TextColor {
-        return DefaultTextColor(255-color.red, 255-color.green, 255-color.blue, color.alpha)
+        return DefaultTextColor(255 - color.red, 255 - color.green, 255 - color.blue, color.alpha)
     }
 }

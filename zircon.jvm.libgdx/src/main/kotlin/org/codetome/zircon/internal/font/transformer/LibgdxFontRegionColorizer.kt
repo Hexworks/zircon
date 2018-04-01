@@ -3,6 +3,7 @@ package org.codetome.zircon.internal.font.transformer
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.extension.toAWTColor
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.font.FontRegionTransformer
 

@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.util
 
 import com.github.benmanes.caffeine.cache.Caffeine
-import org.codetome.zircon.internal.behavior.Cacheable
+import org.codetome.zircon.api.behavior.Cacheable
 import java.util.*
 import java.util.concurrent.TimeUnit
 
