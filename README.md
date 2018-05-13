@@ -565,7 +565,7 @@ Zircon is powered by:
 [animations]:https://github.com/Hexworks/zircon/wiki/Animation-support
 
 [discord]:https://discord.gg/p2vSMFc
-[examples]:https://github.com/Hexworks/zircon/tree/master/zircon.swing/src/test/java/org/codetome/zircon/examples
+[examples]:https://github.com/Hexworks/zircon/tree/master/zircon.jvm.swing/src/test/java/org/codetome/zircon/examples
 [api]:https://github.com/Hexworks/zircon/tree/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api
 [internal]:https://github.com/Hexworks/zircon/tree/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/internal
 
@@ -573,7 +573,7 @@ Zircon is powered by:
 [Shape]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/graphics/Shape.kt
 [ShapeFactory]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/shape/ShapeFactory.kt
 [ColorTheme]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/component/ColorTheme.kt
-[TextColor]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/color/TextColor.kt
+[TextColor]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/color/TextColor.kt
 [StyleSet]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/graphics/StyleSet.kt  
 [Component]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/component/Component.kt
 [LayerBuilder]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/builder/LayerBuilder.kt
