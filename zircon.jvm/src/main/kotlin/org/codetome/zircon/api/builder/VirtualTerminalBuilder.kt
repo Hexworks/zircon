@@ -80,7 +80,7 @@ open class VirtualTerminalBuilder(
     companion object {
 
         @JvmStatic
-        protected val DEFAULT_FONT = PhysicalFontResource.UBUNTU_MONO
+        val DEFAULT_FONT = PhysicalFontResource.UBUNTU_MONO
 
         /**
          * Creates a new [VirtualTerminalBuilder].

@@ -93,20 +93,20 @@ This is the same for [Terminal]s as well so let's create one using a [TerminalBu
 
 ```java
 import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.SwingTerminalBuilder;
 import org.codetome.zircon.api.terminal.Terminal;
 
 public class Playground {
 
     public static void main(String[] args) {
 
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = SwingTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(32, 16))
                 .build();
 
         terminal.flush();
-
     }
+
 }
 ```
 
@@ -119,7 +119,7 @@ Adding and formatting content is also very simple:
 ```java
 import org.codetome.zircon.api.Modifiers;
 import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.SwingTerminalBuilder;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.terminal.Terminal;
 
@@ -127,7 +127,7 @@ public class Playground {
 
     public static void main(String[] args) {
 
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = SwingTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(20, 8))
                 .build();
 
@@ -163,8 +163,8 @@ You might have noticed that the default font is not very nice looking, so let's 
 
 ```java
 import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.SwingTerminalBuilder;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
-import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.terminal.Terminal;
@@ -176,7 +176,7 @@ public class Playground {
 
     public static void main(String[] args) {
 
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = SwingTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(20, 8))
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorColor(ANSITextColor.RED)
@@ -196,6 +196,7 @@ public class Playground {
         terminal.flush();
     }
 }
+
 ```
 
 ![](https://cdn.discordapp.com/attachments/363771631727804416/363778863488303107/image.png)
@@ -213,7 +214,8 @@ Let's create a [Screen] and fill it up with some stuff:
 ```java
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.SwingTerminalBuilder;
+import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.builder.TextImageBuilder;
 import org.codetome.zircon.api.component.ColorTheme;
@@ -228,11 +230,11 @@ public class Playground {
 
     public static void main(String[] args) {
 
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = SwingTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(20, 8))
                 .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .build();
-        final Screen screen = TerminalBuilder.createScreenFor(terminal);
+        final Screen screen = ScreenBuilder.createScreenFor(terminal);
 
         final ColorTheme theme = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme();
 
@@ -289,7 +291,8 @@ Let's look at an example (notes about how it works are in the comments):
 ```java
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.builder.TerminalBuilder;
+import org.codetome.zircon.api.SwingTerminalBuilder;
+import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.CheckBox;
 import org.codetome.zircon.api.component.Header;
@@ -308,11 +311,11 @@ public class Playground {
 
     public static void main(String[] args) {
 
-        final Terminal terminal = TerminalBuilder.newBuilder()
+        final Terminal terminal = SwingTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.of(34, 18))
                 .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .build();
-        final Screen screen = TerminalBuilder.createScreenFor(terminal);
+        final Screen screen = ScreenBuilder.createScreenFor(terminal);
 
         // We create a Panel which will hold our components
         // Note that you can add components to the screen without a panel as well
@@ -375,6 +378,7 @@ public class Playground {
         screen.display();
     }
 }
+
 ```
 
 And the result will look like this:
