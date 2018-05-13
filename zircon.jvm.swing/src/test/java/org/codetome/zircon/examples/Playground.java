@@ -11,8 +11,8 @@ import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.component.builder.ButtonBuilder;
 import org.codetome.zircon.api.component.builder.ColorThemeBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
-import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Layer;
+import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.REXPaintResource;
 import org.codetome.zircon.api.screen.Screen;
@@ -34,7 +34,7 @@ public class Playground {
                 .build();
         final Screen mainScreen = ScreenBuilder.createScreenFor(terminal);
 
-        mainScreen.draw(backgroundLayer, Position.TOP_LEFT_CORNER);
+        mainScreen.draw(backgroundLayer, Positions.TOP_LEFT_CORNER);
 
         DefaultColorTheme theme = ColorThemeBuilder.newBuilder()
                 .accentColor(ANSITextColor.YELLOW)
@@ -49,22 +49,22 @@ public class Playground {
                 .wrapWithBox()
                 .title("Main menu")
                 .size(Size.of(30, 10))
-                .position(Position.of(3, 2))
+                .position(Positions.create(3, 2))
                 .build();
 
         Button newGame = ButtonBuilder.newBuilder()
                 .text("New Game")
-                .position(Position.OFFSET_1x1)
+                .position(Positions.OFFSET_1x1)
                 .build();
 
         Button options = ButtonBuilder.newBuilder()
                 .text("Options")
-                .position(Position.of(1, 2))
+                .position(Positions.create(1, 2))
                 .build();
 
         Button exit = ButtonBuilder.newBuilder()
                 .text("Exit")
-                .position(Position.of(1, 4))
+                .position(Positions.create(1, 4))
                 .build();
 
         panel.addComponent(newGame);

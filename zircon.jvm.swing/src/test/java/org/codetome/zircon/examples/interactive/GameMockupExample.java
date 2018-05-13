@@ -13,6 +13,7 @@ import org.codetome.zircon.api.component.builder.ButtonBuilder;
 import org.codetome.zircon.api.component.builder.LabelBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.component.builder.RadioButtonGroupBuilder;
+import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
@@ -69,7 +70,7 @@ public class GameMockupExample {
         // ==========
 
         Screen mainMenuScreen = ScreenBuilder.createScreenFor(terminal);
-        Position menuPosition = Position.of(
+        Position menuPosition = Positions.create(
                 (terminalSize.getXLength() - MAIN_MENU_PANEL_WIDTH) / 2,
                 (terminalSize.getYLength() - MAIN_MENU_PANEL_HEIGHT) / 2);
         Label mainMenuLabel = LabelBuilder.newBuilder()
@@ -87,19 +88,19 @@ public class GameMockupExample {
 
         Button newGameButton = ButtonBuilder.newBuilder()
                 .text(NEW_GAME_BUTTON_LABEL)
-                .position(Position.of(3, 1))
+                .position(Positions.create(3, 1))
                 .build();
         menuPanel.addComponent(newGameButton);
 
         Button optionsButton = ButtonBuilder.newBuilder()
                 .text(OPTIONS_BUTTON_LABEL)
-                .position(Position.of(4, 3))
+                .position(Positions.create(4, 3))
                 .build();
         menuPanel.addComponent(optionsButton);
 
         Button quitButton = ButtonBuilder.newBuilder()
                 .text(QUIT_BUTTON_LABEL)
-                .position(Position.of(7, 5))
+                .position(Positions.create(7, 5))
                 .build();
         menuPanel.addComponent(quitButton);
 
@@ -114,7 +115,7 @@ public class GameMockupExample {
 
         Button backButton = ButtonBuilder.newBuilder()
                 .text(BACK_LABEL)
-                .position(Position.of(
+                .position(Positions.create(
                         PANEL_SPACING,
                         terminalSize.getYLength() - (PANEL_SPACING * 2)))
                 .build();
@@ -122,20 +123,20 @@ public class GameMockupExample {
 
         Button applyButton = ButtonBuilder.newBuilder()
                 .text(APPLY_LABEL)
-                .position(Position.of(PANEL_SPACING, 0).relativeToRightOf(backButton))
+                .position(Positions.create(PANEL_SPACING, 0).relativeToRightOf(backButton))
                 .build();
         optionsScreen.addComponent(applyButton);
 
         Panel difficultyPanel = PanelBuilder.newBuilder()
                 .size(Size.of((terminalSize.getXLength() - PANEL_SPACING) / 3, 9))
-                .position(Position.of(PANEL_SPACING, PANEL_SPACING))
+                .position(Positions.create(PANEL_SPACING, PANEL_SPACING))
                 .wrapWithBox()
                 .boxType(BoxType.LEFT_RIGHT_DOUBLE)
                 .title(DIFFICULTY_LABEL)
                 .build();
 
         RadioButtonGroup difficultyRadio = RadioButtonGroupBuilder.newBuilder()
-                .position(Position.of(1, 1))
+                .position(Positions.create(1, 1))
                 .size(difficultyPanel.getBoundableSize().minus(Size.of(2, 2)))
                 .build();
 

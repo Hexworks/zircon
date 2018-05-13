@@ -6,6 +6,7 @@ import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.graphics.Layer;
+import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 
@@ -61,12 +62,12 @@ public class TilesetExample {
         final Random random = new Random();
         for (int y = 0; y < TERMINAL_HEIGHT; y++) {
             for (int x = 0; x < TERMINAL_WIDTH; x++) {
-                screen.setCharacterAt(Position.of(x, y), GRASSES[random.nextInt(3)]);
+                screen.setCharacterAt(Positions.create(x, y), GRASSES[random.nextInt(3)]);
             }
         }
         final String text = "Tileset Example";
         for (int i = 0; i < text.length(); i++) {
-            screen.setCharacterAt(Position.of(i + 2, 1),
+            screen.setCharacterAt(Positions.create(i + 2, 1),
                     TextCharacterBuilder.newBuilder()
                             .character(text.charAt(i))
                             .foregroundColor(TEXT_COLOR)
@@ -85,7 +86,7 @@ public class TilesetExample {
 
         for (int i = 0; i < RANDOM_CHAR_COUNT; i++) {
             overlay.setCharacterAt(
-                    Position.of(
+                    Positions.create(
                             random.nextInt(TERMINAL_WIDTH),
                             random.nextInt(TERMINAL_HEIGHT - 2) + 2),
                     TextCharacterBuilder.newBuilder()

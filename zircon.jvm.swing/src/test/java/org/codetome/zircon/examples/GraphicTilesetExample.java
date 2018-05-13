@@ -5,6 +5,7 @@ import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.font.Font;
+import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.resource.GraphicTilesetResource;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy;
@@ -36,7 +37,7 @@ public class GraphicTilesetExample {
         for (int row = 0; row < TERMINAL_HEIGHT; row++) {
             for (int col = 0; col < TERMINAL_WIDTH; col++) {
                 final char c = CHARS[RANDOM.nextInt(CHARS.length)];
-                terminal.setCharacterAt(Position.of(col, row), TextCharacterBuilder.newBuilder()
+                terminal.setCharacterAt(Positions.create(col, row), TextCharacterBuilder.newBuilder()
                         .character(c)
                         .tags(RANDOM_STRATEGY.pickMetadata(terminal.getCurrentFont().fetchMetadataForChar(c)).getTags())
                         .build());

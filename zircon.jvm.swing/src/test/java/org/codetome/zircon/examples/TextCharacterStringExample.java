@@ -8,6 +8,7 @@ import org.codetome.zircon.api.builder.TextCharacterStringBuilder;
 import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.TextCharacterString;
+import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -35,7 +36,7 @@ public class TextCharacterStringExample {
                 .text("This is some text which is too long to fit on one line...")
                 .build();
 
-        terminal.draw(tcs, Position.DEFAULT_POSITION);
+        terminal.draw(tcs, Positions.DEFAULT_POSITION);
 
         terminal.flush();
     }

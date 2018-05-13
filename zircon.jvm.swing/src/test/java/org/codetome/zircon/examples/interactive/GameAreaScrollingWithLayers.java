@@ -15,6 +15,7 @@ import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.game.GameArea;
 import org.codetome.zircon.api.game.Position3D;
 import org.codetome.zircon.api.game.Size3D;
+import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.examples.TerminalUtils;
 import org.codetome.zircon.api.graphics.TextImage;
 import org.codetome.zircon.api.input.InputType;
@@ -66,7 +67,7 @@ public class GameAreaScrollingWithLayers {
                 .build();
         Button sleep = ButtonBuilder.newBuilder()
                 .text("Sleep")
-                .position(Position.DEFAULT_POSITION.withRelativeY(1))
+                .position(Positions.DEFAULT_POSITION.withRelativeY(1))
                 .build();
         actions.addComponent(wait);
         actions.addComponent(sleep);
@@ -75,7 +76,7 @@ public class GameAreaScrollingWithLayers {
 
         final Panel gamePanel = PanelBuilder.newBuilder()
                 .size(screen.getBoundableSize().withXLength(40))
-                .position(Position.DEFAULT_POSITION.relativeToRightOf(actions))
+                .position(Positions.DEFAULT_POSITION.relativeToRightOf(actions))
                 .title("Game area")
                 .wrapWithBox()
                 .boxType(BoxType.TOP_BOTTOM_DOUBLE)
@@ -173,7 +174,7 @@ public class GameAreaScrollingWithLayers {
                                 .text(String.format("Position: (x=%s, y=%s, z=%s)", visibleOffset.getX(), visibleOffset.getY(), visibleOffset.getZ()))
                                 .build()
                                 .toTextImage())
-                        .offset(Position.of(21, 1))
+                        .offset(Positions.create(21, 1))
                         .build());
                 screen.refresh();
             }

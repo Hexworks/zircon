@@ -1,7 +1,7 @@
 package org.codetome.zircon.api
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.component.Component
+import org.codetome.zircon.api.component.*
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
