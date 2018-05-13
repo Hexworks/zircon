@@ -64,7 +64,7 @@ or you can also use Gradle:
 compile("org.codetome.zircon:zircon:2017.4.0-RELEASE")
 ```
 
-Want to use a `SNAPSHOT`? Check [this Wiki page](https://github.com/Hexworks/zircon/wiki/The-release-process-and-versioning-scheme)
+Want to use a `SNAPSHOT`? Check [this Wiki page](https://github.com/Hexworks/zircon/wiki/Release-process-and-versioning-scheme#snapshot-releases)
 
 ### Some rules of thumb
 
@@ -74,7 +74,7 @@ Before we start there are some guidelines which can help you if you are stuck:
   sure that there is a `Builder` or a `*Factory` for it. If you want to build a `TextImage` you can use the `TextImageBuilder` to do so.
   Always look for a `Builder` or a `Factory` (in case of `TextColor`s for example) to create the desired object. Your IDE
   will help you with that
-- If you want to work with external files like tilesets or REXPaint files check the [resource package](https://github.com/Hexworks/zircon/tree/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/resource).
+- If you want to work with external files like tilesets or REXPaint files check the [resource package](https://github.com/Hexworks/zircon/tree/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/resource).
   There are a bunch of built-in tilesets for example which you can choose from but you can also load your own. The rule of thumb
   is that if you need something external there is probably a `*Resource` for it (like the [REXPaintResource]).
 - Anything in the `api.beta` package is considered a *BETA* feature and is subject to change.
@@ -468,7 +468,7 @@ Zircon solves this problem with composition: All of the above mentioned categori
 within a [Terminal] which is responsible for only one thing.
 For example [Terminal] implements the [Layerable] interface and internally all operations defined by it are 
 delegated to an object which implements [Layerable] only.
-You can peruse these [here](https://github.com/Hexworks/zircon/tree/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/behavior).
+You can peruse these [here](https://github.com/Hexworks/zircon/tree/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/behavior).
 In this sense you can consider a [Terminal] as a [Facade](https://en.wikipedia.org/wiki/Facade_pattern).
 
 ### Colors and StyleSets
@@ -566,32 +566,32 @@ Zircon is powered by:
 
 [discord]:https://discord.gg/p2vSMFc
 [examples]:https://github.com/Hexworks/zircon/tree/master/zircon.swing/src/test/java/org/codetome/zircon/examples
-[api]:https://github.com/Hexworks/zircon/tree/master/zircon.core/src/main/kotlin/org/codetome/zircon/api
-[internal]:https://github.com/Hexworks/zircon/tree/master/zircon.core/src/main/kotlin/org/codetome/zircon/internal
+[api]:https://github.com/Hexworks/zircon/tree/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api
+[internal]:https://github.com/Hexworks/zircon/tree/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/internal
 
-[REXPaintResource]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/resource/REXPaintResource.kt
-[Shape]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/graphics/Shape.kt
-[ShapeFactory]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/shape/ShapeFactory.kt
-[ColorTheme]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/component/ColorTheme.kt
-[TextColor]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/color/TextColor.kt
-[StyleSet]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/graphics/StyleSet.kt  
-[Component]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/component/Component.kt
-[LayerBuilder]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/builder/LayerBuilder.kt
-[TerminalBuilder]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/builder/TerminalBuilder.kt
-[Button]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/component/Button.kt
-[Panel]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/component/Panel.kt
-[DrawSurface]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/behavior/DrawSurface.kt
-[Layerable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/behavior/Layerable.kt
-[Layer]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/graphics/Layer.kt
-[ANSITextColor]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/color/ANSITextColor.kt
-[TextColorFactory]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/color/TextColorFactory.kt
-[TextCharacter]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/TextCharacter.kt
-[Modifier]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/Modifier.kt
-[Modifiers]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/Modifiers.kt
-[InputProvider]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/input/InputProvider.kt
-[Input]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/input/Input.kt
-[TextImage]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/graphics/TextImage.kt
-[BasicTextImage]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/graphics/impl/DefaultTextImage.kt
-[Screen]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/screen/Screen.kt
-[InputEmitter]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/behavior/InputEmitter.kt
-[Terminal]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/codetome/zircon/api/terminal/Terminal.kt
+[REXPaintResource]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/resource/REXPaintResource.kt
+[Shape]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/graphics/Shape.kt
+[ShapeFactory]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/shape/ShapeFactory.kt
+[ColorTheme]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/component/ColorTheme.kt
+[TextColor]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/color/TextColor.kt
+[StyleSet]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/graphics/StyleSet.kt  
+[Component]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/component/Component.kt
+[LayerBuilder]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/builder/LayerBuilder.kt
+[TerminalBuilder]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/builder/TerminalBuilder.kt
+[Button]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/component/Button.kt
+[Panel]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/component/Panel.kt
+[DrawSurface]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/behavior/DrawSurface.kt
+[Layerable]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/behavior/Layerable.kt
+[Layer]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/graphics/Layer.kt
+[ANSITextColor]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/color/ANSITextColor.kt
+[TextColorFactory]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/color/TextColorFactory.kt
+[TextCharacter]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/TextCharacter.kt
+[Modifier]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/Modifier.kt
+[Modifiers]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/Modifiers.kt
+[InputProvider]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/input/InputProvider.kt
+[Input]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/input/Input.kt
+[TextImage]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/graphics/TextImage.kt
+[BasicTextImage]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/graphics/impl/DefaultTextImage.kt
+[Screen]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/screen/Screen.kt
+[InputEmitter]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/behavior/InputEmitter.kt
+[Terminal]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/terminal/Terminal.kt
