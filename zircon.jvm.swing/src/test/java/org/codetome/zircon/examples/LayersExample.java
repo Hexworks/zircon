@@ -8,6 +8,7 @@ import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.color.TextColorFactory;
+import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.jetbrains.annotations.NotNull;
@@ -32,19 +33,19 @@ public class LayersExample {
         final String firstRow = "This is white title on black";
         for (int x = 0; x < firstRow.length(); x++) {
             screen.setCharacterAt(
-                    Position.of(x + 1, 1),
+                    Positions.create(x + 1, 1),
                     buildWhiteOnBlack(firstRow.charAt(x)));
         }
 
         final String secondRow = "Like the row above but with blue overlay.";
         for (int x = 0; x < secondRow.length(); x++) {
             screen.setCharacterAt(
-                    Position.of(x + 1, 2),
+                    Positions.create(x + 1, 2),
                     buildWhiteOnBlack(secondRow.charAt(x)));
         }
 
         addOverlayAt(screen,
-                Position.of(1, 2),
+                Positions.create(1, 2),
                 Size.of(secondRow.length(), 1),
                 TextColorFactory.fromRGB(50, 50, 200, 127));
 

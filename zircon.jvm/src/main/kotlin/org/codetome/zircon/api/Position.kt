@@ -1,8 +1,8 @@
 package org.codetome.zircon.api
 
-import org.codetome.zircon.api.behavior.Cacheable
 import org.codetome.zircon.api.component.Component
-import org.codetome.zircon.internal.util.DefaultCache
+import org.codetome.zircon.internal.behavior.Cacheable
+import org.codetome.zircon.internal.util.Cache
 
 /**
  * A 2D position in terminal space. Please note that the coordinates are 0-indexed, meaning 0x0 is the
@@ -21,7 +21,7 @@ data class Position private constructor(
         /**
          * Represents the `y` in a terminal
          */
-        val y: Int) : Comparable<Position>, Cacheable   {
+        val y: Int) : Comparable<Position>, Cacheable {
 
     init {
         require(x >= 0 && y >= 0) {
@@ -105,6 +105,13 @@ data class Position private constructor(
     fun withRelative(translate: Position) = withRelativeY(translate.y).withRelativeX(translate.x)
 
     /**
+     * Transforms this [Position] to a [Size] so if
+     * this position is Position(x=2, y=3) it will become
+     * Size(x=2, y=3).
+     */
+    fun toSize() = Size.of(x, y)
+
+    /**
      * Creates a [Position] which is relative to the top of the given [Component].
      * The x coordinate is used to shift right
      * The y coordinate is used to shift up
@@ -144,90 +151,35 @@ data class Position private constructor(
         Position.of(maxOf(compX - x, 0), compY + y)
     }
 
-    /**
-     * Transforms this [Position] to a [Size] so if
-     * this position is Position(x=2, y=3) it will become
-     * Size(x=2, y=3).
-     */
-    fun toSize() = Size.of(x, y)
-
-    /////////////////////////////
-    /// DEPRECATED ZONE
-    ///
-    /// HERE BE DRAGONS
-    /////////////////////////////
-
-    @Deprecated(message = "This is obsolete, use the value `x` instead",
-            replaceWith = ReplaceWith(
-                    expression = "x",
-                    imports = ["org.codetome.zircon.api"]))
-    fun getColumn() = x
-
-    @Deprecated(message = "This is obsolete, use the value `y` instead",
-            replaceWith = ReplaceWith(
-                    expression = "y",
-                    imports = ["org.codetome.zircon.api"]))
-    fun getRow() = y
-
-    @Deprecated(message = "This is obsolete, use `withY` instead",
-            replaceWith = ReplaceWith(
-                    expression = ".withY",
-                    imports = ["org.codetome.zircon.api"]))
-    fun withRow(row: Int) = withY(row)
-
-    @Deprecated(message = "This is obsolete, use `withX` instead",
-            replaceWith = ReplaceWith(
-                    expression = ".withX",
-                    imports = ["org.codetome.zircon.api"]))
-    fun withColumn(column: Int) = withX(column)
-
-    @Deprecated(message = "This is obsolete, use `withRelativeX` instead",
-            replaceWith = ReplaceWith(
-                    expression = ".withRelativeX",
-                    imports = ["org.codetome.zircon.api"]))
-    fun withRelativeColumn(delta: Int) = withRelativeX(delta)
-
-    @Deprecated(message = "This is obsolete, use `withRelativeY` instead",
-            replaceWith = ReplaceWith(
-                    expression = ".withRelativeY",
-                    imports = ["org.codetome.zircon.api"]))
-    fun withRelativeRow(delta: Int) = withRelativeY(delta)
-
     companion object {
 
         private fun generateCacheKey(x: Int, y: Int) = "Position-$x-$y"
-        private var hits = 0
 
-        private val cache = DefaultCache<Position>()
+        private val cache = Cache.create<Position>()
 
         /**
          * Constant for the top-left corner (0x0)
          */
-        @JvmField
         val TOP_LEFT_CORNER = Position(0, 0)
 
         /**
          * Constant for the 1x1 position (one offset in both directions from top-left)
          */
-        @JvmField
         val OFFSET_1x1 = Position(1, 1)
 
         /**
          * This position can be considered as the default
          */
-        @JvmField
         val DEFAULT_POSITION = TOP_LEFT_CORNER
 
         /**
          * Used in place of a possible null value. Means that the position is unknown (cursor for example)
          */
-        @JvmField
         val UNKNOWN = Position(Int.MAX_VALUE, Int.MAX_VALUE)
 
         /**
          * Factory method for [Position].
          */
-        @JvmStatic
         fun of(x: Int, y: Int): Position {
             return cache.retrieveIfPresent(generateCacheKey(x, y)).orElseGet {
                 cache.store(Position(x, y))

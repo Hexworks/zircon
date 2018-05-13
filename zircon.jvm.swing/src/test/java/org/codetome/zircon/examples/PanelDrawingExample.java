@@ -5,6 +5,7 @@ import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.*;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.color.TextColorFactory;
+import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.shape.FilledRectangleFactory;
 import org.codetome.zircon.api.graphics.Box;
 import org.codetome.zircon.api.terminal.Terminal;
@@ -31,10 +32,10 @@ public class PanelDrawingExample {
         screen.setCursorVisibility(false);
 
         FilledRectangleFactory
-                .buildFilledRectangle(Position.DEFAULT_POSITION, screen.getBoundableSize())
+                .buildFilledRectangle(Positions.DEFAULT_POSITION, screen.getBoundableSize())
                 .toTextImage(TextCharacterBuilder.DEFAULT_CHARACTER
                         .withBackgroundColor(BACKGROUND_COLOR))
-                .drawOnto(screen, Position.DEFAULT_POSITION);
+                .drawOnto(screen, Positions.DEFAULT_POSITION);
 
         final Box box = BoxBuilder.newBuilder()
                 .boxType(BoxType.DOUBLE)
@@ -44,13 +45,13 @@ public class PanelDrawingExample {
                         .foregroundColor(PANEL_FG_COLOR)
                         .build())
                 .build();
-        box.putText("Title", Position.DEFAULT_POSITION
+        box.putText("Title", Positions.DEFAULT_POSITION
                 .withRelativeX(5));
-        box.setCharacterAt(Position.DEFAULT_POSITION.withRelativeX(4),
+        box.setCharacterAt(Positions.DEFAULT_POSITION.withRelativeX(4),
                 BoxType.TOP_BOTTOM_DOUBLE.getConnectorLeft());
-        box.setCharacterAt(Position.DEFAULT_POSITION.withRelativeX(10),
+        box.setCharacterAt(Positions.DEFAULT_POSITION.withRelativeX(10),
                 BoxType.TOP_BOTTOM_DOUBLE.getConnectorRight());
-        screen.draw(box, Position.of(2, 2));
+        screen.draw(box, Positions.create(2, 2));
         screen.display();
     }
 }

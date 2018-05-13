@@ -1,6 +1,7 @@
 package org.codetome.zircon.api.behavior
 
 import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.interop.Positions
 
 /**
  * Represents an object which is positionable within its parent.
@@ -20,6 +21,6 @@ interface Positionable {
      * Only override the default if it is applicable in your context
      * (in [org.codetome.zircon.api.graphics.Layer] for example).
      */
-    fun getPosition(): Position = Position.DEFAULT_POSITION
+    fun getPosition(): Position = Positions.DEFAULT_POSITION
 
 }

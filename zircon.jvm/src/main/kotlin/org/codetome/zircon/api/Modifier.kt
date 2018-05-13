@@ -1,6 +1,6 @@
 package org.codetome.zircon.api
 
-import org.codetome.zircon.api.behavior.Cacheable
+import org.codetome.zircon.internal.behavior.Cacheable
 
 /**
  * Represents a modifiers which can be added to a [TextCharacter]

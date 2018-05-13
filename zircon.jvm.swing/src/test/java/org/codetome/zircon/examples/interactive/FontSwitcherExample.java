@@ -7,6 +7,7 @@ import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.input.InputType;
+import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.examples.TerminalUtils;
@@ -45,7 +46,7 @@ public class FontSwitcherExample {
 
         final Random random = new Random();
 
-        refreshText(terminal, switchFont, Position.DEFAULT_POSITION);
+        refreshText(terminal, switchFont, Positions.DEFAULT_POSITION);
         refreshLayer(terminal, switchLayer, random);
 
         terminal.onInput(input -> {
@@ -53,7 +54,7 @@ public class FontSwitcherExample {
                 if (input.asKeyStroke().inputTypeIs(InputType.ArrowRight)) {
                     terminal.useFont(FONTS.get(random.nextInt(FONTS.size())));
                     // this is needed because terminal can't be forced to redraw
-                    refreshText(terminal, switchFont, Position.DEFAULT_POSITION);
+                    refreshText(terminal, switchFont, Positions.DEFAULT_POSITION);
                     terminal.flush();
                 }
                 if (input.asKeyStroke().inputTypeIs(InputType.ArrowLeft)) {
@@ -77,10 +78,10 @@ public class FontSwitcherExample {
         terminal.drainLayers();
         Layer layer = LayerBuilder.newBuilder()
                 .font(FONTS.get(random.nextInt(FONTS.size())))
-                .offset(Position.of(0, 1))
+                .offset(Positions.create(0, 1))
                 .size(Size.of(text.length(), 1))
                 .build();
-        layer.putText(text, Position.DEFAULT_POSITION);
+        layer.putText(text, Positions.DEFAULT_POSITION);
         terminal.pushLayer(layer);
     }
 
