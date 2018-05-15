@@ -21,7 +21,7 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                                  private val fontWidth: Int,
                                  private val fontHeight: Int) : MouseAdapter() {
 
-    private var lastMouseLocation = Position.UNKNOWN
+    private var lastMouseLocation = Position.unknown()
 
     override fun mouseClicked(e: MouseEvent) {
         if (GraphicsEnvironment.isHeadless().not() &&
@@ -70,7 +70,7 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
 
     private fun addActionToKeyQueue(actionType: MouseActionType, e: MouseEvent) {
         try {
-            val position = Position.of(
+            val position = Position.create(
                     x = Math.max(0, e.x.div(fontWidth)),
                     y = Math.max(0, e.y.div(fontHeight)))
             MouseAction(

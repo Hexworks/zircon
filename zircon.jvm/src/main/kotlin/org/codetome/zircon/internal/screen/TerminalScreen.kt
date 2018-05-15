@@ -27,7 +27,7 @@ class TerminalScreen(private val terminal: InternalTerminal,
                              initialFont = terminal.getCurrentFont()),
                      private val containerHandler: InternalContainerHandler = DefaultContainerHandler(DefaultContainer(
                              initialSize = terminal.getBoundableSize(),
-                             position = Position.DEFAULT_POSITION,
+                             position = Position.defaultPosition(),
                              componentStyles = ComponentStylesBuilder.DEFAULT,
                              initialFont = terminal.getCurrentFont())))
     : InternalScreen,
@@ -69,7 +69,7 @@ class TerminalScreen(private val terminal: InternalTerminal,
         currentScreenId = Optional.of(id)
         EventBus.emit(EventType.ScreenSwitch, id)
         setCursorVisibility(false)
-        putCursorAt(Position.DEFAULT_POSITION)
+        putCursorAt(Position.defaultPosition())
         flipBuffers(true)
         if (oldScreenId.isNotPresent() || oldScreenId.get() != id) {
             activate()

@@ -23,7 +23,7 @@ data class GameComponentBuilder(private var gameArea: Optional<GameArea> = Optio
                                 private var projectionMode: ProjectionMode = DEFAULT_PROJECTION_MODE,
                                 private var visibleSize: Size3D = Size3D.ONE,
                                 private var font: Font = FontSettings.NO_FONT,
-                                private var position: Position = Position.DEFAULT_POSITION,
+                                private var position: Position = Position.defaultPosition(),
                                 private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT) : Builder<GameComponent> {
 
     override fun createCopy() = copy()

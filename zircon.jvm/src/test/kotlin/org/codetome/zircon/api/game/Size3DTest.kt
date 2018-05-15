@@ -23,7 +23,7 @@ class Size3DTest {
 
     @Test
     fun shouldProperlyCreateFrom2DSize() {
-        val size = Size.of(2, 3)
+        val size = Size.create(2, 3)
 
         val result = Size3D.from2DSize(size, 4)
 

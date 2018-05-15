@@ -86,7 +86,7 @@ class DefaultLayer(size: Size,
 
     override fun createCopy() = DefaultLayer(
             size = textImage.getBoundableSize(),
-            filler = TextCharacterBuilder.EMPTY,
+            filler = TextCharacterBuilder.empty(),
             offset = getPosition(),
             initialFont = getCurrentFont(),
             textImage = textImage)

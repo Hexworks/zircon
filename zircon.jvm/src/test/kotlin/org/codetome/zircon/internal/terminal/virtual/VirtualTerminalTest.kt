@@ -4,14 +4,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Cell
 import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Position.Companion.DEFAULT_POSITION
-import org.codetome.zircon.api.Position.Companion.OFFSET_1x1
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
+import org.codetome.zircon.api.interop.Positions.DEFAULT_POSITION
+import org.codetome.zircon.api.interop.Positions.OFFSET_1x1
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.TerminalResizeListener
@@ -20,7 +20,6 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
@@ -103,7 +102,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldProperlySetCursorPositionWhenSetCursorPositionIsCalled() {
-        val pos = Position.of(4, 5)
+        val pos = Position.create(4, 5)
         target.putCursorAt(pos)
 
         assertThat(target.getCursorPosition()).isEqualTo(pos)
@@ -120,7 +119,7 @@ class VirtualTerminalTest {
     fun shouldMoveCursorToNextLineWhenNewLineIsPut() {
         target.putCharacter('\n')
         assertThat(target.getCursorPosition())
-                .isEqualTo(Position.DEFAULT_POSITION.withRelativeY(1))
+                .isEqualTo(Position.defaultPosition().withRelativeY(1))
     }
 
     @Test
@@ -154,14 +153,14 @@ class VirtualTerminalTest {
     @Test
     fun shouldBecomeDirtyWhenACharacterIsSet() {
         target.forEachDirtyCell { }
-        val pos = Position.OFFSET_1x1
+        val pos = Position.offset1x1()
         target.setCharacterAt(pos, 'x')
         val dirtyCells = mutableListOf<Cell>()
         target.forEachDirtyCell { dirtyCells.add(it) }
         assertThat(dirtyCells
                 .filter { it.position == OFFSET_1x1 }
                 .map { it.character })
-                .containsExactly(TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x'))
+                .containsExactly(TextCharacterBuilder.defaultCharacter().withCharacter('x'))
     }
 
     @Test
@@ -197,7 +196,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldBeAbleToSetCharacter() {
-        val expectedChar = TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x')
+        val expectedChar = TextCharacterBuilder.defaultCharacter().withCharacter('x')
         target.setCharacterAt(OFFSET_1x1, expectedChar)
 
         assertThat(target.getCharacterAt(OFFSET_1x1).get())
@@ -222,25 +221,25 @@ class VirtualTerminalTest {
         SIZE.fetchPositions().forEach {
             target.setCharacterAt(it, tc)
         }
-        target.putCursorAt(Position.of(5, 5))
+        target.putCursorAt(Position.create(5, 5))
         target.drainDirtyPositions()
 
         target.clear()
 
         val positions = SIZE.fetchPositions().map {
-            assertThat(target.getCharacterAt(it).get()).isEqualTo(TextCharacterBuilder.DEFAULT_CHARACTER)
+            assertThat(target.getCharacterAt(it).get()).isEqualTo(TextCharacterBuilder.defaultCharacter())
             it
         }
-        assertThat(target.getCursorPosition()).isEqualTo(Position.DEFAULT_POSITION)
+        assertThat(target.getCursorPosition()).isEqualTo(Position.defaultPosition())
         assertThat(target.drainDirtyPositions()).containsExactlyInAnyOrder(*positions.toTypedArray())
     }
 
     @Test
     fun shouldProperlyDrawToTerminalWhenDrawCalled() {
-        val cursorPos = Position.of(5, 5)
+        val cursorPos = Position.create(5, 5)
         target.putCursorAt(cursorPos)
-        val size = Size.of(2, 2)
-        val offset = Position.of(1, 1)
+        val size = Size.create(2, 2)
+        val offset = Position.create(1, 1)
         val tc = TextCharacterBuilder.newBuilder()
                 .character(TEST_CHAR)
                 .build()
@@ -290,7 +289,7 @@ class VirtualTerminalTest {
         target.drainDirtyPositions()
         val cursorPos = target.getCursorPosition()
 
-        val result = target.setCharacterAt(Position.of(Int.MAX_VALUE, Int.MAX_VALUE), 'x')
+        val result = target.setCharacterAt(Position.create(Int.MAX_VALUE, Int.MAX_VALUE), 'x')
 
         assertThat(result).isFalse()
         assertThat(target.drainDirtyPositions()).containsExactly(cursorPos)
@@ -317,9 +316,9 @@ class VirtualTerminalTest {
 
     companion object {
         val TEST_CHAR = 'o'
-        val SIZE = Size.of(10, 20)
+        val SIZE = Size.create(10, 20)
         val FONT = CP437TilesetResource.ROGUE_YUN_16X16
-        val NEW_BIGGER_SIZE = Size.of(30, 40)
+        val NEW_BIGGER_SIZE = Size.create(30, 40)
         val NEW_LESS_ROWS_SIZE = SIZE.withRelativeYLength(-1)
         val NEW_LESS_COLS_SIZE = SIZE.withRelativeXLength(-1)
     }

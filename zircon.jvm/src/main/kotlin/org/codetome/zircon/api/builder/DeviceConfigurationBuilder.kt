@@ -11,7 +11,7 @@ import org.codetome.zircon.api.terminal.config.DeviceConfiguration
 data class DeviceConfigurationBuilder(
         private var blinkLengthInMilliSeconds: Long = 500,
         private var cursorStyle: CursorStyle = CursorStyle.USE_CHARACTER_FOREGROUND,
-        private var cursorColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
+        private var cursorColor: TextColor = TextColorFactory.defaultForegroundColor(),
         private var cursorBlinking: Boolean = false,
         private var clipboardAvailable: Boolean = true) : Builder<DeviceConfiguration> {
 

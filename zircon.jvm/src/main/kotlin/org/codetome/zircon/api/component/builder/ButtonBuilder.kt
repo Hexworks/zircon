@@ -18,7 +18,7 @@ import java.util.*
 data class ButtonBuilder(
         private var font: Font = FontSettings.NO_FONT,
         private var text: String = "",
-        private var position: Position = Position.DEFAULT_POSITION,
+        private var position: Position = Position.defaultPosition(),
         private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT) : Builder<Button> {
 
     /**
@@ -48,7 +48,7 @@ data class ButtonBuilder(
         wrappers.add(ButtonWrappingStrategy())
         return DefaultButton(
                 text = text,
-                initialSize = Size.of(text.length + 2, 1),
+                initialSize = Size.create(text.length + 2, 1),
                 position = position,
                 componentStyles = componentStyles,
                 wrappers = wrappers,

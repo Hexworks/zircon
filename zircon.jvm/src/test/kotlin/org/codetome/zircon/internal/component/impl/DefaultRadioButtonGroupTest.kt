@@ -111,8 +111,8 @@ class DefaultRadioButtonGroupTest {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
         val FONT = CP437TilesetResource.WANDERLUST_16X16
-        val POSITION = Position.of(4, 5)
-        val SIZE = Size.of(10, 20)
+        val POSITION = Position.create(4, 5)
+        val SIZE = Size.create(10, 20)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITextColor.RED)
                 .foregroundColor(ANSITextColor.GREEN)
@@ -124,7 +124,7 @@ class DefaultRadioButtonGroupTest {
 
         val EXPECTED_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.getAccentColor())
-                .backgroundColor(TextColorFactory.TRANSPARENT)
+                .backgroundColor(TextColorFactory.transparent())
                 .build()
 
         val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()

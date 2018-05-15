@@ -15,7 +15,7 @@ data class ComponentStylesBuilder(
 
     init {
         ComponentState.values().forEach {
-            styles[it] = StyleSetBuilder.DEFAULT_STYLE
+            styles[it] = StyleSetBuilder.defaultStyle()
         }
     }
 
@@ -23,7 +23,7 @@ data class ComponentStylesBuilder(
         ComponentState.values()
                 .filterNot { it == ComponentState.DEFAULT }
                 .forEach {
-                    if (styles[it] === StyleSetBuilder.DEFAULT_STYLE) {
+                    if (styles[it] === StyleSetBuilder.defaultStyle()) {
                         styles[it] = styles[ComponentState.DEFAULT]!!
                     }
                 }

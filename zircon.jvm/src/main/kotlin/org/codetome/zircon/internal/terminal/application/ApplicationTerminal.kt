@@ -103,7 +103,7 @@ abstract class ApplicationTerminal(
     }
 
     override fun doResize(width: Int, height: Int) {
-        val terminalSize = Size.of(
+        val terminalSize = Size.create(
                 xLength = width / getSupportedFontSize().xLength,
                 yLength = height / getSupportedFontSize().yLength)
         terminal.setSize(terminalSize)
@@ -121,7 +121,7 @@ abstract class ApplicationTerminal(
         val y = yIdx * getSupportedFontSize().yLength
 
         listOf(Pair(font, character))
-                .plus(fetchOverlayZIntersection(Position.of(xIdx, yIdx)))
+                .plus(fetchOverlayZIntersection(Position.create(xIdx, yIdx)))
                 .forEach { (fontOverride, tc) ->
                     // TODO: test font
                     val fontToUse = if (fontOverride === FontSettings.NO_FONT) {

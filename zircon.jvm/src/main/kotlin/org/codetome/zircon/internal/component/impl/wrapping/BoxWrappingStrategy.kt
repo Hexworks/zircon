@@ -12,9 +12,9 @@ import java.util.*
 class BoxWrappingStrategy(private val boxType: BoxType,
                           private val title: Optional<String> = Optional.empty()) : WrappingStrategy {
 
-    override fun getOccupiedSize() = Size.of(2, 2)
+    override fun getOccupiedSize() = Size.create(2, 2)
 
-    override fun getOffset() = Position.OFFSET_1x1
+    override fun getOffset() = Position.offset1x1()
 
     override fun apply(textImage: TextImage, size: Size, offset: Position, style: StyleSet) {
         BoxBuilder.newBuilder()

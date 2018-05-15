@@ -9,7 +9,7 @@ class DefaultCursorHandler(private var cursorSpace: Size,
                            private val dirtiable: Dirtiable = DefaultDirtiable())
     : InternalCursorHandler, Dirtiable by dirtiable {
 
-    private var cursorPosition = Position.DEFAULT_POSITION
+    private var cursorPosition = Position.defaultPosition()
     private var cursorVisible = false
 
     init {

@@ -42,7 +42,7 @@ object LineFactory : ShapeFactory<LineParameters> {
         val deltaYx2 = deltaY * 2
         val deltaYx2MinusDeltaXx2 = deltaYx2 - dx * 2
         var errorTerm = deltaYx2 - dx
-        result.add(Position.of(x, y))
+        result.add(Position.create(x, y))
         while (dx-- > 0) {
             if (errorTerm >= 0) {
                 y++
@@ -51,7 +51,7 @@ object LineFactory : ShapeFactory<LineParameters> {
                 errorTerm += deltaYx2
             }
             x += if (leftToRight) 1 else -1
-            result.add(Position.of(x, y))
+            result.add(Position.create(x, y))
         }
         return result
     }
@@ -63,7 +63,7 @@ object LineFactory : ShapeFactory<LineParameters> {
         val deltaXx2 = deltaX * 2
         val deltaXx2MinusDeltaYx2 = deltaXx2 - dy * 2
         var errorTerm = deltaXx2 - dy
-        result.add(Position.of(x, y))
+        result.add(Position.create(x, y))
         while (dy-- > 0) {
             if (errorTerm >= 0) {
                 x += if (leftToRight) 1 else -1
@@ -72,7 +72,7 @@ object LineFactory : ShapeFactory<LineParameters> {
                 errorTerm += deltaXx2
             }
             y++
-            result.add(Position.of(x, y))
+            result.add(Position.create(x, y))
         }
         return result
     }

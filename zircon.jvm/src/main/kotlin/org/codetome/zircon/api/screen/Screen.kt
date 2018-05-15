@@ -3,7 +3,6 @@ package org.codetome.zircon.api.screen
 import org.codetome.zircon.api.behavior.*
 import org.codetome.zircon.api.component.ContainerHandler
 import org.codetome.zircon.internal.behavior.Identifiable
-import java.awt.image.BufferedImage
 import java.io.Closeable
 
 /**

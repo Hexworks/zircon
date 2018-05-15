@@ -16,9 +16,9 @@ import java.util.*
 
 data class RadioButtonGroupBuilder(
         private var font: Font = FontSettings.NO_FONT,
-        private var position: Position = Position.DEFAULT_POSITION,
+        private var position: Position = Position.defaultPosition(),
         private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT,
-        private var size: Size = Size.ONE) : Builder<RadioButtonGroup> {
+        private var size: Size = Size.one()) : Builder<RadioButtonGroup> {
 
     /**
      * Sets the [Font] to use with the resulting [Layer].

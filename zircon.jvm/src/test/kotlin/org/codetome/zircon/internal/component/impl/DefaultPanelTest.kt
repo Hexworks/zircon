@@ -86,8 +86,8 @@ class DefaultPanelTest {
         val BOX_TYPE = BoxType.LEFT_RIGHT_DOUBLE
         val TITLE = "TITLE"
         val FONT = CP437TilesetResource.WANDERLUST_16X16
-        val SIZE = Size.of(5, 6)
-        val POSITION = Position.of(2, 3)
+        val SIZE = Size.create(5, 6)
+        val POSITION = Position.create(2, 3)
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val EXPECTED_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.getBrightForegroundColor())

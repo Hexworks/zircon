@@ -19,7 +19,7 @@ import java.util.*
 
 class DefaultContainerHandler(private var container: DefaultContainer) : InternalContainerHandler {
 
-    private var lastMousePosition = Position.DEFAULT_POSITION
+    private var lastMousePosition = Position.defaultPosition()
     private var lastHoveredComponentId = UUID.randomUUID()
     private var lastFocusedComponent: InternalComponent = container
     private var state = UNKNOWN

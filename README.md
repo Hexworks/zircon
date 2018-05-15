@@ -101,7 +101,7 @@ public class Playground {
     public static void main(String[] args) {
 
         final Terminal terminal = SwingTerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.of(32, 16))
+                .initialTerminalSize(Size.create(32, 16))
                 .build();
 
         terminal.flush();
@@ -128,7 +128,7 @@ public class Playground {
     public static void main(String[] args) {
 
         final Terminal terminal = SwingTerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.of(20, 8))
+                .initialTerminalSize(Size.create(20, 8))
                 .build();
 
         terminal.enableModifiers(Modifiers.VERTICAL_FLIP);
@@ -177,7 +177,7 @@ public class Playground {
     public static void main(String[] args) {
 
         final Terminal terminal = SwingTerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.of(20, 8))
+                .initialTerminalSize(Size.create(20, 8))
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorColor(ANSITextColor.RED)
                         .cursorStyle(CursorStyle.VERTICAL_BAR)
@@ -231,7 +231,7 @@ public class Playground {
     public static void main(String[] args) {
 
         final Terminal terminal = SwingTerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.of(20, 8))
+                .initialTerminalSize(Size.create(20, 8))
                 .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .build();
         final Screen screen = ScreenBuilder.createScreenFor(terminal);
@@ -247,7 +247,7 @@ public class Playground {
                         .build())
                 .build();
 
-        screen.draw(image, Position.DEFAULT_POSITION);
+        screen.draw(image, Position.defaultPosition());
 
         screen.display();
     }
@@ -312,7 +312,7 @@ public class Playground {
     public static void main(String[] args) {
 
         final Terminal terminal = SwingTerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.of(34, 18))
+                .initialTerminalSize(Size.create(34, 18))
                 .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .build();
         final Screen screen = ScreenBuilder.createScreenFor(terminal);
@@ -323,20 +323,20 @@ public class Playground {
                 .wrapWithBox() // panels can be wrapped in a box
                 .title("Panel") // if a panel is wrapped in a box a title can be displayed
                 .wrapWithShadow() // shadow can be added
-                .size(Size.of(32, 16)) // the size must be smaller than the parent's size
-                .position(Position.OFFSET_1x1) // position is always relative to the parent
+                .size(Size.create(32, 16)) // the size must be smaller than the parent's size
+                .position(Position.offset1x1()) // position is always relative to the parent
                 .build();
 
         final Header header = HeaderBuilder.newBuilder()
                 // this will be 1x1 left and down from the top left
                 // corner of the panel
-                .position(Position.OFFSET_1x1)
+                .position(Position.offset1x1())
                 .text("Header")
                 .build();
 
         final CheckBox checkBox = CheckBoxBuilder.newBuilder()
                 .text("Check me!")
-                .position(Position.of(0, 1)
+                .position(Position.create(0, 1)
                         // the position class has some convenience methods
                         // for you to specify your component's position as
                         // relative to another one
@@ -344,13 +344,13 @@ public class Playground {
                 .build();
 
         final Button left = ButtonBuilder.newBuilder()
-                .position(Position.of(0, 1) // this means 1 row below the check box
+                .position(Position.create(0, 1) // this means 1 row below the check box
                         .relativeToBottomOf(checkBox))
                 .text("Left")
                 .build();
 
         final Button right = ButtonBuilder.newBuilder()
-                .position(Position.of(1, 0) // 1 column right relative to the left BUTTON
+                .position(Position.create(1, 0) // 1 column right relative to the left BUTTON
                         .relativeToRightOf(left))
                 .text("Right")
                 .build();

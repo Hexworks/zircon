@@ -66,7 +66,7 @@ data class AnimationBuilder private constructor(
 
     override fun build(): Animation {
         if (positions.size == 0) {
-            setPositionForAll(Position.DEFAULT_POSITION)
+            setPositionForAll(Position.defaultPosition())
         } else {
             require(length == positions.size) {
                 "An Animation must have the same amount of positions as frames (one position for each frame)!" +

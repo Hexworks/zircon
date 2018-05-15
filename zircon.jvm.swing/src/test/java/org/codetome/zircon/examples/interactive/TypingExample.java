@@ -10,6 +10,9 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.input.KeyStroke;
+import org.codetome.zircon.api.interop.Sizes;
+import org.codetome.zircon.api.interop.TextCharacters;
+import org.codetome.zircon.api.interop.TextColors;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
@@ -27,8 +30,8 @@ public class TypingExample {
     private static final int TERMINAL_WIDTH = 40;
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
-    private static final TextCharacter TEXT_CHAR_TEMPLATE = TextCharacterBuilder.newBuilder()
-            .foregroundColor(TextColorFactory.fromString("#F7923A"))
+    private static final TextCharacter TEXT_CHAR_TEMPLATE = TextCharacters.newBuilder()
+            .foregroundColor(TextColors.fromString("#F7923A"))
             .backgroundColor(BLACK)
             .build();
 
@@ -44,7 +47,7 @@ public class TypingExample {
             headless = true;
         }
         TerminalBuilder builder = TerminalUtils.fetchTerminalBuilder(args)
-                .initialTerminalSize(Size.of(TERMINAL_WIDTH, 10))
+                .initialTerminalSize(Sizes.create(TERMINAL_WIDTH, 10))
                 .font(CP437TilesetResource.ADU_DHABI_16X16.toFont())
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorBlinking(true)

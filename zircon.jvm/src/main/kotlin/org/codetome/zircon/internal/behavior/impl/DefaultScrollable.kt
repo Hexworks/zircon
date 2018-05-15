@@ -8,7 +8,7 @@ class DefaultScrollable(private var visibleSpaceSize: Size,
                         private var virtualSpaceSize: Size)
     : Scrollable {
 
-    private var offset = Position.DEFAULT_POSITION
+    private var offset = Position.defaultPosition()
 
     init {
         checkSizes()
@@ -57,7 +57,7 @@ class DefaultScrollable(private var visibleSpaceSize: Size,
         }
         val columnToScrollTo = offset.x + columns
         val lastScrollableColumn = virtualSpaceSize.xLength - visibleSpaceSize.xLength
-        offset = offset.copy(x = Math.min(columnToScrollTo, lastScrollableColumn))
+        offset = offset.withX(Math.min(columnToScrollTo, lastScrollableColumn))
         return offset
     }
 
@@ -66,7 +66,7 @@ class DefaultScrollable(private var visibleSpaceSize: Size,
             "You can only scroll left by a positive amount!"
         }
         val columnToScrollTo = offset.x - columns
-        offset = offset.copy(x = Math.max(0, columnToScrollTo))
+        offset = offset.withX(Math.max(0, columnToScrollTo))
         return offset
     }
 
@@ -75,7 +75,7 @@ class DefaultScrollable(private var visibleSpaceSize: Size,
             "You can only scroll up by a positive amount!"
         }
         val rowToScrollTo = offset.y - rows
-        offset = offset.copy(y = Math.max(0, rowToScrollTo))
+        offset = offset.withY(Math.max(0, rowToScrollTo))
         return offset
     }
 
@@ -85,7 +85,7 @@ class DefaultScrollable(private var visibleSpaceSize: Size,
         }
         val rowToScrollTo = offset.y + rows
         val lastScrollableRow = virtualSpaceSize.yLength - visibleSpaceSize.yLength
-        offset = offset.copy(y = Math.min(rowToScrollTo, lastScrollableRow))
+        offset = offset.withY(Math.min(rowToScrollTo, lastScrollableRow))
         return offset
     }
 

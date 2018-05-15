@@ -21,9 +21,9 @@ import java.util.*
 data class PanelBuilder(private var font: Font = FontSettings.NO_FONT,
                         private var boxType: BoxType = BoxType.SINGLE,
                         private var title: String = "",
-                        private var position: Position = Position.DEFAULT_POSITION,
+                        private var position: Position = Position.defaultPosition(),
                         private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT,
-                        private var size: Size = Size.UNKNOWN,
+                        private var size: Size = Size.unknown(),
                         private var drawBox: Boolean = false,
                         private var drawShadow: Boolean = false,
                         private var border: Optional<Border> = Optional.empty()) : Builder<Panel> {
@@ -68,7 +68,7 @@ data class PanelBuilder(private var font: Font = FontSettings.NO_FONT,
     }
 
     override fun build(): Panel {
-        require(size != Size.UNKNOWN) {
+        require(size != Size.unknown()) {
             "You must set a size for a Panel!"
         }
         val wrappers = mutableListOf<WrappingStrategy>()

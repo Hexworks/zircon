@@ -46,7 +46,7 @@ data class DefaultTextCharacter(
             .map { it as Border }
             .toSet()
 
-    override fun isNotEmpty(): Boolean = this != TextCharacterBuilder.EMPTY
+    override fun isNotEmpty(): Boolean = this != TextCharacterBuilder.empty()
 
     override fun withCharacter(character: Char): DefaultTextCharacter {
         if (this.character == character) {

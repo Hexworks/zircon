@@ -55,7 +55,7 @@ class DefaultTextBoxTest {
 
         EventBus.emit(EventType.KeyPressed, KeyStroke(type = InputType.ArrowRight))
 
-        assertThat(target.getCursorPosition()).isEqualTo(Position.DEFAULT_POSITION.withRelativeX(1))
+        assertThat(target.getCursorPosition()).isEqualTo(Position.defaultPosition().withRelativeX(1))
     }
 
     @Test
@@ -63,20 +63,20 @@ class DefaultTextBoxTest {
         target.setText("Foo${System.lineSeparator()}bar")
         target.giveFocus()
 
-        target.putCursorAt(Position.of(0, 1))
+        target.putCursorAt(Position.create(0, 1))
         EventBus.emit(EventType.KeyPressed, KeyStroke(type = InputType.ArrowLeft))
 
-        assertThat(target.getCursorPosition()).isEqualTo(Position.of(3, 0))
+        assertThat(target.getCursorPosition()).isEqualTo(Position.create(3, 0))
     }
 
     @Test
     fun shouldProperlyHandleLeftArrowWhenFocusedAndCanMoveLeftInLine() {
         target.giveFocus()
 
-        target.putCursorAt(Position.of(1, 0))
+        target.putCursorAt(Position.create(1, 0))
         EventBus.emit(EventType.KeyPressed, KeyStroke(type = InputType.ArrowLeft))
 
-        assertThat(target.getCursorPosition()).isEqualTo(Position.DEFAULT_POSITION)
+        assertThat(target.getCursorPosition()).isEqualTo(Position.defaultPosition())
     }
 
     @Test
@@ -107,7 +107,7 @@ class DefaultTextBoxTest {
     @Test
     fun shouldRefreshDrawSurfaceIfSetText() {
         target.setText(UPDATE_TEXT.toString())
-        val character = target.getDrawSurface().getCharacterAt(Position.DEFAULT_POSITION)
+        val character = target.getDrawSurface().getCharacterAt(Position.defaultPosition())
         assertThat(character.get().getCharacter())
                 .isEqualTo(UPDATE_TEXT)
     }
@@ -117,8 +117,8 @@ class DefaultTextBoxTest {
         val TEXT = "text"
         val UPDATE_TEXT = 'U'
         val FONT = CP437TilesetResource.WANDERLUST_16X16
-        val SIZE = Size.of(10, 6)
-        val POSITION = Position.of(4, 5)
+        val SIZE = Size.create(10, 6)
+        val POSITION = Position.create(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.getDarkBackgroundColor())
                 .backgroundColor(THEME.getDarkForegroundColor())

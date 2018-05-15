@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.util
 
-import org.codetome.zircon.internal.behavior.Cacheable
-import org.codetome.zircon.polyfills.Option
+import org.codetome.zircon.api.behavior.Cacheable
+import org.codetome.zircon.util.Maybe
 
 /**
  * Simple cache interface for storing [Cacheable]s.
@@ -11,7 +11,7 @@ expect interface Cache<R : Cacheable> {
     /**
      * Retrieves a font region by a [TextCharacter] if present.
      */
-    fun retrieveIfPresent(key: String): Option<R>
+    fun retrieveIfPresent(key: String): Maybe<R>
 
     /**
      * Caches the given [Cacheable] and then returns it.

@@ -4,6 +4,7 @@ import org.codetome.zircon.api.Modifiers;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.font.Font;
+import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.modifier.RayShade;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.terminal.Terminal;
@@ -21,7 +22,7 @@ public class FontModifiersExample {
 
     private static final int TERMINAL_WIDTH = 16;
     private static final int TERMINAL_HEIGHT = 3;
-    private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
+    private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)

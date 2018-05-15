@@ -74,10 +74,10 @@ class DefaultHeaderTest {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
         val FONT = CP437TilesetResource.WANDERLUST_16X16
-        val POSITION = Position.of(4, 5)
+        val POSITION = Position.create(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.getBrightForegroundColor())
-                .backgroundColor(TextColorFactory.TRANSPARENT)
+                .backgroundColor(TextColorFactory.transparent())
                 .build()
         val COMPONENT_STYLES = ComponentStylesBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)

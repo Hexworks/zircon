@@ -14,8 +14,8 @@ import org.codetome.zircon.internal.font.impl.FontSettings
 data class TextBoxBuilder(
         private var font: Font = FontSettings.NO_FONT,
         private var text: String = "",
-        private var position: Position = Position.DEFAULT_POSITION,
-        private var size: Size = Size.ONE,
+        private var position: Position = Position.defaultPosition(),
+        private var size: Size = Size.one(),
         private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT) : Builder<TextBox> {
 
     /**

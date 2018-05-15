@@ -9,7 +9,7 @@ object FilledRectangleFactory : ShapeFactory<RectangleParameters> {
     override fun createShape(shapeParameters: RectangleParameters) = shapeParameters.let { (topLeft, size) ->
         DefaultShape((0 until size.yLength).flatMap { y ->
             (0 until size.xLength).map { x ->
-                Position.of(topLeft.x + x, topLeft.y + y)
+                Position.create(topLeft.x + x, topLeft.y + y)
             }
         }.toSet()).offsetToDefaultPosition()
     }

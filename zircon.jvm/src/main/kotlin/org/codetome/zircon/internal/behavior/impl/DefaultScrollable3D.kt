@@ -9,7 +9,7 @@ class DefaultScrollable3D(private var visibleSpaceSize: Size3D,
                           private var virtualSpaceSize: Size3D)
     : Scrollable3D {
 
-    private var offset = Position3D.from2DPosition(Position.DEFAULT_POSITION)
+    private var offset = Position3D.from2DPosition(Position.defaultPosition())
 
     private var scrollable2D = DefaultScrollable(
             visibleSpaceSize = visibleSpaceSize.to2DSize(),

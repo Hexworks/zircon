@@ -5,7 +5,7 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.behavior.Layerable
 import org.codetome.zircon.api.behavior.Movable
-import java.awt.image.BufferedImage
+import org.codetome.zircon.util.Maybe
 import java.util.*
 
 /**
@@ -36,7 +36,7 @@ interface Layer : TextImage, Movable, FontOverride {
     /**
      * Same as [Layer.getCharacterAt] but will not use the offset of this [Layer] (eg: just position instead of position - offset).
      */
-    fun getRelativeCharacterAt(position: Position): Optional<TextCharacter>
+    fun getRelativeCharacterAt(position: Position): Maybe<TextCharacter>
 
     /**
      * Same as [Layer.setCharacterAt] but will not use the offset of this [Layer] (eg: just position instead of position - offset).

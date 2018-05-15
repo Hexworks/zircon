@@ -24,7 +24,7 @@ import org.codetome.zircon.internal.terminal.AbstractTerminal
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import java.util.function.Consumer
 
-class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
+class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
                       initialFont: Font,
                       private val fontOverride: FontOverride = DefaultFontOverride(
                               initialFont = initialFont),
@@ -74,7 +74,7 @@ class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
     override fun setSize(newSize: Size) {
         if (newSize != terminalSize) {
             this.terminalSize = newSize
-            backend = backend.resize(newSize, TextCharacterBuilder.DEFAULT_CHARACTER)
+            backend = backend.resize(newSize, TextCharacterBuilder.defaultCharacter())
             resizeCursorSpace(newSize)
             // TODO: this can be optimized later
             terminalSize.fetchPositions().forEach {
@@ -96,7 +96,7 @@ class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
         terminalSize.fetchPositions().forEach {
             setPositionDirty(it)
         }
-        putCursorAt(Position.DEFAULT_POSITION)
+        putCursorAt(Position.defaultPosition())
     }
 
     @Synchronized
@@ -172,7 +172,7 @@ class VirtualTerminal(initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
     private fun createBackend(initialSize: Size) =
             TextImageBuilder.newBuilder()
                     .size(initialSize)
-                    .filler(TextCharacterBuilder.DEFAULT_CHARACTER)
+                    .filler(TextCharacterBuilder.defaultCharacter())
                     .build()
 
 }

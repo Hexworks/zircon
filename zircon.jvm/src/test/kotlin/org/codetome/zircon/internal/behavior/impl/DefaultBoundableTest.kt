@@ -15,19 +15,19 @@ class DefaultBoundableTest {
     fun setUp() {
         target = DefaultBoundable(
                 size = TARGET_SIZE,
-                position = Position.DEFAULT_POSITION)
+                position = Position.defaultPosition())
     }
 
     @Test
     fun shouldContainPositionWhenThereIsNoOffsetAndSizeIsBiggerThanPos() {
-        assertThat(target.containsPosition(Position.DEFAULT_POSITION))
+        assertThat(target.containsPosition(Position.defaultPosition()))
                 .isTrue()
     }
 
     @Test
     fun shouldNotContainPositionWhenPositionIsOutOfBounds() {
         assertThat(target.containsPosition(target.getPosition()
-                        .withRelative(Position.of(TARGET_SIZE.yLength, TARGET_SIZE.xLength))))
+                        .withRelative(Position.create(TARGET_SIZE.yLength, TARGET_SIZE.xLength))))
                 .isFalse()
     }
 
@@ -55,28 +55,28 @@ class DefaultBoundableTest {
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundableWithOffset() {
         assertThat(target.intersects(LayerBuilder.newBuilder()
                 .offset(INTERSECTION_OFFSET)
-                .size(Size.ONE)
+                .size(Size.one())
                 .build()))
                 .isTrue()
     }
 
     @Test
     fun shouldContainBoundableWhenCalledWithContainedBoundable() {
-        assertThat(target.containsBoundable(DefaultBoundable(Size.ONE)))
+        assertThat(target.containsBoundable(DefaultBoundable(Size.one())))
                 .isTrue()
     }
 
     @Test
     fun shouldNotContainBoundableWhenCalledWithNonContainedBoundable() {
-        assertThat(target.containsBoundable(DefaultBoundable(Size.of(100, 100))))
+        assertThat(target.containsBoundable(DefaultBoundable(Size.create(100, 100))))
                 .isFalse()
     }
 
     companion object {
         val DEFAULT_COLS = 10
         val DEFAULT_ROWS = 10
-        val TARGET_SIZE = Size.of(DEFAULT_COLS, DEFAULT_ROWS)
-        val INTERSECTION_OFFSET = Position.OFFSET_1x1
-        val NON_INTERSECTING_OFFSET = Position.of(20, 20)
+        val TARGET_SIZE = Size.create(DEFAULT_COLS, DEFAULT_ROWS)
+        val INTERSECTION_OFFSET = Position.offset1x1()
+        val NON_INTERSECTING_OFFSET = Position.create(20, 20)
     }
 }

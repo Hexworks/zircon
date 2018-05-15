@@ -32,7 +32,7 @@ abstract class DefaultComponent(initialSize: Size,
                                 private val fontOverride: FontOverride = DefaultFontOverride(
                                         initialFont = initialFont),
                                 private val drawSurface: TextImage = TextImageBuilder.newBuilder()
-                                        .filler(TextCharacterBuilder.EMPTY)
+                                        .filler(TextCharacterBuilder.empty())
                                         .size(initialSize)
                                         .build(),
                                 private val boundable: DefaultBoundable = DefaultBoundable(
@@ -41,7 +41,7 @@ abstract class DefaultComponent(initialSize: Size,
     : InternalComponent, Drawable by drawSurface, FontOverride by fontOverride {
 
     private val id: UUID = UUID.randomUUID()
-    private var currentOffset = Position.DEFAULT_POSITION
+    private var currentOffset = Position.defaultPosition()
 
     init {
         drawSurface.setStyleFrom(componentStyles.getCurrentStyle())
@@ -141,7 +141,7 @@ abstract class DefaultComponent(initialSize: Size,
      * So basically this is the value of the component's position (`getPosition()`)
      * plus the space which is taken up by the wrappers.
      */
-    fun getWrapperOffset() = wrappers.map { it.getOffset() }.fold(Position.TOP_LEFT_CORNER) { acc, position -> acc + position }
+    fun getWrapperOffset() = wrappers.map { it.getOffset() }.fold(Position.topLeftCorner()) { acc, position -> acc + position }
 
     open fun transformToLayers() =
             listOf(LayerBuilder.newBuilder()
@@ -170,7 +170,7 @@ abstract class DefaultComponent(initialSize: Size,
 
     private fun applyWrappers() {
         var currSize = getEffectiveSize()
-        currentOffset = Position.DEFAULT_POSITION
+        currentOffset = Position.defaultPosition()
         wrappers.forEach {
             currSize += it.getOccupiedSize()
             it.apply(drawSurface, currSize, currentOffset, componentStyles.getCurrentStyle())
@@ -186,7 +186,7 @@ abstract class DefaultComponent(initialSize: Size,
     /**
      * Calculate the size taken by all the wrappers.
      */
-    private fun getWrappersSize() = wrappers.map { it.getOccupiedSize() }.fold(Size.ZERO) { acc, size -> acc + size }
+    private fun getWrappersSize() = wrappers.map { it.getOccupiedSize() }.fold(Size.zero()) { acc, size -> acc + size }
 
     /**
      * Returns the size of all wrappers which are not themeable.
@@ -194,11 +194,11 @@ abstract class DefaultComponent(initialSize: Size,
     private fun getNonThemedWrapperSize() = wrappers
             .filter { it.isThemeNeutral() }
             .map { it.getOccupiedSize() }
-            .fold(Size.ZERO) { acc, size -> acc + size }
+            .fold(Size.zero()) { acc, size -> acc + size }
 
     private fun getNonThemeableOffset() = wrappers
             .filter { it.isThemeNeutral() }
             .map { it.getOffset() }
-            .fold(Position.TOP_LEFT_CORNER) { acc, position -> acc + position }
+            .fold(Position.topLeftCorner()) { acc, position -> acc + position }
 
 }

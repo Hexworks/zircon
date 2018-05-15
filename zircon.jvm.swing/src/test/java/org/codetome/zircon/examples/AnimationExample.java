@@ -11,6 +11,7 @@ import org.codetome.zircon.api.animation.Animation;
 import org.codetome.zircon.api.animation.AnimationHandler;
 import org.codetome.zircon.api.animation.AnimationResource;
 import org.codetome.zircon.api.interop.Positions;
+import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 
@@ -18,7 +19,7 @@ import static org.codetome.zircon.api.resource.CP437TilesetResource.*;
 
 public class AnimationExample {
 
-    private static final Size TERMINAL_SIZE = Size.of(50, 30);
+    private static final Size TERMINAL_SIZE = Sizes.create(50, 30);
     private static final Position LEFT_POS = Positions.create(8, 5);
     private static final Position RIGHT_POS = Positions.create(29, 5);
 

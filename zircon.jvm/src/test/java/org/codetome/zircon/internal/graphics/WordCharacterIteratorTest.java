@@ -2,6 +2,7 @@ package org.codetome.zircon.internal.graphics;
 
 import org.codetome.zircon.api.TextCharacter;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
+import org.codetome.zircon.api.interop.TextCharacters;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -74,7 +75,7 @@ public class WordCharacterIteratorTest {
     }
 
     for (char character : data.toCharArray()) {
-      TextCharacter textCharacter = TextCharacterBuilder.newBuilder().character(character).build();
+      TextCharacter textCharacter = TextCharacters.newBuilder().character(character).build();
       textCharacters.add(textCharacter);
     }
 

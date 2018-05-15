@@ -47,7 +47,7 @@ data class DefaultStyleable(private var styleSet: AtomicReference<StyleSet>) : S
 
     @Synchronized
     override fun resetColorsAndModifiers() {
-        styleSet.set(StyleSetBuilder.DEFAULT_STYLE)
+        styleSet.set(StyleSetBuilder.defaultStyle())
     }
 
     @Synchronized

@@ -23,7 +23,7 @@ class DefaultCheckBox(private val text: String,
                       initialFont: Font,
                       position: Position,
                       componentStyles: ComponentStyles)
-    : CheckBox, DefaultComponent(initialSize = Size.of(width, 1),
+    : CheckBox, DefaultComponent(initialSize = Size.create(width, 1),
         position = position,
         componentStyles = componentStyles,
         wrappers = wrappers,
@@ -86,7 +86,7 @@ class DefaultCheckBox(private val text: String,
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getAccentColor())
-                        .backgroundColor(TextColorFactory.TRANSPARENT)
+                        .backgroundColor(TextColorFactory.transparent())
                         .build())
                 .mouseOverStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getBrightBackgroundColor())

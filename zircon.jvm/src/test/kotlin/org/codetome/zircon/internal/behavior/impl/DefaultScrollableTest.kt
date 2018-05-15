@@ -28,7 +28,7 @@ class DefaultScrollableTest {
         target.scrollOneRight()
 
         assertThat(target.getVisibleOffset())
-                .isEqualTo(Position.of(1, 0))
+                .isEqualTo(Position.create(1, 0))
     }
 
     @Test
@@ -38,7 +38,7 @@ class DefaultScrollableTest {
         target.scrollOneLeft()
 
         assertThat(target.getVisibleOffset())
-                .isEqualTo(Position.of(1, 0))
+                .isEqualTo(Position.create(1, 0))
     }
 
     @Test
@@ -46,7 +46,7 @@ class DefaultScrollableTest {
         target.scrollOneDown()
 
         assertThat(target.getVisibleOffset())
-                .isEqualTo(Position.of(0, 1))
+                .isEqualTo(Position.create(0, 1))
     }
 
     @Test
@@ -56,7 +56,7 @@ class DefaultScrollableTest {
         target.scrollOneUp()
 
         assertThat(target.getVisibleOffset())
-                .isEqualTo(Position.of(0, 1))
+                .isEqualTo(Position.create(0, 1))
     }
 
     @Test
@@ -64,7 +64,7 @@ class DefaultScrollableTest {
         target.scrollRightBy(5)
 
         assertThat(target.getVisibleOffset())
-                .isEqualTo(Position.of(5, 0))
+                .isEqualTo(Position.create(5, 0))
     }
 
     @Test
@@ -73,7 +73,7 @@ class DefaultScrollableTest {
         target.scrollLeftBy(3)
 
         assertThat(target.getVisibleOffset())
-                .isEqualTo(Position.of(2, 0))
+                .isEqualTo(Position.create(2, 0))
     }
 
     @Test
@@ -81,7 +81,7 @@ class DefaultScrollableTest {
         target.scrollDownBy(5)
 
         assertThat(target.getVisibleOffset())
-                .isEqualTo(Position.of(0, 5))
+                .isEqualTo(Position.create(0, 5))
     }
 
     @Test
@@ -90,7 +90,7 @@ class DefaultScrollableTest {
         target.scrollUpBy(3)
 
         assertThat(target.getVisibleOffset())
-                .isEqualTo(Position.of(0, 2))
+                .isEqualTo(Position.create(0, 2))
     }
 
     @Test
@@ -98,7 +98,7 @@ class DefaultScrollableTest {
         target.scrollRightBy(Int.MAX_VALUE)
 
         assertThat(target.getVisibleOffset())
-                .isEqualTo(Position.of(5, 0))
+                .isEqualTo(Position.create(5, 0))
     }
 
     @Test
@@ -107,7 +107,7 @@ class DefaultScrollableTest {
         target.scrollLeftBy(Int.MAX_VALUE)
 
         assertThat(target.getVisibleOffset())
-                .isEqualTo(Position.of(0, 0))
+                .isEqualTo(Position.create(0, 0))
     }
 
     @Test
@@ -116,7 +116,7 @@ class DefaultScrollableTest {
         target.scrollUpBy(Int.MAX_VALUE)
 
         assertThat(target.getVisibleOffset())
-                .isEqualTo(Position.of(0, 0))
+                .isEqualTo(Position.create(0, 0))
     }
 
     @Test
@@ -124,7 +124,7 @@ class DefaultScrollableTest {
         target.scrollDownBy(Int.MAX_VALUE)
 
         assertThat(target.getVisibleOffset())
-                .isEqualTo(Position.of(0, 5))
+                .isEqualTo(Position.create(0, 5))
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -148,8 +148,8 @@ class DefaultScrollableTest {
     }
 
     companion object {
-        val VIRTUAL_SPACE_SIZE = Size.of(10, 10)
-        val VISIBLE_SPACE_SIZE = Size.of(5, 5)
+        val VIRTUAL_SPACE_SIZE = Size.create(10, 10)
+        val VISIBLE_SPACE_SIZE = Size.create(5, 5)
     }
 
 }

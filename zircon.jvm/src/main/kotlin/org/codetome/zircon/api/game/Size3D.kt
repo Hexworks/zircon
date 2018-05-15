@@ -76,7 +76,7 @@ data class Size3D private constructor(val xLength: Int,
      * Transforms this [Size3D] to a [Size]. Note that
      * the `zLength` component is lost during the conversion!
      */
-    fun to2DSize() = Size.of(xLength, yLength)
+    fun to2DSize() = Size.create(xLength, yLength)
 
     companion object {
 

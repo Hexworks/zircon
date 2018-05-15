@@ -1,5 +1,6 @@
 package org.codetome.zircon.internal.component.impl.wrapping
 
+import org.codetome.zircon.api.JvmSize
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.graphics.StyleSet
@@ -13,9 +14,9 @@ import org.codetome.zircon.internal.component.WrappingStrategy
 
 class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
 
-    override fun getOccupiedSize() = Size.of(0, 0)
+    override fun getOccupiedSize() = Size.create(0, 0)
 
-    override fun getOffset() = Position.DEFAULT_POSITION
+    override fun getOffset() = Position.defaultPosition()
 
     override fun apply(textImage: TextImage, size: Size, offset: Position, style: StyleSet) {
         val drawTop = border.borderPositions.contains(TOP)
@@ -145,7 +146,8 @@ class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
     }
 
     override fun remove(textImage: TextImage, size: Size, offset: Position, style: StyleSet) {
-        size.fetchBoundingBoxPositions().forEach { pos ->
+        // TODO: FIX CAST
+        (size as JvmSize).fetchBoundingBoxPositions().forEach { pos ->
             val fixedPos = pos.withRelative(offset)
             textImage.getCharacterAt(fixedPos).map { char ->
                 if (char.hasBorder()) {

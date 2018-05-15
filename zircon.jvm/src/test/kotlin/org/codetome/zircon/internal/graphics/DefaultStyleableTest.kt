@@ -15,7 +15,7 @@ class DefaultStyleableTest {
 
     @Before
     fun setUp() {
-        target = DefaultStyleable(AtomicReference(StyleSetBuilder.DEFAULT_STYLE))
+        target = DefaultStyleable(AtomicReference(StyleSetBuilder.defaultStyle()))
     }
 
     @Test
@@ -26,13 +26,13 @@ class DefaultStyleableTest {
     @Test
     fun shouldHaveProperFGByDefault() {
         assertThat(target.getForegroundColor())
-                .isEqualTo(TextColorFactory.DEFAULT_FOREGROUND_COLOR)
+                .isEqualTo(TextColorFactory.defaultForegroundColor())
     }
 
     @Test
     fun shouldHaveProperBGByDefault() {
         assertThat(target.getBackgroundColor())
-                .isEqualTo(TextColorFactory.DEFAULT_BACKGROUND_COLOR)
+                .isEqualTo(TextColorFactory.defaultBackgroundColor())
     }
 
     @Test
@@ -82,6 +82,6 @@ class DefaultStyleableTest {
 
     @Test
     fun twoIdenticalStyleSetsShouldBeEqual() {
-        assertThat(StyleSetBuilder.DEFAULT_STYLE).isEqualTo(StyleSetBuilder.DEFAULT_STYLE)
+        assertThat(StyleSetBuilder.defaultStyle()).isEqualTo(StyleSetBuilder.defaultStyle())
     }
 }

@@ -91,7 +91,7 @@ class TerminalKeyListenerTest {
     companion object {
         val CHAR = 'x'
         val FONT_SIZE = 16
-        val POSITION = Position.of(2, 3)
+        val POSITION = Position.create(2, 3)
         val X = POSITION.x * FONT_SIZE
         val Y = POSITION.y * FONT_SIZE
         val BUTTON = 2

@@ -55,7 +55,7 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
                 text = text,
                 wrappers = LinkedList(),
                 width = size.xLength,
-                position = Position.of(0, items.size),
+                position = Position.create(0, items.size),
                 componentStyles = getComponentStyles(),
                 initialFont = getCurrentFont()).also { button ->
             items[key] = button
@@ -95,8 +95,8 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
     override fun applyColorTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(TextColorFactory.TRANSPARENT)
-                        .backgroundColor(TextColorFactory.TRANSPARENT)
+                        .foregroundColor(TextColorFactory.transparent())
+                        .backgroundColor(TextColorFactory.transparent())
                         .build())
                 .build())
         getComponents().forEach { it.applyColorTheme(colorTheme) }
@@ -111,7 +111,7 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
             removeComponent(it)
         }
         items.values.forEachIndexed { idx, comp ->
-            comp.setPosition(Position.of(0, idx))
+            comp.setPosition(Position.create(0, idx))
             addComponent(comp)
         }
     }

@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.extensions
 import java.util.*
 
 /**
- * Returns an element of this [StringBuilder] wrapped in an Option
+ * Returns an element of this [StringBuilder] wrapped in an Maybe
  * which is empty if `idx` is out of bounds.
  */
 fun StringBuilder.getIfPresent(idx: Int) =

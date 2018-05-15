@@ -29,10 +29,10 @@ class DefaultTextCharacterTest {
 
     @Test
     fun defaultCharacterShouldBeEmptyStringWithBlackAndWhiteAndNoModifiers() {
-        assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.getCharacter()).isEqualTo(' ')
-        assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.getBackgroundColor()).isEqualTo(BLACK)
-        assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.getForegroundColor()).isEqualTo(WHITE)
-        assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.getModifiers()).isEmpty()
+        assertThat(TextCharacterBuilder.defaultCharacter().getCharacter()).isEqualTo(' ')
+        assertThat(TextCharacterBuilder.defaultCharacter().getBackgroundColor()).isEqualTo(BLACK)
+        assertThat(TextCharacterBuilder.defaultCharacter().getForegroundColor()).isEqualTo(WHITE)
+        assertThat(TextCharacterBuilder.defaultCharacter().getModifiers()).isEmpty()
     }
 
     @Test
@@ -50,12 +50,12 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldNotBeEmptyWhenNotEmpty() {
-        assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.isNotEmpty()).isTrue()
+        assertThat(TextCharacterBuilder.defaultCharacter().isNotEmpty()).isTrue()
     }
 
     @Test
     fun shouldBeEmptyWhenEmpty() {
-        assertThat(TextCharacterBuilder.EMPTY.isNotEmpty()).isFalse()
+        assertThat(TextCharacterBuilder.empty().isNotEmpty()).isFalse()
     }
 
     @Test

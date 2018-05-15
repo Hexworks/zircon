@@ -12,15 +12,15 @@ import java.util.*
 
 /**
  * Use this to build [Layer]s. Defaults are:
- * - size: [Size.ONE]
- * - filler: [TextCharacterBuilder.EMPTY]
- * - offset: [Position.DEFAULT_POSITION]
+ * - size: [Size.one()]
+ * - filler: [TextCharacterBuilder.empty()]
+ * - offset: [Position.defaultPosition()]
  * - has no text image by default
  */
 data class LayerBuilder(private var font: Font = DEFAULT_FONT,
                         private var size: Size = DEFAULT_SIZE,
                         private var filler: TextCharacter = DEFAULT_FILLER,
-                        private var offset: Position = Position.DEFAULT_POSITION,
+                        private var offset: Position = Position.defaultPosition(),
                         private var textImage: Optional<TextImage> = Optional.empty()) : Builder<Layer> {
 
     /**
@@ -83,10 +83,10 @@ data class LayerBuilder(private var font: Font = DEFAULT_FONT,
         val DEFAULT_FONT = FontSettings.NO_FONT
 
         @JvmField
-        val DEFAULT_SIZE = Size.ONE
+        val DEFAULT_SIZE = Size.one()
 
         @JvmField
-        val DEFAULT_FILLER = TextCharacterBuilder.EMPTY
+        val DEFAULT_FILLER = TextCharacterBuilder.empty()
 
         @JvmStatic
         fun newBuilder() = LayerBuilder()

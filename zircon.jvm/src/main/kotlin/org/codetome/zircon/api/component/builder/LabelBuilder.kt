@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage
 data class LabelBuilder(
         private var font: Font = FontSettings.NO_FONT,
         private var text: String = "",
-        private var position: Position = Position.DEFAULT_POSITION,
+        private var position: Position = Position.defaultPosition(),
         private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT) : Builder<Label> {
 
     /**
@@ -43,7 +43,7 @@ data class LabelBuilder(
         }
         return DefaultLabel(
                 text = text,
-                initialSize = Size.of(text.length, 1),
+                initialSize = Size.create(text.length, 1),
                 initialFont = font,
                 position = position,
                 componentStyles = componentStyles

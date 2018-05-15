@@ -8,6 +8,7 @@ import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.interop.Positions;
+import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.examples.TerminalUtils;
@@ -24,7 +25,7 @@ public class FontSwitcherExample {
 
     private static final int TERMINAL_WIDTH = 30;
     private static final int TERMINAL_HEIGHT = 8;
-    private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
+    private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static final List<Font> FONTS = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -79,7 +80,7 @@ public class FontSwitcherExample {
         Layer layer = LayerBuilder.newBuilder()
                 .font(FONTS.get(random.nextInt(FONTS.size())))
                 .offset(Positions.create(0, 1))
-                .size(Size.of(text.length(), 1))
+                .size(Sizes.create(text.length(), 1))
                 .build();
         layer.putText(text, Positions.DEFAULT_POSITION);
         terminal.pushLayer(layer);

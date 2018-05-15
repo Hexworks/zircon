@@ -16,7 +16,7 @@ object PanelDrawingExample {
 
     private val TERMINAL_WIDTH = 19
     private val TERMINAL_HEIGHT = 12
-    private val SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT)
+    private val SIZE = Size.create(TERMINAL_WIDTH, TERMINAL_HEIGHT)
     private val BACKGROUND_COLOR = TextColorFactory.fromString("#223344")
     private val PANEL_BG_COLOR = TextColorFactory.fromString("#666666")
     private val PANEL_FG_COLOR = TextColorFactory.fromString("#ffffff")
@@ -31,26 +31,26 @@ object PanelDrawingExample {
         screen.setCursorVisibility(false)
 
         FilledRectangleFactory
-                .buildFilledRectangle(Position.DEFAULT_POSITION, screen.getBoundableSize())
-                .toTextImage(TextCharacterBuilder.DEFAULT_CHARACTER
+                .buildFilledRectangle(Position.defaultPosition(), screen.getBoundableSize())
+                .toTextImage(TextCharacterBuilder.defaultCharacter()
                         .withBackgroundColor(BACKGROUND_COLOR))
-                .drawOnto(screen, Position.DEFAULT_POSITION)
+                .drawOnto(screen, Position.defaultPosition())
 
         val box = BoxBuilder.newBuilder()
                 .boxType(BoxType.DOUBLE)
-                .size(Size.of(15, 8))
+                .size(Size.create(15, 8))
                 .style(StyleSetBuilder.newBuilder()
                         .backgroundColor(PANEL_BG_COLOR)
                         .foregroundColor(PANEL_FG_COLOR)
                         .build())
                 .build()
-        box.putText("Title", Position.DEFAULT_POSITION
+        box.putText("Title", Position.defaultPosition()
                 .withRelativeX(5))
-        box.setCharacterAt(Position.DEFAULT_POSITION.withRelativeX(4),
+        box.setCharacterAt(Position.defaultPosition().withRelativeX(4),
                 BoxType.TOP_BOTTOM_DOUBLE.connectorLeft)
-        box.setCharacterAt(Position.DEFAULT_POSITION.withRelativeX(10),
+        box.setCharacterAt(Position.defaultPosition().withRelativeX(10),
                 BoxType.TOP_BOTTOM_DOUBLE.connectorRight)
-        screen.draw(box, Position.of(2, 2))
+        screen.draw(box, Position.create(2, 2))
         screen.display()
     }
 

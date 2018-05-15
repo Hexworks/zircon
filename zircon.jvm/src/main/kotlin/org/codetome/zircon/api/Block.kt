@@ -9,8 +9,8 @@ import org.codetome.zircon.api.game.Position3D
  * The layers are ordered from bottom to top.
  */
 data class Block(val position: Position3D,
-                 val top: TextCharacter = TextCharacterBuilder.EMPTY,
-                 val back: TextCharacter = TextCharacterBuilder.EMPTY,
-                 val front: TextCharacter = TextCharacterBuilder.EMPTY,
-                 val bottom: TextCharacter = TextCharacterBuilder.EMPTY,
+                 val top: TextCharacter = TextCharacterBuilder.empty(),
+                 val back: TextCharacter = TextCharacterBuilder.empty(),
+                 val front: TextCharacter = TextCharacterBuilder.empty(),
+                 val bottom: TextCharacter = TextCharacterBuilder.empty(),
                  val layers: MutableList<TextCharacter> = mutableListOf()) // TODO: mutable

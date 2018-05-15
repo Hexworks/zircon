@@ -13,16 +13,16 @@ class Java2DPhysicalFontTest {
 
     @Test
     fun shouldProperlyCacheFontWhenFetchingRegionTwice() {
-        val firstResult = target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER)
-        val secondResult = target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER)
+        val firstResult = target.fetchRegionForChar(TextCharacterBuilder.defaultCharacter())
+        val secondResult = target.fetchRegionForChar(TextCharacterBuilder.defaultCharacter())
 
         assertThat(firstResult).isSameAs(secondResult)
     }
 
     @Test
     fun shouldNotBeTheSameWhenRegionIsLoadedForDifferentTextChars() {
-        val firstResult = target.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER)
-        val secondResult = target.fetchRegionForChar(TextCharacterBuilder.EMPTY)
+        val firstResult = target.fetchRegionForChar(TextCharacterBuilder.defaultCharacter())
+        val secondResult = target.fetchRegionForChar(TextCharacterBuilder.empty())
 
         assertThat(firstResult).isNotSameAs(secondResult)
     }

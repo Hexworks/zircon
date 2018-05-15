@@ -9,6 +9,9 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.interop.Positions;
+import org.codetome.zircon.api.interop.Sizes;
+import org.codetome.zircon.api.interop.TextCharacters;
+import org.codetome.zircon.api.interop.TextColors;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +22,7 @@ public class LayersExample {
 
     private static final int TERMINAL_WIDTH = 45;
     private static final int TERMINAL_HEIGHT = 5;
-    private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
+    private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
@@ -46,8 +49,8 @@ public class LayersExample {
 
         addOverlayAt(screen,
                 Positions.create(1, 2),
-                Size.of(secondRow.length(), 1),
-                TextColorFactory.fromRGB(50, 50, 200, 127));
+                Sizes.create(secondRow.length(), 1),
+                TextColors.fromRGB(50, 50, 200, 127));
 
         screen.display();
     }
@@ -56,7 +59,7 @@ public class LayersExample {
         screen.pushLayer(new LayerBuilder()
                 .offset(offset)
                 .size(size)
-                .filler(TextCharacterBuilder.newBuilder()
+                .filler(TextCharacters.newBuilder()
                         .backgroundColor(color)
                         .character(' ')
                         .build())
@@ -65,10 +68,10 @@ public class LayersExample {
 
     @NotNull
     private static TextCharacter buildWhiteOnBlack(char c) {
-        return TextCharacterBuilder.newBuilder()
+        return TextCharacters.newBuilder()
                 .character(c)
-                .backgroundColor(TextColorFactory.fromRGB(0, 0, 0, 255))
-                .foregroundColor(TextColorFactory.fromRGB(255, 255, 255, 255))
+                .backgroundColor(TextColors.fromRGB(0, 0, 0, 255))
+                .foregroundColor(TextColors.fromRGB(255, 255, 255, 255))
                 .build();
     }
 

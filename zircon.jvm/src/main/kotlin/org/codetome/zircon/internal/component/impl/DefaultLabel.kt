@@ -25,7 +25,7 @@ class DefaultLabel(private val text: String,
 
 
     init {
-        getDrawSurface().putText(text, Position.DEFAULT_POSITION)
+        getDrawSurface().putText(text, Position.defaultPosition())
     }
 
     override fun getText() = text
@@ -40,7 +40,7 @@ class DefaultLabel(private val text: String,
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getDarkForegroundColor())
-                        .backgroundColor(TextColorFactory.TRANSPARENT)
+                        .backgroundColor(TextColorFactory.transparent())
                         .build())
                 .build())
     }
