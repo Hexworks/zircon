@@ -12,6 +12,9 @@ import org.codetome.zircon.api.component.builder.*;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.interop.Positions;
+import org.codetome.zircon.api.interop.Sizes;
+import org.codetome.zircon.api.interop.TextCharacters;
+import org.codetome.zircon.api.interop.TextColors;
 import org.codetome.zircon.api.modifier.BorderBuilder;
 import org.codetome.zircon.api.modifier.BorderType;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
@@ -30,8 +33,8 @@ import java.util.stream.Collectors;
 
 public class ComponentsExample {
 
-    private static final Size PANEL_SIZE = Size.of(22, 6);
-    private static final Size TERMINAL_SIZE = Size.of(52, 28);
+    private static final Size PANEL_SIZE = Sizes.create(22, 6);
+    private static final Size TERMINAL_SIZE = Sizes.create(52, 28);
     private static final Font FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont();
     private static final ColorTheme PANELS_THEME = ColorThemeResource.TECH_LIGHT.getTheme();
     private static final ColorTheme INPUTS_THEME = ColorThemeResource.SOLARIZED_DARK_GREEN.getTheme();
@@ -48,7 +51,7 @@ public class ComponentsExample {
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorBlinking(true)
                         .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
-                        .cursorColor(TextColorFactory.fromString("#ff00ff"))
+                        .cursorColor(TextColors.fromString("#ff00ff"))
                         .build())
                 .build();
 
@@ -177,7 +180,7 @@ public class ComponentsExample {
                 .build();
         textBoxesPanel.addComponent(TextBoxBuilder.newBuilder()
                 .text("Panel" + System.lineSeparator() + "with editable text box" + System.lineSeparator() + "...")
-                .size(Size.of(13, 3))
+                .size(Sizes.create(13, 3))
                 .build());
         inputsScreen.addComponent(textBoxesPanel);
 
@@ -202,7 +205,7 @@ public class ComponentsExample {
                 .wrapWithShadow()
                 .build();
         final RadioButtonGroup radios = RadioButtonGroupBuilder.newBuilder()
-                .size(Size.of(15, 3))
+                .size(Sizes.create(15, 3))
                 .build();
         radioPanel.addComponent(radios);
         radios.addOption("bar", "Bar");
@@ -285,7 +288,7 @@ public class ComponentsExample {
         final Panel infoPanel = PanelBuilder.newBuilder()
                 .wrapWithBox()
                 .title("Current selection:")
-                .size(Size.of(48, 3))
+                .size(Sizes.create(48, 3))
                 .position(Positions.create(2, 4))
                 .build();
 
@@ -295,7 +298,7 @@ public class ComponentsExample {
         colorThemesScreen.addComponent(infoPanel);
 
 
-        final Size themePickerSize = Size.of(13, 19);
+        final Size themePickerSize = Sizes.create(13, 19);
         final Panel solarizedLightPanel = PanelBuilder.newBuilder()
                 .title("Sol. Light")
                 .position(Positions.create(0, 1).relativeToBottomOf(infoPanel))
@@ -312,7 +315,7 @@ public class ComponentsExample {
                 .title("Other")
                 .position(Positions.create(1, 0).relativeToRightOf(solarizedDarkPanel))
                 .wrapWithBox()
-                .size(themePickerSize.plus(Size.of(7, 0)))
+                .size(themePickerSize.plus(Sizes.create(7, 0)))
                 .build();
 
 
@@ -386,7 +389,7 @@ public class ComponentsExample {
         final Panel exampleComponentsPanel = PanelBuilder.newBuilder()
                 .wrapWithBox()
                 .title("Example components")
-                .size(Size.of(48, 22))
+                .size(Sizes.create(48, 22))
                 .position(Positions.create(2, 4))
                 .build();
 
@@ -395,7 +398,7 @@ public class ComponentsExample {
                 .text("Something with 'a'!")
                 .build();
         final Layer aIcon = LayerBuilder.newBuilder()
-                .size(Size.of(1, 1))
+                .size(Sizes.create(1, 1))
                 .offset(exampleComponentsPanel.getPosition().plus(Positions.create(2, 2)))
                 .font(GraphicTilesetResource.NETHACK_16X16.toFont(new PickRandomMetaStrategy()))
                 .build();
@@ -408,7 +411,7 @@ public class ComponentsExample {
                 .text("Something with 'b'!")
                 .build();
         final Layer bIcon = LayerBuilder.newBuilder()
-                .size(Size.of(1, 1))
+                .size(Sizes.create(1, 1))
                 .offset(exampleComponentsPanel.getPosition().plus(Positions.create(2, 3)))
                 .font(GraphicTilesetResource.NETHACK_16X16.toFont(new PickRandomMetaStrategy()))
                 .build();
@@ -424,9 +427,9 @@ public class ComponentsExample {
     }
 
     private static void refreshIcon(Layer icon, char c) {
-        icon.setRelativeCharacterAt(Positions.DEFAULT_POSITION, TextCharacterBuilder.newBuilder()
+        icon.setRelativeCharacterAt(Positions.DEFAULT_POSITION, TextCharacters.newBuilder()
                 .character(c)
-                .backgroundColor(TextColorFactory.TRANSPARENT)
+                .backgroundColor(TextColors.TRANSPARENT)
                 .build());
     }
 
@@ -450,7 +453,7 @@ public class ComponentsExample {
 
     private static Panel createSmallPanel(Position position) {
         Panel result = PanelBuilder.newBuilder()
-                .size(Size.of(8, 6))
+                .size(Sizes.create(8, 6))
                 .position(position)
                 .addBorder(Modifiers.BORDER)
                 .build();

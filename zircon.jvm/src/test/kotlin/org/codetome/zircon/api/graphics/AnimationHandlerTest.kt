@@ -43,8 +43,8 @@ class AnimationHandlerTest {
     @Test
     fun shouldReturnInfiniteWhenAnimationIsInfinite() {
         val infiniteAnimation = AnimationBuilder.newBuilder()
-                .addFrame(DefaultAnimationFrame(Size.ONE, listOf(), 1))
-                .addPosition(Position.OFFSET_1x1)
+                .addFrame(DefaultAnimationFrame(Size.one(), listOf(), 1))
+                .addPosition(Position.offset1x1())
                 .loopCount(0)
                 .fps(1)
                 .build()
@@ -66,7 +66,7 @@ class AnimationHandlerTest {
         Mockito.`when`(animationMock.getCurrentFrame()).then {
             lock.lock()
             cond.await(2, TimeUnit.SECONDS)
-            DefaultAnimationFrame(Size.ONE, listOf(), 1)
+            DefaultAnimationFrame(Size.one(), listOf(), 1)
         }
 
         val result = target.addAnimation(animationMock)
@@ -80,7 +80,7 @@ class AnimationHandlerTest {
     fun shouldReturnFinishedWhenAnimationIsFinished() {
 
         val uuid = UUID.randomUUID()
-        val currFrame = DefaultAnimationFrame(Size.ONE, listOf(), 1)
+        val currFrame = DefaultAnimationFrame(Size.one(), listOf(), 1)
         val lock = ReentrantLock()
         val cond = lock.newCondition()
 
@@ -110,7 +110,7 @@ class AnimationHandlerTest {
     fun shouldProperlyWaitUntilFinish() {
 
         val uuid = UUID.randomUUID()
-        val currFrame = DefaultAnimationFrame(Size.ONE, listOf(), 1)
+        val currFrame = DefaultAnimationFrame(Size.one(), listOf(), 1)
 
         Mockito.`when`(animationMock.getId()).thenReturn(uuid)
         Mockito.`when`(animationMock.isLoopedIndefinitely()).thenReturn(false)

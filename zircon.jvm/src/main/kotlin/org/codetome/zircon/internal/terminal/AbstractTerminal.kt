@@ -8,11 +8,11 @@ import org.codetome.zircon.api.terminal.TerminalResizeListener
 import org.codetome.zircon.internal.behavior.impl.DefaultStyleable
 import java.util.concurrent.atomic.AtomicReference
 
-abstract class AbstractTerminal(styleable: Styleable = DefaultStyleable(AtomicReference(StyleSetBuilder.DEFAULT_STYLE)))
+abstract class AbstractTerminal(styleable: Styleable = DefaultStyleable(AtomicReference(StyleSetBuilder.defaultStyle())))
     : Styleable by styleable, Terminal {
 
     private val resizeListeners = mutableListOf<TerminalResizeListener>()
-    private var lastKnownSize = Size.UNKNOWN
+    private var lastKnownSize = Size.unknown()
 
     /**
      * Call this method when the terminal has been resized or the initial size of the terminal

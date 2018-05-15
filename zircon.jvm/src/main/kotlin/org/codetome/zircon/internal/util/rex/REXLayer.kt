@@ -28,8 +28,8 @@ data class REXLayer(private val width: Int,
      */
     fun toLayer(): Layer {
         val layer = LayerBuilder.newBuilder()
-                .size(Size.of(width, height))
-                .filler(TextCharacterBuilder.EMPTY)
+                .size(Size.create(width, height))
+                .filler(TextCharacterBuilder.empty())
                 .font(FontSettings.NO_FONT)
                 .build()
 
@@ -41,12 +41,14 @@ data class REXLayer(private val width: Int,
                     // Skip transparent characters
                     continue
                 }
+                val bg = cell.getBackgroundColor()
+                val fg = cell.getForegroundColor()
                 layer.setCharacterAt(
-                        Position.of(x, y),
+                        Position.create(x, y),
                         TextCharacterBuilder.newBuilder()
                                 .character(cell.getCharacter())
-                                .backgroundColor(TextColorFactory.fromAWTColor(cell.getBackgroundColor()))
-                                .foregroundColor(TextColorFactory.fromAWTColor(cell.getForegroundColor()))
+                                .backgroundColor(TextColorFactory.create(bg.red, bg.green, bg.blue, bg.alpha))
+                                .foregroundColor(TextColorFactory.create(fg.red, fg.green, fg.blue, fg.alpha))
                                 .build()
                 )
             }

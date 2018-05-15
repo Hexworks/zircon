@@ -85,7 +85,7 @@ class DefaultComponentTest {
 
         EventBus.emit(EventType.MouseOver(target.getId()))
 
-        val targetChar = target.getDrawSurface().getCharacterAt(Position.DEFAULT_POSITION).get()
+        val targetChar = target.getDrawSurface().getCharacterAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(MOUSE_OVER_STYLE.getBackgroundColor())
         assertThat(targetChar.getForegroundColor()).isEqualTo(MOUSE_OVER_STYLE.getForegroundColor())
         assertThat(componentChanged.get()).isTrue()
@@ -101,7 +101,7 @@ class DefaultComponentTest {
 
         EventBus.emit(EventType.MouseOut(target.getId()))
 
-        val targetChar = target.getDrawSurface().getCharacterAt(Position.DEFAULT_POSITION).get()
+        val targetChar = target.getDrawSurface().getCharacterAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(DEFAULT_STYLE.getBackgroundColor())
         assertThat(targetChar.getForegroundColor()).isEqualTo(DEFAULT_STYLE.getForegroundColor())
         assertThat(componentChanged.get()).isTrue()
@@ -116,12 +116,12 @@ class DefaultComponentTest {
 
     @Test
     fun shouldContainBoundableWhichIsContained() {
-        assertThat(target.containsBoundable(DefaultBoundable(SIZE - Size.ONE, POSITION))).isTrue()
+        assertThat(target.containsBoundable(DefaultBoundable(SIZE - Size.one(), POSITION))).isTrue()
     }
 
     @Test
     fun shouldNotContainBoundableWhichIsContained() {
-        assertThat(target.containsBoundable(DefaultBoundable(SIZE + Size.ONE, POSITION))).isFalse()
+        assertThat(target.containsBoundable(DefaultBoundable(SIZE + Size.one(), POSITION))).isFalse()
     }
 
     @Test
@@ -131,18 +131,18 @@ class DefaultComponentTest {
 
     @Test
     fun shouldNotContainPositionWhichIsContained() {
-        assertThat(target.containsPosition(POSITION - Position.OFFSET_1x1)).isFalse()
+        assertThat(target.containsPosition(POSITION - Position.offset1x1())).isFalse()
     }
 
     @Test
     fun shouldProperlyDrawOntoTextImage() {
         val image = TextImageBuilder.newBuilder()
-                .size(SIZE + Size.of(POSITION.x, POSITION.y))
+                .size(SIZE + Size.create(POSITION.x, POSITION.y))
                 .build()
         target.drawOnto(image)
 
-        assertThat(image.getCharacterAt(POSITION - Position.OFFSET_1x1).get())
-                .isEqualTo(TextCharacterBuilder.EMPTY)
+        assertThat(image.getCharacterAt(POSITION - Position.offset1x1()).get())
+                .isEqualTo(TextCharacterBuilder.empty())
 
         target.getBoundableSize().fetchPositions().forEach {
             assertThat(image.getCharacterAt(it + POSITION).get())
@@ -157,7 +157,7 @@ class DefaultComponentTest {
 
     @Test
     fun shouldNotFetchByPositionWhenDoesNotContainPosition() {
-        assertThat(target.fetchComponentByPosition(Position.of(100, 100))).isNotPresent
+        assertThat(target.fetchComponentByPosition(Position.create(100, 100))).isNotPresent
     }
 
     @Test
@@ -223,9 +223,9 @@ class DefaultComponentTest {
 
     companion object {
         val FONT = CP437TilesetResource.ROGUE_YUN_16X16
-        val SIZE = Size.of(4, 4)
-        val POSITION = Position.of(2, 3)
-        val NEW_POSITION = Position.of(6, 7)
+        val SIZE = Size.create(4, 4)
+        val POSITION = Position.create(2, 3)
+        val NEW_POSITION = Position.create(6, 7)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITextColor.BLUE)
                 .foregroundColor(ANSITextColor.RED)

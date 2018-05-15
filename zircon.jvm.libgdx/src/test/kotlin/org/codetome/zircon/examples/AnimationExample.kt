@@ -13,9 +13,9 @@ import org.codetome.zircon.api.resource.CP437TilesetResource
 object AnimationExample {
 
     private val FONT = CP437TilesetResource.WANDERLUST_16X16
-    private val TERMINAL_SIZE = Size.of(50, 30)
-    private val LEFT_POS = Position.of(8, 5)
-    private val RIGHT_POS = Position.of(29, 5)
+    private val TERMINAL_SIZE = Size.create(50, 30)
+    private val LEFT_POS = Position.create(8, 5)
+    private val RIGHT_POS = Position.create(29, 5)
 
     @JvmStatic
     fun main(args: Array<String>) {

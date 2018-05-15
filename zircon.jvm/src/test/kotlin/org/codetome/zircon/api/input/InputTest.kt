@@ -55,7 +55,7 @@ class InputTest {
 
     @Test
     fun shouldBeAbleToGetMouseActionAsMouseAction() {
-        val input: Input = MouseAction(MouseActionType.MOUSE_CLICKED, 1, Position.DEFAULT_POSITION)
+        val input: Input = MouseAction(MouseActionType.MOUSE_CLICKED, 1, Position.defaultPosition())
         input.asMouseAction()
     }
 
@@ -63,7 +63,7 @@ class InputTest {
         return MouseAction(
                 actionType = MouseActionType.MOUSE_WHEEL_ROTATED_UP,
                 button = 1,
-                position = Position.DEFAULT_POSITION
+                position = Position.defaultPosition()
         )
     }
 

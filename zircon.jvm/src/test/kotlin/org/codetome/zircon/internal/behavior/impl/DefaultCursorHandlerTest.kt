@@ -18,15 +18,15 @@ class DefaultCursorHandlerTest {
     @Test
     fun defaultCursorPositionShouldBeDefaultPosition() {
         assertThat(target.getCursorPosition())
-                .isEqualTo(Position.DEFAULT_POSITION)
+                .isEqualTo(Position.defaultPosition())
     }
 
     @Test
     fun shouldSetPositionCorrectly() {
-        target.putCursorAt(Position.OFFSET_1x1)
+        target.putCursorAt(Position.offset1x1())
 
         assertThat(target.getCursorPosition())
-                .isEqualTo(Position.OFFSET_1x1)
+                .isEqualTo(Position.offset1x1())
     }
 
     @Test
@@ -45,66 +45,66 @@ class DefaultCursorHandlerTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionOnNegativeCursorRow() {
-        target.putCursorAt(Position.DEFAULT_POSITION.withY(-1))
+        target.putCursorAt(Position.defaultPosition().withY(-1))
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionOnNegativeCursorColumn() {
-        target.putCursorAt(Position.DEFAULT_POSITION.withX(-1))
+        target.putCursorAt(Position.defaultPosition().withX(-1))
     }
 
     @Test
     fun shouldReportEndOfLineWhenAtEndOfLine() {
-        target.putCursorAt(Position.of(SIZE.xLength, 0))
+        target.putCursorAt(Position.create(SIZE.xLength, 0))
 
         assertThat(target.isCursorAtTheEndOfTheLine()).isTrue()
     }
 
     @Test
     fun shouldNotReportEndOfLineWhenNotAtEndOfLine() {
-        target.putCursorAt(Position.of(SIZE.xLength - 2, 0))
+        target.putCursorAt(Position.create(SIZE.xLength - 2, 0))
 
         assertThat(target.isCursorAtTheEndOfTheLine()).isFalse()
     }
 
     @Test
     fun shouldReportStartOfLineWhenAtStartOfLine() {
-        target.putCursorAt(Position.of(0, 0))
+        target.putCursorAt(Position.create(0, 0))
 
         assertThat(target.isCursorAtTheStartOfTheLine()).isTrue()
     }
 
     @Test
     fun shouldNotReportStartOfLineWhenNotAtStartOfLine() {
-        target.putCursorAt(Position.of(1, 0))
+        target.putCursorAt(Position.create(1, 0))
 
         assertThat(target.isCursorAtTheStartOfTheLine()).isFalse()
     }
 
     @Test
     fun shouldReportAtFirstRowWhenAtFirstRow() {
-        target.putCursorAt(Position.of(0, 0))
+        target.putCursorAt(Position.create(0, 0))
 
         assertThat(target.isCursorAtTheFirstRow()).isTrue()
     }
 
     @Test
     fun shouldNotReportAtFirstRowWhenNotAtFirstRow() {
-        target.putCursorAt(Position.of(0, 1))
+        target.putCursorAt(Position.create(0, 1))
 
         assertThat(target.isCursorAtTheFirstRow()).isFalse()
     }
 
     @Test
     fun shouldReportAtLastRowWhenAtLastRow() {
-        target.putCursorAt(Position.of(0, SIZE.yLength))
+        target.putCursorAt(Position.create(0, SIZE.yLength))
 
         assertThat(target.isCursorAtTheLastRow()).isTrue()
     }
 
     @Test
     fun shouldNotReportAtLastRowWhenNotAtLastRow() {
-        target.putCursorAt(Position.of(0, 0))
+        target.putCursorAt(Position.create(0, 0))
 
         assertThat(target.isCursorAtTheLastRow()).isFalse()
     }
@@ -116,7 +116,7 @@ class DefaultCursorHandlerTest {
 
     @Test
     fun shouldMoveCursorBackwardProperlyWhenNotAtTheStartOfTheLine() {
-        val pos = Position.of(2, 2)
+        val pos = Position.create(2, 2)
         target.putCursorAt(pos)
         target.moveCursorBackward()
 
@@ -126,17 +126,17 @@ class DefaultCursorHandlerTest {
 
     @Test
     fun shouldMoveCursorBackwardProperlyWhenAtTheStartOfTheLineAndNotAtFirstRow() {
-        val pos = Position.of(0, 1)
+        val pos = Position.create(0, 1)
         target.putCursorAt(pos)
         target.moveCursorBackward()
 
         assertThat(target.getCursorPosition())
-                .isEqualTo(Position.of(SIZE.xLength - 1, 0))
+                .isEqualTo(Position.create(SIZE.xLength - 1, 0))
     }
 
     @Test
     fun shouldMoveCursorBackwardProperlyWhenAtTheStartOfTheLineAndAtFirstRow() {
-        val pos = Position.of(0, 0)
+        val pos = Position.create(0, 0)
         target.putCursorAt(pos)
         target.moveCursorBackward()
 
@@ -145,6 +145,6 @@ class DefaultCursorHandlerTest {
     }
 
     companion object {
-        val SIZE = Size.of(5, 5)
+        val SIZE = Size.create(5, 5)
     }
 }

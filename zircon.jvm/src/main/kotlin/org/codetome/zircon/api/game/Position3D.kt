@@ -137,7 +137,7 @@ data class Position3D private constructor(val x: Int,
      * Transforms this [Position3D] to a [Position]. Note that
      * the `y` component is lost during the conversion!
      */
-    fun to2DPosition() = Position.of(x, y)
+    fun to2DPosition() = Position.create(x, y)
 
     companion object {
 

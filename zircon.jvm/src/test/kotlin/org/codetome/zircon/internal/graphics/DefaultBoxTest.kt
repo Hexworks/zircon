@@ -13,7 +13,7 @@ class DefaultBoxTest {
         assertThat(BoxBuilder.newBuilder()
                 .boxType(BoxType.DOUBLE)
                 .filler('x')
-                .size(Size.of(5, 5))
+                .size(Size.create(5, 5))
                 .style(StyleSetBuilder.newBuilder().build())
                 .build().toString())
                 .isEqualTo(EXPECTED_BOX)

@@ -5,8 +5,8 @@ import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
 
-data class DefaultStyleSet(private var foregroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
-                           private var backgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR,
+data class DefaultStyleSet(private var foregroundColor: TextColor = TextColorFactory.defaultForegroundColor(),
+                           private var backgroundColor: TextColor = TextColorFactory.defaultBackgroundColor(),
                            private val modifiers: Set<Modifier> = setOf()) : StyleSet {
 
     private val cacheKey = StringBuilder().apply {

@@ -16,7 +16,7 @@ class NoFontRegionCacheTest {
 
     @Test
     fun shouldReturnEmptyForCharIfCalledTwice() {
-        val tc = TextCharacterBuilder.DEFAULT_CHARACTER
+        val tc = TextCharacterBuilder.defaultCharacter()
 
         val result0 = target.retrieveIfPresent(tc)
         val result1 = target.retrieveIfPresent(tc)
@@ -27,7 +27,7 @@ class NoFontRegionCacheTest {
 
     @Test
     fun shouldReturnEmptyForCharIfStoredThenRetrieved() {
-        val tc = TextCharacterBuilder.DEFAULT_CHARACTER
+        val tc = TextCharacterBuilder.defaultCharacter()
 
         target.store(tc, tc.getCharacter().toString())
         val result = target.retrieveIfPresent(tc)

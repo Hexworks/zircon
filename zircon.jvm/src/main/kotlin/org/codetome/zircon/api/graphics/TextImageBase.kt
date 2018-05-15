@@ -3,6 +3,7 @@ package org.codetome.zircon.api.graphics
 import org.codetome.zircon.api.Cell
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.Styleable
@@ -55,7 +56,7 @@ abstract class TextImageBase private constructor(boundable: Boundable,
         setStyleFrom(styleSet)
         size.fetchPositions().forEach { pos ->
             pos.plus(offset).let { fixedPos ->
-                getCharacterAt(fixedPos).map { char ->
+                getCharacterAt(fixedPos).map { char: TextCharacter ->
                     setCharacterAt(fixedPos, char.withStyle(styleSet))
                 }
             }
@@ -68,6 +69,6 @@ abstract class TextImageBase private constructor(boundable: Boundable,
             .build())
 
     override fun fetchCells(): Iterable<Cell> {
-        return fetchCellsBy(Position.DEFAULT_POSITION, getBoundableSize())
+        return fetchCellsBy(Position.defaultPosition(), getBoundableSize())
     }
 }

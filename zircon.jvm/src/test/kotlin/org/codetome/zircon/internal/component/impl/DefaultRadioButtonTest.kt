@@ -38,7 +38,7 @@ class DefaultRadioButtonTest {
         val surface = target.getDrawSurface()
         val offset = 4
         TEXT.forEachIndexed { i, char ->
-            assertThat(surface.getCharacterAt(Position.of(i + offset, 0)).get())
+            assertThat(surface.getCharacterAt(Position.create(i + offset, 0)).get())
                     .isEqualTo(TextCharacterBuilder.newBuilder()
                             .character(char)
                             .styleSet(DEFAULT_STYLE)
@@ -155,13 +155,13 @@ class DefaultRadioButtonTest {
         assertThat(componentChanged.get()).isFalse()
     }
 
-    private fun getButtonChar() = target.getDrawSurface().getCharacterAt(Position.of(1, 0)).get().getCharacter()
+    private fun getButtonChar() = target.getDrawSurface().getCharacterAt(Position.create(1, 0)).get().getCharacter()
 
     companion object {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
         val WIDTH = 20
-        val POSITION = Position.of(4, 5)
+        val POSITION = Position.create(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITextColor.RED)
                 .foregroundColor(ANSITextColor.GREEN)
@@ -173,7 +173,7 @@ class DefaultRadioButtonTest {
 
         val EXPECTED_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.getAccentColor())
-                .backgroundColor(TextColorFactory.TRANSPARENT)
+                .backgroundColor(TextColorFactory.transparent())
                 .build()
 
         val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()

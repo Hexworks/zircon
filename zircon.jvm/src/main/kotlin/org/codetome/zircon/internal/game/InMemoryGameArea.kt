@@ -15,7 +15,7 @@ import java.util.*
 
 class InMemoryGameArea(private val size: Size3D,
                        private val layersPerBlock: Int,
-                       private val filler: TextCharacter = TextCharacterBuilder.EMPTY) : GameArea {
+                       private val filler: TextCharacter = TextCharacterBuilder.empty()) : GameArea {
 
     private val emptyBlockLayers = (0 until layersPerBlock).map { filler }
     private val blocks: MutableMap<Position3D, Block> = TreeMap()
@@ -118,10 +118,10 @@ class InMemoryGameArea(private val size: Size3D,
                 .forEachIndexed { idx, char -> layers[idx] = char}
         blocks[position] = Block(
                 position = position,
-                top = blockChars.getOrDefault(GameModifiers.BLOCK_TOP, listOf(TextCharacterBuilder.EMPTY)).first(),
-                back = blockChars.getOrDefault(GameModifiers.BLOCK_BACK, listOf(TextCharacterBuilder.EMPTY)).first(),
-                front = blockChars.getOrDefault(GameModifiers.BLOCK_FRONT, listOf(TextCharacterBuilder.EMPTY)).first(),
-                bottom = blockChars.getOrDefault(GameModifiers.BLOCK_BOTTOM, listOf(TextCharacterBuilder.EMPTY)).first(),
+                top = blockChars.getOrDefault(GameModifiers.BLOCK_TOP, listOf(TextCharacterBuilder.empty())).first(),
+                back = blockChars.getOrDefault(GameModifiers.BLOCK_BACK, listOf(TextCharacterBuilder.empty())).first(),
+                front = blockChars.getOrDefault(GameModifiers.BLOCK_FRONT, listOf(TextCharacterBuilder.empty())).first(),
+                bottom = blockChars.getOrDefault(GameModifiers.BLOCK_BOTTOM, listOf(TextCharacterBuilder.empty())).first(),
                 layers = layers)
     }
 

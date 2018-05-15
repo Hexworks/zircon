@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.builder
 
+import org.codetome.zircon.api.JvmSize
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
@@ -14,8 +15,8 @@ import org.codetome.zircon.internal.graphics.InMemoryTextImage
  */
 @Suppress("ArrayInDataClass")
 data class TextImageBuilder(
-        private var size: Size = Size.ONE,
-        private var filler: TextCharacter = TextCharacterBuilder.EMPTY,
+        private var size: Size = Size.one(),
+        private var filler: TextCharacter = TextCharacterBuilder.empty(),
         private val chars: MutableMap<Position, TextCharacter> = mutableMapOf()) : Builder<TextImage> {
 
     /**
@@ -38,6 +39,8 @@ data class TextImageBuilder(
      * Adds a [TextCharacter] at the given [Position].
      */
     fun character(position: Position, textCharacter: TextCharacter) = also {
+        // TODO: fix this
+        val size = size as JvmSize
         require(size.containsPosition(position)) {
             "The given character's position ($position) is out of bounds for text image size: $size."
         }

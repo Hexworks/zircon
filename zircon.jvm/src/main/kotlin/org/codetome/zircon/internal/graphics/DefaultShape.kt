@@ -22,8 +22,8 @@ class DefaultShape(private val positions: Set<Position> = setOf())
             maxRow = Math.max(maxRow, row)
         }
         val result = TextImageBuilder.newBuilder()
-                .size(Size.of(maxCol + 1, maxRow + 1))
-                .filler(TextCharacterBuilder.EMPTY)
+                .size(Size.create(maxCol + 1, maxRow + 1))
+                .filler(TextCharacterBuilder.empty())
                 .build()
         offsetPositions.forEach {
             result.setCharacterAt(it, textCharacter)
@@ -35,7 +35,7 @@ class DefaultShape(private val positions: Set<Position> = setOf())
         require(positions.isNotEmpty()) {
             "You can't transform a Shape with zero points!"
         }
-        val offset = Position.of(
+        val offset = Position.create(
                 x = positions.minBy { it.x }!!.x,
                 y = positions.minBy { it.y }!!.y
         )

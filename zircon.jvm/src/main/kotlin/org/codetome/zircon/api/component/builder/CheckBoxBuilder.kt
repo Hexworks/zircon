@@ -16,7 +16,7 @@ import java.util.*
 data class CheckBoxBuilder(
         private var font: Font = FontSettings.NO_FONT,
         private var text: String = "",
-        private var position: Position = Position.DEFAULT_POSITION,
+        private var position: Position = Position.defaultPosition(),
         private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT,
         private var width: Int = -1) : Builder<CheckBox> {
 

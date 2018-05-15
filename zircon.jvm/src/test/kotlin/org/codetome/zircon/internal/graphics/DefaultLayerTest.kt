@@ -16,7 +16,7 @@ class DefaultLayerTest {
     @Before
     fun setUp() {
         target = DefaultLayer(
-                filler = TextCharacterBuilder.DEFAULT_CHARACTER,
+                filler = TextCharacterBuilder.defaultCharacter(),
                 size = SIZE,
                 offset = OFFSET,
                 initialFont = FontSettings.NO_FONT)
@@ -24,7 +24,7 @@ class DefaultLayerTest {
 
     @Test
     fun shouldProperlySetOffset() {
-        val expectedOffset = Position.DEFAULT_POSITION
+        val expectedOffset = Position.defaultPosition()
         target.moveTo(expectedOffset)
         assertThat(target.getPosition())
                 .isEqualTo(expectedOffset)
@@ -77,11 +77,11 @@ class DefaultLayerTest {
         val CHAR = TextCharacterBuilder.newBuilder()
                 .character('x')
                 .build()
-        val SIZE = Size.of(10, 10)
-        val OFFSET = Position.of(5, 5)
-        val INTERSECTING_BOUNDABLE = DefaultBoundable(Size.of(6, 6))
-        val NON_INTERSECTING_BOUNDABLE = DefaultBoundable(Size.of(5, 5))
-        val NON_CONTAINED_BOUNDABLE = DefaultBoundable(SIZE.withRelative(Size.ONE))
+        val SIZE = Size.create(10, 10)
+        val OFFSET = Position.create(5, 5)
+        val INTERSECTING_BOUNDABLE = DefaultBoundable(Size.create(6, 6))
+        val NON_INTERSECTING_BOUNDABLE = DefaultBoundable(Size.create(5, 5))
+        val NON_CONTAINED_BOUNDABLE = DefaultBoundable(SIZE.withRelative(Size.one()))
         val CONTAINED_POSITION = OFFSET
         val NON_CONTAINED_POSITION = CONTAINED_POSITION
                 .withRelativeX(-1)

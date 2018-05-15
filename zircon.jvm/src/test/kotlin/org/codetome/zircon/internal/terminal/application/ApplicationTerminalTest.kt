@@ -84,7 +84,7 @@ class ApplicationTerminalTest {
 
 
     companion object {
-        val SIZE = Size.of(10, 20)
+        val SIZE = Size.create(10, 20)
         val BLINK_LEN_MS = 2L
         val CONFIG = DeviceConfigurationBuilder.newBuilder()
                 .cursorBlinking(true)

@@ -65,7 +65,7 @@ class DefaultButton(private val text: String,
         setComponentStyles(ComponentStylesBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getAccentColor())
-                        .backgroundColor(TextColorFactory.TRANSPARENT)
+                        .backgroundColor(TextColorFactory.transparent())
                         .build())
                 .mouseOverStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getBrightBackgroundColor())

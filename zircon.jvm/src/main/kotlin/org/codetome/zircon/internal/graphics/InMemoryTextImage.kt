@@ -11,13 +11,14 @@ import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.graphics.TextImageBase
 import org.codetome.zircon.api.sam.TextCharacterTransformer
+import org.codetome.zircon.util.Maybe
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class InMemoryTextImage(size: Size,
-                        styleSet: StyleSet = StyleSetBuilder.DEFAULT_STYLE,
+                        styleSet: StyleSet = StyleSetBuilder.defaultStyle(),
                         chars: Map<Position, TextCharacter> = mapOf(),
-                        private val filler: TextCharacter = TextCharacterBuilder.EMPTY)
+                        private val filler: TextCharacter = TextCharacterBuilder.empty())
     : TextImageBase(size = size, styleSet = styleSet) {
 
     private val backend = ConcurrentHashMap<Position, TextCharacter>(chars)
@@ -25,18 +26,18 @@ class InMemoryTextImage(size: Size,
     override fun toString(): String {
         return (0 until getBoundableSize().yLength).joinToString("") { y ->
             (0 until getBoundableSize().xLength).map { x ->
-                backend.getOrDefault(Position.of(x, y), filler).getCharacter()
+                backend.getOrDefault(Position.create(x, y), filler).getCharacter()
             }.joinToString("").plus("\n")
         }
     }
 
     override fun fetchFilledPositions() = backend.keys.sorted()
 
-    override fun getCharacterAt(position: Position): Optional<TextCharacter> {
+    override fun getCharacterAt(position: Position): Maybe<TextCharacter> {
         return if (getBoundableSize().containsPosition(position)) {
-            Optional.ofNullable(backend.getOrDefault(position, filler))
+            Maybe.ofNullable(backend.getOrDefault(position, filler))
         } else {
-            Optional.empty()
+            Maybe.empty()
         }
     }
 
@@ -53,7 +54,7 @@ class InMemoryTextImage(size: Size,
         val columns = Math.max(getBoundableSize().xLength, offset.x + textImage.getBoundableSize().xLength)
         val rows = Math.max(getBoundableSize().yLength, offset.y + textImage.getBoundableSize().yLength)
 
-        val surface = resize(Size.of(columns, rows), filler)
+        val surface = resize(Size.create(columns, rows), filler)
         surface.draw(textImage, offset)
         return surface
     }

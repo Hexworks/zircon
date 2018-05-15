@@ -24,40 +24,40 @@ class DefaultStyleSetTest {
 
     @Test
     fun shouldAddModifiersProperly() {
-        val styleSet = StyleSetBuilder.DEFAULT_STYLE.withAddedModifiers(Bold)
+        val styleSet = StyleSetBuilder.defaultStyle().withAddedModifiers(Bold)
 
         val result = styleSet.withAddedModifiers(Italic)
 
-        assertThat(StyleSetBuilder.DEFAULT_STYLE.getModifiers()).isEmpty()
+        assertThat(StyleSetBuilder.defaultStyle().getModifiers()).isEmpty()
         assertThat(styleSet.getModifiers()).containsExactlyInAnyOrder(Bold)
         assertThat(result.getModifiers()).containsExactlyInAnyOrder(Bold, Italic)
     }
 
     @Test
     fun shouldRemoveModifiersProperly() {
-        val styleSet = StyleSetBuilder.DEFAULT_STYLE.withAddedModifiers(Bold, Italic)
+        val styleSet = StyleSetBuilder.defaultStyle().withAddedModifiers(Bold, Italic)
 
         val result = styleSet.withRemovedModifiers(Italic)
 
-        assertThat(StyleSetBuilder.DEFAULT_STYLE.getModifiers()).isEmpty()
+        assertThat(StyleSetBuilder.defaultStyle().getModifiers()).isEmpty()
         assertThat(styleSet.getModifiers()).containsExactlyInAnyOrder(Bold, Italic)
         assertThat(result.getModifiers()).containsExactlyInAnyOrder(Bold)
     }
 
     @Test
     fun shouldSetModifiersProperly() {
-        val styleSet = StyleSetBuilder.DEFAULT_STYLE.withAddedModifiers(Bold, Italic)
+        val styleSet = StyleSetBuilder.defaultStyle().withAddedModifiers(Bold, Italic)
 
         val result = styleSet.withModifiers(Italic, CrossedOut)
 
-        assertThat(StyleSetBuilder.DEFAULT_STYLE.getModifiers()).isEmpty()
+        assertThat(StyleSetBuilder.defaultStyle().getModifiers()).isEmpty()
         assertThat(styleSet.getModifiers()).containsExactlyInAnyOrder(Bold, Italic)
         assertThat(result.getModifiers()).containsExactlyInAnyOrder(CrossedOut, Italic)
     }
 
     @Test
     fun shouldNotHaveModifiersByDefault() {
-        assertThat(StyleSetBuilder.DEFAULT_STYLE.getModifiers()).isEmpty()
+        assertThat(StyleSetBuilder.defaultStyle().getModifiers()).isEmpty()
     }
 
 }

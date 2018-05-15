@@ -20,7 +20,7 @@ class DefaultTextColorTest {
         assertThat(result.getRed()).isEqualTo(RED)
         assertThat(result.getGreen()).isEqualTo(GREEN)
         assertThat(result.getBlue()).isEqualTo(BLUE)
-        assertThat(result.getAlpha()).isEqualTo(TextColorFactory.DEFAULT_ALPHA)
+        assertThat(result.getAlpha()).isEqualTo(TextColorFactory.defaultAlpha())
     }
 
     companion object {

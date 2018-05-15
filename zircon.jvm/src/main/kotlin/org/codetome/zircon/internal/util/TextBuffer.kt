@@ -12,7 +12,7 @@ class TextBuffer(text: String) {
         setText(text)
     }
 
-    fun getBoundingBoxSize() = Size.of(currentText.map { it.length }.max() ?: 0, currentText.size)
+    fun getBoundingBoxSize() = Size.create(currentText.map { it.length }.max() ?: 0, currentText.size)
 
     fun getText() = currentText.joinToString(System.lineSeparator()) { it.toString() }
 

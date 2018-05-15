@@ -7,6 +7,6 @@ class TextColorFactoryTest {
 
     @Test
     fun shouldGiveBackWhiteAsDefaultForegroundColor() {
-        assertThat(TextColorFactory.DEFAULT_FOREGROUND_COLOR).isEqualTo(ANSITextColor.WHITE)
+        assertThat(TextColorFactory.defaultForegroundColor()).isEqualTo(ANSITextColor.WHITE)
     }
 }

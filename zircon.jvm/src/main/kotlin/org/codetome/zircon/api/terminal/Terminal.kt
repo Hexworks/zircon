@@ -4,8 +4,6 @@ package org.codetome.zircon.api.terminal
 
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.*
-import org.codetome.zircon.api.graphics.StyleSet
-import java.awt.image.BufferedImage
 import java.io.Closeable
 
 /**

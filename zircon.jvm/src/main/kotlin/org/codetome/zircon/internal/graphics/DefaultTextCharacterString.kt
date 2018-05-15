@@ -14,7 +14,7 @@ import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 data class DefaultTextCharacterString(private val textChars: List<TextCharacter>,
                                       private val textWrap: TextWrap,
                                       private val boundable: Boundable = DefaultBoundable(
-                                              size = Size.of(textChars.size, 1)))
+                                              size = Size.create(textChars.size, 1)))
     : TextCharacterString, Boundable by boundable, Collection<TextCharacter> by textChars {
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
@@ -101,7 +101,7 @@ data class DefaultTextCharacterString(private val textChars: List<TextCharacter>
             .size(getBoundableSize())
             .build().apply {
         textChars.forEachIndexed { idx, tc ->
-            setCharacterAt(Position.of(idx, 0), tc)
+            setCharacterAt(Position.create(idx, 0), tc)
         }
     }
 

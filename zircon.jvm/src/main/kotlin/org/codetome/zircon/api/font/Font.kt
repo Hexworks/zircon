@@ -42,5 +42,5 @@ interface Font : Identifiable {
     /**
      * Returns the `Size` of this `Font` (width, height)
      */
-    fun getSize(): Size = Size.of(getWidth(), getHeight())
+    fun getSize(): Size = Size.create(getWidth(), getHeight())
 }

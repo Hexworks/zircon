@@ -42,7 +42,7 @@ class TerminalScreenTest {
     @Test
     fun givenScreenWithAnimationWhenGivenInputThenFireOnInput() {
         val animation = AnimationResource.loadAnimationFromStream(this.javaClass.getResourceAsStream("/animations/skull.zap"))
-                .setPositionForAll(Position.of(0, 0))
+                .setPositionForAll(Position.create(0, 0))
                 .loopCount(0)
                 .build()
 
@@ -101,7 +101,7 @@ class TerminalScreenTest {
 
     @Test
     fun shouldResizeOnResize() {
-        val expectedSize = Size.of(5, 5)
+        val expectedSize = Size.create(5, 5)
         terminal.setSize(expectedSize)
         assertThat(terminal.getBoundableSize()).isEqualTo(expectedSize)
     }
@@ -109,26 +109,26 @@ class TerminalScreenTest {
 
     @Test
     fun shouldBeDrawnWhenCharacterSet() {
-        target.setCharacterAt(Position.OFFSET_1x1, CHAR)
-        assertThat(target.getCharacterAt(Position.OFFSET_1x1).get())
+        target.setCharacterAt(Position.offset1x1(), CHAR)
+        assertThat(target.getCharacterAt(Position.offset1x1()).get())
                 .isEqualTo(CHAR)
 
     }
 
     @Test
     fun shouldClearProperlyWhenClearIsCalled() {
-        target.setCharacterAt(Position.OFFSET_1x1, CHAR)
+        target.setCharacterAt(Position.offset1x1(), CHAR)
         target.display()
 
         target.clear()
 
-        assertThat(target.getCharacterAt(Position.OFFSET_1x1))
+        assertThat(target.getCharacterAt(Position.offset1x1()))
                 .isNotEqualTo(CHAR)
     }
 
 
     companion object {
-        val SIZE = Size.of(10, 10)
+        val SIZE = Size.create(10, 10)
         val FONT = CP437TilesetResource.ROGUE_YUN_16X16
         val CHAR = TextCharacterBuilder.newBuilder()
                 .character('x')

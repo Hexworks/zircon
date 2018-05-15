@@ -15,7 +15,7 @@ import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 
 open class VirtualTerminalBuilder(
         protected var fullScreen: Boolean = false,
-        protected var initialSize: Size = Size.DEFAULT_TERMINAL_SIZE,
+        protected var initialSize: Size = Size.defaultTerminalSize(),
         protected var title: String = "Zircon Terminal",
         protected var deviceConfiguration: DeviceConfiguration = DeviceConfigurationBuilder.DEFAULT,
         protected var font: Font = FontSettings.NO_FONT

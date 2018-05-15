@@ -9,7 +9,7 @@ data class DefaultAnimationFrame(private val size: Size,
                                  private val layers: List<Layer>,
                                  private val repeatCount: Int) : AnimationFrame {
 
-    private var position: Position = Position.DEFAULT_POSITION
+    private var position: Position = Position.defaultPosition()
 
     override fun getSize() = size
 

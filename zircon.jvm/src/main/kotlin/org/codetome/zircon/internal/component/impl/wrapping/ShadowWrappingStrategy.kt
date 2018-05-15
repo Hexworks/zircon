@@ -12,26 +12,26 @@ import org.codetome.zircon.internal.component.WrappingStrategy
 
 class ShadowWrappingStrategy(private val shadowChar: Char = DEFAULT_SHADOW_CHAR) : WrappingStrategy {
 
-    override fun getOccupiedSize() = Size.of(1, 1)
+    override fun getOccupiedSize() = Size.create(1, 1)
 
-    override fun getOffset() = Position.TOP_LEFT_CORNER
+    override fun getOffset() = Position.topLeftCorner()
 
     override fun apply(textImage: TextImage, size: Size, offset: Position, style: StyleSet) {
         val tc = TextCharacterBuilder.newBuilder()
-                .backgroundColor(TextColorFactory.TRANSPARENT)
+                .backgroundColor(TextColorFactory.transparent())
                 .foregroundColor(TextColorFactory.fromString("#555555"))
                 .character(shadowChar)
                 .build()
         LineFactory.buildLine(
-                fromPoint = Position.of(1, 0),
-                toPoint = Position.of(size.xLength - 1, 0))
+                fromPoint = Position.create(1, 0),
+                toPoint = Position.create(size.xLength - 1, 0))
                 .toTextImage(tc)
-                .drawOnto(textImage, Position.of(1, size.yLength - 1))
+                .drawOnto(textImage, Position.create(1, size.yLength - 1))
         LineFactory.buildLine(
-                fromPoint = Position.of(0, 1),
-                toPoint = Position.of(0, size.yLength - 1))
+                fromPoint = Position.create(0, 1),
+                toPoint = Position.create(0, size.yLength - 1))
                 .toTextImage(tc)
-                .drawOnto(textImage, Position.of(size.xLength - 1, 1))
+                .drawOnto(textImage, Position.create(size.xLength - 1, 1))
     }
 
     override fun isThemeNeutral() = true

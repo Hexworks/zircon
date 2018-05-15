@@ -43,8 +43,8 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
         if (dx1 > dx2) {
             while (startY <= points[1].y) {
                 result += LineFactory.buildLine(
-                        fromPoint = Position.of(startX.toInt(), startY.toInt()),
-                        toPoint = Position.of(endX.toInt(), startY.toInt()))
+                        fromPoint = Position.create(startX.toInt(), startY.toInt()),
+                        toPoint = Position.create(endX.toInt(), startY.toInt()))
                 startY++
                 startX += dx2
                 endX += dx1
@@ -52,8 +52,8 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
             endX = points[1].x.toFloat()
             while (startY <= points[2].y) {
                 result += LineFactory.buildLine(
-                        fromPoint = Position.of(startX.toInt(), startY.toInt()),
-                        toPoint = Position.of(endX.toInt(), startY.toInt()))
+                        fromPoint = Position.create(startX.toInt(), startY.toInt()),
+                        toPoint = Position.create(endX.toInt(), startY.toInt()))
                 startY++
                 startX += dx2
                 endX += dx3
@@ -61,8 +61,8 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
         } else {
             while (startY <= points[1].y) {
                 result += LineFactory.buildLine(
-                        fromPoint = Position.of(startX.toInt(), startY.toInt()),
-                        toPoint = Position.of(endX.toInt(), startY.toInt()))
+                        fromPoint = Position.create(startX.toInt(), startY.toInt()),
+                        toPoint = Position.create(endX.toInt(), startY.toInt()))
                 startY++
                 startX += dx1
                 endX += dx2
@@ -71,8 +71,8 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
             startY = points[1].y.toFloat()
             while (startY <= points[2].y) {
                 result += LineFactory.buildLine(
-                        fromPoint = Position.of(startX.toInt(), startY.toInt()),
-                        toPoint = Position.of(endX.toInt(), startY.toInt()))
+                        fromPoint = Position.create(startX.toInt(), startY.toInt()),
+                        toPoint = Position.create(endX.toInt(), startY.toInt()))
                 startY++
                 startX += dx3
                 endX += dx2

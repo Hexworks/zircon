@@ -6,10 +6,10 @@ import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.internal.graphics.BoxType
 import org.codetome.zircon.internal.graphics.DefaultBox
 
-data class BoxBuilder(private var size: Size = Size.of(3, 3),
-        private var style: StyleSet = StyleSetBuilder.DEFAULT_STYLE,
-        private var boxType: BoxType = BoxType.BASIC,
-        private var filler: Char = TextCharacterBuilder.EMPTY.getCharacter()) : Builder<Box> {
+data class BoxBuilder(private var size: Size = Size.create(3, 3),
+                      private var style: StyleSet = StyleSetBuilder.defaultStyle(),
+                      private var boxType: BoxType = BoxType.BASIC,
+                      private var filler: Char = TextCharacterBuilder.empty().getCharacter()) : Builder<Box> {
 
     /**
      * Sets the size for the new [org.codetome.zircon.api.graphics.Box].

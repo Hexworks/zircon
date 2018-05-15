@@ -2,6 +2,7 @@ package org.codetome.zircon.internal.font.transformer
 
 import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.interop.TextCharacters
 import org.codetome.zircon.internal.font.impl.Java2DFontTextureRegion
 import org.junit.Before
 import org.junit.Test
@@ -26,7 +27,7 @@ class Java2DHiddenTransformerTest {
     companion object {
         val WIDTH = 10
         val HEIGHT = 10
-        val CHAR = TextCharacterBuilder.newBuilder()
+        val CHAR = TextCharacters.newBuilder()
                 .modifiers(Modifiers.HIDDEN)
                 .build()
     }

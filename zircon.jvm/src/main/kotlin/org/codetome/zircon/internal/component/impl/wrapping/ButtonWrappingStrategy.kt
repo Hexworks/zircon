@@ -8,9 +8,9 @@ import org.codetome.zircon.internal.component.WrappingStrategy
 
 class ButtonWrappingStrategy : WrappingStrategy {
 
-    override fun getOccupiedSize() = Size.of(2, 0)
+    override fun getOccupiedSize() = Size.create(2, 0)
 
-    override fun getOffset() = Position.of(1, 0)
+    override fun getOffset() = Position.create(1, 0)
 
     override fun apply(textImage: TextImage, size: Size, offset: Position, style: StyleSet) {
         textImage.setCharacterAt(offset, '[')

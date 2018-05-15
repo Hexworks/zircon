@@ -107,7 +107,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
                         val y = screenY + z // we need to add `z` to `y` because of isometric
                         val maybeBlock = gameArea.fetchBlockAt(Position3D.of(x, y, z))
                         val maybeNext = gameArea.fetchBlockAt(Position3D.of(x, y + 1, z))
-                        val screenPos = Position.of(x, screenY)
+                        val screenPos = Position.create(x, screenY)
                         val bottomIdx = z * totalLayerCount
                         val frondIdx = bottomIdx + customLayersPerBlock + 1
                         val backIdx = frondIdx + 1

@@ -7,7 +7,7 @@ import java.awt.Color
 data class DefaultTextColor(private val red: Int,
                             private val green: Int,
                             private val blue: Int,
-                            private val alpha: Int = TextColorFactory.DEFAULT_ALPHA) : TextColor {
+                            private val alpha: Int = TextColorFactory.defaultAlpha()) : TextColor {
 
     private val cacheKey = "$red$green$blue$alpha"
 

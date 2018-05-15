@@ -11,7 +11,7 @@ import java.awt.Rectangle
  * A [DefaultBoundable] has no offset.
  */
 class DefaultBoundable(private val size: Size,
-                       private var position: Position = Position.DEFAULT_POSITION)
+                       private var position: Position = Position.defaultPosition())
     : Boundable, Movable {
 
     private var rect = refreshRect()

@@ -1,11 +1,9 @@
 package org.codetome.zircon.examples.interactive;
 
-import org.codetome.zircon.api.Position;
-import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.Symbols;
-import org.codetome.zircon.api.TextCharacter;
+import org.codetome.zircon.api.*;
 import org.codetome.zircon.api.builder.*;
 import org.codetome.zircon.api.color.ANSITextColor;
+import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.Panel;
@@ -16,6 +14,9 @@ import org.codetome.zircon.api.game.GameArea;
 import org.codetome.zircon.api.game.Position3D;
 import org.codetome.zircon.api.game.Size3D;
 import org.codetome.zircon.api.interop.Positions;
+import org.codetome.zircon.api.interop.Sizes;
+import org.codetome.zircon.api.interop.TextCharacters;
+import org.codetome.zircon.api.interop.TextColors;
 import org.codetome.zircon.examples.TerminalUtils;
 import org.codetome.zircon.api.graphics.TextImage;
 import org.codetome.zircon.api.input.InputType;
@@ -36,7 +37,7 @@ public class GameAreaScrollingWithLayers {
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
     private static final int TERMINAL_WIDTH = 60;
     private static final int TERMINAL_HEIGHT = 30;
-    private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
+    private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static boolean headless = false;
 
     static {
@@ -76,15 +77,16 @@ public class GameAreaScrollingWithLayers {
 
         final Panel gamePanel = PanelBuilder.newBuilder()
                 .size(screen.getBoundableSize().withXLength(40))
-                .position(Positions.DEFAULT_POSITION.relativeToRightOf(actions))
+                // TODO: FIX CAST
+                .position(((JvmPosition) Positions.DEFAULT_POSITION).relativeToRightOf(actions))
                 .title("Game area")
                 .wrapWithBox()
                 .boxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build();
 
         final Size3D visibleGameAreaSize = Size3D.from2DSize(gamePanel.getBoundableSize()
-                .minus(Size.of(2, 2)), 5);
-        final Size virtualGameAreaSize = Size.of(Integer.MAX_VALUE, Integer.MAX_VALUE);
+                .minus(Sizes.create(2, 2)), 5);
+        final Size virtualGameAreaSize = Sizes.create(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
 
         final Map<Integer, List<TextImage>> levels = new HashMap<>();
@@ -99,7 +101,7 @@ public class GameAreaScrollingWithLayers {
                 new InMemoryGameArea(
                         Size3D.from2DSize(virtualGameAreaSize, totalLevels),
                         5,
-                        TextCharacterBuilder.EMPTY);
+                        TextCharacters.EMPTY);
 
         final DefaultGameComponent gameComponent = GameComponentBuilder.newBuilder()
                 .gameArea(gameArea)
@@ -121,7 +123,7 @@ public class GameAreaScrollingWithLayers {
 
     private static void generatePyramid(int height, Position3D startPos, GameArea gameArea) {
         double percent = 1.0 / (height + 1);
-        TextCharacter wall = TextCharacterBuilder.newBuilder()
+        TextCharacter wall = TextCharacters.newBuilder()
                 .character(Symbols.BLOCK_SOLID)
                 .build();
         AtomicInteger currLevel = new AtomicInteger(startPos.getZ());
@@ -130,7 +132,7 @@ public class GameAreaScrollingWithLayers {
             Position levelOffset = startPos.to2DPosition()
                     .withRelativeX(-currSize)
                     .withRelativeY(-currSize);
-            Size levelSize = Size.of(1 + currSize * 2, 1 + currSize * 2);
+            Size levelSize = Sizes.create(1 + currSize * 2, 1 + currSize * 2);
             levelSize.fetchPositions().forEach(position -> {
                 gameArea.setBlockAt(
                         Position3D.from2DPosition((position.plus(levelOffset)), currLevel.get()),
@@ -169,8 +171,8 @@ public class GameAreaScrollingWithLayers {
                 Position3D visibleOffset = gameComponent.getVisibleOffset();
                 screen.pushLayer(LayerBuilder.newBuilder()
                         .textImage(TextCharacterStringBuilder.newBuilder()
-                                .backgroundColor(TextColorFactory.TRANSPARENT)
-                                .foregroundColor(TextColorFactory.fromString("#aaaadd"))
+                                .backgroundColor(TextColors.TRANSPARENT)
+                                .foregroundColor(TextColors.fromString("#aaaadd"))
                                 .text(String.format("Position: (x=%s, y=%s, z=%s)", visibleOffset.getX(), visibleOffset.getY(), visibleOffset.getZ()))
                                 .build()
                                 .toTextImage())

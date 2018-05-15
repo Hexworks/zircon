@@ -34,8 +34,8 @@ class LayerBuilderTest {
     }
 
     companion object {
-        val SIZE = Size.of(4, 5)
-        val FILLER = TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x')
-        val OFFSET = Position.of(3, 4)
+        val SIZE = Size.create(4, 5)
+        val FILLER = TextCharacterBuilder.defaultCharacter().withCharacter('x')
+        val OFFSET = Position.create(3, 4)
     }
 }

@@ -11,6 +11,9 @@ import org.codetome.zircon.api.game.Position3D
 import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.api.input.InputType
+import org.codetome.zircon.api.interop.Sizes
+import org.codetome.zircon.api.interop.TextCharacters
+import org.codetome.zircon.api.interop.TextColors
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.screen.Screen
@@ -26,62 +29,62 @@ object IsometricGameArea {
 
     private val FONT = CP437TilesetResource.REX_PAINT_20X20
 
-    private val WALL_COLOR = TextColorFactory.fromString("#333333")
-    private val WALL_DECOR_COLOR = TextColorFactory.fromString("#444444")
+    private val WALL_COLOR = TextColors.fromString("#333333")
+    private val WALL_DECOR_COLOR = TextColors.fromString("#444444")
 
 
-    private val FRONT_WALL_COLOR = TextColorFactory.fromString("#555555")
-    private val FRONT_WALL_DECOR_COLOR = TextColorFactory.fromString("#666666")
+    private val FRONT_WALL_COLOR = TextColors.fromString("#555555")
+    private val FRONT_WALL_DECOR_COLOR = TextColors.fromString("#666666")
 
-    private val ROOF_COLOR = TextColorFactory.fromString("#666666")
-    private val ROOF_DECOR_COLOR = TextColorFactory.fromString("#4e4e4e")
+    private val ROOF_COLOR = TextColors.fromString("#666666")
+    private val ROOF_DECOR_COLOR = TextColors.fromString("#4e4e4e")
 
-    private val INTERIOR_COLOR = TextColorFactory.fromString("#999999")
-    private val INTERIOR_DECOR_COLOR = TextColorFactory.fromString("#aaaaaa")
+    private val INTERIOR_COLOR = TextColors.fromString("#999999")
+    private val INTERIOR_DECOR_COLOR = TextColors.fromString("#aaaaaa")
 
-    private val FRONT_WALL = TextCharacterBuilder.newBuilder()
+    private val FRONT_WALL = TextCharacters.newBuilder()
             .backgroundColor(FRONT_WALL_COLOR)
             .foregroundColor(FRONT_WALL_DECOR_COLOR)
             .modifiers(GameModifiers.BLOCK_FRONT)
             .character('-')
             .build()
 
-    private val BACK_WALL = TextCharacterBuilder.newBuilder()
+    private val BACK_WALL = TextCharacters.newBuilder()
             .backgroundColor(FRONT_WALL_COLOR)
             .foregroundColor(FRONT_WALL_DECOR_COLOR)
             .modifiers(GameModifiers.BLOCK_FRONT)
             .character('-')
             .build()
 
-    private val WALL = TextCharacterBuilder.newBuilder()
+    private val WALL = TextCharacters.newBuilder()
             .backgroundColor(WALL_COLOR)
             .foregroundColor(WALL_DECOR_COLOR)
             .modifiers(GameModifiers.BLOCK_TOP)
             .character('#')
             .build()
 
-    private val ROOF = TextCharacterBuilder.newBuilder()
+    private val ROOF = TextCharacters.newBuilder()
             .backgroundColor(ROOF_COLOR)
             .foregroundColor(ROOF_DECOR_COLOR)
             .modifiers(GameModifiers.BLOCK_TOP)
             .build()
 
-    private val ANTENNA = TextCharacterBuilder.newBuilder()
+    private val ANTENNA = TextCharacters.newBuilder()
             .backgroundColor(WALL_COLOR)
             .foregroundColor(WALL_DECOR_COLOR)
             .modifiers(GameModifiers.BLOCK_FRONT)
             .character('=')
             .build()
 
-    private val INTERIOR = TextCharacterBuilder.newBuilder()
+    private val INTERIOR = TextCharacters.newBuilder()
             .backgroundColor(INTERIOR_COLOR)
             .foregroundColor(INTERIOR_DECOR_COLOR)
             .character(Symbols.BLOCK_SPARSE)
             .modifiers(GameModifiers.BLOCK_BOTTOM)
             .build()
 
-    private val GUY = TextCharacterBuilder.newBuilder()
-            .backgroundColor(TextColorFactory.TRANSPARENT)
+    private val GUY = TextCharacters.newBuilder()
+            .backgroundColor(TextColorFactory.transparent())
             .foregroundColor(ANSITextColor.RED)
             .character(Symbols.FACE_BLACK)
             .build()
@@ -98,7 +101,7 @@ object IsometricGameArea {
         val y = screenSize.getHeight() / FONT.height
         val terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .font(FONT.toFont())
-                .initialTerminalSize(Size.of(x.toInt(), y.toInt()))
+                .initialTerminalSize(Sizes.create(x.toInt(), y.toInt()))
                 .fullScreen()
                 .build()
         val screen = ScreenBuilder.createScreenFor(terminal)
@@ -113,14 +116,14 @@ object IsometricGameArea {
                 .build()
 
         val visibleGameAreaSize = Size3D.from2DSize(gamePanel.getBoundableSize()
-                .minus(Size.of(2, 2)), 8)
+                .minus(Sizes.create(2, 2)), 8)
 
         val virtualSize = Size3D.of(100, 100, 30)
 
         val gameArea = InMemoryGameArea(
                 virtualSize,
                 1,
-                TextCharacterBuilder.EMPTY)
+                TextCharacterBuilder.empty())
 
         val gameComponent = GameComponentBuilder.newBuilder()
                 .gameArea(gameArea)
@@ -157,12 +160,12 @@ object IsometricGameArea {
         (0 until size.zLength).forEach { z ->
             (0 until size.yLength).forEach { y ->
                 (0 until size.xLength).forEach { x ->
-                    val pos = Position3D.from2DPosition(Position.of(x, y).plus(offset.to2DPosition()), z + offset.z)
+                    val pos = Position3D.from2DPosition(Position.create(x, y).plus(offset.to2DPosition()), z + offset.z)
                     val chars = if (y == size.yLength - 1) {
                         mutableListOf(if (size.xLength < 3 || size.yLength < 3) {
                             ANTENNA
                         } else if (random.nextInt(5) < 1) {
-                            FRONT_WALL.withForegroundColor(TextColorFactory.fromString("#ffff00"))
+                            FRONT_WALL.withForegroundColor(TextColors.fromString("#ffff00"))
                         } else {
                             FRONT_WALL
                         }, WALL)
@@ -177,9 +180,9 @@ object IsometricGameArea {
                             chars.add(GUY.withForegroundColor(ANSITextColor.values()[random.nextInt(ANSITextColor.values().size)]))
                         }
                         if (extra == 2) {
-                            chars.add(TextCharacterBuilder.newBuilder()
-                                    .foregroundColor(TextColorFactory.fromString("#333333"))
-                                    .backgroundColor(TextColorFactory.TRANSPARENT)
+                            chars.add(TextCharacters.newBuilder()
+                                    .foregroundColor(TextColors.fromString("#333333"))
+                                    .backgroundColor(TextColorFactory.transparent())
                                     .character(Symbols.SINGLE_LINE_T_DOUBLE_DOWN)
                                     .build())
                         }
@@ -231,12 +234,12 @@ object IsometricGameArea {
                 val (x, y, z) = gameComponent.getVisibleOffset()
                 screen.pushLayer(LayerBuilder.newBuilder()
                         .textImage(TextCharacterStringBuilder.newBuilder()
-                                .backgroundColor(TextColorFactory.TRANSPARENT)
-                                .foregroundColor(TextColorFactory.fromString("#aaaadd"))
+                                .backgroundColor(TextColorFactory.transparent())
+                                .foregroundColor(TextColors.fromString("#aaaadd"))
                                 .text(String.format("Position: (x=%s, y=%s, z=%s)", x, y, z))
                                 .build()
                                 .toTextImage())
-                        .offset(Position.of(21, 1))
+                        .offset(Position.create(21, 1))
                         .build())
                 screen.refresh()
             }

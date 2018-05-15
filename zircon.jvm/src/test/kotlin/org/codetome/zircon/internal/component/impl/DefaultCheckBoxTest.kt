@@ -46,7 +46,7 @@ class DefaultCheckBoxTest {
         val surface = target.getDrawSurface()
         val offset = 4
         TEXT.forEachIndexed { i, char ->
-            Assertions.assertThat(surface.getCharacterAt(Position.of(i + offset, 0)).get())
+            Assertions.assertThat(surface.getCharacterAt(Position.create(i + offset, 0)).get())
                     .isEqualTo(TextCharacterBuilder.newBuilder()
                             .character(char)
                             .styleSet(DEFAULT_STYLE)
@@ -125,7 +125,7 @@ class DefaultCheckBoxTest {
 //
 //        EventBus.emit(
 //                type = EventType.MousePressed(target.getId()),
-//                data = MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.DEFAULT_POSITION))
+//                data = MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.defaultPosition()))
 //
 //        Assertions.assertThat(componentChanged.get()).isTrue()
 //        Assertions.assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_ACTIVE_STYLE)
@@ -141,7 +141,7 @@ class DefaultCheckBoxTest {
 
         EventBus.emit(
                 type = EventType.MouseReleased(target.getId()),
-                data = MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.DEFAULT_POSITION))
+                data = MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.defaultPosition()))
 
         Assertions.assertThat(componentChanged.get()).isTrue()
         Assertions.assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
@@ -150,7 +150,7 @@ class DefaultCheckBoxTest {
     companion object {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
-        val POSITION = Position.of(4, 5)
+        val POSITION = Position.create(4, 5)
         val FONT = CP437TilesetResource.WANDERLUST_16X16
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITextColor.RED)
@@ -163,7 +163,7 @@ class DefaultCheckBoxTest {
 
         val EXPECTED_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.getAccentColor())
-                .backgroundColor(TextColorFactory.TRANSPARENT)
+                .backgroundColor(TextColorFactory.transparent())
                 .build()
 
         val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
