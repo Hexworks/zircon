@@ -8,7 +8,6 @@ import org.codetome.zircon.internal.color.DefaultTextColor
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.junit.Before
 import org.junit.Test
-import java.awt.Color
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 

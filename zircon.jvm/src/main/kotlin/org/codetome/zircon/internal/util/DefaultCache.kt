@@ -6,8 +6,8 @@ import org.codetome.zircon.util.Maybe
 import java.util.concurrent.TimeUnit
 
 class DefaultCache<R : Cacheable>(maximumSize: Long = 5000,
-                                                                   duration: Long = 1,
-                                                                   timeUnit: TimeUnit = TimeUnit.MINUTES) : Cache<R> {
+                                  duration: Long = 1,
+                                  timeUnit: TimeUnit = TimeUnit.MINUTES) : Cache<R> {
 
     private val backend = Caffeine.newBuilder()
             .initialCapacity(100)

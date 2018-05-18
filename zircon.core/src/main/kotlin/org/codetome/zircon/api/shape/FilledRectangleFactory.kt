@@ -23,7 +23,6 @@ object FilledRectangleFactory : ShapeFactory<RectangleParameters> {
      * **Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [org.codetome.zircon.api.graphics.Shape.offsetToDefaultPosition] for more info!
      */
-    @JvmStatic
     fun buildFilledRectangle(rectParams: RectangleParameters) = createShape(rectParams)
 
     /**
@@ -35,7 +34,5 @@ object FilledRectangleFactory : ShapeFactory<RectangleParameters> {
      * **Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [org.codetome.zircon.api.graphics.Shape.offsetToDefaultPosition] for more info!
      */
-    @JvmStatic
-    fun buildFilledRectangle(topLeft: Position, size: Size)
-            = buildFilledRectangle(RectangleParameters(topLeft, size))
+    fun buildFilledRectangle(topLeft: Position, size: Size) = buildFilledRectangle(RectangleParameters(topLeft, size))
 }

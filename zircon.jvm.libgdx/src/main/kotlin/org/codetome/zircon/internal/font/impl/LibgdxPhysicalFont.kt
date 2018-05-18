@@ -10,6 +10,7 @@ import org.codetome.zircon.api.util.FontUtils
 import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.font.FontRegionCache
 import org.codetome.zircon.internal.font.transformer.NoOpTransformer
+import org.codetome.zircon.internal.util.Identifier
 import java.util.*
 
 /**
@@ -21,7 +22,7 @@ class LibgdxPhysicalFont(private val source: java.awt.Font,
                          private val cache: FontRegionCache<FontTextureRegion<TextureRegion>>,
                          private val withAntiAlias: Boolean) : Font {
 
-    private val id = UUID.randomUUID()
+    private val id = Identifier.randomIdentifier()
 
     init {
         require(FontUtils.isFontMonospaced(source)) {
@@ -29,7 +30,7 @@ class LibgdxPhysicalFont(private val source: java.awt.Font,
         }
     }
 
-    override fun getId(): UUID = id
+    override fun getId() = id
 
     override fun getWidth() = width
 

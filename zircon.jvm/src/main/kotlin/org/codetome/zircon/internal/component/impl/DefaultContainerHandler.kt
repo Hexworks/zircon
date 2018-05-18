@@ -15,16 +15,16 @@ import org.codetome.zircon.internal.component.InternalContainerHandler
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType.*
 import org.codetome.zircon.internal.event.Subscription
-import java.util.*
+import org.codetome.zircon.internal.util.Identifier
 
 class DefaultContainerHandler(private var container: DefaultContainer) : InternalContainerHandler {
 
     private var lastMousePosition = Position.defaultPosition()
-    private var lastHoveredComponentId = UUID.randomUUID()
+    private var lastHoveredComponentId = Identifier.randomIdentifier()
     private var lastFocusedComponent: InternalComponent = container
     private var state = UNKNOWN
     private val subscriptions = mutableListOf<Subscription<*>>()
-    private val nextsLookup = mutableMapOf<UUID, InternalComponent>(Pair(container.getId(), container))
+    private val nextsLookup = mutableMapOf<Identifier, InternalComponent>(Pair(container.getId(), container))
     private val prevsLookup = nextsLookup.toMutableMap()
 
     private val keyStrokeHandlers = mapOf(

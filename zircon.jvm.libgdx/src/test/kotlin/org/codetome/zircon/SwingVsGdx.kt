@@ -17,7 +17,7 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.font.impl.LibgdxFontTextureRegion
-import java.util.*
+import org.codetome.zircon.internal.util.Identifier
 
 object Config {
     val TILESET = CP437TilesetResource.WANDERLUST_16X16
@@ -32,7 +32,7 @@ object Config {
 class GdxFont(private val source: Texture,
               private val width: Int,
               private val height: Int,
-              private val id: UUID = UUID.randomUUID()) : Font {
+              private val id: Identifier = Identifier.randomIdentifier()) : Font {
 
     override fun getWidth() = width
 

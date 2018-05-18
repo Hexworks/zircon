@@ -5,6 +5,7 @@ import org.codetome.zircon.api.animation.AnimationState.*
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.internal.animation.AnimationResultImpl
+import org.codetome.zircon.internal.util.Identifier
 import java.io.Closeable
 import java.lang.IllegalStateException
 import java.util.*
@@ -54,9 +55,9 @@ class AnimationHandler(private val screen: Screen) : Closeable {
 
     internal class AnimationJob(private val screen: Screen) : Runnable, Closeable {
 
-        private val animations = ConcurrentHashMap<UUID, Animation>()
-        private val results = ConcurrentHashMap<UUID, AnimationResultImpl>()
-        private val nextUpdatesForAnimations = HashMap<UUID, Long>()
+        private val animations = ConcurrentHashMap<Identifier, Animation>()
+        private val results = ConcurrentHashMap<Identifier, AnimationResultImpl>()
+        private val nextUpdatesForAnimations = HashMap<Identifier, Long>()
         private var running = true
 
         override fun run() {

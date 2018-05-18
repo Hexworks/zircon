@@ -2,7 +2,7 @@ package org.codetome.zircon.api.shape
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.internal.graphics.DefaultShape
-import org.codetome.zircon.api.graphics.Shape
+import org.codetome.zircon.util.Math
 
 object LineFactory : ShapeFactory<LineParameters> {
 
@@ -77,9 +77,7 @@ object LineFactory : ShapeFactory<LineParameters> {
         return result
     }
 
-    @JvmStatic
     fun buildLine(lineParams: LineParameters) = createShape(lineParams)
 
-    @JvmStatic
     fun buildLine(fromPoint: Position, toPoint: Position) = buildLine(LineParameters(fromPoint, toPoint))
 }

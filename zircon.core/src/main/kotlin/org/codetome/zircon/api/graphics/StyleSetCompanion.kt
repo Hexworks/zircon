@@ -17,7 +17,7 @@ interface StyleSetCompanion {
      * - and default background
      * - and no modifiers.
      */
-    fun defaultStyle() = newBuilder().build()
+    fun defaultStyle() = DEFAULT_STYLE
 
     /**
      * Shorthand for the empty style which has:
@@ -30,4 +30,8 @@ interface StyleSetCompanion {
             .foregroundColor(TextColorFactory.transparent())
             .modifiers(setOf())
             .build()
+
+    companion object {
+        val DEFAULT_STYLE = StyleSetBuilder.newBuilder().build()
+    }
 }

@@ -5,7 +5,6 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.builder.*;
-import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection;
 import org.codetome.zircon.api.component.builder.*;

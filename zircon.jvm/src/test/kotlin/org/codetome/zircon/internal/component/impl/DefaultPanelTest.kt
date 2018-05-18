@@ -14,7 +14,6 @@ import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.codetome.zircon.internal.graphics.BoxType
 import org.junit.Before
 import org.junit.Test

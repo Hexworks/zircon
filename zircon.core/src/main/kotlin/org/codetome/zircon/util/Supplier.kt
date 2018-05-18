@@ -1,6 +1,6 @@
 package org.codetome.zircon.util
 
-public interface Supplier<T> {
+interface Supplier<out T> {
 
     fun get(): T
 }

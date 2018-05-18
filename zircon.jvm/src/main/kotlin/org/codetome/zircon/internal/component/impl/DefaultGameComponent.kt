@@ -9,7 +9,6 @@ import org.codetome.zircon.api.game.Position3D
 import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.api.builder.LayerBuilder
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyles

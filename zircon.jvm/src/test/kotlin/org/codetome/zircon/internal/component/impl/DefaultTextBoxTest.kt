@@ -16,7 +16,6 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
 

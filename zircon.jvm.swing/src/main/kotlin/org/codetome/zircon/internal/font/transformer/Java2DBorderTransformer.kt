@@ -7,7 +7,6 @@ import org.codetome.zircon.api.modifier.BorderPosition.*
 import org.codetome.zircon.api.modifier.BorderType
 import org.codetome.zircon.api.modifier.BorderType.*
 import org.codetome.zircon.internal.font.FontRegionTransformer
-import org.codetome.zircon.internal.font.impl.Java2DFontTextureRegion
 import java.awt.BasicStroke
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage

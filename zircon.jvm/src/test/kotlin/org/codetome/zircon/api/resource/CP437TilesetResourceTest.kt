@@ -5,9 +5,7 @@ import org.codetome.zircon.api.Symbols
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.internal.font.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
 
@@ -42,7 +40,7 @@ class CP437TilesetResourceTest {
     fun shouldProperlyLoadMetadataForChar() {
         val result = target.fetchMetadataForChar('a')
 
-        assertThat(result).isEqualTo(listOf(CharacterMetadata(
+        assertThat(result).isEqualTo(listOf(CharacterMetadata.create(
                 char = 'a',
                 x = 1,
                 y = 6)))

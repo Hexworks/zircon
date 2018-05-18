@@ -2,11 +2,11 @@ package org.codetome.zircon.internal.font.impl
 
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.Font
-import java.util.*
+import org.codetome.zircon.internal.util.Identifier
 
 class NoFont : Font {
 
-    private val id = UUID.randomUUID()
+    private val id = Identifier.randomIdentifier()
 
     override fun getId() = id
 

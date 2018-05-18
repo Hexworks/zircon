@@ -30,6 +30,19 @@ class DefaultComponentStylesTest {
     }
 
     @Test
+    fun shouldProperlyUseDefaultForUnsetStyles() {
+        val styles = ComponentStylesBuilder.newBuilder()
+                .activeStyle(ACTIVE_STYLE)
+                .focusedStyle(FOCUSED_STYLE)
+                .defaultStyle(DEFAULT_STYLE)
+                .mouseOverStyle(MOUSE_OVER_STYLE)
+                .build()
+
+        assertThat(styles.getStyleFor(ComponentState.DISABLED))
+                .isEqualTo(DEFAULT_STYLE)
+    }
+
+    @Test
     fun shouldProperlyReturnStyleByKey() {
         assertThat(target.getStyleFor(ComponentState.DISABLED)).isEqualTo(DISABLED_STYLE)
     }

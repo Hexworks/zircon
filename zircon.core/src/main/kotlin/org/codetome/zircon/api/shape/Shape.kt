@@ -1,7 +1,8 @@
-package org.codetome.zircon.api.graphics
+package org.codetome.zircon.api.shape
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.graphics.DefaultShape
 
 /**

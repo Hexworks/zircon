@@ -5,8 +5,9 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
-import org.codetome.zircon.api.graphics.Shape
+import org.codetome.zircon.api.shape.Shape
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.util.Math
 
 class DefaultShape(private val positions: Set<Position> = setOf())
     : Shape, Collection<Position> by positions {

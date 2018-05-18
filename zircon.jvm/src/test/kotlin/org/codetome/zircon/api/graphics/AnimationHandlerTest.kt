@@ -9,6 +9,7 @@ import org.codetome.zircon.api.builder.AnimationBuilder
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.internal.graphics.DefaultAnimation
 import org.codetome.zircon.internal.graphics.DefaultAnimationFrame
+import org.codetome.zircon.internal.util.Identifier
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -57,7 +58,7 @@ class AnimationHandlerTest {
     @Test
     fun shouldReturnInProgressWhenAnimationIsInProgress() {
 
-        val uuid = UUID.randomUUID()
+        val uuid = Identifier.randomIdentifier()
         val lock = ReentrantLock()
         val cond = lock.newCondition()
 
@@ -79,7 +80,7 @@ class AnimationHandlerTest {
     @Test
     fun shouldReturnFinishedWhenAnimationIsFinished() {
 
-        val uuid = UUID.randomUUID()
+        val uuid = Identifier.randomIdentifier()
         val currFrame = DefaultAnimationFrame(Size.one(), listOf(), 1)
         val lock = ReentrantLock()
         val cond = lock.newCondition()
@@ -109,7 +110,7 @@ class AnimationHandlerTest {
     @Test
     fun shouldProperlyWaitUntilFinish() {
 
-        val uuid = UUID.randomUUID()
+        val uuid = Identifier.randomIdentifier()
         val currFrame = DefaultAnimationFrame(Size.one(), listOf(), 1)
 
         Mockito.`when`(animationMock.getId()).thenReturn(uuid)

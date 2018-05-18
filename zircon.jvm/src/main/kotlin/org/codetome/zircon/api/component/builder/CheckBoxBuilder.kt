@@ -10,7 +10,6 @@ import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultCheckBox
 import org.codetome.zircon.internal.font.impl.FontSettings
-import java.awt.image.BufferedImage
 import java.util.*
 
 data class CheckBoxBuilder(

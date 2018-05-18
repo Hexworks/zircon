@@ -18,8 +18,7 @@ data class AnimationBuilder private constructor(
         private var tick: Long = 1000L / DEFAULT_FPS,
         private var loopCount: Int = 1,
         private var frameCount: Int = -1,
-        private var length: Int = -1)
-    : Builder<Animation> {
+        private var length: Int = -1) : Builder<Animation> {
 
     fun getLength() = length
 

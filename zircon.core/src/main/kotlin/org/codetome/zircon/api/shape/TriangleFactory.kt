@@ -1,7 +1,6 @@
 package org.codetome.zircon.api.shape
 
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.graphics.Shape
 import org.codetome.zircon.api.shape.LineFactory.buildLine
 
 object TriangleFactory : ShapeFactory<TriangleParameters> {
@@ -18,7 +17,6 @@ object TriangleFactory : ShapeFactory<TriangleParameters> {
      * *Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [org.codetome.zircon.api.graphics.Shape.offsetToDefaultPosition] for more info!
      */
-    @JvmStatic
     fun buildTriangle(params: TriangleParameters) = createShape(params)
 
     /**
@@ -28,7 +26,6 @@ object TriangleFactory : ShapeFactory<TriangleParameters> {
      * *Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [org.codetome.zircon.api.graphics.Shape.offsetToDefaultPosition] for more info!
      */
-    @JvmStatic
     fun buildTriangle(p1: Position,
                       p2: Position,
                       p3: Position) = buildTriangle(TriangleParameters(p1, p2, p3))
