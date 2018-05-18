@@ -1,7 +1,5 @@
 package org.codetome.zircon.api.shape
 
-import org.codetome.zircon.api.graphics.Shape
-
 /**
  * A [ShapeFactory] is responsible for creating a single
  * kind of shape (like a rectangle or a triangle) using

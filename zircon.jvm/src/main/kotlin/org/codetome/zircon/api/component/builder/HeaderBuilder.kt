@@ -10,7 +10,6 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.component.impl.DefaultHeader
 import org.codetome.zircon.internal.font.impl.FontSettings
-import java.awt.image.BufferedImage
 
 data class HeaderBuilder(
         private var font: Font = FontSettings.NO_FONT,

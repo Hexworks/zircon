@@ -2,6 +2,7 @@ package org.codetome.zircon.api.resource
 
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.internal.font.DefaultCharacterMetadata
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.util.rex.unZipIt
@@ -62,7 +63,7 @@ enum class GraphicTilesetResource(private val tilesetName: String,
                 }
                 tileData.x = i.rem(file.tilesPerRow)
                 tileData.y = i.div(file.tilesPerRow)
-                CharacterMetadata(
+                DefaultCharacterMetadata(
                         char = tileData.char,
                         tags = tileData.tags,
                         x = tileData.x,

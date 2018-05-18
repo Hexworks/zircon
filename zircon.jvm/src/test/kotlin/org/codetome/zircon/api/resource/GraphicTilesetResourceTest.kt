@@ -15,7 +15,7 @@ class GraphicTilesetResourceTest {
         FontLoaderRegistry.setFontLoader(TestFontLoader())
         val result = GraphicTilesetResource.NETHACK_16X16.toFont(PickRandomMetaStrategy())
         val meta = result.fetchMetadataForChar('b').first()
-        val region = result.fetchRegionForChar(
+        result.fetchRegionForChar(
                 textCharacter = TextCharacterBuilder.newBuilder()
                         .character(meta.char)
                         .tags(meta.tags)

@@ -6,7 +6,7 @@ import org.codetome.zircon.util.Maybe
 /**
  * Simple cache interface for storing [Cacheable]s.
  */
-expect interface Cache<R : Cacheable> {
+interface Cache<R : Cacheable> {
 
     /**
      * Retrieves a font region by a [TextCharacter] if present.
@@ -18,8 +18,5 @@ expect interface Cache<R : Cacheable> {
      */
     fun store(cacheable: R): R
 
-    companion object {
-
-        fun <R : Cacheable> create(): Cache<R>
-    }
+    companion object : CacheCompanion
 }

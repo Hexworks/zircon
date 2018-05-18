@@ -6,10 +6,10 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.font.FontLoader
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
+import org.codetome.zircon.internal.util.Identifier
 import java.awt.image.BufferedImage
 import java.awt.image.BufferedImage.TYPE_INT_ARGB
 import java.io.InputStream
-import java.util.*
 
 class TestFontLoader : FontLoader {
 
@@ -18,7 +18,7 @@ class TestFontLoader : FontLoader {
                                    cacheFonts: Boolean,
                                    withAntiAlias: Boolean)  = object: Font {
 
-        val uuid = UUID.randomUUID()
+        val uuid = Identifier.randomIdentifier()
 
         override fun getWidth() = size.toInt()
 
@@ -44,7 +44,7 @@ class TestFontLoader : FontLoader {
                                 metadata: Map<Char, List<CharacterMetadata>>,
                                 metadataPickingStrategy: MetadataPickingStrategy)  = object: Font {
 
-        val uuid = UUID.randomUUID()
+        val uuid = Identifier.randomIdentifier()
 
         override fun getWidth() = width
 

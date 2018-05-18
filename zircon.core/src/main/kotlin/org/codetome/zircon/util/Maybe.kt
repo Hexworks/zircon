@@ -1,6 +1,7 @@
 package org.codetome.zircon.util
 
 
+@Suppress("UNCHECKED_CAST")
 class Maybe<T> {
 
     private val value: T?
@@ -43,11 +44,11 @@ class Maybe<T> {
         }
     }
 
-    fun <U> flatMap(mapper: Function<in T?, Maybe<U>>): Maybe<U> {
+    fun <U> flatMap(mapper: (T?) -> Maybe<U>): Maybe<U> {
         return if (!isPresent)
             empty()
         else {
-            mapper.apply(value)
+            mapper.invoke(value)
         }
     }
 
@@ -59,21 +60,21 @@ class Maybe<T> {
         return value ?: other()
     }
 
-    fun <X : Throwable> orElseThrow(exceptionSupplier: Supplier<out X>): T {
+    fun <X : Throwable> orElseThrow(exceptionSupplier: Supplier<X>): T {
         return value ?: throw exceptionSupplier.get()
     }
 
-    override fun equals(obj: Any?): Boolean {
-        if (this === obj) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
             return true
         }
 
-        if (obj !is Maybe<*>) {
+        if (other !is Maybe<*>) {
             return false
         }
 
-        val other = obj as Maybe<*>?
-        return value == other!!.value
+        val otherMaybe = other as Maybe<*>?
+        return value == otherMaybe!!.value
     }
 
     override fun hashCode(): Int {

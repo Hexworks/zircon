@@ -1,11 +1,11 @@
 package org.codetome.zircon.internal.behavior
 
-import java.util.*
+import org.codetome.zircon.internal.util.Identifier
 
 /**
  * Represents any object, which has an unique identifier.
  */
 interface Identifiable {
 
-    fun getId(): UUID
+    fun getId(): Identifier
 }

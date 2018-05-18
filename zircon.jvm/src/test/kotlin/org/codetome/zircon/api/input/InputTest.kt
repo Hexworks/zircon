@@ -2,11 +2,6 @@ package org.codetome.zircon.api.input
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.input.Input
-import org.codetome.zircon.api.input.InputType
-import org.codetome.zircon.api.input.KeyStroke
-import org.codetome.zircon.api.input.MouseAction
-import org.codetome.zircon.api.input.MouseActionType
 import org.junit.Test
 
 class InputTest {

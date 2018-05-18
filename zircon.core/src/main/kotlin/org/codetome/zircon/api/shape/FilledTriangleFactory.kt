@@ -2,8 +2,6 @@ package org.codetome.zircon.api.shape
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.internal.graphics.DefaultShape
-import org.codetome.zircon.api.graphics.Shape
-import java.util.*
 
 object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
 
@@ -11,8 +9,9 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
 
         // The algorithm described here is used
         // http://www-users.mat.uni.torun.pl/~wrona/3d_tutor/tri_fillers.html
-        val points = arrayOf(p1, p2, p3)
-        Arrays.sort(points, { o1, o2 -> if (o1.y < o2.y) -1 else if (o1.y == o2.y) 0 else 1 })
+        val points = arrayOf(p1, p2, p3).sortedArrayWith(Comparator { o1, o2 ->
+            if (o1.y < o2.y) -1 else if (o1.y == o2.y) 0 else 1
+        })
         var result: Shape = DefaultShape()
 
         val dx1: Float
@@ -88,7 +87,6 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
      * *Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [org.codetome.zircon.api.graphics.Shape.offsetToDefaultPosition] for more info!
      */
-    @JvmStatic
     fun buildFilledTriangle(params: TriangleParameters) = createShape(params)
 
     /**
@@ -98,7 +96,6 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
      * *Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [org.codetome.zircon.api.graphics.Shape.offsetToDefaultPosition] for more info!
      */
-    @JvmStatic
     fun buildFilledTriangle(p1: Position,
                             p2: Position,
                             p3: Position) = buildFilledTriangle(TriangleParameters(p1, p2, p3))

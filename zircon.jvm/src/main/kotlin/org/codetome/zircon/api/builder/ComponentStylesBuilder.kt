@@ -10,8 +10,8 @@ import org.codetome.zircon.internal.component.impl.DefaultComponentStyles
  * They will be used accordingly when the component's state changes.
  */
 data class ComponentStylesBuilder(
-        private val styles: MutableMap<ComponentState, StyleSet> = mutableMapOf()
-) : Builder<ComponentStyles> {
+        private val styles: MutableMap<ComponentState, StyleSet> = mutableMapOf())
+    : Builder<ComponentStyles> {
 
     init {
         ComponentState.values().forEach {

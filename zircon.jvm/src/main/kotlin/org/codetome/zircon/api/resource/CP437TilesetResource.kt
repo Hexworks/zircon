@@ -2,8 +2,10 @@ package org.codetome.zircon.api.resource
 
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.internal.font.DefaultCharacterMetadata
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.PickFirstMetaStrategy
+import java.io.File
 import java.io.InputStream
 
 /**
@@ -47,7 +49,7 @@ enum class CP437TilesetResource(private val tilesetName: String,
         return loadCP437Tileset(
                 width = width,
                 height = height,
-                source = this.javaClass.getResourceAsStream(path),
+                source = javaClass.getResourceAsStream(path),
                 cacheFonts = cacheFonts)
     }
 
@@ -61,10 +63,10 @@ enum class CP437TilesetResource(private val tilesetName: String,
 
         private val CP437_TO_UNICODE_LOOKUP = UNICODE_TO_CP437_LOOKUP.map { Pair(it.value, it.key) }.toMap()
 
-        val CP437_METADATA  = UNICODE_TO_CP437_LOOKUP.map { (char, index) ->
+        val CP437_METADATA = UNICODE_TO_CP437_LOOKUP.map { (char, index) ->
             val x = index.rem(16)
             val y = index.div(16)
-            Pair(char.toChar(), listOf(CharacterMetadata(
+            Pair(char.toChar(), listOf(DefaultCharacterMetadata(
                     char = char.toChar(),
                     x = x,
                     y = y)))
@@ -103,7 +105,7 @@ enum class CP437TilesetResource(private val tilesetName: String,
         fun fetchCP437IndexForChar(char: Char): Int {
             return UNICODE_TO_CP437_LOOKUP[char.toInt()]
                     ?: throw IllegalArgumentException("No CP437 character found for char: '$char'. " +
-                    "Did you try to use a character which has no Code Page 437 representation?")
+                            "Did you try to use a character which has no Code Page 437 representation?")
         }
     }
 }

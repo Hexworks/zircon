@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.event
 
-import java.util.*
+import org.codetome.zircon.internal.util.Identifier
 
 sealed class EventType {
     /**
@@ -12,19 +12,19 @@ sealed class EventType {
      */
     object KeyPressed : EventType()
 
-    data class MousePressed(val componentId: UUID) : EventType()
+    data class MousePressed(val componentId: Identifier) : EventType()
 
-    data class MouseReleased(val componentId: UUID) : EventType()
+    data class MouseReleased(val componentId: Identifier) : EventType()
 
-    data class MouseMoved(val componentId: UUID): EventType()
+    data class MouseMoved(val componentId: Identifier): EventType()
     /**
      * A component was hovered over.
      */
-    data class MouseOver(val componentId: UUID) : EventType()
+    data class MouseOver(val componentId: Identifier) : EventType()
     /**
      * A component is no longer hovered.
      */
-    data class MouseOut(val componentId: UUID) : EventType()
+    data class MouseOut(val componentId: Identifier) : EventType()
     /**
      * Cursor is requested at the given `position`.
      */

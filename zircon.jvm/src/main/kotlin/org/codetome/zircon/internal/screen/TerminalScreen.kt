@@ -12,6 +12,7 @@ import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
+import org.codetome.zircon.internal.util.Identifier
 import java.util.*
 
 /**
@@ -34,11 +35,11 @@ class TerminalScreen(private val terminal: InternalTerminal,
         InternalTerminal by backend,
         InternalContainerHandler by containerHandler {
 
-    private val id: UUID = UUID.randomUUID()
-    private var currentScreenId = Optional.empty<UUID>()
+    private val id = Identifier.randomIdentifier()
+    private var currentScreenId = Optional.empty<Identifier>()
 
     init {
-        EventBus.subscribe<UUID>(EventType.ScreenSwitch, { (screenId) ->
+        EventBus.subscribe<Identifier>(EventType.ScreenSwitch, { (screenId) ->
             if (id != screenId) {
                 deactivate()
             }

@@ -2,6 +2,7 @@ package org.codetome.zircon.internal.graphics
 
 import org.codetome.zircon.api.animation.Animation
 import org.codetome.zircon.api.animation.AnimationFrame
+import org.codetome.zircon.internal.util.Identifier
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 
@@ -11,14 +12,14 @@ class DefaultAnimation(private val animationFrames: List<AnimationFrame>,
                        private val frameCount: Int,
                        private var length: Int) : Animation {
 
-    private val id = UUID.randomUUID()
+    private val id = Identifier.randomIdentifier()
     private val infiniteLoop = loopCount == 0
     private var currentLoopCount = loopCount
 
     private val framesInOrder = LinkedBlockingQueue<AnimationFrame>(flattenFrames())
     private var currentFrame = framesInOrder.peek()
 
-    override fun getId(): UUID = id
+    override fun getId(): Identifier = id
 
     override fun getFrameCount() = frameCount
 

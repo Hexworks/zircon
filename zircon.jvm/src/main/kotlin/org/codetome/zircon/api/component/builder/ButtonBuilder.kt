@@ -12,7 +12,6 @@ import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ButtonWrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultButton
 import org.codetome.zircon.internal.font.impl.FontSettings
-import java.awt.image.BufferedImage
 import java.util.*
 
 data class ButtonBuilder(

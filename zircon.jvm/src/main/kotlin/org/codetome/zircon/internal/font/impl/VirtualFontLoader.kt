@@ -3,12 +3,9 @@ package org.codetome.zircon.internal.font.impl
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.font.FontLoader
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
-import java.awt.image.BufferedImage
-import java.awt.image.BufferedImage.TYPE_INT_ARGB
 import java.io.InputStream
 import java.util.*
 

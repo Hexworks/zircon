@@ -22,12 +22,12 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
+import org.codetome.zircon.internal.util.Identifier
+import org.codetome.zircon.util.Consumer
 import org.junit.Before
 import org.junit.Test
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.function.Consumer
 
 class DefaultComponentTest {
 
@@ -163,8 +163,10 @@ class DefaultComponentTest {
     @Test
     fun shouldProperlyListenToMousePress() {
         val pressed = AtomicBoolean(false)
-        target.onMousePressed(Consumer {
-            pressed.set(true)
+        target.onMousePressed(object : Consumer<MouseAction> {
+            override fun accept(t: MouseAction) {
+                pressed.set(true)
+            }
         })
 
         EventBus.emit(EventType.MousePressed(target.getId()), MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION))
@@ -175,11 +177,13 @@ class DefaultComponentTest {
     @Test
     fun shouldNotListenToMousePressOnOtherComponents() {
         val pressed = AtomicBoolean(false)
-        target.onMousePressed(Consumer {
-            pressed.set(true)
+        target.onMousePressed(object : Consumer<MouseAction> {
+            override fun accept(t: MouseAction) {
+                pressed.set(true)
+            }
         })
 
-        EventBus.emit(EventType.MousePressed(UUID.randomUUID()), MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION))
+        EventBus.emit(EventType.MousePressed(Identifier.randomIdentifier()), MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION))
 
         assertThat(pressed.get()).isFalse()
     }
@@ -187,8 +191,10 @@ class DefaultComponentTest {
     @Test
     fun shouldProperlyListenToMouseRelease() {
         val pressed = AtomicBoolean(false)
-        target.onMouseReleased(Consumer {
-            pressed.set(true)
+        target.onMouseReleased(object : Consumer<MouseAction> {
+            override fun accept(t: MouseAction) {
+                pressed.set(true)
+            }
         })
 
         EventBus.emit(EventType.MouseReleased(target.getId()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
@@ -199,11 +205,13 @@ class DefaultComponentTest {
     @Test
     fun shouldNotListenToMouseReleaseOnOtherComponents() {
         val pressed = AtomicBoolean(false)
-        target.onMouseReleased(Consumer {
-            pressed.set(true)
+        target.onMouseReleased(object : Consumer<MouseAction> {
+            override fun accept(t: MouseAction) {
+                pressed.set(true)
+            }
         })
 
-        EventBus.emit(EventType.MouseReleased(UUID.randomUUID()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+        EventBus.emit(EventType.MouseReleased(Identifier.randomIdentifier()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
 
         assertThat(pressed.get()).isFalse()
     }

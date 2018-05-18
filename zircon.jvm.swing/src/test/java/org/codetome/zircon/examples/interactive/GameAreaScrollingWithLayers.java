@@ -2,9 +2,6 @@ package org.codetome.zircon.examples.interactive;
 
 import org.codetome.zircon.api.*;
 import org.codetome.zircon.api.builder.*;
-import org.codetome.zircon.api.color.ANSITextColor;
-import org.codetome.zircon.api.color.TextColor;
-import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.component.builder.ButtonBuilder;
@@ -17,6 +14,7 @@ import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.interop.TextCharacters;
 import org.codetome.zircon.api.interop.TextColors;
+import org.codetome.zircon.api.interop.TextImages;
 import org.codetome.zircon.examples.TerminalUtils;
 import org.codetome.zircon.api.graphics.TextImage;
 import org.codetome.zircon.api.input.InputType;
@@ -92,7 +90,7 @@ public class GameAreaScrollingWithLayers {
         final Map<Integer, List<TextImage>> levels = new HashMap<>();
         final int totalLevels = 10;
         for (int i = 0; i < totalLevels; i++) {
-            levels.put(i, Collections.singletonList(TextImageBuilder.newBuilder()
+            levels.put(i, Collections.singletonList(TextImages.newBuilder()
                     .size(virtualGameAreaSize)
                     .build()));
         }

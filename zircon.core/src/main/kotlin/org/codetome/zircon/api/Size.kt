@@ -1,5 +1,8 @@
 package org.codetome.zircon.api
 
+import org.codetome.zircon.api.shape.RectangleFactory
+import org.codetome.zircon.util.Math
+
 /**
  * Dimensions in 2D space.
  * This class is immutable and cannot change its internal state after creation.
@@ -37,7 +40,7 @@ interface Size : Comparable<Size> {
                     currX++
                     if (currX == endX) {
                         currY++
-                        if(currY < endY) {
+                        if (currY < endY) {
                             currX = 0
                         }
                     }
@@ -46,17 +49,17 @@ interface Size : Comparable<Size> {
         }
     }
 
-//    /**
-//     * Creates a list of [Position]s which represent the
-//     * bounding box of this size. So for example a size of (3x3)
-//     * will have a bounding box of
-//     * `[(0, 0), (1, 0), (2, 0), (0, 1), (2, 1), (0, 2), (1, 2), (2, 2)]`
-//     */
-//    fun fetchBoundingBoxPositions(): Set<Position> {
-//        return RectangleFactory
-//                .buildRectangle(Position.defaultPosition(), this)
-//                .getPositions()
-//    }
+    /**
+     * Creates a list of [Position]s which represent the
+     * bounding box of this size. So for example a size of (3x3)
+     * will have a bounding box of
+     * `[(0, 0), (1, 0), (2, 0), (0, 1), (2, 1), (0, 2), (1, 2), (2, 2)]`
+     */
+    fun fetchBoundingBoxPositions(): Set<Position> {
+        return RectangleFactory
+                .buildRectangle(Position.defaultPosition(), this)
+                .getPositions()
+    }
 
     fun fetchTopLeftPosition() = Position.topLeftCorner()
 
@@ -124,13 +127,19 @@ interface Size : Comparable<Size> {
      * Takes a different [Size] and returns a new [Size] that has the largest dimensions of the two,
      * measured separately. So calling 3x5 on a 5x3 will return 5x5.
      */
-    fun max(other: Size): Size
+    fun max(other: Size): Size {
+        return withXLength(Math.max(xLength, other.xLength))
+                .withYLength(Math.max(yLength, other.yLength))
+    }
 
     /**
      * Takes a different [Size] and returns a new [Size] that has the smallest dimensions of the two,
      * measured separately. So calling 3x5 on a 5x3 will return 3x3.
      */
-    fun min(other: Size): Size
+    fun min(other: Size): Size {
+        return withXLength(Math.min(xLength, other.xLength))
+                .withYLength(Math.min(yLength, other.yLength))
+    }
 
     /**
      * Returns itself if it is equal to the supplied size, otherwise the supplied size.

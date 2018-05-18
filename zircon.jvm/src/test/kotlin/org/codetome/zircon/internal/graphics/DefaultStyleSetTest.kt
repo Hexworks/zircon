@@ -60,4 +60,9 @@ class DefaultStyleSetTest {
         assertThat(StyleSetBuilder.defaultStyle().getModifiers()).isEmpty()
     }
 
+    @Test
+    fun shouldGenerateEqualDefaults() {
+        assertThat(StyleSetBuilder.defaultStyle()).isEqualTo(StyleSetBuilder.defaultStyle())
+    }
+
 }

@@ -30,7 +30,7 @@ public class PanelDrawingExample {
         final Screen screen = ScreenBuilder.createScreenFor(terminal);
         screen.setCursorVisibility(false);
 
-        FilledRectangleFactory
+        Shapes
                 .buildFilledRectangle(Positions.DEFAULT_POSITION, screen.getBoundableSize())
                 .toTextImage(TextCharacters.DEFAULT_CHARACTER
                         .withBackgroundColor(BACKGROUND_COLOR))

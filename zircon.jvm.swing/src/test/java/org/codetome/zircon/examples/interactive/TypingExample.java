@@ -1,13 +1,10 @@
 package org.codetome.zircon.examples.interactive;
 
 import org.codetome.zircon.api.Position;
-import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.TextCharacter;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
-import org.codetome.zircon.api.builder.TextCharacterBuilder;
-import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.input.KeyStroke;
 import org.codetome.zircon.api.interop.Sizes;

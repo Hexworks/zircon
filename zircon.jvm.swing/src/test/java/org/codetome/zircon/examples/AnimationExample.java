@@ -2,12 +2,12 @@ package org.codetome.zircon.examples;
 
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.animation.Animation;
 import org.codetome.zircon.api.builder.AnimationBuilder;
 import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.component.builder.LabelBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
-import org.codetome.zircon.api.animation.Animation;
 import org.codetome.zircon.api.animation.AnimationHandler;
 import org.codetome.zircon.api.animation.AnimationResource;
 import org.codetome.zircon.api.interop.Positions;

@@ -6,7 +6,6 @@ import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.behavior.Layerable
 import org.codetome.zircon.api.behavior.Movable
 import org.codetome.zircon.util.Maybe
-import java.util.*
 
 /**
  * A [Layer] is a specialized [TextImage] which is drawn upon a

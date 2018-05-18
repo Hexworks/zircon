@@ -20,8 +20,9 @@ import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.util.Identifier
+import org.codetome.zircon.util.Consumer
 import java.util.*
-import java.util.function.Consumer
 
 abstract class DefaultComponent(initialSize: Size,
                                 initialFont: Font,
@@ -40,7 +41,7 @@ abstract class DefaultComponent(initialSize: Size,
                                         position = position))
     : InternalComponent, Drawable by drawSurface, FontOverride by fontOverride {
 
-    private val id: UUID = UUID.randomUUID()
+    private val id = Identifier.randomIdentifier()
     private var currentOffset = Position.defaultPosition()
 
     init {

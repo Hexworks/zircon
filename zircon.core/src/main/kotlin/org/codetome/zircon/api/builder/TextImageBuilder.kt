@@ -1,11 +1,11 @@
 package org.codetome.zircon.api.builder
 
-import org.codetome.zircon.api.JvmSize
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.graphics.TextImage
-import org.codetome.zircon.internal.graphics.InMemoryTextImage
+import org.codetome.zircon.api.graphics.TextImageCompanion
+import org.codetome.zircon.api.graphics.TextImageFactory
 
 /**
  * Creates [org.codetome.zircon.api.graphics.TextImage]s.
@@ -39,28 +39,15 @@ data class TextImageBuilder(
      * Adds a [TextCharacter] at the given [Position].
      */
     fun character(position: Position, textCharacter: TextCharacter) = also {
-        // TODO: fix this
-        val size = size as JvmSize
         require(size.containsPosition(position)) {
             "The given character's position ($position) is out of bounds for text image size: $size."
         }
         chars[position] = textCharacter
     }
 
-    override fun build(): TextImage = InMemoryTextImage(
-            size = size,
-            filler = filler,
-            chars = chars)
+    override fun build(): TextImage = TextImageFactory.create(size, filler, chars)
 
     override fun createCopy() = copy()
 
-    companion object {
-
-        /**
-         * Creates a new [TextImageBuilder] to build [org.codetome.zircon.api.graphics.TextImage]s.
-         */
-        @JvmStatic
-        fun newBuilder() = TextImageBuilder()
-
-    }
+    companion object : TextImageCompanion
 }

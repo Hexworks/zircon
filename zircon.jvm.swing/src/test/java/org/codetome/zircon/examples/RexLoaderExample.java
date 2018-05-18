@@ -2,18 +2,13 @@ package org.codetome.zircon.examples;
 
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.ScreenBuilder;
-import org.codetome.zircon.api.builder.TerminalBuilder;
-import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.REXPaintResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.junit.Ignore;
-import org.junit.Test;
 
-import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.List;
 

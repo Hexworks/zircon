@@ -5,14 +5,14 @@ import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
-import java.util.*
+import org.codetome.zircon.internal.util.Identifier
 
 abstract class AbstractTiledFont(private val metadata: Map<Char, List<CharacterMetadata>>,
                                  private val metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy()) : Font {
 
-    private val id = UUID.randomUUID()
+    private val id = Identifier.randomIdentifier()
 
-    override fun getId(): UUID = id
+    override fun getId() = id
 
     override fun hasDataForChar(char: Char) = metadata.containsKey(char)
 
