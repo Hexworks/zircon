@@ -4,7 +4,7 @@ import org.codetome.zircon.api.*
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.input.KeyStroke
-import org.codetome.zircon.api.terminal.config.DeviceConfiguration
+import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.impl.FontSettings
@@ -45,9 +45,7 @@ abstract class ApplicationTerminal(
 
     @Synchronized
     override fun doCreate() {
-        onShutdown(Runnable {
-            doDispose()
-        })
+        onShutdown { doDispose() }
         blinkTimer.schedule(object : TimerTask() {
             override fun run() {
                 try {
@@ -91,7 +89,7 @@ abstract class ApplicationTerminal(
                         drawCursor = drawCursor)
             }
 
-            if(checkDirty) terminal.forEachDirtyCell(func) else terminal.forEachCell(func)
+            if (checkDirty) terminal.forEachDirtyCell(func) else terminal.forEachCell(func)
             this.hasBlinkingText = foundBlinkingCharacters || deviceConfiguration.isCursorBlinking
         }
     }

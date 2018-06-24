@@ -3,9 +3,9 @@ package org.codetome.zircon.api.component.builder
 import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.builder.Builder
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
-import org.codetome.zircon.api.component.ComponentStyles
-import org.codetome.zircon.api.component.GameComponent
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
+import org.codetome.zircon.api.component.ComponentStyleSet
+import org.codetome.zircon.api.game.GameComponent
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.game.GameArea
 import org.codetome.zircon.api.game.ProjectionMode
@@ -24,7 +24,7 @@ data class GameComponentBuilder(private var gameArea: Optional<GameArea> = Optio
                                 private var visibleSize: Size3D = Size3D.ONE,
                                 private var font: Font = FontSettings.NO_FONT,
                                 private var position: Position = Position.defaultPosition(),
-                                private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT) : Builder<GameComponent> {
+                                private var componentStyleSet: ComponentStyleSet = ComponentStyleSetBuilder.DEFAULT) : Builder<GameComponent> {
 
     override fun createCopy() = copy()
 
@@ -48,8 +48,8 @@ data class GameComponentBuilder(private var gameArea: Optional<GameArea> = Optio
         this.position = position
     }
 
-    fun componentStyles(componentStyles: ComponentStyles) = also {
-        this.componentStyles = componentStyles
+    fun componentStyles(componentStyleSet: ComponentStyleSet) = also {
+        this.componentStyleSet = componentStyleSet
     }
 
     override fun build(): DefaultGameComponent {
@@ -62,7 +62,7 @@ data class GameComponentBuilder(private var gameArea: Optional<GameArea> = Optio
                 visibleSize = visibleSize,
                 initialFont = font,
                 position = position,
-                componentStyles = componentStyles)
+                componentStyleSet = componentStyleSet)
     }
 
     companion object {

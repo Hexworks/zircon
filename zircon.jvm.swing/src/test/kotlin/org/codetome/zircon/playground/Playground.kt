@@ -2,10 +2,8 @@ package org.codetome.zircon.playground
 
 import org.codetome.zircon.api.*
 import org.codetome.zircon.api.builder.GameAreaBuilder
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.api.color.TextColorFactory
-import org.codetome.zircon.api.component.GameComponent
+import org.codetome.zircon.api.game.GameComponent
 import org.codetome.zircon.api.component.builder.GameComponentBuilder
 import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.interop.Sizes

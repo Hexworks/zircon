@@ -20,10 +20,9 @@ import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.examples.TerminalUtils
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent
 import org.codetome.zircon.internal.game.InMemoryGameArea
-import org.codetome.zircon.internal.graphics.BoxType
+import org.codetome.zircon.api.graphics.BoxType
 import java.awt.Toolkit
 import java.util.*
-import java.util.function.Consumer
 
 object IsometricGameArea {
 
@@ -99,6 +98,7 @@ object IsometricGameArea {
         val screenSize = Toolkit.getDefaultToolkit().screenSize
         val x = screenSize.getWidth() / FONT.width
         val y = screenSize.getHeight() / FONT.height
+        TerminalUtils.fetchTerminalBuilder(args)
         val terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .font(FONT.toFont())
                 .initialTerminalSize(Sizes.create(x.toInt(), y.toInt()))
@@ -208,7 +208,7 @@ object IsometricGameArea {
     }
 
     private fun enableMovement(screen: Screen, gameComponent: DefaultGameComponent) {
-        screen.onInput(Consumer { input ->
+        screen.onInput({ input ->
             if (EXIT_CONDITIONS.contains(input.getInputType())) {
                 System.exit(0)
             } else {

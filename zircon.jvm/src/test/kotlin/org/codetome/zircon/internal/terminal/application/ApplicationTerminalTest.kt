@@ -9,7 +9,7 @@ import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
-import org.codetome.zircon.api.terminal.config.CursorStyle
+import org.codetome.zircon.api.terminal.CursorStyle
 import org.codetome.zircon.internal.component.impl.DefaultLabelTest
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType

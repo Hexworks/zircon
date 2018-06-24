@@ -93,4 +93,5 @@ interface TextImage : DrawSurface, Styleable, Drawable {
                    offset: Position = Position.defaultPosition(),
                    size: Size = getBoundableSize())
 
+
 }

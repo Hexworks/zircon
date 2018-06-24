@@ -33,6 +33,7 @@ ext {
     libraries = [
             kotlin_stdlib                 : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
             kotlin_stdlib_common          : "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion",
+            kotlin_reflect                : "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
             kotlin_test_annotations_common: "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlinVersion",
             kotlin_test_common            : "org.jetbrains.kotlin:kotlin-test-common:$kotlinVersion",
             caffeine                      : "com.github.ben-manes.caffeine:caffeine:$caffeineVersion",

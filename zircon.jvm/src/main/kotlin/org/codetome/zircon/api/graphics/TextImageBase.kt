@@ -10,7 +10,6 @@ import org.codetome.zircon.api.behavior.Styleable
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultStyleable
-import java.util.concurrent.atomic.AtomicReference
 
 /**
  * Base class which you can use if you want to implement your own version
@@ -35,7 +34,7 @@ abstract class TextImageBase private constructor(boundable: Boundable,
     constructor(size: Size,
                 styleSet: StyleSet) : this(
             boundable = DefaultBoundable(size = size),
-            styleable = DefaultStyleable(AtomicReference(styleSet)))
+            styleable = DefaultStyleable(styleSet))
 
     override fun draw(drawable: Drawable, offset: Position) {
         drawable.drawOnto(this, offset)

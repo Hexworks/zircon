@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.component.impl
 import org.assertj.core.api.Assertions
 import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
@@ -156,7 +156,7 @@ class DefaultCheckBoxTest {
                 .foregroundColor(ANSITextColor.GREEN)
                 .modifiers(Modifiers.CROSSED_OUT)
                 .build()
-        val COMPONENT_STYLES = ComponentStylesBuilder.newBuilder()
+        val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)
                 .build()
 

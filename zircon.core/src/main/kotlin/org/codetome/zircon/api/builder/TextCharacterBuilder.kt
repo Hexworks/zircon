@@ -2,9 +2,9 @@ package org.codetome.zircon.api.builder
 
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.TextCharacterCompanion
 import org.codetome.zircon.api.TextCharacterFactory
 import org.codetome.zircon.api.color.TextColor
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
 
 /**
@@ -58,5 +58,32 @@ data class TextCharacterBuilder(
 
     override fun createCopy() = copy()
 
-    companion object : TextCharacterCompanion
+    companion object {
+        /**
+         * Creates a new [TextCharacterBuilder] for creating [TextCharacter]s.
+         */
+        fun newBuilder() = TextCharacterBuilder()
+
+        /**
+         * Shorthand for the default character which is:
+         * - a space character
+         * - with default foreground
+         * - and default background
+         * - and no modifiers.
+         */
+        fun defaultCharacter() = TextCharacterBuilder.newBuilder().build()
+
+        /**
+         * Shorthand for an empty character which is:
+         * - a space character
+         * - with transparent foreground
+         * - and transparent background
+         * - and no modifiers.
+         */
+        fun empty() = TextCharacterBuilder.newBuilder()
+                .backgroundColor(TextColorFactory.transparent())
+                .foregroundColor(TextColorFactory.transparent())
+                .character(' ')
+                .build()
+    }
 }

@@ -4,29 +4,49 @@ import org.codetome.zircon.api.Modifiers;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
-import org.codetome.zircon.api.builder.*;
-import org.codetome.zircon.api.component.*;
+import org.codetome.zircon.api.builder.LayerBuilder;
+import org.codetome.zircon.api.builder.ScreenBuilder;
+import org.codetome.zircon.api.component.Button;
+import org.codetome.zircon.api.component.ColorTheme;
+import org.codetome.zircon.api.component.Header;
+import org.codetome.zircon.api.component.Label;
+import org.codetome.zircon.api.component.Panel;
+import org.codetome.zircon.api.component.RadioButtonGroup;
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection;
-import org.codetome.zircon.api.component.builder.*;
+import org.codetome.zircon.api.component.builder.ButtonBuilder;
+import org.codetome.zircon.api.component.builder.CheckBoxBuilder;
+import org.codetome.zircon.api.component.builder.HeaderBuilder;
+import org.codetome.zircon.api.component.builder.LabelBuilder;
+import org.codetome.zircon.api.component.builder.PanelBuilder;
+import org.codetome.zircon.api.component.builder.RadioButtonGroupBuilder;
+import org.codetome.zircon.api.component.builder.TextBoxBuilder;
 import org.codetome.zircon.api.font.Font;
+import org.codetome.zircon.api.graphics.BoxType;
 import org.codetome.zircon.api.graphics.Layer;
+import org.codetome.zircon.api.interop.Borders;
+import org.codetome.zircon.api.interop.DeviceConfigurations;
+import org.codetome.zircon.api.interop.Layers;
 import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.interop.TextCharacters;
 import org.codetome.zircon.api.interop.TextColors;
-import org.codetome.zircon.api.modifier.BorderBuilder;
 import org.codetome.zircon.api.modifier.BorderType;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.resource.GraphicTilesetResource;
 import org.codetome.zircon.api.screen.Screen;
+import org.codetome.zircon.api.terminal.CursorStyle;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.api.terminal.config.CursorStyle;
 import org.codetome.zircon.examples.TerminalUtils;
 import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy;
-import org.codetome.zircon.internal.graphics.BoxType;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -47,7 +67,7 @@ public class ComponentsExample {
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .initialTerminalSize(TERMINAL_SIZE)
                 .font(FONT)
-                .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
+                .deviceConfiguration(DeviceConfigurations.newBuilder()
                         .cursorBlinking(true)
                         .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
                         .cursorColor(TextColors.fromString("#ff00ff"))
@@ -137,7 +157,7 @@ public class ComponentsExample {
         final Panel borderedPanelWithShadow = PANEL_TEMPLATE.createCopy()
                 .title("Bordered panel")
                 .position(Positions.create(0, 2).relativeToBottomOf(panelWithShadowAndBox))
-                .addBorder(BorderBuilder.newBuilder().borderType(BorderType.DOTTED).build())
+                .addBorder(Borders.newBuilder().borderType(BorderType.DOTTED).build())
                 .wrapWithShadow()
                 .build();
         borderedPanelWithShadow.addComponent(LabelBuilder.newBuilder()
@@ -396,7 +416,7 @@ public class ComponentsExample {
                 .position(Positions.create(2, 1))
                 .text("Something with 'a'!")
                 .build();
-        final Layer aIcon = LayerBuilder.newBuilder()
+        final Layer aIcon = Layers.newBuilder()
                 .size(Sizes.create(1, 1))
                 .offset(exampleComponentsPanel.getPosition().plus(Positions.create(2, 2)))
                 .font(GraphicTilesetResource.NETHACK_16X16.toFont(new PickRandomMetaStrategy()))
@@ -409,7 +429,7 @@ public class ComponentsExample {
                 .position(Positions.create(2, 2))
                 .text("Something with 'b'!")
                 .build();
-        final Layer bIcon = LayerBuilder.newBuilder()
+        final Layer bIcon = Layers.newBuilder()
                 .size(Sizes.create(1, 1))
                 .offset(exampleComponentsPanel.getPosition().plus(Positions.create(2, 3)))
                 .font(GraphicTilesetResource.NETHACK_16X16.toFont(new PickRandomMetaStrategy()))

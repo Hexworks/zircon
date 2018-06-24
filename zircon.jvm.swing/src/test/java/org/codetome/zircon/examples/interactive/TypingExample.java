@@ -2,11 +2,11 @@ package org.codetome.zircon.examples.interactive;
 
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.TextCharacter;
-import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.input.KeyStroke;
+import org.codetome.zircon.api.interop.DeviceConfigurations;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.interop.TextCharacters;
 import org.codetome.zircon.api.interop.TextColors;
@@ -46,7 +46,7 @@ public class TypingExample {
         TerminalBuilder builder = TerminalUtils.fetchTerminalBuilder(args)
                 .initialTerminalSize(Sizes.create(TERMINAL_WIDTH, 10))
                 .font(CP437TilesetResource.ADU_DHABI_16X16.toFont())
-                .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
+                .deviceConfiguration(DeviceConfigurations.newBuilder()
                         .cursorBlinking(true)
                         .build());
         final Terminal terminal = builder.build();

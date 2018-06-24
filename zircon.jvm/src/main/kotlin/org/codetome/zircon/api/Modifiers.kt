@@ -41,5 +41,5 @@ object Modifiers {
      * @see BorderBuilder if you want to create custom borders
      */
     @JvmField
-    val BORDER = BorderBuilder.DEFAULT_BORDER
+    val BORDER = BorderBuilder.newBuilder().build()
 }

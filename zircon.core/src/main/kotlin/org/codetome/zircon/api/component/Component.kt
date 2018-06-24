@@ -59,12 +59,12 @@ interface Component : Positionable, Identifiable, Boundable, FontOverride {
     /**
      * Gets the styles this [Component] uses.
      */
-    fun getComponentStyles() : ComponentStyles
+    fun getComponentStyles() : ComponentStyleSet
 
     /**
      * Sets the styles this [Component] should use.
      */
-    fun setComponentStyles(componentStyles: ComponentStyles)
+    fun setComponentStyles(componentStyleSet: ComponentStyleSet)
 
     /**
      * Applies a [ColorTheme] to this component and recursively to all its children (if any).

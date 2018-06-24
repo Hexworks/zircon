@@ -24,7 +24,7 @@ class Maybe<T> {
         return value
     }
 
-    fun ifPresent(consumer: Consumer<in T>) {
+    fun ifPresent(consumer: Consumer<T>) {
         if (value != null)
             consumer.accept(value)
     }

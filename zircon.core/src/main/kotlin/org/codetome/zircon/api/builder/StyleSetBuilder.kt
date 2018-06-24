@@ -4,7 +4,6 @@ import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
-import org.codetome.zircon.api.graphics.StyleSetCompanion
 import org.codetome.zircon.api.graphics.StyleSetFactory
 
 /**
@@ -41,5 +40,33 @@ data class StyleSetBuilder(
         this.modifiers = modifiers.toSet()
     }
 
-    companion object : StyleSetCompanion
+    companion object {
+        /**
+         * Creates a new [StyleSetBuilder] for creating [org.codetome.zircon.api.graphics.StyleSet]s.
+         */
+        fun newBuilder() = StyleSetBuilder()
+
+        /**
+         * Shorthand for the default character which is:
+         * - a space character
+         * - with default foreground
+         * - and default background
+         * - and no modifiers.
+         */
+        fun defaultStyle() = DEFAULT_STYLE
+
+        /**
+         * Shorthand for the empty style which has:
+         * - transparent foreground
+         * - and transparent background
+         * - and no modifiers.
+         */
+        fun empty() = newBuilder()
+                .backgroundColor(TextColorFactory.transparent())
+                .foregroundColor(TextColorFactory.transparent())
+                .modifiers(setOf())
+                .build()
+
+        val DEFAULT_STYLE = StyleSetBuilder.newBuilder().build()
+    }
 }

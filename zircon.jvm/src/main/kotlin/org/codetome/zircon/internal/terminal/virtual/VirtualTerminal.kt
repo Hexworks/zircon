@@ -15,14 +15,16 @@ import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.behavior.InternalCursorHandler
 import org.codetome.zircon.internal.behavior.InternalLayerable
+import org.codetome.zircon.internal.behavior.ShutdownHook
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultFontOverride
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
+import org.codetome.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.terminal.AbstractTerminal
 import org.codetome.zircon.internal.terminal.InternalTerminal
-import java.util.function.Consumer
+import org.codetome.zircon.util.Consumer
 
 class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
                       initialFont: Font,
@@ -32,11 +34,13 @@ class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
                               cursorSpace = initialSize),
                       private val layerable: InternalLayerable = DefaultLayerable(
                               size = initialSize,
-                              supportedFontSize = initialFont.getSize()))
+                              supportedFontSize = initialFont.getSize()),
+                      private val shutdownHook: ShutdownHook = DefaultShutdownHook())
     : AbstractTerminal(), InternalTerminal,
         InternalCursorHandler by cursorHandler,
         InternalLayerable by layerable,
-        FontOverride by fontOverride {
+        FontOverride by fontOverride,
+        ShutdownHook by shutdownHook {
 
     private var terminalSize = initialSize
     private var backend: TextImage = createBackend(terminalSize)

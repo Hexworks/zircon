@@ -3,8 +3,8 @@ package org.codetome.zircon.api.component.builder
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.Builder
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
-import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
+import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.RadioButtonGroup
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
@@ -16,7 +16,7 @@ import java.util.*
 data class RadioButtonGroupBuilder(
         private var font: Font = FontSettings.NO_FONT,
         private var position: Position = Position.defaultPosition(),
-        private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT,
+        private var componentStyleSet: ComponentStyleSet = ComponentStyleSetBuilder.DEFAULT,
         private var size: Size = Size.one()) : Builder<RadioButtonGroup> {
 
     /**
@@ -30,8 +30,8 @@ data class RadioButtonGroupBuilder(
         this.position = position
     }
 
-    fun componentStyles(componentStyles: ComponentStyles) = also {
-        this.componentStyles = componentStyles
+    fun componentStyles(componentStyleSet: ComponentStyleSet) = also {
+        this.componentStyleSet = componentStyleSet
     }
 
     fun size(size: Size) = also {
@@ -43,7 +43,7 @@ data class RadioButtonGroupBuilder(
                 wrappers = LinkedList<WrappingStrategy>(),
                 size = size,
                 position = position,
-                componentStyles = componentStyles,
+                componentStyleSet = componentStyleSet,
                 initialFont = font)
     }
 

@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.builder.ButtonBuilder
@@ -32,7 +32,7 @@ class DefaultContainerHandlerTest {
         target = DefaultContainerHandler(DefaultContainer(
                 initialSize = SIZE,
                 position = Position.defaultPosition(),
-                componentStyles = STYLES,
+                componentStyleSet = STYLES,
                 wrappers = WRAPPERS,
                 initialFont = FontSettings.NO_FONT))
     }
@@ -245,7 +245,7 @@ class DefaultContainerHandlerTest {
                 .backgroundColor(ANSITextColor.RED)
                 .foregroundColor(ANSITextColor.CYAN)
                 .build()
-        val STYLES = ComponentStylesBuilder.newBuilder()
+        val STYLES = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)
                 .activeStyle(ACTIVE_STYLE)
                 .disabledStyle(DISABLED_STYLE)
