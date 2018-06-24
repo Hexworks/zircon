@@ -3,10 +3,10 @@ package org.codetome.zircon.internal.component.impl
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.CursorHandler
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ColorTheme
-import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.TextBox
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
@@ -20,19 +20,19 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.event.Subscription
 import org.codetome.zircon.internal.util.TextBuffer
-import java.util.*
+import org.codetome.zircon.util.Maybe
 
 class DefaultTextBox @JvmOverloads constructor(text: String,
                                                initialSize: Size,
                                                initialFont: Font,
                                                position: Position,
-                                               componentStyles: ComponentStyles,
+                                               componentStyleSet: ComponentStyleSet,
                                                scrollable: Scrollable = DefaultScrollable(initialSize, initialSize),
                                                cursorHandler: CursorHandler = DefaultCursorHandler(initialSize))
     : TextBox, Scrollable by scrollable, CursorHandler by cursorHandler, DefaultComponent(
         initialSize = initialSize,
         position = position,
-        componentStyles = componentStyles,
+        componentStyleSet = componentStyleSet,
         wrappers = listOf(),
         initialFont = initialFont) {
 
@@ -64,7 +64,7 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
     override fun acceptsFocus() = enabled
 
     override fun applyColorTheme(colorTheme: ColorTheme) {
-        setComponentStyles(ComponentStylesBuilder.newBuilder()
+        setComponentStyles(ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getDarkBackgroundColor())
                         .backgroundColor(colorTheme.getDarkForegroundColor())
@@ -103,7 +103,7 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
     }
 
     @Synchronized
-    override fun giveFocus(input: Optional<Input>): Boolean {
+    override fun giveFocus(input: Maybe<Input>): Boolean {
         focused = true
         if (enabled) {
             enableFocusedComponent()
@@ -112,7 +112,7 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
     }
 
     @Synchronized
-    override fun takeFocus(input: Optional<Input>) {
+    override fun takeFocus(input: Maybe<Input>) {
         focused = false
         disableTyping()
         getDrawSurface().applyStyle(getComponentStyles().reset())

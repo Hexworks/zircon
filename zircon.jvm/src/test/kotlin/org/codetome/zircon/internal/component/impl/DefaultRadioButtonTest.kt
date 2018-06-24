@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.component.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
@@ -29,7 +29,7 @@ class DefaultRadioButtonTest {
                 wrappers = LinkedList(),
                 width = WIDTH,
                 position = POSITION,
-                componentStyles = COMPONENT_STYLES,
+                componentStyleSet = COMPONENT_STYLES,
                 initialFont = FontSettings.NO_FONT)
     }
 
@@ -167,7 +167,7 @@ class DefaultRadioButtonTest {
                 .foregroundColor(ANSITextColor.GREEN)
                 .modifiers(Modifiers.CROSSED_OUT)
                 .build()
-        val COMPONENT_STYLES = ComponentStylesBuilder.newBuilder()
+        val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)
                 .build()
 

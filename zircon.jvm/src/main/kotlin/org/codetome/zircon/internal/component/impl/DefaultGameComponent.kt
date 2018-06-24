@@ -11,8 +11,8 @@ import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.ColorTheme
-import org.codetome.zircon.api.component.ComponentStyles
-import org.codetome.zircon.api.component.GameComponent
+import org.codetome.zircon.api.component.ComponentStyleSet
+import org.codetome.zircon.api.game.GameComponent
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
@@ -21,7 +21,7 @@ import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
-import java.util.*
+import org.codetome.zircon.util.Maybe
 
 /**
  * Note that this class is in **BETA**!
@@ -33,7 +33,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
                            visibleSize: Size3D,
                            initialFont: Font,
                            position: Position,
-                           componentStyles: ComponentStyles,
+                           componentStyleSet: ComponentStyleSet,
                            boundable: DefaultBoundable = DefaultBoundable(
                                    size = visibleSize.to2DSize(),
                                    position = position),
@@ -44,7 +44,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
     : GameComponent, Scrollable3D by scrollable, DefaultComponent(
         initialSize = visibleSize.to2DSize(),
         position = position,
-        componentStyles = componentStyles,
+        componentStyleSet = componentStyleSet,
         wrappers = listOf(),
         initialFont = initialFont,
         boundable = boundable) {
@@ -59,13 +59,13 @@ class DefaultGameComponent(private val gameArea: GameArea,
         return true
     }
 
-    override fun giveFocus(input: Optional<Input>): Boolean {
+    override fun giveFocus(input: Maybe<Input>): Boolean {
         refreshVirtualSpaceSize()
         EventBus.emit(EventType.ComponentChange)
         return true
     }
 
-    override fun takeFocus(input: Optional<Input>) {
+    override fun takeFocus(input: Maybe<Input>) {
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme) {

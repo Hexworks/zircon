@@ -24,7 +24,6 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
 import java.util.concurrent.atomic.AtomicReference
-import java.util.function.Consumer
 
 class VirtualTerminalTest {
 
@@ -263,9 +262,7 @@ class VirtualTerminalTest {
     @Test
     fun shouldProperlyListenToInputEvents() {
         val input = AtomicReference<Input>()
-        target.onInput(Consumer<Input> {
-            input.set(it)
-        })
+        target.onInput { input.set(it) }
 
         EventBus.emit(EventType.Input, KeyStroke.EOF_STROKE)
 
@@ -275,9 +272,7 @@ class VirtualTerminalTest {
     @Test
     fun closeShouldProperlyEmitEofStroke() {
         val input = AtomicReference<Input>()
-        target.onInput(Consumer<Input> {
-            input.set(it)
-        })
+        target.onInput { input.set(it) }
 
         target.close()
 

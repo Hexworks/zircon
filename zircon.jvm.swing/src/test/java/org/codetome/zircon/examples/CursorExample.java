@@ -2,14 +2,12 @@ package org.codetome.zircon.examples;
 
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
-import org.codetome.zircon.api.builder.TerminalBuilder;
-import org.codetome.zircon.api.color.TextColorFactory;
+import org.codetome.zircon.api.interop.DeviceConfigurations;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.interop.TextColors;
 import org.codetome.zircon.api.resource.PhysicalFontResource;
+import org.codetome.zircon.api.terminal.CursorStyle;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.api.terminal.config.CursorStyle;
-import org.junit.Test;
 
 public class CursorExample {
 
@@ -23,7 +21,7 @@ public class CursorExample {
                 .initialTerminalSize(SIZE)
                 .font(PhysicalFontResource.SOURCE_CODE_PRO.toFont())
                 // we only override the device config
-                .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
+                .deviceConfiguration(DeviceConfigurations.newBuilder()
                         .cursorColor(TextColors.fromString("#ff8844"))
                         .cursorStyle(CursorStyle.UNDER_BAR)
                         .cursorBlinking(true)

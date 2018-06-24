@@ -6,6 +6,7 @@ import org.codetome.zircon.api.builder.LayerBuilder;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.input.InputType;
+import org.codetome.zircon.api.interop.Layers;
 import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
@@ -74,7 +75,7 @@ public class FontSwitcherExample {
 
     private static void refreshLayer(Terminal terminal, String text, Random random) {
         terminal.drainLayers();
-        Layer layer = LayerBuilder.newBuilder()
+        Layer layer = Layers.newBuilder()
                 .font(FONTS.get(random.nextInt(FONTS.size())))
                 .offset(Positions.create(0, 1))
                 .size(Sizes.create(text.length(), 1))

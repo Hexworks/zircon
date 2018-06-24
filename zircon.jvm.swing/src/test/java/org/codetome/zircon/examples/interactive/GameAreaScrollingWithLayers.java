@@ -1,7 +1,12 @@
 package org.codetome.zircon.examples.interactive;
 
-import org.codetome.zircon.api.*;
-import org.codetome.zircon.api.builder.*;
+import org.codetome.zircon.api.JvmPosition;
+import org.codetome.zircon.api.Position;
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.Symbols;
+import org.codetome.zircon.api.TextCharacter;
+import org.codetome.zircon.api.builder.ScreenBuilder;
+import org.codetome.zircon.api.builder.TextCharacterStringBuilder;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.component.builder.ButtonBuilder;
@@ -10,24 +15,29 @@ import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.game.GameArea;
 import org.codetome.zircon.api.game.Position3D;
 import org.codetome.zircon.api.game.Size3D;
+import org.codetome.zircon.api.graphics.BoxType;
+import org.codetome.zircon.api.graphics.TextImage;
+import org.codetome.zircon.api.input.InputType;
+import org.codetome.zircon.api.interop.Layers;
 import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.interop.TextCharacters;
 import org.codetome.zircon.api.interop.TextColors;
 import org.codetome.zircon.api.interop.TextImages;
-import org.codetome.zircon.examples.TerminalUtils;
-import org.codetome.zircon.api.graphics.TextImage;
-import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.util.TextColorUtils;
+import org.codetome.zircon.examples.TerminalUtils;
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent;
 import org.codetome.zircon.internal.game.InMemoryGameArea;
-import org.codetome.zircon.internal.graphics.BoxType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameAreaScrollingWithLayers {
@@ -167,7 +177,7 @@ public class GameAreaScrollingWithLayers {
                 }
                 screen.drainLayers();
                 Position3D visibleOffset = gameComponent.getVisibleOffset();
-                screen.pushLayer(LayerBuilder.newBuilder()
+                screen.pushLayer(Layers.newBuilder()
                         .textImage(TextCharacterStringBuilder.newBuilder()
                                 .backgroundColor(TextColors.TRANSPARENT)
                                 .foregroundColor(TextColors.fromString("#aaaadd"))

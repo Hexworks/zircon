@@ -3,8 +3,8 @@ package org.codetome.zircon.api.component.builder
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.Builder
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
-import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
+import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.Label
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
@@ -15,7 +15,7 @@ data class LabelBuilder(
         private var font: Font = FontSettings.NO_FONT,
         private var text: String = "",
         private var position: Position = Position.defaultPosition(),
-        private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT) : Builder<Label> {
+        private var componentStyleSet: ComponentStyleSet = ComponentStyleSetBuilder.DEFAULT) : Builder<Label> {
 
     /**
      * Sets the [Font] to use with the resulting [Layer].
@@ -32,8 +32,8 @@ data class LabelBuilder(
         this.position = position
     }
 
-    fun componentStyles(componentStyles: ComponentStyles) = also {
-        this.componentStyles = componentStyles
+    fun componentStyles(componentStyleSet: ComponentStyleSet) = also {
+        this.componentStyleSet = componentStyleSet
     }
 
     override fun build(): Label {
@@ -45,7 +45,7 @@ data class LabelBuilder(
                 initialSize = Size.create(text.length, 1),
                 initialFont = font,
                 position = position,
-                componentStyles = componentStyles
+                componentStyleSet = componentStyleSet
         )
     }
 

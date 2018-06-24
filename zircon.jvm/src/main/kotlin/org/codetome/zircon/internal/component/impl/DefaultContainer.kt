@@ -3,12 +3,12 @@ package org.codetome.zircon.internal.component.impl
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.DrawSurface
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.Component
-import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.Container
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
@@ -18,16 +18,17 @@ import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.util.Maybe
 import java.util.*
 
 open class DefaultContainer(initialSize: Size,
                             position: Position,
                             initialFont: Font,
-                            componentStyles: ComponentStyles,
+                            componentStyleSet: ComponentStyleSet,
                             wrappers: Iterable<WrappingStrategy> = listOf())
     : DefaultComponent(initialSize = initialSize,
         position = position,
-        componentStyles = componentStyles,
+        componentStyleSet = componentStyleSet,
         wrappers = wrappers,
         initialFont = initialFont), Container {
 
@@ -79,9 +80,9 @@ open class DefaultContainer(initialSize: Size,
 
     override fun acceptsFocus() = false
 
-    override fun giveFocus(input: Optional<Input>) = false
+    override fun giveFocus(input: Maybe<Input>) = false
 
-    override fun takeFocus(input: Optional<Input>) {}
+    override fun takeFocus(input: Maybe<Input>) {}
 
     override fun removeComponent(component: Component): Boolean {
         var removalHappened = components.remove(component)
@@ -141,7 +142,7 @@ open class DefaultContainer(initialSize: Size,
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme) {
-        setComponentStyles(ComponentStylesBuilder.newBuilder()
+        setComponentStyles(ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getDarkForegroundColor())
                         .backgroundColor(colorTheme.getDarkBackgroundColor())

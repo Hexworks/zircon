@@ -2,24 +2,25 @@ package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.component.ColorTheme
-import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.Label
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.util.Maybe
 import java.util.*
 
 class DefaultLabel(private val text: String,
                    initialSize: Size,
                    initialFont: Font,
                    position: Position,
-                   componentStyles: ComponentStyles) : Label, DefaultComponent(
+                   componentStyleSet: ComponentStyleSet) : Label, DefaultComponent(
         initialSize = initialSize,
         position = position,
-        componentStyles = componentStyles,
+        componentStyleSet = componentStyleSet,
         wrappers = listOf(),
         initialFont = initialFont) {
 
@@ -32,12 +33,12 @@ class DefaultLabel(private val text: String,
 
     override fun acceptsFocus() = false
 
-    override fun giveFocus(input: Optional<Input>) = false
+    override fun giveFocus(input: Maybe<Input>) = false
 
-    override fun takeFocus(input: Optional<Input>) {}
+    override fun takeFocus(input: Maybe<Input>) {}
 
     override fun applyColorTheme(colorTheme: ColorTheme) {
-        setComponentStyles(ComponentStylesBuilder.newBuilder()
+        setComponentStyles(ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getDarkForegroundColor())
                         .backgroundColor(TextColorFactory.transparent())

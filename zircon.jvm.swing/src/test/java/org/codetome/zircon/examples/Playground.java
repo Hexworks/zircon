@@ -1,17 +1,16 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.api.Position;
-import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.SwingTerminalBuilder;
 import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.color.ANSITextColor;
-import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.component.Button;
+import org.codetome.zircon.api.component.ColorTheme;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.component.builder.ButtonBuilder;
 import org.codetome.zircon.api.component.builder.ColorThemeBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.graphics.Layer;
+import org.codetome.zircon.api.interop.ColorThemes;
 import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.interop.TextColors;
@@ -38,7 +37,7 @@ public class Playground {
 
         mainScreen.draw(backgroundLayer, Positions.TOP_LEFT_CORNER);
 
-        DefaultColorTheme theme = ColorThemeBuilder.newBuilder()
+        DefaultColorTheme theme = ColorThemes.newBuilder()
                 .accentColor(ANSITextColor.YELLOW)
                 .brightBackgroundColor(TextColors.fromRGB(80, 80, 80, 225))
                 .darkBackgroundColor(TextColors.fromRGB(50, 50, 50, 0))

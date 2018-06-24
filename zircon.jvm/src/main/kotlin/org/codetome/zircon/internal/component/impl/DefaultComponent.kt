@@ -10,7 +10,7 @@ import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.ComponentState
-import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.input.MouseAction
@@ -28,7 +28,7 @@ abstract class DefaultComponent(initialSize: Size,
                                 initialFont: Font,
                                 position: Position,
                                 private var attached: Boolean = false,
-                                private var componentStyles: ComponentStyles,
+                                private var componentStyleSet: ComponentStyleSet,
                                 private val wrappers: Iterable<WrappingStrategy>,
                                 private val fontOverride: FontOverride = DefaultFontOverride(
                                         initialFont = initialFont),
@@ -45,17 +45,17 @@ abstract class DefaultComponent(initialSize: Size,
     private var currentOffset = Position.defaultPosition()
 
     init {
-        drawSurface.setStyleFrom(componentStyles.getCurrentStyle())
+        drawSurface.setStyleFrom(componentStyleSet.getCurrentStyle())
         applyWrappers()
         EventBus.subscribe(EventType.MouseOver(id), {
-            if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.MOUSE_OVER)) {
-                drawSurface.applyStyle(componentStyles.mouseOver())
+            if (componentStyleSet.getCurrentStyle() != componentStyleSet.getStyleFor(ComponentState.MOUSE_OVER)) {
+                drawSurface.applyStyle(componentStyleSet.mouseOver())
                 EventBus.emit(EventType.ComponentChange)
             }
         })
         EventBus.subscribe(EventType.MouseOut(id), {
-            if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.DEFAULT)) {
-                drawSurface.applyStyle(componentStyles.reset())
+            if (componentStyleSet.getCurrentStyle() != componentStyleSet.getStyleFor(ComponentState.DEFAULT)) {
+                drawSurface.applyStyle(componentStyleSet.reset())
                 EventBus.emit(EventType.ComponentChange)
             }
         })
@@ -110,12 +110,12 @@ abstract class DefaultComponent(initialSize: Size,
         })
     }
 
-    override fun getComponentStyles() = componentStyles
+    override fun getComponentStyles() = componentStyleSet
 
-    override fun setComponentStyles(componentStyles: ComponentStyles) {
-        this.componentStyles = componentStyles
+    override fun setComponentStyles(componentStyleSet: ComponentStyleSet) {
+        this.componentStyleSet = componentStyleSet
 
-        drawSurface.applyStyle(componentStyles.getCurrentStyle(), getNonThemeableOffset(), getEffectiveThemeableSize())
+        drawSurface.applyStyle(componentStyleSet.getCurrentStyle(), getNonThemeableOffset(), getEffectiveThemeableSize())
     }
 
     fun getBoundable() = boundable
@@ -174,7 +174,7 @@ abstract class DefaultComponent(initialSize: Size,
         currentOffset = Position.defaultPosition()
         wrappers.forEach {
             currSize += it.getOccupiedSize()
-            it.apply(drawSurface, currSize, currentOffset, componentStyles.getCurrentStyle())
+            it.apply(drawSurface, currSize, currentOffset, componentStyleSet.getCurrentStyle())
             currentOffset += it.getOffset()
         }
     }

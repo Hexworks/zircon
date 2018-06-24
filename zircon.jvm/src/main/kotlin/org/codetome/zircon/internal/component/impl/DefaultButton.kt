@@ -2,12 +2,12 @@ package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.component.Button
 import org.codetome.zircon.api.component.ColorTheme
-import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
@@ -17,6 +17,7 @@ import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.util.Maybe
 import java.util.*
 
 class DefaultButton(private val text: String,
@@ -24,10 +25,10 @@ class DefaultButton(private val text: String,
                     wrappers: Deque<WrappingStrategy>,
                     initialSize: Size,
                     position: Position,
-                    componentStyles: ComponentStyles)
+                    componentStyleSet: ComponentStyleSet)
     : Button, DefaultComponent(initialSize = initialSize,
         position = position,
-        componentStyles = componentStyles,
+        componentStyleSet = componentStyleSet,
         wrappers = wrappers,
         initialFont = initialFont) {
 
@@ -48,13 +49,13 @@ class DefaultButton(private val text: String,
         return true
     }
 
-    override fun giveFocus(input: Optional<Input>): Boolean {
+    override fun giveFocus(input: Maybe<Input>): Boolean {
         getDrawSurface().applyStyle(getComponentStyles().giveFocus())
         EventBus.emit(EventType.ComponentChange)
         return true
     }
 
-    override fun takeFocus(input: Optional<Input>) {
+    override fun takeFocus(input: Maybe<Input>) {
         getDrawSurface().applyStyle(getComponentStyles().reset())
         EventBus.emit(EventType.ComponentChange)
     }
@@ -62,7 +63,7 @@ class DefaultButton(private val text: String,
     override fun getText() = text
 
     override fun applyColorTheme(colorTheme: ColorTheme) {
-        setComponentStyles(ComponentStylesBuilder.newBuilder()
+        setComponentStyles(ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getAccentColor())
                         .backgroundColor(TextColorFactory.transparent())

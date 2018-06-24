@@ -5,7 +5,7 @@ import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.api.input.MouseActionType.*
-import org.codetome.zircon.api.terminal.config.DeviceConfiguration
+import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType

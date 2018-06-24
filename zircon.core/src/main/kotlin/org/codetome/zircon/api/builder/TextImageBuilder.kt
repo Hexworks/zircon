@@ -4,7 +4,6 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.graphics.TextImage
-import org.codetome.zircon.api.graphics.TextImageCompanion
 import org.codetome.zircon.api.graphics.TextImageFactory
 
 /**
@@ -49,5 +48,10 @@ data class TextImageBuilder(
 
     override fun createCopy() = copy()
 
-    companion object : TextImageCompanion
+    companion object {
+        /**
+         * Creates a new [TextImageBuilder] to build [org.codetome.zircon.api.graphics.TextImage]s.
+         */
+        fun newBuilder() = TextImageBuilder()
+    }
 }

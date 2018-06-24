@@ -3,8 +3,8 @@ package org.codetome.zircon.api.component.builder
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.Builder
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
-import org.codetome.zircon.api.component.ComponentStyles
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
+import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.TextBox
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
@@ -16,7 +16,7 @@ data class TextBoxBuilder(
         private var text: String = "",
         private var position: Position = Position.defaultPosition(),
         private var size: Size = Size.one(),
-        private var componentStyles: ComponentStyles = ComponentStylesBuilder.DEFAULT) : Builder<TextBox> {
+        private var componentStyleSet: ComponentStyleSet = ComponentStyleSetBuilder.DEFAULT) : Builder<TextBox> {
 
     /**
      * Sets the [Font] to use with the resulting [Layer].
@@ -37,8 +37,8 @@ data class TextBoxBuilder(
         this.size = size
     }
 
-    fun componentStyles(componentStyles: ComponentStyles) = also {
-        this.componentStyles = componentStyles
+    fun componentStyles(componentStyleSet: ComponentStyleSet) = also {
+        this.componentStyleSet = componentStyleSet
     }
 
     override fun build(): TextBox {
@@ -46,7 +46,7 @@ data class TextBoxBuilder(
                 text = text,
                 initialSize = size,
                 position = position,
-                componentStyles = componentStyles,
+                componentStyleSet = componentStyleSet,
                 initialFont = font)
     }
 

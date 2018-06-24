@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.component.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.builder.TextBoxBuilder
@@ -130,7 +130,7 @@ class DefaultTextBoxTest {
                 .foregroundColor(THEME.getDarkForegroundColor())
                 .backgroundColor(THEME.getDarkBackgroundColor())
                 .build()
-        val COMPONENT_STYLES = ComponentStylesBuilder.newBuilder()
+        val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)
                 .build()
     }

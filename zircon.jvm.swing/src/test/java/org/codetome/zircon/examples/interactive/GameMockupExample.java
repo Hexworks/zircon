@@ -1,27 +1,32 @@
 package org.codetome.zircon.examples.interactive;
 
-import org.codetome.zircon.api.*;
-import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
+import org.codetome.zircon.api.JvmPosition;
+import org.codetome.zircon.api.Position;
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.component.Button;
-import org.codetome.zircon.api.component.*;
+import org.codetome.zircon.api.component.ColorTheme;
 import org.codetome.zircon.api.component.Label;
 import org.codetome.zircon.api.component.Panel;
+import org.codetome.zircon.api.component.RadioButtonGroup;
 import org.codetome.zircon.api.component.builder.ButtonBuilder;
 import org.codetome.zircon.api.component.builder.LabelBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.component.builder.RadioButtonGroupBuilder;
+import org.codetome.zircon.api.graphics.BoxType;
+import org.codetome.zircon.api.interop.DeviceConfigurations;
 import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
+import org.codetome.zircon.api.terminal.CursorStyle;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.api.terminal.config.CursorStyle;
 import org.codetome.zircon.examples.TerminalUtils;
-import org.codetome.zircon.internal.graphics.BoxType;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.Arrays;
 
 public class GameMockupExample {
@@ -58,7 +63,7 @@ public class GameMockupExample {
                 .initialTerminalSize(terminalSize)
                 .fullScreen()
                 .font(CP437TilesetResource.ROGUE_YUN_16X16.toFont())
-                .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
+                .deviceConfiguration(DeviceConfigurations.newBuilder()
                         .cursorBlinking(true)
                         .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
                         .build())

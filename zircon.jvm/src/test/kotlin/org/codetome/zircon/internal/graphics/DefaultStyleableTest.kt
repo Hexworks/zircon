@@ -7,7 +7,6 @@ import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.internal.behavior.impl.DefaultStyleable
 import org.junit.Before
 import org.junit.Test
-import java.util.concurrent.atomic.AtomicReference
 
 class DefaultStyleableTest {
 
@@ -15,7 +14,7 @@ class DefaultStyleableTest {
 
     @Before
     fun setUp() {
-        target = DefaultStyleable(AtomicReference(StyleSetBuilder.defaultStyle()))
+        target = DefaultStyleable(StyleSetBuilder.defaultStyle())
     }
 
     @Test

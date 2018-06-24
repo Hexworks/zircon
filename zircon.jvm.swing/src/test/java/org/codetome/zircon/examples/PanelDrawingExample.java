@@ -7,9 +7,8 @@ import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.graphics.Box;
 import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.shape.FilledRectangleFactory;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.internal.graphics.BoxType;
+import org.codetome.zircon.api.graphics.BoxType;
 
 import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16;
 
@@ -36,7 +35,7 @@ public class PanelDrawingExample {
                         .withBackgroundColor(BACKGROUND_COLOR))
                 .drawOnto(screen, Positions.DEFAULT_POSITION);
 
-        final Box box = BoxBuilder.newBuilder()
+        final Box box = Boxes.newBuilder()
                 .boxType(BoxType.DOUBLE)
                 .size(Sizes.create(15, 8))
                 .style(StyleSets.newBuilder()

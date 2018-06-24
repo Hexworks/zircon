@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
@@ -24,6 +24,7 @@ import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.codetome.zircon.internal.util.Identifier
 import org.codetome.zircon.util.Consumer
+import org.codetome.zircon.util.Maybe
 import org.junit.Before
 import org.junit.Test
 import java.util.*
@@ -41,7 +42,7 @@ class DefaultComponentTest {
         target = object : DefaultComponent(
                 initialSize = SIZE,
                 position = POSITION,
-                componentStyles = STYLES,
+                componentStyleSet = STYLES,
                 wrappers = WRAPPERS,
                 initialFont = font) {
             override fun applyColorTheme(colorTheme: ColorTheme) {
@@ -52,11 +53,11 @@ class DefaultComponentTest {
                 TODO("not implemented")
             }
 
-            override fun giveFocus(input: Optional<Input>): Boolean {
+            override fun giveFocus(input: Maybe<Input>): Boolean {
                 TODO("not implemented")
             }
 
-            override fun takeFocus(input: Optional<Input>) {
+            override fun takeFocus(input: Maybe<Input>) {
                 TODO("not implemented")
             }
         }
@@ -254,7 +255,7 @@ class DefaultComponentTest {
                 .backgroundColor(ANSITextColor.RED)
                 .foregroundColor(ANSITextColor.CYAN)
                 .build()
-        val STYLES = ComponentStylesBuilder.newBuilder()
+        val STYLES = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)
                 .activeStyle(ACTIVE_STYLE)
                 .disabledStyle(DISABLED_STYLE)

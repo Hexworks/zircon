@@ -19,7 +19,6 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.function.Consumer
 
 class TerminalScreenTest {
 
@@ -46,7 +45,7 @@ class TerminalScreenTest {
                 .build()
 
         val inputFired = AtomicBoolean(false)
-        target.onInput(Consumer { inputFired.set(true) })
+        target.onInput { inputFired.set(true) }
 
         //first of all lets make sure the default behaviour works. if a key is pressed I should get an input fired
         EventBus.emit(EventType.Input, KeyStroke('a'))

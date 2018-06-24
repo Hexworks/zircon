@@ -6,7 +6,7 @@ import org.codetome.zircon.api.builder.BoxBuilder
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.component.WrappingStrategy
-import org.codetome.zircon.internal.graphics.BoxType
+import org.codetome.zircon.api.graphics.BoxType
 import java.util.*
 
 class BoxWrappingStrategy(private val boxType: BoxType,

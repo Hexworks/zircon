@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.builder.HeaderBuilder
@@ -78,7 +78,7 @@ class DefaultHeaderTest {
                 .foregroundColor(THEME.getBrightForegroundColor())
                 .backgroundColor(TextColorFactory.transparent())
                 .build()
-        val COMPONENT_STYLES = ComponentStylesBuilder.newBuilder()
+        val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)
                 .build()
     }

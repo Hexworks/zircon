@@ -4,10 +4,11 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.api.component.RadioButtonGroup
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
@@ -17,11 +18,11 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
+import org.codetome.zircon.util.Consumer
 import org.junit.Before
 import org.junit.Test
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.function.Consumer
 
 class DefaultRadioButtonGroupTest {
 
@@ -36,7 +37,7 @@ class DefaultRadioButtonGroupTest {
                 wrappers = LinkedList(),
                 size = SIZE,
                 position = POSITION,
-                componentStyles = COMPONENT_STYLES,
+                componentStyleSet = COMPONENT_STYLES,
                 initialFont = font)
     }
 
@@ -95,8 +96,10 @@ class DefaultRadioButtonGroupTest {
         val button = target.addOption("foo", "bar")
 
         val selected = AtomicBoolean(false)
-        target.onSelection(Consumer {
-            selected.set(true)
+        target.onSelection(object : Consumer<RadioButtonGroup.Selection> {
+            override fun accept(t: RadioButtonGroup.Selection) {
+                selected.set(true)
+            }
         })
 
         EventBus.emit(EventType.MouseReleased(button.getId()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
@@ -115,7 +118,7 @@ class DefaultRadioButtonGroupTest {
                 .foregroundColor(ANSITextColor.GREEN)
                 .modifiers(Modifiers.CROSSED_OUT)
                 .build()
-        val COMPONENT_STYLES = ComponentStylesBuilder.newBuilder()
+        val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)
                 .build()
 
