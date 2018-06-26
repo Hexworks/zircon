@@ -11,7 +11,7 @@ import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.component.impl.DefaultLabelTest
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
@@ -48,7 +48,7 @@ class TerminalScreenTest {
         target.onInput { inputFired.set(true) }
 
         //first of all lets make sure the default behaviour works. if a key is pressed I should get an input fired
-        EventBus.emit(EventType.Input, KeyStroke('a'))
+        EventBus.broadcast(Event.Input(KeyStroke('a')))
         assertThat(inputFired.get()).isTrue()
 
         //now lets add the animation and make sure we can still get input
@@ -56,7 +56,7 @@ class TerminalScreenTest {
         animationHandler.addAnimation(animation)
 
         inputFired.set(false)
-        EventBus.emit(EventType.Input, KeyStroke('a'))
+        EventBus.broadcast(Event.Input(KeyStroke('a')))
         assertThat(inputFired.get()).isTrue()
 
     }

@@ -15,7 +15,7 @@ import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.codetome.zircon.util.Consumer
@@ -60,11 +60,11 @@ class DefaultRadioButtonGroupTest {
     @Test
     fun shouldProperlySignalComponentChangeOnMouseRelease() {
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
-        EventBus.emit(EventType.MouseReleased(target.getId()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+        EventBus.sendTo(target.getId(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(componentChanged.get()).isTrue()
     }
@@ -73,7 +73,7 @@ class DefaultRadioButtonGroupTest {
     fun shouldSelectChildButtonWhenClicked() {
         val button = target.addOption("foo", "bar")
 
-        EventBus.emit(EventType.MouseReleased(button.getId()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+        EventBus.sendTo(button.getId(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(button.isSelected()).isTrue()
     }
@@ -84,8 +84,8 @@ class DefaultRadioButtonGroupTest {
         val newButton = target.addOption("baz", "qux")
 
 
-        EventBus.emit(EventType.MouseReleased(oldButton.getId()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
-        EventBus.emit(EventType.MouseReleased(newButton.getId()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+        EventBus.sendTo(oldButton.getId(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        EventBus.sendTo(newButton.getId(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(oldButton.isSelected()).isFalse()
         assertThat(newButton.isSelected()).isTrue()
@@ -102,7 +102,7 @@ class DefaultRadioButtonGroupTest {
             }
         })
 
-        EventBus.emit(EventType.MouseReleased(button.getId()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+        EventBus.sendTo(button.getId(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(selected.get()).isTrue()
     }

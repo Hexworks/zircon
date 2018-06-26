@@ -17,7 +17,7 @@ import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.TerminalResizeListener
 import org.codetome.zircon.internal.component.impl.DefaultLabelTest
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.junit.Before
@@ -264,7 +264,7 @@ class VirtualTerminalTest {
         val input = AtomicReference<Input>()
         target.onInput { input.set(it) }
 
-        EventBus.emit(EventType.Input, KeyStroke.EOF_STROKE)
+        EventBus.broadcast(Event.Input(KeyStroke.EOF_STROKE))
 
         assertThat(input.get()).isEqualTo(KeyStroke.EOF_STROKE)
     }

@@ -11,7 +11,7 @@ import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.junit.Before
 import org.junit.Test
@@ -76,9 +76,9 @@ class DefaultRadioButtonTest {
     fun shouldProperlyGiveFocus() {
         target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
         val result = target.giveFocus()
 
@@ -91,9 +91,9 @@ class DefaultRadioButtonTest {
     fun shouldProperlyTakeFocus() {
         target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
         target.takeFocus()
 
@@ -104,9 +104,9 @@ class DefaultRadioButtonTest {
     @Test
     fun shouldProperlySelect() {
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
         target.applyColorTheme(THEME)
         target.select()
 
@@ -120,9 +120,9 @@ class DefaultRadioButtonTest {
     fun shouldSelectOnlyWhenNotAlreadySelected() {
         target.select()
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
         target.select()
 
         assertThat(componentChanged.get()).isFalse()
@@ -131,9 +131,9 @@ class DefaultRadioButtonTest {
     @Test
     fun shouldProperlyRemoveSelection() {
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
         target.applyColorTheme(THEME)
         target.select()
         target.removeSelection()
@@ -147,9 +147,9 @@ class DefaultRadioButtonTest {
     @Test
     fun shouldDeselectOnlyWhenSelected() {
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
         target.removeSelection()
 
         assertThat(componentChanged.get()).isFalse()

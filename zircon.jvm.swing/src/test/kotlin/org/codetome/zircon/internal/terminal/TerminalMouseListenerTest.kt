@@ -8,7 +8,7 @@ import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.api.input.MouseActionType.*
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.junit.Before
 import org.junit.Test
 import java.awt.Component
@@ -32,7 +32,7 @@ class TerminalMouseListenerTest {
                 Pair(target::mouseExited, MOUSE_EXITED),
                 Pair(target::mousePressed, MOUSE_PRESSED),
                 Pair(target::mouseReleased, MOUSE_RELEASED))
-        EventBus.subscribe<Input>(EventType.Input, {
+        EventBus.subscribe<Input>(Event.Input, {
             inputs.add(it.data)
         })
     }

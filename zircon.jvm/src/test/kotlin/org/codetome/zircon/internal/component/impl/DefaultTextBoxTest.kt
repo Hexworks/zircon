@@ -12,8 +12,8 @@ import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.junit.Before
@@ -52,7 +52,7 @@ class DefaultTextBoxTest {
     fun shouldProperlyHandleRightArrowWhenFocused() {
         target.giveFocus()
 
-        EventBus.emit(EventType.KeyPressed, KeyStroke(type = InputType.ArrowRight))
+        EventBus.broadcast(Event.KeyPressed(KeyStroke(type = InputType.ArrowRight)))
 
         assertThat(target.getCursorPosition()).isEqualTo(Position.defaultPosition().withRelativeX(1))
     }
@@ -63,7 +63,7 @@ class DefaultTextBoxTest {
         target.giveFocus()
 
         target.putCursorAt(Position.create(0, 1))
-        EventBus.emit(EventType.KeyPressed, KeyStroke(type = InputType.ArrowLeft))
+        EventBus.broadcast(Event.KeyPressed(KeyStroke(type = InputType.ArrowLeft)))
 
         assertThat(target.getCursorPosition()).isEqualTo(Position.create(3, 0))
     }
@@ -73,7 +73,7 @@ class DefaultTextBoxTest {
         target.giveFocus()
 
         target.putCursorAt(Position.create(1, 0))
-        EventBus.emit(EventType.KeyPressed, KeyStroke(type = InputType.ArrowLeft))
+        EventBus.broadcast(Event.KeyPressed(KeyStroke(type = InputType.ArrowLeft)))
 
         assertThat(target.getCursorPosition()).isEqualTo(Position.defaultPosition())
     }

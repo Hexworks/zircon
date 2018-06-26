@@ -8,7 +8,7 @@ import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.InputType.Character
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.junit.Before
 import org.junit.Test
 import java.awt.Component
@@ -25,7 +25,7 @@ class TerminalKeyListenerTest {
     @Before
     fun setUp() {
         target = TerminalKeyListener(CONFIG)
-        EventBus.subscribe<Input>(EventType.Input, {
+        EventBus.subscribe<Input>(Event.Input, {
             inputs.add(it.data)
         })
     }

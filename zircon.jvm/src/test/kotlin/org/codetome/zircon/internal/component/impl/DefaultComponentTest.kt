@@ -19,7 +19,7 @@ import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.codetome.zircon.internal.util.Identifier
@@ -27,7 +27,6 @@ import org.codetome.zircon.util.Consumer
 import org.codetome.zircon.util.Maybe
 import org.junit.Before
 import org.junit.Test
-import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 class DefaultComponentTest {
@@ -66,7 +65,7 @@ class DefaultComponentTest {
     @Test
     fun shouldUseFontFromComponentWhenTransformingToLayer() {
         val result = target.transformToLayers()
-        result.forEach{
+        result.forEach {
             assertThat(it.getCurrentFont().getId()).isEqualTo(font.getId())
         }
     }
@@ -80,11 +79,11 @@ class DefaultComponentTest {
     @Test
     fun shouldProperlyApplyStylesOnMouseOver() {
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
-        EventBus.emit(EventType.MouseOver(target.getId()))
+        EventBus.sendTo(target.getId(), Event.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
 
         val targetChar = target.getDrawSurface().getCharacterAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(MOUSE_OVER_STYLE.getBackgroundColor())
@@ -94,13 +93,13 @@ class DefaultComponentTest {
 
     @Test
     fun shouldProperlyApplyStylesOnMouseOut() {
-        EventBus.emit(EventType.MouseOver(target.getId()))
+        EventBus.sendTo(target.getId(), Event.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
-        EventBus.emit(EventType.MouseOut(target.getId()))
+        EventBus.sendTo(target.getId(), Event.MouseOver(MouseAction(MouseActionType.MOUSE_EXITED, 1, Position.defaultPosition())))
 
         val targetChar = target.getDrawSurface().getCharacterAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(DEFAULT_STYLE.getBackgroundColor())
@@ -170,7 +169,7 @@ class DefaultComponentTest {
             }
         })
 
-        EventBus.emit(EventType.MousePressed(target.getId()), MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION))
+        EventBus.sendTo(target.getId(), Event.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION)))
 
         assertThat(pressed.get()).isTrue()
     }
@@ -184,7 +183,7 @@ class DefaultComponentTest {
             }
         })
 
-        EventBus.emit(EventType.MousePressed(Identifier.randomIdentifier()), MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION))
+        EventBus.sendTo(Identifier.randomIdentifier(), Event.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION)))
 
         assertThat(pressed.get()).isFalse()
     }
@@ -198,7 +197,7 @@ class DefaultComponentTest {
             }
         })
 
-        EventBus.emit(EventType.MouseReleased(target.getId()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+        EventBus.sendTo(target.getId(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(pressed.get()).isTrue()
     }
@@ -212,7 +211,7 @@ class DefaultComponentTest {
             }
         })
 
-        EventBus.emit(EventType.MouseReleased(Identifier.randomIdentifier()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+        EventBus.sendTo(Identifier.randomIdentifier(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(pressed.get()).isFalse()
     }

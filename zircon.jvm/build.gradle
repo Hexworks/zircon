@@ -5,6 +5,7 @@ archivesBaseName = 'zircon.jvm'
 dependencies {
     expectedBy project(':zircon.core')
     compile libraries.kotlin_stdlib
+    compile libraries.kotlin_reflect
 
     compile libraries.caffeine
     compile libraries.snakeyaml

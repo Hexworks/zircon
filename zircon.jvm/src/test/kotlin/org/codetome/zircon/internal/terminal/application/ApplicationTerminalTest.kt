@@ -12,7 +12,7 @@ import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.CursorStyle
 import org.codetome.zircon.internal.component.impl.DefaultLabelTest
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
@@ -70,11 +70,11 @@ class ApplicationTerminalTest {
     @Test
     fun shouldSendEofOnDispose() {
         val eofReceived = AtomicBoolean(false)
-        EventBus.subscribe<Input>(EventType.Input, {
-            if (it.data == KeyStroke.EOF_STROKE) {
+        EventBus.subscribe<Event.Input> {
+            if (it.input == KeyStroke.EOF_STROKE) {
                 eofReceived.set(true)
             }
-        })
+        }
 
         target.doDispose()
 

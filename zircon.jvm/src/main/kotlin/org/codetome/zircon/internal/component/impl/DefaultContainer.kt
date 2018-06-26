@@ -16,7 +16,7 @@ import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.util.Maybe
 import java.util.*
@@ -54,7 +54,7 @@ open class DefaultContainer(initialSize: Size,
                 "You can't add a component to a container which intersects with other components!"
             }
             components.add(dc)
-            EventBus.emit(EventType.ComponentAddition)
+            EventBus.broadcast(Event.ComponentAddition)
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
     }
 
@@ -97,7 +97,7 @@ open class DefaultContainer(initialSize: Size,
             }
         }
         if (removalHappened) {
-            EventBus.emit(EventType.ComponentRemoval)
+            EventBus.broadcast(Event.ComponentRemoval)
         }
         return removalHappened
     }

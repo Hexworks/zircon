@@ -17,7 +17,7 @@ import org.codetome.zircon.internal.behavior.Scrollable
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.Subscription
 import org.codetome.zircon.internal.util.TextBuffer
 import org.codetome.zircon.util.Maybe
@@ -50,16 +50,16 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
     override fun getText() = textBuffer.getText() // TODO: line sep?
 
     override fun setText(text: String): Boolean {
-                val isChanged = if (this.textBuffer.toString() == text) {
-                    false
-                } else {
-                    textBuffer.setText(text)
-                    true
-                }
+        val isChanged = if (this.textBuffer.toString() == text) {
+            false
+        } else {
+            textBuffer.setText(text)
+            true
+        }
 
-                refreshDrawSurface()
-                return isChanged
-            }
+        refreshDrawSurface()
+        return isChanged
+    }
 
     override fun acceptsFocus() = enabled
 
@@ -99,7 +99,7 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
             }
         }
         getDrawSurface().applyStyle(getComponentStyles().disable())
-        EventBus.emit(EventType.ComponentChange)
+        EventBus.broadcast(Event.ComponentChange)
     }
 
     @Synchronized
@@ -116,25 +116,25 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
         focused = false
         disableTyping()
         getDrawSurface().applyStyle(getComponentStyles().reset())
-        EventBus.emit(EventType.ComponentChange)
+        EventBus.broadcast(Event.ComponentChange)
     }
 
     private fun enableFocusedComponent() {
         cancelSubscriptions()
         getDrawSurface().applyStyle(getComponentStyles().giveFocus())
         enableTyping()
-        EventBus.emit(EventType.ComponentChange)
+        EventBus.broadcast(Event.ComponentChange)
     }
 
     private fun disableTyping() {
         cancelSubscriptions()
-        EventBus.emit(EventType.HideCursor)
-        EventBus.emit(EventType.ComponentChange)
+        EventBus.broadcast(Event.HideCursor)
+        EventBus.broadcast(Event.ComponentChange)
     }
 
     private fun enableTyping() {
-        EventBus.emit(EventType.RequestCursorAt, getCursorPosition().withRelative(getPosition()))
-        subscriptions.add(EventBus.subscribe<KeyStroke>(EventType.KeyPressed, { (keyStroke) ->
+        EventBus.broadcast(Event.RequestCursorAt(getCursorPosition().withRelative(getPosition())))
+        subscriptions.add(EventBus.subscribe<Event.KeyPressed> { (keyStroke) ->
             val cursorPos = getCursorPosition()
             val (offsetCols, offsetRows) = getVisibleOffset()
             val currColIdx = cursorPos.x + offsetCols
@@ -259,9 +259,9 @@ class DefaultTextBox @JvmOverloads constructor(text: String,
                     refreshDrawSurface()
                 }
             }
-            EventBus.emit(EventType.RequestCursorAt, getCursorPosition() + getPosition())
-            EventBus.emit(EventType.ComponentChange)
-        }))
+            EventBus.broadcast(Event.RequestCursorAt(getCursorPosition() + getPosition()))
+            EventBus.broadcast(Event.ComponentChange)
+        })
     }
 
     private fun scrollUpToEndOfPreviousLine(prevRow: StringBuilder) {
