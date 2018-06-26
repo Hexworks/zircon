@@ -18,12 +18,7 @@ import org.codetome.zircon.api.game.Size3D;
 import org.codetome.zircon.api.graphics.BoxType;
 import org.codetome.zircon.api.graphics.TextImage;
 import org.codetome.zircon.api.input.InputType;
-import org.codetome.zircon.api.interop.Layers;
-import org.codetome.zircon.api.interop.Positions;
-import org.codetome.zircon.api.interop.Sizes;
-import org.codetome.zircon.api.interop.TextCharacters;
-import org.codetome.zircon.api.interop.TextColors;
-import org.codetome.zircon.api.interop.TextImages;
+import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
@@ -92,7 +87,7 @@ public class GameAreaScrollingWithLayers {
                 .boxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build();
 
-        final Size3D visibleGameAreaSize = Size3D.from2DSize(gamePanel.getBoundableSize()
+        final Size3D visibleGameAreaSize = Size3Ds.from2DSize(gamePanel.getBoundableSize()
                 .minus(Sizes.create(2, 2)), 5);
         final Size virtualGameAreaSize = Sizes.create(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
@@ -107,7 +102,7 @@ public class GameAreaScrollingWithLayers {
 
         final GameArea gameArea =
                 new InMemoryGameArea(
-                        Size3D.from2DSize(virtualGameAreaSize, totalLevels),
+                        Size3Ds.from2DSize(virtualGameAreaSize, totalLevels),
                         5,
                         TextCharacters.EMPTY);
 
@@ -121,9 +116,9 @@ public class GameAreaScrollingWithLayers {
         gamePanel.addComponent(gameComponent);
 
         enableMovement(screen, gameComponent);
-        generatePyramid(3, Position3D.of(5, 5, 2), gameArea);
-        generatePyramid(6, Position3D.of(15, 9, 5), gameArea);
-        generatePyramid(5, Position3D.of(9, 21, 4), gameArea);
+        generatePyramid(3, Position3Ds.create(5, 5, 2), gameArea);
+        generatePyramid(6, Position3Ds.create(15, 9, 5), gameArea);
+        generatePyramid(5, Position3Ds.create(9, 21, 4), gameArea);
 
         screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_CYAN.getTheme());
         screen.display();
@@ -141,13 +136,11 @@ public class GameAreaScrollingWithLayers {
                     .withRelativeX(-currSize)
                     .withRelativeY(-currSize);
             Size levelSize = Sizes.create(1 + currSize * 2, 1 + currSize * 2);
-            levelSize.fetchPositions().forEach(position -> {
-                gameArea.setBlockAt(
-                        Position3D.from2DPosition((position.plus(levelOffset)), currLevel.get()),
-                        Collections.singletonList(wall
-                                .withBackgroundColor(TextColorUtils.darkenColorByPercent(wall.getBackgroundColor(), currPercent))
-                                .withForegroundColor(TextColorUtils.darkenColorByPercent(wall.getForegroundColor(), currPercent))));
-            });
+            levelSize.fetchPositions().forEach(position -> gameArea.setBlockAt(
+                    Position3Ds.from2DPosition((position.plus(levelOffset)), currLevel.get()),
+                    Collections.singletonList(wall
+                            .withBackgroundColor(TextColorUtils.darkenColorByPercent(wall.getBackgroundColor(), currPercent))
+                            .withForegroundColor(TextColorUtils.darkenColorByPercent(wall.getForegroundColor(), currPercent)))));
             currLevel.decrementAndGet();
         }
     }
