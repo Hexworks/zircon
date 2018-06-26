@@ -12,8 +12,9 @@ import org.codetome.zircon.api.input.MouseActionType.*
 import org.codetome.zircon.internal.component.ContainerHandlerState.*
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.InternalContainerHandler
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType.*
+import org.codetome.zircon.internal.event.Event.*
 import org.codetome.zircon.internal.event.Subscription
 import org.codetome.zircon.internal.util.Identifier
 
@@ -50,20 +51,20 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
             dc.signalAttached()
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
         refreshFocusableLookup()
-        EventBus.emit(ComponentChange)
+        EventBus.broadcast(ComponentChange)
     }
 
     @Synchronized
     override fun removeComponent(component: Component) =
             container.removeComponent(component).also {
                 refreshFocusableLookup()
-                EventBus.emit(ComponentChange)
+                EventBus.broadcast(ComponentChange)
             }
 
     @Synchronized
     override fun applyColorTheme(colorTheme: ColorTheme) {
         container.applyColorTheme(colorTheme)
-        EventBus.emit(ComponentChange)
+        EventBus.broadcast(ComponentChange)
     }
 
     override fun isActive() = state == ACTIVE
@@ -72,12 +73,12 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
     override fun activate() {
         state = ACTIVE
         refreshFocusableLookup()
-        subscriptions.add(EventBus.subscribe<Input>(Input, { (input) ->
+        subscriptions.add(EventBus.subscribe<Event.Input> { (input) ->
 
             keyStrokeHandlers[input]?.invoke()
 
             if (input is KeyStroke) {
-                EventBus.emit(KeyPressed, input)
+                EventBus.broadcast(KeyPressed(input))
             }
 
             if (input is MouseAction) {
@@ -88,27 +89,27 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
                             .fetchComponentByPosition(input.position)
                             .map { component ->
                                 focusComponent(component)
-                                EventBus.emit(MousePressed(component.getId()), input)
+                                EventBus.sendTo(component.getId(), MousePressed(input))
                             }
 
                     MOUSE_RELEASED -> container
                             .fetchComponentByPosition(input.position)
                             .map { component ->
                                 focusComponent(component)
-                                EventBus.emit(MouseReleased(component.getId()), input)
+                                EventBus.sendTo(component.getId(), MouseReleased(input))
                             }
                     else -> {
                         // we don't handle other actions yet
                     }
                 }
             }
-        }))
-        subscriptions.add(EventBus.subscribe(ComponentAddition, {
+        })
+        subscriptions.add(EventBus.subscribe<ComponentAddition> {
             refreshFocusableLookup()
-        }))
-        subscriptions.add(EventBus.subscribe(ComponentRemoval, {
+        })
+        subscriptions.add(EventBus.subscribe<ComponentRemoval> {
             refreshFocusableLookup()
-        }))
+        })
     }
 
     @Synchronized
@@ -127,9 +128,9 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
     }
 
     private fun clickFocused() {
-        EventBus.emit(
-                type = MouseReleased(lastFocusedComponent.getId()),
-                data = MouseAction(MOUSE_RELEASED, 1, lastFocusedComponent.getPosition()))
+        EventBus.sendTo(
+                identifier = lastFocusedComponent.getId(),
+                event = MouseReleased(MouseAction(MOUSE_RELEASED, 1, lastFocusedComponent.getPosition())))
     }
 
     private fun focusComponent(component: InternalComponent) {
@@ -178,14 +179,14 @@ class DefaultContainerHandler(private var container: DefaultContainer) : Interna
             lastMousePosition = mouseAction.position
             container.fetchComponentByPosition(lastMousePosition)
                     .map { currComponent ->
-                        if(lastHoveredComponentId == currComponent.getId()) {
-                            if(lastFocusedComponent.getId() == currComponent.getId()) {
-                                EventBus.emit(MouseMoved(currComponent.getId()), mouseAction)
+                        if (lastHoveredComponentId == currComponent.getId()) {
+                            if (lastFocusedComponent.getId() == currComponent.getId()) {
+                                EventBus.sendTo(currComponent.getId(), MouseMoved(mouseAction))
                             }
                         } else {
-                            EventBus.emit(MouseOut(lastHoveredComponentId))
+                            EventBus.sendTo(lastHoveredComponentId, MouseOut(mouseAction))
                             lastHoveredComponentId = currComponent.getId()
-                            EventBus.emit(MouseOver(currComponent.getId()))
+                            EventBus.sendTo(currComponent.getId(), MouseOver(mouseAction))
                         }
                     }
         }

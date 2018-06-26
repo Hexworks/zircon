@@ -6,7 +6,7 @@ import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.terminal.ApplicationListener
 import org.codetome.zircon.internal.terminal.InternalTerminal
@@ -96,7 +96,7 @@ abstract class ApplicationTerminal(
 
     @Synchronized
     override fun doDispose() {
-        EventBus.emit(EventType.Input, KeyStroke.EOF_STROKE)
+        EventBus.broadcast(Event.Input(KeyStroke.EOF_STROKE))
         blinkTimer.cancel()
     }
 

@@ -17,7 +17,7 @@ import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.junit.Before
@@ -204,9 +204,9 @@ class DefaultContainerTest {
                 .build()
         target.addComponent(comp)
         val removalHappened = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentRemoval, {
+        EventBus.subscribe<Event.ComponentRemoval> {
             removalHappened.set(true)
-        })
+        }
 
         assertThat(target.removeComponent(comp)).isTrue()
         assertThat(removalHappened.get()).isTrue()
@@ -224,9 +224,9 @@ class DefaultContainerTest {
         panel.addComponent(comp)
         target.addComponent(panel)
         val removalHappened = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentRemoval, {
+        EventBus.subscribe<Event.ComponentRemoval> {
             removalHappened.set(true)
-        })
+        }
 
         assertThat(target.removeComponent(comp)).isTrue()
         assertThat(removalHappened.get()).isTrue()

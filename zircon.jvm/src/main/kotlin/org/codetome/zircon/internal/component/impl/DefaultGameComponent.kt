@@ -20,7 +20,7 @@ import org.codetome.zircon.internal.behavior.Scrollable3D
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.util.Maybe
 
 /**
@@ -61,7 +61,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
         refreshVirtualSpaceSize()
-        EventBus.emit(EventType.ComponentChange)
+        EventBus.broadcast(Event.ComponentChange)
         return true
     }
 

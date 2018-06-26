@@ -14,7 +14,7 @@ import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.util.Maybe
 import java.util.*
 
@@ -49,15 +49,15 @@ class DefaultCheckBox(private val text: String,
 //            getDrawSurface().applyStyle(getComponentStyles().activate())
 //            checkBoxState = PRESSED
 //            redrawContent()
-//            EventBus.emit(EventType.ComponentChange)
+//            EventBus.broadcast(EventType.ComponentChange)
 //        })
-        EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), {
+        EventBus.listenTo<Event.MouseReleased>(getId()) {
             getDrawSurface().applyStyle(getComponentStyles().mouseOver())
             checkBoxState = if (checked) UNCHECKED else CHECKED
             checked = checked.not()
             redrawContent()
-            EventBus.emit(EventType.ComponentChange)
-        })
+            EventBus.broadcast(Event.ComponentChange)
+        }
     }
 
     private fun redrawContent() {
@@ -72,13 +72,13 @@ class DefaultCheckBox(private val text: String,
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
         getDrawSurface().applyStyle(getComponentStyles().giveFocus())
-        EventBus.emit(EventType.ComponentChange)
+        EventBus.broadcast(Event.ComponentChange)
         return true
     }
 
     override fun takeFocus(input: Maybe<Input>) {
         getDrawSurface().applyStyle(getComponentStyles().reset())
-        EventBus.emit(EventType.ComponentChange)
+        EventBus.broadcast(Event.ComponentChange)
     }
 
     override fun getText() = text

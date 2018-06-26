@@ -12,12 +12,11 @@ import org.codetome.zircon.api.component.RadioButtonGroup
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
-import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.behavior.Scrollable
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
 import org.codetome.zircon.internal.component.WrappingStrategy
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.util.Consumer
 import org.codetome.zircon.util.Maybe
 import java.util.*
@@ -41,11 +40,11 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
 
     init {
         refreshContent()
-        EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), { (_) ->
+        EventBus.listenTo<Event.MouseReleased>(getId()) {
             getDrawSurface().applyStyle(getComponentStyles().mouseOver())
             refreshContent()
-            EventBus.emit(EventType.ComponentChange)
-        })
+            EventBus.broadcast(Event.ComponentChange)
+        }
     }
 
     override fun addOption(key: String, text: String): RadioButton {
@@ -61,7 +60,7 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
                 initialFont = getCurrentFont()).also { button ->
             items[key] = button
             addComponent(button)
-            EventBus.subscribe<MouseAction>(EventType.MouseReleased(button.getId()), {
+            EventBus.listenTo<Event.MouseReleased>(button.getId()){
                 selectedItem.map { lastSelected ->
                     if (lastSelected != key) {
                         items[lastSelected]?.removeSelection()
@@ -75,7 +74,7 @@ class DefaultRadioButtonGroup @JvmOverloads constructor(wrappers: Deque<Wrapping
                     }
                 }
 
-            })
+            }
         }
     }
 

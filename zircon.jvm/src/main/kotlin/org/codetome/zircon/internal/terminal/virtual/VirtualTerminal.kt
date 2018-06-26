@@ -21,7 +21,7 @@ import org.codetome.zircon.internal.behavior.impl.DefaultFontOverride
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 import org.codetome.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.terminal.AbstractTerminal
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import org.codetome.zircon.util.Consumer
@@ -89,9 +89,9 @@ class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
     }
 
     override fun onInput(listener: Consumer<Input>) {
-        EventBus.subscribe<Input>(EventType.Input, { (input) ->
+        EventBus.subscribe<Event.Input> { (input) ->
             listener.accept(input)
-        })
+        }
     }
 
     @Synchronized
@@ -130,7 +130,7 @@ class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
     }
 
     override fun close() {
-        EventBus.emit(EventType.Input, KeyStroke.EOF_STROKE)
+        EventBus.broadcast(Event.Input(KeyStroke.EOF_STROKE))
     }
 
     @Synchronized

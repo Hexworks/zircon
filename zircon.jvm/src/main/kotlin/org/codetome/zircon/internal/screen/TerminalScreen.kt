@@ -8,7 +8,7 @@ import org.codetome.zircon.internal.component.InternalContainerHandler
 import org.codetome.zircon.internal.component.impl.DefaultContainer
 import org.codetome.zircon.internal.component.impl.DefaultContainerHandler
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
@@ -39,27 +39,27 @@ class TerminalScreen(private val terminal: InternalTerminal,
     private var currentScreenId = Optional.empty<Identifier>()
 
     init {
-        EventBus.subscribe<Identifier>(EventType.ScreenSwitch, { (screenId) ->
+        EventBus.subscribe<Event.ScreenSwitch> { (screenId) ->
             if (id != screenId) {
                 deactivate()
             }
-        })
-        EventBus.subscribe<Unit>(EventType.ComponentChange, {
+        }
+        EventBus.subscribe<Event.ComponentChange> {
             if (isActive()) {
                 refresh()
             }
-        })
-        EventBus.subscribe<Position>(EventType.RequestCursorAt, { (position) ->
+        }
+        EventBus.subscribe<Event.RequestCursorAt> { (position) ->
             if (isActive()) {
                 terminal.setCursorVisibility(true)
                 terminal.putCursorAt(position)
             }
-        })
-        EventBus.subscribe(EventType.HideCursor, {
+        }
+        EventBus.subscribe<Event.HideCursor> {
             if (isActive()) {
                 terminal.setCursorVisibility(false)
             }
-        })
+        }
     }
 
     override fun getId() = id
@@ -68,7 +68,7 @@ class TerminalScreen(private val terminal: InternalTerminal,
     override fun display() {
         val oldScreenId = currentScreenId
         currentScreenId = Optional.of(id)
-        EventBus.emit(EventType.ScreenSwitch, id)
+        EventBus.broadcast(Event.ScreenSwitch(id))
         setCursorVisibility(false)
         putCursorAt(Position.defaultPosition())
         flipBuffers(true)

@@ -16,7 +16,7 @@ import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.junit.Before
@@ -89,9 +89,9 @@ class DefaultButtonTest {
     fun shouldProperlyGiveFocus() {
         target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
         val result = target.giveFocus()
 
@@ -104,9 +104,9 @@ class DefaultButtonTest {
     fun shouldProperlyTakeFocus() {
         target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
         target.takeFocus()
 
@@ -118,13 +118,13 @@ class DefaultButtonTest {
     fun shouldProperlyHandleMousePress() {
         target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
-        EventBus.emit(
-                type = EventType.MousePressed(target.getId()),
-                data = MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.defaultPosition()))
+        EventBus.sendTo(
+                identifier = target.getId(),
+                event = Event.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.defaultPosition())))
 
         assertThat(componentChanged.get()).isTrue()
         assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_ACTIVE_STYLE)
@@ -134,13 +134,13 @@ class DefaultButtonTest {
     fun shouldProperlyHandleMouseRelease() {
         target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
-        EventBus.emit(
-                type = EventType.MouseReleased(target.getId()),
-                data = MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.defaultPosition()))
+        EventBus.sendTo(
+                identifier = target.getId(),
+                event = Event.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.defaultPosition())))
 
         assertThat(componentChanged.get()).isTrue()
         assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)

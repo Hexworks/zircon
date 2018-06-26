@@ -6,18 +6,18 @@ import java.util.concurrent.atomic.AtomicReference
 
 class EventBusTest {
 
-    val event = AtomicReference<Event<Obj>>()
+    val event = AtomicReference<Event>()
 
     @Test
     fun shouldBeProperlyNotifiedWhenSubscribedEventIsEmitted() {
-        EventBus.subscribe(EventType.HideCursor, this::callback, KEYS)
+        EventBus.subscribe<Event.HideCursor>(this::callback)
 
-        EventBus.emit(EventType.HideCursor, OBJ, KEYS)
+        EventBus.broadcast(Event.HideCursor)
 
         assertThat(event.get()).isEqualToComparingFieldByField(EVENT)
     }
 
-    private fun callback(event: Event<Obj>) {
+    private fun callback(event: Event) {
         this.event.set(event)
     }
 
@@ -26,6 +26,6 @@ class EventBusTest {
     companion object {
         val KEYS = setOf("key")
         val OBJ = Obj("foo")
-        val EVENT = Event(OBJ, EventType.HideCursor, KEYS)
+        val EVENT = Event.HideCursor
     }
 }

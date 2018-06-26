@@ -19,7 +19,7 @@ import org.codetome.zircon.internal.behavior.impl.DefaultFontOverride
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.util.Identifier
 import org.codetome.zircon.util.Consumer
 import java.util.*
@@ -47,18 +47,18 @@ abstract class DefaultComponent(initialSize: Size,
     init {
         drawSurface.setStyleFrom(componentStyleSet.getCurrentStyle())
         applyWrappers()
-        EventBus.subscribe(EventType.MouseOver(id), {
+        EventBus.listenTo<Event.MouseOver>(id) {
             if (componentStyleSet.getCurrentStyle() != componentStyleSet.getStyleFor(ComponentState.MOUSE_OVER)) {
                 drawSurface.applyStyle(componentStyleSet.mouseOver())
-                EventBus.emit(EventType.ComponentChange)
+                EventBus.broadcast(Event.ComponentChange)
             }
-        })
-        EventBus.subscribe(EventType.MouseOut(id), {
+        }
+        EventBus.listenTo<Event.MouseOut>(id) {
             if (componentStyleSet.getCurrentStyle() != componentStyleSet.getStyleFor(ComponentState.DEFAULT)) {
                 drawSurface.applyStyle(componentStyleSet.reset())
-                EventBus.emit(EventType.ComponentChange)
+                EventBus.broadcast(Event.ComponentChange)
             }
-        })
+        }
     }
 
     override fun isAttached() = attached
@@ -93,21 +93,21 @@ abstract class DefaultComponent(initialSize: Size,
             }
 
     override fun onMousePressed(callback: Consumer<MouseAction>) {
-        EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), { (mouseAction) ->
+        EventBus.listenTo<Event.MousePressed>(getId()) { (mouseAction) ->
             callback.accept(mouseAction)
-        })
+        }
     }
 
     override fun onMouseReleased(callback: Consumer<MouseAction>) {
-        EventBus.subscribe<MouseAction>(EventType.MouseReleased(getId()), { (mouseAction) ->
+        EventBus.listenTo<Event.MouseReleased>(getId()) { (mouseAction) ->
             callback.accept(mouseAction)
-        })
+        }
     }
 
     override fun onMouseMoved(callback: Consumer<MouseAction>) {
-        EventBus.subscribe<MouseAction>(EventType.MouseMoved(getId()), { (mouseAction) ->
+        EventBus.listenTo<Event.MouseMoved>(getId()) { (mouseAction) ->
             callback.accept(mouseAction)
-        })
+        }
     }
 
     override fun getComponentStyles() = componentStyleSet
