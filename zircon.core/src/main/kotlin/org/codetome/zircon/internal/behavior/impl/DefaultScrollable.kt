@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.behavior.impl
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.internal.behavior.Scrollable
-import org.codetome.zircon.util.Math
+import org.codetome.zircon.internal.multiplatform.api.Math
 
 class DefaultScrollable(private var visibleSpaceSize: Size,
                         private var virtualSpaceSize: Size) : Scrollable {

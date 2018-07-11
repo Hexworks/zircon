@@ -4,7 +4,7 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.game.Position3D
 import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.internal.behavior.Scrollable3D
-import org.codetome.zircon.util.Math
+import org.codetome.zircon.internal.multiplatform.api.Math
 
 class DefaultScrollable3D(private var visibleSpaceSize: Size3D,
                           private var virtualSpaceSize: Size3D)

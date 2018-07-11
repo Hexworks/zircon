@@ -6,7 +6,7 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
 import org.codetome.zircon.api.component.RadioButtonGroup
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.MouseAction
@@ -18,7 +18,7 @@ import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.util.Consumer
+import org.codetome.zircon.internal.multiplatform.api.Consumer
 import org.junit.Before
 import org.junit.Test
 import java.util.*

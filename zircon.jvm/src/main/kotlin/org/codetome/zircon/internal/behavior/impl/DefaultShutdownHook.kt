@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.behavior.impl
 
 import org.codetome.zircon.internal.behavior.ShutdownHook
-import org.codetome.zircon.util.Runnable
+import org.codetome.zircon.internal.multiplatform.api.Runnable
 
 class DefaultShutdownHook : ShutdownHook {
 

@@ -8,7 +8,7 @@ import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.graphics.DefaultLayer
-import org.codetome.zircon.util.Maybe
+import org.codetome.zircon.internal.multiplatform.api.Maybe
 
 /**
  * Use this to build [Layer]s. Defaults are:

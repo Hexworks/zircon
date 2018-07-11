@@ -2,7 +2,7 @@
 package org.codetome.zircon.api.util
 
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
 
 
 fun darkenColorByPercent(color: TextColor, percentage: Double): TextColor {

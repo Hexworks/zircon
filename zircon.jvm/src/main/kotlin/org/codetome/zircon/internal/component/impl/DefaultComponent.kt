@@ -21,7 +21,7 @@ import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.util.Identifier
-import org.codetome.zircon.util.Consumer
+import org.codetome.zircon.internal.multiplatform.api.Consumer
 import java.util.*
 
 abstract class DefaultComponent(initialSize: Size,

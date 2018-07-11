@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.util
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import org.codetome.zircon.api.behavior.Cacheable
-import org.codetome.zircon.util.Maybe
+import org.codetome.zircon.internal.multiplatform.api.Maybe
 import java.util.concurrent.TimeUnit
 
 class DefaultCache<R : Cacheable>(maximumSize: Long = 5000,

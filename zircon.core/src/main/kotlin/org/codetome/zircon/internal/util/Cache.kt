@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.util
 
 import org.codetome.zircon.api.behavior.Cacheable
-import org.codetome.zircon.util.Maybe
+import org.codetome.zircon.internal.multiplatform.api.Maybe
 
 /**
  * Simple cache interface for storing [Cacheable]s.

@@ -1,5 +1,7 @@
 package org.codetome.zircon.api.color
 
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+
 interface TextColorCompanion {
 
     /**

@@ -2,7 +2,7 @@ package org.codetome.zircon.api.interop
 
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
 
 object TextCharacters {
 

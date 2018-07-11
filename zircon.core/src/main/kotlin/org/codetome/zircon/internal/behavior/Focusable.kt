@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.behavior
 
 import org.codetome.zircon.api.input.Input
-import org.codetome.zircon.util.Maybe
+import org.codetome.zircon.internal.multiplatform.api.Maybe
 
 /**
  * Represents a GUI element which can receive giveFocus.

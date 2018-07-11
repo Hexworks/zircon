@@ -3,7 +3,7 @@ package org.codetome.zircon.examples.interactive
 import org.codetome.zircon.api.*
 import org.codetome.zircon.api.builder.*
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
 import org.codetome.zircon.api.component.builder.GameComponentBuilder
 import org.codetome.zircon.api.component.builder.PanelBuilder
 import org.codetome.zircon.api.game.GameModifiers
