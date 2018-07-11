@@ -24,7 +24,7 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.terminal.AbstractTerminal
 import org.codetome.zircon.internal.terminal.InternalTerminal
-import org.codetome.zircon.util.Consumer
+import org.codetome.zircon.internal.multiplatform.api.Consumer
 
 class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
                       initialFont: Font,

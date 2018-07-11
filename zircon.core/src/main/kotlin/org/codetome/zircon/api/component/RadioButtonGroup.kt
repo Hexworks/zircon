@@ -1,8 +1,8 @@
 package org.codetome.zircon.api.component
 
 import org.codetome.zircon.internal.behavior.Scrollable
-import org.codetome.zircon.util.Consumer
-import org.codetome.zircon.util.Maybe
+import org.codetome.zircon.internal.multiplatform.api.Consumer
+import org.codetome.zircon.internal.multiplatform.api.Maybe
 
 interface RadioButtonGroup : Component, Scrollable {
 

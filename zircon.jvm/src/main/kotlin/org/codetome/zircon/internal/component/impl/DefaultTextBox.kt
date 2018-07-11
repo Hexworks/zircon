@@ -19,7 +19,7 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.Subscription
 import org.codetome.zircon.internal.util.TextBuffer
-import org.codetome.zircon.util.Maybe
+import org.codetome.zircon.internal.multiplatform.api.Maybe
 
 class DefaultTextBox @JvmOverloads constructor(text: String,
                                                initialSize: Size,

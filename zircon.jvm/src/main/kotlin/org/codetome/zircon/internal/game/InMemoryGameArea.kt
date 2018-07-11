@@ -7,7 +7,7 @@ import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.game.GameArea.BlockFetchMode
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.extensions.getIfPresent
-import org.codetome.zircon.util.Maybe
+import org.codetome.zircon.internal.multiplatform.api.Maybe
 import java.util.*
 
 class InMemoryGameArea(private val size: Size3D,

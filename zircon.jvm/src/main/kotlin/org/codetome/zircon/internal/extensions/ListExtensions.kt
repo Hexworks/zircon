@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.extensions
 
-import org.codetome.zircon.util.Maybe
+import org.codetome.zircon.internal.multiplatform.api.Maybe
 
 /**
  * Returns an element of this [List] wrapped in an Maybe

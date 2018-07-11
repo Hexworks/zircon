@@ -4,7 +4,7 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.behavior.Movable
-import org.codetome.zircon.util.Maybe
+import org.codetome.zircon.internal.multiplatform.api.Maybe
 
 /**
  * A [Layer] is a specialized [TextImage] which is drawn upon a

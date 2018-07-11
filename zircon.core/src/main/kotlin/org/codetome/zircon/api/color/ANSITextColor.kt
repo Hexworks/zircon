@@ -1,6 +1,7 @@
 package org.codetome.zircon.api.color
 
-import org.codetome.zircon.api.color.TextColorFactory.defaultAlpha
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory.defaultAlpha
 
 /**
  * Default ANSI colors.

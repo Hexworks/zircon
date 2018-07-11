@@ -2,7 +2,7 @@ package org.codetome.zircon.api.game
 
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.graphics.TextImage
-import org.codetome.zircon.util.Maybe
+import org.codetome.zircon.internal.multiplatform.api.Maybe
 
 /**
  * A [GameArea] represents the 3D space in which the entities of a

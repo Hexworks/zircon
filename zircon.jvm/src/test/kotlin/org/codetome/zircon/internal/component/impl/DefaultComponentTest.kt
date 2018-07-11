@@ -23,8 +23,8 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.codetome.zircon.internal.util.Identifier
-import org.codetome.zircon.util.Consumer
-import org.codetome.zircon.util.Maybe
+import org.codetome.zircon.internal.multiplatform.api.Consumer
+import org.codetome.zircon.internal.multiplatform.api.Maybe
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean

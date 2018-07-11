@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.behavior.impl
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.internal.behavior.Dirtiable
-import org.codetome.zircon.util.ThreadSafeQueueFactory
+import org.codetome.zircon.internal.multiplatform.factory.ThreadSafeQueueFactory
 
 class DefaultDirtiable : Dirtiable {
 
