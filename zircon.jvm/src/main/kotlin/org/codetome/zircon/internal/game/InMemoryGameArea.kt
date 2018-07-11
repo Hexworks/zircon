@@ -1,16 +1,13 @@
 package org.codetome.zircon.internal.game
 
-import org.codetome.zircon.api.Block
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
-import org.codetome.zircon.api.game.GameArea
+import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.game.GameArea.BlockFetchMode
-import org.codetome.zircon.api.game.GameModifiers
-import org.codetome.zircon.api.game.Position3D
-import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.extensions.getIfPresent
+import org.codetome.zircon.util.Maybe
 import java.util.*
 
 class InMemoryGameArea(private val size: Size3D,
@@ -69,11 +66,11 @@ class InMemoryGameArea(private val size: Size3D,
                 .map { blocks[it]!! }
     }
 
-    override fun fetchBlockAt(position: Position3D): Optional<Block> {
-        return Optional.ofNullable(blocks[position])
+    override fun fetchBlockAt(position: Position3D): Maybe<Block> {
+        return Maybe.ofNullable(blocks[position])
     }
 
-    override fun fetchCharacterAt(position: Position3D, layerIdx: Int): Optional<TextCharacter> {
+    override fun fetchCharacterAt(position: Position3D, layerIdx: Int): Maybe<TextCharacter> {
         return blocks.getOrDefault(position, Block(position)).layers.getIfPresent(layerIdx)
     }
 
@@ -103,7 +100,7 @@ class InMemoryGameArea(private val size: Size3D,
         val blockChars = characters.groupBy { tc ->
             var result = GameModifiers.BLOCK_LAYER
             GameModifiers.values().forEach { gameModifier ->
-                if(tc.getModifiers().contains(gameModifier)) {
+                if (tc.getModifiers().contains(gameModifier)) {
                     result = gameModifier
                 }
             }
@@ -115,7 +112,7 @@ class InMemoryGameArea(private val size: Size3D,
         }
         val layers = emptyBlockLayers.toMutableList()
         blockChars.getOrDefault(GameModifiers.BLOCK_LAYER, listOf())
-                .forEachIndexed { idx, char -> layers[idx] = char}
+                .forEachIndexed { idx, char -> layers[idx] = char }
         blocks[position] = Block(
                 position = position,
                 top = blockChars.getOrDefault(GameModifiers.BLOCK_TOP, listOf(TextCharacterBuilder.empty())).first(),

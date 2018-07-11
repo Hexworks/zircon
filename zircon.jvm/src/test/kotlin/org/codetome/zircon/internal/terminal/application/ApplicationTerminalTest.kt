@@ -6,7 +6,6 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
-import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.CursorStyle

@@ -99,19 +99,4 @@ data class DefaultTextCharacter(
 
     override fun generateCacheKey() = cacheKey
 
-    companion object {
-
-        /**
-         * Creates a new [DefaultTextCharacter].
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun of(character: Char,
-               styleSet: StyleSet,
-               tags: Set<String> = setOf()) = DefaultTextCharacter(
-                character = character,
-                styleSet = styleSet,
-                tags = tags)
-    }
-
 }

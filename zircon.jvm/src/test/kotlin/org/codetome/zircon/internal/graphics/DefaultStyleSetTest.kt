@@ -1,10 +1,10 @@
 package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.modifier.BorderBuilder
 import org.codetome.zircon.api.modifier.BorderPosition
 import org.codetome.zircon.internal.SimpleModifiers.*

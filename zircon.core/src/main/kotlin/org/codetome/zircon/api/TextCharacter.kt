@@ -5,6 +5,8 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.Border
+import org.codetome.zircon.internal.DefaultTextCharacter
+import org.codetome.zircon.internal.TextCharacterFactory
 
 /**
  * Represents a single character with additional metadata such as colors and modifiers.
@@ -106,5 +108,14 @@ interface TextCharacter : Cacheable {
      * If the current [TextCharacter] doesn't have the [Modifier] (s) specified, it will return itself.
      */
     fun withoutModifiers(modifiers: Set<Modifier>): TextCharacter
+
+    companion object {
+        /**
+         * Creates a new [DefaultTextCharacter].
+         */
+        fun of(character: Char,
+               styleSet: StyleSet,
+               tags: Set<String> = setOf()) = TextCharacterFactory.create(character, styleSet, tags)
+    }
 
 }

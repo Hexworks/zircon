@@ -1,4 +1,6 @@
-package org.codetome.zircon.api
+package org.codetome.zircon.internal
+
+import org.codetome.zircon.api.Size
 
 expect object SizeFactory {
 

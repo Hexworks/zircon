@@ -1,7 +1,6 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
@@ -14,12 +13,13 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
+import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
-import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.Event
+import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.codetome.zircon.internal.util.Identifier
@@ -99,7 +99,7 @@ class DefaultComponentTest {
             componentChanged.set(true)
         }
 
-        EventBus.sendTo(target.getId(), Event.MouseOver(MouseAction(MouseActionType.MOUSE_EXITED, 1, Position.defaultPosition())))
+        EventBus.sendTo(target.getId(), Event.MouseOut(MouseAction(MouseActionType.MOUSE_EXITED, 1, Position.defaultPosition())))
 
         val targetChar = target.getDrawSurface().getCharacterAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(DEFAULT_STYLE.getBackgroundColor())

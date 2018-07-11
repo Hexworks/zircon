@@ -1,5 +1,6 @@
-package org.codetome.zircon.api
+package org.codetome.zircon.api.game
 
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.game.Position3D
 

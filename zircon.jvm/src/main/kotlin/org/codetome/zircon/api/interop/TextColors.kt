@@ -3,6 +3,7 @@ package org.codetome.zircon.api.interop
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.color.TextColorFactory
+import java.awt.Color
 
 object TextColors {
 
@@ -40,3 +41,8 @@ object TextColors {
     fun fromString(value: String): TextColor = TextColorFactory.fromString(value)
 
 }
+
+/**
+ * Extension for easy conversion between [TextColor] and awt [Color].
+ */
+fun TextColor.toAWTColor(): java.awt.Color = Color(getRed(), getGreen(), getBlue(), getAlpha())

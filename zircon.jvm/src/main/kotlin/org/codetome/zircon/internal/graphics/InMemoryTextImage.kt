@@ -12,7 +12,6 @@ import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.graphics.TextImageBase
 import org.codetome.zircon.api.sam.TextCharacterTransformer
 import org.codetome.zircon.util.Maybe
-import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class InMemoryTextImage(size: Size,

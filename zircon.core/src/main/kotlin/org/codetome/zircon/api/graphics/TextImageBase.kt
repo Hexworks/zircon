@@ -50,7 +50,6 @@ abstract class TextImageBase private constructor(boundable: Boundable,
         }
     }
 
-    @Synchronized
     override fun applyStyle(styleSet: StyleSet, offset: Position, size: Size) {
         setStyleFrom(styleSet)
         size.fetchPositions().forEach { pos ->

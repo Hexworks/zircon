@@ -2,6 +2,7 @@ package org.codetome.zircon.api
 
 import org.codetome.zircon.api.behavior.Cacheable
 import org.codetome.zircon.api.component.Component
+import org.codetome.zircon.internal.PositionFactory
 
 /**
  * A 2D position in terminal space. Please note that the coordinates are 0-indexed, meaning 0x0 is the

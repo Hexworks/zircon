@@ -1,6 +1,5 @@
 package org.codetome.zircon.api.animation
 
-import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.builder.AnimationBuilder
 import org.codetome.zircon.api.resource.REXPaintResource
 import org.codetome.zircon.internal.graphics.AnimationMetadata
@@ -14,7 +13,6 @@ import java.io.InputStream
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
-@Beta
 class AnimationResource {
 
     companion object {

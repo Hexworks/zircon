@@ -11,7 +11,6 @@ import org.codetome.zircon.api.component.TextBox
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
-import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.behavior.Scrollable
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler

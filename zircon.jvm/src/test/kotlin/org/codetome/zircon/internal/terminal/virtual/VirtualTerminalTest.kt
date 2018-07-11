@@ -2,7 +2,6 @@ package org.codetome.zircon.internal.terminal.virtual
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Cell
-import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.TextCharacterBuilder
@@ -10,14 +9,15 @@ import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
+import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.interop.Positions.DEFAULT_POSITION
 import org.codetome.zircon.api.interop.Positions.OFFSET_1x1
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.TerminalResizeListener
 import org.codetome.zircon.internal.component.impl.DefaultLabelTest
-import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.Event
+import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.junit.Before

@@ -29,6 +29,12 @@ class Maybe<T> {
             consumer.accept(value)
     }
 
+    fun ifPresent(consumer: (T) -> Unit) {
+        if (value != null) {
+            consumer.invoke(value)
+        }
+    }
+
     fun filter(predicate: Predicate<in T?>): Maybe<T> {
         return if (!isPresent)
             this

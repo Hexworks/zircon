@@ -7,8 +7,8 @@ import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.api.input.MouseActionType.*
 import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.api.util.TextUtils
-import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.Event
+import org.codetome.zircon.internal.event.EventBus
 import java.awt.GraphicsEnvironment
 import java.awt.MouseInfo
 import java.awt.Toolkit
@@ -81,7 +81,7 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                 if (mouseMovedToNewPosition(actionType, position)
                         .or(isNotMoveEvent(actionType))) {
                     lastMouseLocation = position
-                    EventBus.broadcast(Event.Input, it)
+                    EventBus.broadcast(Event.Input(it))
                 }
             }
         } catch (e: Exception) {
@@ -107,7 +107,7 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                     TextUtils.isPrintableCharacter(it)
                 }
                 .forEach {
-                    EventBus.broadcast(Event.Input, KeyStroke(character = it))
+                    EventBus.broadcast(Event.Input(KeyStroke(character = it)))
                 }
     }
 

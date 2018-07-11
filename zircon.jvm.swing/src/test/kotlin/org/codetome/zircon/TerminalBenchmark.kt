@@ -1,11 +1,7 @@
 package org.codetome.zircon
 
-import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.SwingTerminalBuilder
-import org.codetome.zircon.api.color.TextColorFactory
-import org.codetome.zircon.api.component.builder.PanelBuilder
 import org.codetome.zircon.api.interop.Sizes
 import org.codetome.zircon.api.interop.TextColors
 import org.codetome.zircon.api.resource.CP437TilesetResource

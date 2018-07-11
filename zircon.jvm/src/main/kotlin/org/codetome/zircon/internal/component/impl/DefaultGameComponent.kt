@@ -1,33 +1,27 @@
 package org.codetome.zircon.internal.component.impl
 
-import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.Boundable
-import org.codetome.zircon.api.game.GameArea
-import org.codetome.zircon.api.game.Position3D
-import org.codetome.zircon.api.game.ProjectionMode
-import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
-import org.codetome.zircon.api.game.GameComponent
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.internal.behavior.Scrollable3D
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable3D
-import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.Event
+import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.util.Maybe
 
 /**
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
-@Beta
 class DefaultGameComponent(private val gameArea: GameArea,
                            private val projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
                            visibleSize: Size3D,
@@ -104,7 +98,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
                 (fromY until toY).forEach { screenY ->
                     (fromX until toX).forEach { x ->
                         val y = screenY + z // we need to add `z` to `y` because of isometric
-                        val maybeBlock = gameArea.fetchBlockAt(Position3D.of(x, y, z))
+                        val maybeBlock: Maybe<Block> = gameArea.fetchBlockAt(Position3D.of(x, y, z))
                         val maybeNext = gameArea.fetchBlockAt(Position3D.of(x, y + 1, z))
                         val screenPos = Position.create(x, screenY)
                         val bottomIdx = z * totalLayerCount

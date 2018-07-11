@@ -1,8 +1,7 @@
 package org.codetome.zircon.internal.font.transformer
 
-import org.codetome.zircon.api.Modifiers
+import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.interop.TextCharacters
-import org.codetome.zircon.api.modifier.BorderBuilder
 import org.codetome.zircon.internal.font.impl.Java2DFontTextureRegion
 import org.junit.Before
 import org.junit.Test
