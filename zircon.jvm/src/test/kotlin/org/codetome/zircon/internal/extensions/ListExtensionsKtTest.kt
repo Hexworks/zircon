@@ -11,13 +11,13 @@ class ListExtensionsKtTest {
     fun shouldBeAbleToGetIfPresentWhenPresent() {
         val target = listOf(1)
 
-        Assertions.assertThat(target.getIfPresent(0)).isPresent
+        Assertions.assertThat(target.getIfPresent(0).isPresent).isTrue()
     }
 
     @Test
     fun shouldNotBeAbleToGetIfPresentWhenNotPresent() {
         val target = listOf(1)
 
-        Assertions.assertThat(target.getIfPresent(1)).isNotPresent
+        Assertions.assertThat(target.getIfPresent(1).isPresent).isFalse()
     }
 }

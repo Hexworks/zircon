@@ -2,7 +2,6 @@ package org.codetome.zircon.api.builder
 
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.TextCharacterFactory
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
@@ -54,7 +53,7 @@ data class TextCharacterBuilder(
         this.tags = tags
     }
 
-    override fun build(): TextCharacter = TextCharacterFactory.create(character, styleSet, tags)
+    override fun build(): TextCharacter = TextCharacter.of(character, styleSet, tags)
 
     override fun createCopy() = copy()
 

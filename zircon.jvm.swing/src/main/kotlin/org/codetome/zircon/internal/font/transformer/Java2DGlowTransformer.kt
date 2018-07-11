@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.font.transformer
 
 import com.jhlabs.image.GaussianFilter
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.extension.toAWTColor
+import org.codetome.zircon.api.interop.toAWTColor
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.impl.Java2DFontTextureRegion

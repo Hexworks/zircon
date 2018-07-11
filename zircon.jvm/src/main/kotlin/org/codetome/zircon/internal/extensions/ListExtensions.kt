@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.extensions
 
-import java.util.*
+import org.codetome.zircon.util.Maybe
 
 /**
  * Returns an element of this [List] wrapped in an Maybe
@@ -8,7 +8,7 @@ import java.util.*
  */
 fun <T> List<T>.getIfPresent(idx: Int) =
         if (idx >= size) {
-            Optional.empty()
+            Maybe.empty()
         } else {
-            Optional.of(get(idx))
+            Maybe.of(get(idx))
         }

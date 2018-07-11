@@ -1,14 +1,13 @@
 package org.codetome.zircon.api.game
 
-import org.codetome.zircon.api.*
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.graphics.TextImage
-import java.util.*
+import org.codetome.zircon.util.Maybe
 
 /**
  * A [GameArea] represents the 3D space in which the entities of a
  * game take place.
  */
-@Beta
 interface GameArea {
 
     /**
@@ -95,12 +94,12 @@ interface GameArea {
     /**
      * Returns the [Block] at the given `position` (if any).
      */
-    fun fetchBlockAt(position: Position3D): Optional<Block>
+    fun fetchBlockAt(position: Position3D): Maybe<Block>
 
     /**
      * Returns the [TextCharacter] at the given `position` and `layerIdx` (if any).
      */
-    fun fetchCharacterAt(position: Position3D, layerIdx: Int): Optional<TextCharacter>
+    fun fetchCharacterAt(position: Position3D, layerIdx: Int): Maybe<TextCharacter>
 
     /**
      * Returns all the layers from bottom to top as a collection of [org.codetome.zircon.api.graphics.TextImage]s.
@@ -121,7 +120,7 @@ interface GameArea {
     fun setCharacterAt(position: Position3D, layerIdx: Int, character: TextCharacter)
 
     /**
-     * The fetch mode for [org.codetome.zircon.api.Block]s.
+     * The fetch mode for [Block]s.
      */
     enum class BlockFetchMode {
 

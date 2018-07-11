@@ -10,7 +10,6 @@ import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
-import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
 import org.codetome.zircon.internal.event.EventBus

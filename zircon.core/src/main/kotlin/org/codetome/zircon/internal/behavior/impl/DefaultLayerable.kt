@@ -8,8 +8,8 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.behavior.Dirtiable
 import org.codetome.zircon.internal.behavior.InternalLayerable
-import org.codetome.zircon.util.BlockingDeque
-import org.codetome.zircon.util.BlockingDequeueFactory
+import org.codetome.zircon.util.ThreadSafeQueue
+import org.codetome.zircon.util.ThreadSafeQueueFactory
 
 class DefaultLayerable(private val supportedFontSize: Size,
                        size: Size,
@@ -17,7 +17,7 @@ class DefaultLayerable(private val supportedFontSize: Size,
                        private val dirtiable: Dirtiable = DefaultDirtiable())
     : InternalLayerable, Boundable by boundable, Dirtiable by dirtiable {
 
-    private val layers = BlockingDequeueFactory.create<Layer>()
+    private val layers = ThreadSafeQueueFactory.create<Layer>()
 
     override fun getSupportedFontSize() = supportedFontSize
 
@@ -56,7 +56,7 @@ class DefaultLayerable(private val supportedFontSize: Size,
         return fetchZIntersectionFor(layers, absolutePosition)
     }
 
-    private fun fetchZIntersectionFor(queue: BlockingDeque<Layer>, position: Position): List<Pair<Font, TextCharacter>> {
+    private fun fetchZIntersectionFor(queue: ThreadSafeQueue<Layer>, position: Position): List<Pair<Font, TextCharacter>> {
         return queue.filter { layer ->
             // TODO: optimize based on non-transparent backgrounds
             layer.containsPosition(position)

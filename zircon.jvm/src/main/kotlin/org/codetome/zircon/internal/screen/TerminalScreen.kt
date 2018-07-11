@@ -9,11 +9,11 @@ import org.codetome.zircon.internal.component.impl.DefaultContainer
 import org.codetome.zircon.internal.component.impl.DefaultContainerHandler
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import org.codetome.zircon.internal.util.Identifier
-import java.util.*
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * This class implements the logic defined in the [Screen] interface.
@@ -35,12 +35,13 @@ class TerminalScreen(private val terminal: InternalTerminal,
         InternalTerminal by backend,
         InternalContainerHandler by containerHandler {
 
+    private val logger: Logger = LoggerFactory.getLogger(javaClass)
     private val id = Identifier.randomIdentifier()
-    private var currentScreenId = Optional.empty<Identifier>()
 
     init {
         EventBus.subscribe<Event.ScreenSwitch> { (screenId) ->
             if (id != screenId) {
+                logger.info("Deactivating screen due to screen switch...")
                 deactivate()
             }
         }
@@ -66,15 +67,11 @@ class TerminalScreen(private val terminal: InternalTerminal,
 
     @Synchronized
     override fun display() {
-        val oldScreenId = currentScreenId
-        currentScreenId = Optional.of(id)
         EventBus.broadcast(Event.ScreenSwitch(id))
         setCursorVisibility(false)
         putCursorAt(Position.defaultPosition())
         flipBuffers(true)
-        if (oldScreenId.isNotPresent() || oldScreenId.get() != id) {
-            activate()
-        }
+        activate()
     }
 
     @Synchronized

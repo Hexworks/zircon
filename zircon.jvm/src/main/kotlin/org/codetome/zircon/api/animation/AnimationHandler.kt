@@ -1,6 +1,5 @@
 package org.codetome.zircon.api.animation
 
-import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.animation.AnimationState.*
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.screen.Screen
@@ -18,7 +17,6 @@ import java.util.function.Consumer
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
-@Beta
 class AnimationHandler(private val screen: Screen) : Closeable {
 
     private val pool = Executors.newFixedThreadPool(1)

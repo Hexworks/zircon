@@ -1,6 +1,7 @@
 package org.codetome.zircon.api
 
 import org.codetome.zircon.api.shape.RectangleFactory
+import org.codetome.zircon.internal.SizeFactory
 import org.codetome.zircon.util.Math
 
 /**

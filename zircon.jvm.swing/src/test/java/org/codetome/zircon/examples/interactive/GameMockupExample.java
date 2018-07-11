@@ -1,15 +1,13 @@
 package org.codetome.zircon.examples.interactive;
 
-import org.codetome.zircon.api.JvmPosition;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.component.Button;
-import org.codetome.zircon.api.component.ColorTheme;
+import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.Label;
 import org.codetome.zircon.api.component.Panel;
-import org.codetome.zircon.api.component.RadioButtonGroup;
 import org.codetome.zircon.api.component.builder.ButtonBuilder;
 import org.codetome.zircon.api.component.builder.LabelBuilder;
 import org.codetome.zircon.api.component.builder.PanelBuilder;
@@ -25,8 +23,7 @@ import org.codetome.zircon.api.terminal.CursorStyle;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.examples.TerminalUtils;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.util.Arrays;
 
 public class GameMockupExample {
@@ -50,7 +47,7 @@ public class GameMockupExample {
     private static boolean headless = false;
 
     public static void main(String[] args) {
-        if(args.length > 0) {
+        if (args.length > 0) {
             headless = true;
         }
         Dimension screenSize = headless ? new Dimension(1920, 1080) : Toolkit.getDefaultToolkit().getScreenSize();
@@ -128,7 +125,7 @@ public class GameMockupExample {
         Button applyButton = ButtonBuilder.newBuilder()
                 .text(APPLY_LABEL)
                 // TODO: FIX CAST
-                .position(((JvmPosition)Positions.create(PANEL_SPACING, 0)).relativeToRightOf(backButton))
+                .position((Positions.create(PANEL_SPACING, 0)).relativeToRightOf(backButton))
                 .build();
         optionsScreen.addComponent(applyButton);
 
@@ -158,7 +155,7 @@ public class GameMockupExample {
         // INTERACTIONS
 
         quitButton.onMouseReleased((mouseAction -> {
-            if(!headless) {
+            if (!headless) {
                 System.exit(0);
             }
         }));

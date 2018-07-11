@@ -1,10 +1,8 @@
-package org.codetome.zircon.api
+package org.codetome.zircon.internal
 
-/**
- * Dimensions in 2D space.
- * This class is immutable and cannot change its internal state after creation.
- */
-data class JvmSize(override val xLength: Int,
+import org.codetome.zircon.api.Size
+
+data class DefaultSize(override val xLength: Int,
                    override val yLength: Int) : Size {
     init {
         require(xLength >= 0) {

@@ -17,5 +17,5 @@ sealed class SimpleModifiers : Modifier {
     object Italic : SimpleModifiers()
     object Glow : SimpleModifiers()
 
-    override fun generateCacheKey(): String = this.javaClass.simpleName
+    override fun generateCacheKey(): String = this::class.simpleName!!
 }

@@ -30,12 +30,15 @@ ext {
     caffeineVersion = '2.5.4'
     snakeyamlVersion = '1.18'
     filtersVersion = '2.0.235-1'
+    slf4jVersion = "1.7.25"
     libraries = [
             kotlin_stdlib                 : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
             kotlin_stdlib_common          : "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion",
             kotlin_reflect                : "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
             kotlin_test_annotations_common: "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlinVersion",
             kotlin_test_common            : "org.jetbrains.kotlin:kotlin-test-common:$kotlinVersion",
+            slf4j_api                     : "org.slf4j:slf4j-api:$slf4jVersion",
+            slf4j_simple                  : "org.slf4j:slf4j-simple:$slf4jVersion",
             caffeine                      : "com.github.ben-manes.caffeine:caffeine:$caffeineVersion",
             snakeyaml                     : "org.yaml:snakeyaml:$snakeyamlVersion",
             filters                       : "com.jhlabs:filters:$filtersVersion",

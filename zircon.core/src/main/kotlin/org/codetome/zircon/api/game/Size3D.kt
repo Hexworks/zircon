@@ -1,6 +1,5 @@
 package org.codetome.zircon.api.game
 
-import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 
@@ -22,7 +21,6 @@ import org.codetome.zircon.api.Size
  *
  */
 @Suppress("DataClassPrivateConstructor")
-@Beta
 data class Size3D private constructor(val xLength: Int,
                                       val yLength: Int,
                                       val zLength: Int) : Comparable<Size3D> {

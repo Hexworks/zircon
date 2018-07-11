@@ -1,12 +1,12 @@
 package org.codetome.zircon.internal.game
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Block
 import org.codetome.zircon.api.Cell
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
+import org.codetome.zircon.api.game.Block
 import org.codetome.zircon.api.game.Position3D
 import org.codetome.zircon.api.game.Size3D
 import org.junit.Before
@@ -71,7 +71,7 @@ class InMemoryGameAreaTest {
 
     @Test
     fun shouldProperlyFetchEmptyBlockAtEmptyPosition() {
-        assertThat(target.fetchBlockAt(EMPTY_POSITION)).isNotPresent
+        assertThat(target.fetchBlockAt(EMPTY_POSITION).isPresent).isFalse()
     }
 
     @Test(expected = IllegalArgumentException::class)

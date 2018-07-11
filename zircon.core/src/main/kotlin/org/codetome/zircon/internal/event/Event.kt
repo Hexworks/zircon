@@ -70,8 +70,4 @@ sealed class Event {
      * A component was removed
      */
     object ComponentRemoval : Event()
-
-    fun fetchEventType(): String {
-        return "EventType.${this::class.simpleName}"
-    }
 }

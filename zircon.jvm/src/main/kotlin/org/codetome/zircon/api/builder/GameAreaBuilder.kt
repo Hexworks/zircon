@@ -1,6 +1,5 @@
 package org.codetome.zircon.api.builder
 
-import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.game.GameArea
 import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.api.graphics.TextImage
@@ -10,7 +9,6 @@ import org.codetome.zircon.internal.game.InMemoryGameArea
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
-@Beta
 data class GameAreaBuilder(private var size: Size3D = Size3D.ONE,
                            private var layersPerBlock: Int = -1,
                            private var levels: MutableMap<Int, MutableList<TextImage>> = mutableMapOf()) : Builder<GameArea> {
@@ -43,10 +41,9 @@ data class GameAreaBuilder(private var size: Size3D = Size3D.ONE,
         require(layersPerBlock > 0) {
             "There must be at least 1 layer per block."
         }
-        val gameArea = InMemoryGameArea(
+        return InMemoryGameArea(
                 layersPerBlock = layersPerBlock,
                 size = size)
-        return gameArea
     }
 
     override fun createCopy() = copy(

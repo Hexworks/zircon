@@ -1,6 +1,8 @@
-package org.codetome.zircon.api
+package org.codetome.zircon.internal
 
-data class JvmPosition(
+import org.codetome.zircon.api.Position
+
+data class DefaultPosition(
         override val x: Int,
         override val y: Int) : Position {
     init {
@@ -9,4 +11,3 @@ data class JvmPosition(
         }
     }
 }
-

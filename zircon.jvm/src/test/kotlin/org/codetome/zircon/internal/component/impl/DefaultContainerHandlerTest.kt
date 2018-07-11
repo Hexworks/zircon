@@ -1,7 +1,6 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
@@ -9,15 +8,15 @@ import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.builder.ButtonBuilder
 import org.codetome.zircon.api.component.builder.PanelBuilder
-import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType.*
+import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
-import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.Event
+import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.junit.Before
 import org.junit.Test

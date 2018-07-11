@@ -1,13 +1,14 @@
 package org.codetome.zircon.internal.event
 
 import org.codetome.zircon.internal.util.Identifier
-import java.util.*
-import java.util.concurrent.ConcurrentHashMap
+import org.codetome.zircon.util.Maybe
+import org.codetome.zircon.util.ThreadSafeQueue
+import org.codetome.zircon.util.ThreadSafeQueueFactory
 
 @Suppress("UNCHECKED_CAST")
 object EventBus {
 
-    val subscriptions = ConcurrentHashMap<String, MutableList<Subscription<*>>>()
+    val subscriptions = mutableMapOf<String, ThreadSafeQueue<Subscription<*>>>()
 
     /**
      * Subscribes to all events of the given event type.
@@ -17,7 +18,7 @@ object EventBus {
         val subscription = Subscription(
                 callback = callback,
                 eventType = eventType)
-        subscriptions.getOrPut(eventType, { mutableListOf() })?.add(subscription)
+        subscriptions.getOrPut(eventType, { ThreadSafeQueueFactory.create() }).add(subscription)
         return subscription
     }
 
@@ -30,8 +31,8 @@ object EventBus {
         val subscription = Subscription(
                 callback = callback,
                 eventType = eventType,
-                identifier = Optional.of(identifier))
-        subscriptions.getOrPut(eventType, { mutableListOf() })?.add(subscription)
+                identifier = Maybe.of(identifier))
+        subscriptions.getOrPut(eventType, { ThreadSafeQueueFactory.create() }).add(subscription)
         return subscription
     }
 
@@ -39,7 +40,7 @@ object EventBus {
      * Sends the given `event` to the subscriber having the given [Identifier].
      */
     fun sendTo(identifier: Identifier, event: Event) {
-        subscriptions.getOrDefault(event.fetchEventType(), mutableListOf())
+        subscriptions.getOrPut(event::class.simpleName!!, { ThreadSafeQueueFactory.create() })
                 .filter { it.hasIdentifier(identifier) }
                 .forEach { (it.callback as (Event) -> Unit).invoke(event) }
     }
@@ -48,7 +49,7 @@ object EventBus {
      * Broadcasts an event to all listeners of this event type.
      */
     fun broadcast(event: Event) {
-        subscriptions.getOrDefault(event.fetchEventType(), mutableListOf()).forEach {
+        subscriptions.getOrPut(event::class.simpleName!!, { ThreadSafeQueueFactory.create() }).forEach {
             (it.callback as (Event) -> Unit).invoke(event)
         }
     }

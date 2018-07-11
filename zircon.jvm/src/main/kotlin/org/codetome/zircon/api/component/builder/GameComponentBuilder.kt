@@ -1,13 +1,12 @@
 package org.codetome.zircon.api.component.builder
 
-import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.component.ComponentStyleSet
-import org.codetome.zircon.api.game.GameComponent
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.game.GameArea
+import org.codetome.zircon.api.game.GameComponent
 import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent
@@ -18,7 +17,6 @@ import java.util.*
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
-@Beta
 data class GameComponentBuilder(private var gameArea: Optional<GameArea> = Optional.empty(),
                                 private var projectionMode: ProjectionMode = DEFAULT_PROJECTION_MODE,
                                 private var visibleSize: Size3D = Size3D.ONE,

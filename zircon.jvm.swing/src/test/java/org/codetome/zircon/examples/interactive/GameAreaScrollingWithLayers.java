@@ -1,10 +1,6 @@
 package org.codetome.zircon.examples.interactive;
 
-import org.codetome.zircon.api.JvmPosition;
-import org.codetome.zircon.api.Position;
-import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.Symbols;
-import org.codetome.zircon.api.TextCharacter;
+import org.codetome.zircon.api.*;
 import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.builder.TextCharacterStringBuilder;
 import org.codetome.zircon.api.component.Button;
@@ -28,11 +24,7 @@ import org.codetome.zircon.examples.TerminalUtils;
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent;
 import org.codetome.zircon.internal.game.InMemoryGameArea;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameAreaScrollingWithLayers {
@@ -80,8 +72,7 @@ public class GameAreaScrollingWithLayers {
 
         final Panel gamePanel = PanelBuilder.newBuilder()
                 .size(screen.getBoundableSize().withXLength(40))
-                // TODO: FIX CAST
-                .position(((JvmPosition) Positions.DEFAULT_POSITION).relativeToRightOf(actions))
+                .position((Positions.DEFAULT_POSITION).relativeToRightOf(actions))
                 .title("Game area")
                 .wrapWithBox()
                 .boxType(BoxType.TOP_BOTTOM_DOUBLE)

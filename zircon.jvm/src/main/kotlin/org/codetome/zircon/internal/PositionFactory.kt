@@ -1,5 +1,6 @@
-package org.codetome.zircon.api
+package org.codetome.zircon.internal
 
+import org.codetome.zircon.api.Position
 import org.codetome.zircon.internal.util.Cache
 
 actual object PositionFactory {
@@ -8,7 +9,7 @@ actual object PositionFactory {
 
     actual fun create(x: Int, y: Int): Position {
         return cache.retrieveIfPresent(Position.generateCacheKey(x, y)).orElseGet {
-            cache.store(JvmPosition(x, y))
+            cache.store(DefaultPosition(x, y))
         }
     }
 }

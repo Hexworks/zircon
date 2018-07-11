@@ -1,6 +1,5 @@
 package org.codetome.zircon.api.game
 
-import org.codetome.zircon.api.Beta
 import org.codetome.zircon.api.Position
 
 /**
@@ -23,7 +22,6 @@ import org.codetome.zircon.api.Position
  *
  *</pre>
  */
-@Beta
 @Suppress("DataClassPrivateConstructor")
 data class Position3D private constructor(val x: Int,
                                           val y: Int,

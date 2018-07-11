@@ -4,7 +4,6 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.graphics.Layer
-import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType.*
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.input.MouseAction

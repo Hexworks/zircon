@@ -1,6 +1,6 @@
 package org.codetome.zircon.util
 
-interface BlockingDeque<E> : Collection<E> {
+interface ThreadSafeQueue<E> : MutableCollection<E> {
 
     /**
      * Inserts the specified element at the tail of this queue if it is
@@ -9,8 +9,6 @@ interface BlockingDeque<E> : Collection<E> {
     fun offer(e: E): Boolean
 
     fun drainTo(c: MutableCollection<E>): Int
-
-    fun remove(element: E): Boolean
 
     /**
      * Retrieves and removes the last element of this deque,

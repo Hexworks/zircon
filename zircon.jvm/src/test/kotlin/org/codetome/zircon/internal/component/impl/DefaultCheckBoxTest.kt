@@ -1,22 +1,22 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions
-import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.api.resource.ColorThemeResource
+import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.builder.CheckBoxBuilder
-import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
+import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.resource.CP437TilesetResource
-import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.event.Event
+import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.junit.Before
@@ -140,7 +140,7 @@ class DefaultCheckBoxTest {
 
         EventBus.sendTo(
                 identifier = target.getId(),
-                event = Event.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.defaultPosition())))
+                event = Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition())))
 
         Assertions.assertThat(componentChanged.get()).isTrue()
         Assertions.assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)

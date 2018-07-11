@@ -2,11 +2,11 @@ package org.codetome.zircon.internal.behavior.impl
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.internal.behavior.Dirtiable
-import org.codetome.zircon.util.BlockingDequeueFactory
+import org.codetome.zircon.util.ThreadSafeQueueFactory
 
 class DefaultDirtiable : Dirtiable {
 
-    private val dirtyPositions = BlockingDequeueFactory.create<Position>()
+    private val dirtyPositions = ThreadSafeQueueFactory.create<Position>()
 
     override fun isDirty() = dirtyPositions.isEmpty().not()
 
