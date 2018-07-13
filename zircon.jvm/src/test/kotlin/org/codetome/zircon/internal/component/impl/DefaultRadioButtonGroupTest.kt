@@ -19,6 +19,7 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.codetome.zircon.internal.multiplatform.api.Consumer
+import org.codetome.zircon.internal.multiplatform.factory.ThreadSafeQueueFactory
 import org.junit.Before
 import org.junit.Test
 import java.util.*
@@ -34,7 +35,7 @@ class DefaultRadioButtonGroupTest {
         FontLoaderRegistry.setFontLoader(TestFontLoader())
         font = DefaultLabelTest.FONT.toFont()
         target = DefaultRadioButtonGroup(
-                wrappers = LinkedList(),
+                wrappers = ThreadSafeQueueFactory.create(),
                 size = SIZE,
                 position = POSITION,
                 componentStyleSet = COMPONENT_STYLES,

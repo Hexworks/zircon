@@ -1,13 +1,16 @@
 package org.codetome.zircon.internal.terminal.application
 
-import org.codetome.zircon.api.*
+import org.codetome.zircon.api.Cell
+import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.terminal.DeviceConfiguration
-import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.Event
+import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.terminal.ApplicationListener
 import org.codetome.zircon.internal.terminal.InternalTerminal

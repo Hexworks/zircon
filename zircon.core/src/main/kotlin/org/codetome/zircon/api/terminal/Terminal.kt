@@ -12,8 +12,8 @@ import org.codetome.zircon.internal.behavior.ShutdownHook
  * but you should probably wrap [org.codetome.zircon.internal.terminal.virtual.VirtualTerminal]
  * and delegate to it instead of implementing this interface directly.
  *
- * The normal way you interact in Java with a terminal is through the standard output (System.out)
- * and standard error (System.err) and it's usually through printing characters only.
+ * The normal way you interact in Java with a terminal is through the standard output (SystemUtils.out)
+ * and standard error (SystemUtils.err) and it's usually through printing characters only.
  * This interface abstracts a terminal at a more fundamental level, expressing methods for not only printing
  * title but also changing colors, moving the cursor to new positions, enable special modifiers and get
  * notified when the terminal's size has changed.

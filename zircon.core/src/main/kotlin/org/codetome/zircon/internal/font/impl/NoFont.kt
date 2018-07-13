@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.font.impl
 
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.internal.util.Identifier
+import org.codetome.zircon.internal.multiplatform.api.Identifier
 
 class NoFont : Font {
 

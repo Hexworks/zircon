@@ -5,10 +5,10 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.util.FontUtils
 import org.codetome.zircon.internal.font.FontLoader
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
-import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
-import org.codetome.zircon.internal.font.cache.NoFontRegionCache
+import org.codetome.zircon.internal.font.cache.NoOpCache
 import org.codetome.zircon.internal.font.transformer.Java2DFontRegionCloner
 import org.codetome.zircon.internal.font.transformer.Java2DFontRegionColorizer
+import org.codetome.zircon.internal.multiplatform.factory.CacheFactory
 import java.awt.GraphicsEnvironment
 import java.io.InputStream
 import javax.imageio.ImageIO
@@ -28,9 +28,9 @@ class Java2DFontLoader : FontLoader {
                 width = FontUtils.getFontWidth(font),
                 height = FontUtils.getFontHeight(font),
                 cache = if (cacheFonts) {
-                    DefaultFontRegionCache()
+                    CacheFactory.create()
                 } else {
-                    NoFontRegionCache()
+                    NoOpCache()
                 },
                 withAntiAlias = withAntiAlias)
     }
@@ -47,9 +47,9 @@ class Java2DFontLoader : FontLoader {
                 width = width,
                 height = height,
                 cache = if (cacheFonts) {
-                    DefaultFontRegionCache()
+                    CacheFactory.create()
                 } else {
-                    NoFontRegionCache()
+                    NoOpCache()
                 },
                 regionTransformers = TILE_TRANSFORMERS)
     }

@@ -1,9 +1,7 @@
 package org.codetome.zircon.internal.graphics;
 
 import org.codetome.zircon.api.TextCharacter;
-import org.codetome.zircon.api.builder.TextCharacterBuilder;
 import org.codetome.zircon.api.interop.TextCharacters;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;

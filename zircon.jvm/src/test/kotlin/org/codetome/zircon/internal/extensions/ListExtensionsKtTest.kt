@@ -1,9 +1,7 @@
 package org.codetome.zircon.internal.extensions
 
 import org.assertj.core.api.Assertions
-import org.junit.Before
 import org.junit.Test
-import org.mockito.MockitoAnnotations
 
 class ListExtensionsKtTest {
 

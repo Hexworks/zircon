@@ -1,11 +1,12 @@
 package org.codetome.zircon.playground
 
 import org.codetome.zircon.api.*
-import org.codetome.zircon.api.builder.GameAreaBuilder
+import org.codetome.zircon.api.game.builder.GameAreaBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.game.GameComponent
-import org.codetome.zircon.api.component.builder.GameComponentBuilder
+import org.codetome.zircon.internal.component.builder.GameComponentBuilder
 import org.codetome.zircon.api.game.*
+import org.codetome.zircon.api.interop.Components
 import org.codetome.zircon.api.interop.Sizes
 import org.codetome.zircon.api.interop.TextCharacters
 import org.codetome.zircon.api.interop.TextColors
@@ -29,7 +30,7 @@ object Playground {
                 .size(componentSize)
                 .layersPerBlock(1)
                 .build()
-        val gameComponent: GameComponent = GameComponentBuilder.newBuilder()
+        val gameComponent: GameComponent = Components.newGameComponentBuilder()
                 .projectionMode(ProjectionMode.ISOMETRIC) // you need to set the projection mode (default is TOP_DOWN)
                 .gameArea(gameArea)
                 .visibleSize(componentSize) // you need to set a visible size for the component (default is 1x1)

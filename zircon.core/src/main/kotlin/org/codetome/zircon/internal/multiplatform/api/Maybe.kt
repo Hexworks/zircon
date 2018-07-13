@@ -9,6 +9,8 @@ class Maybe<T> {
     val isPresent: Boolean
         get() = value != null
 
+    fun isNotPresent() = isPresent.not()
+
     private constructor() {
         this.value = null
     }

@@ -19,8 +19,10 @@ interface TextColor : Cacheable {
 
     fun invert(): TextColor
 
+    fun darkenByPercent(percentage: Double): TextColor
+
     companion object {
 
-        fun create(red: Int, green: Int, blue: Int, alpha: Int): TextColor = TextColorFactory.create(red, green, blue, alpha)
+        fun create(red: Int, green: Int, blue: Int, alpha: Int = 255): TextColor = TextColorFactory.create(red, green, blue, alpha)
     }
 }

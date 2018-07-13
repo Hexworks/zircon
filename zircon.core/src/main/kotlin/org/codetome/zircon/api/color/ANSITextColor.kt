@@ -31,6 +31,10 @@ enum class ANSITextColor(private val red: Int,
 
     override fun getAlpha() = alpha
 
+    override fun darkenByPercent(percentage: Double): TextColor {
+        return TextColorFactory.fromRGB(red, green, blue, alpha).darkenByPercent(percentage)
+    }
+
     override fun tint(): TextColor {
         return TextColorFactory.fromRGB(red, green, blue, alpha).tint()
     }

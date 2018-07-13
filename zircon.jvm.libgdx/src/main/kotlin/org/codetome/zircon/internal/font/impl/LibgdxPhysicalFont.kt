@@ -7,11 +7,10 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.util.FontUtils
-import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.font.FontRegionCache
 import org.codetome.zircon.internal.font.transformer.NoOpTransformer
-import org.codetome.zircon.internal.util.Identifier
-import java.util.*
+import org.codetome.zircon.internal.multiplatform.api.Identifier
+import org.codetome.zircon.internal.multiplatform.api.Maybe
 
 /**
  * Represents a physical font which is backed by [java.awt.Font].
@@ -40,7 +39,7 @@ class LibgdxPhysicalFont(private val source: java.awt.Font,
 
     override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<*> {
 
-        val maybeRegion: Optional<FontTextureRegion<TextureRegion>> = cache.retrieveIfPresent(textCharacter)
+        val maybeRegion: Maybe<FontTextureRegion<TextureRegion>> = cache.retrieveIfPresent(textCharacter)
 
         var region: FontTextureRegion<TextureRegion> = if (maybeRegion.isNotPresent()) {
             TODO()

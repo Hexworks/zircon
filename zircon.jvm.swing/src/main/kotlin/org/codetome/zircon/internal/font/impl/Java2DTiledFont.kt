@@ -6,11 +6,10 @@ import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.modifier.Border
 import org.codetome.zircon.api.modifier.RayShade
 import org.codetome.zircon.internal.SimpleModifiers.*
-import org.codetome.zircon.internal.extensions.isNotPresent
-import org.codetome.zircon.internal.font.FontRegionCache
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.transformer.*
+import org.codetome.zircon.internal.multiplatform.api.Cache
 import java.awt.image.BufferedImage
 
 /**
@@ -20,10 +19,10 @@ class Java2DTiledFont(private val source: BufferedImage,
                       private val width: Int,
                       private val height: Int,
                       private val regionTransformers: List<FontRegionTransformer<BufferedImage>>,
-                      private val cache: FontRegionCache<FontTextureRegion<BufferedImage>>,
+                      private val cache: Cache<FontTextureRegion<BufferedImage>>,
                       metadata: Map<Char, List<CharacterMetadata>>,
                       metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy())
-    : AbstractTiledFont(
+    : TiledFontBase(
         metadata = metadata,
         metadataPickingStrategy = metadataPickingStrategy
 ) {
@@ -34,14 +33,16 @@ class Java2DTiledFont(private val source: BufferedImage,
 
     override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<BufferedImage> {
         val meta = fetchMetaFor(textCharacter)
-        val maybeRegion = cache.retrieveIfPresent(textCharacter)
+        val maybeRegion = cache.retrieveIfPresent(textCharacter.generateCacheKey())
 
         var region = if (maybeRegion.isNotPresent()) {
-            var image: FontTextureRegion<BufferedImage> = Java2DFontTextureRegion(source.getSubimage(meta.x * width, meta.y * height, width, height))
+            var image: FontTextureRegion<BufferedImage> = Java2DFontTextureRegion(
+                    cacheKey = textCharacter.generateCacheKey(),
+                    backend = source.getSubimage(meta.x * width, meta.y * height, width, height))
             regionTransformers.forEach {
                 image = it.transform(image, textCharacter)
             }
-            cache.store(textCharacter, image)
+            cache.store(image)
 
             image
         } else {

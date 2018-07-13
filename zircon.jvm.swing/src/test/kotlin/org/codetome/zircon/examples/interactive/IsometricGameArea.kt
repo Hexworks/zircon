@@ -1,26 +1,29 @@
 package org.codetome.zircon.examples.interactive
 
-import org.codetome.zircon.api.*
-import org.codetome.zircon.api.builder.*
+import org.codetome.zircon.TerminalUtils
+import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.Symbols
+import org.codetome.zircon.api.builder.LayerBuilder
+import org.codetome.zircon.api.builder.ScreenBuilder
+import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.TextCharacterStringBuilder
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
-import org.codetome.zircon.api.component.builder.GameComponentBuilder
-import org.codetome.zircon.api.component.builder.PanelBuilder
 import org.codetome.zircon.api.game.GameModifiers
 import org.codetome.zircon.api.game.Position3D
 import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.game.Size3D
+import org.codetome.zircon.api.graphics.BoxType
 import org.codetome.zircon.api.input.InputType
+import org.codetome.zircon.api.interop.Components
 import org.codetome.zircon.api.interop.Sizes
 import org.codetome.zircon.api.interop.TextCharacters
 import org.codetome.zircon.api.interop.TextColors
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.screen.Screen
-import org.codetome.zircon.examples.TerminalUtils
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent
 import org.codetome.zircon.internal.game.InMemoryGameArea
-import org.codetome.zircon.api.graphics.BoxType
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
 import java.awt.Toolkit
 import java.util.*
 
@@ -98,7 +101,6 @@ object IsometricGameArea {
         val screenSize = Toolkit.getDefaultToolkit().screenSize
         val x = screenSize.getWidth() / FONT.width
         val y = screenSize.getHeight() / FONT.height
-        TerminalUtils.fetchTerminalBuilder(args)
         val terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .font(FONT.toFont())
                 .initialTerminalSize(Sizes.create(x.toInt(), y.toInt()))
@@ -108,7 +110,7 @@ object IsometricGameArea {
         screen.setCursorVisibility(false) // we don't want the cursor right now
 
 
-        val gamePanel = PanelBuilder.newBuilder()
+        val gamePanel = Components.newPanelBuilder()
                 .size(screen.getBoundableSize())
                 .title("Game area")
                 .wrapWithBox()
@@ -125,7 +127,7 @@ object IsometricGameArea {
                 1,
                 TextCharacterBuilder.empty())
 
-        val gameComponent = GameComponentBuilder.newBuilder()
+        val gameComponent = Components.newGameComponentBuilder()
                 .gameArea(gameArea)
                 .projectionMode(ProjectionMode.ISOMETRIC)
                 .visibleSize(visibleGameAreaSize)

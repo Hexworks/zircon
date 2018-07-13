@@ -6,13 +6,13 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.api.component.builder.ButtonBuilder
-import org.codetome.zircon.api.component.builder.PanelBuilder
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType.*
 import org.codetome.zircon.api.interop.Modifiers
+import org.codetome.zircon.internal.component.builder.ButtonBuilder
+import org.codetome.zircon.internal.component.builder.PanelBuilder
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.event.Event

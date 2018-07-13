@@ -6,7 +6,7 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.font.FontLoader
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
-import org.codetome.zircon.internal.util.Identifier
+import org.codetome.zircon.internal.multiplatform.api.Identifier
 import java.awt.image.BufferedImage
 import java.awt.image.BufferedImage.TYPE_INT_ARGB
 import java.io.InputStream
@@ -27,6 +27,9 @@ class TestFontLoader : FontLoader {
         override fun hasDataForChar(char: Char) = false
 
         override fun fetchRegionForChar(textCharacter: TextCharacter) = object : FontTextureRegion<BufferedImage> {
+
+            override fun generateCacheKey() = textCharacter.generateCacheKey()
+
             override fun getBackend() = BufferedImage(getWidth(), getHeight(), TYPE_INT_ARGB)
 
         }
@@ -53,6 +56,9 @@ class TestFontLoader : FontLoader {
         override fun hasDataForChar(char: Char) = false
 
         override fun fetchRegionForChar(textCharacter: TextCharacter) = object : FontTextureRegion<BufferedImage> {
+
+            override fun generateCacheKey() = textCharacter.generateCacheKey()
+
             override fun getBackend() = BufferedImage(getWidth() * 16, getHeight() * 16, TYPE_INT_ARGB)
 
         }

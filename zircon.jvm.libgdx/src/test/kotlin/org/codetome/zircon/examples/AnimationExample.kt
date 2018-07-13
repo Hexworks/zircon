@@ -3,12 +3,12 @@ package org.codetome.zircon.examples
 import org.codetome.zircon.api.LibgdxTerminalBuilder
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.animation.AnimationHandler
 import org.codetome.zircon.api.animation.AnimationResource
+import org.codetome.zircon.api.animation.DefaultAnimationHandler
 import org.codetome.zircon.api.builder.ScreenBuilder
-import org.codetome.zircon.api.component.builder.LabelBuilder
-import org.codetome.zircon.api.component.builder.PanelBuilder
 import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.internal.component.builder.LabelBuilder
+import org.codetome.zircon.internal.component.builder.PanelBuilder
 
 object AnimationExample {
 
@@ -56,7 +56,7 @@ object AnimationExample {
         val leftAnim = first.build()
         val rightAnim = second.build()
 
-        val animationHandler = AnimationHandler(screen)
+        val animationHandler = DefaultAnimationHandler(screen)
         animationHandler.addAnimation(leftAnim)
         animationHandler.addAnimation(rightAnim)
 

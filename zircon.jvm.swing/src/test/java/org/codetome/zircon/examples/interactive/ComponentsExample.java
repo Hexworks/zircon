@@ -1,12 +1,12 @@
 package org.codetome.zircon.examples.interactive;
 
+import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection;
-import org.codetome.zircon.api.component.builder.*;
 import org.codetome.zircon.api.font.Font;
 import org.codetome.zircon.api.graphics.BoxType;
 import org.codetome.zircon.api.graphics.Layer;
@@ -18,12 +18,14 @@ import org.codetome.zircon.api.resource.GraphicTilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.CursorStyle;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.examples.TerminalUtils;
+import org.codetome.zircon.internal.component.builder.LabelBuilder;
+import org.codetome.zircon.internal.component.builder.PanelBuilder;
+import org.codetome.zircon.internal.component.builder.RadioButtonGroupBuilder;
+import org.codetome.zircon.internal.component.builder.TextBoxBuilder;
 import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ComponentsExample {
@@ -36,7 +38,7 @@ public class ComponentsExample {
     private static final ColorTheme ADD_REMOVE_THEME = ColorThemeResource.GHOST_OF_A_CHANCE.getTheme();
     private static final ColorThemeResource THEME_PICKER_THEME = ColorThemeResource.GAMEBOOKERS;
 
-    private static final PanelBuilder PANEL_TEMPLATE = PanelBuilder.newBuilder().size(PANEL_SIZE);
+    private static final PanelBuilder PANEL_TEMPLATE = Components.newPanelBuilder().size(PANEL_SIZE);
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
@@ -80,7 +82,7 @@ public class ComponentsExample {
         final Panel simplePanel = PANEL_TEMPLATE.createCopy()
                 .position(Positions.create(2, 4))
                 .build();
-        simplePanel.addComponent(LabelBuilder.newBuilder()
+        simplePanel.addComponent(Components.newLabelBuilder()
                 .position(Positions.OFFSET_1x1)
                 .text("Simple panel")
                 .build());
@@ -99,7 +101,7 @@ public class ComponentsExample {
                 .position(Positions.create(4, 0).relativeToRightOf(simplePanel))
                 .wrapWithShadow()
                 .build();
-        panelWithShadow.addComponent(LabelBuilder.newBuilder()
+        panelWithShadow.addComponent(Components.newLabelBuilder()
                 .text("Panel with shadow")
                 .position(Positions.create(1, 1))
                 .build());
@@ -112,7 +114,7 @@ public class ComponentsExample {
                 .title("Panel with shadow")
                 .wrapWithBox()
                 .build();
-        panelWithShadowAndBox.addComponent(LabelBuilder.newBuilder()
+        panelWithShadowAndBox.addComponent(Components.newLabelBuilder()
                 .text("and box")
                 .position(Positions.create(0, 0))
                 .build());
@@ -124,7 +126,7 @@ public class ComponentsExample {
                 .position(Positions.create(0, 2).relativeToBottomOf(boxedPanel))
                 .addBorder(Modifiers.BORDER)
                 .build();
-        borderedPanel.addComponent(LabelBuilder.newBuilder()
+        borderedPanel.addComponent(Components.newLabelBuilder()
                 .text("Bordered panel")
                 .position(Positions.OFFSET_1x1)
                 .build());
@@ -136,7 +138,7 @@ public class ComponentsExample {
                 .addBorder(Borders.newBuilder().borderType(BorderType.DOTTED).build())
                 .wrapWithShadow()
                 .build();
-        borderedPanelWithShadow.addComponent(LabelBuilder.newBuilder()
+        borderedPanelWithShadow.addComponent(Components.newLabelBuilder()
                 .text("Border+shadow panel")
                 .position(Positions.OFFSET_1x1)
                 .build());
@@ -155,12 +157,12 @@ public class ComponentsExample {
                 .wrapWithShadow()
                 .build();
         for (int i = 0; i < 2; i++) {
-            checkBoxesPanel.addComponent(CheckBoxBuilder.newBuilder()
+            checkBoxesPanel.addComponent(Components.newCheckBoxBuilder()
                     .position(Positions.create(0, i))
                     .text("Check " + (i + 1))
                     .build());
         }
-        checkBoxesPanel.addComponent(CheckBoxBuilder.newBuilder()
+        checkBoxesPanel.addComponent(Components.newCheckBoxBuilder()
                 .position(Positions.create(0, 2))
                 .text("Too long text for this checkbox")
                 .width(19)
@@ -173,7 +175,7 @@ public class ComponentsExample {
                 .title("Text boxes")
                 .wrapWithShadow()
                 .build();
-        textBoxesPanel.addComponent(TextBoxBuilder.newBuilder()
+        textBoxesPanel.addComponent(Components.newTextBoxBuilder()
                 .text("Panel" + System.lineSeparator() + "with editable text box" + System.lineSeparator() + "...")
                 .size(Sizes.create(13, 3))
                 .build());
@@ -186,7 +188,7 @@ public class ComponentsExample {
                 .wrapWithShadow()
                 .build();
         for (int i = 0; i < 3; i++) {
-            buttonsPanel.addComponent(ButtonBuilder.newBuilder()
+            buttonsPanel.addComponent(Components.newButtonBuilder()
                     .position(Positions.create(0, i))
                     .text("Button " + i)
                     .build());
@@ -199,7 +201,7 @@ public class ComponentsExample {
                 .title("Radio buttons")
                 .wrapWithShadow()
                 .build();
-        final RadioButtonGroup radios = RadioButtonGroupBuilder.newBuilder()
+        final RadioButtonGroup radios = Components.newRadioButtonGroupBuilder()
                 .size(Sizes.create(15, 3))
                 .build();
         radioPanel.addComponent(radios);
@@ -218,11 +220,11 @@ public class ComponentsExample {
                 .position(Positions.create(2, 4))
                 .wrapWithShadow()
                 .build();
-        final Button addButton = ButtonBuilder.newBuilder()
+        final Button addButton = Components.newButtonBuilder()
                 .text("Add new panel")
                 .position(Positions.OFFSET_1x1)
                 .build();
-        final Button clearButton = ButtonBuilder.newBuilder()
+        final Button clearButton = Components.newButtonBuilder()
                 .text("Remove all panels")
                 .position(Positions.create(1, 3))
                 .build();
@@ -246,7 +248,7 @@ public class ComponentsExample {
                 Position pos = remainingPositions.pop();
                 usedPositions.push(pos);
                 final Panel panel = createSmallPanel(pos);
-                final Button closeButton = ButtonBuilder.newBuilder()
+                final Button closeButton = Components.newButtonBuilder()
                         .position(Positions.create(5, 0))
                         .text("X")
                         .build();
@@ -280,7 +282,7 @@ public class ComponentsExample {
         AtomicReference<ColorThemeResource> currentTheme = new AtomicReference<>(THEME_PICKER_THEME);
         AtomicReference<Label> currentThemeLabel = new AtomicReference<>(createLabelForTheme(currentTheme.get()));
 
-        final Panel infoPanel = PanelBuilder.newBuilder()
+        final Panel infoPanel = Components.newPanelBuilder()
                 .wrapWithBox()
                 .title("Current selection:")
                 .size(Sizes.create(48, 3))
@@ -294,19 +296,19 @@ public class ComponentsExample {
 
 
         final Size themePickerSize = Sizes.create(13, 19);
-        final Panel solarizedLightPanel = PanelBuilder.newBuilder()
+        final Panel solarizedLightPanel = Components.newPanelBuilder()
                 .title("Sol. Light")
                 .position(Positions.create(0, 1).relativeToBottomOf(infoPanel))
                 .wrapWithBox()
                 .size(themePickerSize)
                 .build();
-        final Panel solarizedDarkPanel = PanelBuilder.newBuilder()
+        final Panel solarizedDarkPanel = Components.newPanelBuilder()
                 .title("Sol. Dark")
                 .position(Positions.create(1, 0).relativeToRightOf(solarizedLightPanel))
                 .wrapWithBox()
                 .size(themePickerSize)
                 .build();
-        final Panel otherPanel = PanelBuilder.newBuilder()
+        final Panel otherPanel = Components.newPanelBuilder()
                 .title("Other")
                 .position(Positions.create(1, 0).relativeToRightOf(solarizedDarkPanel))
                 .wrapWithBox()
@@ -328,7 +330,7 @@ public class ComponentsExample {
                 .filter((option) -> !option.name().startsWith("SOLARIZED"))
                 .collect(Collectors.toList());
 
-        final RadioButtonGroup slOptions = RadioButtonGroupBuilder.newBuilder()
+        final RadioButtonGroup slOptions = Components.newRadioButtonGroupBuilder()
                 .size(themePickerSize
                         .withYLength(solarizedLightOptions.size())
                         .withRelativeXLength(-2))
@@ -338,7 +340,7 @@ public class ComponentsExample {
                 option.name().replace("SOLARIZED_LIGHT_", "")));
         solarizedLightPanel.addComponent(slOptions);
 
-        final RadioButtonGroup sdOptions = RadioButtonGroupBuilder.newBuilder()
+        final RadioButtonGroup sdOptions = Components.newRadioButtonGroupBuilder()
                 .size(themePickerSize
                         .withYLength(solarizedDarkOptions.size())
                         .withRelativeXLength(-2))
@@ -348,7 +350,7 @@ public class ComponentsExample {
                 option.name().replace("SOLARIZED_DARK_", "")));
         solarizedDarkPanel.addComponent(sdOptions);
 
-        final RadioButtonGroup othOptions = RadioButtonGroupBuilder.newBuilder()
+        final RadioButtonGroup othOptions = Components.newRadioButtonGroupBuilder()
                 .size(otherPanel.getBoundableSize()
                         .withYLength(otherOptions.size())
                         .withRelativeXLength(-2))
@@ -381,14 +383,14 @@ public class ComponentsExample {
         // ==============
 
 
-        final Panel exampleComponentsPanel = PanelBuilder.newBuilder()
+        final Panel exampleComponentsPanel = Components.newPanelBuilder()
                 .wrapWithBox()
                 .title("Example components")
                 .size(Sizes.create(48, 22))
                 .position(Positions.create(2, 4))
                 .build();
 
-        Label aLabel = LabelBuilder.newBuilder()
+        Label aLabel = Components.newLabelBuilder()
                 .position(Positions.create(2, 1))
                 .text("Something with 'a'!")
                 .build();
@@ -401,7 +403,7 @@ public class ComponentsExample {
         multiFontScreen.pushLayer(aIcon);
         refreshIcon(aIcon, 'a');
 
-        Label bLabel = LabelBuilder.newBuilder()
+        Label bLabel = Components.newLabelBuilder()
                 .position(Positions.create(2, 2))
                 .text("Something with 'b'!")
                 .build();
@@ -441,13 +443,13 @@ public class ComponentsExample {
     }
 
     private static Label createLabelForTheme(ColorThemeResource currentTheme) {
-        return LabelBuilder.newBuilder()
+        return Components.newLabelBuilder()
                 .text(currentTheme.name())
                 .build();
     }
 
     private static Panel createSmallPanel(Position position) {
-        Panel result = PanelBuilder.newBuilder()
+        Panel result = Components.newPanelBuilder()
                 .size(Sizes.create(8, 6))
                 .position(position)
                 .addBorder(Modifiers.BORDER)
@@ -458,7 +460,7 @@ public class ComponentsExample {
 
     private static void addNavigation(Screen screen, List<Screen> screens, int currIdx) {
         if (currIdx > 0) {
-            final Button prev = ButtonBuilder.newBuilder()
+            final Button prev = Components.newButtonBuilder()
                     .text(Symbols.TRIANGLE_LEFT_POINTING_BLACK + " Prev")
                     .position(Positions.create(33, 1))
                     .build();
@@ -466,7 +468,7 @@ public class ComponentsExample {
             screen.addComponent(prev);
         }
         if (currIdx < screens.size() - 1) {
-            final Button next = ButtonBuilder.newBuilder()
+            final Button next = Components.newButtonBuilder()
                     .text("Next " + Symbols.TRIANGLE_RIGHT_POINTING_BLACK)
                     .position(Positions.create(42, 1))
                     .build();
@@ -476,7 +478,7 @@ public class ComponentsExample {
     }
 
     private static void addScreenTitle(Screen screen, String title) {
-        final Header header = HeaderBuilder.newBuilder()
+        final Header header = Components.newHeaderBuilder()
                 .text(title)
                 .position(Positions.create(2, 1))
                 .build();

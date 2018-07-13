@@ -4,10 +4,9 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.font.impl.FontSettings
-import java.awt.Color
 import java.nio.ByteBuffer
 
 /**
@@ -36,19 +35,17 @@ data class REXLayer(private val width: Int,
         for (y in 0 until height) {
             for (x in 0 until width) {
                 // Have to swap x and y due to how image data is stored
-                val cell = cells[x*height+y]
+                val cell = cells[x * height + y]
                 if (cell.getBackgroundColor() == TRANSPARENT_BACKGROUND) {
                     // Skip transparent characters
                     continue
                 }
-                val bg = cell.getBackgroundColor()
-                val fg = cell.getForegroundColor()
                 layer.setCharacterAt(
                         Position.create(x, y),
                         TextCharacterBuilder.newBuilder()
                                 .character(cell.getCharacter())
-                                .backgroundColor(TextColorFactory.create(bg.red, bg.green, bg.blue, bg.alpha))
-                                .foregroundColor(TextColorFactory.create(fg.red, fg.green, fg.blue, fg.alpha))
+                                .backgroundColor(cell.getBackgroundColor())
+                                .foregroundColor(cell.getForegroundColor())
                                 .build()
                 )
             }
@@ -57,7 +54,7 @@ data class REXLayer(private val width: Int,
     }
 
     companion object {
-        val TRANSPARENT_BACKGROUND = Color(255, 0, 255)
+        val TRANSPARENT_BACKGROUND = TextColor.create(255, 0, 255)
 
         /**
          * Factory method for [REXLayer], which reads out Layer information from a [ByteBuffer].
@@ -68,7 +65,7 @@ data class REXLayer(private val width: Int,
             val height = buffer.int
 
             val cells: MutableList<REXCell> = mutableListOf()
-            for (i in 0 until width*height) {
+            for (i in 0 until width * height) {
                 cells.add(REXCell.fromByteBuffer(buffer))
             }
 

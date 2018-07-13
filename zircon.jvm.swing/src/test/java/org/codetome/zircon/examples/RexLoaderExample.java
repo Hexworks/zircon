@@ -1,5 +1,6 @@
 package org.codetome.zircon.examples;
 
+import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.graphics.Layer;
