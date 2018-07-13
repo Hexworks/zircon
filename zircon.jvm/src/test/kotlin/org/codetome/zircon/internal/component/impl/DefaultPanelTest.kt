@@ -5,16 +5,16 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentState
-import org.codetome.zircon.api.component.builder.LabelBuilder
-import org.codetome.zircon.api.component.builder.PanelBuilder
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.graphics.BoxType
 import org.codetome.zircon.api.modifier.BorderBuilder
 import org.codetome.zircon.api.modifier.BorderType
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
+import org.codetome.zircon.internal.component.builder.LabelBuilder
+import org.codetome.zircon.internal.component.builder.PanelBuilder
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.api.graphics.BoxType
 import org.junit.Before
 import org.junit.Test
 

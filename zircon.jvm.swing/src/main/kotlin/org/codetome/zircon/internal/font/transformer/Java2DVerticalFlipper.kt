@@ -14,6 +14,8 @@ class Java2DVerticalFlipper : FontRegionTransformer<BufferedImage> {
         val backend = region.getBackend()
         val tx = AffineTransform.getScaleInstance(1.0, -1.0)
         tx.translate(0.0, -backend.height.toDouble())
-        return  Java2DFontTextureRegion(AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR).filter(backend, null))
+        return  Java2DFontTextureRegion(
+                cacheKey = textCharacter.generateCacheKey(),
+                backend = AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR).filter(backend, null))
     }
 }

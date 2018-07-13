@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.event
 
-import org.codetome.zircon.internal.util.Identifier
+import org.codetome.zircon.internal.multiplatform.api.Identifier
 import org.codetome.zircon.internal.multiplatform.api.Maybe
 import org.codetome.zircon.internal.multiplatform.api.Predicate
 

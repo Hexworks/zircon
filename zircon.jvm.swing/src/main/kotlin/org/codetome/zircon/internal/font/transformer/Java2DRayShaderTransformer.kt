@@ -20,7 +20,9 @@ class Java2DRayShaderTransformer : FontRegionTransformer<BufferedImage> {
                     filter.threshold = rayShade.threshold
                     filter.strength = rayShade.strength
                     filter.raysOnly = rayShade.raysOnly
-                    return Java2DFontTextureRegion(filter.filter(region.getBackend(), null))
+                    return Java2DFontTextureRegion(
+                            cacheKey = textCharacter.generateCacheKey(),
+                            backend = filter.filter(region.getBackend(), null))
                 }
             }
         }

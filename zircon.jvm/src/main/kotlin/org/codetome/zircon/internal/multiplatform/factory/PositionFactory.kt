@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.multiplatform.factory
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.internal.DefaultPosition
-import org.codetome.zircon.internal.util.Cache
+import org.codetome.zircon.internal.multiplatform.api.Cache
 
 actual object PositionFactory {
 

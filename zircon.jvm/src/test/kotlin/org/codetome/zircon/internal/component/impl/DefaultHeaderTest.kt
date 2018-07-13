@@ -5,13 +5,13 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentState
-import org.codetome.zircon.api.component.builder.HeaderBuilder
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
+import org.codetome.zircon.internal.component.builder.HeaderBuilder
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
 import org.junit.Before
 import org.junit.Test
 

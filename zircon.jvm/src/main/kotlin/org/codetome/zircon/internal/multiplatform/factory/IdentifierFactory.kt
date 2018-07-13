@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.multiplatform.factory
 
-import org.codetome.zircon.internal.util.Identifier
-import org.codetome.zircon.internal.util.UUIDIdentifier
+import org.codetome.zircon.internal.multiplatform.api.Identifier
+import org.codetome.zircon.internal.multiplatform.impl.UUIDIdentifier
 import java.util.*
 
 actual object IdentifierFactory {

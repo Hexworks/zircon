@@ -1,13 +1,14 @@
 package org.codetome.zircon.examples.interactive;
 
-import org.codetome.zircon.api.*;
+import org.codetome.zircon.TerminalUtils;
+import org.codetome.zircon.api.Position;
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.Symbols;
+import org.codetome.zircon.api.TextCharacter;
 import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.builder.TextCharacterStringBuilder;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.Panel;
-import org.codetome.zircon.api.component.builder.ButtonBuilder;
-import org.codetome.zircon.api.component.builder.GameComponentBuilder;
-import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.game.GameArea;
 import org.codetome.zircon.api.game.Position3D;
 import org.codetome.zircon.api.game.Size3D;
@@ -19,8 +20,6 @@ import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.api.util.TextColorUtils;
-import org.codetome.zircon.examples.TerminalUtils;
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent;
 import org.codetome.zircon.internal.game.InMemoryGameArea;
 
@@ -52,16 +51,16 @@ public class GameAreaScrollingWithLayers {
         final Screen screen = ScreenBuilder.createScreenFor(terminal);
         screen.setCursorVisibility(false); // we don't want the cursor right now
 
-        Panel actions = PanelBuilder.newBuilder()
+        Panel actions = Components.newPanelBuilder()
                 .size(screen.getBoundableSize().withXLength(20))
                 .wrapWithBox()
                 .title("Actions")
                 .boxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build();
-        Button wait = ButtonBuilder.newBuilder()
+        Button wait = Components.newButtonBuilder()
                 .text("Wait")
                 .build();
-        Button sleep = ButtonBuilder.newBuilder()
+        Button sleep = Components.newButtonBuilder()
                 .text("Sleep")
                 .position(Positions.DEFAULT_POSITION.withRelativeY(1))
                 .build();
@@ -70,7 +69,7 @@ public class GameAreaScrollingWithLayers {
         screen.addComponent(actions);
 
 
-        final Panel gamePanel = PanelBuilder.newBuilder()
+        final Panel gamePanel = Components.newPanelBuilder()
                 .size(screen.getBoundableSize().withXLength(40))
                 .position((Positions.DEFAULT_POSITION).relativeToRightOf(actions))
                 .title("Game area")
@@ -97,7 +96,7 @@ public class GameAreaScrollingWithLayers {
                         5,
                         TextCharacters.EMPTY);
 
-        final DefaultGameComponent gameComponent = GameComponentBuilder.newBuilder()
+        final DefaultGameComponent gameComponent = Components.newGameComponentBuilder()
                 .gameArea(gameArea)
                 .visibleSize(visibleGameAreaSize)
                 .font(CP437TilesetResource.PHOEBUS_16X16.toFont())
@@ -130,8 +129,8 @@ public class GameAreaScrollingWithLayers {
             levelSize.fetchPositions().forEach(position -> gameArea.setBlockAt(
                     Position3Ds.from2DPosition((position.plus(levelOffset)), currLevel.get()),
                     Collections.singletonList(wall
-                            .withBackgroundColor(TextColorUtils.darkenColorByPercent(wall.getBackgroundColor(), currPercent))
-                            .withForegroundColor(TextColorUtils.darkenColorByPercent(wall.getForegroundColor(), currPercent)))));
+                            .withBackgroundColor(wall.getBackgroundColor().darkenByPercent(currPercent))
+                            .withForegroundColor(wall.getForegroundColor().darkenByPercent(currPercent)))));
             currLevel.decrementAndGet();
         }
     }

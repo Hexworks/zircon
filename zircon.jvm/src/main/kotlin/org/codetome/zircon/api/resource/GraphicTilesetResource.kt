@@ -1,6 +1,5 @@
 package org.codetome.zircon.api.resource
 
-import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.internal.font.DefaultCharacterMetadata
 import org.codetome.zircon.internal.font.FontLoaderRegistry

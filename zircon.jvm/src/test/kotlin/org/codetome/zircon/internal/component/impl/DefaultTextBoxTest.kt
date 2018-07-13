@@ -6,7 +6,7 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentState
-import org.codetome.zircon.api.component.builder.TextBoxBuilder
+import org.codetome.zircon.internal.component.builder.TextBoxBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke

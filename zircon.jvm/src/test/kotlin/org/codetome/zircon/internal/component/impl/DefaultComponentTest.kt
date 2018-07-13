@@ -22,8 +22,8 @@ import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.util.Identifier
 import org.codetome.zircon.internal.multiplatform.api.Consumer
+import org.codetome.zircon.internal.multiplatform.api.Identifier
 import org.codetome.zircon.internal.multiplatform.api.Maybe
 import org.junit.Before
 import org.junit.Test
@@ -157,7 +157,7 @@ class DefaultComponentTest {
 
     @Test
     fun shouldNotFetchByPositionWhenDoesNotContainPosition() {
-        assertThat(target.fetchComponentByPosition(Position.create(100, 100))).isNotPresent
+        assertThat(target.fetchComponentByPosition(Position.create(100, 100)).isPresent).isFalse()
     }
 
     @Test

@@ -17,7 +17,8 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.font.impl.LibgdxFontTextureRegion
-import org.codetome.zircon.internal.util.Identifier
+import org.codetome.zircon.internal.multiplatform.api.Identifier
+import org.codetome.zircon.internal.util.CP437Utils
 
 object Config {
     val TILESET = CP437TilesetResource.WANDERLUST_16X16
@@ -43,10 +44,10 @@ class GdxFont(private val source: Texture,
     }
 
     override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<TextureRegion> {
-        val cp437Idx = CP437TilesetResource.fetchCP437IndexForChar(textCharacter.getCharacter())
+        val cp437Idx = CP437Utils.fetchCP437IndexForChar(textCharacter.getCharacter())
         val x = cp437Idx.rem(16) * width
         val y = cp437Idx.div(16) * height
-        return LibgdxFontTextureRegion(TextureRegion(source, x, y, width, height))
+        return LibgdxFontTextureRegion(textCharacter.generateCacheKey(),TextureRegion(source, x, y, width, height))
     }
 
     override fun fetchMetadataForChar(char: Char): List<CharacterMetadata> {
@@ -85,21 +86,21 @@ class GdxExample : ApplicationAdapter() {
                 source = Texture(Config.TILESET.path.substring(1)),
                 width = Config.TILESET.width,
                 height = Config.TILESET.height)
-            (0..Config.HEIGHT).forEach { y ->
-                (0..Config.WIDTH).forEach { x ->
+        (0..Config.HEIGHT).forEach { y ->
+            (0..Config.WIDTH).forEach { x ->
 
-                    val region = font.fetchRegionForChar(
-                            TextCharacterBuilder.newBuilder().character(chars[0]).build())
-                    val drawable = TextureRegionDrawable(region.getBackend())
-                    val tinted = drawable.tint(com.badlogic.gdx.graphics.Color(0.5f, 0.5f, 0f, 1f)) as SpriteDrawable
-                    tinted.draw(batch,
-                            x * width,
-                            y * height + height,
-                            width,
-                            height)
-                }
+                val region = font.fetchRegionForChar(
+                        TextCharacterBuilder.newBuilder().character(chars[0]).build())
+                val drawable = TextureRegionDrawable(region.getBackend())
+                val tinted = drawable.tint(com.badlogic.gdx.graphics.Color(0.5f, 0.5f, 0f, 1f)) as SpriteDrawable
+                tinted.draw(batch,
+                        x * width,
+                        y * height + height,
+                        width,
+                        height)
             }
-            currIdx = if (currIdx == 0) 1 else 0
+        }
+        currIdx = if (currIdx == 0) 1 else 0
 
         batch.end()
     }
@@ -110,7 +111,8 @@ class GdxExample : ApplicationAdapter() {
 }
 
 object GdxLauncher {
-    @JvmStatic fun main(arg: Array<String>) {
+    @JvmStatic
+    fun main(arg: Array<String>) {
         val config = LwjglApplicationConfiguration()
         LwjglApplication(GdxExample(), config)
     }

@@ -2,7 +2,7 @@ package org.codetome.zircon.api.input
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.input.InputType.*
-import org.codetome.zircon.internal.multiplatform.factory.TimeFactory
+import org.codetome.zircon.internal.multiplatform.util.SystemUtils
 
 
 /**
@@ -23,7 +23,7 @@ import org.codetome.zircon.internal.multiplatform.factory.TimeFactory
  * respectively.
  */
 sealed class Input(private val inputType: InputType,
-                   private val eventTime: Long = TimeFactory.getCurrentTimeMs()) {
+                   private val eventTime: Long = SystemUtils.getCurrentTimeMs()) {
 
     fun getInputType() = inputType
 

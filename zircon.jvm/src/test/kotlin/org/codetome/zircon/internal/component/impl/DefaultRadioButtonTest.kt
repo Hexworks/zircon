@@ -13,6 +13,7 @@ import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.multiplatform.factory.ThreadSafeQueueFactory
 import org.junit.Before
 import org.junit.Test
 import java.util.*
@@ -26,7 +27,7 @@ class DefaultRadioButtonTest {
     fun setUp() {
         target = DefaultRadioButton(
                 text = TEXT,
-                wrappers = LinkedList(),
+                wrappers = ThreadSafeQueueFactory.create(),
                 width = WIDTH,
                 position = POSITION,
                 componentStyleSet = COMPONENT_STYLES,

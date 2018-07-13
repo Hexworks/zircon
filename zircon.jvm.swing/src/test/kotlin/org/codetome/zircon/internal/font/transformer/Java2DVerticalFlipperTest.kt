@@ -19,7 +19,7 @@ class Java2DVerticalFlipperTest {
     @Test
     fun shouldProperlyRun() {
         val image = BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB)
-        target.transform(Java2DFontTextureRegion(image), CHAR)
+        target.transform(Java2DFontTextureRegion(CHAR.generateCacheKey(), image), CHAR)
 
         // TODO: check vertical flip?
     }

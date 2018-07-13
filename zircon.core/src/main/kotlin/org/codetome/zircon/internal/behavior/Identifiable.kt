@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.behavior
 
-import org.codetome.zircon.internal.util.Identifier
+import org.codetome.zircon.internal.multiplatform.api.Identifier
 
 /**
  * Represents any object, which has an unique identifier.

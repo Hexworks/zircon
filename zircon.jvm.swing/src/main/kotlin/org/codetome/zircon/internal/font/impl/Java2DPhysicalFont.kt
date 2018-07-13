@@ -7,14 +7,14 @@ import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.interop.toAWTColor
 import org.codetome.zircon.api.util.FontUtils
-import org.codetome.zircon.internal.extensions.isNotPresent
 import org.codetome.zircon.internal.font.FontRegionCache
 import org.codetome.zircon.internal.font.transformer.*
-import org.codetome.zircon.internal.util.Identifier
+import org.codetome.zircon.internal.multiplatform.api.Cache
+import org.codetome.zircon.internal.multiplatform.api.Identifier
+import org.codetome.zircon.internal.multiplatform.api.Maybe
 import java.awt.Graphics2D
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
-import java.util.*
 
 /**
  * Represents a physical font which is backed by [java.awt.Font].
@@ -22,7 +22,7 @@ import java.util.*
 class Java2DPhysicalFont(private val source: java.awt.Font,
                          private val width: Int,
                          private val height: Int,
-                         private val cache: FontRegionCache<FontTextureRegion<BufferedImage>>,
+                         private val cache: Cache<FontTextureRegion<BufferedImage>>,
                          private val withAntiAlias: Boolean) : Font {
 
     private val id = Identifier.randomIdentifier()
@@ -43,7 +43,7 @@ class Java2DPhysicalFont(private val source: java.awt.Font,
 
     override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<*> {
 
-        val maybeRegion: Optional<FontTextureRegion<BufferedImage>> = cache.retrieveIfPresent(textCharacter)
+        val maybeRegion: Maybe<FontTextureRegion<BufferedImage>> = cache.retrieveIfPresent(textCharacter.generateCacheKey())
 
         var region: FontTextureRegion<BufferedImage> = if (maybeRegion.isNotPresent()) {
             val image = BufferedImage(width, height, BufferedImage.TRANSLUCENT)
@@ -72,8 +72,10 @@ class Java2DPhysicalFont(private val source: java.awt.Font,
 
             g.drawString(str, x, y)
             g.dispose()
-            val region = Java2DFontTextureRegion(image)
-            cache.store(textCharacter, region)
+            val region = Java2DFontTextureRegion(
+                    cacheKey = textCharacter.generateCacheKey(),
+                    backend = image)
+            cache.store(region)
             region
         } else {
             maybeRegion.get()

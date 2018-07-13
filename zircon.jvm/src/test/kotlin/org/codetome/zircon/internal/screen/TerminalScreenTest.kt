@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.screen
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.animation.AnimationHandler
+import org.codetome.zircon.api.animation.DefaultAnimationHandler
 import org.codetome.zircon.api.animation.AnimationResource
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.font.Font
@@ -52,7 +52,7 @@ class TerminalScreenTest {
         assertThat(inputFired.get()).isTrue()
 
         //now lets add the animation and make sure we can still get input
-        var animationHandler = AnimationHandler(target)
+        var animationHandler = DefaultAnimationHandler(target)
         animationHandler.addAnimation(animation)
 
         inputFired.set(false)

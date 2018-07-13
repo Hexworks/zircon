@@ -14,5 +14,9 @@ class JvmThreadSafeQueue<E>(private val backend: BlockingDeque<E> = LinkedBlocki
 
     override fun remove(element: E): Boolean = backend.remove(element)
 
+    override fun peek(): Maybe<E> = Maybe.ofNullable(backend.peek())
+
+    override fun poll(): Maybe<E> = Maybe.ofNullable(backend.poll())
+
     override fun pollLast(): Maybe<E> = Maybe.ofNullable(backend.pollLast())
 }
