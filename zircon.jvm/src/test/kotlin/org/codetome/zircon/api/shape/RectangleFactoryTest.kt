@@ -10,17 +10,17 @@ class RectangleFactoryTest {
     @Test
     fun shouldProperlyDrawRectangle() {
         assertThat(RectangleFactory.buildRectangle(
-                topLeft = Position.OFFSET_1x1,
-                size = Size.of(3, 3)))
+                topLeft = Position.offset1x1(),
+                size = Size.create(3, 3)))
                 .containsExactly(
-                        Position.of(x = 0, y = 0),
-                        Position.of(x = 1, y = 0),
-                        Position.of(x = 2, y = 0),
-                        Position.of(x = 2, y = 1),
-                        Position.of(x = 2, y = 2),
-                        Position.of(x = 1, y = 2),
-                        Position.of(x = 0, y = 2),
-                        Position.of(x = 0, y = 1))
+                        Position.create(x = 0, y = 0),
+                        Position.create(x = 1, y = 0),
+                        Position.create(x = 2, y = 0),
+                        Position.create(x = 2, y = 1),
+                        Position.create(x = 2, y = 2),
+                        Position.create(x = 1, y = 2),
+                        Position.create(x = 0, y = 2),
+                        Position.create(x = 0, y = 1))
     }
 
 }

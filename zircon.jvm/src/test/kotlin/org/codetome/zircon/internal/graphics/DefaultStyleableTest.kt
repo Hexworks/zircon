@@ -1,13 +1,12 @@
 package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.builder.StyleSetBuilder
-import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.internal.behavior.impl.DefaultStyleable
 import org.junit.Before
 import org.junit.Test
-import java.util.concurrent.atomic.AtomicReference
 
 class DefaultStyleableTest {
 
@@ -15,7 +14,7 @@ class DefaultStyleableTest {
 
     @Before
     fun setUp() {
-        target = DefaultStyleable(AtomicReference(StyleSetBuilder.DEFAULT_STYLE))
+        target = DefaultStyleable(StyleSetBuilder.defaultStyle())
     }
 
     @Test
@@ -26,13 +25,13 @@ class DefaultStyleableTest {
     @Test
     fun shouldHaveProperFGByDefault() {
         assertThat(target.getForegroundColor())
-                .isEqualTo(TextColorFactory.DEFAULT_FOREGROUND_COLOR)
+                .isEqualTo(TextColorFactory.defaultForegroundColor())
     }
 
     @Test
     fun shouldHaveProperBGByDefault() {
         assertThat(target.getBackgroundColor())
-                .isEqualTo(TextColorFactory.DEFAULT_BACKGROUND_COLOR)
+                .isEqualTo(TextColorFactory.defaultBackgroundColor())
     }
 
     @Test
@@ -82,6 +81,6 @@ class DefaultStyleableTest {
 
     @Test
     fun twoIdenticalStyleSetsShouldBeEqual() {
-        assertThat(StyleSetBuilder.DEFAULT_STYLE).isEqualTo(StyleSetBuilder.DEFAULT_STYLE)
+        assertThat(StyleSetBuilder.defaultStyle()).isEqualTo(StyleSetBuilder.defaultStyle())
     }
 }

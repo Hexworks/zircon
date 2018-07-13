@@ -1,7 +1,6 @@
 package org.codetome.zircon.api.util
 
 import java.awt.Font
-import java.awt.GraphicsEnvironment
 import java.awt.RenderingHints
 import java.awt.font.FontRenderContext
 

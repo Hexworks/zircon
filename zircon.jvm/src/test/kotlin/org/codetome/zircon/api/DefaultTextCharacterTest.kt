@@ -5,9 +5,9 @@ import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.ANSITextColor.*
-import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.internal.SimpleModifiers.*
-import org.codetome.zircon.internal.DefaultTextCharacter
 import org.junit.Test
 
 @Suppress("UsePropertyAccessSyntax")
@@ -29,10 +29,10 @@ class DefaultTextCharacterTest {
 
     @Test
     fun defaultCharacterShouldBeEmptyStringWithBlackAndWhiteAndNoModifiers() {
-        assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.getCharacter()).isEqualTo(' ')
-        assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.getBackgroundColor()).isEqualTo(BLACK)
-        assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.getForegroundColor()).isEqualTo(WHITE)
-        assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.getModifiers()).isEmpty()
+        assertThat(TextCharacterBuilder.defaultCharacter().getCharacter()).isEqualTo(' ')
+        assertThat(TextCharacterBuilder.defaultCharacter().getBackgroundColor()).isEqualTo(BLACK)
+        assertThat(TextCharacterBuilder.defaultCharacter().getForegroundColor()).isEqualTo(WHITE)
+        assertThat(TextCharacterBuilder.defaultCharacter().getModifiers()).isEmpty()
     }
 
     @Test
@@ -50,12 +50,12 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldNotBeEmptyWhenNotEmpty() {
-        assertThat(TextCharacterBuilder.DEFAULT_CHARACTER.isNotEmpty()).isTrue()
+        assertThat(TextCharacterBuilder.defaultCharacter().isNotEmpty()).isTrue()
     }
 
     @Test
     fun shouldBeEmptyWhenEmpty() {
-        assertThat(TextCharacterBuilder.EMPTY.isNotEmpty()).isFalse()
+        assertThat(TextCharacterBuilder.empty().isNotEmpty()).isFalse()
     }
 
     @Test
@@ -112,7 +112,7 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldBeSameButWithCharChangedWhenWithCharIsCalled() {
-        assertThat(DefaultTextCharacter.of(
+        assertThat(TextCharacter.of(
                 character = 'a',
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -125,7 +125,7 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldBeSameButWithFGChangedWhenWithForegroundColorIsCalled() {
-        assertThat(DefaultTextCharacter.of(
+        assertThat(TextCharacter.of(
                 character = EXPECTED_CHAR,
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(GREEN)
@@ -138,7 +138,7 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldBeSameButWithBGChangedWhenWithBackgroundColorIsCalled() {
-        assertThat(DefaultTextCharacter.of(
+        assertThat(TextCharacter.of(
                 character = EXPECTED_CHAR,
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -151,7 +151,7 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldBeSameButWithModifiersChangedWhenWithModifiersIsCalled() {
-        assertThat(DefaultTextCharacter.of(
+        assertThat(TextCharacter.of(
                 character = EXPECTED_CHAR,
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -163,7 +163,7 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldBeSameButWithModifierRemovedWhenWithModifierIsCalled() {
-        assertThat(DefaultTextCharacter.of(
+        assertThat(TextCharacter.of(
                 character = EXPECTED_CHAR,
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -171,7 +171,7 @@ class DefaultTextCharacterTest {
                         .modifiers(setOf(Bold))
                         .build())
                 .withModifiers(Modifiers.ITALIC)).isEqualTo(
-                DefaultTextCharacter.of(
+                TextCharacter.of(
                         character = EXPECTED_CHAR,
                         styleSet = StyleSetBuilder.newBuilder()
                                 .foregroundColor(EXPECTED_FG_COLOR)
@@ -182,7 +182,7 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldBeSameButWithModifierRemovedWhenWithoutModifierIsCalled() {
-        assertThat(DefaultTextCharacter.of(
+        assertThat(TextCharacter.of(
                 character = EXPECTED_CHAR,
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -235,7 +235,7 @@ class DefaultTextCharacterTest {
         val EXPECTED_BG_COLOR = TextColorFactory.fromString("#223344")
         val EXPECTED_MODIFIERS = setOf(Modifiers.BOLD, Modifiers.ITALIC)
 
-        val EXPECTED_TEXT_CHARACTER = DefaultTextCharacter.of(
+        val EXPECTED_TEXT_CHARACTER = TextCharacter.of(
                 character = EXPECTED_CHAR,
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)

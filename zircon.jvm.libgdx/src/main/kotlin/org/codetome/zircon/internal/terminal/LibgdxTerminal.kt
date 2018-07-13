@@ -9,7 +9,7 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
-import org.codetome.zircon.api.terminal.config.DeviceConfiguration
+import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.internal.terminal.application.ApplicationTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 

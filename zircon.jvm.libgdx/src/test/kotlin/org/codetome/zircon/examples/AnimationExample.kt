@@ -3,19 +3,19 @@ package org.codetome.zircon.examples
 import org.codetome.zircon.api.LibgdxTerminalBuilder
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.animation.AnimationHandler
 import org.codetome.zircon.api.animation.AnimationResource
+import org.codetome.zircon.api.animation.DefaultAnimationHandler
 import org.codetome.zircon.api.builder.ScreenBuilder
-import org.codetome.zircon.api.component.builder.LabelBuilder
-import org.codetome.zircon.api.component.builder.PanelBuilder
 import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.internal.component.builder.LabelBuilder
+import org.codetome.zircon.internal.component.builder.PanelBuilder
 
 object AnimationExample {
 
     private val FONT = CP437TilesetResource.WANDERLUST_16X16
-    private val TERMINAL_SIZE = Size.of(50, 30)
-    private val LEFT_POS = Position.of(8, 5)
-    private val RIGHT_POS = Position.of(29, 5)
+    private val TERMINAL_SIZE = Size.create(50, 30)
+    private val LEFT_POS = Position.create(8, 5)
+    private val RIGHT_POS = Position.create(29, 5)
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -56,7 +56,7 @@ object AnimationExample {
         val leftAnim = first.build()
         val rightAnim = second.build()
 
-        val animationHandler = AnimationHandler(screen)
+        val animationHandler = DefaultAnimationHandler(screen)
         animationHandler.addAnimation(leftAnim)
         animationHandler.addAnimation(rightAnim)
 

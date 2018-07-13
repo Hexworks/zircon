@@ -32,6 +32,6 @@ class FontSettingsTest {
 
     @Test(expected = NotImplementedError::class)
     fun shouldNotHaveRegionForNoFont() {
-        FontSettings.NO_FONT.fetchRegionForChar(TextCharacterBuilder.DEFAULT_CHARACTER)
+        FontSettings.NO_FONT.fetchRegionForChar(TextCharacterBuilder.defaultCharacter())
     }
 }

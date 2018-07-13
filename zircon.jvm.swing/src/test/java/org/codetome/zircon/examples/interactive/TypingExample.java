@@ -1,19 +1,19 @@
 package org.codetome.zircon.examples.interactive;
 
+import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Position;
-import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.TextCharacter;
-import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
-import org.codetome.zircon.api.builder.TextCharacterBuilder;
-import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.input.KeyStroke;
+import org.codetome.zircon.api.interop.DeviceConfigurations;
+import org.codetome.zircon.api.interop.Sizes;
+import org.codetome.zircon.api.interop.TextCharacters;
+import org.codetome.zircon.api.interop.TextColors;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.examples.TerminalUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +27,8 @@ public class TypingExample {
     private static final int TERMINAL_WIDTH = 40;
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
-    private static final TextCharacter TEXT_CHAR_TEMPLATE = TextCharacterBuilder.newBuilder()
-            .foregroundColor(TextColorFactory.fromString("#F7923A"))
+    private static final TextCharacter TEXT_CHAR_TEMPLATE = TextCharacters.newBuilder()
+            .foregroundColor(TextColors.fromString("#F7923A"))
             .backgroundColor(BLACK)
             .build();
 
@@ -44,9 +44,9 @@ public class TypingExample {
             headless = true;
         }
         TerminalBuilder builder = TerminalUtils.fetchTerminalBuilder(args)
-                .initialTerminalSize(Size.of(TERMINAL_WIDTH, 10))
+                .initialTerminalSize(Sizes.create(TERMINAL_WIDTH, 10))
                 .font(CP437TilesetResource.ADU_DHABI_16X16.toFont())
-                .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
+                .deviceConfiguration(DeviceConfigurations.newBuilder()
                         .cursorBlinking(true)
                         .build());
         final Terminal terminal = builder.build();

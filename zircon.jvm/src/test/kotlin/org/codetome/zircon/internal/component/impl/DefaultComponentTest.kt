@@ -1,10 +1,9 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.builder.TextImageBuilder
@@ -14,20 +13,21 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
+import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
+import org.codetome.zircon.internal.multiplatform.api.Consumer
+import org.codetome.zircon.internal.multiplatform.api.Identifier
+import org.codetome.zircon.internal.multiplatform.api.Maybe
 import org.junit.Before
 import org.junit.Test
-import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.function.Consumer
 
 class DefaultComponentTest {
 
@@ -41,7 +41,7 @@ class DefaultComponentTest {
         target = object : DefaultComponent(
                 initialSize = SIZE,
                 position = POSITION,
-                componentStyles = STYLES,
+                componentStyleSet = STYLES,
                 wrappers = WRAPPERS,
                 initialFont = font) {
             override fun applyColorTheme(colorTheme: ColorTheme) {
@@ -52,11 +52,11 @@ class DefaultComponentTest {
                 TODO("not implemented")
             }
 
-            override fun giveFocus(input: Optional<Input>): Boolean {
+            override fun giveFocus(input: Maybe<Input>): Boolean {
                 TODO("not implemented")
             }
 
-            override fun takeFocus(input: Optional<Input>) {
+            override fun takeFocus(input: Maybe<Input>) {
                 TODO("not implemented")
             }
         }
@@ -65,7 +65,7 @@ class DefaultComponentTest {
     @Test
     fun shouldUseFontFromComponentWhenTransformingToLayer() {
         val result = target.transformToLayers()
-        result.forEach{
+        result.forEach {
             assertThat(it.getCurrentFont().getId()).isEqualTo(font.getId())
         }
     }
@@ -79,13 +79,13 @@ class DefaultComponentTest {
     @Test
     fun shouldProperlyApplyStylesOnMouseOver() {
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
-        EventBus.emit(EventType.MouseOver(target.getId()))
+        EventBus.sendTo(target.getId(), Event.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
 
-        val targetChar = target.getDrawSurface().getCharacterAt(Position.DEFAULT_POSITION).get()
+        val targetChar = target.getDrawSurface().getCharacterAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(MOUSE_OVER_STYLE.getBackgroundColor())
         assertThat(targetChar.getForegroundColor()).isEqualTo(MOUSE_OVER_STYLE.getForegroundColor())
         assertThat(componentChanged.get()).isTrue()
@@ -93,15 +93,15 @@ class DefaultComponentTest {
 
     @Test
     fun shouldProperlyApplyStylesOnMouseOut() {
-        EventBus.emit(EventType.MouseOver(target.getId()))
+        EventBus.sendTo(target.getId(), Event.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
-        EventBus.emit(EventType.MouseOut(target.getId()))
+        EventBus.sendTo(target.getId(), Event.MouseOut(MouseAction(MouseActionType.MOUSE_EXITED, 1, Position.defaultPosition())))
 
-        val targetChar = target.getDrawSurface().getCharacterAt(Position.DEFAULT_POSITION).get()
+        val targetChar = target.getDrawSurface().getCharacterAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(DEFAULT_STYLE.getBackgroundColor())
         assertThat(targetChar.getForegroundColor()).isEqualTo(DEFAULT_STYLE.getForegroundColor())
         assertThat(componentChanged.get()).isTrue()
@@ -116,12 +116,12 @@ class DefaultComponentTest {
 
     @Test
     fun shouldContainBoundableWhichIsContained() {
-        assertThat(target.containsBoundable(DefaultBoundable(SIZE - Size.ONE, POSITION))).isTrue()
+        assertThat(target.containsBoundable(DefaultBoundable(SIZE - Size.one(), POSITION))).isTrue()
     }
 
     @Test
     fun shouldNotContainBoundableWhichIsContained() {
-        assertThat(target.containsBoundable(DefaultBoundable(SIZE + Size.ONE, POSITION))).isFalse()
+        assertThat(target.containsBoundable(DefaultBoundable(SIZE + Size.one(), POSITION))).isFalse()
     }
 
     @Test
@@ -131,18 +131,18 @@ class DefaultComponentTest {
 
     @Test
     fun shouldNotContainPositionWhichIsContained() {
-        assertThat(target.containsPosition(POSITION - Position.OFFSET_1x1)).isFalse()
+        assertThat(target.containsPosition(POSITION - Position.offset1x1())).isFalse()
     }
 
     @Test
     fun shouldProperlyDrawOntoTextImage() {
         val image = TextImageBuilder.newBuilder()
-                .size(SIZE + Size.of(POSITION.x, POSITION.y))
+                .size(SIZE + Size.create(POSITION.x, POSITION.y))
                 .build()
         target.drawOnto(image)
 
-        assertThat(image.getCharacterAt(POSITION - Position.OFFSET_1x1).get())
-                .isEqualTo(TextCharacterBuilder.EMPTY)
+        assertThat(image.getCharacterAt(POSITION - Position.offset1x1()).get())
+                .isEqualTo(TextCharacterBuilder.empty())
 
         target.getBoundableSize().fetchPositions().forEach {
             assertThat(image.getCharacterAt(it + POSITION).get())
@@ -157,17 +157,19 @@ class DefaultComponentTest {
 
     @Test
     fun shouldNotFetchByPositionWhenDoesNotContainPosition() {
-        assertThat(target.fetchComponentByPosition(Position.of(100, 100))).isNotPresent
+        assertThat(target.fetchComponentByPosition(Position.create(100, 100)).isPresent).isFalse()
     }
 
     @Test
     fun shouldProperlyListenToMousePress() {
         val pressed = AtomicBoolean(false)
-        target.onMousePressed(Consumer {
-            pressed.set(true)
+        target.onMousePressed(object : Consumer<MouseAction> {
+            override fun accept(t: MouseAction) {
+                pressed.set(true)
+            }
         })
 
-        EventBus.emit(EventType.MousePressed(target.getId()), MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION))
+        EventBus.sendTo(target.getId(), Event.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION)))
 
         assertThat(pressed.get()).isTrue()
     }
@@ -175,11 +177,13 @@ class DefaultComponentTest {
     @Test
     fun shouldNotListenToMousePressOnOtherComponents() {
         val pressed = AtomicBoolean(false)
-        target.onMousePressed(Consumer {
-            pressed.set(true)
+        target.onMousePressed(object : Consumer<MouseAction> {
+            override fun accept(t: MouseAction) {
+                pressed.set(true)
+            }
         })
 
-        EventBus.emit(EventType.MousePressed(UUID.randomUUID()), MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION))
+        EventBus.sendTo(Identifier.randomIdentifier(), Event.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION)))
 
         assertThat(pressed.get()).isFalse()
     }
@@ -187,11 +191,13 @@ class DefaultComponentTest {
     @Test
     fun shouldProperlyListenToMouseRelease() {
         val pressed = AtomicBoolean(false)
-        target.onMouseReleased(Consumer {
-            pressed.set(true)
+        target.onMouseReleased(object : Consumer<MouseAction> {
+            override fun accept(t: MouseAction) {
+                pressed.set(true)
+            }
         })
 
-        EventBus.emit(EventType.MouseReleased(target.getId()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+        EventBus.sendTo(target.getId(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(pressed.get()).isTrue()
     }
@@ -199,11 +205,13 @@ class DefaultComponentTest {
     @Test
     fun shouldNotListenToMouseReleaseOnOtherComponents() {
         val pressed = AtomicBoolean(false)
-        target.onMouseReleased(Consumer {
-            pressed.set(true)
+        target.onMouseReleased(object : Consumer<MouseAction> {
+            override fun accept(t: MouseAction) {
+                pressed.set(true)
+            }
         })
 
-        EventBus.emit(EventType.MouseReleased(UUID.randomUUID()), MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+        EventBus.sendTo(Identifier.randomIdentifier(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(pressed.get()).isFalse()
     }
@@ -223,9 +231,9 @@ class DefaultComponentTest {
 
     companion object {
         val FONT = CP437TilesetResource.ROGUE_YUN_16X16
-        val SIZE = Size.of(4, 4)
-        val POSITION = Position.of(2, 3)
-        val NEW_POSITION = Position.of(6, 7)
+        val SIZE = Size.create(4, 4)
+        val POSITION = Position.create(2, 3)
+        val NEW_POSITION = Position.create(6, 7)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITextColor.BLUE)
                 .foregroundColor(ANSITextColor.RED)
@@ -246,7 +254,7 @@ class DefaultComponentTest {
                 .backgroundColor(ANSITextColor.RED)
                 .foregroundColor(ANSITextColor.CYAN)
                 .build()
-        val STYLES = ComponentStylesBuilder.newBuilder()
+        val STYLES = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)
                 .activeStyle(ACTIVE_STYLE)
                 .disabledStyle(DISABLED_STYLE)

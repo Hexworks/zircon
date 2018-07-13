@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.BoxBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.graphics.BoxType
 import org.junit.Test
 
 class DefaultBoxTest {
@@ -13,7 +14,7 @@ class DefaultBoxTest {
         assertThat(BoxBuilder.newBuilder()
                 .boxType(BoxType.DOUBLE)
                 .filler('x')
-                .size(Size.of(5, 5))
+                .size(Size.create(5, 5))
                 .style(StyleSetBuilder.newBuilder().build())
                 .build().toString())
                 .isEqualTo(EXPECTED_BOX)

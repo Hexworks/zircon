@@ -2,7 +2,7 @@ package org.codetome.zircon.api.builder
 
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
 import org.codetome.zircon.api.graphics.TextCharacterString
 import org.codetome.zircon.api.graphics.TextWrap
 import org.codetome.zircon.api.graphics.TextWrap.WRAP
@@ -19,8 +19,8 @@ data class TextCharacterStringBuilder(
         private var text: String = NO_VALUE,
         private var textWrap: TextWrap = WRAP,
         private val modifiers: MutableSet<Modifier> = mutableSetOf(),
-        private var foregroundColor: TextColor = TextColorFactory.DEFAULT_FOREGROUND_COLOR,
-        private var backgroundColor: TextColor = TextColorFactory.DEFAULT_BACKGROUND_COLOR)
+        private var foregroundColor: TextColor = TextColorFactory.defaultForegroundColor(),
+        private var backgroundColor: TextColor = TextColorFactory.defaultBackgroundColor())
     : Builder<TextCharacterString> {
 
 

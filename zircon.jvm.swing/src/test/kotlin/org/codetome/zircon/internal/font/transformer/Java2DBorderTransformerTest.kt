@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.font.transformer
 
-import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.modifier.BorderBuilder
+import org.codetome.zircon.api.interop.Modifiers
+import org.codetome.zircon.api.interop.TextCharacters
 import org.codetome.zircon.internal.font.impl.Java2DFontTextureRegion
 import org.junit.Before
 import org.junit.Test
@@ -19,7 +19,7 @@ class Java2DBorderTransformerTest {
     @Test
     fun shouldProperlyRun() {
         val image = BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB)
-        target.transform(Java2DFontTextureRegion(image), CHAR)
+        target.transform(Java2DFontTextureRegion(CHAR.generateCacheKey(), image), CHAR)
 
         // TODO: check border?
     }
@@ -27,8 +27,8 @@ class Java2DBorderTransformerTest {
     companion object {
         val WIDTH = 10
         val HEIGHT = 10
-        val CHAR = TextCharacterBuilder.newBuilder()
-                .modifiers(BorderBuilder.DEFAULT_BORDER)
+        val CHAR = TextCharacters.newBuilder()
+                .modifiers(Modifiers.BORDER)
                 .build()
     }
 }

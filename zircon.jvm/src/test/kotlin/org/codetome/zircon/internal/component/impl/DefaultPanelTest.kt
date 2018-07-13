@@ -5,17 +5,16 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentState
-import org.codetome.zircon.api.component.builder.LabelBuilder
-import org.codetome.zircon.api.component.builder.PanelBuilder
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.graphics.BoxType
 import org.codetome.zircon.api.modifier.BorderBuilder
 import org.codetome.zircon.api.modifier.BorderType
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
+import org.codetome.zircon.internal.component.builder.LabelBuilder
+import org.codetome.zircon.internal.component.builder.PanelBuilder
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
-import org.codetome.zircon.internal.graphics.BoxType
 import org.junit.Before
 import org.junit.Test
 
@@ -86,8 +85,8 @@ class DefaultPanelTest {
         val BOX_TYPE = BoxType.LEFT_RIGHT_DOUBLE
         val TITLE = "TITLE"
         val FONT = CP437TilesetResource.WANDERLUST_16X16
-        val SIZE = Size.of(5, 6)
-        val POSITION = Position.of(2, 3)
+        val SIZE = Size.create(5, 6)
+        val POSITION = Position.create(2, 3)
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val EXPECTED_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.getBrightForegroundColor())

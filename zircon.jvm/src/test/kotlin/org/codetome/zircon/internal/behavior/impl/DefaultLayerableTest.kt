@@ -5,13 +5,11 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.builder.TextCharacterBuilder.Companion.DEFAULT_CHARACTER
 import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
 
@@ -32,10 +30,10 @@ class DefaultLayerableTest {
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionWhenLayerUsesUnsupportedFontSize() {
         val layer = LayerBuilder.newBuilder()
-                .size(Size.ONE)
-                .filler(DEFAULT_CHARACTER)
+                .size(Size.one())
+                .filler(TextCharacterBuilder.defaultCharacter())
                 .font(CP437TilesetResource.BISASAM_20X20.toFont())
-                .offset(Position.TOP_LEFT_CORNER)
+                .offset(Position.topLeftCorner())
                 .build()
 
 
@@ -45,14 +43,14 @@ class DefaultLayerableTest {
     @Test
     fun shouldContainLayerWhenLayerIsAdded() {
         val layer = LayerBuilder.newBuilder()
-                .size(Size.ONE)
-                .filler(DEFAULT_CHARACTER)
-                .offset(Position.TOP_LEFT_CORNER)
+                .size(Size.one())
+                .filler(TextCharacterBuilder.defaultCharacter())
+                .offset(Position.topLeftCorner())
                 .build()
 
         target.pushLayer(layer)
 
-        assertThat(target.fetchOverlayZIntersection(Position.TOP_LEFT_CORNER))
+        assertThat(target.fetchOverlayZIntersection(Position.topLeftCorner()))
                 .isNotEmpty
 
     }
@@ -60,15 +58,15 @@ class DefaultLayerableTest {
     @Test
     fun shouldNotContainLayerWhenLayerIsAddedThenRemoved() {
         val layer = LayerBuilder.newBuilder()
-                .size(Size.ONE)
-                .filler(DEFAULT_CHARACTER)
-                .offset(Position.TOP_LEFT_CORNER)
+                .size(Size.one())
+                .filler(TextCharacterBuilder.defaultCharacter())
+                .offset(Position.topLeftCorner())
                 .build()
 
         target.pushLayer(layer)
         target.removeLayer(layer)
 
-        assertThat(target.fetchOverlayZIntersection(Position.TOP_LEFT_CORNER))
+        assertThat(target.fetchOverlayZIntersection(Position.topLeftCorner()))
                 .isEmpty()
 
     }
@@ -76,15 +74,15 @@ class DefaultLayerableTest {
     @Test
     fun shouldNotContainLayerWhenLayerIsAddedThenPopped() {
         val layer = LayerBuilder.newBuilder()
-                .size(Size.ONE)
-                .filler(DEFAULT_CHARACTER)
-                .offset(Position.TOP_LEFT_CORNER)
+                .size(Size.one())
+                .filler(TextCharacterBuilder.defaultCharacter())
+                .offset(Position.topLeftCorner())
                 .build()
 
         target.pushLayer(layer)
         val result = target.popLayer()
 
-        assertThat(target.fetchOverlayZIntersection(Position.TOP_LEFT_CORNER))
+        assertThat(target.fetchOverlayZIntersection(Position.topLeftCorner()))
                 .isEmpty()
         assertThat(result.get()).isSameAs(layer)
 
@@ -97,23 +95,23 @@ class DefaultLayerableTest {
                 .build()
 
         val offset1x1layer = LayerBuilder.newBuilder()
-                .size(Size.ONE)
+                .size(Size.one())
                 .filler(expectedChar)
-                .offset(Position.OFFSET_1x1)
+                .offset(Position.offset1x1())
                 .build()
         val offset2x2layer = LayerBuilder.newBuilder()
-                .size(Size.ONE)
+                .size(Size.one())
                 .filler(TextCharacterBuilder.newBuilder()
                         .character('2')
                         .build())
-                .offset(Position.of(2, 2))
+                .offset(Position.create(2, 2))
                 .build()
 
 
         target.pushLayer(offset1x1layer)
         target.pushLayer(offset2x2layer)
 
-        val result = target.fetchOverlayZIntersection(Position.OFFSET_1x1)
+        val result = target.fetchOverlayZIntersection(Position.offset1x1())
 
 
         assertThat(result.map { it.second }).containsExactly(expectedChar)
@@ -121,22 +119,22 @@ class DefaultLayerableTest {
 
     @Test
     fun shouldProperlyMarkDrainedLayerPositionsDirtyWhenLayersAreDrained() {
-        val dirty0 = Position.of(1, 2)
-        val dirty1 = Position.of(3, 4)
+        val dirty0 = Position.create(1, 2)
+        val dirty1 = Position.create(3, 4)
 
         target.pushLayer(LayerBuilder.newBuilder()
                 .offset(dirty0)
                 .textImage(TextImageBuilder.newBuilder()
-                        .size(Size.ONE)
-                        .character(Position.DEFAULT_POSITION, TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x'))
+                        .size(Size.one())
+                        .character(Position.defaultPosition(), TextCharacterBuilder.defaultCharacter().withCharacter('x'))
                         .build())
                 .build())
 
         target.pushLayer(LayerBuilder.newBuilder()
                 .offset(dirty1)
                 .textImage(TextImageBuilder.newBuilder()
-                        .size(Size.ONE)
-                        .character(Position.DEFAULT_POSITION, TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x'))
+                        .size(Size.one())
+                        .character(Position.defaultPosition(), TextCharacterBuilder.defaultCharacter().withCharacter('x'))
                         .build())
                 .build())
 
@@ -147,8 +145,8 @@ class DefaultLayerableTest {
 
     @Test
     fun shouldProperlyNotMarkDrainedLayerPositionsDirtyWhenTheyAreEmpty() {
-        val dirty0 = Position.of(1, 2)
-        val dirty1 = Position.of(3, 4)
+        val dirty0 = Position.create(1, 2)
+        val dirty1 = Position.create(3, 4)
 
         target.pushLayer(LayerBuilder.newBuilder()
                 .offset(dirty0)
@@ -169,28 +167,28 @@ class DefaultLayerableTest {
                 .build()
 
         val offset1x1layer = LayerBuilder.newBuilder()
-                .size(Size.ONE)
+                .size(Size.one())
                 .filler(expectedChar)
-                .offset(Position.OFFSET_1x1)
+                .offset(Position.offset1x1())
                 .build()
 
         val offset2x2layer = LayerBuilder.newBuilder()
-                .size(Size.ONE)
+                .size(Size.one())
                 .filler(expectedChar)
-                .offset(Position.OFFSET_1x1)
+                .offset(Position.offset1x1())
                 .build()
 
         target.pushLayer(offset1x1layer)
         target.pushLayer(offset2x2layer)
 
-        val result = target.fetchOverlayZIntersection(Position.OFFSET_1x1)
+        val result = target.fetchOverlayZIntersection(Position.offset1x1())
 
 
         assertThat(result.map { it.second }).containsExactly(expectedChar, expectedChar)
     }
 
     companion object {
-        val SIZE = Size.of(10, 10)
+        val SIZE = Size.create(10, 10)
         val FONT = CP437TilesetResource.WANDERLUST_16X16
     }
 }

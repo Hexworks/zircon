@@ -10,12 +10,12 @@ class StringBuilderExtensionsKtTest {
 
     @Test
     fun shouldBePresentWhenGetIfPresentIsCalledWithValidIdx() {
-        assertThat(target.getIfPresent(STRING.length - 1)).isPresent
+        assertThat(target.getIfPresent(STRING.length - 1).isPresent).isTrue()
     }
 
     @Test
     fun shouldNotBePresentWhenGetIfPresentIsCalledWithInvalidIdx() {
-        assertThat(target.getIfPresent(STRING.length)).isNotPresent
+        assertThat(target.getIfPresent(STRING.length).isPresent).isFalse()
     }
 
     companion object {

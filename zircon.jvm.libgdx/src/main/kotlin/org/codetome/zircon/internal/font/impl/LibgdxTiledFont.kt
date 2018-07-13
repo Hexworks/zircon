@@ -7,11 +7,10 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.SimpleModifiers.Blink
-import org.codetome.zircon.internal.extensions.isNotPresent
-import org.codetome.zircon.internal.font.FontRegionCache
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.transformer.NoOpTransformer
+import org.codetome.zircon.internal.multiplatform.api.Cache
 import java.io.InputStream
 
 /**
@@ -21,10 +20,10 @@ class LibgdxTiledFont(private val source: InputStream,
                       private val width: Int,
                       private val height: Int,
                       private val regionTransformers: List<FontRegionTransformer<TextureRegion>>,
-                      private val cache: FontRegionCache<FontTextureRegion<TextureRegion>>,
+                      private val cache: Cache<FontTextureRegion<TextureRegion>>,
                       metadata: Map<Char, List<CharacterMetadata>>,
                       metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy())
-    : AbstractTiledFont(
+    : TiledFontBase(
         metadata = metadata,
         metadataPickingStrategy = metadataPickingStrategy) {
 
@@ -43,15 +42,16 @@ class LibgdxTiledFont(private val source: InputStream,
 
     override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<TextureRegion> {
         val meta = fetchMetaFor(textCharacter)
-        val maybeRegion = cache.retrieveIfPresent(textCharacter)
+        val maybeRegion = cache.retrieveIfPresent(textCharacter.generateCacheKey())
 
         var region = if (maybeRegion.isNotPresent()) {
             var image: FontTextureRegion<TextureRegion> = LibgdxFontTextureRegion(
+                    textCharacter.generateCacheKey(),
                     TextureRegion(texture, meta.x * width, meta.y * height, width, height))
             regionTransformers.forEach {
                 image = it.transform(image, textCharacter)
             }
-            cache.store(textCharacter, image)
+            cache.store(image)
             image
         } else {
             maybeRegion.get()

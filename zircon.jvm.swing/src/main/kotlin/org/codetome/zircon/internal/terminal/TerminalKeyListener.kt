@@ -2,10 +2,10 @@ package org.codetome.zircon.internal.terminal
 
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke
-import org.codetome.zircon.api.terminal.config.DeviceConfiguration
+import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
 import java.awt.event.InputEvent
@@ -34,11 +34,11 @@ class TerminalKeyListener(private val deviceConfiguration: DeviceConfiguration) 
             if (!altDown && ctrlDown && shiftDown && character == 'V' && deviceConfiguration.isClipboardAvailable) {
                 pasteClipboardContent()
             } else {
-                EventBus.emit(EventType.Input, KeyStroke(
+                EventBus.broadcast(Event.Input(KeyStroke(
                         character = character,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
-                        shiftDown = shiftDown))
+                        shiftDown = shiftDown)))
             }
         }
     }
@@ -53,28 +53,28 @@ class TerminalKeyListener(private val deviceConfiguration: DeviceConfiguration) 
             if (!altDown && !ctrlDown && shiftDown && deviceConfiguration.isClipboardAvailable) {
                 pasteClipboardContent()
             } else {
-                EventBus.emit(EventType.Input, KeyStroke(type = InputType.Insert,
+                EventBus.broadcast(Event.Input(KeyStroke(type = InputType.Insert,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
-                        shiftDown = shiftDown))
+                        shiftDown = shiftDown)))
             }
         } else if (e.keyCode == KeyEvent.VK_TAB) {
             if (e.isShiftDown) {
-                EventBus.emit(EventType.Input, KeyStroke(type = InputType.ReverseTab,
+                EventBus.broadcast(Event.Input(KeyStroke(type = InputType.ReverseTab,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
-                        shiftDown = shiftDown))
+                        shiftDown = shiftDown)))
             } else {
-                EventBus.emit(EventType.Input, KeyStroke(type = InputType.Tab,
+                EventBus.broadcast(Event.Input(KeyStroke(type = InputType.Tab,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
-                        shiftDown = shiftDown))
+                        shiftDown = shiftDown)))
             }
         } else if (KEY_EVENT_TO_KEY_TYPE_LOOKUP.containsKey(e.keyCode)) {
-            EventBus.emit(EventType.Input, KeyStroke(type = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
+            EventBus.broadcast(Event.Input(KeyStroke(type = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
                     ctrlDown = ctrlDown,
                     altDown = altDown,
-                    shiftDown = shiftDown))
+                    shiftDown = shiftDown)))
         } else {
             //keyTyped doesn't catch this scenario (for whatever reason...) so we have to do it here
             if (altDown && ctrlDown && e.keyCode >= 'A'.toByte() && e.keyCode <= 'Z'.toByte()) {
@@ -82,11 +82,11 @@ class TerminalKeyListener(private val deviceConfiguration: DeviceConfiguration) 
                 if (!shiftDown) {
                     character = Character.toLowerCase(character)
                 }
-                EventBus.emit(EventType.Input, KeyStroke(
+                EventBus.broadcast(Event.Input(KeyStroke(
                         character = character,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
-                        shiftDown = shiftDown))
+                        shiftDown = shiftDown)))
             }
         }
     }
@@ -101,7 +101,7 @@ class TerminalKeyListener(private val deviceConfiguration: DeviceConfiguration) 
         string.filter {
             TextUtils.isPrintableCharacter(it)
         }.forEach {
-            EventBus.emit(EventType.Input, KeyStroke(character = it))
+            EventBus.broadcast(Event.Input(KeyStroke(character = it)))
         }
     }
 

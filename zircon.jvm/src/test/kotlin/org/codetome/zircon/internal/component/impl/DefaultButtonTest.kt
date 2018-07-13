@@ -1,25 +1,24 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.component.ComponentState
-import org.codetome.zircon.api.component.builder.ButtonBuilder
-import org.codetome.zircon.api.color.TextColorFactory
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
+import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.api.resource.ColorThemeResource
+import org.codetome.zircon.internal.component.builder.ButtonBuilder
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -46,7 +45,7 @@ class DefaultButtonTest {
         val surface = target.getDrawSurface()
         val offset = target.getWrapperOffset().x
         TEXT.forEachIndexed { i, char ->
-            assertThat(surface.getCharacterAt(Position.of(i + offset, 0)).get())
+            assertThat(surface.getCharacterAt(Position.create(i + offset, 0)).get())
                     .isEqualTo(TextCharacterBuilder.newBuilder()
                             .character(char)
                             .styleSet(DEFAULT_STYLE)
@@ -90,9 +89,9 @@ class DefaultButtonTest {
     fun shouldProperlyGiveFocus() {
         target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
         val result = target.giveFocus()
 
@@ -105,9 +104,9 @@ class DefaultButtonTest {
     fun shouldProperlyTakeFocus() {
         target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
         target.takeFocus()
 
@@ -119,13 +118,13 @@ class DefaultButtonTest {
     fun shouldProperlyHandleMousePress() {
         target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
-        EventBus.emit(
-                type = EventType.MousePressed(target.getId()),
-                data = MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.DEFAULT_POSITION))
+        EventBus.sendTo(
+                identifier = target.getId(),
+                event = Event.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.defaultPosition())))
 
         assertThat(componentChanged.get()).isTrue()
         assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_ACTIVE_STYLE)
@@ -135,13 +134,13 @@ class DefaultButtonTest {
     fun shouldProperlyHandleMouseRelease() {
         target.applyColorTheme(THEME)
         val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe(EventType.ComponentChange, {
+        EventBus.subscribe<Event.ComponentChange> {
             componentChanged.set(true)
-        })
+        }
 
-        EventBus.emit(
-                type = EventType.MouseReleased(target.getId()),
-                data = MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.DEFAULT_POSITION))
+        EventBus.sendTo(
+                identifier = target.getId(),
+                event = Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition())))
 
         assertThat(componentChanged.get()).isTrue()
         assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
@@ -150,20 +149,20 @@ class DefaultButtonTest {
     companion object {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
-        val POSITION = Position.of(4, 5)
+        val POSITION = Position.create(4, 5)
         val FONT = CP437TilesetResource.WANDERLUST_16X16
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITextColor.RED)
                 .foregroundColor(ANSITextColor.GREEN)
                 .modifiers(Modifiers.CROSSED_OUT)
                 .build()
-        val COMPONENT_STYLES = ComponentStylesBuilder.newBuilder()
+        val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)
                 .build()
 
         val EXPECTED_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.getAccentColor())
-                .backgroundColor(TextColorFactory.TRANSPARENT)
+                .backgroundColor(TextColorFactory.transparent())
                 .build()
 
         val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()

@@ -9,6 +9,6 @@ import org.codetome.zircon.internal.font.impl.LibgdxFontTextureRegion
 class LibgdxFontRegionCloner : FontRegionTransformer<TextureRegion> {
 
     override fun transform(region: FontTextureRegion<TextureRegion>, textCharacter: TextCharacter): FontTextureRegion<TextureRegion> {
-        return LibgdxFontTextureRegion(TextureRegion(region.getBackend()))
+        return LibgdxFontTextureRegion(textCharacter.generateCacheKey(),TextureRegion(region.getBackend()))
     }
 }

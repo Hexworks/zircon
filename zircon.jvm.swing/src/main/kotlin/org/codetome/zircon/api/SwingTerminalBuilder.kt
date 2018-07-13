@@ -1,6 +1,7 @@
 package org.codetome.zircon.api
 
-import org.codetome.zircon.api.builder.VirtualTerminalBuilder
+import org.codetome.zircon.api.resource.PhysicalFontResource
+import org.codetome.zircon.internal.terminal.builder.VirtualTerminalBuilder
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.FontSettings.NO_FONT
@@ -16,7 +17,7 @@ class SwingTerminalBuilder : VirtualTerminalBuilder() {
 
     override fun build(): Terminal {
         if(font === NO_FONT) {
-            font = DEFAULT_FONT.toFont()
+            font = PhysicalFontResource.UBUNTU_MONO.toFont()
         }
         checkScreenSize()
         return SwingTerminalFrame(

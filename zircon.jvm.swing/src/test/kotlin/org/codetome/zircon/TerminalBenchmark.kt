@@ -1,11 +1,9 @@
 package org.codetome.zircon
 
-import org.codetome.zircon.api.Modifiers
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.SwingTerminalBuilder
-import org.codetome.zircon.api.color.TextColorFactory
-import org.codetome.zircon.api.component.builder.PanelBuilder
+import org.codetome.zircon.api.interop.Sizes
+import org.codetome.zircon.api.interop.TextColors
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -20,8 +18,8 @@ fun main(args:Array<String>) {
 
     val charCount = 60 * 30
     val chars = listOf('a', 'b')
-    val bgColors = listOf(TextColorFactory.fromString("#223344"), TextColorFactory.fromString("#112233"))
-    val fgColors = listOf(TextColorFactory.fromString("#ffaaff"), TextColorFactory.fromString("#aaffaa"))
+    val bgColors = listOf(TextColors.fromString("#223344"), TextColors.fromString("#112233"))
+    val fgColors = listOf(TextColors.fromString("#ffaaff"), TextColors.fromString("#aaffaa"))
 
     var currIdx = 0
     var loopCount = 0
@@ -33,7 +31,7 @@ fun main(args:Array<String>) {
                 screen.putCharacter(chars[currIdx])
             }
             screen.refresh()
-            screen.putCursorAt(Position.DEFAULT_POSITION)
+            screen.putCursorAt(Position.defaultPosition())
             currIdx = if (currIdx == 0) 1 else 0
             loopCount++
         }
@@ -43,7 +41,7 @@ fun main(args:Array<String>) {
     }
 }
 
-val SIZE = Size.of(60, 30)
+val SIZE = Sizes.create(60, 30)
 
 
 object Stats {

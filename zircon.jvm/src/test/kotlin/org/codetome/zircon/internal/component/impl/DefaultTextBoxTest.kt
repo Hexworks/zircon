@@ -3,20 +3,19 @@ package org.codetome.zircon.internal.component.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.ComponentStylesBuilder
+import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentState
-import org.codetome.zircon.api.component.builder.TextBoxBuilder
+import org.codetome.zircon.internal.component.builder.TextBoxBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.junit.Before
 import org.junit.Test
 
@@ -53,9 +52,9 @@ class DefaultTextBoxTest {
     fun shouldProperlyHandleRightArrowWhenFocused() {
         target.giveFocus()
 
-        EventBus.emit(EventType.KeyPressed, KeyStroke(type = InputType.ArrowRight))
+        EventBus.broadcast(Event.KeyPressed(KeyStroke(type = InputType.ArrowRight)))
 
-        assertThat(target.getCursorPosition()).isEqualTo(Position.DEFAULT_POSITION.withRelativeX(1))
+        assertThat(target.getCursorPosition()).isEqualTo(Position.defaultPosition().withRelativeX(1))
     }
 
     @Test
@@ -63,20 +62,20 @@ class DefaultTextBoxTest {
         target.setText("Foo${System.lineSeparator()}bar")
         target.giveFocus()
 
-        target.putCursorAt(Position.of(0, 1))
-        EventBus.emit(EventType.KeyPressed, KeyStroke(type = InputType.ArrowLeft))
+        target.putCursorAt(Position.create(0, 1))
+        EventBus.broadcast(Event.KeyPressed(KeyStroke(type = InputType.ArrowLeft)))
 
-        assertThat(target.getCursorPosition()).isEqualTo(Position.of(3, 0))
+        assertThat(target.getCursorPosition()).isEqualTo(Position.create(3, 0))
     }
 
     @Test
     fun shouldProperlyHandleLeftArrowWhenFocusedAndCanMoveLeftInLine() {
         target.giveFocus()
 
-        target.putCursorAt(Position.of(1, 0))
-        EventBus.emit(EventType.KeyPressed, KeyStroke(type = InputType.ArrowLeft))
+        target.putCursorAt(Position.create(1, 0))
+        EventBus.broadcast(Event.KeyPressed(KeyStroke(type = InputType.ArrowLeft)))
 
-        assertThat(target.getCursorPosition()).isEqualTo(Position.DEFAULT_POSITION)
+        assertThat(target.getCursorPosition()).isEqualTo(Position.defaultPosition())
     }
 
     @Test
@@ -107,7 +106,7 @@ class DefaultTextBoxTest {
     @Test
     fun shouldRefreshDrawSurfaceIfSetText() {
         target.setText(UPDATE_TEXT.toString())
-        val character = target.getDrawSurface().getCharacterAt(Position.DEFAULT_POSITION)
+        val character = target.getDrawSurface().getCharacterAt(Position.defaultPosition())
         assertThat(character.get().getCharacter())
                 .isEqualTo(UPDATE_TEXT)
     }
@@ -117,8 +116,8 @@ class DefaultTextBoxTest {
         val TEXT = "text"
         val UPDATE_TEXT = 'U'
         val FONT = CP437TilesetResource.WANDERLUST_16X16
-        val SIZE = Size.of(10, 6)
-        val POSITION = Position.of(4, 5)
+        val SIZE = Size.create(10, 6)
+        val POSITION = Position.create(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.getDarkBackgroundColor())
                 .backgroundColor(THEME.getDarkForegroundColor())
@@ -131,7 +130,7 @@ class DefaultTextBoxTest {
                 .foregroundColor(THEME.getDarkForegroundColor())
                 .backgroundColor(THEME.getDarkBackgroundColor())
                 .build()
-        val COMPONENT_STYLES = ComponentStylesBuilder.newBuilder()
+        val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)
                 .build()
     }
