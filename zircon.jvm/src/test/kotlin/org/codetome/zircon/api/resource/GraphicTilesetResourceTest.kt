@@ -1,8 +1,7 @@
 package org.codetome.zircon.api.resource
 
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.builder.VirtualTerminalBuilder
-import org.codetome.zircon.api.color.TextColorFactory
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy
 import org.codetome.zircon.internal.font.impl.TestFontLoader
@@ -16,12 +15,12 @@ class GraphicTilesetResourceTest {
         FontLoaderRegistry.setFontLoader(TestFontLoader())
         val result = GraphicTilesetResource.NETHACK_16X16.toFont(PickRandomMetaStrategy())
         val meta = result.fetchMetadataForChar('b').first()
-        val region = result.fetchRegionForChar(
+        result.fetchRegionForChar(
                 textCharacter = TextCharacterBuilder.newBuilder()
                         .character(meta.char)
                         .tags(meta.tags)
-                        .foregroundColor(TextColorFactory.DEFAULT_FOREGROUND_COLOR)
-                        .backgroundColor(TextColorFactory.DEFAULT_BACKGROUND_COLOR)
+                        .foregroundColor(TextColorFactory.defaultForegroundColor())
+                        .backgroundColor(TextColorFactory.defaultBackgroundColor())
                         .build())
     }
 }

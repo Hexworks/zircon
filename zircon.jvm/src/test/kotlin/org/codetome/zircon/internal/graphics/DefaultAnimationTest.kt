@@ -11,7 +11,7 @@ class DefaultAnimationTest {
     fun shouldProperlyBuildFromResource() {
         val builder = AnimationResource.loadAnimationFromStream(this.javaClass.getResourceAsStream("/animations/skull.zap"))
         (0 until EXPECTED_LENGTH).forEach {
-            builder.addPosition(Position.DEFAULT_POSITION)
+            builder.addPosition(Position.defaultPosition())
         }
         val result = builder.build()
         assertThat(result.getLength()).isEqualTo(EXPECTED_LENGTH)

@@ -9,7 +9,6 @@ import org.codetome.zircon.api.terminal.TerminalResizeListener
 import org.codetome.zircon.internal.component.impl.DefaultLabelTest
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import org.junit.Before
 import org.junit.Test
@@ -36,20 +35,20 @@ class AbstractTerminalTest {
                 resized = true
             }
         })
-        target.setSize(Size.of(5, 5))
+        target.setSize(Size.create(5, 5))
         assertThat(resized).isTrue()
     }
 
     @Test
     fun shouldNotResizeWhenSizeIsTheSame() {
         var resized = false
-        target.setSize(Size.of(5, 5))
+        target.setSize(Size.create(5, 5))
         target.addResizeListener(object : TerminalResizeListener {
             override fun onResized(terminal: Terminal, newSize: Size) {
                 resized = true
             }
         })
-        target.setSize(Size.of(5, 5))
+        target.setSize(Size.create(5, 5))
         assertThat(resized).isFalse()
     }
 
@@ -63,7 +62,7 @@ class AbstractTerminalTest {
         }
         target.addResizeListener(listener)
         target.removeResizeListener(listener)
-        target.setSize(Size.of(5, 5))
+        target.setSize(Size.create(5, 5))
         assertThat(resized).isFalse()
     }
 

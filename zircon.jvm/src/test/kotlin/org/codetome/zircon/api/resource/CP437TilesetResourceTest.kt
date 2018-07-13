@@ -5,9 +5,8 @@ import org.codetome.zircon.api.Symbols
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.internal.font.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
+import org.codetome.zircon.internal.util.CP437Utils
 import org.junit.Before
 import org.junit.Test
 
@@ -34,7 +33,7 @@ class CP437TilesetResourceTest {
 
     @Test
     fun shouldProperlyConvertCpToUnicode() {
-        assertThat(CP437TilesetResource.convertCp437toUnicode(1).toInt())
+        assertThat(CP437Utils.convertCp437toUnicode(1).toInt())
                 .isEqualTo(Symbols.FACE_WHITE.toInt())
     }
 
@@ -42,7 +41,7 @@ class CP437TilesetResourceTest {
     fun shouldProperlyLoadMetadataForChar() {
         val result = target.fetchMetadataForChar('a')
 
-        assertThat(result).isEqualTo(listOf(CharacterMetadata(
+        assertThat(result).isEqualTo(listOf(CharacterMetadata.create(
                 char = 'a',
                 x = 1,
                 y = 6)))
@@ -58,14 +57,14 @@ class CP437TilesetResourceTest {
 
     @Test
     fun shouldProperlyFetchCP437IndexForChar() {
-        val result = CP437TilesetResource.fetchCP437IndexForChar('x')
+        val result = CP437Utils.fetchCP437IndexForChar('x')
 
         assertThat(result).isEqualTo(X_CP437_INDEX)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotBeAbleToFetchCP437IndexForInvalidChar() {
-        CP437TilesetResource.fetchCP437IndexForChar(1.toChar())
+        CP437Utils.fetchCP437IndexForChar(1.toChar())
     }
 
     companion object {

@@ -28,26 +28,26 @@ class DefaultShapeTest {
     fun shouldProperlyCreateTextImage() {
         val result = LINE_SHAPE.toTextImage(CHAR)
 
-        assertThat(result.getCharacterAt(Position.of(0, 0)).get())
+        assertThat(result.getCharacterAt(Position.create(0, 0)).get())
                 .isEqualTo(CHAR)
-        assertThat(result.getCharacterAt(Position.of(1, 0)).get())
-                .isEqualTo(TextCharacterBuilder.EMPTY)
-        assertThat(result.getCharacterAt(Position.of(0, 1)).get())
-                .isEqualTo(TextCharacterBuilder.EMPTY)
-        assertThat(result.getCharacterAt(Position.of(1, 1)).get())
+        assertThat(result.getCharacterAt(Position.create(1, 0)).get())
+                .isEqualTo(TextCharacterBuilder.empty())
+        assertThat(result.getCharacterAt(Position.create(0, 1)).get())
+                .isEqualTo(TextCharacterBuilder.empty())
+        assertThat(result.getCharacterAt(Position.create(1, 1)).get())
                 .isEqualTo(CHAR)
 
     }
 
     companion object {
-        val POS_0 = Position.of(2, 3)
-        val POS_1 = Position.of(3, 4)
-        val POS_2 = Position.of(1, 2)
+        val POS_0 = Position.create(2, 3)
+        val POS_1 = Position.create(3, 4)
+        val POS_2 = Position.create(1, 2)
 
-        val TRANSFORMED_POS_0 = Position.of(0, 0)
-        val TRANSFORMED_POS_1 = Position.of(1, 1)
+        val TRANSFORMED_POS_0 = Position.create(0, 0)
+        val TRANSFORMED_POS_1 = Position.create(1, 1)
 
-        val CHAR = TextCharacterBuilder.DEFAULT_CHARACTER.withCharacter('x')
+        val CHAR = TextCharacterBuilder.defaultCharacter().withCharacter('x')
 
         val LINE_SHAPE = DefaultShape(setOf(POS_0, POS_1))
         val OTHER_SHAPE = DefaultShape(setOf(POS_2))

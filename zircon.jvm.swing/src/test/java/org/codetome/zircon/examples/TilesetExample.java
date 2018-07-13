@@ -1,12 +1,18 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.api.*;
-import org.codetome.zircon.api.builder.*;
+import org.codetome.zircon.TerminalUtils;
+import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.Symbols;
+import org.codetome.zircon.api.TextCharacter;
+import org.codetome.zircon.api.builder.LayerBuilder;
+import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.color.TextColor;
-import org.codetome.zircon.api.color.TextColorFactory;
 import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.interop.Positions;
+import org.codetome.zircon.api.interop.Sizes;
+import org.codetome.zircon.api.interop.TextCharacters;
+import org.codetome.zircon.api.interop.TextColors;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 
@@ -31,25 +37,25 @@ public class TilesetExample {
 
     private static final int TERMINAL_WIDTH = 40;
     private static final int TERMINAL_HEIGHT = 40;
-    private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final TextCharacter GRASS_0 = TextCharacterBuilder.newBuilder()
+    private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
+    private static final TextCharacter GRASS_0 = TextCharacters.newBuilder()
             .character(',')
-            .foregroundColor(TextColorFactory.fromString("#33cc44"))
-            .backgroundColor(TextColorFactory.fromString("#114911"))
+            .foregroundColor(TextColors.fromString("#33cc44"))
+            .backgroundColor(TextColors.fromString("#114911"))
             .build();
-    private static final TextCharacter GRASS_1 = TextCharacterBuilder.newBuilder()
+    private static final TextCharacter GRASS_1 = TextCharacters.newBuilder()
             .character('`')
-            .foregroundColor(TextColorFactory.fromString("#33bb44"))
-            .backgroundColor(TextColorFactory.fromString("#114511"))
+            .foregroundColor(TextColors.fromString("#33bb44"))
+            .backgroundColor(TextColors.fromString("#114511"))
             .build();
-    private static final TextCharacter GRASS_2 = TextCharacterBuilder.newBuilder()
+    private static final TextCharacter GRASS_2 = TextCharacters.newBuilder()
             .character('\'')
-            .foregroundColor(TextColorFactory.fromString("#33aa44"))
-            .backgroundColor(TextColorFactory.fromString("#114011"))
+            .foregroundColor(TextColors.fromString("#33aa44"))
+            .backgroundColor(TextColors.fromString("#114011"))
             .build();
     private static final TextCharacter[] GRASSES = new TextCharacter[]{GRASS_0, GRASS_1, GRASS_2};
-    private static final TextColor TEXT_COLOR = TextColorFactory.fromString("#dd6644");
-    private static final TextColor TEXT_BG_COLOR = TextColorFactory.fromString("#00ff00");
+    private static final TextColor TEXT_COLOR = TextColors.fromString("#dd6644");
+    private static final TextColor TEXT_BG_COLOR = TextColors.fromString("#00ff00");
 
     public static void main(String[] args) {
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
@@ -68,7 +74,7 @@ public class TilesetExample {
         final String text = "Tileset Example";
         for (int i = 0; i < text.length(); i++) {
             screen.setCharacterAt(Positions.create(i + 2, 1),
-                    TextCharacterBuilder.newBuilder()
+                    TextCharacters.newBuilder()
                             .character(text.charAt(i))
                             .foregroundColor(TEXT_COLOR)
                             .backgroundColor(TEXT_BG_COLOR)
@@ -80,8 +86,8 @@ public class TilesetExample {
 
         final Layer overlay = new LayerBuilder()
                 .size(screen.getBoundableSize())
-                .filler(TextCharacterBuilder.EMPTY
-                        .withBackgroundColor(TextColorFactory.fromRGB(0, 0, 0, 50)))
+                .filler(TextCharacters.EMPTY
+                        .withBackgroundColor(TextColors.fromRGB(0, 0, 0, 50)))
                 .build();
 
         for (int i = 0; i < RANDOM_CHAR_COUNT; i++) {
@@ -89,10 +95,10 @@ public class TilesetExample {
                     Positions.create(
                             random.nextInt(TERMINAL_WIDTH),
                             random.nextInt(TERMINAL_HEIGHT - 2) + 2),
-                    TextCharacterBuilder.newBuilder()
+                    TextCharacters.newBuilder()
                             .character(RANDOM_CHARS[random.nextInt(charCount)])
                             .foregroundColor(ANSITextColor.values()[random.nextInt(ansiCount)])
-                            .backgroundColor(TextColorFactory.TRANSPARENT)
+                            .backgroundColor(TextColors.TRANSPARENT)
                             .build());
         }
         screen.pushLayer(overlay);

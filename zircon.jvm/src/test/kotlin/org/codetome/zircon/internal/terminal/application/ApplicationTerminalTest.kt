@@ -6,16 +6,14 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
-import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
-import org.codetome.zircon.api.terminal.config.CursorStyle
+import org.codetome.zircon.api.terminal.CursorStyle
 import org.codetome.zircon.internal.component.impl.DefaultLabelTest
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import org.junit.Before
 import org.junit.Test
@@ -71,11 +69,11 @@ class ApplicationTerminalTest {
     @Test
     fun shouldSendEofOnDispose() {
         val eofReceived = AtomicBoolean(false)
-        EventBus.subscribe<Input>(EventType.Input, {
-            if (it.data == KeyStroke.EOF_STROKE) {
+        EventBus.subscribe<Event.Input> {
+            if (it.input == KeyStroke.EOF_STROKE) {
                 eofReceived.set(true)
             }
-        })
+        }
 
         target.doDispose()
 
@@ -84,7 +82,7 @@ class ApplicationTerminalTest {
 
 
     companion object {
-        val SIZE = Size.of(10, 20)
+        val SIZE = Size.create(10, 20)
         val BLINK_LEN_MS = 2L
         val CONFIG = DeviceConfigurationBuilder.newBuilder()
                 .cursorBlinking(true)

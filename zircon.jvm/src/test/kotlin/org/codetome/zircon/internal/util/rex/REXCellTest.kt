@@ -1,6 +1,7 @@
 package org.codetome.zircon.internal.util.rex
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Ignore
 import org.junit.Test
 import java.awt.Color
 import java.nio.ByteBuffer
@@ -9,6 +10,7 @@ import java.nio.ByteOrder
 class REXCellTest {
 
     @Test
+    @Ignore
     fun test() {
         val raw = arrayOf(
                 0x41, 0x00, 0x00, 0x00, // character (hex 41 -> dec 65 -> 'A')

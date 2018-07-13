@@ -7,8 +7,8 @@ import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.InputType.Character
 import org.codetome.zircon.api.input.KeyStroke
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
 import org.junit.Before
 import org.junit.Test
 import java.awt.Component
@@ -25,9 +25,9 @@ class TerminalKeyListenerTest {
     @Before
     fun setUp() {
         target = TerminalKeyListener(CONFIG)
-        EventBus.subscribe<Input>(EventType.Input, {
-            inputs.add(it.data)
-        })
+        EventBus.subscribe<Event.Input>{
+            inputs.add(it.input)
+        }
     }
 
     @Test
@@ -91,7 +91,7 @@ class TerminalKeyListenerTest {
     companion object {
         val CHAR = 'x'
         val FONT_SIZE = 16
-        val POSITION = Position.of(2, 3)
+        val POSITION = Position.create(2, 3)
         val X = POSITION.x * FONT_SIZE
         val Y = POSITION.y * FONT_SIZE
         val BUTTON = 2

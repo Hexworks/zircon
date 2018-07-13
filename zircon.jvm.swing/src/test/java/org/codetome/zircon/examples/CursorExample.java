@@ -1,19 +1,19 @@
 package org.codetome.zircon.examples;
 
+import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
-import org.codetome.zircon.api.builder.TerminalBuilder;
-import org.codetome.zircon.api.color.TextColorFactory;
+import org.codetome.zircon.api.interop.DeviceConfigurations;
+import org.codetome.zircon.api.interop.Sizes;
+import org.codetome.zircon.api.interop.TextColors;
 import org.codetome.zircon.api.resource.PhysicalFontResource;
+import org.codetome.zircon.api.terminal.CursorStyle;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.api.terminal.config.CursorStyle;
-import org.junit.Test;
 
 public class CursorExample {
 
     private static final int TERMINAL_WIDTH = 30;
     private static final int TERMINAL_HEIGHT = 10;
-    private static final Size SIZE = Size.of(TERMINAL_WIDTH, TERMINAL_HEIGHT);
+    private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
 
     public static void main(String[] args) {
         // we create a new terminal using TerminalBuilder
@@ -21,8 +21,8 @@ public class CursorExample {
                 .initialTerminalSize(SIZE)
                 .font(PhysicalFontResource.SOURCE_CODE_PRO.toFont())
                 // we only override the device config
-                .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
-                        .cursorColor(TextColorFactory.fromString("#ff8844"))
+                .deviceConfiguration(DeviceConfigurations.newBuilder()
+                        .cursorColor(TextColors.fromString("#ff8844"))
                         .cursorStyle(CursorStyle.UNDER_BAR)
                         .cursorBlinking(true)
                         .build())

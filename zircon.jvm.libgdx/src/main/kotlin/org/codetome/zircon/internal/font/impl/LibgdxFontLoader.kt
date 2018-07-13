@@ -4,10 +4,10 @@ import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.internal.font.FontLoader
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
-import org.codetome.zircon.internal.font.cache.DefaultFontRegionCache
-import org.codetome.zircon.internal.font.cache.NoFontRegionCache
+import org.codetome.zircon.internal.font.cache.NoOpCache
 import org.codetome.zircon.internal.font.transformer.LibgdxFontRegionCloner
 import org.codetome.zircon.internal.font.transformer.LibgdxFontRegionColorizer
+import org.codetome.zircon.internal.multiplatform.factory.CacheFactory
 import java.io.InputStream
 
 class LibgdxFontLoader : FontLoader {
@@ -31,9 +31,9 @@ class LibgdxFontLoader : FontLoader {
                 width = width,
                 height = height,
                 cache = if (cacheFonts) {
-                    DefaultFontRegionCache()
+                    CacheFactory.create()
                 } else {
-                    NoFontRegionCache()
+                    NoOpCache()
                 },
                 regionTransformers = TILE_TRANSFORMERS)
     }

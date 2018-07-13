@@ -2,8 +2,8 @@ package org.codetome.zircon.internal.font.transformer
 
 import com.jhlabs.image.GaussianFilter
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.extension.toAWTColor
 import org.codetome.zircon.api.font.FontTextureRegion
+import org.codetome.zircon.api.interop.toAWTColor
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.impl.Java2DFontTextureRegion
 import java.awt.Color
@@ -45,7 +45,7 @@ class Java2DGlowTransformer : FontRegionTransformer<BufferedImage> {
                     gc.drawImage(charImage.getBackend(), 0, 0, null)
                     gc.dispose()
 
-                    return Java2DFontTextureRegion(result)
+                    return Java2DFontTextureRegion(textCharacter.generateCacheKey(), result)
                 }
             }
         }
@@ -68,6 +68,6 @@ class Java2DGlowTransformer : FontRegionTransformer<BufferedImage> {
             }
         }
 
-        return Java2DFontTextureRegion(image)
+        return Java2DFontTextureRegion(textCharacter.generateCacheKey(), image)
     }
 }

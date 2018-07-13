@@ -1,7 +1,6 @@
 package org.codetome.zircon.api.util
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.util.TextUtils
 import org.junit.Test
 
 class TextUtilsTest {

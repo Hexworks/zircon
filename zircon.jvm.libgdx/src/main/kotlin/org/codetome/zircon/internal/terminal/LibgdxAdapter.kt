@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.terminal
 import com.badlogic.gdx.ApplicationAdapter
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.api.terminal.config.DeviceConfiguration
+import org.codetome.zircon.api.terminal.DeviceConfiguration
 
 class LibgdxAdapter(initialFont: Font,
                     initialSize: Size,

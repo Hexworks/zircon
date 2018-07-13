@@ -1,6 +1,7 @@
 package org.codetome.zircon.api.color
 
-import org.codetome.zircon.internal.behavior.Cacheable
+import org.codetome.zircon.api.behavior.Cacheable
+import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
 
 interface TextColor : Cacheable {
 
@@ -17,4 +18,11 @@ interface TextColor : Cacheable {
     fun shade(): TextColor
 
     fun invert(): TextColor
+
+    fun darkenByPercent(percentage: Double): TextColor
+
+    companion object {
+
+        fun create(red: Int, green: Int, blue: Int, alpha: Int = 255): TextColor = TextColorFactory.create(red, green, blue, alpha)
+    }
 }

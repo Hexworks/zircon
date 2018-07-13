@@ -1,12 +1,16 @@
 package org.codetome.zircon.internal.terminal.application
 
-import org.codetome.zircon.api.*
+import org.codetome.zircon.api.Cell
+import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.input.KeyStroke
-import org.codetome.zircon.api.terminal.config.DeviceConfiguration
+import org.codetome.zircon.api.interop.Modifiers
+import org.codetome.zircon.api.terminal.DeviceConfiguration
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.terminal.ApplicationListener
 import org.codetome.zircon.internal.terminal.InternalTerminal
@@ -45,9 +49,7 @@ abstract class ApplicationTerminal(
 
     @Synchronized
     override fun doCreate() {
-        onShutdown(Runnable {
-            doDispose()
-        })
+        onShutdown { doDispose() }
         blinkTimer.schedule(object : TimerTask() {
             override fun run() {
                 try {
@@ -91,19 +93,19 @@ abstract class ApplicationTerminal(
                         drawCursor = drawCursor)
             }
 
-            if(checkDirty) terminal.forEachDirtyCell(func) else terminal.forEachCell(func)
+            if (checkDirty) terminal.forEachDirtyCell(func) else terminal.forEachCell(func)
             this.hasBlinkingText = foundBlinkingCharacters || deviceConfiguration.isCursorBlinking
         }
     }
 
     @Synchronized
     override fun doDispose() {
-        EventBus.emit(EventType.Input, KeyStroke.EOF_STROKE)
+        EventBus.broadcast(Event.Input(KeyStroke.EOF_STROKE))
         blinkTimer.cancel()
     }
 
     override fun doResize(width: Int, height: Int) {
-        val terminalSize = Size.of(
+        val terminalSize = Size.create(
                 xLength = width / getSupportedFontSize().xLength,
                 yLength = height / getSupportedFontSize().yLength)
         terminal.setSize(terminalSize)
@@ -121,7 +123,7 @@ abstract class ApplicationTerminal(
         val y = yIdx * getSupportedFontSize().yLength
 
         listOf(Pair(font, character))
-                .plus(fetchOverlayZIntersection(Position.of(xIdx, yIdx)))
+                .plus(fetchOverlayZIntersection(Position.create(xIdx, yIdx)))
                 .forEach { (fontOverride, tc) ->
                     // TODO: test font
                     val fontToUse = if (fontOverride === FontSettings.NO_FONT) {

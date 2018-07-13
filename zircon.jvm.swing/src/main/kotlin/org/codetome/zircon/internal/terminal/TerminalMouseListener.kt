@@ -5,10 +5,10 @@ import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.api.input.MouseActionType.*
-import org.codetome.zircon.api.terminal.config.DeviceConfiguration
+import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.api.util.TextUtils
+import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.EventType
 import java.awt.GraphicsEnvironment
 import java.awt.MouseInfo
 import java.awt.Toolkit
@@ -21,7 +21,7 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                                  private val fontWidth: Int,
                                  private val fontHeight: Int) : MouseAdapter() {
 
-    private var lastMouseLocation = Position.UNKNOWN
+    private var lastMouseLocation = Position.unknown()
 
     override fun mouseClicked(e: MouseEvent) {
         if (GraphicsEnvironment.isHeadless().not() &&
@@ -70,7 +70,7 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
 
     private fun addActionToKeyQueue(actionType: MouseActionType, e: MouseEvent) {
         try {
-            val position = Position.of(
+            val position = Position.create(
                     x = Math.max(0, e.x.div(fontWidth)),
                     y = Math.max(0, e.y.div(fontHeight)))
             MouseAction(
@@ -81,7 +81,7 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                 if (mouseMovedToNewPosition(actionType, position)
                         .or(isNotMoveEvent(actionType))) {
                     lastMouseLocation = position
-                    EventBus.emit(EventType.Input, it)
+                    EventBus.broadcast(Event.Input(it))
                 }
             }
         } catch (e: Exception) {
@@ -107,7 +107,7 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                     TextUtils.isPrintableCharacter(it)
                 }
                 .forEach {
-                    EventBus.emit(EventType.Input, KeyStroke(character = it))
+                    EventBus.broadcast(Event.Input(KeyStroke(character = it)))
                 }
     }
 
