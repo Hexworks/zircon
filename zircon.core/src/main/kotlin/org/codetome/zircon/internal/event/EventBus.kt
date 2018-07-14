@@ -1,9 +1,9 @@
 package org.codetome.zircon.internal.event
 
-import org.codetome.zircon.internal.multiplatform.api.Identifier
-import org.codetome.zircon.internal.multiplatform.api.Maybe
-import org.codetome.zircon.internal.multiplatform.api.ThreadSafeQueue
-import org.codetome.zircon.internal.multiplatform.factory.ThreadSafeQueueFactory
+import org.codetome.zircon.api.util.Identifier
+import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.util.ThreadSafeQueue
+import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 
 @Suppress("UNCHECKED_CAST")
 object EventBus {

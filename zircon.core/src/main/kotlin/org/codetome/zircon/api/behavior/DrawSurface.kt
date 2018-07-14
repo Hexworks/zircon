@@ -2,7 +2,7 @@ package org.codetome.zircon.api.behavior
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Maybe
 
 /**
  * Represents an object which can be drawn upon.

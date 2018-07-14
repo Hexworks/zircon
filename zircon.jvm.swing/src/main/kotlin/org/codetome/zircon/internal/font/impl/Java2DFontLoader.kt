@@ -8,7 +8,7 @@ import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.cache.NoOpCache
 import org.codetome.zircon.internal.font.transformer.Java2DFontRegionCloner
 import org.codetome.zircon.internal.font.transformer.Java2DFontRegionColorizer
-import org.codetome.zircon.internal.multiplatform.factory.CacheFactory
+import org.codetome.zircon.platform.factory.CacheFactory
 import java.awt.GraphicsEnvironment
 import java.io.InputStream
 import javax.imageio.ImageIO

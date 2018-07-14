@@ -6,8 +6,8 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.internal.animation.DefaultAnimation
 import org.codetome.zircon.internal.animation.DefaultAnimationFrame
-import org.codetome.zircon.internal.multiplatform.api.Identifier
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Identifier
+import org.codetome.zircon.api.util.Maybe
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock

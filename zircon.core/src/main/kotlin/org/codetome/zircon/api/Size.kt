@@ -1,8 +1,8 @@
 package org.codetome.zircon.api
 
 import org.codetome.zircon.api.shape.RectangleFactory
-import org.codetome.zircon.internal.multiplatform.factory.SizeFactory
-import org.codetome.zircon.internal.multiplatform.api.Math
+import org.codetome.zircon.platform.factory.SizeFactory
+import org.codetome.zircon.api.util.Math
 
 /**
  * Dimensions in 2D space.

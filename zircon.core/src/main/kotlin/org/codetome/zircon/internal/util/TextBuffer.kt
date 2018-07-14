@@ -2,9 +2,9 @@ package org.codetome.zircon.internal.util
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.internal.multiplatform.api.Math
-import org.codetome.zircon.internal.multiplatform.api.Maybe
-import org.codetome.zircon.internal.multiplatform.util.SystemUtils
+import org.codetome.zircon.api.util.Math
+import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.platform.util.SystemUtils
 
 class TextBuffer(text: String) {
 

@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.event
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.input.MouseAction
-import org.codetome.zircon.internal.multiplatform.api.Identifier
+import org.codetome.zircon.api.util.Identifier
 
 sealed class Event {
     /**

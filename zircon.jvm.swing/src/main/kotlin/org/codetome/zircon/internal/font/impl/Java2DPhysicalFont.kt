@@ -7,11 +7,10 @@ import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.interop.toAWTColor
 import org.codetome.zircon.api.util.FontUtils
-import org.codetome.zircon.internal.font.FontRegionCache
 import org.codetome.zircon.internal.font.transformer.*
-import org.codetome.zircon.internal.multiplatform.api.Cache
-import org.codetome.zircon.internal.multiplatform.api.Identifier
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Cache
+import org.codetome.zircon.api.util.Identifier
+import org.codetome.zircon.api.util.Maybe
 import java.awt.Graphics2D
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage

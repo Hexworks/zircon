@@ -6,7 +6,7 @@ import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.Border
 import org.codetome.zircon.internal.DefaultTextCharacter
-import org.codetome.zircon.internal.multiplatform.factory.TextCharacterFactory
+import org.codetome.zircon.platform.factory.TextCharacterFactory
 
 /**
  * Represents a single character with additional metadata such as colors and modifiers.

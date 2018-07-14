@@ -10,7 +10,7 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.component.impl.DefaultRadioButtonGroup
 import org.codetome.zircon.internal.font.impl.FontSettings
-import org.codetome.zircon.internal.multiplatform.factory.ThreadSafeQueueFactory
+import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 
 data class RadioButtonGroupBuilder(
         private var font: Font = FontSettings.NO_FONT,

@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.font
 
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Maybe
 
 /**
  * This cache is responsible for caching font regions. A font region is basically

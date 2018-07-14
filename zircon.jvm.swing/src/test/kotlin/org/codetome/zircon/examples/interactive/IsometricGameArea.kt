@@ -23,7 +23,7 @@ import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent
 import org.codetome.zircon.internal.game.InMemoryGameArea
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.platform.factory.TextColorFactory
 import java.awt.Toolkit
 import java.util.*
 

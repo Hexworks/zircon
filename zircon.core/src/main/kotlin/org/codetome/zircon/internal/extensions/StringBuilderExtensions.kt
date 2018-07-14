@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.extensions
 
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Maybe
 
 /**
  * Returns an element of this [StringBuilder] wrapped in an Maybe

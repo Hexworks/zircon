@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.font.cache
 
 import org.codetome.zircon.api.behavior.Cacheable
-import org.codetome.zircon.internal.multiplatform.api.Cache
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Cache
+import org.codetome.zircon.api.util.Maybe
 
 /**
  * This is a no-op cache implementation.

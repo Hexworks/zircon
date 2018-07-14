@@ -11,9 +11,9 @@ import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.graphics.TextImageBase
 import org.codetome.zircon.api.sam.TextCharacterTransformer
-import org.codetome.zircon.internal.multiplatform.api.Math
-import org.codetome.zircon.internal.multiplatform.api.Maybe
-import org.codetome.zircon.internal.multiplatform.factory.ThreadSafeMapFactory
+import org.codetome.zircon.api.util.Math
+import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.platform.factory.ThreadSafeMapFactory
 
 class InMemoryTextImage(size: Size,
                         styleSet: StyleSet = StyleSetBuilder.defaultStyle(),

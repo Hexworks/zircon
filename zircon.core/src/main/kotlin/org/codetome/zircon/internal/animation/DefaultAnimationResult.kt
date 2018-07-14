@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.animation
 
 import org.codetome.zircon.api.animation.AnimationResult
 import org.codetome.zircon.api.animation.AnimationState
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Maybe
 
 class DefaultAnimationResult(private var state: AnimationState) : AnimationResult {
 

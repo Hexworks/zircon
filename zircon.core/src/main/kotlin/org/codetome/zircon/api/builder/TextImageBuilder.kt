@@ -4,7 +4,7 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.graphics.TextImage
-import org.codetome.zircon.internal.multiplatform.factory.TextImageFactory
+import org.codetome.zircon.platform.factory.TextImageFactory
 
 /**
  * Creates [org.codetome.zircon.api.graphics.TextImage]s.

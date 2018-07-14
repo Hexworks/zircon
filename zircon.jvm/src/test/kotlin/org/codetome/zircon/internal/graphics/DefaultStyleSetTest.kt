@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.graphics
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.modifier.BorderBuilder
 import org.codetome.zircon.api.modifier.BorderPosition

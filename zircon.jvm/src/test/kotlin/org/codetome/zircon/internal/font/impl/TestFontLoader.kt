@@ -6,7 +6,7 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.font.FontLoader
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
-import org.codetome.zircon.internal.multiplatform.api.Identifier
+import org.codetome.zircon.api.util.Identifier
 import java.awt.image.BufferedImage
 import java.awt.image.BufferedImage.TYPE_INT_ARGB
 import java.io.InputStream

@@ -4,13 +4,13 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.Header
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Maybe
 
 class DefaultHeader(private val text: String,
                     initialSize: Size,

@@ -2,7 +2,7 @@ package org.codetome.zircon.api.interop
 
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.platform.factory.TextColorFactory
 import java.awt.Color
 
 object TextColors {

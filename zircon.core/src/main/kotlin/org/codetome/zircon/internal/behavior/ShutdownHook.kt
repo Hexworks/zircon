@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.behavior
 
-import org.codetome.zircon.internal.multiplatform.api.Runnable
+import org.codetome.zircon.api.util.Runnable
 
 /**
  * Interface for listening to the shutdown of the environment (JVM, browser, etc).

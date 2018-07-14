@@ -16,8 +16,8 @@ import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.multiplatform.api.Math
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Math
+import org.codetome.zircon.api.util.Maybe
 
 /**
  * Note that this class is in **BETA**!

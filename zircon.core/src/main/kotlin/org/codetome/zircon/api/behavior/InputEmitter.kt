@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.behavior
 
 import org.codetome.zircon.api.input.Input
-import org.codetome.zircon.internal.multiplatform.api.Consumer
+import org.codetome.zircon.api.util.Consumer
 
 /**
  * Represents an object which (re) emits the [Input]s

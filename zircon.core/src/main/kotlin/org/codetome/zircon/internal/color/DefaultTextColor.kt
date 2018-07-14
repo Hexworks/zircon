@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.color
 
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.internal.multiplatform.api.Math
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.api.util.Math
+import org.codetome.zircon.platform.factory.TextColorFactory
 
 data class DefaultTextColor(private val red: Int,
                             private val green: Int,

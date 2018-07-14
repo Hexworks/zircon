@@ -11,7 +11,7 @@ import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent
 import org.codetome.zircon.internal.font.impl.FontSettings
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Maybe
 
 /**
  * Note that this class is in **BETA**!

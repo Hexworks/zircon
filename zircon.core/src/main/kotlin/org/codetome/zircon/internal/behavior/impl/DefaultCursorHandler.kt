@@ -4,7 +4,7 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.internal.behavior.Dirtiable
 import org.codetome.zircon.internal.behavior.InternalCursorHandler
-import org.codetome.zircon.internal.multiplatform.api.Math
+import org.codetome.zircon.api.util.Math
 
 class DefaultCursorHandler(private var cursorSpace: Size,
                            private val dirtiable: Dirtiable = DefaultDirtiable())
