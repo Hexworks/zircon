@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.animation
 
 import org.codetome.zircon.internal.behavior.Identifiable
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Maybe
 
 /**
  * Note that this class is in **BETA**!

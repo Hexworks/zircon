@@ -2,7 +2,7 @@ package org.codetome.zircon.api.input
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.input.InputType.*
-import org.codetome.zircon.internal.multiplatform.util.SystemUtils
+import org.codetome.zircon.platform.util.SystemUtils
 
 
 /**

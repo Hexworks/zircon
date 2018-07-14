@@ -2,7 +2,7 @@ package org.codetome.zircon.api.builder
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.api.interop.Modifiers
 import org.junit.Test
 

@@ -12,7 +12,7 @@ import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultButton
 import org.codetome.zircon.internal.component.impl.wrapping.ButtonWrappingStrategy
 import org.codetome.zircon.internal.font.impl.FontSettings
-import org.codetome.zircon.internal.multiplatform.factory.ThreadSafeQueueFactory
+import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 
 data class ButtonBuilder(
         private var font: Font = FontSettings.NO_FONT,

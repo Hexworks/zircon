@@ -9,7 +9,7 @@ import org.codetome.zircon.internal.SimpleModifiers.*
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.transformer.*
-import org.codetome.zircon.internal.multiplatform.api.Cache
+import org.codetome.zircon.api.util.Cache
 import java.awt.image.BufferedImage
 
 /**

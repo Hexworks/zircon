@@ -16,11 +16,11 @@ import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.multiplatform.api.Consumer
-import org.codetome.zircon.internal.multiplatform.api.Maybe
-import org.codetome.zircon.internal.multiplatform.api.ThreadSafeQueue
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
-import org.codetome.zircon.internal.multiplatform.factory.ThreadSafeQueueFactory
+import org.codetome.zircon.api.util.Consumer
+import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.util.ThreadSafeQueue
+import org.codetome.zircon.platform.factory.TextColorFactory
+import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 
 class DefaultRadioButtonGroup constructor(wrappers: ThreadSafeQueue<WrappingStrategy>,
                                           private val size: Size,

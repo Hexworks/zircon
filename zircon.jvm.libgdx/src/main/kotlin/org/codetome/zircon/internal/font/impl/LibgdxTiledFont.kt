@@ -10,7 +10,7 @@ import org.codetome.zircon.internal.SimpleModifiers.Blink
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.transformer.NoOpTransformer
-import org.codetome.zircon.internal.multiplatform.api.Cache
+import org.codetome.zircon.api.util.Cache
 import java.io.InputStream
 
 /**

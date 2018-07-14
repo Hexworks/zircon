@@ -6,17 +6,16 @@ import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.font.impl.FontSettings
-import org.codetome.zircon.internal.multiplatform.factory.ThreadSafeQueueFactory
+import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 import org.junit.Before
 import org.junit.Test
-import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 class DefaultRadioButtonTest {

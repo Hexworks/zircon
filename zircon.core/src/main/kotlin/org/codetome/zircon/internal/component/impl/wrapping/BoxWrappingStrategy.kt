@@ -7,7 +7,7 @@ import org.codetome.zircon.api.graphics.BoxType
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.component.WrappingStrategy
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Maybe
 
 class BoxWrappingStrategy(private val boxType: BoxType,
                           private val title: Maybe<String> = Maybe.empty()) : WrappingStrategy {

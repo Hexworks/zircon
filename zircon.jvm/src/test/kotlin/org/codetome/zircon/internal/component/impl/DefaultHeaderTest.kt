@@ -11,7 +11,7 @@ import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.component.builder.HeaderBuilder
 import org.codetome.zircon.internal.font.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.platform.factory.TextColorFactory
 import org.junit.Before
 import org.junit.Test
 

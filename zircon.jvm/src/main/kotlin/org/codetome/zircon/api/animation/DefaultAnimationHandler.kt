@@ -4,7 +4,7 @@ import org.codetome.zircon.api.animation.AnimationState.*
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.internal.animation.DefaultAnimationResult
-import org.codetome.zircon.internal.multiplatform.api.Identifier
+import org.codetome.zircon.api.util.Identifier
 import java.io.Closeable
 import java.lang.IllegalStateException
 import java.util.*

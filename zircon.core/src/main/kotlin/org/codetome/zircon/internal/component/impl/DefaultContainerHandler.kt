@@ -3,8 +3,6 @@ package org.codetome.zircon.internal.component.impl
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.Component
-import org.codetome.zircon.api.component.ComponentState
-import org.codetome.zircon.api.component.ComponentState.*
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.InputType.*
 import org.codetome.zircon.api.input.KeyStroke
@@ -18,7 +16,7 @@ import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.Event.*
 import org.codetome.zircon.internal.event.Subscription
-import org.codetome.zircon.internal.multiplatform.api.Identifier
+import org.codetome.zircon.api.util.Identifier
 
 class DefaultContainerHandler(private var container: DefaultContainer) : InternalContainerHandler {
 

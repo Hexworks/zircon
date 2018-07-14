@@ -9,8 +9,8 @@ import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.util.FontUtils
 import org.codetome.zircon.internal.font.FontRegionCache
 import org.codetome.zircon.internal.font.transformer.NoOpTransformer
-import org.codetome.zircon.internal.multiplatform.api.Identifier
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Identifier
+import org.codetome.zircon.api.util.Maybe
 
 /**
  * Represents a physical font which is backed by [java.awt.Font].

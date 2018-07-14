@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.event
 
-import org.codetome.zircon.internal.multiplatform.api.Identifier
-import org.codetome.zircon.internal.multiplatform.api.Maybe
-import org.codetome.zircon.internal.multiplatform.api.Predicate
+import org.codetome.zircon.api.util.Identifier
+import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.api.util.Predicate
 
 data class Subscription<in T : Event>(val callback: (T) -> Unit,
                                       val eventType: String,

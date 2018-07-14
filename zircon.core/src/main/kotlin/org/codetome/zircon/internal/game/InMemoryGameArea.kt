@@ -7,10 +7,10 @@ import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.game.GameArea.BlockFetchMode
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.extensions.getIfPresent
-import org.codetome.zircon.internal.multiplatform.api.Maybe
-import org.codetome.zircon.internal.multiplatform.api.TreeMap
-import org.codetome.zircon.internal.multiplatform.extensions.getOrDefault
-import org.codetome.zircon.internal.multiplatform.factory.TreeMapFactory
+import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.util.TreeMap
+import org.codetome.zircon.platform.extension.getOrDefault
+import org.codetome.zircon.platform.factory.TreeMapFactory
 
 class InMemoryGameArea(private val size: Size3D,
                        private val layersPerBlock: Int,

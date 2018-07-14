@@ -4,7 +4,7 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.internal.behavior.Focusable
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Maybe
 
 /**
  * A [InternalComponent] is a GUI element which is used either to display information to the user

@@ -5,7 +5,7 @@ import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
-import org.codetome.zircon.internal.multiplatform.api.Identifier
+import org.codetome.zircon.api.util.Identifier
 
 abstract class TiledFontBase(private val metadata: Map<Char, List<CharacterMetadata>>,
                              private val metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy()) : Font {

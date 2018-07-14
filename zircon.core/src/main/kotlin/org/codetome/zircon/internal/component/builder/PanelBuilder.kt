@@ -16,7 +16,7 @@ import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrate
 import org.codetome.zircon.internal.component.impl.wrapping.BoxWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.font.impl.FontSettings
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Maybe
 
 data class PanelBuilder(private var font: Font = FontSettings.NO_FONT,
                         private var boxType: BoxType = BoxType.SINGLE,

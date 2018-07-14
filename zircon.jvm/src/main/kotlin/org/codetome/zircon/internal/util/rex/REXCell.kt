@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.util.rex
 
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.internal.util.CP437Utils
 import java.nio.ByteBuffer
 

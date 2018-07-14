@@ -18,11 +18,11 @@ import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.Subscription
-import org.codetome.zircon.internal.multiplatform.api.Math
-import org.codetome.zircon.internal.multiplatform.api.Maybe
-import org.codetome.zircon.internal.multiplatform.extensions.delete
-import org.codetome.zircon.internal.multiplatform.extensions.deleteCharAt
-import org.codetome.zircon.internal.multiplatform.extensions.insert
+import org.codetome.zircon.api.util.Math
+import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.platform.extension.delete
+import org.codetome.zircon.platform.extension.deleteCharAt
+import org.codetome.zircon.platform.extension.insert
 import org.codetome.zircon.internal.util.TextBuffer
 
 class DefaultTextBox constructor(text: String,

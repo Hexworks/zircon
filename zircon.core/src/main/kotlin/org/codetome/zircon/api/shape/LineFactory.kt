@@ -2,7 +2,7 @@ package org.codetome.zircon.api.shape
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.internal.graphics.DefaultShape
-import org.codetome.zircon.internal.multiplatform.api.Math
+import org.codetome.zircon.api.util.Math
 
 object LineFactory : ShapeFactory<LineParameters> {
 

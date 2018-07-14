@@ -17,7 +17,7 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.font.impl.LibgdxFontTextureRegion
-import org.codetome.zircon.internal.multiplatform.api.Identifier
+import org.codetome.zircon.api.util.Identifier
 import org.codetome.zircon.internal.util.CP437Utils
 
 object Config {

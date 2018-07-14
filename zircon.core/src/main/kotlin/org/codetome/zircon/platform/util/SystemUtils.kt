@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal.multiplatform.util
+package org.codetome.zircon.platform.util
 
 expect object SystemUtils {
 

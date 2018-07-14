@@ -7,7 +7,7 @@ import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.behavior.Positionable
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.internal.behavior.Identifiable
-import org.codetome.zircon.internal.multiplatform.api.Consumer
+import org.codetome.zircon.api.util.Consumer
 
 /**
  * A [Component] is a GUI element which is used either to display information to the user

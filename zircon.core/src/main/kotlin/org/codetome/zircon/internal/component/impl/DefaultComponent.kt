@@ -20,9 +20,9 @@ import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.multiplatform.api.Consumer
-import org.codetome.zircon.internal.multiplatform.api.Identifier
-import org.codetome.zircon.internal.multiplatform.api.Maybe
+import org.codetome.zircon.api.util.Consumer
+import org.codetome.zircon.api.util.Identifier
+import org.codetome.zircon.api.util.Maybe
 
 abstract class DefaultComponent(initialSize: Size,
                                 initialFont: Font,

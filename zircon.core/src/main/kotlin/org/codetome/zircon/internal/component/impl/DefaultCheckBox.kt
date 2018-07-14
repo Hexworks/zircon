@@ -13,9 +13,9 @@ import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.multiplatform.api.Maybe
-import org.codetome.zircon.internal.multiplatform.api.ThreadSafeQueue
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.util.ThreadSafeQueue
+import org.codetome.zircon.platform.factory.TextColorFactory
 
 class DefaultCheckBox(private val text: String,
                       wrappers: ThreadSafeQueue<WrappingStrategy>,

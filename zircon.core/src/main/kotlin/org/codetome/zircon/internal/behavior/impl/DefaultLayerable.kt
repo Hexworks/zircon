@@ -8,8 +8,8 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.behavior.Dirtiable
 import org.codetome.zircon.internal.behavior.InternalLayerable
-import org.codetome.zircon.internal.multiplatform.api.ThreadSafeQueue
-import org.codetome.zircon.internal.multiplatform.factory.ThreadSafeQueueFactory
+import org.codetome.zircon.internal.util.ThreadSafeQueue
+import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 
 class DefaultLayerable(private val supportedFontSize: Size,
                        size: Size,

@@ -2,9 +2,9 @@ package org.codetome.zircon.api.builder
 
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
-import org.codetome.zircon.internal.multiplatform.factory.StyleSetFactory
+import org.codetome.zircon.platform.factory.StyleSetFactory
 
 /**
  * Builder used to create [StyleSet]s. Uses the default colors from

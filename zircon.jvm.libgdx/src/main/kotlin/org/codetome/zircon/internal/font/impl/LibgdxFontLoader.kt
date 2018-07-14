@@ -7,7 +7,7 @@ import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.cache.NoOpCache
 import org.codetome.zircon.internal.font.transformer.LibgdxFontRegionCloner
 import org.codetome.zircon.internal.font.transformer.LibgdxFontRegionColorizer
-import org.codetome.zircon.internal.multiplatform.factory.CacheFactory
+import org.codetome.zircon.platform.factory.CacheFactory
 import java.io.InputStream
 
 class LibgdxFontLoader : FontLoader {

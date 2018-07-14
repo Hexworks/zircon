@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.color
 
 import org.codetome.zircon.api.behavior.Cacheable
-import org.codetome.zircon.internal.multiplatform.factory.TextColorFactory
+import org.codetome.zircon.platform.factory.TextColorFactory
 
 interface TextColor : Cacheable {
 
