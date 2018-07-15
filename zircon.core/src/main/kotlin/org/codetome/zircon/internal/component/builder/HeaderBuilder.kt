@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.component.builder
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.Builder
-import org.codetome.zircon.api.builder.ComponentStyleSetBuilder
+import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.Header
 import org.codetome.zircon.api.font.Font

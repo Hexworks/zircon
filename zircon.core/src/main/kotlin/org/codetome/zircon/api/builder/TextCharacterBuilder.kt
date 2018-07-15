@@ -5,6 +5,7 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
+import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 
 /**
  * Builds [TextCharacter]s.
@@ -53,7 +54,7 @@ data class TextCharacterBuilder(
         this.tags = tags
     }
 
-    override fun build(): TextCharacter = TextCharacter.of(character, styleSet, tags)
+    override fun build(): TextCharacter = TextCharacter.create(character, styleSet, tags)
 
     override fun createCopy() = copy()
 

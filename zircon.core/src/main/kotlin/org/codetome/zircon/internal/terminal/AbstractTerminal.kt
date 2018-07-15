@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.terminal
 
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.Styleable
-import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.TerminalResizeListener
 import org.codetome.zircon.internal.behavior.impl.DefaultStyleable

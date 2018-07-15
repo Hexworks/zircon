@@ -3,10 +3,10 @@ package org.codetome.zircon.examples.interactive
 import org.codetome.zircon.TerminalUtils
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Symbols
-import org.codetome.zircon.api.builder.LayerBuilder
+import org.codetome.zircon.api.graphics.builder.LayerBuilder
 import org.codetome.zircon.api.builder.ScreenBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.builder.TextCharacterStringBuilder
+import org.codetome.zircon.api.graphics.builder.TextCharacterStringBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.game.GameModifiers
 import org.codetome.zircon.api.game.Position3D

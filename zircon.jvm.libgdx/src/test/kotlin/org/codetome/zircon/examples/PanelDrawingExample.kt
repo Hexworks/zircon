@@ -3,9 +3,9 @@ package org.codetome.zircon.examples
 import org.codetome.zircon.api.LibgdxTerminalBuilder
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.BoxBuilder
+import org.codetome.zircon.api.graphics.builder.BoxBuilder
 import org.codetome.zircon.api.builder.ScreenBuilder
-import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.api.resource.CP437TilesetResource

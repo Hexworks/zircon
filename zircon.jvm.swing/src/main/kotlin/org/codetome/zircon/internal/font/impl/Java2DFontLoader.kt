@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.font.impl
 
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.api.util.FontUtils
+import org.codetome.zircon.api.util.JVMFontUtils
 import org.codetome.zircon.internal.font.FontLoader
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.cache.NoOpCache
@@ -25,8 +25,8 @@ class Java2DFontLoader : FontLoader {
 
         return Java2DPhysicalFont(
                 source = font,
-                width = FontUtils.getFontWidth(font),
-                height = FontUtils.getFontHeight(font),
+                width = JVMFontUtils.getFontWidth(font),
+                height = JVMFontUtils.getFontHeight(font),
                 cache = if (cacheFonts) {
                     CacheFactory.create()
                 } else {

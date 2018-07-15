@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.component.impl.wrapping
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.BoxBuilder
+import org.codetome.zircon.api.graphics.builder.BoxBuilder
 import org.codetome.zircon.api.graphics.BoxType
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
