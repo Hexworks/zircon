@@ -4,7 +4,7 @@ import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.TextCharacter;
-import org.codetome.zircon.api.builder.LayerBuilder;
+import org.codetome.zircon.api.graphics.builder.LayerBuilder;
 import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.interop.Positions;

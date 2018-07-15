@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.interop
 
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.LayerBuilder
+import org.codetome.zircon.api.graphics.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.internal.font.impl.FontSettings
 

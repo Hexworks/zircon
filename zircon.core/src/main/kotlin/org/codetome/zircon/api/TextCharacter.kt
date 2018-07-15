@@ -113,9 +113,9 @@ interface TextCharacter : Cacheable {
         /**
          * Creates a new [DefaultTextCharacter].
          */
-        fun of(character: Char,
-               styleSet: StyleSet,
-               tags: Set<String> = setOf()) = TextCharacterFactory.create(character, styleSet, tags)
+        fun create(character: Char,
+                   styleSet: StyleSet,
+                   tags: Set<String> = setOf()) = TextCharacterFactory.create(character, styleSet, tags)
     }
 
 }

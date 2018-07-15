@@ -2,6 +2,7 @@ package org.codetome.zircon.api.builder
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.api.interop.Modifiers
 import org.junit.Test
@@ -20,7 +21,7 @@ class TextCharacterBuilderTest {
                 .build()
 
         assertThat(result).isEqualTo(
-                TextCharacter.of(
+                TextCharacter.create(
                         character = CHAR,
                         tags = TAGS,
                         styleSet = StyleSetBuilder.newBuilder()

@@ -7,7 +7,7 @@ import java.awt.font.FontRenderContext
 /**
  * Convenience functions for [Font]s.
  */
-object FontUtils {
+object JVMFontUtils {
 
     /**
      * Tells whether the given [Font] is monospaced or not.

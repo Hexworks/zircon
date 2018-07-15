@@ -6,7 +6,7 @@ import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.TextCharacter;
 import org.codetome.zircon.api.builder.ScreenBuilder;
-import org.codetome.zircon.api.builder.TextCharacterStringBuilder;
+import org.codetome.zircon.api.graphics.builder.TextCharacterStringBuilder;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.game.GameArea;

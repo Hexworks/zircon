@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.component.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.StyleSetBuilder
+import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.BoxType

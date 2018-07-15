@@ -18,10 +18,7 @@ import org.codetome.zircon.api.resource.GraphicTilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.CursorStyle;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.internal.component.builder.LabelBuilder;
 import org.codetome.zircon.internal.component.builder.PanelBuilder;
-import org.codetome.zircon.internal.component.builder.RadioButtonGroupBuilder;
-import org.codetome.zircon.internal.component.builder.TextBoxBuilder;
 import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy;
 
 import java.util.*;

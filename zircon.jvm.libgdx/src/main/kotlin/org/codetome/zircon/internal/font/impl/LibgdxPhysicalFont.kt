@@ -6,7 +6,7 @@ import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.interop.Modifiers
-import org.codetome.zircon.api.util.FontUtils
+import org.codetome.zircon.api.util.JVMFontUtils
 import org.codetome.zircon.internal.font.FontRegionCache
 import org.codetome.zircon.internal.font.transformer.NoOpTransformer
 import org.codetome.zircon.api.util.Identifier
@@ -24,7 +24,7 @@ class LibgdxPhysicalFont(private val source: java.awt.Font,
     private val id = Identifier.randomIdentifier()
 
     init {
-        require(FontUtils.isFontMonospaced(source)) {
+        require(JVMFontUtils.isFontMonospaced(source)) {
             "Font '${source.name} is not monospaced!"
         }
     }

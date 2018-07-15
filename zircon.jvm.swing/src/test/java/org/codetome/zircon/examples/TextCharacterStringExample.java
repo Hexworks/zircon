@@ -2,7 +2,7 @@ package org.codetome.zircon.examples;
 
 import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.builder.TextCharacterStringBuilder;
+import org.codetome.zircon.api.graphics.builder.TextCharacterStringBuilder;
 import org.codetome.zircon.api.graphics.TextCharacterString;
 import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.interop.Sizes;
