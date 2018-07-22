@@ -19,7 +19,7 @@ class DefaultStyleSetTest {
                 .foregroundColor(TextColor.fromString("#aabbcc"))
                 .modifiers(Modifiers.CROSSED_OUT, BorderBuilder.newBuilder().borderPositions(BorderPosition.TOP).build())
                 .build().generateCacheKey()
-        assertThat(result).isEqualTo("170187204255WHITECrossedOutBorderSOLIDTOP")
+        assertThat(result).isEqualTo("170187204255WHITEBorderSOLIDTOP-CrossedOut")
     }
 
     @Test

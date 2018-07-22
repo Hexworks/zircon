@@ -78,5 +78,16 @@ interface StyleSet : Cacheable {
      */
     fun withoutModifiers(): StyleSet
 
+    companion object {
+
+        fun generateCacheKey(foregroundColor: TextColor, backgroundColor: TextColor, modifiers: Set<Modifier>): String =
+                StringBuilder().apply {
+                    append(foregroundColor.generateCacheKey())
+                    append(backgroundColor.generateCacheKey())
+                    append(modifiers.sortedBy { it.generateCacheKey() }
+                            .joinToString(separator = "-", transform = { it.generateCacheKey() }))
+                }.toString()
+    }
+
 }
 
