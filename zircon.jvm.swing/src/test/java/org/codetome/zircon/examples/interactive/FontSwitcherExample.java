@@ -44,7 +44,7 @@ public class FontSwitcherExample {
 
         final Random random = new Random();
 
-        refreshText(terminal, switchFont, Positions.DEFAULT_POSITION);
+        refreshText(terminal, switchFont, Positions.defaultPosition());
         refreshLayer(terminal, switchLayer, random);
 
         terminal.onInput(input -> {
@@ -52,7 +52,7 @@ public class FontSwitcherExample {
                 if (input.asKeyStroke().inputTypeIs(InputType.ArrowRight)) {
                     terminal.useFont(FONTS.get(random.nextInt(FONTS.size())));
                     // this is needed because terminal can't be forced to redraw
-                    refreshText(terminal, switchFont, Positions.DEFAULT_POSITION);
+                    refreshText(terminal, switchFont, Positions.defaultPosition());
                     terminal.flush();
                 }
                 if (input.asKeyStroke().inputTypeIs(InputType.ArrowLeft)) {
@@ -79,7 +79,7 @@ public class FontSwitcherExample {
                 .offset(Positions.create(0, 1))
                 .size(Sizes.create(text.length(), 1))
                 .build();
-        layer.putText(text, Positions.DEFAULT_POSITION);
+        layer.putText(text, Positions.defaultPosition());
         terminal.pushLayer(layer);
     }
 

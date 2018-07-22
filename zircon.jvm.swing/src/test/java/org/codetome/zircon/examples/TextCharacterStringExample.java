@@ -19,7 +19,7 @@ public class TextCharacterStringExample {
     private static final int TERMINAL_HEIGHT = 16;
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
 
-        public static void main(String[] args) {
+    public static void main(String[] args) {
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .font(TAFFER_20X20.toFont())
                 .initialTerminalSize(SIZE)
@@ -33,7 +33,7 @@ public class TextCharacterStringExample {
                 .text("This is some text which is too long to fit on one line...")
                 .build();
 
-        terminal.draw(tcs, Positions.DEFAULT_POSITION);
+        terminal.draw(tcs, Positions.defaultPosition());
 
         terminal.flush();
     }

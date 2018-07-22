@@ -29,10 +29,10 @@ public class PanelDrawingExample {
         screen.setCursorVisibility(false);
 
         Shapes
-                .buildFilledRectangle(Positions.DEFAULT_POSITION, screen.getBoundableSize())
+                .buildFilledRectangle(Positions.defaultPosition(), screen.getBoundableSize())
                 .toTextImage(TextCharacters.defaultCharacter()
                         .withBackgroundColor(BACKGROUND_COLOR))
-                .drawOnto(screen, Positions.DEFAULT_POSITION);
+                .drawOnto(screen, Positions.defaultPosition());
 
         final Box box = Boxes.newBuilder()
                 .boxType(BoxType.DOUBLE)
@@ -42,11 +42,11 @@ public class PanelDrawingExample {
                         .foregroundColor(PANEL_FG_COLOR)
                         .build())
                 .build();
-        box.putText("Title", Positions.DEFAULT_POSITION
+        box.putText("Title", Positions.defaultPosition()
                 .withRelativeX(5));
-        box.setCharacterAt(Positions.DEFAULT_POSITION.withRelativeX(4),
+        box.setCharacterAt(Positions.defaultPosition().withRelativeX(4),
                 BoxType.TOP_BOTTOM_DOUBLE.getConnectorLeft());
-        box.setCharacterAt(Positions.DEFAULT_POSITION.withRelativeX(10),
+        box.setCharacterAt(Positions.defaultPosition().withRelativeX(10),
                 BoxType.TOP_BOTTOM_DOUBLE.getConnectorRight());
         screen.draw(box, Positions.create(2, 2));
         screen.display();

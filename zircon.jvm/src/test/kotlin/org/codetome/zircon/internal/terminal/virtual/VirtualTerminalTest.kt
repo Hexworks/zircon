@@ -11,8 +11,6 @@ import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.interop.Modifiers
-import org.codetome.zircon.api.interop.Positions.DEFAULT_POSITION
-import org.codetome.zircon.api.interop.Positions.OFFSET_1x1
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.TerminalResizeListener
@@ -43,16 +41,16 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldCapCursorColumnsWhenSetToBiggerThanTerminalSize() {
-        target.putCursorAt(DEFAULT_POSITION.withRelativeX(Int.MAX_VALUE))
+        target.putCursorAt(Position.defaultPosition().withRelativeX(Int.MAX_VALUE))
         assertThat(target.getCursorPosition())
-                .isEqualTo(DEFAULT_POSITION.withX(target.getBoundableSize().xLength - 1))
+                .isEqualTo(Position.defaultPosition().withX(target.getBoundableSize().xLength - 1))
     }
 
     @Test
     fun shouldCapCursorRowsWhenSetToBiggerThanTerminalSize() {
-        target.putCursorAt(DEFAULT_POSITION.withRelativeY(Int.MAX_VALUE))
+        target.putCursorAt(Position.defaultPosition().withRelativeY(Int.MAX_VALUE))
         assertThat(target.getCursorPosition())
-                .isEqualTo(DEFAULT_POSITION.withY(target.getBoundableSize().yLength - 1))
+                .isEqualTo(Position.defaultPosition().withY(target.getBoundableSize().yLength - 1))
     }
 
     @Test
@@ -80,7 +78,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldResetCursorWhenColsAreLessAfterResize() {
-        target.putCursorAt(DEFAULT_POSITION.withX(Int.MAX_VALUE))
+        target.putCursorAt(Position.defaultPosition().withX(Int.MAX_VALUE))
         val originalCursorPos = target.getCursorPosition()
         target.setSize(NEW_LESS_COLS_SIZE)
         assertThat(target.getCursorPosition()).isEqualTo(originalCursorPos.withX(NEW_LESS_COLS_SIZE.xLength - 1))
@@ -88,7 +86,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldResetCursorWhenRowsAreLessAfterResize() {
-        target.putCursorAt(DEFAULT_POSITION.withY(Int.MAX_VALUE))
+        target.putCursorAt(Position.defaultPosition().withY(Int.MAX_VALUE))
         val originalCursorPos = target.getCursorPosition()
         target.setSize(NEW_LESS_ROWS_SIZE)
         assertThat(target.getCursorPosition()).isEqualTo(originalCursorPos.withRelativeY(-1))
@@ -128,7 +126,7 @@ class VirtualTerminalTest {
                 .character('a')
                 .build()
         target.putCharacter('a')
-        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
+        assertThat(target.getCharacterAt(Position.defaultPosition()).get())
                 .isEqualTo(tc)
     }
 
@@ -138,7 +136,7 @@ class VirtualTerminalTest {
                 .character('a')
                 .build()
         target.putTextCharacter(tc)
-        assertThat(target.getCharacterAt(DEFAULT_POSITION).get())
+        assertThat(target.getCharacterAt(Position.defaultPosition()).get())
                 .isEqualTo(tc)
     }
 
@@ -158,7 +156,7 @@ class VirtualTerminalTest {
         val dirtyCells = mutableListOf<Cell>()
         target.forEachDirtyCell { dirtyCells.add(it) }
         assertThat(dirtyCells
-                .filter { it.position == OFFSET_1x1 }
+                .filter { it.position == Position.offset1x1() }
                 .map { it.character })
                 .containsExactly(TextCharacter.defaultCharacter().withCharacter('x'))
     }
@@ -168,12 +166,12 @@ class VirtualTerminalTest {
         val dirtyCells = addCharAndFetchDirtyCells('a')
         assertThat(dirtyCells).containsExactly(
                 Cell(
-                        position = DEFAULT_POSITION,
+                        position = Position.defaultPosition(),
                         character = TextCharacterBuilder.newBuilder()
                                 .character('a')
                                 .build()),
                 Cell(
-                        position = DEFAULT_POSITION.withRelativeX(1),
+                        position = Position.defaultPosition().withRelativeX(1),
                         character = TextCharacterBuilder.newBuilder()
                                 .character(' ')
                                 .build())
@@ -197,22 +195,22 @@ class VirtualTerminalTest {
     @Test
     fun shouldBeAbleToSetCharacter() {
         val expectedChar = TextCharacter.defaultCharacter().withCharacter('x')
-        target.setCharacterAt(OFFSET_1x1, expectedChar)
+        target.setCharacterAt(Position.offset1x1(), expectedChar)
 
-        assertThat(target.getCharacterAt(OFFSET_1x1).get())
+        assertThat(target.getCharacterAt(Position.offset1x1()).get())
                 .isEqualTo(expectedChar)
     }
 
     @Test
     fun shouldProperlyMarkBlinkingCharactersAsDirtyAfterADirtyDrain() {
-        target.setCharacterAt(DEFAULT_POSITION, TextCharacterBuilder.newBuilder()
+        target.setCharacterAt(Position.defaultPosition(), TextCharacterBuilder.newBuilder()
                 .modifiers(Modifiers.BLINK)
                 .build())
 
         target.drainDirtyPositions()
 
         val result = target.drainDirtyPositions()
-        assertThat(result).containsExactly(DEFAULT_POSITION)
+        assertThat(result).containsExactly(Position.defaultPosition())
     }
 
     @Test
@@ -294,11 +292,11 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldSetCursorPositionToNewLineWhenWritingAtTheEndOfTheLine() {
-        target.putCursorAt(DEFAULT_POSITION.withRelativeX(Int.MAX_VALUE))
+        target.putCursorAt(Position.defaultPosition().withRelativeX(Int.MAX_VALUE))
         target.putCharacter('a')
 
         assertThat(target.getCursorPosition())
-                .isEqualTo(DEFAULT_POSITION.withRelativeY(1))
+                .isEqualTo(Position.defaultPosition().withRelativeY(1))
     }
 
     private fun addCharAndFetchDirtyCells(char: Char): MutableList<Cell> {

@@ -1,5 +1,6 @@
 package org.codetome.zircon.examples;
 
+import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.SwingTerminalBuilder;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.component.Button;
@@ -27,7 +28,7 @@ public class Playground {
                 .build();
         final Screen mainScreen = Screens.createScreenFor(terminal);
 
-        mainScreen.draw(backgroundLayer, Positions.TOP_LEFT_CORNER);
+        mainScreen.draw(backgroundLayer, Positions.topLeftCorner());
 
         DefaultColorTheme theme = ColorThemes.newBuilder()
                 .accentColor(ANSITextColor.YELLOW)
@@ -47,7 +48,7 @@ public class Playground {
 
         Button newGame = Components.newButtonBuilder()
                 .text("New Game")
-                .position(Positions.OFFSET_1x1)
+                .position(Positions.offset1x1())
                 .build();
 
         Button options = Components.newButtonBuilder()
