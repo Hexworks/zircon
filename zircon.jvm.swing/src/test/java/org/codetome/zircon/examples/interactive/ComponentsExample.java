@@ -79,7 +79,7 @@ public class ComponentsExample {
                 .position(Positions.create(2, 4))
                 .build();
         simplePanel.addComponent(Components.newLabelBuilder()
-                .position(Positions.OFFSET_1x1)
+                .position(Positions.offset1x1())
                 .text("Simple panel")
                 .build());
         panelsScreen.addComponent(simplePanel);
@@ -124,7 +124,7 @@ public class ComponentsExample {
                 .build();
         borderedPanel.addComponent(Components.newLabelBuilder()
                 .text("Bordered panel")
-                .position(Positions.OFFSET_1x1)
+                .position(Positions.offset1x1())
                 .build());
         panelsScreen.addComponent(borderedPanel);
 
@@ -136,7 +136,7 @@ public class ComponentsExample {
                 .build();
         borderedPanelWithShadow.addComponent(Components.newLabelBuilder()
                 .text("Border+shadow panel")
-                .position(Positions.OFFSET_1x1)
+                .position(Positions.offset1x1())
                 .build());
         panelsScreen.addComponent(borderedPanelWithShadow);
 
@@ -218,7 +218,7 @@ public class ComponentsExample {
                 .build();
         final Button addButton = Components.newButtonBuilder()
                 .text("Add new panel")
-                .position(Positions.OFFSET_1x1)
+                .position(Positions.offset1x1())
                 .build();
         final Button clearButton = Components.newButtonBuilder()
                 .text("Remove all panels")
@@ -420,7 +420,7 @@ public class ComponentsExample {
     }
 
     private static void refreshIcon(Layer icon, char c) {
-        icon.setRelativeCharacterAt(Positions.DEFAULT_POSITION, TextCharacters.newBuilder()
+        icon.setRelativeCharacterAt(Positions.defaultPosition(), TextCharacters.newBuilder()
                 .character(c)
                 .backgroundColor(TextColors.TRANSPARENT)
                 .build());

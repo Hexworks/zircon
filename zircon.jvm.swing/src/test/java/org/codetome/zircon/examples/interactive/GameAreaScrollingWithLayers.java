@@ -60,7 +60,7 @@ public class GameAreaScrollingWithLayers {
                 .build();
         Button sleep = Components.newButtonBuilder()
                 .text("Sleep")
-                .position(Positions.DEFAULT_POSITION.withRelativeY(1))
+                .position(Positions.defaultPosition().withRelativeY(1))
                 .build();
         actions.addComponent(wait);
         actions.addComponent(sleep);
@@ -69,7 +69,7 @@ public class GameAreaScrollingWithLayers {
 
         final Panel gamePanel = Components.newPanelBuilder()
                 .size(screen.getBoundableSize().withXLength(40))
-                .position((Positions.DEFAULT_POSITION).relativeToRightOf(actions))
+                .position((Positions.defaultPosition()).relativeToRightOf(actions))
                 .title("Game area")
                 .wrapWithBox()
                 .boxType(BoxType.TOP_BOTTOM_DOUBLE)
