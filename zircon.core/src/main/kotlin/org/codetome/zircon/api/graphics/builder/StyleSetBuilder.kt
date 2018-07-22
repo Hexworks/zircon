@@ -4,7 +4,6 @@ import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
-import org.codetome.zircon.internal.factory.StyleSetFactory
 
 /**
  * Builder used to create [StyleSet]s. Uses the default colors from
@@ -15,7 +14,7 @@ data class StyleSetBuilder(
         private var backgroundColor: TextColor = TextColor.defaultBackgroundColor(),
         private var modifiers: Set<Modifier> = setOf()) : Builder<StyleSet> {
 
-    override fun build(): StyleSet = StyleSetFactory.create(
+    override fun build(): StyleSet = StyleSet.create(
             foregroundColor = foregroundColor,
             backgroundColor = backgroundColor,
             modifiers = modifiers.toMutableSet())

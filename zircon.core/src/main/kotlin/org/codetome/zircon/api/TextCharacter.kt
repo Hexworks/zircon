@@ -6,7 +6,7 @@ import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.Border
 import org.codetome.zircon.internal.DefaultTextCharacter
-import org.codetome.zircon.platform.factory.TextCharacterFactory
+import org.codetome.zircon.internal.factory.TextCharacterFactory
 
 /**
  * Represents a single character with additional metadata such as colors and modifiers.
@@ -116,6 +116,13 @@ interface TextCharacter : Cacheable {
         fun create(character: Char,
                    styleSet: StyleSet,
                    tags: Set<String> = setOf()) = TextCharacterFactory.create(character, styleSet, tags)
+
+        fun generateCacheKey(character: Char, styleSet: StyleSet, tags: Set<String>): String =
+                StringBuilder().apply {
+                    append(character)
+                    append(styleSet.generateCacheKey())
+                    append(tags.sorted().joinToString(separator = ""))
+                }.toString()
     }
 
 }

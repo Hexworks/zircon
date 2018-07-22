@@ -20,8 +20,6 @@ class TextBuffer(text: String) {
 
     fun getSize() = currentText.size
 
-    fun getSB() = StringBuilder()
-
     fun getRow(row: Int): Maybe<StringBuilder> =
             if (row < currentText.size && row >= 0) {
                 Maybe.of(currentText[row])

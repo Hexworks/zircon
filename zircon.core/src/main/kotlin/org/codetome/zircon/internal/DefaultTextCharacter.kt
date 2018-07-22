@@ -13,12 +13,6 @@ data class DefaultTextCharacter(
         private val styleSet: StyleSet,
         private val tags: Set<String>) : TextCharacter {
 
-    private val cacheKey = StringBuilder().apply {
-        append(character)
-        append(styleSet.generateCacheKey())
-        append(tags.joinToString(separator = ""))
-    }.toString()
-
     override fun getCharacter(): Char = character
 
     override fun getForegroundColor(): TextColor = styleSet.getForegroundColor()
@@ -97,6 +91,9 @@ data class DefaultTextCharacter(
 
     override fun withTags(tags: Set<String>) = copy(tags = tags)
 
-    override fun generateCacheKey() = cacheKey
+    override fun generateCacheKey() = TextCharacter.generateCacheKey(
+            character = character,
+            styleSet = styleSet,
+            tags = tags)
 
 }
