@@ -1,9 +1,9 @@
 package org.codetome.zircon.api.terminal.config
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.terminal.CursorStyle
+import org.codetome.zircon.api.terminal.builder.DeviceConfigurationBuilder
 import org.junit.Test
 
 class DeviceConfigurationTest {

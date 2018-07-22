@@ -2,12 +2,13 @@ package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ComponentState
+import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.api.interop.Modifiers
@@ -16,9 +17,8 @@ import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.component.builder.CheckBoxBuilder
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
-import org.codetome.zircon.platform.factory.TextColorFactory
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -162,7 +162,7 @@ class DefaultCheckBoxTest {
 
         val EXPECTED_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.getAccentColor())
-                .backgroundColor(TextColorFactory.transparent())
+                .backgroundColor(TextColor.transparent())
                 .build()
 
         val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()

@@ -1,10 +1,9 @@
 package org.codetome.zircon.api.resource
 
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.PickFirstMetaStrategy
 import org.codetome.zircon.internal.util.CP437Utils.CP437_METADATA
-import java.io.InputStream
 
 /**
  * This enum encapsulates the means of loading CP437 tilesets.
@@ -15,7 +14,7 @@ enum class CP437TilesetResource(private val tilesetName: String,
                                 val width: Int,
                                 val height: Int,
                                 private val fileName: String = "${tilesetName}_${width}x$height.png",
-                                val path: String = "/cp_437_tilesets/$fileName") {
+                                val path: String = "zircon.jvm/src/main/resources/cp_437_tilesets/$fileName") {
 
     JOLLY_12X12("jolly", 12, 12),
     ADU_DHABI_16X16("adu_dhabi", 16, 16),
@@ -36,8 +35,7 @@ enum class CP437TilesetResource(private val tilesetName: String,
     REX_PAINT_14X14("rex_paint", 14, 14),
     REX_PAINT_16X16("rex_paint", 16, 16),
     REX_PAINT_18X18("rex_paint", 18, 18),
-    REX_PAINT_20X20("rex_paint", 20, 20)
-    ;
+    REX_PAINT_20X20("rex_paint", 20, 20);
 
     /**
      * Loads this built-in tileset as a tiled [Font].
@@ -47,7 +45,7 @@ enum class CP437TilesetResource(private val tilesetName: String,
         return loadCP437Tileset(
                 width = width,
                 height = height,
-                source = javaClass.getResourceAsStream(path),
+                path = path,
                 cacheFonts = cacheFonts)
     }
 
@@ -64,10 +62,10 @@ enum class CP437TilesetResource(private val tilesetName: String,
         @JvmOverloads
         fun loadCP437Tileset(width: Int,
                              height: Int,
-                             source: InputStream,
+                             path: String,
                              cacheFonts: Boolean = true): Font {
             return FontLoaderRegistry.getCurrentFontLoader().fetchTiledFont(
-                    source = source,
+                    path = path,
                     metadata = CP437_METADATA,
                     width = width,
                     height = height,

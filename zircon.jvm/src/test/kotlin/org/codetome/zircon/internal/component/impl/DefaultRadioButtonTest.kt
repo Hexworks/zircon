@@ -2,12 +2,12 @@ package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.platform.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ComponentState
+import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
+import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.event.Event
@@ -173,7 +173,7 @@ class DefaultRadioButtonTest {
 
         val EXPECTED_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.getAccentColor())
-                .backgroundColor(TextColorFactory.transparent())
+                .backgroundColor(TextColor.transparent())
                 .build()
 
         val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()

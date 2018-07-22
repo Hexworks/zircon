@@ -12,7 +12,7 @@ import org.codetome.zircon.api.terminal.DeviceConfiguration
 data class DeviceConfigurationBuilder(
         private var blinkLengthInMilliSeconds: Long = 500,
         private var cursorStyle: CursorStyle = CursorStyle.USE_CHARACTER_FOREGROUND,
-        private var cursorColor: TextColor = TextColorFactory.defaultForegroundColor(),
+        private var cursorColor: TextColor = TextColor.defaultForegroundColor(),
         private var cursorBlinking: Boolean = false,
         private var clipboardAvailable: Boolean = true) : Builder<DeviceConfiguration> {
 

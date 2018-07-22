@@ -4,6 +4,7 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.Symbols
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
@@ -18,8 +19,8 @@ class ShadowWrappingStrategy(private val shadowChar: Char = DEFAULT_SHADOW_CHAR)
 
     override fun apply(textImage: TextImage, size: Size, offset: Position, style: StyleSet) {
         val tc = TextCharacterBuilder.newBuilder()
-                .backgroundColor(TextColorFactory.transparent())
-                .foregroundColor(TextColorFactory.fromString("#555555"))
+                .backgroundColor(TextColor.transparent())
+                .foregroundColor(TextColor.create(100, 100, 100))
                 .character(shadowChar)
                 .build()
         LineFactory.buildLine(

@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.color
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.platform.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColor
 import org.junit.Test
 
 class DefaultTextColorTest {
@@ -20,7 +20,7 @@ class DefaultTextColorTest {
         assertThat(result.getRed()).isEqualTo(RED)
         assertThat(result.getGreen()).isEqualTo(GREEN)
         assertThat(result.getBlue()).isEqualTo(BLUE)
-        assertThat(result.getAlpha()).isEqualTo(TextColorFactory.defaultAlpha())
+        assertThat(result.getAlpha()).isEqualTo(TextColor.defaultAlpha())
     }
 
     companion object {

@@ -1,8 +1,7 @@
 package org.codetome.zircon.api.resource
 
-import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
 import java.awt.Font
-import java.io.InputStream
 
 /**
  * This enum encapsulates the means of loading physical fonts from `.ttf` files.
@@ -11,7 +10,7 @@ import java.io.InputStream
  */
 enum class PhysicalFontResource(private val fontName: String,
                                 private val fileName: String = "$fontName.ttf",
-                                private val path: String = "/monospace_fonts/$fileName") {
+                                private val path: String = "zircon.jvm/src/main/resources/monospace_fonts/$fileName") {
 
     ANONYMOUS_PRO("AnonymousPro-Regular"),
     COUSINE("Cousine-Regular"),
@@ -39,7 +38,7 @@ enum class PhysicalFontResource(private val fontName: String,
             loadPhysicalFont(
                     size = size,
                     withAntiAlias = withAntiAlias,
-                    source = this.javaClass.getResourceAsStream(path),
+                    path = path,
                     cacheFonts = cacheFonts)
 
     companion object {
@@ -52,12 +51,12 @@ enum class PhysicalFontResource(private val fontName: String,
         @JvmOverloads
         @JvmStatic
         fun loadPhysicalFont(size: Float,
-                             source: InputStream,
+                             path: String,
                              cacheFonts: Boolean = true,
                              withAntiAlias: Boolean = true) =
                 FontLoaderRegistry.getCurrentFontLoader().fetchPhysicalFont(
                         size = size,
-                        source = source,
+                        path = path,
                         withAntiAlias = withAntiAlias,
                         cacheFonts = cacheFonts)
     }

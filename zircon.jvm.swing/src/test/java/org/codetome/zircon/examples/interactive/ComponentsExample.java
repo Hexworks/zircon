@@ -4,7 +4,6 @@ import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
-import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection;
 import org.codetome.zircon.api.font.Font;
@@ -49,11 +48,11 @@ public class ComponentsExample {
                         .build())
                 .build();
 
-        Screen panelsScreen = ScreenBuilder.createScreenFor(terminal);
-        Screen inputsScreen = ScreenBuilder.createScreenFor(terminal);
-        Screen addAndRemoveScreen = ScreenBuilder.createScreenFor(terminal);
-        Screen colorThemesScreen = ScreenBuilder.createScreenFor(terminal);
-        Screen multiFontScreen = ScreenBuilder.createScreenFor(terminal);
+        Screen panelsScreen = Screens.createScreenFor(terminal);
+        Screen inputsScreen = Screens.createScreenFor(terminal);
+        Screen addAndRemoveScreen = Screens.createScreenFor(terminal);
+        Screen colorThemesScreen = Screens.createScreenFor(terminal);
+        Screen multiFontScreen = Screens.createScreenFor(terminal);
         final List<Screen> screens = Arrays.asList(
                 panelsScreen,
                 inputsScreen,

@@ -1,13 +1,13 @@
 package org.codetome.zircon.api
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.ANSITextColor.*
-import org.codetome.zircon.platform.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColor
+import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 import org.codetome.zircon.api.interop.Modifiers
-import org.codetome.zircon.internal.SimpleModifiers.*
+import org.codetome.zircon.api.modifier.SimpleModifiers.*
 import org.junit.Test
 
 @Suppress("UsePropertyAccessSyntax")
@@ -18,7 +18,7 @@ class DefaultTextCharacterTest {
         val result = TextCharacterBuilder.newBuilder()
                 .character('x')
                 .backgroundColor(ANSITextColor.GREEN)
-                .foregroundColor(TextColorFactory.fromString("#aabbcc"))
+                .foregroundColor(TextColor.fromString("#aabbcc"))
                 .modifiers(Bold)
                 .tag("foo", "bar")
                 .build()
@@ -231,8 +231,8 @@ class DefaultTextCharacterTest {
 
     companion object {
         val EXPECTED_CHAR = 'x'
-        val EXPECTED_FG_COLOR = TextColorFactory.fromString("#aabbcc")
-        val EXPECTED_BG_COLOR = TextColorFactory.fromString("#223344")
+        val EXPECTED_FG_COLOR = TextColor.fromString("#aabbcc")
+        val EXPECTED_BG_COLOR = TextColor.fromString("#223344")
         val EXPECTED_MODIFIERS = setOf(Modifiers.BOLD, Modifiers.ITALIC)
 
         val EXPECTED_TEXT_CHARACTER = TextCharacter.create(

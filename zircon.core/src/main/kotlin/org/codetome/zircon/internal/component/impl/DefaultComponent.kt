@@ -6,23 +6,23 @@ import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.FontOverride
-import org.codetome.zircon.api.graphics.builder.LayerBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.graphics.builder.LayerBuilder
+import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.codetome.zircon.api.input.MouseAction
+import org.codetome.zircon.api.util.Consumer
+import org.codetome.zircon.api.util.Identifier
+import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultFontOverride
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.api.util.Consumer
-import org.codetome.zircon.api.util.Identifier
-import org.codetome.zircon.api.util.Maybe
 
 abstract class DefaultComponent(initialSize: Size,
                                 initialFont: Font,

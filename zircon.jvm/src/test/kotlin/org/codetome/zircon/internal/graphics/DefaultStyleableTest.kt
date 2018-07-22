@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
-import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.internal.behavior.impl.DefaultStyleable
 import org.junit.Before
@@ -25,13 +25,13 @@ class DefaultStyleableTest {
     @Test
     fun shouldHaveProperFGByDefault() {
         assertThat(target.getForegroundColor())
-                .isEqualTo(TextColorFactory.defaultForegroundColor())
+                .isEqualTo(TextColor.defaultForegroundColor())
     }
 
     @Test
     fun shouldHaveProperBGByDefault() {
         assertThat(target.getBackgroundColor())
-                .isEqualTo(TextColorFactory.defaultBackgroundColor())
+                .isEqualTo(TextColor.defaultBackgroundColor())
     }
 
     @Test

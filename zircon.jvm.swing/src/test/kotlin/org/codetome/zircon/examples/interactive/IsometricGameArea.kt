@@ -3,16 +3,16 @@ package org.codetome.zircon.examples.interactive
 import org.codetome.zircon.TerminalUtils
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Symbols
-import org.codetome.zircon.api.graphics.builder.LayerBuilder
-import org.codetome.zircon.api.builder.ScreenBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.graphics.builder.TextCharacterStringBuilder
 import org.codetome.zircon.api.color.ANSITextColor
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.game.GameModifiers
 import org.codetome.zircon.api.game.Position3D
 import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.api.graphics.BoxType
+import org.codetome.zircon.api.graphics.builder.LayerBuilder
+import org.codetome.zircon.api.graphics.builder.TextCharacterStringBuilder
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.interop.Components
 import org.codetome.zircon.api.interop.Sizes
@@ -21,6 +21,7 @@ import org.codetome.zircon.api.interop.TextColors
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.screen.Screen
+import org.codetome.zircon.api.screen.builder.ScreenBuilder
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent
 import org.codetome.zircon.internal.game.InMemoryGameArea
 import org.codetome.zircon.platform.factory.TextColorFactory
@@ -86,7 +87,7 @@ object IsometricGameArea {
             .build()
 
     private val GUY = TextCharacters.newBuilder()
-            .backgroundColor(TextColorFactory.transparent())
+            .backgroundColor(TextColor.transparent())
             .foregroundColor(ANSITextColor.RED)
             .character(Symbols.FACE_BLACK)
             .build()
@@ -184,7 +185,7 @@ object IsometricGameArea {
                         if (extra == 2) {
                             chars.add(TextCharacters.newBuilder()
                                     .foregroundColor(TextColors.fromString("#333333"))
-                                    .backgroundColor(TextColorFactory.transparent())
+                                    .backgroundColor(TextColor.transparent())
                                     .character(Symbols.SINGLE_LINE_T_DOUBLE_DOWN)
                                     .build())
                         }
@@ -236,7 +237,7 @@ object IsometricGameArea {
                 val (x, y, z) = gameComponent.getVisibleOffset()
                 screen.pushLayer(LayerBuilder.newBuilder()
                         .textImage(TextCharacterStringBuilder.newBuilder()
-                                .backgroundColor(TextColorFactory.transparent())
+                                .backgroundColor(TextColor.transparent())
                                 .foregroundColor(TextColors.fromString("#aaaadd"))
                                 .text(String.format("Position: (x=%s, y=%s, z=%s)", x, y, z))
                                 .build()

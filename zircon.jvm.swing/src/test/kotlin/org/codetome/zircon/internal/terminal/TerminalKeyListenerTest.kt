@@ -2,11 +2,11 @@ package org.codetome.zircon.internal.terminal
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.InputType.Character
 import org.codetome.zircon.api.input.KeyStroke
+import org.codetome.zircon.api.terminal.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
 import org.junit.Before

@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal
+package org.codetome.zircon.api.modifier
 
 import org.codetome.zircon.api.Modifier
 

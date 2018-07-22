@@ -7,10 +7,10 @@ import org.codetome.zircon.api.animation.Animation;
 import org.codetome.zircon.api.animation.AnimationBuilder;
 import org.codetome.zircon.api.animation.AnimationResource;
 import org.codetome.zircon.api.animation.DefaultAnimationHandler;
-import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.interop.Components;
 import org.codetome.zircon.api.interop.Positions;
+import org.codetome.zircon.api.interop.Screens;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
@@ -28,7 +28,7 @@ public class AnimationExample {
                 .font(WANDERLUST_16X16.toFont())
                 .initialTerminalSize(TERMINAL_SIZE)
                 .build();
-        final Screen screen = ScreenBuilder.createScreenFor(terminal);
+        final Screen screen = Screens.createScreenFor(terminal);
         screen.setCursorVisibility(false);
 
         final Panel panel = Components.newPanelBuilder()

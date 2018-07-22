@@ -3,14 +3,10 @@ package org.codetome.zircon.examples.interactive;
 import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.TextCharacter;
-import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.builder.TerminalBuilder;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.input.KeyStroke;
-import org.codetome.zircon.api.interop.DeviceConfigurations;
-import org.codetome.zircon.api.interop.Sizes;
-import org.codetome.zircon.api.interop.TextCharacters;
-import org.codetome.zircon.api.interop.TextColors;
+import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
@@ -50,7 +46,7 @@ public class TypingExample {
                         .cursorBlinking(true)
                         .build());
         final Terminal terminal = builder.build();
-        final Screen screen = ScreenBuilder.createScreenFor(terminal);
+        final Screen screen = Screens.createScreenFor(terminal);
 
         startTypingSupportForScreen(screen);
 //        startTypingSupportForTerminal(terminal);

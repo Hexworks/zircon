@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.resource.CP437TilesetResource
-import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.junit.Before

@@ -7,14 +7,13 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.input.KeyStroke
-import org.codetome.zircon.api.interop.Modifiers
+import org.codetome.zircon.api.modifier.SimpleModifiers
 import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.terminal.ApplicationListener
 import org.codetome.zircon.internal.terminal.InternalTerminal
-import java.util.*
 
 /**
  * This is the class implements the [InternalTerminal] for the java 2d world. It maintains
@@ -30,7 +29,6 @@ abstract class ApplicationTerminal(
 
     private var hasBlinkingText = deviceConfiguration.isCursorBlinking
     private var blinkOn = true
-    private var blinkTimer = Timer("BlinkTimer", true)
     private var resizeHappened = false
 
     /**
@@ -47,25 +45,11 @@ abstract class ApplicationTerminal(
 
     abstract fun drawCursor(character: TextCharacter, x: Int, y: Int)
 
-    @Synchronized
     override fun doCreate() {
         onShutdown { doDispose() }
-        blinkTimer.schedule(object : TimerTask() {
-            override fun run() {
-                try {
-                    blinkOn = !blinkOn
-                    if (hasBlinkingText) {
-                        doRender()
-                        flush()
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }, deviceConfiguration.blinkLengthInMilliSeconds, deviceConfiguration.blinkLengthInMilliSeconds)
+        // TODO: support blink
     }
 
-    @Synchronized
     override fun doRender() {
         var needToRedraw = hasBlinkingText.or(resizeHappened)
         resizeHappened = false
@@ -82,7 +66,7 @@ abstract class ApplicationTerminal(
                 val (position, textCharacter) = cell
                 val atCursorLocation = cursorPosition == position
                 val drawCursor = shouldDrawCursor(atCursorLocation)
-                if (textCharacter.getModifiers().contains(Modifiers.BLINK)) {
+                if (textCharacter.getModifiers().contains(SimpleModifiers.Blink)) {
                     foundBlinkingCharacters = true
                 }
                 drawCharacter(
@@ -98,10 +82,8 @@ abstract class ApplicationTerminal(
         }
     }
 
-    @Synchronized
     override fun doDispose() {
         EventBus.broadcast(Event.Input(KeyStroke.EOF_STROKE))
-        blinkTimer.cancel()
     }
 
     override fun doResize(width: Int, height: Int) {

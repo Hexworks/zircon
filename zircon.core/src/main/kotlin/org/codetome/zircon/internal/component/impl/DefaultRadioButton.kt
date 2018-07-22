@@ -2,20 +2,20 @@ package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.RadioButton
+import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.util.ThreadSafeQueue
-import org.codetome.zircon.platform.factory.TextColorFactory
 
 class DefaultRadioButton(private val text: String,
                          wrappers: ThreadSafeQueue<WrappingStrategy>,
@@ -89,7 +89,7 @@ class DefaultRadioButton(private val text: String,
         setComponentStyles(ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getAccentColor())
-                        .backgroundColor(TextColorFactory.transparent())
+                        .backgroundColor(TextColor.transparent())
                         .build())
                 .mouseOverStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.getBrightBackgroundColor())

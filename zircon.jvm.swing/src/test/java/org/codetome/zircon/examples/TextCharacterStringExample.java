@@ -2,10 +2,10 @@ package org.codetome.zircon.examples;
 
 import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.graphics.builder.TextCharacterStringBuilder;
 import org.codetome.zircon.api.graphics.TextCharacterString;
 import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.interop.Sizes;
+import org.codetome.zircon.api.interop.TextCharacterStrings;
 import org.codetome.zircon.api.interop.TextColors;
 import org.codetome.zircon.api.terminal.Terminal;
 
@@ -26,7 +26,7 @@ public class TextCharacterStringExample {
                 .build();
         terminal.setCursorVisibility(false);
 
-        TextCharacterString tcs = TextCharacterStringBuilder.newBuilder()
+        TextCharacterString tcs = TextCharacterStrings.newBuilder()
                 .foregroundColor(TextColors.fromString("#eeffee"))
                 .backgroundColor(TextColors.fromString("#223344"))
                 .modifiers(UNDERLINE)

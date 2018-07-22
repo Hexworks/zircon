@@ -46,7 +46,7 @@ class Java2DPhysicalFontTest {
     fun shouldNotLoadNonMonospaceFont() {
         PhysicalFontResource.loadPhysicalFont(
                 size = 20f,
-                source = this.javaClass.getResourceAsStream("/non_mono_font/OpenSans-Regular.ttf"),
+                path = "src/test/resources/non_mono_font/OpenSans-Regular.ttf",
                 cacheFonts = true,
                 withAntiAlias = true)
     }

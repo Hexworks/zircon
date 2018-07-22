@@ -1,7 +1,6 @@
 package org.codetome.zircon.api.color
 
-import org.codetome.zircon.platform.factory.TextColorFactory
-import org.codetome.zircon.platform.factory.TextColorFactory.defaultAlpha
+import org.codetome.zircon.api.color.TextColor.Companion.defaultAlpha
 
 /**
  * Default ANSI colors.
@@ -32,18 +31,23 @@ enum class ANSITextColor(private val red: Int,
     override fun getAlpha() = alpha
 
     override fun darkenByPercent(percentage: Double): TextColor {
-        return TextColorFactory.fromRGB(red, green, blue, alpha).darkenByPercent(percentage)
+        return TextColor.create(red, green, blue, alpha).darkenByPercent(percentage)
     }
 
     override fun tint(): TextColor {
-        return TextColorFactory.fromRGB(red, green, blue, alpha).tint()
+        return TextColor.create(red, green, blue, alpha).tint()
     }
 
     override fun shade(): TextColor {
-        return TextColorFactory.fromRGB(red, green, blue, alpha).shade()
+        return TextColor.create(red, green, blue, alpha).shade()
     }
 
     override fun invert(): TextColor {
-        return TextColorFactory.fromRGB(red, green, blue, alpha).invert()
+        return TextColor.create(red, green, blue, alpha).invert()
+    }
+
+    companion object {
+
+        internal val COLOR_NAMES = values().map { it.name }
     }
 }

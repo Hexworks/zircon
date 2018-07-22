@@ -5,7 +5,7 @@ import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.modifier.Border
 import org.codetome.zircon.api.modifier.RayShade
-import org.codetome.zircon.internal.SimpleModifiers.*
+import org.codetome.zircon.api.modifier.SimpleModifiers.*
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.transformer.*

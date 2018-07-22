@@ -1,7 +1,6 @@
 package org.codetome.zircon.examples;
 
 import org.codetome.zircon.api.SwingTerminalBuilder;
-import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.Panel;
@@ -26,7 +25,7 @@ public class Playground {
                 .initialTerminalSize(Sizes.create(70, 43))
                 .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
                 .build();
-        final Screen mainScreen = ScreenBuilder.createScreenFor(terminal);
+        final Screen mainScreen = Screens.createScreenFor(terminal);
 
         mainScreen.draw(backgroundLayer, Positions.TOP_LEFT_CORNER);
 

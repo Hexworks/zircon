@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.resource
 
-import org.codetome.zircon.platform.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.builder.ColorThemeBuilder
 import org.codetome.zircon.api.resource.ColorThemeResource.SolarizedBase.SOLARIZED_DARK_BASE
@@ -12,247 +12,247 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
      * http://www.colourlovers.com/palette/580974/Adrift_in_Dreams
      */
     ADRIFT_IN_DREAMS(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#CFF09E"))
-            .brightForegroundColor(TextColorFactory.fromString("#A8DBA8"))
-            .darkForegroundColor(TextColorFactory.fromString("#79BD9A"))
-            .brightBackgroundColor(TextColorFactory.fromString("#3B8686"))
-            .darkBackgroundColor(TextColorFactory.fromString("#0B486B"))
+            .accentColor(TextColor.fromString("#CFF09E"))
+            .brightForegroundColor(TextColor.fromString("#A8DBA8"))
+            .darkForegroundColor(TextColor.fromString("#79BD9A"))
+            .brightBackgroundColor(TextColor.fromString("#3B8686"))
+            .darkBackgroundColor(TextColor.fromString("#0B486B"))
             .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/49963/let_them_eat_cake
      */
     LET_THEM_EAT_CAKE(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#C5E0DC"))
-            .brightForegroundColor(TextColorFactory.fromString("#ECE5CE"))
-            .darkForegroundColor(TextColorFactory.fromString("#F1D4AF"))
-            .brightBackgroundColor(TextColorFactory.fromString("#E08E79"))
-            .darkBackgroundColor(TextColorFactory.fromString("#774F38"))
+            .accentColor(TextColor.fromString("#C5E0DC"))
+            .brightForegroundColor(TextColor.fromString("#ECE5CE"))
+            .darkForegroundColor(TextColor.fromString("#F1D4AF"))
+            .brightBackgroundColor(TextColor.fromString("#E08E79"))
+            .darkBackgroundColor(TextColor.fromString("#774F38"))
             .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/559428/lucky_bubble_gum
      */
     LUCKY_BUBBLE_GUM(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#E33258"))
-            .brightForegroundColor(TextColorFactory.fromString("#CCBF82"))
-            .darkForegroundColor(TextColorFactory.fromString("#B8AF03"))
-            .brightBackgroundColor(TextColorFactory.fromString("#67917A"))
-            .darkBackgroundColor(TextColorFactory.fromString("#170409"))
+            .accentColor(TextColor.fromString("#E33258"))
+            .brightForegroundColor(TextColor.fromString("#CCBF82"))
+            .darkForegroundColor(TextColor.fromString("#B8AF03"))
+            .brightBackgroundColor(TextColor.fromString("#67917A"))
+            .darkBackgroundColor(TextColor.fromString("#170409"))
             .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/15/tech_light
      */
     TECH_LIGHT(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#D1E751"))
-            .brightForegroundColor(TextColorFactory.fromString("#FFFFFF"))
-            .darkForegroundColor(TextColorFactory.fromString("#FFFFFF"))
-            .brightBackgroundColor(TextColorFactory.fromString("#26ADE4"))
-            .darkBackgroundColor(TextColorFactory.fromString("#000000"))
+            .accentColor(TextColor.fromString("#D1E751"))
+            .brightForegroundColor(TextColor.fromString("#FFFFFF"))
+            .darkForegroundColor(TextColor.fromString("#FFFFFF"))
+            .brightBackgroundColor(TextColor.fromString("#26ADE4"))
+            .darkBackgroundColor(TextColor.fromString("#000000"))
             .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/953498/Headache
      */
     HEADACHE(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#BF4D28"))
-            .brightForegroundColor(TextColorFactory.fromString("#F6F7BD"))
-            .darkForegroundColor(TextColorFactory.fromString("#E6AC27"))
-            .brightBackgroundColor(TextColorFactory.fromString("#80BCA3"))
-            .darkBackgroundColor(TextColorFactory.fromString("#655643"))
+            .accentColor(TextColor.fromString("#BF4D28"))
+            .brightForegroundColor(TextColor.fromString("#F6F7BD"))
+            .darkForegroundColor(TextColor.fromString("#E6AC27"))
+            .brightBackgroundColor(TextColor.fromString("#80BCA3"))
+            .darkBackgroundColor(TextColor.fromString("#655643"))
             .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/148712/Gamebookers
      */
     GAMEBOOKERS(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#FF9900"))
-            .brightForegroundColor(TextColorFactory.fromString("#E9E9E9"))
-            .darkForegroundColor(TextColorFactory.fromString("#BCBCBC"))
-            .brightBackgroundColor(TextColorFactory.fromString("#3299BB"))
-            .darkBackgroundColor(TextColorFactory.fromString("#424242"))
+            .accentColor(TextColor.fromString("#FF9900"))
+            .brightForegroundColor(TextColor.fromString("#E9E9E9"))
+            .darkForegroundColor(TextColor.fromString("#BCBCBC"))
+            .brightBackgroundColor(TextColor.fromString("#3299BB"))
+            .darkBackgroundColor(TextColor.fromString("#424242"))
             .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/903157/Entrapped_InAPalette
      */
     ENTRAPPED_IN_A_PALETTE(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#7B3B3B"))
-            .brightForegroundColor(TextColorFactory.fromString("#B9D7D9"))
-            .darkForegroundColor(TextColorFactory.fromString("#668284"))
-            .brightBackgroundColor(TextColorFactory.fromString("#493736"))
-            .darkBackgroundColor(TextColorFactory.fromString("#2A2829"))
+            .accentColor(TextColor.fromString("#7B3B3B"))
+            .brightForegroundColor(TextColor.fromString("#B9D7D9"))
+            .darkForegroundColor(TextColor.fromString("#668284"))
+            .brightBackgroundColor(TextColor.fromString("#493736"))
+            .darkBackgroundColor(TextColor.fromString("#2A2829"))
             .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/678929/War
      */
     WAR(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#F21D41"))
-            .brightForegroundColor(TextColorFactory.fromString("#EBEBBC"))
-            .darkForegroundColor(TextColorFactory.fromString("#BCE3C5"))
-            .brightBackgroundColor(TextColorFactory.fromString("#82B3AE"))
-            .darkBackgroundColor(TextColorFactory.fromString("#230F2B"))
+            .accentColor(TextColor.fromString("#F21D41"))
+            .brightForegroundColor(TextColor.fromString("#EBEBBC"))
+            .darkForegroundColor(TextColor.fromString("#BCE3C5"))
+            .brightBackgroundColor(TextColor.fromString("#82B3AE"))
+            .darkBackgroundColor(TextColor.fromString("#230F2B"))
             .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/557832/Captured_By_Pirates
      */
     CAPTURED_BY_PIRATES(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#AB9597"))
-            .brightForegroundColor(TextColorFactory.fromString("#FFFBF0"))
-            .darkForegroundColor(TextColorFactory.fromString("#968F4B"))
-            .brightBackgroundColor(TextColorFactory.fromString("#7A6248"))
-            .darkBackgroundColor(TextColorFactory.fromString("#030506"))
+            .accentColor(TextColor.fromString("#AB9597"))
+            .brightForegroundColor(TextColor.fromString("#FFFBF0"))
+            .darkForegroundColor(TextColor.fromString("#968F4B"))
+            .brightBackgroundColor(TextColor.fromString("#7A6248"))
+            .darkBackgroundColor(TextColor.fromString("#030506"))
             .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/4454375/ghost_of_a_chance
      */
     GHOST_OF_A_CHANCE(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#95AC54"))
-            .brightForegroundColor(TextColorFactory.fromString("#F6F1CB"))
-            .darkForegroundColor(TextColorFactory.fromString("#DFD4A7"))
-            .brightBackgroundColor(TextColorFactory.fromString("#7F7C69"))
-            .darkBackgroundColor(TextColorFactory.fromString("#29210A"))
+            .accentColor(TextColor.fromString("#95AC54"))
+            .brightForegroundColor(TextColor.fromString("#F6F1CB"))
+            .darkForegroundColor(TextColor.fromString("#DFD4A7"))
+            .brightBackgroundColor(TextColor.fromString("#7F7C69"))
+            .darkBackgroundColor(TextColor.fromString("#29210A"))
             .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/1585870/after_the_heist
      */
     AFTER_THE_HEIST(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#b86A6A"))
-            .brightForegroundColor(TextColorFactory.fromString("#F8EDD1"))
-            .darkForegroundColor(TextColorFactory.fromString("#C5CFC6"))
-            .brightBackgroundColor(TextColorFactory.fromString("#9D9D93"))
-            .darkBackgroundColor(TextColorFactory.fromString("#474843"))
+            .accentColor(TextColor.fromString("#b86A6A"))
+            .brightForegroundColor(TextColor.fromString("#F8EDD1"))
+            .darkForegroundColor(TextColor.fromString("#C5CFC6"))
+            .brightBackgroundColor(TextColor.fromString("#9D9D93"))
+            .darkBackgroundColor(TextColor.fromString("#474843"))
             .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/731302/pablo_neruda
      */
     PABLO_NERUDA(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#E6324B"))
-            .brightForegroundColor(TextColorFactory.fromString("#F2E3C6"))
-            .darkForegroundColor(TextColorFactory.fromString("#FFC6A5"))
-            .brightBackgroundColor(TextColorFactory.fromString("#353634"))
-            .darkBackgroundColor(TextColorFactory.fromString("#2B2B2B"))
+            .accentColor(TextColor.fromString("#E6324B"))
+            .brightForegroundColor(TextColor.fromString("#F2E3C6"))
+            .darkForegroundColor(TextColor.fromString("#FFC6A5"))
+            .brightBackgroundColor(TextColor.fromString("#353634"))
+            .darkBackgroundColor(TextColor.fromString("#2B2B2B"))
             .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/27905/threadless
      */
     THREADLESS(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#b24C2F"))
-            .brightForegroundColor(TextColorFactory.fromString("#E9F2F9"))
-            .darkForegroundColor(TextColorFactory.fromString("#9CC4E4"))
-            .brightBackgroundColor(TextColorFactory.fromString("#3A89C9"))
-            .darkBackgroundColor(TextColorFactory.fromString("#1B325F"))
+            .accentColor(TextColor.fromString("#b24C2F"))
+            .brightForegroundColor(TextColor.fromString("#E9F2F9"))
+            .darkForegroundColor(TextColor.fromString("#9CC4E4"))
+            .brightBackgroundColor(TextColor.fromString("#3A89C9"))
+            .darkBackgroundColor(TextColor.fromString("#1B325F"))
             .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/38562/Hands_On
      */
     HANDS_ON(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#94BA65"))
-            .brightForegroundColor(TextColorFactory.fromString("#2790B0"))
-            .darkForegroundColor(TextColorFactory.fromString("#4B6E92"))
-            .brightBackgroundColor(TextColorFactory.fromString("#4E4D4A"))
-            .darkBackgroundColor(TextColorFactory.fromString("#353432"))
+            .accentColor(TextColor.fromString("#94BA65"))
+            .brightForegroundColor(TextColor.fromString("#2790B0"))
+            .darkForegroundColor(TextColor.fromString("#4B6E92"))
+            .brightBackgroundColor(TextColor.fromString("#4E4D4A"))
+            .darkBackgroundColor(TextColor.fromString("#353432"))
             .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/2031222/Olive_Leaf_Tea
      */
     OLIVE_LEAF_TEA(ColorThemeBuilder.newBuilder()
-            .accentColor(TextColorFactory.fromString("#e99A44"))
-            .brightForegroundColor(TextColorFactory.fromString("#EAE7D1"))
-            .darkForegroundColor(TextColorFactory.fromString("#CCC58E"))
-            .brightBackgroundColor(TextColorFactory.fromString("#7B8455"))
-            .darkBackgroundColor(TextColorFactory.fromString("#485C2B"))
+            .accentColor(TextColor.fromString("#e99A44"))
+            .brightForegroundColor(TextColor.fromString("#EAE7D1"))
+            .darkForegroundColor(TextColor.fromString("#CCC58E"))
+            .brightBackgroundColor(TextColor.fromString("#7B8455"))
+            .darkBackgroundColor(TextColor.fromString("#485C2B"))
             .build()),
     /**
      * All Solarized themes are taken from:
      * http://www.zovirl.com/2011/07/22/solarized_cheat_sheet/
      */
     SOLARIZED_DARK_YELLOW(SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#b58900"))
+            .accentColor(TextColor.fromString("#b58900"))
             .build()),
 
     SOLARIZED_DARK_ORANGE(SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#cb4b16"))
+            .accentColor(TextColor.fromString("#cb4b16"))
             .build()),
 
     SOLARIZED_DARK_RED(SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#dc322f"))
+            .accentColor(TextColor.fromString("#dc322f"))
             .build()),
 
     SOLARIZED_DARK_MAGENTA(SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#d33682"))
+            .accentColor(TextColor.fromString("#d33682"))
             .build()),
 
     SOLARIZED_DARK_VIOLET(SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#6c71c4"))
+            .accentColor(TextColor.fromString("#6c71c4"))
             .build()),
 
     SOLARIZED_DARK_BLUE(SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#268bd2"))
+            .accentColor(TextColor.fromString("#268bd2"))
             .build()),
 
     SOLARIZED_DARK_CYAN(SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#2aa198"))
+            .accentColor(TextColor.fromString("#2aa198"))
             .build()),
 
     SOLARIZED_DARK_GREEN(SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#859900"))
+            .accentColor(TextColor.fromString("#859900"))
             .build()),
 
     SOLARIZED_LIGHT_YELLOW(SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#b58900"))
+            .accentColor(TextColor.fromString("#b58900"))
             .build()),
 
     SOLARIZED_LIGHT_ORANGE(SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#cb4b16"))
+            .accentColor(TextColor.fromString("#cb4b16"))
             .build()),
 
     SOLARIZED_LIGHT_RED(SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#dc322f"))
+            .accentColor(TextColor.fromString("#dc322f"))
             .build()),
 
     SOLARIZED_LIGHT_MAGENTA(SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#d33682"))
+            .accentColor(TextColor.fromString("#d33682"))
             .build()),
 
     SOLARIZED_LIGHT_VIOLET(SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#6c71c4"))
+            .accentColor(TextColor.fromString("#6c71c4"))
             .build()),
 
     SOLARIZED_LIGHT_BLUE(SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#268bd2"))
+            .accentColor(TextColor.fromString("#268bd2"))
             .build()),
 
     SOLARIZED_LIGHT_CYAN(SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#2aa198"))
+            .accentColor(TextColor.fromString("#2aa198"))
             .build()),
 
     SOLARIZED_LIGHT_GREEN(SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
-            .accentColor(TextColorFactory.fromString("#859900"))
+            .accentColor(TextColor.fromString("#859900"))
             .build());
 
     fun getTheme() = colorTheme
 
     enum class SolarizedBase(val colorThemeBuilder: ColorThemeBuilder) {
         SOLARIZED_DARK_BASE(ColorThemeBuilder.newBuilder()
-                .brightForegroundColor(TextColorFactory.fromString("#93a1a1"))
-                .darkForegroundColor(TextColorFactory.fromString("#839496"))
-                .brightBackgroundColor(TextColorFactory.fromString("#073642"))
-                .darkBackgroundColor(TextColorFactory.fromString("#002b36"))),
+                .brightForegroundColor(TextColor.fromString("#93a1a1"))
+                .darkForegroundColor(TextColor.fromString("#839496"))
+                .brightBackgroundColor(TextColor.fromString("#073642"))
+                .darkBackgroundColor(TextColor.fromString("#002b36"))),
 
         SOLARIZED_LIGHT_BASE(ColorThemeBuilder.newBuilder()
-                .brightForegroundColor(TextColorFactory.fromString("#657b83"))
-                .darkForegroundColor(TextColorFactory.fromString("#586e75"))
-                .brightBackgroundColor(TextColorFactory.fromString("#fdf6e3"))
-                .darkBackgroundColor(TextColorFactory.fromString("#eee8d5")))
+                .brightForegroundColor(TextColor.fromString("#657b83"))
+                .darkForegroundColor(TextColor.fromString("#586e75"))
+                .brightBackgroundColor(TextColor.fromString("#fdf6e3"))
+                .darkBackgroundColor(TextColor.fromString("#eee8d5")))
     }
 }
