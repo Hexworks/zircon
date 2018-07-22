@@ -3,7 +3,7 @@ package org.codetome.zircon.api.interop
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.internal.color.DefaultTextColor
-import org.codetome.zircon.platform.factory.TextColorFactory
+import org.codetome.zircon.internal.factory.TextColorFactory
 import java.awt.Color
 
 object TextColors {
@@ -30,7 +30,7 @@ object TextColors {
      * Creates a [TextColor] from a <code>red</code>, <code>green</code>, <code>blue</code> triple.
      */
     @JvmStatic
-    fun fromRGB(red: Int, green: Int, blue: Int, alpha: Int = 255): TextColor = TextColorFactory.create(red, green, blue, alpha)
+    fun fromRGB(red: Int, green: Int, blue: Int, alpha: Int = 255): TextColor = TextColor.create(red, green, blue, alpha)
 
     /**
      * Parses a string into a color. Formats:
@@ -39,7 +39,7 @@ object TextColors {
      *  parsing the tuples as Red, Green and Blue.
      */
     @JvmStatic
-    fun fromString(value: String)  = TextColor.fromString(value)
+    fun fromString(value: String) = TextColor.fromString(value)
 
 }
 
