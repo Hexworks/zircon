@@ -92,7 +92,7 @@ public class GameAreaScrollingWithLayers {
                 new InMemoryGameArea(
                         Size3Ds.from2DSize(virtualGameAreaSize, totalLevels),
                         5,
-                        TextCharacters.EMPTY);
+                        TextCharacters.empty());
 
         final DefaultGameComponent gameComponent = Components.newGameComponentBuilder()
                 .gameArea(gameArea)

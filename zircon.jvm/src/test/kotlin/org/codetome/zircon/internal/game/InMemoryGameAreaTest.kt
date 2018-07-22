@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Cell
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.game.Block
@@ -65,7 +66,7 @@ class InMemoryGameAreaTest {
     fun shouldProperlySetBlockAtPosition() {
         target.setBlockAt(EMPTY_POSITION, OTHER_BLOCK)
         assertThat(target.fetchBlockAt(EMPTY_POSITION).get())
-                .isEqualTo(Block(position = EMPTY_POSITION, layers = OTHER_BLOCK.plus(TextCharacterBuilder.empty()).plus(TextCharacterBuilder.empty()).toMutableList()))
+                .isEqualTo(Block(position = EMPTY_POSITION, layers = OTHER_BLOCK.plus(TextCharacter.empty()).plus(TextCharacter.empty()).toMutableList()))
 
     }
 
@@ -100,9 +101,9 @@ class InMemoryGameAreaTest {
 
     companion object {
 
-        val BOTTOM_CHAR = TextCharacterBuilder.defaultCharacter().withBackgroundColor(ANSITextColor.RED)
-        val MID_CHAR = TextCharacterBuilder.defaultCharacter().withBackgroundColor(ANSITextColor.GREEN)
-        val TOP_CHAR = TextCharacterBuilder.defaultCharacter().withBackgroundColor(ANSITextColor.BLUE)
+        val BOTTOM_CHAR = TextCharacter.defaultCharacter().withBackgroundColor(ANSITextColor.RED)
+        val MID_CHAR = TextCharacter.defaultCharacter().withBackgroundColor(ANSITextColor.GREEN)
+        val TOP_CHAR = TextCharacter.defaultCharacter().withBackgroundColor(ANSITextColor.BLUE)
 
 
         val BLOCK = listOf(BOTTOM_CHAR, MID_CHAR, TOP_CHAR)
@@ -126,12 +127,12 @@ class InMemoryGameAreaTest {
                 Position3D.of(999, 999, 999))
 
         val EXPECTED_LAYER_0 = listOf(
-                Cell(Position.create(0, 0), TextCharacterBuilder.empty()),
+                Cell(Position.create(0, 0), TextCharacter.empty()),
                 Cell(Position.create(1, 0), BOTTOM_CHAR),
-                Cell(Position.create(2, 0), TextCharacterBuilder.empty()),
-                Cell(Position.create(0, 1), TextCharacterBuilder.empty()),
-                Cell(Position.create(1, 1), TextCharacterBuilder.empty()),
-                Cell(Position.create(2, 1), TextCharacterBuilder.empty()))
+                Cell(Position.create(2, 0), TextCharacter.empty()),
+                Cell(Position.create(0, 1), TextCharacter.empty()),
+                Cell(Position.create(1, 1), TextCharacter.empty()),
+                Cell(Position.create(2, 1), TextCharacter.empty()))
 
         val EXPECTED_LAYER_1 = EXPECTED_LAYER_0.toMutableList().also {
             it[1] = Cell(it[1].position, MID_CHAR)
@@ -140,12 +141,12 @@ class InMemoryGameAreaTest {
             it[1] = Cell(it[1].position, TOP_CHAR)
         }
         val EXPECTED_LAYER_3 = listOf(
-                Cell(Position.create(0, 0), TextCharacterBuilder.empty()),
-                Cell(Position.create(1, 0), TextCharacterBuilder.empty()),
+                Cell(Position.create(0, 0), TextCharacter.empty()),
+                Cell(Position.create(1, 0), TextCharacter.empty()),
                 Cell(Position.create(2, 0), BOTTOM_CHAR),
-                Cell(Position.create(0, 1), TextCharacterBuilder.empty()),
-                Cell(Position.create(1, 1), TextCharacterBuilder.empty()),
-                Cell(Position.create(2, 1), TextCharacterBuilder.empty()))
+                Cell(Position.create(0, 1), TextCharacter.empty()),
+                Cell(Position.create(1, 1), TextCharacter.empty()),
+                Cell(Position.create(2, 1), TextCharacter.empty()))
         val EXPECTED_LAYER_4 = EXPECTED_LAYER_3.toMutableList().also {
             it[2] = Cell(it[2].position, MID_CHAR)
         }

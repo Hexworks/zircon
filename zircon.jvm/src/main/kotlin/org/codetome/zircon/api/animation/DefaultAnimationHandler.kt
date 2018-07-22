@@ -20,6 +20,8 @@ import java.util.function.Consumer
 class DefaultAnimationHandler(private val screen: Screen) : AnimationHandler, Closeable {
 
     // TODO: this needs to be refactored to support multiplatform code
+    //
+    // TODO: ^^^--- this won't be needed after game loop is implemented
     private val pool = Executors.newFixedThreadPool(1)
 
     private var running = true

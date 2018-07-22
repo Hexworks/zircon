@@ -5,7 +5,6 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.FontOverride
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TextImage
@@ -85,7 +84,7 @@ class DefaultLayer(size: Size,
 
     override fun createCopy() = DefaultLayer(
             size = textImage.getBoundableSize(),
-            filler = TextCharacterBuilder.empty(),
+            filler = TextCharacter.empty(),
             offset = getPosition(),
             initialFont = getCurrentFont(),
             textImage = textImage)

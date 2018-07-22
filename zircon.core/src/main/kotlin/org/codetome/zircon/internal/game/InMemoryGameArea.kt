@@ -1,7 +1,6 @@
 package org.codetome.zircon.internal.game
 
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.game.GameArea.BlockFetchMode
 import org.codetome.zircon.api.graphics.TextImage
@@ -14,7 +13,7 @@ import org.codetome.zircon.platform.factory.TreeMapFactory
 
 class InMemoryGameArea(private val size: Size3D,
                        private val layersPerBlock: Int,
-                       private val filler: TextCharacter = TextCharacterBuilder.empty()) : GameArea {
+                       private val filler: TextCharacter = TextCharacter.empty()) : GameArea {
 
     private val emptyBlockLayers = (0 until layersPerBlock).map { filler }
     private val blocks: TreeMap<Position3D, Block> = TreeMapFactory.create()
@@ -117,10 +116,10 @@ class InMemoryGameArea(private val size: Size3D,
                 .forEachIndexed { idx, char -> layers[idx] = char }
         blocks[position] = Block(
                 position = position,
-                top = blockChars.getOrDefault(GameModifiers.BLOCK_TOP, listOf(TextCharacterBuilder.empty())).first(),
-                back = blockChars.getOrDefault(GameModifiers.BLOCK_BACK, listOf(TextCharacterBuilder.empty())).first(),
-                front = blockChars.getOrDefault(GameModifiers.BLOCK_FRONT, listOf(TextCharacterBuilder.empty())).first(),
-                bottom = blockChars.getOrDefault(GameModifiers.BLOCK_BOTTOM, listOf(TextCharacterBuilder.empty())).first(),
+                top = blockChars.getOrDefault(GameModifiers.BLOCK_TOP, listOf(TextCharacter.empty())).first(),
+                back = blockChars.getOrDefault(GameModifiers.BLOCK_BACK, listOf(TextCharacter.empty())).first(),
+                front = blockChars.getOrDefault(GameModifiers.BLOCK_FRONT, listOf(TextCharacter.empty())).first(),
+                bottom = blockChars.getOrDefault(GameModifiers.BLOCK_BOTTOM, listOf(TextCharacter.empty())).first(),
                 layers = layers)
     }
 

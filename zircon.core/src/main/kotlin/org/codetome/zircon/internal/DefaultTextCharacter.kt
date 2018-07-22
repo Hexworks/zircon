@@ -2,7 +2,6 @@ package org.codetome.zircon.internal
 
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.Border
@@ -40,7 +39,7 @@ data class DefaultTextCharacter(
             .map { it as Border }
             .toSet()
 
-    override fun isNotEmpty(): Boolean = this != TextCharacterBuilder.empty()
+    override fun isNotEmpty(): Boolean = this != TextCharacter.empty()
 
     override fun withCharacter(character: Char): DefaultTextCharacter {
         if (this.character == character) {

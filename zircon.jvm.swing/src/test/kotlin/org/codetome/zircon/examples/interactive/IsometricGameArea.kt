@@ -3,7 +3,7 @@ package org.codetome.zircon.examples.interactive
 import org.codetome.zircon.TerminalUtils
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Symbols
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.game.GameModifiers
@@ -125,7 +125,7 @@ object IsometricGameArea {
         val gameArea = InMemoryGameArea(
                 virtualSize,
                 1,
-                TextCharacterBuilder.empty())
+                TextCharacter.empty())
 
         val gameComponent = Components.newGameComponentBuilder()
                 .gameArea(gameArea)

@@ -3,7 +3,6 @@ package org.codetome.zircon.internal.graphics
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.codetome.zircon.api.shape.Shape
@@ -24,7 +23,7 @@ class DefaultShape(private val positions: Set<Position> = setOf())
         }
         val result = TextImageBuilder.newBuilder()
                 .size(Size.create(maxCol + 1, maxRow + 1))
-                .filler(TextCharacterBuilder.empty())
+                .filler(TextCharacter.empty())
                 .build()
         offsetPositions.forEach {
             result.setCharacterAt(it, textCharacter)

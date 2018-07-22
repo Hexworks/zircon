@@ -76,7 +76,7 @@ class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
     override fun setSize(newSize: Size) {
         if (newSize != terminalSize) {
             this.terminalSize = newSize
-            backend = backend.resize(newSize, TextCharacterBuilder.defaultCharacter())
+            backend = backend.resize(newSize, TextCharacter.defaultCharacter())
             resizeCursorSpace(newSize)
             // TODO: this can be optimized later
             terminalSize.fetchPositions().forEach {
@@ -166,7 +166,7 @@ class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
     private fun createBackend(initialSize: Size) =
             TextImageBuilder.newBuilder()
                     .size(initialSize)
-                    .filler(TextCharacterBuilder.defaultCharacter())
+                    .filler(TextCharacter.defaultCharacter())
                     .build()
 
 }

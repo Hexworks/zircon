@@ -2,10 +2,11 @@ package org.codetome.zircon.internal.util.rex
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.graphics.builder.LayerBuilder
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.Layer
+import org.codetome.zircon.api.graphics.builder.LayerBuilder
 import org.codetome.zircon.internal.font.impl.FontSettings
 import java.nio.ByteBuffer
 
@@ -28,7 +29,7 @@ data class REXLayer(private val width: Int,
     fun toLayer(): Layer {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.create(width, height))
-                .filler(TextCharacterBuilder.empty())
+                .filler(TextCharacter.empty())
                 .font(FontSettings.NO_FONT)
                 .build()
 

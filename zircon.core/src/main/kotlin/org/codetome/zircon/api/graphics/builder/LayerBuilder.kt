@@ -4,18 +4,17 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.Builder
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.graphics.DefaultLayer
-import org.codetome.zircon.api.util.Maybe
 
 /**
  * Use this to build [Layer]s. Defaults are:
  * - size: [Size.one()]
- * - filler: [TextCharacterBuilder.empty()]
+ * - filler: [TextCharacter.empty()]
  * - offset: [Position.defaultPosition()]
  * - has no text image by default
  */
@@ -85,7 +84,7 @@ data class LayerBuilder(private var font: Font = DEFAULT_FONT,
 
         val DEFAULT_SIZE = Size.one()
 
-        val DEFAULT_FILLER = TextCharacterBuilder.empty()
+        val DEFAULT_FILLER = TextCharacter.empty()
 
         fun newBuilder() = LayerBuilder()
     }

@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font.impl
 
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.TextCharacter
 import org.junit.Test
 
 class FontSettingsTest {
@@ -32,6 +32,6 @@ class FontSettingsTest {
 
     @Test(expected = NotImplementedError::class)
     fun shouldNotHaveRegionForNoFont() {
-        FontSettings.NO_FONT.fetchRegionForChar(TextCharacterBuilder.defaultCharacter())
+        FontSettings.NO_FONT.fetchRegionForChar(TextCharacter.defaultCharacter())
     }
 }

@@ -2,11 +2,11 @@ package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.FontOverride
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.font.Font
@@ -33,7 +33,7 @@ abstract class DefaultComponent(initialSize: Size,
                                 private val fontOverride: FontOverride = DefaultFontOverride(
                                         initialFont = initialFont),
                                 private val drawSurface: TextImage = TextImageBuilder.newBuilder()
-                                        .filler(TextCharacterBuilder.empty())
+                                        .filler(TextCharacter.empty())
                                         .size(initialSize)
                                         .build(),
                                 private val boundable: DefaultBoundable = DefaultBoundable(

@@ -17,7 +17,7 @@ class NoOpCacheTest {
 
     @Test
     fun shouldReturnEmptyForCharIfCalledTwice() {
-        val tc = TextCharacterBuilder.defaultCharacter()
+        val tc = TextCharacter.defaultCharacter()
 
         val result0 = target.retrieveIfPresent(tc.generateCacheKey())
         val result1 = target.retrieveIfPresent(tc.generateCacheKey())
@@ -28,7 +28,7 @@ class NoOpCacheTest {
 
     @Test
     fun shouldReturnEmptyForCharIfStoredThenRetrieved() {
-        val tc = TextCharacterBuilder.defaultCharacter()
+        val tc = TextCharacter.defaultCharacter()
 
         target.store(tc)
         val result = target.retrieveIfPresent(tc.generateCacheKey())

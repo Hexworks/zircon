@@ -30,7 +30,7 @@ public class PanelDrawingExample {
 
         Shapes
                 .buildFilledRectangle(Positions.DEFAULT_POSITION, screen.getBoundableSize())
-                .toTextImage(TextCharacters.DEFAULT_CHARACTER
+                .toTextImage(TextCharacters.defaultCharacter()
                         .withBackgroundColor(BACKGROUND_COLOR))
                 .drawOnto(screen, Positions.DEFAULT_POSITION);
 

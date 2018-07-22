@@ -5,20 +5,16 @@ import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.internal.animation.DefaultAnimation
 import org.codetome.zircon.internal.animation.DefaultAnimationFrame
 
-/**
- * Note that this class is in **BETA**!
- * It's API is subject to change!
- */
 @Suppress("DataClassPrivateConstructor")
 data class AnimationBuilder private constructor(
         private val animationFrames: MutableList<AnimationFrame> = mutableListOf(),
         private val positions: MutableList<Position> = mutableListOf(),
         private var tick: Long = 1000L / DEFAULT_FPS,
         private var loopCount: Int = 1,
-        private var frameCount: Int = -1,
-        private var length: Int = -1) : Builder<Animation> {
+        private var uniqueFrameCount: Int = -1,
+        private var totalFrameCount: Int = -1) : Builder<Animation> {
 
-    fun getLength() = length
+    fun getLength() = totalFrameCount
 
     fun loopCount(loopCount: Int) = also {
         require(loopCount >= 0) {
@@ -48,7 +44,7 @@ data class AnimationBuilder private constructor(
     }
 
     fun setPositionForAll(position: Position) = also {
-        for (i in 0 until length) {
+        for (i in 0 until totalFrameCount) {
             addPosition(position)
         }
     }
@@ -65,15 +61,15 @@ data class AnimationBuilder private constructor(
         if (positions.size == 0) {
             setPositionForAll(Position.defaultPosition())
         } else {
-            require(length == positions.size) {
+            require(totalFrameCount == positions.size) {
                 "An Animation must have the same amount of positions as frames (one position for each frame)!" +
-                        " length: $length, position count: ${positions.size}"
+                        " length: $totalFrameCount, position count: ${positions.size}"
             }
         }
-        require(frameCount > 0) {
+        require(uniqueFrameCount > 0) {
             "An Animation must contain at least one frame!"
         }
-        require(length > 0) {
+        require(totalFrameCount > 0) {
             "An Animation must have a length greater than zero!"
         }
         animationFrames.forEachIndexed { i, frame ->
@@ -83,8 +79,8 @@ data class AnimationBuilder private constructor(
                 animationFrames = animationFrames,
                 tick = tick,
                 loopCount = loopCount,
-                frameCount = frameCount,
-                length = length)
+                uniqueFrameCount = uniqueFrameCount,
+                totalFrameCount = totalFrameCount)
     }
 
     override fun createCopy() = copy(
@@ -99,8 +95,8 @@ data class AnimationBuilder private constructor(
             positions = positions.toMutableList())
 
     private fun recalculateFrameCountAndLength() {
-        length = animationFrames.map { it.getRepeatCount() }.reduce(Int::plus)
-        frameCount = animationFrames.size
+        totalFrameCount = animationFrames.map { it.getRepeatCount() }.reduce(Int::plus)
+        uniqueFrameCount = animationFrames.size
     }
 
 

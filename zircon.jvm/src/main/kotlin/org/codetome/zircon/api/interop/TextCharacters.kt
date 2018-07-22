@@ -2,7 +2,6 @@ package org.codetome.zircon.api.interop
 
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.color.TextColor
 
 object TextCharacters {
 
@@ -19,8 +18,8 @@ object TextCharacters {
      * - and default background
      * - and no modifiers.
      */
-    @JvmField
-    val DEFAULT_CHARACTER = TextCharacterBuilder.newBuilder().build()
+    @JvmStatic
+    fun defaultCharacter() = TextCharacter.defaultCharacter()
 
     /**
      * Shorthand for an empty character which is:
@@ -29,10 +28,6 @@ object TextCharacters {
      * - and transparent background
      * - and no modifiers.
      */
-    @JvmField
-    val EMPTY = TextCharacterBuilder.newBuilder()
-            .backgroundColor(TextColor.transparent())
-            .foregroundColor(TextColor.transparent())
-            .character(' ')
-            .build()
+    @JvmStatic
+    fun empty() = TextCharacter.empty()
 }
