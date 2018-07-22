@@ -3,14 +3,10 @@ package org.codetome.zircon.examples;
 import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.graphics.TextCharacterString;
-import org.codetome.zircon.api.interop.Positions;
-import org.codetome.zircon.api.interop.Sizes;
-import org.codetome.zircon.api.interop.TextCharacterStrings;
-import org.codetome.zircon.api.interop.TextColors;
+import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.terminal.Terminal;
 
 import static org.codetome.zircon.api.color.ANSITextColor.BLACK;
-import static org.codetome.zircon.api.interop.Modifiers.UNDERLINE;
 import static org.codetome.zircon.api.resource.CP437TilesetResource.TAFFER_20X20;
 
 public class TextCharacterStringExample {
@@ -29,7 +25,7 @@ public class TextCharacterStringExample {
         TextCharacterString tcs = TextCharacterStrings.newBuilder()
                 .foregroundColor(TextColors.fromString("#eeffee"))
                 .backgroundColor(TextColors.fromString("#223344"))
-                .modifiers(UNDERLINE)
+                .modifiers(Modifiers.underline())
                 .text("This is some text which is too long to fit on one line...")
                 .build();
 

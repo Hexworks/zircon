@@ -28,7 +28,7 @@ class Java2DCrossedOutTransformerTest {
         val WIDTH = 10
         val HEIGHT = 10
         val CHAR = TextCharacters.newBuilder()
-                .modifiers(Modifiers.CROSSED_OUT)
+                .modifiers(Modifiers.crossedOut())
                 .build()
     }
 }

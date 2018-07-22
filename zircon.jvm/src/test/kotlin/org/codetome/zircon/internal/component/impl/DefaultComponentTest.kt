@@ -4,12 +4,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
+import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
+import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.ColorTheme
-import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
-import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
@@ -263,6 +263,6 @@ class DefaultComponentTest {
                 .build()
         val WRAPPERS = listOf(
                 ShadowWrappingStrategy(),
-                BorderWrappingStrategy(Modifiers.BORDER))
+                BorderWrappingStrategy(Modifiers.border()))
     }
 }

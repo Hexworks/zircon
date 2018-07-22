@@ -160,7 +160,7 @@ public class GameAreaScrollingWithLayers {
                 Position3D visibleOffset = gameComponent.getVisibleOffset();
                 screen.pushLayer(Layers.newBuilder()
                         .textImage(TextCharacterStrings.newBuilder()
-                                .backgroundColor(TextColors.TRANSPARENT)
+                                .backgroundColor(TextColors.transparent())
                                 .foregroundColor(TextColors.fromString("#aaaadd"))
                                 .text(String.format("Position: (x=%s, y=%s, z=%s)", visibleOffset.getX(), visibleOffset.getY(), visibleOffset.getZ()))
                                 .build()

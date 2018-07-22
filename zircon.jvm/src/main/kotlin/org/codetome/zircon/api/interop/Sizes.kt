@@ -4,20 +4,20 @@ import org.codetome.zircon.api.Size
 
 object Sizes {
 
-    @JvmField
-    val UNKNOWN = Size.unknown()
+    @JvmStatic
+    fun unknown() = Size.create(Int.MAX_VALUE, Int.MAX_VALUE)
 
-    @JvmField
-    val DEFAULT_TERMINAL_SIZE = Size.defaultTerminalSize()
+    @JvmStatic
+    fun defaultTerminalSize() = Size.create(80, 24)
 
-    @JvmField
-    val ZERO = Size.zero()
+    @JvmStatic
+    fun zero() = Size.create(0, 0)
 
-    @JvmField
-    val ONE = Size.one()
+    @JvmStatic
+    fun one() = Size.create(1, 1)
 
     /**
-     * Factory method for [Size].
+     * Factory method for creating [Size]s.
      */
     @JvmStatic
     fun create(xLength: Int, yLength: Int) = Size.create(xLength, yLength)

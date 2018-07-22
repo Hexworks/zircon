@@ -1,6 +1,5 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.SwingTerminalBuilder;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.component.Button;
@@ -32,8 +31,8 @@ public class Playground {
 
         DefaultColorTheme theme = ColorThemes.newBuilder()
                 .accentColor(ANSITextColor.YELLOW)
-                .brightBackgroundColor(TextColors.fromRGB(80, 80, 80, 225))
-                .darkBackgroundColor(TextColors.fromRGB(50, 50, 50, 0))
+                .brightBackgroundColor(TextColors.create(80, 80, 80, 225))
+                .darkBackgroundColor(TextColors.create(50, 50, 50, 0))
                 .brightForegroundColor(ANSITextColor.GREEN)
                 .darkForegroundColor(ANSITextColor.BLUE)
                 .build();

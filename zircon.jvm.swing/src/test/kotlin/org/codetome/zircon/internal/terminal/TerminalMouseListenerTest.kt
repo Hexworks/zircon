@@ -6,7 +6,7 @@ import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.api.input.MouseActionType.*
-import org.codetome.zircon.api.terminal.builder.DeviceConfigurationBuilder
+import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
 import org.junit.Before
@@ -56,7 +56,7 @@ class TerminalMouseListenerTest {
         val X = POSITION.x * FONT_SIZE
         val Y = POSITION.y * FONT_SIZE
         val BUTTON = 2
-        val CONFIG = DeviceConfigurationBuilder.DEFAULT
+        val CONFIG = DeviceConfiguration.defaultConfiguration()
         val DUMMY_COMPONENT = object : Component() {}
         val MOUSE_EVENT = MouseEvent(DUMMY_COMPONENT, 1, 1, 1, X, Y, 1, true, BUTTON)
     }

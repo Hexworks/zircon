@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.interop
 
-import org.codetome.zircon.api.graphics.builder.TextCharacterStringBuilder
+import org.codetome.zircon.api.builder.graphics.TextCharacterStringBuilder
 
 object TextCharacterStrings {
 

@@ -8,7 +8,7 @@ import org.codetome.zircon.api.Position.Companion.offset1x1
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.graphics.builder.TextImageBuilder
+import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.junit.Before
 import org.junit.Test
 import java.util.function.Consumer
@@ -89,7 +89,7 @@ class InMemoryTextImageTest {
     }
 
     @Test
-    fun givenATextImageThatOverFlowsWhenCombinedThenResizeNewTextImage(){
+    fun givenATextImageThatOverFlowsWhenCombinedThenResizeNewTextImage() {
         val sourceChar = TextCharacter.defaultCharacter().withCharacter('x')
         val overwriteChar = TextCharacter.defaultCharacter().withCharacter('+')
 
@@ -110,17 +110,17 @@ class InMemoryTextImageTest {
         assertThat(result.getBoundableSize()).isEqualTo(Size.create(3, 3))
 
         //first yLength should all be xLength's
-        for(x in 0..2){
+        for (x in 0..2) {
             assertThat(result.getCharacterAt(Position.create(x, 0)).get().getCharacter()).isEqualTo('x')
         }
 
         //as the second image was offset by 2 yLength there should be nothing here
-        for(x in 0..2){
+        for (x in 0..2) {
             assertThat(result.getCharacterAt(Position.create(x, 1)).get().getCharacter()).isEqualTo(' ')
         }
 
         //the 3rd yLength should be + for the first 2 xLength (as that's the size of the second image)
-        for(x in 0..1){
+        for (x in 0..1) {
             assertThat(result.getCharacterAt(Position.create(x, 2)).get().getCharacter()).isEqualTo('+')
         }
 

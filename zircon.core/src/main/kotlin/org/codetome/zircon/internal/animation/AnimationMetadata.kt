@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.animation
 
-data class AnimationMetadata(var type: String,
-                             var animationData: AnimationData) {
+internal data class AnimationMetadata(var type: String,
+                                      var animationData: AnimationData) {
     constructor() : this(
             type = "",
             animationData = AnimationData())

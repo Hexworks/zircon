@@ -182,6 +182,6 @@ interface Size : Comparable<Size>, Cacheable {
 
         fun one() = create(1, 1)
 
-        fun generateCacheKey(xLength: Int, yLength: Int) = "Size-$xLength-$yLength"
+        internal fun generateCacheKey(xLength: Int, yLength: Int) = "Size-$xLength-$yLength"
     }
 }

@@ -1,11 +1,11 @@
 package org.codetome.zircon.playground
 
-import org.codetome.zircon.api.*
-import org.codetome.zircon.api.game.builder.GameAreaBuilder
+import org.codetome.zircon.api.SwingTerminalBuilder
+import org.codetome.zircon.api.Symbols
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.api.game.GameComponent
-import org.codetome.zircon.internal.component.builder.GameComponentBuilder
 import org.codetome.zircon.api.game.*
+import org.codetome.zircon.api.builder.game.GameAreaBuilder
 import org.codetome.zircon.api.interop.Components
 import org.codetome.zircon.api.interop.Sizes
 import org.codetome.zircon.api.interop.TextCharacters
@@ -50,7 +50,7 @@ object Playground {
 
 
         gameScreen.addComponent(gameComponent)
-        gameArea.setBlockAt(Position3D.of(3, 5, 0), block)
+        gameArea.setBlockAt(Position3D.create(3, 5, 0), block)
         gameScreen.display()
     }
 }

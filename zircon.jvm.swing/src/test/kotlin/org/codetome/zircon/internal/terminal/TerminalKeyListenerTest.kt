@@ -6,7 +6,7 @@ import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.InputType.Character
 import org.codetome.zircon.api.input.KeyStroke
-import org.codetome.zircon.api.terminal.builder.DeviceConfigurationBuilder
+import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
 import org.junit.Before
@@ -25,7 +25,7 @@ class TerminalKeyListenerTest {
     @Before
     fun setUp() {
         target = TerminalKeyListener(CONFIG)
-        EventBus.subscribe<Event.Input>{
+        EventBus.subscribe<Event.Input> {
             inputs.add(it.input)
         }
     }
@@ -95,7 +95,7 @@ class TerminalKeyListenerTest {
         val X = POSITION.x * FONT_SIZE
         val Y = POSITION.y * FONT_SIZE
         val BUTTON = 2
-        val CONFIG = DeviceConfigurationBuilder.DEFAULT
+        val CONFIG = DeviceConfiguration.defaultConfiguration()
         val DUMMY_COMPONENT = object : Component() {}
     }
 }

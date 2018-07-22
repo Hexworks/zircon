@@ -40,8 +40,8 @@ class InMemoryGameAreaTest {
     @Test
     fun shouldFetchBlocksAtPositionAndSizeInProperOrder() {
         assertThat(target.fetchBlocksAt(
-                offset = Position3D.of(1, 1, 1),
-                size = Size3D.of(100, 100, 100))
+                offset = Position3D.create(1, 1, 1),
+                size = Size3D.create(100, 100, 100))
                 .map { it.position })
                 .containsExactlyElementsOf(POSITIONS_IN_ORDER.drop(1).dropLast(1))
 
@@ -77,7 +77,7 @@ class InMemoryGameAreaTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotBeAbleToSetBlockAtPositionWhichIsNotWithinSize() {
-        target.setBlockAt(Position3D.of(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE), BLOCK)
+        target.setBlockAt(Position3D.create(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE), BLOCK)
     }
 
     @Test
@@ -109,22 +109,22 @@ class InMemoryGameAreaTest {
         val BLOCK = listOf(BOTTOM_CHAR, MID_CHAR, TOP_CHAR)
         val OTHER_BLOCK = listOf(TextCharacterBuilder.newBuilder().backgroundColor(ANSITextColor.RED).build())
 
-        val EMPTY_POSITION = Position3D.of(323, 123, 654)
+        val EMPTY_POSITION = Position3D.create(323, 123, 654)
 
-        val LEVEL_7_POS_0 = Position3D.of(9, 3, 7)
-        val LEVEL_7_POS_1 = Position3D.of(9, 4, 7)
+        val LEVEL_7_POS_0 = Position3D.create(9, 3, 7)
+        val LEVEL_7_POS_1 = Position3D.create(9, 4, 7)
 
-        val POS_FOR_LAYER_0 = Position3D.of(2, 1, 5)
-        val POS_FOR_LAYER_1 = Position3D.of(3, 1, 6)
+        val POS_FOR_LAYER_0 = Position3D.create(2, 1, 5)
+        val POS_FOR_LAYER_1 = Position3D.create(3, 1, 6)
 
         val POSITIONS_IN_ORDER = listOf(
-                Position3D.of(0, 0, 0),
-                Position3D.of(1, 1, 4),
+                Position3D.create(0, 0, 0),
+                Position3D.create(1, 1, 4),
                 POS_FOR_LAYER_0,
                 POS_FOR_LAYER_1,
                 LEVEL_7_POS_0,
                 LEVEL_7_POS_1,
-                Position3D.of(999, 999, 999))
+                Position3D.create(999, 999, 999))
 
         val EXPECTED_LAYER_0 = listOf(
                 Cell(Position.create(0, 0), TextCharacter.empty()),
@@ -154,6 +154,6 @@ class InMemoryGameAreaTest {
             it[2] = Cell(it[2].position, TOP_CHAR)
         }
 
-        val HUGE_SIZE = Size3D.of(Int.MAX_VALUE - 1, Int.MAX_VALUE - 1, Int.MAX_VALUE - 1)
+        val HUGE_SIZE = Size3D.create(Int.MAX_VALUE - 1, Int.MAX_VALUE - 1, Int.MAX_VALUE - 1)
     }
 }

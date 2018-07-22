@@ -7,12 +7,12 @@ import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.FontOverride
+import org.codetome.zircon.api.builder.graphics.LayerBuilder
+import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.TextImage
-import org.codetome.zircon.api.graphics.builder.LayerBuilder
-import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Identifier

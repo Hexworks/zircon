@@ -5,14 +5,14 @@ import org.codetome.zircon.api.game.Size3D
 
 object Size3Ds {
 
-    @JvmField
-    val ONE = create(1, 1, 1)
+    @JvmStatic
+    fun one() = Size3D.one()
 
     /**
      * Factory method for [Size3D].
      */
     @JvmStatic
-    fun create(xLength: Int, yLength: Int, zLength: Int) = Size3D.of(
+    fun create(xLength: Int, yLength: Int, zLength: Int) = Size3D.create(
             xLength = xLength,
             yLength = yLength,
             zLength = zLength)

@@ -27,56 +27,56 @@ public class FontModifiersExample {
                 .build();
         terminal.setCursorVisibility(false); // we don't want the cursor right now
 
-        terminal.enableModifiers(Modifiers.VERTICAL_FLIP);
+        terminal.enableModifiers(Modifiers.verticalFlip());
         terminal.setBackgroundColor(BLUE);
         terminal.setForegroundColor(YELLOW);
         terminal.putCharacter('A');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(Modifiers.CROSSED_OUT);
+        terminal.enableModifiers(Modifiers.crossedOut());
         terminal.setBackgroundColor(RED);
         terminal.setForegroundColor(GREEN);
         terminal.putCharacter('B');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(Modifiers.BLINK);
+        terminal.enableModifiers(Modifiers.blink());
         terminal.setBackgroundColor(RED);
         terminal.setForegroundColor(WHITE);
         terminal.putCharacter('C');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(Modifiers.UNDERLINE);
+        terminal.enableModifiers(Modifiers.underline());
         terminal.setBackgroundColor(BLUE);
         terminal.setForegroundColor(CYAN);
         terminal.putCharacter('D');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(Modifiers.HORIZONTAL_FLIP);
+        terminal.enableModifiers(Modifiers.horizontalFlip());
         terminal.setBackgroundColor(BLACK);
         terminal.setForegroundColor(YELLOW);
         terminal.putCharacter('E');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(Modifiers.BLINK);
+        terminal.enableModifiers(Modifiers.blink());
         terminal.setBackgroundColor(CYAN);
         terminal.setForegroundColor(YELLOW);
         terminal.putCharacter('F');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(Stream.of(Modifiers.HORIZONTAL_FLIP, Modifiers.VERTICAL_FLIP, Modifiers.BLINK).collect(Collectors.toSet()));
+        terminal.enableModifiers(Stream.of(Modifiers.horizontalFlip(), Modifiers.verticalFlip(), Modifiers.blink()).collect(Collectors.toSet()));
         terminal.setBackgroundColor(BLUE);
         terminal.setForegroundColor(WHITE);
         terminal.putCharacter('G');
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(Modifiers.BORDER);
+        terminal.enableModifiers(Modifiers.border());
         terminal.setBackgroundColor(WHITE);
         terminal.setForegroundColor(BLUE);
         terminal.putCharacter('H');
@@ -90,7 +90,7 @@ public class FontModifiersExample {
 
         putEmptySpace(terminal);
 
-        terminal.enableModifiers(Modifiers.GLOW);
+        terminal.enableModifiers(Modifiers.glow());
         terminal.setBackgroundColor(WHITE);
         terminal.setForegroundColor(BLUE);
         terminal.putCharacter('J');

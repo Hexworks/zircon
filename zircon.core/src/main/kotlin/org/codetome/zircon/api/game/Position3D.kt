@@ -25,7 +25,7 @@ import org.codetome.zircon.api.Position
 @Suppress("DataClassPrivateConstructor")
 data class Position3D private constructor(val x: Int,
                                           val y: Int,
-                                          val z: Int): Comparable<Position3D> {
+                                          val z: Int) : Comparable<Position3D> {
 
     init {
         require(x >= 0) {
@@ -129,7 +129,7 @@ data class Position3D private constructor(val x: Int,
      * this position is Position(x=2, y=3, z=1) it will become
      * Size3D(x=2, y=3, z=1).
      */
-    fun toSize() = Size3D.of(x, y, z)
+    fun toSize() = Size3D.create(x, y, z)
 
     /**
      * Transforms this [Position3D] to a [Position]. Note that
@@ -142,12 +142,12 @@ data class Position3D private constructor(val x: Int,
         /**
          * Position3d(0, 0, 0)
          */
-        val DEFAULT_POSITION = of(0, 0, 0)
+        fun defaultPosition() = create(0, 0, 0)
 
         /**
          * Factory method for [Position3D].
          */
-        fun of(x: Int, y: Int, z: Int) = Position3D(x = x, y = y, z = z)
+        fun create(x: Int, y: Int, z: Int) = Position3D(x = x, y = y, z = z)
 
         /**
          * Creates a new [Position3D] from a [Position].

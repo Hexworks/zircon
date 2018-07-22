@@ -3,6 +3,7 @@ package org.codetome.zircon.api.animation
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.builder.animation.AnimationBuilder
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.internal.animation.DefaultAnimation
 import org.codetome.zircon.internal.animation.DefaultAnimationFrame

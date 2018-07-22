@@ -25,17 +25,15 @@ data class Size3D private constructor(val xLength: Int,
                                       val yLength: Int,
                                       val zLength: Int) : Comparable<Size3D> {
 
-    operator fun plus(other: Size3D) = of(xLength + other.xLength, yLength + other.yLength, zLength + other.zLength)
+    operator fun plus(other: Size3D) = create(xLength + other.xLength, yLength + other.yLength, zLength + other.zLength)
 
-    operator fun minus(other: Size3D) = of(xLength - other.xLength, yLength - other.yLength, zLength - other.zLength)
+    operator fun minus(other: Size3D) = create(xLength - other.xLength, yLength - other.yLength, zLength - other.zLength)
 
     override fun compareTo(other: Size3D): Int {
-        return if(fetchPositionCount() > other.fetchPositionCount()) {
-            1
-        } else if(fetchPositionCount() < other.fetchPositionCount()) {
-            -1
-        } else {
-            0
+        return when {
+            fetchPositionCount() > other.fetchPositionCount() -> 1
+            fetchPositionCount() < other.fetchPositionCount() -> -1
+            else -> 0
         }
     }
 
@@ -50,7 +48,7 @@ data class Size3D private constructor(val xLength: Int,
         return (0 until zLength).flatMap { z ->
             (0 until yLength).flatMap { y ->
                 (0 until xLength).map { x ->
-                    Position3D.of(x, y, z)
+                    Position3D.create(x, y, z)
                 }
             }
         }
@@ -78,12 +76,12 @@ data class Size3D private constructor(val xLength: Int,
 
     companion object {
 
-        val ONE = of(1, 1, 1)
+        fun one() = create(1, 1, 1)
 
         /**
          * Factory method for [Size3D].
          */
-        fun of(xLength: Int, yLength: Int, zLength: Int) = Size3D(
+        fun create(xLength: Int, yLength: Int, zLength: Int) = Size3D(
                 xLength = xLength,
                 yLength = yLength,
                 zLength = zLength)

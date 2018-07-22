@@ -7,8 +7,8 @@ import org.codetome.zircon.api.animation.AnimationResource
 import org.codetome.zircon.api.animation.DefaultAnimationHandler
 import org.codetome.zircon.api.interop.Screens
 import org.codetome.zircon.api.resource.CP437TilesetResource
-import org.codetome.zircon.internal.component.builder.LabelBuilder
-import org.codetome.zircon.internal.component.builder.PanelBuilder
+import org.codetome.zircon.api.builder.component.LabelBuilder
+import org.codetome.zircon.api.builder.component.PanelBuilder
 
 object AnimationExample {
 

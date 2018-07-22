@@ -1,15 +1,15 @@
 package org.codetome.zircon.internal.screen
 
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
+import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.api.terminal.Terminal
+import org.codetome.zircon.api.util.Identifier
 import org.codetome.zircon.internal.component.InternalContainerHandler
 import org.codetome.zircon.internal.component.impl.DefaultContainer
 import org.codetome.zircon.internal.component.impl.DefaultContainerHandler
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.api.util.Identifier
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 
@@ -27,7 +27,7 @@ class TerminalScreen(private val terminal: InternalTerminal,
                      private val containerHandler: InternalContainerHandler = DefaultContainerHandler(DefaultContainer(
                              initialSize = terminal.getBoundableSize(),
                              position = Position.defaultPosition(),
-                             componentStyleSet = ComponentStyleSetBuilder.DEFAULT,
+                             componentStyleSet = ComponentStyleSet.defaultStyleSet(),
                              initialFont = terminal.getCurrentFont())))
     : InternalScreen,
         InternalTerminal by backend,

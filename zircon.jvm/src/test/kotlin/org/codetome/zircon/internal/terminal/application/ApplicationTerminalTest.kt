@@ -3,12 +3,12 @@ package org.codetome.zircon.internal.terminal.application
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.builder.terminal.DeviceConfigurationBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.CursorStyle
-import org.codetome.zircon.api.terminal.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.internal.component.impl.DefaultLabelTest
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus

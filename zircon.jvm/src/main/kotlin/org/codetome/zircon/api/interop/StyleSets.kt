@@ -1,15 +1,9 @@
 package org.codetome.zircon.api.interop
 
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
+import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 
 object StyleSets {
-
-    /**
-     * Creates a new [StyleSetBuilder] for creating [org.codetome.zircon.api.graphics.StyleSet]s.
-     */
-    @JvmStatic
-    fun newBuilder() = StyleSetBuilder()
 
     /**
      * Shorthand for the default character which is:
@@ -18,8 +12,8 @@ object StyleSets {
      * - and default background
      * - and no modifiers.
      */
-    @JvmField
-    val DEFAULT_STYLE = newBuilder().build()
+    @JvmStatic
+    fun defaultStyle() = newBuilder().build()
 
     /**
      * Shorthand for the empty style which has:
@@ -27,11 +21,17 @@ object StyleSets {
      * - and transparent background
      * - and no modifiers.
      */
-    @JvmField
-    val EMPTY = newBuilder()
+    @JvmStatic
+    fun empty() = newBuilder()
             .backgroundColor(TextColor.transparent())
             .foregroundColor(TextColor.transparent())
             .modifiers(setOf())
             .build()
+
+    /**
+     * Creates a new [StyleSetBuilder] for creating [org.codetome.zircon.api.graphics.StyleSet]s.
+     */
+    @JvmStatic
+    fun newBuilder() = StyleSetBuilder()
 
 }

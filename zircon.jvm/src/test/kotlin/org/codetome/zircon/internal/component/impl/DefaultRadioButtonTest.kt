@@ -6,8 +6,8 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ComponentState
-import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
+import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
+import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.event.Event
@@ -165,7 +165,7 @@ class DefaultRadioButtonTest {
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITextColor.RED)
                 .foregroundColor(ANSITextColor.GREEN)
-                .modifiers(Modifiers.CROSSED_OUT)
+                .modifiers(Modifiers.crossedOut())
                 .build()
         val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)

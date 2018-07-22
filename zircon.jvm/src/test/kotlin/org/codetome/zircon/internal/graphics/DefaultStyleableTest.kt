@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
+import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.internal.behavior.impl.DefaultStyleable
 import org.junit.Before
@@ -36,7 +36,7 @@ class DefaultStyleableTest {
 
     @Test
     fun shouldProperlyEnableModifier() {
-        val modifier = Modifiers.BOLD
+        val modifier = Modifiers.bold()
 
         target.enableModifiers(modifier)
 
@@ -45,7 +45,7 @@ class DefaultStyleableTest {
 
     @Test
     fun shouldProperlyDisableModifier() {
-        val modifier = Modifiers.BOLD
+        val modifier = Modifiers.bold()
 
         target.enableModifiers(modifier)
         target.disableModifiers(modifier)
@@ -55,23 +55,23 @@ class DefaultStyleableTest {
 
     @Test
     fun shouldProperlyEnableModifiers() {
-        target.enableModifiers(setOf(Modifiers.BOLD, Modifiers.CROSSED_OUT))
+        target.enableModifiers(setOf(Modifiers.bold(), Modifiers.crossedOut()))
 
-        assertThat(target.getActiveModifiers()).containsExactlyInAnyOrder(Modifiers.BOLD, Modifiers.CROSSED_OUT)
+        assertThat(target.getActiveModifiers()).containsExactlyInAnyOrder(Modifiers.bold(), Modifiers.crossedOut())
     }
 
     @Test
     fun shouldProperlySetModifiers() {
-        val modifiers = setOf(Modifiers.BOLD, Modifiers.CROSSED_OUT)
+        val modifiers = setOf(Modifiers.bold(), Modifiers.crossedOut())
 
         target.setModifiers(modifiers)
 
-        assertThat(target.getActiveModifiers()).containsExactlyInAnyOrder(Modifiers.BOLD, Modifiers.CROSSED_OUT)
+        assertThat(target.getActiveModifiers()).containsExactlyInAnyOrder(Modifiers.bold(), Modifiers.crossedOut())
     }
 
     @Test
     fun shouldProperlyClearModifiers() {
-        target.enableModifiers(Modifiers.BOLD)
+        target.enableModifiers(Modifiers.bold())
 
         target.clearModifiers()
 

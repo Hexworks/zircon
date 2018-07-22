@@ -6,7 +6,7 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.Layer
-import org.codetome.zircon.api.graphics.builder.LayerBuilder
+import org.codetome.zircon.api.builder.graphics.LayerBuilder
 import org.codetome.zircon.internal.font.impl.FontSettings
 import java.nio.ByteBuffer
 

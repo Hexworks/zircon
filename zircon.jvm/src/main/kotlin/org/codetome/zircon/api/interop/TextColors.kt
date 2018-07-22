@@ -3,7 +3,6 @@ package org.codetome.zircon.api.interop
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.internal.color.DefaultTextColor
-import org.codetome.zircon.internal.factory.TextColorFactory
 import java.awt.Color
 
 object TextColors {
@@ -11,26 +10,23 @@ object TextColors {
     /**
      * The default foreground color is `WHITE`.
      */
-    @JvmField
-    val DEFAULT_FOREGROUND_COLOR = ANSITextColor.WHITE
+    @JvmStatic
+    fun defaultForegroundColor() = TextColor.defaultForegroundColor()
 
     /**
      * The default background color is `BLACK`.
      */
-    @JvmField
-    val DEFAULT_BACKGROUND_COLOR = ANSITextColor.BLACK
+    @JvmStatic
+    fun defaultBackgroundColor() = TextColor.defaultBackgroundColor()
 
     /**
      * Shorthand for a [TextColor] which is fully transparent.
      */
-    @JvmField
-    val TRANSPARENT = TextColorFactory.create(0, 0, 0, 0)
-
-    /**
-     * Creates a [TextColor] from a <code>red</code>, <code>green</code>, <code>blue</code> triple.
-     */
     @JvmStatic
-    fun fromRGB(red: Int, green: Int, blue: Int, alpha: Int = 255): TextColor = TextColor.create(red, green, blue, alpha)
+    fun transparent() = TextColor.transparent()
+
+    @JvmStatic
+    fun defaultAlpha() = TextColor.defaultAlpha()
 
     /**
      * Parses a string into a color. Formats:
@@ -39,7 +35,13 @@ object TextColors {
      *  parsing the tuples as Red, Green and Blue.
      */
     @JvmStatic
-    fun fromString(value: String) = TextColor.fromString(value)
+    fun fromString(value: String): TextColor = TextColor.fromString(value)
+
+    @JvmStatic
+    @JvmOverloads
+    fun create(red: Int, green: Int, blue: Int, alpha: Int = 255): TextColor =
+            TextColor.create(red, green, blue, alpha)
+
 
 }
 

@@ -9,7 +9,7 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.system.measureNanoTime
 
-fun main(args:Array<String>) {
+fun main(args: Array<String>) {
     val screen = SwingTerminalBuilder.newBuilder()
             .initialTerminalSize(SIZE)
             .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
@@ -23,7 +23,7 @@ fun main(args:Array<String>) {
 
     var currIdx = 0
     var loopCount = 0
-    while(true) {
+    while (true) {
         Stats.addTimedStatFor("terminalBenchmark") {
             screen.setBackgroundColor(bgColors[currIdx])
             screen.setForegroundColor(fgColors[currIdx])
@@ -35,7 +35,7 @@ fun main(args:Array<String>) {
             currIdx = if (currIdx == 0) 1 else 0
             loopCount++
         }
-        if(loopCount.rem(100) == 0) {
+        if (loopCount.rem(100) == 0) {
             Stats.printStats()
         }
     }
@@ -96,7 +96,7 @@ object Stats {
             val ms = avgTimeNs * weight / 1000 / 1000
             return "Stat(name='$name', " +
                     "avgTimeMs=$ms, " +
-                    "fps=${1000/ms}" +
+                    "fps=${1000 / ms}" +
                     "measurements=$measurements, " +
                     "weight = $weight)"
         }

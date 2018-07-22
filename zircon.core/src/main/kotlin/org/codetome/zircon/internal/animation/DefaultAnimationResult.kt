@@ -4,7 +4,7 @@ import org.codetome.zircon.api.animation.AnimationResult
 import org.codetome.zircon.api.animation.AnimationState
 import org.codetome.zircon.api.util.Maybe
 
-class DefaultAnimationResult(private var state: AnimationState) : AnimationResult {
+internal class DefaultAnimationResult(private var state: AnimationState) : AnimationResult {
 
     private var onFinishFn = Maybe.empty<(AnimationResult) -> Unit>()
 

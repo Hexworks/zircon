@@ -3,7 +3,6 @@ package org.codetome.zircon.internal.terminal
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.terminal.DeviceConfiguration
-import org.codetome.zircon.api.terminal.builder.DeviceConfigurationBuilder
 import java.awt.Canvas
 import java.awt.Frame
 import java.awt.Graphics
@@ -17,20 +16,20 @@ import javax.swing.JFrame
  */
 class SwingTerminalFrame(title: String = "ZirconTerminal",
                          size: Size,
-                         deviceConfiguration: DeviceConfiguration = DeviceConfigurationBuilder.DEFAULT,
+                         deviceConfiguration: DeviceConfiguration = DeviceConfiguration.defaultConfiguration(),
                          font: Font,
                          fullScreen: Boolean,
                          private val canvas: Canvas = TerminalCanvas(),
                          private val swingTerminal: SwingTerminal =
-                         SwingTerminal(
-                                 canvas = canvas,
-                                 initialFont = font,
-                                 initialSize = size,
-                                 deviceConfiguration = deviceConfiguration))
+                                 SwingTerminal(
+                                         canvas = canvas,
+                                         initialFont = font,
+                                         initialSize = size,
+                                         deviceConfiguration = deviceConfiguration))
     : JFrame(title), InternalTerminal by swingTerminal, WindowStateListener {
 
     override fun windowStateChanged(e: WindowEvent) {
-        if(e.newState == Frame.NORMAL) {
+        if (e.newState == Frame.NORMAL) {
             swingTerminal.flush()
         }
     }
@@ -58,7 +57,7 @@ class SwingTerminalFrame(title: String = "ZirconTerminal",
     private class TerminalCanvas : Canvas() {
         var swingTerminal: SwingTerminal? = null
 
-        override fun paint (g: Graphics) {
+        override fun paint(g: Graphics) {
             swingTerminal?.flush()
         }
     }

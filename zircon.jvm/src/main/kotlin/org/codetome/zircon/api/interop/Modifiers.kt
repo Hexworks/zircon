@@ -7,32 +7,33 @@ import org.codetome.zircon.api.modifier.SimpleModifiers.*
  * Represents the built-in modifiers supported by zircon.
  */
 object Modifiers {
-    @JvmField
-    val UNDERLINE = Underline
 
-    @JvmField
-    val BLINK = Blink
+    @JvmStatic
+    fun underline() = Underline
 
-    @JvmField
-    val CROSSED_OUT = CrossedOut
+    @JvmStatic
+    fun blink() = Blink
 
-    @JvmField
-    val VERTICAL_FLIP = VerticalFlip
+    @JvmStatic
+    fun crossedOut() = CrossedOut
 
-    @JvmField
-    val HORIZONTAL_FLIP = HorizontalFlip
+    @JvmStatic
+    fun verticalFlip() = VerticalFlip
 
-    @JvmField
-    val HIDDEN = Hidden
+    @JvmStatic
+    fun horizontalFlip() = HorizontalFlip
 
-    @JvmField
-    val BOLD = Bold
+    @JvmStatic
+    fun hidden() = Hidden
 
-    @JvmField
-    val ITALIC = Italic
+    @JvmStatic
+    fun bold() = Bold
 
-    @JvmField
-    val GLOW = Glow
+    @JvmStatic
+    fun italic() = Italic
+
+    @JvmStatic
+    fun glow() = Glow
 
     /**
      * Shorthand for the default border which is:
@@ -40,6 +41,6 @@ object Modifiers {
      * - on all sides (top, right, bottom, left)
      * @see BorderBuilder if you want to create custom borders
      */
-    @JvmField
-    val BORDER = BorderBuilder.newBuilder().build()
+    @JvmStatic
+    fun border() = BorderBuilder.newBuilder().build()
 }

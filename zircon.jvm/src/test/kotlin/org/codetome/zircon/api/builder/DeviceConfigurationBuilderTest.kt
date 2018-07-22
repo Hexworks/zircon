@@ -2,9 +2,9 @@ package org.codetome.zircon.api.builder
 
 
 import org.assertj.core.api.Assertions
+import org.codetome.zircon.api.builder.terminal.DeviceConfigurationBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.terminal.CursorStyle
-import org.codetome.zircon.api.terminal.builder.DeviceConfigurationBuilder
 import org.junit.Before
 import org.junit.Test
 import org.mockito.internal.util.reflection.Whitebox

@@ -1,10 +1,10 @@
 package org.codetome.zircon.internal.game
 
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.game.GameArea.BlockFetchMode
 import org.codetome.zircon.api.graphics.TextImage
-import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.extensions.getIfPresent
 import org.codetome.zircon.internal.util.TreeMap
@@ -56,8 +56,8 @@ class InMemoryGameArea(private val size: Size3D,
             fetchBlocksAt(z)
         } else {
             fetchPositionsWithOffset(
-                    offset = Position3D.DEFAULT_POSITION,
-                    size = Size3D.of(size.xLength, size.yLength, z))
+                    offset = Position3D.defaultPosition(),
+                    size = Size3D.create(size.xLength, size.yLength, z))
                     .map { fetchBlockAtPosition(it) }
         }
     }
@@ -96,7 +96,7 @@ class InMemoryGameArea(private val size: Size3D,
 
     override fun setBlockAt(position: Position3D, characters: List<TextCharacter>) {
         require(size.containsPosition(position)) {
-            "The supplied position ($position) is not within the size ($size) of this game area."
+            "The supplied position ($position) is not within the size ($size) create this game area."
         }
         val blockChars = characters.groupBy { tc ->
             var result = GameModifiers.BLOCK_LAYER
@@ -108,8 +108,8 @@ class InMemoryGameArea(private val size: Size3D,
             result
         }
         require(blockChars.getOrDefault(GameModifiers.BLOCK_LAYER, listOf()).size <= layersPerBlock) {
-            "The maximum number of layers per block for this game area is $layersPerBlock." +
-                    " The supplied characters have a size of ${characters.size}"
+            "The maximum number create layers per block for this game area is $layersPerBlock." +
+                    " The supplied characters have a size create ${characters.size}"
         }
         val layers = emptyBlockLayers.toMutableList()
         blockChars.getOrDefault(GameModifiers.BLOCK_LAYER, listOf())
@@ -125,7 +125,7 @@ class InMemoryGameArea(private val size: Size3D,
 
     override fun setCharacterAt(position: Position3D, layerIdx: Int, character: TextCharacter) {
         require(size.containsPosition(position)) {
-            "The supplied position ($position) is not within the size ($size) of this game area."
+            "The supplied position ($position) is not within the size ($size) create this game area."
         }
         require(blocks.containsKey(position)) {
             "There is no block at position $position."

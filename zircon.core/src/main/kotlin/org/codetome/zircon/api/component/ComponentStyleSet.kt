@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.component
 
+import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.codetome.zircon.api.graphics.StyleSet
 
 /**
@@ -22,4 +23,9 @@ interface ComponentStyleSet {
     fun disable(): StyleSet
 
     fun reset(): StyleSet
+
+    companion object {
+
+        fun defaultStyleSet() = ComponentStyleSetBuilder.newBuilder().build()
+    }
 }

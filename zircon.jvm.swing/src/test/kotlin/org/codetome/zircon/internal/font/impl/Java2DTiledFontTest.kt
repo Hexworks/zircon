@@ -3,7 +3,6 @@ package org.codetome.zircon.internal.font.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.resource.CP437TilesetResource
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.junit.Ignore
 import org.junit.Test
 
@@ -43,7 +42,7 @@ class Java2DTiledFontTest {
         target.fetchRegionForChar(TextCharacter.defaultCharacter().withTags("foo"))
     }
 
-   @Test(expected = IllegalArgumentException::class)
+    @Test(expected = IllegalArgumentException::class)
     fun shouldNotBeAbleToFetchRegionWithChar() {
         target.fetchRegionForChar(TextCharacter.defaultCharacter().withCharacter(1.toChar()))
     }

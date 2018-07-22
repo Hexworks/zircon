@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.terminal
 
+import org.codetome.zircon.api.builder.terminal.DeviceConfigurationBuilder
 import org.codetome.zircon.api.color.TextColor
 
 /**
@@ -13,4 +14,11 @@ data class DeviceConfiguration(
         val cursorStyle: CursorStyle,
         val cursorColor: TextColor,
         val isCursorBlinking: Boolean,
-        val isClipboardAvailable: Boolean)
+        val isClipboardAvailable: Boolean) {
+
+    companion object {
+
+        fun defaultConfiguration() = DeviceConfigurationBuilder.newBuilder().build()
+
+    }
+}
