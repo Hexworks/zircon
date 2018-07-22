@@ -2,19 +2,19 @@ package org.codetome.zircon.api.interop
 
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.graphics.builder.LayerBuilder
+import org.codetome.zircon.api.builder.graphics.LayerBuilder
 import org.codetome.zircon.internal.font.impl.FontSettings
 
 object Layers {
 
-    @JvmField
-    val DEFAULT_FONT = FontSettings.NO_FONT
+    @JvmStatic
+    fun defaultFont() = FontSettings.NO_FONT
 
-    @JvmField
-    val DEFAULT_SIZE = Size.one()
+    @JvmStatic
+    fun defaultSize() = Size.one()
 
-    @JvmField
-    val DEFAULT_FILLER = TextCharacter.empty()
+    @JvmStatic
+    fun defaultFiller() = TextCharacter.empty()
 
     @JvmStatic
     fun newBuilder() = LayerBuilder()

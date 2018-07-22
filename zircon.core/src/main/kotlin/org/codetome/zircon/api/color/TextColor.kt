@@ -1,6 +1,7 @@
 package org.codetome.zircon.api.color
 
 import org.codetome.zircon.api.behavior.Cacheable
+import org.codetome.zircon.internal.color.DefaultTextColor
 import org.codetome.zircon.internal.factory.TextColorFactory
 
 interface TextColor : Cacheable {
@@ -40,6 +41,12 @@ interface TextColor : Cacheable {
 
         fun defaultAlpha() = 255
 
+        /**
+         * Parses a string into a color. Formats:
+         *  * *blue* - Constant value from the [ANSITextColor] enum
+         *  * *#1a1a1a* - Hash character followed by three hex-decimal tuples; creates a [DefaultTextColor] color entry by
+         *  parsing the tuples as Red, Green and Blue.
+         */
         fun fromString(value: String): TextColor {
             value.trim { it <= ' ' }.let { cleanValue ->
                 try {
@@ -59,6 +66,6 @@ interface TextColor : Cacheable {
 
         fun create(red: Int, green: Int, blue: Int, alpha: Int = 255): TextColor = TextColorFactory.create(red, green, blue, alpha)
 
-        fun generateCacheKey(red: Int, green: Int, blue: Int, alpha: Int) = "TextColor-$red-$green-$blue-$alpha"
+        internal fun generateCacheKey(red: Int, green: Int, blue: Int, alpha: Int) = "TextColor-$red-$green-$blue-$alpha"
     }
 }

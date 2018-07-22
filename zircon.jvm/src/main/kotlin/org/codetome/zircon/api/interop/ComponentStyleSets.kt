@@ -1,10 +1,13 @@
 package org.codetome.zircon.api.interop
 
-import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
+import org.codetome.zircon.api.component.ComponentStyleSet
+import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
 
 object ComponentStyleSets {
 
+    @JvmStatic
     fun newBuilder() = ComponentStyleSetBuilder()
 
-    val DEFAULT_COMPONENT_SYTLE_SET = ComponentStyleSetBuilder.newBuilder().build()
+    @JvmStatic
+    fun defaultStyleSet() = ComponentStyleSet.defaultStyleSet()
 }

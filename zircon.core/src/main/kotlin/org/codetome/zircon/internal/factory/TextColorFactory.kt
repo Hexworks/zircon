@@ -4,7 +4,7 @@ import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.util.Cache
 import org.codetome.zircon.internal.color.DefaultTextColor
 
-object TextColorFactory {
+internal object TextColorFactory {
 
     private val cache = Cache.create<TextColor>()
 

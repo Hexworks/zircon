@@ -3,8 +3,8 @@ package org.codetome.zircon.internal.component.impl
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.CursorHandler
-import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
+import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
+import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.TextBox

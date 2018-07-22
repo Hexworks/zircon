@@ -6,11 +6,11 @@ import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.interop.toAWTColor
-import org.codetome.zircon.api.util.JVMFontUtils
-import org.codetome.zircon.internal.font.transformer.*
 import org.codetome.zircon.api.util.Cache
 import org.codetome.zircon.api.util.Identifier
+import org.codetome.zircon.api.util.JVMFontUtils
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.font.transformer.*
 import java.awt.Graphics2D
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
@@ -89,12 +89,12 @@ class Java2DPhysicalFont(private val source: java.awt.Font,
 
     companion object {
         val MODIFIER_TRANSFORMER_LOOKUP = mapOf(
-                Pair(Modifiers.UNDERLINE, Java2DUnderlineTransformer()),
-                Pair(Modifiers.VERTICAL_FLIP, Java2DVerticalFlipper()),
-                Pair(Modifiers.HORIZONTAL_FLIP, Java2DHorizontalFlipper()),
-                Pair(Modifiers.CROSSED_OUT, Java2DCrossedOutTransformer()),
-                Pair(Modifiers.BLINK, NoOpTransformer()),
-                Pair(Modifiers.HIDDEN, Java2DHiddenTransformer())
+                Pair(Modifiers.underline(), Java2DUnderlineTransformer()),
+                Pair(Modifiers.verticalFlip(), Java2DVerticalFlipper()),
+                Pair(Modifiers.horizontalFlip(), Java2DHorizontalFlipper()),
+                Pair(Modifiers.crossedOut(), Java2DCrossedOutTransformer()),
+                Pair(Modifiers.blink(), NoOpTransformer()),
+                Pair(Modifiers.hidden(), Java2DHiddenTransformer())
         ).toMap()
     }
 }

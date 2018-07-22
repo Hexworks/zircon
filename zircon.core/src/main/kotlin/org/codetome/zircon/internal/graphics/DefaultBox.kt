@@ -4,11 +4,11 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.graphics.Box
 import org.codetome.zircon.api.graphics.BoxType
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
-import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.codetome.zircon.api.shape.LineFactory
 
 class DefaultBox(size: Size,

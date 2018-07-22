@@ -3,13 +3,13 @@ package org.codetome.zircon.internal.component.impl
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.Boundable
+import org.codetome.zircon.api.builder.graphics.LayerBuilder
+import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.graphics.Layer
-import org.codetome.zircon.api.graphics.builder.LayerBuilder
-import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.util.Math
 import org.codetome.zircon.api.util.Maybe
@@ -99,8 +99,8 @@ class DefaultGameComponent(private val gameArea: GameArea,
                 (fromY until toY).forEach { screenY ->
                     (fromX until toX).forEach { x ->
                         val y = screenY + z // we need to add `z` to `y` because of isometric
-                        val maybeBlock: Maybe<Block> = gameArea.fetchBlockAt(Position3D.of(x, y, z))
-                        val maybeNext = gameArea.fetchBlockAt(Position3D.of(x, y + 1, z))
+                        val maybeBlock: Maybe<Block> = gameArea.fetchBlockAt(Position3D.create(x, y, z))
+                        val maybeNext = gameArea.fetchBlockAt(Position3D.create(x, y + 1, z))
                         val screenPos = Position.create(x, screenY)
                         val bottomIdx = z * totalLayerCount
                         val frondIdx = bottomIdx + customLayersPerBlock + 1

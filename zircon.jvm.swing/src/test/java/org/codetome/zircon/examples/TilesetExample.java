@@ -7,7 +7,7 @@ import org.codetome.zircon.api.TextCharacter;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.graphics.Layer;
-import org.codetome.zircon.api.graphics.builder.LayerBuilder;
+import org.codetome.zircon.api.builder.graphics.LayerBuilder;
 import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
@@ -83,7 +83,7 @@ public class TilesetExample {
         final Layer overlay = new LayerBuilder()
                 .size(screen.getBoundableSize())
                 .filler(TextCharacters.empty()
-                        .withBackgroundColor(TextColors.fromRGB(0, 0, 0, 50)))
+                        .withBackgroundColor(TextColors.create(0, 0, 0, 50)))
                 .build();
 
         for (int i = 0; i < RANDOM_CHAR_COUNT; i++) {
@@ -94,7 +94,7 @@ public class TilesetExample {
                     TextCharacters.newBuilder()
                             .character(RANDOM_CHARS[random.nextInt(charCount)])
                             .foregroundColor(ANSITextColor.values()[random.nextInt(ansiCount)])
-                            .backgroundColor(TextColors.TRANSPARENT)
+                            .backgroundColor(TextColors.transparent())
                             .build());
         }
         screen.pushLayer(overlay);

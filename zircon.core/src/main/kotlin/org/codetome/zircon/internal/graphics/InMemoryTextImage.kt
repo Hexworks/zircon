@@ -8,7 +8,7 @@ import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.graphics.TextImageBase
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
+import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.sam.TextCharacterTransformer
 import org.codetome.zircon.api.util.Math
 import org.codetome.zircon.api.util.Maybe

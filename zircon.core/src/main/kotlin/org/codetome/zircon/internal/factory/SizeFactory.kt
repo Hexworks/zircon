@@ -4,7 +4,7 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.util.Cache
 import org.codetome.zircon.internal.DefaultSize
 
-object SizeFactory {
+internal object SizeFactory {
 
     private val cache = Cache.create<Size>()
 

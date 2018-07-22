@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.animation
 
+import org.codetome.zircon.api.builder.animation.AnimationBuilder
 import org.codetome.zircon.api.resource.REXPaintResource
 import org.codetome.zircon.internal.animation.AnimationMetadata
 import org.codetome.zircon.internal.animation.DefaultAnimationFrame

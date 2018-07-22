@@ -4,7 +4,7 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.util.Cache
 import org.codetome.zircon.internal.DefaultPosition
 
-object PositionFactory {
+internal object PositionFactory {
 
     private val cache = Cache.create<Position>()
 

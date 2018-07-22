@@ -85,7 +85,7 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                 }
             }
         } catch (e: Exception) {
-            System.err.println("position for mouse event '$e' was out of bounds. It is dropped.")
+            System.err.println("position for mouse event '$e' was out create bounds. It is dropped.")
             e.printStackTrace()
         }
     }

@@ -5,7 +5,7 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.TextCharacter;
 import org.codetome.zircon.api.color.TextColor;
-import org.codetome.zircon.api.graphics.builder.LayerBuilder;
+import org.codetome.zircon.api.builder.graphics.LayerBuilder;
 import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
@@ -45,7 +45,7 @@ public class LayersExample {
         addOverlayAt(screen,
                 Positions.create(1, 2),
                 Sizes.create(secondRow.length(), 1),
-                TextColors.fromRGB(50, 50, 200, 127));
+                TextColors.create(50, 50, 200, 127));
 
         screen.display();
     }
@@ -65,8 +65,8 @@ public class LayersExample {
     private static TextCharacter buildWhiteOnBlack(char c) {
         return TextCharacters.newBuilder()
                 .character(c)
-                .backgroundColor(TextColors.fromRGB(0, 0, 0, 255))
-                .foregroundColor(TextColors.fromRGB(255, 255, 255, 255))
+                .backgroundColor(TextColors.create(0, 0, 0, 255))
+                .foregroundColor(TextColors.create(255, 255, 255, 255))
                 .build();
     }
 

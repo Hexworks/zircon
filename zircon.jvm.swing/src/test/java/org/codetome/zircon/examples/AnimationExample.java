@@ -4,7 +4,7 @@ import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.animation.Animation;
-import org.codetome.zircon.api.animation.AnimationBuilder;
+import org.codetome.zircon.api.builder.animation.AnimationBuilder;
 import org.codetome.zircon.api.animation.AnimationResource;
 import org.codetome.zircon.api.animation.DefaultAnimationHandler;
 import org.codetome.zircon.api.component.Panel;

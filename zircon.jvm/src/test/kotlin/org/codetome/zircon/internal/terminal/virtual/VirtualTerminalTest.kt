@@ -6,8 +6,8 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.interop.Modifiers
@@ -108,9 +108,9 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldEnableModifiersWhenEnableModifiersIsCalled() {
-        target.enableModifiers(setOf(Modifiers.BLINK, Modifiers.BOLD))
+        target.enableModifiers(setOf(Modifiers.blink(), Modifiers.bold()))
 
-        assertThat(target.getActiveModifiers()).containsExactlyInAnyOrder(Modifiers.BLINK, Modifiers.BOLD)
+        assertThat(target.getActiveModifiers()).containsExactlyInAnyOrder(Modifiers.blink(), Modifiers.bold())
     }
 
     @Test
@@ -204,7 +204,7 @@ class VirtualTerminalTest {
     @Test
     fun shouldProperlyMarkBlinkingCharactersAsDirtyAfterADirtyDrain() {
         target.setCharacterAt(Position.defaultPosition(), TextCharacterBuilder.newBuilder()
-                .modifiers(Modifiers.BLINK)
+                .modifiers(Modifiers.blink())
                 .build())
 
         target.drainDirtyPositions()

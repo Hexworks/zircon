@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.interop
 
-import org.codetome.zircon.api.graphics.builder.BoxBuilder
+import org.codetome.zircon.api.builder.graphics.BoxBuilder
 
 object Boxes {
 

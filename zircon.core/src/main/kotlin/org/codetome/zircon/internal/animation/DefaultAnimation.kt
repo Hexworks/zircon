@@ -6,7 +6,7 @@ import org.codetome.zircon.api.util.Identifier
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 
-class DefaultAnimation(private val animationFrames: List<AnimationFrame>,
+internal class DefaultAnimation(private val animationFrames: List<AnimationFrame>,
                        private var tick: Long,
                        private var loopCount: Int,
                        private val uniqueFrameCount: Int,

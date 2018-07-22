@@ -6,8 +6,8 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.BoxType
-import org.codetome.zircon.api.graphics.builder.BoxBuilder
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
+import org.codetome.zircon.api.builder.graphics.BoxBuilder
+import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.interop.Screens
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.shape.FilledRectangleFactory

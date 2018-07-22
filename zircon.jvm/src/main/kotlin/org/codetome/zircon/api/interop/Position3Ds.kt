@@ -8,14 +8,14 @@ object Position3Ds {
     /**
      * Position3d(0, 0, 0)
      */
-    @JvmField
-    val DEFAULT_POSITION = create(0, 0, 0)
+    @JvmStatic
+    fun defaultPosition() = Position3D.defaultPosition()
 
     /**
      * Factory method for [Position3D].
      */
     @JvmStatic
-    fun create(x: Int, y: Int, z: Int) = Position3D.of(x = x, y = y, z = z)
+    fun create(x: Int, y: Int, z: Int) = Position3D.create(x = x, y = y, z = z)
 
     /**
      * Creates a new [Position3D] from a [Position].

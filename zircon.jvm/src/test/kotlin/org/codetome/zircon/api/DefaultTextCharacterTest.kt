@@ -2,10 +2,10 @@ package org.codetome.zircon.api
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.ANSITextColor.*
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.modifier.SimpleModifiers.*
 import org.junit.Test
@@ -38,7 +38,7 @@ class DefaultTextCharacterTest {
     @Test
     fun shouldProperlyReportHavingABorderWhenThereIsBorder() {
         assertThat(TextCharacterBuilder.newBuilder()
-                .modifiers(Modifiers.BORDER)
+                .modifiers(Modifiers.border())
                 .build().hasBorder()).isTrue()
     }
 
@@ -61,9 +61,9 @@ class DefaultTextCharacterTest {
     @Test
     fun shouldProperlyRemoveModifiersWhenWithoutModifiersIsCalled() {
         assertThat(TextCharacterBuilder.newBuilder()
-                .modifiers(Modifiers.BOLD)
+                .modifiers(Modifiers.bold())
                 .build()
-                .withoutModifiers(setOf(Modifiers.BOLD))
+                .withoutModifiers(setOf(Modifiers.bold()))
                 .getModifiers())
                 .isEmpty()
     }
@@ -73,7 +73,7 @@ class DefaultTextCharacterTest {
         val style = StyleSetBuilder.newBuilder()
                 .foregroundColor(ANSITextColor.BLUE)
                 .backgroundColor(ANSITextColor.CYAN)
-                .modifiers(Modifiers.BOLD)
+                .modifiers(Modifiers.bold())
                 .build()
 
         val copy = TextCharacterBuilder.newBuilder()
@@ -87,27 +87,27 @@ class DefaultTextCharacterTest {
 
     @Test
     fun boldModifierShouldBeBold() {
-        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.BOLD).build().isBold()).isTrue()
+        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.bold()).build().isBold()).isTrue()
     }
 
     @Test
     fun underlinedModifierShouldBeUnderlined() {
-        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.UNDERLINE).build().isUnderlined()).isTrue()
+        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.underline()).build().isUnderlined()).isTrue()
     }
 
     @Test
     fun crossedOutModifierShouldBeCrossedOut() {
-        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.CROSSED_OUT).build().isCrossedOut()).isTrue()
+        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.crossedOut()).build().isCrossedOut()).isTrue()
     }
 
     @Test
     fun italicModifierShouldBeItalic() {
-        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.ITALIC).build().isItalic()).isTrue()
+        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.italic()).build().isItalic()).isTrue()
     }
 
     @Test
     fun blinkingModifierShouldBeBlinking() {
-        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.BLINK).build().isBlinking()).isTrue()
+        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.blink()).build().isBlinking()).isTrue()
     }
 
     @Test
@@ -170,7 +170,7 @@ class DefaultTextCharacterTest {
                         .backgroundColor(EXPECTED_BG_COLOR)
                         .modifiers(setOf(Bold))
                         .build())
-                .withModifiers(Modifiers.ITALIC)).isEqualTo(
+                .withModifiers(Modifiers.italic())).isEqualTo(
                 TextCharacter.create(
                         character = EXPECTED_CHAR,
                         styleSet = StyleSetBuilder.newBuilder()
@@ -187,9 +187,9 @@ class DefaultTextCharacterTest {
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
                         .backgroundColor(EXPECTED_BG_COLOR)
-                        .modifiers(setOf(Modifiers.BOLD, Modifiers.ITALIC, Modifiers.BLINK))
+                        .modifiers(setOf(Modifiers.bold(), Modifiers.italic(), Modifiers.blink()))
                         .build())
-                .withoutModifiers(Modifiers.BLINK))
+                .withoutModifiers(Modifiers.blink()))
                 .isEqualTo(EXPECTED_TEXT_CHARACTER)
     }
 
@@ -213,7 +213,7 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldReturnSameTextCharacterWhenWithModifierIsCalledWithSameModifier() {
-        assertThat(EXPECTED_TEXT_CHARACTER.withModifiers(Modifiers.BOLD, Modifiers.ITALIC))
+        assertThat(EXPECTED_TEXT_CHARACTER.withModifiers(Modifiers.bold(), Modifiers.italic()))
                 .isSameAs(EXPECTED_TEXT_CHARACTER)
     }
 
@@ -225,7 +225,7 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldReturnSameTextCharacterWhenWithoutModifierIsCalledWithNonPresentModifier() {
-        assertThat(EXPECTED_TEXT_CHARACTER.withoutModifiers(Modifiers.CROSSED_OUT))
+        assertThat(EXPECTED_TEXT_CHARACTER.withoutModifiers(Modifiers.crossedOut()))
                 .isSameAs(EXPECTED_TEXT_CHARACTER)
     }
 
@@ -233,7 +233,7 @@ class DefaultTextCharacterTest {
         val EXPECTED_CHAR = 'x'
         val EXPECTED_FG_COLOR = TextColor.fromString("#aabbcc")
         val EXPECTED_BG_COLOR = TextColor.fromString("#223344")
-        val EXPECTED_MODIFIERS = setOf(Modifiers.BOLD, Modifiers.ITALIC)
+        val EXPECTED_MODIFIERS = setOf(Modifiers.bold(), Modifiers.italic())
 
         val EXPECTED_TEXT_CHARACTER = TextCharacter.create(
                 character = EXPECTED_CHAR,

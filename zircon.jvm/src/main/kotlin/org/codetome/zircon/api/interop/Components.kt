@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.interop
 
-import org.codetome.zircon.internal.component.builder.*
+import org.codetome.zircon.api.builder.component.*
 
 object Components {
 

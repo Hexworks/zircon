@@ -5,7 +5,7 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.animation.AnimationFrame
 import org.codetome.zircon.api.graphics.Layer
 
-data class DefaultAnimationFrame(private val size: Size,
+internal data class DefaultAnimationFrame(private val size: Size,
                                  private val layers: List<Layer>,
                                  private val repeatCount: Int) : AnimationFrame {
 

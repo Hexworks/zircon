@@ -5,9 +5,9 @@ import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
+import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.graphics.TextCharacterString
 import org.codetome.zircon.api.graphics.TextWrap
-import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 

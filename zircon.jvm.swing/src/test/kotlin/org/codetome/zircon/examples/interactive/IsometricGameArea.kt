@@ -4,6 +4,9 @@ import org.codetome.zircon.TerminalUtils
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Symbols
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.builder.graphics.LayerBuilder
+import org.codetome.zircon.api.builder.graphics.TextCharacterStringBuilder
+import org.codetome.zircon.api.builder.screen.ScreenBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.game.GameModifiers
@@ -11,8 +14,6 @@ import org.codetome.zircon.api.game.Position3D
 import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.game.Size3D
 import org.codetome.zircon.api.graphics.BoxType
-import org.codetome.zircon.api.graphics.builder.LayerBuilder
-import org.codetome.zircon.api.graphics.builder.TextCharacterStringBuilder
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.interop.Components
 import org.codetome.zircon.api.interop.Sizes
@@ -21,7 +22,6 @@ import org.codetome.zircon.api.interop.TextColors
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.screen.Screen
-import org.codetome.zircon.api.screen.builder.ScreenBuilder
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent
 import org.codetome.zircon.internal.game.InMemoryGameArea
 import java.awt.Toolkit
@@ -120,7 +120,7 @@ object IsometricGameArea {
         val visibleGameAreaSize = Size3D.from2DSize(gamePanel.getBoundableSize()
                 .minus(Sizes.create(2, 2)), 8)
 
-        val virtualSize = Size3D.of(100, 100, 30)
+        val virtualSize = Size3D.create(100, 100, 30)
 
         val gameArea = InMemoryGameArea(
                 virtualSize,
@@ -140,7 +140,7 @@ object IsometricGameArea {
 
         val buildingCount = random.nextInt(5) + 3
 
-        val pos = Position3D.of(15, random.nextInt(20) + 20, 0)
+        val pos = Position3D.create(15, random.nextInt(20) + 20, 0)
 
         (0 until buildingCount).forEach { idx ->
 
@@ -148,7 +148,7 @@ object IsometricGameArea {
             val depth = random.nextInt(5) + 5
             val height = random.nextInt(5) + 5
 
-            generateBuilding(size = Size3D.of(width, depth, height),
+            generateBuilding(size = Size3D.create(width, depth, height),
                     offset = pos.withRelativeX(random.nextInt(5) + 10 * idx).withRelativeY(random.nextInt(10)),
                     gameArea = gameArea,
                     repeat = 2)
@@ -202,7 +202,7 @@ object IsometricGameArea {
         }
         if (repeat > 0) {
             generateBuilding(
-                    size = Size3D.of(size.xLength - 2, size.yLength - 2, size.zLength),
+                    size = Size3D.create(size.xLength - 2, size.yLength - 2, size.zLength),
                     offset = offset.withRelativeZ(size.zLength).withRelativeX(1).withRelativeY(1),
                     gameArea = gameArea,
                     repeat = repeat - 1)

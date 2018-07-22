@@ -56,7 +56,7 @@ class LibgdxPhysicalFont(private val source: java.awt.Font,
 
     companion object {
         val MODIFIER_TRANSFORMER_LOOKUP = mapOf(
-                Pair(Modifiers.BLINK, NoOpTransformer())
+                Pair(Modifiers.blink(), NoOpTransformer())
         ).toMap()
     }
 }

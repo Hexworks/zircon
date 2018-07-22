@@ -17,7 +17,7 @@ import org.codetome.zircon.api.resource.GraphicTilesetResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.CursorStyle;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.internal.component.builder.PanelBuilder;
+import org.codetome.zircon.api.builder.component.PanelBuilder;
 import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy;
 
 import java.util.*;
@@ -120,7 +120,7 @@ public class ComponentsExample {
         final Panel borderedPanel = PANEL_TEMPLATE.createCopy()
                 .title("Bordered panel")
                 .position(Positions.create(0, 2).relativeToBottomOf(boxedPanel))
-                .addBorder(Modifiers.BORDER)
+                .addBorder(Modifiers.border())
                 .build();
         borderedPanel.addComponent(Components.newLabelBuilder()
                 .text("Bordered panel")
@@ -422,7 +422,7 @@ public class ComponentsExample {
     private static void refreshIcon(Layer icon, char c) {
         icon.setRelativeCharacterAt(Positions.defaultPosition(), TextCharacters.newBuilder()
                 .character(c)
-                .backgroundColor(TextColors.TRANSPARENT)
+                .backgroundColor(TextColors.transparent())
                 .build());
     }
 
@@ -448,7 +448,7 @@ public class ComponentsExample {
         Panel result = Components.newPanelBuilder()
                 .size(Sizes.create(8, 6))
                 .position(position)
-                .addBorder(Modifiers.BORDER)
+                .addBorder(Modifiers.border())
                 .build();
         result.applyColorTheme(ADD_REMOVE_THEME);
         return result;

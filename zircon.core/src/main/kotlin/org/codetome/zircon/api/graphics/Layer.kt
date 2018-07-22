@@ -1,10 +1,12 @@
 package org.codetome.zircon.api.graphics
 
 import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.behavior.Movable
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.font.impl.FontSettings
 
 /**
  * A [Layer] is a specialized [TextImage] which is drawn upon a
@@ -40,4 +42,14 @@ interface Layer : TextImage, Movable, FontOverride {
      * Same as [Layer.setCharacterAt] but will not use the offset of this [Layer] (eg: just position instead of position - offset).
      */
     fun setRelativeCharacterAt(position: Position, character: TextCharacter): Boolean
+
+    companion object {
+
+        fun defaultFont() = FontSettings.NO_FONT
+
+        fun defaultSize() = Size.one()
+
+        fun defaultFiller() = TextCharacter.empty()
+
+    }
 }

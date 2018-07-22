@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
+import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
+import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyleSet

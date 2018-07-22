@@ -8,17 +8,17 @@ class Size3DTest {
 
     @Test
     fun shouldFetchPositionsInProperOrder() {
-        val size = Size3D.of(2, 2, 2)
+        val size = Size3D.create(2, 2, 2)
 
         assertThat(size.fetchPositions()).containsExactly(
-                Position3D.of(0, 0, 0),
-                Position3D.of(1, 0, 0),
-                Position3D.of(0, 1, 0),
-                Position3D.of(1, 1, 0),
-                Position3D.of(0, 0, 1),
-                Position3D.of(1, 0, 1),
-                Position3D.of(0, 1, 1),
-                Position3D.of(1, 1, 1))
+                Position3D.create(0, 0, 0),
+                Position3D.create(1, 0, 0),
+                Position3D.create(0, 1, 0),
+                Position3D.create(1, 1, 0),
+                Position3D.create(0, 0, 1),
+                Position3D.create(1, 0, 1),
+                Position3D.create(0, 1, 1),
+                Position3D.create(1, 1, 1))
     }
 
     @Test
@@ -34,7 +34,7 @@ class Size3DTest {
 
     @Test
     fun shouldProperlyCreateWithFactory() {
-        val result = Size3D.of(2, 3, 4)
+        val result = Size3D.create(2, 3, 4)
 
         assertThat(result.xLength).isEqualTo(2)
         assertThat(result.yLength).isEqualTo(3)
