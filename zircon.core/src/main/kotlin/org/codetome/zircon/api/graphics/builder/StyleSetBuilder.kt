@@ -3,7 +3,6 @@ package org.codetome.zircon.api.graphics.builder
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.platform.factory.StyleSetFactory
 

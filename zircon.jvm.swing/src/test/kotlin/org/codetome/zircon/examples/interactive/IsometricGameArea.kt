@@ -24,7 +24,6 @@ import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.api.screen.builder.ScreenBuilder
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent
 import org.codetome.zircon.internal.game.InMemoryGameArea
-import org.codetome.zircon.platform.factory.TextColorFactory
 import java.awt.Toolkit
 import java.util.*
 

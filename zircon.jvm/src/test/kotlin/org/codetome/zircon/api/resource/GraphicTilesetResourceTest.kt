@@ -2,7 +2,6 @@ package org.codetome.zircon.api.resource
 
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy
 import org.codetome.zircon.internal.font.impl.TestFontLoader
