@@ -2,9 +2,10 @@ package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
-import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.junit.Before
 import org.junit.Test
@@ -16,7 +17,7 @@ class DefaultLayerTest {
     @Before
     fun setUp() {
         target = DefaultLayer(
-                filler = TextCharacterBuilder.defaultCharacter(),
+                filler = TextCharacter.defaultCharacter(),
                 size = SIZE,
                 offset = OFFSET,
                 initialFont = FontSettings.NO_FONT)

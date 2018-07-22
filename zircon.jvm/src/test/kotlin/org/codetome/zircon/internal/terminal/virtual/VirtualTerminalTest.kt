@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Cell
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.builder.TextImageBuilder
@@ -159,7 +160,7 @@ class VirtualTerminalTest {
         assertThat(dirtyCells
                 .filter { it.position == OFFSET_1x1 }
                 .map { it.character })
-                .containsExactly(TextCharacterBuilder.defaultCharacter().withCharacter('x'))
+                .containsExactly(TextCharacter.defaultCharacter().withCharacter('x'))
     }
 
     @Test
@@ -195,7 +196,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldBeAbleToSetCharacter() {
-        val expectedChar = TextCharacterBuilder.defaultCharacter().withCharacter('x')
+        val expectedChar = TextCharacter.defaultCharacter().withCharacter('x')
         target.setCharacterAt(OFFSET_1x1, expectedChar)
 
         assertThat(target.getCharacterAt(OFFSET_1x1).get())
@@ -226,7 +227,7 @@ class VirtualTerminalTest {
         target.clear()
 
         val positions = SIZE.fetchPositions().map {
-            assertThat(target.getCharacterAt(it).get()).isEqualTo(TextCharacterBuilder.defaultCharacter())
+            assertThat(target.getCharacterAt(it).get()).isEqualTo(TextCharacter.defaultCharacter())
             it
         }
         assertThat(target.getCursorPosition()).isEqualTo(Position.defaultPosition())

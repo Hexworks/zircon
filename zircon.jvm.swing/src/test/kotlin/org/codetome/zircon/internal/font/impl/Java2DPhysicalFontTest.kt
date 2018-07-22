@@ -1,6 +1,7 @@
 package org.codetome.zircon.internal.font.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.resource.PhysicalFontResource
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.junit.Ignore
@@ -13,16 +14,16 @@ class Java2DPhysicalFontTest {
 
     @Test
     fun shouldProperlyCacheFontWhenFetchingRegionTwice() {
-        val firstResult = target.fetchRegionForChar(TextCharacterBuilder.defaultCharacter())
-        val secondResult = target.fetchRegionForChar(TextCharacterBuilder.defaultCharacter())
+        val firstResult = target.fetchRegionForChar(TextCharacter.defaultCharacter())
+        val secondResult = target.fetchRegionForChar(TextCharacter.defaultCharacter())
 
         assertThat(firstResult).isSameAs(secondResult)
     }
 
     @Test
     fun shouldNotBeTheSameWhenRegionIsLoadedForDifferentTextChars() {
-        val firstResult = target.fetchRegionForChar(TextCharacterBuilder.defaultCharacter())
-        val secondResult = target.fetchRegionForChar(TextCharacterBuilder.empty())
+        val firstResult = target.fetchRegionForChar(TextCharacter.defaultCharacter())
+        val secondResult = target.fetchRegionForChar(TextCharacter.empty())
 
         assertThat(firstResult).isNotSameAs(secondResult)
     }

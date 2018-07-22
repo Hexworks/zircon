@@ -3,6 +3,7 @@ package org.codetome.zircon.internal.behavior.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.builder.LayerBuilder
@@ -31,7 +32,7 @@ class DefaultLayerableTest {
     fun shouldThrowExceptionWhenLayerUsesUnsupportedFontSize() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(TextCharacterBuilder.defaultCharacter())
+                .filler(TextCharacter.defaultCharacter())
                 .font(CP437TilesetResource.BISASAM_20X20.toFont())
                 .offset(Position.topLeftCorner())
                 .build()
@@ -44,7 +45,7 @@ class DefaultLayerableTest {
     fun shouldContainLayerWhenLayerIsAdded() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(TextCharacterBuilder.defaultCharacter())
+                .filler(TextCharacter.defaultCharacter())
                 .offset(Position.topLeftCorner())
                 .build()
 
@@ -59,7 +60,7 @@ class DefaultLayerableTest {
     fun shouldNotContainLayerWhenLayerIsAddedThenRemoved() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(TextCharacterBuilder.defaultCharacter())
+                .filler(TextCharacter.defaultCharacter())
                 .offset(Position.topLeftCorner())
                 .build()
 
@@ -75,7 +76,7 @@ class DefaultLayerableTest {
     fun shouldNotContainLayerWhenLayerIsAddedThenPopped() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(TextCharacterBuilder.defaultCharacter())
+                .filler(TextCharacter.defaultCharacter())
                 .offset(Position.topLeftCorner())
                 .build()
 
@@ -126,7 +127,7 @@ class DefaultLayerableTest {
                 .offset(dirty0)
                 .textImage(TextImageBuilder.newBuilder()
                         .size(Size.one())
-                        .character(Position.defaultPosition(), TextCharacterBuilder.defaultCharacter().withCharacter('x'))
+                        .character(Position.defaultPosition(), TextCharacter.defaultCharacter().withCharacter('x'))
                         .build())
                 .build())
 
@@ -134,7 +135,7 @@ class DefaultLayerableTest {
                 .offset(dirty1)
                 .textImage(TextImageBuilder.newBuilder()
                         .size(Size.one())
-                        .character(Position.defaultPosition(), TextCharacterBuilder.defaultCharacter().withCharacter('x'))
+                        .character(Position.defaultPosition(), TextCharacter.defaultCharacter().withCharacter('x'))
                         .build())
                 .build())
 

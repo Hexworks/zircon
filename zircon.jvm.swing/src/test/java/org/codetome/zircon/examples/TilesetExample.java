@@ -82,7 +82,7 @@ public class TilesetExample {
 
         final Layer overlay = new LayerBuilder()
                 .size(screen.getBoundableSize())
-                .filler(TextCharacters.EMPTY
+                .filler(TextCharacters.empty()
                         .withBackgroundColor(TextColors.fromRGB(0, 0, 0, 50)))
                 .build();
 

@@ -9,8 +9,8 @@ import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 class DefaultAnimation(private val animationFrames: List<AnimationFrame>,
                        private var tick: Long,
                        private var loopCount: Int,
-                       private val frameCount: Int,
-                       private var length: Int) : Animation {
+                       private val uniqueFrameCount: Int,
+                       private var totalFrameCount: Int) : Animation {
 
     private val id = Identifier.randomIdentifier()
     private val infiniteLoop = loopCount == 0
@@ -31,9 +31,9 @@ class DefaultAnimation(private val animationFrames: List<AnimationFrame>,
 
     override fun getId(): Identifier = id
 
-    override fun getFrameCount() = frameCount
+    override fun getFrameCount() = uniqueFrameCount
 
-    override fun getLength() = length
+    override fun getLength() = totalFrameCount
 
     override fun getLoopCount() = loopCount
 

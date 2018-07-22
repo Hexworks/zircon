@@ -90,8 +90,8 @@ class InMemoryTextImageTest {
 
     @Test
     fun givenATextImageThatOverFlowsWhenCombinedThenResizeNewTextImage(){
-        val sourceChar = TextCharacterBuilder.defaultCharacter().withCharacter('x')
-        val overwriteChar = TextCharacterBuilder.defaultCharacter().withCharacter('+')
+        val sourceChar = TextCharacter.defaultCharacter().withCharacter('x')
+        val overwriteChar = TextCharacter.defaultCharacter().withCharacter('+')
 
         val originalSize = Size.create(3, 1)
         val source = TextImageBuilder.newBuilder()
@@ -130,9 +130,9 @@ class InMemoryTextImageTest {
 
     @Test
     fun shouldProperlyCombineTwoImages() {
-        val sourceChar = TextCharacterBuilder.defaultCharacter().withCharacter('x')
-        val imageChar = TextCharacterBuilder.defaultCharacter().withCharacter('+')
-        val filler = TextCharacterBuilder.defaultCharacter().withCharacter('_')
+        val sourceChar = TextCharacter.defaultCharacter().withCharacter('x')
+        val imageChar = TextCharacter.defaultCharacter().withCharacter('+')
+        val filler = TextCharacter.defaultCharacter().withCharacter('_')
 
         val source = TextImageBuilder.newBuilder()
                 .size(Size.create(3, 3))
@@ -184,7 +184,7 @@ class InMemoryTextImageTest {
     }
 
     companion object {
-        val EMPTY_CHAR = TextCharacterBuilder.empty()
+        val EMPTY_CHAR = TextCharacter.empty()
         val EMPTY_BY_DEFAULT_POS = Position.create(2, 1)
         val FILLED_POS = Position.create(1, 2)
         val SIZE_OF_3X3 = Size.create(3, 3)

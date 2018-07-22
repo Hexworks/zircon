@@ -13,10 +13,8 @@ import org.codetome.zircon.api.terminal.Terminal
  * - default `initialSize` is 80x24
  * - default `title` is "Zircon Terminal"
  * - default `font` is `UBUNTU_MONO` (because it is cp437 compliant)
- * @see DeviceConfigurationBuilder for the defaults for `deviceConfiguration`
  */
 interface TerminalBuilder : Builder<Terminal> {
-
 
     override fun build(): Terminal
 
@@ -27,7 +25,6 @@ interface TerminalBuilder : Builder<Terminal> {
      * Default is 80x24.
      */
     fun initialTerminalSize(initialSize: Size): TerminalBuilder
-
 
     /**
      * Sets the title to use on created [Terminal]s created by this shape.

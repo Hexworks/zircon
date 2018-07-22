@@ -5,7 +5,6 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.Border
-import org.codetome.zircon.internal.DefaultTextCharacter
 import org.codetome.zircon.internal.factory.TextCharacterFactory
 
 /**
@@ -53,7 +52,7 @@ interface TextCharacter : Cacheable {
 
     fun fetchBorderData(): Set<Border>
 
-    fun isNotEmpty(): Boolean = this != TextCharacterBuilder.empty()
+    fun isNotEmpty(): Boolean = this != TextCharacter.empty()
 
     /**
      * Returns a copy of this [TextCharacter] with the specified character.
@@ -110,14 +109,34 @@ interface TextCharacter : Cacheable {
     fun withoutModifiers(modifiers: Set<Modifier>): TextCharacter
 
     companion object {
-        /**
-         * Creates a new [DefaultTextCharacter].
-         */
-        fun create(character: Char,
-                   styleSet: StyleSet,
-                   tags: Set<String> = setOf()) = TextCharacterFactory.create(character, styleSet, tags)
 
-        fun generateCacheKey(character: Char, styleSet: StyleSet, tags: Set<String>): String =
+        /**
+         * Shorthand for the default character which is:
+         * - a space character
+         * - with default foreground
+         * - and default background
+         * - and no modifiers.
+         */
+        fun defaultCharacter() = TextCharacterBuilder.newBuilder().build()
+
+        /**
+         * Shorthand for an empty character which is:
+         * - a space character
+         * - with transparent foreground
+         * - and transparent background
+         * - and no modifiers.
+         */
+        fun empty() = TextCharacterBuilder.newBuilder()
+                .backgroundColor(TextColor.transparent())
+                .foregroundColor(TextColor.transparent())
+                .character(' ')
+                .build()
+
+        internal fun create(character: Char,
+                            styleSet: StyleSet,
+                            tags: Set<String> = setOf()) = TextCharacterFactory.create(character, styleSet, tags)
+
+        internal fun generateCacheKey(character: Char, styleSet: StyleSet, tags: Set<String>): String =
                 StringBuilder().apply {
                     append(character)
                     append(styleSet.generateCacheKey())

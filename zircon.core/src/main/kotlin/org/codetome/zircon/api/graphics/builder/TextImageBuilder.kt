@@ -4,7 +4,6 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.Builder
-import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.graphics.InMemoryTextImage
 
@@ -17,7 +16,7 @@ import org.codetome.zircon.internal.graphics.InMemoryTextImage
 @Suppress("ArrayInDataClass")
 data class TextImageBuilder(
         private var size: Size = Size.one(),
-        private var filler: TextCharacter = TextCharacterBuilder.empty(),
+        private var filler: TextCharacter = TextCharacter.empty(),
         private val chars: MutableMap<Position, TextCharacter> = mutableMapOf()) : Builder<TextImage> {
 
     /**

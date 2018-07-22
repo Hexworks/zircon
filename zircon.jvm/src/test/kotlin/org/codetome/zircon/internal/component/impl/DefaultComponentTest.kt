@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.component.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
@@ -142,7 +142,7 @@ class DefaultComponentTest {
         target.drawOnto(image)
 
         assertThat(image.getCharacterAt(POSITION - Position.offset1x1()).get())
-                .isEqualTo(TextCharacterBuilder.empty())
+                .isEqualTo(TextCharacter.empty())
 
         target.getBoundableSize().fetchPositions().forEach {
             assertThat(image.getCharacterAt(it + POSITION).get())
