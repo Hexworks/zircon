@@ -3,23 +3,23 @@ package org.codetome.zircon.examples
 import org.codetome.zircon.api.LibgdxTerminalBuilder
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.graphics.builder.BoxBuilder
-import org.codetome.zircon.api.builder.ScreenBuilder
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.platform.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColor
+import org.codetome.zircon.api.graphics.BoxType
+import org.codetome.zircon.api.graphics.builder.BoxBuilder
+import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
+import org.codetome.zircon.api.interop.Screens
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.shape.FilledRectangleFactory
-import org.codetome.zircon.api.graphics.BoxType
 
 object PanelDrawingExample {
 
     private val TERMINAL_WIDTH = 19
     private val TERMINAL_HEIGHT = 12
     private val SIZE = Size.create(TERMINAL_WIDTH, TERMINAL_HEIGHT)
-    private val BACKGROUND_COLOR = TextColorFactory.fromString("#223344")
-    private val PANEL_BG_COLOR = TextColorFactory.fromString("#666666")
-    private val PANEL_FG_COLOR = TextColorFactory.fromString("#ffffff")
+    private val BACKGROUND_COLOR = TextColor.fromString("#223344")
+    private val PANEL_BG_COLOR = TextColor.fromString("#443322")
+    private val PANEL_FG_COLOR = TextColor.fromString("#ddeedd")
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -27,7 +27,7 @@ object PanelDrawingExample {
                 .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build()
-        val screen = ScreenBuilder.createScreenFor(terminal)
+        val screen = Screens.createScreenFor(terminal)
         screen.setCursorVisibility(false)
 
         FilledRectangleFactory

@@ -7,11 +7,12 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
+import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.behavior.InternalCursorHandler
 import org.codetome.zircon.internal.behavior.InternalLayerable
@@ -20,11 +21,10 @@ import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultFontOverride
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 import org.codetome.zircon.internal.behavior.impl.DefaultShutdownHook
-import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.Event
+import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.terminal.AbstractTerminal
 import org.codetome.zircon.internal.terminal.InternalTerminal
-import org.codetome.zircon.api.util.Consumer
 
 class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
                       initialFont: Font,

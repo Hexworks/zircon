@@ -2,8 +2,8 @@ package org.codetome.zircon.api.builder
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
-import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.api.interop.Modifiers
 import org.junit.Test
 
@@ -32,8 +32,8 @@ class TextCharacterBuilderTest {
     }
 
     companion object {
-        val BG_COLOR = TextColorFactory.fromString("#aabbcc")
-        val FG_COLOR = TextColorFactory.fromString("#ccbbaa")
+        val BG_COLOR = TextColor.fromString("#aabbcc")
+        val FG_COLOR = TextColor.fromString("#ccbbaa")
         val TAGS = setOf("TAG1", "TAG2")
         val CHAR = 'a'
         val MODIFIER = Modifiers.BOLD

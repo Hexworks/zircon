@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.FontTextureRegion
-import org.codetome.zircon.internal.SimpleModifiers.Blink
+import org.codetome.zircon.api.modifier.SimpleModifiers.Blink
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.transformer.NoOpTransformer

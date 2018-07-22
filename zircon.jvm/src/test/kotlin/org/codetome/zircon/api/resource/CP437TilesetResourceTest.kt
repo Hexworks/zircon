@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Symbols
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.codetome.zircon.internal.util.CP437Utils
 import org.junit.Before

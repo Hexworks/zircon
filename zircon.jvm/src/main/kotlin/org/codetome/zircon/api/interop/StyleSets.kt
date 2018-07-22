@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.interop
 
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
-import org.codetome.zircon.platform.factory.TextColorFactory
 
 object StyleSets {
 
@@ -29,8 +29,8 @@ object StyleSets {
      */
     @JvmField
     val EMPTY = newBuilder()
-            .backgroundColor(TextColorFactory.transparent())
-            .foregroundColor(TextColorFactory.transparent())
+            .backgroundColor(TextColor.transparent())
+            .foregroundColor(TextColor.transparent())
             .modifiers(setOf())
             .build()
 

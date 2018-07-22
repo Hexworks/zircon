@@ -1,6 +1,6 @@
-package org.codetome.zircon.internal.font
+package org.codetome.zircon.internal.font.impl
 
-import org.codetome.zircon.internal.font.impl.VirtualFontLoader
+import org.codetome.zircon.api.font.FontLoader
 
 object FontLoaderRegistry {
 

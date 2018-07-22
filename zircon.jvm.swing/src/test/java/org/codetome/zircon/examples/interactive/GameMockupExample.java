@@ -4,16 +4,12 @@ import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
-import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.Label;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.graphics.BoxType;
-import org.codetome.zircon.api.interop.Components;
-import org.codetome.zircon.api.interop.DeviceConfigurations;
-import org.codetome.zircon.api.interop.Positions;
-import org.codetome.zircon.api.interop.Sizes;
+import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
@@ -67,7 +63,7 @@ public class GameMockupExample {
         // MAIN MENU
         // ==========
 
-        Screen mainMenuScreen = ScreenBuilder.createScreenFor(terminal);
+        Screen mainMenuScreen = Screens.createScreenFor(terminal);
         Position menuPosition = Positions.create(
                 (terminalSize.getXLength() - MAIN_MENU_PANEL_WIDTH) / 2,
                 (terminalSize.getYLength() - MAIN_MENU_PANEL_HEIGHT) / 2);
@@ -109,7 +105,7 @@ public class GameMockupExample {
         // OPTIONS
         // ==========
 
-        Screen optionsScreen = ScreenBuilder.createScreenFor(terminal);
+        Screen optionsScreen = Screens.createScreenFor(terminal);
 
         Button backButton = Components.newButtonBuilder()
                 .text(BACK_LABEL)

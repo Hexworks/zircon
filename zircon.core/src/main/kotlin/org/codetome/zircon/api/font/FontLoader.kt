@@ -1,20 +1,18 @@
-package org.codetome.zircon.internal.font
+package org.codetome.zircon.api.font
 
-import org.codetome.zircon.api.font.CharacterMetadata
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.impl.PickFirstMetaStrategy
-import java.io.InputStream
 
 interface FontLoader {
 
     fun fetchPhysicalFont(size: Float = 18f,
-                          source: InputStream,
+                          path: String,
                           cacheFonts: Boolean = true,
                           withAntiAlias: Boolean = true): Font
 
     fun fetchTiledFont(width: Int,
                        height: Int,
-                       source: InputStream,
+                       path: String,
                        cacheFonts: Boolean,
                        metadata: Map<Char, List<CharacterMetadata>>,
                        metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy()) : Font

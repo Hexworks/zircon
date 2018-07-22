@@ -2,8 +2,9 @@ package org.codetome.zircon.api.builder
 
 
 import org.assertj.core.api.Assertions
-import org.codetome.zircon.platform.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.terminal.CursorStyle
+import org.codetome.zircon.api.terminal.builder.DeviceConfigurationBuilder
 import org.junit.Before
 import org.junit.Test
 import org.mockito.internal.util.reflection.Whitebox
@@ -22,7 +23,7 @@ class DeviceConfigurationBuilderTest {
         val blinkLengthInMilliSeconds = 5L
         val clipboardAvailable = true
         val cursorBlinking = true
-        val cursorColor = TextColorFactory.fromString("#aabbcc")
+        val cursorColor = TextColor.fromString("#aabbcc")
         val cursorStyle = CursorStyle.UNDER_BAR
 
         target

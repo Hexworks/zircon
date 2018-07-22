@@ -1,12 +1,12 @@
 package org.codetome.zircon.internal.terminal.builder
 
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.api.builder.TerminalBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.api.terminal.Terminal
+import org.codetome.zircon.api.terminal.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.codetome.zircon.internal.screen.TerminalScreen
 import org.codetome.zircon.internal.terminal.InternalTerminal

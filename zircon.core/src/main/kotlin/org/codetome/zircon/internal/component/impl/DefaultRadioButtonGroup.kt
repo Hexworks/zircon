@@ -2,24 +2,24 @@ package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
-import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.RadioButton
 import org.codetome.zircon.api.component.RadioButtonGroup
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection
+import org.codetome.zircon.api.component.builder.ComponentStyleSetBuilder
 import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.graphics.builder.StyleSetBuilder
 import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.util.Consumer
+import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.behavior.Scrollable
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.api.util.Consumer
-import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.util.ThreadSafeQueue
-import org.codetome.zircon.platform.factory.TextColorFactory
 import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 
 class DefaultRadioButtonGroup constructor(wrappers: ThreadSafeQueue<WrappingStrategy>,
@@ -96,8 +96,8 @@ class DefaultRadioButtonGroup constructor(wrappers: ThreadSafeQueue<WrappingStra
     override fun applyColorTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(TextColorFactory.transparent())
-                        .backgroundColor(TextColorFactory.transparent())
+                        .foregroundColor(TextColor.transparent())
+                        .backgroundColor(TextColor.transparent())
                         .build())
                 .build())
         getComponents().forEach { it.applyColorTheme(colorTheme) }

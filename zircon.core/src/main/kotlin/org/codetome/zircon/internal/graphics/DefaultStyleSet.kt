@@ -3,16 +3,15 @@ package org.codetome.zircon.internal.graphics
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
-import org.codetome.zircon.platform.factory.TextColorFactory
 
-data class DefaultStyleSet(private var foregroundColor: TextColor = TextColorFactory.defaultForegroundColor(),
-                           private var backgroundColor: TextColor = TextColorFactory.defaultBackgroundColor(),
+data class DefaultStyleSet(private var foregroundColor: TextColor = TextColor.defaultForegroundColor(),
+                           private var backgroundColor: TextColor = TextColor.defaultBackgroundColor(),
                            private val modifiers: Set<Modifier> = setOf()) : StyleSet {
 
     private val cacheKey = StringBuilder().apply {
         append(foregroundColor.generateCacheKey())
         append(backgroundColor.generateCacheKey())
-        append(modifiers.joinToString(separator = "", transform = {it.generateCacheKey()}))
+        append(modifiers.joinToString(separator = "", transform = { it.generateCacheKey() }))
     }.toString()
 
     override fun getForegroundColor() = foregroundColor

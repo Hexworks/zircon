@@ -23,6 +23,40 @@ interface TextColor : Cacheable {
 
     companion object {
 
+        /**
+         * The default foreground color is `WHITE`.
+         */
+        fun defaultForegroundColor() = ANSITextColor.WHITE
+
+        /**
+         * The default background color is `BLACK`.
+         */
+        fun defaultBackgroundColor() = ANSITextColor.BLACK
+
+        /**
+         * Shorthand for a [TextColor] which is fully transparent.
+         */
+        fun transparent() = TextColorFactory.create(0, 0, 0, 0)
+
+        fun defaultAlpha() = 255
+
+        fun fromString(value: String): TextColor {
+            value.trim { it <= ' ' }.let { cleanValue ->
+                try {
+                    return if (ANSITextColor.COLOR_NAMES.contains(cleanValue.toUpperCase())) {
+                        ANSITextColor.valueOf(cleanValue.toUpperCase())
+                    } else {
+                        val r = cleanValue.substring(1, 3).toInt(16)
+                        val g = cleanValue.substring(3, 5).toInt(16)
+                        val b = cleanValue.substring(5, 7).toInt(16)
+                        create(r, g, b)
+                    }
+                } catch (e: Exception) {
+                    throw IllegalArgumentException("Unknown color definition '$cleanValue'", e)
+                }
+            }
+        }
+
         fun create(red: Int, green: Int, blue: Int, alpha: Int = 255): TextColor = TextColorFactory.create(red, green, blue, alpha)
     }
 }

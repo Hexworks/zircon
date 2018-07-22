@@ -4,13 +4,9 @@ import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.TextCharacter;
-import org.codetome.zircon.api.graphics.builder.LayerBuilder;
-import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.color.TextColor;
-import org.codetome.zircon.api.interop.Positions;
-import org.codetome.zircon.api.interop.Sizes;
-import org.codetome.zircon.api.interop.TextCharacters;
-import org.codetome.zircon.api.interop.TextColors;
+import org.codetome.zircon.api.graphics.builder.LayerBuilder;
+import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +25,7 @@ public class LayersExample {
                 .font(WANDERLUST_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
-        final Screen screen = ScreenBuilder.createScreenFor(terminal);
+        final Screen screen = Screens.createScreenFor(terminal);
         screen.setCursorVisibility(false); // we don't want the cursor right now
 
         final String firstRow = "This is white title on black";

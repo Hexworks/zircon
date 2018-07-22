@@ -8,7 +8,7 @@ import org.codetome.zircon.api.Position.Companion.offset1x1
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.builder.TextImageBuilder
+import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.junit.Before
 import org.junit.Test
 import java.util.function.Consumer

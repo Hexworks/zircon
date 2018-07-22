@@ -1,17 +1,21 @@
 package org.codetome.zircon.api
 
+import org.codetome.zircon.api.behavior.Cacheable
 import org.codetome.zircon.api.shape.RectangleFactory
-import org.codetome.zircon.platform.factory.SizeFactory
 import org.codetome.zircon.api.util.Math
+import org.codetome.zircon.internal.factory.SizeFactory
 
 /**
  * Dimensions in 2D space.
  * This class is immutable and cannot change its internal state after creation.
  */
-interface Size : Comparable<Size> {
+interface Size : Comparable<Size>, Cacheable {
 
     val xLength: Int
+
     val yLength: Int
+
+    override fun generateCacheKey() = Size.generateCacheKey(xLength, yLength)
 
     operator fun plus(other: Size) = create(xLength + other.xLength, yLength + other.yLength)
 
@@ -32,6 +36,7 @@ interface Size : Comparable<Size> {
         var currX = 0
         val endX = xLength
         val endY = yLength
+
         object : Iterator<Position> {
 
             override fun hasNext() = currY < endY && currX < endX
@@ -155,9 +160,6 @@ interface Size : Comparable<Size> {
         return size
     }
 
-    /**
-     * TODO: refactor DefaultBoundable to call to this. Implement other DefaultBoundable methods.
-     */
     fun containsPosition(position: Position) = xLength > position.x && yLength > position.y
 
     private fun returnZeroIfZero(size: Size): Size {
@@ -169,6 +171,7 @@ interface Size : Comparable<Size> {
     }
 
     companion object {
+
         fun create(xLength: Int, yLength: Int) = SizeFactory.create(xLength, yLength)
 
         fun unknown() = create(Int.MAX_VALUE, Int.MAX_VALUE)
@@ -178,5 +181,7 @@ interface Size : Comparable<Size> {
         fun zero() = create(0, 0)
 
         fun one() = create(1, 1)
+
+        fun generateCacheKey(xLength: Int, yLength: Int) = "Size-$xLength-$yLength"
     }
 }

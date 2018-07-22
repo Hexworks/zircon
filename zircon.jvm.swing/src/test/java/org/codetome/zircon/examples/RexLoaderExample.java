@@ -2,8 +2,8 @@ package org.codetome.zircon.examples;
 
 import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.graphics.Layer;
+import org.codetome.zircon.api.interop.Screens;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.REXPaintResource;
@@ -25,7 +25,7 @@ public class RexLoaderExample {
                 .font(CP437TilesetResource.TAFFER_20X20.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
-        final Screen screen = ScreenBuilder.createScreenFor(terminal);
+        final Screen screen = Screens.createScreenFor(terminal);
         screen.setCursorVisibility(false);
         List<Layer> layers = rex.toLayerList();
         for (Layer layer: layers) {

@@ -81,8 +81,8 @@ data class TextCharacterBuilder(
          * - and no modifiers.
          */
         fun empty() = TextCharacterBuilder.newBuilder()
-                .backgroundColor(TextColorFactory.transparent())
-                .foregroundColor(TextColorFactory.transparent())
+                .backgroundColor(TextColor.transparent())
+                .foregroundColor(TextColor.transparent())
                 .character(' ')
                 .build()
     }

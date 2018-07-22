@@ -4,10 +4,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.graphics.builder.TextCharacterStringBuilder
-import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.graphics.TextWrap
+import org.codetome.zircon.api.graphics.builder.TextCharacterStringBuilder
+import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.codetome.zircon.api.interop.Modifiers
 import org.junit.Test
 

@@ -2,6 +2,7 @@ package org.codetome.zircon.api.interop
 
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
+import org.codetome.zircon.internal.color.DefaultTextColor
 import org.codetome.zircon.platform.factory.TextColorFactory
 import java.awt.Color
 
@@ -38,7 +39,7 @@ object TextColors {
      *  parsing the tuples as Red, Green and Blue.
      */
     @JvmStatic
-    fun fromString(value: String): TextColor = TextColorFactory.fromString(value)
+    fun fromString(value: String)  = TextColor.fromString(value)
 
 }
 

@@ -2,13 +2,12 @@ package org.codetome.zircon.examples;
 
 import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.graphics.Box;
+import org.codetome.zircon.api.graphics.BoxType;
 import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.api.graphics.BoxType;
 
 import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16;
 
@@ -26,7 +25,7 @@ public class PanelDrawingExample {
                 .font(WANDERLUST_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
-        final Screen screen = ScreenBuilder.createScreenFor(terminal);
+        final Screen screen = Screens.createScreenFor(terminal);
         screen.setCursorVisibility(false);
 
         Shapes

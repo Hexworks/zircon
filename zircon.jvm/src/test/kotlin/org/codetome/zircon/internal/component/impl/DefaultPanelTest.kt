@@ -13,7 +13,7 @@ import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.component.builder.LabelBuilder
 import org.codetome.zircon.internal.component.builder.PanelBuilder
-import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.TestFontLoader
 import org.junit.Before
 import org.junit.Test

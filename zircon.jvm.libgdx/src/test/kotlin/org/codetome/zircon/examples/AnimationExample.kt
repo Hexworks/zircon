@@ -5,7 +5,7 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.animation.AnimationResource
 import org.codetome.zircon.api.animation.DefaultAnimationHandler
-import org.codetome.zircon.api.builder.ScreenBuilder
+import org.codetome.zircon.api.interop.Screens
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.component.builder.LabelBuilder
 import org.codetome.zircon.internal.component.builder.PanelBuilder
@@ -23,7 +23,7 @@ object AnimationExample {
                 .font(FONT.toFont())
                 .initialTerminalSize(TERMINAL_SIZE)
                 .build()
-        val screen = ScreenBuilder.createScreenFor(terminal)
+        val screen = Screens.createScreenFor(terminal)
         screen.setCursorVisibility(false)
 
         val panel = PanelBuilder.newBuilder()

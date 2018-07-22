@@ -2,12 +2,11 @@ package org.codetome.zircon.internal.color
 
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.util.Math
-import org.codetome.zircon.platform.factory.TextColorFactory
 
 data class DefaultTextColor(private val red: Int,
                             private val green: Int,
                             private val blue: Int,
-                            private val alpha: Int = TextColorFactory.defaultAlpha()) : TextColor {
+                            private val alpha: Int = TextColor.defaultAlpha()) : TextColor {
 
     private val cacheKey = "$red$green$blue$alpha"
 
@@ -53,7 +52,7 @@ data class DefaultTextColor(private val red: Int,
     }
 
     override fun darkenByPercent(percentage: Double): TextColor {
-        return TextColorFactory.fromRGB(
+        return TextColor.create(
                 red = (red * (1f - percentage)).toInt(),
                 green = (green * (1f - percentage)).toInt(),
                 blue = (blue * (1f - percentage)).toInt(),

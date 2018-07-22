@@ -2,7 +2,7 @@ package org.codetome.zircon.api.interop
 
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.platform.factory.TextColorFactory
+import org.codetome.zircon.api.color.TextColor
 
 object TextCharacters {
 
@@ -31,8 +31,8 @@ object TextCharacters {
      */
     @JvmField
     val EMPTY = TextCharacterBuilder.newBuilder()
-            .backgroundColor(TextColorFactory.transparent())
-            .foregroundColor(TextColorFactory.transparent())
+            .backgroundColor(TextColor.transparent())
+            .foregroundColor(TextColor.transparent())
             .character(' ')
             .build()
 }

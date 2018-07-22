@@ -2,12 +2,12 @@ package org.codetome.zircon.internal.game
 
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.game.GameArea.BlockFetchMode
 import org.codetome.zircon.api.graphics.TextImage
-import org.codetome.zircon.internal.extensions.getIfPresent
+import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.extensions.getIfPresent
 import org.codetome.zircon.internal.util.TreeMap
 import org.codetome.zircon.platform.extension.getOrDefault
 import org.codetome.zircon.platform.factory.TreeMapFactory
@@ -83,7 +83,7 @@ class InMemoryGameArea(private val size: Size3D,
         return (offset.z until size.zLength + offset.z).flatMap { z ->
             val images = mutableListOf<TextImage>()
             (0 until layersPerBlock).forEach { layerIdx ->
-                val builder = TextImageBuilder().size(size.to2DSize())
+                val builder = TextImageBuilder.newBuilder().size(size.to2DSize())
                 window.forEach { pos ->
                     fetchCharacterAt(Position3D.from2DPosition(pos + offset2D, z), layerIdx).map { char ->
                         builder.character(pos, char)

@@ -6,7 +6,7 @@ import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.Border
-import org.codetome.zircon.internal.SimpleModifiers.*
+import org.codetome.zircon.api.modifier.SimpleModifiers.*
 
 data class DefaultTextCharacter(
         private val character: Char,

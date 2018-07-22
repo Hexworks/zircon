@@ -1,9 +1,9 @@
 package org.codetome.zircon.internal.terminal
 
 import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.DeviceConfigurationBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.terminal.DeviceConfiguration
+import org.codetome.zircon.api.terminal.builder.DeviceConfigurationBuilder
 import java.awt.Canvas
 import java.awt.Frame
 import java.awt.Graphics

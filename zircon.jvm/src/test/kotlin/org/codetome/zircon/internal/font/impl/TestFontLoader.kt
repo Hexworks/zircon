@@ -4,17 +4,16 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
-import org.codetome.zircon.internal.font.FontLoader
+import org.codetome.zircon.api.font.FontLoader
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.api.util.Identifier
 import java.awt.image.BufferedImage
 import java.awt.image.BufferedImage.TYPE_INT_ARGB
-import java.io.InputStream
 
 class TestFontLoader : FontLoader {
 
     override fun fetchPhysicalFont(size: Float,
-                                   source: InputStream,
+                                   path: String,
                                    cacheFonts: Boolean,
                                    withAntiAlias: Boolean)  = object: Font {
 
@@ -42,7 +41,7 @@ class TestFontLoader : FontLoader {
 
     override fun fetchTiledFont(width: Int,
                                 height: Int,
-                                source: InputStream,
+                                path: String,
                                 cacheFonts: Boolean,
                                 metadata: Map<Char, List<CharacterMetadata>>,
                                 metadataPickingStrategy: MetadataPickingStrategy)  = object: Font {

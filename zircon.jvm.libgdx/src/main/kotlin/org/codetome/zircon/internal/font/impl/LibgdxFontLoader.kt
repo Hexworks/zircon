@@ -2,18 +2,18 @@ package org.codetome.zircon.internal.font.impl
 
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.internal.font.FontLoader
+import org.codetome.zircon.api.font.FontLoader
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.cache.NoOpCache
 import org.codetome.zircon.internal.font.transformer.LibgdxFontRegionCloner
 import org.codetome.zircon.internal.font.transformer.LibgdxFontRegionColorizer
 import org.codetome.zircon.platform.factory.CacheFactory
-import java.io.InputStream
+import java.io.File
 
 class LibgdxFontLoader : FontLoader {
 
     override fun fetchPhysicalFont(size: Float,
-                                   source: InputStream,
+                                   path: String,
                                    cacheFonts: Boolean,
                                    withAntiAlias: Boolean): Font {
         TODO("Implement font loading")
@@ -21,12 +21,12 @@ class LibgdxFontLoader : FontLoader {
 
     override fun fetchTiledFont(width: Int,
                                 height: Int,
-                                source: InputStream,
+                                path: String,
                                 cacheFonts: Boolean,
                                 metadata: Map<Char, List<CharacterMetadata>>,
                                 metadataPickingStrategy: MetadataPickingStrategy): Font {
         return LibgdxTiledFont(
-                source = source,
+                source = File(path).inputStream(),
                 metadata = metadata,
                 width = width,
                 height = height,

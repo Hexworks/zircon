@@ -3,21 +3,21 @@ package org.codetome.zircon.internal.component.impl
 import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.Boundable
-import org.codetome.zircon.api.graphics.builder.LayerBuilder
-import org.codetome.zircon.api.builder.TextImageBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.graphics.Layer
+import org.codetome.zircon.api.graphics.builder.LayerBuilder
+import org.codetome.zircon.api.graphics.builder.TextImageBuilder
 import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.util.Math
+import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.behavior.Scrollable3D
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.api.util.Math
-import org.codetome.zircon.api.util.Maybe
 
 /**
  * Note that this class is in **BETA**!

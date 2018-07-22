@@ -3,23 +3,21 @@ package org.codetome.zircon.internal.font.impl
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.font.CharacterMetadata
 import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.internal.font.FontLoader
-import org.codetome.zircon.internal.font.FontLoaderRegistry
+import org.codetome.zircon.api.font.FontLoader
+import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
-import java.io.InputStream
-import java.util.*
 
 class VirtualFontLoader : FontLoader {
 
     // TODO: this retard trick is temporary, fix it later
 
     override fun fetchPhysicalFont(size: Float,
-                                   source: InputStream,
+                                   path: String,
                                    cacheFonts: Boolean,
                                    withAntiAlias: Boolean): Font {
         return object : Font {
 
-            private var actualFont: Optional<Font> = Optional.empty()
+            private var actualFont: Maybe<Font> = Maybe.empty()
 
             override fun getWidth() =
                     tryToGetActualFont().getWidth()
@@ -44,9 +42,9 @@ class VirtualFontLoader : FontLoader {
                     if (FontLoaderRegistry.getCurrentFontLoader() === this@VirtualFontLoader) {
                         throw IllegalStateException("No font")
                     } else {
-                        actualFont = Optional.of(FontLoaderRegistry.getCurrentFontLoader().fetchPhysicalFont(
+                        actualFont = Maybe.of(FontLoaderRegistry.getCurrentFontLoader().fetchPhysicalFont(
                                 size = size,
-                                source = source,
+                                path = path,
                                 cacheFonts = cacheFonts,
                                 withAntiAlias = withAntiAlias))
                         actualFont.get()
@@ -58,13 +56,13 @@ class VirtualFontLoader : FontLoader {
 
     override fun fetchTiledFont(width: Int,
                                 height: Int,
-                                source: InputStream,
+                                path: String,
                                 cacheFonts: Boolean,
                                 metadata: Map<Char, List<CharacterMetadata>>,
                                 metadataPickingStrategy: MetadataPickingStrategy): Font {
         return object : Font {
 
-            private var actualFont: Optional<Font> = Optional.empty()
+            private var actualFont: Maybe<Font> = Maybe.empty()
 
             override fun getWidth() =
                     tryToGetActualFont().getWidth()
@@ -89,10 +87,10 @@ class VirtualFontLoader : FontLoader {
                     if (FontLoaderRegistry.getCurrentFontLoader() === this@VirtualFontLoader) {
                         throw IllegalStateException("No font")
                     } else {
-                        actualFont = Optional.of(FontLoaderRegistry.getCurrentFontLoader().fetchTiledFont(
+                        actualFont = Maybe.of(FontLoaderRegistry.getCurrentFontLoader().fetchTiledFont(
                                 width = width,
                                 height = height,
-                                source = source,
+                                path = path,
                                 cacheFonts = cacheFonts,
                                 metadataPickingStrategy = metadataPickingStrategy,
                                 metadata = metadata))

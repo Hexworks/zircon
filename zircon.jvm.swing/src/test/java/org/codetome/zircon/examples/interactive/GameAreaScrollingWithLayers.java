@@ -5,8 +5,6 @@ import org.codetome.zircon.api.Position;
 import org.codetome.zircon.api.Size;
 import org.codetome.zircon.api.Symbols;
 import org.codetome.zircon.api.TextCharacter;
-import org.codetome.zircon.api.builder.ScreenBuilder;
-import org.codetome.zircon.api.graphics.builder.TextCharacterStringBuilder;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.game.GameArea;
@@ -48,7 +46,7 @@ public class GameAreaScrollingWithLayers {
         if (args.length > 0) {
             headless = true;
         }
-        final Screen screen = ScreenBuilder.createScreenFor(terminal);
+        final Screen screen = Screens.createScreenFor(terminal);
         screen.setCursorVisibility(false); // we don't want the cursor right now
 
         Panel actions = Components.newPanelBuilder()
@@ -161,7 +159,7 @@ public class GameAreaScrollingWithLayers {
                 screen.drainLayers();
                 Position3D visibleOffset = gameComponent.getVisibleOffset();
                 screen.pushLayer(Layers.newBuilder()
-                        .textImage(TextCharacterStringBuilder.newBuilder()
+                        .textImage(TextCharacterStrings.newBuilder()
                                 .backgroundColor(TextColors.TRANSPARENT)
                                 .foregroundColor(TextColors.fromString("#aaaadd"))
                                 .text(String.format("Position: (x=%s, y=%s, z=%s)", visibleOffset.getX(), visibleOffset.getY(), visibleOffset.getZ()))

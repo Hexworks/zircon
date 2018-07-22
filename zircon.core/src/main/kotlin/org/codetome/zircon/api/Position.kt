@@ -2,25 +2,17 @@ package org.codetome.zircon.api
 
 import org.codetome.zircon.api.behavior.Cacheable
 import org.codetome.zircon.api.component.Component
-import org.codetome.zircon.platform.factory.PositionFactory
+import org.codetome.zircon.internal.factory.PositionFactory
 
 /**
  * A 2D position in terminal space. Please note that the coordinates are 0-indexed, meaning 0x0 is the
  * top left corner of the terminal. This object is immutable so you cannot change it after it has been created.
  * Instead, you can easily create modified clones by using the `with*` methods.
- *
- * **Note that** the `copy` operation is not supported for this class. Use the `of` method to create a new
- * instance of [Position]!
  */
 interface Position : Comparable<Position>, Cacheable {
 
-    /**
-     * Represents the `x` in a terminal.
-     */
     val x: Int
-    /**
-     * Represents the `y` in a terminal
-     */
+
     val y: Int
 
     override fun generateCacheKey() = generateCacheKey(x, y)
@@ -59,9 +51,6 @@ interface Position : Comparable<Position>, Cacheable {
      * supplied y index.
      */
     fun withY(y: Int): Position {
-        if (y == 0 && this.x == 0) {
-            return topLeftCorner()
-        }
         return create(x, y)
     }
 
@@ -70,9 +59,6 @@ interface Position : Comparable<Position>, Cacheable {
      * supplied x index.
      */
     fun withX(x: Int): Position {
-        if (x == 0 && this.y == 0) {
-            return topLeftCorner()
-        }
         return create(x, y)
     }
 
@@ -150,6 +136,10 @@ interface Position : Comparable<Position>, Cacheable {
     }
 
     companion object {
+
+        /**
+         * Creates a new [Position] using the given `x` and `y` values.
+         */
         fun create(x: Int, y: Int) = PositionFactory.create(x, y)
 
         /**

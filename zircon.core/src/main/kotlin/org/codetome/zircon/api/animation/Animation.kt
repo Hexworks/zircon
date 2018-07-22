@@ -36,4 +36,5 @@ interface Animation : Identifiable {
     fun hasNextFrame(): Boolean
 
     fun getAllFrames(): List<AnimationFrame>
+
 }
