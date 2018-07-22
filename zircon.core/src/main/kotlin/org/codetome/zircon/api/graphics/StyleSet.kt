@@ -3,6 +3,7 @@ package org.codetome.zircon.api.graphics
 import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.behavior.Cacheable
 import org.codetome.zircon.api.color.TextColor
+import org.codetome.zircon.internal.factory.StyleSetFactory
 
 /**
  * Represents style information which is handled by Zircon like
@@ -79,6 +80,12 @@ interface StyleSet : Cacheable {
     fun withoutModifiers(): StyleSet
 
     companion object {
+
+        fun create(foregroundColor: TextColor, backgroundColor: TextColor, modifiers: Set<Modifier>) =
+                StyleSetFactory.create(
+                        foregroundColor = foregroundColor,
+                        backgroundColor = backgroundColor,
+                        modifiers = modifiers)
 
         fun generateCacheKey(foregroundColor: TextColor, backgroundColor: TextColor, modifiers: Set<Modifier>): String =
                 StringBuilder().apply {

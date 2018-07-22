@@ -24,7 +24,7 @@ class DefaultTextCharacterTest {
                 .build()
                 .generateCacheKey()
 
-        assertThat(result).isEqualTo("x170187204255GREENBoldfoobar")
+        assertThat(result).isEqualTo("x170187204255GREENBoldbarfoo")
     }
 
     @Test

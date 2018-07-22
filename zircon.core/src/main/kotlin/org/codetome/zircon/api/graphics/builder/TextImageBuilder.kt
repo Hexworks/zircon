@@ -6,7 +6,7 @@ import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.builder.TextCharacterBuilder
 import org.codetome.zircon.api.graphics.TextImage
-import org.codetome.zircon.platform.factory.TextImageFactory
+import org.codetome.zircon.internal.graphics.InMemoryTextImage
 
 /**
  * Creates [org.codetome.zircon.api.graphics.TextImage]s.
@@ -46,7 +46,10 @@ data class TextImageBuilder(
         chars[position] = textCharacter
     }
 
-    override fun build(): TextImage = TextImageFactory.create(size, filler, chars)
+    override fun build(): TextImage = InMemoryTextImage(
+            size = size,
+            filler = filler,
+            chars = chars)
 
     override fun createCopy() = copy()
 
