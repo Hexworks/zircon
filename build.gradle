@@ -1,6 +1,6 @@
 allprojects {
     group 'org.codetome.zircon'
-    version '2018.1.9-PREVIEW'
+    version '2018.2.0-PREVIEW'
 }
 
 task wrapper(type: Wrapper) {
