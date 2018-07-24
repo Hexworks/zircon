@@ -1,7 +1,12 @@
 package org.codetome.zircon
 
 import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.SwingTerminalBuilder
+import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.graphics.LayerBuilder
+import org.codetome.zircon.api.color.ANSITextColor
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.interop.Sizes
 import org.codetome.zircon.api.interop.TextColors
 import org.codetome.zircon.api.resource.CP437TilesetResource
@@ -16,19 +21,54 @@ fun main(args: Array<String>) {
             .buildScreen()
     screen.setCursorVisibility(false)
 
-    val charCount = 60 * 30
+    val random = Random()
+    val terminalWidth = 100
+    val terminalHeight = 40
+    val charCount = terminalWidth * terminalHeight
+    val layerCount = 20
+    val layerWidth = 20
+    val layerHeight = 10
+    var layers = (0..layerCount).map {
+        LayerBuilder.newBuilder().filler(TextCharacterBuilder.newBuilder()
+                .backgroundColor(TextColor.create(random.nextInt(255), random.nextInt(255), random.nextInt(255)))
+                .foregroundColor(TextColor.create(random.nextInt(255), random.nextInt(255), random.nextInt(255)))
+                .character('x')
+                .build())
+                .size(Size.create(layerWidth, layerHeight))
+                .offset(Position.create(random.nextInt(terminalWidth - layerWidth), random.nextInt(terminalHeight - layerHeight)))
+                .build().also {
+                    screen.pushLayer(it)
+                }
+    }
+
     val chars = listOf('a', 'b')
     val bgColors = listOf(TextColors.fromString("#223344"), TextColors.fromString("#112233"))
     val fgColors = listOf(TextColors.fromString("#ffaaff"), TextColors.fromString("#aaffaa"))
 
     var currIdx = 0
     var loopCount = 0
+
     while (true) {
         Stats.addTimedStatFor("terminalBenchmark") {
             screen.setBackgroundColor(bgColors[currIdx])
             screen.setForegroundColor(fgColors[currIdx])
             (0..charCount).forEach {
                 screen.putCharacter(chars[currIdx])
+            }
+            layers.forEach {
+                screen.removeLayer(it)
+            }
+            layers = (0..layerCount).map {
+                LayerBuilder.newBuilder().filler(TextCharacterBuilder.newBuilder()
+                        .backgroundColor(TextColor.create(random.nextInt(255), random.nextInt(255), random.nextInt(255)))
+                        .foregroundColor(TextColor.create(random.nextInt(255), random.nextInt(255), random.nextInt(255)))
+                        .character('x')
+                        .build())
+                        .size(Size.create(layerWidth, layerHeight))
+                        .offset(Position.create(random.nextInt(terminalWidth - layerWidth), random.nextInt(terminalHeight - layerHeight)))
+                        .build().also {
+                            screen.pushLayer(it)
+                        }
             }
             screen.refresh()
             screen.putCursorAt(Position.defaultPosition())
