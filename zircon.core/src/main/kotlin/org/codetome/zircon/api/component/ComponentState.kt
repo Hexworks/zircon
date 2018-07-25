@@ -4,13 +4,14 @@ package org.codetome.zircon.api.component
  * Represents the states a [Component] can be in.
  */
 enum class ComponentState {
+
     DEFAULT,
     /**
      * The mouse is over this component.
      */
     MOUSE_OVER,
     /**
-     * This component has giveFocus.
+     * This component has focus.
      */
     FOCUSED,
     /**

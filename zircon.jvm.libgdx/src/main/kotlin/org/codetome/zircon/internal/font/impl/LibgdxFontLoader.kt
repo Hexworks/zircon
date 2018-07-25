@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font.impl
 
-import org.codetome.zircon.api.font.CharacterMetadata
+import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontLoader
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
@@ -23,7 +23,7 @@ class LibgdxFontLoader : FontLoader {
                                 height: Int,
                                 path: String,
                                 cacheFonts: Boolean,
-                                metadata: Map<Char, List<CharacterMetadata>>,
+                                metadata: Map<Char, List<TextureRegionMetadata>>,
                                 metadataPickingStrategy: MetadataPickingStrategy): Font {
         return LibgdxTiledFont(
                 source = File(path).inputStream(),

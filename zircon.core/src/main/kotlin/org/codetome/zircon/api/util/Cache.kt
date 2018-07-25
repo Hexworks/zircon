@@ -9,7 +9,7 @@ import org.codetome.zircon.platform.factory.CacheFactory
 interface Cache<R : Cacheable> {
 
     /**
-     * Retrieves a font region by a [TextCharacter] if present.
+     * Retrieves a font region by a `key` if present.
      */
     fun retrieveIfPresent(key: String): Maybe<R>
 
@@ -20,6 +20,9 @@ interface Cache<R : Cacheable> {
 
     companion object {
 
+        /**
+         * Creates a new [Cache] for the given [Cacheable] type.
+         */
         fun <R : Cacheable> create(): Cache<R> = CacheFactory.create()
     }
 }

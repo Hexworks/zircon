@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.TextCharacterBuilder
-import org.codetome.zircon.api.font.CharacterMetadata
+import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.resource.CP437TilesetResource
@@ -50,7 +50,7 @@ class GdxFont(private val source: Texture,
         return LibgdxFontTextureRegion(textCharacter.generateCacheKey(),TextureRegion(source, x, y, width, height))
     }
 
-    override fun fetchMetadataForChar(char: Char): List<CharacterMetadata> {
+    override fun fetchMetadataForChar(char: Char): List<TextureRegionMetadata> {
         TODO("not implemented")
     }
 

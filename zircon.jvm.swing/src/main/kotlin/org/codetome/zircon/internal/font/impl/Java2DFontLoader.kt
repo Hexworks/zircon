@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font.impl
 
-import org.codetome.zircon.api.font.CharacterMetadata
+import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.util.JVMFontUtils
 import org.codetome.zircon.api.font.FontLoader
@@ -39,7 +39,7 @@ class Java2DFontLoader : FontLoader {
                                 height: Int,
                                 path: String,
                                 cacheFonts: Boolean,
-                                metadata: Map<Char, List<CharacterMetadata>>,
+                                metadata: Map<Char, List<TextureRegionMetadata>>,
                                 metadataPickingStrategy: MetadataPickingStrategy): Font {
         return Java2DTiledFont(
                 source = ImageIO.read(File(path)),

@@ -10,7 +10,7 @@ import org.codetome.zircon.internal.font.impl.FontSettings
 
 /**
  * A [Layer] is a specialized [TextImage] which is drawn upon a
- * [Layerable] object. A [Layer] differs from a [TextImage] in
+ * [org.codetome.zircon.api.behavior.Layerable] object. A [Layer] differs from a [TextImage] in
  * the way it is handled. It can be repositioned relative to its
  * parent while a [TextImage] cannot.
  */
@@ -34,12 +34,14 @@ interface Layer : TextImage, Movable, FontOverride {
     fun createCopy(): Layer
 
     /**
-     * Same as [Layer.getCharacterAt] but will not use the offset of this [Layer] (eg: just position instead of position - offset).
+     * Same as [Layer.getCharacterAt] but will not use the offset of this [Layer]
+     * (eg: just position instead of position - offset).
      */
     fun getRelativeCharacterAt(position: Position): Maybe<TextCharacter>
 
     /**
-     * Same as [Layer.setCharacterAt] but will not use the offset of this [Layer] (eg: just position instead of position - offset).
+     * Same as [Layer.setCharacterAt] but will not use the offset of this [Layer]
+     * (eg: just position instead of position - offset).
      */
     fun setRelativeCharacterAt(position: Position, character: TextCharacter): Boolean
 

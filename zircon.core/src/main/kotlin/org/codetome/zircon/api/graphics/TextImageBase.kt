@@ -24,7 +24,7 @@ import org.codetome.zircon.internal.behavior.impl.DefaultStyleable
  * - [TextImage.getCharacterAt]
  * - [TextImage.drawOnto]
  *
- * If puzzled you can always take a look at [org.codetome.zircon.internal.graphics.DefaultTextImage]
+ * If puzzled you can always take a look at [org.codetome.zircon.internal.graphics.InMemoryTextImage]
  * for inspiration.
  */
 abstract class TextImageBase private constructor(boundable: Boundable,

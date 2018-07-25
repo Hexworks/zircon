@@ -5,8 +5,7 @@ import org.codetome.zircon.api.graphics.StyleSet
 
 /**
  * This interface represents a collection of [StyleSet]s which
- * will be used when a [Component]'s [ComponentState] this [ComponentStyleSet] is applied to
- * changes.
+ * will be used when a [Component]'s [ComponentState] changes.
  */
 interface ComponentStyleSet {
 

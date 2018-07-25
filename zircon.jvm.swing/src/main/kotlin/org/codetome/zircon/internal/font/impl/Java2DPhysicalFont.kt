@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.font.impl
 
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.font.CharacterMetadata
+import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.interop.Modifiers
@@ -85,7 +85,7 @@ class Java2DPhysicalFont(private val source: java.awt.Font,
         return region
     }
 
-    override fun fetchMetadataForChar(char: Char) = listOf<CharacterMetadata>()
+    override fun fetchMetadataForChar(char: Char) = listOf<TextureRegionMetadata>()
 
     companion object {
         val MODIFIER_TRANSFORMER_LOOKUP = mapOf(
