@@ -14,6 +14,6 @@ interface FontLoader {
                        height: Int,
                        path: String,
                        cacheFonts: Boolean,
-                       metadata: Map<Char, List<CharacterMetadata>>,
+                       metadata: Map<Char, List<TextureRegionMetadata>>,
                        metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy()) : Font
 }

@@ -1,13 +1,13 @@
 package org.codetome.zircon.internal.font.impl
 
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.font.CharacterMetadata
+import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.api.util.Identifier
 
-abstract class TiledFontBase(private val metadata: Map<Char, List<CharacterMetadata>>,
+abstract class TiledFontBase(private val metadata: Map<Char, List<TextureRegionMetadata>>,
                              private val metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy()) : Font {
 
     private val id = Identifier.randomIdentifier()
@@ -16,9 +16,9 @@ abstract class TiledFontBase(private val metadata: Map<Char, List<CharacterMetad
 
     override fun hasDataForChar(char: Char) = metadata.containsKey(char)
 
-    override fun fetchMetadataForChar(char: Char): List<CharacterMetadata> = metadata[char] ?: listOf()
+    override fun fetchMetadataForChar(char: Char): List<TextureRegionMetadata> = metadata[char] ?: listOf()
 
-    protected fun fetchMetaFor(textCharacter: TextCharacter): CharacterMetadata {
+    protected fun fetchMetaFor(textCharacter: TextCharacter): TextureRegionMetadata {
         if (!hasDataForChar(textCharacter.getCharacter()))
             if (TextUtils.isPrintableCharacter(textCharacter.getCharacter()))
                 throw IllegalArgumentException("No texture region exists for printable character: '${textCharacter.getCharacter().toInt()}'!")

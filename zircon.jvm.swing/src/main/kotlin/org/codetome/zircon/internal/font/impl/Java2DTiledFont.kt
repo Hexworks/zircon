@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.font.impl
 
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.font.CharacterMetadata
+import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.modifier.Border
 import org.codetome.zircon.api.modifier.RayShade
@@ -20,7 +20,7 @@ class Java2DTiledFont(private val source: BufferedImage,
                       private val height: Int,
                       private val regionTransformers: List<FontRegionTransformer<BufferedImage>>,
                       private val cache: Cache<FontTextureRegion<BufferedImage>>,
-                      metadata: Map<Char, List<CharacterMetadata>>,
+                      metadata: Map<Char, List<TextureRegionMetadata>>,
                       metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy())
     : TiledFontBase(
         metadata = metadata,

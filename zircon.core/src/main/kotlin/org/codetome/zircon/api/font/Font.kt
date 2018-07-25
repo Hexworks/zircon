@@ -35,9 +35,9 @@ interface Font : Identifiable {
     fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<*>
 
     /**
-     * Returns all the [CharacterMetadata] for a [Char] which is known by this [Font].
+     * Returns all the [TextureRegionMetadata] for a [Char] which is known by this [Font].
      */
-    fun fetchMetadataForChar(char: Char): List<CharacterMetadata>
+    fun fetchMetadataForChar(char: Char): List<TextureRegionMetadata>
 
     /**
      * Returns the `Size` of this `Font` (width, height)

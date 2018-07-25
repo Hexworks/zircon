@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.font.CharacterMetadata
+import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.modifier.SimpleModifiers.Blink
 import org.codetome.zircon.internal.font.FontRegionTransformer
@@ -21,7 +21,7 @@ class LibgdxTiledFont(private val source: InputStream,
                       private val height: Int,
                       private val regionTransformers: List<FontRegionTransformer<TextureRegion>>,
                       private val cache: Cache<FontTextureRegion<TextureRegion>>,
-                      metadata: Map<Char, List<CharacterMetadata>>,
+                      metadata: Map<Char, List<TextureRegionMetadata>>,
                       metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy())
     : TiledFontBase(
         metadata = metadata,

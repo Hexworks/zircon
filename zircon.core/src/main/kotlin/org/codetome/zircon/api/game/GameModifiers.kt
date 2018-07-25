@@ -3,7 +3,7 @@ package org.codetome.zircon.api.game
 import org.codetome.zircon.api.Modifier
 
 /**
- * Represents the built-in SimpleModifiers supported by zircon.
+ * [Modifier]s for the [GameComponent].
  */
 enum class GameModifiers : Modifier {
 

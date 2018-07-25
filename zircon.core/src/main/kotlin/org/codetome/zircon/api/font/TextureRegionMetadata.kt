@@ -1,11 +1,11 @@
 package org.codetome.zircon.api.font
 
-import org.codetome.zircon.internal.font.DefaultCharacterMetadata
+import org.codetome.zircon.internal.font.DefaultTextureRegionMetadata
 
 /**
- * Metadata about a [Char], like `tags` and its position (x, y) in a [Font].
+ * Metadata about a [FontTextureRegion], like `tags` and its position (x, y) in a [Font].
  */
-interface CharacterMetadata {
+interface TextureRegionMetadata {
 
     val char: Char
     val x: Int
@@ -17,7 +17,7 @@ interface CharacterMetadata {
         fun create(char: Char,
                    x: Int,
                    y: Int,
-                   tags: Set<String> = setOf()) = DefaultCharacterMetadata(
+                   tags: Set<String> = setOf()) = DefaultTextureRegionMetadata(
                 char = char,
                 tags = tags,
                 x = x,

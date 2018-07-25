@@ -12,7 +12,7 @@ import org.codetome.zircon.api.graphics.StyleSet
  * - Default character is a space
  * - Default modifiers is an empty set
  * also
- * @see TextColorFactory to check default colors
+ * @see [org.codetome.zircon.api.color.TextColor] to check default colors.
  */
 data class TextCharacterBuilder(
         private var character: Char = ' ',

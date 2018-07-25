@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.font.impl
 
 import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.font.CharacterMetadata
+import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.font.FontLoader
@@ -33,7 +33,7 @@ class TestFontLoader : FontLoader {
 
         }
 
-        override fun fetchMetadataForChar(char: Char) = listOf<CharacterMetadata>()
+        override fun fetchMetadataForChar(char: Char) = listOf<TextureRegionMetadata>()
 
         override fun getId() = uuid
 
@@ -43,7 +43,7 @@ class TestFontLoader : FontLoader {
                                 height: Int,
                                 path: String,
                                 cacheFonts: Boolean,
-                                metadata: Map<Char, List<CharacterMetadata>>,
+                                metadata: Map<Char, List<TextureRegionMetadata>>,
                                 metadataPickingStrategy: MetadataPickingStrategy)  = object: Font {
 
         val uuid = Identifier.randomIdentifier()
