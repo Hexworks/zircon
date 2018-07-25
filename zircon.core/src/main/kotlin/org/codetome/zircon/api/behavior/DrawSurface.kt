@@ -14,15 +14,16 @@ interface DrawSurface : Boundable {
 
     /**
      * Returns the character stored at a particular position on this [DrawSurface].
-     * Returns an empty [Optional] if no [TextCharacter] is present at the given [Position].
+     * Returns an empty [Maybe] if no [TextCharacter] is present at the given [Position].
      */
     fun getCharacterAt(position: Position): Maybe<TextCharacter>
 
     /**
      * Sets the character at a specific position in the [DrawSurface] to a particular [TextCharacter].
-     * If the position is outside of the [DrawSurface]'s size, this method has no side effect.
+     * If the position is outside of the [DrawSurface]'s size, this method has no effect.
      * Note that if this [DrawSurface] already has the given [TextCharacter] on the supplied [Position]
      * nothing will change and this method will return `false`.
+     *
      * @return true if the character was set, false if the position is outside of the [DrawSurface]
      * or if no change happened.
      */
@@ -30,11 +31,13 @@ interface DrawSurface : Boundable {
 
     /**
      * Sets the character at a specific position in the [DrawSurface] to a particular [TextCharacter].
-     * If the position is outside of the [DrawSurface]'s size, this method has no side effect.
+     * If the position is outside of the [DrawSurface]'s size, this method has no effect.
      * **Note that** this method will use the style information if the [DrawSurface] implements
      * [org.codetome.zircon.api.graphics.StyleSet].
-     * If not it will use [org.codetome.zircon.api.builder.TextCharacterBuilder.defaultCharacter()]
+     *
+     * If not it will use [org.codetome.zircon.api.TextCharacter.defaultCharacter]
      * when it sets the given `character` as a [TextCharacter].
+     *
      * @return true if the character was set, false if the position is outside of the [DrawSurface]
      * or if no change happened.
      */

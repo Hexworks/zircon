@@ -4,6 +4,9 @@ import org.codetome.zircon.api.Modifier
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 
+/**
+ * Represents an object which contains style information.
+ */
 interface Styleable {
 
     /**

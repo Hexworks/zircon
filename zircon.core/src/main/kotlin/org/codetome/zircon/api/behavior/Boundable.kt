@@ -4,7 +4,7 @@ import org.codetome.zircon.api.Position
 import org.codetome.zircon.api.Size
 
 /**
- * Represents an object which has bounds in 2d space. A [Boundable] object can provide useful information
+ * Represents an object which has bounds in 2D space. A [Boundable] object can provide useful information
  * about its geometry relating to other [Boundable]s (like intersection).
  */
 interface Boundable : Positionable {
@@ -15,7 +15,7 @@ interface Boundable : Positionable {
     fun getBoundableSize(): Size
 
     /**
-     * Tells whether this [Boundable] intersects the other <code>boundable</code> or not.
+     * Tells whether this [Boundable] intersects the other `boundable` or not.
      */
     fun intersects(boundable: Boundable): Boolean
 

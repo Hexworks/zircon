@@ -37,14 +37,29 @@ interface CursorHandler {
      */
     fun moveCursorBackward(): Boolean
 
+    /**
+     * Tells whether the cursor is visible.
+     */
     fun isCursorVisible(): Boolean
 
+    /**
+     * Tells whether the cursor is at the end of the line.
+     */
     fun isCursorAtTheEndOfTheLine(): Boolean
 
+    /**
+     * Tells whether the cursor is at the start of the line.
+     */
     fun isCursorAtTheStartOfTheLine(): Boolean
 
+    /**
+     * Tells whether the cursor is at the first (index 0) row.
+     */
     fun isCursorAtTheFirstRow(): Boolean
 
+    /**
+     * Tells whether the cursor is at the last row.
+     */
     fun isCursorAtTheLastRow(): Boolean
 
     /**
