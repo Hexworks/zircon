@@ -1,9 +1,9 @@
 package org.codetome.zircon.examples;
 
 import org.codetome.zircon.TerminalUtils;
-import org.codetome.zircon.api.Position;
-import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.TextCharacter;
+import org.codetome.zircon.api.data.Position;
+import org.codetome.zircon.api.data.Size;
+import org.codetome.zircon.api.data.Tile;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.builder.graphics.LayerBuilder;
 import org.codetome.zircon.api.interop.*;
@@ -62,7 +62,7 @@ public class LayersExample {
     }
 
     @NotNull
-    private static TextCharacter buildWhiteOnBlack(char c) {
+    private static Tile buildWhiteOnBlack(char c) {
         return TextCharacters.newBuilder()
                 .character(c)
                 .backgroundColor(TextColors.create(0, 0, 0, 255))

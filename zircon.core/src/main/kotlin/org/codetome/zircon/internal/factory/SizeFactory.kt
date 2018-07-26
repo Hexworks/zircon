@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.factory
 
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.util.Cache
-import org.codetome.zircon.internal.DefaultSize
+import org.codetome.zircon.internal.data.DefaultSize
 
 internal object SizeFactory {
 

@@ -1,7 +1,9 @@
 package org.codetome.zircon.api.game
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Position3D
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Size3D
 import org.junit.Test
 
 class Size3DTest {

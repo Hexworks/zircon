@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.builder.component
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.TextBox

@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.behavior.impl
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
@@ -52,11 +52,11 @@ class DefaultLayerable(private val supportedFontSize: Size,
         }
     }
 
-    override fun fetchOverlayZIntersection(absolutePosition: Position): List<Pair<Font, TextCharacter>> {
+    override fun fetchOverlayZIntersection(absolutePosition: Position): List<Pair<Font, Tile>> {
         return fetchZIntersectionFor(layers, absolutePosition)
     }
 
-    private fun fetchZIntersectionFor(queue: ThreadSafeQueue<Layer>, position: Position): List<Pair<Font, TextCharacter>> {
+    private fun fetchZIntersectionFor(queue: ThreadSafeQueue<Layer>, position: Position): List<Pair<Font, Tile>> {
         return queue.filter { layer ->
             // TODO: optimize based on non-transparent backgrounds
             layer.containsPosition(position)

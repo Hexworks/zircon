@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.terminal
 
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.interop.toAWTColor
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
@@ -95,7 +95,7 @@ class SwingTerminal(
         getGraphics2D().drawImage(fontTextureRegion.getBackend() as BufferedImage, x, y, null)
     }
 
-    override fun drawCursor(character: TextCharacter, x: Int, y: Int) {
+    override fun drawCursor(character: Tile, x: Int, y: Int) {
         val graphics = getGraphics2D()
         graphics.color = deviceConfiguration.cursorColor.toAWTColor()
         when (deviceConfiguration.cursorStyle) {

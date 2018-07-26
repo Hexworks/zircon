@@ -1,7 +1,5 @@
 package org.codetome.zircon.api.modifier
 
-import org.codetome.zircon.api.Modifier
-
 data class Border(val borderType: BorderType,
                   val borderPositions: Set<BorderPosition>) : Modifier {
 

@@ -1,11 +1,11 @@
 package org.codetome.zircon.internal.screen
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.animation.AnimationResource
 import org.codetome.zircon.api.animation.DefaultAnimationHandler
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
@@ -64,7 +64,7 @@ class TerminalScreenTest {
     @Test
     fun shouldBeAbleToPutCharacterWhenPutCharacterIsCalled() {
         val char = 'x'
-        val expected = TextCharacterBuilder.newBuilder()
+        val expected = TileBuilder.newBuilder()
                 .styleSet(target.toStyleSet())
                 .character(char)
                 .build()
@@ -128,7 +128,7 @@ class TerminalScreenTest {
     companion object {
         val SIZE = Size.create(10, 10)
         val FONT = CP437TilesetResource.ROGUE_YUN_16X16
-        val CHAR = TextCharacterBuilder.newBuilder()
+        val CHAR = TileBuilder.newBuilder()
                 .character('x')
                 .build()
     }

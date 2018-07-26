@@ -1,21 +1,22 @@
 package org.codetome.zircon.api
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.ANSITextColor.*
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.modifier.SimpleModifiers.*
+import org.codetome.zircon.api.data.Tile
 import org.junit.Test
 
 @Suppress("UsePropertyAccessSyntax")
-class DefaultTextCharacterTest {
+class DefaultTileTest {
 
     @Test
     fun shouldGenerateProperCacheKey() {
-        val result = TextCharacterBuilder.newBuilder()
+        val result = TileBuilder.newBuilder()
                 .character('x')
                 .backgroundColor(ANSITextColor.GREEN)
                 .foregroundColor(TextColor.fromString("#aabbcc"))
@@ -29,38 +30,38 @@ class DefaultTextCharacterTest {
 
     @Test
     fun defaultCharacterShouldBeEmptyStringWithBlackAndWhiteAndNoModifiers() {
-        assertThat(TextCharacter.defaultCharacter().getCharacter()).isEqualTo(' ')
-        assertThat(TextCharacter.defaultCharacter().getBackgroundColor()).isEqualTo(BLACK)
-        assertThat(TextCharacter.defaultCharacter().getForegroundColor()).isEqualTo(WHITE)
-        assertThat(TextCharacter.defaultCharacter().getModifiers()).isEmpty()
+        assertThat(Tile.defaultCharacter().getCharacter()).isEqualTo(' ')
+        assertThat(Tile.defaultCharacter().getBackgroundColor()).isEqualTo(BLACK)
+        assertThat(Tile.defaultCharacter().getForegroundColor()).isEqualTo(WHITE)
+        assertThat(Tile.defaultCharacter().getModifiers()).isEmpty()
     }
 
     @Test
     fun shouldProperlyReportHavingABorderWhenThereIsBorder() {
-        assertThat(TextCharacterBuilder.newBuilder()
+        assertThat(TileBuilder.newBuilder()
                 .modifiers(Modifiers.border())
                 .build().hasBorder()).isTrue()
     }
 
     @Test
     fun shouldProperlyReportHavingABorderWhenThereIsNoBorder() {
-        assertThat(TextCharacterBuilder.newBuilder()
+        assertThat(TileBuilder.newBuilder()
                 .build().hasBorder()).isFalse()
     }
 
     @Test
     fun shouldNotBeEmptyWhenNotEmpty() {
-        assertThat(TextCharacter.defaultCharacter().isNotEmpty()).isTrue()
+        assertThat(Tile.defaultCharacter().isNotEmpty()).isTrue()
     }
 
     @Test
     fun shouldBeEmptyWhenEmpty() {
-        assertThat(TextCharacter.empty().isNotEmpty()).isFalse()
+        assertThat(Tile.empty().isNotEmpty()).isFalse()
     }
 
     @Test
     fun shouldProperlyRemoveModifiersWhenWithoutModifiersIsCalled() {
-        assertThat(TextCharacterBuilder.newBuilder()
+        assertThat(TileBuilder.newBuilder()
                 .modifiers(Modifiers.bold())
                 .build()
                 .withoutModifiers(setOf(Modifiers.bold()))
@@ -76,7 +77,7 @@ class DefaultTextCharacterTest {
                 .modifiers(Modifiers.bold())
                 .build()
 
-        val copy = TextCharacterBuilder.newBuilder()
+        val copy = TileBuilder.newBuilder()
                 .build()
                 .withStyle(style)
 
@@ -87,32 +88,32 @@ class DefaultTextCharacterTest {
 
     @Test
     fun boldModifierShouldBeBold() {
-        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.bold()).build().isBold()).isTrue()
+        assertThat(TileBuilder.newBuilder().modifiers(Modifiers.bold()).build().isBold()).isTrue()
     }
 
     @Test
     fun underlinedModifierShouldBeUnderlined() {
-        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.underline()).build().isUnderlined()).isTrue()
+        assertThat(TileBuilder.newBuilder().modifiers(Modifiers.underline()).build().isUnderlined()).isTrue()
     }
 
     @Test
     fun crossedOutModifierShouldBeCrossedOut() {
-        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.crossedOut()).build().isCrossedOut()).isTrue()
+        assertThat(TileBuilder.newBuilder().modifiers(Modifiers.crossedOut()).build().isCrossedOut()).isTrue()
     }
 
     @Test
     fun italicModifierShouldBeItalic() {
-        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.italic()).build().isItalic()).isTrue()
+        assertThat(TileBuilder.newBuilder().modifiers(Modifiers.italic()).build().isItalic()).isTrue()
     }
 
     @Test
     fun blinkingModifierShouldBeBlinking() {
-        assertThat(TextCharacterBuilder.newBuilder().modifiers(Modifiers.blink()).build().isBlinking()).isTrue()
+        assertThat(TileBuilder.newBuilder().modifiers(Modifiers.blink()).build().isBlinking()).isTrue()
     }
 
     @Test
     fun shouldBeSameButWithCharChangedWhenWithCharIsCalled() {
-        assertThat(TextCharacter.create(
+        assertThat(Tile.create(
                 character = 'a',
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -125,7 +126,7 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldBeSameButWithFGChangedWhenWithForegroundColorIsCalled() {
-        assertThat(TextCharacter.create(
+        assertThat(Tile.create(
                 character = EXPECTED_CHAR,
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(GREEN)
@@ -138,7 +139,7 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldBeSameButWithBGChangedWhenWithBackgroundColorIsCalled() {
-        assertThat(TextCharacter.create(
+        assertThat(Tile.create(
                 character = EXPECTED_CHAR,
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -151,7 +152,7 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldBeSameButWithModifiersChangedWhenWithModifiersIsCalled() {
-        assertThat(TextCharacter.create(
+        assertThat(Tile.create(
                 character = EXPECTED_CHAR,
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -163,7 +164,7 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldBeSameButWithModifierRemovedWhenWithModifierIsCalled() {
-        assertThat(TextCharacter.create(
+        assertThat(Tile.create(
                 character = EXPECTED_CHAR,
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -171,7 +172,7 @@ class DefaultTextCharacterTest {
                         .modifiers(setOf(Bold))
                         .build())
                 .withModifiers(Modifiers.italic())).isEqualTo(
-                TextCharacter.create(
+                Tile.create(
                         character = EXPECTED_CHAR,
                         styleSet = StyleSetBuilder.newBuilder()
                                 .foregroundColor(EXPECTED_FG_COLOR)
@@ -182,7 +183,7 @@ class DefaultTextCharacterTest {
 
     @Test
     fun shouldBeSameButWithModifierRemovedWhenWithoutModifierIsCalled() {
-        assertThat(TextCharacter.create(
+        assertThat(Tile.create(
                 character = EXPECTED_CHAR,
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -235,7 +236,7 @@ class DefaultTextCharacterTest {
         val EXPECTED_BG_COLOR = TextColor.fromString("#223344")
         val EXPECTED_MODIFIERS = setOf(Modifiers.bold(), Modifiers.italic())
 
-        val EXPECTED_TEXT_CHARACTER = TextCharacter.create(
+        val EXPECTED_TEXT_CHARACTER = Tile.create(
                 character = EXPECTED_CHAR,
                 styleSet = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)

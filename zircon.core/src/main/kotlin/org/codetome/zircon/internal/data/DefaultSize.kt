@@ -1,6 +1,6 @@
-package org.codetome.zircon.internal
+package org.codetome.zircon.internal.data
 
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Size
 
 data class DefaultSize(override val xLength: Int,
                    override val yLength: Int) : Size {

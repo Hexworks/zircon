@@ -1,6 +1,6 @@
-package org.codetome.zircon.internal
+package org.codetome.zircon.internal.data
 
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 
 data class DefaultPosition(
         override val x: Int,

@@ -1,8 +1,8 @@
 package org.codetome.zircon.api.builder.graphics
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.Layer
@@ -13,13 +13,13 @@ import org.codetome.zircon.internal.graphics.DefaultLayer
 /**
  * Use this to build [Layer]s. Defaults are:
  * - size: [Size.one()]
- * - filler: [TextCharacter.empty()]
+ * - filler: [Tile.empty()]
  * - offset: [Position.defaultPosition()]
  * - has no text image by default
  */
 data class LayerBuilder(private var font: Font = Layer.defaultFont(),
                         private var size: Size = Layer.defaultSize(),
-                        private var filler: TextCharacter = Layer.defaultFiller(),
+                        private var filler: Tile = Layer.defaultFiller(),
                         private var offset: Position = Position.defaultPosition(),
                         private var textImage: Maybe<TextImage> = Maybe.empty()) : Builder<Layer> {
 
@@ -39,10 +39,10 @@ data class LayerBuilder(private var font: Font = Layer.defaultFont(),
     }
 
     /**
-     * The new [org.codetome.zircon.api.graphics.Layer] will be filled by this [TextCharacter].
+     * The new [org.codetome.zircon.api.graphics.Layer] will be filled by this [Tile].
      * Defaults to `EMPTY`.
      */
-    fun filler(filler: TextCharacter) = also {
+    fun filler(filler: Tile) = also {
         this.filler = filler
     }
 

@@ -1,18 +1,18 @@
 package org.codetome.zircon.examples.interactive
 
 import org.codetome.zircon.TerminalUtils
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Symbols
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.graphics.Symbols
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
 import org.codetome.zircon.api.builder.graphics.TextCharacterStringBuilder
 import org.codetome.zircon.api.builder.screen.ScreenBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.game.GameModifiers
-import org.codetome.zircon.api.game.Position3D
+import org.codetome.zircon.api.data.Position3D
 import org.codetome.zircon.api.game.ProjectionMode
-import org.codetome.zircon.api.game.Size3D
+import org.codetome.zircon.api.data.Size3D
 import org.codetome.zircon.api.graphics.BoxType
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.interop.Components
@@ -125,7 +125,7 @@ object IsometricGameArea {
         val gameArea = InMemoryGameArea(
                 virtualSize,
                 1,
-                TextCharacter.empty())
+                Tile.empty())
 
         val gameComponent = Components.newGameComponentBuilder()
                 .gameArea(gameArea)

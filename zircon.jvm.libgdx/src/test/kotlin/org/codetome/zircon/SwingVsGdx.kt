@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
@@ -43,11 +43,11 @@ class GdxFont(private val source: Texture,
         return true
     }
 
-    override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<TextureRegion> {
-        val cp437Idx = CP437Utils.fetchCP437IndexForChar(textCharacter.getCharacter())
+    override fun fetchRegionForChar(tile: Tile): FontTextureRegion<TextureRegion> {
+        val cp437Idx = CP437Utils.fetchCP437IndexForChar(tile.getCharacter())
         val x = cp437Idx.rem(16) * width
         val y = cp437Idx.div(16) * height
-        return LibgdxFontTextureRegion(textCharacter.generateCacheKey(),TextureRegion(source, x, y, width, height))
+        return LibgdxFontTextureRegion(tile.generateCacheKey(),TextureRegion(source, x, y, width, height))
     }
 
     override fun fetchMetadataForChar(char: Char): List<TextureRegionMetadata> {
@@ -90,7 +90,7 @@ class GdxExample : ApplicationAdapter() {
             (0..Config.WIDTH).forEach { x ->
 
                 val region = font.fetchRegionForChar(
-                        TextCharacterBuilder.newBuilder().character(chars[0]).build())
+                        TileBuilder.newBuilder().character(chars[0]).build())
                 val drawable = TextureRegionDrawable(region.getBackend())
                 val tinted = drawable.tint(com.badlogic.gdx.graphics.Color(0.5f, 0.5f, 0f, 1f)) as SpriteDrawable
                 tinted.draw(batch,

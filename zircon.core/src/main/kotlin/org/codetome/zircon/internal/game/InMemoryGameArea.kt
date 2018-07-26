@@ -1,7 +1,10 @@
 package org.codetome.zircon.internal.game
 
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
+import org.codetome.zircon.api.data.Block
+import org.codetome.zircon.api.data.Position3D
+import org.codetome.zircon.api.data.Size3D
 import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.game.GameArea.BlockFetchMode
 import org.codetome.zircon.api.graphics.TextImage
@@ -13,7 +16,7 @@ import org.codetome.zircon.platform.factory.TreeMapFactory
 
 class InMemoryGameArea(private val size: Size3D,
                        private val layersPerBlock: Int,
-                       private val filler: TextCharacter = TextCharacter.empty()) : GameArea {
+                       private val filler: Tile = Tile.empty()) : GameArea {
 
     private val emptyBlockLayers = (0 until layersPerBlock).map { filler }
     private val blocks: TreeMap<Position3D, Block> = TreeMapFactory.create()
@@ -71,7 +74,7 @@ class InMemoryGameArea(private val size: Size3D,
         return Maybe.ofNullable(blocks[position])
     }
 
-    override fun fetchCharacterAt(position: Position3D, layerIdx: Int): Maybe<TextCharacter> {
+    override fun fetchCharacterAt(position: Position3D, layerIdx: Int): Maybe<Tile> {
         return blocks.getOrDefault(position, Block(position)).layers.getIfPresent(layerIdx)
     }
 
@@ -94,7 +97,7 @@ class InMemoryGameArea(private val size: Size3D,
         }
     }
 
-    override fun setBlockAt(position: Position3D, characters: List<TextCharacter>) {
+    override fun setBlockAt(position: Position3D, characters: List<Tile>) {
         require(size.containsPosition(position)) {
             "The supplied position ($position) is not within the size ($size) create this game area."
         }
@@ -116,14 +119,14 @@ class InMemoryGameArea(private val size: Size3D,
                 .forEachIndexed { idx, char -> layers[idx] = char }
         blocks[position] = Block(
                 position = position,
-                top = blockChars.getOrDefault(GameModifiers.BLOCK_TOP, listOf(TextCharacter.empty())).first(),
-                back = blockChars.getOrDefault(GameModifiers.BLOCK_BACK, listOf(TextCharacter.empty())).first(),
-                front = blockChars.getOrDefault(GameModifiers.BLOCK_FRONT, listOf(TextCharacter.empty())).first(),
-                bottom = blockChars.getOrDefault(GameModifiers.BLOCK_BOTTOM, listOf(TextCharacter.empty())).first(),
+                top = blockChars.getOrDefault(GameModifiers.BLOCK_TOP, listOf(Tile.empty())).first(),
+                back = blockChars.getOrDefault(GameModifiers.BLOCK_BACK, listOf(Tile.empty())).first(),
+                front = blockChars.getOrDefault(GameModifiers.BLOCK_FRONT, listOf(Tile.empty())).first(),
+                bottom = blockChars.getOrDefault(GameModifiers.BLOCK_BOTTOM, listOf(Tile.empty())).first(),
                 layers = layers)
     }
 
-    override fun setCharacterAt(position: Position3D, layerIdx: Int, character: TextCharacter) {
+    override fun setCharacterAt(position: Position3D, layerIdx: Int, character: Tile) {
         require(size.containsPosition(position)) {
             "The supplied position ($position) is not within the size ($size) create this game area."
         }

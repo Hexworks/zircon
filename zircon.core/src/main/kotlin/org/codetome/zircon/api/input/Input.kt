@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.input
 
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.input.InputType.*
 import org.codetome.zircon.platform.util.SystemUtils
 

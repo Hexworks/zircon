@@ -1,9 +1,9 @@
 package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.TextCharacterStringBuilder
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.color.ANSITextColor
@@ -19,7 +19,7 @@ class DefaultTextCharacterStringTest {
                 .text(TEXT)
                 .build()
 
-        val template = TextCharacterBuilder.newBuilder().build()
+        val template = TileBuilder.newBuilder().build()
 
         assertThat(result.getTextCharacters()).containsExactly(
                 template.withCharacter('T'),
@@ -38,7 +38,7 @@ class DefaultTextCharacterStringTest {
                 .textWrap(TextWrap.NO_WRAPPING)
                 .build() as DefaultTextCharacterString
 
-        val template = TextCharacterBuilder.newBuilder()
+        val template = TileBuilder.newBuilder()
                 .foregroundColor(FOREGROUND)
                 .backgroundColor(BACKGROUND)
                 .modifiers(MODIFIER)
@@ -310,7 +310,7 @@ class DefaultTextCharacterStringTest {
                 .text("XT")
                 .build()
 
-        val template = TextCharacterBuilder.newBuilder().build()
+        val template = TileBuilder.newBuilder().build()
 
         assertThat(string.plus(other).getTextCharacters()).containsExactly(
                 template.withCharacter('T'),

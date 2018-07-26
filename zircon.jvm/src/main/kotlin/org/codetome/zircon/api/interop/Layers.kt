@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.interop
 
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
 import org.codetome.zircon.internal.font.impl.FontSettings
 
@@ -14,7 +14,7 @@ object Layers {
     fun defaultSize() = Size.one()
 
     @JvmStatic
-    fun defaultFiller() = TextCharacter.empty()
+    fun defaultFiller() = Tile.empty()
 
     @JvmStatic
     fun newBuilder() = LayerBuilder()

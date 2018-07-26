@@ -1,13 +1,13 @@
 package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Cell
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Position.Companion.defaultPosition
-import org.codetome.zircon.api.Position.Companion.offset1x1
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.data.Cell
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Position.Companion.defaultPosition
+import org.codetome.zircon.api.data.Position.Companion.offset1x1
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.junit.Before
 import org.junit.Test
@@ -90,8 +90,8 @@ class InMemoryTextImageTest {
 
     @Test
     fun givenATextImageThatOverFlowsWhenCombinedThenResizeNewTextImage() {
-        val sourceChar = TextCharacter.defaultCharacter().withCharacter('x')
-        val overwriteChar = TextCharacter.defaultCharacter().withCharacter('+')
+        val sourceChar = Tile.defaultCharacter().withCharacter('x')
+        val overwriteChar = Tile.defaultCharacter().withCharacter('+')
 
         val originalSize = Size.create(3, 1)
         val source = TextImageBuilder.newBuilder()
@@ -130,9 +130,9 @@ class InMemoryTextImageTest {
 
     @Test
     fun shouldProperlyCombineTwoImages() {
-        val sourceChar = TextCharacter.defaultCharacter().withCharacter('x')
-        val imageChar = TextCharacter.defaultCharacter().withCharacter('+')
-        val filler = TextCharacter.defaultCharacter().withCharacter('_')
+        val sourceChar = Tile.defaultCharacter().withCharacter('x')
+        val imageChar = Tile.defaultCharacter().withCharacter('+')
+        val filler = Tile.defaultCharacter().withCharacter('_')
 
         val source = TextImageBuilder.newBuilder()
                 .size(Size.create(3, 3))
@@ -169,7 +169,7 @@ class InMemoryTextImageTest {
                 Cell(Position.create(2, 1), EMPTY_CHAR))
     }
 
-    private fun fetchTargetChars(): List<TextCharacter> {
+    private fun fetchTargetChars(): List<Tile> {
         return (0..2).flatMap { col ->
             (0..2).map { row ->
                 target.getCharacterAt(Position.create(col, row)).get()
@@ -184,17 +184,17 @@ class InMemoryTextImageTest {
     }
 
     companion object {
-        val EMPTY_CHAR = TextCharacter.empty()
+        val EMPTY_CHAR = Tile.empty()
         val EMPTY_BY_DEFAULT_POS = Position.create(2, 1)
         val FILLED_POS = Position.create(1, 2)
         val SIZE_OF_3X3 = Size.create(3, 3)
-        val FILLER = TextCharacterBuilder.newBuilder()
+        val FILLER = TileBuilder.newBuilder()
                 .character('a')
                 .build()
-        val TO_COPY_CHAR = TextCharacterBuilder.newBuilder()
+        val TO_COPY_CHAR = TileBuilder.newBuilder()
                 .character('b')
                 .build()
-        val SET_ALL_CHAR = TextCharacterBuilder.newBuilder()
+        val SET_ALL_CHAR = TileBuilder.newBuilder()
                 .character('c')
                 .build()
         val TO_COPY = arrayOf(arrayOf(TO_COPY_CHAR))

@@ -1,13 +1,13 @@
 package org.codetome.zircon.api.graphics
 
-import org.codetome.zircon.api.Cell
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Cell
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.Styleable
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultStyleable
 
@@ -42,7 +42,7 @@ abstract class TextImageBase private constructor(boundable: Boundable,
 
     override fun putText(text: String, position: Position) {
         text.forEachIndexed { col, char ->
-            setCharacterAt(position.withRelativeX(col), TextCharacterBuilder
+            setCharacterAt(position.withRelativeX(col), TileBuilder
                     .newBuilder()
                     .styleSet(toStyleSet())
                     .character(char)
@@ -54,14 +54,14 @@ abstract class TextImageBase private constructor(boundable: Boundable,
         setStyleFrom(styleSet)
         size.fetchPositions().forEach { pos ->
             pos.plus(offset).let { fixedPos ->
-                getCharacterAt(fixedPos).map { char: TextCharacter ->
+                getCharacterAt(fixedPos).map { char: Tile ->
                     setCharacterAt(fixedPos, char.withStyle(styleSet))
                 }
             }
         }
     }
 
-    override fun setCharacterAt(position: Position, character: Char) = setCharacterAt(position, TextCharacterBuilder.newBuilder()
+    override fun setCharacterAt(position: Position, character: Char) = setCharacterAt(position, TileBuilder.newBuilder()
             .character(character)
             .styleSet(toStyleSet())
             .build())

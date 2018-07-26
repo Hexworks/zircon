@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font.impl
 
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.util.Identifier
 
@@ -16,7 +16,7 @@ class NoFont : Font {
 
     override fun hasDataForChar(char: Char) = signalNoOp()
 
-    override fun fetchRegionForChar(textCharacter: TextCharacter) = signalNoOp()
+    override fun fetchRegionForChar(tile: Tile) = signalNoOp()
 
     override fun fetchMetadataForChar(char: Char) = signalNoOp()
 

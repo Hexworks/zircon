@@ -1,10 +1,10 @@
 package org.codetome.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.font.Font
@@ -32,7 +32,7 @@ class DefaultLayerableTest {
     fun shouldThrowExceptionWhenLayerUsesUnsupportedFontSize() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(TextCharacter.defaultCharacter())
+                .filler(Tile.defaultCharacter())
                 .font(CP437TilesetResource.BISASAM_20X20.toFont())
                 .offset(Position.topLeftCorner())
                 .build()
@@ -45,7 +45,7 @@ class DefaultLayerableTest {
     fun shouldContainLayerWhenLayerIsAdded() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(TextCharacter.defaultCharacter())
+                .filler(Tile.defaultCharacter())
                 .offset(Position.topLeftCorner())
                 .build()
 
@@ -60,7 +60,7 @@ class DefaultLayerableTest {
     fun shouldNotContainLayerWhenLayerIsAddedThenRemoved() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(TextCharacter.defaultCharacter())
+                .filler(Tile.defaultCharacter())
                 .offset(Position.topLeftCorner())
                 .build()
 
@@ -76,7 +76,7 @@ class DefaultLayerableTest {
     fun shouldNotContainLayerWhenLayerIsAddedThenPopped() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(TextCharacter.defaultCharacter())
+                .filler(Tile.defaultCharacter())
                 .offset(Position.topLeftCorner())
                 .build()
 
@@ -91,7 +91,7 @@ class DefaultLayerableTest {
 
     @Test
     fun shouldContainBottomLayerOnlyWhenTwoLayersAreAddedAndTopDoesNotIntersectCoordinate() {
-        val expectedChar = TextCharacterBuilder.newBuilder()
+        val expectedChar = TileBuilder.newBuilder()
                 .character('1')
                 .build()
 
@@ -102,7 +102,7 @@ class DefaultLayerableTest {
                 .build()
         val offset2x2layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(TextCharacterBuilder.newBuilder()
+                .filler(TileBuilder.newBuilder()
                         .character('2')
                         .build())
                 .offset(Position.create(2, 2))
@@ -127,7 +127,7 @@ class DefaultLayerableTest {
                 .offset(dirty0)
                 .textImage(TextImageBuilder.newBuilder()
                         .size(Size.one())
-                        .character(Position.defaultPosition(), TextCharacter.defaultCharacter().withCharacter('x'))
+                        .character(Position.defaultPosition(), Tile.defaultCharacter().withCharacter('x'))
                         .build())
                 .build())
 
@@ -135,7 +135,7 @@ class DefaultLayerableTest {
                 .offset(dirty1)
                 .textImage(TextImageBuilder.newBuilder()
                         .size(Size.one())
-                        .character(Position.defaultPosition(), TextCharacter.defaultCharacter().withCharacter('x'))
+                        .character(Position.defaultPosition(), Tile.defaultCharacter().withCharacter('x'))
                         .build())
                 .build())
 
@@ -163,7 +163,7 @@ class DefaultLayerableTest {
 
     @Test
     fun shouldContainAllLayersWhenTwoLayersAreAddedAndTheyIntersect() {
-        val expectedChar = TextCharacterBuilder.newBuilder()
+        val expectedChar = TileBuilder.newBuilder()
                 .character('1')
                 .build()
 

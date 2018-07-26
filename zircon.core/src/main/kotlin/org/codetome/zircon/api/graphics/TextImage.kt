@@ -1,16 +1,16 @@
 package org.codetome.zircon.api.graphics
 
-import org.codetome.zircon.api.Cell
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Cell
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.Styleable
 import org.codetome.zircon.api.sam.TextCharacterTransformer
 
 /**
- * An image built from [TextCharacter]s with color and style information.
+ * An image built from [Tile]s with color and style information.
  * These are completely in memory and not visible,
  * but can be used when drawing on other [DrawSurface]s.
  */
@@ -40,10 +40,10 @@ interface TextImage : DrawSurface, Styleable, Drawable {
      * The copy will be independent from the one this method is
      * invoked on, so modifying one will not affect the other.
      */
-    fun resize(newSize: Size, filler: TextCharacter): TextImage
+    fun resize(newSize: Size, filler: Tile): TextImage
 
     /**
-     * Returns all the [Cell]s ([TextCharacter]s with associated [Position] information)
+     * Returns all the [Cell]s ([Tile]s with associated [Position] information)
      * of this [TextImage].
      */
     fun fetchCells(): Iterable<Cell>
@@ -60,8 +60,8 @@ interface TextImage : DrawSurface, Styleable, Drawable {
      * Combines this text image with another one. This method creates a new
      * [TextImage] which is the combination of `this` one and the supplied `textImage`.
      * *Note that* if there are two [Position]s which are present in both [TextImage]s
-     * **and** at none of those positions is an `EMPTY` [TextCharacter] then the
-     * [TextCharacter] in the supplied `textImage` will be used.
+     * **and** at none of those positions is an `EMPTY` [Tile] then the
+     * [Tile] in the supplied `textImage` will be used.
      * This method creates a new object and **both** original [TextImage]s are left
      * untouched!
      * The size of the new [TextImage] will be the size of the current [TextImage] UNLESS the offset + `textImage`
@@ -72,7 +72,7 @@ interface TextImage : DrawSurface, Styleable, Drawable {
     fun combineWith(textImage: TextImage, offset: Position): TextImage
 
     /**
-     * Transforms all of the [TextCharacter]s in this [TextImage] with the given
+     * Transforms all of the [Tile]s in this [TextImage] with the given
      * `transformer` and returns a new one with the transformed characters.
      */
     fun transform(transformer: TextCharacterTransformer): TextImage
@@ -84,7 +84,7 @@ interface TextImage : DrawSurface, Styleable, Drawable {
     /**
      * Sets the style of this [TextImage] from the given `styleSet`
      * and also applies it to all currently present
-     * [TextCharacter]s within the bounds delimited by `offset` and `size`.
+     * [Tile]s within the bounds delimited by `offset` and `size`.
      * Offset is used to offset the starting position from the top left position
      * while size is used to determine the region (down and right) to overwrite
      * relative to `offset`.

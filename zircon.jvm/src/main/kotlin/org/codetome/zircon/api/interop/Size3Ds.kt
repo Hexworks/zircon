@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.interop
 
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.game.Size3D
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Size3D
 
 object Size3Ds {
 

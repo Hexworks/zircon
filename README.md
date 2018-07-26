@@ -92,7 +92,7 @@ In Zircon almost every object you might want to use has a `Builder` for it.
 This is the same for [Terminal]s as well so let's create one using a [TerminalBuilder]:
 
 ```java
-import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.SwingTerminalBuilder;
 import org.codetome.zircon.api.terminal.Terminal;
 
@@ -118,7 +118,7 @@ Adding and formatting content is also very simple:
 
 ```java
 import org.codetome.zircon.api.Modifiers;
-import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.SwingTerminalBuilder;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.terminal.Terminal;
@@ -162,7 +162,7 @@ Running the above code will result in something like this:
 You might have noticed that the default font is not very nice looking, so let's see what else the [TerminalBuilder] can do for us:
 
 ```java
-import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.SwingTerminalBuilder;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.color.ANSITextColor;
@@ -212,8 +212,8 @@ Let's create a [Screen] and fill it up with some stuff:
 
 
 ```java
-import org.codetome.zircon.api.Position;
-import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.data.Position;
+import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.SwingTerminalBuilder;
 import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.builder.TextCharacterBuilder;
@@ -289,8 +289,8 @@ These components are rather simple and you can expect them to work in a way you 
 Let's look at an example (notes about how it works are in the comments):
 
 ```java
-import org.codetome.zircon.api.Position;
-import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.data.Position;
+import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.SwingTerminalBuilder;
 import org.codetome.zircon.api.builder.ScreenBuilder;
 import org.codetome.zircon.api.component.Button;
@@ -589,7 +589,7 @@ Zircon is powered by:
 [Layer]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/graphics/Layer.kt
 [ANSITextColor]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/color/ANSITextColor.kt
 [TextColorFactory]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/color/TextColorFactory.kt
-[TextCharacter]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/TextCharacter.kt
+[TextCharacter]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/Tile.kt
 [Modifier]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/Modifier.kt
 [Modifiers]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/Modifiers.kt
 [InputProvider]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/input/InputProvider.kt

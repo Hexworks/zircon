@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font
 
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.util.Maybe
 
 /**
@@ -10,12 +10,12 @@ import org.codetome.zircon.api.util.Maybe
 interface FontRegionCache<R> {
 
     /**
-     * Retrieves a font region by a [TextCharacter] if present.
+     * Retrieves a font region by a [Tile] if present.
      */
-    fun retrieveIfPresent(textCharacter: TextCharacter): Maybe<R>
+    fun retrieveIfPresent(tile: Tile): Maybe<R>
 
     /**
-     * Caches the given region for a [TextCharacter].
+     * Caches the given region for a [Tile].
      */
-    fun store(textCharacter: TextCharacter, region: R)
+    fun store(tile: Tile, region: R)
 }

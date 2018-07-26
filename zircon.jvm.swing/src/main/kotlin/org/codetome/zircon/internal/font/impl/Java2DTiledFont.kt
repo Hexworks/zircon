@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font.impl
 
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.modifier.Border
@@ -31,16 +31,16 @@ class Java2DTiledFont(private val source: BufferedImage,
 
     override fun getHeight() = height
 
-    override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<BufferedImage> {
-        val meta = fetchMetaFor(textCharacter)
-        val maybeRegion = cache.retrieveIfPresent(textCharacter.generateCacheKey())
+    override fun fetchRegionForChar(tile: Tile): FontTextureRegion<BufferedImage> {
+        val meta = fetchMetaFor(tile)
+        val maybeRegion = cache.retrieveIfPresent(tile.generateCacheKey())
 
         var region = if (maybeRegion.isNotPresent()) {
             var image: FontTextureRegion<BufferedImage> = Java2DFontTextureRegion(
-                    cacheKey = textCharacter.generateCacheKey(),
+                    cacheKey = tile.generateCacheKey(),
                     backend = source.getSubimage(meta.x * width, meta.y * height, width, height))
             regionTransformers.forEach {
-                image = it.transform(image, textCharacter)
+                image = it.transform(image, tile)
             }
             cache.store(image)
 
@@ -48,8 +48,8 @@ class Java2DTiledFont(private val source: BufferedImage,
         } else {
             maybeRegion.get()
         }
-        textCharacter.getModifiers().forEach {
-            region = MODIFIER_TRANSFORMER_LOOKUP[it::class]?.transform(region, textCharacter) ?: region
+        tile.getModifiers().forEach {
+            region = MODIFIER_TRANSFORMER_LOOKUP[it::class]?.transform(region, tile) ?: region
         }
         return region
     }

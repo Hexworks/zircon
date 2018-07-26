@@ -1,4 +1,4 @@
-package org.codetome.zircon.api
+package org.codetome.zircon.api.data
 
 import org.codetome.zircon.api.behavior.Cacheable
 import org.codetome.zircon.api.component.Component
@@ -101,7 +101,7 @@ interface Position : Comparable<Position>, Cacheable {
      * The y coordinate is used to shift up
      */
     fun relativeToTopOf(component: Component) = component.getPosition().let { (compX, compY) ->
-        Position.create(compX + x, maxOf(compY - y, 0))
+        create(compX + x, maxOf(compY - y, 0))
     }
 
     /**
@@ -110,7 +110,7 @@ interface Position : Comparable<Position>, Cacheable {
      * The y coordinate is used to shift down
      */
     fun relativeToRightOf(component: Component) = component.getPosition().let { (compX, compY) ->
-        Position.create(
+        create(
                 x = compX + component.getBoundableSize().xLength + x,
                 y = compY + y)
     }
@@ -121,7 +121,7 @@ interface Position : Comparable<Position>, Cacheable {
      * The y coordinate is used to shift down
      */
     fun relativeToBottomOf(component: Component) = component.getPosition().let { (compX, compY) ->
-        Position.create(
+        create(
                 x = compX + x,
                 y = compY + component.getBoundableSize().yLength + y)
     }
@@ -132,7 +132,7 @@ interface Position : Comparable<Position>, Cacheable {
      * The y coordinate is used to shift down
      */
     fun relativeToLeftOf(component: Component) = component.getPosition().let { (compX, compY) ->
-        Position.create(maxOf(compX - x, 0), compY + y)
+        create(maxOf(compX - x, 0), compY + y)
     }
 
     companion object {

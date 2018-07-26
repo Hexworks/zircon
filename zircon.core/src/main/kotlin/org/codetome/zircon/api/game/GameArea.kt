@@ -1,6 +1,9 @@
 package org.codetome.zircon.api.game
 
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Block
+import org.codetome.zircon.api.data.Position3D
+import org.codetome.zircon.api.data.Size3D
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.util.Maybe
 
@@ -97,27 +100,27 @@ interface GameArea {
     fun fetchBlockAt(position: Position3D): Maybe<Block>
 
     /**
-     * Returns the [TextCharacter] at the given `position` and `layerIdx` (if any).
+     * Returns the [Tile] at the given `position` and `layerIdx` (if any).
      */
-    fun fetchCharacterAt(position: Position3D, layerIdx: Int): Maybe<TextCharacter>
+    fun fetchCharacterAt(position: Position3D, layerIdx: Int): Maybe<Tile>
 
     /**
      * Returns all the layers from bottom to top as a collection of [org.codetome.zircon.api.graphics.TextImage]s.
-     * A layer is a collection of [TextCharacter]s at a given `z` level and `layerIndex`.
+     * A layer is a collection of [Tile]s at a given `z` level and `layerIndex`.
      */
     fun fetchLayersAt(offset: Position3D, size: Size3D) : Iterable<TextImage>
 
     /**
-     * Sets the [TextCharacter]s at the given position. Text characters are ordered
+     * Sets the [Tile]s at the given position. Text characters are ordered
      * as layers from bottom to top.
      */
-    fun setBlockAt(position: Position3D, characters: List<TextCharacter>)
+    fun setBlockAt(position: Position3D, characters: List<Tile>)
 
     /**
-     * Sets the [TextCharacter]s at the given position and layer. Text characters are ordered
+     * Sets the [Tile]s at the given position and layer. Text characters are ordered
      * as layers from bottom to top.
      */
-    fun setCharacterAt(position: Position3D, layerIdx: Int, character: TextCharacter)
+    fun setCharacterAt(position: Position3D, layerIdx: Int, character: Tile)
 
     /**
      * The fetch mode for [Block]s.

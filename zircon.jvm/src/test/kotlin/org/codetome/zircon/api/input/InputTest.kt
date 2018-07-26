@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.input
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 import org.junit.Test
 
 class InputTest {

@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.screen
 
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.api.terminal.Terminal

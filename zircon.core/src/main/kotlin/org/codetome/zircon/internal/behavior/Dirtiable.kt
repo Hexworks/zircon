@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.behavior
 
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 
 /**
  * Represents **any** object, component or data structure which holds

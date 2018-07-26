@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font.impl
 
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
@@ -25,9 +25,9 @@ class TestFontLoader : FontLoader {
 
         override fun hasDataForChar(char: Char) = false
 
-        override fun fetchRegionForChar(textCharacter: TextCharacter) = object : FontTextureRegion<BufferedImage> {
+        override fun fetchRegionForChar(tile: Tile) = object : FontTextureRegion<BufferedImage> {
 
-            override fun generateCacheKey() = textCharacter.generateCacheKey()
+            override fun generateCacheKey() = tile.generateCacheKey()
 
             override fun getBackend() = BufferedImage(getWidth(), getHeight(), TYPE_INT_ARGB)
 
@@ -54,9 +54,9 @@ class TestFontLoader : FontLoader {
 
         override fun hasDataForChar(char: Char) = false
 
-        override fun fetchRegionForChar(textCharacter: TextCharacter) = object : FontTextureRegion<BufferedImage> {
+        override fun fetchRegionForChar(tile: Tile) = object : FontTextureRegion<BufferedImage> {
 
-            override fun generateCacheKey() = textCharacter.generateCacheKey()
+            override fun generateCacheKey() = tile.generateCacheKey()
 
             override fun getBackend() = BufferedImage(getWidth() * 16, getHeight() * 16, TYPE_INT_ARGB)
 

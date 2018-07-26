@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.terminal
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType

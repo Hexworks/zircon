@@ -1,8 +1,8 @@
 package org.codetome.zircon.examples
 
 import org.codetome.zircon.api.LibgdxTerminalBuilder
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.animation.AnimationResource
 import org.codetome.zircon.api.animation.DefaultAnimationHandler
 import org.codetome.zircon.api.interop.Screens

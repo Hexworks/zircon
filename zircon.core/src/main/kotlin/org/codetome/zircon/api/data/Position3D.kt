@@ -1,6 +1,4 @@
-package org.codetome.zircon.api.game
-
-import org.codetome.zircon.api.Position
+package org.codetome.zircon.api.data
 
 /**
  * Represents a coordinate in 3D space. Extends [Position] with

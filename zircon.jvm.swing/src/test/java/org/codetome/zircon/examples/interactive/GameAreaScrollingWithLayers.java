@@ -1,15 +1,15 @@
 package org.codetome.zircon.examples.interactive;
 
 import org.codetome.zircon.TerminalUtils;
-import org.codetome.zircon.api.Position;
-import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.Symbols;
-import org.codetome.zircon.api.TextCharacter;
+import org.codetome.zircon.api.data.Position;
+import org.codetome.zircon.api.data.Size;
+import org.codetome.zircon.api.graphics.Symbols;
+import org.codetome.zircon.api.data.Tile;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.Panel;
 import org.codetome.zircon.api.game.GameArea;
-import org.codetome.zircon.api.game.Position3D;
-import org.codetome.zircon.api.game.Size3D;
+import org.codetome.zircon.api.data.Position3D;
+import org.codetome.zircon.api.data.Size3D;
 import org.codetome.zircon.api.graphics.BoxType;
 import org.codetome.zircon.api.graphics.TextImage;
 import org.codetome.zircon.api.input.InputType;
@@ -114,7 +114,7 @@ public class GameAreaScrollingWithLayers {
 
     private static void generatePyramid(int height, Position3D startPos, GameArea gameArea) {
         double percent = 1.0 / (height + 1);
-        TextCharacter wall = TextCharacters.newBuilder()
+        Tile wall = TextCharacters.newBuilder()
                 .character(Symbols.BLOCK_SOLID)
                 .build();
         AtomicInteger currLevel = new AtomicInteger(startPos.getZ());

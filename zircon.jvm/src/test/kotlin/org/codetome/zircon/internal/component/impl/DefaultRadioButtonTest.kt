@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ComponentState
@@ -39,7 +39,7 @@ class DefaultRadioButtonTest {
         val offset = 4
         TEXT.forEachIndexed { i, char ->
             assertThat(surface.getCharacterAt(Position.create(i + offset, 0)).get())
-                    .isEqualTo(TextCharacterBuilder.newBuilder()
+                    .isEqualTo(TileBuilder.newBuilder()
                             .character(char)
                             .styleSet(DEFAULT_STYLE)
                             .build())

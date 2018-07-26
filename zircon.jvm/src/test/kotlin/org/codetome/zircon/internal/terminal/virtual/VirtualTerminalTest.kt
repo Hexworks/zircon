@@ -1,11 +1,11 @@
 package org.codetome.zircon.internal.terminal.virtual
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Cell
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.data.Cell
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.input.Input
@@ -122,7 +122,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldPutCharacterWhenPutCharacterIsCalled() {
-        val tc = TextCharacterBuilder.newBuilder()
+        val tc = TileBuilder.newBuilder()
                 .character('a')
                 .build()
         target.putCharacter('a')
@@ -132,7 +132,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldPutTextCharacterWhenPutTextCharacterIsCalled() {
-        val tc = TextCharacterBuilder.newBuilder()
+        val tc = TileBuilder.newBuilder()
                 .character('a')
                 .build()
         target.putTextCharacter(tc)
@@ -158,7 +158,7 @@ class VirtualTerminalTest {
         assertThat(dirtyCells
                 .filter { it.position == Position.offset1x1() }
                 .map { it.character })
-                .containsExactly(TextCharacter.defaultCharacter().withCharacter('x'))
+                .containsExactly(Tile.defaultCharacter().withCharacter('x'))
     }
 
     @Test
@@ -167,12 +167,12 @@ class VirtualTerminalTest {
         assertThat(dirtyCells).containsExactly(
                 Cell(
                         position = Position.defaultPosition(),
-                        character = TextCharacterBuilder.newBuilder()
+                        character = TileBuilder.newBuilder()
                                 .character('a')
                                 .build()),
                 Cell(
                         position = Position.defaultPosition().withRelativeX(1),
-                        character = TextCharacterBuilder.newBuilder()
+                        character = TileBuilder.newBuilder()
                                 .character(' ')
                                 .build())
         )
@@ -194,7 +194,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldBeAbleToSetCharacter() {
-        val expectedChar = TextCharacter.defaultCharacter().withCharacter('x')
+        val expectedChar = Tile.defaultCharacter().withCharacter('x')
         target.setCharacterAt(Position.offset1x1(), expectedChar)
 
         assertThat(target.getCharacterAt(Position.offset1x1()).get())
@@ -203,7 +203,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldProperlyMarkBlinkingCharactersAsDirtyAfterADirtyDrain() {
-        target.setCharacterAt(Position.defaultPosition(), TextCharacterBuilder.newBuilder()
+        target.setCharacterAt(Position.defaultPosition(), TileBuilder.newBuilder()
                 .modifiers(Modifiers.blink())
                 .build())
 
@@ -215,7 +215,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldProperlyClearWhenClearIsCalled() {
-        val tc = TextCharacterBuilder.newBuilder().character('x').build()
+        val tc = TileBuilder.newBuilder().character('x').build()
         SIZE.fetchPositions().forEach {
             target.setCharacterAt(it, tc)
         }
@@ -225,7 +225,7 @@ class VirtualTerminalTest {
         target.clear()
 
         val positions = SIZE.fetchPositions().map {
-            assertThat(target.getCharacterAt(it).get()).isEqualTo(TextCharacter.defaultCharacter())
+            assertThat(target.getCharacterAt(it).get()).isEqualTo(Tile.defaultCharacter())
             it
         }
         assertThat(target.getCursorPosition()).isEqualTo(Position.defaultPosition())
@@ -238,7 +238,7 @@ class VirtualTerminalTest {
         target.putCursorAt(cursorPos)
         val size = Size.create(2, 2)
         val offset = Position.create(1, 1)
-        val tc = TextCharacterBuilder.newBuilder()
+        val tc = TileBuilder.newBuilder()
                 .character(TEST_CHAR)
                 .build()
         val image = TextImageBuilder.newBuilder()

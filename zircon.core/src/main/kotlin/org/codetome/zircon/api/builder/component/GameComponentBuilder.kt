@@ -1,13 +1,13 @@
 package org.codetome.zircon.api.builder.component
 
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.game.GameArea
 import org.codetome.zircon.api.game.GameComponent
 import org.codetome.zircon.api.game.ProjectionMode
-import org.codetome.zircon.api.game.Size3D
+import org.codetome.zircon.api.data.Size3D
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.component.impl.DefaultGameComponent
 import org.codetome.zircon.internal.font.impl.FontSettings

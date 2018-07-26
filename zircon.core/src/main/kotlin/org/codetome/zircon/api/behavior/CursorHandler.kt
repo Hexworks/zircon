@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.behavior
 
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 
 /**
  * Represents an object which manipulates a cursor (a [org.codetome.zircon.api.terminal.Terminal]

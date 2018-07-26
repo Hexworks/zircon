@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font.impl
 
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.util.TextUtils
@@ -18,15 +18,15 @@ abstract class TiledFontBase(private val metadata: Map<Char, List<TextureRegionM
 
     override fun fetchMetadataForChar(char: Char): List<TextureRegionMetadata> = metadata[char] ?: listOf()
 
-    protected fun fetchMetaFor(textCharacter: TextCharacter): TextureRegionMetadata {
-        if (!hasDataForChar(textCharacter.getCharacter()))
-            if (TextUtils.isPrintableCharacter(textCharacter.getCharacter()))
-                throw IllegalArgumentException("No texture region exists for printable character: '${textCharacter.getCharacter().toInt()}'!")
+    protected fun fetchMetaFor(tile: Tile): TextureRegionMetadata {
+        if (!hasDataForChar(tile.getCharacter()))
+            if (TextUtils.isPrintableCharacter(tile.getCharacter()))
+                throw IllegalArgumentException("No texture region exists for printable character: '${tile.getCharacter().toInt()}'!")
             else
-                throw IllegalArgumentException("No texture region exists for non-printable character: '${textCharacter.getCharacter().toInt()}'!")
+                throw IllegalArgumentException("No texture region exists for non-printable character: '${tile.getCharacter().toInt()}'!")
 
-        val tags = textCharacter.getTags()
-        val filtered = metadata[textCharacter.getCharacter()]!!.filter { it.tags.containsAll(tags.toList()) }
+        val tags = tile.getTags()
+        val filtered = metadata[tile.getCharacter()]!!.filter { it.tags.containsAll(tags.toList()) }
 
 
         require(filtered.isNotEmpty()) {

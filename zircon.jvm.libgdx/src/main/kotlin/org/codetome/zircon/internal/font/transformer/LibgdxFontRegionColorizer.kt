@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.font.transformer
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.interop.toAWTColor
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.font.FontRegionTransformer
@@ -10,10 +10,10 @@ import org.codetome.zircon.internal.font.FontRegionTransformer
 
 class LibgdxFontRegionColorizer : FontRegionTransformer<TextureRegion> {
 
-    override fun transform(region: FontTextureRegion<TextureRegion>, textCharacter: TextCharacter): FontTextureRegion<TextureRegion> {
-        val r = textCharacter.getForegroundColor().getRed().toFloat() / 255F
-        val g = textCharacter.getForegroundColor().getGreen().toFloat() / 255F
-        val b = textCharacter.getForegroundColor().getBlue().toFloat() / 255F
+    override fun transform(region: FontTextureRegion<TextureRegion>, tile: Tile): FontTextureRegion<TextureRegion> {
+        val r = tile.getForegroundColor().getRed().toFloat() / 255F
+        val g = tile.getForegroundColor().getGreen().toFloat() / 255F
+        val b = tile.getForegroundColor().getBlue().toFloat() / 255F
 
         val backend: TextureRegion = region.getBackend()
 
@@ -34,7 +34,7 @@ class LibgdxFontRegionColorizer : FontRegionTransformer<TextureRegion> {
                 gx *= g
                 bx *= b
                 if (ax < 50) {
-                    pixmap.drawPixel(backend.regionX + x, backend.regionY + y, textCharacter.getBackgroundColor().toAWTColor().rgb)
+                    pixmap.drawPixel(backend.regionX + x, backend.regionY + y, tile.getBackgroundColor().toAWTColor().rgb)
                 } else {
                     pixmap.drawPixel(backend.regionX + x, backend.regionY + y, Color(rx, gx, bx, ax).toIntBits())
                 }

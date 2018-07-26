@@ -1,12 +1,11 @@
 package org.codetome.zircon.internal.component.impl
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
+import org.codetome.zircon.api.data.*
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.graphics.Layer

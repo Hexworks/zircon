@@ -1,12 +1,12 @@
 package org.codetome.zircon.api.shape
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.internal.graphics.DefaultShape
 
 /**
- * A [Shape] is a set of [org.codetome.zircon.api.Position]s representing a geometric formation
+ * A [Shape] is a set of [org.codetome.zircon.api.data.Position]s representing a geometric formation
  * (line, triangle, rectangle, box, etc). A [Shape] is the most abstract representation of any graphic
  * object in Zircon and has no associated terminal, style, nor characters thus it is useful for
  * templating (like creating multiple versions of the same rectangle with different colors, shades
@@ -31,9 +31,9 @@ interface Shape : Collection<Position> {
     }
 
     /**
-     * Creates a [TextImage] from this [Shape] using `textCharacter` to fill the positions.
+     * Creates a [TextImage] from this [Shape] using `tile` to fill the positions.
      */
-    fun toTextImage(textCharacter: TextCharacter) : TextImage
+    fun toTextImage(tile: Tile) : TextImage
 
     /**
      * Offsets this [Shape] to the default position (column=0,row=0),

@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.graphics
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
@@ -11,11 +11,11 @@ import org.codetome.zircon.api.graphics.TextWrap
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 
-data class DefaultTextCharacterString(private val textChars: List<TextCharacter>,
+data class DefaultTextCharacterString(private val textChars: List<Tile>,
                                       private val textWrap: TextWrap,
                                       private val boundable: Boundable = DefaultBoundable(
                                               size = Size.create(textChars.size, 1)))
-    : TextCharacterString, Boundable by boundable, Collection<TextCharacter> by textChars {
+    : TextCharacterString, Boundable by boundable, Collection<Tile> by textChars {
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
         val (cols, rows) = surface.getBoundableSize()

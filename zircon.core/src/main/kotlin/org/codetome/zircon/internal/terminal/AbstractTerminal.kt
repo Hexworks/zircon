@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.terminal
 
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.behavior.Styleable
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.terminal.Terminal

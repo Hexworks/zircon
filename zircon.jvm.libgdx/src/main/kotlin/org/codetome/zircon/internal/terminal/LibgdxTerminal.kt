@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.terminal.DeviceConfiguration
@@ -79,7 +79,7 @@ class LibgdxTerminal(
                 font.getHeight().toFloat())
     }
 
-    override fun drawCursor(character: TextCharacter, x: Int, y: Int) {
+    override fun drawCursor(character: Tile, x: Int, y: Int) {
         // TODO implement this
     }
 }

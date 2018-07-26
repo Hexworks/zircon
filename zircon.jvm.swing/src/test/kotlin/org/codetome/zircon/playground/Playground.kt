@@ -1,11 +1,13 @@
 package org.codetome.zircon.playground
 
 import org.codetome.zircon.api.SwingTerminalBuilder
-import org.codetome.zircon.api.Symbols
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.graphics.Symbols
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.builder.game.GameAreaBuilder
+import org.codetome.zircon.api.data.Position3D
+import org.codetome.zircon.api.data.Size3D
 import org.codetome.zircon.api.interop.Components
 import org.codetome.zircon.api.interop.Sizes
 import org.codetome.zircon.api.interop.TextCharacters
@@ -35,18 +37,18 @@ object Playground {
                 .gameArea(gameArea)
                 .visibleSize(componentSize) // you need to set a visible size for the component (default is 1x1)
                 .build()
-        val WALL: TextCharacter = TextCharacters.newBuilder()
+        val WALL: Tile = TextCharacters.newBuilder()
                 .character(Symbols.BLOCK_SOLID)
                 .modifiers(GameModifiers.BLOCK_FRONT)
                 .foregroundColor(ANSITextColor.BLUE)
                 .build()
-        val TOP: TextCharacter = TextCharacters.newBuilder()
+        val TOP: Tile = TextCharacters.newBuilder()
                 .character('^')
                 .modifiers(GameModifiers.BLOCK_TOP)
                 .foregroundColor(ANSITextColor.CYAN)
                 .backgroundColor(TextColors.fromString("#666666")) // setting a bgcolor helps
                 .build()
-        val block: MutableList<TextCharacter> = mutableListOf(WALL, TOP)
+        val block: MutableList<Tile> = mutableListOf(WALL, TOP)
 
 
         gameScreen.addComponent(gameComponent)

@@ -1,21 +1,21 @@
 package org.codetome.zircon.internal.graphics
 
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 
 /**
  * Responsible for iterating over a [<] and returning a list
  * of TextCharacters that represents a word
  */
-class WordCharacterIterator(private val textCharacterIterator: Iterator<TextCharacter>) : Iterator<List<TextCharacter>> {
-    private var characterStore: TextCharacter? = null
+class WordCharacterIterator(private val tileIterator: Iterator<Tile>) : Iterator<List<Tile>> {
+    private var characterStore: Tile? = null
 
 
     override fun hasNext(): Boolean {
-        return textCharacterIterator.hasNext() || characterStore != null
+        return tileIterator.hasNext() || characterStore != null
     }
 
-    override fun next(): List<TextCharacter> {
-        val textCharacters = ArrayList<TextCharacter>()
+    override fun next(): List<Tile> {
+        val textCharacters = ArrayList<Tile>()
 
         if (characterStore != null) {
             val result = listOf(characterStore!!)
@@ -23,8 +23,8 @@ class WordCharacterIterator(private val textCharacterIterator: Iterator<TextChar
             return result
         }
 
-        while (textCharacterIterator.hasNext()) {
-            val textCharacter = textCharacterIterator.next()
+        while (tileIterator.hasNext()) {
+            val textCharacter = tileIterator.next()
 
             //this means we have hit the end of a word. Therefore we should store that ending so that we do not
             //lose it and return the word we just got

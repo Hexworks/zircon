@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.interop
 
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 
 object Positions {
 

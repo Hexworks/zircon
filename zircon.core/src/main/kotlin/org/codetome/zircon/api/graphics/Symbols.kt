@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package org.codetome.zircon.api
+package org.codetome.zircon.api.graphics
 
 /**
  * Some text graphics, taken from http://en.wikipedia.org/wiki/Codepage_437 but converted to its UTF-8

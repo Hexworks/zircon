@@ -1,9 +1,9 @@
 package org.codetome.zircon.internal.graphics
 
-import org.codetome.zircon.api.Cell
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Cell
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
@@ -16,11 +16,11 @@ import org.codetome.zircon.platform.factory.ThreadSafeMapFactory
 
 class InMemoryTextImage(size: Size,
                         styleSet: StyleSet = StyleSetBuilder.defaultStyle(),
-                        chars: Map<Position, TextCharacter> = mapOf(),
-                        private val filler: TextCharacter = TextCharacter.empty())
+                        chars: Map<Position, Tile> = mapOf(),
+                        private val filler: Tile = Tile.empty())
     : TextImageBase(size = size, styleSet = styleSet) {
 
-    private val backend = ThreadSafeMapFactory.create<Position, TextCharacter>()
+    private val backend = ThreadSafeMapFactory.create<Position, Tile>()
 
     init {
         chars.entries.forEach {
@@ -38,7 +38,7 @@ class InMemoryTextImage(size: Size,
 
     override fun fetchFilledPositions() = backend.keys.sorted()
 
-    override fun getCharacterAt(position: Position): Maybe<TextCharacter> {
+    override fun getCharacterAt(position: Position): Maybe<Tile> {
         return if (getBoundableSize().containsPosition(position)) {
             Maybe.ofNullable(backend.getOrDefault(position, filler))
         } else {
@@ -46,7 +46,7 @@ class InMemoryTextImage(size: Size,
         }
     }
 
-    override fun setCharacterAt(position: Position, character: TextCharacter): Boolean {
+    override fun setCharacterAt(position: Position, character: Tile): Boolean {
         return if (getBoundableSize().containsPosition(position)) {
             backend[position] = character
             true
@@ -76,7 +76,7 @@ class InMemoryTextImage(size: Size,
                 .map { Cell(it, getCharacterAt(it).get()) }
     }
 
-    override fun resize(newSize: Size, filler: TextCharacter): TextImage {
+    override fun resize(newSize: Size, filler: Tile): TextImage {
         val result = InMemoryTextImage(
                 size = newSize,
                 styleSet = toStyleSet(),

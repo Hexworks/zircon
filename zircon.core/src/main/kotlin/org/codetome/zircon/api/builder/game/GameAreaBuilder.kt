@@ -2,7 +2,7 @@ package org.codetome.zircon.api.builder.game
 
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.game.GameArea
-import org.codetome.zircon.api.game.Size3D
+import org.codetome.zircon.api.data.Size3D
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.game.InMemoryGameArea
 

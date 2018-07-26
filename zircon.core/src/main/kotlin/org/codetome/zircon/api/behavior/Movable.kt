@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.behavior
 
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 
 /**
  * A [Movable] object is a specialized [Positionable].

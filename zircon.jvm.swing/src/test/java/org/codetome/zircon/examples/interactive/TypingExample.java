@@ -1,8 +1,8 @@
 package org.codetome.zircon.examples.interactive;
 
 import org.codetome.zircon.TerminalUtils;
-import org.codetome.zircon.api.Position;
-import org.codetome.zircon.api.TextCharacter;
+import org.codetome.zircon.api.data.Position;
+import org.codetome.zircon.api.data.Tile;
 import org.codetome.zircon.api.builder.terminal.TerminalBuilder;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.input.KeyStroke;
@@ -23,7 +23,7 @@ public class TypingExample {
     private static final int TERMINAL_WIDTH = 40;
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
-    private static final TextCharacter TEXT_CHAR_TEMPLATE = TextCharacters.newBuilder()
+    private static final Tile TEXT_CHAR_TEMPLATE = TextCharacters.newBuilder()
             .foregroundColor(TextColors.fromString("#F7923A"))
             .backgroundColor(BLACK)
             .build();

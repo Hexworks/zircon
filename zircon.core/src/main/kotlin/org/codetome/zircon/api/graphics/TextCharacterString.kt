@@ -1,10 +1,10 @@
 package org.codetome.zircon.api.graphics
 
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.Drawable
 
 /**
- * [TextCharacterString] is an aggregation of [TextCharacter]s. You can draw a [TextCharacterString] onto any
+ * [TextCharacterString] is an aggregation of [Tile]s. You can draw a [TextCharacterString] onto any
  * [org.codetome.zircon.api.behavior.DrawSurface] and you can expect it to behave in a way like handwriting
  * would (if a string does not fit in a line it continues in a new line).
  *
@@ -16,9 +16,9 @@ import org.codetome.zircon.api.behavior.Drawable
  *
  * [TextCharacterString] comes with its own builder and you can create them in a simple way from plain Java [String]s.
  */
-interface TextCharacterString : Drawable, Collection<TextCharacter> {
+interface TextCharacterString : Drawable, Collection<Tile> {
 
-    fun getTextCharacters(): List<TextCharacter>
+    fun getTextCharacters(): List<Tile>
 
     fun toTextImage(): TextImage
 

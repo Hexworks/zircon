@@ -1,9 +1,9 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
@@ -142,7 +142,7 @@ class DefaultComponentTest {
         target.drawOnto(image)
 
         assertThat(image.getCharacterAt(POSITION - Position.offset1x1()).get())
-                .isEqualTo(TextCharacter.empty())
+                .isEqualTo(Tile.empty())
 
         target.getBoundableSize().fetchPositions().forEach {
             assertThat(image.getCharacterAt(it + POSITION).get())

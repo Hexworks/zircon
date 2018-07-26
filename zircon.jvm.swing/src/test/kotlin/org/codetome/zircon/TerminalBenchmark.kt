@@ -1,11 +1,10 @@
 package org.codetome.zircon
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.SwingTerminalBuilder
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
-import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.interop.Sizes
 import org.codetome.zircon.api.interop.TextColors
@@ -29,7 +28,7 @@ fun main(args: Array<String>) {
     val layerWidth = 20
     val layerHeight = 10
     var layers = (0..layerCount).map {
-        LayerBuilder.newBuilder().filler(TextCharacterBuilder.newBuilder()
+        LayerBuilder.newBuilder().filler(TileBuilder.newBuilder()
                 .backgroundColor(TextColor.create(random.nextInt(255), random.nextInt(255), random.nextInt(255)))
                 .foregroundColor(TextColor.create(random.nextInt(255), random.nextInt(255), random.nextInt(255)))
                 .character('x')
@@ -59,7 +58,7 @@ fun main(args: Array<String>) {
                 screen.removeLayer(it)
             }
             layers = (0..layerCount).map {
-                LayerBuilder.newBuilder().filler(TextCharacterBuilder.newBuilder()
+                LayerBuilder.newBuilder().filler(TileBuilder.newBuilder()
                         .backgroundColor(TextColor.create(random.nextInt(255), random.nextInt(255), random.nextInt(255)))
                         .foregroundColor(TextColor.create(random.nextInt(255), random.nextInt(255), random.nextInt(255)))
                         .character('x')

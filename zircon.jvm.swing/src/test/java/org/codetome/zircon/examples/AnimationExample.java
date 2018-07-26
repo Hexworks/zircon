@@ -1,8 +1,8 @@
 package org.codetome.zircon.examples;
 
 import org.codetome.zircon.TerminalUtils;
-import org.codetome.zircon.api.Position;
-import org.codetome.zircon.api.Size;
+import org.codetome.zircon.api.data.Position;
+import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.animation.Animation;
 import org.codetome.zircon.api.builder.animation.AnimationBuilder;
 import org.codetome.zircon.api.animation.AnimationResource;

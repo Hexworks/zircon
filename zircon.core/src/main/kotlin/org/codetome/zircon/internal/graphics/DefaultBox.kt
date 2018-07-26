@@ -1,9 +1,9 @@
 package org.codetome.zircon.internal.graphics
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.graphics.Box
 import org.codetome.zircon.api.graphics.BoxType
@@ -12,7 +12,7 @@ import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.shape.LineFactory
 
 class DefaultBox(size: Size,
-                 filler: TextCharacter,
+                 filler: Tile,
                  styleSet: StyleSet,
                  boxType: BoxType,
                  private val backend: TextImage = TextImageBuilder.newBuilder()
@@ -23,7 +23,7 @@ class DefaultBox(size: Size,
 
     init {
         setStyleFrom(styleSet)
-        val verticalChar = TextCharacterBuilder.newBuilder()
+        val verticalChar = TileBuilder.newBuilder()
                 .styleSet(styleSet)
                 .character(boxType.vertical)
                 .build()

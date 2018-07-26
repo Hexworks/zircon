@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.interop
 
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Size
 
 object Sizes {
 
