@@ -6,7 +6,7 @@ import org.codetome.zircon.internal.DefaultPosition
 
 internal object PositionFactory {
 
-    private val cache = Cache.create<Position>()
+    private val cache: Cache<Position> = Cache.create()
 
     fun create(x: Int, y: Int): Position {
         return cache.retrieveIfPresent(Position.generateCacheKey(x, y)).orElseGet {

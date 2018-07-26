@@ -8,7 +8,7 @@ import org.codetome.zircon.internal.graphics.DefaultStyleSet
 
 internal object StyleSetFactory {
 
-    private val cache = Cache.create<StyleSet>()
+    private val cache: Cache<StyleSet> = Cache.create()
 
     fun create(foregroundColor: TextColor, backgroundColor: TextColor, modifiers: Set<Modifier>): StyleSet {
         return cache.retrieveIfPresent(StyleSet.generateCacheKey(

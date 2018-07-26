@@ -7,7 +7,7 @@ import org.codetome.zircon.internal.DefaultTextCharacter
 
 internal object TextCharacterFactory {
 
-    private val cache = Cache.create<TextCharacter>()
+    private val cache: Cache<TextCharacter> = Cache.create()
 
     fun create(character: Char, styleSet: StyleSet, tags: Set<String>): TextCharacter {
         return cache.retrieveIfPresent(TextCharacter.generateCacheKey(
