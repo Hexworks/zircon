@@ -1,9 +1,9 @@
 package org.codetome.zircon.api.graphics
 
-import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.behavior.Cacheable
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
+import org.codetome.zircon.api.modifier.Modifier
+import org.codetome.zircon.internal.graphics.DefaultStyleSet
 
 /**
  * Represents style information which is handled by Zircon like
@@ -79,6 +79,14 @@ interface StyleSet : Cacheable {
      */
     fun withoutModifiers(): StyleSet
 
+    override fun generateCacheKey(): String {
+        return "fg:${getForegroundColor().generateCacheKey()}" +
+                "bg:${getBackgroundColor().generateCacheKey()}" +
+                "mod:${getModifiers().map { it.generateCacheKey() }
+                        .sorted()
+                        .joinToString(separator = "")}"
+    }
+
     companion object {
 
         /**
@@ -88,7 +96,7 @@ interface StyleSet : Cacheable {
          * - and default background
          * - and no modifiers.
          */
-        fun defaultStyle() = StyleSetBuilder.newBuilder().build()
+        fun defaultStyle() = DEFAULT_STYLE
 
         /**
          * Shorthand for the empty style which has:
@@ -96,19 +104,27 @@ interface StyleSet : Cacheable {
          * - and transparent background
          * - and no modifiers.
          */
-        fun empty() = StyleSetBuilder.newBuilder()
-                .backgroundColor(TextColor.transparent())
-                .foregroundColor(TextColor.transparent())
-                .modifiers(setOf())
-                .build()
+        fun empty() = EMPTY
 
-        internal fun generateCacheKey(foregroundColor: TextColor, backgroundColor: TextColor, modifiers: Set<Modifier>): String =
-                StringBuilder().apply {
-                    append(foregroundColor.generateCacheKey())
-                    append(backgroundColor.generateCacheKey())
-                    append(modifiers.sortedBy { it.generateCacheKey() }
-                            .joinToString(separator = "-", transform = { it.generateCacheKey() }))
-                }.toString()
+        /**
+         * Creates a new [StyleSet].
+         */
+        fun create(foregroundColor: TextColor, backgroundColor: TextColor, modifiers: Set<Modifier> = setOf()): StyleSet {
+            return DefaultStyleSet(
+                    foregroundColor = foregroundColor,
+                    backgroundColor = backgroundColor,
+                    modifiers = modifiers)
+        }
+
+        private val DEFAULT_STYLE = DefaultStyleSet(
+                foregroundColor = TextColor.defaultForegroundColor(),
+                backgroundColor = TextColor.defaultBackgroundColor(),
+                modifiers = setOf())
+
+        private val EMPTY = DefaultStyleSet(
+                foregroundColor = TextColor.transparent(),
+                backgroundColor = TextColor.transparent(),
+                modifiers = setOf())
     }
 
 }

@@ -17,7 +17,7 @@ import org.codetome.zircon.api.graphics.BoxType
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.interop.Components
 import org.codetome.zircon.api.interop.Sizes
-import org.codetome.zircon.api.interop.TextCharacters
+import org.codetome.zircon.api.interop.Tiles
 import org.codetome.zircon.api.interop.TextColors
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
@@ -44,48 +44,48 @@ object IsometricGameArea {
     private val INTERIOR_COLOR = TextColors.fromString("#999999")
     private val INTERIOR_DECOR_COLOR = TextColors.fromString("#aaaaaa")
 
-    private val FRONT_WALL = TextCharacters.newBuilder()
+    private val FRONT_WALL = Tiles.newBuilder()
             .backgroundColor(FRONT_WALL_COLOR)
             .foregroundColor(FRONT_WALL_DECOR_COLOR)
             .modifiers(GameModifiers.BLOCK_FRONT)
             .character('-')
             .build()
 
-    private val BACK_WALL = TextCharacters.newBuilder()
+    private val BACK_WALL = Tiles.newBuilder()
             .backgroundColor(FRONT_WALL_COLOR)
             .foregroundColor(FRONT_WALL_DECOR_COLOR)
             .modifiers(GameModifiers.BLOCK_FRONT)
             .character('-')
             .build()
 
-    private val WALL = TextCharacters.newBuilder()
+    private val WALL = Tiles.newBuilder()
             .backgroundColor(WALL_COLOR)
             .foregroundColor(WALL_DECOR_COLOR)
             .modifiers(GameModifiers.BLOCK_TOP)
             .character('#')
             .build()
 
-    private val ROOF = TextCharacters.newBuilder()
+    private val ROOF = Tiles.newBuilder()
             .backgroundColor(ROOF_COLOR)
             .foregroundColor(ROOF_DECOR_COLOR)
             .modifiers(GameModifiers.BLOCK_TOP)
             .build()
 
-    private val ANTENNA = TextCharacters.newBuilder()
+    private val ANTENNA = Tiles.newBuilder()
             .backgroundColor(WALL_COLOR)
             .foregroundColor(WALL_DECOR_COLOR)
             .modifiers(GameModifiers.BLOCK_FRONT)
             .character('=')
             .build()
 
-    private val INTERIOR = TextCharacters.newBuilder()
+    private val INTERIOR = Tiles.newBuilder()
             .backgroundColor(INTERIOR_COLOR)
             .foregroundColor(INTERIOR_DECOR_COLOR)
             .character(Symbols.BLOCK_SPARSE)
             .modifiers(GameModifiers.BLOCK_BOTTOM)
             .build()
 
-    private val GUY = TextCharacters.newBuilder()
+    private val GUY = Tiles.newBuilder()
             .backgroundColor(TextColor.transparent())
             .foregroundColor(ANSITextColor.RED)
             .character(Symbols.FACE_BLACK)
@@ -182,7 +182,7 @@ object IsometricGameArea {
                             chars.add(GUY.withForegroundColor(ANSITextColor.values()[random.nextInt(ANSITextColor.values().size)]))
                         }
                         if (extra == 2) {
-                            chars.add(TextCharacters.newBuilder()
+                            chars.add(Tiles.newBuilder()
                                     .foregroundColor(TextColors.fromString("#333333"))
                                     .backgroundColor(TextColor.transparent())
                                     .character(Symbols.SINGLE_LINE_T_DOUBLE_DOWN)

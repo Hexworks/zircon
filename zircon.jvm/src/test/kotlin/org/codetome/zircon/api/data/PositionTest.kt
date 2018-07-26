@@ -1,9 +1,7 @@
-package org.codetome.zircon.api
+package org.codetome.zircon.api.data
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.component.Component
-import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.data.Size
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock

@@ -158,7 +158,7 @@ class VirtualTerminalTest {
         assertThat(dirtyCells
                 .filter { it.position == Position.offset1x1() }
                 .map { it.character })
-                .containsExactly(Tile.defaultCharacter().withCharacter('x'))
+                .containsExactly(Tile.defaultTile().withCharacter('x'))
     }
 
     @Test
@@ -194,7 +194,7 @@ class VirtualTerminalTest {
 
     @Test
     fun shouldBeAbleToSetCharacter() {
-        val expectedChar = Tile.defaultCharacter().withCharacter('x')
+        val expectedChar = Tile.defaultTile().withCharacter('x')
         target.setCharacterAt(Position.offset1x1(), expectedChar)
 
         assertThat(target.getCharacterAt(Position.offset1x1()).get())
@@ -225,7 +225,7 @@ class VirtualTerminalTest {
         target.clear()
 
         val positions = SIZE.fetchPositions().map {
-            assertThat(target.getCharacterAt(it).get()).isEqualTo(Tile.defaultCharacter())
+            assertThat(target.getCharacterAt(it).get()).isEqualTo(Tile.defaultTile())
             it
         }
         assertThat(target.getCursorPosition()).isEqualTo(Position.defaultPosition())

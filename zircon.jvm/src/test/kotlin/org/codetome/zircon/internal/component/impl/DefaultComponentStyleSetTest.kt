@@ -6,7 +6,6 @@ import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyleSet
-import org.codetome.zircon.internal.component.DefaultComponentStyleSet
 import org.junit.Before
 import org.junit.Test
 

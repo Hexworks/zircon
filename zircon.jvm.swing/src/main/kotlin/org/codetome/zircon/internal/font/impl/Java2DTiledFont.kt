@@ -1,15 +1,15 @@
 package org.codetome.zircon.internal.font.impl
 
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.FontTextureRegion
+import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.modifier.Border
 import org.codetome.zircon.api.modifier.RayShade
 import org.codetome.zircon.api.modifier.SimpleModifiers.*
+import org.codetome.zircon.api.util.Cache
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.transformer.*
-import org.codetome.zircon.api.util.Cache
 import java.awt.image.BufferedImage
 
 /**
@@ -33,16 +33,17 @@ class Java2DTiledFont(private val source: BufferedImage,
 
     override fun fetchRegionForChar(tile: Tile): FontTextureRegion<BufferedImage> {
         val meta = fetchMetaFor(tile)
-        val maybeRegion = cache.retrieveIfPresent(tile.generateCacheKey())
+        val key = tile.generateCacheKey()
+        val maybeRegion = cache.retrieveIfPresent(key)
 
         var region = if (maybeRegion.isNotPresent()) {
             var image: FontTextureRegion<BufferedImage> = Java2DFontTextureRegion(
-                    cacheKey = tile.generateCacheKey(),
+                    cacheKey = key,
                     backend = source.getSubimage(meta.x * width, meta.y * height, width, height))
             regionTransformers.forEach {
                 image = it.transform(image, tile)
             }
-            cache.store(image)
+            cache.store(key, image)
 
             image
         } else {

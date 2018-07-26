@@ -1,21 +1,18 @@
 package org.codetome.zircon.api.data
 
-import org.codetome.zircon.api.behavior.Cacheable
 import org.codetome.zircon.api.component.Component
-import org.codetome.zircon.internal.factory.PositionFactory
+import org.codetome.zircon.internal.data.DefaultPosition
 
 /**
- * A 2D position in terminal space. Please note that the coordinates are 0-indexed, meaning 0x0 is the
- * top left corner of the terminal. This object is immutable so you cannot change it after it has been created.
+ * Represents the abstract concept of a position. Please note that the coordinates are 0-indexed, meaning 0x0 is the
+ * top left corner of a grid for example. This object is immutable so you cannot change it after it has been created.
  * Instead, you can easily create modified clones by using the `with*` methods.
  */
-interface Position : Comparable<Position>, Cacheable {
+interface Position : Comparable<Position> {
 
     val x: Int
 
     val y: Int
-
-    override fun generateCacheKey() = generateCacheKey(x, y)
 
     override fun compareTo(other: Position): Int = when {
         y > other.y -> 1
@@ -51,7 +48,9 @@ interface Position : Comparable<Position>, Cacheable {
      * supplied y index.
      */
     fun withY(y: Int): Position {
-        return create(x, y)
+        return if (x == 0 && y == 0) {
+            DEFAULT_POSITION
+        } else create(x, y)
     }
 
     /**
@@ -59,7 +58,9 @@ interface Position : Comparable<Position>, Cacheable {
      * supplied x index.
      */
     fun withX(x: Int): Position {
-        return create(x, y)
+        return if (x == 0 && y == 0) {
+            DEFAULT_POSITION
+        } else create(x, y)
     }
 
     /**
@@ -138,31 +139,34 @@ interface Position : Comparable<Position>, Cacheable {
     companion object {
 
         /**
-         * Creates a new [Position] using the given `x` and `y` values.
-         */
-        fun create(x: Int, y: Int) = PositionFactory.create(x, y)
-
-        /**
          * Constant for the top-left corner (0x0)
          */
-        fun topLeftCorner() = create(0, 0)
+        fun topLeftCorner() = TOP_LEFT_CORNER
 
         /**
          * Constant for the 1x1 position (one offset in both directions from top-left)
          */
-        fun offset1x1() = create(1, 1)
+        fun offset1x1() = OFFSET_1X1
 
         /**
          * This position can be considered as the default
          */
-        fun defaultPosition() = topLeftCorner()
+        fun defaultPosition() = DEFAULT_POSITION
 
         /**
-         * Used in place of a possible null value. Means that the position is unknown (cursor for example)
+         * Used in place of a possible null value. Means that the position is unknown (cursor for example).
          */
-        fun unknown() = create(Int.MAX_VALUE, Int.MAX_VALUE)
+        fun unknown() = UNKNOWN
 
-        fun generateCacheKey(x: Int, y: Int) = "Position-$x-$y"
+        /**
+         * Creates a new [Position] using the given `x` and `y` values.
+         */
+        fun create(x: Int, y: Int): Position = DefaultPosition(x, y)
+
+        private val TOP_LEFT_CORNER = create(0, 0)
+        private val OFFSET_1X1 = create(1, 1)
+        private val DEFAULT_POSITION = TOP_LEFT_CORNER
+        private val UNKNOWN = create(Int.MAX_VALUE, Int.MAX_VALUE)
     }
 }
 

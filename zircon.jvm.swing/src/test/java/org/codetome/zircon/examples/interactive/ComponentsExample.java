@@ -420,7 +420,7 @@ public class ComponentsExample {
     }
 
     private static void refreshIcon(Layer icon, char c) {
-        icon.setRelativeCharacterAt(Positions.defaultPosition(), TextCharacters.newBuilder()
+        icon.setRelativeCharacterAt(Positions.defaultPosition(), Tiles.newBuilder()
                 .character(c)
                 .backgroundColor(TextColors.transparent())
                 .build());

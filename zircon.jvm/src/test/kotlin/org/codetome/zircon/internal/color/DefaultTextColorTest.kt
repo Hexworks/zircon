@@ -10,7 +10,7 @@ class DefaultTextColorTest {
     fun shouldGenerateProperCacheKey() {
         val result = DefaultTextColor(RED, GREEN, BLUE, 123).generateCacheKey()
 
-        assertThat(result).isEqualTo("51015123")
+        assertThat(result).isEqualTo("a:123r:5g:10b:15")
     }
 
     @Test
@@ -24,9 +24,9 @@ class DefaultTextColorTest {
     }
 
     companion object {
-        val RED = 5
-        val GREEN = 10
-        val BLUE = 15
+        const val RED = 5
+        const val GREEN = 10
+        const val BLUE = 15
     }
 
 }

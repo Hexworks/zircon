@@ -10,7 +10,7 @@ import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.internal.graphics.DefaultBox
 
 data class BoxBuilder(private var size: Size = Size.create(3, 3),
-                      private var style: StyleSet = StyleSetBuilder.defaultStyle(),
+                      private var style: StyleSet = StyleSet.defaultStyle(),
                       private var boxType: BoxType = BoxType.BASIC,
                       private var filler: Char = Tile.empty().getCharacter()) : Builder<Box> {
 

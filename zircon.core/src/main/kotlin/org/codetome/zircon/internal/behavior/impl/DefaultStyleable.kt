@@ -1,10 +1,9 @@
 package org.codetome.zircon.internal.behavior.impl
 
-import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.behavior.Styleable
-import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
+import org.codetome.zircon.api.modifier.Modifier
 
 data class DefaultStyleable(private var styleSet: StyleSet) : Styleable {
 
@@ -45,7 +44,7 @@ data class DefaultStyleable(private var styleSet: StyleSet) : Styleable {
     }
 
     override fun resetColorsAndModifiers() {
-        styleSet = StyleSetBuilder.defaultStyle()
+        styleSet = StyleSet.defaultStyle()
     }
 
     override fun setStyleFrom(source: StyleSet) {

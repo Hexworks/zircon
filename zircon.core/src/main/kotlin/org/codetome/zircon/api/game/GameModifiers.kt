@@ -13,5 +13,7 @@ enum class GameModifiers : Modifier {
     BLOCK_BOTTOM,
     BLOCK_LAYER;
 
-    override fun generateCacheKey(): String = this::class.simpleName!!
+    override fun generateCacheKey(): String {
+        return "GameModifiers$name"
+    }
 }

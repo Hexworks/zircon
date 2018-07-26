@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.interop
 
+import org.codetome.zircon.api.modifier.Border
 import org.codetome.zircon.api.modifier.BorderBuilder
 import org.codetome.zircon.api.modifier.SimpleModifiers.*
 
@@ -42,5 +43,5 @@ object Modifiers {
      * @see BorderBuilder if you want to create custom borders
      */
     @JvmStatic
-    fun border() = BorderBuilder.newBuilder().build()
+    fun border(): Border = BorderBuilder.newBuilder().build()
 }

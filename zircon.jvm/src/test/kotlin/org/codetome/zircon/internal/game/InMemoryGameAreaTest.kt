@@ -101,9 +101,9 @@ class InMemoryGameAreaTest {
 
     companion object {
 
-        val BOTTOM_CHAR = Tile.defaultCharacter().withBackgroundColor(ANSITextColor.RED)
-        val MID_CHAR = Tile.defaultCharacter().withBackgroundColor(ANSITextColor.GREEN)
-        val TOP_CHAR = Tile.defaultCharacter().withBackgroundColor(ANSITextColor.BLUE)
+        val BOTTOM_CHAR = Tile.defaultTile().withBackgroundColor(ANSITextColor.RED)
+        val MID_CHAR = Tile.defaultTile().withBackgroundColor(ANSITextColor.GREEN)
+        val TOP_CHAR = Tile.defaultTile().withBackgroundColor(ANSITextColor.BLUE)
 
 
         val BLOCK = listOf(BOTTOM_CHAR, MID_CHAR, TOP_CHAR)

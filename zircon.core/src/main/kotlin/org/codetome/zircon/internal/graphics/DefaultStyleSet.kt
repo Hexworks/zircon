@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.graphics
 
-import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
+import org.codetome.zircon.api.modifier.Modifier
 
 data class DefaultStyleSet(private var foregroundColor: TextColor = TextColor.defaultForegroundColor(),
                            private var backgroundColor: TextColor = TextColor.defaultBackgroundColor(),
@@ -34,8 +34,4 @@ data class DefaultStyleSet(private var foregroundColor: TextColor = TextColor.de
 
     override fun withoutModifiers() = copy(modifiers = setOf())
 
-    override fun generateCacheKey() = StyleSet.generateCacheKey(
-            foregroundColor = foregroundColor,
-            backgroundColor = backgroundColor,
-            modifiers = modifiers)
 }

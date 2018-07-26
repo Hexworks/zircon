@@ -23,7 +23,7 @@ public class TypingExample {
     private static final int TERMINAL_WIDTH = 40;
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
-    private static final Tile TEXT_CHAR_TEMPLATE = TextCharacters.newBuilder()
+    private static final Tile TEXT_CHAR_TEMPLATE = Tiles.newBuilder()
             .foregroundColor(TextColors.fromString("#F7923A"))
             .backgroundColor(BLACK)
             .build();

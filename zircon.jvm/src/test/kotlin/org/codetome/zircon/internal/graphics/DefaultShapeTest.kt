@@ -47,7 +47,7 @@ class DefaultShapeTest {
         val TRANSFORMED_POS_0 = Position.create(0, 0)
         val TRANSFORMED_POS_1 = Position.create(1, 1)
 
-        val CHAR = Tile.defaultCharacter().withCharacter('x')
+        val CHAR = Tile.defaultTile().withCharacter('x')
 
         val LINE_SHAPE = DefaultShape(setOf(POS_0, POS_1))
         val OTHER_SHAPE = DefaultShape(setOf(POS_2))

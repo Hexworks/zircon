@@ -17,7 +17,7 @@ class DefaultLayerTest {
     @Before
     fun setUp() {
         target = DefaultLayer(
-                filler = Tile.defaultCharacter(),
+                filler = Tile.defaultTile(),
                 size = SIZE,
                 offset = OFFSET,
                 initialFont = FontSettings.NO_FONT)

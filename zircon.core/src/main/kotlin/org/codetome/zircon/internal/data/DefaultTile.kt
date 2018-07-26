@@ -1,10 +1,10 @@
 package org.codetome.zircon.internal.data
 
-import org.codetome.zircon.api.modifier.Modifier
-import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.color.TextColor
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.Border
+import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.modifier.SimpleModifiers.*
 
 data class DefaultTile(
@@ -19,6 +19,8 @@ data class DefaultTile(
     override fun getBackgroundColor(): TextColor = styleSet.getBackgroundColor()
 
     override fun getModifiers(): Set<Modifier> = styleSet.getModifiers()
+
+    override fun toStyleSet() = styleSet
 
     override fun getTags(): Set<String> = tags
 
@@ -89,10 +91,5 @@ data class DefaultTile(
     override fun withTags(vararg tags: String) = withTags(tags.toSet())
 
     override fun withTags(tags: Set<String>) = copy(tags = tags)
-
-    override fun generateCacheKey() = Tile.generateCacheKey(
-            character = character,
-            styleSet = styleSet,
-            tags = tags)
 
 }
