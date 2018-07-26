@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.behavior.impl
 
-import org.codetome.zircon.api.Modifier
+import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.behavior.Styleable
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.color.TextColor

@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.terminal.application
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.terminal.DeviceConfigurationBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
@@ -27,7 +27,7 @@ class ApplicationTerminalTest {
     lateinit var font: Font
 
     val fontTextureDraws = mutableListOf<Triple<FontTextureRegion<*>, Int, Int>>()
-    val cursorDraws = mutableListOf<Triple<TextCharacter, Int, Int>>()
+    val cursorDraws = mutableListOf<Triple<Tile, Int, Int>>()
     var rendered = AtomicBoolean(false)
 
     @Before
@@ -43,7 +43,7 @@ class ApplicationTerminalTest {
                 fontTextureDraws.add(Triple(fontTextureRegion, x, y))
             }
 
-            override fun drawCursor(character: TextCharacter, x: Int, y: Int) {
+            override fun drawCursor(character: Tile, x: Int, y: Int) {
                 cursorDraws.add(Triple(character, x, y))
             }
 

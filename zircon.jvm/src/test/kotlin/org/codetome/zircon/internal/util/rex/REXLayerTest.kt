@@ -1,9 +1,9 @@
 package org.codetome.zircon.internal.util.rex
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.internal.color.DefaultTextColor
 import org.codetome.zircon.internal.font.impl.FontSettings
 import org.junit.Before
@@ -84,7 +84,7 @@ class REXLayerTest {
         return buffer
     }
 
-    private fun assertChar(expChar: Char, expBgColor: DefaultTextColor, expFgColor: DefaultTextColor, textChar: TextCharacter) {
+    private fun assertChar(expChar: Char, expBgColor: DefaultTextColor, expFgColor: DefaultTextColor, textChar: Tile) {
         assertThat(textChar.getCharacter()).isEqualTo(expChar)
         assertThat(textChar.getBackgroundColor()).isEqualTo(expBgColor)
         assertThat(textChar.getForegroundColor()).isEqualTo(expFgColor)

@@ -1,16 +1,16 @@
-package org.codetome.zircon.internal
+package org.codetome.zircon.internal.data
 
-import org.codetome.zircon.api.Modifier
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.modifier.Modifier
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.Border
 import org.codetome.zircon.api.modifier.SimpleModifiers.*
 
-data class DefaultTextCharacter(
+data class DefaultTile(
         private val character: Char,
         private val styleSet: StyleSet,
-        private val tags: Set<String>) : TextCharacter {
+        private val tags: Set<String>) : Tile {
 
     override fun getCharacter(): Char = character
 
@@ -39,45 +39,45 @@ data class DefaultTextCharacter(
             .map { it as Border }
             .toSet()
 
-    override fun isNotEmpty(): Boolean = this != TextCharacter.empty()
+    override fun isNotEmpty(): Boolean = this != Tile.empty()
 
-    override fun withCharacter(character: Char): DefaultTextCharacter {
+    override fun withCharacter(character: Char): DefaultTile {
         if (this.character == character) {
             return this
         }
         return copy(character = character)
     }
 
-    override fun withForegroundColor(foregroundColor: TextColor): DefaultTextCharacter {
+    override fun withForegroundColor(foregroundColor: TextColor): DefaultTile {
         if (this.styleSet.getForegroundColor() == foregroundColor) {
             return this
         }
         return copy(styleSet = styleSet.withForegroundColor(foregroundColor))
     }
 
-    override fun withBackgroundColor(backgroundColor: TextColor): DefaultTextCharacter {
+    override fun withBackgroundColor(backgroundColor: TextColor): DefaultTile {
         if (this.styleSet.getBackgroundColor() == backgroundColor) {
             return this
         }
         return copy(styleSet = styleSet.withBackgroundColor(backgroundColor))
     }
 
-    override fun withModifiers(vararg modifiers: Modifier): DefaultTextCharacter {
+    override fun withModifiers(vararg modifiers: Modifier): DefaultTile {
         return withModifiers(modifiers.toSet())
     }
 
-    override fun withModifiers(modifiers: Set<Modifier>): DefaultTextCharacter {
+    override fun withModifiers(modifiers: Set<Modifier>): DefaultTile {
         if (this.styleSet.getModifiers() == modifiers) {
             return this
         }
         return copy(styleSet = styleSet.withModifiers(modifiers))
     }
 
-    override fun withoutModifiers(vararg modifiers: Modifier): DefaultTextCharacter {
+    override fun withoutModifiers(vararg modifiers: Modifier): DefaultTile {
         return withoutModifiers(modifiers.toSet())
     }
 
-    override fun withoutModifiers(modifiers: Set<Modifier>): DefaultTextCharacter {
+    override fun withoutModifiers(modifiers: Set<Modifier>): DefaultTile {
         if (this.styleSet.getModifiers().none { modifiers.contains(it) }) {
             return this
         }
@@ -90,7 +90,7 @@ data class DefaultTextCharacter(
 
     override fun withTags(tags: Set<String>) = copy(tags = tags)
 
-    override fun generateCacheKey() = TextCharacter.generateCacheKey(
+    override fun generateCacheKey() = Tile.generateCacheKey(
             character = character,
             styleSet = styleSet,
             tags = tags)

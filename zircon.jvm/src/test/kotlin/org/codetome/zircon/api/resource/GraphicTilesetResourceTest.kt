@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.resource
 
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
 import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy
@@ -18,7 +18,7 @@ class GraphicTilesetResourceTest {
                 metadataPickingStrategy = PickRandomMetaStrategy())
         val meta = result.fetchMetadataForChar('b').first()
         result.fetchRegionForChar(
-                textCharacter = TextCharacterBuilder.newBuilder()
+                tile = TileBuilder.newBuilder()
                         .character(meta.char)
                         .tags(meta.tags)
                         .foregroundColor(TextColor.defaultForegroundColor())

@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.behavior
 
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 
 /**
  * A [TypingSupport] is a specialized [CursorHandler] which not only handles a cursor
@@ -32,6 +32,6 @@ interface TypingSupport : CursorHandler {
      *
      * If you try to print non-printable control characters, they will be ignored.
      */
-    fun putTextCharacter(tc: TextCharacter)
+    fun putTextCharacter(tc: Tile)
 
 }

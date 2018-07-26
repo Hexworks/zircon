@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.behavior
 
-import org.codetome.zircon.api.game.Position3D
-import org.codetome.zircon.api.game.Size3D
+import org.codetome.zircon.api.data.Position3D
+import org.codetome.zircon.api.data.Size3D
 
 /**
  * A [Scrollable3D] object has a visible 3D space which might be smaller than

@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font.transformer
 
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.interop.toAWTColor
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.modifier.BorderPosition.*
@@ -13,13 +13,13 @@ import java.awt.image.BufferedImage
 
 
 class Java2DBorderTransformer : FontRegionTransformer<BufferedImage> {
-    override fun transform(region: FontTextureRegion<BufferedImage>, textCharacter: TextCharacter): FontTextureRegion<BufferedImage> {
+    override fun transform(region: FontTextureRegion<BufferedImage>, tile: Tile): FontTextureRegion<BufferedImage> {
         return region.also {
             it.getBackend().let { backend ->
                 backend.graphics.apply {
-                    color = textCharacter.getForegroundColor().toAWTColor()
-                    if (textCharacter.hasBorder()) {
-                        textCharacter.fetchBorderData().forEach { border ->
+                    color = tile.getForegroundColor().toAWTColor()
+                    if (tile.hasBorder()) {
+                        tile.fetchBorderData().forEach { border ->
                             border.borderPositions.forEach { pos ->
                                 FILLER_LOOKUP[pos]?.invoke(backend, this as Graphics2D, border.borderType)
                             }

@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.factory
 
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.util.Cache
-import org.codetome.zircon.internal.DefaultPosition
+import org.codetome.zircon.internal.data.DefaultPosition
 
 internal object PositionFactory {
 

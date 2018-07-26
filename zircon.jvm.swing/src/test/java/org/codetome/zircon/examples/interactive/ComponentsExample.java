@@ -1,9 +1,9 @@
 package org.codetome.zircon.examples.interactive;
 
 import org.codetome.zircon.TerminalUtils;
-import org.codetome.zircon.api.Position;
-import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.Symbols;
+import org.codetome.zircon.api.data.Position;
+import org.codetome.zircon.api.data.Size;
+import org.codetome.zircon.api.graphics.Symbols;
 import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection;
 import org.codetome.zircon.api.font.Font;

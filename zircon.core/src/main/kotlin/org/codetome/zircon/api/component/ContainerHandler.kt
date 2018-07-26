@@ -3,7 +3,7 @@ package org.codetome.zircon.api.component
 /**
  * Represents an object which can hold gui [Component]s.
  * **Note that** a [ContainerHandler] **will always** hold a "root" [Container]
- * which will have the [org.codetome.zircon.api.Size] of its parent.
+ * which will have the [org.codetome.zircon.api.data.Size] of its parent.
  * @see Component for more info
  */
 interface ContainerHandler {

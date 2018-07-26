@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font
 
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.font.FontTextureRegion
 
 /**
@@ -12,5 +12,5 @@ interface FontRegionTransformer<T> {
     /**
      * Transforms a font region and returns the transformed version.
      */
-    fun transform(region: FontTextureRegion<T>, textCharacter: TextCharacter): FontTextureRegion<T>
+    fun transform(region: FontTextureRegion<T>, tile: Tile): FontTextureRegion<T>
 }

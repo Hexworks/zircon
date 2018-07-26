@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.font
 
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.internal.behavior.Identifiable
 
 /**
@@ -27,12 +27,12 @@ interface Font : Identifiable {
     fun hasDataForChar(char: Char): Boolean
 
     /**
-     * Returns a region (graphical representation of a [TextCharacter]) for a character.
-     * If `tags` are supplied in `textCharacter`, than this method will try to filter for them.
+     * Returns a region (graphical representation of a [Tile]) for a character.
+     * If `tags` are supplied in `tile`, than this method will try to filter for them.
      * *Note that* this is only useful for graphical tilesets which have multiple
-     * regions for a given [TextCharacter]!
+     * regions for a given [Tile]!
      */
-    fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<*>
+    fun fetchRegionForChar(tile: Tile): FontTextureRegion<*>
 
     /**
      * Returns all the [TextureRegionMetadata] for a [Char] which is known by this [Font].

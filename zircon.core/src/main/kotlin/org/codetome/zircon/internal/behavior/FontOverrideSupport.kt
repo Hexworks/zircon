@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.behavior
 
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Size
 
 interface FontOverrideSupport {
 

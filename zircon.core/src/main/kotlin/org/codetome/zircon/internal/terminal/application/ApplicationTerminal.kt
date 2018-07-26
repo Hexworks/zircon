@@ -1,9 +1,9 @@
 package org.codetome.zircon.internal.terminal.application
 
-import org.codetome.zircon.api.Cell
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Cell
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.input.KeyStroke
@@ -43,7 +43,7 @@ abstract class ApplicationTerminal(
 
     abstract fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion<*>, x: Int, y: Int)
 
-    abstract fun drawCursor(character: TextCharacter, x: Int, y: Int)
+    abstract fun drawCursor(character: Tile, x: Int, y: Int)
 
     override fun doCreate() {
         onShutdown { doDispose() }
@@ -95,7 +95,7 @@ abstract class ApplicationTerminal(
     }
 
     private fun drawCharacter(
-            character: TextCharacter,
+            character: Tile,
             xIdx: Int,
             yIdx: Int,
             font: Font,

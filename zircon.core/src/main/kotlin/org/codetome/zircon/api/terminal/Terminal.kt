@@ -2,8 +2,8 @@
 
 package org.codetome.zircon.api.terminal
 
-import org.codetome.zircon.api.Size
 import org.codetome.zircon.api.behavior.*
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.internal.behavior.ShutdownHook
 
 /**

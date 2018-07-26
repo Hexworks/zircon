@@ -1,9 +1,9 @@
 package org.codetome.zircon.internal.component.impl.wrapping
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.Symbols
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.graphics.Symbols
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
@@ -17,7 +17,7 @@ class ShadowWrappingStrategy(private val shadowChar: Char = DEFAULT_SHADOW_CHAR)
     override fun getOffset() = Position.topLeftCorner()
 
     override fun apply(textImage: TextImage, size: Size, offset: Position, style: StyleSet) {
-        val tc = TextCharacterBuilder.newBuilder()
+        val tc = TileBuilder.newBuilder()
                 .backgroundColor(TextColor.transparent())
                 .foregroundColor(TextColor.create(100, 100, 100))
                 .character(shadowChar)

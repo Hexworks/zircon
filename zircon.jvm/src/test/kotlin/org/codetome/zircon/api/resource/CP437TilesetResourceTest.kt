@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.resource
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Symbols
+import org.codetome.zircon.api.graphics.Symbols
 import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.internal.font.impl.FontLoaderRegistry

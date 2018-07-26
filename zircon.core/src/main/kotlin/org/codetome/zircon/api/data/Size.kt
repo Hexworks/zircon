@@ -1,4 +1,4 @@
-package org.codetome.zircon.api
+package org.codetome.zircon.api.data
 
 import org.codetome.zircon.api.behavior.Cacheable
 import org.codetome.zircon.api.shape.RectangleFactory
@@ -15,7 +15,7 @@ interface Size : Comparable<Size>, Cacheable {
 
     val yLength: Int
 
-    override fun generateCacheKey() = Size.generateCacheKey(xLength, yLength)
+    override fun generateCacheKey() = generateCacheKey(xLength, yLength)
 
     operator fun plus(other: Size) = create(xLength + other.xLength, yLength + other.yLength)
 

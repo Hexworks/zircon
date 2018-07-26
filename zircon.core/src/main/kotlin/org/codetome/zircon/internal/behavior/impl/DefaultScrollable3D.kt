@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.behavior.impl
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.game.Position3D
-import org.codetome.zircon.api.game.Size3D
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Position3D
+import org.codetome.zircon.api.data.Size3D
 import org.codetome.zircon.internal.behavior.Scrollable3D
 import org.codetome.zircon.api.util.Math
 

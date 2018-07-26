@@ -1,9 +1,9 @@
 package org.codetome.zircon.internal.util.rex
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
@@ -29,7 +29,7 @@ data class REXLayer(private val width: Int,
     fun toLayer(): Layer {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.create(width, height))
-                .filler(TextCharacter.empty())
+                .filler(Tile.empty())
                 .font(FontSettings.NO_FONT)
                 .build()
 
@@ -43,7 +43,7 @@ data class REXLayer(private val width: Int,
                 }
                 layer.setCharacterAt(
                         Position.create(x, y),
-                        TextCharacterBuilder.newBuilder()
+                        TileBuilder.newBuilder()
                                 .character(cell.getCharacter())
                                 .backgroundColor(cell.getBackgroundColor())
                                 .foregroundColor(cell.getForegroundColor())

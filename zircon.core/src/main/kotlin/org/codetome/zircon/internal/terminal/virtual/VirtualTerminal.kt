@@ -1,12 +1,12 @@
 package org.codetome.zircon.internal.terminal.virtual
 
-import org.codetome.zircon.api.Cell
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Cell
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.FontOverride
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.TextImage
@@ -76,7 +76,7 @@ class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
     override fun setSize(newSize: Size) {
         if (newSize != terminalSize) {
             this.terminalSize = newSize
-            backend = backend.resize(newSize, TextCharacter.defaultCharacter())
+            backend = backend.resize(newSize, Tile.defaultCharacter())
             resizeCursorSpace(newSize)
             // TODO: this can be optimized later
             terminalSize.fetchPositions().forEach {
@@ -101,7 +101,7 @@ class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
     }
 
     override fun putCharacter(c: Char) {
-        putTextCharacter(TextCharacterBuilder.newBuilder()
+        putTextCharacter(TileBuilder.newBuilder()
                 .character(c)
                 .foregroundColor(getForegroundColor())
                 .backgroundColor(getBackgroundColor())
@@ -109,7 +109,7 @@ class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
                 .build())
     }
 
-    override fun putTextCharacter(tc: TextCharacter) {
+    override fun putTextCharacter(tc: Tile) {
         if (tc.getCharacter() == '\n') {
             moveCursorToNextLine()
         } else if (TextUtils.isPrintableCharacter(tc.getCharacter())) {
@@ -131,12 +131,12 @@ class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
             backend.getCharacterAt(position)
 
     override fun setCharacterAt(position: Position, character: Char) =
-            setCharacterAt(position, TextCharacterBuilder.newBuilder()
+            setCharacterAt(position, TileBuilder.newBuilder()
                     .character(character)
                     .styleSet(toStyleSet())
                     .build())
 
-    override fun setCharacterAt(position: Position, character: TextCharacter) =
+    override fun setCharacterAt(position: Position, character: Tile) =
             if (containsPosition(position)) {
                 backend.setCharacterAt(position, character)
                 setPositionDirty(position)
@@ -166,7 +166,7 @@ class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
     private fun createBackend(initialSize: Size) =
             TextImageBuilder.newBuilder()
                     .size(initialSize)
-                    .filler(TextCharacter.defaultCharacter())
+                    .filler(Tile.defaultCharacter())
                     .build()
 
 }

@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.shape
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.internal.graphics.DefaultShape
 
 object FilledRectangleFactory : ShapeFactory<RectangleParameters> {
@@ -21,7 +21,7 @@ object FilledRectangleFactory : ShapeFactory<RectangleParameters> {
      * value being the terminals top-left (0x0) corner will create a shape which when drawn
      * will fill the whole terminal.
      * **Note that** all resulting shapes will be offset to the top left (0x0) position!
-     * @see [org.codetome.zircon.api.graphics.Shape.offsetToDefaultPosition] for more info!
+     * @see [org.codetome.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
      */
     fun buildFilledRectangle(rectParams: RectangleParameters) = createShape(rectParams)
 
@@ -32,7 +32,7 @@ object FilledRectangleFactory : ShapeFactory<RectangleParameters> {
      * value being the terminals top-left (0x0) corner will create a shape which when drawn
      * will fill the whole terminal.
      * **Note that** all resulting shapes will be offset to the top left (0x0) position!
-     * @see [org.codetome.zircon.api.graphics.Shape.offsetToDefaultPosition] for more info!
+     * @see [org.codetome.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
      */
     fun buildFilledRectangle(topLeft: Position, size: Size) = buildFilledRectangle(RectangleParameters(topLeft, size))
 }

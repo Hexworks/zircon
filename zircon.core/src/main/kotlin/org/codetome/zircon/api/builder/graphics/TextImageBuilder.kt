@@ -1,10 +1,10 @@
 package org.codetome.zircon.api.builder.graphics
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
 import org.codetome.zircon.api.builder.Builder
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.internal.graphics.InMemoryTextImage
 
 /**
@@ -16,8 +16,8 @@ import org.codetome.zircon.internal.graphics.InMemoryTextImage
 @Suppress("ArrayInDataClass")
 data class TextImageBuilder(
         private var size: Size = Size.one(),
-        private var filler: TextCharacter = TextCharacter.empty(),
-        private val chars: MutableMap<Position, TextCharacter> = mutableMapOf()) : Builder<TextImage> {
+        private var filler: Tile = Tile.empty(),
+        private val chars: MutableMap<Position, Tile> = mutableMapOf()) : Builder<TextImage> {
 
     /**
      * Sets the size for the new [TextImage].
@@ -28,21 +28,21 @@ data class TextImageBuilder(
     }
 
     /**
-     * The new [TextImage] will be filled by this [TextCharacter].
+     * The new [TextImage] will be filled by this [Tile].
      * Defaults to `EMPTY`.
      */
-    fun filler(filler: TextCharacter) = also {
+    fun filler(filler: Tile) = also {
         this.filler = filler
     }
 
     /**
-     * Adds a [TextCharacter] at the given [Position].
+     * Adds a [Tile] at the given [Position].
      */
-    fun character(position: Position, textCharacter: TextCharacter) = also {
+    fun character(position: Position, tile: Tile) = also {
         require(size.containsPosition(position)) {
             "The given character's position ($position) is out create bounds for text image size: $size."
         }
-        chars[position] = textCharacter
+        chars[position] = tile
     }
 
     override fun build(): TextImage = InMemoryTextImage(

@@ -1,7 +1,5 @@
 package org.codetome.zircon.api.modifier
 
-import org.codetome.zircon.api.Modifier
-
 /**
  * Represents the built-in SimpleModifiers supported by zircon.
  */

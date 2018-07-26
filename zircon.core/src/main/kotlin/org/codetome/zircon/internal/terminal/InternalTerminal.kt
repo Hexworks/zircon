@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.terminal
 
-import org.codetome.zircon.api.Cell
+import org.codetome.zircon.api.data.Cell
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.internal.behavior.FontOverrideSupport
 import org.codetome.zircon.internal.behavior.InternalLayerable

@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ComponentState
@@ -46,7 +46,7 @@ class DefaultCheckBoxTest {
         val offset = 4
         TEXT.forEachIndexed { i, char ->
             Assertions.assertThat(surface.getCharacterAt(Position.create(i + offset, 0)).get())
-                    .isEqualTo(TextCharacterBuilder.newBuilder()
+                    .isEqualTo(TileBuilder.newBuilder()
                             .character(char)
                             .styleSet(DEFAULT_STYLE)
                             .build())

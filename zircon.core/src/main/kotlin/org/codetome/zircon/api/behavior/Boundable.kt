@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.behavior
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
 
 /**
  * Represents an object which has bounds in 2D space. A [Boundable] object can provide useful information

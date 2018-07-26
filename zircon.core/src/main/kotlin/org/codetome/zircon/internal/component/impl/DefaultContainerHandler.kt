@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.component.impl
 
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.graphics.Layer

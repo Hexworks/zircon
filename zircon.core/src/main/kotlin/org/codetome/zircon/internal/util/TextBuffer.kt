@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.util
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.util.Math
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.platform.util.SystemUtils

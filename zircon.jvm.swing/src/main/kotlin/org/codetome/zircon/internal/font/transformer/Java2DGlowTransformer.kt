@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.font.transformer
 
 import com.jhlabs.image.GaussianFilter
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.interop.toAWTColor
 import org.codetome.zircon.internal.font.FontRegionTransformer
@@ -14,20 +14,20 @@ class Java2DGlowTransformer : FontRegionTransformer<BufferedImage> {
 
     val cloner = Java2DFontRegionCloner()
 
-    override fun transform(region: FontTextureRegion<BufferedImage>, textCharacter: TextCharacter): FontTextureRegion<BufferedImage> {
+    override fun transform(region: FontTextureRegion<BufferedImage>, tile: Tile): FontTextureRegion<BufferedImage> {
         return region.also {
             it.getBackend().let { backend ->
                 backend.graphics.apply {
 
-                    if (textCharacter.getForegroundColor() == textCharacter.getBackgroundColor()) {
+                    if (tile.getForegroundColor() == tile.getBackgroundColor()) {
                         return region
                     }
 
                     // Get character image:
                     val charImage = swapColor(region,
-                            textCharacter.getBackgroundColor().toAWTColor(),
+                            tile.getBackgroundColor().toAWTColor(),
                             Color(0, 0, 0, 0),
-                            textCharacter)
+                            tile)
 
                     // Generate glow image:
                     val filter = GaussianFilter()
@@ -39,21 +39,21 @@ class Java2DGlowTransformer : FontRegionTransformer<BufferedImage> {
                     val result = BufferedImage(image.width, image.height, BufferedImage.TYPE_INT_ARGB)
                     val gc = result.graphics as Graphics2D
 
-                    gc.color = textCharacter.getBackgroundColor().toAWTColor()
+                    gc.color = tile.getBackgroundColor().toAWTColor()
                     gc.fillRect(0, 0, result.width, result.height)
                     gc.drawImage(glowImage, 0, 0, null)
                     gc.drawImage(charImage.getBackend(), 0, 0, null)
                     gc.dispose()
 
-                    return Java2DFontTextureRegion(textCharacter.generateCacheKey(), result)
+                    return Java2DFontTextureRegion(tile.generateCacheKey(), result)
                 }
             }
         }
     }
 
-    private fun swapColor(region: FontTextureRegion<BufferedImage>, oldColor: Color, newColor: Color, textCharacter: TextCharacter)
+    private fun swapColor(region: FontTextureRegion<BufferedImage>, oldColor: Color, newColor: Color, tile: Tile)
             : FontTextureRegion<BufferedImage> {
-        val result = cloner.transform(region, textCharacter)
+        val result = cloner.transform(region, tile)
         val image = result.getBackend()
         val newRGB = newColor.rgb
         val oldRGB = oldColor.rgb
@@ -68,6 +68,6 @@ class Java2DGlowTransformer : FontRegionTransformer<BufferedImage> {
             }
         }
 
-        return Java2DFontTextureRegion(textCharacter.generateCacheKey(), image)
+        return Java2DFontTextureRegion(tile.generateCacheKey(), image)
     }
 }

@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.game
 
-import org.codetome.zircon.api.Modifier
+import org.codetome.zircon.api.modifier.Modifier
 
 /**
  * [Modifier]s for the [GameComponent].

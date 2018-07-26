@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.game.Position3D
-import org.codetome.zircon.api.game.Size3D
+import org.codetome.zircon.api.data.Position3D
+import org.codetome.zircon.api.data.Size3D
 import org.junit.Before
 import org.junit.Test
 

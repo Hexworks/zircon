@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.behavior.impl
 
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 
 data class Rectangle(
         var x: Int = 0,

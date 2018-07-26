@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.graphics;
 
-import org.codetome.zircon.api.TextCharacter;
+import org.codetome.zircon.api.data.Tile;
 import org.codetome.zircon.api.interop.TextCharacters;
 import org.junit.Test;
 
@@ -15,14 +15,14 @@ public class WordCharacterIteratorTest {
 
   @Test
   public void whenIteratorHasNoWords() throws Exception {
-    Iterator<TextCharacter> iterator = generateTextCharacters(null).iterator();
+    Iterator<Tile> iterator = generateTextCharacters(null).iterator();
     WordCharacterIterator wordCharacterIterator = new WordCharacterIterator(iterator);
     assertFalse(wordCharacterIterator.hasNext());
   }
 
   @Test
   public void whenIteratorHasOneWords() throws Exception {
-    Iterator<TextCharacter> iterator = generateTextCharacters("ThisIsATestToSeeWhatThisLooksLike").iterator();
+    Iterator<Tile> iterator = generateTextCharacters("ThisIsATestToSeeWhatThisLooksLike").iterator();
     WordCharacterIterator wordCharacterIterator = new WordCharacterIterator(iterator);
     assertTrue(wordCharacterIterator.hasNext());
     assertEquals(generateTextCharacters("ThisIsATestToSeeWhatThisLooksLike"), wordCharacterIterator.next());
@@ -31,7 +31,7 @@ public class WordCharacterIteratorTest {
 
   @Test
   public void whenIteratorHasMultipleWords() throws Exception {
-    Iterator<TextCharacter> iterator = generateTextCharacters("This is a test too.").iterator();
+    Iterator<Tile> iterator = generateTextCharacters("This is a test too.").iterator();
     WordCharacterIterator wordCharacterIterator = new WordCharacterIterator(iterator);
 
     assertTrue(wordCharacterIterator.hasNext());
@@ -64,19 +64,19 @@ public class WordCharacterIteratorTest {
     assertFalse(wordCharacterIterator.hasNext());
   }
 
-  private List<TextCharacter> generateTextCharacters(String data) {
-    List<TextCharacter> textCharacters = new ArrayList<>();
+  private List<Tile> generateTextCharacters(String data) {
+    List<Tile> tiles = new ArrayList<>();
 
     //forces an empty iterator
     if(data == null){
-      return textCharacters;
+      return tiles;
     }
 
     for (char character : data.toCharArray()) {
-      TextCharacter textCharacter = TextCharacters.newBuilder().character(character).build();
-      textCharacters.add(textCharacter);
+      Tile tile = TextCharacters.newBuilder().character(character).build();
+      tiles.add(tile);
     }
 
-    return textCharacters;
+    return tiles;
   }
 }

@@ -1,8 +1,8 @@
 package org.codetome.zircon.api.builder.graphics
 
-import org.codetome.zircon.api.Modifier
+import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.builder.Builder
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.TextCharacterString
 import org.codetome.zircon.api.graphics.TextWrap
@@ -34,7 +34,7 @@ data class TextCharacterStringBuilder(
         }
         return DefaultTextCharacterString(
                 textChars = text.map {
-                    TextCharacterBuilder.newBuilder()
+                    TileBuilder.newBuilder()
                             .foregroundColor(foregroundColor)
                             .backgroundColor(backgroundColor)
                             .character(it)

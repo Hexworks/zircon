@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.graphics
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
@@ -13,7 +13,7 @@ import org.codetome.zircon.internal.behavior.impl.DefaultFontOverride
 import org.codetome.zircon.internal.behavior.impl.Rectangle
 
 class DefaultLayer(size: Size,
-                   filler: TextCharacter,
+                   filler: Tile,
                    offset: Position,
                    initialFont: Font,
                    private val fontOverride: FontOverride = DefaultFontOverride(
@@ -74,17 +74,17 @@ class DefaultLayer(size: Size,
 
     override fun getRelativeCharacterAt(position: Position) = textImage.getCharacterAt(position)
 
-    override fun setCharacterAt(position: Position, character: TextCharacter): Boolean {
+    override fun setCharacterAt(position: Position, character: Tile): Boolean {
         return textImage.setCharacterAt(position - this.position, character)
     }
 
-    override fun setRelativeCharacterAt(position: Position, character: TextCharacter): Boolean {
+    override fun setRelativeCharacterAt(position: Position, character: Tile): Boolean {
         return textImage.setCharacterAt(position, character)
     }
 
     override fun createCopy() = DefaultLayer(
             size = textImage.getBoundableSize(),
-            filler = TextCharacter.empty(),
+            filler = Tile.empty(),
             offset = getPosition(),
             initialFont = getCurrentFont(),
             textImage = textImage)

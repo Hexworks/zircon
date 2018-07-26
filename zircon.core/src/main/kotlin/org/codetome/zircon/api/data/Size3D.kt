@@ -1,10 +1,7 @@
-package org.codetome.zircon.api.game
-
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
+package org.codetome.zircon.api.data
 
 /**
- * Represents the size of a 3D space. Extends [org.codetome.zircon.api.Size]
+ * Represents the size of a 3D space. Extends [org.codetome.zircon.api.data.Size]
  * with a `zLength` (z axis) dimension.
  * Explanation:
  *         ^ (zLength, z axis, positive direction)

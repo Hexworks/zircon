@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font.impl
 
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontLoader
@@ -28,8 +28,8 @@ class VirtualFontLoader : FontLoader {
             override fun hasDataForChar(char: Char) =
                     tryToGetActualFont().hasDataForChar(char)
 
-            override fun fetchRegionForChar(textCharacter: TextCharacter) =
-                    tryToGetActualFont().fetchRegionForChar(textCharacter)
+            override fun fetchRegionForChar(tile: Tile) =
+                    tryToGetActualFont().fetchRegionForChar(tile)
 
             override fun fetchMetadataForChar(char: Char) =
                     tryToGetActualFont().fetchMetadataForChar(char)
@@ -73,8 +73,8 @@ class VirtualFontLoader : FontLoader {
             override fun hasDataForChar(char: Char) =
                     tryToGetActualFont().hasDataForChar(char)
 
-            override fun fetchRegionForChar(textCharacter: TextCharacter) =
-                    tryToGetActualFont().fetchRegionForChar(textCharacter)
+            override fun fetchRegionForChar(tile: Tile) =
+                    tryToGetActualFont().fetchRegionForChar(tile)
 
             override fun fetchMetadataForChar(char: Char) =
                     tryToGetActualFont().fetchMetadataForChar(char)

@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.behavior.impl
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.internal.behavior.Dirtiable
 import org.codetome.zircon.internal.behavior.InternalCursorHandler
 import org.codetome.zircon.api.util.Math

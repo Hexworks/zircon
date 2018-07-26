@@ -1,9 +1,9 @@
 package org.codetome.zircon.api.builder
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
 import org.junit.Before
 import org.junit.Test
@@ -37,7 +37,7 @@ class LayerBuilderTest {
 
     companion object {
         val SIZE = Size.create(4, 5)
-        val FILLER = TextCharacter.defaultCharacter().withCharacter('x')
+        val FILLER = Tile.defaultCharacter().withCharacter('x')
         val OFFSET = Position.create(3, 4)
     }
 }

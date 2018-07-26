@@ -1,15 +1,15 @@
 package org.codetome.zircon.internal.game
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Cell
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
-import org.codetome.zircon.api.builder.TextCharacterBuilder
+import org.codetome.zircon.api.data.Cell
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.api.game.Block
-import org.codetome.zircon.api.game.Position3D
-import org.codetome.zircon.api.game.Size3D
+import org.codetome.zircon.api.data.Block
+import org.codetome.zircon.api.data.Position3D
+import org.codetome.zircon.api.data.Size3D
 import org.junit.Before
 import org.junit.Test
 
@@ -66,7 +66,7 @@ class InMemoryGameAreaTest {
     fun shouldProperlySetBlockAtPosition() {
         target.setBlockAt(EMPTY_POSITION, OTHER_BLOCK)
         assertThat(target.fetchBlockAt(EMPTY_POSITION).get())
-                .isEqualTo(Block(position = EMPTY_POSITION, layers = OTHER_BLOCK.plus(TextCharacter.empty()).plus(TextCharacter.empty()).toMutableList()))
+                .isEqualTo(Block(position = EMPTY_POSITION, layers = OTHER_BLOCK.plus(Tile.empty()).plus(Tile.empty()).toMutableList()))
 
     }
 
@@ -101,13 +101,13 @@ class InMemoryGameAreaTest {
 
     companion object {
 
-        val BOTTOM_CHAR = TextCharacter.defaultCharacter().withBackgroundColor(ANSITextColor.RED)
-        val MID_CHAR = TextCharacter.defaultCharacter().withBackgroundColor(ANSITextColor.GREEN)
-        val TOP_CHAR = TextCharacter.defaultCharacter().withBackgroundColor(ANSITextColor.BLUE)
+        val BOTTOM_CHAR = Tile.defaultCharacter().withBackgroundColor(ANSITextColor.RED)
+        val MID_CHAR = Tile.defaultCharacter().withBackgroundColor(ANSITextColor.GREEN)
+        val TOP_CHAR = Tile.defaultCharacter().withBackgroundColor(ANSITextColor.BLUE)
 
 
         val BLOCK = listOf(BOTTOM_CHAR, MID_CHAR, TOP_CHAR)
-        val OTHER_BLOCK = listOf(TextCharacterBuilder.newBuilder().backgroundColor(ANSITextColor.RED).build())
+        val OTHER_BLOCK = listOf(TileBuilder.newBuilder().backgroundColor(ANSITextColor.RED).build())
 
         val EMPTY_POSITION = Position3D.create(323, 123, 654)
 
@@ -127,12 +127,12 @@ class InMemoryGameAreaTest {
                 Position3D.create(999, 999, 999))
 
         val EXPECTED_LAYER_0 = listOf(
-                Cell(Position.create(0, 0), TextCharacter.empty()),
+                Cell(Position.create(0, 0), Tile.empty()),
                 Cell(Position.create(1, 0), BOTTOM_CHAR),
-                Cell(Position.create(2, 0), TextCharacter.empty()),
-                Cell(Position.create(0, 1), TextCharacter.empty()),
-                Cell(Position.create(1, 1), TextCharacter.empty()),
-                Cell(Position.create(2, 1), TextCharacter.empty()))
+                Cell(Position.create(2, 0), Tile.empty()),
+                Cell(Position.create(0, 1), Tile.empty()),
+                Cell(Position.create(1, 1), Tile.empty()),
+                Cell(Position.create(2, 1), Tile.empty()))
 
         val EXPECTED_LAYER_1 = EXPECTED_LAYER_0.toMutableList().also {
             it[1] = Cell(it[1].position, MID_CHAR)
@@ -141,12 +141,12 @@ class InMemoryGameAreaTest {
             it[1] = Cell(it[1].position, TOP_CHAR)
         }
         val EXPECTED_LAYER_3 = listOf(
-                Cell(Position.create(0, 0), TextCharacter.empty()),
-                Cell(Position.create(1, 0), TextCharacter.empty()),
+                Cell(Position.create(0, 0), Tile.empty()),
+                Cell(Position.create(1, 0), Tile.empty()),
                 Cell(Position.create(2, 0), BOTTOM_CHAR),
-                Cell(Position.create(0, 1), TextCharacter.empty()),
-                Cell(Position.create(1, 1), TextCharacter.empty()),
-                Cell(Position.create(2, 1), TextCharacter.empty()))
+                Cell(Position.create(0, 1), Tile.empty()),
+                Cell(Position.create(1, 1), Tile.empty()),
+                Cell(Position.create(2, 1), Tile.empty()))
         val EXPECTED_LAYER_4 = EXPECTED_LAYER_3.toMutableList().also {
             it[2] = Cell(it[2].position, MID_CHAR)
         }

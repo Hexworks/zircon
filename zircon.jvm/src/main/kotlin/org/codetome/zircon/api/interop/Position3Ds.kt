@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.interop
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.game.Position3D
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Position3D
 
 object Position3Ds {
 

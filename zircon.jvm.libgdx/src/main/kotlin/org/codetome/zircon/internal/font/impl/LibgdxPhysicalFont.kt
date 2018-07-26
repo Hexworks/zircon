@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.font.impl
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
@@ -37,17 +37,17 @@ class LibgdxPhysicalFont(private val source: java.awt.Font,
 
     override fun hasDataForChar(char: Char) = source.canDisplay(char)
 
-    override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<*> {
+    override fun fetchRegionForChar(tile: Tile): FontTextureRegion<*> {
 
-        val maybeRegion: Maybe<FontTextureRegion<TextureRegion>> = cache.retrieveIfPresent(textCharacter)
+        val maybeRegion: Maybe<FontTextureRegion<TextureRegion>> = cache.retrieveIfPresent(tile)
 
         var region: FontTextureRegion<TextureRegion> = if (maybeRegion.isNotPresent()) {
             TODO()
         } else {
             maybeRegion.get()
         }
-        textCharacter.getModifiers().forEach {
-            region = MODIFIER_TRANSFORMER_LOOKUP[it]?.transform(region, textCharacter) ?: region
+        tile.getModifiers().forEach {
+            region = MODIFIER_TRANSFORMER_LOOKUP[it]?.transform(region, tile) ?: region
         }
         return region
     }

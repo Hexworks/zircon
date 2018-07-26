@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Tile
 import org.junit.Test
 
 class DefaultShapeTest {
@@ -31,9 +31,9 @@ class DefaultShapeTest {
         assertThat(result.getCharacterAt(Position.create(0, 0)).get())
                 .isEqualTo(CHAR)
         assertThat(result.getCharacterAt(Position.create(1, 0)).get())
-                .isEqualTo(TextCharacter.empty())
+                .isEqualTo(Tile.empty())
         assertThat(result.getCharacterAt(Position.create(0, 1)).get())
-                .isEqualTo(TextCharacter.empty())
+                .isEqualTo(Tile.empty())
         assertThat(result.getCharacterAt(Position.create(1, 1)).get())
                 .isEqualTo(CHAR)
 
@@ -47,7 +47,7 @@ class DefaultShapeTest {
         val TRANSFORMED_POS_0 = Position.create(0, 0)
         val TRANSFORMED_POS_1 = Position.create(1, 1)
 
-        val CHAR = TextCharacter.defaultCharacter().withCharacter('x')
+        val CHAR = Tile.defaultCharacter().withCharacter('x')
 
         val LINE_SHAPE = DefaultShape(setOf(POS_0, POS_1))
         val OTHER_SHAPE = DefaultShape(setOf(POS_2))

@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.event
 
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.util.Identifier

@@ -1,7 +1,6 @@
 package org.codetome.zircon.api.terminal
 
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.terminal.Terminal
+import org.codetome.zircon.api.data.Size
 
 interface TerminalResizeListener {
 

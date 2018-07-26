@@ -1,9 +1,9 @@
 package org.codetome.zircon.examples
 
 import org.codetome.zircon.api.LibgdxTerminalBuilder
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.BoxType
 import org.codetome.zircon.api.builder.graphics.BoxBuilder
@@ -32,7 +32,7 @@ object PanelDrawingExample {
 
         FilledRectangleFactory
                 .buildFilledRectangle(Position.defaultPosition(), screen.getBoundableSize())
-                .toTextImage(TextCharacter.defaultCharacter()
+                .toTextImage(Tile.defaultCharacter()
                         .withBackgroundColor(BACKGROUND_COLOR))
                 .drawOnto(screen, Position.defaultPosition())
 

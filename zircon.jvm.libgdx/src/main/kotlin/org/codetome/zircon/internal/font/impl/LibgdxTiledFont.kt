@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.font.impl
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.api.modifier.SimpleModifiers.Blink
@@ -40,24 +40,24 @@ class LibgdxTiledFont(private val source: InputStream,
 
     override fun getHeight() = height
 
-    override fun fetchRegionForChar(textCharacter: TextCharacter): FontTextureRegion<TextureRegion> {
-        val meta = fetchMetaFor(textCharacter)
-        val maybeRegion = cache.retrieveIfPresent(textCharacter.generateCacheKey())
+    override fun fetchRegionForChar(tile: Tile): FontTextureRegion<TextureRegion> {
+        val meta = fetchMetaFor(tile)
+        val maybeRegion = cache.retrieveIfPresent(tile.generateCacheKey())
 
         var region = if (maybeRegion.isNotPresent()) {
             var image: FontTextureRegion<TextureRegion> = LibgdxFontTextureRegion(
-                    textCharacter.generateCacheKey(),
+                    tile.generateCacheKey(),
                     TextureRegion(texture, meta.x * width, meta.y * height, width, height))
             regionTransformers.forEach {
-                image = it.transform(image, textCharacter)
+                image = it.transform(image, tile)
             }
             cache.store(image)
             image
         } else {
             maybeRegion.get()
         }
-        textCharacter.getModifiers().forEach {
-            region = MODIFIER_TRANSFORMER_LOOKUP[it::class]?.transform(region, textCharacter) ?: region
+        tile.getModifiers().forEach {
+            region = MODIFIER_TRANSFORMER_LOOKUP[it::class]?.transform(region, tile) ?: region
         }
         return region
     }

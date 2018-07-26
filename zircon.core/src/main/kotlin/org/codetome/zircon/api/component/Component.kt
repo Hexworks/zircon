@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.component
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.behavior.Positionable
@@ -52,7 +52,7 @@ interface Component : Positionable, Identifiable, Boundable, FontOverride {
 
     /**
      * Adds a callback to this [Component] which will be called
-     * when the mouse is moved over this component (to a new [org.codetome.zircon.api.Position]).
+     * when the mouse is moved over this component (to a new [org.codetome.zircon.api.data.Position]).
      */
     fun onMouseMoved(callback: Consumer<MouseAction>)
 

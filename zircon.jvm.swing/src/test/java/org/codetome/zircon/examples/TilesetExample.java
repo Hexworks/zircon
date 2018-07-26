@@ -1,9 +1,9 @@
 package org.codetome.zircon.examples;
 
 import org.codetome.zircon.TerminalUtils;
-import org.codetome.zircon.api.Size;
-import org.codetome.zircon.api.Symbols;
-import org.codetome.zircon.api.TextCharacter;
+import org.codetome.zircon.api.data.Size;
+import org.codetome.zircon.api.graphics.Symbols;
+import org.codetome.zircon.api.data.Tile;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.graphics.Layer;
@@ -34,22 +34,22 @@ public class TilesetExample {
     private static final int TERMINAL_WIDTH = 40;
     private static final int TERMINAL_HEIGHT = 40;
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final TextCharacter GRASS_0 = TextCharacters.newBuilder()
+    private static final Tile GRASS_0 = TextCharacters.newBuilder()
             .character(',')
             .foregroundColor(TextColors.fromString("#33cc44"))
             .backgroundColor(TextColors.fromString("#114911"))
             .build();
-    private static final TextCharacter GRASS_1 = TextCharacters.newBuilder()
+    private static final Tile GRASS_1 = TextCharacters.newBuilder()
             .character('`')
             .foregroundColor(TextColors.fromString("#33bb44"))
             .backgroundColor(TextColors.fromString("#114511"))
             .build();
-    private static final TextCharacter GRASS_2 = TextCharacters.newBuilder()
+    private static final Tile GRASS_2 = TextCharacters.newBuilder()
             .character('\'')
             .foregroundColor(TextColors.fromString("#33aa44"))
             .backgroundColor(TextColors.fromString("#114011"))
             .build();
-    private static final TextCharacter[] GRASSES = new TextCharacter[]{GRASS_0, GRASS_1, GRASS_2};
+    private static final Tile[] GRASSES = new Tile[]{GRASS_0, GRASS_1, GRASS_2};
     private static final TextColor TEXT_COLOR = TextColors.fromString("#dd6644");
     private static final TextColor TEXT_BG_COLOR = TextColors.fromString("#00ff00");
 

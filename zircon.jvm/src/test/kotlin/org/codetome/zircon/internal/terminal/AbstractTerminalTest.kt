@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.terminal
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.Terminal

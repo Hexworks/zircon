@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font.transformer
 
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.interop.toAWTColor
 import org.codetome.zircon.api.font.FontTextureRegion
 import org.codetome.zircon.internal.font.FontRegionTransformer
@@ -8,10 +8,10 @@ import java.awt.image.BufferedImage
 
 class Java2DFontRegionColorizer : FontRegionTransformer<BufferedImage> {
 
-    override fun transform(region: FontTextureRegion<BufferedImage>, textCharacter: TextCharacter): FontTextureRegion<BufferedImage> {
-        val r = textCharacter.getForegroundColor().getRed().toFloat() / 255
-        val g = textCharacter.getForegroundColor().getGreen().toFloat() / 255
-        val b = textCharacter.getForegroundColor().getBlue().toFloat() / 255
+    override fun transform(region: FontTextureRegion<BufferedImage>, tile: Tile): FontTextureRegion<BufferedImage> {
+        val r = tile.getForegroundColor().getRed().toFloat() / 255
+        val g = tile.getForegroundColor().getGreen().toFloat() / 255
+        val b = tile.getForegroundColor().getBlue().toFloat() / 255
 
         val backend = region.getBackend()
         (0 until backend.width).forEach { x ->
@@ -24,7 +24,7 @@ class Java2DFontRegionColorizer : FontRegionTransformer<BufferedImage> {
                 gx = (gx * g).toInt()
                 bx = (bx * b).toInt()
                 if (ax < 50) {
-                    backend.setRGB(x, y, textCharacter.getBackgroundColor().toAWTColor().rgb)
+                    backend.setRGB(x, y, tile.getBackgroundColor().toAWTColor().rgb)
                 } else {
                     backend.setRGB(x, y, (ax shl 24) or (rx shl 16) or (gx shl 8) or (bx shl 0))
                 }

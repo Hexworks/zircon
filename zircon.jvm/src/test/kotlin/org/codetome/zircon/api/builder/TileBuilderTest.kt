@@ -1,17 +1,18 @@
 package org.codetome.zircon.api.builder
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.TextCharacter
+import org.codetome.zircon.api.builder.data.TileBuilder
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.interop.Modifiers
 import org.junit.Test
 
-class TextCharacterBuilderTest {
+class TileBuilderTest {
 
     @Test
     fun shouldBuildProperTextCharacter() {
-        val result = TextCharacterBuilder.newBuilder()
+        val result = TileBuilder.newBuilder()
                 .backgroundColor(BG_COLOR)
                 .foregroundColor(FG_COLOR)
                 .character(CHAR)
@@ -21,7 +22,7 @@ class TextCharacterBuilderTest {
                 .build()
 
         assertThat(result).isEqualTo(
-                TextCharacter.create(
+                Tile.create(
                         character = CHAR,
                         tags = TAGS,
                         styleSet = StyleSetBuilder.newBuilder()

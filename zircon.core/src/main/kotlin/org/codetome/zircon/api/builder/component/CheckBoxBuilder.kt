@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.builder.component
 
-import org.codetome.zircon.api.Position
+import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.component.CheckBox
 import org.codetome.zircon.api.component.ComponentStyleSet

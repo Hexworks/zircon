@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.component.impl
 
-import org.codetome.zircon.api.Position
-import org.codetome.zircon.api.Size
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.behavior.CursorHandler
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder

@@ -1,4 +1,4 @@
-package org.codetome.zircon.api
+package org.codetome.zircon.api.modifier
 
 import org.codetome.zircon.api.behavior.Cacheable
 
