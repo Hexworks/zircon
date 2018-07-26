@@ -1,6 +1,7 @@
-rootProject.name = 'zircon'
+rootProject.name = "zircon"
 
-include ':zircon.core'
-include ':zircon.jvm'
-include ':zircon.jvm.swing'
-include ':zircon.jvm.libgdx'
+include ":zircon.core"
+include ":zircon.jvm"
+include ":zircon.jvm.swing"
+include ":zircon.jvm.libgdx"
+include ":zircon.development"

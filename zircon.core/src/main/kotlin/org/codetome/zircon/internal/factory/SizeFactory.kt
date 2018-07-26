@@ -6,7 +6,7 @@ import org.codetome.zircon.internal.DefaultSize
 
 internal object SizeFactory {
 
-    private val cache = Cache.create<Size>()
+    private val cache: Cache<Size> = Cache.create()
 
     fun create(xLength: Int, yLength: Int): Size {
         return cache.retrieveIfPresent(Size.generateCacheKey(xLength, yLength)).orElseGet {

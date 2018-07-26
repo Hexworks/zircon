@@ -1,0 +1,17 @@
+apply plugin: 'kotlin-platform-jvm'
+
+archivesBaseName = 'zircon.development'
+
+dependencies {
+    compile libraries.kotlin_stdlib
+    compile libraries.kotlin_reflect
+
+    compile libraries.caffeine
+    compile libraries.snakeyaml
+    compile libraries.slf4j_api
+    compile libraries.slf4j_simple
+
+    testCompile libraries.junit
+    testCompile libraries.mockito
+    testCompile libraries.assertj
+}

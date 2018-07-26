@@ -93,9 +93,7 @@ object Stats {
 
     @JvmStatic
     fun printStats() {
-        println("==================== S T A T S ====================")
         println(getAllStats().joinToString("\n"))
-        println("===================================================")
     }
 
     @JvmStatic
@@ -134,11 +132,11 @@ object Stats {
 
         override fun toString(): String {
             val ms = avgTimeNs * weight / 1000 / 1000
-            return "Stat(name='$name', " +
+            return "Stats: name='$name', " +
                     "avgTimeMs=$ms, " +
-                    "fps=${1000 / ms}" +
+                    "fps=${1000 / ms}, " +
                     "measurements=$measurements, " +
-                    "weight = $weight)"
+                    "weight = $weight"
         }
     }
 }
