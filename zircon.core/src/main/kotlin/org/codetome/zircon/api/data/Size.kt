@@ -1,21 +1,18 @@
 package org.codetome.zircon.api.data
 
-import org.codetome.zircon.api.behavior.Cacheable
 import org.codetome.zircon.api.shape.RectangleFactory
 import org.codetome.zircon.api.util.Math
-import org.codetome.zircon.internal.factory.SizeFactory
+import org.codetome.zircon.internal.data.DefaultSize
 
 /**
- * Dimensions in 2D space.
+ * Represents a rectangular area in a 2D space.
  * This class is immutable and cannot change its internal state after creation.
  */
-interface Size : Comparable<Size>, Cacheable {
+interface Size : Comparable<Size> {
 
     val xLength: Int
 
     val yLength: Int
-
-    override fun generateCacheKey() = generateCacheKey(xLength, yLength)
 
     operator fun plus(other: Size) = create(xLength + other.xLength, yLength + other.yLength)
 
@@ -172,16 +169,34 @@ interface Size : Comparable<Size>, Cacheable {
 
     companion object {
 
-        fun create(xLength: Int, yLength: Int) = SizeFactory.create(xLength, yLength)
+        /**
+         * Represents a [Size] which is an unknown (can be used instead of a `null` value).
+         */
+        fun unknown() = UNKNOWN
 
-        fun unknown() = create(Int.MAX_VALUE, Int.MAX_VALUE)
+        /**
+         * The default terminal size is (80 * 24)
+         */
+        fun defaultTerminalSize() = DEFAULT_TERMINAL_SIZE
 
-        fun defaultTerminalSize() = create(80, 24)
+        /**
+         * Size of (0 * 0).
+         */
+        fun zero() = ZERO
 
-        fun zero() = create(0, 0)
+        /**
+         * Size of (1 * 1).
+         */
+        fun one() = ONE
 
-        fun one() = create(1, 1)
+        /**
+         * Creates a new [Size] using the given `xLength` (width) and `yLength` (height).
+         */
+        fun create(xLength: Int, yLength: Int): Size = DefaultSize(xLength, yLength)
 
-        internal fun generateCacheKey(xLength: Int, yLength: Int) = "Size-$xLength-$yLength"
+        private val UNKNOWN = create(Int.MAX_VALUE, Int.MAX_VALUE)
+        private val DEFAULT_TERMINAL_SIZE = create(80, 24)
+        private val ZERO = create(0, 0)
+        private val ONE = create(1, 1)
     }
 }

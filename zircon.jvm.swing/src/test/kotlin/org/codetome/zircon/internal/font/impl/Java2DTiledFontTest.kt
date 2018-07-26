@@ -13,15 +13,15 @@ class Java2DTiledFontTest {
 
     @Test
     fun shouldProperlyCacheFontWhenFetchingRegionTwice() {
-        val firstResult = target.fetchRegionForChar(Tile.defaultCharacter())
-        val secondResult = target.fetchRegionForChar(Tile.defaultCharacter())
+        val firstResult = target.fetchRegionForChar(Tile.defaultTile())
+        val secondResult = target.fetchRegionForChar(Tile.defaultTile())
 
         assertThat(firstResult).isSameAs(secondResult)
     }
 
     @Test
     fun shouldNotBeTheSameWhenRegionIsLoadedForDifferentTextChars() {
-        val firstResult = target.fetchRegionForChar(Tile.defaultCharacter())
+        val firstResult = target.fetchRegionForChar(Tile.defaultTile())
         val secondResult = target.fetchRegionForChar(Tile.empty())
 
         assertThat(firstResult).isNotSameAs(secondResult)
@@ -39,12 +39,12 @@ class Java2DTiledFontTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotBeAbleToFetchRegionWithTags() {
-        target.fetchRegionForChar(Tile.defaultCharacter().withTags("foo"))
+        target.fetchRegionForChar(Tile.defaultTile().withTags("foo"))
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotBeAbleToFetchRegionWithChar() {
-        target.fetchRegionForChar(Tile.defaultCharacter().withCharacter(1.toChar()))
+        target.fetchRegionForChar(Tile.defaultTile().withCharacter(1.toChar()))
     }
 
     @Test

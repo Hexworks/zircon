@@ -20,8 +20,6 @@ enum class ANSITextColor(private val red: Int,
     WHITE(170, 170, 170, defaultAlpha()),
     DEFAULT(0, 0, 0, defaultAlpha());
 
-    override fun generateCacheKey() = name
-
     override fun getRed() = red
 
     override fun getGreen() = green

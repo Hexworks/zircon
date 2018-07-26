@@ -32,7 +32,7 @@ object PanelDrawingExample {
 
         FilledRectangleFactory
                 .buildFilledRectangle(Position.defaultPosition(), screen.getBoundableSize())
-                .toTextImage(Tile.defaultCharacter()
+                .toTextImage(Tile.defaultTile()
                         .withBackgroundColor(BACKGROUND_COLOR))
                 .drawOnto(screen, Position.defaultPosition())
 

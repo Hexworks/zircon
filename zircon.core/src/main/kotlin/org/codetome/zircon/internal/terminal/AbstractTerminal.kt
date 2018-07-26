@@ -1,13 +1,13 @@
 package org.codetome.zircon.internal.terminal
 
-import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.behavior.Styleable
-import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.terminal.Terminal
 import org.codetome.zircon.api.terminal.TerminalResizeListener
 import org.codetome.zircon.internal.behavior.impl.DefaultStyleable
 
-abstract class AbstractTerminal(styleable: Styleable = DefaultStyleable(StyleSetBuilder.defaultStyle()))
+abstract class AbstractTerminal(styleable: Styleable = DefaultStyleable(StyleSet.defaultStyle()))
     : Styleable by styleable, Terminal {
 
     private val resizeListeners = mutableListOf<TerminalResizeListener>()

@@ -16,10 +16,10 @@ class NoOpCacheTest {
 
     @Test
     fun shouldReturnEmptyForCharIfCalledTwice() {
-        val tc = Tile.defaultCharacter()
+        val tc = Tile.defaultTile()
 
-        val result0 = target.retrieveIfPresent(tc.generateCacheKey())
-        val result1 = target.retrieveIfPresent(tc.generateCacheKey())
+        val result0 = target.retrieveIfPresent("${tc.getCharacter()}")
+        val result1 = target.retrieveIfPresent("${tc.getCharacter()}")
 
         assertThat(result0.isPresent).isFalse()
         assertThat(result1.isPresent).isFalse()
@@ -27,10 +27,10 @@ class NoOpCacheTest {
 
     @Test
     fun shouldReturnEmptyForCharIfStoredThenRetrieved() {
-        val tc = Tile.defaultCharacter()
+        val tc = Tile.defaultTile()
 
-        target.store(tc)
-        val result = target.retrieveIfPresent(tc.generateCacheKey())
+        target.store(tc.getCharacter() + "", tc)
+        val result = target.retrieveIfPresent("${tc.getCharacter()}")
 
         assertThat(result.isPresent).isFalse()
     }

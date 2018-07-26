@@ -1,9 +1,9 @@
 package org.codetome.zircon.internal.font.impl
 
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.font.FontTextureRegion
+import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.interop.toAWTColor
 import org.codetome.zircon.api.util.Cache
@@ -71,10 +71,11 @@ class Java2DPhysicalFont(private val source: java.awt.Font,
 
             g.drawString(str, x, y)
             g.dispose()
+            val key = tile.generateCacheKey()
             val region = Java2DFontTextureRegion(
-                    cacheKey = tile.generateCacheKey(),
+                    cacheKey = key,
                     backend = image)
-            cache.store(region)
+            cache.store(key, region)
             region
         } else {
             maybeRegion.get()

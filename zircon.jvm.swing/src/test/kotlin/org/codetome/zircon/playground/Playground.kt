@@ -10,7 +10,7 @@ import org.codetome.zircon.api.data.Position3D
 import org.codetome.zircon.api.data.Size3D
 import org.codetome.zircon.api.interop.Components
 import org.codetome.zircon.api.interop.Sizes
-import org.codetome.zircon.api.interop.TextCharacters
+import org.codetome.zircon.api.interop.Tiles
 import org.codetome.zircon.api.interop.TextColors
 import org.codetome.zircon.api.resource.CP437TilesetResource
 
@@ -37,12 +37,12 @@ object Playground {
                 .gameArea(gameArea)
                 .visibleSize(componentSize) // you need to set a visible size for the component (default is 1x1)
                 .build()
-        val WALL: Tile = TextCharacters.newBuilder()
+        val WALL: Tile = Tiles.newBuilder()
                 .character(Symbols.BLOCK_SOLID)
                 .modifiers(GameModifiers.BLOCK_FRONT)
                 .foregroundColor(ANSITextColor.BLUE)
                 .build()
-        val TOP: Tile = TextCharacters.newBuilder()
+        val TOP: Tile = Tiles.newBuilder()
                 .character('^')
                 .modifiers(GameModifiers.BLOCK_TOP)
                 .foregroundColor(ANSITextColor.CYAN)

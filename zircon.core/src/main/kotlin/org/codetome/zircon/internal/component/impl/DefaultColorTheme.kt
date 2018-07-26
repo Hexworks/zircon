@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal.component
+package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ColorTheme

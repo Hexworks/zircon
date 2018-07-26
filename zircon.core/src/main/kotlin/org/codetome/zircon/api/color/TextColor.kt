@@ -2,7 +2,6 @@ package org.codetome.zircon.api.color
 
 import org.codetome.zircon.api.behavior.Cacheable
 import org.codetome.zircon.internal.color.DefaultTextColor
-import org.codetome.zircon.internal.factory.TextColorFactory
 
 interface TextColor : Cacheable {
 
@@ -22,6 +21,10 @@ interface TextColor : Cacheable {
 
     fun darkenByPercent(percentage: Double): TextColor
 
+    override fun generateCacheKey(): String {
+        return "a:${getAlpha()}r:${getRed()}g:${getGreen()}b:${getBlue()}"
+    }
+
     companion object {
 
         /**
@@ -37,7 +40,7 @@ interface TextColor : Cacheable {
         /**
          * Shorthand for a [TextColor] which is fully transparent.
          */
-        fun transparent() = TextColorFactory.create(0, 0, 0, 0)
+        fun transparent() = TRANSPARENT
 
         fun defaultAlpha() = 255
 
@@ -64,8 +67,13 @@ interface TextColor : Cacheable {
             }
         }
 
-        fun create(red: Int, green: Int, blue: Int, alpha: Int = 255): TextColor = TextColorFactory.create(red, green, blue, alpha)
+        /**
+         * Creates a new [TextColor].
+         */
+        fun create(red: Int, green: Int, blue: Int, alpha: Int = 255): TextColor {
+            return DefaultTextColor(red, green, blue, alpha)
+        }
 
-        internal fun generateCacheKey(red: Int, green: Int, blue: Int, alpha: Int) = "TextColor-$red-$green-$blue-$alpha"
+        private val TRANSPARENT = TextColor.create(0, 0, 0, 0)
     }
 }

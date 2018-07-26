@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
+import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.internal.behavior.impl.DefaultStyleable
 import org.junit.Before
@@ -14,7 +14,7 @@ class DefaultStyleableTest {
 
     @Before
     fun setUp() {
-        target = DefaultStyleable(StyleSetBuilder.defaultStyle())
+        target = DefaultStyleable(StyleSet.defaultStyle())
     }
 
     @Test
@@ -81,6 +81,6 @@ class DefaultStyleableTest {
 
     @Test
     fun twoIdenticalStyleSetsShouldBeEqual() {
-        assertThat(StyleSetBuilder.defaultStyle()).isEqualTo(StyleSetBuilder.defaultStyle())
+        assertThat(StyleSet.defaultStyle()).isEqualTo(StyleSet.defaultStyle())
     }
 }

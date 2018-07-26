@@ -1,9 +1,9 @@
 package org.codetome.zircon.api.interop
 
-import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.data.TileBuilder
+import org.codetome.zircon.api.data.Tile
 
-object TextCharacters {
+object Tiles {
 
     /**
      * Creates a new [TileBuilder] for creating [Tile]s.
@@ -19,7 +19,7 @@ object TextCharacters {
      * - and no modifiers.
      */
     @JvmStatic
-    fun defaultCharacter() = Tile.defaultCharacter()
+    fun defaultTile() = Tile.defaultTile()
 
     /**
      * Shorthand for an empty character which is:

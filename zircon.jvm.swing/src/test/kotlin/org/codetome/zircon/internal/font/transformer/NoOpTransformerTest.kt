@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.font.transformer
 
-import org.codetome.zircon.api.interop.TextCharacters
+import org.codetome.zircon.api.interop.Tiles
 import org.codetome.zircon.internal.font.impl.Java2DFontTextureRegion
 import org.junit.Before
 import org.junit.Test
@@ -26,7 +26,7 @@ class NoOpTransformerTest {
     companion object {
         val WIDTH = 10
         val HEIGHT = 10
-        val CHAR = TextCharacters.newBuilder()
+        val CHAR = Tiles.newBuilder()
                 .build()
     }
 }

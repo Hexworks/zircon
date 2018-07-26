@@ -18,8 +18,8 @@ class DefaultCache<R : Cacheable>(maximumSize: Long = 5000,
         return Maybe.ofNullable(backend.getIfPresent(key))
     }
 
-    override fun store(cacheable: R): R {
-        backend.put(cacheable.generateCacheKey(), cacheable)
-        return cacheable
+    override fun store(key: String, obj: R): R {
+        backend.put(key, obj)
+        return obj
     }
 }

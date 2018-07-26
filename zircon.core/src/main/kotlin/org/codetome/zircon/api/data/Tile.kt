@@ -1,12 +1,11 @@
 package org.codetome.zircon.api.data
 
-import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.behavior.Cacheable
-import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.Border
-import org.codetome.zircon.internal.factory.TextCharacterFactory
+import org.codetome.zircon.api.modifier.Modifier
+import org.codetome.zircon.internal.data.DefaultTile
 
 /**
  * Represents a single tile with additional metadata such as colors and modifiers.
@@ -29,6 +28,8 @@ interface Tile : Cacheable {
     fun getBackgroundColor(): TextColor
 
     fun getModifiers(): Set<Modifier>
+
+    fun toStyleSet(): StyleSet
 
     fun getTags(): Set<String>
 
@@ -102,6 +103,12 @@ interface Tile : Cacheable {
      */
     fun withoutModifiers(modifiers: Set<Modifier>): Tile
 
+    override fun generateCacheKey(): String {
+        return "c:${getCharacter()}" +
+                "ss:${toStyleSet().generateCacheKey()}" +
+                "t:${getTags().sorted().joinToString(separator = "")}"
+    }
+
     companion object {
 
         /**
@@ -111,7 +118,7 @@ interface Tile : Cacheable {
          * - and default background
          * - and no modifiers.
          */
-        fun defaultCharacter() = TileBuilder.newBuilder().build()
+        fun defaultTile() = DEFAULT_CHARACTER
 
         /**
          * Shorthand for an empty character which is:
@@ -120,22 +127,28 @@ interface Tile : Cacheable {
          * - and transparent background
          * - and no modifiers.
          */
-        fun empty() = TileBuilder.newBuilder()
-                .backgroundColor(TextColor.transparent())
-                .foregroundColor(TextColor.transparent())
-                .character(' ')
-                .build()
+        fun empty() = EMPTY
 
+        /**
+         * Creates a new [Tile].
+         */
         fun create(character: Char,
                    styleSet: StyleSet,
-                   tags: Set<String> = setOf()) = TextCharacterFactory.create(character, styleSet, tags)
+                   tags: Set<String> = setOf()) = DefaultTile(
+                character = character,
+                styleSet = styleSet,
+                tags = tags)
 
-        internal fun generateCacheKey(character: Char, styleSet: StyleSet, tags: Set<String>): String =
-                StringBuilder().apply {
-                    append(character)
-                    append(styleSet.generateCacheKey())
-                    append(tags.sorted().joinToString(separator = ""))
-                }.toString()
+        private val DEFAULT_CHARACTER = DefaultTile(
+                character = ' ',
+                styleSet = StyleSet.defaultStyle(),
+                tags = setOf())
+
+        private val EMPTY = DefaultTile(
+                character = ' ',
+                styleSet = StyleSet.empty(),
+                tags = setOf())
+
     }
 
 }

@@ -54,7 +54,7 @@ public class LayersExample {
         screen.pushLayer(new LayerBuilder()
                 .offset(offset)
                 .size(size)
-                .filler(TextCharacters.newBuilder()
+                .filler(Tiles.newBuilder()
                         .backgroundColor(color)
                         .character(' ')
                         .build())
@@ -63,7 +63,7 @@ public class LayersExample {
 
     @NotNull
     private static Tile buildWhiteOnBlack(char c) {
-        return TextCharacters.newBuilder()
+        return Tiles.newBuilder()
                 .character(c)
                 .backgroundColor(TextColors.create(0, 0, 0, 255))
                 .foregroundColor(TextColors.create(255, 255, 255, 255))

@@ -1,4 +1,4 @@
-package org.codetome.zircon.api
+package org.codetome.zircon.api.data
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.builder.data.TileBuilder
@@ -8,7 +8,6 @@ import org.codetome.zircon.api.color.ANSITextColor.*
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.modifier.SimpleModifiers.*
-import org.codetome.zircon.api.data.Tile
 import org.junit.Test
 
 @Suppress("UsePropertyAccessSyntax")
@@ -25,15 +24,15 @@ class DefaultTileTest {
                 .build()
                 .generateCacheKey()
 
-        assertThat(result).isEqualTo("x170187204255GREENBoldbarfoo")
+        assertThat(result).isEqualTo("c:xss:fg:a:255r:170g:187b:204bg:a:255r:0g:170b:0mod:SimpleModifiers:Boldt:barfoo")
     }
 
     @Test
     fun defaultCharacterShouldBeEmptyStringWithBlackAndWhiteAndNoModifiers() {
-        assertThat(Tile.defaultCharacter().getCharacter()).isEqualTo(' ')
-        assertThat(Tile.defaultCharacter().getBackgroundColor()).isEqualTo(BLACK)
-        assertThat(Tile.defaultCharacter().getForegroundColor()).isEqualTo(WHITE)
-        assertThat(Tile.defaultCharacter().getModifiers()).isEmpty()
+        assertThat(Tile.defaultTile().getCharacter()).isEqualTo(' ')
+        assertThat(Tile.defaultTile().getBackgroundColor()).isEqualTo(BLACK)
+        assertThat(Tile.defaultTile().getForegroundColor()).isEqualTo(WHITE)
+        assertThat(Tile.defaultTile().getModifiers()).isEmpty()
     }
 
     @Test
@@ -51,7 +50,7 @@ class DefaultTileTest {
 
     @Test
     fun shouldNotBeEmptyWhenNotEmpty() {
-        assertThat(Tile.defaultCharacter().isNotEmpty()).isTrue()
+        assertThat(Tile.defaultTile().isNotEmpty()).isTrue()
     }
 
     @Test

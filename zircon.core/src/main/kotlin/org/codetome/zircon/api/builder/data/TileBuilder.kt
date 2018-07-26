@@ -17,7 +17,7 @@ import org.codetome.zircon.api.graphics.StyleSet
  */
 data class TileBuilder(
         private var character: Char = ' ',
-        private var styleSet: StyleSet = StyleSetBuilder.defaultStyle(),
+        private var styleSet: StyleSet = StyleSet.defaultStyle(),
         private var tags: Set<String> = setOf()) : Builder<Tile> {
 
     fun character(character: Char) = also {

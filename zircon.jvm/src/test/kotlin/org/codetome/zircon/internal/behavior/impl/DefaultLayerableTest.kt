@@ -32,7 +32,7 @@ class DefaultLayerableTest {
     fun shouldThrowExceptionWhenLayerUsesUnsupportedFontSize() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(Tile.defaultCharacter())
+                .filler(Tile.defaultTile())
                 .font(CP437TilesetResource.BISASAM_20X20.toFont())
                 .offset(Position.topLeftCorner())
                 .build()
@@ -45,7 +45,7 @@ class DefaultLayerableTest {
     fun shouldContainLayerWhenLayerIsAdded() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(Tile.defaultCharacter())
+                .filler(Tile.defaultTile())
                 .offset(Position.topLeftCorner())
                 .build()
 
@@ -60,7 +60,7 @@ class DefaultLayerableTest {
     fun shouldNotContainLayerWhenLayerIsAddedThenRemoved() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(Tile.defaultCharacter())
+                .filler(Tile.defaultTile())
                 .offset(Position.topLeftCorner())
                 .build()
 
@@ -76,7 +76,7 @@ class DefaultLayerableTest {
     fun shouldNotContainLayerWhenLayerIsAddedThenPopped() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(Tile.defaultCharacter())
+                .filler(Tile.defaultTile())
                 .offset(Position.topLeftCorner())
                 .build()
 
@@ -127,7 +127,7 @@ class DefaultLayerableTest {
                 .offset(dirty0)
                 .textImage(TextImageBuilder.newBuilder()
                         .size(Size.one())
-                        .character(Position.defaultPosition(), Tile.defaultCharacter().withCharacter('x'))
+                        .character(Position.defaultPosition(), Tile.defaultTile().withCharacter('x'))
                         .build())
                 .build())
 
@@ -135,7 +135,7 @@ class DefaultLayerableTest {
                 .offset(dirty1)
                 .textImage(TextImageBuilder.newBuilder()
                         .size(Size.one())
-                        .character(Position.defaultPosition(), Tile.defaultCharacter().withCharacter('x'))
+                        .character(Position.defaultPosition(), Tile.defaultTile().withCharacter('x'))
                         .build())
                 .build())
 

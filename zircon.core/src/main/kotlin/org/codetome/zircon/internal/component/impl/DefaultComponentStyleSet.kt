@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal.component
+package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyleSet

@@ -1,21 +1,20 @@
 package org.codetome.zircon.internal.graphics
 
+import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.data.Cell
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.graphics.TextImageBase
-import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.sam.TextCharacterTransformer
 import org.codetome.zircon.api.util.Math
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.platform.factory.ThreadSafeMapFactory
 
 class InMemoryTextImage(size: Size,
-                        styleSet: StyleSet = StyleSetBuilder.defaultStyle(),
+                        styleSet: StyleSet = StyleSet.defaultStyle(),
                         chars: Map<Position, Tile> = mapOf(),
                         private val filler: Tile = Tile.empty())
     : TextImageBase(size = size, styleSet = styleSet) {

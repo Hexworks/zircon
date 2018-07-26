@@ -34,17 +34,17 @@ public class TilesetExample {
     private static final int TERMINAL_WIDTH = 40;
     private static final int TERMINAL_HEIGHT = 40;
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final Tile GRASS_0 = TextCharacters.newBuilder()
+    private static final Tile GRASS_0 = Tiles.newBuilder()
             .character(',')
             .foregroundColor(TextColors.fromString("#33cc44"))
             .backgroundColor(TextColors.fromString("#114911"))
             .build();
-    private static final Tile GRASS_1 = TextCharacters.newBuilder()
+    private static final Tile GRASS_1 = Tiles.newBuilder()
             .character('`')
             .foregroundColor(TextColors.fromString("#33bb44"))
             .backgroundColor(TextColors.fromString("#114511"))
             .build();
-    private static final Tile GRASS_2 = TextCharacters.newBuilder()
+    private static final Tile GRASS_2 = Tiles.newBuilder()
             .character('\'')
             .foregroundColor(TextColors.fromString("#33aa44"))
             .backgroundColor(TextColors.fromString("#114011"))
@@ -70,7 +70,7 @@ public class TilesetExample {
         final String text = "Tileset Example";
         for (int i = 0; i < text.length(); i++) {
             screen.setCharacterAt(Positions.create(i + 2, 1),
-                    TextCharacters.newBuilder()
+                    Tiles.newBuilder()
                             .character(text.charAt(i))
                             .foregroundColor(TEXT_COLOR)
                             .backgroundColor(TEXT_BG_COLOR)
@@ -82,7 +82,7 @@ public class TilesetExample {
 
         final Layer overlay = new LayerBuilder()
                 .size(screen.getBoundableSize())
-                .filler(TextCharacters.empty()
+                .filler(Tiles.empty()
                         .withBackgroundColor(TextColors.create(0, 0, 0, 50)))
                 .build();
 
@@ -91,7 +91,7 @@ public class TilesetExample {
                     Positions.create(
                             random.nextInt(TERMINAL_WIDTH),
                             random.nextInt(TERMINAL_HEIGHT - 2) + 2),
-                    TextCharacters.newBuilder()
+                    Tiles.newBuilder()
                             .character(RANDOM_CHARS[random.nextInt(charCount)])
                             .foregroundColor(ANSITextColor.values()[random.nextInt(ansiCount)])
                             .backgroundColor(TextColors.transparent())

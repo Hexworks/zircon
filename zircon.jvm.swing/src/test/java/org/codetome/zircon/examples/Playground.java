@@ -10,7 +10,7 @@ import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.REXPaintResource;
 import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.internal.component.DefaultColorTheme;
+import org.codetome.zircon.internal.component.impl.DefaultColorTheme;
 
 import java.io.InputStream;
 

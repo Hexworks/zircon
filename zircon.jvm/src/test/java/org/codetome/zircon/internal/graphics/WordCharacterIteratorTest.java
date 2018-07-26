@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.graphics;
 
 import org.codetome.zircon.api.data.Tile;
-import org.codetome.zircon.api.interop.TextCharacters;
+import org.codetome.zircon.api.interop.Tiles;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class WordCharacterIteratorTest {
     }
 
     for (char character : data.toCharArray()) {
-      Tile tile = TextCharacters.newBuilder().character(character).build();
+      Tile tile = Tiles.newBuilder().character(character).build();
       tiles.add(tile);
     }
 

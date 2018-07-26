@@ -1,11 +1,10 @@
 package org.codetome.zircon.api.builder.component
 
 import org.codetome.zircon.api.builder.Builder
-import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.graphics.StyleSet
-import org.codetome.zircon.internal.component.DefaultComponentStyleSet
+import org.codetome.zircon.internal.component.impl.DefaultComponentStyleSet
 
 /**
  * Use this to build [StyleSet]s for your [org.codetome.zircon.api.component.Component]s.
@@ -17,7 +16,7 @@ data class ComponentStyleSetBuilder(
 
     init {
         ComponentState.values().forEach {
-            styles[it] = StyleSetBuilder.defaultStyle()
+            styles[it] = StyleSet.defaultStyle()
         }
     }
 
@@ -25,7 +24,7 @@ data class ComponentStyleSetBuilder(
         ComponentState.values()
                 .filterNot { it == ComponentState.DEFAULT }
                 .forEach {
-                    if (styles[it] === StyleSetBuilder.defaultStyle()) {
+                    if (styles[it] === StyleSet.defaultStyle()) {
                         styles[it] = styles[ComponentState.DEFAULT]!!
                     }
                 }

@@ -92,7 +92,7 @@ public class GameAreaScrollingWithLayers {
                 new InMemoryGameArea(
                         Size3Ds.from2DSize(virtualGameAreaSize, totalLevels),
                         5,
-                        TextCharacters.empty());
+                        Tiles.empty());
 
         final DefaultGameComponent gameComponent = Components.newGameComponentBuilder()
                 .gameArea(gameArea)
@@ -114,7 +114,7 @@ public class GameAreaScrollingWithLayers {
 
     private static void generatePyramid(int height, Position3D startPos, GameArea gameArea) {
         double percent = 1.0 / (height + 1);
-        Tile wall = TextCharacters.newBuilder()
+        Tile wall = Tiles.newBuilder()
                 .character(Symbols.BLOCK_SOLID)
                 .build();
         AtomicInteger currLevel = new AtomicInteger(startPos.getZ());

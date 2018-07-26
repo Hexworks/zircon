@@ -4,13 +4,13 @@ import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.font.FontTextureRegion
+import org.codetome.zircon.api.font.TextureRegionMetadata
 import org.codetome.zircon.api.modifier.SimpleModifiers.Blink
+import org.codetome.zircon.api.util.Cache
 import org.codetome.zircon.internal.font.FontRegionTransformer
 import org.codetome.zircon.internal.font.MetadataPickingStrategy
 import org.codetome.zircon.internal.font.transformer.NoOpTransformer
-import org.codetome.zircon.api.util.Cache
 import java.io.InputStream
 
 /**
@@ -42,7 +42,8 @@ class LibgdxTiledFont(private val source: InputStream,
 
     override fun fetchRegionForChar(tile: Tile): FontTextureRegion<TextureRegion> {
         val meta = fetchMetaFor(tile)
-        val maybeRegion = cache.retrieveIfPresent(tile.generateCacheKey())
+        val cacheKey = tile.generateCacheKey()
+        val maybeRegion = cache.retrieveIfPresent(cacheKey)
 
         var region = if (maybeRegion.isNotPresent()) {
             var image: FontTextureRegion<TextureRegion> = LibgdxFontTextureRegion(
@@ -51,7 +52,7 @@ class LibgdxTiledFont(private val source: InputStream,
             regionTransformers.forEach {
                 image = it.transform(image, tile)
             }
-            cache.store(image)
+            cache.store(cacheKey, image)
             image
         } else {
             maybeRegion.get()
