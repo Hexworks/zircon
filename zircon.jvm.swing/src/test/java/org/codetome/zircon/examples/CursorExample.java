@@ -5,7 +5,7 @@ import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.interop.DeviceConfigurations;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.interop.TextColors;
-import org.codetome.zircon.api.resource.PhysicalFontResource;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.terminal.CursorStyle;
 import org.codetome.zircon.api.terminal.Terminal;
 
@@ -19,7 +19,7 @@ public class CursorExample {
         // we create a new terminal using TerminalBuilder
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .initialTerminalSize(SIZE)
-                .font(PhysicalFontResource.SOURCE_CODE_PRO.toFont())
+                .font(CP437TilesetResource.TAFFER_20X20.toFont())
                 // we only override the device config
                 .deviceConfiguration(DeviceConfigurations.newBuilder()
                         .cursorColor(TextColors.fromString("#ff8844"))

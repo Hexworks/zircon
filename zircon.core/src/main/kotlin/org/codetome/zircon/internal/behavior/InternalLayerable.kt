@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.behavior
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.Layerable
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.Layer
 
 /**
@@ -18,7 +18,7 @@ interface InternalLayerable : Layerable, Dirtiable, FontOverrideSupport {
      * A Z intersection is a list of characters present at the same absolute
      * position in a 3d space of [Layer]s ordered from bottom to top.
      */
-    fun fetchOverlayZIntersection(absolutePosition: Position) : List<Pair<Font, Tile>>
+    fun fetchOverlayZIntersection(absolutePosition: Position) : List<Pair<Tileset, Tile>>
 
     // TODO: add dirty checking when adding / removing / popping layers
 }

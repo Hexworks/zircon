@@ -7,21 +7,21 @@ import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.Label
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.util.Maybe
 
 class DefaultLabel(private val text: String,
                    initialSize: Size,
-                   initialFont: Font,
+                   initialTileset: Tileset,
                    position: Position,
                    componentStyleSet: ComponentStyleSet) : Label, DefaultComponent(
         initialSize = initialSize,
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = listOf(),
-        initialFont = initialFont) {
+        initialTileset = initialTileset) {
 
 
     init {

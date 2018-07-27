@@ -12,7 +12,7 @@ import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.tileset.impl.FontSettings
 import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 import org.junit.Before
 import org.junit.Test
@@ -30,7 +30,7 @@ class DefaultRadioButtonTest {
                 width = WIDTH,
                 position = POSITION,
                 componentStyleSet = COMPONENT_STYLES,
-                initialFont = FontSettings.NO_FONT)
+                initialTileset = FontSettings.NO_FONT)
     }
 
     @Test

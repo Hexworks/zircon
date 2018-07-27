@@ -1,32 +1,32 @@
 package org.codetome.zircon.api.behavior
 
-import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.internal.tileset.impl.FontSettings
 
 /**
- * Interface which adds functionality for overriding [Font]s used
+ * Interface which adds functionality for overriding [Tileset]s used
  * in its implementors (components, layers, etc).
  */
 interface FontOverride {
 
     /**
-     * Tells whether there is currently an override [Font] present or not.
+     * Tells whether there is currently an override [Tileset] present or not.
      */
     fun hasOverrideFont(): Boolean = getCurrentFont() !== FontSettings.NO_FONT
 
     /**
-     * Returns the currently used [Font].
+     * Returns the currently used [Tileset].
      */
-    fun getCurrentFont(): Font
+    fun getCurrentFont(): Tileset
 
     /**
-     * Sets the [Font] to use.
-     * @return true if successful, false if not (if the font was set from another thread for example).
+     * Sets the [Tileset] to use.
+     * @return true if successful, false if not (if the tileset was set from another thread for example).
      */
-    fun useFont(font: Font): Boolean
+    fun useFont(tileset: Tileset): Boolean
 
     /**
-     * Sets the override [Font] to its default value (which is `NO_FONT`).
+     * Sets the override [Tileset] to its default value (which is `NO_FONT`).
      */
     fun resetFont()
 }

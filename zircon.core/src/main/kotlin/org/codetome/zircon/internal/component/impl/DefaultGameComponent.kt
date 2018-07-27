@@ -6,7 +6,7 @@ import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.data.*
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
@@ -25,7 +25,7 @@ import org.codetome.zircon.internal.event.EventBus
 class DefaultGameComponent(private val gameArea: GameArea,
                            private val projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
                            visibleSize: Size3D,
-                           initialFont: Font,
+                           initialTileset: Tileset,
                            position: Position,
                            componentStyleSet: ComponentStyleSet,
                            boundable: DefaultBoundable = DefaultBoundable(
@@ -40,7 +40,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = listOf(),
-        initialFont = initialFont,
+        initialTileset = initialTileset,
         boundable = boundable) {
 
     private val visibleLevelCount = visibleSize.zLength

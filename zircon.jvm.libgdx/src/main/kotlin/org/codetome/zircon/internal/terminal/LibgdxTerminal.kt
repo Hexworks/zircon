@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.api.font.FontTextureRegion
+import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.internal.terminal.application.ApplicationTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
@@ -17,7 +17,7 @@ import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
  * Concrete implementation of [ApplicationTerminal] that adapts it to libGDX.
  */
 class LibgdxTerminal(
-        initialFont: Font,
+        initialTileset: Tileset,
         initialSize: Size,
         private val deviceConfiguration: DeviceConfiguration)
 
@@ -25,7 +25,7 @@ class LibgdxTerminal(
         deviceConfiguration = deviceConfiguration,
         terminal = VirtualTerminal(
                 initialSize = initialSize,
-                initialFont = initialFont),
+                initialTileset = initialTileset),
         checkDirty = false) {
 
     lateinit var batch: SpriteBatch
@@ -67,12 +67,12 @@ class LibgdxTerminal(
         TODO()
     }
 
-    override fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion<*>, x: Int, y: Int) {
+    override fun drawFontTextureRegion(tileTexture: TileTexture<*>, x: Int, y: Int) {
         val (_, rows) = getBoundableSize()
         val font = getCurrentFont()
         val (_, height) = font.getSize()
         val fixedY = (height * rows) - y
-        TextureRegionDrawable(fontTextureRegion.getBackend() as TextureRegion).draw(batch,
+        TextureRegionDrawable(tileTexture.getBackend() as TextureRegion).draw(batch,
                 x.toFloat(),
                 fixedY.toFloat(),
                 font.getWidth().toFloat(),

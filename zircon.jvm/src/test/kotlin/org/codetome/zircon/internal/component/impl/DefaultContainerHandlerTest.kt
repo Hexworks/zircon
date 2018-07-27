@@ -17,7 +17,7 @@ import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrate
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.tileset.impl.FontSettings
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -33,7 +33,7 @@ class DefaultContainerHandlerTest {
                 position = Position.defaultPosition(),
                 componentStyleSet = STYLES,
                 wrappers = WRAPPERS,
-                initialFont = FontSettings.NO_FONT))
+                initialTileset = FontSettings.NO_FONT))
     }
 
     @Test

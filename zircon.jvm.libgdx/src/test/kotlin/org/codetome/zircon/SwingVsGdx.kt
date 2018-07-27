@@ -12,11 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.data.TileBuilder
-import org.codetome.zircon.api.font.TextureRegionMetadata
-import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.api.font.FontTextureRegion
+import org.codetome.zircon.api.tileset.TileTextureMetadata
+import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.resource.CP437TilesetResource
-import org.codetome.zircon.internal.font.impl.LibgdxFontTextureRegion
+import org.codetome.zircon.internal.tileset.impl.LibgdxTileTexture
 import org.codetome.zircon.api.util.Identifier
 import org.codetome.zircon.internal.util.CP437Utils
 
@@ -30,10 +30,10 @@ object Config {
 
 // GDX
 
-class GdxFont(private val source: Texture,
-              private val width: Int,
-              private val height: Int,
-              private val id: Identifier = Identifier.randomIdentifier()) : Font {
+class GdxTileset(private val source: Texture,
+                 private val width: Int,
+                 private val height: Int,
+                 private val id: Identifier = Identifier.randomIdentifier()) : Tileset {
 
     override fun getWidth() = width
 
@@ -43,14 +43,14 @@ class GdxFont(private val source: Texture,
         return true
     }
 
-    override fun fetchRegionForChar(tile: Tile): FontTextureRegion<TextureRegion> {
+    override fun fetchRegionForChar(tile: Tile): TileTexture<TextureRegion> {
         val cp437Idx = CP437Utils.fetchCP437IndexForChar(tile.getCharacter())
         val x = cp437Idx.rem(16) * width
         val y = cp437Idx.div(16) * height
-        return LibgdxFontTextureRegion(tile.generateCacheKey(),TextureRegion(source, x, y, width, height))
+        return LibgdxTileTexture(tile.generateCacheKey(),TextureRegion(source, x, y, width, height))
     }
 
-    override fun fetchMetadataForChar(char: Char): List<TextureRegionMetadata> {
+    override fun fetchMetadataForChar(char: Char): List<TileTextureMetadata> {
         TODO("not implemented")
     }
 
@@ -82,7 +82,7 @@ class GdxExample : ApplicationAdapter() {
         batch.begin()
         val width = Config.TILESET.width.toFloat()
         val height = Config.TILESET.height.toFloat()
-        val font = GdxFont(
+        val font = GdxTileset(
                 source = Texture(Config.TILESET.path.substring(1)),
                 width = Config.TILESET.width,
                 height = Config.TILESET.height)

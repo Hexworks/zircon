@@ -6,7 +6,7 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
-import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.tileset.impl.FontSettings
 import org.junit.Before
 import org.junit.Test
 
@@ -20,7 +20,7 @@ class DefaultLayerTest {
                 filler = Tile.defaultTile(),
                 size = SIZE,
                 offset = OFFSET,
-                initialFont = FontSettings.NO_FONT)
+                initialTileset = FontSettings.NO_FONT)
     }
 
     @Test

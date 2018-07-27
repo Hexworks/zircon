@@ -7,7 +7,7 @@ import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
@@ -17,8 +17,8 @@ import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.builder.component.CheckBoxBuilder
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.TestFontLoader
+import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
+import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -26,15 +26,15 @@ import java.util.concurrent.atomic.AtomicBoolean
 class DefaultCheckBoxTest {
 
     lateinit var target: DefaultCheckBox
-    lateinit var font: Font
+    lateinit var tileset: Tileset
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(TestFontLoader())
-        font = FONT.toFont()
+        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
+        tileset = FONT.toFont()
         target = CheckBoxBuilder.newBuilder()
                 .componentStyles(COMPONENT_STYLES)
-                .font(font)
+                .font(tileset)
                 .position(POSITION)
                 .text(TEXT)
                 .build() as DefaultCheckBox
@@ -56,7 +56,7 @@ class DefaultCheckBoxTest {
     @Test
     fun shouldUseProperFont() {
         Assertions.assertThat(target.getCurrentFont().getId())
-                .isEqualTo(font.getId())
+                .isEqualTo(tileset.getId())
     }
 
     @Test

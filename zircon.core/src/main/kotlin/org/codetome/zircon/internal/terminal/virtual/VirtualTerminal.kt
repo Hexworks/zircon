@@ -9,7 +9,7 @@ import org.codetome.zircon.api.data.Cell
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
@@ -28,14 +28,14 @@ import org.codetome.zircon.internal.terminal.AbstractTerminal
 import org.codetome.zircon.internal.terminal.InternalTerminal
 
 class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
-                      initialFont: Font,
+                      initialTileset: Tileset,
                       private val fontOverride: FontOverride = DefaultFontOverride(
-                              initialFont = initialFont),
+                              initialTileset = initialTileset),
                       private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                               cursorSpace = initialSize),
                       private val layerable: InternalLayerable = DefaultLayerable(
                               size = initialSize,
-                              supportedFontSize = initialFont.getSize()),
+                              supportedFontSize = initialTileset.getSize()),
                       private val shutdownHook: ShutdownHook = DefaultShutdownHook())
     : AbstractTerminal(), InternalTerminal,
         InternalCursorHandler by cursorHandler,

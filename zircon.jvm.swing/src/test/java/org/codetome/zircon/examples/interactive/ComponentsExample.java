@@ -6,7 +6,7 @@ import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.graphics.Symbols;
 import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection;
-import org.codetome.zircon.api.font.Font;
+import org.codetome.zircon.api.tileset.Tileset;
 import org.codetome.zircon.api.graphics.BoxType;
 import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.interop.*;
@@ -18,7 +18,7 @@ import org.codetome.zircon.api.screen.Screen;
 import org.codetome.zircon.api.terminal.CursorStyle;
 import org.codetome.zircon.api.terminal.Terminal;
 import org.codetome.zircon.api.builder.component.PanelBuilder;
-import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy;
+import org.codetome.zircon.internal.tileset.impl.PickRandomMetaStrategy;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,7 +28,7 @@ public class ComponentsExample {
 
     private static final Size PANEL_SIZE = Sizes.create(22, 6);
     private static final Size TERMINAL_SIZE = Sizes.create(52, 28);
-    private static final Font FONT = CP437TilesetResource.ROGUE_YUN_16X16.toFont();
+    private static final Tileset TILESET = CP437TilesetResource.ROGUE_YUN_16X16.toFont();
     private static final ColorTheme PANELS_THEME = ColorThemeResource.TECH_LIGHT.getTheme();
     private static final ColorTheme INPUTS_THEME = ColorThemeResource.SOLARIZED_DARK_GREEN.getTheme();
     private static final ColorTheme ADD_REMOVE_THEME = ColorThemeResource.GHOST_OF_A_CHANCE.getTheme();
@@ -40,7 +40,7 @@ public class ComponentsExample {
         // for this example we only need a default terminal (no extra config)
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
                 .initialTerminalSize(TERMINAL_SIZE)
-                .font(FONT)
+                .font(TILESET)
                 .deviceConfiguration(DeviceConfigurations.newBuilder()
                         .cursorBlinking(true)
                         .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
@@ -64,7 +64,7 @@ public class ComponentsExample {
         addScreenTitle(inputsScreen, "Input controls");
         addScreenTitle(addAndRemoveScreen, "Add and remove panels");
         addScreenTitle(colorThemesScreen, "Color themes");
-        addScreenTitle(multiFontScreen, "Multi-font");
+        addScreenTitle(multiFontScreen, "Multi-tileset");
 
 
         for (int i = 0; i < screens.size(); i++) {
@@ -375,7 +375,7 @@ public class ComponentsExample {
         colorThemesScreen.applyColorTheme(currentTheme.get().getTheme());
 
         // ==============
-        // multi font screen
+        // multi tileset screen
         // ==============
 
 

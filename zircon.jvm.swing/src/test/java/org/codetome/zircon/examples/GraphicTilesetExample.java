@@ -7,7 +7,7 @@ import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.interop.Tiles;
 import org.codetome.zircon.api.resource.GraphicTilesetResource;
 import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy;
+import org.codetome.zircon.internal.tileset.impl.PickRandomMetaStrategy;
 
 import java.util.Random;
 

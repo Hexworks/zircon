@@ -6,7 +6,7 @@ import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.internal.behavior.impl.DefaultFontOverride
@@ -15,9 +15,9 @@ import org.codetome.zircon.internal.behavior.impl.Rectangle
 class DefaultLayer(size: Size,
                    filler: Tile,
                    offset: Position,
-                   initialFont: Font,
+                   initialTileset: Tileset,
                    private val fontOverride: FontOverride = DefaultFontOverride(
-                           initialFont = initialFont),
+                           initialTileset = initialTileset),
                    private val textImage: TextImage = TextImageBuilder.newBuilder()
                            .size(size)
                            .filler(filler)
@@ -86,7 +86,7 @@ class DefaultLayer(size: Size,
             size = textImage.getBoundableSize(),
             filler = Tile.empty(),
             offset = getPosition(),
-            initialFont = getCurrentFont(),
+            initialTileset = getCurrentFont(),
             textImage = textImage)
 
     private fun refreshRect(): Rectangle {

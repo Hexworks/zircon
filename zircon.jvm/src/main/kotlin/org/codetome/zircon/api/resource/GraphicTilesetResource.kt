@@ -1,9 +1,9 @@
 package org.codetome.zircon.api.resource
 
-import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.internal.font.DefaultTextureRegionMetadata
-import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
-import org.codetome.zircon.internal.font.MetadataPickingStrategy
+import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.internal.tileset.DefaultTileTextureMetadata
+import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
+import org.codetome.zircon.internal.tileset.MetadataPickingStrategy
 import org.codetome.zircon.internal.util.rex.unZipIt
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
@@ -21,7 +21,7 @@ enum class GraphicTilesetResource(private val tilesetName: String,
     NETHACK_16X16("nethack", 16);
 
     /**
-     * Loads this built-in tileset as a tiled [Font].
+     * Loads this built-in tileset as a tiled [Tileset].
      */
     @JvmOverloads
     fun toFont(metadataPickingStrategy: MetadataPickingStrategy,
@@ -35,7 +35,7 @@ enum class GraphicTilesetResource(private val tilesetName: String,
     companion object {
 
         /**
-         * Loads a tileset from the given `sourceZip` as a tiled [Font].
+         * Loads a tileset from the given `sourceZip` as a tiled [Tileset].
          * *Note that* it is your responsibility to supply the proper parameters for
          * this method!
          */
@@ -43,7 +43,7 @@ enum class GraphicTilesetResource(private val tilesetName: String,
         @JvmOverloads
         fun loadGraphicTileset(path: String,
                                metadataPickingStrategy: MetadataPickingStrategy,
-                               cacheFonts: Boolean = true): Font {
+                               cacheFonts: Boolean = true): Tileset {
             val files = unZipIt(File(path).inputStream(), createTempDir())
             val tileInfoSource = files.first { it.name == "tileinfo.yml" }.bufferedReader().use {
                 it.readText()
@@ -62,7 +62,7 @@ enum class GraphicTilesetResource(private val tilesetName: String,
                 }
                 tileData.x = i.rem(file.tilesPerRow)
                 tileData.y = i.div(file.tilesPerRow)
-                DefaultTextureRegionMetadata(
+                DefaultTileTextureMetadata(
                         char = tileData.char,
                         tags = tileData.tags,
                         x = tileData.x,
@@ -71,12 +71,12 @@ enum class GraphicTilesetResource(private val tilesetName: String,
 
             // TODO: figure out something for multi-file tilesets
 
-            return FontLoaderRegistry.getCurrentFontLoader().fetchTiledFont(
+            return TilesetLoaderRegistry.getCurrentFontLoader().fetchTiledFont(
                     width = tileInfo.size,
                     height = tileInfo.size,
                     path = files.first { it.name == file.name }.absolutePath,
                     cacheFonts = cacheFonts,
-                    metadata = metadata,
+                    metadataTile = metadata,
                     metadataPickingStrategy = metadataPickingStrategy)
         }
     }

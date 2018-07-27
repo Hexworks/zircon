@@ -3,7 +3,7 @@ package org.codetome.zircon.api.interop
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
-import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.tileset.impl.FontSettings
 
 object Layers {
 

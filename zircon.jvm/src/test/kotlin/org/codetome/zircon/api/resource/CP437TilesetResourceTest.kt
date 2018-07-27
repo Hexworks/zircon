@@ -2,21 +2,21 @@ package org.codetome.zircon.api.resource
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.graphics.Symbols
-import org.codetome.zircon.api.font.TextureRegionMetadata
-import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.TestFontLoader
+import org.codetome.zircon.api.tileset.TileTextureMetadata
+import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
+import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
 import org.codetome.zircon.internal.util.CP437Utils
 import org.junit.Before
 import org.junit.Test
 
 class CP437TilesetResourceTest {
 
-    lateinit var target: Font
+    lateinit var target: Tileset
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(TestFontLoader())
+        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
         target = CP437TilesetResource.WANDERLUST_16X16.toFont()
     }
 
@@ -41,7 +41,7 @@ class CP437TilesetResourceTest {
     fun shouldProperlyLoadMetadataForChar() {
         val result = target.fetchMetadataForChar('a')
 
-        assertThat(result).isEqualTo(listOf(TextureRegionMetadata.create(
+        assertThat(result).isEqualTo(listOf(TileTextureMetadata.create(
                 char = 'a',
                 x = 1,
                 y = 6)))

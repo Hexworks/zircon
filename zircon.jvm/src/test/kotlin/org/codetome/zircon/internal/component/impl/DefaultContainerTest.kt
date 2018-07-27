@@ -11,15 +11,15 @@ import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.builder.screen.ScreenBuilder
 import org.codetome.zircon.api.builder.terminal.VirtualTerminalBuilder
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.TestFontLoader
+import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
+import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -27,24 +27,24 @@ import java.util.concurrent.atomic.AtomicBoolean
 class DefaultContainerTest {
 
     lateinit var target: DefaultContainer
-    lateinit var goodFont: Font
-    lateinit var badFont: Font
+    lateinit var goodTileset: Tileset
+    lateinit var badTileset: Tileset
 
     @Before
     fun setUp() {
-        goodFont = GOOD_FONT.toFont()
-        badFont = BAD_FONT.toFont()
+        goodTileset = GOOD_FONT.toFont()
+        badTileset = BAD_FONT.toFont()
         target = DefaultContainer(
                 initialSize = SIZE,
                 position = POSITION,
                 componentStyleSet = STYLES,
                 wrappers = WRAPPERS,
-                initialFont = goodFont)
+                initialTileset = goodTileset)
     }
 
     @Test
     fun shouldProperlySetPositionsWhenAContainerWithComponentsIsAddedToTheComponentTree() {
-        FontLoaderRegistry.setFontLoader(TestFontLoader())
+        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
         val terminal = VirtualTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.create(40, 25))
                 .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
@@ -166,7 +166,7 @@ class DefaultContainerTest {
     fun shouldThrowExceptionIfComponentWithUnsupportedFontSizeIsAdded() {
         target.addComponent(LabelBuilder.newBuilder()
                 .text("foo")
-                .font(badFont)
+                .font(badTileset)
                 .build())
     }
 
@@ -188,7 +188,7 @@ class DefaultContainerTest {
     fun shouldSetCurrentFontToAddedComponentWithNoFont() {
         val comp = LabelBuilder.newBuilder().text("foo").build()
         target.addComponent(comp)
-        assertThat(comp.getCurrentFont().getId()).isEqualTo(goodFont.getId())
+        assertThat(comp.getCurrentFont().getId()).isEqualTo(goodTileset.getId())
     }
 
     @Test

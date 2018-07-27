@@ -159,7 +159,7 @@ Running the above code will result in something like this:
 > 
 > If interested check out the code examples [here][examples].
 
-You might have noticed that the default font is not very nice looking, so let's see what else the [TerminalBuilder] can do for us:
+You might have noticed that the default tileset is not very nice looking, so let's see what else the [TerminalBuilder] can do for us:
 
 ```java
 import org.codetome.zircon.api.data.Size;
@@ -185,7 +185,7 @@ public class Playground {
                         .blinkLengthInMilliSeconds(500)
                         .clipboardAvailable(true)
                         .build())
-                .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
+                .tileset(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .title(TEXT)
                 .build();
 
@@ -232,7 +232,7 @@ public class Playground {
 
         final Terminal terminal = SwingTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.create(20, 8))
-                .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
+                .tileset(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .build();
         final Screen screen = ScreenBuilder.createScreenFor(terminal);
 
@@ -313,7 +313,7 @@ public class Playground {
 
         final Terminal terminal = SwingTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.create(34, 18))
-                .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
+                .tileset(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .build();
         final Screen screen = ScreenBuilder.createScreenFor(terminal);
 
@@ -453,7 +453,7 @@ Zircon provides multiple layers of abstractions and it depends on your needs whi
 ### Terminal
 At the lowest level Zircon provides the [Terminal] interface. This provides you with a surface on which 
 you can draw [TextCharacter]s. A [TextCharacter] is basically a character (like an `x`) with additional
-metadata like `foregroundColor` and `backgroundColor`. This surface sits on top of a GUI layer and
+metadataTile like `foregroundColor` and `backgroundColor`. This surface sits on top of a GUI layer and
 completely abstracts away how that layer works. For example the default implementation of the [Terminal] 
 interface uses Swing under the hood. The main advantage of using [Terminal]s is that by implementing all
 its methods you can swap Swing with something else (like SWT) and use **all** higher

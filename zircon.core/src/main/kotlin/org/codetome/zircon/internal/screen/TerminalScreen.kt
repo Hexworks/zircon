@@ -23,12 +23,12 @@ import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 class TerminalScreen(private val terminal: InternalTerminal,
                      private val backend: VirtualTerminal = VirtualTerminal(
                              initialSize = terminal.getBoundableSize(),
-                             initialFont = terminal.getCurrentFont()),
+                             initialTileset = terminal.getCurrentFont()),
                      private val containerHandler: InternalContainerHandler = DefaultContainerHandler(DefaultContainer(
                              initialSize = terminal.getBoundableSize(),
                              position = Position.defaultPosition(),
                              componentStyleSet = ComponentStyleSet.defaultStyleSet(),
-                             initialFont = terminal.getCurrentFont())))
+                             initialTileset = terminal.getCurrentFont())))
     : InternalScreen,
         InternalTerminal by backend,
         InternalContainerHandler by containerHandler {

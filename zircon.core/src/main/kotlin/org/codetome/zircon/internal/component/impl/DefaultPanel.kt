@@ -7,20 +7,20 @@ import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.Panel
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.internal.component.WrappingStrategy
 
 class DefaultPanel(private val title: String,
                    initialSize: Size,
                    position: Position,
-                   initialFont: Font,
+                   initialTileset: Tileset,
                    componentStyleSet: ComponentStyleSet,
                    wrappers: Iterable<WrappingStrategy> = listOf())
     : Panel, DefaultContainer(initialSize = initialSize,
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = wrappers,
-        initialFont = initialFont) {
+        initialTileset = initialTileset) {
 
     override fun getTitle() = title
 

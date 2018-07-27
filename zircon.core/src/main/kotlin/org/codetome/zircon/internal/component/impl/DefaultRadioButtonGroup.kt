@@ -9,7 +9,7 @@ import org.codetome.zircon.api.component.RadioButton
 import org.codetome.zircon.api.component.RadioButtonGroup
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.util.Consumer
@@ -24,7 +24,7 @@ import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 
 class DefaultRadioButtonGroup constructor(wrappers: ThreadSafeQueue<WrappingStrategy>,
                                           private val size: Size,
-                                          initialFont: Font,
+                                          initialTileset: Tileset,
                                           position: Position,
                                           componentStyleSet: ComponentStyleSet,
                                           scrollable: Scrollable = DefaultScrollable(size, size))
@@ -32,7 +32,7 @@ class DefaultRadioButtonGroup constructor(wrappers: ThreadSafeQueue<WrappingStra
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = wrappers,
-        initialFont = initialFont) {
+        initialTileset = initialTileset) {
 
     private val items = LinkedHashMap<String, DefaultRadioButton>()
     private val selectionListeners = mutableListOf<Consumer<Selection>>()
@@ -57,7 +57,7 @@ class DefaultRadioButtonGroup constructor(wrappers: ThreadSafeQueue<WrappingStra
                 width = size.xLength,
                 position = Position.create(0, items.size),
                 componentStyleSet = getComponentStyles(),
-                initialFont = getCurrentFont()).also { button ->
+                initialTileset = getCurrentFont()).also { button ->
             items[key] = button
             addComponent(button)
             EventBus.listenTo<Event.MouseReleased>(button.getId()) {

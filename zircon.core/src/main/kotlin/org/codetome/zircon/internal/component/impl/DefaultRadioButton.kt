@@ -7,7 +7,7 @@ import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.RadioButton
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.util.Maybe
@@ -20,14 +20,14 @@ import org.codetome.zircon.internal.util.ThreadSafeQueue
 class DefaultRadioButton(private val text: String,
                          wrappers: ThreadSafeQueue<WrappingStrategy>,
                          width: Int,
-                         initialFont: Font,
+                         initialTileset: Tileset,
                          position: Position,
                          componentStyleSet: ComponentStyleSet)
     : RadioButton, DefaultComponent(initialSize = Size.create(width, 1),
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = wrappers,
-        initialFont = initialFont) {
+        initialTileset = initialTileset) {
 
     private val maxTextLength = width - BUTTON_WIDTH - 1
     private val clearedText = if (text.length > maxTextLength) {
