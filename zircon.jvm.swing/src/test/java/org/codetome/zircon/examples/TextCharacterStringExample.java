@@ -4,7 +4,7 @@ import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.graphics.TextCharacterString;
 import org.codetome.zircon.api.interop.*;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 
 import static org.codetome.zircon.api.color.ANSITextColor.BLACK;
 import static org.codetome.zircon.api.resource.CP437TilesetResource.TAFFER_20X20;
@@ -16,11 +16,11 @@ public class TextCharacterStringExample {
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
 
     public static void main(String[] args) {
-        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
+        final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
                 .font(TAFFER_20X20.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
-        terminal.setCursorVisibility(false);
+        tileGrid.setCursorVisibility(false);
 
         TextCharacterString tcs = TextCharacterStrings.newBuilder()
                 .foregroundColor(TextColors.fromString("#eeffee"))
@@ -29,15 +29,15 @@ public class TextCharacterStringExample {
                 .text("This is some text which is too long to fit on one line...")
                 .build();
 
-        terminal.draw(tcs, Positions.defaultPosition());
+        tileGrid.draw(tcs, Positions.defaultPosition());
 
-        terminal.flush();
+        tileGrid.flush();
     }
 
-    private static void putEmptySpace(Terminal terminal) {
-        terminal.resetColorsAndModifiers();
-        terminal.setForegroundColor(BLACK);
-        terminal.putCharacter(' ');
+    private static void putEmptySpace(TileGrid tileGrid) {
+        tileGrid.resetColorsAndModifiers();
+        tileGrid.setForegroundColor(BLACK);
+        tileGrid.putCharacter(' ');
     }
 
 }

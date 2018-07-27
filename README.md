@@ -3,7 +3,7 @@
 <img src="https://cdn.discordapp.com/attachments/363771631727804416/376372957041393677/Screen_Shot_2017-11-04_at_15.11.08.png" />
 
 
-*Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna). Check it out if you are looking for a terminal emulator instead. 
+*Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna). Check it out if you are looking for a tileGrid emulator instead. 
 
 ---
 
@@ -21,7 +21,7 @@ Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki) | or [Creat
 
 - [Getting Started](https://github.com/Hexworks/zircon#getting-started)
   - [Some rules of thumb](https://github.com/Hexworks/zircon#some-rules-of-thumb)
-  - [Creating a Terminal](https://github.com/Hexworks/zircon#creating-a-terminal)
+  - [Creating a Terminal](https://github.com/Hexworks/zircon#creating-a-tileGrid)
   - [Working with Screens](https://github.com/Hexworks/zircon#working-with-screens)
   - [Components](https://github.com/Hexworks/zircon#components)
   - [Additional features](https://github.com/Hexworks/zircon#additional-features)
@@ -34,7 +34,7 @@ Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki) | or [Creat
     - [Animations (BETA)](https://github.com/Hexworks/zircon#animations-beta)
     - [The API](https://github.com/Hexworks/zircon#the-api)
 - [A little Crash Course](https://github.com/Hexworks/zircon#a-little-crash-course)
-  - [Terminal](https://github.com/Hexworks/zircon#terminal)
+  - [Terminal](https://github.com/Hexworks/zircon#tileGrid)
   - [Colors and StyleSets](https://github.com/Hexworks/zircon#colors-and-stylesets)
   - [Modifiers](https://github.com/Hexworks/zircon#modifiers)
   - [TextImages](https://github.com/Hexworks/zircon#textimages)
@@ -94,17 +94,17 @@ This is the same for [Terminal]s as well so let's create one using a [TerminalBu
 ```java
 import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.SwingTerminalBuilder;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 
 public class Playground {
 
     public static void main(String[] args) {
 
-        final Terminal terminal = SwingTerminalBuilder.newBuilder()
+        final Terminal tileGrid = SwingTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.create(32, 16))
                 .build();
 
-        terminal.flush();
+        tileGrid.flush();
     }
 
 }
@@ -121,30 +121,30 @@ import org.codetome.zircon.api.Modifiers;
 import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.SwingTerminalBuilder;
 import org.codetome.zircon.api.color.ANSITextColor;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 
 public class Playground {
 
     public static void main(String[] args) {
 
-        final Terminal terminal = SwingTerminalBuilder.newBuilder()
+        final Terminal tileGrid = SwingTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.create(20, 8))
                 .build();
 
-        terminal.enableModifiers(Modifiers.verticalFlip());
-        terminal.setForegroundColor(ANSITextColor.CYAN);
-        terminal.putCharacter('a');
-        terminal.resetColorsAndModifiers();
+        tileGrid.enableModifiers(Modifiers.verticalFlip());
+        tileGrid.setForegroundColor(ANSITextColor.CYAN);
+        tileGrid.putCharacter('a');
+        tileGrid.resetColorsAndModifiers();
 
-        terminal.setForegroundColor(ANSITextColor.GREEN);
-        terminal.enableModifiers(Modifiers.horizontalFlip());
-        terminal.putCharacter('b');
-        terminal.resetColorsAndModifiers();
+        tileGrid.setForegroundColor(ANSITextColor.GREEN);
+        tileGrid.enableModifiers(Modifiers.horizontalFlip());
+        tileGrid.putCharacter('b');
+        tileGrid.resetColorsAndModifiers();
 
-        terminal.setForegroundColor(ANSITextColor.RED);
-        terminal.enableModifiers(Modifiers.crossedOut());
-        terminal.putCharacter('c');
-        terminal.flush();
+        tileGrid.setForegroundColor(ANSITextColor.RED);
+        tileGrid.enableModifiers(Modifiers.crossedOut());
+        tileGrid.putCharacter('c');
+        tileGrid.flush();
     }
 }
 ```      
@@ -167,8 +167,8 @@ import org.codetome.zircon.api.SwingTerminalBuilder;
 import org.codetome.zircon.api.builder.DeviceConfigurationBuilder;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
-import org.codetome.zircon.api.terminal.Terminal;
-import org.codetome.zircon.api.terminal.config.CursorStyle;
+import org.codetome.zircon.api.grid.TileGrid;
+import org.codetome.zircon.api.grid.config.CursorStyle;
 
 public class Playground {
 
@@ -176,7 +176,7 @@ public class Playground {
 
     public static void main(String[] args) {
 
-        final Terminal terminal = SwingTerminalBuilder.newBuilder()
+        final Terminal tileGrid = SwingTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.create(20, 8))
                 .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
                         .cursorColor(ANSITextColor.RED)
@@ -189,11 +189,11 @@ public class Playground {
                 .title(TEXT)
                 .build();
 
-        terminal.setForegroundColor(ANSITextColor.GREEN);
-        terminal.setCursorVisibility(true);
-        TEXT.chars().forEach((c) -> terminal.putCharacter((char)c));
+        tileGrid.setForegroundColor(ANSITextColor.GREEN);
+        tileGrid.setCursorVisibility(true);
+        TEXT.chars().forEach((c) -> tileGrid.putCharacter((char)c));
 
-        terminal.flush();
+        tileGrid.flush();
     }
 }
 
@@ -223,23 +223,23 @@ import org.codetome.zircon.api.graphics.TextImage;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 
 public class Playground {
 
 
     public static void main(String[] args) {
 
-        final Terminal terminal = SwingTerminalBuilder.newBuilder()
+        final Terminal tileGrid = SwingTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.create(20, 8))
                 .tileset(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .build();
-        final Screen screen = ScreenBuilder.createScreenFor(terminal);
+        final Screen screen = ScreenBuilder.createScreenFor(tileGrid);
 
         final ColorTheme theme = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme();
 
         final TextImage image = TextImageBuilder.newBuilder()
-                .size(terminal.getBoundableSize())
+                .size(tileGrid.getBoundableSize())
                 .filler(TextCharacterBuilder.newBuilder()
                         .foregroundColor(theme.getBrightForegroundColor())
                         .backgroundColor(theme.getBrightBackgroundColor())
@@ -304,18 +304,18 @@ import org.codetome.zircon.api.component.builder.PanelBuilder;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 
 public class Playground {
 
 
     public static void main(String[] args) {
 
-        final Terminal terminal = SwingTerminalBuilder.newBuilder()
+        final Terminal tileGrid = SwingTerminalBuilder.newBuilder()
                 .initialTerminalSize(Size.create(34, 18))
                 .tileset(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .build();
-        final Screen screen = ScreenBuilder.createScreenFor(terminal);
+        final Screen screen = ScreenBuilder.createScreenFor(tileGrid);
 
         // We create a Panel which will hold our components
         // Note that you can add components to the screen without a panel as well
@@ -598,4 +598,4 @@ Zircon is powered by:
 [BasicTextImage]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/graphics/impl/DefaultTextImage.kt
 [Screen]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/screen/Screen.kt
 [InputEmitter]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/behavior/InputEmitter.kt
-[Terminal]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/terminal/Terminal.kt
+[Terminal]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/codetome/zircon/api/tileGrid/TileGrid.kt

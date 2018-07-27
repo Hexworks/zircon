@@ -8,7 +8,7 @@ import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.REXPaintResource;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 
 import java.io.InputStream;
 import java.util.List;
@@ -21,11 +21,11 @@ public class RexLoaderExample {
 
     public static void main(String[] args) {
         REXPaintResource rex = REXPaintResource.loadREXFile(RESOURCE);
-        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
+        final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
                 .font(CP437TilesetResource.TAFFER_20X20.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
-        final Screen screen = Screens.createScreenFor(terminal);
+        final Screen screen = Screens.createScreenFor(tileGrid);
         screen.setCursorVisibility(false);
         List<Layer> layers = rex.toLayerList();
         for (Layer layer: layers) {

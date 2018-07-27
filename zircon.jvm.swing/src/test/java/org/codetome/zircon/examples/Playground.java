@@ -9,7 +9,7 @@ import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.REXPaintResource;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 import org.codetome.zircon.internal.component.impl.DefaultColorTheme;
 
 import java.io.InputStream;
@@ -21,11 +21,11 @@ public class Playground {
         REXPaintResource background = REXPaintResource.loadREXFile(TITLE);
         Layer backgroundLayer = background.toLayerList().get(0);
 
-        final Terminal terminal = SwingTerminalBuilder.newBuilder()
+        final TileGrid tileGrid = SwingTerminalBuilder.newBuilder()
                 .initialTerminalSize(Sizes.create(70, 43))
                 .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
                 .build();
-        final Screen mainScreen = Screens.createScreenFor(terminal);
+        final Screen mainScreen = Screens.createScreenFor(tileGrid);
 
         mainScreen.draw(backgroundLayer, Positions.topLeftCorner());
 

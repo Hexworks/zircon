@@ -8,7 +8,7 @@ import org.codetome.zircon.internal.shape.DefaultShape
 /**
  * A [Shape] is a set of [org.codetome.zircon.api.data.Position]s representing a geometric formation
  * (line, triangle, rectangle, box, etc). A [Shape] is the most abstract representation of any graphic
- * object in Zircon and has no associated terminal, style, nor characters thus it is useful for
+ * object in Zircon and has no associated grid, style, nor characters thus it is useful for
  * templating (like creating multiple versions of the same rectangle with different colors, shades
  * and characters).
  * Any [Shape] implementation is supposed to be immutable!

@@ -3,23 +3,23 @@ package org.codetome.zircon.api.builder.terminal
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.screen.Screen
-import org.codetome.zircon.api.terminal.DeviceConfiguration
-import org.codetome.zircon.api.terminal.Terminal
+import org.codetome.zircon.api.grid.DeviceConfiguration
+import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.internal.tileset.impl.FontSettings
-import org.codetome.zircon.internal.screen.TerminalScreen
-import org.codetome.zircon.internal.terminal.InternalTerminal
-import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
+import org.codetome.zircon.internal.screen.TileGridScreen
+import org.codetome.zircon.internal.grid.InternalTileGrid
+import org.codetome.zircon.internal.grid.virtual.VirtualTileGrid
 
 open class VirtualTerminalBuilder(
         protected var fullScreen: Boolean = false,
         protected var initialSize: Size = Size.defaultTerminalSize(),
-        protected var title: String = "Zircon Terminal",
+        protected var title: String = "Zircon TileGrid",
         protected var deviceConfiguration: DeviceConfiguration = DeviceConfiguration.defaultConfiguration(),
         protected var tileset: Tileset = FontSettings.NO_FONT
 ) : TerminalBuilder {
 
-    override fun build(): Terminal {
-        return VirtualTerminal(
+    override fun build(): TileGrid {
+        return VirtualTileGrid(
                 initialSize = initialSize,
                 initialTileset = tileset)
     }
@@ -32,7 +32,7 @@ open class VirtualTerminalBuilder(
             tileset = tileset)
 
     /**
-     * Sets the initial terminal [Size].
+     * Sets the initial grid [Size].
      * Default is 80x24.
      */
     override fun initialTerminalSize(initialSize: Size) = also {
@@ -40,8 +40,8 @@ open class VirtualTerminalBuilder(
     }
 
     /**
-     * Sets the title to use on created [Terminal]s created by this shape.
-     * Default is "Zircon Terminal"
+     * Sets the title to use on created [TileGrid]s created by this shape.
+     * Default is "Zircon TileGrid"
      */
     override fun title(title: String) = also {
         this.title = title
@@ -52,7 +52,7 @@ open class VirtualTerminalBuilder(
     }
 
     /**
-     * Sets the device configuration to use on the [Terminal] being created.
+     * Sets the device configuration to use on the [TileGrid] being created.
      */
     override fun deviceConfiguration(deviceConfiguration: DeviceConfiguration) = also {
         this.deviceConfiguration = deviceConfiguration
@@ -68,10 +68,10 @@ open class VirtualTerminalBuilder(
     }
 
     /**
-     * Creates a [Terminal] using this builder's settings and immediately wraps it up in a [Screen].
+     * Creates a [TileGrid] using this builder's settings and immediately wraps it up in a [Screen].
      */
-    override fun buildScreen() = TerminalScreen(
-            terminal = build() as InternalTerminal)
+    override fun buildScreen() = TileGridScreen(
+            terminal = build() as InternalTileGrid)
 
     companion object {
 

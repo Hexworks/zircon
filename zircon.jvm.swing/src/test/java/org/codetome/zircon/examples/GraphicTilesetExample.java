@@ -6,7 +6,7 @@ import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.interop.Tiles;
 import org.codetome.zircon.api.resource.GraphicTilesetResource;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 import org.codetome.zircon.internal.tileset.impl.PickRandomMetaStrategy;
 
 import java.util.Random;
@@ -22,25 +22,25 @@ public class GraphicTilesetExample {
     private static final Random RANDOM = new Random();
 
     public static void main(String[] args) {
-        // for this example we only need a default terminal (no extra config)
+        // for this example we only need a default grid (no extra config)
 
-        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
+        final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
                 .font(FONT.toFont(RANDOM_STRATEGY))
                 .initialTerminalSize(SIZE)
                 .build();
-        terminal.setCursorVisibility(false); // we don't want the cursor right now
+        tileGrid.setCursorVisibility(false); // we don't want the cursor right now
 
         for (int row = 0; row < TERMINAL_HEIGHT; row++) {
             for (int col = 0; col < TERMINAL_WIDTH; col++) {
                 final char c = CHARS[RANDOM.nextInt(CHARS.length)];
-                terminal.setCharacterAt(Positions.create(col, row), Tiles.newBuilder()
+                tileGrid.setCharacterAt(Positions.create(col, row), Tiles.newBuilder()
                         .character(c)
-                        .tags(RANDOM_STRATEGY.pickMetadata(terminal.getCurrentFont().fetchMetadataForChar(c)).getTags())
+                        .tags(RANDOM_STRATEGY.pickMetadata(tileGrid.getCurrentFont().fetchMetadataForChar(c)).getTags())
                         .build());
             }
         }
 
-        terminal.flush();
+        tileGrid.flush();
     }
 
 }

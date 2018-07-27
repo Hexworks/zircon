@@ -2,10 +2,10 @@ package org.codetome.zircon.api.interop
 
 import org.codetome.zircon.api.builder.screen.ScreenBuilder
 import org.codetome.zircon.api.screen.Screen
-import org.codetome.zircon.api.terminal.Terminal
+import org.codetome.zircon.api.grid.TileGrid
 
 object Screens {
 
     @JvmStatic
-    fun createScreenFor(terminal: Terminal): Screen = ScreenBuilder.createScreenFor(terminal)
+    fun createScreenFor(tileGrid: TileGrid): Screen = ScreenBuilder.createScreenFor(tileGrid)
 }

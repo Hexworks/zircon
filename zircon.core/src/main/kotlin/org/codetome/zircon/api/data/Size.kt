@@ -96,7 +96,7 @@ interface Size : Comparable<Size> {
      * Creates a new [Size] object representing a size with the same number of yLength, but with
      * a xLength size offset by a supplied value. Calling this method with delta 0 will return this,
      * calling it with a positive delta will return
-     * a terminal size <code>delta</code> number of xLength wider and for negative numbers shorter.
+     * a grid size <code>delta</code> number of xLength wider and for negative numbers shorter.
      */
     fun withRelativeXLength(delta: Int): Size {
         if (delta == 0) {
@@ -109,7 +109,7 @@ interface Size : Comparable<Size> {
      * Creates a new [Size] object representing a size with the same number of xLength, but with a yLength
      * size offset by a supplied value. Calling this method with delta 0 will return this, calling
      * it with a positive delta will return
-     * a terminal size <code>delta</code> number of yLength longer and for negative numbers shorter.
+     * a grid size <code>delta</code> number of yLength longer and for negative numbers shorter.
      */
     fun withRelativeYLength(delta: Int): Size {
         if (delta == 0) {
@@ -175,7 +175,7 @@ interface Size : Comparable<Size> {
         fun unknown() = UNKNOWN
 
         /**
-         * The default terminal size is (80 * 24)
+         * The default grid size is (80 * 24)
          */
         fun defaultTerminalSize() = DEFAULT_TERMINAL_SIZE
 

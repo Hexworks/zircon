@@ -13,8 +13,8 @@ import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.terminal.CursorStyle;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.CursorStyle;
+import org.codetome.zircon.api.grid.TileGrid;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -48,8 +48,8 @@ public class GameMockupExample {
         double rows = screenSize.getHeight() / FONT_SIZE;
         Size terminalSize = Sizes.create((int) columns, (int) rows);
 
-        // for this example we only need a default terminal (no extra config)
-        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
+        // for this example we only need a default grid (no extra config)
+        final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
                 .initialTerminalSize(terminalSize)
                 .fullScreen()
                 .font(CP437TilesetResource.ROGUE_YUN_16X16.toFont())
@@ -63,7 +63,7 @@ public class GameMockupExample {
         // MAIN MENU
         // ==========
 
-        Screen mainMenuScreen = Screens.createScreenFor(terminal);
+        Screen mainMenuScreen = Screens.createScreenFor(tileGrid);
         Position menuPosition = Positions.create(
                 (terminalSize.getXLength() - MAIN_MENU_PANEL_WIDTH) / 2,
                 (terminalSize.getYLength() - MAIN_MENU_PANEL_HEIGHT) / 2);
@@ -105,7 +105,7 @@ public class GameMockupExample {
         // OPTIONS
         // ==========
 
-        Screen optionsScreen = Screens.createScreenFor(terminal);
+        Screen optionsScreen = Screens.createScreenFor(tileGrid);
 
         Button backButton = Components.newButtonBuilder()
                 .text(BACK_LABEL)

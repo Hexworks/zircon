@@ -17,9 +17,9 @@ object FilledRectangleFactory : ShapeFactory<RectangleParameters> {
     /**
      * Creates the points for a filled rectangle.
      *
-     * For example, calling this method with size being the size of a terminal and top-left
+     * For example, calling this method with size being the size of a grid and top-left
      * value being the terminals top-left (0x0) corner will create a shape which when drawn
-     * will fill the whole terminal.
+     * will fill the whole grid.
      * **Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [org.codetome.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
      */
@@ -28,9 +28,9 @@ object FilledRectangleFactory : ShapeFactory<RectangleParameters> {
     /**
      * Creates the points for a filled rectangle.
      *
-     * For example, calling this method with size being the size of a terminal and top-left
+     * For example, calling this method with size being the size of a grid and top-left
      * value being the terminals top-left (0x0) corner will create a shape which when drawn
-     * will fill the whole terminal.
+     * will fill the whole grid.
      * **Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [org.codetome.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
      */

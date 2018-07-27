@@ -2,11 +2,11 @@ package org.codetome.zircon.api
 
 import org.codetome.zircon.api.builder.terminal.VirtualTerminalBuilder
 import org.codetome.zircon.api.resource.CP437TilesetResource
-import org.codetome.zircon.api.terminal.Terminal
+import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
 import org.codetome.zircon.internal.tileset.impl.FontSettings.NO_FONT
 import org.codetome.zircon.internal.tileset.impl.Java2DTilesetLoader
-import org.codetome.zircon.internal.terminal.SwingTerminalFrame
+import org.codetome.zircon.internal.grid.SwingTileGridFrame
 import java.awt.Toolkit
 
 class SwingTerminalBuilder : VirtualTerminalBuilder() {
@@ -15,12 +15,12 @@ class SwingTerminalBuilder : VirtualTerminalBuilder() {
         TilesetLoaderRegistry.setFontLoader(Java2DTilesetLoader())
     }
 
-    override fun build(): Terminal {
+    override fun build(): TileGrid {
         if(tileset === NO_FONT) {
             tileset = CP437TilesetResource.WANDERLUST_16X16.toFont()
         }
         checkScreenSize()
-        return SwingTerminalFrame(
+        return SwingTileGridFrame(
                 title = title,
                 size = initialSize,
                 deviceConfiguration = deviceConfiguration,
