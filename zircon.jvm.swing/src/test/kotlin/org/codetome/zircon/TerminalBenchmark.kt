@@ -28,14 +28,18 @@ fun main(args: Array<String>) {
     val layerWidth = 20
     val layerHeight = 10
     var layers = (0..layerCount).map {
-        LayerBuilder.newBuilder().filler(TileBuilder.newBuilder()
+        val filler = TileBuilder.newBuilder()
                 .backgroundColor(TextColor.create(random.nextInt(255), random.nextInt(255), random.nextInt(255)))
                 .foregroundColor(TextColor.create(random.nextInt(255), random.nextInt(255), random.nextInt(255)))
                 .character('x')
-                .build())
+                .build()
+
+        LayerBuilder.newBuilder()
                 .size(Size.create(layerWidth, layerHeight))
                 .offset(Position.create(random.nextInt(terminalWidth - layerWidth), random.nextInt(terminalHeight - layerHeight)))
-                .build().also {
+                .build()
+                .fill(filler)
+                .also {
                     screen.pushLayer(it)
                 }
     }
@@ -58,14 +62,18 @@ fun main(args: Array<String>) {
                 screen.removeLayer(it)
             }
             layers = (0..layerCount).map {
-                LayerBuilder.newBuilder().filler(TileBuilder.newBuilder()
+                val filler = TileBuilder.newBuilder()
                         .backgroundColor(TextColor.create(random.nextInt(255), random.nextInt(255), random.nextInt(255)))
                         .foregroundColor(TextColor.create(random.nextInt(255), random.nextInt(255), random.nextInt(255)))
                         .character('x')
-                        .build())
+                        .build()
+
+                LayerBuilder.newBuilder()
                         .size(Size.create(layerWidth, layerHeight))
                         .offset(Position.create(random.nextInt(terminalWidth - layerWidth), random.nextInt(terminalHeight - layerHeight)))
-                        .build().also {
+                        .build()
+                        .fill(filler)
+                        .also {
                             screen.pushLayer(it)
                         }
             }

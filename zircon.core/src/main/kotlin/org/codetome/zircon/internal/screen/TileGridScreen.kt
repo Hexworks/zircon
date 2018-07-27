@@ -80,8 +80,8 @@ class TileGridScreen(private val terminal: InternalTileGrid,
             drainDirtyPositions()
         }
         positions.forEach { position ->
-            val character = backend.getCharacterAt(position).get()
-            terminal.setCharacterAt(position, character)
+            val character = backend.getTileAt(position).get()
+            terminal.setTileAt(position, character)
         }
         // TODO: optimize this
         terminal.drainLayers()

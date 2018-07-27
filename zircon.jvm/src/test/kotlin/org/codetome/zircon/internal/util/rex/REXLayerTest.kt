@@ -31,12 +31,12 @@ class REXLayerTest {
                 'A',
                 DefaultTextColor(85, 85, 85, 255),
                 DefaultTextColor(170, 170, 170, 255),
-                layer.getCharacterAt(Position.create(0, 0)).get())
+                layer.getTileAt(Position.create(0, 0)).get())
         assertChar(
                 'B',
                 DefaultTextColor(35, 35, 35, 255),
                 DefaultTextColor(133, 133, 133, 255),
-                layer.getCharacterAt(Position.create(1, 0)).get())
+                layer.getTileAt(Position.create(1, 0)).get())
     }
 
     @Test

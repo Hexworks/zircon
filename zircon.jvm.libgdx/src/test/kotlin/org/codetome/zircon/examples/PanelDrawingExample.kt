@@ -46,9 +46,9 @@ object PanelDrawingExample {
                 .build()
         box.putText("Title", Position.defaultPosition()
                 .withRelativeX(5))
-        box.setCharacterAt(Position.defaultPosition().withRelativeX(4),
+        box.setCharAt(Position.defaultPosition().withRelativeX(4),
                 BoxType.TOP_BOTTOM_DOUBLE.connectorLeft)
-        box.setCharacterAt(Position.defaultPosition().withRelativeX(10),
+        box.setCharAt(Position.defaultPosition().withRelativeX(10),
                 BoxType.TOP_BOTTOM_DOUBLE.connectorRight)
         screen.draw(box, Position.create(2, 2))
         screen.display()

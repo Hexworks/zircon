@@ -1,13 +1,13 @@
 package org.codetome.zircon.internal.game
 
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.builder.graphics.TextImageBuilder
+import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.data.Block
 import org.codetome.zircon.api.data.Position3D
 import org.codetome.zircon.api.data.Size3D
 import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.game.GameArea.BlockFetchMode
-import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.extensions.getIfPresent
 import org.codetome.zircon.internal.util.TreeMap
@@ -78,17 +78,17 @@ class InMemoryGameArea(private val size: Size3D,
         return blocks.getOrDefault(position, Block(position)).layers.getIfPresent(layerIdx)
     }
 
-    override fun fetchLayersAt(offset: Position3D, size: Size3D): Iterable<TextImage> {
+    override fun fetchLayersAt(offset: Position3D, size: Size3D): Iterable<TileImage> {
         // TODO: param check here
         val offset2D = offset.to2DPosition()
         val window = size.to2DSize().fetchPositions()
         return (offset.z until size.zLength + offset.z).flatMap { z ->
-            val images = mutableListOf<TextImage>()
+            val images = mutableListOf<TileImage>()
             (0 until layersPerBlock).forEach { layerIdx ->
-                val builder = TextImageBuilder.newBuilder().size(size.to2DSize())
+                val builder = TileImageBuilder.newBuilder().size(size.to2DSize())
                 window.forEach { pos ->
                     fetchCharacterAt(Position3D.from2DPosition(pos + offset2D, z), layerIdx).map { char ->
-                        builder.character(pos, char)
+                        builder.tile(pos, char)
                     }
                 }
                 images.add(builder.build())

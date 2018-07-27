@@ -1,13 +1,13 @@
 package org.codetome.zircon.internal.component.impl.wrapping
 
+import org.codetome.zircon.api.builder.graphics.BoxBuilder
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
-import org.codetome.zircon.api.builder.graphics.BoxBuilder
 import org.codetome.zircon.api.graphics.BoxType
 import org.codetome.zircon.api.graphics.StyleSet
-import org.codetome.zircon.api.graphics.TextImage
-import org.codetome.zircon.internal.component.WrappingStrategy
+import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.component.WrappingStrategy
 
 class BoxWrappingStrategy(private val boxType: BoxType,
                           private val title: Maybe<String> = Maybe.empty()) : WrappingStrategy {
@@ -16,13 +16,13 @@ class BoxWrappingStrategy(private val boxType: BoxType,
 
     override fun getOffset() = Position.offset1x1()
 
-    override fun apply(textImage: TextImage, size: Size, offset: Position, style: StyleSet) {
+    override fun apply(tileImage: TileImage, size: Size, offset: Position, style: StyleSet) {
         BoxBuilder.newBuilder()
                 .boxType(boxType)
                 .size(size)
                 .style(style)
                 .build()
-                .drawOnto(textImage, offset)
+                .drawOnto(tileImage, offset)
         if (size.xLength > 4) {
             title.map { titleText ->
                 val cleanText = if (titleText.length > size.xLength - 4) {
@@ -30,9 +30,9 @@ class BoxWrappingStrategy(private val boxType: BoxType,
                 } else {
                     titleText
                 }
-                textImage.setCharacterAt(offset.withRelativeX(1), boxType.connectorLeft)
-                textImage.putText(cleanText, offset.withRelativeX(2))
-                textImage.setCharacterAt(offset.withRelativeX(2 + cleanText.length), boxType.connectorRight)
+                tileImage.setCharAt(offset.withRelativeX(1), boxType.connectorLeft)
+                tileImage.putText(cleanText, offset.withRelativeX(2))
+                tileImage.setCharAt(offset.withRelativeX(2 + cleanText.length), boxType.connectorRight)
             }
         }
     }

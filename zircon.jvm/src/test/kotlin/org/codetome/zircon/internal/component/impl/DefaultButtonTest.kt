@@ -45,7 +45,7 @@ class DefaultButtonTest {
         val surface = target.getDrawSurface()
         val offset = target.getWrapperOffset().x
         TEXT.forEachIndexed { i, char ->
-            assertThat(surface.getCharacterAt(Position.create(i + offset, 0)).get())
+            assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
                     .isEqualTo(TileBuilder.newBuilder()
                             .character(char)
                             .styleSet(DEFAULT_STYLE)

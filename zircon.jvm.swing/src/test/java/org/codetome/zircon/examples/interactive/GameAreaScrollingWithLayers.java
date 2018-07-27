@@ -11,7 +11,7 @@ import org.codetome.zircon.api.game.GameArea;
 import org.codetome.zircon.api.data.Position3D;
 import org.codetome.zircon.api.data.Size3D;
 import org.codetome.zircon.api.graphics.BoxType;
-import org.codetome.zircon.api.graphics.TextImage;
+import org.codetome.zircon.api.graphics.TileImage;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
@@ -80,7 +80,7 @@ public class GameAreaScrollingWithLayers {
         final Size virtualGameAreaSize = Sizes.create(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
 
-        final Map<Integer, List<TextImage>> levels = new HashMap<>();
+        final Map<Integer, List<TileImage>> levels = new HashMap<>();
         final int totalLevels = 10;
         for (int i = 0; i < totalLevels; i++) {
             levels.put(i, Collections.singletonList(TextImages.newBuilder()

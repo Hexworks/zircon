@@ -33,7 +33,7 @@ public class GraphicTilesetExample {
         for (int row = 0; row < TERMINAL_HEIGHT; row++) {
             for (int col = 0; col < TERMINAL_WIDTH; col++) {
                 final char c = CHARS[RANDOM.nextInt(CHARS.length)];
-                tileGrid.setCharacterAt(Positions.create(col, row), Tiles.newBuilder()
+                tileGrid.setTileAt(Positions.create(col, row), Tiles.newBuilder()
                         .character(c)
                         .tags(RANDOM_STRATEGY.pickMetadata(tileGrid.getCurrentFont().fetchMetadataForChar(c)).getTags())
                         .build());

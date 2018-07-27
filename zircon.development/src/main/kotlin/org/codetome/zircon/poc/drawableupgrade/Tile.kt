@@ -1,5 +1,8 @@
 package org.codetome.zircon.poc.drawableupgrade
 
+import org.codetome.zircon.poc.drawableupgrade.drawables.DrawSurface
+import org.codetome.zircon.poc.drawableupgrade.drawables.Drawable
+
 /**
  * A [Tile] is the basic building block. In this case it just holds a character
  * but this can be any metadata in a real implementation which can be used by the renderer

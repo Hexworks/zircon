@@ -21,9 +21,9 @@ class LayerBuilderTest {
     fun shouldProperlyBuildLayer() {
         val result = target
                 .size(SIZE)
-                .filler(FILLER)
                 .offset(OFFSET)
                 .build()
+                .fill(FILLER)
 
         assertThat(result.getBoundableSize())
                 .isEqualTo(SIZE)
@@ -31,7 +31,7 @@ class LayerBuilderTest {
         assertThat(result.getPosition())
                 .isEqualTo(OFFSET)
 
-        assertThat(result.getCharacterAt(OFFSET).get())
+        assertThat(result.getTileAt(OFFSET).get())
                 .isEqualTo(FILLER)
     }
 

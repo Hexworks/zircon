@@ -326,7 +326,7 @@ class DefaultTextBox constructor(text: String,
     private fun refreshDrawSurface() {
         getBoundableSize().fetchPositions().forEach { pos ->
             val fixedPos = pos + getVisibleOffset()
-            getDrawSurface().setCharacterAt(pos, textBuffer.getCharAt(fixedPos).orElse(' '))
+            getDrawSurface().setCharAt(pos, textBuffer.getCharAt(fixedPos).orElse(' '))
         }
     }
 

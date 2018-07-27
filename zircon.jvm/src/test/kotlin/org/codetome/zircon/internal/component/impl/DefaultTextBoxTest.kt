@@ -106,7 +106,7 @@ class DefaultTextBoxTest {
     @Test
     fun shouldRefreshDrawSurfaceIfSetText() {
         target.setText(UPDATE_TEXT.toString())
-        val character = target.getDrawSurface().getCharacterAt(Position.defaultPosition())
+        val character = target.getDrawSurface().getTileAt(Position.defaultPosition())
         assertThat(character.get().getCharacter())
                 .isEqualTo(UPDATE_TEXT)
     }

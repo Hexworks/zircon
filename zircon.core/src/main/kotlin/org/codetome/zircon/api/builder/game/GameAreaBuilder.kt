@@ -3,7 +3,7 @@ package org.codetome.zircon.api.builder.game
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.game.GameArea
 import org.codetome.zircon.api.data.Size3D
-import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.internal.game.InMemoryGameArea
 
 /**
@@ -12,7 +12,7 @@ import org.codetome.zircon.internal.game.InMemoryGameArea
  */
 data class GameAreaBuilder(private var size: Size3D = Size3D.one(),
                            private var layersPerBlock: Int = -1,
-                           private var levels: MutableMap<Int, MutableList<TextImage>> = mutableMapOf()) : Builder<GameArea> {
+                           private var levels: MutableMap<Int, MutableList<TileImage>> = mutableMapOf()) : Builder<GameArea> {
 
     fun layersPerBlock(layersPerBlock: Int) = also {
         this.layersPerBlock = layersPerBlock
@@ -26,9 +26,9 @@ data class GameAreaBuilder(private var size: Size3D = Size3D.one(),
         }
     }
 
-    fun setLevel(level: Int, vararg images: TextImage) = setLevel(level, images.toList())
+    fun setLevel(level: Int, vararg images: TileImage) = setLevel(level, images.toList())
 
-    fun setLevel(level: Int, images: List<TextImage>) = also {
+    fun setLevel(level: Int, images: List<TileImage>) = also {
         require(level in 0.rangeTo(size.zLength)) {
             "Level '$level' is out create bounds (0 - ${size.zLength})!"
         }

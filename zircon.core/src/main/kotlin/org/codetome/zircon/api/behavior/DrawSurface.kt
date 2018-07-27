@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.behavior
 
+import org.codetome.zircon.api.data.Cell
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.util.Maybe
@@ -16,32 +17,29 @@ interface DrawSurface : Boundable {
      * Returns the character stored at a particular position on this [DrawSurface].
      * Returns an empty [Maybe] if no [Tile] is present at the given [Position].
      */
-    fun getCharacterAt(position: Position): Maybe<Tile>
+    fun getTileAt(position: Position): Maybe<Tile>
 
     /**
-     * Sets the character at a specific position in the [DrawSurface] to a particular [Tile].
+     * Sets a [Tile] at a specific position in the [DrawSurface] to `tile`.
      * If the position is outside of the [DrawSurface]'s size, this method has no effect.
      * Note that if this [DrawSurface] already has the given [Tile] on the supplied [Position]
-     * nothing will change and this method will return `false`.
-     *
-     * @return true if the character was set, false if the position is outside of the [DrawSurface]
-     * or if no change happened.
+     * nothing will change.
      */
-    fun setCharacterAt(position: Position, character: Tile): Boolean
+    fun setTileAt(position: Position, tile: Tile)
 
     /**
-     * Sets the character at a specific position in the [DrawSurface] to a particular [Tile].
+     * Sets a [Char] at a specific position in the [DrawSurface] to `char`.
      * If the position is outside of the [DrawSurface]'s size, this method has no effect.
-     * **Note that** this method will use the style information if the [DrawSurface] implements
-     * [org.codetome.zircon.api.graphics.StyleSet].
-     *
-     * If not it will use [org.codetome.zircon.api.TextCharacter.defaultCharacter]
-     * when it sets the given `character` as a [Tile].
-     *
-     * @return true if the character was set, false if the position is outside of the [DrawSurface]
-     * or if no change happened.
+     * Note that if the [DrawSurface] is [Styleable] its style information will be used.
      */
-    fun setCharacterAt(position: Position, character: Char): Boolean
+    fun setCharAt(position: Position, char: Char)
+
+    /**
+     * Creates a snapshot of the current state of this [DrawSurface].
+     * A snapshot is useful to see a consistent state of a [DrawSurface]
+     * regardless of potential changes by other threads.
+     */
+    fun createSnapshot(): List<Cell>
 
     /**
      * Draws a [Drawable] onto this [DrawSurface]. If the destination [DrawSurface] is larger than

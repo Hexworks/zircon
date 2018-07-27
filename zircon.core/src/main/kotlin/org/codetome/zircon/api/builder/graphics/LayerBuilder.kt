@@ -6,7 +6,7 @@ import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.Layer
-import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.graphics.DefaultLayer
 
@@ -19,9 +19,8 @@ import org.codetome.zircon.internal.graphics.DefaultLayer
  */
 data class LayerBuilder(private var tileset: Tileset = Layer.defaultFont(),
                         private var size: Size = Layer.defaultSize(),
-                        private var filler: Tile = Layer.defaultFiller(),
                         private var offset: Position = Position.defaultPosition(),
-                        private var textImage: Maybe<TextImage> = Maybe.empty()) : Builder<Layer> {
+                        private var tileImage: Maybe<TileImage> = Maybe.empty()) : Builder<Layer> {
 
     /**
      * Sets the [Tileset] to use with the resulting [Layer].
@@ -39,14 +38,6 @@ data class LayerBuilder(private var tileset: Tileset = Layer.defaultFont(),
     }
 
     /**
-     * The new [org.codetome.zircon.api.graphics.Layer] will be filled by this [Tile].
-     * Defaults to `EMPTY`.
-     */
-    fun filler(filler: Tile) = also {
-        this.filler = filler
-    }
-
-    /**
      * Sets the `offset` for the new [org.codetome.zircon.api.graphics.Layer].
      * Default is 0x0.
      */
@@ -55,22 +46,20 @@ data class LayerBuilder(private var tileset: Tileset = Layer.defaultFont(),
     }
 
     /**
-     * Uses the given [TextImage] and converts it to a [Layer].
+     * Uses the given [TileImage] and converts it to a [Layer].
      */
-    fun textImage(textImage: TextImage) = also {
-        this.textImage = Maybe.of(textImage)
+    fun textImage(tileImage: TileImage) = also {
+        this.tileImage = Maybe.of(tileImage)
     }
 
-    override fun build(): Layer = if (textImage.isPresent) {
-        DefaultLayer(size = textImage.get().getBoundableSize(),
-                filler = filler,
+    override fun build(): Layer = if (tileImage.isPresent) {
+        DefaultLayer(size = tileImage.get().getBoundableSize(),
                 offset = offset,
-                textImage = textImage.get(),
+                tileImage = tileImage.get(),
                 initialTileset = tileset)
     } else {
         DefaultLayer(
                 size = size,
-                filler = filler,
                 offset = offset,
                 initialTileset = tileset)
     }

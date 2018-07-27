@@ -17,10 +17,10 @@ class DefaultLayerTest {
     @Before
     fun setUp() {
         target = DefaultLayer(
-                filler = Tile.defaultTile(),
                 size = SIZE,
                 offset = OFFSET,
                 initialTileset = FontSettings.NO_FONT)
+
     }
 
     @Test
@@ -69,8 +69,8 @@ class DefaultLayerTest {
 
     @Test
     fun shouldProperlySetChar() {
-        target.setCharacterAt(CONTAINED_POSITION, CHAR)
-        assertThat(target.getCharacterAt(CONTAINED_POSITION).get())
+        target.setTileAt(CONTAINED_POSITION, CHAR)
+        assertThat(target.getTileAt(CONTAINED_POSITION).get())
                 .isEqualTo(CHAR)
     }
 

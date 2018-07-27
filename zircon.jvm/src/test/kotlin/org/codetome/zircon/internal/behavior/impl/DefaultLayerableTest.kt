@@ -6,7 +6,7 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
-import org.codetome.zircon.api.builder.graphics.TextImageBuilder
+import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
@@ -32,7 +32,6 @@ class DefaultLayerableTest {
     fun shouldThrowExceptionWhenLayerUsesUnsupportedFontSize() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(Tile.defaultTile())
                 .font(CP437TilesetResource.BISASAM_20X20.toFont())
                 .offset(Position.topLeftCorner())
                 .build()
@@ -45,7 +44,6 @@ class DefaultLayerableTest {
     fun shouldContainLayerWhenLayerIsAdded() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(Tile.defaultTile())
                 .offset(Position.topLeftCorner())
                 .build()
 
@@ -60,7 +58,6 @@ class DefaultLayerableTest {
     fun shouldNotContainLayerWhenLayerIsAddedThenRemoved() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(Tile.defaultTile())
                 .offset(Position.topLeftCorner())
                 .build()
 
@@ -76,7 +73,6 @@ class DefaultLayerableTest {
     fun shouldNotContainLayerWhenLayerIsAddedThenPopped() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(Tile.defaultTile())
                 .offset(Position.topLeftCorner())
                 .build()
 
@@ -97,16 +93,16 @@ class DefaultLayerableTest {
 
         val offset1x1layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(expectedChar)
                 .offset(Position.offset1x1())
                 .build()
+                .fill(expectedChar)
         val offset2x2layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(TileBuilder.newBuilder()
-                        .character('2')
-                        .build())
                 .offset(Position.create(2, 2))
                 .build()
+                .fill(TileBuilder.newBuilder()
+                        .character('2')
+                        .build())
 
 
         target.pushLayer(offset1x1layer)
@@ -125,17 +121,17 @@ class DefaultLayerableTest {
 
         target.pushLayer(LayerBuilder.newBuilder()
                 .offset(dirty0)
-                .textImage(TextImageBuilder.newBuilder()
+                .textImage(TileImageBuilder.newBuilder()
                         .size(Size.one())
-                        .character(Position.defaultPosition(), Tile.defaultTile().withCharacter('x'))
+                        .tile(Position.defaultPosition(), Tile.defaultTile().withCharacter('x'))
                         .build())
                 .build())
 
         target.pushLayer(LayerBuilder.newBuilder()
                 .offset(dirty1)
-                .textImage(TextImageBuilder.newBuilder()
+                .textImage(TileImageBuilder.newBuilder()
                         .size(Size.one())
-                        .character(Position.defaultPosition(), Tile.defaultTile().withCharacter('x'))
+                        .tile(Position.defaultPosition(), Tile.defaultTile().withCharacter('x'))
                         .build())
                 .build())
 
@@ -169,15 +165,15 @@ class DefaultLayerableTest {
 
         val offset1x1layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(expectedChar)
                 .offset(Position.offset1x1())
                 .build()
+                .fill(expectedChar)
 
         val offset2x2layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .filler(expectedChar)
                 .offset(Position.offset1x1())
                 .build()
+                .fill(expectedChar)
 
         target.pushLayer(offset1x1layer)
         target.pushLayer(offset2x2layer)

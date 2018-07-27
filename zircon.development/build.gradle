@@ -11,6 +11,8 @@ dependencies {
     compile libraries.slf4j_api
     compile libraries.slf4j_simple
 
+    compile "com.github.romix:java-concurrent-hash-trie-map:0.2.23"
+
     testCompile libraries.junit
     testCompile libraries.mockito
     testCompile libraries.assertj

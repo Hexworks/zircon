@@ -9,12 +9,12 @@ import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.tileset.impl.FontSettings
 
 /**
- * A [Layer] is a specialized [TextImage] which is drawn upon a
- * [org.codetome.zircon.api.behavior.Layerable] object. A [Layer] differs from a [TextImage] in
+ * A [Layer] is a specialized [TileImage] which is drawn upon a
+ * [org.codetome.zircon.api.behavior.Layerable] object. A [Layer] differs from a [TileImage] in
  * the way it is handled. It can be repositioned relative to its
- * parent while a [TextImage] cannot.
+ * parent while a [TileImage] cannot.
  */
-interface Layer : TextImage, Movable, FontOverride {
+interface Layer : TileImage, Movable, FontOverride {
 
     /**
      * Fetches all the (absolute) [Position]s which this
@@ -34,16 +34,18 @@ interface Layer : TextImage, Movable, FontOverride {
     fun createCopy(): Layer
 
     /**
-     * Same as [Layer.getCharacterAt] but will not use the offset of this [Layer]
+     * Same as [Layer.getTileAt] but will not use the offset of this [Layer]
      * (eg: just position instead of position - offset).
      */
-    fun getRelativeCharacterAt(position: Position): Maybe<Tile>
+    fun getRelativeTileAt(position: Position): Maybe<Tile>
 
     /**
-     * Same as [Layer.setCharacterAt] but will not use the offset of this [Layer]
+     * Same as [Layer.setTileAt] but will not use the offset of this [Layer]
      * (eg: just position instead of position - offset).
      */
-    fun setRelativeCharacterAt(position: Position, character: Tile): Boolean
+    fun setRelativeTileAt(position: Position, character: Tile)
+
+    override fun fill(filler: Tile): Layer
 
     companion object {
 

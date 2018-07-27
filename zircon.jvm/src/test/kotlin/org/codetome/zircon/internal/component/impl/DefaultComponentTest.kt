@@ -6,7 +6,7 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
-import org.codetome.zircon.api.builder.graphics.TextImageBuilder
+import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.tileset.Tileset
@@ -85,7 +85,7 @@ class DefaultComponentTest {
 
         EventBus.sendTo(target.getId(), Event.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
 
-        val targetChar = target.getDrawSurface().getCharacterAt(Position.defaultPosition()).get()
+        val targetChar = target.getDrawSurface().getTileAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(MOUSE_OVER_STYLE.getBackgroundColor())
         assertThat(targetChar.getForegroundColor()).isEqualTo(MOUSE_OVER_STYLE.getForegroundColor())
         assertThat(componentChanged.get()).isTrue()
@@ -101,7 +101,7 @@ class DefaultComponentTest {
 
         EventBus.sendTo(target.getId(), Event.MouseOut(MouseAction(MouseActionType.MOUSE_EXITED, 1, Position.defaultPosition())))
 
-        val targetChar = target.getDrawSurface().getCharacterAt(Position.defaultPosition()).get()
+        val targetChar = target.getDrawSurface().getTileAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(DEFAULT_STYLE.getBackgroundColor())
         assertThat(targetChar.getForegroundColor()).isEqualTo(DEFAULT_STYLE.getForegroundColor())
         assertThat(componentChanged.get()).isTrue()
@@ -136,17 +136,17 @@ class DefaultComponentTest {
 
     @Test
     fun shouldProperlyDrawOntoTextImage() {
-        val image = TextImageBuilder.newBuilder()
+        val image = TileImageBuilder.newBuilder()
                 .size(SIZE + Size.create(POSITION.x, POSITION.y))
                 .build()
         target.drawOnto(image)
 
-        assertThat(image.getCharacterAt(POSITION - Position.offset1x1()).get())
+        assertThat(image.getTileAt(POSITION - Position.offset1x1()).get())
                 .isEqualTo(Tile.empty())
 
         target.getBoundableSize().fetchPositions().forEach {
-            assertThat(image.getCharacterAt(it + POSITION).get())
-                    .isEqualTo(target.getDrawSurface().getCharacterAt(it).get())
+            assertThat(image.getTileAt(it + POSITION).get())
+                    .isEqualTo(target.getDrawSurface().getTileAt(it).get())
         }
     }
 

@@ -4,12 +4,12 @@ import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.builder.data.TileBuilder
-import org.codetome.zircon.api.builder.graphics.TextImageBuilder
+import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.data.Cell
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.tileset.Tileset
@@ -44,13 +44,13 @@ class VirtualTileGrid(initialSize: Size = Size.defaultTerminalSize(),
         ShutdownHook by shutdownHook {
 
     private var terminalSize = initialSize
-    private var backend: TextImage = createBackend(terminalSize)
+    private var backend: TileImage = createBackend(terminalSize)
 
 
     override fun drainDirtyPositions() =
             cursorHandler.drainDirtyPositions().plus(layerable.drainDirtyPositions()).also { dirtyPositions ->
                 val blinkingChars = dirtyPositions.filter {
-                    getCharacterAt(it).let { char ->
+                    getTileAt(it).let { char ->
                         char.isPresent && char.get().isBlinking() // TODO: check layers too
                     }
                 }
@@ -75,6 +75,10 @@ class VirtualTileGrid(initialSize: Size = Size.defaultTerminalSize(),
         } else {
             setPositionDirty(offset)
         }
+    }
+
+    override fun createSnapshot(): List<Cell> {
+        return backend.createSnapshot()
     }
 
     override fun getBoundableSize(): Size = terminalSize
@@ -119,7 +123,7 @@ class VirtualTileGrid(initialSize: Size = Size.defaultTerminalSize(),
         if (tc.getCharacter() == '\n') {
             moveCursorToNextLine()
         } else if (TextUtils.isPrintableCharacter(tc.getCharacter())) {
-            backend.setCharacterAt(getCursorPosition(), tc)
+            backend.setTileAt(getCursorPosition(), tc)
             setPositionDirty(getCursorPosition())
             moveCursorForward()
         }
@@ -133,28 +137,28 @@ class VirtualTileGrid(initialSize: Size = Size.defaultTerminalSize(),
         EventBus.broadcast(Event.Input(KeyStroke.EOF_STROKE))
     }
 
-    override fun getCharacterAt(position: Position) =
-            backend.getCharacterAt(position)
+    override fun getTileAt(position: Position) =
+            backend.getTileAt(position)
 
-    override fun setCharacterAt(position: Position, character: Char) =
-            setCharacterAt(position, TileBuilder.newBuilder()
-                    .character(character)
-                    .styleSet(toStyleSet())
-                    .build())
+    override fun setCharAt(position: Position, char: Char) {
+        setTileAt(position, TileBuilder.newBuilder()
+                .character(char)
+                .styleSet(toStyleSet())
+                .build())
+    }
 
-    override fun setCharacterAt(position: Position, character: Tile) =
-            if (containsPosition(position)) {
-                backend.setCharacterAt(position, character)
-                setPositionDirty(position)
-                true
-            } else {
-                false
-            }
+
+    override fun setTileAt(position: Position, tile: Tile) {
+        if (containsPosition(position)) {
+            backend.setTileAt(position, tile)
+            setPositionDirty(position)
+        }
+    }
 
     override fun forEachDirtyCell(fn: (Cell) -> Unit) {
         val dirtyPositions = drainDirtyPositions()
         dirtyPositions.forEach { pos ->
-            val char = backend.getCharacterAt(pos)
+            val char = backend.getTileAt(pos)
             if (char.isPresent) {
                 fn(Cell(pos, char.get()))
             }
@@ -170,9 +174,8 @@ class VirtualTileGrid(initialSize: Size = Size.defaultTerminalSize(),
     }
 
     private fun createBackend(initialSize: Size) =
-            TextImageBuilder.newBuilder()
+            TileImageBuilder.newBuilder()
                     .size(initialSize)
-                    .filler(Tile.defaultTile())
                     .build()
 
 }

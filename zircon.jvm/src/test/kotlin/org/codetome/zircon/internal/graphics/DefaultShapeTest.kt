@@ -29,13 +29,13 @@ class DefaultShapeTest {
     fun shouldProperlyCreateTextImage() {
         val result = LINE_SHAPE.toTextImage(CHAR)
 
-        assertThat(result.getCharacterAt(Position.create(0, 0)).get())
+        assertThat(result.getTileAt(Position.create(0, 0)).get())
                 .isEqualTo(CHAR)
-        assertThat(result.getCharacterAt(Position.create(1, 0)).get())
+        assertThat(result.getTileAt(Position.create(1, 0)).get())
                 .isEqualTo(Tile.empty())
-        assertThat(result.getCharacterAt(Position.create(0, 1)).get())
+        assertThat(result.getTileAt(Position.create(0, 1)).get())
                 .isEqualTo(Tile.empty())
-        assertThat(result.getCharacterAt(Position.create(1, 1)).get())
+        assertThat(result.getTileAt(Position.create(1, 1)).get())
                 .isEqualTo(CHAR)
 
     }

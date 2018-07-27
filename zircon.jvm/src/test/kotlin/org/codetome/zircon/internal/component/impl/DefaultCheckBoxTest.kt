@@ -45,7 +45,7 @@ class DefaultCheckBoxTest {
         val surface = target.getDrawSurface()
         val offset = 4
         TEXT.forEachIndexed { i, char ->
-            Assertions.assertThat(surface.getCharacterAt(Position.create(i + offset, 0)).get())
+            Assertions.assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
                     .isEqualTo(TileBuilder.newBuilder()
                             .character(char)
                             .styleSet(DEFAULT_STYLE)

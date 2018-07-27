@@ -112,7 +112,7 @@ interface Tile : Cacheable, Drawable {
     }
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
-        surface.setCharacterAt(offset, this)
+        surface.setTileAt(offset, this)
     }
 
     companion object {
