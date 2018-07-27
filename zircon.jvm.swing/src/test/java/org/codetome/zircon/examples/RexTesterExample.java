@@ -14,23 +14,25 @@ import java.io.InputStream;
 import java.util.List;
 
 public class RexTesterExample {
-    private static final int TERMINAL_WIDTH = 69;
+    private static final int TERMINAL_WIDTH = 70;
     private static final int TERMINAL_HEIGHT = 40;
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final InputStream RESOURCE = RexTesterExample.class.getResourceAsStream("/rex_files/BOT.xp");
+    private static final InputStream RESOURCE = RexTesterExample.class.getResourceAsStream("/rex_files/Buildings.xp");
 
     public static void main(String[] args) {
         REXPaintResource rex = REXPaintResource.loadREXFile(RESOURCE);
         final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
-                .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
+                .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
         final Screen screen = Screens.createScreenFor(terminal);
         screen.setCursorVisibility(false);
         List<Layer> layers = rex.toLayerList();
+
         for (Layer layer: layers) {
             screen.pushLayer(layer);
         }
+
         screen.display();
     }
 }
