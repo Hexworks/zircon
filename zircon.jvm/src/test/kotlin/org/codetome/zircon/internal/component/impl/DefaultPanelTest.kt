@@ -7,7 +7,7 @@ import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.BoxType
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
-import org.codetome.zircon.api.modifier.BorderBuilder
+import org.codetome.zircon.api.builder.modifier.BorderBuilder
 import org.codetome.zircon.api.modifier.BorderType
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource

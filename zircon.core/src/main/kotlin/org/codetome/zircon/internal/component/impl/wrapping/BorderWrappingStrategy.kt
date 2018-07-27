@@ -5,7 +5,7 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.modifier.Border
-import org.codetome.zircon.api.modifier.BorderBuilder
+import org.codetome.zircon.api.builder.modifier.BorderBuilder
 import org.codetome.zircon.api.modifier.BorderPosition
 import org.codetome.zircon.api.modifier.BorderPosition.*
 import org.codetome.zircon.api.shape.LineFactory

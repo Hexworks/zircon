@@ -2,6 +2,7 @@ package org.codetome.zircon.api.modifier
 
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
+import org.codetome.zircon.api.builder.modifier.BorderBuilder
 import org.codetome.zircon.api.modifier.BorderPosition.*
 import org.codetome.zircon.api.modifier.BorderType.*
 import org.junit.Test

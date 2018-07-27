@@ -10,7 +10,7 @@ import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.input.Input
-import org.codetome.zircon.api.modifier.BorderBuilder
+import org.codetome.zircon.api.builder.modifier.BorderBuilder
 import org.codetome.zircon.api.modifier.BorderType
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.component.WrappingStrategy

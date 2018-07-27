@@ -1,6 +1,7 @@
-package org.codetome.zircon.api.modifier
+package org.codetome.zircon.api.builder.modifier
 
 import org.codetome.zircon.api.builder.Builder
+import org.codetome.zircon.api.modifier.RayShade
 
 /**
  * Builds [RayShade]s.
