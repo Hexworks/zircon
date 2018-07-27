@@ -1,12 +1,13 @@
 package org.codetome.zircon.api.graphics
 
+import org.codetome.zircon.api.behavior.Boundable
+import org.codetome.zircon.api.behavior.DrawSurface
+import org.codetome.zircon.api.behavior.Drawable
+import org.codetome.zircon.api.behavior.Styleable
 import org.codetome.zircon.api.data.Cell
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.behavior.DrawSurface
-import org.codetome.zircon.api.behavior.Drawable
-import org.codetome.zircon.api.behavior.Styleable
 import org.codetome.zircon.api.sam.TextCharacterTransformer
 
 /**
@@ -14,7 +15,7 @@ import org.codetome.zircon.api.sam.TextCharacterTransformer
  * These are completely in memory and not visible,
  * but can be used when drawing on other [DrawSurface]s.
  */
-interface TextImage : DrawSurface, Styleable, Drawable {
+interface TextImage : DrawSurface, Styleable, Drawable, Boundable {
 
     /**
      * Returns a [List] of [Position]s which are not `EMPTY`.
@@ -76,6 +77,7 @@ interface TextImage : DrawSurface, Styleable, Drawable {
      * `transformer` and returns a new one with the transformed characters.
      */
     fun transform(transformer: TextCharacterTransformer): TextImage
+
     /**
      * Writes the given `text` at the given `position`.
      */
