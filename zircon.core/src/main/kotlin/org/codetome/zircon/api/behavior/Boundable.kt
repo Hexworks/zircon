@@ -4,7 +4,8 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 
 /**
- * Represents an object which has bounds in 2D space. A [Boundable] object can provide useful information
+ * Represents an object which has bounds and a position in 2D space.
+ * A [Boundable] object can provide useful information
  * about its geometry relating to other [Boundable]s (like intersection).
  */
 interface Boundable : Positionable {

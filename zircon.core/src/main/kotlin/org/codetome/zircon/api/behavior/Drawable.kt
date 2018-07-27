@@ -5,7 +5,7 @@ import org.codetome.zircon.api.data.Position
 /**
  * Represents an object which can be drawn upon a [DrawSurface].
  */
-interface Drawable : Boundable {
+interface Drawable {
 
     /**
      * Copies this [Drawable]'s content to a [DrawSurface]. If the destination [DrawSurface] is larger

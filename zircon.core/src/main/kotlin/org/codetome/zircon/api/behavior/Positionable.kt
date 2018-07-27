@@ -7,8 +7,8 @@ import org.codetome.zircon.api.data.Position
  * For example a [org.codetome.zircon.api.component.Component] can be positioned
  * relative to is parent or an [org.codetome.zircon.api.graphics.Layer]
  * can be positioned within a [org.codetome.zircon.api.terminal.Terminal].
- * Note that once positioned a [Positionable] can't be moved. If you want
- * re-positionable objects @see [Movable].
+ * Note that once positioned a [Positionable] can't be moved.
+ * If you want re-positionable objects @see [Movable].
  */
 interface Positionable {
 

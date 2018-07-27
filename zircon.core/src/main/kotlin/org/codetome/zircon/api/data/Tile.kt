@@ -1,6 +1,8 @@
 package org.codetome.zircon.api.data
 
 import org.codetome.zircon.api.behavior.Cacheable
+import org.codetome.zircon.api.behavior.DrawSurface
+import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.Border
@@ -14,7 +16,7 @@ import org.codetome.zircon.internal.data.DefaultTile
  * Use the with* methods to of new instances based on this one.
  *
  */
-interface Tile : Cacheable {
+interface Tile : Cacheable, Drawable {
 
     /**
      * Tells whether this [Tile] is opaque, eg: the background color's alpha is 255.
@@ -107,6 +109,10 @@ interface Tile : Cacheable {
         return "c:${getCharacter()}" +
                 "ss:${toStyleSet().generateCacheKey()}" +
                 "t:${getTags().sorted().joinToString(separator = "")}"
+    }
+
+    override fun drawOnto(surface: DrawSurface, offset: Position) {
+        surface.setCharacterAt(offset, this)
     }
 
     companion object {

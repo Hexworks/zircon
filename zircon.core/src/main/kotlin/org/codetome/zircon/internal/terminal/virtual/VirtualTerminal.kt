@@ -1,13 +1,14 @@
 package org.codetome.zircon.internal.terminal.virtual
 
-import org.codetome.zircon.api.data.Cell
-import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.data.Size
-import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
+import org.codetome.zircon.api.data.Cell
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.font.Font
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.input.Input
@@ -66,8 +67,13 @@ class VirtualTerminal(initialSize: Size = Size.defaultTerminalSize(),
 
     override fun draw(drawable: Drawable, offset: Position) {
         drawable.drawOnto(this, offset)
-        drawable.getBoundableSize().fetchPositions().forEach {
-            setPositionDirty(it + offset)
+        // TODO: fix this
+        if (drawable is Boundable) {
+            drawable.getBoundableSize().fetchPositions().forEach {
+                setPositionDirty(it + offset)
+            }
+        } else {
+            setPositionDirty(offset)
         }
     }
 
