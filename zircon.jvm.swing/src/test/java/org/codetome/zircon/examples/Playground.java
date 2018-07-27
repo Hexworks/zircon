@@ -17,7 +17,7 @@ import java.io.InputStream;
 public class Playground {
 
     public static void main(String[] args) {
-        final InputStream TITLE = Playground.class.getResourceAsStream("/tester.xp");
+        final InputStream TITLE = Playground.class.getResourceAsStream("/rex_files/keyfinder.xp");
         REXPaintResource background = REXPaintResource.loadREXFile(TITLE);
         Layer backgroundLayer = background.toLayerList().get(0);
 
