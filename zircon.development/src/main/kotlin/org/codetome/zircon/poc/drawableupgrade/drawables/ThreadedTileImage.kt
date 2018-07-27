@@ -1,5 +1,7 @@
-package org.codetome.zircon.poc.drawableupgrade
+package org.codetome.zircon.poc.drawableupgrade.drawables
 
+import org.codetome.zircon.poc.drawableupgrade.Position
+import org.codetome.zircon.poc.drawableupgrade.Tile
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -10,7 +12,7 @@ import java.util.concurrent.Executors
  * use this class as a base class just like how the TileGrid uses it
  */
 
-data class TileImage(val width: Int, val height: Int) : DrawSurface, Drawable {
+data class ThreadedTileImage(val width: Int, val height: Int) : TileImage {
 
     private val contents = mutableMapOf<Position, Tile>()
 
@@ -37,7 +39,7 @@ data class TileImage(val width: Int, val height: Int) : DrawSurface, Drawable {
 
     override fun createSnapshot(): Map<Position, Tile> {
         return executor.submit<Map<Position, Tile>> {
-            contents.entries.map { Pair(it.key, it.value) }.toMap()
+            contents.map { Pair(it.key, it.value) }.toMap()
         }.get()
     }
 
@@ -59,6 +61,6 @@ data class TileImage(val width: Int, val height: Int) : DrawSurface, Drawable {
                 // the atomic building blocks of any DrawSurface / Drawable
                 tile.drawOnto(surface, pos + offset)
             }
-        } // no `get` is needed here since we don't return values
+        }
     }
 }

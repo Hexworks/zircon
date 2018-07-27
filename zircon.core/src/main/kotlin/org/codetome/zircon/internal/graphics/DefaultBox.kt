@@ -4,22 +4,20 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.data.TileBuilder
-import org.codetome.zircon.api.builder.graphics.TextImageBuilder
+import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.graphics.Box
 import org.codetome.zircon.api.graphics.BoxType
 import org.codetome.zircon.api.graphics.StyleSet
-import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.shape.LineFactory
 
 class DefaultBox(size: Size,
-                 filler: Tile,
                  styleSet: StyleSet,
                  boxType: BoxType,
-                 private val backend: TextImage = TextImageBuilder.newBuilder()
+                 private val backend: TileImage = TileImageBuilder.newBuilder()
                          .size(size)
-                         .filler(filler)
                          .build())
-    : Box, TextImage by backend {
+    : Box, TileImage by backend {
 
     init {
         setStyleFrom(styleSet)
@@ -42,13 +40,13 @@ class DefaultBox(size: Size,
         draw(horizontalLine, Position.create(1, size.yLength - 1))
         draw(verticalLine, Position.create(0, 1))
         draw(verticalLine, Position.create(size.xLength - 1, 1))
-        setCharacterAt(Position.create(0, 0),
+        setTileAt(Position.create(0, 0),
                 verticalChar.withCharacter(boxType.topLeft))
-        setCharacterAt(Position.create(size.xLength - 1, 0),
+        setTileAt(Position.create(size.xLength - 1, 0),
                 verticalChar.withCharacter(boxType.topRight))
-        setCharacterAt(Position.create(0, size.yLength - 1),
+        setTileAt(Position.create(0, size.yLength - 1),
                 verticalChar.withCharacter(boxType.bottomLeft))
-        setCharacterAt(Position.create(size.xLength - 1, size.yLength - 1),
+        setTileAt(Position.create(size.xLength - 1, size.yLength - 1),
                 verticalChar.withCharacter(boxType.bottomRight))
     }
 

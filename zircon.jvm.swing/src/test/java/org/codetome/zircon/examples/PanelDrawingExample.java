@@ -44,9 +44,9 @@ public class PanelDrawingExample {
                 .build();
         box.putText("Title", Positions.defaultPosition()
                 .withRelativeX(5));
-        box.setCharacterAt(Positions.defaultPosition().withRelativeX(4),
+        box.setCharAt(Positions.defaultPosition().withRelativeX(4),
                 BoxType.TOP_BOTTOM_DOUBLE.getConnectorLeft());
-        box.setCharacterAt(Positions.defaultPosition().withRelativeX(10),
+        box.setCharAt(Positions.defaultPosition().withRelativeX(10),
                 BoxType.TOP_BOTTOM_DOUBLE.getConnectorRight());
         screen.draw(box, Positions.create(2, 2));
         screen.display();

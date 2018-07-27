@@ -6,7 +6,7 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.data.TileBuilder
-import org.codetome.zircon.api.builder.graphics.TextImageBuilder
+import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
@@ -126,7 +126,7 @@ class VirtualTileGridTest {
                 .character('a')
                 .build()
         target.putCharacter('a')
-        assertThat(target.getCharacterAt(Position.defaultPosition()).get())
+        assertThat(target.getTileAt(Position.defaultPosition()).get())
                 .isEqualTo(tc)
     }
 
@@ -136,7 +136,7 @@ class VirtualTileGridTest {
                 .character('a')
                 .build()
         target.putTextCharacter(tc)
-        assertThat(target.getCharacterAt(Position.defaultPosition()).get())
+        assertThat(target.getTileAt(Position.defaultPosition()).get())
                 .isEqualTo(tc)
     }
 
@@ -152,12 +152,12 @@ class VirtualTileGridTest {
     fun shouldBecomeDirtyWhenACharacterIsSet() {
         target.forEachDirtyCell { }
         val pos = Position.offset1x1()
-        target.setCharacterAt(pos, 'x')
+        target.setCharAt(pos, 'x')
         val dirtyCells = mutableListOf<Cell>()
         target.forEachDirtyCell { dirtyCells.add(it) }
         assertThat(dirtyCells
                 .filter { it.position == Position.offset1x1() }
-                .map { it.character })
+                .map { it.tile })
                 .containsExactly(Tile.defaultTile().withCharacter('x'))
     }
 
@@ -167,14 +167,12 @@ class VirtualTileGridTest {
         assertThat(dirtyCells).containsExactly(
                 Cell(
                         position = Position.defaultPosition(),
-                        character = TileBuilder.newBuilder()
+                        tile = TileBuilder.newBuilder()
                                 .character('a')
                                 .build()),
                 Cell(
                         position = Position.defaultPosition().withRelativeX(1),
-                        character = TileBuilder.newBuilder()
-                                .character(' ')
-                                .build())
+                        tile = Tile.empty())
         )
     }
 
@@ -195,15 +193,15 @@ class VirtualTileGridTest {
     @Test
     fun shouldBeAbleToSetCharacter() {
         val expectedChar = Tile.defaultTile().withCharacter('x')
-        target.setCharacterAt(Position.offset1x1(), expectedChar)
+        target.setTileAt(Position.offset1x1(), expectedChar)
 
-        assertThat(target.getCharacterAt(Position.offset1x1()).get())
+        assertThat(target.getTileAt(Position.offset1x1()).get())
                 .isEqualTo(expectedChar)
     }
 
     @Test
     fun shouldProperlyMarkBlinkingCharactersAsDirtyAfterADirtyDrain() {
-        target.setCharacterAt(Position.defaultPosition(), TileBuilder.newBuilder()
+        target.setTileAt(Position.defaultPosition(), TileBuilder.newBuilder()
                 .modifiers(Modifiers.blink())
                 .build())
 
@@ -217,7 +215,7 @@ class VirtualTileGridTest {
     fun shouldProperlyClearWhenClearIsCalled() {
         val tc = TileBuilder.newBuilder().character('x').build()
         SIZE.fetchPositions().forEach {
-            target.setCharacterAt(it, tc)
+            target.setTileAt(it, tc)
         }
         target.putCursorAt(Position.create(5, 5))
         target.drainDirtyPositions()
@@ -225,7 +223,7 @@ class VirtualTileGridTest {
         target.clear()
 
         val positions = SIZE.fetchPositions().map {
-            assertThat(target.getCharacterAt(it).get()).isEqualTo(Tile.defaultTile())
+            assertThat(target.getTileAt(it).get()).isEqualTo(Tile.empty())
             it
         }
         assertThat(target.getCursorPosition()).isEqualTo(Position.defaultPosition())
@@ -241,17 +239,17 @@ class VirtualTileGridTest {
         val tc = TileBuilder.newBuilder()
                 .character(TEST_CHAR)
                 .build()
-        val image = TextImageBuilder.newBuilder()
+        val image = TileImageBuilder.newBuilder()
                 .size(size)
-                .filler(tc)
                 .build()
+                .fill(tc)
         target.drainDirtyPositions()
 
         target.draw(image, offset)
 
         val positions = size.fetchPositions().map {
             val realPos = it + offset
-            assertThat(target.getCharacterAt(realPos).get()).isEqualTo(tc)
+            assertThat(target.getTileAt(realPos).get()).isEqualTo(tc)
             realPos
         }.plus(cursorPos).toList()
 
@@ -283,9 +281,8 @@ class VirtualTileGridTest {
         target.drainDirtyPositions()
         val cursorPos = target.getCursorPosition()
 
-        val result = target.setCharacterAt(Position.create(Int.MAX_VALUE, Int.MAX_VALUE), 'x')
+        target.setCharAt(Position.create(Int.MAX_VALUE, Int.MAX_VALUE), 'x')
 
-        assertThat(result).isFalse()
         assertThat(target.drainDirtyPositions()).containsExactly(cursorPos)
     }
 

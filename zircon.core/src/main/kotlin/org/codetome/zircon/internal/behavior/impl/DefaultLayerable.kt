@@ -61,7 +61,7 @@ class DefaultLayerable(private val supportedFontSize: Size,
             // TODO: optimize based on non-transparent backgrounds
             layer.containsPosition(position)
         }.map { layer ->
-            Pair(layer.getCurrentFont(), layer.getCharacterAt(position).get())
+            Pair(layer.getCurrentFont(), layer.getTileAt(position).get())
         }
     }
 

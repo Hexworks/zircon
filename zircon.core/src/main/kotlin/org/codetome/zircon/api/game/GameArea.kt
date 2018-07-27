@@ -4,7 +4,7 @@ import org.codetome.zircon.api.data.Block
 import org.codetome.zircon.api.data.Position3D
 import org.codetome.zircon.api.data.Size3D
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.util.Maybe
 
 /**
@@ -105,10 +105,10 @@ interface GameArea {
     fun fetchCharacterAt(position: Position3D, layerIdx: Int): Maybe<Tile>
 
     /**
-     * Returns all the layers from bottom to top as a collection of [org.codetome.zircon.api.graphics.TextImage]s.
+     * Returns all the layers from bottom to top as a collection of [org.codetome.zircon.api.graphics.TileImage]s.
      * A layer is a collection of [Tile]s at a given `z` level and `layerIndex`.
      */
-    fun fetchLayersAt(offset: Position3D, size: Size3D) : Iterable<TextImage>
+    fun fetchLayersAt(offset: Position3D, size: Size3D) : Iterable<TileImage>
 
     /**
      * Sets the [Tile]s at the given position. Text characters are ordered

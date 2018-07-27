@@ -1,3 +1,3 @@
 package org.codetome.zircon.api.graphics
 
-interface Box : TextImage
+interface Box : TileImage

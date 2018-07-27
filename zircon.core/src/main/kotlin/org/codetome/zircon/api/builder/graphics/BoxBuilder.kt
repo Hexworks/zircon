@@ -11,8 +11,7 @@ import org.codetome.zircon.internal.graphics.DefaultBox
 
 data class BoxBuilder(private var size: Size = Size.create(3, 3),
                       private var style: StyleSet = StyleSet.defaultStyle(),
-                      private var boxType: BoxType = BoxType.BASIC,
-                      private var filler: Char = Tile.empty().getCharacter()) : Builder<Box> {
+                      private var boxType: BoxType = BoxType.BASIC) : Builder<Box> {
 
     /**
      * Sets the size for the new [org.codetome.zircon.api.graphics.Box].
@@ -30,14 +29,6 @@ data class BoxBuilder(private var size: Size = Size.create(3, 3),
     }
 
     /**
-     * The new [org.codetome.zircon.api.graphics.Box] will be filled by this [Char].
-     * Defaults to `EMPTY` character.
-     */
-    fun filler(filler: Char) = also {
-        this.filler = filler
-    }
-
-    /**
      * Sets the [BoxType] for the resulting [org.codetome.zircon.api.graphics.Box].
      */
     fun boxType(boxType: BoxType) = also {
@@ -46,10 +37,6 @@ data class BoxBuilder(private var size: Size = Size.create(3, 3),
 
     override fun build(): Box = DefaultBox(
             size = size,
-            filler = TileBuilder.newBuilder()
-                    .styleSet(style)
-                    .character(filler)
-                    .build(),
             styleSet = style,
             boxType = boxType)
 

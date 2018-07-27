@@ -1,28 +1,26 @@
 package org.codetome.zircon.internal.graphics
 
+import org.codetome.zircon.api.behavior.Boundable
+import org.codetome.zircon.api.behavior.FontOverride
+import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.behavior.Boundable
-import org.codetome.zircon.api.behavior.FontOverride
-import org.codetome.zircon.api.builder.graphics.TextImageBuilder
-import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.Layer
-import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.graphics.TileImage
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.internal.behavior.impl.DefaultFontOverride
 import org.codetome.zircon.internal.behavior.impl.Rectangle
 
 class DefaultLayer(size: Size,
-                   filler: Tile,
                    offset: Position,
                    initialTileset: Tileset,
                    private val fontOverride: FontOverride = DefaultFontOverride(
                            initialTileset = initialTileset),
-                   private val textImage: TextImage = TextImageBuilder.newBuilder()
+                   private val tileImage: TileImage = TileImageBuilder.newBuilder()
                            .size(size)
-                           .filler(filler)
                            .build())
-    : Layer, TextImage by textImage, FontOverride by fontOverride {
+    : Layer, TileImage by tileImage, FontOverride by fontOverride {
 
 
     private var position: Position
@@ -33,7 +31,12 @@ class DefaultLayer(size: Size,
         this.rect = refreshRect()
     }
 
-    override fun fetchFilledPositions() = textImage.fetchFilledPositions().map {
+    override fun fill(filler: Tile): Layer {
+        tileImage.fill(filler)
+        return this
+    }
+
+    override fun fetchFilledPositions() = tileImage.fetchFilledPositions().map {
         it + position
     }
 
@@ -70,24 +73,23 @@ class DefaultLayer(size: Size,
                     boundable.getBoundableSize().xLength,
                     boundable.getBoundableSize().yLength))
 
-    override fun getCharacterAt(position: Position) = textImage.getCharacterAt(position - this.position)
+    override fun getTileAt(position: Position) = tileImage.getTileAt(position - this.position)
 
-    override fun getRelativeCharacterAt(position: Position) = textImage.getCharacterAt(position)
+    override fun getRelativeTileAt(position: Position) = tileImage.getTileAt(position)
 
-    override fun setCharacterAt(position: Position, character: Tile): Boolean {
-        return textImage.setCharacterAt(position - this.position, character)
+    override fun setTileAt(position: Position, tile: Tile) {
+        tileImage.setTileAt(position - this.position, tile)
     }
 
-    override fun setRelativeCharacterAt(position: Position, character: Tile): Boolean {
-        return textImage.setCharacterAt(position, character)
+    override fun setRelativeTileAt(position: Position, character: Tile) {
+        tileImage.setTileAt(position, character)
     }
 
     override fun createCopy() = DefaultLayer(
-            size = textImage.getBoundableSize(),
-            filler = Tile.empty(),
+            size = tileImage.getBoundableSize(),
             offset = getPosition(),
             initialTileset = getCurrentFont(),
-            textImage = textImage)
+            tileImage = tileImage)
 
     private fun refreshRect(): Rectangle {
         return Rectangle(position.x, position.y, getBoundableSize().xLength, getBoundableSize().yLength)

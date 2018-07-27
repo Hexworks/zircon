@@ -1,4 +1,6 @@
-package org.codetome.zircon.poc.drawableupgrade
+package org.codetome.zircon.poc.drawableupgrade.drawables
+
+import org.codetome.zircon.poc.drawableupgrade.Position
 
 /**
  * Represents an object which can be drawn onto a [DrawSurface].

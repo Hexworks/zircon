@@ -5,7 +5,7 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
-import org.codetome.zircon.api.builder.graphics.TextImageBuilder
+import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.graphics.TextCharacterString
 import org.codetome.zircon.api.graphics.TextWrap
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
@@ -41,7 +41,7 @@ data class DefaultTextCharacterString(private val textChars: List<Tile>,
                     //the word is bigger then 1 line when this happens we should character wrap
                     if(wordSize > cols){
                         nextWord.forEach { tc ->
-                            surface.setCharacterAt(cursorHandler.getCursorPosition(), tc)
+                            surface.setTileAt(cursorHandler.getCursorPosition(), tc)
                             cursorHandler.moveCursorForward()
                         }
                     }
@@ -49,7 +49,7 @@ data class DefaultTextCharacterString(private val textChars: List<Tile>,
                     //this means we can plunk the word on our line
                     if (spaceRemaining >= wordSize) {
                         nextWord.forEach { tc ->
-                            surface.setCharacterAt(cursorHandler.getCursorPosition(), tc)
+                            surface.setTileAt(cursorHandler.getCursorPosition(), tc)
                             cursorHandler.moveCursorForward()
                         }
                     } else {
@@ -68,7 +68,7 @@ data class DefaultTextCharacterString(private val textChars: List<Tile>,
                         if (spaceRemaining >= wordSize) {
                             //this means we can plunk the word on our line
                             nextWord.forEach { tc ->
-                                surface.setCharacterAt(cursorHandler.getCursorPosition(), tc)
+                                surface.setTileAt(cursorHandler.getCursorPosition(), tc)
                                 cursorHandler.moveCursorForward()
                             }
                         }
@@ -80,27 +80,27 @@ data class DefaultTextCharacterString(private val textChars: List<Tile>,
             return
         }
 
-        surface.setCharacterAt(cursorHandler.getCursorPosition(), charIter.next())
+        surface.setTileAt(cursorHandler.getCursorPosition(), charIter.next())
         if (cursorIsNotAtBottomRightCorner(cursorHandler) && charIter.hasNext()) {
             do {
                 cursorHandler.moveCursorForward()
-                surface.setCharacterAt(cursorHandler.getCursorPosition(), charIter.next())
+                surface.setTileAt(cursorHandler.getCursorPosition(), charIter.next())
             } while (cursorHandler.isCursorAtTheEndOfTheLine().not() && charIter.hasNext())
 
             if (textWrap == TextWrap.WRAP && charIter.hasNext() && cursorHandler.isCursorAtTheLastRow().not()) {
                 do {
                     cursorHandler.moveCursorForward()
-                    surface.setCharacterAt(cursorHandler.getCursorPosition(), charIter.next())
+                    surface.setTileAt(cursorHandler.getCursorPosition(), charIter.next())
                 } while (cursorIsNotAtBottomRightCorner(cursorHandler) && charIter.hasNext())
             }
         }
     }
 
-    override fun toTextImage() = TextImageBuilder.newBuilder()
+    override fun toTextImage() = TileImageBuilder.newBuilder()
             .size(getBoundableSize())
             .build().apply {
         textChars.forEachIndexed { idx, tc ->
-            setCharacterAt(Position.create(idx, 0), tc)
+            setTileAt(Position.create(idx, 0), tc)
         }
     }
 

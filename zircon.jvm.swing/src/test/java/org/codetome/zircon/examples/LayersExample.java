@@ -6,13 +6,13 @@ import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.data.Position;
 import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.data.Tile;
+import org.codetome.zircon.api.grid.TileGrid;
 import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.interop.Screens;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.interop.TextColors;
 import org.codetome.zircon.api.interop.Tiles;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.grid.TileGrid;
 import org.jetbrains.annotations.NotNull;
 
 import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16;
@@ -34,14 +34,14 @@ public class LayersExample {
 
         final String firstRow = "This is white title on black";
         for (int x = 0; x < firstRow.length(); x++) {
-            screen.setCharacterAt(
+            screen.setTileAt(
                     Positions.create(x + 1, 1),
                     buildWhiteOnBlack(firstRow.charAt(x)));
         }
 
         final String secondRow = "Like the row above but with blue overlay.";
         for (int x = 0; x < secondRow.length(); x++) {
-            screen.setCharacterAt(
+            screen.setTileAt(
                     Positions.create(x + 1, 2),
                     buildWhiteOnBlack(secondRow.charAt(x)));
         }
@@ -58,11 +58,11 @@ public class LayersExample {
         screen.pushLayer(new LayerBuilder()
                 .offset(offset)
                 .size(size)
-                .filler(Tiles.newBuilder()
+                .build()
+                .fill(Tiles.newBuilder()
                         .backgroundColor(color)
                         .character(' ')
-                        .build())
-                .build());
+                        .build()));
     }
 
     @NotNull

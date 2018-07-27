@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.shape
 
 import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.internal.shape.DefaultShape
 
@@ -31,9 +31,9 @@ interface Shape : Collection<Position> {
     }
 
     /**
-     * Creates a [TextImage] from this [Shape] using `tile` to fill the positions.
+     * Creates a [TileImage] from this [Shape] using `tile` to fill the positions.
      */
-    fun toTextImage(tile: Tile) : TextImage
+    fun toTextImage(tile: Tile) : TileImage
 
     /**
      * Offsets this [Shape] to the default position (column=0,row=0),

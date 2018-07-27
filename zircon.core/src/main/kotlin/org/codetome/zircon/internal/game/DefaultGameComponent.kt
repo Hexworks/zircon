@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.game
 
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
-import org.codetome.zircon.api.builder.graphics.TextImageBuilder
+import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.data.*
@@ -90,7 +90,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
             val customLayersPerBlock = gameArea.getLayersPerBlock()
             val totalLayerCount = fixedLayerCount + customLayersPerBlock
             val builders = (0 until totalLayerCount * height).map {
-                TextImageBuilder.newBuilder().size(screenSize)
+                TileImageBuilder.newBuilder().size(screenSize)
             }
             val (fromX, fromY) = getVisibleOffset().to2DPosition()
             val toX = fromX + getBoundableSize().xLength
@@ -111,17 +111,17 @@ class DefaultGameComponent(private val gameArea: GameArea,
                             val layers = block.layers
                             val front = block.front
 
-                            builders[bottomIdx].character(screenPos, bot)
+                            builders[bottomIdx].tile(screenPos, bot)
                             layers.forEachIndexed { idx, layer ->
-                                builders[bottomIdx + idx + 1].character(screenPos, layer)
+                                builders[bottomIdx + idx + 1].tile(screenPos, layer)
                             }
-                            builders[frondIdx].character(screenPos, front)
+                            builders[frondIdx].tile(screenPos, front)
                         }
                         maybeNext.ifPresent { block ->
                             val back = block.back
                             val top = block.top
-                            builders[backIdx].character(screenPos, back)
-                            builders[topIdx].character(screenPos, top)
+                            builders[backIdx].tile(screenPos, back)
+                            builders[topIdx].tile(screenPos, top)
                         }
                     }
                 }

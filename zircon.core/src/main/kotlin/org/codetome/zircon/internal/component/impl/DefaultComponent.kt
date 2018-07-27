@@ -8,11 +8,11 @@ import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
-import org.codetome.zircon.api.builder.graphics.TextImageBuilder
+import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.tileset.Tileset
-import org.codetome.zircon.api.graphics.TextImage
+import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Identifier
@@ -32,8 +32,7 @@ abstract class DefaultComponent(initialSize: Size,
                                 private val wrappers: Iterable<WrappingStrategy>,
                                 private val fontOverride: FontOverride = DefaultFontOverride(
                                         initialTileset = initialTileset),
-                                private val drawSurface: TextImage = TextImageBuilder.newBuilder()
-                                        .filler(Tile.empty())
+                                private val drawSurface: TileImage = TileImageBuilder.newBuilder()
                                         .size(initialSize)
                                         .build(),
                                 private val boundable: DefaultBoundable = DefaultBoundable(

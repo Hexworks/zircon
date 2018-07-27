@@ -20,7 +20,7 @@ interface TextCharacterString : Drawable, Collection<Tile> {
 
     fun getTextCharacters(): List<Tile>
 
-    fun toTextImage(): TextImage
+    fun toTextImage(): TileImage
 
     /**
      * Creates a new [TextCharacterString] which contains the contents of `this` string and the `other` string.

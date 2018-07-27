@@ -38,7 +38,7 @@ class DefaultRadioButtonTest {
         val surface = target.getDrawSurface()
         val offset = 4
         TEXT.forEachIndexed { i, char ->
-            assertThat(surface.getCharacterAt(Position.create(i + offset, 0)).get())
+            assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
                     .isEqualTo(TileBuilder.newBuilder()
                             .character(char)
                             .styleSet(DEFAULT_STYLE)
@@ -155,7 +155,7 @@ class DefaultRadioButtonTest {
         assertThat(componentChanged.get()).isFalse()
     }
 
-    private fun getButtonChar() = target.getDrawSurface().getCharacterAt(Position.create(1, 0)).get().getCharacter()
+    private fun getButtonChar() = target.getDrawSurface().getTileAt(Position.create(1, 0)).get().getCharacter()
 
     companion object {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()

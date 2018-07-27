@@ -15,7 +15,7 @@ import org.codetome.zircon.api.sam.TextCharacterTransformer
  * These are completely in memory and not visible,
  * but can be used when drawing on other [DrawSurface]s.
  */
-interface TextImage : DrawSurface, Styleable, Drawable, Boundable {
+interface TileImage : DrawSurface, Drawable, Styleable, Boundable {
 
     /**
      * Returns a [List] of [Position]s which are not `EMPTY`.
@@ -23,17 +23,17 @@ interface TextImage : DrawSurface, Styleable, Drawable, Boundable {
     fun fetchFilledPositions(): List<Position>
 
     /**
-     * Returns a copy of this [TextImage] with the exact same content.
+     * Returns a copy of this [TileImage] with the exact same content.
      */
-    fun copyImage(): TextImage = toSubImage(Position.defaultPosition(), getBoundableSize())
+    fun copyImage(): TileImage = toSubImage(Position.defaultPosition(), getBoundableSize())
 
     /**
-     * Returns a part of this [TextImage] as a new [TextImage].
+     * Returns a part of this [TileImage] as a new [TileImage].
      * @param offset the position from which copying will start
      * @param size the size of the newly created image.
      * If the new image would overflow an exception is thrown
      */
-    fun toSubImage(offset: Position, size: Size): TextImage
+    fun toSubImage(offset: Position, size: Size): TileImage
 
     /**
      * Returns a copy of this image resized to a new size and using a specified filler character
@@ -41,42 +41,47 @@ interface TextImage : DrawSurface, Styleable, Drawable, Boundable {
      * The copy will be independent from the one this method is
      * invoked on, so modifying one will not affect the other.
      */
-    fun resize(newSize: Size, filler: Tile): TextImage
+    fun resize(newSize: Size, filler: Tile = Tile.empty()): TileImage
+
+    /**
+     * Fills the emtpy parts of this [TileImage] with the given `filler`.
+     */
+    fun fill(filler: Tile): TileImage
 
     /**
      * Returns all the [Cell]s ([Tile]s with associated [Position] information)
-     * of this [TextImage].
+     * of this [TileImage].
      */
     fun fetchCells(): Iterable<Cell>
 
     /**
-     * Returns the [Cell]s in this [TextImage] from the given `offset`
+     * Returns the [Cell]s in this [TileImage] from the given `offset`
      * position and area.
      * Throws an exception if either `offset` or `size` would overlap
-     * with this [TextImage].
+     * with this [TileImage].
      */
     fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell>
 
     /**
      * Combines this text image with another one. This method creates a new
-     * [TextImage] which is the combination of `this` one and the supplied `textImage`.
-     * *Note that* if there are two [Position]s which are present in both [TextImage]s
+     * [TileImage] which is the combination of `this` one and the supplied `tileImage`.
+     * *Note that* if there are two [Position]s which are present in both [TileImage]s
      * **and** at none of those positions is an `EMPTY` [Tile] then the
-     * [Tile] in the supplied `textImage` will be used.
-     * This method creates a new object and **both** original [TextImage]s are left
+     * [Tile] in the supplied `tileImage` will be used.
+     * This method creates a new object and **both** original [TileImage]s are left
      * untouched!
-     * The size of the new [TextImage] will be the size of the current [TextImage] UNLESS the offset + `textImage`
-     * would overflow. In that case the new [TextImage] will be resized to fit the new TextImage accordingly
-     * @param textImage the image which will be drawn onto `this` image
-     * @param offset The position on the target image where the `textImage`'s top left corner will be
+     * The size of the new [TileImage] will be the size of the current [TileImage] UNLESS the offset + `tileImage`
+     * would overflow. In that case the new [TileImage] will be resized to fit the new TileImage accordingly
+     * @param tileImage the image which will be drawn onto `this` image
+     * @param offset The position on the target image where the `tileImage`'s top left corner will be
      */
-    fun combineWith(textImage: TextImage, offset: Position): TextImage
+    fun combineWith(tileImage: TileImage, offset: Position): TileImage
 
     /**
-     * Transforms all of the [Tile]s in this [TextImage] with the given
+     * Transforms all of the [Tile]s in this [TileImage] with the given
      * `transformer` and returns a new one with the transformed characters.
      */
-    fun transform(transformer: TextCharacterTransformer): TextImage
+    fun transform(transformer: TextCharacterTransformer): TileImage
 
     /**
      * Writes the given `text` at the given `position`.
@@ -84,7 +89,7 @@ interface TextImage : DrawSurface, Styleable, Drawable, Boundable {
     fun putText(text: String, position: Position = Position.defaultPosition())
 
     /**
-     * Sets the style of this [TextImage] from the given `styleSet`
+     * Sets the style of this [TileImage] from the given `styleSet`
      * and also applies it to all currently present
      * [Tile]s within the bounds delimited by `offset` and `size`.
      * Offset is used to offset the starting position from the top left position

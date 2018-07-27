@@ -63,7 +63,7 @@ public class TypingExample {
             } else {
                 if (input.isKeyStroke()) {
                     final KeyStroke ks = input.asKeyStroke();
-                    screen.setCharacterAt(pos, TEXT_CHAR_TEMPLATE.withCharacter(ks.getCharacter()));
+                    screen.setTileAt(pos, TEXT_CHAR_TEMPLATE.withCharacter(ks.getCharacter()));
                     screen.moveCursorForward();
                     screen.refresh();
                 }

@@ -5,7 +5,7 @@ import org.codetome.zircon.api.util.Maybe
 
 /**
  * Represents an object which can contain multiple [org.codetome.zircon.api.graphics.Layer]s
- * which are specialized [org.codetome.zircon.api.graphics.TextImage] overlays displayed
+ * which are specialized [org.codetome.zircon.api.graphics.TileImage] overlays displayed
  * above the [Layerable] object.
  */
 interface Layerable : Boundable {

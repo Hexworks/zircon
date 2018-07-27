@@ -29,7 +29,6 @@ data class REXLayer(private val width: Int,
     fun toLayer(): Layer {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.create(width, height))
-                .filler(Tile.empty())
                 .font(FontSettings.NO_FONT)
                 .build()
 
@@ -41,7 +40,7 @@ data class REXLayer(private val width: Int,
                     // Skip transparent characters
                     continue
                 }
-                layer.setCharacterAt(
+                layer.setTileAt(
                         Position.create(x, y),
                         TileBuilder.newBuilder()
                                 .character(cell.getCharacter())

@@ -72,7 +72,7 @@ class TileGridScreenTest {
 
         target.putCharacter(char)
 
-        assertThat(target.getCharacterAt(currCursorPos).get()).isEqualTo(expected)
+        assertThat(target.getTileAt(currCursorPos).get()).isEqualTo(expected)
         assertThat(target.getCursorPosition()).isEqualTo(currCursorPos.withRelativeX(1))
 
     }
@@ -107,20 +107,20 @@ class TileGridScreenTest {
 
     @Test
     fun shouldBeDrawnWhenCharacterSet() {
-        target.setCharacterAt(Position.offset1x1(), CHAR)
-        assertThat(target.getCharacterAt(Position.offset1x1()).get())
+        target.setTileAt(Position.offset1x1(), CHAR)
+        assertThat(target.getTileAt(Position.offset1x1()).get())
                 .isEqualTo(CHAR)
 
     }
 
     @Test
     fun shouldClearProperlyWhenClearIsCalled() {
-        target.setCharacterAt(Position.offset1x1(), CHAR)
+        target.setTileAt(Position.offset1x1(), CHAR)
         target.display()
 
         target.clear()
 
-        assertThat(target.getCharacterAt(Position.offset1x1()))
+        assertThat(target.getTileAt(Position.offset1x1()))
                 .isNotEqualTo(CHAR)
     }
 

@@ -8,31 +8,31 @@ import org.codetome.zircon.api.data.Position.Companion.offset1x1
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.data.TileBuilder
-import org.codetome.zircon.api.builder.graphics.TextImageBuilder
+import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.junit.Before
 import org.junit.Test
 import java.util.function.Consumer
 
-class InMemoryTextImageTest {
+class MapTileImageTest {
 
-    lateinit var target: InMemoryTextImage
+    lateinit var target: MapTileImage
 
     @Before
     fun setUp() {
-        target = InMemoryTextImage(SIZE_OF_3X3)
+        target = MapTileImage(SIZE_OF_3X3)
     }
 
     @Test
     fun shouldContainNothingWhenCreated() {
-        assertThat(target.getCharacterAt(EMPTY_BY_DEFAULT_POS).get())
+        assertThat(target.getTileAt(EMPTY_BY_DEFAULT_POS).get())
                 .isEqualTo(EMPTY_CHAR)
     }
 
     @Test
     fun shouldProperlyImplementGetCharacter() {
-        target.setCharacterAt(FILLED_POS, FILLER)
+        target.setTileAt(FILLED_POS, FILLER)
 
-        assertThat(target.getCharacterAt(FILLED_POS).get()).isEqualTo(FILLER)
+        assertThat(target.getTileAt(FILLED_POS).get()).isEqualTo(FILLER)
     }
 
 
@@ -44,26 +44,26 @@ class InMemoryTextImageTest {
     @Test
     fun shouldProperlyResizeWhenResizeCalledWithDifferentSize() {
         val result = target.resize(Size.create(4, 4), SET_ALL_CHAR)
-        assertThat(result.getCharacterAt(Position.defaultPosition()).get())
+        assertThat(result.getTileAt(Position.defaultPosition()).get())
                 .isEqualTo(EMPTY_CHAR)
-        assertThat(result.getCharacterAt(Position.create(1, 1)).get())
+        assertThat(result.getTileAt(Position.create(1, 1)).get())
                 .isEqualTo(EMPTY_CHAR)
-        assertThat(result.getCharacterAt(Position.create(3, 3)).get())
+        assertThat(result.getTileAt(Position.create(3, 3)).get())
                 .isEqualTo(SET_ALL_CHAR)
     }
 
     @Test
     fun shouldNotSetAnythingWhenSetCharAtIsCalledWithOutOfBounds() {
         fetchOutOfBoundsPositions().forEach {
-            target.setCharacterAt(it, SET_ALL_CHAR)
+            target.setTileAt(it, SET_ALL_CHAR)
             assertThat(fetchTargetChars().filter { it == SET_ALL_CHAR }).isEmpty()
         }
     }
 
     @Test
     fun shouldSetCharProperlyWhenCalledWithinBounds() {
-        target.setCharacterAt(Position.offset1x1(), SET_ALL_CHAR)
-        assertThat(target.getCharacterAt(Position.offset1x1()).get())
+        target.setTileAt(Position.offset1x1(), SET_ALL_CHAR)
+        assertThat(target.getTileAt(Position.offset1x1()).get())
                 .isEqualTo(SET_ALL_CHAR)
     }
 
@@ -72,7 +72,7 @@ class InMemoryTextImageTest {
         fetchOutOfBoundsPositions().forEach {
             var ex: Exception? = null
             try {
-                target.getCharacterAt(it).get()
+                target.getTileAt(it).get()
             } catch (e: Exception) {
                 ex = e
             }
@@ -84,7 +84,7 @@ class InMemoryTextImageTest {
     fun shouldProperlyCopyWithBasicParams() {
         IMAGE_TO_COPY.drawOnto(target)
 
-        assertThat(target.getCharacterAt(defaultPosition()).get())
+        assertThat(target.getTileAt(defaultPosition()).get())
                 .isEqualTo(SET_ALL_CHAR)
     }
 
@@ -94,38 +94,38 @@ class InMemoryTextImageTest {
         val overwriteChar = Tile.defaultTile().withCharacter('+')
 
         val originalSize = Size.create(3, 1)
-        val source = TextImageBuilder.newBuilder()
+        val source = TileImageBuilder.newBuilder()
                 .size(originalSize)
                 .build()
         originalSize.fetchPositions().forEach {
-            source.setCharacterAt(it, sourceChar)
+            source.setTileAt(it, sourceChar)
         }
 
-        val newImage = TextImageBuilder.newBuilder()
+        val newImage = TileImageBuilder.newBuilder()
                 .size(Size.create(2, 1))
-                .filler(overwriteChar)
                 .build()
+                .fill(overwriteChar)
 
         val result = source.combineWith(newImage, Position.create(0, 2))
         assertThat(result.getBoundableSize()).isEqualTo(Size.create(3, 3))
 
         //first yLength should all be xLength's
         for (x in 0..2) {
-            assertThat(result.getCharacterAt(Position.create(x, 0)).get().getCharacter()).isEqualTo('x')
+            assertThat(result.getTileAt(Position.create(x, 0)).get().getCharacter()).isEqualTo('x')
         }
 
         //as the second image was offset by 2 yLength there should be nothing here
         for (x in 0..2) {
-            assertThat(result.getCharacterAt(Position.create(x, 1)).get().getCharacter()).isEqualTo(' ')
+            assertThat(result.getTileAt(Position.create(x, 1)).get().getCharacter()).isEqualTo(' ')
         }
 
         //the 3rd yLength should be + for the first 2 xLength (as that's the size of the second image)
         for (x in 0..1) {
-            assertThat(result.getCharacterAt(Position.create(x, 2)).get().getCharacter()).isEqualTo('+')
+            assertThat(result.getTileAt(Position.create(x, 2)).get().getCharacter()).isEqualTo('+')
         }
 
         //the bottom right character should be blank
-        assertThat(result.getCharacterAt(Position.create(2, 2)).get().getCharacter()).isEqualTo(' ')
+        assertThat(result.getTileAt(Position.create(2, 2)).get().getCharacter()).isEqualTo(' ')
     }
 
     @Test
@@ -134,31 +134,31 @@ class InMemoryTextImageTest {
         val imageChar = Tile.defaultTile().withCharacter('+')
         val filler = Tile.defaultTile().withCharacter('_')
 
-        val source = TextImageBuilder.newBuilder()
+        val source = TileImageBuilder.newBuilder()
                 .size(Size.create(3, 3))
-                .filler(filler)
                 .build()
+                .fill(filler)
 
-        val image = TextImageBuilder.newBuilder()
+        val image = TileImageBuilder.newBuilder()
                 .size(Size.create(2, 2))
-                .filler(filler)
                 .build()
+                .fill(filler)
 
-        source.setCharacterAt(Position.create(0, 0), sourceChar)
-        source.setCharacterAt(Position.create(1, 0), sourceChar)
-        source.setCharacterAt(Position.create(0, 1), sourceChar)
-        source.setCharacterAt(Position.create(1, 1), sourceChar)
+        source.setTileAt(Position.create(0, 0), sourceChar)
+        source.setTileAt(Position.create(1, 0), sourceChar)
+        source.setTileAt(Position.create(0, 1), sourceChar)
+        source.setTileAt(Position.create(1, 1), sourceChar)
 
         image.getBoundableSize().fetchPositions().forEach(Consumer {
-            image.setCharacterAt(it, imageChar)
+            image.setTileAt(it, imageChar)
         })
 
         val result = source.combineWith(image, offset1x1())
 
-        assertThat(result.getCharacterAt(offset1x1()).get()).isEqualTo(imageChar)
+        assertThat(result.getTileAt(offset1x1()).get()).isEqualTo(imageChar)
         assertThat(result.getBoundableSize()).isEqualTo(source.getBoundableSize())
-        assertThat(source.getCharacterAt(offset1x1()).get()).isEqualTo(sourceChar)
-        assertThat(image.getCharacterAt(offset1x1()).get()).isEqualTo(imageChar)
+        assertThat(source.getTileAt(offset1x1()).get()).isEqualTo(sourceChar)
+        assertThat(image.getTileAt(offset1x1()).get()).isEqualTo(imageChar)
     }
 
     @Test
@@ -172,7 +172,7 @@ class InMemoryTextImageTest {
     private fun fetchTargetChars(): List<Tile> {
         return (0..2).flatMap { col ->
             (0..2).map { row ->
-                target.getCharacterAt(Position.create(col, row)).get()
+                target.getTileAt(Position.create(col, row)).get()
             }
         }
     }
@@ -198,12 +198,10 @@ class InMemoryTextImageTest {
                 .character('c')
                 .build()
         val TO_COPY = arrayOf(arrayOf(TO_COPY_CHAR))
-        val IMAGE_TO_COPY = InMemoryTextImage(
-                size = Size.one(),
-                filler = SET_ALL_CHAR)
-        val IMAGE_TO_COPY_AND_CROP = InMemoryTextImage(
-                size = Size.create(2, 2),
-                filler = SET_ALL_CHAR)
+        val IMAGE_TO_COPY = ConcurrentTileImage(
+                size = Size.one()).fill(SET_ALL_CHAR)
+        val IMAGE_TO_COPY_AND_CROP = ConcurrentTileImage(
+                size = Size.create(2, 2)).fill(SET_ALL_CHAR)
 
     }
 

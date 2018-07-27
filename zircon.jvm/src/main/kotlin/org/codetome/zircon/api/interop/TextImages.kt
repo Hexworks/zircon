@@ -1,12 +1,12 @@
 package org.codetome.zircon.api.interop
 
-import org.codetome.zircon.api.builder.graphics.TextImageBuilder
+import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 
 object TextImages {
 
     /**
-     * Creates a new [TextImageBuilder] to build [org.codetome.zircon.api.graphics.TextImage]s.
+     * Creates a new [TileImageBuilder] to build [org.codetome.zircon.api.graphics.TileImage]s.
      */
     @JvmStatic
-    fun newBuilder() = TextImageBuilder.newBuilder()
+    fun newBuilder() = TileImageBuilder.newBuilder()
 }

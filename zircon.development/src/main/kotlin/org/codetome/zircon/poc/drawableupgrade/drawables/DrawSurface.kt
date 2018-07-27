@@ -1,11 +1,13 @@
-package org.codetome.zircon.poc.drawableupgrade
+package org.codetome.zircon.poc.drawableupgrade.drawables
 
+import org.codetome.zircon.poc.drawableupgrade.Position
+import org.codetome.zircon.poc.drawableupgrade.Tile
 import java.util.*
 
 /**
  * A draw surface is like a piece of paper. Any [Drawable] can be drawn on top of it
  * It also supports drawing the most basic building block: a [Tile]. This will be useful
- * later, see the implementation in [TileImage]
+ * later, see the implementation in [ThreadedTileImage]
  */
 interface DrawSurface {
 
