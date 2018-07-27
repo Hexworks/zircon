@@ -1,8 +1,8 @@
 package org.codetome.zircon.api.resource
 
-import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.PickFirstMetaStrategy
+import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
+import org.codetome.zircon.internal.tileset.impl.PickFirstMetaStrategy
 import org.codetome.zircon.internal.util.CP437Utils.CP437_METADATA
 
 /**
@@ -38,16 +38,16 @@ enum class CP437TilesetResource(private val tilesetName: String,
     REX_PAINT_20X20("rex_paint", 20, 20);
 
     /**
-     * Loads this built-in tileset as a tiled [Font].
+     * Loads this built-in tileset as a tiled [Tileset].
      */
-    fun toFont(): Font {
+    fun toFont(): Tileset {
         return toFont(true)
     }
 
     /**
-     * Loads this built-in tileset as a tiled [Font].
+     * Loads this built-in tileset as a tiled [Tileset].
      */
-    fun toFont(cacheFonts: Boolean): Font {
+    fun toFont(cacheFonts: Boolean): Tileset {
         return loadCP437Tileset(
                 width = width,
                 height = height,
@@ -58,17 +58,17 @@ enum class CP437TilesetResource(private val tilesetName: String,
     companion object {
 
         /**
-         * Loads a tileset from the given `source` as a tiled [Font].
+         * Loads a tileset from the given `source` as a tiled [Tileset].
          * *Note that* it is your responsibility to supply the proper parameters for
          * this method!
          */
         fun loadCP437Tileset(width: Int,
                              height: Int,
                              path: String,
-                             cacheFonts: Boolean = true): Font {
-            return FontLoaderRegistry.getCurrentFontLoader().fetchTiledFont(
+                             cacheFonts: Boolean = true): Tileset {
+            return TilesetLoaderRegistry.getCurrentFontLoader().fetchTiledFont(
                     path = path,
-                    metadata = CP437_METADATA,
+                    metadataTile = CP437_METADATA,
                     width = width,
                     height = height,
                     cacheFonts = cacheFonts,

@@ -1,7 +1,7 @@
 package org.codetome.zircon.internal.terminal
 
 import org.codetome.zircon.api.data.Size
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.terminal.DeviceConfiguration
 import java.awt.Canvas
 import java.awt.Frame
@@ -17,13 +17,13 @@ import javax.swing.JFrame
 class SwingTerminalFrame(title: String = "ZirconTerminal",
                          size: Size,
                          deviceConfiguration: DeviceConfiguration = DeviceConfiguration.defaultConfiguration(),
-                         font: Font,
+                         tileset: Tileset,
                          fullScreen: Boolean,
                          private val canvas: Canvas = TerminalCanvas(),
                          private val swingTerminal: SwingTerminal =
                                  SwingTerminal(
                                          canvas = canvas,
-                                         initialFont = font,
+                                         initialTileset = tileset,
                                          initialSize = size,
                                          deviceConfiguration = deviceConfiguration))
     : JFrame(title), InternalTerminal by swingTerminal, WindowStateListener {

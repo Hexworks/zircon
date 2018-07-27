@@ -2,9 +2,9 @@ package org.codetome.zircon.api.resource
 
 import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.PickRandomMetaStrategy
-import org.codetome.zircon.internal.font.impl.TestFontLoader
+import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
+import org.codetome.zircon.internal.tileset.impl.PickRandomMetaStrategy
+import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
 import org.junit.Test
 
 
@@ -12,7 +12,7 @@ class GraphicTilesetResourceTest {
 
     @Test
     fun test() {
-        FontLoaderRegistry.setFontLoader(TestFontLoader())
+        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
         val result = GraphicTilesetResource.loadGraphicTileset(
                 path = "src/main/resources/graphic_tilesets/nethack_16x16.zip",
                 metadataPickingStrategy = PickRandomMetaStrategy())

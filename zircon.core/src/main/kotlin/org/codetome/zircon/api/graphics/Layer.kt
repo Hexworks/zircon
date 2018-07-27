@@ -6,7 +6,7 @@ import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.FontOverride
 import org.codetome.zircon.api.behavior.Movable
 import org.codetome.zircon.api.util.Maybe
-import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.tileset.impl.FontSettings
 
 /**
  * A [Layer] is a specialized [TextImage] which is drawn upon a

@@ -1,28 +1,28 @@
 package org.codetome.zircon.internal.behavior.impl
 
 import org.codetome.zircon.api.behavior.FontOverride
-import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.internal.tileset.impl.FontSettings
 
-class DefaultFontOverride(initialFont: Font) : FontOverride {
+class DefaultFontOverride(initialTileset: Tileset) : FontOverride {
 
-    private var font = initialFont
+    private var font = initialTileset
 
     override fun resetFont() {
         font = FontSettings.NO_FONT
     }
 
-    override fun getCurrentFont(): Font = font
+    override fun getCurrentFont(): Tileset = font
 
-    override fun useFont(font: Font): Boolean {
+    override fun useFont(tileset: Tileset): Boolean {
         val currentFont = getCurrentFont()
         if (currentFont !== FontSettings.NO_FONT) {
-            require(currentFont.getSize() == font.getSize()) {
-                "Can't override previous font with size: ${getCurrentFont().getSize()} with a Font with" +
-                        " different size: ${font.getSize()}"
+            require(currentFont.getSize() == tileset.getSize()) {
+                "Can't override previous tileset with size: ${getCurrentFont().getSize()} with a Tileset with" +
+                        " different size: ${tileset.getSize()}"
             }
         }
-        this.font = font
+        this.font = tileset
         return true
     }
 }

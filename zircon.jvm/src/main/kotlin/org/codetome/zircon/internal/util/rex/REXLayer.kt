@@ -7,7 +7,7 @@ import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
-import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.tileset.impl.FontSettings
 import java.nio.ByteBuffer
 
 /**

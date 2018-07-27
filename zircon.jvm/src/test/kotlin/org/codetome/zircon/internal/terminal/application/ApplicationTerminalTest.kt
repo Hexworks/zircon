@@ -4,16 +4,16 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.terminal.DeviceConfigurationBuilder
-import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.api.font.FontTextureRegion
+import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.terminal.CursorStyle
 import org.codetome.zircon.internal.component.impl.DefaultLabelTest
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.TestFontLoader
+import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
+import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import org.junit.Before
 import org.junit.Ignore
@@ -24,32 +24,32 @@ import java.util.concurrent.atomic.AtomicBoolean
 class ApplicationTerminalTest {
 
     lateinit var target: ApplicationTerminal
-    lateinit var font: Font
+    lateinit var tileset: Tileset
 
-    val fontTextureDraws = mutableListOf<Triple<FontTextureRegion<*>, Int, Int>>()
+    val fontTextureDraws = mutableListOf<Triple<TileTexture<*>, Int, Int>>()
     val cursorDraws = mutableListOf<Triple<Tile, Int, Int>>()
     var rendered = AtomicBoolean(false)
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(TestFontLoader())
-        font = DefaultLabelTest.FONT.toFont()
+        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
+        tileset = DefaultLabelTest.FONT.toFont()
         target = object : ApplicationTerminal(
                 deviceConfiguration = CONFIG,
                 terminal = VirtualTerminal(
                         initialSize = SIZE,
-                        initialFont = font)) {
-            override fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion<*>, x: Int, y: Int) {
-                fontTextureDraws.add(Triple(fontTextureRegion, x, y))
+                        initialTileset = tileset)) {
+            override fun drawFontTextureRegion(tileTexture: TileTexture<*>, x: Int, y: Int) {
+                fontTextureDraws.add(Triple(tileTexture, x, y))
             }
 
             override fun drawCursor(character: Tile, x: Int, y: Int) {
                 cursorDraws.add(Triple(character, x, y))
             }
 
-            override fun getHeight() = SIZE.yLength * font.getHeight()
+            override fun getHeight() = SIZE.yLength * tileset.getHeight()
 
-            override fun getWidth() = SIZE.xLength * font.getWidth()
+            override fun getWidth() = SIZE.xLength * tileset.getWidth()
 
             override fun doRender() {
                 super.doRender()

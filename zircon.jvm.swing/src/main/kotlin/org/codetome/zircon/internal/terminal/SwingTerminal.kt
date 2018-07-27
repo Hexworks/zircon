@@ -3,8 +3,8 @@ package org.codetome.zircon.internal.terminal
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.interop.toAWTColor
-import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.api.font.FontTextureRegion
+import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.terminal.CursorStyle
 import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.internal.terminal.application.ApplicationTerminal
@@ -22,7 +22,7 @@ import javax.swing.SwingUtilities
  * and wraps a [Canvas].
  */
 class SwingTerminal(
-        initialFont: Font,
+        initialTileset: Tileset,
         initialSize: Size,
         private val canvas: Canvas,
         private val deviceConfiguration: DeviceConfiguration)
@@ -31,7 +31,7 @@ class SwingTerminal(
         deviceConfiguration = deviceConfiguration,
         terminal = VirtualTerminal(
                 initialSize = initialSize,
-                initialFont = initialFont)) {
+                initialTileset = initialTileset)) {
 
     private var firstDraw = true
 
@@ -42,7 +42,7 @@ class SwingTerminal(
                 getSupportedFontSize().yLength * getBoundableSize().yLength)
         canvas.isFocusable = true
         canvas.requestFocusInWindow()
-        canvas.minimumSize = Dimension(initialFont.getWidth(), initialFont.getHeight())
+        canvas.minimumSize = Dimension(initialTileset.getWidth(), initialTileset.getHeight())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.addKeyListener(TerminalKeyListener(
@@ -91,8 +91,8 @@ class SwingTerminal(
         flush()
     }
 
-    override fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion<*>, x: Int, y: Int) {
-        getGraphics2D().drawImage(fontTextureRegion.getBackend() as BufferedImage, x, y, null)
+    override fun drawFontTextureRegion(tileTexture: TileTexture<*>, x: Int, y: Int) {
+        getGraphics2D().drawImage(tileTexture.getBackend() as BufferedImage, x, y, null)
     }
 
     override fun drawCursor(character: Tile, x: Int, y: Int) {

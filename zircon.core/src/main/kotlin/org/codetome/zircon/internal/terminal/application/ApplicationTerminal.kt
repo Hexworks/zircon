@@ -4,14 +4,14 @@ import org.codetome.zircon.api.data.Cell
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.font.Font
-import org.codetome.zircon.api.font.FontTextureRegion
+import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.modifier.SimpleModifiers
 import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.tileset.impl.FontSettings
 import org.codetome.zircon.internal.terminal.ApplicationListener
 import org.codetome.zircon.internal.terminal.InternalTerminal
 
@@ -41,7 +41,7 @@ abstract class ApplicationTerminal(
      */
     abstract fun getWidth(): Int
 
-    abstract fun drawFontTextureRegion(fontTextureRegion: FontTextureRegion<*>, x: Int, y: Int)
+    abstract fun drawFontTextureRegion(tileTexture: TileTexture<*>, x: Int, y: Int)
 
     abstract fun drawCursor(character: Tile, x: Int, y: Int)
 
@@ -53,7 +53,7 @@ abstract class ApplicationTerminal(
     override fun doRender() {
         var needToRedraw = hasBlinkingText.or(resizeHappened)
         resizeHappened = false
-        val font = getCurrentFont() // we get the font at the start because it might be changed by external force
+        val font = getCurrentFont() // we get the tileset at the start because it might be changed by external force
 
         if (isDirty()) {
             needToRedraw = true
@@ -73,7 +73,7 @@ abstract class ApplicationTerminal(
                         character = textCharacter,
                         xIdx = position.x,
                         yIdx = position.y,
-                        font = font,
+                        tileset = font,
                         drawCursor = drawCursor)
             }
 
@@ -98,18 +98,18 @@ abstract class ApplicationTerminal(
             character: Tile,
             xIdx: Int,
             yIdx: Int,
-            font: Font,
+            tileset: Tileset,
             drawCursor: Boolean) {
 
         val x = xIdx * getSupportedFontSize().xLength
         val y = yIdx * getSupportedFontSize().yLength
 
-        listOf(Pair(font, character))
+        listOf(Pair(tileset, character))
                 .plus(fetchOverlayZIntersection(Position.create(xIdx, yIdx)))
                 .forEach { (fontOverride, tc) ->
-                    // TODO: test font
+                    // TODO: test tileset
                     val fontToUse = if (fontOverride === FontSettings.NO_FONT) {
-                        font
+                        tileset
                     } else {
                         fontOverride
                     }

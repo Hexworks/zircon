@@ -6,14 +6,14 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.animation.AnimationResource
 import org.codetome.zircon.api.animation.DefaultAnimationHandler
 import org.codetome.zircon.api.builder.data.TileBuilder
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.component.impl.DefaultLabelTest
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.TestFontLoader
+import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
+import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
 import org.junit.Before
 import org.junit.Test
@@ -23,16 +23,16 @@ import java.util.concurrent.atomic.AtomicBoolean
 class TerminalScreenTest {
 
     lateinit var target: TerminalScreen
-    lateinit var font: Font
+    lateinit var tileset: Tileset
     lateinit var terminal: VirtualTerminal
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(TestFontLoader())
-        font = DefaultLabelTest.FONT.toFont()
+        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
+        tileset = DefaultLabelTest.FONT.toFont()
         terminal = VirtualTerminal(
                 initialSize = SIZE,
-                initialFont = font)
+                initialTileset = tileset)
         MockitoAnnotations.initMocks(this)
         target = TerminalScreen(terminal)
     }

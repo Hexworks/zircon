@@ -7,7 +7,7 @@ import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.RadioButtonGroup
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
@@ -17,8 +17,8 @@ import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.TestFontLoader
+import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
+import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
 import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 import org.junit.Before
 import org.junit.Test
@@ -27,18 +27,18 @@ import java.util.concurrent.atomic.AtomicBoolean
 class DefaultRadioButtonGroupTest {
 
     lateinit var target: DefaultRadioButtonGroup
-    lateinit var font: Font
+    lateinit var tileset: Tileset
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(TestFontLoader())
-        font = DefaultLabelTest.FONT.toFont()
+        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
+        tileset = DefaultLabelTest.FONT.toFont()
         target = DefaultRadioButtonGroup(
                 wrappers = ThreadSafeQueueFactory.create(),
                 size = SIZE,
                 position = POSITION,
                 componentStyleSet = COMPONENT_STYLES,
-                initialFont = font)
+                initialTileset = tileset)
     }
 
     @Test
@@ -49,7 +49,7 @@ class DefaultRadioButtonGroupTest {
     @Test
     fun shouldUseProperFont() {
         assertThat(target.getCurrentFont().getId())
-                .isEqualTo(font.getId())
+                .isEqualTo(tileset.getId())
     }
 
     @Test

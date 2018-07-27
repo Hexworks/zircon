@@ -4,7 +4,7 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.Builder
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.util.Maybe
@@ -17,17 +17,17 @@ import org.codetome.zircon.internal.graphics.DefaultLayer
  * - offset: [Position.defaultPosition()]
  * - has no text image by default
  */
-data class LayerBuilder(private var font: Font = Layer.defaultFont(),
+data class LayerBuilder(private var tileset: Tileset = Layer.defaultFont(),
                         private var size: Size = Layer.defaultSize(),
                         private var filler: Tile = Layer.defaultFiller(),
                         private var offset: Position = Position.defaultPosition(),
                         private var textImage: Maybe<TextImage> = Maybe.empty()) : Builder<Layer> {
 
     /**
-     * Sets the [Font] to use with the resulting [Layer].
+     * Sets the [Tileset] to use with the resulting [Layer].
      */
-    fun font(font: Font) = also {
-        this.font = font
+    fun font(tileset: Tileset) = also {
+        this.tileset = tileset
     }
 
     /**
@@ -66,13 +66,13 @@ data class LayerBuilder(private var font: Font = Layer.defaultFont(),
                 filler = filler,
                 offset = offset,
                 textImage = textImage.get(),
-                initialFont = font)
+                initialTileset = tileset)
     } else {
         DefaultLayer(
                 size = size,
                 filler = filler,
                 offset = offset,
-                initialFont = font)
+                initialTileset = tileset)
     }
 
     override fun createCopy() = copy()

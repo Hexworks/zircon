@@ -9,7 +9,7 @@ import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.ColorTheme
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
@@ -23,8 +23,8 @@ import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrate
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.TestFontLoader
+import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
+import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -32,18 +32,18 @@ import java.util.concurrent.atomic.AtomicBoolean
 class DefaultComponentTest {
 
     lateinit var target: DefaultComponent
-    lateinit var font: Font
+    lateinit var tileset: Tileset
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(TestFontLoader())
-        font = FONT.toFont()
+        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
+        tileset = FONT.toFont()
         target = object : DefaultComponent(
                 initialSize = SIZE,
                 position = POSITION,
                 componentStyleSet = STYLES,
                 wrappers = WRAPPERS,
-                initialFont = font) {
+                initialTileset = tileset) {
             override fun applyColorTheme(colorTheme: ColorTheme) {
                 TODO("not implemented")
             }
@@ -66,7 +66,7 @@ class DefaultComponentTest {
     fun shouldUseFontFromComponentWhenTransformingToLayer() {
         val result = target.transformToLayers()
         result.forEach {
-            assertThat(it.getCurrentFont().getId()).isEqualTo(font.getId())
+            assertThat(it.getCurrentFont().getId()).isEqualTo(tileset.getId())
         }
     }
 

@@ -1,11 +1,11 @@
 package org.codetome.zircon.api.builder.terminal
 
 import org.codetome.zircon.api.data.Size
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.api.terminal.Terminal
-import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.tileset.impl.FontSettings
 import org.codetome.zircon.internal.screen.TerminalScreen
 import org.codetome.zircon.internal.terminal.InternalTerminal
 import org.codetome.zircon.internal.terminal.virtual.VirtualTerminal
@@ -15,13 +15,13 @@ open class VirtualTerminalBuilder(
         protected var initialSize: Size = Size.defaultTerminalSize(),
         protected var title: String = "Zircon Terminal",
         protected var deviceConfiguration: DeviceConfiguration = DeviceConfiguration.defaultConfiguration(),
-        protected var font: Font = FontSettings.NO_FONT
+        protected var tileset: Tileset = FontSettings.NO_FONT
 ) : TerminalBuilder {
 
     override fun build(): Terminal {
         return VirtualTerminal(
                 initialSize = initialSize,
-                initialFont = font)
+                initialTileset = tileset)
     }
 
     override fun createCopy(): TerminalBuilder = VirtualTerminalBuilder(
@@ -29,7 +29,7 @@ open class VirtualTerminalBuilder(
             initialSize = initialSize,
             title = title,
             deviceConfiguration = deviceConfiguration,
-            font = font)
+            tileset = tileset)
 
     /**
      * Sets the initial terminal [Size].
@@ -59,12 +59,12 @@ open class VirtualTerminalBuilder(
     }
 
     /**
-     * Sets a [Font] for this api.
+     * Sets a [Tileset] for this api.
      * @see [org.codetome.zircon.api.resource.CP437TilesetResource] and
      * @see PhysicalFontResource
      */
-    override fun font(font: Font) = also {
-        this.font = font
+    override fun font(tileset: Tileset) = also {
+        this.tileset = tileset
     }
 
     /**

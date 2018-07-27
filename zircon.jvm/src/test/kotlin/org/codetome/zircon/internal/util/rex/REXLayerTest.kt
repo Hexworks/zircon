@@ -5,7 +5,7 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.internal.color.DefaultTextColor
-import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.tileset.impl.FontSettings
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test

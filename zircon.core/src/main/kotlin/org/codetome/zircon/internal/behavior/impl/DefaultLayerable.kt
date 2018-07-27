@@ -4,7 +4,7 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.Boundable
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.behavior.Dirtiable
 import org.codetome.zircon.internal.behavior.InternalLayerable
@@ -24,8 +24,8 @@ class DefaultLayerable(private val supportedFontSize: Size,
     override fun pushLayer(layer: Layer) {
         if (layer.hasOverrideFont()) {
             require(getSupportedFontSize() == layer.getCurrentFont().getSize()) {
-                "Can't add Layer to Layerable with unsupported font size! Supported size: " +
-                        "${getSupportedFontSize()}, layer font size: ${layer.getCurrentFont().getSize()}"
+                "Can't add Layer to Layerable with unsupported tileset size! Supported size: " +
+                        "${getSupportedFontSize()}, layer tileset size: ${layer.getCurrentFont().getSize()}"
             }
         }
         layer.moveTo(layer.getPosition() + boundable.getPosition())
@@ -52,11 +52,11 @@ class DefaultLayerable(private val supportedFontSize: Size,
         }
     }
 
-    override fun fetchOverlayZIntersection(absolutePosition: Position): List<Pair<Font, Tile>> {
+    override fun fetchOverlayZIntersection(absolutePosition: Position): List<Pair<Tileset, Tile>> {
         return fetchZIntersectionFor(layers, absolutePosition)
     }
 
-    private fun fetchZIntersectionFor(queue: ThreadSafeQueue<Layer>, position: Position): List<Pair<Font, Tile>> {
+    private fun fetchZIntersectionFor(queue: ThreadSafeQueue<Layer>, position: Position): List<Pair<Tileset, Tile>> {
         return queue.filter { layer ->
             // TODO: optimize based on non-transparent backgrounds
             layer.containsPosition(position)

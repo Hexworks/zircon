@@ -8,7 +8,7 @@ import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.TextBox
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.util.TextUtils
@@ -26,18 +26,18 @@ import org.codetome.zircon.platform.extension.insert
 import org.codetome.zircon.internal.util.TextBuffer
 
 class DefaultTextBox constructor(text: String,
-                                               initialSize: Size,
-                                               initialFont: Font,
-                                               position: Position,
-                                               componentStyleSet: ComponentStyleSet,
-                                               scrollable: Scrollable = DefaultScrollable(initialSize, initialSize),
-                                               cursorHandler: CursorHandler = DefaultCursorHandler(initialSize))
+                                 initialSize: Size,
+                                 initialTileset: Tileset,
+                                 position: Position,
+                                 componentStyleSet: ComponentStyleSet,
+                                 scrollable: Scrollable = DefaultScrollable(initialSize, initialSize),
+                                 cursorHandler: CursorHandler = DefaultCursorHandler(initialSize))
     : TextBox, Scrollable by scrollable, CursorHandler by cursorHandler, DefaultComponent(
         initialSize = initialSize,
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = listOf(),
-        initialFont = initialFont) {
+        initialTileset = initialTileset) {
 
     private val textBuffer = TextBuffer(text)
     private val subscriptions = mutableListOf<Subscription<*>>()

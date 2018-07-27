@@ -10,26 +10,26 @@ import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.Container
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.tileset.impl.FontSettings
 import org.codetome.zircon.api.util.Maybe
 
 open class DefaultContainer(initialSize: Size,
                             position: Position,
-                            initialFont: Font,
+                            initialTileset: Tileset,
                             componentStyleSet: ComponentStyleSet,
                             wrappers: Iterable<WrappingStrategy> = listOf())
     : DefaultComponent(initialSize = initialSize,
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = wrappers,
-        initialFont = initialFont), Container {
+        initialTileset = initialTileset), Container {
 
     private val components = mutableListOf<InternalComponent>()
 
@@ -45,8 +45,8 @@ open class DefaultContainer(initialSize: Size,
                 component.useFont(getCurrentFont())
             } else {
                 require(getCurrentFont().getSize() == component.getCurrentFont().getSize()) {
-                    "Trying to add component with incompatible font size '${component.getCurrentFont().getSize()}' to" +
-                            "container with font size: '${getCurrentFont().getSize()}'!"
+                    "Trying to add component with incompatible tileset size '${component.getCurrentFont().getSize()}' to" +
+                            "container with tileset size: '${getCurrentFont().getSize()}'!"
                 }
             }
             require(components.none { it.intersects(component) }) {

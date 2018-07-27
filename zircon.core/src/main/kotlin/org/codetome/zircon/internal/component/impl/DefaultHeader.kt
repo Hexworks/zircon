@@ -8,20 +8,20 @@ import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.Header
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.util.Maybe
 
 class DefaultHeader(private val text: String,
                     initialSize: Size,
-                    initialFont: Font,
+                    initialTileset: Tileset,
                     position: Position,
                     componentStyleSet: ComponentStyleSet) : Header, DefaultComponent(
         initialSize = initialSize,
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = listOf(),
-        initialFont = initialFont) {
+        initialTileset = initialTileset) {
 
 
     init {

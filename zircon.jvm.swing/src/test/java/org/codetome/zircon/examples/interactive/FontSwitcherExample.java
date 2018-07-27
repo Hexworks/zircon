@@ -3,7 +3,7 @@ package org.codetome.zircon.examples.interactive;
 import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.data.Position;
 import org.codetome.zircon.api.data.Size;
-import org.codetome.zircon.api.font.Font;
+import org.codetome.zircon.api.tileset.Tileset;
 import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.interop.Layers;
@@ -23,7 +23,7 @@ public class FontSwitcherExample {
     private static final int TERMINAL_WIDTH = 30;
     private static final int TERMINAL_HEIGHT = 8;
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final List<Font> FONTS = new ArrayList<>();
+    private static final List<Tileset> TILESETS = new ArrayList<>();
 
     public static void main(String[] args) {
         // for this example we only need a default terminal (no extra config)
@@ -33,13 +33,13 @@ public class FontSwitcherExample {
                 .build();
         terminal.setCursorVisibility(false); // we don't want the cursor right now
 
-        FONTS.add(CP437TilesetResource.ADU_DHABI_16X16.toFont());
-        FONTS.add(CP437TilesetResource.ROGUE_YUN_16X16.toFont());
-        FONTS.add(CP437TilesetResource.REX_PAINT_16X16.toFont());
-        FONTS.add(CP437TilesetResource.WANDERLUST_16X16.toFont());
-        FONTS.add(CP437TilesetResource.BISASAM_16X16.toFont());
+        TILESETS.add(CP437TilesetResource.ADU_DHABI_16X16.toFont());
+        TILESETS.add(CP437TilesetResource.ROGUE_YUN_16X16.toFont());
+        TILESETS.add(CP437TilesetResource.REX_PAINT_16X16.toFont());
+        TILESETS.add(CP437TilesetResource.WANDERLUST_16X16.toFont());
+        TILESETS.add(CP437TilesetResource.BISASAM_16X16.toFont());
 
-        final String switchFont = "Press '->' to switch Font!";
+        final String switchFont = "Press '->' to switch Tileset!";
         final String switchLayer = "Press '<-' to switch Layer!";
 
         final Random random = new Random();
@@ -50,7 +50,7 @@ public class FontSwitcherExample {
         terminal.onInput(input -> {
             if (input.isKeyStroke()) {
                 if (input.asKeyStroke().inputTypeIs(InputType.ArrowRight)) {
-                    terminal.useFont(FONTS.get(random.nextInt(FONTS.size())));
+                    terminal.useFont(TILESETS.get(random.nextInt(TILESETS.size())));
                     // this is needed because terminal can't be forced to redraw
                     refreshText(terminal, switchFont, Positions.defaultPosition());
                     terminal.flush();
@@ -75,7 +75,7 @@ public class FontSwitcherExample {
     private static void refreshLayer(Terminal terminal, String text, Random random) {
         terminal.drainLayers();
         Layer layer = Layers.newBuilder()
-                .font(FONTS.get(random.nextInt(FONTS.size())))
+                .font(TILESETS.get(random.nextInt(TILESETS.size())))
                 .offset(Positions.create(0, 1))
                 .size(Sizes.create(text.length(), 1))
                 .build();

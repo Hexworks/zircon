@@ -5,7 +5,7 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke
@@ -14,24 +14,24 @@ import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.builder.component.TextBoxBuilder
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.TestFontLoader
+import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
+import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
 import org.junit.Before
 import org.junit.Test
 
 class DefaultTextBoxTest {
 
     lateinit var target: DefaultTextBox
-    lateinit var font: Font
+    lateinit var tileset: Tileset
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(TestFontLoader())
-        font = DefaultLabelTest.FONT.toFont()
+        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
+        tileset = DefaultLabelTest.FONT.toFont()
         target = TextBoxBuilder.newBuilder()
                 .componentStyles(COMPONENT_STYLES)
                 .size(SIZE)
-                .font(font)
+                .font(tileset)
                 .position(POSITION)
                 .text(TEXT)
                 .build() as DefaultTextBox
@@ -45,7 +45,7 @@ class DefaultTextBoxTest {
     @Test
     fun shouldUseProperFont() {
         assertThat(target.getCurrentFont().getId())
-                .isEqualTo(font.getId())
+                .isEqualTo(tileset.getId())
     }
 
     @Test

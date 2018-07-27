@@ -7,7 +7,7 @@ import org.codetome.zircon.api.component.Button
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.modifier.BorderBuilder
@@ -20,7 +20,7 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.util.ThreadSafeQueue
 
 class DefaultButton(private val text: String,
-                    initialFont: Font,
+                    initialTileset: Tileset,
                     wrappers: ThreadSafeQueue<WrappingStrategy>,
                     initialSize: Size,
                     position: Position,
@@ -29,7 +29,7 @@ class DefaultButton(private val text: String,
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = wrappers,
-        initialFont = initialFont) {
+        initialTileset = initialTileset) {
 
     init {
         getDrawSurface().putText(text, getWrapperOffset())

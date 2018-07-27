@@ -2,7 +2,7 @@ package org.codetome.zircon.api.builder.terminal
 
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.builder.Builder
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.api.terminal.DeviceConfiguration
 import org.codetome.zircon.api.terminal.Terminal
@@ -13,7 +13,7 @@ import org.codetome.zircon.api.terminal.Terminal
  * Defaults are:
  * - default `initialSize` is 80x24
  * - default `title` is "Zircon Terminal"
- * - default `font` is `UBUNTU_MONO` (because it is cp437 compliant)
+ * - default `tileset` is `UBUNTU_MONO` (because it is cp437 compliant)
  */
 interface TerminalBuilder : Builder<Terminal> {
 
@@ -44,11 +44,11 @@ interface TerminalBuilder : Builder<Terminal> {
     fun deviceConfiguration(deviceConfiguration: DeviceConfiguration): TerminalBuilder
 
     /**
-     * Sets a [Font] for this api.
+     * Sets a [Tileset] for this api.
      * @see [org.codetome.zircon.api.resource.CP437TilesetResource] and
      * @see PhysicalFontResource
      */
-    fun font(font: Font): TerminalBuilder
+    fun font(tileset: Tileset): TerminalBuilder
 
     /**
      * Creates a [Terminal] using this builder's settings and immediately wraps it up in a [Screen].

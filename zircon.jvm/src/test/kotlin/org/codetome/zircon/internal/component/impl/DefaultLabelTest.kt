@@ -5,29 +5,29 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.builder.component.LabelBuilder
-import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.TestFontLoader
+import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
+import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
 import org.junit.Before
 import org.junit.Test
 
 class DefaultLabelTest {
 
     lateinit var target: DefaultLabel
-    lateinit var font: Font
+    lateinit var tileset: Tileset
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(TestFontLoader())
-        font = FONT.toFont()
+        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
+        tileset = FONT.toFont()
         target = LabelBuilder.newBuilder()
                 .componentStyles(COMPONENT_STYLES)
                 .position(POSITION)
-                .font(font)
+                .font(tileset)
                 .text(TEXT)
                 .build() as DefaultLabel
     }
@@ -40,7 +40,7 @@ class DefaultLabelTest {
     @Test
     fun shouldUseProperFont() {
         assertThat(target.getCurrentFont().getId())
-                .isEqualTo(font.getId())
+                .isEqualTo(tileset.getId())
     }
 
     @Test

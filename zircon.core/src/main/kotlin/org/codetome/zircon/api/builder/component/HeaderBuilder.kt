@@ -5,22 +5,22 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.Header
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.component.impl.DefaultHeader
-import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.tileset.impl.FontSettings
 
 data class HeaderBuilder(
-        private var font: Font = FontSettings.NO_FONT,
+        private var tileset: Tileset = FontSettings.NO_FONT,
         private var text: String = "",
         private var position: Position = Position.defaultPosition(),
         private var componentStyleSet: ComponentStyleSet = ComponentStyleSet.defaultStyleSet()) : Builder<Header> {
 
     /**
-     * Sets the [Font] to use with the resulting [Layer].
+     * Sets the [Tileset] to use with the resulting [Layer].
      */
-    fun font(font: Font) = also {
-        this.font = font
+    fun font(tileset: Tileset) = also {
+        this.tileset = tileset
     }
 
     fun text(text: String) = also {
@@ -44,7 +44,7 @@ data class HeaderBuilder(
                 initialSize = Size.create(text.length, 1),
                 position = position,
                 componentStyleSet = componentStyleSet,
-                initialFont = font)
+                initialTileset = tileset)
     }
 
     override fun createCopy() = copy()

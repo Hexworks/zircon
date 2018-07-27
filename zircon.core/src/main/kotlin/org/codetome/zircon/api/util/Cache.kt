@@ -9,7 +9,7 @@ import org.codetome.zircon.platform.factory.CacheFactory
 interface Cache<R> {
 
     /**
-     * Retrieves a font region by a `key` if present.
+     * Retrieves a tileset region by a `key` if present.
      */
     fun retrieveIfPresent(key: String): Maybe<R>
 

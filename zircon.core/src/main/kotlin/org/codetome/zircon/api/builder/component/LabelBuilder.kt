@@ -5,22 +5,22 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.Label
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.component.impl.DefaultLabel
-import org.codetome.zircon.internal.font.impl.FontSettings
+import org.codetome.zircon.internal.tileset.impl.FontSettings
 
 data class LabelBuilder(
-        private var font: Font = FontSettings.NO_FONT,
+        private var tileset: Tileset = FontSettings.NO_FONT,
         private var text: String = "",
         private var position: Position = Position.defaultPosition(),
         private var componentStyleSet: ComponentStyleSet = ComponentStyleSet.defaultStyleSet()) : Builder<Label> {
 
     /**
-     * Sets the [Font] to use with the resulting [Layer].
+     * Sets the [Tileset] to use with the resulting [Layer].
      */
-    fun font(font: Font) = also {
-        this.font = font
+    fun font(tileset: Tileset) = also {
+        this.tileset = tileset
     }
 
     fun text(text: String) = also {
@@ -42,7 +42,7 @@ data class LabelBuilder(
         return DefaultLabel(
                 text = text,
                 initialSize = Size.create(text.length, 1),
-                initialFont = font,
+                initialTileset = tileset,
                 position = position,
                 componentStyleSet = componentStyleSet
         )

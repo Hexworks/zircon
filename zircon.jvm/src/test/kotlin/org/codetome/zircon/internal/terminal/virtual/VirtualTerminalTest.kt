@@ -7,7 +7,7 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.TextImageBuilder
-import org.codetome.zircon.api.font.Font
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.interop.Modifiers
@@ -17,8 +17,8 @@ import org.codetome.zircon.api.terminal.TerminalResizeListener
 import org.codetome.zircon.internal.component.impl.DefaultLabelTest
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.font.impl.FontLoaderRegistry
-import org.codetome.zircon.internal.font.impl.TestFontLoader
+import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
+import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
@@ -27,16 +27,16 @@ import java.util.concurrent.atomic.AtomicReference
 class VirtualTerminalTest {
 
     lateinit var target: VirtualTerminal
-    lateinit var font: Font
+    lateinit var tileset: Tileset
 
     @Before
     fun setUp() {
-        FontLoaderRegistry.setFontLoader(TestFontLoader())
-        font = DefaultLabelTest.FONT.toFont()
+        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
+        tileset = DefaultLabelTest.FONT.toFont()
         MockitoAnnotations.initMocks(this)
         target = VirtualTerminal(
                 initialSize = SIZE,
-                initialFont = font)
+                initialTileset = tileset)
     }
 
     @Test
