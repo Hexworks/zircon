@@ -1,6 +1,5 @@
 package org.codetome.zircon.api.tileset
 
-import org.codetome.zircon.internal.tileset.MetadataPickingStrategy
 import org.codetome.zircon.internal.tileset.impl.PickFirstMetaStrategy
 
 interface TilesetLoader {

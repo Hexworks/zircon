@@ -3,6 +3,7 @@ package org.codetome.zircon.internal.graphics
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.internal.shape.DefaultShape
 import org.junit.Test
 
 class DefaultShapeTest {

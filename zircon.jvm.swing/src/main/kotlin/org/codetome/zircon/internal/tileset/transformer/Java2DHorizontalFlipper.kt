@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.tileset.transformer
 
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.tileset.TileTexture
-import org.codetome.zircon.internal.tileset.TileTextureTransformer
+import org.codetome.zircon.api.tileset.TileTextureTransformer
 import org.codetome.zircon.internal.tileset.impl.Java2DTileTexture
 import java.awt.geom.AffineTransform
 import java.awt.image.AffineTransformOp

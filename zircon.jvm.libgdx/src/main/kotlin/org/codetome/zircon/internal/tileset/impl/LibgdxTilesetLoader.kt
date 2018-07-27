@@ -3,8 +3,8 @@ package org.codetome.zircon.internal.tileset.impl
 import org.codetome.zircon.api.tileset.TileTextureMetadata
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.tileset.TilesetLoader
-import org.codetome.zircon.internal.tileset.MetadataPickingStrategy
-import org.codetome.zircon.internal.tileset.cache.NoOpCache
+import org.codetome.zircon.api.tileset.MetadataPickingStrategy
+import org.codetome.zircon.internal.util.impl.NoOpCache
 import org.codetome.zircon.internal.tileset.transformer.LibgdxTileTextureCloner
 import org.codetome.zircon.internal.tileset.transformer.LibgdxTileTextureColorizer
 import org.codetome.zircon.platform.factory.CacheFactory

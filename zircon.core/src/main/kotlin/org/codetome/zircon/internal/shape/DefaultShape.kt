@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal.graphics
+package org.codetome.zircon.internal.shape
 
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size

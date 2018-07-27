@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.tileset
 
-import org.codetome.zircon.internal.tileset.DefaultTileTextureMetadata
+import org.codetome.zircon.internal.tileset.impl.DefaultTileTextureMetadata
 
 /**
  * Metadata about a [TileTexture], like `tags` and its position (x, y) in a [Tileset].

@@ -1,7 +1,6 @@
-package org.codetome.zircon.internal.tileset
+package org.codetome.zircon.api.tileset
 
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.tileset.TileTexture
 
 /**
  * Transforms a tileset region. A tileset region is a part of a

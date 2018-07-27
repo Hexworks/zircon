@@ -2,6 +2,7 @@ package org.codetome.zircon.internal.tileset.cache
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.internal.util.impl.NoOpCache
 import org.junit.Before
 import org.junit.Test
 

@@ -3,7 +3,7 @@ package org.codetome.zircon.api.shape
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.graphics.TextImage
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.internal.graphics.DefaultShape
+import org.codetome.zircon.internal.shape.DefaultShape
 
 /**
  * A [Shape] is a set of [org.codetome.zircon.api.data.Position]s representing a geometric formation

@@ -5,7 +5,7 @@ import org.codetome.zircon.api.tileset.TileTextureMetadata
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.tileset.TilesetLoader
 import org.codetome.zircon.api.util.Maybe
-import org.codetome.zircon.internal.tileset.MetadataPickingStrategy
+import org.codetome.zircon.api.tileset.MetadataPickingStrategy
 
 class VirtualTilesetLoader : TilesetLoader {
 

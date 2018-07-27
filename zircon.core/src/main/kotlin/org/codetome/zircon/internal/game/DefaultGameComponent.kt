@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal.component.impl
+package org.codetome.zircon.internal.game
 
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
@@ -15,6 +15,7 @@ import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.behavior.Scrollable3D
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable3D
+import org.codetome.zircon.internal.component.impl.DefaultComponent
 import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
 

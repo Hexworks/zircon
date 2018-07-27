@@ -22,7 +22,7 @@ import org.codetome.zircon.api.interop.TextColors
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.screen.Screen
-import org.codetome.zircon.internal.component.impl.DefaultGameComponent
+import org.codetome.zircon.internal.game.DefaultGameComponent
 import org.codetome.zircon.internal.game.InMemoryGameArea
 import java.awt.Toolkit
 import java.util.*

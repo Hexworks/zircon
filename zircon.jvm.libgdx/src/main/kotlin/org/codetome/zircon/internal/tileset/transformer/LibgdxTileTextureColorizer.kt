@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.interop.toAWTColor
 import org.codetome.zircon.api.tileset.TileTexture
-import org.codetome.zircon.internal.tileset.TileTextureTransformer
+import org.codetome.zircon.api.tileset.TileTextureTransformer
 
 
 class LibgdxTileTextureColorizer : TileTextureTransformer<TextureRegion> {

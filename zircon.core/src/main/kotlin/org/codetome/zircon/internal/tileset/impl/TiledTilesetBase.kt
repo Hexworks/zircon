@@ -4,7 +4,7 @@ import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.tileset.TileTextureMetadata
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.util.TextUtils
-import org.codetome.zircon.internal.tileset.MetadataPickingStrategy
+import org.codetome.zircon.api.tileset.MetadataPickingStrategy
 import org.codetome.zircon.api.util.Identifier
 
 abstract class TiledTilesetBase(private val metadataTile: Map<Char, List<TileTextureMetadata>>,
