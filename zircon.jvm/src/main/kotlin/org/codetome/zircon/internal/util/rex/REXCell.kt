@@ -24,8 +24,8 @@ data class REXCell(private val character: Char,
         fun fromByteBuffer(buffer: ByteBuffer): REXCell {
             return REXCell(
                     character = CP437Utils.convertCp437toUnicode(buffer.int),
-                    foregroundColor = TextColor.create(buffer.get().toInt() and 0xFF, buffer.get().toInt() and 0xFF, buffer.get().toInt() and 0xFF, 0),
-                    backgroundColor = TextColor.create(buffer.get().toInt() and 0xFF, buffer.get().toInt() and 0xFF, buffer.get().toInt() and 0xFF, 0))
+                    foregroundColor = TextColor.create(buffer.get().toInt() and 0xFF, buffer.get().toInt() and 0xFF, buffer.get().toInt() and 0xFF, 255),
+                    backgroundColor = TextColor.create(buffer.get().toInt() and 0xFF, buffer.get().toInt() and 0xFF, buffer.get().toInt() and 0xFF, 255))
         }
     }
 }
