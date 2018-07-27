@@ -5,7 +5,7 @@ import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.interop.Modifiers;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.modifier.RayShade;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,88 +20,88 @@ public class FontModifiersExample {
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
 
     public static void main(String[] args) {
-        // for this example we only need a default terminal (no extra config)
-        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
+        // for this example we only need a default grid (no extra config)
+        final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
                 .font(WANDERLUST_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
-        terminal.setCursorVisibility(false); // we don't want the cursor right now
+        tileGrid.setCursorVisibility(false); // we don't want the cursor right now
 
-        terminal.enableModifiers(Modifiers.verticalFlip());
-        terminal.setBackgroundColor(BLUE);
-        terminal.setForegroundColor(YELLOW);
-        terminal.putCharacter('A');
+        tileGrid.enableModifiers(Modifiers.verticalFlip());
+        tileGrid.setBackgroundColor(BLUE);
+        tileGrid.setForegroundColor(YELLOW);
+        tileGrid.putCharacter('A');
 
-        putEmptySpace(terminal);
+        putEmptySpace(tileGrid);
 
-        terminal.enableModifiers(Modifiers.crossedOut());
-        terminal.setBackgroundColor(RED);
-        terminal.setForegroundColor(GREEN);
-        terminal.putCharacter('B');
+        tileGrid.enableModifiers(Modifiers.crossedOut());
+        tileGrid.setBackgroundColor(RED);
+        tileGrid.setForegroundColor(GREEN);
+        tileGrid.putCharacter('B');
 
-        putEmptySpace(terminal);
+        putEmptySpace(tileGrid);
 
-        terminal.enableModifiers(Modifiers.blink());
-        terminal.setBackgroundColor(RED);
-        terminal.setForegroundColor(WHITE);
-        terminal.putCharacter('C');
+        tileGrid.enableModifiers(Modifiers.blink());
+        tileGrid.setBackgroundColor(RED);
+        tileGrid.setForegroundColor(WHITE);
+        tileGrid.putCharacter('C');
 
-        putEmptySpace(terminal);
+        putEmptySpace(tileGrid);
 
-        terminal.enableModifiers(Modifiers.underline());
-        terminal.setBackgroundColor(BLUE);
-        terminal.setForegroundColor(CYAN);
-        terminal.putCharacter('D');
+        tileGrid.enableModifiers(Modifiers.underline());
+        tileGrid.setBackgroundColor(BLUE);
+        tileGrid.setForegroundColor(CYAN);
+        tileGrid.putCharacter('D');
 
-        putEmptySpace(terminal);
+        putEmptySpace(tileGrid);
 
-        terminal.enableModifiers(Modifiers.horizontalFlip());
-        terminal.setBackgroundColor(BLACK);
-        terminal.setForegroundColor(YELLOW);
-        terminal.putCharacter('E');
+        tileGrid.enableModifiers(Modifiers.horizontalFlip());
+        tileGrid.setBackgroundColor(BLACK);
+        tileGrid.setForegroundColor(YELLOW);
+        tileGrid.putCharacter('E');
 
-        putEmptySpace(terminal);
+        putEmptySpace(tileGrid);
 
-        terminal.enableModifiers(Modifiers.blink());
-        terminal.setBackgroundColor(CYAN);
-        terminal.setForegroundColor(YELLOW);
-        terminal.putCharacter('F');
+        tileGrid.enableModifiers(Modifiers.blink());
+        tileGrid.setBackgroundColor(CYAN);
+        tileGrid.setForegroundColor(YELLOW);
+        tileGrid.putCharacter('F');
 
-        putEmptySpace(terminal);
+        putEmptySpace(tileGrid);
 
-        terminal.enableModifiers(Stream.of(Modifiers.horizontalFlip(), Modifiers.verticalFlip(), Modifiers.blink()).collect(Collectors.toSet()));
-        terminal.setBackgroundColor(BLUE);
-        terminal.setForegroundColor(WHITE);
-        terminal.putCharacter('G');
+        tileGrid.enableModifiers(Stream.of(Modifiers.horizontalFlip(), Modifiers.verticalFlip(), Modifiers.blink()).collect(Collectors.toSet()));
+        tileGrid.setBackgroundColor(BLUE);
+        tileGrid.setForegroundColor(WHITE);
+        tileGrid.putCharacter('G');
 
-        putEmptySpace(terminal);
+        putEmptySpace(tileGrid);
 
-        terminal.enableModifiers(Modifiers.border());
-        terminal.setBackgroundColor(WHITE);
-        terminal.setForegroundColor(BLUE);
-        terminal.putCharacter('H');
+        tileGrid.enableModifiers(Modifiers.border());
+        tileGrid.setBackgroundColor(WHITE);
+        tileGrid.setForegroundColor(BLUE);
+        tileGrid.putCharacter('H');
 
-        putEmptySpace(terminal);
+        putEmptySpace(tileGrid);
 
-        terminal.enableModifiers(new RayShade());
-        terminal.setBackgroundColor(WHITE);
-        terminal.setForegroundColor(BLUE);
-        terminal.putCharacter('I');
+        tileGrid.enableModifiers(new RayShade());
+        tileGrid.setBackgroundColor(WHITE);
+        tileGrid.setForegroundColor(BLUE);
+        tileGrid.putCharacter('I');
 
-        putEmptySpace(terminal);
+        putEmptySpace(tileGrid);
 
-        terminal.enableModifiers(Modifiers.glow());
-        terminal.setBackgroundColor(WHITE);
-        terminal.setForegroundColor(BLUE);
-        terminal.putCharacter('J');
+        tileGrid.enableModifiers(Modifiers.glow());
+        tileGrid.setBackgroundColor(WHITE);
+        tileGrid.setForegroundColor(BLUE);
+        tileGrid.putCharacter('J');
 
-        terminal.flush();
+        tileGrid.flush();
     }
 
-    private static void putEmptySpace(Terminal terminal) {
-        terminal.resetColorsAndModifiers();
-        terminal.setForegroundColor(BLACK);
-        terminal.putCharacter(' ');
+    private static void putEmptySpace(TileGrid tileGrid) {
+        tileGrid.resetColorsAndModifiers();
+        tileGrid.setForegroundColor(BLACK);
+        tileGrid.putCharacter(' ');
     }
 
 }

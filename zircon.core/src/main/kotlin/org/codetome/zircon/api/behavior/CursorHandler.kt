@@ -3,7 +3,7 @@ package org.codetome.zircon.api.behavior
 import org.codetome.zircon.api.data.Position
 
 /**
- * Represents an object which manipulates a cursor (a [org.codetome.zircon.api.terminal.Terminal]
+ * Represents an object which manipulates a cursor (a [org.codetome.zircon.api.grid.TileGrid]
  * or a [org.codetome.zircon.api.component.TextBox] for example.
  * All operations which work with [Position]s are relative to the [CursorHandler]'s position!
  */

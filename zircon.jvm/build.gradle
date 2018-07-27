@@ -75,7 +75,7 @@ artifacts {
 //                name 'Zircon'
 //                packaging 'jar'
 //                artifactId 'zircon'
-//                description 'Zircon is a terminal emulator which targets multiple GUI platforms and designed specifically for game developers.'
+//                description 'Zircon is a grid emulator which targets multiple GUI platforms and designed specifically for game developers.'
 //                url 'https://github.com/Hexworks/zircon'
 //                scm {
 //                    connection 'scm:git:https://github.com/Hexworks/zircon.git'

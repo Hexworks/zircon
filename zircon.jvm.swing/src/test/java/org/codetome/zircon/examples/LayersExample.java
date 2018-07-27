@@ -12,7 +12,7 @@ import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.interop.TextColors;
 import org.codetome.zircon.api.interop.Tiles;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 import org.jetbrains.annotations.NotNull;
 
 import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16;
@@ -24,12 +24,12 @@ public class LayersExample {
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
 
     public static void main(String[] args) {
-        // for this example we only need a default terminal (no extra config)
-        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
+        // for this example we only need a default grid (no extra config)
+        final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
                 .font(WANDERLUST_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
-        final Screen screen = Screens.createScreenFor(terminal);
+        final Screen screen = Screens.createScreenFor(tileGrid);
         screen.setCursorVisibility(false); // we don't want the cursor right now
 
         final String firstRow = "This is white title on black";

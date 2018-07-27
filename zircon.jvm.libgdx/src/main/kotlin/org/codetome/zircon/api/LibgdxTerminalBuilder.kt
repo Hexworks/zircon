@@ -7,7 +7,7 @@ import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
 import org.codetome.zircon.internal.tileset.impl.FontSettings.NO_FONT
 import org.codetome.zircon.internal.tileset.impl.LibgdxTilesetLoader
-import org.codetome.zircon.internal.terminal.LibgdxAdapter
+import org.codetome.zircon.internal.grid.LibgdxAdapter
 
 class LibgdxTerminalBuilder : VirtualTerminalBuilder() {
 

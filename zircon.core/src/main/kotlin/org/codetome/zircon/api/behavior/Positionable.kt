@@ -6,7 +6,7 @@ import org.codetome.zircon.api.data.Position
  * Represents an object which is positionable within its parent.
  * For example a [org.codetome.zircon.api.component.Component] can be positioned
  * relative to is parent or an [org.codetome.zircon.api.graphics.Layer]
- * can be positioned within a [org.codetome.zircon.api.terminal.Terminal].
+ * can be positioned within a [org.codetome.zircon.api.grid.TileGrid].
  * Note that once positioned a [Positionable] can't be moved.
  * If you want re-positionable objects @see [Movable].
  */

@@ -4,42 +4,42 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.screen.Screen
-import org.codetome.zircon.api.terminal.DeviceConfiguration
-import org.codetome.zircon.api.terminal.Terminal
+import org.codetome.zircon.api.grid.DeviceConfiguration
+import org.codetome.zircon.api.grid.TileGrid
 
 
 /**
- * Builds [Terminal]s.
+ * Builds [TileGrid]s.
  * Defaults are:
  * - default `initialSize` is 80x24
- * - default `title` is "Zircon Terminal"
+ * - default `title` is "Zircon TileGrid"
  * - default `tileset` is `UBUNTU_MONO` (because it is cp437 compliant)
  */
-interface TerminalBuilder : Builder<Terminal> {
+interface TerminalBuilder : Builder<TileGrid> {
 
     /**
-     * Creates a new [Terminal] from the given parameters
+     * Creates a new [TileGrid] from the given parameters
      */
-    override fun build(): Terminal
+    override fun build(): TileGrid
 
     override fun createCopy(): TerminalBuilder
 
     /**
-     * Sets the initial terminal [Size].
+     * Sets the initial grid [Size].
      * Default is 80x24.
      */
     fun initialTerminalSize(initialSize: Size): TerminalBuilder
 
     /**
-     * Sets the title to use on created [Terminal]s created by this shape.
-     * Default is "Zircon Terminal"
+     * Sets the title to use on created [TileGrid]s created by this shape.
+     * Default is "Zircon TileGrid"
      */
     fun title(title: String): TerminalBuilder
 
     fun fullScreen(): TerminalBuilder
 
     /**
-     * Sets the device configuration to use on the [Terminal] being created.
+     * Sets the device configuration to use on the [TileGrid] being created.
      */
     fun deviceConfiguration(deviceConfiguration: DeviceConfiguration): TerminalBuilder
 
@@ -51,7 +51,7 @@ interface TerminalBuilder : Builder<Terminal> {
     fun font(tileset: Tileset): TerminalBuilder
 
     /**
-     * Creates a [Terminal] using this builder's settings and immediately wraps it up in a [Screen].
+     * Creates a [TileGrid] using this builder's settings and immediately wraps it up in a [Screen].
      */
     fun buildScreen(): Screen
 }

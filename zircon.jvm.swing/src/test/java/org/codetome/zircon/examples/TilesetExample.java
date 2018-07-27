@@ -10,7 +10,7 @@ import org.codetome.zircon.api.graphics.Layer;
 import org.codetome.zircon.api.builder.graphics.LayerBuilder;
 import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 
 import java.util.Random;
 
@@ -54,11 +54,11 @@ public class TilesetExample {
     private static final TextColor TEXT_BG_COLOR = TextColors.fromString("#00ff00");
 
     public static void main(String[] args) {
-        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
+        final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
                 .font(WANDERLUST_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
-        final Screen screen = Screens.createScreenFor(terminal);
+        final Screen screen = Screens.createScreenFor(tileGrid);
         screen.setCursorVisibility(false);
 
         final Random random = new Random();

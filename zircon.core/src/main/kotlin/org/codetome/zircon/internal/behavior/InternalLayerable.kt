@@ -8,7 +8,7 @@ import org.codetome.zircon.api.graphics.Layer
 
 /**
  * Represents an object which can contain multiple [org.codetome.zircon.api.graphics.Layer]s
- * (which are specialized [org.codetome.zircon.api.graphics.TextImage]s) overlays above the terminal.
+ * (which are specialized [org.codetome.zircon.api.graphics.TextImage]s) overlays above the grid.
  */
 interface InternalLayerable : Layerable, Dirtiable, FontOverrideSupport {
 

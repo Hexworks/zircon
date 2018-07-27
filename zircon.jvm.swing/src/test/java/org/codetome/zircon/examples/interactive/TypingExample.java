@@ -9,7 +9,7 @@ import org.codetome.zircon.api.input.KeyStroke;
 import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,11 +45,11 @@ public class TypingExample {
                 .deviceConfiguration(DeviceConfigurations.newBuilder()
                         .cursorBlinking(true)
                         .build());
-        final Terminal terminal = builder.build();
-        final Screen screen = Screens.createScreenFor(terminal);
+        final TileGrid tileGrid = builder.build();
+        final Screen screen = Screens.createScreenFor(tileGrid);
 
         startTypingSupportForScreen(screen);
-//        startTypingSupportForTerminal(terminal);
+//        startTypingSupportForTerminal(grid);
     }
 
     private static void startTypingSupportForScreen(Screen screen) {
@@ -71,22 +71,22 @@ public class TypingExample {
         });
     }
 
-    private static void startTypingSupportForTerminal(Terminal terminal) {
-        terminal.onInput((input) -> {
-            final Position pos = terminal.getCursorPosition();
+    private static void startTypingSupportForTerminal(TileGrid tileGrid) {
+        tileGrid.onInput((input) -> {
+            final Position pos = tileGrid.getCursorPosition();
             if (EXIT_CONDITIONS.contains(input.getInputType()) && !headless) {
                 System.exit(0);
             } else if (input.inputTypeIs(Enter)) {
-                terminal.putCursorAt(pos.withRelativeY(1).withX(0));
-                terminal.flush();
+                tileGrid.putCursorAt(pos.withRelativeY(1).withX(0));
+                tileGrid.flush();
             } else {
                 if (input.isKeyStroke()) {
                     final KeyStroke ks = input.asKeyStroke();
-                    terminal.setBackgroundColor(BLACK);
-                    terminal.setForegroundColor(RED);
-                    terminal.putCharacter(ks.getCharacter());
-                    terminal.resetColorsAndModifiers();
-                    terminal.flush();
+                    tileGrid.setBackgroundColor(BLACK);
+                    tileGrid.setForegroundColor(RED);
+                    tileGrid.putCharacter(ks.getCharacter());
+                    tileGrid.resetColorsAndModifiers();
+                    tileGrid.flush();
                 }
             }
         });

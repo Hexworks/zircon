@@ -7,7 +7,7 @@ import org.codetome.zircon.api.graphics.Box;
 import org.codetome.zircon.api.graphics.BoxType;
 import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 
 import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16;
 
@@ -21,11 +21,11 @@ public class PanelDrawingExample {
     private static final TextColor PANEL_FG_COLOR = TextColors.fromString("#ffffff");
 
     public static void main(String[] args) {
-        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
+        final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
                 .font(WANDERLUST_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
-        final Screen screen = Screens.createScreenFor(terminal);
+        final Screen screen = Screens.createScreenFor(tileGrid);
         screen.setCursorVisibility(false);
 
         Shapes

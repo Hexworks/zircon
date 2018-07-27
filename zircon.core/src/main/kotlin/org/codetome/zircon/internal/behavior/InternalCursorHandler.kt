@@ -15,8 +15,8 @@ interface InternalCursorHandler : CursorHandler, Dirtiable {
 
     /**
      * Sets the 2d space which bounds the cursor.
-     * For example in the case of a [org.codetome.zircon.api.terminal.Terminal]
-     * it will be the terminal's size.
+     * For example in the case of a [org.codetome.zircon.api.grid.TileGrid]
+     * it will be the grid's size.
      */
     fun resizeCursorSpace(size: Size)
 }

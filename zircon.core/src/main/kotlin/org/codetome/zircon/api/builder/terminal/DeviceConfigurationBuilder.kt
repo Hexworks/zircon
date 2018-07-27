@@ -2,8 +2,8 @@ package org.codetome.zircon.api.builder.terminal
 
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.api.terminal.CursorStyle
-import org.codetome.zircon.api.terminal.DeviceConfiguration
+import org.codetome.zircon.api.grid.CursorStyle
+import org.codetome.zircon.api.grid.DeviceConfiguration
 
 /**
  * Builder for [DeviceConfiguration]s.

@@ -17,7 +17,7 @@ import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 import org.codetome.zircon.internal.game.DefaultGameComponent;
 import org.codetome.zircon.internal.game.InMemoryGameArea;
 
@@ -38,15 +38,15 @@ public class GameAreaScrollingWithLayers {
     }
 
     public static void main(String[] args) {
-        // for this example we only need a default terminal (no extra config)
-        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
+        // for this example we only need a default grid (no extra config)
+        final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
                 .font(CP437TilesetResource.ROGUE_YUN_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
         if (args.length > 0) {
             headless = true;
         }
-        final Screen screen = Screens.createScreenFor(terminal);
+        final Screen screen = Screens.createScreenFor(tileGrid);
         screen.setCursorVisibility(false); // we don't want the cursor right now
 
         Panel actions = Components.newPanelBuilder()

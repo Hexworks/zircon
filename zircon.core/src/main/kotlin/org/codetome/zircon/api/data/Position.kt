@@ -66,7 +66,7 @@ interface Position : Comparable<Position> {
     /**
      * Creates a new [Position] object representing a position on the same y, but with a x offset by a
      * supplied value. Calling this method with delta 0 will return this, calling it with a positive
-     * delta will return a terminal position <code>delta</code> number of x to the right and
+     * delta will return a grid position <code>delta</code> number of x to the right and
      * for negative numbers the same to the left.
      */
     fun withRelativeX(delta: Int) = if (delta == 0) this else withX(x + delta)
@@ -74,7 +74,7 @@ interface Position : Comparable<Position> {
     /**
      * Creates a new [Position] object representing a position on the same x, but with a y offset by a
      * supplied value. Calling this method with delta 0 will return this, calling it with a positive delta
-     * will return a terminal position <code>delta</code> number of y to the down and for negative
+     * will return a grid position <code>delta</code> number of y to the down and for negative
      * numbers the same up.
      */
     fun withRelativeY(delta: Int) = if (delta == 0) this else withY(y + delta)

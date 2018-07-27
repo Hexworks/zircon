@@ -10,7 +10,7 @@ import org.codetome.zircon.api.interop.Layers;
 import org.codetome.zircon.api.interop.Positions;
 import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
-import org.codetome.zircon.api.terminal.Terminal;
+import org.codetome.zircon.api.grid.TileGrid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +26,12 @@ public class FontSwitcherExample {
     private static final List<Tileset> TILESETS = new ArrayList<>();
 
     public static void main(String[] args) {
-        // for this example we only need a default terminal (no extra config)
-        final Terminal terminal = TerminalUtils.fetchTerminalBuilder(args)
+        // for this example we only need a default grid (no extra config)
+        final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
                 .font(WANDERLUST_16X16.toFont())
                 .initialTerminalSize(SIZE)
                 .build();
-        terminal.setCursorVisibility(false); // we don't want the cursor right now
+        tileGrid.setCursorVisibility(false); // we don't want the cursor right now
 
         TILESETS.add(CP437TilesetResource.ADU_DHABI_16X16.toFont());
         TILESETS.add(CP437TilesetResource.ROGUE_YUN_16X16.toFont());
@@ -44,43 +44,43 @@ public class FontSwitcherExample {
 
         final Random random = new Random();
 
-        refreshText(terminal, switchFont, Positions.defaultPosition());
-        refreshLayer(terminal, switchLayer, random);
+        refreshText(tileGrid, switchFont, Positions.defaultPosition());
+        refreshLayer(tileGrid, switchLayer, random);
 
-        terminal.onInput(input -> {
+        tileGrid.onInput(input -> {
             if (input.isKeyStroke()) {
                 if (input.asKeyStroke().inputTypeIs(InputType.ArrowRight)) {
-                    terminal.useFont(TILESETS.get(random.nextInt(TILESETS.size())));
-                    // this is needed because terminal can't be forced to redraw
-                    refreshText(terminal, switchFont, Positions.defaultPosition());
-                    terminal.flush();
+                    tileGrid.useFont(TILESETS.get(random.nextInt(TILESETS.size())));
+                    // this is needed because grid can't be forced to redraw
+                    refreshText(tileGrid, switchFont, Positions.defaultPosition());
+                    tileGrid.flush();
                 }
                 if (input.asKeyStroke().inputTypeIs(InputType.ArrowLeft)) {
-                    refreshLayer(terminal, switchLayer, random);
-                    terminal.flush();
+                    refreshLayer(tileGrid, switchLayer, random);
+                    tileGrid.flush();
                 }
             }
         });
 
-        terminal.flush();
+        tileGrid.flush();
     }
 
-    private static void refreshText(Terminal terminal, String text, Position position) {
-        terminal.putCursorAt(position);
+    private static void refreshText(TileGrid tileGrid, String text, Position position) {
+        tileGrid.putCursorAt(position);
         for (int i = 0; i < text.length(); i++) {
-            terminal.putCharacter(text.charAt(i));
+            tileGrid.putCharacter(text.charAt(i));
         }
     }
 
-    private static void refreshLayer(Terminal terminal, String text, Random random) {
-        terminal.drainLayers();
+    private static void refreshLayer(TileGrid tileGrid, String text, Random random) {
+        tileGrid.drainLayers();
         Layer layer = Layers.newBuilder()
                 .font(TILESETS.get(random.nextInt(TILESETS.size())))
                 .offset(Positions.create(0, 1))
                 .size(Sizes.create(text.length(), 1))
                 .build();
         layer.putText(text, Positions.defaultPosition());
-        terminal.pushLayer(layer);
+        tileGrid.pushLayer(layer);
     }
 
 }
