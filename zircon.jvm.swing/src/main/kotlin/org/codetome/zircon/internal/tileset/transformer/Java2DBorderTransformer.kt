@@ -6,7 +6,7 @@ import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.modifier.BorderPosition.*
 import org.codetome.zircon.api.modifier.BorderType
 import org.codetome.zircon.api.modifier.BorderType.*
-import org.codetome.zircon.internal.tileset.TileTextureTransformer
+import org.codetome.zircon.api.tileset.TileTextureTransformer
 import java.awt.BasicStroke
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage

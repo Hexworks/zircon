@@ -9,7 +9,7 @@ import org.codetome.zircon.api.game.GameComponent
 import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.data.Size3D
 import org.codetome.zircon.api.util.Maybe
-import org.codetome.zircon.internal.component.impl.DefaultGameComponent
+import org.codetome.zircon.internal.game.DefaultGameComponent
 import org.codetome.zircon.internal.tileset.impl.FontSettings
 
 /**

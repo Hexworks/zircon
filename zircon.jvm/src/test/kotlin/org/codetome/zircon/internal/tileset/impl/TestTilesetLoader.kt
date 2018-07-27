@@ -5,7 +5,7 @@ import org.codetome.zircon.api.tileset.TileTextureMetadata
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.tileset.TilesetLoader
-import org.codetome.zircon.internal.tileset.MetadataPickingStrategy
+import org.codetome.zircon.api.tileset.MetadataPickingStrategy
 import org.codetome.zircon.api.util.Identifier
 import java.awt.image.BufferedImage
 import java.awt.image.BufferedImage.TYPE_INT_ARGB

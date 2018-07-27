@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal.tileset
+package org.codetome.zircon.api.tileset
 
 import org.codetome.zircon.api.tileset.TileTextureMetadata
 

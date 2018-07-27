@@ -4,7 +4,7 @@ import com.jhlabs.image.GaussianFilter
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.interop.toAWTColor
-import org.codetome.zircon.internal.tileset.TileTextureTransformer
+import org.codetome.zircon.api.tileset.TileTextureTransformer
 import org.codetome.zircon.internal.tileset.impl.Java2DTileTexture
 import java.awt.Color
 import java.awt.Graphics2D

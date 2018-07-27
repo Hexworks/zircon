@@ -8,8 +8,8 @@ import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.tileset.TileTextureMetadata
 import org.codetome.zircon.api.modifier.SimpleModifiers.Blink
 import org.codetome.zircon.api.util.Cache
-import org.codetome.zircon.internal.tileset.TileTextureTransformer
-import org.codetome.zircon.internal.tileset.MetadataPickingStrategy
+import org.codetome.zircon.api.tileset.TileTextureTransformer
+import org.codetome.zircon.api.tileset.MetadataPickingStrategy
 import org.codetome.zircon.internal.tileset.transformer.NoOpTransformer
 import java.io.InputStream
 

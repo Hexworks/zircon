@@ -1,4 +1,4 @@
-package org.codetome.zircon.internal.tileset.cache
+package org.codetome.zircon.internal.util.impl
 
 import org.codetome.zircon.api.util.Cache
 import org.codetome.zircon.api.util.Maybe

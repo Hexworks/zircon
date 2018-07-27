@@ -1,9 +1,9 @@
 package org.codetome.zircon.api.resource
 
 import org.codetome.zircon.api.tileset.Tileset
-import org.codetome.zircon.internal.tileset.DefaultTileTextureMetadata
+import org.codetome.zircon.internal.tileset.impl.DefaultTileTextureMetadata
 import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
-import org.codetome.zircon.internal.tileset.MetadataPickingStrategy
+import org.codetome.zircon.api.tileset.MetadataPickingStrategy
 import org.codetome.zircon.internal.util.rex.unZipIt
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor

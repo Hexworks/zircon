@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.util
 
-import org.codetome.zircon.internal.tileset.DefaultTileTextureMetadata
+import org.codetome.zircon.internal.tileset.impl.DefaultTileTextureMetadata
 
 object CP437Utils {
 

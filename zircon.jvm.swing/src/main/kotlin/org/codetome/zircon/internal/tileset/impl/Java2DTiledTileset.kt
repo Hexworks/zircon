@@ -7,8 +7,8 @@ import org.codetome.zircon.api.modifier.Border
 import org.codetome.zircon.api.modifier.RayShade
 import org.codetome.zircon.api.modifier.SimpleModifiers.*
 import org.codetome.zircon.api.util.Cache
-import org.codetome.zircon.internal.tileset.TileTextureTransformer
-import org.codetome.zircon.internal.tileset.MetadataPickingStrategy
+import org.codetome.zircon.api.tileset.TileTextureTransformer
+import org.codetome.zircon.api.tileset.MetadataPickingStrategy
 import org.codetome.zircon.internal.tileset.transformer.*
 import java.awt.image.BufferedImage
 
