@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.interop
 
 import org.codetome.zircon.api.modifier.Border
-import org.codetome.zircon.api.modifier.BorderBuilder
+import org.codetome.zircon.api.builder.modifier.BorderBuilder
 import org.codetome.zircon.api.modifier.SimpleModifiers.*
 
 /**

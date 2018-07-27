@@ -6,7 +6,7 @@ import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.interop.Modifiers
-import org.codetome.zircon.api.modifier.BorderBuilder
+import org.codetome.zircon.api.builder.modifier.BorderBuilder
 import org.codetome.zircon.api.modifier.BorderPosition
 import org.codetome.zircon.api.modifier.SimpleModifiers.*
 import org.junit.Test

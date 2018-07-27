@@ -1,6 +1,9 @@
-package org.codetome.zircon.api.modifier
+package org.codetome.zircon.api.builder.modifier
 
 import org.codetome.zircon.api.builder.Builder
+import org.codetome.zircon.api.modifier.Border
+import org.codetome.zircon.api.modifier.BorderPosition
+import org.codetome.zircon.api.modifier.BorderType
 
 /**
  * Builds [Border]s.
