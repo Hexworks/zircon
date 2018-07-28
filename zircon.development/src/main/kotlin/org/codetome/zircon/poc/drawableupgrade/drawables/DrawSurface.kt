@@ -1,37 +1,17 @@
 package org.codetome.zircon.poc.drawableupgrade.drawables
 
-import org.codetome.zircon.poc.drawableupgrade.Position
-import org.codetome.zircon.poc.drawableupgrade.Tile
+import org.codetome.zircon.poc.drawableupgrade.position.GridPosition
+import org.codetome.zircon.poc.drawableupgrade.tile.Tile
 import java.util.*
 
-/**
- * A draw surface is like a piece of paper. Any [Drawable] can be drawn on top of it
- * It also supports drawing the most basic building block: a [Tile]. This will be useful
- * later, see the implementation in [ThreadedTileImage]
- */
-interface DrawSurface {
+interface DrawSurface<T : Any> {
 
-    /**
-     * Returns the stored [Tile] at the given [Position] (if any).
-     */
-    fun getTileAt(position: Position): Optional<Tile>
+    fun getTileAt(position: GridPosition): Optional<Tile<T>>
 
-    /**
-     * Sets the given [Tile] at the given [Position].
-     */
-    fun setTileAt(position: Position, tile: Tile)
+    fun setTileAt(position: GridPosition, tile: Tile<T>)
 
-    /**
-     * Creates a snapshot of the current state of this [DrawSurface].
-     * A snapshot is useful to see a consistent state of an image
-     * like creating a picture.
-     */
+    fun createSnapshot(): Map<GridPosition, Tile<T>>
 
-    fun createSnapshot(): Map<Position, Tile>
-
-    /**
-     * Draws the given [Drawable] onto this [DrawSurface] at the given `offset` [Position].
-     */
-    fun draw(drawable: Drawable,
-             offset: Position)
+    fun draw(drawable: Drawable<T>,
+             offset: GridPosition)
 }

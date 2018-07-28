@@ -1,8 +1,8 @@
 package org.codetome.zircon.poc.drawableupgrade.renderer
 
-import org.codetome.zircon.poc.drawableupgrade.drawables.TileGrid
+interface Renderer<SURFACE : Any> {
 
-interface Renderer<T> {
+    val surface: SURFACE
 
-    fun render(grid: TileGrid)
+    fun render()
 }
