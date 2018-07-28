@@ -1,14 +1,15 @@
 package org.codetome.zircon.poc.drawableupgrade.tileset
 
-import org.codetome.zircon.poc.drawableupgrade.Tile
+import org.codetome.zircon.poc.drawableupgrade.texture.TileTexture
+import org.codetome.zircon.poc.drawableupgrade.tile.Tile
 
-interface Tileset<T> {
+interface Tileset<T: Any, S: Any> {
 
     fun getWidth(): Int
 
     fun getHeight(): Int
 
-    fun supportsTile(tile: Tile): Boolean
+    fun supportsTile(tile: Tile<out Any>): Boolean
 
-    fun fetchTextureForTile(tile: Tile): TileTexture<T>
+    fun fetchTextureForTile(tile: Tile<T>): TileTexture<S>
 }

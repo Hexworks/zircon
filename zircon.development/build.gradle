@@ -12,6 +12,7 @@ dependencies {
     compile libraries.slf4j_simple
 
     compile "com.github.romix:java-concurrent-hash-trie-map:0.2.23"
+    compile "com.github.ben-manes.caffeine:caffeine:2.5.4"
 
     testCompile libraries.junit
     testCompile libraries.mockito
