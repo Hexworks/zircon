@@ -13,6 +13,8 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.system.measureNanoTime
 
+val SIZE = Sizes.create(60, 30)
+
 fun main(args: Array<String>) {
     val screen = SwingTerminalBuilder.newBuilder()
             .initialTerminalSize(SIZE)
@@ -21,8 +23,8 @@ fun main(args: Array<String>) {
     screen.setCursorVisibility(false)
 
     val random = Random()
-    val terminalWidth = 100
-    val terminalHeight = 40
+    val terminalWidth = SIZE.xLength
+    val terminalHeight = SIZE.yLength
     val charCount = terminalWidth * terminalHeight
     val layerCount = 20
     val layerWidth = 20
@@ -87,8 +89,6 @@ fun main(args: Array<String>) {
         }
     }
 }
-
-val SIZE = Sizes.create(60, 30)
 
 
 object Stats {
