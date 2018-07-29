@@ -1,8 +1,8 @@
 package org.codetome.zircon.poc.drawableupgrade.tileimage
 
-import org.codetome.zircon.poc.drawableupgrade.position.GridPosition
 import org.codetome.zircon.poc.drawableupgrade.drawables.Layer
 import org.codetome.zircon.poc.drawableupgrade.drawables.TileImage
+import org.codetome.zircon.api.data.Position
 
 /**
  * this is a basic building block which can be re-used by complex image
@@ -11,7 +11,7 @@ import org.codetome.zircon.poc.drawableupgrade.drawables.TileImage
  * use this class as a base class just like how the TileGrid uses it
  */
 
-data class DefaultLayer<T : Any, S : Any>(val position: GridPosition,
+data class DefaultLayer<T : Any, S : Any>(private val position: Position,
                                           val backend: TileImage<T, S>)
     : Layer<T, S>, TileImage<T, S> by backend {
 

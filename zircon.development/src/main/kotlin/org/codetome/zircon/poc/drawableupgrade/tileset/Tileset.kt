@@ -5,9 +5,9 @@ import org.codetome.zircon.poc.drawableupgrade.tile.Tile
 
 interface Tileset<T: Any, S: Any> {
 
-    fun getWidth(): Int
+    fun width(): Int
 
-    fun getHeight(): Int
+    fun height(): Int
 
     fun supportsTile(tile: Tile<out Any>): Boolean
 

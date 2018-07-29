@@ -4,7 +4,7 @@ import org.codetome.zircon.poc.drawableupgrade.drawables.Drawable
 
 interface Tile<T : Any> : Drawable<T> {
 
-    val key: T
+    val type: T
 
-    fun keyType(): Class<out T> = key::class.java
+    fun keyType(): Class<out T> = type::class.java
 }
