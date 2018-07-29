@@ -13,19 +13,19 @@ object StringTileset : Tileset<Char, String> {
             '_' to " _ ",
             'x' to " x ")
 
-    override fun getWidth(): Int {
+    override fun width(): Int {
         return 3
     }
 
-    override fun getHeight(): Int {
+    override fun height(): Int {
         return 1
     }
 
     override fun supportsTile(tile: Tile<out Any>): Boolean {
-        return tile.keyType() == Char::class.java && supportedTiles.containsKey(tile.key)
+        return tile.keyType() == Char::class.java && supportedTiles.containsKey(tile.type)
     }
 
     override fun fetchTextureForTile(tile: Tile<Char>): TileTexture<String> {
-        return DefaultTileTexture(3, 1, supportedTiles[tile.key]!!)
+        return DefaultTileTexture(3, 1, supportedTiles[tile.type]!!)
     }
 }

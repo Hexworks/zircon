@@ -1,7 +1,6 @@
 package org.codetome.zircon.poc.drawableupgrade.tileset
 
 import com.github.benmanes.caffeine.cache.Caffeine
-import org.codetome.zircon.poc.drawableupgrade.tile.CharacterTile
 import org.codetome.zircon.poc.drawableupgrade.texture.BufferedImageTileTextureCloner
 import org.codetome.zircon.poc.drawableupgrade.texture.DefaultTileTexture
 import org.codetome.zircon.poc.drawableupgrade.texture.TileTexture
@@ -21,32 +20,32 @@ class BufferedImageCP437Tileset(private val width: Int,
             .expireAfterAccess(1, TimeUnit.MINUTES)
             .build<Char, TileTexture<BufferedImage>>()
 
-    override fun getWidth(): Int {
+    override fun width(): Int {
         return width
     }
 
-    override fun getHeight(): Int {
+    override fun height(): Int {
         return height
     }
 
     override fun supportsTile(tile: Tile<out Any>): Boolean {
-        return CP437_METADATA.containsKey(tile.key)
+        return CP437_METADATA.containsKey(tile.type)
     }
 
     override fun fetchTextureForTile(tile: Tile<Char>): TileTexture<BufferedImage> {
-        val maybeRegion = cache.getIfPresent(tile.key)
-        val meta = CP437_METADATA[tile.key]!!
+        val maybeRegion = cache.getIfPresent(tile.type)
+        val meta = CP437_METADATA[tile.type]!!
         return if (maybeRegion != null) {
             maybeRegion
         } else {
             var image: TileTexture<BufferedImage> = DefaultTileTexture(
-                    width = getWidth(),
-                    height = getHeight(),
+                    width = width(),
+                    height = height(),
                     texture = source.getSubimage(meta.x * width, meta.y * height, width, height))
             TILE_TRANSFORMERS.forEach {
                 image = it.transform(image, tile)
             }
-            cache.put(tile.key, image)
+            cache.put(tile.type, image)
             image
         }
     }
@@ -69,18 +68,23 @@ class BufferedImageCP437Tileset(private val width: Int,
         fun rexPaint16x16() = BufferedImageCP437Tileset(
                 width = 16,
                 height = 16,
-                source = ImageIO.read(File("zircon.development/src/main/resources/cp_437_tilesets/rex_paint_16x16.png")))
+                source = ImageIO.read(File("src/main/resources/cp_437_tilesets/rex_paint_16x16.png")))
 
         fun taffer20x20() = BufferedImageCP437Tileset(
                 width = 20,
                 height = 20,
-                source = ImageIO.read(File("zircon.development/src/main/resources/cp_437_tilesets/taffer_20x20.png")))
+                source = ImageIO.read(File("src/main/resources/cp_437_tilesets/taffer_20x20.png")))
 
 
         fun rexPaint18x18() = BufferedImageCP437Tileset(
                 width = 18,
                 height = 18,
-                source = ImageIO.read(File("zircon.development/src/main/resources/cp_437_tilesets/rex_paint_18x18.png")))
+                source = ImageIO.read(File("src/main/resources/cp_437_tilesets/rex_paint_18x18.png")))
+
+        fun rexPaint8x8() = BufferedImageCP437Tileset(
+                width = 8,
+                height = 8,
+                source = ImageIO.read(File("src/main/resources/cp_437_tilesets/rex_paint_8x8.png")))
 
     }
 

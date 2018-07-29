@@ -21,17 +21,17 @@ class BufferedImageDictionaryTileset(dir: File) : Tileset<String, BufferedImage>
         it.name to it
     }.toMap()
 
-    override fun getWidth() = 1
+    override fun width() = 1
 
-    override fun getHeight() = 1
+    override fun height() = 1
 
     override fun supportsTile(tile: Tile<out Any>): Boolean {
-        return tile.keyType() == String::class.java && images.containsKey(tile.key)
+        return tile.keyType() == String::class.java && images.containsKey(tile.type)
     }
 
     override fun fetchTextureForTile(tile: Tile<String>): TileTexture<BufferedImage> {
-        val maybeRegion = cache.getIfPresent(tile.key)
-        val file = images[tile.key]!!
+        val maybeRegion = cache.getIfPresent(tile.type)
+        val file = images[tile.type]!!
         return if (maybeRegion != null) {
             maybeRegion
         } else {
@@ -40,7 +40,7 @@ class BufferedImageDictionaryTileset(dir: File) : Tileset<String, BufferedImage>
                     width = texture.width,
                     height = texture.height,
                     texture = texture)
-            cache.put(tile.key, image)
+            cache.put(tile.type, image)
             image
         }
     }
@@ -48,6 +48,6 @@ class BufferedImageDictionaryTileset(dir: File) : Tileset<String, BufferedImage>
     companion object {
 
         fun fromResourceDir() = BufferedImageDictionaryTileset(
-                File("zircon.development/src/main/resources/images"))
+                File("src/main/resources/images"))
     }
 }

@@ -16,7 +16,7 @@ class SwingFrame(private val renderer: SwingCanvasRenderer) : JFrame(), WindowSt
     }
 
     init {
-        isResizable = false // TODO: implement proper resizing
+        isResizable = false
         add(renderer.surface)
         defaultCloseOperation = JFrame.EXIT_ON_CLOSE
         pack()

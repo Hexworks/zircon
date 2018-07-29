@@ -1,20 +1,29 @@
-apply plugin: 'kotlin-platform-jvm'
+buildscript {
+    ext.kotlinVersion = '1.2.51'
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "com.eriwen:gradle-js-plugin:2.14.1"
+        classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
 
-archivesBaseName = 'zircon.development'
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+apply plugin: 'kotlin'
+
 
 dependencies {
-    compile libraries.kotlin_stdlib
-    compile libraries.kotlin_reflect
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
-    compile libraries.caffeine
-    compile libraries.snakeyaml
-    compile libraries.slf4j_api
-    compile libraries.slf4j_simple
-
-    compile "com.github.romix:java-concurrent-hash-trie-map:0.2.23"
     compile "com.github.ben-manes.caffeine:caffeine:2.5.4"
-
-    testCompile libraries.junit
-    testCompile libraries.mockito
-    testCompile libraries.assertj
+    compile "com.github.romix:java-concurrent-hash-trie-map:0.2.23"
 }

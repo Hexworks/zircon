@@ -1,15 +1,15 @@
 package org.codetome.zircon.poc.drawableupgrade.renderer
 
-import org.codetome.zircon.poc.drawableupgrade.position.GridPosition
-import org.codetome.zircon.poc.drawableupgrade.drawables.TileGrid
+import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.poc.drawableupgrade.drawables.TilesetOverride
+import org.codetome.zircon.api.data.AbsolutePosition
+import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.poc.drawableupgrade.tile.Tile
 import org.codetome.zircon.poc.drawableupgrade.tileset.Tileset
 import java.awt.*
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.awt.image.BufferedImage
-import java.util.*
 
 @Suppress("UNCHECKED_CAST")
 class SwingCanvasRenderer(override val surface: Canvas,
@@ -20,9 +20,9 @@ class SwingCanvasRenderer(override val surface: Canvas,
 
     init {
         surface.preferredSize = Dimension(
-                tileset.getWidth() * grid.getColumnCount(),
-                tileset.getHeight() * grid.getRowCount())
-        surface.minimumSize = Dimension(tileset.getWidth(), tileset.getHeight())
+                grid.widthInPixels(),
+                grid.heightInPixels())
+        surface.minimumSize = Dimension(tileset.width(), tileset.height())
         surface.isFocusable = true
         surface.requestFocusInWindow()
 
@@ -42,37 +42,38 @@ class SwingCanvasRenderer(override val surface: Canvas,
             gc.fillRect(0, 0, getWidth(), getHeight())
             bs.show()
         }
-        val tiles = grid.createSnapshot().toSortedMap() as SortedMap<GridPosition, Tile<Any>>
-        renderTiles(tiles, tileset, GridPosition(0, 0))
+        renderTiles(grid.createSnapshot(), tileset, AbsolutePosition(0, 0))
         grid.getLayers().forEach { layer ->
-            renderTiles(layer.createSnapshot().toSortedMap() as SortedMap<GridPosition, Tile<Any>>, layer.tileset() as Tileset<Any, BufferedImage>, layer.position())
+            renderTiles(
+                    tiles = layer.createSnapshot(), // TODO: fix cat
+                    tileset = layer.tileset() as Tileset<Any, BufferedImage>,
+                    offset = layer.position().toAbsolutePosition(tileset))
         }
         fillLeftoverSpaceWithBlack()
         gc.dispose()
         bs.show()
     }
 
-    private fun renderTiles(tiles: SortedMap<GridPosition, Tile<Any>>,
+    private fun renderTiles(tiles: Map<Position, Tile<out Any>>,
                             tileset: Tileset<Any, BufferedImage>,
-                            offset: GridPosition) {
-        tiles.forEach { pos, tile ->
-            val (gridX, gridY) = pos + offset
-            val actualTileset: Tileset<Any, BufferedImage> = if (tile is TilesetOverride<*, *>) {
-                tile.tileset() as Tileset<Any, BufferedImage>
+                            offset: AbsolutePosition) {
+        tiles.forEach { (pos, tile) ->
+            val actualTile = tile as Tile<Any>
+            val (x, y) = pos.toAbsolutePosition(tileset) + offset
+            val actualTileset: Tileset<Any, BufferedImage> = if (actualTile is TilesetOverride<*, *>) {
+                actualTile.tileset() as Tileset<Any, BufferedImage>
             } else {
                 tileset
             }
 
-            val texture = actualTileset.fetchTextureForTile(tile)
-            val x = gridX * texture.getWidth()
-            val y = gridY * texture.getHeight()
+            val texture = actualTileset.fetchTextureForTile(actualTile)
             getGraphics2D().drawImage(texture.getTexture(), x, y, null)
         }
     }
 
-    private fun getWidth() = tileset.getWidth() * grid.getColumnCount()
+    private fun getWidth() = grid.widthInPixels()
 
-    private fun getHeight() = tileset.getHeight() * grid.getRowCount()
+    private fun getHeight() = grid.heightInPixels()
 
     tailrec fun initializeBufferStrategy() {
         val bs = surface.bufferStrategy
@@ -98,12 +99,12 @@ class SwingCanvasRenderer(override val surface: Canvas,
         // Take care of the left-over area at the bottom and right of the component where no character can fit
         graphics.color = Color.BLACK
 
-        val leftoverWidth = getWidth() % tileset.getWidth()
+        val leftoverWidth = getWidth() % tileset.width()
         if (leftoverWidth > 0) {
             graphics.fillRect(getWidth() - leftoverWidth, 0, leftoverWidth, getHeight())
         }
 
-        val leftoverHeight = getHeight() % tileset.getHeight()
+        val leftoverHeight = getHeight() % tileset.height()
         if (leftoverHeight > 0) {
             graphics.fillRect(0, getHeight() - leftoverHeight, getWidth(), leftoverHeight)
         }
