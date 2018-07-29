@@ -1,6 +1,8 @@
 package org.codetome.zircon.poc.drawableupgrade.renderer
 
-interface Renderer<SURFACE : Any> {
+import org.codetome.zircon.api.behavior.Clearable
+
+interface Renderer<SURFACE : Any> : Clearable {
 
     val surface: SURFACE
 
