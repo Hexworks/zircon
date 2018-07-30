@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.grid.virtual
 
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.Drawable
-import org.codetome.zircon.api.behavior.FontOverride
+import org.codetome.zircon.api.behavior.TilesetOverride
 import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.data.Cell
@@ -19,7 +19,7 @@ import org.codetome.zircon.internal.behavior.InternalCursorHandler
 import org.codetome.zircon.internal.behavior.InternalLayerable
 import org.codetome.zircon.internal.behavior.ShutdownHook
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
-import org.codetome.zircon.internal.behavior.impl.DefaultFontOverride
+import org.codetome.zircon.internal.behavior.impl.DefaultTilesetOverride
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 import org.codetome.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.codetome.zircon.internal.event.Event
@@ -29,7 +29,7 @@ import org.codetome.zircon.internal.grid.InternalTileGrid
 
 class VirtualTileGrid(initialSize: Size = Size.defaultTerminalSize(),
                       initialTileset: Tileset,
-                      private val fontOverride: FontOverride = DefaultFontOverride(
+                      private val tilesetOverride: TilesetOverride = DefaultTilesetOverride(
                               initialTileset = initialTileset),
                       private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                               cursorSpace = initialSize),
@@ -40,7 +40,7 @@ class VirtualTileGrid(initialSize: Size = Size.defaultTerminalSize(),
     : AbstractTileGrid(), InternalTileGrid,
         InternalCursorHandler by cursorHandler,
         InternalLayerable by layerable,
-        FontOverride by fontOverride,
+        TilesetOverride by tilesetOverride,
         ShutdownHook by shutdownHook {
 
     private var terminalSize = initialSize

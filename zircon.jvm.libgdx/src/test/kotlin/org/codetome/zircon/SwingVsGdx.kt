@@ -83,7 +83,7 @@ class GdxExample : ApplicationAdapter() {
         val width = Config.TILESET.width.toFloat()
         val height = Config.TILESET.height.toFloat()
         val font = GdxTileset(
-                source = Texture(Config.TILESET.path.substring(1)),
+                source = Texture(Config.TILESET.path),
                 width = Config.TILESET.width,
                 height = Config.TILESET.height)
         (0..Config.HEIGHT).forEach { y ->

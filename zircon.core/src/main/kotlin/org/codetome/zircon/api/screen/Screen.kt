@@ -15,7 +15,7 @@ import org.codetome.zircon.internal.behavior.Identifiable
  * tracking the changes use the [Screen.display] function.
  */
 interface Screen
-    : Closeable, Clearable, Layerable, TypingSupport, ContainerHandler, DrawSurface, InputEmitter, Identifiable, FontOverride {
+    : Closeable, Clearable, Layerable, TypingSupport, ContainerHandler, DrawSurface, InputEmitter, Identifiable, TilesetOverride {
 
     /**
      * This function will take the content from the back-buffer and move it into the front-buffer

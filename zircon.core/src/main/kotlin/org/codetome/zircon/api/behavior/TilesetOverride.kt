@@ -7,7 +7,7 @@ import org.codetome.zircon.internal.tileset.impl.FontSettings
  * Interface which adds functionality for overriding [Tileset]s used
  * in its implementors (components, layers, etc).
  */
-interface FontOverride {
+interface TilesetOverride {
 
     /**
      * Tells whether there is currently an override [Tileset] present or not.

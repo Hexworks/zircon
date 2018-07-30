@@ -1,10 +1,10 @@
 package org.codetome.zircon.internal.behavior.impl
 
-import org.codetome.zircon.api.behavior.FontOverride
+import org.codetome.zircon.api.behavior.TilesetOverride
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.internal.tileset.impl.FontSettings
 
-class DefaultFontOverride(initialTileset: Tileset) : FontOverride {
+class DefaultTilesetOverride(initialTileset: Tileset) : TilesetOverride {
 
     private var font = initialTileset
 
