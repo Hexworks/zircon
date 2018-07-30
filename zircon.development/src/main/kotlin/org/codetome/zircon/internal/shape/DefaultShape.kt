@@ -3,10 +3,10 @@ package org.codetome.zircon.internal.shape
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.shape.Shape
-import org.codetome.zircon.poc.drawableupgrade.drawables.TileImage
-import org.codetome.zircon.poc.drawableupgrade.tile.Tile
-import org.codetome.zircon.poc.drawableupgrade.tileimage.MapTileImage
-import org.codetome.zircon.poc.drawableupgrade.tileset.Tileset
+import org.codetome.zircon.api.graphics.TileImage
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.internal.graphics.MapTileImage
+import org.codetome.zircon.api.tileset.Tileset
 
 class DefaultShape(private val positions: Set<Position> = setOf())
     : Shape, Collection<Position> by positions {

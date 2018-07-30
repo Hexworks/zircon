@@ -2,9 +2,9 @@ package org.codetome.zircon.api.screen
 
 import org.codetome.zircon.api.behavior.Clearable
 import org.codetome.zircon.api.behavior.Closeable
-import org.codetome.zircon.poc.drawableupgrade.drawables.DrawSurface
-import org.codetome.zircon.poc.drawableupgrade.drawables.Layerable
-import org.codetome.zircon.poc.drawableupgrade.drawables.TilesetOverride
+import org.codetome.zircon.api.behavior.DrawSurface
+import org.codetome.zircon.api.behavior.Layerable
+import org.codetome.zircon.api.behavior.TilesetOverride
 
 /**
  * [Screen] is a fundamental layer presenting the grid as a bitmap-like surface where you can perform

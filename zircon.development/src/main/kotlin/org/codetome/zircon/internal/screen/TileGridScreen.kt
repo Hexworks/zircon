@@ -4,10 +4,10 @@ import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.screen.Screen
-import org.codetome.zircon.poc.drawableupgrade.drawables.Drawable
-import org.codetome.zircon.poc.drawableupgrade.drawables.Layer
-import org.codetome.zircon.poc.drawableupgrade.tile.Tile
-import org.codetome.zircon.poc.drawableupgrade.tileset.Tileset
+import org.codetome.zircon.api.behavior.Drawable
+import org.codetome.zircon.api.graphics.Layer
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.tileset.Tileset
 import java.util.*
 
 class TileGridScreen<T: Any, S: Any> : Screen<T, S> {

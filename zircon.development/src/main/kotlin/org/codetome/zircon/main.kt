@@ -5,18 +5,18 @@ import org.codetome.zircon.api.data.GridPosition
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.grid.TileGrid
-import org.codetome.zircon.poc.drawableupgrade.Symbols
-import org.codetome.zircon.poc.drawableupgrade.grid.RectangleTileGrid
-import org.codetome.zircon.poc.drawableupgrade.misc.SwingFrame
-import org.codetome.zircon.poc.drawableupgrade.renderer.SwingCanvasRenderer
-import org.codetome.zircon.poc.drawableupgrade.tile.CharacterTile
-import org.codetome.zircon.poc.drawableupgrade.tile.ImageTile
-import org.codetome.zircon.poc.drawableupgrade.tileimage.DefaultLayer
-import org.codetome.zircon.poc.drawableupgrade.tileimage.MapTileImage
-import org.codetome.zircon.poc.drawableupgrade.tileset.ImageDictionaryTileset
-import org.codetome.zircon.poc.drawableupgrade.tileset.Java2DCP437Tileset
+import org.codetome.zircon.api.graphics.Symbols
+import org.codetome.zircon.internal.grid.RectangleTileGrid
+import org.codetome.zircon.swing.SwingFrame
+import org.codetome.zircon.swing.SwingCanvasRenderer
+import org.codetome.zircon.api.data.CharacterTile
+import org.codetome.zircon.api.data.ImageTile
+import org.codetome.zircon.internal.graphics.DefaultLayer
+import org.codetome.zircon.internal.graphics.MapTileImage
+import org.codetome.zircon.swing.BufferedImageCP437Tileset
+import org.codetome.zircon.swing.BufferedImageDictionaryTileset
 import java.awt.Canvas
-import java.awt.image.VolatileImage
+import java.awt.image.BufferedImage
 import java.util.*
 
 fun main(args: Array<String>) {
@@ -33,10 +33,10 @@ private fun testRender() {
     val imageWidth = 4
     val imageHeight = 4
     val imageCount = 20
-    val tileset = Java2DCP437Tileset.rexPaint16x16()
-    val layerTileset = Java2DCP437Tileset.rexPaint8x8()
-    val imageTileset = ImageDictionaryTileset.fromResourceDir()
-    val tileGrid: TileGrid<Char, VolatileImage> = RectangleTileGrid(tileset, Size.create(width, height))
+    val tileset = BufferedImageCP437Tileset.rexPaint16x16()
+    val layerTileset = BufferedImageCP437Tileset.rexPaint8x8()
+    val imageTileset = BufferedImageDictionaryTileset.fromResourceDir()
+    val tileGrid: TileGrid<Char, BufferedImage> = RectangleTileGrid(tileset, Size.create(width, height))
     val canvas = Canvas()
     val renderer = SwingCanvasRenderer(canvas, tileGrid)
     val frame = SwingFrame(renderer)
@@ -84,7 +84,7 @@ private fun testRender() {
     }
 }
 
-private fun fillGrid(tileGrid: TileGrid<Char, VolatileImage>) {
+private fun fillGrid(tileGrid: TileGrid<Char, BufferedImage>) {
     (0..tileGrid.getBoundableSize().yLength).forEach { y ->
         (0..tileGrid.getBoundableSize().xLength).forEach { x ->
             tileGrid.setTileAt(GridPosition(x, y), CharacterTile(Symbols.SINGLE_LINE_CROSS))
