@@ -2,9 +2,9 @@ package org.codetome.zircon.api.shape
 
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.internal.shape.DefaultShape
-import org.codetome.zircon.poc.drawableupgrade.drawables.TileImage
-import org.codetome.zircon.poc.drawableupgrade.tile.Tile
-import org.codetome.zircon.poc.drawableupgrade.tileset.Tileset
+import org.codetome.zircon.api.graphics.TileImage
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.tileset.Tileset
 
 /**
  * A [Shape] is a set of [org.codetome.zircon.api.data.Position]s representing a geometric formation
