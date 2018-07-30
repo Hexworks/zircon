@@ -3,7 +3,7 @@ package org.codetome.zircon.api.graphics
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.behavior.FontOverride
+import org.codetome.zircon.api.behavior.TilesetOverride
 import org.codetome.zircon.api.behavior.Movable
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.tileset.impl.FontSettings
@@ -14,7 +14,7 @@ import org.codetome.zircon.internal.tileset.impl.FontSettings
  * the way it is handled. It can be repositioned relative to its
  * parent while a [TileImage] cannot.
  */
-interface Layer : TileImage, Movable, FontOverride {
+interface Layer : TileImage, Movable, TilesetOverride {
 
     /**
      * Fetches all the (absolute) [Position]s which this

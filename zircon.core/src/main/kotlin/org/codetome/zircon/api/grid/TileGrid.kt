@@ -22,7 +22,7 @@ import org.codetome.zircon.internal.behavior.ShutdownHook
  * interface you should be programming against.
  */
 interface TileGrid
-    : Closeable, Clearable, Styleable, TypingSupport, Layerable, DrawSurface, InputEmitter, FontOverride, ShutdownHook {
+    : Closeable, Clearable, Styleable, TypingSupport, Layerable, DrawSurface, InputEmitter, TilesetOverride, ShutdownHook {
 
     /**
      * Adds a [GridResizeListener] to be called when the grid has changed size.

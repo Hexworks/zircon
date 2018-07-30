@@ -10,18 +10,18 @@ import org.junit.Test
 
 class DefaultTilesetOverrideTest {
 
-    lateinit var target: DefaultFontOverride
+    lateinit var target: DefaultTilesetOverride
 
     @Before
     fun setUp() {
         TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
-        target = DefaultFontOverride(INITIAL_FONT.toFont())
+        target = DefaultTilesetOverride(INITIAL_FONT.toFont())
     }
 
     @Test
     fun shouldReturnInitialFontInitially() {
         val font = INITIAL_FONT.toFont()
-        target = DefaultFontOverride(font)
+        target = DefaultTilesetOverride(font)
         assertThat(target.getCurrentFont().getId())
                 .isEqualTo(font.getId())
     }

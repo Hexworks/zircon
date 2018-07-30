@@ -2,11 +2,10 @@ package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
-import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Drawable
-import org.codetome.zircon.api.behavior.FontOverride
+import org.codetome.zircon.api.behavior.TilesetOverride
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
 import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.component.ComponentState
@@ -18,7 +17,7 @@ import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Identifier
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
-import org.codetome.zircon.internal.behavior.impl.DefaultFontOverride
+import org.codetome.zircon.internal.behavior.impl.DefaultTilesetOverride
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.Event
@@ -30,7 +29,7 @@ abstract class DefaultComponent(initialSize: Size,
                                 private var attached: Boolean = false,
                                 private var componentStyleSet: ComponentStyleSet,
                                 private val wrappers: Iterable<WrappingStrategy>,
-                                private val fontOverride: FontOverride = DefaultFontOverride(
+                                private val tilesetOverride: TilesetOverride = DefaultTilesetOverride(
                                         initialTileset = initialTileset),
                                 private val drawSurface: TileImage = TileImageBuilder.newBuilder()
                                         .size(initialSize)
@@ -38,7 +37,7 @@ abstract class DefaultComponent(initialSize: Size,
                                 private val boundable: DefaultBoundable = DefaultBoundable(
                                         size = initialSize,
                                         position = position))
-    : InternalComponent, Drawable by drawSurface, FontOverride by fontOverride {
+    : InternalComponent, Drawable by drawSurface, TilesetOverride by tilesetOverride {
 
     private val id = Identifier.randomIdentifier()
     private var currentOffset = Position.defaultPosition()
