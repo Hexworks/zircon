@@ -5,6 +5,7 @@ import org.codetome.zircon.api.behavior.Closeable
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.behavior.Layerable
 import org.codetome.zircon.api.behavior.TilesetOverride
+import org.codetome.zircon.api.grid.TileGrid
 
 /**
  * [Screen] is a fundamental layer presenting the grid as a bitmap-like surface where you can perform
@@ -17,7 +18,7 @@ import org.codetome.zircon.api.behavior.TilesetOverride
  * tracking the changes use the [Screen.display] function.
  */
 interface Screen<T: Any, S: Any>
-    : Closeable, Clearable, DrawSurface<T>, Layerable, TilesetOverride<T, S> {
+    : TileGrid<T, S> {
 
     /**
      * Moves the contents of this [Screen] to the underlying [org.codetome.zircon.api.grid.TileGrid].

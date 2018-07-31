@@ -1,74 +1,94 @@
 package org.codetome.zircon.swing
 
+import org.codetome.zircon.api.application.Renderer
 import org.codetome.zircon.api.behavior.TilesetOverride
 import org.codetome.zircon.api.data.AbsolutePosition
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.graphics.Renderer
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.tileset.Tileset
 import java.awt.*
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.awt.image.BufferedImage
+import javax.swing.JFrame
 
 @Suppress("UNCHECKED_CAST")
-class SwingCanvasRenderer(val surface: Canvas,
+class SwingCanvasRenderer(val canvas: Canvas,
+                          val frame: JFrame,
                           private val grid: TileGrid<out Any, BufferedImage>) : Renderer {
 
     private var firstDraw = true
     private val tileset = grid.tileset() as Tileset<Any, BufferedImage>
 
-    init {
-        surface.preferredSize = Dimension(
+    override fun create() {
+        frame.isResizable = false
+        frame.addWindowStateListener {
+            if (it.newState == Frame.NORMAL) {
+                println("============ Window state changed")
+                render()
+            }
+        }
+
+        canvas.preferredSize = Dimension(
                 grid.widthInPixels(),
                 grid.heightInPixels())
-        surface.minimumSize = Dimension(tileset.width(), tileset.height())
-        surface.isFocusable = true
-        surface.requestFocusInWindow()
+        canvas.minimumSize = Dimension(tileset.width(), tileset.height())
+        canvas.isFocusable = true
+        canvas.requestFocusInWindow()
 
-    }
-
-    override fun create() {
-        TODO("not implemented")
+        frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+        frame.pack()
+        frame.setLocationRelativeTo(null)
+        canvas.createBufferStrategy(2)
+        initializeBufferStrategy()
     }
 
     override fun dispose() {
-        TODO("not implemented")
+        grid.close()
     }
 
     override fun render() {
         val bs = getBufferStrategy()
-        val gc = getGraphics2D()
+        val img = BufferedImage(
+                grid.widthInPixels(),
+                grid.heightInPixels(),
+                BufferedImage.TRANSLUCENT)
+        val gc = configureGraphics(img.graphics)
+        gc.fillRect(0, 0, grid.widthInPixels(), grid.heightInPixels())
+
+        renderTiles(gc, grid.createSnapshot(), tileset)
+        grid.getLayers().forEach { layer ->
+            renderTiles(
+                    graphics = gc,
+                    tiles = layer.createSnapshot(), // TODO: fix cat
+                    tileset = layer.tileset() as Tileset<Any, BufferedImage>)
+        }
+        configureGraphics(getGraphics2D() ).apply {
+            drawImage(img, 0, 0, null)
+            dispose()
+        }
+
+        bs.show()
+    }
+
+    private fun configureGraphics(graphics: Graphics): Graphics2D {
+        graphics.color = Color.BLACK
+        val gc = graphics as Graphics2D
         gc.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED)
         gc.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE)
         gc.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY)
         gc.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
         gc.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED)
-        if (firstDraw) {
-            firstDraw = false
-            gc.color = Color.BLACK
-            gc.fillRect(0, 0, getWidth(), getHeight())
-            bs.show()
-        }
-        renderTiles(grid.createSnapshot(), tileset, AbsolutePosition(0, 0))
-        grid.getLayers().forEach { layer ->
-            renderTiles(
-                    tiles = layer.createSnapshot(), // TODO: fix cat
-                    tileset = layer.tileset() as Tileset<Any, BufferedImage>,
-                    offset = layer.position().toAbsolutePosition(tileset))
-        }
-        fillLeftoverSpaceWithBlack()
-        gc.dispose()
-        bs.show()
+        return gc
     }
 
-    private fun renderTiles(tiles: Map<Position, Tile<out Any>>,
-                            tileset: Tileset<Any, BufferedImage>,
-                            offset: AbsolutePosition) {
+    private fun renderTiles(graphics: Graphics,
+                            tiles: Map<Position, Tile<out Any>>,
+                            tileset: Tileset<Any, BufferedImage>) {
         tiles.forEach { (pos, tile) ->
             val actualTile = tile as Tile<Any>
-            val (x, y) = pos.toAbsolutePosition(tileset) + offset
+            val (x, y) = pos.toAbsolutePosition(tileset)
             val actualTileset: Tileset<Any, BufferedImage> = if (actualTile is TilesetOverride<*, *>) {
                 actualTile.tileset() as Tileset<Any, BufferedImage>
             } else {
@@ -76,7 +96,7 @@ class SwingCanvasRenderer(val surface: Canvas,
             }
 
             val texture = actualTileset.fetchTextureForTile(actualTile)
-            getGraphics2D().drawImage(texture.getTexture(), x, y, null)
+            graphics.drawImage(texture.getTexture(), x, y, null)
         }
     }
 
@@ -84,8 +104,8 @@ class SwingCanvasRenderer(val surface: Canvas,
 
     private fun getHeight() = grid.heightInPixels()
 
-    tailrec fun initializeBufferStrategy() {
-        val bs = surface.bufferStrategy
+    private tailrec fun initializeBufferStrategy() {
+        val bs = canvas.bufferStrategy
         var failed = false
         try {
             bs.drawGraphics as Graphics2D
@@ -95,7 +115,7 @@ class SwingCanvasRenderer(val surface: Canvas,
         if (failed) {
             initializeBufferStrategy()
         } else {
-            surface.addComponentListener(object : ComponentAdapter() {
+            canvas.addComponentListener(object : ComponentAdapter() {
                 override fun componentResized(e: ComponentEvent) {
                     println("======== RESIZE?")
                 }
@@ -103,23 +123,7 @@ class SwingCanvasRenderer(val surface: Canvas,
         }
     }
 
-    private fun fillLeftoverSpaceWithBlack() {
-        val graphics = getGraphics2D()
-        // Take care of the left-over area at the bottom and right of the component where no character can fit
-        graphics.color = Color.BLACK
-
-        val leftoverWidth = getWidth() % tileset.width()
-        if (leftoverWidth > 0) {
-            graphics.fillRect(getWidth() - leftoverWidth, 0, leftoverWidth, getHeight())
-        }
-
-        val leftoverHeight = getHeight() % tileset.height()
-        if (leftoverHeight > 0) {
-            graphics.fillRect(0, getHeight() - leftoverHeight, getWidth(), leftoverHeight)
-        }
-    }
-
-    private fun getBufferStrategy() = surface.bufferStrategy
+    private fun getBufferStrategy() = canvas.bufferStrategy
 
     private fun getGraphics2D() = getBufferStrategy().drawGraphics as Graphics2D
 }

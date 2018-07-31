@@ -1,4 +1,4 @@
-package org.codetome.zircon.api.graphics
+package org.codetome.zircon.api.application
 
 interface Renderer {
     /**
