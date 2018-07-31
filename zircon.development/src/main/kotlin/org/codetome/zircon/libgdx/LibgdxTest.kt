@@ -9,7 +9,7 @@ import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.data.*
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.internal.graphics.DefaultStyleSet
-import org.codetome.zircon.internal.grid.RectangleTileGrid
+import org.codetome.zircon.internal.grid.ThreadSafeTileGrid
 import org.codetome.zircon.internal.graphics.DefaultLayer
 import org.codetome.zircon.internal.graphics.MapTileImage
 import java.util.*
@@ -19,7 +19,7 @@ val tileset = LibgdxTileset.rexPaint16x16()
 
 class GdxExample : ApplicationAdapter() {
 
-    private val tileGrid: TileGrid<Char, TextureRegion> = RectangleTileGrid(tileset, size)
+    private val tileGrid: TileGrid<Char, TextureRegion> = ThreadSafeTileGrid(tileset, size)
     private val renderer = LibgdxRenderer(grid = tileGrid)
 
     private val random = Random()

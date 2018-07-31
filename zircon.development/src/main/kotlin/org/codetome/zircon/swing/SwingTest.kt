@@ -1,32 +1,27 @@
 package org.codetome.zircon.swing
 
 import org.codetome.zircon.Stats
-import org.codetome.zircon.api.data.GridPosition
-import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.*
 import org.codetome.zircon.api.grid.TileGrid
-import org.codetome.zircon.internal.grid.RectangleTileGrid
-import org.codetome.zircon.api.data.CharacterTile
-import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.internal.graphics.DefaultLayer
-import java.awt.Canvas
+import org.codetome.zircon.internal.graphics.MapTileImage
+import org.codetome.zircon.internal.grid.RectangleTileGrid
 import java.awt.image.BufferedImage
 import java.util.*
 
-val SIZE = Size.create(70, 40)
-
 fun main(args: Array<String>) {
+
+    val size = Size.create(70, 40)
 
     val tileset = BufferedImageCP437Tileset.rexPaint16x16()
 
-    val tileGrid: TileGrid<Char, BufferedImage> = RectangleTileGrid(tileset, SIZE)
-    val canvas = Canvas()
-    val renderer = SwingCanvasRenderer(canvas, tileGrid)
-    val frame = SwingFrame(renderer)
+    val tileGrid: TileGrid<Char, BufferedImage> = RectangleTileGrid(tileset, size)
+    val frame = SwingFrame(tileGrid)
 
 
     val random = Random()
-    val terminalWidth = SIZE.xLength
-    val terminalHeight = SIZE.yLength
+    val terminalWidth = size.xLength
+    val terminalHeight = size.yLength
     val layerCount = 20
     val layerWidth = 15
     val layerHeight = 15
@@ -40,6 +35,8 @@ fun main(args: Array<String>) {
 
     frame.isVisible = true
 
+    frame.renderer.create()
+
     while (true) {
         Stats.addTimedStatFor("terminalBenchmark") {
             val tile = CharacterTile(chars[currIdx])
@@ -48,23 +45,23 @@ fun main(args: Array<String>) {
                 tileGrid.removeLayer(it)
             }
             val filler = CharacterTile('x')
-//            layers = (0..layerCount).map {
-//
-//                val imageLayer = MapTileImage(layerSize, tileset)
-//                layerSize.fetchPositions().forEach {
-//                    imageLayer.setTileAt(it, filler)
-//                }
-//
-//                val layer = DefaultLayer(
-//                        position = Position.create(
-//                                x = random.nextInt(terminalWidth - layerWidth),
-//                                y = random.nextInt(terminalHeight - layerHeight)),
-//                        backend = imageLayer)
-//
-//                tileGrid.pushLayer(layer)
-//                layer
-//            }
-            renderer.render()
+            layers = (0..layerCount).map {
+
+                val imageLayer = MapTileImage(layerSize, tileset)
+                layerSize.fetchPositions().forEach {
+                    imageLayer.setTileAt(it, filler)
+                }
+
+                val layer = DefaultLayer(
+                        position = Position.create(
+                                x = random.nextInt(terminalWidth - layerWidth),
+                                y = random.nextInt(terminalHeight - layerHeight)),
+                        backend = imageLayer)
+
+                tileGrid.pushLayer(layer)
+                layer
+            }
+            frame.renderer.render()
             currIdx = if (currIdx == 0) 1 else 0
             loopCount++
         }

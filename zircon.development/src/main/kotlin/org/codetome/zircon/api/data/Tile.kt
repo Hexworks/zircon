@@ -6,6 +6,9 @@ import org.codetome.zircon.api.behavior.Drawable
 
 interface Tile<T : Any> : Drawable<T> {
 
+    fun isOpaque(): Boolean = getForegroundColor().isOpaque().and(
+            getBackgroundColor().isOpaque())
+
     fun getForegroundColor(): TextColor
 
     fun getBackgroundColor(): TextColor

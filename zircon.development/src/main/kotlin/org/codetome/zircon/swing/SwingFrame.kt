@@ -1,27 +1,17 @@
 package org.codetome.zircon.swing
 
-import java.awt.Frame
-import java.awt.event.WindowEvent
-import java.awt.event.WindowStateListener
+import org.codetome.zircon.api.grid.TileGrid
+import java.awt.Canvas
+import java.awt.image.BufferedImage
 import javax.swing.JFrame
 
-class SwingFrame(private val renderer: SwingCanvasRenderer) : JFrame(), WindowStateListener {
+class SwingFrame(val grid: TileGrid<out Any, BufferedImage>,
+                 canvas: Canvas = Canvas()) : JFrame() {
 
-    override fun windowStateChanged(e: WindowEvent) {
-        if (e.newState == Frame.NORMAL) {
-            println("============ Window state changed")
-            renderer.render()
-        }
-    }
+    val renderer: SwingCanvasRenderer
 
     init {
-        isResizable = false
-        add(renderer.surface)
-        defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-        pack()
-        setLocationRelativeTo(null)
-        renderer.surface.createBufferStrategy(2)
-        renderer.initializeBufferStrategy()
-        addWindowStateListener(this)
+        add(canvas)
+        renderer = SwingCanvasRenderer(canvas, this, grid)
     }
 }

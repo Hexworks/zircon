@@ -14,7 +14,7 @@ import org.codetome.zircon.api.behavior.TilesetOverride
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.tileset.Tileset
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import org.codetome.zircon.api.graphics.Renderer
+import org.codetome.zircon.api.application.Renderer
 
 
 @Suppress("UNCHECKED_CAST")
@@ -78,16 +78,6 @@ class LibgdxRenderer(private val grid: TileGrid<out Any, TextureRegion>) : Rende
             val bg = actualTile.getBackgroundColor().getGreen().toFloat().div(255)
             val bb = actualTile.getBackgroundColor().getBlue().toFloat().div(255)
             val ba = actualTile.getBackgroundColor().getAlpha().toFloat().div(255)
-
-            Gdx.gl.glClearColor(br, bg, bb, ba)
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-            shapeRenderer.rect(x,
-                    y + height,
-                    width,
-                    height)
-            shapeRenderer.end()
 
             val tinted = drawable.tint(Color(fr, fg, fb, fa)) as SpriteDrawable
             tinted.draw(batch,
