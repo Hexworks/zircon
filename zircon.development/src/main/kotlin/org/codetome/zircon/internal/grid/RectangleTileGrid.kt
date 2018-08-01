@@ -1,6 +1,8 @@
 package org.codetome.zircon.internal.grid
 
-import org.codetome.zircon.api.behavior.*
+import org.codetome.zircon.api.behavior.Boundable
+import org.codetome.zircon.api.behavior.Drawable
+import org.codetome.zircon.api.behavior.Layerable
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
@@ -8,15 +10,20 @@ import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TileImage
-import org.codetome.zircon.api.grid.TileGrid
+import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.api.util.TextUtils
+import org.codetome.zircon.internal.behavior.InternalCursorHandler
+import org.codetome.zircon.internal.behavior.ShutdownHook
+import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
+import org.codetome.zircon.internal.behavior.impl.DefaultShutdownHook
+import org.codetome.zircon.internal.event.Event
+import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.graphics.ConcurrentTileImage
-import org.codetome.zircon.internal.graphics.CtrieTileImage
-import org.codetome.zircon.internal.graphics.MapTileImage
-import java.util.*
 
 
 class RectangleTileGrid<T : Any, S : Any>(
@@ -26,8 +33,23 @@ class RectangleTileGrid<T : Any, S : Any>(
                 size = size,
                 tileset = tileset,
                 styleSet = StyleSet.defaultStyle()),
-        override var layerable: Layerable = DefaultLayerable(size))
-    : InternalTileGrid<T, S> {
+        override var layerable: Layerable = DefaultLayerable(size),
+        private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
+                cursorSpace = size),
+        private val shutdownHook: ShutdownHook = DefaultShutdownHook())
+    : InternalTileGrid<T, S>,
+        InternalCursorHandler by cursorHandler,
+        ShutdownHook by shutdownHook {
+
+    override fun onInput(listener: Consumer<Input>) {
+        EventBus.subscribe<Event.Input> { (input) ->
+            listener.accept(input)
+        }
+    }
+
+    override fun putTile(tile: Tile<T>) {
+        TODO("undo this")
+    }
 
     override fun getTileAt(position: Position): Maybe<Tile<T>> {
         return backend.getTileAt(position)
@@ -42,7 +64,7 @@ class RectangleTileGrid<T : Any, S : Any>(
     }
 
     override fun draw(drawable: Drawable<T>, offset: Position) {
-       backend.draw(drawable, offset)
+        backend.draw(drawable, offset)
     }
 
     override fun pushLayer(layer: Layer<out Any, out Any>) {

@@ -10,8 +10,13 @@ import org.codetome.zircon.api.sam.TextCharacterTransformer
 import org.codetome.zircon.api.util.Math
 import org.codetome.zircon.internal.graphics.ConcurrentTileImage
 
+/**
+ * An image built from [Tile]s with color and style information.
+ * It is completely in memory but it can be drawn onto other
+ * [DrawSurface]s like a [org.codetome.zircon.api.grid.TileGrid].
+ */
 interface TileImage<T : Any, S: Any>
-    : Boundable, Clearable, DrawSurface<T>, Drawable<T>, Styleable, TilesetOverride<T, S> {
+    : Clearable, DrawSurface<T>, Drawable<T>, Styleable, TilesetOverride<T, S> {
 
     /**
      * Returns a [List] of [Position]s which are not `EMPTY`.

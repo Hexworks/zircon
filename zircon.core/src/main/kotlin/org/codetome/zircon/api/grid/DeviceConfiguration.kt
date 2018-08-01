@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.grid
 
-import org.codetome.zircon.api.builder.terminal.DeviceConfigurationBuilder
+import org.codetome.zircon.api.builder.grid.DeviceConfigurationBuilder
 import org.codetome.zircon.api.color.TextColor
 
 /**

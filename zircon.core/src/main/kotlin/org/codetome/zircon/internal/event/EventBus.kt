@@ -18,7 +18,7 @@ object EventBus {
         val subscription = Subscription(
                 callback = callback,
                 eventType = eventType)
-        subscriptions.getOrPut(eventType, { ThreadSafeQueueFactory.create() }).add(subscription)
+        subscriptions.getOrPut(eventType) { ThreadSafeQueueFactory.create() }.add(subscription)
         return subscription
     }
 
@@ -32,7 +32,7 @@ object EventBus {
                 callback = callback,
                 eventType = eventType,
                 identifier = Maybe.of(identifier))
-        subscriptions.getOrPut(eventType, { ThreadSafeQueueFactory.create() }).add(subscription)
+        subscriptions.getOrPut(eventType) { ThreadSafeQueueFactory.create() }.add(subscription)
         return subscription
     }
 

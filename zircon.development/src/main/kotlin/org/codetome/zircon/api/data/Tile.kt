@@ -8,6 +8,7 @@ import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.Border
 import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.modifier.SimpleModifiers.*
+import kotlin.reflect.KClass
 
 interface Tile<T : Any> : Drawable<T>, Cacheable {
 

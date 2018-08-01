@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.screen
 
-import org.codetome.zircon.api.behavior.*
 import org.codetome.zircon.api.component.ContainerHandler
+import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.internal.behavior.Identifiable
 
 /**
@@ -15,7 +15,7 @@ import org.codetome.zircon.internal.behavior.Identifiable
  * tracking the changes use the [Screen.display] function.
  */
 interface Screen
-    : Closeable, Clearable, Layerable, TypingSupport, ContainerHandler, DrawSurface, InputEmitter, Identifiable, TilesetOverride {
+    : TileGrid, ContainerHandler, Identifiable {
 
     /**
      * This function will take the content from the back-buffer and move it into the front-buffer

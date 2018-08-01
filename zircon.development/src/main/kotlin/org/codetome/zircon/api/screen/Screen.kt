@@ -1,11 +1,8 @@
 package org.codetome.zircon.api.screen
 
-import org.codetome.zircon.api.behavior.Clearable
-import org.codetome.zircon.api.behavior.Closeable
-import org.codetome.zircon.api.behavior.DrawSurface
-import org.codetome.zircon.api.behavior.Layerable
-import org.codetome.zircon.api.behavior.TilesetOverride
+import org.codetome.zircon.api.component.ContainerHandler
 import org.codetome.zircon.api.grid.TileGrid
+import org.codetome.zircon.internal.behavior.Identifiable
 
 /**
  * [Screen] is a fundamental layer presenting the grid as a bitmap-like surface where you can perform
@@ -18,7 +15,7 @@ import org.codetome.zircon.api.grid.TileGrid
  * tracking the changes use the [Screen.display] function.
  */
 interface Screen<T: Any, S: Any>
-    : TileGrid<T, S> {
+    : TileGrid<T, S>, ContainerHandler<T, S>, Identifiable {
 
     /**
      * Moves the contents of this [Screen] to the underlying [org.codetome.zircon.api.grid.TileGrid].

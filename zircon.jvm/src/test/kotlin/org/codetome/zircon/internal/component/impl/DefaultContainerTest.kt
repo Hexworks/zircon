@@ -9,7 +9,7 @@ import org.codetome.zircon.api.builder.component.LabelBuilder
 import org.codetome.zircon.api.builder.component.PanelBuilder
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.builder.screen.ScreenBuilder
-import org.codetome.zircon.api.builder.terminal.VirtualTerminalBuilder
+import org.codetome.zircon.api.builder.grid.VirtualTerminalBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.interop.Modifiers

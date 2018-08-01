@@ -1,8 +1,8 @@
 package org.codetome.zircon
 
 import org.codetome.zircon.api.SwingTerminalBuilder
-import org.codetome.zircon.api.builder.terminal.TerminalBuilder
-import org.codetome.zircon.api.builder.terminal.VirtualTerminalBuilder
+import org.codetome.zircon.api.builder.grid.TerminalBuilder
+import org.codetome.zircon.api.builder.grid.VirtualTerminalBuilder
 
 object TerminalUtils {
 

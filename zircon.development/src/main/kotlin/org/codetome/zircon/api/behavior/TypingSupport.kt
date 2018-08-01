@@ -16,6 +16,6 @@ interface TypingSupport<T : Any> : CursorHandler {
      * to reposition the cursor. If you reach the end of the line while putting tiles
      * using this method, you can expect the cursor to move to the beginning of the next line.
      */
-    fun putTile(tc: Tile<T>)
+    fun putTile(tile: Tile<T>)
 
 }

@@ -2,7 +2,7 @@ package org.codetome.zircon.api.builder
 
 
 import org.assertj.core.api.Assertions
-import org.codetome.zircon.api.builder.terminal.DeviceConfigurationBuilder
+import org.codetome.zircon.api.builder.grid.DeviceConfigurationBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.grid.CursorStyle
 import org.junit.Before
