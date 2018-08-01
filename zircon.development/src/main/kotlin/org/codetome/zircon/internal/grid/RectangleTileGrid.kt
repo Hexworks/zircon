@@ -11,6 +11,7 @@ import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 import org.codetome.zircon.internal.graphics.ConcurrentTileImage
 import org.codetome.zircon.internal.graphics.CtrieTileImage
@@ -28,7 +29,7 @@ class RectangleTileGrid<T : Any, S : Any>(
         override var layerable: Layerable = DefaultLayerable(size))
     : InternalTileGrid<T, S> {
 
-    override fun getTileAt(position: Position): Optional<Tile<T>> {
+    override fun getTileAt(position: Position): Maybe<Tile<T>> {
         return backend.getTileAt(position)
     }
 
@@ -48,7 +49,7 @@ class RectangleTileGrid<T : Any, S : Any>(
         layerable.pushLayer(layer)
     }
 
-    override fun popLayer(): Optional<Layer<out Any, out Any>> {
+    override fun popLayer(): Maybe<Layer<out Any, out Any>> {
         return layerable.popLayer()
     }
 

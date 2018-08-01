@@ -10,6 +10,7 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.util.Maybe
 import java.util.*
 
 /**
@@ -40,8 +41,8 @@ abstract class BaseTileImage<T : Any, S : Any>(
         contents.clear()
     }
 
-    override fun getTileAt(position: Position): Optional<Tile<T>> {
-        return Optional.ofNullable(contents[position])
+    override fun getTileAt(position: Position): Maybe<Tile<T>> {
+        return Maybe.ofNullable(contents[position])
     }
 
     override fun setTileAt(position: Position, tile: Tile<T>) {

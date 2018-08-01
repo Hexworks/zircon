@@ -14,7 +14,7 @@ import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Maybe
-import org.codetome.zircon.internal.behavior.Scrollable
+import org.codetome.zircon.api.behavior.Scrollable
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.Event

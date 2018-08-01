@@ -7,6 +7,7 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.BaseTileImage
 import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.util.Maybe
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -22,8 +23,8 @@ class ThreadedTileImage<T : Any, S : Any>(
 
     private val executor = Executors.newSingleThreadExecutor()
 
-    override fun getTileAt(position: Position): Optional<Tile<T>> {
-        return executor.submit<Optional<Tile<T>>> {
+    override fun getTileAt(position: Position): Maybe<Tile<T>> {
+        return executor.submit<Maybe<Tile<T>>> {
             super.getTileAt(position)
         }.get()
     }

@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.component
 
-import org.codetome.zircon.internal.behavior.Scrollable
+import org.codetome.zircon.api.behavior.Scrollable
 import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Maybe
 

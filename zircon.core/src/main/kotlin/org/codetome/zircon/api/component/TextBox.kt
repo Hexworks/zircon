@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.component
 
-import org.codetome.zircon.internal.behavior.Scrollable
+import org.codetome.zircon.api.behavior.Scrollable
 
 interface TextBox : Component, Scrollable {
 

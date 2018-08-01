@@ -1,6 +1,9 @@
 package org.codetome.zircon.api.application
 
+import org.codetome.zircon.api.data.Size
+
 interface Application {
+
     /**
      *  Called when the [Application] is first created.
      */
@@ -10,11 +13,8 @@ interface Application {
      * Called when the [Application] is resized. This can happen at any
      * point during a non-paused state but will never happen
      * before a call to [Application.create].
-     *
-     * @param width the new width in pixels
-     * @param height the new height in pixels
      */
-    fun resize(width: Int, height: Int) {}
+    fun resize(size: Size) {}
 
     /**
      * Called when the [Application] should render itself.

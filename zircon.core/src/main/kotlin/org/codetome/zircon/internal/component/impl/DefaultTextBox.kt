@@ -12,7 +12,7 @@ import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.util.TextUtils
-import org.codetome.zircon.internal.behavior.Scrollable
+import org.codetome.zircon.api.behavior.Scrollable
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
 import org.codetome.zircon.internal.event.Event
