@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.behavior.impl
 
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
-import org.codetome.zircon.internal.behavior.Scrollable
+import org.codetome.zircon.api.behavior.Scrollable
 import org.codetome.zircon.api.util.Math
 
 class DefaultScrollable(private var visibleSpaceSize: Size,

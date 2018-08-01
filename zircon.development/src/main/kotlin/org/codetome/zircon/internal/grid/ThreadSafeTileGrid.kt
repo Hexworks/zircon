@@ -12,6 +12,7 @@ import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 import org.codetome.zircon.internal.graphics.MapTileImage
 import java.util.*
@@ -47,7 +48,7 @@ class ThreadSafeTileGrid<T : Any, S : Any>(
         }
     }
 
-    override fun getTileAt(position: Position): Optional<Tile<T>> {
+    override fun getTileAt(position: Position): Maybe<Tile<T>> {
         return execute { backend.getTileAt(position) }
     }
 
@@ -75,7 +76,7 @@ class ThreadSafeTileGrid<T : Any, S : Any>(
         submit { layerable.pushLayer(layer) }
     }
 
-    override fun popLayer(): Optional<Layer<out Any, out Any>> {
+    override fun popLayer(): Maybe<Layer<out Any, out Any>> {
         return execute { layerable.popLayer() }
     }
 

@@ -1,8 +1,14 @@
 package org.codetome.zircon.api.behavior
 
 import org.codetome.zircon.api.graphics.Layer
+import org.codetome.zircon.api.util.Maybe
 import java.util.*
 
+/**
+ * Represents an object which can contain multiple [org.codetome.zircon.api.graphics.Layer]s
+ * which are specialized [org.codetome.zircon.api.graphics.TileImage] overlays displayed
+ * above the [Layerable] object.
+ */
 interface Layerable : Boundable {
 
     /**
@@ -14,7 +20,7 @@ interface Layerable : Boundable {
      * Removes and returns the layer which is at the top of the currently present layers
      * (if any).
      */
-    fun popLayer(): Optional<Layer<out Any, out Any>>
+    fun popLayer(): Maybe<Layer<out Any, out Any>>
 
     /**
      * Removes a [Layer] from the current layers.

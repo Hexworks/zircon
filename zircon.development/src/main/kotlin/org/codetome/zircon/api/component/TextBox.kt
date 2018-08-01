@@ -1,0 +1,19 @@
+package org.codetome.zircon.api.component
+
+import org.codetome.zircon.api.behavior.Scrollable
+
+interface TextBox<T: Any, S: Any> : Component<T, S>, Scrollable {
+
+    fun getText(): String
+
+    /**
+     * Sets the text of this [TextBox].
+     * @return `true` if the box was changed `false` if the old text was the same as the new
+     */
+    fun setText(text: String): Boolean
+
+    fun disable()
+
+    fun enable()
+
+}
