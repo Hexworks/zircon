@@ -3,7 +3,7 @@ package org.codetome.zircon.internal.grid.application
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.builder.terminal.DeviceConfigurationBuilder
+import org.codetome.zircon.api.builder.grid.DeviceConfigurationBuilder
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.input.KeyStroke

@@ -16,11 +16,11 @@ import kotlin.system.measureNanoTime
 val SIZE = Sizes.create(60, 30)
 
 fun main(args: Array<String>) {
-    val screen = SwingTerminalBuilder.newBuilder()
+    val builder: SwingTerminalBuilder = SwingTerminalBuilder.newBuilder()
+    val grid = builder
             .initialTerminalSize(SIZE)
             .font(CP437TilesetResource.WANDERLUST_16X16.toFont())
-            .buildScreen()
-    screen.setCursorVisibility(false)
+            .build()
 
     val random = Random()
     val terminalWidth = SIZE.xLength
@@ -42,7 +42,7 @@ fun main(args: Array<String>) {
                 .build()
                 .fill(filler)
                 .also {
-                    screen.pushLayer(it)
+                    grid.pushLayer(it)
                 }
     }
 
@@ -55,13 +55,13 @@ fun main(args: Array<String>) {
 
     while (true) {
         Stats.addTimedStatFor("terminalBenchmark") {
-            screen.setBackgroundColor(bgColors[currIdx])
-            screen.setForegroundColor(fgColors[currIdx])
+            grid.setBackgroundColor(bgColors[currIdx])
+            grid.setForegroundColor(fgColors[currIdx])
             (0..charCount).forEach {
-                screen.putCharacter(chars[currIdx])
+                grid.putCharacter(chars[currIdx])
             }
             layers.forEach {
-                screen.removeLayer(it)
+                grid.removeLayer(it)
             }
             layers = (0..layerCount).map {
                 val filler = TileBuilder.newBuilder()
@@ -76,11 +76,11 @@ fun main(args: Array<String>) {
                         .build()
                         .fill(filler)
                         .also {
-                            screen.pushLayer(it)
+                            grid.pushLayer(it)
                         }
             }
-            screen.refresh()
-            screen.putCursorAt(Position.defaultPosition())
+            grid.flush()
+            grid.putCursorAt(Position.defaultPosition())
             currIdx = if (currIdx == 0) 1 else 0
             loopCount++
         }

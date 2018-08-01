@@ -28,10 +28,10 @@ class SwingTileGrid(
         private val deviceConfiguration: DeviceConfiguration)
 
     : ApplicationTileGrid(
-        deviceConfiguration = deviceConfiguration,
         terminal = VirtualTileGrid(
                 initialSize = initialSize,
-                initialTileset = initialTileset)) {
+                initialTileset = initialTileset),
+        deviceConfiguration = deviceConfiguration) {
 
     private var firstDraw = true
 

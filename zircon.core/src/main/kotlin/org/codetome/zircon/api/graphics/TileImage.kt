@@ -15,7 +15,8 @@ import org.codetome.zircon.api.sam.TextCharacterTransformer
  * These are completely in memory and not visible,
  * but can be used when drawing on other [DrawSurface]s.
  */
-interface TileImage : DrawSurface, Drawable, Styleable, Boundable {
+interface TileImage
+    : DrawSurface, Drawable, Styleable {
 
     /**
      * Returns a [List] of [Position]s which are not `EMPTY`.

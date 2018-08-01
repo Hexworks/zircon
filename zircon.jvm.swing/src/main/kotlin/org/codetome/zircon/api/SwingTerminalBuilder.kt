@@ -1,6 +1,6 @@
 package org.codetome.zircon.api
 
-import org.codetome.zircon.api.builder.terminal.VirtualTerminalBuilder
+import org.codetome.zircon.api.builder.grid.VirtualTerminalBuilder
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry

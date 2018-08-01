@@ -3,7 +3,7 @@ package org.codetome.zircon.examples.interactive;
 import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.data.Position;
 import org.codetome.zircon.api.data.Tile;
-import org.codetome.zircon.api.builder.terminal.TerminalBuilder;
+import org.codetome.zircon.api.builder.grid.TerminalBuilder;
 import org.codetome.zircon.api.input.InputType;
 import org.codetome.zircon.api.input.KeyStroke;
 import org.codetome.zircon.api.interop.*;

@@ -21,6 +21,10 @@ data class DefaultLayer<T : Any, S : Any>(private var position: Position,
 
     private var rect: Rectangle = refreshRect()
 
+    override fun createSnapshot(): Map<Position, Tile<T>> {
+        return backend.createSnapshot().mapKeys { it.key + position }
+    }
+
     override fun fetchFilledPositions(): List<Position> =
             createSnapshot().map { it.key }
 

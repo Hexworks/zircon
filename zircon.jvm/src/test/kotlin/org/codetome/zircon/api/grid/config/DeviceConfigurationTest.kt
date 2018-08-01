@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.grid.config
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.builder.terminal.DeviceConfigurationBuilder
+import org.codetome.zircon.api.builder.grid.DeviceConfigurationBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.grid.CursorStyle
 import org.junit.Test

@@ -3,10 +3,10 @@
 package org.codetome.zircon.api.graphics
 
 /**
- * Some text graphics, taken from http://en.wikipedia.org/wiki/Codepage_437 but converted to its UTF-8
- * counterpart.
- * This class it mostly here to help out with building text GUIs when you don't have a handy Unicode chart
- * available.
+ * Some text graphics, taken from http://en.wikipedia.org/wiki/Codepage_437 but converted
+ * to its UTF-8 counterpart.
+ * This class it mostly here to help out with building text GUIs when you don't have a
+ * handy Unicode chart available.
  * This object was taken from Lanterna (https://github.com/mabe02/lanterna) as-is.
  */
 object Symbols {

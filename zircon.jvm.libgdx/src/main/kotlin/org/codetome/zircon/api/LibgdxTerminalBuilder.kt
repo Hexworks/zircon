@@ -2,7 +2,7 @@ package org.codetome.zircon.api
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
-import org.codetome.zircon.api.builder.terminal.VirtualTerminalBuilder
+import org.codetome.zircon.api.builder.grid.VirtualTerminalBuilder
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
 import org.codetome.zircon.internal.tileset.impl.FontSettings.NO_FONT

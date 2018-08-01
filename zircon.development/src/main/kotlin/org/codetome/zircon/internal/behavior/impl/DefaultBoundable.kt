@@ -1,6 +1,7 @@
 package org.codetome.zircon.internal.behavior.impl
 
 import org.codetome.zircon.api.behavior.Boundable
+import org.codetome.zircon.api.behavior.Movable
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 
@@ -9,13 +10,22 @@ import org.codetome.zircon.api.data.Size
  */
 class DefaultBoundable(private val size: Size,
                        private var position: Position = Position.defaultPosition())
-    : Boundable {
+    : Boundable, Movable {
 
     private var rect = refreshRect()
 
     override fun getPosition() = position
 
     override fun getBoundableSize() = size
+
+    override fun moveTo(position: Position) =
+            if (this.position == position) {
+                false
+            } else {
+                this.position = position
+                this.rect = refreshRect()
+                true
+            }
 
     override fun intersects(boundable: Boundable) = rect.intersects(
             Rectangle(
