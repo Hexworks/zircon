@@ -13,7 +13,7 @@ object Stats {
 
     @JvmStatic
     fun printStats() {
-        println(getAllStats().joinToString("\n"))
+        println("T: ${System.currentTimeMillis()}, " + getAllStats().joinToString("\n"))
     }
 
     @JvmStatic
@@ -27,13 +27,13 @@ object Stats {
     }
 
     @JvmStatic
-    fun addStatFor(key: String, timeMs: Long) {
+    fun addStatFor(key: String, timeNano: Long) {
         addEmptyStatForKeyIfNotPresent(key)
         stats[key] = stats[key]!!.let { stat ->
             stat.copy(name = key,
                     avgTimeNs = stat.avgTimeNs
                             .times(stat.measurements)
-                            .plus(timeMs)
+                            .plus(timeNano)
                             .div(stat.measurements + 1),
                     measurements = stat.measurements + 1)
         }
@@ -47,16 +47,14 @@ object Stats {
 
     data class Stat(val name: String,
                     val avgTimeNs: Double = 0.toDouble(),
-                    val measurements: Long = 0,
-                    val weight: Long = 1) {
+                    val measurements: Long = 0) {
 
         override fun toString(): String {
-            val ms = avgTimeNs * weight / 1000 / 1000
+            val ms = avgTimeNs / 1000 / 1000
             return "Stats: name='$name', " +
                     "avgTimeMs=$ms, " +
                     "fps=${1000 / ms}, " +
-                    "measurements=$measurements, " +
-                    "weight = $weight"
+                    "measurements=$measurements"
         }
     }
 }

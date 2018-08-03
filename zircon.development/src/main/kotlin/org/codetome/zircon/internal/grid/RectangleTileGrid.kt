@@ -12,10 +12,9 @@ import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.modifier.Modifier
-import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Maybe
-import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.behavior.InternalCursorHandler
 import org.codetome.zircon.internal.behavior.ShutdownHook
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
@@ -26,10 +25,10 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.graphics.ConcurrentTileImage
 
 
-class RectangleTileGrid<T : Any, S : Any>(
-        tileset: Tileset<T, S>,
+class RectangleTileGrid(
+        tileset: TilesetResource<out Tile>,
         size: Size,
-        override var backend: TileImage<T, S> = ConcurrentTileImage(
+        override var backend: TileImage = ConcurrentTileImage(
                 size = size,
                 tileset = tileset,
                 styleSet = StyleSet.defaultStyle()),
@@ -37,7 +36,7 @@ class RectangleTileGrid<T : Any, S : Any>(
         private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                 cursorSpace = size),
         private val shutdownHook: ShutdownHook = DefaultShutdownHook())
-    : InternalTileGrid<T, S>,
+    : InternalTileGrid,
         InternalCursorHandler by cursorHandler,
         ShutdownHook by shutdownHook {
 
@@ -47,39 +46,39 @@ class RectangleTileGrid<T : Any, S : Any>(
         }
     }
 
-    override fun putTile(tile: Tile<T>) {
+    override fun putTile(tile: Tile) {
         TODO("undo this")
     }
 
-    override fun getTileAt(position: Position): Maybe<Tile<T>> {
+    override fun getTileAt(position: Position): Maybe<Tile> {
         return backend.getTileAt(position)
     }
 
-    override fun setTileAt(position: Position, tile: Tile<T>) {
+    override fun setTileAt(position: Position, tile: Tile) {
         backend.setTileAt(position, tile)
     }
 
-    override fun createSnapshot(): Map<Position, Tile<T>> {
+    override fun createSnapshot(): Map<Position, Tile> {
         return backend.createSnapshot()
     }
 
-    override fun draw(drawable: Drawable<T>, offset: Position) {
+    override fun draw(drawable: Drawable, offset: Position) {
         backend.draw(drawable, offset)
     }
 
-    override fun pushLayer(layer: Layer<out Any, out Any>) {
+    override fun pushLayer(layer: Layer) {
         layerable.pushLayer(layer)
     }
 
-    override fun popLayer(): Maybe<Layer<out Any, out Any>> {
+    override fun popLayer(): Maybe<Layer> {
         return layerable.popLayer()
     }
 
-    override fun removeLayer(layer: Layer<out Any, out Any>) {
+    override fun removeLayer(layer: Layer) {
         layerable.removeLayer(layer)
     }
 
-    override fun getLayers(): List<Layer<out Any, out Any>> {
+    override fun getLayers(): List<Layer> {
         return layerable.getLayers()
     }
 
@@ -99,11 +98,11 @@ class RectangleTileGrid<T : Any, S : Any>(
         return backend.containsBoundable(boundable)
     }
 
-    override fun tileset(): Tileset<T, S> {
+    override fun tileset(): TilesetResource<out Tile> {
         return backend.tileset()
     }
 
-    override fun useTileset(tileset: Tileset<T, S>) {
+    override fun useTileset(tileset: TilesetResource<out Tile>) {
         backend.useTileset(tileset)
     }
 
@@ -166,7 +165,7 @@ class RectangleTileGrid<T : Any, S : Any>(
     private var originalBackend = backend
     private var originalLayerable = layerable
 
-    override fun useContentsOf(tileGrid: InternalTileGrid<T, S>) {
+    override fun useContentsOf(tileGrid: InternalTileGrid) {
         backend = tileGrid.backend
         layerable = tileGrid.layerable
     }

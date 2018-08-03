@@ -13,24 +13,24 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.grid.InternalTileGrid
 import org.codetome.zircon.internal.grid.RectangleTileGrid
 
-class TileGridScreen<T : Any, S : Any>(
-        private val tileGrid: TileGrid<T, S>,
-        private val buffer: InternalTileGrid<T, S> = RectangleTileGrid(
+class TileGridScreen(
+        private val tileGrid: TileGrid,
+        private val buffer: InternalTileGrid = RectangleTileGrid(
                 tileset = tileGrid.tileset(),
                 size = tileGrid.getBoundableSize()),
-        private val containerHandler: InternalContainerHandler<T, S> = DefaultContainerHandler(DefaultContainer(
+        private val containerHandler: InternalContainerHandler = DefaultContainerHandler(DefaultContainer(
                 initialSize = tileGrid.getBoundableSize(),
                 position = Position.defaultPosition(),
                 componentStyleSet = ComponentStyleSet.defaultStyleSet(),
                 initialTileset = tileGrid.tileset())))
-    : Screen<T, S>,
-        TileGrid<T, S> by buffer,
-        InternalContainerHandler<T, S> by containerHandler {
+    : Screen,
+        TileGrid by buffer,
+        InternalContainerHandler by containerHandler {
 
-    private val id = Identifier.randomIdentifier()
+    override val id = Identifier.randomIdentifier()
 
     init {
-        require(tileGrid is InternalTileGrid<T, S>) {
+        require(tileGrid is InternalTileGrid) {
             "The supplied TileGrid is not an instance of InternalTileGrid."
         }
         EventBus.subscribe<Event.ScreenSwitch> { (screenId) ->
@@ -56,10 +56,11 @@ class TileGridScreen<T : Any, S : Any>(
         }
     }
 
-    override fun getId() = id
-
     override fun display() {
-        (tileGrid as InternalTileGrid<T, S>).useContentsOf(buffer)
+        transformComponentsToLayers().forEach {
+            buffer.pushLayer(it)
+        }
+        (tileGrid as InternalTileGrid).useContentsOf(buffer)
     }
 
 }

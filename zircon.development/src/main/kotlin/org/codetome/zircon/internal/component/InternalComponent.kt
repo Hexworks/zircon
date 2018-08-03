@@ -16,7 +16,7 @@ import org.codetome.zircon.api.util.Maybe
  * like a label or a check box is a [Container] while a label which is only intended to
  * display information is a [InternalComponent].
  */
-interface InternalComponent<T: Any, S: Any> : Component<T, S>, Drawable<T>, Focusable {
+interface InternalComponent : Component, Drawable, Focusable {
 
     /**
      * Returns the innermost [InternalComponent] for a given [Position].
@@ -26,7 +26,7 @@ interface InternalComponent<T: Any, S: Any> : Component<T, S>, Drawable<T>, Focu
      * If no [InternalComponent] intersects with the given `position` an
      * empty [Optional] is returned.
      */
-    fun fetchComponentByPosition(position: Position): Maybe<out InternalComponent<T, S>>
+    fun fetchComponentByPosition(position: Position): Maybe<out InternalComponent>
 
     fun setPosition(position: Position)
 

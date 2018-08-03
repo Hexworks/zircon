@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.component
 
-interface RadioButton<T: Any, S: Any> : Component<T, S> {
+interface RadioButton : Component {
 
     fun getText(): String
 

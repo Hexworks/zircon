@@ -1,10 +1,10 @@
 package org.codetome.zircon.api.shape
 
 import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.internal.shape.DefaultShape
-import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.graphics.TileImage
+import org.codetome.zircon.api.resource.TilesetResource
+import org.codetome.zircon.internal.shape.DefaultShape
 
 /**
  * A [Shape] is a set of [org.codetome.zircon.api.data.Position]s representing a geometric formation
@@ -34,7 +34,7 @@ interface Shape : Collection<Position> {
     /**
      * Creates a [TileImage] from this [Shape] using `tile` to fill the positions.
      */
-    fun <T: Any, S: Any> toTextImage(tile: Tile<T>, tileset: Tileset<T, S>) : TileImage<T, S>
+    fun toTileImage(tile: Tile, tileset: TilesetResource<out Tile>) : TileImage
 
     /**
      * Offsets this [Shape] to the default position (column=0,row=0),

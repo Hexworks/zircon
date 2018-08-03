@@ -6,16 +6,17 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.BaseTileImage
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.util.Maybe
 import java.util.*
 import java.util.concurrent.Executors
 
-class ThreadedTileImage<T : Any, S : Any>(
+class ThreadedTileImage(
         size: Size,
-        tileset: Tileset<T, S>,
+        tileset: TilesetResource<out Tile>,
         styleSet: StyleSet = StyleSet.defaultStyle())
-    : BaseTileImage<T, S>(
+    : BaseTileImage(
         tileset = tileset,
         contents = mutableMapOf(),
         styleSet = styleSet,
@@ -23,20 +24,20 @@ class ThreadedTileImage<T : Any, S : Any>(
 
     private val executor = Executors.newSingleThreadExecutor()
 
-    override fun getTileAt(position: Position): Maybe<Tile<T>> {
-        return executor.submit<Maybe<Tile<T>>> {
+    override fun getTileAt(position: Position): Maybe<Tile> {
+        return executor.submit<Maybe<Tile>> {
             super.getTileAt(position)
         }.get()
     }
 
-    override fun setTileAt(position: Position, tile: Tile<T>) {
+    override fun setTileAt(position: Position, tile: Tile) {
         executor.submit {
             super.setTileAt(position, tile)
         }
     }
 
-    override fun createSnapshot(): Map<Position, Tile<T>> {
-        return executor.submit<Map<Position, Tile<T>>> {
+    override fun createSnapshot(): Map<Position, Tile> {
+        return executor.submit<Map<Position, Tile>> {
             super.createSnapshot()
         }.get()
     }
@@ -47,7 +48,7 @@ class ThreadedTileImage<T : Any, S : Any>(
         }
     }
 
-    override fun drawOnto(surface: DrawSurface<T>, offset: Position) {
+    override fun drawOnto(surface: DrawSurface, offset: Position) {
         executor.submit {
             super.drawOnto(surface, offset)
         }

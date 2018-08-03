@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.component
 
-interface CheckBox<T: Any, S: Any> : Component<T, S> {
+interface CheckBox : Component {
 
     fun getText(): String
 

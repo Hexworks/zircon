@@ -2,8 +2,12 @@ package org.codetome.zircon.api.tileset
 
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.internal.behavior.Identifiable
+import kotlin.reflect.KClass
 
-interface Tileset<T: Any, S: Any> {
+interface Tileset<T: Tile, S: Any> : Identifiable {
+
+    val sourceType: KClass<S>
 
     fun width(): Int
 
@@ -11,7 +15,7 @@ interface Tileset<T: Any, S: Any> {
 
     fun getSize() = Size.create(width(), height())
 
-    fun supportsTile(tile: Tile<out Any>): Boolean
+    fun supportsTile(tile: Tile): Boolean
 
-    fun fetchTextureForTile(tile: Tile<T>): TileTexture<S>
+    fun fetchTextureForTile(tile: T): TileTexture<S>
 }

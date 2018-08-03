@@ -6,14 +6,14 @@ package org.codetome.zircon.api.component
  * You can add other [Container]s to a container but you can't add
  * components to a [Component].
  */
-interface Container<T: Any, S: Any> : Component<T, S> {
+interface Container : Component {
 
     /**
      * Adds a child [Component] to this [Container]. It can either be
      * a leaf component (like a label) or another container which can itself
      * contain components within itself.
      */
-    fun addComponent(component: Component<T, S>)
+    fun addComponent(component: Component)
 
     /**
      * Removes the given [Component] from this [Container].
@@ -22,5 +22,5 @@ interface Container<T: Any, S: Any> : Component<T, S> {
      * the component to remove.
      * @return true if a removal happened
      */
-    fun removeComponent(component: Component<T, S>): Boolean
+    fun removeComponent(component: Component): Boolean
 }

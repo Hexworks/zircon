@@ -7,7 +7,7 @@ interface Position : Comparable<Position> {
     val x: Int
     val y: Int
 
-    fun toAbsolutePosition(tileset: Tileset<out Any, out Any>): AbsolutePosition
+    fun toAbsolutePosition(tileset: Tileset<out Tile, out Any>): AbsolutePosition
 
     override fun compareTo(other: Position): Int {
         checkType(this, other)

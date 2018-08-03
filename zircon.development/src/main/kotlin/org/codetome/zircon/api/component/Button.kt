@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.component
 
-interface Button<T: Any, S: Any> : Component<T, S> {
+interface Button : Component {
 
     fun getText(): String
 }

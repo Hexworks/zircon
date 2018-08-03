@@ -2,7 +2,7 @@ package org.codetome.zircon.api.sam
 
 import org.codetome.zircon.api.data.Tile
 
-interface TextCharacterTransformer<T: Any> {
+interface TextCharacterTransformer {
 
-    fun transform(tc: Tile<T>): Tile<T>
+    fun transform(tc: Tile): Tile
 }

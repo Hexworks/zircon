@@ -1,11 +1,10 @@
 package org.codetome.zircon.internal.graphics
 
 import org.codetome.zircon.api.behavior.Boundable
-import org.codetome.zircon.api.graphics.Layer
-import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.api.graphics.Layer
+import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.internal.behavior.impl.Rectangle
 
 /**
@@ -15,13 +14,13 @@ import org.codetome.zircon.internal.behavior.impl.Rectangle
  * use this class as a base class just like how the TileGrid uses it
  */
 
-data class DefaultLayer<T : Any, S : Any>(private var position: Position,
-                                          val backend: TileImage<T, S>)
-    : Layer<T, S>, TileImage<T, S> by backend {
+data class DefaultLayer(private var position: Position,
+                        val backend: TileImage)
+    : Layer, TileImage by backend {
 
     private var rect: Rectangle = refreshRect()
 
-    override fun createSnapshot(): Map<Position, Tile<T>> {
+    override fun createSnapshot(): Map<Position, Tile> {
         return backend.createSnapshot().mapKeys { it.key + position }
     }
 
@@ -34,11 +33,11 @@ data class DefaultLayer<T : Any, S : Any>(private var position: Position,
 
     override fun getRelativeTileAt(position: Position) = backend.getTileAt(position)
 
-    override fun setRelativeTileAt(position: Position, character: Tile<T>) {
+    override fun setRelativeTileAt(position: Position, character: Tile) {
         backend.setTileAt(position, character)
     }
 
-    override fun fill(filler: Tile<T>): Layer<T, S> {
+    override fun fill(filler: Tile): Layer {
         backend.fill(filler)
         return this
     }
@@ -74,7 +73,7 @@ data class DefaultLayer<T : Any, S : Any>(private var position: Position,
 
     override fun getTileAt(position: Position) = backend.getTileAt(position - this.position)
 
-    override fun setTileAt(position: Position, tile: Tile<T>) {
+    override fun setTileAt(position: Position, tile: Tile) {
         backend.setTileAt(position - this.position, tile)
     }
 

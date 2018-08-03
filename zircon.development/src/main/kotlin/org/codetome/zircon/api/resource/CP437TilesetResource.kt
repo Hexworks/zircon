@@ -1,17 +1,22 @@
 package org.codetome.zircon.api.resource
 
-import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.data.CharacterTile
+import org.codetome.zircon.api.util.Identifier
+import kotlin.reflect.KClass
 
 /**
  * This enum encapsulates the means of loading CP437 tilesets.
  * You can either use a built-in tileset (extracted from the Dwarf Fortress tileset
- * repository) or you can load your own using [CP437TilesetResource.loadCP437Tileset]
+ * repository) or you can load your own using TODO
  */
 enum class CP437TilesetResource(private val tilesetName: String,
-                                val width: Int,
-                                val height: Int,
+                                override val width: Int,
+                                override val height: Int,
                                 private val fileName: String = "${tilesetName}_${width}x$height.png",
-                                val path: String = "zircon.core/src/main/resources/cp_437_tilesets/$fileName") {
+                                override val id: Identifier = Identifier.randomIdentifier(),
+                                override val tileType: KClass<CharacterTile> = CharacterTile::class,
+                                override val path: String = "src/main/resources/cp_437_tilesets/$fileName")
+    : TilesetResource<CharacterTile> {
 
     JOLLY_12X12("jolly", 12, 12),
     ADU_DHABI_16X16("adu_dhabi", 16, 16),
@@ -34,36 +39,4 @@ enum class CP437TilesetResource(private val tilesetName: String,
     REX_PAINT_18X18("rex_paint", 18, 18),
     REX_PAINT_20X20("rex_paint", 20, 20);
 
-    /**
-     * Loads this built-in tileset as a tiled [Tileset].
-     */
-    fun <T: Any, S : Any> toFont(): Tileset<T, S> {
-        return toFont(true)
-    }
-
-    /**
-     * Loads this built-in tileset as a tiled [Tileset].
-     */
-    fun <T: Any, S : Any> toFont(cacheFonts: Boolean): Tileset<T, S> {
-        return loadCP437Tileset(
-                width = width,
-                height = height,
-                path = path,
-                cacheFonts = cacheFonts)
-    }
-
-    companion object {
-
-        /**
-         * Loads a tileset from the given `source` as a tiled [Tileset].
-         * *Note that* it is your responsibility to supply the proper parameters for
-         * this method!
-         */
-        fun <T: Any, S : Any> loadCP437Tileset(width: Int,
-                             height: Int,
-                             path: String,
-                             cacheFonts: Boolean = true): Tileset<T, S> {
-            TODO()
-        }
-    }
 }

@@ -17,7 +17,7 @@ data class GridPosition(override val x: Int,
         }
     }
 
-    override fun toAbsolutePosition(tileset: Tileset<out Any, out Any>): AbsolutePosition {
+    override fun toAbsolutePosition(tileset: Tileset<out Tile, out Any>): AbsolutePosition {
         return AbsolutePosition(x * tileset.width(), y * tileset.height())
     }
 

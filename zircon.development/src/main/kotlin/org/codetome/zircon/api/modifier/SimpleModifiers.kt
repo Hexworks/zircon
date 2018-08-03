@@ -16,6 +16,6 @@ sealed class SimpleModifiers : Modifier {
     object Glow : SimpleModifiers()
 
     override fun generateCacheKey(): String {
-        return "SimpleModifiers:${this::class.simpleName}"
+        return "Modifier:${this::class.simpleName}"
     }
 }

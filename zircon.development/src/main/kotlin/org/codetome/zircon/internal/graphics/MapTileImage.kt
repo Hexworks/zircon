@@ -1,10 +1,11 @@
 package org.codetome.zircon.internal.graphics
 
-import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.BaseTileImage
+import org.codetome.zircon.api.graphics.StyleSet
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.tileset.Tileset
 import java.util.concurrent.ConcurrentHashMap
 
@@ -15,12 +16,12 @@ import java.util.concurrent.ConcurrentHashMap
  * use this class as a base class just like how the TileGrid uses it
  */
 
-class MapTileImage<T : Any, S : Any>(
+class MapTileImage(
         size: Size,
-        tileset: Tileset<T, S>,
+        tileset: TilesetResource<out Tile>,
         styleSet: StyleSet = StyleSet.defaultStyle())
-    : BaseTileImage<T, S>(
+    : BaseTileImage(
         tileset = tileset,
-        contents = ConcurrentHashMap<Position, Tile<T>>(),
+        contents = ConcurrentHashMap(),
         styleSet = styleSet,
         size = size)

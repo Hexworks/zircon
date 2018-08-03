@@ -1,6 +1,6 @@
 package org.codetome.zircon.api.component
 
-interface Header<T: Any, S: Any> : Component<T, S> {
+interface Header : Component {
 
     fun getText(): String
 }

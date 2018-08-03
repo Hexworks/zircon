@@ -7,8 +7,8 @@ package org.codetome.zircon.api.data
  */
 data class Block<T : Any>(
         val position: Position3D,
-        val top: Tile<T>,
-        val back: Tile<T>,
-        val front: Tile<T>,
-        val bottom: Tile<T>,
-        val layers: MutableList<Tile<T>> = mutableListOf()) // TODO: mutable
+        val top: Tile,
+        val back: Tile,
+        val front: Tile,
+        val bottom: Tile,
+        val layers: MutableList<Tile> = mutableListOf()) // TODO: mutable

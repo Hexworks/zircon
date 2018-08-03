@@ -3,6 +3,7 @@ package org.codetome.zircon.gui.swing.example
 import org.codetome.zircon.Stats
 import org.codetome.zircon.api.data.*
 import org.codetome.zircon.api.grid.TileGrid
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.graphics.DefaultLayer
 import org.codetome.zircon.internal.graphics.MapTileImage
 import org.codetome.zircon.gui.swing.impl.BufferedImageCP437Tileset
@@ -11,9 +12,9 @@ import java.util.*
 
 fun main(args: Array<String>) {
 
-    val size = Size.create(60, 30)
+    val size = Size.create(80, 40)
 
-    val tileset = BufferedImageCP437Tileset.rexPaint16x16()
+    val tileset = CP437TilesetResource.WANDERLUST_16X16
 
     val app = SwingApplication(size, tileset)
 
@@ -72,7 +73,7 @@ fun main(args: Array<String>) {
     }
 }
 
-private fun fillGrid(tileGrid: TileGrid<Char, out Any>, tile: Tile<Char>) {
+private fun fillGrid(tileGrid: TileGrid, tile: Tile) {
     (0..tileGrid.getBoundableSize().yLength).forEach { y ->
         (0..tileGrid.getBoundableSize().xLength).forEach { x ->
             tileGrid.setTileAt(GridPosition(x, y), tile)

@@ -5,12 +5,13 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.internal.tileset.impl.VirtualTileset
 import java.awt.image.BufferedImage
 
 @Suppress("UNCHECKED_CAST")
-class NoOpRenderer(private val grid: TileGrid<out Any, out Any>) : Renderer {
+class NoOpRenderer(private val grid: TileGrid) : Renderer {
 
-    private val tileset = grid.tileset() as Tileset<Any, Any>
+    private val tileset = VirtualTileset()
 
     override fun create() {
 
@@ -24,17 +25,17 @@ class NoOpRenderer(private val grid: TileGrid<out Any, out Any>) : Renderer {
         renderTiles(grid.createSnapshot(), tileset)
         grid.getLayers().forEach { layer ->
             renderTiles(
-                    tiles = layer.createSnapshot(), // TODO: fix cat
-                    tileset = layer.tileset() as Tileset<Any, Any>)
+                    tiles = layer.createSnapshot(),
+                    tileset = tileset)
         }
     }
 
-    private fun renderTiles(tiles: Map<Position, Tile<out Any>>,
-                            tileset: Tileset<Any, Any>) {
+    private fun renderTiles(tiles: Map<Position, Tile>,
+                            tileset: Tileset<out Tile, out Any>) {
         tiles.forEach { (pos, tile) ->
             val (x, y) = pos.toAbsolutePosition(tileset)
 
-            val texture = tileset.fetchTextureForTile(tile as Tile<Any>)
+            val texture = this.tileset.fetchTextureForTile(tile)
             // we do nothing with it
         }
     }

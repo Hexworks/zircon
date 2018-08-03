@@ -1,7 +1,6 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.codetome.zircon.api.behavior.DrawSurface
-import org.codetome.zircon.api.behavior.TilesetOverride
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
@@ -11,9 +10,10 @@ import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.Container
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
-import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
@@ -22,21 +22,21 @@ import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.tileset.impl.FontSettings
 
 @Suppress("UNCHECKED_CAST")
-open class DefaultContainer<T: Any, S: Any>(initialSize: Size,
-                                            position: Position,
-                                            initialTileset: Tileset<T, S>,
-                                            componentStyleSet: ComponentStyleSet,
-                                            wrappers: Iterable<WrappingStrategy<T, S>> = listOf())
-    : DefaultComponent<T, S>(initialSize = initialSize,
+open class DefaultContainer(initialSize: Size,
+                            position: Position,
+                            initialTileset: TilesetResource<out Tile>,
+                            componentStyleSet: ComponentStyleSet,
+                            wrappers: Iterable<WrappingStrategy> = listOf())
+    : DefaultComponent(initialSize = initialSize,
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = wrappers,
         initialTileset = initialTileset),
-        Container<T, S>{
+        Container {
 
-    private val components = mutableListOf<InternalComponent<T, S>>()
+    private val components = mutableListOf<InternalComponent>()
 
-    override fun addComponent(component: Component<T, S>) {
+    override fun addComponent(component: Component) {
         require(component !== this) {
             "You can't add a component to itself!"
         }
@@ -47,9 +47,9 @@ open class DefaultContainer<T: Any, S: Any>(initialSize: Size,
             if (component.tileset() === FontSettings.NO_FONT) {
                 component.useTileset(tileset())
             } else {
-                require(tileset().getSize() == component.tileset().getSize()) {
-                    "Trying to add component with incompatible tileset size '${component.tileset().getSize()}' to" +
-                            "container with tileset size: '${tileset().getSize()}'!"
+                require(tileset().size() == component.tileset().size()) {
+                    "Trying to add component with incompatible tileset size '${component.tileset().size()}' to" +
+                            "container with tileset size: '${tileset().size()}'!"
                 }
             }
             require(components.none { it.intersects(component) }) {
@@ -86,12 +86,12 @@ open class DefaultContainer<T: Any, S: Any>(initialSize: Size,
 
     override fun takeFocus(input: Maybe<Input>) {}
 
-    override fun removeComponent(component: Component<T, S>): Boolean {
+    override fun removeComponent(component: Component): Boolean {
         var removalHappened = components.remove(component)
         if (removalHappened.not()) {
             val childResults = components
-                    .filter { it is Container<*, *> }
-                    .map { (it as Container<T, S>).removeComponent(component) }
+                    .filter { it is Container }
+                    .map { (it as Container).removeComponent(component) }
             removalHappened = if (childResults.isEmpty()) {
                 false
             } else {
@@ -104,9 +104,9 @@ open class DefaultContainer<T: Any, S: Any>(initialSize: Size,
         return removalHappened
     }
 
-    override fun transformToLayers(): List<Layer<T, S>> {
+    override fun transformToLayers(): List<Layer> {
         // TODO: persistent list here
-        return mutableListOf(LayerBuilder.newBuilder<T, S>()
+        return mutableListOf(LayerBuilder.newBuilder()
                 .textImage(getDrawSurface())
                 .offset(getPosition())
                 .build()).also {
@@ -114,7 +114,7 @@ open class DefaultContainer<T: Any, S: Any>(initialSize: Size,
         }
     }
 
-    override fun drawOnto(surface: DrawSurface<T>, offset: Position) {
+    override fun drawOnto(surface: DrawSurface, offset: Position) {
         surface.draw(getDrawSurface(), getPosition())
         components.forEach {
             it.drawOnto(surface)
@@ -140,7 +140,7 @@ open class DefaultContainer<T: Any, S: Any>(initialSize: Size,
 
 
     override fun toString(): String {
-        return "${this::class.simpleName}(id=${getId().toString().substring(0, 4)})"
+        return "${this::class.simpleName}(id=${id.toString().substring(0, 4)})"
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme) {
@@ -157,8 +157,8 @@ open class DefaultContainer<T: Any, S: Any>(initialSize: Size,
 
     fun getComponents() = components
 
-    fun fetchFlattenedComponentTree(): List<InternalComponent<T, S>> {
-        val result = mutableListOf<InternalComponent<T, S>>()
+    fun fetchFlattenedComponentTree(): List<InternalComponent> {
+        val result = mutableListOf<InternalComponent>()
         components.forEach {
             result.add(it)
             if (it is DefaultContainer) {

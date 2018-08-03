@@ -5,7 +5,7 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TileImage
 
-interface WrappingStrategy<T: Any, S: Any> {
+interface WrappingStrategy {
 
     /**
      * Returns the size the wrapping occupies.
@@ -21,12 +21,12 @@ interface WrappingStrategy<T: Any, S: Any> {
      * if you apply border and shadow as well you need to know where the border should
      * end and the shadow should start.
      */
-    fun apply(tileImage: TileImage<T, S>, size: Size, offset: Position, style: StyleSet)
+    fun apply(tileImage: TileImage, size: Size, offset: Position, style: StyleSet)
 
     /**
      * Removes the last change made by this [WrappingStrategy].
      */
-    fun remove(tileImage: TileImage<T, S>, size: Size, offset: Position, style: StyleSet): Unit {
+    fun remove(tileImage: TileImage, size: Size, offset: Position, style: StyleSet): Unit {
 
     }
 

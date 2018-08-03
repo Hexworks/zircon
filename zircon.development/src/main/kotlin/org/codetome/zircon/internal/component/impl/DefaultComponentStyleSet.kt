@@ -4,7 +4,8 @@ import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.graphics.StyleSet
 
-data class DefaultComponentStyleSet(private val styles: Map<ComponentState, StyleSet>) : ComponentStyleSet {
+data class DefaultComponentStyleSet(private val styles: Map<ComponentState, StyleSet>)
+    : ComponentStyleSet {
 
     private var currentState = ComponentState.DEFAULT
 

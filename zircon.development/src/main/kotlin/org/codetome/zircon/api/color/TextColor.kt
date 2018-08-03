@@ -24,7 +24,7 @@ interface TextColor : Cacheable {
     fun darkenByPercent(percentage: Double): TextColor
 
     override fun generateCacheKey(): String {
-        return "a:${getAlpha()}r:${getRed()}g:${getGreen()}b:${getBlue()}"
+        return "a:${getAlpha()},r:${getRed()},g:${getGreen()},b:${getBlue()}"
     }
 
     companion object {

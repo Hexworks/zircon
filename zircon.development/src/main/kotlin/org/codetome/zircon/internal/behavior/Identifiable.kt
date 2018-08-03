@@ -7,5 +7,5 @@ import org.codetome.zircon.api.util.Identifier
  */
 interface Identifiable {
 
-    fun getId(): Identifier
+    val id: Identifier
 }

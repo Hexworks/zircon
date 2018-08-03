@@ -19,15 +19,15 @@ import org.codetome.zircon.internal.event.Event.*
 import org.codetome.zircon.internal.event.EventBus
 import org.codetome.zircon.internal.event.Subscription
 
-class DefaultContainerHandler<T: Any, S: Any>(private var container: DefaultContainer<T, S>) :
-        InternalContainerHandler<T, S> {
+class DefaultContainerHandler(private var container: DefaultContainer) :
+        InternalContainerHandler {
 
     private var lastMousePosition = Position.defaultPosition()
     private var lastHoveredComponentId = Identifier.randomIdentifier()
-    private var lastFocusedComponent: InternalComponent<T, S> = container
+    private var lastFocusedComponent: InternalComponent = container
     private var state = UNKNOWN
     private val subscriptions = mutableListOf<Subscription<*>>()
-    private val nextsLookup = mutableMapOf<Identifier, InternalComponent<T, S>>(Pair(container.getId(), container))
+    private val nextsLookup = mutableMapOf<Identifier, InternalComponent>(Pair(container.id, container))
     private val prevsLookup = nextsLookup.toMutableMap()
 
     private val keyStrokeHandlers = mapOf(
@@ -36,8 +36,8 @@ class DefaultContainerHandler<T: Any, S: Any>(private var container: DefaultCont
             Pair(CLICK_STROKE, this::clickFocused))
             .toMap()
 
-    override fun addComponent(component: Component<T, S>) {
-        (component as? DefaultComponent<T, S>)?.let { dc ->
+    override fun addComponent(component: Component) {
+        (component as? DefaultComponent)?.let { dc ->
             dc.setPosition(dc.getPosition() + container.getEffectivePosition())
             // TODO: if the component has the same size and position it adds it!!!
             require(container.containsBoundable(dc)) {
@@ -55,7 +55,7 @@ class DefaultContainerHandler<T: Any, S: Any>(private var container: DefaultCont
         EventBus.broadcast(ComponentChange)
     }
 
-    override fun removeComponent(component: Component<T, S>) =
+    override fun removeComponent(component: Component) =
             container.removeComponent(component).also {
                 refreshFocusableLookup()
                 EventBus.broadcast(ComponentChange)
@@ -87,14 +87,14 @@ class DefaultContainerHandler<T: Any, S: Any>(private var container: DefaultCont
                             .fetchComponentByPosition(input.position)
                             .map { component ->
                                 focusComponent(component)
-                                EventBus.sendTo(component.getId(), MousePressed(input))
+                                EventBus.sendTo(component.id, MousePressed(input))
                             }
 
                     MOUSE_RELEASED -> container
                             .fetchComponentByPosition(input.position)
                             .map { component ->
                                 focusComponent(component)
-                                EventBus.sendTo(component.getId(), MouseReleased(input))
+                                EventBus.sendTo(component.id, MouseReleased(input))
                             }
                     else -> {
                         // we don't handle other actions yet
@@ -120,17 +120,17 @@ class DefaultContainerHandler<T: Any, S: Any>(private var container: DefaultCont
         state = DEACTIVATED
     }
 
-    override fun transformComponentsToLayers(): List<Layer<T, S>> {
+    override fun transformComponentsToLayers(): List<Layer> {
         return container.transformToLayers()
     }
 
     private fun clickFocused() {
         EventBus.sendTo(
-                identifier = lastFocusedComponent.getId(),
+                identifier = lastFocusedComponent.id,
                 event = MouseReleased(MouseAction(MOUSE_RELEASED, 1, lastFocusedComponent.getPosition())))
     }
 
-    private fun focusComponent(component: InternalComponent<T, S>) {
+    private fun focusComponent(component: InternalComponent) {
         if (component.acceptsFocus() && isNotAlreadyFocused(component)) {
             lastFocusedComponent.takeFocus()
             lastFocusedComponent = component
@@ -138,12 +138,12 @@ class DefaultContainerHandler<T: Any, S: Any>(private var container: DefaultCont
         }
     }
 
-    private fun focusNext() = nextsLookup[lastFocusedComponent.getId()]?.let { focusComponent(it) }
+    private fun focusNext() = nextsLookup[lastFocusedComponent.id]?.let { focusComponent(it) }
 
-    private fun focusPrevious() = prevsLookup[lastFocusedComponent.getId()]?.let { focusComponent(it) }
+    private fun focusPrevious() = prevsLookup[lastFocusedComponent.id]?.let { focusComponent(it) }
 
-    private fun isNotAlreadyFocused(component: InternalComponent<T, S>) =
-            lastFocusedComponent.getId() != component.getId()
+    private fun isNotAlreadyFocused(component: InternalComponent) =
+            lastFocusedComponent.id != component.id
 
     private fun refreshFocusableLookup() {
         nextsLookup.clear()
@@ -152,21 +152,21 @@ class DefaultContainerHandler<T: Any, S: Any>(private var container: DefaultCont
         val tree = container.fetchFlattenedComponentTree().filter { it.acceptsFocus() }
         if (tree.isNotEmpty()) {
             val first = tree.first()
-            nextsLookup[container.getId()] = first
-            prevsLookup[first.getId()] = container
+            nextsLookup[container.id] = first
+            prevsLookup[first.id] = container
             var prev = first
 
             tree.iterator().let { treeIter ->
                 treeIter.next() // first already handled
                 while (treeIter.hasNext()) {
                     val next = treeIter.next()
-                    nextsLookup[prev.getId()] = next
-                    prevsLookup[next.getId()] = prev
+                    nextsLookup[prev.id] = next
+                    prevsLookup[next.id] = prev
                     prev = next
                 }
             }
-            nextsLookup[prev.getId()] = container
-            prevsLookup[container.getId()] = prev
+            nextsLookup[prev.id] = container
+            prevsLookup[container.id] = prev
             lastFocusedComponent = container
         }
     }
@@ -176,14 +176,14 @@ class DefaultContainerHandler<T: Any, S: Any>(private var container: DefaultCont
             lastMousePosition = mouseAction.position
             container.fetchComponentByPosition(lastMousePosition)
                     .map { currComponent ->
-                        if (lastHoveredComponentId == currComponent.getId()) {
-                            if (lastFocusedComponent.getId() == currComponent.getId()) {
-                                EventBus.sendTo(currComponent.getId(), MouseMoved(mouseAction))
+                        if (lastHoveredComponentId == currComponent.id) {
+                            if (lastFocusedComponent.id == currComponent.id) {
+                                EventBus.sendTo(currComponent.id, MouseMoved(mouseAction))
                             }
                         } else {
                             EventBus.sendTo(lastHoveredComponentId, MouseOut(mouseAction))
-                            lastHoveredComponentId = currComponent.getId()
-                            EventBus.sendTo(currComponent.getId(), MouseOver(mouseAction))
+                            lastHoveredComponentId = currComponent.id
+                            EventBus.sendTo(currComponent.id, MouseOver(mouseAction))
                         }
                     }
         }

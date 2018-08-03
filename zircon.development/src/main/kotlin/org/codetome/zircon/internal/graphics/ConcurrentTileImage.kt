@@ -1,19 +1,18 @@
 package org.codetome.zircon.internal.graphics
 
-import org.codetome.zircon.api.graphics.StyleSet
-import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.BaseTileImage
-import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.graphics.StyleSet
+import org.codetome.zircon.api.resource.TilesetResource
 import java.util.concurrent.ConcurrentHashMap
 
-class ConcurrentTileImage<T : Any, S : Any>(
+class ConcurrentTileImage(
         size: Size,
-        tileset: Tileset<T, S>,
+        tileset: TilesetResource<out Tile>,
         styleSet: StyleSet = StyleSet.defaultStyle())
-    : BaseTileImage<T, S>(
+    : BaseTileImage(
         size = size,
         tileset = tileset,
-        contents = ConcurrentHashMap<Position, Tile<T>>(),
+        contents = ConcurrentHashMap(),
         styleSet = styleSet)

@@ -10,8 +10,10 @@ import org.codetome.zircon.api.component.ComponentState
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.input.MouseAction
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Identifier
@@ -23,24 +25,26 @@ import org.codetome.zircon.internal.event.Event
 import org.codetome.zircon.internal.event.EventBus
 
 @Suppress("UNCHECKED_CAST")
-abstract class DefaultComponent<T : Any, S : Any>(initialSize: Size,
-                                                  initialTileset: Tileset<T, S>,
-                                                  position: Position,
-                                                  private var attached: Boolean = false,
-                                                  private var componentStyleSet: ComponentStyleSet,
-                                                  private val wrappers: Iterable<WrappingStrategy<T, S>>,
-                                                  private val drawSurface: TileImage<T, S> = TileImageBuilder
-                                                          .newBuilder<T, S>(initialTileset)
-                                                          .size(initialSize)
-                                                          .build(),
-                                                  private val boundable: DefaultBoundable = DefaultBoundable(
-                                                          size = initialSize,
-                                                          position = position))
-    : InternalComponent<T, S>,
-        Drawable<T> by drawSurface,
-        TilesetOverride<T, S> by drawSurface {
+abstract class DefaultComponent(
+        initialSize: Size,
+        initialTileset: TilesetResource<out Tile>,
+        position: Position,
+        private var attached: Boolean = false,
+        private var componentStyleSet: ComponentStyleSet,
+        private val wrappers: Iterable<WrappingStrategy>,
+        private val drawSurface: TileImage = TileImageBuilder
+                .newBuilder(initialTileset)
+                .size(initialSize)
+                .build(),
+        private val boundable: DefaultBoundable = DefaultBoundable(
+                size = initialSize,
+                position = position))
+    : InternalComponent,
+        Drawable by drawSurface,
+        TilesetOverride by drawSurface {
 
-    private val id = Identifier.randomIdentifier()
+    override val id = Identifier.randomIdentifier()
+    
     private var currentOffset = Position.defaultPosition()
 
     init {
@@ -76,11 +80,9 @@ abstract class DefaultComponent<T : Any, S : Any>(initialSize: Size,
 
     override fun intersects(boundable: Boundable) = this.boundable.intersects(boundable)
 
-    override fun getId() = id
-
     override fun getPosition() = boundable.getPosition()
 
-    override fun drawOnto(surface: DrawSurface<T>, offset: Position) {
+    override fun drawOnto(surface: DrawSurface, offset: Position) {
         surface.draw(drawSurface, boundable.getPosition())
     }
 
@@ -88,23 +90,23 @@ abstract class DefaultComponent<T : Any, S : Any>(initialSize: Size,
             if (containsPosition(position)) {
                 Maybe.of(this)
             } else {
-                Maybe.empty<InternalComponent<T, S>>()
+                Maybe.empty<InternalComponent>()
             }
 
     override fun onMousePressed(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<Event.MousePressed>(getId()) { (mouseAction) ->
+        EventBus.listenTo<Event.MousePressed>(id) { (mouseAction) ->
             callback.accept(mouseAction)
         }
     }
 
     override fun onMouseReleased(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<Event.MouseReleased>(getId()) { (mouseAction) ->
+        EventBus.listenTo<Event.MouseReleased>(id) { (mouseAction) ->
             callback.accept(mouseAction)
         }
     }
 
     override fun onMouseMoved(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<Event.MouseMoved>(getId()) { (mouseAction) ->
+        EventBus.listenTo<Event.MouseMoved>(id) { (mouseAction) ->
             callback.accept(mouseAction)
         }
     }
@@ -144,7 +146,7 @@ abstract class DefaultComponent<T : Any, S : Any>(initialSize: Size,
     fun getWrapperOffset() = wrappers.map { it.getOffset() }.fold(Position.topLeftCorner()) { acc, position -> acc + position }
 
     open fun transformToLayers() =
-            listOf(LayerBuilder.newBuilder<T, S>()
+            listOf(LayerBuilder.newBuilder()
                     .textImage(drawSurface)
                     .offset(getPosition())
                     .font(tileset())
@@ -159,7 +161,7 @@ abstract class DefaultComponent<T : Any, S : Any>(initialSize: Size,
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (this::class != other!!::class) return false
-        other as DefaultComponent<T, S>
+        other as DefaultComponent
         if (id != other.id) return false
         return true
     }

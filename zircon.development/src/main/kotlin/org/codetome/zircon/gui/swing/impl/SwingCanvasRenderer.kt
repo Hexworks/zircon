@@ -15,9 +15,9 @@ import javax.swing.JFrame
 @Suppress("UNCHECKED_CAST")
 class SwingCanvasRenderer(private val canvas: Canvas,
                           private val frame: JFrame,
-                          private val grid: TileGrid<out Any, BufferedImage>) : Renderer {
+                          private val grid: TileGrid) : Renderer {
 
-    private val tileset = grid.tileset() as Tileset<Any, BufferedImage>
+    private val tilesetLoader = SwingTilesetLoader()
 
     override fun create() {
         frame.isResizable = false
@@ -27,14 +27,12 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                 render()
             }
         }
-
         canvas.preferredSize = Dimension(
                 grid.widthInPixels(),
                 grid.heightInPixels())
-        canvas.minimumSize = Dimension(tileset.width(), tileset.height())
+        canvas.minimumSize = Dimension(grid.tileset().width, grid.tileset().height)
         canvas.isFocusable = true
         canvas.requestFocusInWindow()
-
         frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
         frame.pack()
         frame.setLocationRelativeTo(null)
@@ -55,14 +53,14 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         val gc = configureGraphics(img.graphics)
         gc.fillRect(0, 0, grid.widthInPixels(), grid.heightInPixels())
 
-        renderTiles(gc, grid.createSnapshot(), tileset)
+        renderTiles(gc, grid.createSnapshot(), tilesetLoader.loadTilesetFrom(grid.tileset()))
         grid.getLayers().forEach { layer ->
             renderTiles(
                     graphics = gc,
-                    tiles = layer.createSnapshot(), // TODO: fix cat
-                    tileset = layer.tileset() as Tileset<Any, BufferedImage>)
+                    tiles = layer.createSnapshot(),
+                    tileset = tilesetLoader.loadTilesetFrom(layer.tileset()))
         }
-        configureGraphics(getGraphics2D() ).apply {
+        configureGraphics(getGraphics2D()).apply {
             drawImage(img, 0, 0, null)
             dispose()
         }
@@ -82,18 +80,17 @@ class SwingCanvasRenderer(private val canvas: Canvas,
     }
 
     private fun renderTiles(graphics: Graphics,
-                            tiles: Map<Position, Tile<out Any>>,
-                            tileset: Tileset<Any, BufferedImage>) {
+                            tiles: Map<Position, Tile>,
+                            tileset: Tileset<out Tile, BufferedImage>) {
         tiles.forEach { (pos, tile) ->
-            val actualTile = tile as Tile<Any>
             val (x, y) = pos.toAbsolutePosition(tileset)
-            val actualTileset: Tileset<Any, BufferedImage> = if (actualTile is TilesetOverride<*, *>) {
-                actualTile.tileset() as Tileset<Any, BufferedImage>
+            val actualTileset: Tileset<Tile, BufferedImage> = if (tile is TilesetOverride) {
+                tile.tileset() as Tileset<Tile, BufferedImage>
             } else {
-                tileset
+                tileset as Tileset<Tile, BufferedImage>
             }
 
-            val texture = actualTileset.fetchTextureForTile(actualTile)
+            val texture = actualTileset.fetchTextureForTile(tile)
             graphics.drawImage(texture.getTexture(), x, y, null)
         }
     }
