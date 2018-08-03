@@ -17,11 +17,11 @@ import org.codetome.zircon.api.application.Renderer
 
 
 @Suppress("UNCHECKED_CAST")
-class LibgdxRenderer(private val grid: TileGrid<out Any, TextureRegion>) : Renderer {
+class LibgdxRenderer(private val grid: TileGrid) : Renderer {
 
     lateinit var batch: SpriteBatch
 
-    private val tileset = grid.tileset() as Tileset<Any, TextureRegion>
+    private val tilesetLoader = LibgdxTilesetLoader()
 
 
     override fun create() {
@@ -33,12 +33,12 @@ class LibgdxRenderer(private val grid: TileGrid<out Any, TextureRegion>) : Rende
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         batch.begin()
 
-        renderTiles(grid.createSnapshot(), tileset, AbsolutePosition(0, 0))
+        renderTiles(grid.createSnapshot(), tilesetLoader.loadTilesetFrom(grid.tileset()), AbsolutePosition(0, 0))
         grid.getLayers().forEach { layer ->
             renderTiles(
-                    tiles = layer.createSnapshot(), // TODO: fix cat
-                    tileset = layer.tileset() as Tileset<Any, TextureRegion>,
-                    offset = layer.getPosition().toAbsolutePosition(tileset))
+                    tiles = layer.createSnapshot(),
+                    tileset = tilesetLoader.loadTilesetFrom(layer.tileset()),
+                    offset = layer.getPosition().toAbsolutePosition(tilesetLoader.loadTilesetFrom(grid.tileset())))
         }
         batch.end()
     }
@@ -47,34 +47,33 @@ class LibgdxRenderer(private val grid: TileGrid<out Any, TextureRegion>) : Rende
         batch.dispose()
     }
 
-    private fun renderTiles(tiles: Map<Position, Tile<out Any>>,
-                            tileset: Tileset<Any, TextureRegion>,
+    private fun renderTiles(tiles: Map<Position, Tile>,
+                            tileset: Tileset<out Tile, TextureRegion>,
                             offset: AbsolutePosition) {
         tiles.forEach { (pos, tile) ->
-            val actualTile = tile as Tile<Any>
             val p = pos.toAbsolutePosition(tileset) + offset
             val x = p.x.toFloat()
             val y = p.y.toFloat()
-            val actualTileset: Tileset<Any, TextureRegion> = if (actualTile is TilesetOverride<*, *>) {
-                actualTile.tileset() as Tileset<Any, TextureRegion>
+            val actualTileset: Tileset<Tile, TextureRegion> = if (tile is TilesetOverride) {
+                tilesetLoader.loadTilesetFrom(tile.tileset())
             } else {
                 tileset
-            }
+            } as Tileset<Tile, TextureRegion>
 
-            val width = tileset.width().toFloat()
-            val height = tileset.height().toFloat()
+            val width = actualTileset.width().toFloat()
+            val height = actualTileset.height().toFloat()
 
-            var texture = actualTileset.fetchTextureForTile(actualTile)
+            var texture = actualTileset.fetchTextureForTile(tile)
             val drawable = TextureRegionDrawable(texture.getTexture())
-            val fr = actualTile.getForegroundColor().getRed().toFloat().div(255)
-            val fg = actualTile.getForegroundColor().getGreen().toFloat().div(255)
-            val fb = actualTile.getForegroundColor().getBlue().toFloat().div(255)
-            val fa = actualTile.getForegroundColor().getAlpha().toFloat().div(255)
+            val fr = tile.getForegroundColor().getRed().toFloat().div(255)
+            val fg = tile.getForegroundColor().getGreen().toFloat().div(255)
+            val fb = tile.getForegroundColor().getBlue().toFloat().div(255)
+            val fa = tile.getForegroundColor().getAlpha().toFloat().div(255)
 
-            val br = actualTile.getBackgroundColor().getRed().toFloat().div(255)
-            val bg = actualTile.getBackgroundColor().getGreen().toFloat().div(255)
-            val bb = actualTile.getBackgroundColor().getBlue().toFloat().div(255)
-            val ba = actualTile.getBackgroundColor().getAlpha().toFloat().div(255)
+            val br = tile.getBackgroundColor().getRed().toFloat().div(255)
+            val bg = tile.getBackgroundColor().getGreen().toFloat().div(255)
+            val bb = tile.getBackgroundColor().getBlue().toFloat().div(255)
+            val ba = tile.getBackgroundColor().getAlpha().toFloat().div(255)
 
             val tinted = drawable.tint(Color(fr, fg, fb, fa)) as SpriteDrawable
             tinted.draw(batch,

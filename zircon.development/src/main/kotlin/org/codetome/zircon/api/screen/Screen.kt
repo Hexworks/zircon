@@ -14,8 +14,8 @@ import org.codetome.zircon.internal.behavior.Identifiable
  * [org.codetome.zircon.api.grid.TileGrid]. If you want a [Screen] to be displayed without
  * tracking the changes use the [Screen.display] function.
  */
-interface Screen<T: Any, S: Any>
-    : TileGrid<T, S>, ContainerHandler<T, S>, Identifiable {
+interface Screen
+    : TileGrid, ContainerHandler, Identifiable {
 
     /**
      * Moves the contents of this [Screen] to the underlying [org.codetome.zircon.api.grid.TileGrid].

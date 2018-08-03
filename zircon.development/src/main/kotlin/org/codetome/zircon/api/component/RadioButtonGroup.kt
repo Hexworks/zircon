@@ -4,13 +4,13 @@ import org.codetome.zircon.api.behavior.Scrollable
 import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Maybe
 
-interface RadioButtonGroup<T: Any, S: Any> : Component<T, S>, Scrollable {
+interface RadioButtonGroup : Component, Scrollable {
 
     /**
      * Adds an option to this [RadioButtonGroup] and returns the
      * resulting [RadioButton] which was added.
      */
-    fun addOption(key: String, text: String): RadioButton<T, S>
+    fun addOption(key: String, text: String): RadioButton
 
     /**
      * Returns the currently selected item's key (if any).

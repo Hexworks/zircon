@@ -1,6 +1,8 @@
 package org.codetome.zircon.api.tileset
 
-interface MetadataPickingStrategy {
+import org.codetome.zircon.api.data.Tile
 
-    fun pickMetadata(metas: List<TileTextureMetadata>) : TileTextureMetadata
+interface MetadataPickingStrategy<T : Tile> {
+
+    fun pickMetadata(metas: List<TileTextureMetadata<T>>): TileTextureMetadata<T>
 }

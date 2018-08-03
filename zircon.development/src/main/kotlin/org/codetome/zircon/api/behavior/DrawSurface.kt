@@ -11,13 +11,13 @@ import java.util.*
  * which exposes simple get and set functions for getting and setting
  * [Tile]s and drawing [Drawable]s.
  */
-interface DrawSurface<T : Any> : Boundable {
+interface DrawSurface : Boundable {
 
     /**
      * Returns the character stored at a particular position on this [DrawSurface].
      * Returns an empty [Maybe] if no [Tile] is present at the given [Position].
      */
-    fun getTileAt(position: Position): Maybe<Tile<T>>
+    fun getTileAt(position: Position): Maybe<Tile>
 
     /**
      * Sets a [Tile] at a specific position in the [DrawSurface] to `tile`.
@@ -25,20 +25,20 @@ interface DrawSurface<T : Any> : Boundable {
      * Note that if this [DrawSurface] already has the given [Tile] on the supplied [Position]
      * nothing will change.
      */
-    fun setTileAt(position: Position, tile: Tile<T>)
+    fun setTileAt(position: Position, tile: Tile)
 
     /**
      * Creates a snapshot of the current state of this [DrawSurface].
      * A snapshot is useful to see a consistent state of a [DrawSurface]
      * regardless of potential changes by other threads.
      */
-    fun createSnapshot(): Map<Position, Tile<T>>
+    fun createSnapshot(): Map<Position, Tile>
 
     /**
      * Draws a [Drawable] onto this [DrawSurface]. If the destination [DrawSurface] is larger than
      * this [Drawable], the areas outside of the area that is written to will be untouched.
      * @param offset the starting position of the drawing relative to the [DrawSurface]'s top left corner.
      */
-    fun draw(drawable: Drawable<T>,
+    fun draw(drawable: Drawable ,
              offset: Position)
 }

@@ -5,7 +5,7 @@ import org.codetome.zircon.api.tileset.Tileset
 data class AbsolutePosition(override val x: Int,
                             override val y: Int) : Position {
 
-    override fun toAbsolutePosition(tileset: Tileset<out Any, out Any>) = this
+    override fun toAbsolutePosition(tileset: Tileset<out Tile, out Any>) = this
 
     companion object {
 

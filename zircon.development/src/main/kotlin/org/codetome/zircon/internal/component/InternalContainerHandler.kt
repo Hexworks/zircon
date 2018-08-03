@@ -6,7 +6,7 @@ import org.codetome.zircon.api.graphics.Layer
 /**
  * Internal API for a [ContainerHandler].
  */
-interface InternalContainerHandler<T: Any, S: Any> : ContainerHandler<T, S> {
+interface InternalContainerHandler : ContainerHandler {
 
     /**
      * Tells whether this [InternalContainerHandler] is active or not.
@@ -30,6 +30,6 @@ interface InternalContainerHandler<T: Any, S: Any> : ContainerHandler<T, S> {
      * this container is holding. The [Layer]s are ordered from
      * bottom to top to make it easy to render them.
      */
-    fun transformComponentsToLayers(): List<Layer<T, S>>
+    fun transformComponentsToLayers(): List<Layer>
 
 }

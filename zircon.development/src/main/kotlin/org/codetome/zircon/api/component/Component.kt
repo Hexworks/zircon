@@ -19,7 +19,7 @@ import org.codetome.zircon.api.util.Consumer
  * like a label or a check box is a [Container] while a label which is only intended to
  * display information is a [Component].
  */
-interface Component<T: Any, S: Any> : Positionable, Identifiable, Boundable, TilesetOverride<T, S> {
+interface Component : Positionable, Identifiable, Boundable, TilesetOverride {
 
 
     /**

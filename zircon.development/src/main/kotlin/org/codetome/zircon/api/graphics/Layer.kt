@@ -5,7 +5,7 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.util.Maybe
 
-interface Layer<T : Any, S: Any> : TileImage<T, S>, Movable {
+interface Layer : TileImage, Movable {
 
     /**
      * Fetches all the (absolute) [Position]s which this
@@ -20,20 +20,20 @@ interface Layer<T : Any, S: Any> : TileImage<T, S>, Movable {
     /**
      * Copies this [Layer].
      */
-    fun createCopy(): Layer<T, S>
+    fun createCopy(): Layer
 
     /**
      * Same as [Layer.getTileAt] but will not use the offset of this [Layer]
      * (eg: just position instead of position - offset).
      */
-    fun getRelativeTileAt(position: Position): Maybe<Tile<T>>
+    fun getRelativeTileAt(position: Position): Maybe<Tile>
 
     /**
      * Same as [Layer.setTileAt] but will not use the offset of this [Layer]
      * (eg: just position instead of position - offset).
      */
-    fun setRelativeTileAt(position: Position, character: Tile<T>)
+    fun setRelativeTileAt(position: Position, character: Tile)
 
-    override fun fill(filler: Tile<T>): Layer<T, S>
+    override fun fill(filler: Tile): Layer
 
 }

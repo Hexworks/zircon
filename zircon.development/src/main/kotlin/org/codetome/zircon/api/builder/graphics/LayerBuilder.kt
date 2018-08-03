@@ -3,8 +3,10 @@ package org.codetome.zircon.api.builder.graphics
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TileImage
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.graphics.DefaultLayer
@@ -16,15 +18,16 @@ import org.codetome.zircon.internal.graphics.DefaultLayer
  * - offset: [Position.defaultPosition()]
  * - has no text image by default
  */
-data class LayerBuilder<T : Any, S : Any>(private var tileset: Maybe<Tileset<T, S>> = Maybe.empty(),
-                                          private var size: Size = Size.defaultTerminalSize(),
-                                          private var offset: Position = Position.defaultPosition(),
-                                          private var tileImage: Maybe<TileImage<T, S>> = Maybe.empty()) : Builder<Layer<T, S>> {
+data class LayerBuilder(
+        private var tileset: Maybe<TilesetResource<out Tile>> = Maybe.empty(),
+        private var size: Size = Size.defaultTerminalSize(),
+        private var offset: Position = Position.defaultPosition(),
+        private var tileImage: Maybe<TileImage> = Maybe.empty()) : Builder<Layer> {
 
     /**
      * Sets the [Tileset] to use with the resulting [Layer].
      */
-    fun font(tileset: Tileset<T, S>) = also {
+    fun font(tileset: TilesetResource<out Tile>) = also {
         this.tileset = Maybe.of(tileset)
     }
 
@@ -47,11 +50,11 @@ data class LayerBuilder<T : Any, S : Any>(private var tileset: Maybe<Tileset<T, 
     /**
      * Uses the given [TileImage] and converts it to a [Layer].
      */
-    fun textImage(tileImage: TileImage<T, S>) = also {
+    fun textImage(tileImage: TileImage) = also {
         this.tileImage = Maybe.of(tileImage)
     }
 
-    override fun build(): Layer<T, S> = if (tileImage.isPresent) {
+    override fun build(): Layer = if (tileImage.isPresent) {
         DefaultLayer(
                 position = offset,
                 backend = tileImage.get())
@@ -67,6 +70,6 @@ data class LayerBuilder<T : Any, S : Any>(private var tileset: Maybe<Tileset<T, 
 
     companion object {
 
-        fun <T : Any, S : Any> newBuilder() = LayerBuilder<T, S>()
+        fun newBuilder() = LayerBuilder()
     }
 }

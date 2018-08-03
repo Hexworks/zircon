@@ -16,11 +16,11 @@ import org.codetome.zircon.internal.behavior.ShutdownHook
  * If you want to write an application that has a very precise control of the grid,
  * this is the interface you should be programming against.
  */
-interface TileGrid<T: Any, S: Any>
-    : Closeable, Clearable, DrawSurface<T>, InputEmitter, Layerable, ShutdownHook, Styleable, TilesetOverride<T, S>, TypingSupport<T> {
+interface TileGrid
+    : Closeable, Clearable, DrawSurface, InputEmitter, Layerable, ShutdownHook, Styleable, TilesetOverride, TypingSupport {
 
-    fun widthInPixels() = tileset().width() * getBoundableSize().xLength
+    fun widthInPixels() = tileset().width * getBoundableSize().xLength
 
-    fun heightInPixels() = tileset().height() * getBoundableSize().yLength
+    fun heightInPixels() = tileset().height * getBoundableSize().yLength
 
 }

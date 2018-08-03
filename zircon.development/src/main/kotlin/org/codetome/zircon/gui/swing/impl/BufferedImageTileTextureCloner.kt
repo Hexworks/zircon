@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage
 
 class BufferedImageTileTextureCloner : TileTextureTransformer<BufferedImage> {
 
-    override fun transform(texture: TileTexture<BufferedImage>, tile: Tile<out Any>): TileTexture<BufferedImage> {
+    override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         val txt = texture.getTexture()
         return DefaultTileTexture(
                 width = txt.width,

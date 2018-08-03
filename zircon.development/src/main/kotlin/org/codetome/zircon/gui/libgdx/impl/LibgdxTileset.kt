@@ -3,10 +3,12 @@ package org.codetome.zircon.gui.libgdx.impl
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import org.codetome.zircon.api.tileset.Tileset
-import org.codetome.zircon.internal.tileset.impl.DefaultTileTexture
-import org.codetome.zircon.api.tileset.TileTexture
+import org.codetome.zircon.api.data.CharacterTile
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.tileset.TileTexture
+import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.util.Identifier
+import org.codetome.zircon.internal.tileset.impl.DefaultTileTexture
 import java.io.File
 
 /**
@@ -15,7 +17,10 @@ import java.io.File
 class LibgdxTileset(private val path: String,
                     private val width: Int,
                     private val height: Int)
-    : Tileset<Char, TextureRegion> {
+    : Tileset<CharacterTile, TextureRegion> {
+
+    override val id: Identifier = Identifier.randomIdentifier()
+    override val sourceType = TextureRegion::class
 
     private val texture: Texture by lazy {
         val bytes = File(path).readBytes()
@@ -30,12 +35,13 @@ class LibgdxTileset(private val path: String,
 
     override fun height() = height
 
-    override fun supportsTile(tile: Tile<out Any>): Boolean {
+    override fun supportsTile(tile: Tile): Boolean {
         return true
     }
 
-    override fun fetchTextureForTile(tile: Tile<Char>): TileTexture<TextureRegion> {
-        val meta = CP437_METADATA[tile.key]!!
+    override fun fetchTextureForTile(tile: CharacterTile): TileTexture<TextureRegion> {
+        val fixedTile: CharacterTile = tile as? CharacterTile ?: throw IllegalArgumentException("Wrong tile type")
+        val meta = CP437_METADATA[fixedTile.character]!!
         val tr = TextureRegion(texture, meta.x * width, meta.y * height, width, height)
         return DefaultTileTexture(
                 width = width,

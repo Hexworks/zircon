@@ -10,11 +10,9 @@ import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.modifier.SimpleModifiers.*
 import kotlin.reflect.KClass
 
-interface Tile<T : Any> : Drawable<T>, Cacheable {
+interface Tile : Drawable, Cacheable {
 
-    val key: T
-
-    fun keyType(): Class<out T> = key::class.java
+    fun tileType(): KClass<out Tile>
 
     fun isOpaque(): Boolean = getForegroundColor().isOpaque().and(
             getBackgroundColor().isOpaque())
@@ -46,57 +44,48 @@ interface Tile<T : Any> : Drawable<T>, Cacheable {
 
     fun isNotEmpty(): Boolean = this != empty()
 
-    override fun generateCacheKey(): String {
-        return "c:${key}ss:${toStyleSet().generateCacheKey()}"
-    }
-
-    override fun drawOnto(surface: DrawSurface<T>, offset: Position) {
+    override fun drawOnto(surface: DrawSurface, offset: Position) {
         surface.setTileAt(offset, this)
     }
 
     /**
-     * Returns a copy of this [Tile] with the specified `key`.
-     */
-    fun withKey(key: T): Tile<T>
-
-    /**
      * Returns a copy of this [Tile] with the specified foreground color.
      */
-    fun withForegroundColor(foregroundColor: TextColor): Tile<T>
+    fun withForegroundColor(foregroundColor: TextColor): Tile
 
     /**
      * Returns a copy of this [Tile] with the specified background color.
      */
-    fun withBackgroundColor(backgroundColor: TextColor): Tile<T>
+    fun withBackgroundColor(backgroundColor: TextColor): Tile
 
     /**
      * Returns a copy of this [Tile] with the specified style.
      */
-    fun withStyle(styleSet: StyleSet): Tile<T>
+    fun withStyle(styleSet: StyleSet): Tile
 
     /**
      * Returns a copy of this [Tile] with the specified modifiers.
      */
-    fun withModifiers(vararg modifiers: Modifier): Tile<T>
+    fun withModifiers(vararg modifiers: Modifier): Tile
 
     /**
      * Returns a copy of this [Tile] with the specified modifiers.
      */
-    fun withModifiers(modifiers: Set<Modifier>): Tile<T>
+    fun withModifiers(modifiers: Set<Modifier>): Tile
 
     /**
      * Returns a copy of this [Tile] with [Modifier] (s) removed.
      * The currently active [Modifier]s will be carried over to the copy, except for the one(s) specified.
      * If the current [Tile] doesn't have the [Modifier] (s) specified, it will return itself.
      */
-    fun withoutModifiers(vararg modifiers: Modifier): Tile<T>
+    fun withoutModifiers(vararg modifiers: Modifier): Tile
 
     /**
      * Returns a copy of this [Tile] with [Modifier] (s) removed.
      * The currently active [Modifier]s will be carried over to the copy, except for the one(s) specified.
      * If the current [Tile] doesn't have the [Modifier] (s) specified, it will return itself.
      */
-    fun withoutModifiers(modifiers: Set<Modifier>): Tile<T>
+    fun withoutModifiers(modifiers: Set<Modifier>): Tile
 
     companion object {
 
@@ -121,17 +110,17 @@ interface Tile<T : Any> : Drawable<T>, Cacheable {
         /**
          * Creates a new [Tile].
          */
-        fun create(key: Char,
+        fun create(character: Char,
                    style: StyleSet) = CharacterTile(
-                key = key,
+                character = character,
                 style = style)
 
         private val DEFAULT_CHARACTER_TILE = CharacterTile(
-                key = ' ',
+                character = ' ',
                 style = StyleSet.defaultStyle())
 
         private val EMPTY_CHARACTER_TILE = CharacterTile(
-                key = ' ',
+                character = ' ',
                 style = StyleSet.empty())
 
     }

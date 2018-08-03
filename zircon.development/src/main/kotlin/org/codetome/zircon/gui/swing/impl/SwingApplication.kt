@@ -2,15 +2,17 @@ package org.codetome.zircon.gui.swing.impl
 
 import org.codetome.zircon.api.application.Application
 import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.grid.TileGrid
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.internal.grid.RectangleTileGrid
 import java.awt.image.BufferedImage
 
-class SwingApplication<T : Any>(size: Size,
-                                tileset: Tileset<T, BufferedImage>) : Application {
+class SwingApplication(size: Size,
+                       tileset: TilesetResource<out Tile>) : Application {
 
-    val tileGrid: TileGrid<T, BufferedImage> = RectangleTileGrid(
+    val tileGrid: TileGrid = RectangleTileGrid(
             tileset = tileset,
             size = size)
 
@@ -33,11 +35,11 @@ class SwingApplication<T : Any>(size: Size,
     companion object {
 
         fun <T : Any> create(size: Size,
-                             tileset: Tileset<T, BufferedImage>) =
+                             tileset: TilesetResource<out Tile>) =
                 SwingApplication(size, tileset)
 
         fun <T : Any> createLooped(size: Size,
-                             tileset: Tileset<T, BufferedImage>) : SwingApplication<T> {
+                                   tileset: TilesetResource<out Tile>): SwingApplication {
             val result = SwingApplication(size, tileset)
             result.create()
             Thread {

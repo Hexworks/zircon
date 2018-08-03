@@ -5,6 +5,7 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.shape.Shape
 import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.internal.graphics.MapTileImage
 import org.codetome.zircon.api.tileset.Tileset
 
@@ -13,7 +14,7 @@ class DefaultShape(private val positions: Set<Position> = setOf())
 
     override fun getPositions() = positions
 
-    override fun <T : Any, S : Any> toTextImage(tile: Tile<T>, tileset: Tileset<T, S>): TileImage<T, S> {
+    override fun toTileImage(tile: Tile, tileset: TilesetResource<out Tile>): TileImage {
         val offsetPositions = offsetToDefaultPosition()
         var maxCol = Int.MIN_VALUE
         var maxRow = Int.MIN_VALUE
