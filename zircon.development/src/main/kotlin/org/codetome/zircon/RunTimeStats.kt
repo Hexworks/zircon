@@ -4,7 +4,7 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.system.measureNanoTime
 
-object Stats {
+object RunTimeStats {
 
     private val stats = ConcurrentHashMap<String, Stat>()
 
@@ -12,8 +12,8 @@ object Stats {
     fun getAllStats() = stats.values.toList()
 
     @JvmStatic
-    fun printStats() {
-        println("T: ${System.currentTimeMillis()}, " + getAllStats().joinToString("\n"))
+    fun printStatFor(key: String) {
+        println("T: ${System.currentTimeMillis()}, " + stats[key])
     }
 
     @JvmStatic
@@ -28,14 +28,17 @@ object Stats {
 
     @JvmStatic
     fun addStatFor(key: String, timeNano: Long) {
-        addEmptyStatForKeyIfNotPresent(key)
-        stats[key] = stats[key]!!.let { stat ->
-            stat.copy(name = key,
+        stats.getOrPut(key) { Stat(key) }.let { stat ->
+            val newStat = stat.copy(name = key,
                     avgTimeNs = stat.avgTimeNs
                             .times(stat.measurements)
                             .plus(timeNano)
                             .div(stat.measurements + 1),
                     measurements = stat.measurements + 1)
+            stats[key] = newStat
+            if(newStat.measurements.rem(100) == 0L) {
+                printStatFor(key)
+            }
         }
     }
 

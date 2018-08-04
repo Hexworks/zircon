@@ -14,15 +14,14 @@ import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.resource.TilesetResource
-import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Identifier
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.event.InternalEvent
+import org.codetome.zircon.api.event.EventBus
 
 @Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
@@ -50,16 +49,14 @@ abstract class DefaultComponent(
     init {
         drawSurface.setStyleFrom(componentStyleSet.getCurrentStyle())
         applyWrappers()
-        EventBus.listenTo<Event.MouseOver>(id) {
+        EventBus.listenTo<InternalEvent.MouseOver>(id) {
             if (componentStyleSet.getCurrentStyle() != componentStyleSet.getStyleFor(ComponentState.MOUSE_OVER)) {
                 drawSurface.applyStyle(componentStyleSet.mouseOver())
-                EventBus.broadcast(Event.ComponentChange)
             }
         }
-        EventBus.listenTo<Event.MouseOut>(id) {
+        EventBus.listenTo<InternalEvent.MouseOut>(id) {
             if (componentStyleSet.getCurrentStyle() != componentStyleSet.getStyleFor(ComponentState.DEFAULT)) {
                 drawSurface.applyStyle(componentStyleSet.reset())
-                EventBus.broadcast(Event.ComponentChange)
             }
         }
     }
@@ -94,19 +91,19 @@ abstract class DefaultComponent(
             }
 
     override fun onMousePressed(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<Event.MousePressed>(id) { (mouseAction) ->
+        EventBus.listenTo<InternalEvent.MousePressed>(id) { (mouseAction) ->
             callback.accept(mouseAction)
         }
     }
 
     override fun onMouseReleased(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<Event.MouseReleased>(id) { (mouseAction) ->
+        EventBus.listenTo<InternalEvent.MouseReleased>(id) { (mouseAction) ->
             callback.accept(mouseAction)
         }
     }
 
     override fun onMouseMoved(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<Event.MouseMoved>(id) { (mouseAction) ->
+        EventBus.listenTo<InternalEvent.MouseMoved>(id) { (mouseAction) ->
             callback.accept(mouseAction)
         }
     }

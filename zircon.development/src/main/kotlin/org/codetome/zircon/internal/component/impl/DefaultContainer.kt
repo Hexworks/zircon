@@ -11,15 +11,14 @@ import org.codetome.zircon.api.component.Container
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.tileset.impl.FontSettings
+import org.codetome.zircon.internal.event.InternalEvent
 
 @Suppress("UNCHECKED_CAST")
 open class DefaultContainer(initialSize: Size,
@@ -44,31 +43,27 @@ open class DefaultContainer(initialSize: Size,
             if (isAttached()) {
                 dc.setPosition(dc.getPosition() + getEffectivePosition())
             }
-            if (component.tileset() === FontSettings.NO_FONT) {
-                component.useTileset(tileset())
-            } else {
-                require(tileset().size() == component.tileset().size()) {
-                    "Trying to add component with incompatible tileset size '${component.tileset().size()}' to" +
-                            "container with tileset size: '${tileset().size()}'!"
-                }
+            require(tileset().size() == component.tileset().size()) {
+                "Trying to add component with incompatible tileset size '${component.tileset().size()}' to" +
+                        "container with tileset size: '${tileset().size()}'!"
             }
             require(components.none { it.intersects(component) }) {
                 "You can't add a component to a container which intersects with other components!"
             }
             components.add(dc)
-            EventBus.broadcast(Event.ComponentAddition)
+            EventBus.broadcast(InternalEvent.ComponentAddition)
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
     }
 
     override fun setPosition(position: Position) {
         super.setPosition(position)
-        components.forEach {
-            it.setPosition(it.getPosition() + getEffectivePosition())
+        components.forEach { comp ->
+            comp.setPosition(comp.getPosition() + getEffectivePosition())
             // TODO: if the component has the same size and position it adds it!!!
-            require(containsBoundable(it)) {
+            require(containsBoundable(comp)) {
                 "You can't add a component to a container which is not within its bounds " +
-                        "(target size: ${getEffectiveSize()}, component size: ${it.getBoundableSize()}" +
-                        ", position: ${it.getPosition()})!"
+                        "(target size: ${getEffectiveSize()}, component size: ${comp.getBoundableSize()}" +
+                        ", position: ${comp.getPosition()})!"
             }
         }
     }
@@ -99,13 +94,12 @@ open class DefaultContainer(initialSize: Size,
             }
         }
         if (removalHappened) {
-            EventBus.broadcast(Event.ComponentRemoval)
+            EventBus.broadcast(InternalEvent.ComponentRemoval)
         }
         return removalHappened
     }
 
     override fun transformToLayers(): List<Layer> {
-        // TODO: persistent list here
         return mutableListOf(LayerBuilder.newBuilder()
                 .textImage(getDrawSurface())
                 .offset(getPosition())

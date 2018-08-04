@@ -1,24 +1,22 @@
-package org.codetome.zircon.gui.swing.impl
+package org.codetome.zircon.gui.swing.tileset.transformer
 
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.tileset.TileTextureTransformer
 import org.codetome.zircon.internal.tileset.impl.DefaultTileTexture
-import org.codetome.zircon.api.data.Tile
+import java.awt.geom.AffineTransform
+import java.awt.image.AffineTransformOp
 import java.awt.image.BufferedImage
 
-class BufferedImageTileTextureCloner : TileTextureTransformer<BufferedImage> {
+class Java2DVerticalFlipper : TileTextureTransformer<BufferedImage> {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         val txt = texture.getTexture()
+        val tx = AffineTransform.getScaleInstance(1.0, -1.0)
+        tx.translate(0.0, -txt.height.toDouble())
         return DefaultTileTexture(
                 width = txt.width,
                 height = txt.height,
-                texture = BufferedImage(txt.width, txt.height, BufferedImage.TRANSLUCENT).let { clone ->
-                    clone.graphics.apply {
-                        drawImage(txt, 0, 0, null)
-                        dispose()
-                    }
-                    clone
-                })
+                texture = AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR).filter(txt, null))
     }
 }

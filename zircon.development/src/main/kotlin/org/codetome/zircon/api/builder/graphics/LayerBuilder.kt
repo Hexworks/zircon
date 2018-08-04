@@ -9,6 +9,7 @@ import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.config.RuntimeConfig
 import org.codetome.zircon.internal.graphics.DefaultLayer
 
 /**
@@ -19,7 +20,7 @@ import org.codetome.zircon.internal.graphics.DefaultLayer
  * - has no text image by default
  */
 data class LayerBuilder(
-        private var tileset: Maybe<TilesetResource<out Tile>> = Maybe.empty(),
+        private var tileset: TilesetResource<out Tile> = RuntimeConfig.config.defaultTileset,
         private var size: Size = Size.defaultTerminalSize(),
         private var offset: Position = Position.defaultPosition(),
         private var tileImage: Maybe<TileImage> = Maybe.empty()) : Builder<Layer> {
@@ -28,7 +29,7 @@ data class LayerBuilder(
      * Sets the [Tileset] to use with the resulting [Layer].
      */
     fun font(tileset: TilesetResource<out Tile>) = also {
-        this.tileset = Maybe.of(tileset)
+        this.tileset = tileset
     }
 
     /**
@@ -62,7 +63,7 @@ data class LayerBuilder(
         DefaultLayer(
                 position = offset,
                 backend = TileImageBuilder(
-                        tileset = tileset.get(),
+                        tileset = tileset,
                         size = size).build())
     }
 

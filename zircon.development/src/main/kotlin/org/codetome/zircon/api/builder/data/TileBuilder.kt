@@ -3,12 +3,11 @@ package org.codetome.zircon.api.builder.data
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.data.CharacterTile
-import org.codetome.zircon.api.data.ImageTile
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.Modifier
-import org.codetome.zircon.api.tileset.Tileset
-import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.api.resource.TilesetResource
+import org.codetome.zircon.internal.config.RuntimeConfig
 
 /**
  * Builds [Tile]s.
@@ -22,7 +21,8 @@ import org.codetome.zircon.api.util.Maybe
 data class TileBuilder(
         private var character: Char = ' ',
         private var styleSet: StyleSet = StyleSet.defaultStyle(),
-        private var tileset: Maybe<Tileset<out Tile, out Any>> = Maybe.empty()) : Builder<Tile> {
+        private var tileset: TilesetResource<out Tile> = RuntimeConfig.config.defaultTileset)
+    : Builder<Tile> {
 
     fun character(character: Char) = also {
         this.character = character
@@ -48,8 +48,8 @@ data class TileBuilder(
         this.styleSet = styleSet.withModifiers(modifiers)
     }
 
-    fun tileset(tileset: Tileset<out Tile, out Any>) = also {
-        this.tileset = Maybe.of(tileset)
+    fun tileset(tileset: TilesetResource<out Tile>) = also {
+        this.tileset = tileset
     }
 
     fun modifiers(vararg modifiers: Modifier) = also {

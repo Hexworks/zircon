@@ -14,10 +14,11 @@ import org.codetome.zircon.internal.component.ContainerHandlerState.DEACTIVATED
 import org.codetome.zircon.internal.component.ContainerHandlerState.UNKNOWN
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.InternalContainerHandler
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.Event.*
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.Subscription
+import org.codetome.zircon.internal.event.InternalEvent
+import org.codetome.zircon.internal.event.InternalEvent.*
+import org.codetome.zircon.api.event.EventBus
+import org.codetome.zircon.api.event.Subscription
+import org.codetome.zircon.internal.config.RuntimeConfig
 
 class DefaultContainerHandler(private var container: DefaultContainer) :
         InternalContainerHandler {
@@ -29,6 +30,7 @@ class DefaultContainerHandler(private var container: DefaultContainer) :
     private val subscriptions = mutableListOf<Subscription<*>>()
     private val nextsLookup = mutableMapOf<Identifier, InternalComponent>(Pair(container.id, container))
     private val prevsLookup = nextsLookup.toMutableMap()
+    private val debug = RuntimeConfig.config.debugMode
 
     private val keyStrokeHandlers = mapOf(
             Pair(NEXT_FOCUS_STROKE, this::focusNext),
@@ -52,26 +54,24 @@ class DefaultContainerHandler(private var container: DefaultContainer) :
             dc.signalAttached()
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
         refreshFocusableLookup()
-        EventBus.broadcast(ComponentChange)
     }
 
     override fun removeComponent(component: Component) =
             container.removeComponent(component).also {
                 refreshFocusableLookup()
-                EventBus.broadcast(ComponentChange)
             }
 
     override fun applyColorTheme(colorTheme: ColorTheme) {
         container.applyColorTheme(colorTheme)
-        EventBus.broadcast(ComponentChange)
     }
 
     override fun isActive() = state == ContainerHandlerState.ACTIVE
 
     override fun activate() {
+        if(debug) println("Activating container handler")
         state = ContainerHandlerState.ACTIVE
         refreshFocusableLookup()
-        subscriptions.add(EventBus.subscribe<Event.Input> { (input) ->
+        subscriptions.add(EventBus.subscribe<InternalEvent.Input> { (input) ->
 
             keyStrokeHandlers[input]?.invoke()
 

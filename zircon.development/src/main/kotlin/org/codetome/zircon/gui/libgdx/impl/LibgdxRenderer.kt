@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import org.codetome.zircon.RunTimeStats
 import org.codetome.zircon.api.data.AbsolutePosition
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.grid.TileGrid
@@ -17,7 +18,8 @@ import org.codetome.zircon.api.application.Renderer
 
 
 @Suppress("UNCHECKED_CAST")
-class LibgdxRenderer(private val grid: TileGrid) : Renderer {
+class LibgdxRenderer(private val grid: TileGrid,
+                     private val debug: Boolean = false) : Renderer {
 
     lateinit var batch: SpriteBatch
 
@@ -29,6 +31,18 @@ class LibgdxRenderer(private val grid: TileGrid) : Renderer {
     }
 
     override fun render() {
+        if (debug) {
+            RunTimeStats.addTimedStatFor("debug.render.time") {
+                doRender()
+            }
+        } else doRender()
+    }
+
+    override fun dispose() {
+        batch.dispose()
+    }
+
+    private fun doRender() {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         batch.begin()
@@ -41,10 +55,6 @@ class LibgdxRenderer(private val grid: TileGrid) : Renderer {
                     offset = layer.getPosition().toAbsolutePosition(tilesetLoader.loadTilesetFrom(grid.tileset())))
         }
         batch.end()
-    }
-
-    override fun dispose() {
-        batch.dispose()
     }
 
     private fun renderTiles(tiles: Map<Position, Tile>,

@@ -3,21 +3,19 @@ package org.codetome.zircon.gui.libgdx.example
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
-import org.codetome.zircon.Stats
+import org.codetome.zircon.RunTimeStats
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.data.*
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.gui.libgdx.impl.LibgdxRenderer
-import org.codetome.zircon.gui.libgdx.impl.LibgdxTileset
 import org.codetome.zircon.internal.graphics.DefaultLayer
 import org.codetome.zircon.internal.graphics.DefaultStyleSet
 import org.codetome.zircon.internal.graphics.MapTileImage
 import org.codetome.zircon.internal.grid.RectangleTileGrid
-import org.codetome.zircon.internal.grid.ThreadSafeTileGrid
 import java.util.*
 
-private val size = Size.create(70, 40)
+private val size = Size.create(80, 40)
 val tileset = CP437TilesetResource.WANDERLUST_16X16
 
 class GdxExample : ApplicationAdapter() {
@@ -66,7 +64,7 @@ class GdxExample : ApplicationAdapter() {
     }
 
     override fun render() {
-        Stats.addTimedStatFor("terminalBenchmark") {
+        RunTimeStats.addTimedStatFor("debug.render.time") {
             val tile = CharacterTile(
                     character = chars[currIdx],
                     style = styles[currIdx])
@@ -79,9 +77,6 @@ class GdxExample : ApplicationAdapter() {
             currIdx = if (currIdx == 0) 1 else 0
             loopCount++
             renderer.render()
-        }
-        if (loopCount.rem(100) == 0) {
-            Stats.printStats()
         }
     }
 

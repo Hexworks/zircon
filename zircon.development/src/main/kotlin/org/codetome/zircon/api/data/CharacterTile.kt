@@ -15,7 +15,7 @@ data class CharacterTile(
     override fun tileType() = CharacterTile::class
 
     override fun generateCacheKey(): String {
-        return "c:$character,s:{${style.generateCacheKey()}}"
+        return "char:$character,style:{${style.generateCacheKey()}}"
     }
 
     override fun toStyleSet() = style

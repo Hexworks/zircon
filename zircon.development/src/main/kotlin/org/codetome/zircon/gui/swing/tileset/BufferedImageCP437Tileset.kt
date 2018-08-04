@@ -1,19 +1,20 @@
-package org.codetome.zircon.gui.swing.impl
+package org.codetome.zircon.gui.swing.tileset
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import org.codetome.zircon.api.data.CharacterTile
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.modifier.Border
+import org.codetome.zircon.api.modifier.RayShade
+import org.codetome.zircon.api.modifier.SimpleModifiers
 import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.tileset.lookup.CP437TileMetadataLoader
 import org.codetome.zircon.api.util.Identifier
+import org.codetome.zircon.gui.swing.tileset.transformer.*
 import org.codetome.zircon.internal.tileset.impl.DefaultTileTexture
 import java.awt.image.BufferedImage
-import java.io.File
 import java.util.concurrent.TimeUnit
-import javax.imageio.ImageIO
-import kotlin.reflect.KClass
 
 class BufferedImageCP437Tileset(private val resource: TilesetResource<CharacterTile>,
                                 private val source: BufferedImage)
@@ -29,7 +30,7 @@ class BufferedImageCP437Tileset(private val resource: TilesetResource<CharacterT
             .initialCapacity(100)
             .maximumSize(5000)
             .expireAfterAccess(1, TimeUnit.MINUTES)
-            .build<Char, TileTexture<BufferedImage>>()
+            .build<String, TileTexture<BufferedImage>>()
 
     override val sourceType = BufferedImage::class
 
@@ -50,9 +51,9 @@ class BufferedImageCP437Tileset(private val resource: TilesetResource<CharacterT
     }
 
     override fun fetchTextureForTile(tile: CharacterTile): TileTexture<BufferedImage> {
-        tile as? CharacterTile ?: throw IllegalArgumentException()
-        val maybeRegion = cache.getIfPresent(tile.character)
+        val key = tile.generateCacheKey()
         val meta = lookup.fetchMetaForTile(tile)
+        val maybeRegion = cache.getIfPresent(key)
         return if (maybeRegion != null) {
             maybeRegion
         } else {
@@ -60,18 +61,34 @@ class BufferedImageCP437Tileset(private val resource: TilesetResource<CharacterT
                     width = width(),
                     height = height(),
                     texture = source.getSubimage(meta.x * width(), meta.y * height(), width(), height()))
-            TILE_TRANSFORMERS.forEach {
+            TILE_INITIALIZERS.forEach {
                 image = it.transform(image, tile)
             }
-            cache.put(tile.character, image)
+            tile.getModifiers().forEach {
+                image = MODIFIER_TRANSFORMER_LOOKUP[it::class]?.transform(image, tile) ?: image
+            }
+            cache.put(key, image)
             image
         }
     }
 
     companion object {
 
-        private val TILE_TRANSFORMERS = listOf(
-                BufferedImageTileTextureCloner())
+        private val TILE_INITIALIZERS = listOf(
+                Java2DTileTextureCloner(),
+                Java2DTileTextureColorizer())
+
+        val MODIFIER_TRANSFORMER_LOOKUP = mapOf(
+                Pair(SimpleModifiers.Underline::class, Java2DUnderlineTransformer()),
+                Pair(SimpleModifiers.VerticalFlip::class, Java2DVerticalFlipper()),
+                Pair(SimpleModifiers.HorizontalFlip::class, Java2DHorizontalFlipper()),
+                Pair(SimpleModifiers.CrossedOut::class, Java2DCrossedOutTransformer()),
+                Pair(SimpleModifiers.Blink::class, NoOpTransformer()),
+                Pair(SimpleModifiers.Hidden::class, Java2DHiddenTransformer()),
+                Pair(SimpleModifiers.Glow::class, Java2DGlowTransformer()),
+                Pair(Border::class, Java2DBorderTransformer()),
+                Pair(RayShade::class, Java2DRayShaderTransformer())
+        ).toMap()
 
     }
 }

@@ -8,6 +8,8 @@ import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.tileset.TilesetLoader
 import org.codetome.zircon.api.util.Identifier
+import org.codetome.zircon.gui.swing.tileset.BufferedImageCP437Tileset
+import org.codetome.zircon.gui.swing.tileset.BufferedImageDictionaryTileset
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO

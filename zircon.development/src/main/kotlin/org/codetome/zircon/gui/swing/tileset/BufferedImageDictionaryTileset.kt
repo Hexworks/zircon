@@ -1,4 +1,4 @@
-package org.codetome.zircon.gui.swing.impl
+package org.codetome.zircon.gui.swing.tileset
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import org.codetome.zircon.api.data.ImageTile

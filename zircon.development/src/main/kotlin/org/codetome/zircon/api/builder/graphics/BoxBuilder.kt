@@ -8,10 +8,11 @@ import org.codetome.zircon.api.graphics.BoxType
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.config.RuntimeConfig
 import org.codetome.zircon.internal.graphics.DefaultBox
 
 data class BoxBuilder(
-        private var tileset: Maybe<TilesetResource<out Tile>> = Maybe.empty(),
+        private var tileset: TilesetResource<out Tile> = RuntimeConfig.config.defaultTileset,
         private var size: Size = Size.create(3, 3),
         private var style: StyleSet = StyleSet.defaultStyle(),
         private var boxType: BoxType = BoxType.BASIC) : Builder<Box> {
@@ -39,14 +40,14 @@ data class BoxBuilder(
     }
 
     fun tileset(tileset: TilesetResource<out Tile>) = also {
-        this.tileset = Maybe.of(tileset)
+        this.tileset = tileset
     }
 
     override fun build(): Box = DefaultBox(
             size = size,
             styleSet = style,
             boxType = boxType,
-            tileset = tileset.get())
+            tileset = tileset)
 
     override fun createCopy() = copy()
 

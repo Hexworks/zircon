@@ -1,83 +1,77 @@
 package org.codetome.zircon.gui.swing.example
 
-import org.codetome.zircon.Stats
+import org.codetome.zircon.api.builder.grid.ApplicationConfigurationBuilder
 import org.codetome.zircon.api.data.*
-import org.codetome.zircon.api.graphics.Symbols
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.gui.swing.impl.SwingApplication
 import org.codetome.zircon.internal.graphics.DefaultLayer
 import org.codetome.zircon.internal.graphics.MapTileImage
-import org.codetome.zircon.internal.grid.RectangleTileGrid
 import org.codetome.zircon.internal.screen.TileGridScreen
-import org.codetome.zircon.gui.swing.impl.BufferedImageCP437Tileset
-import org.codetome.zircon.gui.swing.impl.SwingFrame
-import java.awt.image.BufferedImage
 import java.util.*
 
 fun main(args: Array<String>) {
 
-    val size = Size.create(60, 30)
+    val size = Size.create(80, 40)
+
     val tileset = CP437TilesetResource.WANDERLUST_16X16
-    val tileGrid: TileGrid = RectangleTileGrid(tileset, size)
-    val frame = SwingFrame(tileGrid)
-    val screen0 = TileGridScreen(tileGrid)
-    val screen1 = TileGridScreen(tileGrid)
+
+    val app = SwingApplication.create(
+            ApplicationConfigurationBuilder.newBuilder()
+                    .defaultSize(size)
+                    .defaultTileset(tileset)
+                    .debugMode(true)
+                    .build())
+
+    app.start()
+
+    val screen = TileGridScreen(app.tileGrid)
+
+    screen.display()
 
     val random = Random()
     val terminalWidth = size.xLength
     val terminalHeight = size.yLength
     val layerCount = 20
-    val layerWidth = 15
-    val layerHeight = 15
+    val layerWidth = 20
+    val layerHeight = 10
     val layerSize = Size.create(layerWidth, layerHeight)
+    val filler = CharacterTile('x')
 
-    val gridChars = listOf(
-            CharacterTile('a'),
-            CharacterTile('b'))
-    val layerChars = listOf(
-            CharacterTile(Symbols.BLOCK_SOLID),
-            CharacterTile(Symbols.BLOCK_SPARSE))
-    val screens = listOf(screen0, screen1)
+    val layers = (0..layerCount).map {
+
+        val imageLayer = MapTileImage(layerSize, tileset)
+        layerSize.fetchPositions().forEach {
+            imageLayer.setTileAt(it, filler)
+        }
+
+        val layer = DefaultLayer(
+                position = Position.create(
+                        x = random.nextInt(terminalWidth - layerWidth),
+                        y = random.nextInt(terminalHeight - layerHeight)),
+                backend = imageLayer)
+
+        screen.pushLayer(layer)
+        layer
+    }
+
+    val chars = listOf('a', 'b')
 
     var currIdx = 0
-    var loopCount = 0
-
-    frame.isVisible = true
-
-    frame.renderer.create()
-
-    gridChars.forEachIndexed { idx, char ->
-        fillGrid(screens[idx], char)
-        (0..layerCount).map {
-            val imageLayer = MapTileImage(layerSize, tileset)
-            layerSize.fetchPositions().forEach {
-                imageLayer.setTileAt(it, layerChars[idx])
-            }
-
-            val layer = DefaultLayer(
-                    position = Position.create(
-                            x = random.nextInt(terminalWidth - layerWidth),
-                            y = random.nextInt(terminalHeight - layerHeight)),
-                    backend = imageLayer)
-
-            screens[idx].pushLayer(layer)
-            layer
-        }
-    }
 
 
     while (true) {
-        Stats.addTimedStatFor("terminalBenchmark") {
-            screens[currIdx].display()
-            frame.renderer.render()
-            currIdx = if (currIdx == 0) 1 else 0
-            loopCount++
+        val tile = CharacterTile(chars[currIdx])
+        fillGrid(screen, tile)
+        layers.forEach {
+            it.moveTo(Position.create(
+                    x = random.nextInt(terminalWidth - layerWidth),
+                    y = random.nextInt(terminalHeight - layerHeight)))
         }
-        if (loopCount.rem(100) == 0) {
-            Stats.printStats()
-        }
+        currIdx = if (currIdx == 0) 1 else 0
     }
 }
+
 
 private fun fillGrid(tileGrid: TileGrid, tile: Tile) {
     (0..tileGrid.getBoundableSize().yLength).forEach { y ->

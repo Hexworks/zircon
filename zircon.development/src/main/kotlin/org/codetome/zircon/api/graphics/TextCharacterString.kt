@@ -2,6 +2,7 @@ package org.codetome.zircon.api.graphics
 
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.data.CharacterTile
+import org.codetome.zircon.api.resource.TilesetResource
 
 /**
  * A [TextCharacterString] is an aggregation of [CharacterTile]s. You can draw a
@@ -24,7 +25,7 @@ interface TextCharacterString : Drawable, Collection<CharacterTile> {
 
     fun getTextCharacters(): List<CharacterTile>
 
-    fun toTextImage(): TileImage
+    fun toTextImage(tileset: TilesetResource<CharacterTile>): TileImage
 
     /**
      * Creates a new [TextCharacterString] which contains the contents of `this` string

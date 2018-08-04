@@ -9,14 +9,14 @@ import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.tileset.Tileset
-import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultButton
 import org.codetome.zircon.internal.component.impl.wrapping.ButtonWrappingStrategy
+import org.codetome.zircon.internal.config.RuntimeConfig
 import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 
 data class ButtonBuilder(
-        private var tileset: Maybe<TilesetResource<out Tile>> = Maybe.empty(),
+        private var tileset: TilesetResource<out Tile> = RuntimeConfig.config.defaultTileset,
         private var text: String = "",
         private var position: Position = Position.defaultPosition(),
         private var componentStyleSet: ComponentStyleSet = ComponentStyleSet.defaultStyleSet())
@@ -26,7 +26,7 @@ data class ButtonBuilder(
      * Sets the [Tileset] to use with the resulting [Layer].
      */
     fun tileset(tileset: TilesetResource<out Tile>) = also {
-        this.tileset = Maybe.of(tileset)
+        this.tileset = tileset
     }
 
     fun text(text: String) = also {
@@ -53,7 +53,7 @@ data class ButtonBuilder(
                 position = position,
                 componentStyleSet = componentStyleSet,
                 wrappers = wrappers,
-                initialTileset = tileset.get())
+                initialTileset = tileset)
     }
 
     override fun createCopy() = copy()

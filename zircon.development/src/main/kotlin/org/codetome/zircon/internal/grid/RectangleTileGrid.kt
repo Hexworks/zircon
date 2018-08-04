@@ -20,8 +20,8 @@ import org.codetome.zircon.internal.behavior.ShutdownHook
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 import org.codetome.zircon.internal.behavior.impl.DefaultShutdownHook
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.event.InternalEvent
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.internal.graphics.ConcurrentTileImage
 
 
@@ -41,7 +41,7 @@ class RectangleTileGrid(
         ShutdownHook by shutdownHook {
 
     override fun onInput(listener: Consumer<Input>) {
-        EventBus.subscribe<Event.Input> { (input) ->
+        EventBus.subscribe<InternalEvent.Input> { (input) ->
             listener.accept(input)
         }
     }
