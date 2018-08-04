@@ -1,14 +1,15 @@
-package org.codetome.zircon.internal.event
+package org.codetome.zircon.api.event
 
 import org.codetome.zircon.api.util.Identifier
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.util.ThreadSafeQueue
 import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
+import java.util.concurrent.ConcurrentHashMap
 
 @Suppress("UNCHECKED_CAST")
 object EventBus {
 
-    val subscriptions = mutableMapOf<String, ThreadSafeQueue<Subscription<*>>>()
+    val subscriptions = ConcurrentHashMap<String, ThreadSafeQueue<Subscription<*>>>()
 
     /**
      * Subscribes to all events of the given event type.
@@ -40,7 +41,7 @@ object EventBus {
      * Sends the given `event` to the subscriber having the given [Identifier].
      */
     fun sendTo(identifier: Identifier, event: Event) {
-        subscriptions.getOrPut(event::class.simpleName!!, { ThreadSafeQueueFactory.create() })
+        subscriptions.getOrPut(event::class.simpleName!!) { ThreadSafeQueueFactory.create() }
                 .filter { it.hasIdentifier(identifier) }
                 .forEach { (it.callback as (Event) -> Unit).invoke(event) }
     }
@@ -49,7 +50,7 @@ object EventBus {
      * Broadcasts an event to all listeners of this event type.
      */
     fun broadcast(event: Event) {
-        subscriptions.getOrPut(event::class.simpleName!!, { ThreadSafeQueueFactory.create() }).forEach {
+        subscriptions.getOrPut(event::class.simpleName!!) { ThreadSafeQueueFactory.create() }.forEach {
             (it.callback as (Event) -> Unit).invoke(event)
         }
     }

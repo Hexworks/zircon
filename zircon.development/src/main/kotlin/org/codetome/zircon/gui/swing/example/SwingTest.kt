@@ -1,13 +1,12 @@
 package org.codetome.zircon.gui.swing.example
 
-import org.codetome.zircon.Stats
+import org.codetome.zircon.api.builder.grid.ApplicationConfigurationBuilder
 import org.codetome.zircon.api.data.*
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.gui.swing.impl.SwingApplication
 import org.codetome.zircon.internal.graphics.DefaultLayer
 import org.codetome.zircon.internal.graphics.MapTileImage
-import org.codetome.zircon.gui.swing.impl.BufferedImageCP437Tileset
-import org.codetome.zircon.gui.swing.impl.SwingApplication
 import java.util.*
 
 fun main(args: Array<String>) {
@@ -16,9 +15,14 @@ fun main(args: Array<String>) {
 
     val tileset = CP437TilesetResource.WANDERLUST_16X16
 
-    val app = SwingApplication(size, tileset)
+    val app = SwingApplication.create(
+            ApplicationConfigurationBuilder.newBuilder()
+                    .defaultSize(size)
+                    .defaultTileset(tileset)
+                    .debugMode(true)
+                    .build())
 
-    app.create()
+    app.start()
 
     val tileGrid = app.tileGrid
 
@@ -51,27 +55,20 @@ fun main(args: Array<String>) {
     val chars = listOf('a', 'b')
 
     var currIdx = 0
-    var loopCount = 0
 
 
     while (true) {
-        Stats.addTimedStatFor("terminalBenchmark") {
-            val tile = CharacterTile(chars[currIdx])
-            fillGrid(tileGrid, tile)
-            layers.forEach {
-                it.moveTo(Position.create(
-                        x = random.nextInt(terminalWidth - layerWidth),
-                        y = random.nextInt(terminalHeight - layerHeight)))
-            }
-            app.render()
-            currIdx = if (currIdx == 0) 1 else 0
-            loopCount++
+        val tile = CharacterTile(chars[currIdx])
+        fillGrid(tileGrid, tile)
+        layers.forEach {
+            it.moveTo(Position.create(
+                    x = random.nextInt(terminalWidth - layerWidth),
+                    y = random.nextInt(terminalHeight - layerHeight)))
         }
-        if (loopCount.rem(100) == 0) {
-            Stats.printStats()
-        }
+        currIdx = if (currIdx == 0) 1 else 0
     }
 }
+
 
 private fun fillGrid(tileGrid: TileGrid, tile: Tile) {
     (0..tileGrid.getBoundableSize().yLength).forEach { y ->

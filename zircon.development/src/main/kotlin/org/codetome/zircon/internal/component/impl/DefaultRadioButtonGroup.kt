@@ -18,8 +18,8 @@ import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
 import org.codetome.zircon.internal.component.WrappingStrategy
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.event.InternalEvent
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.internal.util.ThreadSafeQueue
 import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 
@@ -42,10 +42,9 @@ class DefaultRadioButtonGroup constructor(
 
     init {
         refreshContent()
-        EventBus.listenTo<Event.MouseReleased>(id) {
+        EventBus.listenTo<InternalEvent.MouseReleased>(id) {
             getDrawSurface().applyStyle(getComponentStyles().mouseOver())
             refreshContent()
-            EventBus.broadcast(Event.ComponentChange)
         }
     }
 
@@ -62,7 +61,7 @@ class DefaultRadioButtonGroup constructor(
                 initialTileset = tileset()).also { button ->
             items[key] = button
             addComponent(button)
-            EventBus.listenTo<Event.MouseReleased>(button.id) {
+            EventBus.listenTo<InternalEvent.MouseReleased>(button.id) {
                 selectedItem.map { lastSelected ->
                     if (lastSelected != key) {
                         items[lastSelected]?.removeSelection()

@@ -25,13 +25,9 @@ interface Tile : Drawable, Cacheable {
 
     fun toStyleSet(): StyleSet
 
-    fun isBold(): Boolean = getModifiers().contains(Bold)
-
     fun isUnderlined(): Boolean = getModifiers().contains(Underline)
 
     fun isCrossedOut(): Boolean = getModifiers().contains(CrossedOut)
-
-    fun isItalic(): Boolean = getModifiers().contains(Italic)
 
     fun isBlinking(): Boolean = getModifiers().contains(Blink)
 

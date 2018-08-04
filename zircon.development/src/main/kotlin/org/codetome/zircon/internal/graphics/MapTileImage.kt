@@ -1,12 +1,10 @@
 package org.codetome.zircon.internal.graphics
 
-import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.BaseTileImage
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.resource.TilesetResource
-import org.codetome.zircon.api.tileset.Tileset
 import java.util.concurrent.ConcurrentHashMap
 
 /**

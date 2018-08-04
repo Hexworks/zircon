@@ -32,10 +32,9 @@ class Java2DTiledTileset(private val source: BufferedImage,
     override fun getHeight() = height
 
     override fun fetchRegionForChar(tile: Tile): TileTexture<BufferedImage> {
-        val meta = fetchMetaFor(tile)
         val key = tile.generateCacheKey()
+        val meta = fetchMetaFor(tile)
         val maybeRegion = cache.retrieveIfPresent(key)
-
         var region = if (maybeRegion.isNotPresent()) {
             var image: TileTexture<BufferedImage> = Java2DTileTexture(
                     cacheKey = key,

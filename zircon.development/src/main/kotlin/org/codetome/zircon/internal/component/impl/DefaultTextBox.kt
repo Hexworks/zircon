@@ -14,15 +14,14 @@ import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.resource.TilesetResource
-import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.util.Math
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.Subscription
+import org.codetome.zircon.internal.event.InternalEvent
+import org.codetome.zircon.api.event.EventBus
+import org.codetome.zircon.api.event.Subscription
 import org.codetome.zircon.internal.util.TextBuffer
 
 class DefaultTextBox constructor(
@@ -101,7 +100,6 @@ class DefaultTextBox constructor(
             }
         }
         getDrawSurface().applyStyle(getComponentStyles().disable())
-        EventBus.broadcast(Event.ComponentChange)
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
@@ -116,25 +114,22 @@ class DefaultTextBox constructor(
         focused = false
         disableTyping()
         getDrawSurface().applyStyle(getComponentStyles().reset())
-        EventBus.broadcast(Event.ComponentChange)
     }
 
     private fun enableFocusedComponent() {
         cancelSubscriptions()
         getDrawSurface().applyStyle(getComponentStyles().giveFocus())
         enableTyping()
-        EventBus.broadcast(Event.ComponentChange)
     }
 
     private fun disableTyping() {
         cancelSubscriptions()
-        EventBus.broadcast(Event.HideCursor)
-        EventBus.broadcast(Event.ComponentChange)
+        EventBus.broadcast(InternalEvent.HideCursor)
     }
 
     private fun enableTyping() {
-        EventBus.broadcast(Event.RequestCursorAt(getCursorPosition().withRelative(getPosition())))
-        subscriptions.add(EventBus.subscribe<Event.KeyPressed> { (keyStroke) ->
+        EventBus.broadcast(InternalEvent.RequestCursorAt(getCursorPosition().withRelative(getPosition())))
+        subscriptions.add(EventBus.subscribe<InternalEvent.KeyPressed> { (keyStroke) ->
             val cursorPos = getCursorPosition()
             val (offsetCols, offsetRows) = getVisibleOffset()
             val currColIdx = cursorPos.x + offsetCols
@@ -259,8 +254,7 @@ class DefaultTextBox constructor(
                     refreshDrawSurface()
                 }
             }
-            EventBus.broadcast(Event.RequestCursorAt(getCursorPosition() + getPosition()))
-            EventBus.broadcast(Event.ComponentChange)
+            EventBus.broadcast(InternalEvent.RequestCursorAt(getCursorPosition() + getPosition()))
         })
     }
 

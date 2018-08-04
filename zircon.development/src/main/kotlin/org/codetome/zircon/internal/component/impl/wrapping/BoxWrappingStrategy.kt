@@ -22,6 +22,7 @@ class BoxWrappingStrategy(private val boxType: BoxType,
                 .boxType(boxType)
                 .size(size)
                 .style(style)
+                .tileset(tileImage.tileset())
                 .build()
                 .drawOnto(tileImage, offset)
         if (size.xLength > 4) {
@@ -36,7 +37,7 @@ class BoxWrappingStrategy(private val boxType: BoxType,
                         .character(boxType.connectorLeft)
                         .build())
                 val pos = offset.withRelativeX(2)
-                (0..cleanText.length).forEach { idx ->
+                (0 until cleanText.length).forEach { idx ->
                     tileImage.setTileAt(
                             position = pos.withRelativeX(idx),
                             tile = TileBuilder.newBuilder()

@@ -1,56 +1,69 @@
 package org.codetome.zircon.gui.swing.impl
 
+import org.codetome.zircon.RunTimeStats
 import org.codetome.zircon.api.application.Application
-import org.codetome.zircon.api.data.Size
-import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.grid.ApplicationConfiguration
 import org.codetome.zircon.api.grid.TileGrid
-import org.codetome.zircon.api.resource.TilesetResource
-import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.internal.grid.RectangleTileGrid
-import java.awt.image.BufferedImage
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
 
-class SwingApplication(size: Size,
-                       tileset: TilesetResource<out Tile>) : Application {
+class SwingApplication(private val appConfig: ApplicationConfiguration) : Application {
 
     val tileGrid: TileGrid = RectangleTileGrid(
-            tileset = tileset,
-            size = size)
+            tileset = appConfig.defaultTileset,
+            size = appConfig.size)
+
+    private var running = false
+    private var paused = false
 
     private val frame = SwingFrame(tileGrid)
+    private val renderer = frame.renderer
+    private val executor = Executors.newSingleThreadExecutor()
+    private lateinit var renderJob: Future<*>
 
-    override fun create() {
-        frame.isVisible = true
-        frame.renderer.create()
+    override fun start() {
+        if (running.not()) {
+            frame.isVisible = true
+            renderer.create()
+            running = true
+            renderJob = executor.submit {
+                while (running) {
+                    if (paused.not()) {
+                        if (appConfig.debugMode) {
+                            RunTimeStats.addTimedStatFor("debug.render.time") {
+                                renderer.render()
+                            }
+                        } else {
+                            renderer.render()
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    override fun render() {
-        frame.renderer.render()
+    override fun pause() {
+        paused = true
     }
 
-    override fun dispose() {
+    override fun resume() {
+        paused = false
+    }
+
+    override fun stop() {
+        running = false
+        renderJob.cancel(false)
+        executor.shutdownNow()
         frame.renderer.dispose()
         tileGrid.close()
     }
 
     companion object {
 
-        fun <T : Any> create(size: Size,
-                             tileset: TilesetResource<out Tile>) =
-                SwingApplication(size, tileset)
-
-        fun <T : Any> createLooped(size: Size,
-                                   tileset: TilesetResource<out Tile>): SwingApplication {
-            val result = SwingApplication(size, tileset)
-            result.create()
-            Thread {
-                try {
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }.start()
-            return result
-        }
+        fun create(
+                appConfig: ApplicationConfiguration = ApplicationConfiguration.defaultConfiguration()) =
+                SwingApplication(appConfig)
 
     }
 }

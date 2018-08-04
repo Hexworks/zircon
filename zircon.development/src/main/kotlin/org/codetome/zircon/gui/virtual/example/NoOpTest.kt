@@ -1,10 +1,8 @@
 package org.codetome.zircon.gui.virtual.example
 
-import org.codetome.zircon.Stats
 import org.codetome.zircon.api.data.*
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.resource.CP437TilesetResource
-import org.codetome.zircon.gui.swing.impl.BufferedImageCP437Tileset
 import org.codetome.zircon.gui.virtual.impl.NoOpRenderer
 import org.codetome.zircon.internal.graphics.DefaultLayer
 import org.codetome.zircon.internal.graphics.MapTileImage
@@ -56,21 +54,16 @@ fun main(args: Array<String>) {
 
 
     while (true) {
-        Stats.addTimedStatFor("terminalBenchmark") {
-            val tile = CharacterTile(chars[currIdx])
-            fillGrid(tileGrid, tile)
-            layers.forEach {
-                it.moveTo(Position.create(
-                        x = random.nextInt(terminalWidth - layerWidth),
-                        y = random.nextInt(terminalHeight - layerHeight)))
-            }
-            renderer.render()
-            currIdx = if (currIdx == 0) 1 else 0
-            loopCount++
+        val tile = CharacterTile(chars[currIdx])
+        fillGrid(tileGrid, tile)
+        layers.forEach {
+            it.moveTo(Position.create(
+                    x = random.nextInt(terminalWidth - layerWidth),
+                    y = random.nextInt(terminalHeight - layerHeight)))
         }
-        if (loopCount.rem(100) == 0) {
-            Stats.printStats()
-        }
+        renderer.render()
+        currIdx = if (currIdx == 0) 1 else 0
+        loopCount++
     }
 }
 

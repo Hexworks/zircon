@@ -6,17 +6,23 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.gui.swing.grid.TerminalKeyListener
+import org.codetome.zircon.gui.swing.grid.TerminalMouseListener
+import org.codetome.zircon.internal.config.RuntimeConfig
 import java.awt.*
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
+import java.awt.event.HierarchyEvent
+import java.awt.event.MouseEvent
 import java.awt.image.BufferedImage
 import javax.swing.JFrame
 
 @Suppress("UNCHECKED_CAST")
 class SwingCanvasRenderer(private val canvas: Canvas,
                           private val frame: JFrame,
-                          private val grid: TileGrid) : Renderer {
+                          private val tileGrid: TileGrid) : Renderer {
 
+    private var firstDraw = true
     private val tilesetLoader = SwingTilesetLoader()
 
     override fun create() {
@@ -27,34 +33,72 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                 render()
             }
         }
+
         canvas.preferredSize = Dimension(
-                grid.widthInPixels(),
-                grid.heightInPixels())
-        canvas.minimumSize = Dimension(grid.tileset().width, grid.tileset().height)
+                tileGrid.widthInPixels(),
+                tileGrid.heightInPixels())
+        canvas.minimumSize = Dimension(tileGrid.tileset().width, tileGrid.tileset().height)
         canvas.isFocusable = true
         canvas.requestFocusInWindow()
+        canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
+        canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
+        canvas.addKeyListener(TerminalKeyListener())
+        val listener = object : TerminalMouseListener(
+                fontWidth = tileGrid.tileset().width,
+                fontHeight = tileGrid.tileset().height) {
+            override fun mouseClicked(e: MouseEvent) {
+                super.mouseClicked(e)
+                canvas.requestFocusInWindow()
+            }
+        }
+        canvas.addMouseListener(listener)
+        canvas.addMouseMotionListener(listener)
+        canvas.addMouseWheelListener(listener)
+        canvas.addHierarchyListener { e ->
+            if (e.changeFlags == HierarchyEvent.DISPLAYABILITY_CHANGED.toLong()) {
+                if (e.changed.isDisplayable) {
+                    // no op
+                } else {
+                    dispose()
+                }
+            }
+        }
+
         frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+        if (RuntimeConfig.config.fullScreen) {
+            frame.extendedState = JFrame.MAXIMIZED_BOTH
+            frame.isUndecorated = true
+        }
         frame.pack()
         frame.setLocationRelativeTo(null)
+
+        // buffering
         canvas.createBufferStrategy(2)
         initializeBufferStrategy()
+
     }
 
     override fun dispose() {
-        grid.close()
+        tileGrid.close()
     }
 
     override fun render() {
         val bs = getBufferStrategy()
+        if (firstDraw) {
+            firstDraw = false
+            bs.drawGraphics.color = Color.BLACK
+            bs.drawGraphics.fillRect(0, 0, getWidth(), getHeight())
+            bs.show()
+        }
         val img = BufferedImage(
-                grid.widthInPixels(),
-                grid.heightInPixels(),
+                tileGrid.widthInPixels(),
+                tileGrid.heightInPixels(),
                 BufferedImage.TRANSLUCENT)
         val gc = configureGraphics(img.graphics)
-        gc.fillRect(0, 0, grid.widthInPixels(), grid.heightInPixels())
+        gc.fillRect(0, 0, tileGrid.widthInPixels(), tileGrid.heightInPixels())
 
-        renderTiles(gc, grid.createSnapshot(), tilesetLoader.loadTilesetFrom(grid.tileset()))
-        grid.getLayers().forEach { layer ->
+        renderTiles(gc, tileGrid.createSnapshot(), tilesetLoader.loadTilesetFrom(tileGrid.tileset()))
+        tileGrid.getLayers().forEach { layer ->
             renderTiles(
                     graphics = gc,
                     tiles = layer.createSnapshot(),
@@ -76,6 +120,8 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         gc.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY)
         gc.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
         gc.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED)
+        gc.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
+        gc.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF)
         return gc
     }
 
@@ -95,9 +141,9 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         }
     }
 
-    private fun getWidth() = grid.widthInPixels()
+    private fun getWidth() = tileGrid.widthInPixels()
 
-    private fun getHeight() = grid.heightInPixels()
+    private fun getHeight() = tileGrid.heightInPixels()
 
     private tailrec fun initializeBufferStrategy() {
         val bs = canvas.bufferStrategy
