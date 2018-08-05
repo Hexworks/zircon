@@ -24,11 +24,11 @@ class DefaultCheckBox(private val text: String,
                       initialTileset: TilesetResource<out Tile>,
                       position: Position,
                       componentStyleSet: ComponentStyleSet)
-    : CheckBox, DefaultComponent(initialSize = Size.create(width, 1),
+    : CheckBox, DefaultComponent(size = Size.create(width, 1),
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = wrappers,
-        initialTileset = initialTileset) {
+        tileset = initialTileset) {
 
     private val maxTextLength = width - BUTTON_WIDTH - 1
     private val clearedText = if (text.length > maxTextLength) {

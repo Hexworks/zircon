@@ -1,5 +1,6 @@
-package org.codetome.zircon.internal.util
+package org.codetome.zircon.jvm.internal.util
 
+import org.codetome.zircon.internal.util.ThreadSafeMap
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 

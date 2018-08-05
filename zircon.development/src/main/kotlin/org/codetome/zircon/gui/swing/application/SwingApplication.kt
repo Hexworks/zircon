@@ -1,14 +1,15 @@
-package org.codetome.zircon.gui.swing.impl
+package org.codetome.zircon.gui.swing.application
 
 import org.codetome.zircon.RunTimeStats
 import org.codetome.zircon.api.application.Application
-import org.codetome.zircon.api.grid.ApplicationConfiguration
+import org.codetome.zircon.api.grid.AppConfig
 import org.codetome.zircon.api.grid.TileGrid
+import org.codetome.zircon.gui.swing.impl.SwingFrame
 import org.codetome.zircon.internal.grid.RectangleTileGrid
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
-class SwingApplication(private val appConfig: ApplicationConfiguration) : Application {
+class SwingApplication(private val appConfig: AppConfig) : Application {
 
     val tileGrid: TileGrid = RectangleTileGrid(
             tileset = appConfig.defaultTileset,
@@ -62,7 +63,7 @@ class SwingApplication(private val appConfig: ApplicationConfiguration) : Applic
     companion object {
 
         fun create(
-                appConfig: ApplicationConfiguration = ApplicationConfiguration.defaultConfiguration()) =
+                appConfig: AppConfig = AppConfig.defaultConfiguration()) =
                 SwingApplication(appConfig)
 
     }

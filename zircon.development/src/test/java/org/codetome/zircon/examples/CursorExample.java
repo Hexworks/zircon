@@ -1,13 +1,13 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.api.builder.grid.ApplicationConfigurationBuilder;
+import org.codetome.zircon.api.builder.grid.AppConfigBuilder;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.data.Size;
-import org.codetome.zircon.api.grid.ApplicationConfiguration;
+import org.codetome.zircon.api.grid.AppConfig;
 import org.codetome.zircon.api.grid.CursorStyle;
 import org.codetome.zircon.api.grid.TileGrid;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
-import org.codetome.zircon.gui.swing.impl.SwingApplication;
+import org.codetome.zircon.gui.swing.application.SwingApplication;
 
 public class CursorExample {
 
@@ -17,9 +17,10 @@ public class CursorExample {
 
     public static void main(String[] args) {
 
-        ApplicationConfiguration config = ApplicationConfigurationBuilder.Companion.newBuilder()
+        AppConfig config = AppConfigBuilder.Companion.newBuilder()
                 .cursorColor(TextColor.Companion.fromString("#ff8844"))
-                .cursorStyle(CursorStyle.VERTICAL_BAR)
+                .blinkLengthInMilliSeconds(500)
+                .cursorStyle(CursorStyle.FIXED_BACKGROUND)
                 .cursorBlinking(true)
                 .defaultSize(SIZE)
                 .defaultTileset(CP437TilesetResource.TAFFER_20X20)

@@ -11,14 +11,14 @@ import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.shape.LineFactory
-import org.codetome.zircon.api.tileset.Tileset
 
 class DefaultBox(
         size: Size,
         styleSet: StyleSet,
         boxType: BoxType,
         tileset: TilesetResource<out Tile>,
-        private val backend: TileImage = TileImageBuilder.newBuilder(tileset)
+        private val backend: TileImage = TileImageBuilder.newBuilder()
+                .tileset(tileset)
                 .size(size)
                 .build())
     : Box, TileImage by backend {

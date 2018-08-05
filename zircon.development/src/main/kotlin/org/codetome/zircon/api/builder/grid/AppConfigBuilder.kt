@@ -4,7 +4,7 @@ import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.grid.ApplicationConfiguration
+import org.codetome.zircon.api.grid.AppConfig
 import org.codetome.zircon.api.grid.CursorStyle
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.resource.CP437TilesetResource
@@ -12,11 +12,11 @@ import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.internal.config.RuntimeConfig
 
 /**
- * Builder for [ApplicationConfiguration]s.
+ * Builder for [AppConfig]s.
  * Defaults are:
  * - default `title` is "Zircon Application"
  */
-data class ApplicationConfigurationBuilder(
+data class AppConfigBuilder(
         private var blinkLengthInMilliSeconds: Long = 500,
         private var cursorStyle: CursorStyle = CursorStyle.USE_CHARACTER_FOREGROUND,
         private var cursorColor: TextColor = TextColor.defaultForegroundColor(),
@@ -27,9 +27,9 @@ data class ApplicationConfigurationBuilder(
         private var fullScreen: Boolean = false,
         private var debugMode: Boolean = false,
         private var defaultSize: Size = Size.defaultTerminalSize())
-    : Builder<ApplicationConfiguration> {
+    : Builder<AppConfig> {
 
-    override fun build() = ApplicationConfiguration(
+    override fun build() = AppConfig(
             blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
             cursorStyle = cursorStyle,
             cursorColor = cursorColor,
@@ -106,7 +106,7 @@ data class ApplicationConfigurationBuilder(
 
     companion object {
 
-        fun newBuilder() = ApplicationConfigurationBuilder()
+        fun newBuilder() = AppConfigBuilder()
 
     }
 }

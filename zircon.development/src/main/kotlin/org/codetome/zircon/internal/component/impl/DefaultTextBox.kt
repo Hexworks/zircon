@@ -33,11 +33,11 @@ class DefaultTextBox constructor(
         scrollable: Scrollable = DefaultScrollable(initialSize, initialSize),
         cursorHandler: CursorHandler = DefaultCursorHandler(initialSize))
     : TextBox, Scrollable by scrollable, CursorHandler by cursorHandler, DefaultComponent(
-        initialSize = initialSize,
+        size = initialSize,
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = listOf(),
-        initialTileset = initialTileset) {
+        tileset = initialTileset) {
 
     private val textBuffer = TextBuffer(text)
     private val subscriptions = mutableListOf<Subscription<*>>()

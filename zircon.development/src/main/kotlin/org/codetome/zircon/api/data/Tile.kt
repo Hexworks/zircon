@@ -38,7 +38,7 @@ interface Tile : Drawable, Cacheable {
             .map { it as Border }
             .toSet()
 
-    fun isNotEmpty(): Boolean = this != empty()
+    fun isNotEmpty(): Boolean = this !== empty()
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
         surface.setTileAt(offset, this)

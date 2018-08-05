@@ -1,12 +1,12 @@
 package org.codetome.zircon.gui.swing.example
 
-import org.codetome.zircon.api.builder.grid.ApplicationConfigurationBuilder
+import org.codetome.zircon.api.builder.grid.AppConfigBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.data.*
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.resource.CP437TilesetResource
-import org.codetome.zircon.gui.swing.impl.SwingApplication
+import org.codetome.zircon.gui.swing.application.SwingApplication
 import org.codetome.zircon.internal.graphics.DefaultLayer
 import org.codetome.zircon.internal.graphics.MapTileImage
 import java.util.*
@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
     val tileset = CP437TilesetResource.WANDERLUST_16X16
 
     val app = SwingApplication.create(
-            ApplicationConfigurationBuilder.newBuilder()
+            AppConfigBuilder.newBuilder()
                     .defaultSize(size)
                     .defaultTileset(tileset)
                     .debugMode(true)

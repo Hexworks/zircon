@@ -7,7 +7,7 @@ import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.resource.TilesetResource
-import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.internal.config.RuntimeConfig
 import org.codetome.zircon.internal.graphics.MapTileImage
 
 /**
@@ -18,7 +18,7 @@ import org.codetome.zircon.internal.graphics.MapTileImage
  */
 @Suppress("ArrayInDataClass")
 data class TileImageBuilder(
-        private var tileset: TilesetResource<out Tile>,
+        private var tileset: TilesetResource<out Tile> = RuntimeConfig.config.defaultTileset,
         private var filler: Tile = Tile.empty(),
         private var size: Size = Size.one(),
         private var style: StyleSet = StyleSet.defaultStyle(),
@@ -66,7 +66,6 @@ data class TileImageBuilder(
         /**
          * Creates a new [TileImageBuilder] to build [org.codetome.zircon.api.graphics.TileImage]s.
          */
-        fun newBuilder(tileset: TilesetResource<out Tile>) = TileImageBuilder(
-                tileset = tileset)
+        fun newBuilder() = TileImageBuilder()
     }
 }

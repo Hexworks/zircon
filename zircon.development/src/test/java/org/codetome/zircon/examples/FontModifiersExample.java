@@ -1,14 +1,14 @@
 package org.codetome.zircon.examples;
 
 import kotlin.collections.SetsKt;
-import org.codetome.zircon.api.builder.grid.ApplicationConfigurationBuilder;
+import org.codetome.zircon.api.builder.grid.AppConfigBuilder;
 import org.codetome.zircon.api.data.Size;
-import org.codetome.zircon.api.grid.ApplicationConfiguration;
+import org.codetome.zircon.api.grid.AppConfig;
 import org.codetome.zircon.api.grid.TileGrid;
 import org.codetome.zircon.api.modifier.Border;
 import org.codetome.zircon.api.modifier.RayShade;
 import org.codetome.zircon.api.modifier.SimpleModifiers;
-import org.codetome.zircon.gui.swing.impl.SwingApplication;
+import org.codetome.zircon.gui.swing.application.SwingApplication;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,7 +33,7 @@ public class FontModifiersExample {
 
     public static void main(String[] args) {
 
-        ApplicationConfiguration config = ApplicationConfigurationBuilder.Companion.newBuilder()
+        AppConfig config = AppConfigBuilder.Companion.newBuilder()
                 .defaultTileset(WANDERLUST_16X16)
                 .defaultSize(SIZE)
                 .build();

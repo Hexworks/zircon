@@ -28,7 +28,7 @@ data class LayerBuilder(
     /**
      * Sets the [Tileset] to use with the resulting [Layer].
      */
-    fun font(tileset: TilesetResource<out Tile>) = also {
+    fun tileset(tileset: TilesetResource<out Tile>) = also {
         this.tileset = tileset
     }
 
