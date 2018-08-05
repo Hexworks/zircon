@@ -1,7 +1,9 @@
 package org.codetome.zircon.gui.swing.example
 
 import org.codetome.zircon.api.builder.grid.ApplicationConfigurationBuilder
+import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.data.*
+import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.gui.swing.impl.SwingApplication
@@ -52,14 +54,18 @@ fun main(args: Array<String>) {
         layer
     }
 
-    val chars = listOf('a', 'b')
+    val tiles = listOf(
+            CharacterTile('a', StyleSet.create(
+                    foregroundColor = ANSITextColor.YELLOW,
+                    backgroundColor = ANSITextColor.BLUE)),
+            CharacterTile('b', StyleSet.create(
+                    foregroundColor = ANSITextColor.GREEN,
+                    backgroundColor = ANSITextColor.RED)))
 
     var currIdx = 0
 
-
     while (true) {
-        val tile = CharacterTile(chars[currIdx])
-        fillGrid(tileGrid, tile)
+        fillGrid(tileGrid, tiles[currIdx])
         layers.forEach {
             it.moveTo(Position.create(
                     x = random.nextInt(terminalWidth - layerWidth),
