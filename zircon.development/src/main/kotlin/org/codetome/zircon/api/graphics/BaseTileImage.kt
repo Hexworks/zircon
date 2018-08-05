@@ -38,7 +38,11 @@ abstract class BaseTileImage(
     }
 
     override fun getTileAt(position: Position): Maybe<Tile> {
-        return Maybe.ofNullable(contents[position])
+        return if (containsPosition(position)) {
+            Maybe.of(contents[position] ?: Tile.empty())
+        } else {
+            Maybe.empty()
+        }
     }
 
     override fun setTileAt(position: Position, tile: Tile) {

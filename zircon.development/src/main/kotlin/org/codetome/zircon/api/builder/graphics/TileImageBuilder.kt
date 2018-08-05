@@ -19,6 +19,7 @@ import org.codetome.zircon.internal.graphics.MapTileImage
 @Suppress("ArrayInDataClass")
 data class TileImageBuilder(
         private var tileset: TilesetResource<out Tile>,
+        private var filler: Tile = Tile.empty(),
         private var size: Size = Size.one(),
         private var style: StyleSet = StyleSet.defaultStyle(),
         private val tiles: MutableMap<Position, Tile> = mutableMapOf()) : Builder<TileImage> {
@@ -29,6 +30,10 @@ data class TileImageBuilder(
 
     fun style(style: StyleSet) = also {
         this.style = style
+    }
+
+    fun filler(filler: Tile) = also {
+        this.filler = filler
     }
 
     /**

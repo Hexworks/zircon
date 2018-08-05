@@ -3,7 +3,9 @@ package org.codetome.zircon.internal.grid
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.Layerable
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.color.TextColor
+import org.codetome.zircon.api.data.CharacterTile
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
@@ -22,6 +24,7 @@ import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 import org.codetome.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.codetome.zircon.internal.event.InternalEvent
 import org.codetome.zircon.api.event.EventBus
+import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.graphics.MapTileImage
 import java.util.concurrent.Executors
 
@@ -52,8 +55,29 @@ class ThreadSafeTileGrid(
         }
     }
 
+    override fun putCharacter(c: Char) {
+        submit {
+            if (TextUtils.isPrintableCharacter(c)) {
+                putTile(TileBuilder.newBuilder()
+                        .character(c)
+                        .foregroundColor(getForegroundColor())
+                        .backgroundColor(getBackgroundColor())
+                        .modifiers(getActiveModifiers())
+                        .build())
+            }
+        }
+    }
+
     override fun putTile(tile: Tile) {
-        TODO("undo this")
+        submit {
+            if (tile is CharacterTile && tile.character == '\n') {
+                moveCursorToNextLine()
+            } else {
+                backend.setTileAt(getCursorPosition(), tile)
+                setPositionDirty(getCursorPosition())
+                moveCursorForward()
+            }
+        }
     }
 
     override fun useContentsOf(tileGrid: InternalTileGrid) {
@@ -187,5 +211,8 @@ class ThreadSafeTileGrid(
         }
     }
 
+    private fun moveCursorToNextLine() {
+        putCursorAt(getCursorPosition().withRelativeY(1).withX(0))
+    }
 
 }

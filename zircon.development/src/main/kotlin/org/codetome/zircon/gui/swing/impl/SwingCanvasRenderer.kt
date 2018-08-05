@@ -4,10 +4,12 @@ import org.codetome.zircon.api.application.Renderer
 import org.codetome.zircon.api.behavior.TilesetOverride
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.grid.CursorStyle
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.gui.swing.grid.TerminalKeyListener
 import org.codetome.zircon.gui.swing.grid.TerminalMouseListener
+import org.codetome.zircon.gui.swing.tileset.transformer.toAWTColor
 import org.codetome.zircon.internal.config.RuntimeConfig
 import java.awt.*
 import java.awt.event.ComponentAdapter
@@ -109,7 +111,33 @@ class SwingCanvasRenderer(private val canvas: Canvas,
             dispose()
         }
 
+        if (tileGrid.isCursorVisible()) {
+            val cursorPos = tileGrid.getCursorPosition()
+            tileGrid.getTileAt(cursorPos).map {
+                drawCursor(it, cursorPos)
+            }
+        }
+
         bs.show()
+    }
+
+    private fun drawCursor(character: Tile, position: Position) {
+        val tileWidth = tileGrid.tileset().width
+        val tileHeight = tileGrid.tileset().height
+        val x = position.x * tileWidth
+        val y = position.y * tileHeight
+        val config = RuntimeConfig.config
+        val graphics = getGraphics2D()
+        graphics.color = config.cursorColor.toAWTColor()
+        when (config.cursorStyle) {
+            CursorStyle.USE_CHARACTER_FOREGROUND -> {
+                graphics.color = character.getForegroundColor().toAWTColor()
+                graphics.fillRect(x, y, tileWidth, tileHeight)
+            }
+            CursorStyle.FIXED_BACKGROUND -> graphics.fillRect(x, y, tileWidth, tileHeight)
+            CursorStyle.UNDER_BAR -> graphics.fillRect(x, y + tileHeight - 3, tileWidth, 2)
+            CursorStyle.VERTICAL_BAR -> graphics.fillRect(x, y + 1, 2, tileHeight - 2)
+        }
     }
 
     private fun configureGraphics(graphics: Graphics): Graphics2D {
@@ -129,15 +157,17 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                             tiles: Map<Position, Tile>,
                             tileset: Tileset<out Tile, BufferedImage>) {
         tiles.forEach { (pos, tile) ->
-            val (x, y) = pos.toAbsolutePosition(tileset)
-            val actualTileset: Tileset<Tile, BufferedImage> = if (tile is TilesetOverride) {
-                tile.tileset() as Tileset<Tile, BufferedImage>
-            } else {
-                tileset as Tileset<Tile, BufferedImage>
-            }
+            if(tile !== Tile.empty()) {
+                val (x, y) = pos.toAbsolutePosition(tileset)
+                val actualTileset: Tileset<Tile, BufferedImage> = if (tile is TilesetOverride) {
+                    tile.tileset() as Tileset<Tile, BufferedImage>
+                } else {
+                    tileset as Tileset<Tile, BufferedImage>
+                }
 
-            val texture = actualTileset.fetchTextureForTile(tile)
-            graphics.drawImage(texture.getTexture(), x, y, null)
+                val texture = actualTileset.fetchTextureForTile(tile)
+                graphics.drawImage(texture.getTexture(), x, y, null)
+            }
         }
     }
 
