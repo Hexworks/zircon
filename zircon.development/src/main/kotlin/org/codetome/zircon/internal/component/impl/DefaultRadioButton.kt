@@ -14,8 +14,6 @@ import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
-import org.codetome.zircon.internal.event.InternalEvent
-import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.internal.util.ThreadSafeQueue
 
 class DefaultRadioButton(private val text: String,
@@ -25,11 +23,11 @@ class DefaultRadioButton(private val text: String,
                          position: Position,
                          componentStyleSet: ComponentStyleSet)
     : RadioButton, DefaultComponent(
-        initialSize = Size.create(width, 1),
+        size = Size.create(width, 1),
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = wrappers,
-        initialTileset = initialTileset) {
+        tileset = initialTileset) {
 
     private val maxTextLength = width - BUTTON_WIDTH - 1
     private val clearedText = if (text.length > maxTextLength) {

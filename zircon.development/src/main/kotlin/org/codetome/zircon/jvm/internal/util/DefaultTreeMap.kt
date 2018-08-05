@@ -1,4 +1,6 @@
-package org.codetome.zircon.internal.util
+package org.codetome.zircon.jvm.internal.util
+
+import org.codetome.zircon.internal.util.TreeMap
 
 
 class DefaultTreeMap<K, V>(private val backend: java.util.TreeMap<K, V> = java.util.TreeMap())

@@ -26,11 +26,11 @@ open class DefaultContainer(initialSize: Size,
                             initialTileset: TilesetResource<out Tile>,
                             componentStyleSet: ComponentStyleSet,
                             wrappers: Iterable<WrappingStrategy> = listOf())
-    : DefaultComponent(initialSize = initialSize,
+    : DefaultComponent(size = initialSize,
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = wrappers,
-        initialTileset = initialTileset),
+        tileset = initialTileset),
         Container {
 
     private val components = mutableListOf<InternalComponent>()

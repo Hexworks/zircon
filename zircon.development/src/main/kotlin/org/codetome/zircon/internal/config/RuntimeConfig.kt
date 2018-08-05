@@ -1,8 +1,8 @@
 package org.codetome.zircon.internal.config
 
-import org.codetome.zircon.api.grid.ApplicationConfiguration
+import org.codetome.zircon.api.grid.AppConfig
 
 object RuntimeConfig {
 
-    var config: ApplicationConfiguration = ApplicationConfiguration.defaultConfiguration()
+    var config: AppConfig = AppConfig.defaultConfiguration()
 }

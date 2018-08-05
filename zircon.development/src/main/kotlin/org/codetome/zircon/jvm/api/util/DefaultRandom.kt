@@ -1,4 +1,6 @@
-package org.codetome.zircon.api.util
+package org.codetome.zircon.jvm.api.util
+
+import org.codetome.zircon.api.util.Random
 
 class DefaultRandom : Random {
 

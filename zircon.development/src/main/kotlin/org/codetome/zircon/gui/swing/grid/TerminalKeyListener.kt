@@ -1,7 +1,6 @@
 package org.codetome.zircon.gui.swing.grid
 
 import org.codetome.zircon.api.event.EventBus
-import org.codetome.zircon.api.grid.ApplicationConfiguration
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.util.TextUtils

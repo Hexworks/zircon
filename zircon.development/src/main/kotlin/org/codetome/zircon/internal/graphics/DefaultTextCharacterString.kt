@@ -100,7 +100,8 @@ data class DefaultTextCharacterString(private val textChars: List<CharacterTile>
     }
 
     override fun toTextImage(tileset: TilesetResource<CharacterTile>) =
-            TileImageBuilder.newBuilder(tileset)
+            TileImageBuilder.newBuilder()
+                    .tileset(tileset)
                     .size(getBoundableSize())
                     .build().apply {
                         textChars.forEachIndexed { idx, tc ->

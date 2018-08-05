@@ -23,11 +23,11 @@ class DefaultButton(private val text: String,
                     initialSize: Size,
                     position: Position,
                     componentStyleSet: ComponentStyleSet)
-    : Button, DefaultComponent(initialSize = initialSize,
+    : Button, DefaultComponent(size = initialSize,
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = wrappers,
-        initialTileset = initialTileset) {
+        tileset = initialTileset) {
 
     init {
         getDrawSurface().putText(text, getWrapperOffset())

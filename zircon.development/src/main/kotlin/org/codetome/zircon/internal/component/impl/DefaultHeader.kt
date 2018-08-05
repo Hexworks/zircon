@@ -18,11 +18,11 @@ class DefaultHeader(private val text: String,
                     initialTileset: TilesetResource<out Tile>,
                     position: Position,
                     componentStyleSet: ComponentStyleSet) : Header, DefaultComponent(
-        initialSize = initialSize,
+        size = initialSize,
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = listOf(),
-        initialTileset = initialTileset) {
+        tileset = initialTileset) {
 
 
     init {

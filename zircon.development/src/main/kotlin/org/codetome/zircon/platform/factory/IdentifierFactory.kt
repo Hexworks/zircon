@@ -1,7 +1,7 @@
 package org.codetome.zircon.platform.factory
 
 import org.codetome.zircon.api.util.Identifier
-import org.codetome.zircon.api.util.DefaultIdentifier
+import org.codetome.zircon.jvm.api.util.DefaultIdentifier
 import java.util.*
 
 object IdentifierFactory {

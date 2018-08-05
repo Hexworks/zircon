@@ -1,6 +1,7 @@
 package org.codetome.zircon.gui.swing.impl
 
 import org.codetome.zircon.api.grid.TileGrid
+import org.codetome.zircon.gui.swing.application.SwingCanvasRenderer
 import java.awt.Canvas
 import javax.swing.JFrame
 

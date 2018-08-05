@@ -1,6 +1,7 @@
-package org.codetome.zircon.internal.util
+package org.codetome.zircon.jvm.internal.util
 
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.util.ThreadSafeQueue
 import java.util.concurrent.BlockingDeque
 import java.util.concurrent.LinkedBlockingDeque
 

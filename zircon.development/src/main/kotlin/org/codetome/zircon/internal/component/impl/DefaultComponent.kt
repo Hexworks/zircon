@@ -11,6 +11,7 @@ import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.resource.TilesetResource
@@ -21,29 +22,29 @@ import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.InternalEvent
-import org.codetome.zircon.api.event.EventBus
 
 @Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
-        initialSize: Size,
-        initialTileset: TilesetResource<out Tile>,
+        size: Size,
+        tileset: TilesetResource<out Tile>,
         position: Position,
         private var attached: Boolean = false,
         private var componentStyleSet: ComponentStyleSet,
         private val wrappers: Iterable<WrappingStrategy>,
         private val drawSurface: TileImage = TileImageBuilder
-                .newBuilder(initialTileset)
-                .size(initialSize)
+                .newBuilder()
+                .tileset(tileset)
+                .size(size)
                 .build(),
         private val boundable: DefaultBoundable = DefaultBoundable(
-                size = initialSize,
+                size = size,
                 position = position))
     : InternalComponent,
         Drawable by drawSurface,
         TilesetOverride by drawSurface {
 
     override val id = Identifier.randomIdentifier()
-    
+
     private var currentOffset = Position.defaultPosition()
 
     init {
@@ -146,7 +147,7 @@ abstract class DefaultComponent(
             listOf(LayerBuilder.newBuilder()
                     .textImage(drawSurface)
                     .offset(getPosition())
-                    .font(tileset())
+                    .tileset(tileset())
                     .build())
 
     override fun getBoundableSize() = boundable.getBoundableSize()
