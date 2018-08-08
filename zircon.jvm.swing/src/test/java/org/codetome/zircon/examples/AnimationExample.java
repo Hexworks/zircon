@@ -1,6 +1,7 @@
 package org.codetome.zircon.examples;
 
 import org.codetome.zircon.api.animation.Animation;
+import org.codetome.zircon.api.animation.AnimationResource;
 import org.codetome.zircon.api.builder.animation.AnimationBuilder;
 import org.codetome.zircon.api.builder.grid.AppConfigBuilder;
 import org.codetome.zircon.api.builder.screen.ScreenBuilder;
@@ -9,13 +10,12 @@ import org.codetome.zircon.api.data.CharacterTile;
 import org.codetome.zircon.api.data.Position;
 import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.grid.AppConfig;
+import org.codetome.zircon.api.interop.Components;
+import org.codetome.zircon.api.interop.Positions;
+import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.resource.TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.gui.swing.internal.application.SwingApplication;
-import org.codetome.zircon.jvm.api.animation.AnimationResource;
-import org.codetome.zircon.jvm.api.interop.Components;
-import org.codetome.zircon.jvm.api.interop.Positions;
-import org.codetome.zircon.jvm.api.interop.Sizes;
+import org.codetome.zircon.internal.application.SwingApplication;
 
 import static org.codetome.zircon.api.resource.CP437TilesetResource.WANDERLUST_16X16;
 

@@ -9,11 +9,11 @@ data class GraphicTile(
         val tags: Set<String>)
     : Tile {
 
+    private val cacheKey = "GraphicTile(n=$name,t=[${tags.sorted().joinToString()}])"
+
     override fun tileType() = GraphicTile::class
 
-    override fun generateCacheKey(): String {
-        return "GraphicTile,name:$name,tags:${tags.sorted()}"
-    }
+    override fun generateCacheKey() = cacheKey
 
     override fun toStyleSet() = throw UnsupportedOperationException("No.")
 

@@ -23,10 +23,6 @@ interface TextColor : Cacheable {
 
     fun darkenByPercent(percentage: Double): TextColor
 
-    override fun generateCacheKey(): String {
-        return "a:${getAlpha()},r:${getRed()},g:${getGreen()},b:${getBlue()}"
-    }
-
     companion object {
 
         /**
@@ -44,7 +40,7 @@ interface TextColor : Cacheable {
          */
         fun transparent() = TRANSPARENT
 
-        fun defaultAlpha() = 255
+        fun defaultAlpha() = DEFAULT_ALPHA
 
         /**
          * Parses a string into a color. Formats:
@@ -55,7 +51,7 @@ interface TextColor : Cacheable {
         fun fromString(value: String): TextColor {
             value.trim { it <= ' ' }.let { cleanValue ->
                 try {
-                    return if (ANSITextColor.COLOR_NAMES.contains(cleanValue.toUpperCase())) {
+                    return if (ANSITextColor.values().map { it.name }.contains(cleanValue.toUpperCase())) {
                         ANSITextColor.valueOf(cleanValue.toUpperCase())
                     } else {
                         val r = cleanValue.substring(1, 3).toInt(16)
@@ -77,5 +73,6 @@ interface TextColor : Cacheable {
         }
 
         private val TRANSPARENT = TextColor.create(0, 0, 0, 0)
+        private val DEFAULT_ALPHA = 255
     }
 }

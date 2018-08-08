@@ -3,12 +3,12 @@ package org.codetome.zircon.examples;
 import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.grid.AppConfig;
 import org.codetome.zircon.api.grid.TileGrid;
+import org.codetome.zircon.api.interop.AppConfigs;
+import org.codetome.zircon.api.interop.Positions;
+import org.codetome.zircon.api.interop.Sizes;
+import org.codetome.zircon.api.interop.Tiles;
 import org.codetome.zircon.api.resource.GraphicalTilesetResource;
-import org.codetome.zircon.gui.swing.internal.application.SwingApplication;
-import org.codetome.zircon.jvm.api.interop.AppConfigs;
-import org.codetome.zircon.jvm.api.interop.Positions;
-import org.codetome.zircon.jvm.api.interop.Sizes;
-import org.codetome.zircon.jvm.api.interop.Tiles;
+import org.codetome.zircon.internal.application.SwingApplication;
 
 import java.util.Random;
 

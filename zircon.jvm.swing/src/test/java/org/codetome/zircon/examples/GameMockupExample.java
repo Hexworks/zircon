@@ -1,20 +1,26 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.TerminalUtils;
-import org.codetome.zircon.api.data.Position;
-import org.codetome.zircon.api.data.Size;
-import org.codetome.zircon.api.graphics.Symbols;
+import org.codetome.zircon.api.builder.grid.AppConfigBuilder;
+import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.*;
 import org.codetome.zircon.api.component.Label;
 import org.codetome.zircon.api.component.Panel;
+import org.codetome.zircon.api.data.Position;
+import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.graphics.BoxType;
-import org.codetome.zircon.api.interop.*;
+import org.codetome.zircon.api.graphics.Symbols;
+import org.codetome.zircon.api.grid.AppConfig;
+import org.codetome.zircon.api.grid.CursorStyle;
+import org.codetome.zircon.api.grid.TileGrid;
+import org.codetome.zircon.api.interop.Components;
+import org.codetome.zircon.api.interop.Positions;
+import org.codetome.zircon.api.interop.Screens;
+import org.codetome.zircon.api.interop.Sizes;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.ColorThemeResource;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.grid.CursorStyle;
-import org.codetome.zircon.api.grid.TileGrid;
+import org.codetome.zircon.internal.application.SwingApplication;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -48,16 +54,19 @@ public class GameMockupExample {
         double rows = screenSize.getHeight() / FONT_SIZE;
         Size terminalSize = Sizes.create((int) columns, (int) rows);
 
-        // for this example we only need a default grid (no extra config)
-        final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
-                .initialTerminalSize(terminalSize)
-                .fullScreen()
-                .font(CP437TilesetResource.ROGUE_YUN_16X16)
-                .deviceConfiguration(DeviceConfigurations.newBuilder()
-                        .cursorBlinking(true)
-                        .cursorStyle(CursorStyle.USE_CHARACTER_FOREGROUND)
-                        .build())
+        final AppConfig config = AppConfigBuilder.Companion.newBuilder()
+                .defaultSize(terminalSize)
+                .defaultTileset(CP437TilesetResource.CHEEPICUS_16X16)
+                .cursorBlinking(true)
+                .cursorStyle(CursorStyle.FIXED_BACKGROUND)
+                .cursorColor(TextColor.Companion.fromString("#ff00ff"))
                 .build();
+
+        final SwingApplication app = SwingApplication.Companion.create(config);
+
+        final TileGrid tileGrid = app.getTileGrid();
+
+        app.start();
 
         // ==========
         // MAIN MENU

@@ -5,6 +5,7 @@ import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.builder.modifier.BorderBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
+import org.codetome.zircon.api.data.GraphicTile
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.BorderPosition
 import org.codetome.zircon.api.modifier.SimpleModifiers.*
@@ -20,7 +21,7 @@ class DefaultStyleSetTest {
                 .foregroundColor(TextColor.fromString("#aabbcc"))
                 .modifiers(Modifiers.crossedOut(), BorderBuilder.newBuilder().borderPositions(BorderPosition.TOP).build())
                 .build().generateCacheKey()
-        assertThat(result).isEqualTo("fg:a:255r:170g:187b:204bg:a:255r:170g:170b:170mod:Border:SOLID:TOPSimpleModifiers:CrossedOut")
+        assertThat(result).isEqualTo("DefaultStyleSet(foregroundColor=DefaultTextColor(red=170, green=187, blue=204, alpha=255), backgroundColor=WHITE, modifiers=[Modifier.CrossedOut, Border(borderType=SOLID, borderPositions=[TOP])])")
     }
 
     @Test
