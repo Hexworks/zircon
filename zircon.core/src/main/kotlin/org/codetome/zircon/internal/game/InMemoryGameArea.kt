@@ -1,12 +1,13 @@
 package org.codetome.zircon.internal.game
 
-import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.data.Block
 import org.codetome.zircon.api.data.Position3D
 import org.codetome.zircon.api.data.Size3D
-import org.codetome.zircon.api.game.*
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.game.GameArea
 import org.codetome.zircon.api.game.GameArea.BlockFetchMode
+import org.codetome.zircon.api.game.GameModifiers
 import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.extensions.getIfPresent

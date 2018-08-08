@@ -1,17 +1,20 @@
 package org.codetome.zircon.playground
 
-import org.codetome.zircon.api.SwingTerminalBuilder
-import org.codetome.zircon.api.graphics.Symbols
-import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.api.game.*
 import org.codetome.zircon.api.builder.game.GameAreaBuilder
+import org.codetome.zircon.api.builder.grid.TileGridBuilder
+import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.data.Position3D
 import org.codetome.zircon.api.data.Size3D
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.game.GameArea
+import org.codetome.zircon.api.game.GameComponent
+import org.codetome.zircon.api.game.GameModifiers
+import org.codetome.zircon.api.game.ProjectionMode
+import org.codetome.zircon.api.graphics.Symbols
 import org.codetome.zircon.api.interop.Components
 import org.codetome.zircon.api.interop.Sizes
-import org.codetome.zircon.api.interop.Tiles
 import org.codetome.zircon.api.interop.TextColors
+import org.codetome.zircon.api.interop.Tiles
 import org.codetome.zircon.api.resource.CP437TilesetResource
 
 object Playground {
@@ -21,9 +24,9 @@ object Playground {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val gameScreen = SwingTerminalBuilder.newBuilder()
-                .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
-                .initialTerminalSize(TERMINAL_SIZE)
+        val gameScreen = TileGridBuilder.Companion.newBuilder()
+                .tileset(CP437TilesetResource.REX_PAINT_16X16)
+                .size(TERMINAL_SIZE)
                 .buildScreen()
 
         val componentSize = Size3D.from2DSize(TERMINAL_SIZE, 5)

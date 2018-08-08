@@ -1,23 +1,23 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.builder.component.ButtonBuilder
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
+import org.codetome.zircon.api.builder.component.PanelBuilder
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType.*
-import org.codetome.zircon.api.interop.Modifiers
-import org.codetome.zircon.api.builder.component.ButtonBuilder
-import org.codetome.zircon.api.builder.component.PanelBuilder
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.tileset.impl.FontSettings
+import org.codetome.zircon.internal.event.InternalEvent
+import org.codetome.zircon.api.interop.Modifiers
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -33,7 +33,7 @@ class DefaultContainerHandlerTest {
                 position = Position.defaultPosition(),
                 componentStyleSet = STYLES,
                 wrappers = WRAPPERS,
-                initialTileset = FontSettings.NO_FONT))
+                initialTileset = TILESET))
     }
 
     @Test
@@ -42,14 +42,8 @@ class DefaultContainerHandlerTest {
         target.addComponent(button)
         assertThat(target.transformComponentsToLayers()).hasSize(2)
 
-        val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe<Event.ComponentChange> {
-            componentChanged.set(true)
-        }
-
         val result = target.removeComponent(button)
 
-        assertThat(componentChanged.get()).isTrue()
         assertThat(result).isTrue()
         assertThat(target.transformComponentsToLayers()).hasSize(1) // default container
     }
@@ -69,11 +63,11 @@ class DefaultContainerHandlerTest {
         target.addComponent(button)
 
         val componentHovered = AtomicBoolean(false)
-        EventBus.listenTo<Event.MouseOver>(button.getId()) {
+        EventBus.listenTo<InternalEvent.MouseOver>(button.id) {
             componentHovered.set(true)
         }
 
-        EventBus.broadcast(Event.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
+        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
 
         assertThat(componentHovered.get()).isTrue()
     }
@@ -85,14 +79,14 @@ class DefaultContainerHandlerTest {
         val button = createButton()
         target.addComponent(button)
 
-        EventBus.broadcast(Event.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
+        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
 
         val componentHovered = AtomicBoolean(false)
-        EventBus.listenTo<Event.MouseOver>(button.getId()) {
+        EventBus.listenTo<InternalEvent.MouseOver>(button.id) {
             componentHovered.set(true)
         }
 
-        EventBus.broadcast(Event.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION.withRelativeX(1))))
+        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION.withRelativeX(1))))
 
         assertThat(componentHovered.get()).isFalse()
     }
@@ -105,11 +99,11 @@ class DefaultContainerHandlerTest {
         target.addComponent(button)
 
         val pressed = AtomicBoolean(false)
-        EventBus.listenTo<Event.MousePressed>(button.getId()) {
+        EventBus.listenTo<InternalEvent.MousePressed>(button.id) {
             pressed.set(true)
         }
 
-        EventBus.broadcast(Event.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)))
+        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)))
 
         assertThat(pressed.get()).isTrue()
     }
@@ -122,11 +116,11 @@ class DefaultContainerHandlerTest {
         target.addComponent(button)
 
         val released = AtomicBoolean(false)
-        EventBus.listenTo<Event.MouseReleased>(button.getId()) {
+        EventBus.listenTo<InternalEvent.MouseReleased>(button.id) {
             released.set(true)
         }
 
-        EventBus.broadcast(Event.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)))
+        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)))
 
         assertThat(released.get()).isTrue()
     }
@@ -139,19 +133,19 @@ class DefaultContainerHandlerTest {
         target.addComponent(button)
 
         val events = mutableListOf<Boolean>()
-        EventBus.listenTo<Event.MouseOver>(button.getId()) {
+        EventBus.listenTo<InternalEvent.MouseOver>(button.id) {
             events.add(true)
         }
-        EventBus.listenTo<Event.MousePressed>(button.getId()) {
+        EventBus.listenTo<InternalEvent.MousePressed>(button.id) {
             events.add(true)
         }
-        EventBus.listenTo<Event.MouseReleased>(button.getId()) {
+        EventBus.listenTo<InternalEvent.MouseReleased>(button.id) {
             events.add(true)
         }
 
-        EventBus.broadcast(Event.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
-        EventBus.broadcast(Event.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)))
-        EventBus.broadcast(Event.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)))
+        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
+        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)))
+        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)))
 
 
         assertThat(events).isEmpty()
@@ -166,7 +160,7 @@ class DefaultContainerHandlerTest {
 
         assertThat(button.getComponentStyles().getCurrentStyle()).isNotEqualTo(FOCUSED_STYLE)
 
-        EventBus.broadcast(Event.Input(KeyStroke(type = InputType.Tab)))
+        EventBus.broadcast(InternalEvent.Input(KeyStroke(type = InputType.Tab)))
 
         assertThat(button.getComponentStyles().getCurrentStyle()).isEqualTo(FOCUSED_STYLE)
     }
@@ -203,12 +197,12 @@ class DefaultContainerHandlerTest {
         target.addComponent(button)
 
         val released = AtomicBoolean(false)
-        EventBus.listenTo<Event.MouseReleased>(button.getId()) {
+        EventBus.listenTo<InternalEvent.MouseReleased>(button.id) {
             released.set(true)
         }
 
-        EventBus.broadcast(Event.Input(KeyStroke(type = InputType.Tab)))
-        EventBus.broadcast(Event.Input(KeyStroke(type = InputType.Character, character = ' ')))
+        EventBus.broadcast(InternalEvent.Input(KeyStroke(type = InputType.Tab)))
+        EventBus.broadcast(InternalEvent.Input(KeyStroke(type = InputType.Character, character = ' ')))
 
         assertThat(released.get()).isTrue()
     }
@@ -220,6 +214,7 @@ class DefaultContainerHandlerTest {
             .build()
 
     companion object {
+        val TILESET = CP437TilesetResource.REX_PAINT_16X16
         val SIZE = Size.create(30, 20)
         val BUTTON_TEXT = "TEXT"
         val BUTTON_POSITION = Position.create(6, 7)

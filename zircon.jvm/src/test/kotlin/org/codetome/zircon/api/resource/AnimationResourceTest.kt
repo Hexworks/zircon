@@ -9,7 +9,9 @@ class AnimationResourceTest {
 
     @Test
     fun shouldProperlyLoadAnimationFile() {
-        val result = AnimationResource.loadAnimationFromStream(this.javaClass.getResourceAsStream("/animations/skull.zap"))
+        val result = AnimationResource.loadAnimationFromStream(
+                zipStream = this.javaClass.getResourceAsStream("/animations/skull.zap"),
+                tileset = CP437TilesetResource.ADU_DHABI_16X16)
         Assertions.assertThat(result).isNotNull()
     }
 }

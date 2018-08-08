@@ -22,7 +22,7 @@ public class PanelDrawingExample {
 
     public static void main(String[] args) {
         final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
-                .font(WANDERLUST_16X16.toFont())
+                .font(WANDERLUST_16X16)
                 .initialTerminalSize(SIZE)
                 .build();
         final Screen screen = Screens.createScreenFor(tileGrid);

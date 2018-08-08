@@ -14,25 +14,25 @@ class REXFileTest {
                 // layer #1
                 0x02, 0x00, 0x00, 0x00,     // xLength
                 0x01, 0x00, 0x00, 0x00,     // yLength
-                    // cell #1
-                    0x41, 0x00, 0x00, 0x00, // character (hex 41 -> dec 65 -> 'A')
-                    0xaa, 0xaa, 0xaa,       // foreground
-                    0x55, 0x55, 0x55,       // background
-                    // cell #2
-                    0x42, 0x00, 0x00, 0x00, // character (hex 42 -> dec 66 -> 'B')
-                    0x85, 0x85, 0x85,       // foreground
-                    0x23, 0x23, 0x23,       // background
+                // cell #1
+                0x41, 0x00, 0x00, 0x00, // character (hex 41 -> dec 65 -> 'A')
+                0xaa, 0xaa, 0xaa,       // foreground
+                0x55, 0x55, 0x55,       // background
+                // cell #2
+                0x42, 0x00, 0x00, 0x00, // character (hex 42 -> dec 66 -> 'B')
+                0x85, 0x85, 0x85,       // foreground
+                0x23, 0x23, 0x23,       // background
                 // layer #2
                 0x02, 0x00, 0x00, 0x00,     // xLength
                 0x01, 0x00, 0x00, 0x00,     // yLength
-                    // cell #1
-                    0x41, 0x00, 0x00, 0x00, // character (hex 41 -> dec 65 -> 'A')
-                    0xbb, 0xbb, 0xbb,       // foreground
-                    0x55, 0x55, 0x55,       // background
-                    // cell #2
-                    0x42, 0x00, 0x00, 0x00, // character (hex 42 -> dec 66 -> 'B')
-                    0x85, 0x85, 0x85,       // foreground
-                    0x23, 0x23, 0x23        // background
+                // cell #1
+                0x41, 0x00, 0x00, 0x00, // character (hex 41 -> dec 65 -> 'A')
+                0xbb, 0xbb, 0xbb,       // foreground
+                0x55, 0x55, 0x55,       // background
+                // cell #2
+                0x42, 0x00, 0x00, 0x00, // character (hex 42 -> dec 66 -> 'B')
+                0x85, 0x85, 0x85,       // foreground
+                0x23, 0x23, 0x23        // background
         )
         val ba = ByteArray(raw.size)
         for ((i, b) in raw.withIndex()) {

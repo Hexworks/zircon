@@ -4,7 +4,10 @@ import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TileImage
+import org.codetome.zircon.api.resource.TilesetResource
+import org.codetome.zircon.internal.config.RuntimeConfig
 import org.codetome.zircon.internal.graphics.MapTileImage
 
 /**
@@ -15,9 +18,23 @@ import org.codetome.zircon.internal.graphics.MapTileImage
  */
 @Suppress("ArrayInDataClass")
 data class TileImageBuilder(
-        private var size: Size = Size.one(),
+        private var tileset: TilesetResource<out Tile> = RuntimeConfig.config.defaultTileset,
         private var filler: Tile = Tile.empty(),
+        private var size: Size = Size.one(),
+        private var style: StyleSet = StyleSet.defaultStyle(),
         private val tiles: MutableMap<Position, Tile> = mutableMapOf()) : Builder<TileImage> {
+
+    fun tileset(tileset: TilesetResource<out Tile>) = also {
+        this.tileset = tileset
+    }
+
+    fun style(style: StyleSet) = also {
+        this.style = style
+    }
+
+    fun filler(filler: Tile) = also {
+        this.filler = filler
+    }
 
     /**
      * Sets the size for the new [TileImage].
@@ -26,7 +43,6 @@ data class TileImageBuilder(
     fun size(size: Size) = also {
         this.size = size
     }
-
 
     /**
      * Adds a [Tile] at the given [Position].
@@ -40,11 +56,13 @@ data class TileImageBuilder(
 
     override fun build(): TileImage = MapTileImage(
             size = size,
-            tiles = tiles)
+            tileset = tileset,
+            styleSet = StyleSet.defaultStyle())
 
     override fun createCopy() = copy()
 
     companion object {
+
         /**
          * Creates a new [TileImageBuilder] to build [org.codetome.zircon.api.graphics.TileImage]s.
          */

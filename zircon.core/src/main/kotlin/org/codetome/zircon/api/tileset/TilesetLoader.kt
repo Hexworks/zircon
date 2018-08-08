@@ -1,13 +1,10 @@
 package org.codetome.zircon.api.tileset
 
-import org.codetome.zircon.internal.tileset.impl.PickFirstMetaStrategy
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.resource.TilesetResource
 
-interface TilesetLoader {
+interface TilesetLoader<S: Any> {
 
-    fun fetchTiledFont(width: Int,
-                       height: Int,
-                       path: String,
-                       cacheFonts: Boolean,
-                       metadataTile: Map<Char, List<TileTextureMetadata>>,
-                       metadataPickingStrategy: MetadataPickingStrategy = PickFirstMetaStrategy()) : Tileset
+    fun loadTilesetFrom(resource: TilesetResource<out Tile>) : Tileset<out Tile, S>
+
 }

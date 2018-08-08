@@ -1,26 +1,13 @@
 package org.codetome.zircon.api.tileset
 
-import org.codetome.zircon.internal.tileset.impl.DefaultTileTextureMetadata
+import org.codetome.zircon.api.data.Tile
 
 /**
  * Metadata about a [TileTexture], like `tags` and its position (x, y) in a [Tileset].
  */
-interface TileTextureMetadata {
-
-    val char: Char
+interface TileTextureMetadata<T: Tile> {
     val x: Int
     val y: Int
-    val tags: Set<String>
-
-    companion object {
-
-        fun create(char: Char,
-                   x: Int,
-                   y: Int,
-                   tags: Set<String> = setOf()) = DefaultTileTextureMetadata(
-                char = char,
-                tags = tags,
-                x = x,
-                y = y)
-    }
+    val width: Int
+    val height: Int
 }

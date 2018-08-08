@@ -23,7 +23,7 @@ class LayerBuilderTest {
                 .size(SIZE)
                 .offset(OFFSET)
                 .build()
-                .fill(FILLER)
+//                .fill(FILLER)
 
         assertThat(result.getBoundableSize())
                 .isEqualTo(SIZE)

@@ -11,11 +11,9 @@ sealed class SimpleModifiers : Modifier {
     object VerticalFlip : SimpleModifiers()
     object HorizontalFlip : SimpleModifiers()
     object Hidden : SimpleModifiers()
-    object Bold : SimpleModifiers()
-    object Italic : SimpleModifiers()
     object Glow : SimpleModifiers()
 
     override fun generateCacheKey(): String {
-        return "SimpleModifiers:${this::class.simpleName}"
+        return "Modifier:${this::class.simpleName}"
     }
 }

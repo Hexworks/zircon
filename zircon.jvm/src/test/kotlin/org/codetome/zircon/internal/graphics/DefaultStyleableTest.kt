@@ -3,8 +3,8 @@ package org.codetome.zircon.internal.graphics
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
-import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.internal.behavior.impl.DefaultStyleable
+import org.codetome.zircon.api.interop.Modifiers
 import org.junit.Before
 import org.junit.Test
 
@@ -36,7 +36,7 @@ class DefaultStyleableTest {
 
     @Test
     fun shouldProperlyEnableModifier() {
-        val modifier = Modifiers.bold()
+        val modifier = Modifiers.verticalFlip()
 
         target.enableModifiers(modifier)
 
@@ -45,7 +45,7 @@ class DefaultStyleableTest {
 
     @Test
     fun shouldProperlyDisableModifier() {
-        val modifier = Modifiers.bold()
+        val modifier = Modifiers.verticalFlip()
 
         target.enableModifiers(modifier)
         target.disableModifiers(modifier)
@@ -55,23 +55,23 @@ class DefaultStyleableTest {
 
     @Test
     fun shouldProperlyEnableModifiers() {
-        target.enableModifiers(setOf(Modifiers.bold(), Modifiers.crossedOut()))
+        target.enableModifiers(setOf(Modifiers.verticalFlip(), Modifiers.crossedOut()))
 
-        assertThat(target.getActiveModifiers()).containsExactlyInAnyOrder(Modifiers.bold(), Modifiers.crossedOut())
+        assertThat(target.getActiveModifiers()).containsExactlyInAnyOrder(Modifiers.verticalFlip(), Modifiers.crossedOut())
     }
 
     @Test
     fun shouldProperlySetModifiers() {
-        val modifiers = setOf(Modifiers.bold(), Modifiers.crossedOut())
+        val modifiers = setOf(Modifiers.verticalFlip(), Modifiers.crossedOut())
 
         target.setModifiers(modifiers)
 
-        assertThat(target.getActiveModifiers()).containsExactlyInAnyOrder(Modifiers.bold(), Modifiers.crossedOut())
+        assertThat(target.getActiveModifiers()).containsExactlyInAnyOrder(Modifiers.verticalFlip(), Modifiers.crossedOut())
     }
 
     @Test
     fun shouldProperlyClearModifiers() {
-        target.enableModifiers(Modifiers.bold())
+        target.enableModifiers(Modifiers.verticalFlip())
 
         target.clearModifiers()
 

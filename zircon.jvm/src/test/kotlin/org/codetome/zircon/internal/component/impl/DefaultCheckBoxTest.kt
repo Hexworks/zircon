@@ -1,37 +1,34 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions
-import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.builder.component.CheckBoxBuilder
+import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.data.TileBuilder
+import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ComponentState
-import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.codetome.zircon.api.tileset.Tileset
-import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
-import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
-import org.codetome.zircon.api.builder.component.CheckBoxBuilder
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
-import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
+import org.codetome.zircon.api.resource.TilesetResource
+import org.codetome.zircon.internal.event.InternalEvent
+import org.codetome.zircon.api.interop.Modifiers
 import org.junit.Before
 import org.junit.Test
-import java.util.concurrent.atomic.AtomicBoolean
 
 class DefaultCheckBoxTest {
 
     lateinit var target: DefaultCheckBox
-    lateinit var tileset: Tileset
+    lateinit var tileset: TilesetResource<out Tile>
 
     @Before
     fun setUp() {
-        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
-        tileset = FONT.toFont()
+        tileset = FONT
         target = CheckBoxBuilder.newBuilder()
                 .componentStyles(COMPONENT_STYLES)
                 .font(tileset)
@@ -55,8 +52,8 @@ class DefaultCheckBoxTest {
 
     @Test
     fun shouldUseProperFont() {
-        Assertions.assertThat(target.getCurrentFont().getId())
-                .isEqualTo(tileset.getId())
+        Assertions.assertThat(target.tileset().id)
+                .isEqualTo(tileset.id)
     }
 
     @Test
@@ -88,29 +85,19 @@ class DefaultCheckBoxTest {
     @Test
     fun shouldProperlyGiveFocus() {
         target.applyColorTheme(THEME)
-        val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe<Event.ComponentChange> {
-            componentChanged.set(true)
-        }
 
         val result = target.giveFocus()
 
         Assertions.assertThat(result).isTrue()
-        Assertions.assertThat(componentChanged.get()).isTrue()
         Assertions.assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
     }
 
     @Test
     fun shouldProperlyTakeFocus() {
         target.applyColorTheme(THEME)
-        val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe<Event.ComponentChange> {
-            componentChanged.set(true)
-        }
 
         target.takeFocus()
 
-        Assertions.assertThat(componentChanged.get()).isTrue()
         Assertions.assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
@@ -123,7 +110,7 @@ class DefaultCheckBoxTest {
 //        })
 //
 //        EventBus.broadcast(
-//                type = EventType.MousePressed(target.getId()),
+//                type = EventType.MousePressed(target.id),
 //                data = MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.defaultPosition()))
 //
 //        Assertions.assertThat(componentChanged.get()).isTrue()
@@ -133,16 +120,11 @@ class DefaultCheckBoxTest {
     @Test
     fun shouldProperlyHandleMouseRelease() {
         target.applyColorTheme(THEME)
-        val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe<Event.ComponentChange> {
-            componentChanged.set(true)
-        }
 
         EventBus.sendTo(
-                identifier = target.getId(),
-                event = Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition())))
+                identifier = target.id,
+                event = InternalEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition())))
 
-        Assertions.assertThat(componentChanged.get()).isTrue()
         Assertions.assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
     }
 

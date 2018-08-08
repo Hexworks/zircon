@@ -3,6 +3,7 @@ package org.codetome.zircon.api.builder.data
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.data.CharacterTile
+import org.codetome.zircon.api.data.ImageTile
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.Modifier
@@ -20,12 +21,22 @@ import org.codetome.zircon.internal.config.RuntimeConfig
 @Suppress("UNCHECKED_CAST")
 data class TileBuilder(
         private var character: Char = ' ',
+        private var name: String = " ",
+        private var tags: Set<String> = setOf(),
         private var styleSet: StyleSet = StyleSet.defaultStyle(),
         private var tileset: TilesetResource<out Tile> = RuntimeConfig.config.defaultTileset)
     : Builder<Tile> {
 
     fun character(character: Char) = also {
         this.character = character
+    }
+
+    fun name(name: String) = also {
+        this.name = name
+    }
+
+    fun tags(tags: Set<String>) = also {
+        this.tags = tags
     }
 
     /**
@@ -66,6 +77,13 @@ data class TileBuilder(
         return CharacterTile(
                 character = character,
                 style = styleSet)
+    }
+
+    fun buildImageTile(): ImageTile {
+        return ImageTile(
+                tileset = tileset as? TilesetResource<ImageTile> ?: throw IllegalArgumentException("Wrong tileset."),
+                name = name,
+                tags = tags)
     }
 
     override fun createCopy() = copy()

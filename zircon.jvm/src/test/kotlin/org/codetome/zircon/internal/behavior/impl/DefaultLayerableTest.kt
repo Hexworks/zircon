@@ -1,38 +1,33 @@
 package org.codetome.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.data.Size
-import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
 import org.codetome.zircon.api.builder.graphics.TileImageBuilder
-import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.resource.CP437TilesetResource
-import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
-import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
+import org.codetome.zircon.api.resource.TilesetResource
 import org.junit.Before
 import org.junit.Test
 
 class DefaultLayerableTest {
 
     lateinit var target: DefaultLayerable
-    lateinit var tileset: Tileset
+    lateinit var tileset: TilesetResource<out Tile>
 
     @Before
     fun setUp() {
-        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
-        tileset = FONT.toFont()
+        tileset = FONT
         target = DefaultLayerable(
-                size = SIZE,
-                supportedFontSize = tileset.getSize())
+                size = SIZE)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionWhenLayerUsesUnsupportedFontSize() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .font(CP437TilesetResource.BISASAM_20X20.toFont())
                 .offset(Position.topLeftCorner())
                 .build()
 
@@ -49,7 +44,7 @@ class DefaultLayerableTest {
 
         target.pushLayer(layer)
 
-        assertThat(target.fetchOverlayZIntersection(Position.topLeftCorner()))
+        assertThat(target.getLayers())
                 .isNotEmpty
 
     }
@@ -64,7 +59,7 @@ class DefaultLayerableTest {
         target.pushLayer(layer)
         target.removeLayer(layer)
 
-        assertThat(target.fetchOverlayZIntersection(Position.topLeftCorner()))
+        assertThat(target.getLayers())
                 .isEmpty()
 
     }
@@ -79,7 +74,7 @@ class DefaultLayerableTest {
         target.pushLayer(layer)
         val result = target.popLayer()
 
-        assertThat(target.fetchOverlayZIntersection(Position.topLeftCorner()))
+        assertThat(target.getLayers())
                 .isEmpty()
         assertThat(result.get()).isSameAs(layer)
 
@@ -108,53 +103,12 @@ class DefaultLayerableTest {
         target.pushLayer(offset1x1layer)
         target.pushLayer(offset2x2layer)
 
-        val result = target.fetchOverlayZIntersection(Position.offset1x1())
+        val result = target.getLayers()
+                .flatMap { it.createSnapshot().toList() }
+                .filter { it.first == Position.offset1x1() }
 
 
         assertThat(result.map { it.second }).containsExactly(expectedChar)
-    }
-
-    @Test
-    fun shouldProperlyMarkDrainedLayerPositionsDirtyWhenLayersAreDrained() {
-        val dirty0 = Position.create(1, 2)
-        val dirty1 = Position.create(3, 4)
-
-        target.pushLayer(LayerBuilder.newBuilder()
-                .offset(dirty0)
-                .textImage(TileImageBuilder.newBuilder()
-                        .size(Size.one())
-                        .tile(Position.defaultPosition(), Tile.defaultTile().withCharacter('x'))
-                        .build())
-                .build())
-
-        target.pushLayer(LayerBuilder.newBuilder()
-                .offset(dirty1)
-                .textImage(TileImageBuilder.newBuilder()
-                        .size(Size.one())
-                        .tile(Position.defaultPosition(), Tile.defaultTile().withCharacter('x'))
-                        .build())
-                .build())
-
-        target.drainLayers()
-        assertThat(target.drainDirtyPositions())
-                .containsExactlyInAnyOrder(dirty0, dirty1)
-    }
-
-    @Test
-    fun shouldProperlyNotMarkDrainedLayerPositionsDirtyWhenTheyAreEmpty() {
-        val dirty0 = Position.create(1, 2)
-        val dirty1 = Position.create(3, 4)
-
-        target.pushLayer(LayerBuilder.newBuilder()
-                .offset(dirty0)
-                .build())
-
-        target.pushLayer(LayerBuilder.newBuilder()
-                .offset(dirty1)
-                .build())
-
-        target.drainLayers()
-        assertThat(target.drainDirtyPositions()).isEmpty()
     }
 
     @Test
@@ -178,7 +132,9 @@ class DefaultLayerableTest {
         target.pushLayer(offset1x1layer)
         target.pushLayer(offset2x2layer)
 
-        val result = target.fetchOverlayZIntersection(Position.offset1x1())
+        val result = target.getLayers()
+                .flatMap { it.createSnapshot().toList() }
+                .filter { it.first == Position.offset1x1() }
 
 
         assertThat(result.map { it.second }).containsExactly(expectedChar, expectedChar)

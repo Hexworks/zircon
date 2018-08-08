@@ -26,7 +26,7 @@ public class LayersExample {
     public static void main(String[] args) {
         // for this example we only need a default grid (no extra config)
         final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
-                .font(WANDERLUST_16X16.toFont())
+                .font(WANDERLUST_16X16)
                 .initialTerminalSize(SIZE)
                 .build();
         final Screen screen = Screens.createScreenFor(tileGrid);

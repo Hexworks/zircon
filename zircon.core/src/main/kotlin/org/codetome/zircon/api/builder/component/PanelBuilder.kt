@@ -5,19 +5,21 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.Panel
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.BoxType
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.modifier.Border
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultPanel
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.BoxWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
-import org.codetome.zircon.internal.tileset.impl.FontSettings
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.config.RuntimeConfig
 
-data class PanelBuilder(private var tileset: Tileset = FontSettings.NO_FONT,
+data class PanelBuilder(private var tileset: TilesetResource<out Tile> = RuntimeConfig.config.defaultTileset,
                         private var boxType: BoxType = BoxType.SINGLE,
                         private var title: String = "",
                         private var position: Position = Position.defaultPosition(),
@@ -30,7 +32,7 @@ data class PanelBuilder(private var tileset: Tileset = FontSettings.NO_FONT,
     /**
      * Sets the [Tileset] to use with the resulting [Layer].
      */
-    fun font(tileset: Tileset) = also {
+    fun tileset(tileset: TilesetResource<out Tile>) = also {
         this.tileset = tileset
     }
 

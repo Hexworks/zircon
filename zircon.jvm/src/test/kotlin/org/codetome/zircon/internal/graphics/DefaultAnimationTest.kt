@@ -2,6 +2,7 @@ package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.animation.AnimationResource
 import org.junit.Test
 
@@ -9,7 +10,9 @@ class DefaultAnimationTest {
 
     @Test
     fun shouldProperlyBuildFromResource() {
-        val builder = AnimationResource.loadAnimationFromStream(this.javaClass.getResourceAsStream("/animations/skull.zap"))
+        val builder = AnimationResource.loadAnimationFromStream(
+                zipStream = this.javaClass.getResourceAsStream("/animations/skull.zap"),
+                tileset = CP437TilesetResource.AESOMATICA_16X16)
         (0 until EXPECTED_LENGTH).forEach {
             builder.addPosition(Position.defaultPosition())
         }

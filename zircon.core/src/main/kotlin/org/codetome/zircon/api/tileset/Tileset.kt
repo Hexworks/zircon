@@ -3,42 +3,19 @@ package org.codetome.zircon.api.tileset
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.internal.behavior.Identifiable
+import kotlin.reflect.KClass
 
-/**
- * A tileset contains textures for [Tile]s.
- */
-interface Tileset : Identifiable {
+interface Tileset<T: Tile, S: Any> : Identifiable {
 
-    /**
-     * Returns the width of a character in pixels.
-     */
-    fun getWidth(): Int
+    val sourceType: KClass<S>
 
-    /**
-     * Returns the height of a character in pixels.
-     */
-    fun getHeight(): Int
+    fun width(): Int
 
-    /**
-     * Tells whether this [Tileset] knows about the given [Char] or not.
-     */
-    fun hasDataForChar(char: Char): Boolean
+    fun height(): Int
 
-    /**
-     * Returns a region (graphical representation of a [Tile]) for a character.
-     * If `tags` are supplied in `tile`, than this method will try to filter for them.
-     * *Note that* this is only useful for graphical tilesets which have multiple
-     * regions for a given [Tile]!
-     */
-    fun fetchRegionForChar(tile: Tile): TileTexture<*>
+    fun getSize() = Size.create(width(), height())
 
-    /**
-     * Returns all the [TileTextureMetadata] for a [Char] which is known by this [Tileset].
-     */
-    fun fetchMetadataForChar(char: Char): List<TileTextureMetadata>
+    fun supportsTile(tile: Tile): Boolean
 
-    /**
-     * Returns the `Size` of this `Tileset` (width, height)
-     */
-    fun getSize(): Size = Size.create(getWidth(), getHeight())
+    fun fetchTextureForTile(tile: Tile): TileTexture<S>
 }

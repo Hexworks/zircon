@@ -1,8 +1,8 @@
 package org.codetome.zircon.api.input
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.Event
+import org.codetome.zircon.api.event.EventBus
+import org.codetome.zircon.internal.event.InternalEvent
 import org.junit.Test
 
 class InputTypeTest {
@@ -11,10 +11,10 @@ class InputTypeTest {
     fun test() {
         InputType.values().forEach {
             val inputs = mutableListOf<Input>()
-            EventBus.subscribe<Event.Input> { (input) ->
+            EventBus.subscribe<InternalEvent.Input> { (input) ->
                 inputs.add(input)
             }
-            EventBus.broadcast(Event.Input(KeyStroke(
+            EventBus.broadcast(InternalEvent.Input(KeyStroke(
                     character = ' ',
                     type = it)))
             assertThat(inputs.map { it.getInputType() }.first())

@@ -1,12 +1,14 @@
 package org.codetome.zircon.api.tileset
 
-import org.codetome.zircon.api.behavior.Cacheable
-
 /**
  * Represents the texture which is used to draw
- * characters for a given [Tileset].
+ * tiles for a given [Tileset].
  */
-interface TileTexture<out T> : Cacheable {
+interface TileTexture<out T> {
 
-    fun getBackend(): T
+    fun getWidth(): Int
+
+    fun getHeight(): Int
+
+    fun getTexture(): T
 }

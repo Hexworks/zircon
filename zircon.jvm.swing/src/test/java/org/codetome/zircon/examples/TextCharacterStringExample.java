@@ -1,10 +1,14 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.TerminalUtils;
+import org.codetome.zircon.api.builder.grid.TileGridBuilder;
 import org.codetome.zircon.api.data.Size;
 import org.codetome.zircon.api.graphics.TextCharacterString;
-import org.codetome.zircon.api.interop.*;
 import org.codetome.zircon.api.grid.TileGrid;
+import org.codetome.zircon.api.interop.Modifiers;
+import org.codetome.zircon.api.interop.Positions;
+import org.codetome.zircon.api.interop.Sizes;
+import org.codetome.zircon.api.interop.TextCharacterStrings;
+import org.codetome.zircon.api.interop.TextColors;
 
 import static org.codetome.zircon.api.color.ANSITextColor.BLACK;
 import static org.codetome.zircon.api.resource.CP437TilesetResource.TAFFER_20X20;
@@ -16,9 +20,9 @@ public class TextCharacterStringExample {
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
 
     public static void main(String[] args) {
-        final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
-                .font(TAFFER_20X20.toFont())
-                .initialTerminalSize(SIZE)
+        final TileGrid tileGrid = TileGridBuilder.Companion.newBuilder()
+                .tileset(TAFFER_20X20)
+                .size(SIZE)
                 .build();
         tileGrid.setCursorVisibility(false);
 
@@ -31,7 +35,6 @@ public class TextCharacterStringExample {
 
         tileGrid.draw(tcs, Positions.defaultPosition());
 
-        tileGrid.flush();
     }
 
     private static void putEmptySpace(TileGrid tileGrid) {

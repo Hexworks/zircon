@@ -9,12 +9,12 @@ import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.event.InternalEvent
-import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.internal.util.ThreadSafeQueue
 
 class DefaultButton(private val text: String,

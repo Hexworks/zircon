@@ -2,7 +2,6 @@ package org.codetome.zircon.api.behavior
 
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.util.Maybe
-import java.util.*
 
 /**
  * Represents an object which can contain multiple [org.codetome.zircon.api.graphics.Layer]s

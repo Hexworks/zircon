@@ -2,9 +2,6 @@ package org.codetome.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.resource.CP437TilesetResource
-import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
-import org.codetome.zircon.internal.tileset.impl.FontSettings
-import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
 import org.junit.Before
 import org.junit.Test
 
@@ -14,43 +11,28 @@ class DefaultTilesetOverrideTest {
 
     @Before
     fun setUp() {
-        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
-        target = DefaultTilesetOverride(INITIAL_FONT.toFont())
+        target = DefaultTilesetOverride(INITIAL_FONT)
     }
 
     @Test
     fun shouldReturnInitialFontInitially() {
-        val font = INITIAL_FONT.toFont()
-        target = DefaultTilesetOverride(font)
-        assertThat(target.getCurrentFont().getId())
-                .isEqualTo(font.getId())
+        assertThat(target.tileset().id)
+                .isEqualTo(INITIAL_FONT.id)
     }
 
     @Test
     fun shouldBeAbleToUseSameSizeFont() {
-        val expected = CP437TilesetResource.ROGUE_YUN_16X16.toFont()
+        val expected = CP437TilesetResource.ROGUE_YUN_16X16
 
-        target.useFont(expected)
+        target.useTileset(expected)
 
-        assertThat(target.getCurrentFont().getId())
-                .isEqualTo(expected.getId())
+        assertThat(target.tileset().id)
+                .isEqualTo(expected.id)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionWhenTryingToSetNonCompatibleFont() {
-        target.useFont(CP437TilesetResource.BISASAM_20X20.toFont())
-    }
-
-    @Test
-    fun shouldHaveFontOverrideWhenHasOne() {
-        assertThat(target.hasOverrideFont()).isTrue()
-    }
-
-    @Test
-    fun shouldNotHaveFontOverrideAfterReset() {
-        target.resetFont()
-        assertThat(target.hasOverrideFont()).isFalse()
-        assertThat(target.getCurrentFont()).isSameAs(FontSettings.NO_FONT)
+        target.useTileset(CP437TilesetResource.BISASAM_20X20)
     }
 
     companion object {

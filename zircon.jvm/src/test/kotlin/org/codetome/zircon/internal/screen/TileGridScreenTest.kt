@@ -1,20 +1,19 @@
 package org.codetome.zircon.internal.screen
 
 import org.assertj.core.api.Assertions.assertThat
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
-import org.codetome.zircon.api.animation.AnimationResource
-import org.codetome.zircon.api.animation.DefaultAnimationHandler
-import org.codetome.zircon.api.builder.data.TileBuilder
-import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.event.EventBus
+import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.internal.component.impl.DefaultLabelTest
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
-import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
-import org.codetome.zircon.internal.grid.virtual.VirtualTileGrid
+import org.codetome.zircon.internal.event.InternalEvent
+import org.codetome.zircon.internal.grid.RectangleTileGrid
+import org.codetome.zircon.api.animation.AnimationResource
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
@@ -23,23 +22,24 @@ import java.util.concurrent.atomic.AtomicBoolean
 class TileGridScreenTest {
 
     lateinit var target: TileGridScreen
-    lateinit var tileset: Tileset
-    lateinit var terminal: VirtualTileGrid
+    lateinit var tileset: TilesetResource<out Tile>
+    lateinit var terminal: TileGrid
 
     @Before
     fun setUp() {
-        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
-        tileset = DefaultLabelTest.FONT.toFont()
-        terminal = VirtualTileGrid(
-                initialSize = SIZE,
-                initialTileset = tileset)
+        tileset = DefaultLabelTest.FONT
+        terminal = RectangleTileGrid(
+                tileset = tileset,
+                size = SIZE)
         MockitoAnnotations.initMocks(this)
         target = TileGridScreen(terminal)
     }
 
     @Test
     fun givenScreenWithAnimationWhenGivenInputThenFireOnInput() {
-        val animation = AnimationResource.loadAnimationFromStream(this.javaClass.getResourceAsStream("/animations/skull.zap"))
+        val animation = AnimationResource.loadAnimationFromStream(
+                zipStream = this.javaClass.getResourceAsStream("/animations/skull.zap"),
+                tileset = tileset)
                 .setPositionForAll(Position.create(0, 0))
                 .loopCount(0)
                 .build()
@@ -48,15 +48,14 @@ class TileGridScreenTest {
         target.onInput { inputFired.set(true) }
 
         //first of all lets make sure the default behaviour works. if a key is pressed I should get an input fired
-        EventBus.broadcast(Event.Input(KeyStroke('a')))
+        EventBus.broadcast(InternalEvent.Input(KeyStroke('a')))
         assertThat(inputFired.get()).isTrue()
 
         //now lets add the animation and make sure we can still get input
-        var animationHandler = DefaultAnimationHandler(target)
-        animationHandler.addAnimation(animation)
+        target.addAnimation(animation)
 
         inputFired.set(false)
-        EventBus.broadcast(Event.Input(KeyStroke('a')))
+        EventBus.broadcast(InternalEvent.Input(KeyStroke('a')))
         assertThat(inputFired.get()).isTrue()
 
     }
@@ -79,31 +78,23 @@ class TileGridScreenTest {
 
     @Test
     fun shouldUseTerminalsFontWhenCreating() {
-        assertThat(target.getCurrentFont().getId())
-                .isEqualTo(terminal.getCurrentFont().getId())
+        assertThat(target.tileset().id)
+                .isEqualTo(terminal.tileset().id)
     }
 
     @Test
     fun shouldProperlyOverrideTerminalFontWhenHasOverrideFontAndDisplayIsCalled() {
-        val expectedFont = CP437TilesetResource.AESOMATICA_16X16.toFont()
-        target.useFont(expectedFont)
+        val expectedFont = CP437TilesetResource.AESOMATICA_16X16
+        target.useTileset(expectedFont)
         target.display()
-        assertThat(target.getCurrentFont().getId()).isEqualTo(expectedFont.getId())
-        assertThat(terminal.getCurrentFont().getId()).isEqualTo(expectedFont.getId())
+        assertThat(target.tileset().id).isEqualTo(expectedFont.id)
+        assertThat(terminal.tileset().id).isEqualTo(expectedFont.id)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldProperlyThrowExceptionWhenTyringToSetNonCompatibleFont() {
-        target.useFont(CP437TilesetResource.BISASAM_20X20.toFont())
+        target.useTileset(CP437TilesetResource.BISASAM_20X20)
     }
-
-    @Test
-    fun shouldResizeOnResize() {
-        val expectedSize = Size.create(5, 5)
-        terminal.setSize(expectedSize)
-        assertThat(terminal.getBoundableSize()).isEqualTo(expectedSize)
-    }
-
 
     @Test
     fun shouldBeDrawnWhenCharacterSet() {

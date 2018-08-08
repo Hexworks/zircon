@@ -8,7 +8,7 @@ import org.codetome.zircon.api.grid.TileGrid;
 import org.codetome.zircon.api.modifier.Border;
 import org.codetome.zircon.api.modifier.RayShade;
 import org.codetome.zircon.api.modifier.SimpleModifiers;
-import org.codetome.zircon.gui.swing.application.SwingApplication;
+import org.codetome.zircon.gui.swing.internal.application.SwingApplication;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

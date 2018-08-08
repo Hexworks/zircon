@@ -1,33 +1,35 @@
 package org.codetome.zircon.internal.component.impl
 
-import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.behavior.Scrollable
+import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
+import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.RadioButton
 import org.codetome.zircon.api.component.RadioButtonGroup
 import org.codetome.zircon.api.component.RadioButtonGroup.Selection
-import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.codetome.zircon.api.tileset.Tileset
-import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Maybe
-import org.codetome.zircon.api.behavior.Scrollable
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
 import org.codetome.zircon.internal.component.WrappingStrategy
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.event.InternalEvent
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.internal.util.ThreadSafeQueue
 import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 
-class DefaultRadioButtonGroup constructor(wrappers: ThreadSafeQueue<WrappingStrategy>,
-                                          private val size: Size,
-                                          initialTileset: Tileset,
-                                          position: Position,
-                                          componentStyleSet: ComponentStyleSet,
-                                          scrollable: Scrollable = DefaultScrollable(size, size))
+class DefaultRadioButtonGroup constructor(
+        wrappers: ThreadSafeQueue<WrappingStrategy>,
+        private val size: Size,
+        initialTileset: TilesetResource<out Tile>,
+        position: Position,
+        componentStyleSet: ComponentStyleSet,
+        scrollable: Scrollable = DefaultScrollable(size, size))
     : RadioButtonGroup, Scrollable by scrollable, DefaultContainer(initialSize = size,
         position = position,
         componentStyleSet = componentStyleSet,
@@ -40,10 +42,9 @@ class DefaultRadioButtonGroup constructor(wrappers: ThreadSafeQueue<WrappingStra
 
     init {
         refreshContent()
-        EventBus.listenTo<Event.MouseReleased>(getId()) {
+        EventBus.listenTo<InternalEvent.MouseReleased>(id) {
             getDrawSurface().applyStyle(getComponentStyles().mouseOver())
             refreshContent()
-            EventBus.broadcast(Event.ComponentChange)
         }
     }
 
@@ -57,10 +58,10 @@ class DefaultRadioButtonGroup constructor(wrappers: ThreadSafeQueue<WrappingStra
                 width = size.xLength,
                 position = Position.create(0, items.size),
                 componentStyleSet = getComponentStyles(),
-                initialTileset = getCurrentFont()).also { button ->
+                initialTileset = tileset()).also { button ->
             items[key] = button
             addComponent(button)
-            EventBus.listenTo<Event.MouseReleased>(button.getId()) {
+            EventBus.listenTo<InternalEvent.MouseReleased>(button.id) {
                 selectedItem.map { lastSelected ->
                     if (lastSelected != key) {
                         items[lastSelected]?.removeSelection()
@@ -112,7 +113,7 @@ class DefaultRadioButtonGroup constructor(wrappers: ThreadSafeQueue<WrappingStra
             removeComponent(it)
         }
         items.values.forEachIndexed { idx, comp ->
-            comp.setPosition(Position.create(0, idx))
+            comp.moveTo(Position.create(0, idx))
             addComponent(comp)
         }
     }

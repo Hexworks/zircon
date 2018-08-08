@@ -5,14 +5,16 @@ import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.RadioButtonGroup
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.Layer
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.internal.component.impl.DefaultRadioButtonGroup
-import org.codetome.zircon.internal.tileset.impl.FontSettings
+import org.codetome.zircon.internal.config.RuntimeConfig
 import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 
 data class RadioButtonGroupBuilder(
-        private var tileset: Tileset = FontSettings.NO_FONT,
+        private var tileset: TilesetResource<out Tile> = RuntimeConfig.config.defaultTileset,
         private var position: Position = Position.defaultPosition(),
         private var componentStyleSet: ComponentStyleSet = ComponentStyleSet.defaultStyleSet(),
         private var size: Size = Size.one()) : Builder<RadioButtonGroup> {
@@ -20,7 +22,7 @@ data class RadioButtonGroupBuilder(
     /**
      * Sets the [Tileset] to use with the resulting [Layer].
      */
-    fun font(tileset: Tileset) = also {
+    fun font(tileset: TilesetResource<out Tile>) = also {
         this.tileset = tileset
     }
 

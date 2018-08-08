@@ -1,15 +1,22 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.api.SwingTerminalBuilder;
+import org.codetome.zircon.api.builder.grid.TileGridBuilder;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.component.Button;
 import org.codetome.zircon.api.component.Panel;
+import org.codetome.zircon.api.data.CharacterTile;
 import org.codetome.zircon.api.graphics.Layer;
-import org.codetome.zircon.api.interop.*;
+import org.codetome.zircon.api.grid.TileGrid;
+import org.codetome.zircon.api.interop.ColorThemes;
+import org.codetome.zircon.api.interop.Components;
+import org.codetome.zircon.api.interop.Positions;
+import org.codetome.zircon.api.interop.Screens;
+import org.codetome.zircon.api.interop.Sizes;
+import org.codetome.zircon.api.interop.TextColors;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
 import org.codetome.zircon.api.resource.REXPaintResource;
+import org.codetome.zircon.api.resource.TilesetResource;
 import org.codetome.zircon.api.screen.Screen;
-import org.codetome.zircon.api.grid.TileGrid;
 import org.codetome.zircon.internal.component.impl.DefaultColorTheme;
 
 import java.io.InputStream;
@@ -17,13 +24,14 @@ import java.io.InputStream;
 public class Playground {
 
     public static void main(String[] args) {
+        final TilesetResource<CharacterTile> tileset = CP437TilesetResource.CLA_18X18;
         final InputStream TITLE = Playground.class.getResourceAsStream("/rex_files/keyfinder.xp");
         REXPaintResource background = REXPaintResource.loadREXFile(TITLE);
-        Layer backgroundLayer = background.toLayerList().get(0);
+        Layer backgroundLayer = background.toLayerList(tileset).get(0);
 
-        final TileGrid tileGrid = SwingTerminalBuilder.newBuilder()
-                .initialTerminalSize(Sizes.create(70, 43))
-                .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
+        final TileGrid tileGrid = TileGridBuilder.Companion.newBuilder()
+                .size(Sizes.create(70, 43))
+                .tileset(tileset)
                 .build();
         final Screen mainScreen = Screens.createScreenFor(tileGrid);
 

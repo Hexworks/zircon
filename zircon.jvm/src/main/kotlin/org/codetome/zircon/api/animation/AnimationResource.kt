@@ -1,9 +1,11 @@
 package org.codetome.zircon.api.animation
 
 import org.codetome.zircon.api.builder.animation.AnimationBuilder
-import org.codetome.zircon.api.resource.REXPaintResource
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.internal.animation.AnimationMetadata
 import org.codetome.zircon.internal.animation.DefaultAnimationFrame
+import org.codetome.zircon.api.resource.REXPaintResource
 import org.codetome.zircon.internal.util.rex.unZipIt
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
@@ -24,7 +26,7 @@ class AnimationResource {
          * [AnimationBuilder] which contains the loaded data.
          */
         @JvmStatic
-        fun loadAnimationFromStream(zipStream: InputStream): AnimationBuilder {
+        fun loadAnimationFromStream(zipStream: InputStream, tileset: TilesetResource<out Tile>): AnimationBuilder {
             val files = unZipIt(zipStream, createTempDir())
             val tileInfoSource = files.first { it.name == "animation.yml" }.bufferedReader().use {
                 it.readText()
@@ -36,10 +38,10 @@ class AnimationResource {
                 val fileName = "${animationData.baseName}${frame.frame}.xp"
                 frameMap.computeIfAbsent(frame.frame) {
                     val frameImage = REXPaintResource.loadREXFile(files.first { it.name == fileName }.inputStream())
-                    val size = frameImage.toLayerList().maxBy { it.getBoundableSize() }!!.getBoundableSize()
+                    val size = frameImage.toLayerList(tileset).maxBy { it.getBoundableSize() }!!.getBoundableSize()
                     DefaultAnimationFrame(
                             size = size,
-                            layers = frameImage.toLayerList(),
+                            layers = frameImage.toLayerList(tileset),
                             repeatCount = frame.repeatCount)
                 }
                 // we need this trick to not load the file (and create a frame out of it) if it has already been loaded

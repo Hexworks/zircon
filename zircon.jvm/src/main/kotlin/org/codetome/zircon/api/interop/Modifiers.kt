@@ -28,12 +28,6 @@ object Modifiers {
     fun hidden() = Hidden
 
     @JvmStatic
-    fun bold() = Bold
-
-    @JvmStatic
-    fun italic() = Italic
-
-    @JvmStatic
     fun glow() = Glow
 
     /**

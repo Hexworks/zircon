@@ -9,6 +9,7 @@ import org.codetome.zircon.internal.animation.DefaultAnimation
 import org.codetome.zircon.internal.animation.DefaultAnimationFrame
 import org.codetome.zircon.api.util.Identifier
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.animation.DefaultAnimationHandler
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -29,7 +30,7 @@ class DefaultAnimationHandlerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        target = DefaultAnimationHandler(screenMock)
+        target = DefaultAnimationHandler()
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -60,7 +61,7 @@ class DefaultAnimationHandlerTest {
         val lock = ReentrantLock()
         val cond = lock.newCondition()
 
-        Mockito.`when`(animationMock.getId()).thenReturn(uuid)
+        Mockito.`when`(animationMock.id).thenReturn(uuid)
         Mockito.`when`(animationMock.isLoopedIndefinitely()).thenReturn(false)
         Mockito.`when`(animationMock.getCurrentFrame()).then {
             lock.lock()
@@ -83,7 +84,7 @@ class DefaultAnimationHandlerTest {
         val lock = ReentrantLock()
         val cond = lock.newCondition()
 
-        Mockito.`when`(animationMock.getId()).thenReturn(uuid)
+        Mockito.`when`(animationMock.id).thenReturn(uuid)
         Mockito.`when`(animationMock.isLoopedIndefinitely()).thenReturn(false)
         Mockito.`when`(animationMock.fetchNextFrame()).thenReturn(Maybe.empty())
         Mockito.`when`(animationMock.getCurrentFrame())

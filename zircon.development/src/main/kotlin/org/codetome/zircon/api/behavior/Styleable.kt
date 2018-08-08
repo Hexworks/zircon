@@ -1,8 +1,8 @@
 package org.codetome.zircon.api.behavior
 
-import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
+import org.codetome.zircon.api.modifier.Modifier
 
 /**
  * Represents an object which contains style information.

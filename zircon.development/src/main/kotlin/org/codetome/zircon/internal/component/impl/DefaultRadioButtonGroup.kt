@@ -113,7 +113,7 @@ class DefaultRadioButtonGroup constructor(
             removeComponent(it)
         }
         items.values.forEachIndexed { idx, comp ->
-            comp.setPosition(Position.create(0, idx))
+            comp.moveTo(Position.create(0, idx))
             addComponent(comp)
         }
     }

@@ -15,7 +15,7 @@ class LibgdxTileTextureColorizer : TileTextureTransformer<TextureRegion> {
         val g = tile.getForegroundColor().getGreen().toFloat() / 255F
         val b = tile.getForegroundColor().getBlue().toFloat() / 255F
 
-        val backend: TextureRegion = texture.getBackend()
+        val backend: TextureRegion = texture.getTexture()
 
         val result = backend.texture
         if (!result.textureData.isPrepared) {

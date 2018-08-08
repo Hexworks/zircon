@@ -1,43 +1,46 @@
 package org.codetome.zircon.internal.component.impl
 
-import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.behavior.CursorHandler
+import org.codetome.zircon.api.behavior.Scrollable
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.TextBox
-import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.event.EventBus
+import org.codetome.zircon.api.event.Subscription
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
-import org.codetome.zircon.api.util.TextUtils
-import org.codetome.zircon.api.behavior.Scrollable
-import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
-import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.Subscription
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.util.Math
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.api.util.TextUtils
+import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
+import org.codetome.zircon.internal.behavior.impl.DefaultScrollable
+import org.codetome.zircon.internal.event.InternalEvent
+import org.codetome.zircon.internal.util.TextBuffer
 import org.codetome.zircon.platform.extension.delete
 import org.codetome.zircon.platform.extension.deleteCharAt
 import org.codetome.zircon.platform.extension.insert
-import org.codetome.zircon.internal.util.TextBuffer
 
-class DefaultTextBox constructor(text: String,
-                                 initialSize: Size,
-                                 initialTileset: Tileset,
-                                 position: Position,
-                                 componentStyleSet: ComponentStyleSet,
-                                 scrollable: Scrollable = DefaultScrollable(initialSize, initialSize),
-                                 cursorHandler: CursorHandler = DefaultCursorHandler(initialSize))
+class DefaultTextBox constructor(
+        text: String,
+        initialSize: Size,
+        initialTileset: TilesetResource<out Tile>,
+        position: Position,
+        componentStyleSet: ComponentStyleSet,
+        scrollable: Scrollable = DefaultScrollable(initialSize, initialSize),
+        cursorHandler: CursorHandler = DefaultCursorHandler(initialSize))
     : TextBox, Scrollable by scrollable, CursorHandler by cursorHandler, DefaultComponent(
-        initialSize = initialSize,
+        size = initialSize,
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = listOf(),
-        initialTileset = initialTileset) {
+        tileset = initialTileset) {
 
     private val textBuffer = TextBuffer(text)
     private val subscriptions = mutableListOf<Subscription<*>>()
@@ -100,7 +103,6 @@ class DefaultTextBox constructor(text: String,
             }
         }
         getDrawSurface().applyStyle(getComponentStyles().disable())
-        EventBus.broadcast(Event.ComponentChange)
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
@@ -115,25 +117,22 @@ class DefaultTextBox constructor(text: String,
         focused = false
         disableTyping()
         getDrawSurface().applyStyle(getComponentStyles().reset())
-        EventBus.broadcast(Event.ComponentChange)
     }
 
     private fun enableFocusedComponent() {
         cancelSubscriptions()
         getDrawSurface().applyStyle(getComponentStyles().giveFocus())
         enableTyping()
-        EventBus.broadcast(Event.ComponentChange)
     }
 
     private fun disableTyping() {
         cancelSubscriptions()
-        EventBus.broadcast(Event.HideCursor)
-        EventBus.broadcast(Event.ComponentChange)
+        EventBus.broadcast(InternalEvent.HideCursor)
     }
 
     private fun enableTyping() {
-        EventBus.broadcast(Event.RequestCursorAt(getCursorPosition().withRelative(getPosition())))
-        subscriptions.add(EventBus.subscribe<Event.KeyPressed> { (keyStroke) ->
+        EventBus.broadcast(InternalEvent.RequestCursorAt(getCursorPosition().withRelative(getPosition())))
+        subscriptions.add(EventBus.subscribe<InternalEvent.KeyPressed> { (keyStroke) ->
             val cursorPos = getCursorPosition()
             val (offsetCols, offsetRows) = getVisibleOffset()
             val currColIdx = cursorPos.x + offsetCols
@@ -258,8 +257,7 @@ class DefaultTextBox constructor(text: String,
                     refreshDrawSurface()
                 }
             }
-            EventBus.broadcast(Event.RequestCursorAt(getCursorPosition() + getPosition()))
-            EventBus.broadcast(Event.ComponentChange)
+            EventBus.broadcast(InternalEvent.RequestCursorAt(getCursorPosition() + getPosition()))
         })
     }
 
@@ -326,7 +324,9 @@ class DefaultTextBox constructor(text: String,
     private fun refreshDrawSurface() {
         getBoundableSize().fetchPositions().forEach { pos ->
             val fixedPos = pos + getVisibleOffset()
-            getDrawSurface().setCharAt(pos, textBuffer.getCharAt(fixedPos).orElse(' '))
+            getDrawSurface().setTileAt(pos, TileBuilder.newBuilder()
+                    .character(textBuffer.getCharAt(fixedPos).orElse(' '))
+                    .build())
         }
     }
 

@@ -1,99 +1,72 @@
 package org.codetome.zircon.internal.screen
 
-import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.component.ComponentStyleSet
-import org.codetome.zircon.api.screen.Screen
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.util.Identifier
+import org.codetome.zircon.internal.behavior.impl.ComponentsLayerable
+import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 import org.codetome.zircon.internal.component.InternalContainerHandler
 import org.codetome.zircon.internal.component.impl.DefaultContainer
 import org.codetome.zircon.internal.component.impl.DefaultContainerHandler
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.config.RuntimeConfig
+import org.codetome.zircon.internal.event.InternalEvent
 import org.codetome.zircon.internal.grid.InternalTileGrid
-import org.codetome.zircon.internal.grid.virtual.VirtualTileGrid
+import org.codetome.zircon.internal.grid.RectangleTileGrid
 
-/**
- * This class implements the logic defined in the [Screen] interface.
- * A [TileGridScreen] wraps a [TileGrid] and uses a [VirtualTileGrid] as a backend
- * for its changes. When `refresh` or `display` is called the changes are written to
- * the [TileGrid] this [TileGridScreen] wraps. This means that a [TileGridScreen] acts
- * as a double buffer for the wrapped [TileGrid].
- */
-class TileGridScreen(private val terminal: InternalTileGrid,
-                     private val backend: VirtualTileGrid = VirtualTileGrid(
-                             initialSize = terminal.getBoundableSize(),
-                             initialTileset = terminal.getCurrentFont()),
-                     private val containerHandler: InternalContainerHandler = DefaultContainerHandler(DefaultContainer(
-                             initialSize = terminal.getBoundableSize(),
-                             position = Position.defaultPosition(),
-                             componentStyleSet = ComponentStyleSet.defaultStyleSet(),
-                             initialTileset = terminal.getCurrentFont())))
+class TileGridScreen(
+        private val tileGrid: TileGrid,
+        private val componentsContainer: DefaultContainer = DefaultContainer(
+                initialSize = tileGrid.getBoundableSize(),
+                position = Position.defaultPosition(),
+                componentStyleSet = ComponentStyleSet.defaultStyleSet(),
+                initialTileset = tileGrid.tileset()),
+        private val buffer: InternalTileGrid = RectangleTileGrid(
+                tileset = tileGrid.tileset(),
+                size = tileGrid.getBoundableSize(),
+                layerable = ComponentsLayerable(
+                        layers = DefaultLayerable(tileGrid.getBoundableSize()),
+                        components = componentsContainer)),
+        private val containerHandler: InternalContainerHandler =
+                DefaultContainerHandler(componentsContainer))
     : InternalScreen,
-        InternalTileGrid by backend,
+        TileGrid by buffer,
         InternalContainerHandler by containerHandler {
 
-    private val id = Identifier.randomIdentifier()
+    override val id = Identifier.randomIdentifier()
 
     init {
-        EventBus.subscribe<Event.ScreenSwitch> { (screenId) ->
+        val debug = RuntimeConfig.config.debugMode
+        require(tileGrid is InternalTileGrid) {
+            "The supplied TileGrid is not an instance of InternalTileGrid."
+        }
+        EventBus.subscribe<InternalEvent.ScreenSwitch> { (screenId) ->
+            if (debug) println("Screen switch event received. screenId: '$screenId'.")
             if (id != screenId) {
+                if (debug) println("Deactivating screen")
                 deactivate()
             }
         }
-        EventBus.subscribe<Event.ComponentChange> {
+        EventBus.subscribe<InternalEvent.RequestCursorAt> { (position) ->
             if (isActive()) {
-                refresh()
+                tileGrid.setCursorVisibility(true)
+                tileGrid.putCursorAt(position)
             }
         }
-        EventBus.subscribe<Event.RequestCursorAt> { (position) ->
+        EventBus.subscribe<InternalEvent.HideCursor> {
             if (isActive()) {
-                terminal.setCursorVisibility(true)
-                terminal.putCursorAt(position)
-            }
-        }
-        EventBus.subscribe<Event.HideCursor> {
-            if (isActive()) {
-                terminal.setCursorVisibility(false)
+                tileGrid.setCursorVisibility(false)
             }
         }
     }
-
-    override fun getId() = id
 
     override fun display() {
-        EventBus.broadcast(Event.ScreenSwitch(id))
+        EventBus.broadcast(InternalEvent.ScreenSwitch(id))
         setCursorVisibility(false)
         putCursorAt(Position.defaultPosition())
-        flipBuffers(true)
         activate()
+        (tileGrid as InternalTileGrid).useContentsOf(buffer)
     }
 
-    override fun refresh() {
-        flipBuffers(false)
-    }
-
-    private fun flipBuffers(forceRedraw: Boolean) {
-        val positions = if (forceRedraw) {
-            getBoundableSize().fetchPositions()
-        } else {
-            drainDirtyPositions()
-        }
-        positions.forEach { position ->
-            val character = backend.getTileAt(position).get()
-            terminal.setTileAt(position, character)
-        }
-        // TODO: optimize this
-        terminal.drainLayers()
-        transformComponentsToLayers().forEach {
-            terminal.pushLayer(it)
-        }
-        backend.getLayers().forEach {
-            terminal.pushLayer(it)
-        }
-        if (hasOverrideFont()) {
-            terminal.useFont(getCurrentFont())
-        }
-        terminal.flush()
-    }
 }

@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.data
 
+import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.tileset.Tileset
 
 interface Position : Comparable<Position> {
@@ -98,6 +99,46 @@ interface Position : Comparable<Position> {
     operator fun component1() = x
 
     operator fun component2() = y
+
+    /**
+     * Creates a [Position] which is relative to the top of the given [Component].
+     * The x coordinate is used to shift right
+     * The y coordinate is used to shift up
+     */
+    fun relativeToTopOf(component: Component) = component.getPosition().let { (compX, compY) ->
+        create(compX + x, maxOf(compY - y, 0))
+    }
+
+    /**
+     * Creates a [Position] which is relative to the right of the given [Component].
+     * The x coordinate is used to shift right
+     * The y coordinate is used to shift down
+     */
+    fun relativeToRightOf(component: Component) = component.getPosition().let { (compX, compY) ->
+        create(
+                x = compX + component.getBoundableSize().xLength + x,
+                y = compY + y)
+    }
+
+    /**
+     * Creates a [Position] which is relative to the bottom of the given [Component].
+     * The x coordinate is used to shift right
+     * The y coordinate is used to shift down
+     */
+    fun relativeToBottomOf(component: Component) = component.getPosition().let { (compX, compY) ->
+        create(
+                x = compX + x,
+                y = compY + component.getBoundableSize().yLength + y)
+    }
+
+    /**
+     * Creates a [Position] which is relative to the left of the given [Component].
+     * The x coordinate is used to shift left
+     * The y coordinate is used to shift down
+     */
+    fun relativeToLeftOf(component: Component) = component.getPosition().let { (compX, compY) ->
+        create(maxOf(compX - x, 0), compY + y)
+    }
 
     companion object {
 

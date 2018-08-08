@@ -39,7 +39,7 @@ data class TextCharacterStringBuilder(
                             .backgroundColor(backgroundColor)
                             .character(it)
                             .modifiers(modifiers)
-                            .build()
+                            .buildCharacterTile()
                 },
                 textWrap = textWrap)
     }

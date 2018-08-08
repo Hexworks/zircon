@@ -7,13 +7,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.io.File as JFile
 import java.io.ByteArrayOutputStream
-import java.util.zip.Inflater
 import java.io.ByteArrayInputStream
-
-
-
-
-
 
 /**
  * Takes a GZIP-compressed [ByteArray] and returns it decompressed.

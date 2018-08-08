@@ -1,17 +1,25 @@
 package org.codetome.zircon.internal.graphics
 
-import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.graphics.BaseTileImage
 import org.codetome.zircon.api.graphics.StyleSet
-import org.codetome.zircon.api.graphics.TileImageBase
+import org.codetome.zircon.api.resource.TilesetResource
+import org.codetome.zircon.platform.factory.ThreadSafeMapFactory
 
-class MapTileImage(size: Size,
-                   styleSet: StyleSet = StyleSet.defaultStyle(),
-                   tiles: Map<Position, Tile> = mapOf(),
-                   private val backend: MutableMap<Position, Tile> =
-                           mutableMapOf())
-    : TileImageBase(size = size,
+/**
+ * this is a basic building block which can be re-used by complex image
+ * classes like layers, boxes, components, and more
+ * all classes which are implementing the DrawSurface or the Drawable operations can
+ * use this class as a base class just like how the TileGrid uses it
+ */
+
+class MapTileImage(
+        size: Size,
+        tileset: TilesetResource<out Tile>,
+        styleSet: StyleSet = StyleSet.defaultStyle())
+    : BaseTileImage(
+        tileset = tileset,
+        contents = mutableMapOf(),
         styleSet = styleSet,
-        backend = backend,
-        tiles = tiles)
+        size = size)

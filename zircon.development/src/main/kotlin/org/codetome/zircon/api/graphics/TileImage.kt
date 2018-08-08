@@ -136,19 +136,6 @@ interface TileImage
     }
 
     /**
-     * Writes the given `text` at the given `position`.
-     */
-    fun putText(text: String, position: Position = Position.defaultPosition()) {
-        text.forEachIndexed { col, char ->
-            setTileAt(position.withRelativeX(col), TileBuilder
-                    .newBuilder()
-                    .styleSet(toStyleSet())
-                    .character(char)
-                    .build())
-        }
-    }
-
-    /**
      * Transforms all of the [Tile]s in this [TileImage] with the given
      * `transformer` and returns a new one with the transformed characters.
      */
@@ -161,6 +148,19 @@ interface TileImage
             result.setTileAt(pos, transformer.transform(char))
         }
         return result
+    }
+
+    /**
+     * Writes the given `text` at the given `position`.
+     */
+    fun putText(text: String, position: Position = Position.defaultPosition()) {
+        text.forEachIndexed { col, char ->
+            setTileAt(position.withRelativeX(col), TileBuilder
+                    .newBuilder()
+                    .styleSet(toStyleSet())
+                    .character(char)
+                    .build())
+        }
     }
 
     /**

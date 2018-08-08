@@ -1,9 +1,9 @@
 package org.codetome.zircon.internal.behavior.impl
 
-import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.Movable
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
 
 /**
  * A [DefaultBoundable] has no offset.
