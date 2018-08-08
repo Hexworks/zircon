@@ -1,11 +1,10 @@
 package org.codetome.zircon.internal.tileset.transformer
 
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.interop.toAWTColor
-import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.modifier.BorderPosition.*
 import org.codetome.zircon.api.modifier.BorderType
 import org.codetome.zircon.api.modifier.BorderType.*
+import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.tileset.TileTextureTransformer
 import java.awt.BasicStroke
 import java.awt.Graphics2D
@@ -15,18 +14,18 @@ import java.awt.image.BufferedImage
 class Java2DBorderTransformer : TileTextureTransformer<BufferedImage> {
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         return texture.also {
-            it.getBackend().let { backend ->
-                backend.graphics.apply {
-                    color = tile.getForegroundColor().toAWTColor()
-                    if (tile.hasBorder()) {
-                        tile.fetchBorderData().forEach { border ->
-                            border.borderPositions.forEach { pos ->
-                                FILLER_LOOKUP[pos]?.invoke(backend, this as Graphics2D, border.borderType)
-                            }
+            val txt = it.getTexture()
+            txt.graphics.apply {
+                color = tile.getForegroundColor().toAWTColor()
+                if (tile.hasBorder()) {
+                    tile.fetchBorderData().forEach { border ->
+                        border.borderPositions.forEach { pos ->
+                            txt.width
+                            FILLER_LOOKUP[pos]?.invoke(txt, this as Graphics2D, border.borderType)
                         }
                     }
-                    dispose()
                 }
+                dispose()
             }
         }
     }

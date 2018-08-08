@@ -12,6 +12,7 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.event.EventBus
+import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.resource.TilesetResource
@@ -44,7 +45,6 @@ abstract class DefaultComponent(
         TilesetOverride by drawSurface {
 
     override val id = Identifier.randomIdentifier()
-
     private var currentOffset = Position.defaultPosition()
 
     init {
@@ -62,14 +62,42 @@ abstract class DefaultComponent(
         }
     }
 
+    override fun createCopy(): Layer {
+        throw UnsupportedOperationException("No.")
+    }
+
+    override fun getRelativeTileAt(position: Position): Maybe<Tile> {
+        throw UnsupportedOperationException()
+    }
+
+    override fun setRelativeTileAt(position: Position, character: Tile) {
+        throw UnsupportedOperationException()
+    }
+
+    override fun getTileAt(position: Position): Maybe<Tile> {
+        throw UnsupportedOperationException()
+    }
+
+    override fun setTileAt(position: Position, tile: Tile) {
+        throw UnsupportedOperationException()
+    }
+
+    override fun createSnapshot(): Map<Position, Tile> {
+        TODO("not implemented")
+    }
+
+    override fun draw(drawable: Drawable, offset: Position) {
+        throw UnsupportedOperationException()
+    }
+
+    override fun moveTo(position: Position): Boolean {
+        return boundable.moveTo(position)
+    }
+
     override fun isAttached() = attached
 
     override fun signalAttached() {
         this.attached = true
-    }
-
-    override fun setPosition(position: Position) {
-        boundable.moveTo(position)
     }
 
     override fun containsBoundable(boundable: Boundable) = this.boundable.containsBoundable(boundable)

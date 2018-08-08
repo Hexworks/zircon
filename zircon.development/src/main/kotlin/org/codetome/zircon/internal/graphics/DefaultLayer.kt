@@ -1,7 +1,10 @@
 package org.codetome.zircon.internal.graphics
 
 import org.codetome.zircon.api.behavior.Boundable
+import org.codetome.zircon.api.behavior.Drawable
+import org.codetome.zircon.api.behavior.TilesetOverride
 import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TileImage
@@ -16,7 +19,7 @@ import org.codetome.zircon.internal.behavior.impl.Rectangle
 
 data class DefaultLayer(private var position: Position,
                         val backend: TileImage)
-    : Layer, TileImage by backend {
+    : Layer, TilesetOverride by backend {
 
     private var rect: Rectangle = refreshRect()
 
@@ -24,22 +27,18 @@ data class DefaultLayer(private var position: Position,
         return backend.createSnapshot().mapKeys { it.key + position }
     }
 
-    override fun fetchFilledPositions(): List<Position> =
-            createSnapshot().map { it.key }
+    override fun draw(drawable: Drawable, offset: Position) {
+        backend.draw(drawable, offset)
+    }
 
-    override fun createCopy() = DefaultLayer(
-            position = position,
-            backend = backend)
+    override fun getBoundableSize(): Size {
+        return backend.getBoundableSize()
+    }
 
     override fun getRelativeTileAt(position: Position) = backend.getTileAt(position)
 
     override fun setRelativeTileAt(position: Position, character: Tile) {
         backend.setTileAt(position, character)
-    }
-
-    override fun fill(filler: Tile): Layer {
-        backend.fill(filler)
-        return this
     }
 
     override fun getPosition() = position
@@ -80,5 +79,9 @@ data class DefaultLayer(private var position: Position,
     private fun refreshRect(): Rectangle {
         return Rectangle(position.x, position.y, getBoundableSize().xLength, getBoundableSize().yLength)
     }
+
+    override fun createCopy() = DefaultLayer(
+            position = position,
+            backend = backend)
 
 }

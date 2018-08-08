@@ -6,18 +6,18 @@ import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.data.*
-import org.codetome.zircon.api.tileset.Tileset
-import org.codetome.zircon.api.game.*
+import org.codetome.zircon.api.game.GameArea
+import org.codetome.zircon.api.game.GameComponent
+import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.util.Math
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.behavior.Scrollable3D
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.codetome.zircon.internal.component.impl.DefaultComponent
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
 
 /**
  * Note that this class is in **BETA**!
@@ -26,7 +26,7 @@ import org.codetome.zircon.internal.event.EventBus
 class DefaultGameComponent(private val gameArea: GameArea,
                            private val projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
                            visibleSize: Size3D,
-                           initialTileset: Tileset,
+                           initialTileset: TilesetResource<out Tile>,
                            position: Position,
                            componentStyleSet: ComponentStyleSet,
                            boundable: DefaultBoundable = DefaultBoundable(
@@ -37,11 +37,11 @@ class DefaultGameComponent(private val gameArea: GameArea,
                                    virtualSpaceSize = gameArea.getSize()))
 
     : GameComponent, Scrollable3D by scrollable, DefaultComponent(
-        initialSize = visibleSize.to2DSize(),
+        size = visibleSize.to2DSize(),
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = listOf(),
-        initialTileset = initialTileset,
+        tileset = initialTileset,
         boundable = boundable) {
 
     private val visibleLevelCount = visibleSize.zLength
@@ -56,7 +56,6 @@ class DefaultGameComponent(private val gameArea: GameArea,
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
         refreshVirtualSpaceSize()
-        EventBus.broadcast(Event.ComponentChange)
         return true
     }
 

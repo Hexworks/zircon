@@ -1,11 +1,14 @@
 package org.codetome.zircon.api.builder.data
 
 import org.codetome.zircon.api.builder.Builder
-import org.codetome.zircon.api.modifier.Modifier
-import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.color.TextColor
+import org.codetome.zircon.api.data.CharacterTile
+import org.codetome.zircon.api.data.ImageTile
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.StyleSet
+import org.codetome.zircon.api.modifier.Modifier
+import org.codetome.zircon.api.resource.TilesetResource
+import org.codetome.zircon.internal.config.RuntimeConfig
 
 /**
  * Builds [Tile]s.
@@ -15,13 +18,25 @@ import org.codetome.zircon.api.graphics.StyleSet
  * also
  * @see [org.codetome.zircon.api.color.TextColor] to check default colors.
  */
+@Suppress("UNCHECKED_CAST")
 data class TileBuilder(
         private var character: Char = ' ',
+        private var name: String = " ",
+        private var tags: Set<String> = setOf(),
         private var styleSet: StyleSet = StyleSet.defaultStyle(),
-        private var tags: Set<String> = setOf()) : Builder<Tile> {
+        private var tileset: TilesetResource<out Tile> = RuntimeConfig.config.defaultTileset)
+    : Builder<Tile> {
 
     fun character(character: Char) = also {
         this.character = character
+    }
+
+    fun name(name: String) = also {
+        this.name = name
+    }
+
+    fun tags(tags: Set<String>) = also {
+        this.tags = tags
     }
 
     /**
@@ -44,17 +59,32 @@ data class TileBuilder(
         this.styleSet = styleSet.withModifiers(modifiers)
     }
 
-    fun modifiers(vararg modifiers: Modifier): TileBuilder = modifiers(modifiers.toSet())
-
-    fun tag(vararg tags: String) = also {
-        this.tags = tags.toSet()
+    fun tileset(tileset: TilesetResource<out Tile>) = also {
+        this.tileset = tileset
     }
 
-    fun tags(tags: Set<String>) = also {
-        this.tags = tags
+    fun modifiers(vararg modifiers: Modifier) = also {
+        modifiers(modifiers.toSet())
     }
 
-    override fun build(): Tile = Tile.create(character, styleSet, tags)
+    override fun build(): Tile {
+        return CharacterTile(
+                character = character,
+                style = styleSet)
+    }
+
+    fun buildCharacterTile(): CharacterTile {
+        return CharacterTile(
+                character = character,
+                style = styleSet)
+    }
+
+    fun buildImageTile(): ImageTile {
+        return ImageTile(
+                tileset = tileset as? TilesetResource<ImageTile> ?: throw IllegalArgumentException("Wrong tileset."),
+                name = name,
+                tags = tags)
+    }
 
     override fun createCopy() = copy()
 

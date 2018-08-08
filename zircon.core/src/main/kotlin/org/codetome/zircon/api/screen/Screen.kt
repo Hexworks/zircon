@@ -18,17 +18,7 @@ interface Screen
     : TileGrid, ContainerHandler, Identifiable {
 
     /**
-     * This function will take the content from the back-buffer and move it into the front-buffer
-     * (a TileGrid for example), making the changes visible in the process.
-     * <strong>Note that</strong> this function will use the tracked changes since the last refresh/display
-     * operation and only overwrite characters which were changed. This will cause graphical artifacts
-     * if you have multiple [Screen]s attached to the same [org.codetome.zircon.api.grid.TileGrid]!
-     * In this case consider using [Screen.display] instead!
-     */
-    fun refresh()
-
-    /**
-     * Same as [Screen.refresh] but forces a redraw of each character regardless of its changes.
+     * Moves the contents of this [Screen] to the underlying [org.codetome.zircon.api.grid.TileGrid].
      */
     fun display()
 

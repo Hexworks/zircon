@@ -3,9 +3,8 @@ package org.codetome.zircon.internal.tileset.transformer
 import com.jhlabs.image.GaussianFilter
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.tileset.TileTexture
-import org.codetome.zircon.api.interop.toAWTColor
 import org.codetome.zircon.api.tileset.TileTextureTransformer
-import org.codetome.zircon.internal.tileset.impl.Java2DTileTexture
+import org.codetome.zircon.internal.tileset.impl.DefaultTileTexture
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
@@ -16,8 +15,8 @@ class Java2DGlowTransformer : TileTextureTransformer<BufferedImage> {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         return texture.also {
-            it.getBackend().let { backend ->
-                backend.graphics.apply {
+            it.getTexture().let { txt ->
+                txt.graphics.apply {
 
                     if (tile.getForegroundColor() == tile.getBackgroundColor()) {
                         return texture
@@ -32,29 +31,31 @@ class Java2DGlowTransformer : TileTextureTransformer<BufferedImage> {
                     // Generate glow image:
                     val filter = GaussianFilter()
                     filter.radius = 5f
-                    val glowImage = filter.filter(charImage.getBackend(), null)
+                    val glowImage = filter.filter(charImage.getTexture(), null)
 
                     // Combine images and background:
-                    val image = texture.getBackend()
-                    val result = BufferedImage(image.width, image.height, BufferedImage.TYPE_INT_ARGB)
+                    val result = BufferedImage(txt.width, txt.height, BufferedImage.TYPE_INT_ARGB)
                     val gc = result.graphics as Graphics2D
 
                     gc.color = tile.getBackgroundColor().toAWTColor()
                     gc.fillRect(0, 0, result.width, result.height)
                     gc.drawImage(glowImage, 0, 0, null)
-                    gc.drawImage(charImage.getBackend(), 0, 0, null)
+                    gc.drawImage(charImage.getTexture(), 0, 0, null)
                     gc.dispose()
 
-                    return Java2DTileTexture(tile.generateCacheKey(), result)
+                    return DefaultTileTexture(
+                            width = txt.width,
+                            height = txt.height,
+                            texture = result)
                 }
             }
         }
     }
 
-    private fun swapColor(region: TileTexture<BufferedImage>, oldColor: Color, newColor: Color, tile: Tile)
+    private fun swapColor(texture: TileTexture<BufferedImage>, oldColor: Color, newColor: Color, tile: Tile)
             : TileTexture<BufferedImage> {
-        val result = cloner.transform(region, tile)
-        val image = result.getBackend()
+        val result = cloner.transform(texture, tile)
+        val image = result.getTexture()
         val newRGB = newColor.rgb
         val oldRGB = oldColor.rgb
 
@@ -68,6 +69,9 @@ class Java2DGlowTransformer : TileTextureTransformer<BufferedImage> {
             }
         }
 
-        return Java2DTileTexture(tile.generateCacheKey(), image)
+        return DefaultTileTexture(
+                width = texture.getWidth(),
+                height = texture.getHeight(),
+                texture = image)
     }
 }

@@ -4,8 +4,10 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.animation.Animation
 import org.codetome.zircon.api.animation.AnimationFrame
 import org.codetome.zircon.api.builder.Builder
+import org.codetome.zircon.api.builder.graphics.LayerBuilder
 import org.codetome.zircon.internal.animation.DefaultAnimation
 import org.codetome.zircon.internal.animation.DefaultAnimationFrame
+import org.codetome.zircon.internal.graphics.DefaultLayer
 
 @Suppress("DataClassPrivateConstructor")
 data class AnimationBuilder private constructor(

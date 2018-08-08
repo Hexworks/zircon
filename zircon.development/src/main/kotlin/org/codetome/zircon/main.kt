@@ -17,7 +17,7 @@ import org.codetome.zircon.api.modifier.SimpleModifiers.*
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.util.Consumer
-import org.codetome.zircon.gui.swing.application.SwingApplication
+import org.codetome.zircon.gui.swing.internal.application.SwingApplication
 import org.codetome.zircon.internal.screen.TileGridScreen
 
 fun main(args: Array<String>) {

@@ -4,7 +4,6 @@ import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.grid.TileGrid
-import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.api.util.Identifier
 import org.codetome.zircon.internal.behavior.impl.ComponentsLayerable
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
@@ -43,9 +42,9 @@ class TileGridScreen(
             "The supplied TileGrid is not an instance of InternalTileGrid."
         }
         EventBus.subscribe<InternalEvent.ScreenSwitch> { (screenId) ->
-            if(debug) println("Screen switch event received. screenId: '$screenId'.")
+            if (debug) println("Screen switch event received. screenId: '$screenId'.")
             if (id != screenId) {
-                if(debug) println("Deactivating screen")
+                if (debug) println("Deactivating screen")
                 deactivate()
             }
         }
@@ -67,9 +66,6 @@ class TileGridScreen(
         setCursorVisibility(false)
         putCursorAt(Position.defaultPosition())
         activate()
-        transformComponentsToLayers().forEach {
-            buffer.pushLayer(it)
-        }
         (tileGrid as InternalTileGrid).useContentsOf(buffer)
     }
 

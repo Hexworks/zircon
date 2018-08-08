@@ -40,7 +40,7 @@ class DefaultContainerHandler(private var container: DefaultContainer) :
 
     override fun addComponent(component: Component) {
         (component as? DefaultComponent)?.let { dc ->
-            dc.setPosition(dc.getPosition() + container.getEffectivePosition())
+            dc.moveTo(dc.getPosition() + container.getEffectivePosition())
             // TODO: if the component has the same size and position it adds it!!!
             require(container.containsBoundable(dc)) {
                 "You can't add a component to a container which is not within its bounds " +

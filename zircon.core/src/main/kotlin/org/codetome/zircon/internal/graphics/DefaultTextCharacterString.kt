@@ -1,21 +1,24 @@
 package org.codetome.zircon.internal.graphics
 
-import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.data.Size
-import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.builder.graphics.TileImageBuilder
+import org.codetome.zircon.api.data.CharacterTile
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.graphics.TextCharacterString
 import org.codetome.zircon.api.graphics.TextWrap
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 
-data class DefaultTextCharacterString(private val textChars: List<Tile>,
+data class DefaultTextCharacterString(private val textChars: List<CharacterTile>,
                                       private val textWrap: TextWrap,
                                       private val boundable: Boundable = DefaultBoundable(
                                               size = Size.create(textChars.size, 1)))
-    : TextCharacterString, Boundable by boundable, Collection<Tile> by textChars {
+    : TextCharacterString,
+        Boundable by boundable,
+        Collection<CharacterTile> by textChars {
 
     override fun drawOnto(surface: DrawSurface, offset: Position) {
         val (cols, rows) = surface.getBoundableSize()
@@ -30,7 +33,7 @@ data class DefaultTextCharacterString(private val textChars: List<Tile>,
         cursorHandler.putCursorAt(offset)
 
         if (textWrap == TextWrap.WORD_WRAP) {
-            val wordCharacterIterator = WordCharacterIterator(charIter)
+            val wordCharacterIterator = CharacterTileIterator(charIter)
 
             if (cursorIsNotAtBottomRightCorner(cursorHandler) && wordCharacterIterator.hasNext()) {
                 do {
@@ -39,7 +42,7 @@ data class DefaultTextCharacterString(private val textChars: List<Tile>,
                     var spaceRemaining = cols - cursorHandler.getCursorPosition().x
 
                     //the word is bigger then 1 line when this happens we should character wrap
-                    if(wordSize > cols){
+                    if (wordSize > cols) {
                         nextWord.forEach { tc ->
                             surface.setTileAt(cursorHandler.getCursorPosition(), tc)
                             cursorHandler.moveCursorForward()
@@ -56,7 +59,7 @@ data class DefaultTextCharacterString(private val textChars: List<Tile>,
                         //this means we are at the last yLength and therefore we cannot wrap anymore. Therefore we should
                         //stop rendering
                         val row = cursorHandler.getCursorPosition().y
-                        if(row == rows - 1){
+                        if (row == rows - 1) {
                             return
                         }
 
@@ -96,13 +99,15 @@ data class DefaultTextCharacterString(private val textChars: List<Tile>,
         }
     }
 
-    override fun toTextImage() = TileImageBuilder.newBuilder()
-            .size(getBoundableSize())
-            .build().apply {
-        textChars.forEachIndexed { idx, tc ->
-            setTileAt(Position.create(idx, 0), tc)
-        }
-    }
+    override fun toTextImage(tileset: TilesetResource<CharacterTile>) =
+            TileImageBuilder.newBuilder()
+                    .tileset(tileset)
+                    .size(getBoundableSize())
+                    .build().apply {
+                        textChars.forEachIndexed { idx, tc ->
+                            setTileAt(Position.create(idx, 0), tc)
+                        }
+                    }
 
     override fun getTextCharacters() = textChars
 

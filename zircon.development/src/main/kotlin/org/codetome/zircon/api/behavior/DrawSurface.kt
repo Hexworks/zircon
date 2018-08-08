@@ -3,7 +3,6 @@ package org.codetome.zircon.api.behavior
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.util.Maybe
-import java.util.*
 
 /**
  * Represents an object which can be drawn upon.

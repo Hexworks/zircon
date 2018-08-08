@@ -1,5 +1,7 @@
 package org.codetome.zircon.internal.grid
 
+import org.codetome.zircon.api.animation.Animation
+import org.codetome.zircon.api.animation.AnimationResult
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.Layerable
@@ -13,12 +15,15 @@ import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TileImage
+import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.api.util.TextUtils
+import org.codetome.zircon.internal.animation.DefaultAnimationHandler
+import org.codetome.zircon.internal.animation.InternalAnimationHandler
 import org.codetome.zircon.internal.behavior.InternalCursorHandler
 import org.codetome.zircon.internal.behavior.ShutdownHook
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
@@ -36,12 +41,25 @@ class RectangleTileGrid(
                 tileset = tileset,
                 styleSet = StyleSet.defaultStyle()),
         override var layerable: Layerable = DefaultLayerable(size),
+        override var animationHandler: InternalAnimationHandler = DefaultAnimationHandler(),
         private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                 cursorSpace = size),
         private val shutdownHook: ShutdownHook = DefaultShutdownHook())
     : InternalTileGrid,
         InternalCursorHandler by cursorHandler,
         ShutdownHook by shutdownHook {
+
+    private var originalBackend = backend
+    private var originalLayerable = layerable
+    private var originalAnimationHandler = animationHandler
+
+    override fun addAnimation(animation: Animation): AnimationResult {
+        return animationHandler.addAnimation(animation)
+    }
+
+    override fun updateAnimations(currentTimeMs: Long, tileGrid: TileGrid) {
+        animationHandler.updateAnimations(currentTimeMs, tileGrid)
+    }
 
     override fun onInput(listener: Consumer<Input>) {
         EventBus.subscribe<InternalEvent.Input> { (input) ->
@@ -182,17 +200,16 @@ class RectangleTileGrid(
         backend.setStyleFrom(source)
     }
 
-    private var originalBackend = backend
-    private var originalLayerable = layerable
-
     override fun useContentsOf(tileGrid: InternalTileGrid) {
         backend = tileGrid.backend
         layerable = tileGrid.layerable
+        animationHandler = tileGrid.animationHandler
     }
 
     override fun reset() {
         backend = originalBackend
         layerable = originalLayerable
+        animationHandler = originalAnimationHandler
     }
 
     override fun close() {

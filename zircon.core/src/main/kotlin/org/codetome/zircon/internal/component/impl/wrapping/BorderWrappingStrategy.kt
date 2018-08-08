@@ -1,11 +1,11 @@
 package org.codetome.zircon.internal.component.impl.wrapping
 
+import org.codetome.zircon.api.builder.modifier.BorderBuilder
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.modifier.Border
-import org.codetome.zircon.api.builder.modifier.BorderBuilder
 import org.codetome.zircon.api.modifier.BorderPosition
 import org.codetome.zircon.api.modifier.BorderPosition.*
 import org.codetome.zircon.api.shape.LineFactory

@@ -1,28 +1,23 @@
 package org.codetome.zircon.internal.behavior.impl
 
 import org.codetome.zircon.api.behavior.TilesetOverride
-import org.codetome.zircon.api.tileset.Tileset
-import org.codetome.zircon.internal.tileset.impl.FontSettings
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.resource.TilesetResource
 
-class DefaultTilesetOverride(initialTileset: Tileset) : TilesetOverride {
+class DefaultTilesetOverride(
+        private var tileset: TilesetResource<out Tile>) : TilesetOverride {
 
-    private var font = initialTileset
+    override fun tileset() = tileset
 
-    override fun resetFont() {
-        font = FontSettings.NO_FONT
-    }
-
-    override fun getCurrentFont(): Tileset = font
-
-    override fun useFont(tileset: Tileset): Boolean {
-        val currentFont = getCurrentFont()
-        if (currentFont !== FontSettings.NO_FONT) {
-            require(currentFont.getSize() == tileset.getSize()) {
-                "Can't override previous tileset with size: ${getCurrentFont().getSize()} with a Tileset with" +
-                        " different size: ${tileset.getSize()}"
-            }
+    override fun useTileset(tileset: TilesetResource<out Tile>) {
+        val current = tileset()
+        require(current.size() == tileset.size()) {
+            "Can't override previous tileset with size: ${current.size()} with a Tileset with" +
+                    " different size: ${tileset.size()}"
         }
-        this.font = tileset
-        return true
+        require(this.tileset.isCompatibleWith(tileset)) {
+            "The supplied tileset is not compatible with the current one."
+        }
+        this.tileset = tileset
     }
 }

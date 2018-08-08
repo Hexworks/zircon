@@ -1,33 +1,31 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
+import org.codetome.zircon.api.builder.component.LabelBuilder
+import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.ComponentState
-import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.codetome.zircon.api.tileset.Tileset
-import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
-import org.codetome.zircon.api.builder.component.LabelBuilder
-import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
-import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
+import org.codetome.zircon.api.resource.TilesetResource
 import org.junit.Before
 import org.junit.Test
 
 class DefaultLabelTest {
 
     lateinit var target: DefaultLabel
-    lateinit var tileset: Tileset
+    lateinit var tileset: TilesetResource<out Tile>
 
     @Before
     fun setUp() {
-        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
-        tileset = FONT.toFont()
+        tileset = FONT
         target = LabelBuilder.newBuilder()
                 .componentStyles(COMPONENT_STYLES)
                 .position(POSITION)
-                .font(tileset)
+                .tileset(tileset)
                 .text(TEXT)
                 .build() as DefaultLabel
     }
@@ -39,8 +37,8 @@ class DefaultLabelTest {
 
     @Test
     fun shouldUseProperFont() {
-        assertThat(target.getCurrentFont().getId())
-                .isEqualTo(tileset.getId())
+        assertThat(target.tileset().id)
+                .isEqualTo(tileset.id)
     }
 
     @Test

@@ -1,6 +1,7 @@
 package org.codetome.zircon.api.animation
 
 import org.codetome.zircon.api.behavior.Closeable
+import org.codetome.zircon.api.screen.Screen
 
 /**
  * This component is responsible for running [Animation]s.

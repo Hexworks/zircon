@@ -36,12 +36,14 @@ open class DefaultContainer(initialSize: Size,
     private val components = mutableListOf<InternalComponent>()
 
     override fun addComponent(component: Component) {
+        // TODO: refactor component to be a layer
+        // TODO: and use the layering functionality out of the box
         require(component !== this) {
             "You can't add a component to itself!"
         }
         (component as? DefaultComponent)?.let { dc ->
             if (isAttached()) {
-                dc.setPosition(dc.getPosition() + getEffectivePosition())
+                dc.moveTo(dc.getPosition() + getEffectivePosition())
             }
             require(tileset().size() == component.tileset().size()) {
                 "Trying to add component with incompatible tileset size '${component.tileset().size()}' to" +
@@ -55,10 +57,10 @@ open class DefaultContainer(initialSize: Size,
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
     }
 
-    override fun setPosition(position: Position) {
-        super.setPosition(position)
+    override fun moveTo(position: Position): Boolean {
+        super.moveTo(position)
         components.forEach { comp ->
-            comp.setPosition(comp.getPosition() + getEffectivePosition())
+            comp.moveTo(comp.getPosition() + getEffectivePosition())
             // TODO: if the component has the same size and position it adds it!!!
             require(containsBoundable(comp)) {
                 "You can't add a component to a container which is not within its bounds " +
@@ -66,6 +68,7 @@ open class DefaultContainer(initialSize: Size,
                         ", position: ${comp.getPosition()})!"
             }
         }
+        return true
     }
 
     override fun signalAttached() {

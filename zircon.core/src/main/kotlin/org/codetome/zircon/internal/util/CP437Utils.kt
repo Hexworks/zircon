@@ -1,6 +1,6 @@
 package org.codetome.zircon.internal.util
 
-import org.codetome.zircon.internal.tileset.impl.DefaultTileTextureMetadata
+import org.codetome.zircon.internal.tileset.impl.CP437TileTextureMetadata
 
 object CP437Utils {
 
@@ -15,10 +15,12 @@ object CP437Utils {
     val CP437_METADATA = UNICODE_TO_CP437_LOOKUP.map { (char, index) ->
         val x = index.rem(16)
         val y = index.div(16)
-        Pair(char.toChar(), listOf(DefaultTileTextureMetadata(
-                char = char.toChar(),
+        Pair(char.toChar(), listOf(CP437TileTextureMetadata(
+                character = char.toChar(),
                 x = x,
-                y = y)))
+                y = y,
+                width = 1,
+                height = 1)))
     }.toMap()
 
     /**

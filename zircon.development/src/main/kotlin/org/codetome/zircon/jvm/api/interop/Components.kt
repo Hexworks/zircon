@@ -22,8 +22,8 @@ object Components {
     @JvmStatic
     fun newCheckBoxBuilder() = CheckBoxBuilder.newBuilder()
 
-//    @JvmStatic
-//    fun newGameComponentBuilder() = GameComponentBuilder.newBuilder()
+    @JvmStatic
+    fun newGameComponentBuilder() = GameComponentBuilder.newBuilder()
 
     @JvmStatic
     fun newHeaderBuilder() = HeaderBuilder.newBuilder()

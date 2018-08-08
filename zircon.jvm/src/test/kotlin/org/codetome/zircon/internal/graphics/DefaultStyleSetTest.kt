@@ -2,13 +2,13 @@ package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
+import org.codetome.zircon.api.builder.modifier.BorderBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
-import org.codetome.zircon.api.interop.Modifiers
-import org.codetome.zircon.api.builder.modifier.BorderBuilder
 import org.codetome.zircon.api.modifier.BorderPosition
 import org.codetome.zircon.api.modifier.SimpleModifiers.*
+import org.codetome.zircon.api.interop.Modifiers
 import org.junit.Test
 
 class DefaultStyleSetTest {
@@ -25,35 +25,35 @@ class DefaultStyleSetTest {
 
     @Test
     fun shouldAddModifiersProperly() {
-        val styleSet = StyleSet.defaultStyle().withAddedModifiers(Bold)
+        val styleSet = StyleSet.defaultStyle().withAddedModifiers(VerticalFlip)
 
-        val result = styleSet.withAddedModifiers(Italic)
+        val result = styleSet.withAddedModifiers(HorizontalFlip)
 
         assertThat(StyleSet.defaultStyle().getModifiers()).isEmpty()
-        assertThat(styleSet.getModifiers()).containsExactlyInAnyOrder(Bold)
-        assertThat(result.getModifiers()).containsExactlyInAnyOrder(Bold, Italic)
+        assertThat(styleSet.getModifiers()).containsExactlyInAnyOrder(VerticalFlip)
+        assertThat(result.getModifiers()).containsExactlyInAnyOrder(VerticalFlip, HorizontalFlip)
     }
 
     @Test
     fun shouldRemoveModifiersProperly() {
-        val styleSet = StyleSet.defaultStyle().withAddedModifiers(Bold, Italic)
+        val styleSet = StyleSet.defaultStyle().withAddedModifiers(VerticalFlip, HorizontalFlip)
 
-        val result = styleSet.withRemovedModifiers(Italic)
+        val result = styleSet.withRemovedModifiers(HorizontalFlip)
 
         assertThat(StyleSet.defaultStyle().getModifiers()).isEmpty()
-        assertThat(styleSet.getModifiers()).containsExactlyInAnyOrder(Bold, Italic)
-        assertThat(result.getModifiers()).containsExactlyInAnyOrder(Bold)
+        assertThat(styleSet.getModifiers()).containsExactlyInAnyOrder(VerticalFlip, HorizontalFlip)
+        assertThat(result.getModifiers()).containsExactlyInAnyOrder(VerticalFlip)
     }
 
     @Test
     fun shouldSetModifiersProperly() {
-        val styleSet = StyleSet.defaultStyle().withAddedModifiers(Bold, Italic)
+        val styleSet = StyleSet.defaultStyle().withAddedModifiers(VerticalFlip, HorizontalFlip)
 
-        val result = styleSet.withModifiers(Italic, CrossedOut)
+        val result = styleSet.withModifiers(HorizontalFlip, CrossedOut)
 
         assertThat(StyleSet.defaultStyle().getModifiers()).isEmpty()
-        assertThat(styleSet.getModifiers()).containsExactlyInAnyOrder(Bold, Italic)
-        assertThat(result.getModifiers()).containsExactlyInAnyOrder(CrossedOut, Italic)
+        assertThat(styleSet.getModifiers()).containsExactlyInAnyOrder(VerticalFlip, HorizontalFlip)
+        assertThat(result.getModifiers()).containsExactlyInAnyOrder(CrossedOut, HorizontalFlip)
     }
 
     @Test

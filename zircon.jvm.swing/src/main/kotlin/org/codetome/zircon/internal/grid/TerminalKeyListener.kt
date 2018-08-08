@@ -1,11 +1,11 @@
-package org.codetome.zircon.internal.grid
+package org.codetome.zircon.gui.swing.internal.grid
 
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.KeyStroke
-import org.codetome.zircon.api.grid.DeviceConfiguration
 import org.codetome.zircon.api.util.TextUtils
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.event.Event
+import org.codetome.zircon.internal.config.RuntimeConfig
+import org.codetome.zircon.internal.event.InternalEvent
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
 import java.awt.event.InputEvent
@@ -13,7 +13,7 @@ import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.util.*
 
-class TerminalKeyListener(private val deviceConfiguration: DeviceConfiguration) : KeyAdapter() {
+class TerminalKeyListener() : KeyAdapter() {
 
     override fun keyTyped(e: KeyEvent) {
         var character = e.keyChar
@@ -31,10 +31,10 @@ class TerminalKeyListener(private val deviceConfiguration: DeviceConfiguration) 
 
             // Check if clipboard is available and this was a paste (ctrl + shift + v) before
             // adding the key to the input queue
-            if (!altDown && ctrlDown && shiftDown && character == 'V' && deviceConfiguration.isClipboardAvailable) {
+            if (!altDown && ctrlDown && shiftDown && character == 'V' && RuntimeConfig.config.isClipboardAvailable) {
                 pasteClipboardContent()
             } else {
-                EventBus.broadcast(Event.Input(KeyStroke(
+                EventBus.broadcast(InternalEvent.Input(KeyStroke(
                         character = character,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
@@ -50,28 +50,28 @@ class TerminalKeyListener(private val deviceConfiguration: DeviceConfiguration) 
 
         if (e.keyCode == KeyEvent.VK_INSERT) {
             // This could be a paste (shift+insert) if the clipboard is available
-            if (!altDown && !ctrlDown && shiftDown && deviceConfiguration.isClipboardAvailable) {
+            if (!altDown && !ctrlDown && shiftDown && RuntimeConfig.config.isClipboardAvailable) {
                 pasteClipboardContent()
             } else {
-                EventBus.broadcast(Event.Input(KeyStroke(type = InputType.Insert,
+                EventBus.broadcast(InternalEvent.Input(KeyStroke(type = InputType.Insert,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
                         shiftDown = shiftDown)))
             }
         } else if (e.keyCode == KeyEvent.VK_TAB) {
             if (e.isShiftDown) {
-                EventBus.broadcast(Event.Input(KeyStroke(type = InputType.ReverseTab,
+                EventBus.broadcast(InternalEvent.Input(KeyStroke(type = InputType.ReverseTab,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
                         shiftDown = shiftDown)))
             } else {
-                EventBus.broadcast(Event.Input(KeyStroke(type = InputType.Tab,
+                EventBus.broadcast(InternalEvent.Input(KeyStroke(type = InputType.Tab,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
                         shiftDown = shiftDown)))
             }
         } else if (KEY_EVENT_TO_KEY_TYPE_LOOKUP.containsKey(e.keyCode)) {
-            EventBus.broadcast(Event.Input(KeyStroke(type = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
+            EventBus.broadcast(InternalEvent.Input(KeyStroke(type = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
                     ctrlDown = ctrlDown,
                     altDown = altDown,
                     shiftDown = shiftDown)))
@@ -82,7 +82,7 @@ class TerminalKeyListener(private val deviceConfiguration: DeviceConfiguration) 
                 if (!shiftDown) {
                     character = Character.toLowerCase(character)
                 }
-                EventBus.broadcast(Event.Input(KeyStroke(
+                EventBus.broadcast(InternalEvent.Input(KeyStroke(
                         character = character,
                         ctrlDown = ctrlDown,
                         altDown = altDown,
@@ -101,7 +101,7 @@ class TerminalKeyListener(private val deviceConfiguration: DeviceConfiguration) 
         string.filter {
             TextUtils.isPrintableCharacter(it)
         }.forEach {
-            EventBus.broadcast(Event.Input(KeyStroke(character = it)))
+            EventBus.broadcast(InternalEvent.Input(KeyStroke(character = it)))
         }
     }
 

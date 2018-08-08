@@ -1,5 +1,6 @@
 package org.codetome.zircon.internal.component.impl.wrapping
 
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.builder.graphics.BoxBuilder
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
@@ -21,6 +22,7 @@ class BoxWrappingStrategy(private val boxType: BoxType,
                 .boxType(boxType)
                 .size(size)
                 .style(style)
+                .tileset(tileImage.tileset())
                 .build()
                 .drawOnto(tileImage, offset)
         if (size.xLength > 4) {
@@ -30,9 +32,25 @@ class BoxWrappingStrategy(private val boxType: BoxType,
                 } else {
                     titleText
                 }
-                tileImage.setCharAt(offset.withRelativeX(1), boxType.connectorLeft)
-                tileImage.putText(cleanText, offset.withRelativeX(2))
-                tileImage.setCharAt(offset.withRelativeX(2 + cleanText.length), boxType.connectorRight)
+                tileImage.setTileAt(offset.withRelativeX(1), TileBuilder.newBuilder()
+                        .styleSet(style)
+                        .character(boxType.connectorLeft)
+                        .build())
+                val pos = offset.withRelativeX(2)
+                (0 until cleanText.length).forEach { idx ->
+                    tileImage.setTileAt(
+                            position = pos.withRelativeX(idx),
+                            tile = TileBuilder.newBuilder()
+                                    .styleSet(style)
+                                    .character(cleanText[idx])
+                                    .build())
+                }
+                tileImage.setTileAt(
+                        position = offset.withRelativeX(2 + cleanText.length),
+                        tile = TileBuilder.newBuilder()
+                                .styleSet(style)
+                                .character(boxType.connectorRight)
+                                .build())
             }
         }
     }

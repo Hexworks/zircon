@@ -1,7 +1,7 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.TerminalUtils;
 import org.codetome.zircon.api.builder.graphics.LayerBuilder;
+import org.codetome.zircon.api.builder.grid.TileGridBuilder;
 import org.codetome.zircon.api.color.ANSITextColor;
 import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.data.Size;
@@ -58,9 +58,9 @@ public class TilesetExample {
     private static final TextColor TEXT_BG_COLOR = TextColors.fromString("#00ff00");
 
     public static void main(String[] args) {
-        final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
-                .font(WANDERLUST_16X16.toFont())
-                .initialTerminalSize(SIZE)
+        final TileGrid tileGrid = TileGridBuilder.Companion.newBuilder()
+                .tileset(WANDERLUST_16X16)
+                .size(SIZE)
                 .build();
         final Screen screen = Screens.createScreenFor(tileGrid);
         screen.setCursorVisibility(false);

@@ -1,5 +1,7 @@
 package org.codetome.zircon.internal.grid
 
+import org.codetome.zircon.api.animation.Animation
+import org.codetome.zircon.api.animation.AnimationResult
 import org.codetome.zircon.api.behavior.Boundable
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.Layerable
@@ -9,22 +11,25 @@ import org.codetome.zircon.api.data.CharacterTile
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.graphics.TileImage
+import org.codetome.zircon.api.grid.TileGrid
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.modifier.Modifier
 import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.api.util.TextUtils
+import org.codetome.zircon.internal.animation.DefaultAnimationHandler
+import org.codetome.zircon.internal.animation.InternalAnimationHandler
 import org.codetome.zircon.internal.behavior.InternalCursorHandler
 import org.codetome.zircon.internal.behavior.ShutdownHook
 import org.codetome.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.codetome.zircon.internal.behavior.impl.DefaultLayerable
 import org.codetome.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.codetome.zircon.internal.event.InternalEvent
-import org.codetome.zircon.api.event.EventBus
-import org.codetome.zircon.api.util.TextUtils
 import org.codetome.zircon.internal.graphics.MapTileImage
 import java.util.concurrent.Executors
 
@@ -37,6 +42,7 @@ class ThreadSafeTileGrid(
                 tileset = tileset,
                 styleSet = StyleSet.defaultStyle()),
         override var layerable: Layerable = DefaultLayerable(size),
+        override var animationHandler: InternalAnimationHandler = DefaultAnimationHandler(),
         private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                 cursorSpace = size),
         private val shutdownHook: ShutdownHook = DefaultShutdownHook())
@@ -46,8 +52,20 @@ class ThreadSafeTileGrid(
         ShutdownHook by shutdownHook {
 
     private val executor = Executors.newSingleThreadExecutor()
+
     private var originalBackend = backend
     private var originalLayerable = layerable
+    private var originalAnimationHandler = animationHandler
+
+    override fun addAnimation(animation: Animation): AnimationResult {
+        return execute { animationHandler.addAnimation(animation) }
+    }
+
+    override fun updateAnimations(currentTimeMs: Long, tileGrid: TileGrid) {
+        submit {
+            animationHandler.updateAnimations(currentTimeMs, tileGrid)
+        }
+    }
 
     override fun onInput(listener: Consumer<Input>) {
         EventBus.subscribe<InternalEvent.Input> { (input) ->
@@ -84,6 +102,7 @@ class ThreadSafeTileGrid(
         submit {
             backend = tileGrid.backend
             layerable = tileGrid.layerable
+            animationHandler = tileGrid.animationHandler
         }
     }
 
@@ -91,6 +110,7 @@ class ThreadSafeTileGrid(
         submit {
             backend = originalBackend
             layerable = originalLayerable
+            animationHandler = originalAnimationHandler
         }
     }
 

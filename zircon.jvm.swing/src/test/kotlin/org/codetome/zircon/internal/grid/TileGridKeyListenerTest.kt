@@ -2,13 +2,13 @@ package org.codetome.zircon.internal.grid
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.input.InputType.Character
 import org.codetome.zircon.api.input.KeyStroke
-import org.codetome.zircon.api.grid.DeviceConfiguration
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.gui.swing.internal.grid.TerminalKeyListener
+import org.codetome.zircon.internal.event.InternalEvent
 import org.junit.Before
 import org.junit.Test
 import java.awt.Component
@@ -24,8 +24,8 @@ class TileGridKeyListenerTest {
 
     @Before
     fun setUp() {
-        target = TerminalKeyListener(CONFIG)
-        EventBus.subscribe<Event.Input> {
+        target = TerminalKeyListener()
+        EventBus.subscribe<InternalEvent.Input> {
             inputs.add(it.input)
         }
     }
@@ -95,7 +95,6 @@ class TileGridKeyListenerTest {
         val X = POSITION.x * FONT_SIZE
         val Y = POSITION.y * FONT_SIZE
         val BUTTON = 2
-        val CONFIG = DeviceConfiguration.defaultConfiguration()
         val DUMMY_COMPONENT = object : Component() {}
     }
 }

@@ -22,7 +22,7 @@ public class RexTesterExample {
     public static void main(String[] args) {
         REXPaintResource rex = REXPaintResource.loadREXFile(RESOURCE);
         final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
-                .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
+                .font(CP437TilesetResource.REX_PAINT_16X16)
                 .initialTerminalSize(SIZE)
                 .build();
         final Screen screen = Screens.createScreenFor(tileGrid);

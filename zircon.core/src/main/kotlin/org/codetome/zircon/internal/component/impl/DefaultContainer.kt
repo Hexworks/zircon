@@ -1,7 +1,5 @@
 package org.codetome.zircon.internal.component.impl
 
-import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.behavior.DrawSurface
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
@@ -10,64 +8,67 @@ import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.Component
 import org.codetome.zircon.api.component.ComponentStyleSet
 import org.codetome.zircon.api.component.Container
-import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.resource.TilesetResource
+import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.component.InternalComponent
 import org.codetome.zircon.internal.component.WrappingStrategy
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.tileset.impl.FontSettings
-import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.event.InternalEvent
 
+@Suppress("UNCHECKED_CAST")
 open class DefaultContainer(initialSize: Size,
                             position: Position,
-                            initialTileset: Tileset,
+                            initialTileset: TilesetResource<out Tile>,
                             componentStyleSet: ComponentStyleSet,
                             wrappers: Iterable<WrappingStrategy> = listOf())
-    : DefaultComponent(initialSize = initialSize,
+    : DefaultComponent(size = initialSize,
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = wrappers,
-        initialTileset = initialTileset), Container {
+        tileset = initialTileset),
+        Container {
 
     private val components = mutableListOf<InternalComponent>()
 
     override fun addComponent(component: Component) {
+        // TODO: refactor component to be a layer
+        // TODO: and use the layering functionality out of the box
         require(component !== this) {
             "You can't add a component to itself!"
         }
         (component as? DefaultComponent)?.let { dc ->
             if (isAttached()) {
-                dc.setPosition(dc.getPosition() + getEffectivePosition())
+                dc.moveTo(dc.getPosition() + getEffectivePosition())
             }
-            if (component.getCurrentFont() === FontSettings.NO_FONT) {
-                component.useFont(getCurrentFont())
-            } else {
-                require(getCurrentFont().getSize() == component.getCurrentFont().getSize()) {
-                    "Trying to add component with incompatible tileset size '${component.getCurrentFont().getSize()}' to" +
-                            "container with tileset size: '${getCurrentFont().getSize()}'!"
-                }
+            require(tileset().size() == component.tileset().size()) {
+                "Trying to add component with incompatible tileset size '${component.tileset().size()}' to" +
+                        "container with tileset size: '${tileset().size()}'!"
             }
             require(components.none { it.intersects(component) }) {
                 "You can't add a component to a container which intersects with other components!"
             }
             components.add(dc)
-            EventBus.broadcast(Event.ComponentAddition)
+            EventBus.broadcast(InternalEvent.ComponentAddition)
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
     }
 
-    override fun setPosition(position: Position) {
-        super.setPosition(position)
-        components.forEach {
-            it.setPosition(it.getPosition() + getEffectivePosition())
+    override fun moveTo(position: Position): Boolean {
+        super.moveTo(position)
+        components.forEach { comp ->
+            comp.moveTo(comp.getPosition() + getEffectivePosition())
             // TODO: if the component has the same size and position it adds it!!!
-            require(containsBoundable(it)) {
+            require(containsBoundable(comp)) {
                 "You can't add a component to a container which is not within its bounds " +
-                        "(target size: ${getEffectiveSize()}, component size: ${it.getBoundableSize()}" +
-                        ", position: ${it.getPosition()})!"
+                        "(target size: ${getEffectiveSize()}, component size: ${comp.getBoundableSize()}" +
+                        ", position: ${comp.getPosition()})!"
             }
         }
+        return true
     }
 
     override fun signalAttached() {
@@ -96,13 +97,12 @@ open class DefaultContainer(initialSize: Size,
             }
         }
         if (removalHappened) {
-            EventBus.broadcast(Event.ComponentRemoval)
+            EventBus.broadcast(InternalEvent.ComponentRemoval)
         }
         return removalHappened
     }
 
     override fun transformToLayers(): List<Layer> {
-        // TODO: persistent list here
         return mutableListOf(LayerBuilder.newBuilder()
                 .textImage(getDrawSurface())
                 .offset(getPosition())
@@ -137,7 +137,7 @@ open class DefaultContainer(initialSize: Size,
 
 
     override fun toString(): String {
-        return "${this::class.simpleName}(id=${getId().toString().substring(0, 4)})"
+        return "${this::class.simpleName}(id=${id.toString().substring(0, 4)})"
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme) {

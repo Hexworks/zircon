@@ -25,7 +25,7 @@ class CP437TileMetadataLoader(private val width: Int,
 
     override fun supportsTile(tile: Tile): Boolean {
         return tile is CharacterTile &&
-                cp437Metadata.containsKey((tile as CharacterTile).character)
+                cp437Metadata.containsKey(tile.character)
     }
 
     override fun fetchMetaForTile(tile: CharacterTile): TileTextureMetadata<CharacterTile> {

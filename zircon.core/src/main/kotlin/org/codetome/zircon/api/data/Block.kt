@@ -5,9 +5,10 @@ package org.codetome.zircon.api.data
  * consists of layers of [Tile]s.
  * The layers are ordered from bottom to top.
  */
-data class Block(val position: Position3D,
-                 val top: Tile = Tile.empty(),
-                 val back: Tile = Tile.empty(),
-                 val front: Tile = Tile.empty(),
-                 val bottom: Tile = Tile.empty(),
-                 val layers: MutableList<Tile> = mutableListOf()) // TODO: mutable
+data class Block(
+        val position: Position3D,
+        val top: Tile = Tile.empty(),
+        val back: Tile = Tile.empty(),
+        val front: Tile = Tile.empty(),
+        val bottom: Tile = Tile.empty(),
+        val layers: MutableList<Tile> = mutableListOf())

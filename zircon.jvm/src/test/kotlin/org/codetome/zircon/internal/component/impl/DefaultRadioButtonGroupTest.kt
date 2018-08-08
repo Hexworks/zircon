@@ -1,24 +1,23 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
+import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.RadioButtonGroup
-import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.codetome.zircon.api.tileset.Tileset
-import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
-import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.util.Consumer
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
-import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
+import org.codetome.zircon.internal.event.InternalEvent
+import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 import org.junit.Before
 import org.junit.Test
@@ -27,12 +26,11 @@ import java.util.concurrent.atomic.AtomicBoolean
 class DefaultRadioButtonGroupTest {
 
     lateinit var target: DefaultRadioButtonGroup
-    lateinit var tileset: Tileset
+    lateinit var tileset: TilesetResource<out Tile>
 
     @Before
     fun setUp() {
-        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
-        tileset = DefaultLabelTest.FONT.toFont()
+        tileset = DefaultLabelTest.FONT
         target = DefaultRadioButtonGroup(
                 wrappers = ThreadSafeQueueFactory.create(),
                 size = SIZE,
@@ -48,8 +46,8 @@ class DefaultRadioButtonGroupTest {
 
     @Test
     fun shouldUseProperFont() {
-        assertThat(target.getCurrentFont().getId())
-                .isEqualTo(tileset.getId())
+        assertThat(target.tileset().id)
+                .isEqualTo(tileset.id)
     }
 
     @Test
@@ -58,22 +56,10 @@ class DefaultRadioButtonGroupTest {
     }
 
     @Test
-    fun shouldProperlySignalComponentChangeOnMouseRelease() {
-        val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe<Event.ComponentChange> {
-            componentChanged.set(true)
-        }
-
-        EventBus.sendTo(target.getId(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
-
-        assertThat(componentChanged.get()).isTrue()
-    }
-
-    @Test
     fun shouldSelectChildButtonWhenClicked() {
         val button = target.addOption("foo", "bar")
 
-        EventBus.sendTo(button.getId(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        EventBus.sendTo(button.id, InternalEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(button.isSelected()).isTrue()
     }
@@ -84,8 +70,8 @@ class DefaultRadioButtonGroupTest {
         val newButton = target.addOption("baz", "qux")
 
 
-        EventBus.sendTo(oldButton.getId(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
-        EventBus.sendTo(newButton.getId(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        EventBus.sendTo(oldButton.id, InternalEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        EventBus.sendTo(newButton.id, InternalEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(oldButton.isSelected()).isFalse()
         assertThat(newButton.isSelected()).isTrue()
@@ -102,7 +88,7 @@ class DefaultRadioButtonGroupTest {
             }
         })
 
-        EventBus.sendTo(button.getId(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        EventBus.sendTo(button.id, InternalEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(selected.get()).isTrue()
     }

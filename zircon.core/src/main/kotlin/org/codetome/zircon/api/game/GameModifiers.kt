@@ -14,6 +14,6 @@ enum class GameModifiers : Modifier {
     BLOCK_LAYER;
 
     override fun generateCacheKey(): String {
-        return "GameModifiers$name"
+        return "Modifier.GameModifier.$name"
     }
 }

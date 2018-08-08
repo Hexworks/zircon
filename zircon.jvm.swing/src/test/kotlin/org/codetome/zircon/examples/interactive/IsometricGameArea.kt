@@ -1,24 +1,24 @@
 package org.codetome.zircon.examples.interactive
 
-import org.codetome.zircon.TerminalUtils
-import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.graphics.Symbols
-import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.graphics.LayerBuilder
 import org.codetome.zircon.api.builder.graphics.TextCharacterStringBuilder
+import org.codetome.zircon.api.builder.grid.TileGridBuilder
 import org.codetome.zircon.api.builder.screen.ScreenBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.color.TextColor
-import org.codetome.zircon.api.game.GameModifiers
+import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Position3D
-import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.data.Size3D
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.game.GameModifiers
+import org.codetome.zircon.api.game.ProjectionMode
 import org.codetome.zircon.api.graphics.BoxType
+import org.codetome.zircon.api.graphics.Symbols
 import org.codetome.zircon.api.input.InputType
 import org.codetome.zircon.api.interop.Components
 import org.codetome.zircon.api.interop.Sizes
-import org.codetome.zircon.api.interop.Tiles
 import org.codetome.zircon.api.interop.TextColors
+import org.codetome.zircon.api.interop.Tiles
 import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.api.resource.ColorThemeResource
 import org.codetome.zircon.api.screen.Screen
@@ -101,12 +101,11 @@ object IsometricGameArea {
         val screenSize = Toolkit.getDefaultToolkit().screenSize
         val x = screenSize.getWidth() / FONT.width
         val y = screenSize.getHeight() / FONT.height
-        val terminal = TerminalUtils.fetchTerminalBuilder(args)
-                .font(FONT.toFont())
-                .initialTerminalSize(Sizes.create(x.toInt(), y.toInt()))
-                .fullScreen()
+        val grid = TileGridBuilder.newBuilder()
+                .tileset(FONT)
+                .size(Sizes.create(x.toInt(), y.toInt()))
                 .build()
-        val screen = ScreenBuilder.createScreenFor(terminal)
+        val screen = ScreenBuilder.createScreenFor(grid)
         screen.setCursorVisibility(false) // we don't want the cursor right now
 
 
@@ -210,7 +209,7 @@ object IsometricGameArea {
     }
 
     private fun enableMovement(screen: Screen, gameComponent: DefaultGameComponent) {
-        screen.onInput({ input ->
+        screen.onInput { input ->
             if (EXIT_CONDITIONS.contains(input.getInputType())) {
                 System.exit(0)
             } else {
@@ -232,7 +231,9 @@ object IsometricGameArea {
                 if (InputType.PageDown === input.getInputType()) {
                     gameComponent.scrollOneDown()
                 }
-                screen.drainLayers()
+                screen.getLayers().forEach {
+                    screen.removeLayer(it)
+                }
                 val (x, y, z) = gameComponent.getVisibleOffset()
                 screen.pushLayer(LayerBuilder.newBuilder()
                         .textImage(TextCharacterStringBuilder.newBuilder()
@@ -240,11 +241,10 @@ object IsometricGameArea {
                                 .foregroundColor(TextColors.fromString("#aaaadd"))
                                 .text(String.format("Position: (x=%s, y=%s, z=%s)", x, y, z))
                                 .build()
-                                .toTextImage())
+                                .toTextImage(FONT))
                         .offset(Position.create(21, 1))
                         .build())
-                screen.refresh()
             }
-        })
+        }
     }
 }

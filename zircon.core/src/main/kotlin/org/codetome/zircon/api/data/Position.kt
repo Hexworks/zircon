@@ -1,46 +1,49 @@
 package org.codetome.zircon.api.data
 
 import org.codetome.zircon.api.component.Component
-import org.codetome.zircon.internal.data.DefaultPosition
+import org.codetome.zircon.api.tileset.Tileset
 
-/**
- * Represents the abstract concept of a position. Please note that the coordinates are 0-indexed, meaning 0x0 is the
- * top left corner of a grid for example. This object is immutable so you cannot change it after it has been created.
- * Instead, you can easily create modified clones by using the `with*` methods.
- */
 interface Position : Comparable<Position> {
 
     val x: Int
-
     val y: Int
 
-    override fun compareTo(other: Position): Int = when {
-        y > other.y -> 1
-        y == other.y && x > other.x -> 1
-        y == other.y && x == other.x -> 0
-        else -> -1
+    fun toAbsolutePosition(tileset: Tileset<out Tile, out Any>): AbsolutePosition
+
+    override fun compareTo(other: Position): Int {
+        checkType(this, other)
+        return when {
+            y > other.y -> 1
+            y == other.y && x > other.x -> 1
+            y == other.y && x == other.x -> 0
+            else -> -1
+        }
     }
 
-    /**
-     * Returns a new [Position] which is the sum of `x` and `y` in both [Position]s.
-     * so `Position(x = 1, y = 1).plus(Position(x = 2, y = 2))` will be
-     * `Position(x = 3, y = 3)`.
-     */
-    operator fun plus(position: Position): Position {
-        return create(
-                x = x + position.x,
-                y = y + position.y)
+    operator fun plus(other: Position): Position {
+        checkType(this, other)
+        return when (this) {
+            is AbsolutePosition -> AbsolutePosition(
+                    x = x + other.x,
+                    y = y + other.y)
+            is GridPosition -> GridPosition(
+                    x = x + other.x,
+                    y = y + other.y)
+            else -> throw UnsupportedOperationException("Can't add unknown Position type")
+        }
     }
 
-    /**
-     * Returns a new [Position] which is the difference between `x` and `y` in both [Position]s.
-     * so `Position(x = 3, y = 3).minus(Position(x = 2, y = 2))` will be
-     * `Position(x = 1, y = 1)`.
-     */
-    operator fun minus(position: Position): Position {
-        return create(
-                x = x - position.x,
-                y = y - position.y)
+    operator fun minus(other: Position): Position {
+        checkType(this, other)
+        return when (this) {
+            is AbsolutePosition -> AbsolutePosition(
+                    x = x - other.x,
+                    y = y - other.y)
+            is GridPosition -> GridPosition(
+                    x = x - other.x,
+                    y = y - other.y)
+            else -> throw UnsupportedOperationException("Can't subtract unknown Position type")
+        }
     }
 
     /**
@@ -50,7 +53,7 @@ interface Position : Comparable<Position> {
     fun withY(y: Int): Position {
         return if (x == 0 && y == 0) {
             DEFAULT_POSITION
-        } else create(x, y)
+        } else create(x, y, this)
     }
 
     /**
@@ -60,7 +63,7 @@ interface Position : Comparable<Position> {
     fun withX(x: Int): Position {
         return if (x == 0 && y == 0) {
             DEFAULT_POSITION
-        } else create(x, y)
+        } else create(x, y, this)
     }
 
     /**
@@ -83,7 +86,8 @@ interface Position : Comparable<Position> {
      * Creates a new [Position] object that is translated by an amount of y and x specified by another
      * [Position]. Same as calling `withRelativeY(translate.getYLength()).withRelativeX(translate.getXLength())`.
      */
-    fun withRelative(translate: Position) = withRelativeY(translate.y).withRelativeX(translate.x)
+    fun withRelative(translate: Position) = withRelativeY(translate.y)
+            .withRelativeX(translate.x)
 
     /**
      * Transforms this [Position] to a [Size] so if
@@ -161,7 +165,17 @@ interface Position : Comparable<Position> {
         /**
          * Creates a new [Position] using the given `x` and `y` values.
          */
-        fun create(x: Int, y: Int): Position = DefaultPosition(x, y)
+        fun create(x: Int, y: Int): Position = GridPosition(x, y)
+
+        private fun create(x: Int, y: Int, pos: Position): Position = when (pos) {
+            is GridPosition -> GridPosition(x, y)
+            is AbsolutePosition -> AbsolutePosition(x, y)
+            else -> throw UnsupportedOperationException("Unsupported Position type: ${pos::class.simpleName}")
+        }
+
+        private fun checkType(pos0: Position, pos1: Position) {
+            require(pos0::class == pos1::class)
+        }
 
         private val TOP_LEFT_CORNER = create(0, 0)
         private val OFFSET_1X1 = create(1, 1)
@@ -169,4 +183,3 @@ interface Position : Comparable<Position> {
         private val UNKNOWN = create(Int.MAX_VALUE, Int.MAX_VALUE)
     }
 }
-

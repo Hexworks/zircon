@@ -1,9 +1,9 @@
 package org.codetome.zircon.api.builder.screen
 
-import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.api.grid.TileGrid
-import org.codetome.zircon.internal.screen.TileGridScreen
+import org.codetome.zircon.api.screen.Screen
 import org.codetome.zircon.internal.grid.InternalTileGrid
+import org.codetome.zircon.internal.screen.TileGridScreen
 
 class ScreenBuilder {
 
@@ -11,7 +11,7 @@ class ScreenBuilder {
 
         fun createScreenFor(tileGrid: TileGrid): Screen {
             return TileGridScreen(
-                    terminal = tileGrid as InternalTileGrid)
+                    tileGrid = tileGrid as InternalTileGrid)
         }
     }
 }

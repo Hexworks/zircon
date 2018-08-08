@@ -2,7 +2,7 @@ package org.codetome.zircon.api.util
 
 import java.util.*
 
-class DefaultIdentifier(private val backend: UUID = UUID.randomUUID()) : Identifier {
+class DefaultIdentifier(val backend: UUID = UUID.randomUUID()) : Identifier {
 
     override fun compareTo(other: Identifier): Int {
         return backend.compareTo(fetchBackend(other))

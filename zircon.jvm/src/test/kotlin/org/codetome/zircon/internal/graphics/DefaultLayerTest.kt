@@ -1,12 +1,12 @@
 package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
+import org.codetome.zircon.api.builder.data.TileBuilder
+import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
-import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.builder.data.TileBuilder
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
-import org.codetome.zircon.internal.tileset.impl.FontSettings
 import org.junit.Before
 import org.junit.Test
 
@@ -17,9 +17,8 @@ class DefaultLayerTest {
     @Before
     fun setUp() {
         target = DefaultLayer(
-                size = SIZE,
-                offset = OFFSET,
-                initialTileset = FontSettings.NO_FONT)
+                position = OFFSET,
+                backend = TILE_IMAGE)
 
     }
 
@@ -75,10 +74,15 @@ class DefaultLayerTest {
     }
 
     companion object {
+        val TILESET = CP437TilesetResource.CLA_18X18
         val CHAR = TileBuilder.newBuilder()
                 .character('x')
                 .build()
         val SIZE = Size.create(10, 10)
+        val TILE_IMAGE = TileImageBuilder.newBuilder()
+                .size(SIZE)
+                .tileset(TILESET)
+                .build()
         val OFFSET = Position.create(5, 5)
         val INTERSECTING_BOUNDABLE = DefaultBoundable(Size.create(6, 6))
         val NON_INTERSECTING_BOUNDABLE = DefaultBoundable(Size.create(5, 5))

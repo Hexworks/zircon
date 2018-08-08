@@ -1,5 +1,6 @@
 package org.codetome.zircon.api.resource
 
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.internal.util.rex.REXFile
 import org.codetome.zircon.internal.util.rex.decompressGZIPByteArray
@@ -14,8 +15,8 @@ class REXPaintResource private constructor(rexFile: REXFile) {
     /**
      * Converts this [REXPaintResource] to a list of [Layer]s.
      */
-    fun toLayerList(): List<Layer> {
-        return this.rexFile.getLayers().map { it.toLayer() }.toList()
+    fun toLayerList(tileset: TilesetResource<out Tile>): List<Layer> {
+        return this.rexFile.getLayers().map { it.toLayer(tileset) }.toList()
     }
 
     companion object {

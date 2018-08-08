@@ -1,27 +1,30 @@
 package org.codetome.zircon.api.builder.component
 
-import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.component.ComponentStyleSet
-import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size3D
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.game.GameArea
 import org.codetome.zircon.api.game.GameComponent
 import org.codetome.zircon.api.game.ProjectionMode
-import org.codetome.zircon.api.data.Size3D
+import org.codetome.zircon.api.resource.TilesetResource
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.config.RuntimeConfig
 import org.codetome.zircon.internal.game.DefaultGameComponent
-import org.codetome.zircon.internal.tileset.impl.FontSettings
 
 /**
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
-data class GameComponentBuilder(private var gameArea: Maybe<GameArea> = Maybe.empty(),
-                                private var projectionMode: ProjectionMode = DEFAULT_PROJECTION_MODE,
-                                private var visibleSize: Size3D = Size3D.one(),
-                                private var tileset: Tileset = FontSettings.NO_FONT,
-                                private var position: Position = Position.defaultPosition(),
-                                private var componentStyleSet: ComponentStyleSet = ComponentStyleSet.defaultStyleSet()) : Builder<GameComponent> {
+data class GameComponentBuilder(
+        private var gameArea: Maybe<GameArea> = Maybe.empty(),
+        private var projectionMode: ProjectionMode = DEFAULT_PROJECTION_MODE,
+        private var visibleSize: Size3D = Size3D.one(),
+        private var tileset: TilesetResource<out Tile> = RuntimeConfig.config.defaultTileset,
+        private var position: Position = Position.defaultPosition(),
+        private var componentStyleSet: ComponentStyleSet = ComponentStyleSet.defaultStyleSet()) : Builder<GameComponent> {
 
     override fun createCopy() = copy()
 
@@ -37,7 +40,7 @@ data class GameComponentBuilder(private var gameArea: Maybe<GameArea> = Maybe.em
         this.visibleSize = visibleSize
     }
 
-    fun font(tileset: Tileset) = also {
+    fun font(tileset: TilesetResource<out Tile>) = also {
         this.tileset = tileset
     }
 

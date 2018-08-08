@@ -1,42 +1,45 @@
 package org.codetome.zircon.examples;
 
-import org.codetome.zircon.TerminalUtils;
+import org.codetome.zircon.api.builder.grid.AppConfigBuilder;
+import org.codetome.zircon.api.color.TextColor;
 import org.codetome.zircon.api.data.Size;
-import org.codetome.zircon.api.interop.DeviceConfigurations;
-import org.codetome.zircon.api.interop.Sizes;
-import org.codetome.zircon.api.interop.TextColors;
-import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.api.grid.AppConfig;
 import org.codetome.zircon.api.grid.CursorStyle;
 import org.codetome.zircon.api.grid.TileGrid;
+import org.codetome.zircon.api.resource.CP437TilesetResource;
+import org.codetome.zircon.gui.swing.internal.application.SwingApplication;
 
 public class CursorExample {
 
     private static final int TERMINAL_WIDTH = 30;
     private static final int TERMINAL_HEIGHT = 10;
-    private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
+    private static final Size SIZE = Size.Companion.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
 
     public static void main(String[] args) {
-        // we create a new grid using TerminalBuilder
-        final TileGrid tileGrid = TerminalUtils.fetchTerminalBuilder(args)
-                .initialTerminalSize(SIZE)
-                .font(CP437TilesetResource.TAFFER_20X20.toFont())
-                // we only override the device config
-                .deviceConfiguration(DeviceConfigurations.newBuilder()
-                        .cursorColor(TextColors.fromString("#ff8844"))
-                        .cursorStyle(CursorStyle.UNDER_BAR)
-                        .cursorBlinking(true)
-                        .build())
-                .build(); // then we build the grid
+
+        AppConfig config = AppConfigBuilder.Companion.newBuilder()
+                .cursorColor(TextColor.Companion.fromString("#ff8844"))
+                .blinkLengthInMilliSeconds(500)
+                .cursorStyle(CursorStyle.FIXED_BACKGROUND)
+                .cursorBlinking(true)
+                .defaultSize(SIZE)
+                .defaultTileset(CP437TilesetResource.TAFFER_20X20)
+                .build();
+
+        SwingApplication app = SwingApplication.Companion.create(config);
+
+        app.start();
+
+        TileGrid grid = app.getTileGrid();
 
         // for this example we need the cursor to be visible
-        tileGrid.setCursorVisibility(true);
+        grid.setCursorVisibility(true);
 
         String text = "Cursor example...";
         for (int i = 0; i < text.length(); i++) {
-            tileGrid.putCharacter(text.charAt(i));
+            grid.putCharacter(text.charAt(i));
         }
 
-        tileGrid.flush();
 
     }
 }

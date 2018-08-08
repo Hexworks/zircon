@@ -7,54 +7,51 @@ import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.StyleSet
 import org.codetome.zircon.api.modifier.Border
 import org.codetome.zircon.api.modifier.Modifier
-import org.codetome.zircon.internal.data.DefaultTile
+import org.codetome.zircon.api.modifier.SimpleModifiers.*
+import org.codetome.zircon.api.util.Maybe
+import kotlin.reflect.KClass
 
-/**
- * Represents a single tile with additional metadata such as colors and modifiers.
- * **Note that** a [Tile] has to be immutable and cannot be modified after creation.
- *
- * Use the with* methods to of new instances based on this one.
- *
- */
-interface Tile : Cacheable, Drawable {
+interface Tile : Drawable, Cacheable {
 
-    /**
-     * Tells whether this [Tile] is opaque, eg: the background color's alpha is 255.
-     */
-    fun isOpaque() = getBackgroundColor().getAlpha() == 255
+    fun asCharacterTile() = Maybe.ofNullable(this as? CharacterTile)
 
-    fun getCharacter(): Char
+    fun asImageTile() = Maybe.ofNullable(this as? ImageTile)
 
-    fun getForegroundColor(): TextColor
+    fun asGraphicTile() = Maybe.ofNullable(this as? GraphicTile)
 
-    fun getBackgroundColor(): TextColor
+    fun tileType(): KClass<out Tile>
 
-    fun getModifiers(): Set<Modifier>
+    fun isOpaque(): Boolean = getForegroundColor().isOpaque().and(
+            getBackgroundColor().isOpaque())
+
+    fun getForegroundColor(): TextColor = toStyleSet().getForegroundColor()
+
+    fun getBackgroundColor(): TextColor = toStyleSet().getBackgroundColor()
+
+    fun getModifiers(): Set<Modifier> = toStyleSet().getModifiers()
 
     fun toStyleSet(): StyleSet
 
-    fun getTags(): Set<String>
+    fun isUnderlined(): Boolean = getModifiers().contains(Underline)
 
-    fun isBold(): Boolean
+    fun isCrossedOut(): Boolean = getModifiers().contains(CrossedOut)
 
-    fun isUnderlined(): Boolean
+    fun isBlinking(): Boolean = getModifiers().contains(Blink)
 
-    fun isCrossedOut(): Boolean
+    fun isVerticalFlip(): Boolean = getModifiers().contains(VerticalFlip)
 
-    fun isItalic(): Boolean
+    fun hasBorder(): Boolean = getModifiers().any { it is Border }
 
-    fun isBlinking(): Boolean
+    fun fetchBorderData(): Set<Border> = getModifiers()
+            .filter { it is Border }
+            .map { it as Border }
+            .toSet()
 
-    fun hasBorder(): Boolean
+    fun isNotEmpty(): Boolean = this !== empty()
 
-    fun fetchBorderData(): Set<Border>
-
-    fun isNotEmpty(): Boolean = this != empty()
-
-    /**
-     * Returns a copy of this [Tile] with the specified character.
-     */
-    fun withCharacter(character: Char): Tile
+    override fun drawOnto(surface: DrawSurface, offset: Position) {
+        surface.setTileAt(offset, this)
+    }
 
     /**
      * Returns a copy of this [Tile] with the specified foreground color.
@@ -70,16 +67,6 @@ interface Tile : Cacheable, Drawable {
      * Returns a copy of this [Tile] with the specified style.
      */
     fun withStyle(styleSet: StyleSet): Tile
-
-    /**
-     * Returns a copy of this [Tile] with the specified tags.
-     */
-    fun withTags(tags: Set<String>): Tile
-
-    /**
-     * Returns a copy of this [Tile] with the specified tags.
-     */
-    fun withTags(vararg tags: String): Tile
 
     /**
      * Returns a copy of this [Tile] with the specified modifiers.
@@ -105,16 +92,6 @@ interface Tile : Cacheable, Drawable {
      */
     fun withoutModifiers(modifiers: Set<Modifier>): Tile
 
-    override fun generateCacheKey(): String {
-        return "c:${getCharacter()}" +
-                "ss:${toStyleSet().generateCacheKey()}" +
-                "t:${getTags().sorted().joinToString(separator = "")}"
-    }
-
-    override fun drawOnto(surface: DrawSurface, offset: Position) {
-        surface.setTileAt(offset, this)
-    }
-
     companion object {
 
         /**
@@ -124,37 +101,32 @@ interface Tile : Cacheable, Drawable {
          * - and default background
          * - and no modifiers.
          */
-        fun defaultTile() = DEFAULT_CHARACTER
+        fun defaultTile() = DEFAULT_CHARACTER_TILE
 
         /**
-         * Shorthand for an empty character which is:
+         * Shorthand for an empty character tile which is:
          * - a space character
          * - with transparent foreground
          * - and transparent background
          * - and no modifiers.
          */
-        fun empty() = EMPTY
+        fun empty() = EMPTY_CHARACTER_TILE
 
         /**
          * Creates a new [Tile].
          */
         fun create(character: Char,
-                   styleSet: StyleSet,
-                   tags: Set<String> = setOf()) = DefaultTile(
+                   style: StyleSet) = CharacterTile(
                 character = character,
-                styleSet = styleSet,
-                tags = tags)
+                style = style)
 
-        private val DEFAULT_CHARACTER = DefaultTile(
+        private val DEFAULT_CHARACTER_TILE = CharacterTile(
                 character = ' ',
-                styleSet = StyleSet.defaultStyle(),
-                tags = setOf())
+                style = StyleSet.defaultStyle())
 
-        private val EMPTY = DefaultTile(
+        private val EMPTY_CHARACTER_TILE = CharacterTile(
                 character = ' ',
-                styleSet = StyleSet.empty(),
-                tags = setOf())
+                style = StyleSet.empty())
 
     }
-
 }

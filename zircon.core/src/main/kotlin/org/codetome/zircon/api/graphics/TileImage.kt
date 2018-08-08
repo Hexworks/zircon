@@ -1,27 +1,27 @@
 package org.codetome.zircon.api.graphics
 
-import org.codetome.zircon.api.behavior.Boundable
-import org.codetome.zircon.api.behavior.DrawSurface
-import org.codetome.zircon.api.behavior.Drawable
-import org.codetome.zircon.api.behavior.Styleable
+import org.codetome.zircon.api.behavior.*
+import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.data.Cell
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.sam.TextCharacterTransformer
+import org.codetome.zircon.api.util.Math
+import org.codetome.zircon.internal.graphics.ConcurrentTileImage
 
 /**
  * An image built from [Tile]s with color and style information.
- * These are completely in memory and not visible,
- * but can be used when drawing on other [DrawSurface]s.
+ * It is completely in memory but it can be drawn onto other
+ * [DrawSurface]s like a [org.codetome.zircon.api.grid.TileGrid].
  */
 interface TileImage
-    : DrawSurface, Drawable, Styleable {
+    : Clearable, DrawSurface, Drawable, Styleable, TilesetOverride {
 
     /**
      * Returns a [List] of [Position]s which are not `EMPTY`.
      */
-    fun fetchFilledPositions(): List<Position>
+    fun fetchFilledPositions(): List<Position> = createSnapshot().keys.toList()
 
     /**
      * Returns a copy of this [TileImage] with the exact same content.
@@ -34,26 +34,72 @@ interface TileImage
      * @param size the size of the newly created image.
      * If the new image would overflow an exception is thrown
      */
-    fun toSubImage(offset: Position, size: Size): TileImage
+    fun toSubImage(offset: Position, size: Size): TileImage {
+        val result = ConcurrentTileImage(getBoundableSize(), tileset(), toStyleSet())
+        size.fetchPositions()
+                .map { it + offset }
+                .intersect(getBoundableSize().fetchPositions())
+                .forEach {
+                    result.setTileAt(it - offset, getTileAt(it).get())
+                }
+        return result
+    }
 
     /**
-     * Returns a copy of this image resized to a new size and using a specified filler character
-     * if the new size is larger than the old and we need to fill in empty areas.
+     * Returns a copy of this image resized to a new size and using
+     * a specified filler [Tile] if the new size is larger than the old and
+     * we need to fill in empty areas.
      * The copy will be independent from the one this method is
      * invoked on, so modifying one will not affect the other.
      */
-    fun resize(newSize: Size, filler: Tile = Tile.empty()): TileImage
+    fun resize(newSize: Size, filler: Tile): TileImage {
+        // TODO: return same type, use factory for this
+        val result = ConcurrentTileImage(
+                size = newSize,
+                styleSet = toStyleSet(),
+                tileset = tileset())
+        createSnapshot().filter { (pos) -> newSize.containsPosition(pos) }
+                .forEach { (pos, tc) ->
+                    result.setTileAt(pos, tc)
+                }
+        if (filler != Tile.empty()) {
+            newSize.fetchPositions().subtract(getBoundableSize().fetchPositions()).forEach {
+                result.setTileAt(it, filler)
+            }
+        }
+        return result
+    }
 
     /**
-     * Fills the emtpy parts of this [TileImage] with the given `filler`.
+     * Returns a copy of this image resized to a new size and using
+     * an empty [Tile] if the new size is larger than the old and
+     * we need to fill in empty areas.
+     * The copy will be independent from the one this method is
+     * invoked on, so modifying one will not affect the other.
      */
-    fun fill(filler: Tile): TileImage
+    fun resize(newSize: Size): TileImage {
+        return resize(newSize, Tile.empty())
+    }
+
+    /**
+     * Fills the empty parts of this [TileImage] with the given `filler`.
+     */
+    fun fill(filler: Tile): TileImage {
+        getBoundableSize().fetchPositions().filter { pos ->
+            getTileAt(pos).map { it == Tile.empty() }.orElse(false)
+        }.forEach { pos ->
+            setTileAt(pos, filler)
+        }
+        return this
+    }
 
     /**
      * Returns all the [Cell]s ([Tile]s with associated [Position] information)
      * of this [TileImage].
      */
-    fun fetchCells(): Iterable<Cell>
+    fun fetchCells(): Iterable<Cell> {
+        return fetchCellsBy(Position.defaultPosition(), getBoundableSize())
+    }
 
     /**
      * Returns the [Cell]s in this [TileImage] from the given `offset`
@@ -61,7 +107,11 @@ interface TileImage
      * Throws an exception if either `offset` or `size` would overlap
      * with this [TileImage].
      */
-    fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell>
+    fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell> {
+        return size.fetchPositions()
+                .map { it + offset }
+                .map { Cell(it, getTileAt(it).get()) }
+    }
 
     /**
      * Combines this text image with another one. This method creates a new
@@ -76,18 +126,42 @@ interface TileImage
      * @param tileImage the image which will be drawn onto `this` image
      * @param offset The position on the target image where the `tileImage`'s top left corner will be
      */
-    fun combineWith(tileImage: TileImage, offset: Position): TileImage
+    fun combineWith(tileImage: TileImage, offset: Position): TileImage {
+        val columns = Math.max(getBoundableSize().xLength, offset.x + tileImage.getBoundableSize().xLength)
+        val rows = Math.max(getBoundableSize().yLength, offset.y + tileImage.getBoundableSize().yLength)
+
+        val surface = resize(Size.create(columns, rows))
+        surface.draw(tileImage, offset)
+        return surface
+    }
 
     /**
      * Transforms all of the [Tile]s in this [TileImage] with the given
      * `transformer` and returns a new one with the transformed characters.
      */
-    fun transform(transformer: TextCharacterTransformer): TileImage
+    fun transform(transformer: TextCharacterTransformer): TileImage {
+        val result = ConcurrentTileImage(
+                size = getBoundableSize(),
+                tileset = tileset(),
+                styleSet = toStyleSet())
+        fetchCells().forEach { (pos, char) ->
+            result.setTileAt(pos, transformer.transform(char))
+        }
+        return result
+    }
 
     /**
      * Writes the given `text` at the given `position`.
      */
-    fun putText(text: String, position: Position = Position.defaultPosition())
+    fun putText(text: String, position: Position = Position.defaultPosition()) {
+        text.forEachIndexed { col, char ->
+            setTileAt(position.withRelativeX(col), TileBuilder
+                    .newBuilder()
+                    .styleSet(toStyleSet())
+                    .character(char)
+                    .build())
+        }
+    }
 
     /**
      * Sets the style of this [TileImage] from the given `styleSet`
@@ -99,7 +173,14 @@ interface TileImage
      */
     fun applyStyle(styleSet: StyleSet,
                    offset: Position = Position.defaultPosition(),
-                   size: Size = getBoundableSize())
-
-
+                   size: Size = getBoundableSize()) {
+        setStyleFrom(styleSet)
+        size.fetchPositions().forEach { pos ->
+            pos.plus(offset).let { fixedPos ->
+                getTileAt(fixedPos).map { char: Tile ->
+                    setTileAt(fixedPos, char.withStyle(styleSet))
+                }
+            }
+        }
+    }
 }

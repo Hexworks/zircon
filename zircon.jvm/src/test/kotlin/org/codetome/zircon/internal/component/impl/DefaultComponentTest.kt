@@ -1,30 +1,28 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.data.Size
-import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.color.ANSITextColor
 import org.codetome.zircon.api.component.ColorTheme
-import org.codetome.zircon.api.tileset.Tileset
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
-import org.codetome.zircon.api.interop.Modifiers
 import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.util.Consumer
 import org.codetome.zircon.api.util.Identifier
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.behavior.impl.DefaultBoundable
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
-import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
+import org.codetome.zircon.internal.event.InternalEvent
+import org.codetome.zircon.api.interop.Modifiers
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -32,18 +30,17 @@ import java.util.concurrent.atomic.AtomicBoolean
 class DefaultComponentTest {
 
     lateinit var target: DefaultComponent
-    lateinit var tileset: Tileset
+    lateinit var tileset: TilesetResource<out Tile>
 
     @Before
     fun setUp() {
-        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
-        tileset = FONT.toFont()
+        tileset = FONT
         target = object : DefaultComponent(
-                initialSize = SIZE,
+                size = SIZE,
                 position = POSITION,
                 componentStyleSet = STYLES,
                 wrappers = WRAPPERS,
-                initialTileset = tileset) {
+                tileset = tileset) {
             override fun applyColorTheme(colorTheme: ColorTheme) {
                 TODO("not implemented")
             }
@@ -66,7 +63,7 @@ class DefaultComponentTest {
     fun shouldUseFontFromComponentWhenTransformingToLayer() {
         val result = target.transformToLayers()
         result.forEach {
-            assertThat(it.getCurrentFont().getId()).isEqualTo(tileset.getId())
+            assertThat(it.tileset().id).isEqualTo(tileset.id)
         }
     }
 
@@ -78,38 +75,28 @@ class DefaultComponentTest {
 
     @Test
     fun shouldProperlyApplyStylesOnMouseOver() {
-        val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe<Event.ComponentChange> {
-            componentChanged.set(true)
-        }
 
-        EventBus.sendTo(target.getId(), Event.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
+        EventBus.sendTo(target.id, InternalEvent.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
 
         val targetChar = target.getDrawSurface().getTileAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(MOUSE_OVER_STYLE.getBackgroundColor())
         assertThat(targetChar.getForegroundColor()).isEqualTo(MOUSE_OVER_STYLE.getForegroundColor())
-        assertThat(componentChanged.get()).isTrue()
     }
 
     @Test
     fun shouldProperlyApplyStylesOnMouseOut() {
-        EventBus.sendTo(target.getId(), Event.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
-        val componentChanged = AtomicBoolean(false)
-        EventBus.subscribe<Event.ComponentChange> {
-            componentChanged.set(true)
-        }
+        EventBus.sendTo(target.id, InternalEvent.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
 
-        EventBus.sendTo(target.getId(), Event.MouseOut(MouseAction(MouseActionType.MOUSE_EXITED, 1, Position.defaultPosition())))
+        EventBus.sendTo(target.id, InternalEvent.MouseOut(MouseAction(MouseActionType.MOUSE_EXITED, 1, Position.defaultPosition())))
 
         val targetChar = target.getDrawSurface().getTileAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(DEFAULT_STYLE.getBackgroundColor())
         assertThat(targetChar.getForegroundColor()).isEqualTo(DEFAULT_STYLE.getForegroundColor())
-        assertThat(componentChanged.get()).isTrue()
     }
 
     @Test
     fun shouldProperlySetNewPosition() {
-        target.setPosition(NEW_POSITION)
+        target.moveTo(NEW_POSITION)
 
         assertThat(target.getPosition()).isEqualTo(NEW_POSITION)
     }
@@ -169,7 +156,7 @@ class DefaultComponentTest {
             }
         })
 
-        EventBus.sendTo(target.getId(), Event.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION)))
+        EventBus.sendTo(target.id, InternalEvent.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION)))
 
         assertThat(pressed.get()).isTrue()
     }
@@ -183,7 +170,7 @@ class DefaultComponentTest {
             }
         })
 
-        EventBus.sendTo(Identifier.randomIdentifier(), Event.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION)))
+        EventBus.sendTo(Identifier.randomIdentifier(), InternalEvent.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION)))
 
         assertThat(pressed.get()).isFalse()
     }
@@ -197,7 +184,7 @@ class DefaultComponentTest {
             }
         })
 
-        EventBus.sendTo(target.getId(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        EventBus.sendTo(target.id, InternalEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(pressed.get()).isTrue()
     }
@@ -211,7 +198,7 @@ class DefaultComponentTest {
             }
         })
 
-        EventBus.sendTo(Identifier.randomIdentifier(), Event.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        EventBus.sendTo(Identifier.randomIdentifier(), InternalEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(pressed.get()).isFalse()
     }

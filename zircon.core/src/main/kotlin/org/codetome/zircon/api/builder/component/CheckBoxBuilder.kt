@@ -4,14 +4,16 @@ import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.component.CheckBox
 import org.codetome.zircon.api.component.ComponentStyleSet
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.Layer
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.internal.component.impl.DefaultCheckBox
-import org.codetome.zircon.internal.tileset.impl.FontSettings
+import org.codetome.zircon.internal.config.RuntimeConfig
 import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 
 data class CheckBoxBuilder(
-        private var tileset: Tileset = FontSettings.NO_FONT,
+        private var tileset: TilesetResource<out Tile> = RuntimeConfig.config.defaultTileset,
         private var text: String = "",
         private var position: Position = Position.defaultPosition(),
         private var componentStyleSet: ComponentStyleSet = ComponentStyleSet.defaultStyleSet(),
@@ -20,7 +22,7 @@ data class CheckBoxBuilder(
     /**
      * Sets the [Tileset] to use with the resulting [Layer].
      */
-    fun font(tileset: Tileset) = also {
+    fun font(tileset: TilesetResource<out Tile>) = also {
         this.tileset = tileset
     }
 

@@ -3,6 +3,7 @@ package org.codetome.zircon.internal.graphics
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.shape.DefaultShape
 import org.junit.Test
 
@@ -27,7 +28,7 @@ class DefaultShapeTest {
 
     @Test
     fun shouldProperlyCreateTextImage() {
-        val result = LINE_SHAPE.toTextImage(CHAR)
+        val result = LINE_SHAPE.toTileImage(CHAR, TILESET)
 
         assertThat(result.getTileAt(Position.create(0, 0)).get())
                 .isEqualTo(CHAR)
@@ -41,6 +42,8 @@ class DefaultShapeTest {
     }
 
     companion object {
+        val TILESET = CP437TilesetResource.ADU_DHABI_16X16
+
         val POS_0 = Position.create(2, 3)
         val POS_1 = Position.create(3, 4)
         val POS_2 = Position.create(1, 2)

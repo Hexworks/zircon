@@ -1,33 +1,34 @@
 package org.codetome.zircon.internal.component.impl
 
-import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
+import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
 import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.component.CheckBox
 import org.codetome.zircon.api.component.ColorTheme
 import org.codetome.zircon.api.component.ComponentStyleSet
-import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.codetome.zircon.api.tileset.Tileset
-import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.input.Input
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.internal.component.WrappingStrategy
 import org.codetome.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.event.InternalEvent
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.internal.util.ThreadSafeQueue
 
 class DefaultCheckBox(private val text: String,
                       wrappers: ThreadSafeQueue<WrappingStrategy>,
                       width: Int,
-                      initialTileset: Tileset,
+                      initialTileset: TilesetResource<out Tile>,
                       position: Position,
                       componentStyleSet: ComponentStyleSet)
-    : CheckBox, DefaultComponent(initialSize = Size.create(width, 1),
+    : CheckBox, DefaultComponent(size = Size.create(width, 1),
         position = position,
         componentStyleSet = componentStyleSet,
         wrappers = wrappers,
-        initialTileset = initialTileset) {
+        tileset = initialTileset) {
 
     private val maxTextLength = width - BUTTON_WIDTH - 1
     private val clearedText = if (text.length > maxTextLength) {
@@ -44,18 +45,17 @@ class DefaultCheckBox(private val text: String,
         // TODO: re-enable in next release and fix the bug when the mouse is moved
         // TODO: after it is pressed and released on another component
         // TODO: the pressed state persists
-//        EventBus.subscribe<MouseAction>(EventType.MousePressed(getId()), {
+//        EventBus.subscribe<MouseAction>(EventType.MousePressed(id), {
 //            getDrawSurface().applyStyle(getComponentStyles().activate())
 //            checkBoxState = PRESSED
 //            redrawContent()
 //            EventBus.broadcast(EventType.ComponentChange)
 //        })
-        EventBus.listenTo<Event.MouseReleased>(getId()) {
+        EventBus.listenTo<InternalEvent.MouseReleased>(id) {
             getDrawSurface().applyStyle(getComponentStyles().mouseOver())
             checkBoxState = if (checked) UNCHECKED else CHECKED
             checked = checked.not()
             redrawContent()
-            EventBus.broadcast(Event.ComponentChange)
         }
     }
 
@@ -71,13 +71,11 @@ class DefaultCheckBox(private val text: String,
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
         getDrawSurface().applyStyle(getComponentStyles().giveFocus())
-        EventBus.broadcast(Event.ComponentChange)
         return true
     }
 
     override fun takeFocus(input: Maybe<Input>) {
         getDrawSurface().applyStyle(getComponentStyles().reset())
-        EventBus.broadcast(Event.ComponentChange)
     }
 
     override fun getText() = text

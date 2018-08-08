@@ -1,9 +1,10 @@
 package org.codetome.zircon.internal.tileset.transformer
 
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.interop.toAWTColor
 import org.codetome.zircon.api.tileset.TileTexture
 import org.codetome.zircon.api.tileset.TileTextureTransformer
+import java.awt.Color
 import java.awt.image.BufferedImage
 
 class Java2DTileTextureColorizer : TileTextureTransformer<BufferedImage> {
@@ -13,7 +14,7 @@ class Java2DTileTextureColorizer : TileTextureTransformer<BufferedImage> {
         val g = tile.getForegroundColor().getGreen().toFloat() / 255
         val b = tile.getForegroundColor().getBlue().toFloat() / 255
 
-        val backend = texture.getBackend()
+        val backend = texture.getTexture()
         (0 until backend.width).forEach { x ->
             (0 until backend.height).forEach { y ->
                 val ax = backend.colorModel.getAlpha(backend.raster.getDataElements(x, y, null))
@@ -34,3 +35,9 @@ class Java2DTileTextureColorizer : TileTextureTransformer<BufferedImage> {
     }
 
 }
+
+/**
+ * Extension for easy conversion between [TextColor] and awt [Color].
+ */
+fun TextColor.toAWTColor(): java.awt.Color = Color(getRed(), getGreen(), getBlue(), getAlpha())
+

@@ -1,25 +1,24 @@
 package org.codetome.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.codetome.zircon.api.data.Position
-import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.codetome.zircon.api.builder.component.HeaderBuilder
 import org.codetome.zircon.api.builder.component.LabelBuilder
 import org.codetome.zircon.api.builder.component.PanelBuilder
 import org.codetome.zircon.api.builder.graphics.StyleSetBuilder
+import org.codetome.zircon.api.builder.grid.TileGridBuilder
 import org.codetome.zircon.api.builder.screen.ScreenBuilder
-import org.codetome.zircon.api.builder.grid.VirtualTerminalBuilder
 import org.codetome.zircon.api.color.ANSITextColor
-import org.codetome.zircon.api.tileset.Tileset
-import org.codetome.zircon.api.interop.Modifiers
+import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.data.Size
+import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.resource.CP437TilesetResource
+import org.codetome.zircon.api.resource.TilesetResource
 import org.codetome.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.codetome.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
-import org.codetome.zircon.internal.tileset.impl.TilesetLoaderRegistry
-import org.codetome.zircon.internal.tileset.impl.TestTilesetLoader
+import org.codetome.zircon.internal.event.InternalEvent
+import org.codetome.zircon.api.interop.Modifiers
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -27,13 +26,13 @@ import java.util.concurrent.atomic.AtomicBoolean
 class DefaultContainerTest {
 
     lateinit var target: DefaultContainer
-    lateinit var goodTileset: Tileset
-    lateinit var badTileset: Tileset
+    lateinit var goodTileset: TilesetResource<out Tile>
+    lateinit var badTileset: TilesetResource<out Tile>
 
     @Before
     fun setUp() {
-        goodTileset = GOOD_FONT.toFont()
-        badTileset = BAD_FONT.toFont()
+        goodTileset = GOOD_FONT
+        badTileset = BAD_FONT
         target = DefaultContainer(
                 initialSize = SIZE,
                 position = POSITION,
@@ -44,12 +43,12 @@ class DefaultContainerTest {
 
     @Test
     fun shouldProperlySetPositionsWhenAContainerWithComponentsIsAddedToTheComponentTree() {
-        TilesetLoaderRegistry.setFontLoader(TestTilesetLoader())
-        val terminal = VirtualTerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.create(40, 25))
-                .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
+        val grid = TileGridBuilder.newBuilder()
+                .size(Size.create(40, 25))
+                .tileset(CP437TilesetResource.REX_PAINT_16X16)
                 .build()
-        val screen = ScreenBuilder.createScreenFor(terminal)
+
+        val screen = ScreenBuilder.createScreenFor(grid)
 
         val panel0 = PanelBuilder.newBuilder()
                 .wrapWithBox()
@@ -90,11 +89,11 @@ class DefaultContainerTest {
 
     @Test
     fun shouldProperlySetPositionsWhenAContainerIsAddedToTheComponentTreeThenComponentsAreAddedToIt() {
-        val terminal = VirtualTerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.create(40, 25))
-                .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
+        val grid = TileGridBuilder.newBuilder()
+                .size(Size.create(40, 25))
+                .tileset(CP437TilesetResource.REX_PAINT_16X16)
                 .build()
-        val screen = ScreenBuilder.createScreenFor(terminal)
+        val screen = ScreenBuilder.createScreenFor(grid)
 
         val panel0 = PanelBuilder.newBuilder()
                 .wrapWithBox()
@@ -135,11 +134,11 @@ class DefaultContainerTest {
 
     @Test
     fun shouldProperlySetPositionsWhenAComponentIsAddedToAContainerAfterItIsAttachedToTheScreen() {
-        val terminal = VirtualTerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.create(40, 25))
-                .font(CP437TilesetResource.REX_PAINT_16X16.toFont())
+        val grid = TileGridBuilder.newBuilder()
+                .size(Size.create(40, 25))
+                .tileset(CP437TilesetResource.REX_PAINT_16X16)
                 .build()
-        val screen = ScreenBuilder.createScreenFor(terminal)
+        val screen = ScreenBuilder.createScreenFor(grid)
 
         val panel0 = PanelBuilder.newBuilder()
                 .wrapWithBox()
@@ -166,7 +165,7 @@ class DefaultContainerTest {
     fun shouldThrowExceptionIfComponentWithUnsupportedFontSizeIsAdded() {
         target.addComponent(LabelBuilder.newBuilder()
                 .text("foo")
-                .font(badTileset)
+                .tileset(badTileset)
                 .build())
     }
 
@@ -188,7 +187,7 @@ class DefaultContainerTest {
     fun shouldSetCurrentFontToAddedComponentWithNoFont() {
         val comp = LabelBuilder.newBuilder().text("foo").build()
         target.addComponent(comp)
-        assertThat(comp.getCurrentFont().getId()).isEqualTo(goodTileset.getId())
+        assertThat(comp.tileset().id).isEqualTo(goodTileset.id)
     }
 
     @Test
@@ -204,7 +203,7 @@ class DefaultContainerTest {
                 .build()
         target.addComponent(comp)
         val removalHappened = AtomicBoolean(false)
-        EventBus.subscribe<Event.ComponentRemoval> {
+        EventBus.subscribe<InternalEvent.ComponentRemoval> {
             removalHappened.set(true)
         }
 
@@ -224,7 +223,7 @@ class DefaultContainerTest {
         panel.addComponent(comp)
         target.addComponent(panel)
         val removalHappened = AtomicBoolean(false)
-        EventBus.subscribe<Event.ComponentRemoval> {
+        EventBus.subscribe<InternalEvent.ComponentRemoval> {
             removalHappened.set(true)
         }
 

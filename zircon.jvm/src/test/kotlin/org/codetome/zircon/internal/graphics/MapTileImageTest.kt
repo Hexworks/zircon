@@ -1,14 +1,15 @@
 package org.codetome.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
+import org.codetome.zircon.api.builder.data.TileBuilder
+import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.data.Cell
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Position.Companion.defaultPosition
 import org.codetome.zircon.api.data.Position.Companion.offset1x1
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.builder.data.TileBuilder
-import org.codetome.zircon.api.builder.graphics.TileImageBuilder
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.junit.Before
 import org.junit.Test
 import java.util.function.Consumer
@@ -19,7 +20,9 @@ class MapTileImageTest {
 
     @Before
     fun setUp() {
-        target = MapTileImage(SIZE_OF_3X3)
+        target = MapTileImage(
+                size = SIZE_OF_3X3,
+                tileset = TILESET)
     }
 
     @Test
@@ -111,21 +114,33 @@ class MapTileImageTest {
 
         //first yLength should all be xLength's
         for (x in 0..2) {
-            assertThat(result.getTileAt(Position.create(x, 0)).get().getCharacter()).isEqualTo('x')
+            assertThat(result.getTileAt(Position.create(x, 0))
+                    .get()
+                    .asCharacterTile()
+                    .get().character).isEqualTo('x')
         }
 
         //as the second image was offset by 2 yLength there should be nothing here
         for (x in 0..2) {
-            assertThat(result.getTileAt(Position.create(x, 1)).get().getCharacter()).isEqualTo(' ')
+            assertThat(result.getTileAt(Position.create(x, 1))
+                    .get()
+                    .asCharacterTile()
+                    .get().character).isEqualTo(' ')
         }
 
         //the 3rd yLength should be + for the first 2 xLength (as that's the size of the second image)
         for (x in 0..1) {
-            assertThat(result.getTileAt(Position.create(x, 2)).get().getCharacter()).isEqualTo('+')
+            assertThat(result.getTileAt(Position.create(x, 2))
+                    .get()
+                    .asCharacterTile()
+                    .get().character).isEqualTo('+')
         }
 
         //the bottom right character should be blank
-        assertThat(result.getTileAt(Position.create(2, 2)).get().getCharacter()).isEqualTo(' ')
+        assertThat(result.getTileAt(Position.create(2, 2))
+                .get()
+                .asCharacterTile()
+                .get().character).isEqualTo(' ')
     }
 
     @Test
@@ -184,6 +199,7 @@ class MapTileImageTest {
     }
 
     companion object {
+        val TILESET = CP437TilesetResource.JOLLY_12X12
         val EMPTY_CHAR = Tile.empty()
         val EMPTY_BY_DEFAULT_POS = Position.create(2, 1)
         val FILLED_POS = Position.create(1, 2)
@@ -199,9 +215,11 @@ class MapTileImageTest {
                 .build()
         val TO_COPY = arrayOf(arrayOf(TO_COPY_CHAR))
         val IMAGE_TO_COPY = ConcurrentTileImage(
-                size = Size.one()).fill(SET_ALL_CHAR)
+                size = Size.one(),
+                tileset = TILESET).fill(SET_ALL_CHAR)
         val IMAGE_TO_COPY_AND_CROP = ConcurrentTileImage(
-                size = Size.create(2, 2)).fill(SET_ALL_CHAR)
+                size = Size.create(2, 2),
+                tileset = TILESET).fill(SET_ALL_CHAR)
 
     }
 

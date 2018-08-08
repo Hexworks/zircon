@@ -1,48 +1,50 @@
 package org.codetome.zircon.internal.graphics
 
 import org.codetome.zircon.api.behavior.Boundable
+import org.codetome.zircon.api.behavior.DrawSurface
+import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.behavior.TilesetOverride
-import org.codetome.zircon.api.builder.graphics.TileImageBuilder
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TileImage
-import org.codetome.zircon.api.tileset.Tileset
-import org.codetome.zircon.internal.behavior.impl.DefaultTilesetOverride
 import org.codetome.zircon.internal.behavior.impl.Rectangle
 
-class DefaultLayer(size: Size,
-                   offset: Position,
-                   initialTileset: Tileset,
-                   private val tilesetOverride: TilesetOverride = DefaultTilesetOverride(
-                           initialTileset = initialTileset),
-                   private val tileImage: TileImage = TileImageBuilder.newBuilder()
-                           .size(size)
-                           .build())
-    : Layer, TileImage by tileImage, TilesetOverride by tilesetOverride {
+/**
+ * this is a basic building block which can be re-used by complex image
+ * classes like layers, boxes, components, and more
+ * all classes which are implementing the DrawSurface or the Drawable operations can
+ * use this class as a base class just like how the TileGrid uses it
+ */
 
+data class DefaultLayer(private var position: Position,
+                        val backend: TileImage)
+    : Layer, TilesetOverride by backend {
 
-    private var position: Position
-    private var rect: Rectangle
+    private var rect: Rectangle = refreshRect()
 
-    init {
-        this.position = offset
-        this.rect = refreshRect()
+    override fun createSnapshot(): Map<Position, Tile> {
+        return backend.createSnapshot().mapKeys { it.key + position }
     }
 
-    override fun fill(filler: Tile): Layer {
-        tileImage.fill(filler)
-        return this
+    override fun draw(drawable: Drawable, offset: Position) {
+        backend.draw(drawable, offset)
     }
 
-    override fun fetchFilledPositions() = tileImage.fetchFilledPositions().map {
-        it + position
+    override fun drawOnto(surface: DrawSurface, offset: Position) {
+        backend.drawOnto(surface, offset)
     }
 
-    override fun fetchPositions() = getBoundableSize().fetchPositions()
-            .map { it + position }
-            .toSet()
+    override fun getBoundableSize(): Size {
+        return backend.getBoundableSize()
+    }
+
+    override fun getRelativeTileAt(position: Position) = backend.getTileAt(position)
+
+    override fun setRelativeTileAt(position: Position, character: Tile) {
+        backend.setTileAt(position, character)
+    }
 
     override fun getPosition() = position
 
@@ -73,25 +75,23 @@ class DefaultLayer(size: Size,
                     boundable.getBoundableSize().xLength,
                     boundable.getBoundableSize().yLength))
 
-    override fun getTileAt(position: Position) = tileImage.getTileAt(position - this.position)
-
-    override fun getRelativeTileAt(position: Position) = tileImage.getTileAt(position)
+    override fun getTileAt(position: Position) = backend.getTileAt(position - this.position)
 
     override fun setTileAt(position: Position, tile: Tile) {
-        tileImage.setTileAt(position - this.position, tile)
+        backend.setTileAt(position - this.position, tile)
     }
-
-    override fun setRelativeTileAt(position: Position, character: Tile) {
-        tileImage.setTileAt(position, character)
-    }
-
-    override fun createCopy() = DefaultLayer(
-            size = tileImage.getBoundableSize(),
-            offset = getPosition(),
-            initialTileset = getCurrentFont(),
-            tileImage = tileImage)
 
     private fun refreshRect(): Rectangle {
         return Rectangle(position.x, position.y, getBoundableSize().xLength, getBoundableSize().yLength)
     }
+
+    override fun createCopy() = DefaultLayer(
+            position = position,
+            backend = backend)
+
+    override fun fill(filler: Tile): Layer {
+        backend.fill(filler)
+        return this
+    }
+
 }

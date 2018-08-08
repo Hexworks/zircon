@@ -1,13 +1,13 @@
 package org.codetome.zircon.internal.util.rex
 
+import org.codetome.zircon.api.builder.data.TileBuilder
+import org.codetome.zircon.api.builder.graphics.LayerBuilder
+import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.builder.data.TileBuilder
-import org.codetome.zircon.api.color.TextColor
 import org.codetome.zircon.api.graphics.Layer
-import org.codetome.zircon.api.builder.graphics.LayerBuilder
-import org.codetome.zircon.internal.tileset.impl.FontSettings
+import org.codetome.zircon.api.resource.TilesetResource
 import java.nio.ByteBuffer
 
 /**
@@ -26,10 +26,10 @@ data class REXLayer(private val width: Int,
     /**
      * Returns itself as a [REXLayer].
      */
-    fun toLayer(): Layer {
+    fun toLayer(tileset: TilesetResource<out Tile>): Layer {
         val layer = LayerBuilder.newBuilder()
+                .tileset(tileset)
                 .size(Size.create(width, height))
-                .font(FontSettings.NO_FONT)
                 .build()
 
         for (y in 0 until height) {

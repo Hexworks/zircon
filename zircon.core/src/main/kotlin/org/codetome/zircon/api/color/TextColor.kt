@@ -5,6 +5,8 @@ import org.codetome.zircon.internal.color.DefaultTextColor
 
 interface TextColor : Cacheable {
 
+    fun isOpaque() = getAlpha() == 255
+
     fun getAlpha(): Int
 
     fun getRed(): Int
@@ -22,7 +24,7 @@ interface TextColor : Cacheable {
     fun darkenByPercent(percentage: Double): TextColor
 
     override fun generateCacheKey(): String {
-        return "a:${getAlpha()}r:${getRed()}g:${getGreen()}b:${getBlue()}"
+        return "a:${getAlpha()},r:${getRed()},g:${getGreen()},b:${getBlue()}"
     }
 
     companion object {

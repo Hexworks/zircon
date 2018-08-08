@@ -10,7 +10,8 @@ import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.shape.LineFactory
 import org.codetome.zircon.internal.component.WrappingStrategy
 
-class ShadowWrappingStrategy(private val shadowChar: Char = DEFAULT_SHADOW_CHAR) : WrappingStrategy {
+class ShadowWrappingStrategy(
+        private val shadowChar: Char = DEFAULT_SHADOW_CHAR) : WrappingStrategy {
 
     override fun getOccupiedSize() = Size.create(1, 1)
 
@@ -25,12 +26,12 @@ class ShadowWrappingStrategy(private val shadowChar: Char = DEFAULT_SHADOW_CHAR)
         LineFactory.buildLine(
                 fromPoint = Position.create(1, 0),
                 toPoint = Position.create(size.xLength - 1, 0))
-                .toTextImage(tc)
+                .toTileImage(tc, tileImage.tileset())
                 .drawOnto(tileImage, Position.create(1, size.yLength - 1))
         LineFactory.buildLine(
                 fromPoint = Position.create(0, 1),
                 toPoint = Position.create(0, size.yLength - 1))
-                .toTextImage(tc)
+                .toTileImage(tc, tileImage.tileset())
                 .drawOnto(tileImage, Position.create(size.xLength - 1, 1))
     }
 

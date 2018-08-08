@@ -30,9 +30,4 @@ interface Layerable : Boundable {
      * Returns a list of [Layer]s which are currently present in this [Layerable].
      */
     fun getLayers(): List<Layer>
-
-    /**
-     * Removes all [Layer]s from this [Layerable] and returns them.
-     */
-    fun drainLayers(): List<Layer>
 }

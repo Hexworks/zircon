@@ -4,8 +4,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
+import org.codetome.zircon.api.resource.CP437TilesetResource
 import org.codetome.zircon.internal.color.DefaultTextColor
-import org.codetome.zircon.internal.tileset.impl.FontSettings
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -24,7 +24,7 @@ class REXLayerTest {
     @Test
     @Ignore
     fun shouldProperlyLoadFromByteBuffer() {
-        val layer = target.toLayer()
+        val layer = target.toLayer(TILESET)
         assertThat(layer.getBoundableSize()).isEqualTo(Size.create(2, 1))
 
         assertChar(
@@ -41,9 +41,9 @@ class REXLayerTest {
 
     @Test
     fun shouldHaveNoFontByDefault() {
-        val layer = target.toLayer()
+        val layer = target.toLayer(TILESET)
 
-        assertThat(layer.getCurrentFont()).isSameAs(FontSettings.NO_FONT)
+        assertThat(layer.tileset()).isSameAs(TILESET)
     }
 
     @Test
@@ -85,8 +85,13 @@ class REXLayerTest {
     }
 
     private fun assertChar(expChar: Char, expBgColor: DefaultTextColor, expFgColor: DefaultTextColor, textChar: Tile) {
-        assertThat(textChar.getCharacter()).isEqualTo(expChar)
+        assertThat(textChar.asCharacterTile().get().character).isEqualTo(expChar)
         assertThat(textChar.getBackgroundColor()).isEqualTo(expBgColor)
         assertThat(textChar.getForegroundColor()).isEqualTo(expFgColor)
+    }
+
+    companion object {
+
+        val TILESET = CP437TilesetResource.CHEEPICUS_16X16
     }
 }

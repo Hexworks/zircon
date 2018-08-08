@@ -2,13 +2,13 @@ package org.codetome.zircon.internal.grid
 
 import org.assertj.core.api.Assertions.assertThat
 import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.input.Input
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.api.input.MouseActionType.*
-import org.codetome.zircon.api.grid.DeviceConfiguration
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.gui.swing.internal.grid.TerminalMouseListener
+import org.codetome.zircon.internal.event.InternalEvent
 import org.junit.Before
 import org.junit.Test
 import java.awt.Component
@@ -24,7 +24,7 @@ class TileGridMouseListenerTest {
 
     @Before
     fun setUp() {
-        target = TerminalMouseListener(CONFIG, FONT_SIZE, FONT_SIZE)
+        target = TerminalMouseListener(FONT_SIZE, FONT_SIZE)
         operations = mapOf(
                 Pair(target::mouseClicked, MOUSE_CLICKED),
                 Pair(target::mouseDragged, MOUSE_DRAGGED),
@@ -32,7 +32,7 @@ class TileGridMouseListenerTest {
                 Pair(target::mouseExited, MOUSE_EXITED),
                 Pair(target::mousePressed, MOUSE_PRESSED),
                 Pair(target::mouseReleased, MOUSE_RELEASED))
-        EventBus.subscribe<Event.Input> {
+        EventBus.subscribe<InternalEvent.Input> {
             inputs.add(it.input)
         }
     }
@@ -56,7 +56,6 @@ class TileGridMouseListenerTest {
         val X = POSITION.x * FONT_SIZE
         val Y = POSITION.y * FONT_SIZE
         val BUTTON = 2
-        val CONFIG = DeviceConfiguration.defaultConfiguration()
         val DUMMY_COMPONENT = object : Component() {}
         val MOUSE_EVENT = MouseEvent(DUMMY_COMPONENT, 1, 1, 1, X, Y, 1, true, BUTTON)
     }

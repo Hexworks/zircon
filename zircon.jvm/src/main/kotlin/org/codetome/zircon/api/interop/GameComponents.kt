@@ -1,7 +1,7 @@
 package org.codetome.zircon.api.interop
 
-import org.codetome.zircon.api.builder.game.GameAreaBuilder
 import org.codetome.zircon.api.builder.component.GameComponentBuilder
+import org.codetome.zircon.api.builder.game.GameAreaBuilder
 
 object GameComponents {
 

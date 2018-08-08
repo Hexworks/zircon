@@ -1,14 +1,14 @@
-package org.codetome.zircon.internal.grid
+package org.codetome.zircon.gui.swing.internal.grid
 
 import org.codetome.zircon.api.data.Position
+import org.codetome.zircon.api.event.EventBus
 import org.codetome.zircon.api.input.KeyStroke
 import org.codetome.zircon.api.input.MouseAction
 import org.codetome.zircon.api.input.MouseActionType
 import org.codetome.zircon.api.input.MouseActionType.*
-import org.codetome.zircon.api.grid.DeviceConfiguration
 import org.codetome.zircon.api.util.TextUtils
-import org.codetome.zircon.internal.event.Event
-import org.codetome.zircon.internal.event.EventBus
+import org.codetome.zircon.internal.config.RuntimeConfig
+import org.codetome.zircon.internal.event.InternalEvent
 import java.awt.GraphicsEnvironment
 import java.awt.MouseInfo
 import java.awt.Toolkit
@@ -17,8 +17,7 @@ import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
 
-open class TerminalMouseListener(private val deviceConfiguration: DeviceConfiguration,
-                                 private val fontWidth: Int,
+open class TerminalMouseListener(private val fontWidth: Int,
                                  private val fontHeight: Int) : MouseAdapter() {
 
     private var lastMouseLocation = Position.unknown()
@@ -27,7 +26,7 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
         if (GraphicsEnvironment.isHeadless().not() &&
                 MouseInfo.getNumberOfButtons() > 2 &&
                 e.button == MouseEvent.BUTTON2 &&
-                deviceConfiguration.isClipboardAvailable) {
+                RuntimeConfig.config.isClipboardAvailable) {
             pasteSelectionContent()
         }
         addActionToKeyQueue(MOUSE_CLICKED, e)
@@ -79,9 +78,9 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
                     position = position
             ).let {
                 if (mouseMovedToNewPosition(actionType, position)
-                        .or(isNotMoveEvent(actionType))) {
+                                .or(isNotMoveEvent(actionType))) {
                     lastMouseLocation = position
-                    EventBus.broadcast(Event.Input(it))
+                    EventBus.broadcast(InternalEvent.Input(it))
                 }
             }
         } catch (e: Exception) {
@@ -102,13 +101,11 @@ open class TerminalMouseListener(private val deviceConfiguration: DeviceConfigur
     }
 
     private fun injectStringAsKeyStrokes(string: String) {
-        string
-                .filter {
-                    TextUtils.isPrintableCharacter(it)
-                }
-                .forEach {
-                    EventBus.broadcast(Event.Input(KeyStroke(character = it)))
-                }
+        string.filter {
+            TextUtils.isPrintableCharacter(it)
+        }.forEach {
+            EventBus.broadcast(InternalEvent.Input(KeyStroke(character = it)))
+        }
     }
 
 }

@@ -1,13 +1,15 @@
 package org.codetome.zircon.api.builder.graphics
 
+import org.codetome.zircon.api.builder.Builder
 import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.data.Size
 import org.codetome.zircon.api.data.Tile
-import org.codetome.zircon.api.builder.Builder
-import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.graphics.Layer
 import org.codetome.zircon.api.graphics.TileImage
+import org.codetome.zircon.api.resource.TilesetResource
+import org.codetome.zircon.api.tileset.Tileset
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.config.RuntimeConfig
 import org.codetome.zircon.internal.graphics.DefaultLayer
 
 /**
@@ -17,15 +19,16 @@ import org.codetome.zircon.internal.graphics.DefaultLayer
  * - offset: [Position.defaultPosition()]
  * - has no text image by default
  */
-data class LayerBuilder(private var tileset: Tileset = Layer.defaultFont(),
-                        private var size: Size = Layer.defaultSize(),
-                        private var offset: Position = Position.defaultPosition(),
-                        private var tileImage: Maybe<TileImage> = Maybe.empty()) : Builder<Layer> {
+data class LayerBuilder(
+        private var tileset: TilesetResource<out Tile> = RuntimeConfig.config.defaultTileset,
+        private var size: Size = Size.defaultTerminalSize(),
+        private var offset: Position = Position.defaultPosition(),
+        private var tileImage: Maybe<TileImage> = Maybe.empty()) : Builder<Layer> {
 
     /**
      * Sets the [Tileset] to use with the resulting [Layer].
      */
-    fun font(tileset: Tileset) = also {
+    fun tileset(tileset: TilesetResource<out Tile>) = also {
         this.tileset = tileset
     }
 
@@ -53,15 +56,15 @@ data class LayerBuilder(private var tileset: Tileset = Layer.defaultFont(),
     }
 
     override fun build(): Layer = if (tileImage.isPresent) {
-        DefaultLayer(size = tileImage.get().getBoundableSize(),
-                offset = offset,
-                tileImage = tileImage.get(),
-                initialTileset = tileset)
+        DefaultLayer(
+                position = offset,
+                backend = tileImage.get())
     } else {
         DefaultLayer(
-                size = size,
-                offset = offset,
-                initialTileset = tileset)
+                position = offset,
+                backend = TileImageBuilder(
+                        tileset = tileset,
+                        size = size).build())
     }
 
     override fun createCopy() = copy()

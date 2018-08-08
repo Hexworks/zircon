@@ -2,7 +2,7 @@ package org.codetome.zircon.internal.tileset.transformer
 
 import org.codetome.zircon.api.builder.data.TileBuilder
 import org.codetome.zircon.api.interop.Modifiers
-import org.codetome.zircon.internal.tileset.impl.Java2DTileTexture
+import org.codetome.zircon.internal.tileset.impl.DefaultTileTexture
 import org.junit.Before
 import org.junit.Test
 import java.awt.image.BufferedImage
@@ -19,7 +19,7 @@ class Java2DBorderTransformerTest {
     @Test
     fun shouldProperlyRun() {
         val image = BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB)
-        target.transform(Java2DTileTexture(CHAR.generateCacheKey(), image), CHAR)
+        target.transform(DefaultTileTexture(WIDTH, HEIGHT, image), CHAR)
 
         // TODO: check border?
     }

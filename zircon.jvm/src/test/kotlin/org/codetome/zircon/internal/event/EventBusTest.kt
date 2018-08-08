@@ -1,6 +1,8 @@
 package org.codetome.zircon.internal.event
 
 import org.assertj.core.api.Assertions.assertThat
+import org.codetome.zircon.api.event.Event
+import org.codetome.zircon.api.event.EventBus
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicReference
 
@@ -10,9 +12,9 @@ class EventBusTest {
 
     @Test
     fun shouldBeProperlyNotifiedWhenSubscribedEventIsEmitted() {
-        EventBus.subscribe<Event.HideCursor>(this::callback)
+        EventBus.subscribe<InternalEvent.HideCursor>(this::callback)
 
-        EventBus.broadcast(Event.HideCursor)
+        EventBus.broadcast(InternalEvent.HideCursor)
 
         assertThat(event.get()).isEqualToComparingFieldByField(EVENT)
     }
@@ -26,6 +28,6 @@ class EventBusTest {
     companion object {
         val KEYS = setOf("key")
         val OBJ = Obj("foo")
-        val EVENT = Event.HideCursor
+        val EVENT = InternalEvent.HideCursor
     }
 }

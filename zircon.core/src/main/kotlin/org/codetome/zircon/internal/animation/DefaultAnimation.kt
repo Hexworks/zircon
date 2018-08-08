@@ -7,12 +7,12 @@ import org.codetome.zircon.api.util.Maybe
 import org.codetome.zircon.platform.factory.ThreadSafeQueueFactory
 
 internal class DefaultAnimation(private val animationFrames: List<AnimationFrame>,
-                       private var tick: Long,
-                       private var loopCount: Int,
-                       private val uniqueFrameCount: Int,
-                       private var totalFrameCount: Int) : Animation {
+                                private var tick: Long,
+                                private var loopCount: Int,
+                                private val uniqueFrameCount: Int,
+                                private var totalFrameCount: Int) : Animation {
 
-    private val id = Identifier.randomIdentifier()
+    override val id: Identifier = Identifier.randomIdentifier()
     private val infiniteLoop = loopCount == 0
     private var currentLoopCount = loopCount
 
@@ -28,8 +28,6 @@ internal class DefaultAnimation(private val animationFrames: List<AnimationFrame
         }
         currentFrame = framesInOrder.peek().get()
     }
-
-    override fun getId(): Identifier = id
 
     override fun getFrameCount() = uniqueFrameCount
 

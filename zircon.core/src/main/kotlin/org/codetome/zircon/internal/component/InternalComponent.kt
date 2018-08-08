@@ -1,10 +1,10 @@
 package org.codetome.zircon.internal.component
 
-import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.behavior.Drawable
 import org.codetome.zircon.api.component.Component
-import org.codetome.zircon.internal.behavior.Focusable
+import org.codetome.zircon.api.data.Position
 import org.codetome.zircon.api.util.Maybe
+import org.codetome.zircon.internal.behavior.Focusable
 
 /**
  * A [InternalComponent] is a GUI element which is used either to display information to the user
@@ -24,11 +24,9 @@ interface InternalComponent : Component, Drawable, Focusable {
      * contains a [InternalComponent] which intersects with `position` the
      * component will be returned instead of the container itself.
      * If no [InternalComponent] intersects with the given `position` an
-     * empty [Optional] is returned.
+     * empty [Maybe] is returned.
      */
     fun fetchComponentByPosition(position: Position): Maybe<out InternalComponent>
-
-    fun setPosition(position: Position)
 
     /**
      * Tells whether this [Component] is attached to a [org.codetome.zircon.api.component.ContainerHandler] or not.

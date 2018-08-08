@@ -1,16 +1,19 @@
 package org.codetome.zircon.internal.grid
 
-import org.codetome.zircon.api.data.Cell
+import org.codetome.zircon.api.behavior.Layerable
+import org.codetome.zircon.api.graphics.TileImage
 import org.codetome.zircon.api.grid.TileGrid
-import org.codetome.zircon.internal.behavior.FontOverrideSupport
-import org.codetome.zircon.internal.behavior.InternalLayerable
+import org.codetome.zircon.internal.animation.InternalAnimationHandler
 
-/**
- * This is the internal API of a [TileGrid]
- */
-interface InternalTileGrid : TileGrid, InternalLayerable, FontOverrideSupport {
+interface InternalTileGrid
+    : TileGrid, InternalAnimationHandler {
 
-    fun forEachDirtyCell(fn: (Cell) -> Unit)
+    var backend: TileImage
+    var layerable: Layerable
+    var animationHandler: InternalAnimationHandler
 
-    fun forEachCell(fn: (Cell) -> Unit)
+    fun useContentsOf(tileGrid: InternalTileGrid)
+
+    fun reset()
+
 }
