@@ -18,6 +18,10 @@ enum class ANSITextColor(private val red: Int,
     WHITE(170, 170, 170, TextColor.defaultAlpha()),
     DEFAULT(0, 0, 0, TextColor.defaultAlpha());
 
+    private val cacheKey = "TextColor(r=$red,g=$green,b=$blue,a=$alpha)"
+
+    override fun generateCacheKey() = cacheKey
+
     override fun getRed() = red
 
     override fun getGreen() = green
@@ -40,10 +44,5 @@ enum class ANSITextColor(private val red: Int,
 
     override fun invert(): TextColor {
         return TextColor.create(red, green, blue, alpha).invert()
-    }
-
-    companion object {
-
-        internal val COLOR_NAMES = values().map { it.name }
     }
 }

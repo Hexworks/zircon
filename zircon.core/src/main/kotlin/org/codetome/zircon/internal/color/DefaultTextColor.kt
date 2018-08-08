@@ -8,6 +8,10 @@ data class DefaultTextColor(private val red: Int,
                             private val blue: Int,
                             private val alpha: Int = TextColor.defaultAlpha()) : TextColor {
 
+    private val cacheKey = "TextColor(r=$red,g=$green,b=$blue,a=$alpha)"
+
+    override fun generateCacheKey() = cacheKey
+
     override fun getRed() = red
 
     override fun getGreen() = green

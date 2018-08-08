@@ -16,12 +16,12 @@ data class ImageTile(
     : Tile,
         TilesetOverride by tilesetOverride {
 
+    private val cacheKey = "ImageTile(t=${tileset.path},n=$name,t=[${tags.sorted().joinToString()}]," +
+            "s=${style.generateCacheKey()})"
+
     override fun tileType() = ImageTile::class
 
-    override fun generateCacheKey(): String {
-        return "ImageTile,name:$name,tags:${tags.sorted()}," +
-                "id:${tileset.id},style:{${style.generateCacheKey()}}"
-    }
+    override fun generateCacheKey() = cacheKey
 
     override fun toStyleSet() = style
 

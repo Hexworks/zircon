@@ -7,7 +7,7 @@ import org.codetome.zircon.api.grid.AppConfig;
 import org.codetome.zircon.api.grid.CursorStyle;
 import org.codetome.zircon.api.grid.TileGrid;
 import org.codetome.zircon.api.resource.CP437TilesetResource;
-import org.codetome.zircon.gui.swing.internal.application.SwingApplication;
+import org.codetome.zircon.internal.application.SwingApplication;
 
 public class CursorExample {
 

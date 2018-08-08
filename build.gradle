@@ -9,7 +9,7 @@ task wrapper(type: Wrapper) {
 }
 
 buildscript {
-    ext.kotlinVersion = '1.2.51'
+    ext.kotlinVersion = '1.2.60'
     repositories {
         jcenter()
         mavenCentral()

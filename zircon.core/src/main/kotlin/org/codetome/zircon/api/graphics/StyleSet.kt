@@ -79,14 +79,6 @@ interface StyleSet : Cacheable {
      */
     fun withoutModifiers(): StyleSet
 
-    override fun generateCacheKey(): String {
-        return "fg:${getForegroundColor().generateCacheKey()}" +
-                "bg:${getBackgroundColor().generateCacheKey()}" +
-                "mod:${getModifiers().map { it.generateCacheKey() }
-                        .sorted()
-                        .joinToString(separator = "")}"
-    }
-
     companion object {
 
         /**

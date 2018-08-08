@@ -8,18 +8,12 @@ import org.codetome.zircon.api.grid.TileGrid;
 import org.codetome.zircon.api.modifier.Border;
 import org.codetome.zircon.api.modifier.RayShade;
 import org.codetome.zircon.api.modifier.SimpleModifiers;
-import org.codetome.zircon.gui.swing.internal.application.SwingApplication;
+import org.codetome.zircon.internal.application.SwingApplication;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.codetome.zircon.api.color.ANSITextColor.BLACK;
-import static org.codetome.zircon.api.color.ANSITextColor.BLUE;
-import static org.codetome.zircon.api.color.ANSITextColor.CYAN;
-import static org.codetome.zircon.api.color.ANSITextColor.GREEN;
-import static org.codetome.zircon.api.color.ANSITextColor.RED;
-import static org.codetome.zircon.api.color.ANSITextColor.WHITE;
-import static org.codetome.zircon.api.color.ANSITextColor.YELLOW;
+import static org.codetome.zircon.api.color.ANSITextColor.*;
 import static org.codetome.zircon.api.modifier.BorderPosition.RIGHT;
 import static org.codetome.zircon.api.modifier.BorderPosition.TOP;
 import static org.codetome.zircon.api.modifier.BorderType.SOLID;

@@ -10,11 +10,11 @@ data class CharacterTile(
         private val style: StyleSet = StyleSet.defaultStyle())
     : Drawable, Tile {
 
+    private val cacheKey = "CharacterTile(c=$character,s=${style.generateCacheKey()})"
+
     override fun tileType() = CharacterTile::class
 
-    override fun generateCacheKey(): String {
-        return "char:$character,style:{${style.generateCacheKey()}}"
-    }
+    override fun generateCacheKey() = cacheKey
 
     override fun toStyleSet() = style
 

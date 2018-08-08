@@ -12,7 +12,7 @@ data class GraphicTile(
     override fun tileType() = GraphicTile::class
 
     override fun generateCacheKey(): String {
-        return "GraphicTile,name:$name,tags:${tags.sorted()}"
+        return "GraphicTile(name=$name,tags=${tags.sorted()})"
     }
 
     override fun toStyleSet() = throw UnsupportedOperationException("No.")
