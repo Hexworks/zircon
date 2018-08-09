@@ -2,6 +2,7 @@ package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.AppConfigs;
 import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.TileColors;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.application.CursorStyle;
@@ -19,7 +20,7 @@ public class CursorExample {
     public static void main(String[] args) {
 
         AppConfig config = AppConfigs.newBuilder()
-                .cursorColor(TileColor.Companion.fromString("#ff8844"))
+                .cursorColor(TileColors.fromString("#ff8844"))
                 .blinkLengthInMilliSeconds(500)
                 .cursorStyle(CursorStyle.FIXED_BACKGROUND)
                 .cursorBlinking(true)

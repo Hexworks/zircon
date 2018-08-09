@@ -100,10 +100,11 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         val gc = configureGraphics(img.graphics)
         gc.fillRect(0, 0, tileGrid.widthInPixels(), tileGrid.heightInPixels())
 
+        val snapshot = tileGrid.snapshot()
         tileGrid.updateAnimations(now, tileGrid)
         renderTiles(
                 graphics = gc,
-                tiles = tileGrid.snapshot(),
+                tiles = snapshot,
                 tileset = tilesetLoader.loadTilesetFrom(tileGrid.tileset()))
         tileGrid.getLayers().forEach { layer ->
             renderTiles(

@@ -1,16 +1,15 @@
 package org.hexworks.zircon.internal.graphics
 
-import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.BaseTileGraphic
+import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
-import java.util.concurrent.Executors
 
-class ThreadedTileGraphic(
+class SynchronizedTileGraphic(
         size: Size,
         tileset: TilesetResource,
         styleSet: StyleSet = StyleSet.defaultStyle())
@@ -20,35 +19,28 @@ class ThreadedTileGraphic(
         styleSet = styleSet,
         size = size) {
 
-    private val executor = Executors.newSingleThreadExecutor()
-
+    @Synchronized
     override fun getTileAt(position: Position): Maybe<Tile> {
-        return executor.submit<Maybe<Tile>> {
-            super.getTileAt(position)
-        }.get()
+        return super.getTileAt(position)
     }
 
+    @Synchronized
     override fun setTileAt(position: Position, tile: Tile) {
-        executor.submit {
-            super.setTileAt(position, tile)
-        }
+        super.setTileAt(position, tile)
     }
 
+    @Synchronized
     override fun snapshot(): Map<Position, Tile> {
-        return executor.submit<Map<Position, Tile>> {
-            super.snapshot()
-        }.get()
+        return super.snapshot()
     }
 
+    @Synchronized
     override fun clear() {
-        executor.submit {
-            super.clear()
-        }
+        super.clear()
     }
 
+    @Synchronized
     override fun drawOnto(surface: DrawSurface, position: Position) {
-        executor.submit {
-            super.drawOnto(surface, position)
-        }
+        super.drawOnto(surface, position)
     }
 }
