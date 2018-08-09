@@ -1,0 +1,146 @@
+package org.hexworks.zircon.api.data
+
+import org.hexworks.zircon.api.behavior.Cacheable
+import org.hexworks.zircon.api.behavior.DrawSurface
+import org.hexworks.zircon.api.behavior.Drawable
+import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.modifier.Border
+import org.hexworks.zircon.api.modifier.Modifier
+import org.hexworks.zircon.api.modifier.SimpleModifiers.*
+import org.hexworks.zircon.api.util.Maybe
+import kotlin.reflect.KClass
+
+interface Tile : Drawable, Cacheable {
+
+    /**
+     * Returns the tile type of this [Tile].
+     */
+    fun tileType(): KClass<out Tile>
+
+    fun styleSet(): StyleSet
+
+    /**
+     * Returns this [Tile] as a [CharacterTile] if possible.
+     */
+    fun asCharacterTile() = Maybe.ofNullable(this as? CharacterTile)
+
+    /**
+     * Returns this [Tile] as an [ImageTile] if possible.
+     */
+    fun asImageTile() = Maybe.ofNullable(this as? ImageTile)
+
+    /**
+     * Returns this [Tile] as a [GraphicTile] if possible.
+     */
+    fun asGraphicTile() = Maybe.ofNullable(this as? GraphicTile)
+
+    fun isOpaque(): Boolean = getForegroundColor().isOpaque().and(
+            getBackgroundColor().isOpaque())
+
+    fun getForegroundColor(): TileColor = styleSet().foregroundColor()
+
+    fun getBackgroundColor(): TileColor = styleSet().backgroundColor()
+
+    fun getModifiers(): Set<Modifier> = styleSet().modifiers()
+
+    fun isUnderlined(): Boolean = getModifiers().contains(Underline)
+
+    fun isCrossedOut(): Boolean = getModifiers().contains(CrossedOut)
+
+    fun isBlinking(): Boolean = getModifiers().contains(Blink)
+
+    fun isVerticalFlipped(): Boolean = getModifiers().contains(VerticalFlip)
+
+    fun isHorizontalFlipped(): Boolean = getModifiers().contains(HorizontalFlip)
+
+    fun hasBorder(): Boolean = getModifiers().any { it is Border }
+
+    fun fetchBorderData(): Set<Border> = getModifiers()
+            .filter { it is Border }
+            .map { it as Border }
+            .toSet()
+
+    fun isNotEmpty(): Boolean = this !== empty()
+
+    override fun drawOnto(surface: DrawSurface, position: Position) {
+        surface.setTileAt(position, this)
+    }
+
+    /**
+     * Returns a copy of this [Tile] with the specified foreground color.
+     */
+    fun withForegroundColor(foregroundColor: TileColor): Tile
+
+    /**
+     * Returns a copy of this [Tile] with the specified background color.
+     */
+    fun withBackgroundColor(backgroundColor: TileColor): Tile
+
+    /**
+     * Returns a copy of this [Tile] with the specified style.
+     */
+    fun withStyle(style: StyleSet): Tile
+
+    /**
+     * Returns a copy of this [Tile] with the specified modifiers.
+     */
+    fun withModifiers(vararg modifiers: Modifier): Tile = withModifiers(modifiers.toSet())
+
+    /**
+     * Returns a copy of this [Tile] with the specified modifiers.
+     */
+    fun withModifiers(modifiers: Set<Modifier>): Tile
+
+    /**
+     * Returns a copy of this [Tile] with [Modifier] (s) removed.
+     * The currently active [Modifier]s will be carried over to the copy, except for the one(s) specified.
+     * If the current [Tile] doesn't have the [Modifier] (s) specified, it will return itself.
+     */
+    fun withoutModifiers(vararg modifiers: Modifier): Tile = withoutModifiers(modifiers.toSet())
+
+    /**
+     * Returns a copy of this [Tile] with [Modifier] (s) removed.
+     * The currently active [Modifier]s will be carried over to the copy, except for the one(s) specified.
+     * If the current [Tile] doesn't have the [Modifier] (s) specified, it will return itself.
+     */
+    fun withoutModifiers(modifiers: Set<Modifier>): Tile
+
+    companion object {
+
+        /**
+         * Shorthand for the default character which is:
+         * - a space character
+         * - with default foreground
+         * - and default background
+         * - and no modifiers.
+         */
+        fun defaultTile() = DEFAULT_CHARACTER_TILE
+
+        /**
+         * Shorthand for an empty character tile which is:
+         * - a space character
+         * - with transparent foreground
+         * - and transparent background
+         * - and no modifiers.
+         */
+        fun empty() = EMPTY_CHARACTER_TILE
+
+        /**
+         * Creates a new [Tile].
+         */
+        fun create(character: Char,
+                   style: StyleSet) = CharacterTile(
+                character = character,
+                style = style)
+
+        private val DEFAULT_CHARACTER_TILE = CharacterTile(
+                character = ' ',
+                style = StyleSet.defaultStyle())
+
+        private val EMPTY_CHARACTER_TILE = CharacterTile(
+                character = ' ',
+                style = StyleSet.empty())
+
+    }
+}

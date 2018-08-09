@@ -1,0 +1,19 @@
+package org.hexworks.zircon.api
+
+import org.hexworks.zircon.api.builder.graphics.LayerBuilder
+import org.hexworks.zircon.api.data.Tile
+
+object Layers {
+
+    /**
+     * Returns the default filler which is an emtpy [Tile].
+     */
+    @JvmStatic
+    fun defaultFiller() = Tile.empty()
+
+    /**
+     * Creates a new [LayerBuilder].
+     */
+    @JvmStatic
+    fun newBuilder() = LayerBuilder()
+}
