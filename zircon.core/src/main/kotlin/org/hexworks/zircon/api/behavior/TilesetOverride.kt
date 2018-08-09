@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.behavior
 
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 

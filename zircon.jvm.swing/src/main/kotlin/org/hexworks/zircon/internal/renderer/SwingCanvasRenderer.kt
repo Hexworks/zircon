@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.renderer
 
+import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.gui.swing.internal.grid.TerminalKeyListener
 import org.hexworks.zircon.gui.swing.internal.grid.TerminalMouseListener
@@ -169,7 +169,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                     tile
                 }
                 val actualTileset: Tileset<BufferedImage> = if (actualTile is TilesetOverride) {
-                    actualTile.tileset() as Tileset<BufferedImage>
+                    tilesetLoader.loadTilesetFrom(actualTile.tileset())
                 } else {
                     tileset
                 }

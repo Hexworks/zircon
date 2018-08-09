@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.Input
@@ -104,7 +103,7 @@ open class DefaultContainer(initialSize: Size,
 
     override fun transformToLayers(): List<Layer> {
         return mutableListOf(LayerBuilder.newBuilder()
-                .textImage(getDrawSurface())
+                .tileGraphic(getDrawSurface())
                 .offset(position())
                 .build()).also {
             it.addAll(components.flatMap { (it as DefaultComponent).transformToLayers() })

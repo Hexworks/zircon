@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.TextCharacterString
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.api.graphics.TextWrap.WRAP
-import org.hexworks.zircon.internal.graphics.DefaultTextCharacterString
+import org.hexworks.zircon.internal.graphics.DefaultCharacterTileString
 import org.hexworks.zircon.platform.factory.IdentifierFactory
 
 /**
@@ -16,7 +16,7 @@ import org.hexworks.zircon.platform.factory.IdentifierFactory
  * - `text` is **mandatory**
  */
 @Suppress("ArrayInDataClass")
-data class TextCharacterStringBuilder(
+data class CharacterTileStringBuilder(
         private var text: String = NO_VALUE,
         private var textWrap: TextWrap = WRAP,
         private val modifiers: MutableSet<Modifier> = mutableSetOf(),
@@ -32,7 +32,7 @@ data class TextCharacterStringBuilder(
         require(text.isNotBlank()) {
             "'text' must not be blank!"
         }
-        return DefaultTextCharacterString(
+        return DefaultCharacterTileString(
                 textChars = text.map {
                     TileBuilder.newBuilder()
                             .foregroundColor(foregroundColor)
@@ -69,9 +69,9 @@ data class TextCharacterStringBuilder(
     companion object {
 
         /**
-         * Creates a new [TextCharacterStringBuilder] to build [org.hexworks.zircon.api.graphics.TextCharacterString]s.
+         * Creates a new [CharacterTileStringBuilder] to build [org.hexworks.zircon.api.graphics.TextCharacterString]s.
          */
-        fun newBuilder() = TextCharacterStringBuilder()
+        fun newBuilder() = CharacterTileStringBuilder()
 
         private val NO_VALUE = IdentifierFactory.randomIdentifier().toString()
 

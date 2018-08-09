@@ -115,23 +115,23 @@ interface TileGraphic
 
     /**
      * Combines this text image with another one. This method creates a new
-     * [TileGraphic] which is the combination of `this` one and the supplied `tileImage`.
+     * [TileGraphic] which is the combination of `this` one and the supplied `tileGraphic`.
      * *Note that* if there are two [Position]s which are present in both [TileGraphic]s
      * **and** at none of those positions is an `EMPTY` [Tile] then the
-     * [Tile] in the supplied `tileImage` will be used.
+     * [Tile] in the supplied `tileGraphic` will be used.
      * This method creates a new object and **both** original [TileGraphic]s are left
      * untouched!
-     * The size of the new [TileGraphic] will be the size of the current [TileGraphic] UNLESS the offset + `tileImage`
+     * The size of the new [TileGraphic] will be the size of the current [TileGraphic] UNLESS the offset + `tileGraphic`
      * would overflow. In that case the new [TileGraphic] will be resized to fit the new TileGraphic accordingly
-     * @param tileImage the image which will be drawn onto `this` image
-     * @param offset The position on the target image where the `tileImage`'s top left corner will be
+     * @param tileGraphic the image which will be drawn onto `this` image
+     * @param offset The position on the target image where the `tileGraphic`'s top left corner will be
      */
-    fun combineWith(tileImage: TileGraphic, offset: Position): TileGraphic {
-        val columns = Math.max(size().xLength, offset.x + tileImage.size().xLength)
-        val rows = Math.max(size().yLength, offset.y + tileImage.size().yLength)
+    fun combineWith(tileGraphic: TileGraphic, offset: Position): TileGraphic {
+        val columns = Math.max(size().xLength, offset.x + tileGraphic.size().xLength)
+        val rows = Math.max(size().yLength, offset.y + tileGraphic.size().yLength)
 
         val surface = resize(Size.create(columns, rows))
-        surface.draw(tileImage, offset)
+        surface.draw(tileGraphic, offset)
         return surface
     }
 

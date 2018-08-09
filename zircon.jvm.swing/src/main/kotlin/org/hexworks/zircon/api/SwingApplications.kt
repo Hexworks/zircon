@@ -11,7 +11,8 @@ object SwingApplications {
      * Builds a new [Application] using the given `appConfig`.
      */
     @JvmStatic
-    fun buildApplication(appConfig: AppConfig): Application {
+    @JvmOverloads
+    fun buildApplication(appConfig: AppConfig = AppConfig.defaultConfiguration()): Application {
         return SwingApplication(appConfig)
     }
 
@@ -19,7 +20,8 @@ object SwingApplications {
      * Builds and starts a new [Application] from the given `appConfig`.
      */
     @JvmStatic
-    fun startApplication(appConfig: AppConfig): Application {
+    @JvmOverloads
+    fun startApplication(appConfig: AppConfig = AppConfig.defaultConfiguration()): Application {
         return SwingApplication(appConfig).also {
             it.start()
         }
@@ -29,7 +31,8 @@ object SwingApplications {
      * Builds and starts a new [Application] and returns its [TileGrid].
      */
     @JvmStatic
-    fun startTileGrid(appConfig: AppConfig): TileGrid {
+    @JvmOverloads
+    fun startTileGrid(appConfig: AppConfig = AppConfig.defaultConfiguration()): TileGrid {
         return SwingApplication(appConfig).also {
             it.start()
         }.tileGrid

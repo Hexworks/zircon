@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.builder.graphics
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphic
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -23,7 +22,7 @@ data class LayerBuilder(
         private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
         private var size: Size = Size.defaultTerminalSize(),
         private var offset: Position = Position.defaultPosition(),
-        private var tileImage: Maybe<TileGraphic> = Maybe.empty()) : Builder<Layer> {
+        private var tileGraphic: Maybe<TileGraphic> = Maybe.empty()) : Builder<Layer> {
 
     /**
      * Sets the [Tileset] to use with the resulting [Layer].
@@ -51,14 +50,14 @@ data class LayerBuilder(
     /**
      * Uses the given [TileGraphic] and converts it to a [Layer].
      */
-    fun textImage(tileImage: TileGraphic) = also {
-        this.tileImage = Maybe.of(tileImage)
+    fun tileGraphic(tileGraphic: TileGraphic) = also {
+        this.tileGraphic = Maybe.of(tileGraphic)
     }
 
-    override fun build(): Layer = if (tileImage.isPresent) {
+    override fun build(): Layer = if (tileGraphic.isPresent) {
         DefaultLayer(
                 position = offset,
-                backend = tileImage.get())
+                backend = tileGraphic.get())
     } else {
         DefaultLayer(
                 position = offset,

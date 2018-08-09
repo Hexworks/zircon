@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.builder.graphics.TextCharacterStringBuilder
+import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
@@ -11,11 +11,11 @@ import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.api.Modifiers
 import org.junit.Test
 
-class DefaultTextCharacterStringTest {
+class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldBuildStringWithDefaultProperly() {
-        val result = TextCharacterStringBuilder.newBuilder()
+        val result = CharacterTileStringBuilder.newBuilder()
                 .text(TEXT)
                 .build()
 
@@ -30,13 +30,13 @@ class DefaultTextCharacterStringTest {
 
     @Test
     fun shouldBuildStringWithCustomProperly() {
-        val result = TextCharacterStringBuilder.newBuilder()
+        val result = CharacterTileStringBuilder.newBuilder()
                 .backgroundColor(BACKGROUND)
                 .foregroundColor(FOREGROUND)
                 .modifiers(MODIFIER)
                 .text(TEXT)
                 .textWrap(TextWrap.NO_WRAPPING)
-                .build() as DefaultTextCharacterString
+                .build() as DefaultCharacterTileString
 
         val template = TileBuilder.newBuilder()
                 .foregroundColor(FOREGROUND)
@@ -57,7 +57,7 @@ class DefaultTextCharacterStringTest {
                 .size(Size.create(2, 2))
                 .build()
 
-        TextCharacterStringBuilder.newBuilder()
+        CharacterTileStringBuilder.newBuilder()
                 .text(TEXT)
                 .textWrap(TextWrap.NO_WRAPPING)
                 .build().drawOnto(surface, Position.create(2, 1))
@@ -69,7 +69,7 @@ class DefaultTextCharacterStringTest {
                 .size(Size.create(2, 2))
                 .build()
 
-        TextCharacterStringBuilder.newBuilder()
+        CharacterTileStringBuilder.newBuilder()
                 .text(TEXT)
                 .textWrap(TextWrap.NO_WRAPPING)
                 .build().drawOnto(surface, Position.create(1, 2))
@@ -81,7 +81,7 @@ class DefaultTextCharacterStringTest {
                 .size(Size.create(2, 2))
                 .build()
 
-        TextCharacterStringBuilder.newBuilder()
+        CharacterTileStringBuilder.newBuilder()
                 .text(TEXT)
                 .textWrap(TextWrap.NO_WRAPPING)
                 .build().drawOnto(surface)
@@ -115,7 +115,7 @@ class DefaultTextCharacterStringTest {
                 .size(Size.create(5, 1))
                 .build()
 
-        val textCharacterString = TextCharacterStringBuilder.newBuilder()
+        val textCharacterString = CharacterTileStringBuilder.newBuilder()
                 .text("atest")
                 .textWrap(TextWrap.WORD_WRAP)
                 .build()
@@ -150,7 +150,7 @@ class DefaultTextCharacterStringTest {
                 .size(Size.create(4, 2))
                 .build()
 
-        val textCharacterString = TextCharacterStringBuilder.newBuilder()
+        val textCharacterString = CharacterTileStringBuilder.newBuilder()
                 .text("a test")
                 .textWrap(TextWrap.WORD_WRAP)
                 .build()
@@ -189,7 +189,7 @@ class DefaultTextCharacterStringTest {
                 .size(Size.create(4, 2))
                 .build()
 
-        val textCharacterString = TextCharacterStringBuilder.newBuilder()
+        val textCharacterString = CharacterTileStringBuilder.newBuilder()
                 .text("atest")
                 .textWrap(TextWrap.WORD_WRAP)
                 .build()
@@ -224,7 +224,7 @@ class DefaultTextCharacterStringTest {
                 .size(Size.create(5, 4))
                 .build()
 
-        val textCharacterString = TextCharacterStringBuilder.newBuilder()
+        val textCharacterString = CharacterTileStringBuilder.newBuilder()
                 .text("a test thghty")
                 .textWrap(TextWrap.WORD_WRAP)
                 .build()
@@ -294,7 +294,7 @@ class DefaultTextCharacterStringTest {
                 .size(Size.create(2, 2))
                 .build()
 
-        TextCharacterStringBuilder.newBuilder()
+        CharacterTileStringBuilder.newBuilder()
                 .text(TEXT)
                 .textWrap(TextWrap.NO_WRAPPING)
                 .build().drawOnto(surface, Position.offset1x1())
@@ -329,7 +329,7 @@ class DefaultTextCharacterStringTest {
                 .size(Size.create(2, 2))
                 .build()
 
-        TextCharacterStringBuilder.newBuilder()
+        CharacterTileStringBuilder.newBuilder()
                 .text(TEXT)
                 .build().drawOnto(surface)
 
@@ -363,7 +363,7 @@ class DefaultTextCharacterStringTest {
                 .size(Size.create(2, 2))
                 .build()
 
-        TextCharacterStringBuilder.newBuilder()
+        CharacterTileStringBuilder.newBuilder()
                 .text(TEXT)
                 .build().drawOnto(surface, Position.create(1, 0))
 
@@ -397,7 +397,7 @@ class DefaultTextCharacterStringTest {
                 .size(Size.create(2, 2))
                 .build()
 
-        TextCharacterStringBuilder.newBuilder()
+        CharacterTileStringBuilder.newBuilder()
                 .text("T")
                 .build().drawOnto(surface, Position.create(0, 0))
 
@@ -431,7 +431,7 @@ class DefaultTextCharacterStringTest {
                 .size(Size.create(2, 2))
                 .build()
 
-        TextCharacterStringBuilder.newBuilder()
+        CharacterTileStringBuilder.newBuilder()
                 .text("TEXTTEXT")
                 .build().drawOnto(surface, Position.create(0, 0))
 
@@ -462,11 +462,11 @@ class DefaultTextCharacterStringTest {
     @Test
     fun shouldAddTwoStringsTogetherProperly() {
 
-        val string = TextCharacterStringBuilder.newBuilder()
+        val string = CharacterTileStringBuilder.newBuilder()
                 .text("TE")
                 .build()
 
-        val other = TextCharacterStringBuilder.newBuilder()
+        val other = CharacterTileStringBuilder.newBuilder()
                 .text("XT")
                 .build()
 
