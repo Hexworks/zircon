@@ -1,7 +1,7 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
-import org.hexworks.zircon.api.builder.graphics.TextCharacterStringBuilder
+import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
@@ -237,7 +237,7 @@ object IsometricGameArea {
                 }
                 val (x, y, z) = gameComponent.visibleOffset()
                 screen.pushLayer(LayerBuilder.newBuilder()
-                        .textImage(TextCharacterStringBuilder.newBuilder()
+                        .tileGraphic(CharacterTileStringBuilder.newBuilder()
                                 .backgroundColor(TileColor.transparent())
                                 .foregroundColor(TileColors.fromString("#aaaadd"))
                                 .text(String.format("Position: (x=%s, y=%s, z=%s)", x, y, z))

@@ -83,8 +83,7 @@ data class TileBuilder(
     fun buildImageTile(): ImageTile {
         return ImageTile(
                 tileset = tileset,
-                name = name,
-                tags = tags)
+                name = name)
     }
 
     fun buildGraphicTile(): GraphicTile {

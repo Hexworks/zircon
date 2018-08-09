@@ -177,7 +177,7 @@ abstract class DefaultComponent(
 
     open fun transformToLayers() =
             listOf(LayerBuilder.newBuilder()
-                    .textImage(drawSurface)
+                    .tileGraphic(drawSurface)
                     .offset(position())
                     .tileset(tileset())
                     .build())

@@ -23,7 +23,7 @@ public class TextCharacterStringExample {
 
         TileGrid tileGrid = app.getTileGrid();
 
-        TextCharacterString tcs = TextCharacterStrings.newBuilder()
+        TextCharacterString tcs = CharacterTileStrings.newBuilder()
                 .foregroundColor(TileColors.fromString("#eeffee"))
                 .backgroundColor(TileColors.fromString("#223344"))
                 .modifiers(Modifiers.underline())

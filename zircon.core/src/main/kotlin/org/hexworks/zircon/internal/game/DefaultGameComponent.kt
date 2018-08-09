@@ -79,7 +79,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
                         size = Size3D.from2DSize(size(), 1))
                 segment.forEach {
                     result.add(LayerBuilder.newBuilder()
-                            .textImage(it)
+                            .tileGraphic(it)
                             .offset(position())
                             .build())
                 }
@@ -126,7 +126,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
                 }
             }
             builders.forEach {
-                result.add(LayerBuilder.newBuilder().textImage(it.build()).build())
+                result.add(LayerBuilder.newBuilder().tileGraphic(it.build()).build())
             }
         }
 

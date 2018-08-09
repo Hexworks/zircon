@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api
 
+import org.hexworks.zircon.api.data.AbsolutePosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position3D
 
@@ -57,5 +58,10 @@ object Positions {
             x = position.x,
             y = position.y,
             z = z)
+
+    @JvmStatic
+    fun createAbsolutePosition(x: Int, y: Int): Position {
+        return AbsolutePosition(x, y)
+    }
 
 }
