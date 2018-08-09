@@ -8,3 +8,4 @@
 **/*.iml
 **/*.ipr
 **/node_modules/
+**/.DS.Store

@@ -1,15 +1,15 @@
 allprojects {
-    group 'org.codetome.zircon'
-    version '2018.2.0-PREVIEW'
+    group "org.hexworks.zircon"
+    version "2018.2.0-PREVIEW"
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.6'
+    gradleVersion = "4.6"
     distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
 }
 
 buildscript {
-    ext.kotlinVersion = '1.2.60'
+    ext.kotlinVersion = "1.2.60"
     repositories {
         jcenter()
         mavenCentral()
@@ -17,19 +17,20 @@ buildscript {
     }
     dependencies {
         classpath "com.eriwen:gradle-js-plugin:2.14.1"
-        classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
+        classpath "com.moowork.gradle:gradle-node-plugin:1.2.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
 ext {
-    gdxVersion = '1.9.6'
-    junitVersion = '4.12'
-    mockitoVersion = '1.10.19'
-    assertjVersion = '3.6.2'
-    caffeineVersion = '2.5.4'
-    snakeyamlVersion = '1.18'
-    filtersVersion = '2.0.235-1'
+    gdxVersion = "1.9.6"
+    junitVersion = "4.12"
+    mockitoVersion = "1.10.19"
+    assertjVersion = "3.6.2"
+    caffeineVersion = "2.5.4"
+    snakeyamlVersion = "1.18"
+    trieMapVersion = "0.2.23"
+    filtersVersion = "2.0.235-1"
     slf4jVersion = "1.7.25"
     libraries = [
             kotlin_stdlib                 : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
@@ -41,6 +42,7 @@ ext {
             slf4j_simple                  : "org.slf4j:slf4j-simple:$slf4jVersion",
             caffeine                      : "com.github.ben-manes.caffeine:caffeine:$caffeineVersion",
             snakeyaml                     : "org.yaml:snakeyaml:$snakeyamlVersion",
+            trie_map                      : "com.github.romix:java-concurrent-hash-trie-map:$trieMapVersion",
             filters                       : "com.jhlabs:filters:$filtersVersion",
             junit                         : "junit:junit:$junitVersion",
             mockito                       : "org.mockito:mockito-all:$mockitoVersion",
