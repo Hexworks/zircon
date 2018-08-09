@@ -22,7 +22,12 @@ class LibgdxApplication(appConfig: AppConfig) : ApplicationAdapter(), Applicatio
 
     // libgdx overrides
     override fun create() {
-        start()
+        println("create")
+        if (started.not()) {
+            println("start")
+            started = true
+            renderer.create()
+        }
     }
 
     override fun render() {
@@ -38,15 +43,11 @@ class LibgdxApplication(appConfig: AppConfig) : ApplicationAdapter(), Applicatio
     // zircon overrides
 
     override fun start() {
-        if (started.not()) {
-            started = true
-            val cfg = LwjglApplicationConfiguration()
-            cfg.title = "LibGDX Test"
-            cfg.height = tileGrid.heightInPixels()
-            cfg.width = tileGrid.widthInPixels()
-            LwjglApplication(this, cfg)
-            renderer.create()
-        }
+        val cfg = LwjglApplicationConfiguration()
+        cfg.title = "LibGDX Test"
+        cfg.height = tileGrid.heightInPixels()
+        cfg.width = tileGrid.widthInPixels()
+        LwjglApplication(this, cfg)
     }
 
     override fun pause() {

@@ -1,9 +1,6 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.Screens;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.Layer;
@@ -12,6 +9,8 @@ import org.hexworks.zircon.api.resource.CP437TilesetResource;
 import org.hexworks.zircon.api.resource.REXPaintResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
+import org.hexworks.zircon.internal.application.LibgdxApplication;
+import org.hexworks.zircon.internal.application.SwingApplication;
 
 import java.io.InputStream;
 import java.util.List;
