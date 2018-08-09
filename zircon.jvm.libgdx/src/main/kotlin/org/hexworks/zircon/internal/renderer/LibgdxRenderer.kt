@@ -68,10 +68,11 @@ class LibgdxRenderer(private val grid: TileGrid,
                             tileset: Tileset<TextureRegion>,
                             offset: AbsolutePosition,
                             batch: SpriteBatch) {
+        val height = grid.heightInPixels()
         tiles.forEach { (pos, tile) ->
-            val p = pos.toAbsolutePosition(tileset) + offset
-            val x = p.x.toFloat()
-            val y = p.y.toFloat()
+            val aPos = pos.toAbsolutePosition(tileset) + offset
+            val x = aPos.x.toFloat()
+            val y = height - aPos.y.toFloat()
             val actualTileset: Tileset<TextureRegion> = if (tile is TilesetOverride) {
                 tilesetLoader.loadTilesetFrom(tile.tileset())
             } else {

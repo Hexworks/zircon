@@ -71,7 +71,6 @@ abstract class BaseTileGraphic(
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
         contents.entries.forEach { (pos, tile) ->
-
             tile.drawOnto(surface, pos + position)
         }
     }
