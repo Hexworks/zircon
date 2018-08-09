@@ -6,8 +6,8 @@ When submitting code, please make every effort to follow existing conventions an
 ## Code
 - Zircon is written in Kotlin but you can add your contribution using *Java*
 - If you contribute *Java* code put it into `src/main/java`. If you kontribute Kotlin code it should go into `src/main/kotlin`
-- If you write implementation code for something put it into the `org.codetome.zircon.internal` package
-  Conversely interfaces and code which expresses an external api should go to the `org.codetome.zircon.api` package
+- If you write implementation code for something put it into the `org.hexworks.zircon.internal` package
+  Conversely interfaces and code which expresses an external api should go to the `org.hexworks.zircon.api` package
 - If you add implementation code try to follow [the design philosophy behind Zircon](https://github.com/Hexworks/zircon/wiki/The-design-philosophy-behind-Zircon)
 - Make sure that you add unit tests for your code and
 - Check whether the build passes when creating a pull request
