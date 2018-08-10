@@ -3,11 +3,15 @@
 <img src="https://cdn.discordapp.com/attachments/363771631727804416/376372957041393677/Screen_Shot_2017-11-04_at_15.11.08.png" />
 
 
-*Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna). Check it out if you are looking for a tileGrid emulator instead. 
+*Note that* this library is deeply inspired by [Lanterna](https://github.com/mabe02/lanterna). 
+Check it out if you are looking for a *terminal emulator* instead. 
 
 ---
 
-Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki) | or [Create an issue](https://github.com/Hexworks/zircon/issues/new) | Check [our project Board](https://github.com/Hexworks/zircon/projects/2) | [Ask us on Discord][discord]
+Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki)
+ | or [Create an issue](https://github.com/Hexworks/zircon/issues/new)
+ | Check [our project Board](https://github.com/Hexworks/zircon/projects/2)
+ | [Ask us on Discord][discord]
 
 [![][circleci img]][circleci]
 [![][maven img]][maven]
@@ -21,7 +25,7 @@ Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki) | or [Creat
 
 - [Getting Started](https://github.com/Hexworks/zircon#getting-started)
   - [Some rules of thumb](https://github.com/Hexworks/zircon#some-rules-of-thumb)
-  - [Creating a Terminal](https://github.com/Hexworks/zircon#creating-a-tileGrid)
+  - [Creating a TileGrid](https://github.com/Hexworks/zircon#creating-a-tileGrid)
   - [Working with Screens](https://github.com/Hexworks/zircon#working-with-screens)
   - [Components](https://github.com/Hexworks/zircon#components)
   - [Additional features](https://github.com/Hexworks/zircon#additional-features)
@@ -34,7 +38,7 @@ Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki) | or [Creat
     - [Animations (BETA)](https://github.com/Hexworks/zircon#animations-beta)
     - [The API](https://github.com/Hexworks/zircon#the-api)
 - [A little Crash Course](https://github.com/Hexworks/zircon#a-little-crash-course)
-  - [Terminal](https://github.com/Hexworks/zircon#tileGrid)
+  - [TileGrid](https://github.com/Hexworks/zircon#tileGrid)
   - [Colors and StyleSets](https://github.com/Hexworks/zircon#colors-and-stylesets)
   - [Modifiers](https://github.com/Hexworks/zircon#modifiers)
   - [TileGraphics](https://github.com/Hexworks/zircon#textimages)
@@ -52,8 +56,8 @@ from Maven:
 ```xml
 <dependency>
     <groupId>org.hexworks.zircon</groupId>
-    <artifactId>zircon</artifactId>
-    <version>2017.4.0-RELEASE</version>
+    <artifactId>zircon.jvm.swing</artifactId>
+    <version>2018.4.0-RELEASE</version>
 </dependency>
 
 ```
@@ -61,193 +65,209 @@ from Maven:
 or you can also use Gradle:
 
 ```groovy
-compile("org.hexworks.zircon:zircon:2017.4.0-RELEASE")
+compile("org.hexworks.zircon:zircon.jvm.swing:2018.4.0-RELEASE")
 ```
 
-Want to use a `SNAPSHOT`? Check [this Wiki page](https://github.com/Hexworks/zircon/wiki/Release-process-and-versioning-scheme#snapshot-releases)
+Want to use a `PREVIEW`?
+ Check [this Wiki page](https://github.com/Hexworks/zircon/wiki/Release-process-and-versioning-scheme#snapshot-releases)
 
 ### Some rules of thumb
 
 Before we start there are some guidelines which can help you if you are stuck:
 
 - If you want to build something (a `TileGraphic`, a `Component` or anything which is part of the public API) it is almost
-  sure that there is a `Builder` or a `*Factory` for it. If you want to build a `TileGraphic` you can use the `TileGraphicBuilder` to do so.
-  Always look for a `Builder` or a `Factory` (in case of `TextColor`s for example) to create the desired object. Your IDE
-  will help you with that
-- If you want to work with external files like tilesets or REXPaint files check the [resource package](https://github.com/Hexworks/zircon/tree/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/resource).
-  There are a bunch of built-in tilesets for example which you can choose from but you can also load your own. The rule of thumb
-  is that if you need something external there is probably a `*Resource` for it (like the [REXPaintResource]).
-- Anything in the `api.beta` package is considered a *BETA* feature and is subject to change.
-- You can use *anything* you can find in the [API][api] package and they will not change (so your code won't break). The
+  sure that there is a `Builder` or a `Factory` for it. The convention is that if you want to create an `TileGraphic` for example,
+  then you can use the `TileGraphics` class to do so. (so it is the plural form of the thing which you want to build). Your IDE
+  will help you with this. These classes reside in the `org.hexworks.zircon.api` package.
+- If you want to work with external files like tilesets or REXPaint files check the same package (`org.hexworks.zircon.api`), and look for
+  classes which end with `*Resources`. There are a bunch of built-in tilesets for example which you can choose from but you can also
+  load your own. The rule of thumb is that if you need something external there is probably a `*Resources` class
+  for it (like the [CP437TilesetResources]).
+- You can use *anything* you can find in the [API][api] package, they are part of the public API, and safe to use. The
   [internal][internal] package however is considered private to Zircon so don't depend on anything in it.
 - Some topics are explained in depth on the [Wiki](https://github.com/Hexworks/zircon/wiki)
 - If you want to see some example code look [here][examples].  
-- If all else fails read the javadoc. API classes are rather well documented.
+- If all else fails read the javadoc. API classes are well documented.
 - If you have any problems which are not answered here feel free to ask us at the [Hexworks Discord server][discord]. 
   
 
-### Creating a Terminal
+### Creating an Application
 
-In Zircon almost every object you might want to use has a `Builder` for it.
-This is the same for [Terminal]s as well so let's create one using a [TerminalBuilder]:
+In Zircon almost every object you might want to use has a helper class for building it.
+This is the same for [Application]s as well so let's create one using the [SwingApplications] class:
+
+> Note that these examples reside in the `org.hexworks.zircon.examples.docs` package in the `zircon.examples` project,
+> you can try them all out.
 
 ```java
-import org.hexworks.zircon.api.data.Size;
-import org.hexworks.zircon.api.SwingTerminalBuilder;
-import org.hexworks.zircon.api.grid.TileGrid;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.application.Application;
 
-public class Playground {
+public class CreatingAnApplication {
 
     public static void main(String[] args) {
 
-        final Terminal tileGrid = SwingTerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.create(32, 16))
-                .build();
-
-        tileGrid.flush();
+        Application application = SwingApplications.startApplication();
     }
-
 }
+
 ```
 
 Running this snippet will result in this screen:
 
-![](https://cdn.discordapp.com/attachments/363771631727804416/363772871115538454/image.png)
+![](https://cdn.discordapp.com/attachments/363771631727804416/477466202982055939/CreatingAnApplication.png)
 
-Adding and formatting content is also very simple:
+Not very useful, is it? So what happens here? An [Application] is just an object which has a [Renderer] for rendering [Tile]s on
+your screen), and a [TileGrid], which is the main interface which you will use to interact with Zircon.
+An [Application] is responsible for *continuously rendering* the contents of the grid on the screen. Here we use the *Swing* variant,
+but there are other types in the making (one for LibGDX, and one which works in the browser).
+
+Since most of the time you don't care about the [Application] itself, there is a function for creating a [TileGrid] directly:
 
 ```java
-import org.hexworks.zircon.api.Modifiers;
-import org.hexworks.zircon.api.data.Size;
-import org.hexworks.zircon.api.SwingTerminalBuilder;
-import org.hexworks.zircon.api.color.ANSITileColor;
+import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.grid.TileGrid;
 
-public class Playground {
+public class CreatingATileGrid {
 
     public static void main(String[] args) {
 
-        final Terminal tileGrid = SwingTerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.create(20, 8))
-                .build();
+        TileGrid tileGrid = SwingApplications.startTileGrid();
+    }
+}
+```
 
-        tileGrid.enableModifiers(Modifiers.verticalFlip());
-        tileGrid.setForegroundColor(ANSITextColor.CYAN);
-        tileGrid.putCharacter('a');
-        tileGrid.resetColorsAndModifiers();
+Now let's see how we can specify how a [TileGrid] is created. We'll use the [AppConfigs] helper for this:
 
-        tileGrid.setForegroundColor(ANSITextColor.GREEN);
-        tileGrid.enableModifiers(Modifiers.horizontalFlip());
-        tileGrid.putCharacter('b');
-        tileGrid.resetColorsAndModifiers();
+```java
+import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.Sizes;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.grid.TileGrid;
 
-        tileGrid.setForegroundColor(ANSITextColor.RED);
-        tileGrid.enableModifiers(Modifiers.crossedOut());
-        tileGrid.putCharacter('c');
-        tileGrid.flush();
+public class CreatingATileGrid {
+
+    public static void main(String[] args) {
+
+        TileGrid tileGrid = SwingApplications.startTileGrid(
+                AppConfigs.newBuilder()
+                        .defaultSize(Sizes.create(20, 10))
+                        .defaultTileset(CP437TilesetResources.rexPaint16x16())
+                        .build());
+    }
+}
+```
+
+
+Adding and formatting [Tile]s is also very simple:
+
+```java
+import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.Positions;
+import org.hexworks.zircon.api.Sizes;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.color.ANSITileColor;
+import org.hexworks.zircon.api.grid.TileGrid;
+
+public class CreatingATileGrid {
+
+    public static void main(String[] args) {
+
+        TileGrid tileGrid = SwingApplications.startTileGrid(
+                AppConfigs.newBuilder()
+                        .defaultSize(Sizes.create(10, 10))
+                        .defaultTileset(CP437TilesetResources.rexPaint16x16())
+                        .build());
+
+        tileGrid.setTileAt(
+                Positions.create(2, 3),
+                Tiles.newBuilder()
+                        .backgroundColor(ANSITileColor.CYAN)
+                        .foregroundColor(ANSITileColor.WHITE)
+                        .character('x')
+                        .build());
+
+        tileGrid.setTileAt(
+                Positions.create(3, 4),
+                Tiles.newBuilder()
+                        .backgroundColor(ANSITileColor.RED)
+                        .foregroundColor(ANSITileColor.GREEN)
+                        .character('y')
+                        .build());
+
+        tileGrid.setTileAt(
+                Positions.create(4, 5),
+                Tiles.newBuilder()
+                        .backgroundColor(ANSITileColor.BLUE)
+                        .foregroundColor(ANSITileColor.MAGENTA)
+                        .character('z')
+                        .build());
     }
 }
 ```      
 
 Running the above code will result in something like this:
 
-![](https://cdn.discordapp.com/attachments/363771631727804416/363774881298644995/image.png)
+![](https://cdn.discordapp.com/attachments/363771631727804416/477469640205926401/CreatingATileGrid.png)
 
 > You can do a lot of fancy stuff with [Modifier]s, like this:
 >  
-> ![](https://cdn.discordapp.com/attachments/277739394641690625/347280659263389696/modifiers_anim.gif)
+> ![](https://cdn.discordapp.com/attachments/363771631727804416/477470683513880576/modifiers.gif)
 > 
 > If interested check out the code examples [here][examples].
 
-You might have noticed that the default tileset is not very nice looking, so let's see what else the [TerminalBuilder] can do for us:
-
-```java
-import org.hexworks.zircon.api.data.Size;
-import org.hexworks.zircon.api.SwingTerminalBuilder;
-import org.hexworks.zircon.api.builder.DeviceConfigurationBuilder;
-import org.hexworks.zircon.api.color.ANSITileColor;
-import org.hexworks.zircon.api.resource.CP437TilesetResource;
-import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.grid.config.CursorStyle;
-
-public class Playground {
-
-    private static final String TEXT = "Hello Zircon!";
-
-    public static void main(String[] args) {
-
-        final Terminal tileGrid = SwingTerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.create(20, 8))
-                .deviceConfiguration(DeviceConfigurationBuilder.newBuilder()
-                        .cursorColor(ANSITextColor.RED)
-                        .cursorStyle(CursorStyle.VERTICAL_BAR)
-                        .cursorBlinking(true)
-                        .blinkLengthInMilliSeconds(500)
-                        .clipboardAvailable(true)
-                        .build())
-                .tileset(CP437TilesetResource.WANDERLUST_16X16.toFont())
-                .title(TEXT)
-                .build();
-
-        tileGrid.setForegroundColor(ANSITextColor.GREEN);
-        tileGrid.setCursorVisibility(true);
-        TEXT.chars().forEach((c) -> tileGrid.putCharacter((char)c));
-
-        tileGrid.flush();
-    }
-}
-
-```
-
-![](https://cdn.discordapp.com/attachments/363771631727804416/363778863488303107/image.png)
  
-> Font (and by extension resource) handling in Zircon is very simple and if you are interested in how to load your custom fonts and other resources
-take a look at the [Resource handling wiki page][resource-handling].
+> Tileset (and by extension resource) handling in Zircon is very simple and if you are interested in how to load your
+custom fonts and other resources take a look at the [Resource handling wiki page][resource-handling].
 
 ### Working with Screens
 
-[Terminal]s alone won't suffice if you want to get any serious work done since they are rather rudimentary.
+[TileGrid]s alone won't suffice if you want to get any serious work done since they are rather rudimentary.
 
 Let's create a [Screen] and fill it up with some stuff:
 
-
 ```java
-import org.hexworks.zircon.api.data.Position;
-import org.hexworks.zircon.api.data.Size;
-import org.hexworks.zircon.api.SwingTerminalBuilder;
-import org.hexworks.zircon.api.builder.ScreenBuilder;
-import org.hexworks.zircon.api.builder.TextCharacterBuilder;
-import org.hexworks.zircon.api.builder.TileGraphicBuilder;
+import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.ColorThemes;
+import org.hexworks.zircon.api.Positions;
+import org.hexworks.zircon.api.Screens;
+import org.hexworks.zircon.api.Sizes;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.TileGraphics;
+import org.hexworks.zircon.api.Tiles;
 import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.graphics.TileGraphic;
-import org.hexworks.zircon.api.resource.CP437TilesetResource;
-import org.hexworks.zircon.api.resource.ColorThemeResource;
-import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.api.grid.TileGrid;
+import org.hexworks.zircon.api.screen.Screen;
 
-public class Playground {
-
+public class CreatingAScreen {
 
     public static void main(String[] args) {
 
-        final Terminal tileGrid = SwingTerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.create(20, 8))
-                .tileset(CP437TilesetResource.WANDERLUST_16X16.toFont())
-                .build();
-        final Screen screen = ScreenBuilder.createScreenFor(tileGrid);
+        TileGrid tileGrid = SwingApplications.startTileGrid(
+                AppConfigs.newBuilder()
+                        .defaultSize(Sizes.create(20, 8))
+                        .defaultTileset(CP437TilesetResources.wanderlust16x16())
+                        .build());
 
-        final ColorTheme theme = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme();
+        final Screen screen = Screens.createScreenFor(tileGrid);
 
-        final TileGraphic image = TileGraphicBuilder.newBuilder()
-                .size(tileGrid.getBoundableSize())
-                .filler(TextCharacterBuilder.newBuilder()
+        final ColorTheme theme = ColorThemes.adriftInDreams();
+
+        final TileGraphic image = TileGraphics.newBuilder()
+                .size(tileGrid.size())
+                .build()
+                .fill(Tiles.newBuilder()
                         .foregroundColor(theme.getBrightForegroundColor())
                         .backgroundColor(theme.getBrightBackgroundColor())
                         .character('~')
-                        .build())
-                .build();
+                        .build());
 
-        screen.draw(image, Position.defaultPosition());
+        screen.draw(image, Positions.defaultPosition());
 
         screen.display();
     }
@@ -256,14 +276,14 @@ public class Playground {
 
 and we've got a nice ocean:
 
-![](https://cdn.discordapp.com/attachments/363771631727804416/363797686639394817/image.png)
+![](https://cdn.discordapp.com/attachments/363771631727804416/477475680594952223/CreatingAScreen.png)
 
 What happens here is that we:
 
 - Create a [Screen]
 - Fetch a nice [ColorTheme] which has colors we need
 - Create a [TileGraphic] with the colors added and fill it with `~`s
-- Draw the image onto the [Screen]
+- Draw the graphic onto the [Screen]
 
 > You can do so much more with [Screen]s. If interested then check out [A primer on Screens][screen-primer] on the Wiki! 
 
@@ -271,13 +291,13 @@ What happens here is that we:
 
 Zircon supports a bunch of [Component]s out of the box:
 
-- Button: A simple clickable component with corresponding event listeners
-- CheckBox: Like a BUTTON but with checked / unchecked state
-- Label: Simple component with text
-- Header: Like a label but this one has emphasis (useful when using [ColorTheme]s)
-- Panel: A [Container] which can hold multiple [Components]
-- RadioButtonGroup and RadioButton: Like a CheckBox but only one can be selected at a time
-- TextBox
+- `Button`: A simple clickable component with corresponding event listeners
+- `CheckBox`: Like a BUTTON but with checked / unchecked state
+- `Label`: Simple component with text
+- `Header`: Like a label but this one has emphasis (useful when using [ColorTheme]s)
+- `Panel`: A [Container] which can hold multiple [Components]
+- `RadioButtonGroup` and `RadioButton`: Like a `CheckBox` but only one can be selected at a time
+- `TextBox`
 
 These components are rather simple and you can expect them to work in a way you might be familiar with:
 
@@ -291,7 +311,7 @@ Let's look at an example (notes about how it works are in the comments):
 ```java
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
-import org.hexworks.zircon.api.SwingTerminalBuilder;
+import org.hexworks.zircon.api.SwingTileGridBuilder;
 import org.hexworks.zircon.api.builder.ScreenBuilder;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.CheckBox;
@@ -311,8 +331,8 @@ public class Playground {
 
     public static void main(String[] args) {
 
-        final Terminal tileGrid = SwingTerminalBuilder.newBuilder()
-                .initialTerminalSize(Size.create(34, 18))
+        final TileGrid tileGrid = SwingTileGridBuilder.newBuilder()
+                .initialTileGridSize(Size.create(34, 18))
                 .tileset(CP437TilesetResource.WANDERLUST_16X16.toFont())
                 .build();
         final Screen screen = ScreenBuilder.createScreenFor(tileGrid);
@@ -403,15 +423,15 @@ There are a bunch of other stuff Zircon can do which are not detailed in this RE
 in either the source code or the [Wiki](https://github.com/Hexworks/zircon/wiki):
 
 ### Layering
-Both the [Terminal] and the [Screen] interfaces implement [Layerable] which means that you can add [Layer]s on top of
+Both the [TileGrid] and the [Screen] interfaces implement [Layerable] which means that you can add [Layer]s on top of
 them. Every [Layerable] can have an arbitrary amount of [Layer]s. [Layer]s are like [TileGraphic]s and you can also have
-transparency in them which can be used to create fancy effects. Look at the [LayerBuilder] to see how to use them.
+transparency in them which can be used to create fancy effects. Look at the [Layers] to see how to use them.
 For more details check the [layers][layers] Wiki page.
 
-> Note that when creating `Layer`s you can set its `offset` from the builder but after attaching it to a `Terminal` or `Screen` you can change its position by calling `moveTo` with a new `Position`.
+> Note that when creating `Layer`s you can set its `offset` from the builder but after attaching it to a `TileGrid` or `Screen` you can change its position by calling `moveTo` with a new `Position`.
 
 ### Input handling
-Both the [Terminal] and the [Screen] interfaces implement [InputEmitter] which means that they re-emit all inputs from
+Both the [TileGrid] and the [Screen] interfaces implement [InputEmitter] which means that they re-emit all inputs from
 your users (key strokes and mouse actions) and you can listen on them. There is a [Wiki page][inputs] with more info.
 
 ### Shape and box drawing
@@ -450,15 +470,15 @@ Everything which is intented to be the public API is there.
 In order to work with Zircon you should get familiar with the core concepts. 
 Zircon provides multiple layers of abstractions and it depends on your needs which one you should pick.
 
-### Terminal
-At the lowest level Zircon provides the [Terminal] interface. This provides you with a surface on which 
-you can draw [TextCharacter]s. A [TextCharacter] is basically a character (like an `x`) with additional
+### TileGrid
+At the lowest level Zircon provides the [TileGrid] interface. This provides you with a surface on which 
+you can draw [Tile]s. A [Tile] is basically a character (like an `x`) with additional
 metadataTile like `foregroundColor` and `backgroundColor`. This surface sits on top of a GUI layer and
-completely abstracts away how that layer works. For example the default implementation of the [Terminal] 
-interface uses Swing under the hood. The main advantage of using [Terminal]s is that by implementing all
+completely abstracts away how that layer works. For example the default implementation of the [TileGrid] 
+interface uses Swing under the hood. The main advantage of using [TileGrid]s is that by implementing all
 its methods you can swap Swing with something else (like SWT) and use **all** higher
-level abstractions on top of it (like [Screen]s) which depend on [Terminal] (more on [Screen]s later).
-Working with [Terminal]s is *very* simple but somewhat limited. A [Terminal] is responsible for:
+level abstractions on top of it (like [Screen]s) which depend on [TileGrid] (more on [Screen]s later).
+Working with [TileGrid]s is *very* simple but somewhat limited. A [TileGrid] is responsible for:
 
 - drawing characters (by position or by cursor) on the screen
 - handling inputs (keyboard and mouse) which are emitted by the GUI layer
@@ -469,16 +489,16 @@ Working with [Terminal]s is *very* simple but somewhat limited. A [Terminal] is 
 
 This seems like a lot of things to do at once so you might ask "How is this [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design))?".
 Zircon solves this problem with composition: All of the above mentioned categories are handled by an object 
-within a [Terminal] which is responsible for only one thing.
-For example [Terminal] implements the [Layerable] interface and internally all operations defined by it are 
+within a [TileGrid] which is responsible for only one thing.
+For example [TileGrid] implements the [Layerable] interface and internally all operations defined by it are 
 delegated to an object which implements [Layerable] only.
 You can peruse these [here](https://github.com/Hexworks/zircon/tree/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/behavior).
-In this sense you can consider a [Terminal] as a [Facade](https://en.wikipedia.org/wiki/Facade_pattern).
+In this sense you can consider a [TileGrid] as a [Facade](https://en.wikipedia.org/wiki/Facade_pattern).
 
 ### Colors and StyleSets
 
-Objects like [TextCharacter]s can have foreground and background colors. You can either use the [ANSITextColor]
-`enum` to pick a pre-defined [TextColor] or you can create a new one by using [TextColorFactory]. This class
+Objects like [Tile]s can have foreground and background colors. You can either use the [ANSITileColor]
+`enum` to pick a pre-defined [TileColor] or you can create a new one by using [TileColors]. This class
 has some useful factory methods for this like: `fromAWTColor`, `fromRGB` and `fromString`. The latter can be
 called with simple CSS-like strings (eg: `#334455`).
 
@@ -487,23 +507,23 @@ multiple things you can use a [StyleSet] which is basically a [Value Object](htt
 which holds fore/background colors and modifiers.
 
 ### Modifiers
-When working with [TextCharacter]s apart from giving them color you might want to apply some special
+When working with [Tile]s apart from giving them color you might want to apply some special
 [Modifier] to them like `UNDERLINE` or `VERTICAL_FLIP`.
 You can do this by picking the right [Modifier] from the [Modifiers] class.
-You can set any number of [Modifier]s to each [TextCharacter] individually and when
-you refresh your [Terminal] by calling `flush` on it you will see them applied.
+You can set any number of [Modifier]s to each [Tile] individually and when
+you refresh your [TileGrid] by calling `flush` on it you will see them applied.
 
 ### TileGraphics
-An image built from [TextCharacter]s with color and style information. 
+An image built from [Tile]s with color and style information. 
 These are completely in memory and not visible, but can be used when drawing on other [DrawSurface]s,
-like a [Screen] or a [Terminal]. In other words [TileGraphic]s are like real images but composed of
-[TextCharacter]s to create ASCII art and the like. 
+like a [Screen] or a [TileGrid]. In other words [TileGraphic]s are like real images but composed of
+[Tile]s to create ASCII art and the like. 
 
 ### Screens 
 
-[Screen]s are in-memory representations of your [Terminal]. They are double buffered
+[Screen]s are in-memory representations of your [TileGrid]. They are double buffered
 which means that you write to a back-buffer and when you `refresh` your [Screen] only the changes will
-be written to the backing [Terminal] instance. Multiple [Screen]s can be attached to the same [Terminal]
+be written to the backing [TileGrid] instance. Multiple [Screen]s can be attached to the same [TileGrid]
 object which means that you can have more than one screen in your app and you can switch between them
 simultaneously by using the `display` method. [Screen]s also let you use [Component]s like [Button]s
 and [Panel]s.
@@ -557,45 +577,53 @@ Zircon is powered by:
 [maven]:https://mvnrepository.com/artifact/org.hexworks.zircon/zircon/2017.4.0
 [maven img]:https://maven-badges.herokuapp.com/maven-central/org.hexworks.zircon/zircon/badge.svg
 
+[screen-primer]:https://github.com/Hexworks/zircon/wiki/A-primer-on-Screens
+[text-images]:https://github.com/Hexworks/zircon/wiki/How-to-work-with-TileGraphics
+
 [resource-handling]:https://github.com/Hexworks/zircon/wiki/Resource-Handling
 [design-philosophy]:https://github.com/Hexworks/zircon/wiki/The-design-philosophy-behind-Zircon
 [color-themes]:https://github.com/Hexworks/zircon/wiki/Working-with-ColorThemes
-[text-images]:https://github.com/Hexworks/zircon/wiki/How-to-work-with-TileGraphics
-[screen-primer]:https://github.com/Hexworks/zircon/wiki/A-primer-on-Screens
-[components]:https://github.com/Hexworks/zircon/wiki/The-component-system
 [layers]:https://github.com/Hexworks/zircon/wiki/How-Layers-work
 [inputs]:https://github.com/Hexworks/zircon/wiki/Input-handling
+[components]:https://github.com/Hexworks/zircon/wiki/The-component-system
 [shapes]:https://github.com/Hexworks/zircon/wiki/Shapes
 [animations]:https://github.com/Hexworks/zircon/wiki/Animation-support
 
 [discord]:https://discord.gg/p2vSMFc
-[examples]:https://github.com/Hexworks/zircon/tree/master/zircon.jvm.swing/src/test/java/org/hexworks/zircon/examples
-[api]:https://github.com/Hexworks/zircon/tree/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api
-[internal]:https://github.com/Hexworks/zircon/tree/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/internal
+[examples]:https://github.com/Hexworks/zircon/tree/master/zircon.examples/src/main
+[api]:https://github.com/Hexworks/zircon/tree/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api
+[internal]:https://github.com/Hexworks/zircon/tree/master/zircon.core/src/main/kotlin/org/hexworks/zircon/internal
 
-[REXPaintResource]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/resource/REXPaintResource.kt
-[Shape]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/graphics/Shape.kt
-[ShapeFactory]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/shape/ShapeFactory.kt
-[ColorTheme]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/component/ColorTheme.kt
-[TextColor]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/color/TextColor.kt
-[StyleSet]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/graphics/StyleSet.kt  
-[Component]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/component/Component.kt
-[LayerBuilder]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/builder/LayerBuilder.kt
-[TerminalBuilder]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/builder/TerminalBuilder.kt
-[Button]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/component/Button.kt
-[Panel]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/component/Panel.kt
-[DrawSurface]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/behavior/DrawSurface.kt
-[Layerable]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/behavior/Layerable.kt
-[Layer]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/graphics/Layer.kt
-[ANSITextColor]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/color/ANSITileColor.kt
-[TextColorFactory]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/color/TextColorFactory.kt
-[TextCharacter]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/Tile.kt
-[Modifier]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/Modifier.kt
+# JVM
+[CP437TilesetResources]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/CP437TilesetResources.kt
+[Layers]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/Layers.kt
+[TileColors]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/TileColors.kt
 [Modifiers]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/Modifiers.kt
-[InputProvider]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/input/InputProvider.kt
-[Input]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/input/Input.kt
-[TileGraphic]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/graphics/TileGraphic.kt
-[BasicTileGraphic]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/graphics/impl/DefaultTileGraphic.kt
-[Screen]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/screen/Screen.kt
-[InputEmitter]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/behavior/InputEmitter.kt
-[Terminal]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/tileGrid/TileGrid.kt
+[AppConfigs]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/AppConfigs.kt
+
+# CORE
+[Application]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/application/Application.kt
+[Renderer]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/renderer/Renderer.kt
+[Shape]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/shape/Shape.kt
+[ShapeFactory]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/shape/ShapeFactory.kt
+[ColorTheme]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/component/ColorTheme.kt
+[TileColor]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/color/TileColor.kt
+[StyleSet]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/graphics/StyleSet.kt  
+[Component]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/component/Component.kt
+[Button]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/component/Button.kt
+[Panel]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/component/Panel.kt
+[DrawSurface]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/behavior/DrawSurface.kt
+[Layerable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/behavior/Layerable.kt
+[Layer]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/graphics/Layer.kt
+[ANSITileColor]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/color/ANSITileColor.kt
+[Tile]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/data/Tile.kt
+[Modifier]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/modifier/Modifier.kt
+[Input]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/input/Input.kt
+[TileGraphic]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/graphics/TileGraphic.kt
+[Screen]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/screen/Screen.kt
+[InputEmitter]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/behavior/InputEmitter.kt
+[TileGrid]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/grid/TileGrid.kt
+
+## SWING
+[SwingApplications]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm.swing/src/main/kotlin/org/hexworks/zircon/api/SwingApplications.kt
+
