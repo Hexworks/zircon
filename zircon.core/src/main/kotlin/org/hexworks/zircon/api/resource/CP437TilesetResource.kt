@@ -15,7 +15,7 @@ enum class CP437TilesetResource(private val tilesetName: String,
                                 private val fileName: String = "${tilesetName}_${width}x$height.png",
                                 override val id: Identifier = Identifier.randomIdentifier(),
                                 override val tileType: KClass<CharacterTile> = CharacterTile::class,
-                                override val path: String = "zircon.core/src/main/resources/cp_437_tilesets/$fileName")
+                                override val path: String = "/cp_437_tilesets/$fileName")
     : TilesetResource {
 
     JOLLY_12X12("jolly", 12, 12),
