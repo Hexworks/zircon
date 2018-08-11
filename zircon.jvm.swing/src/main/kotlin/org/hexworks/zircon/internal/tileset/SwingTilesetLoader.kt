@@ -37,8 +37,7 @@ class SwingTilesetLoader : TilesetLoader<BufferedImage>, Closeable {
                 CharacterTile::class to { resource: TilesetResource ->
                     val source = if (resource is CP437TilesetResource) {
                         // this loads it from the zircon jar
-                        ImageIO.read(File(resource.path))
-//                        ImageIO.read(this::class.java.classLoader.getResource(resource.path))
+                        ImageIO.read(this::class.java.getResource(resource.path))
                     } else {
                         // and this loads it from an external source
                         ImageIO.read(File(resource.path))
