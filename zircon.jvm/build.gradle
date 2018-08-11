@@ -27,6 +27,10 @@ artifacts {
     archives sourcesJar
 }
 
+jar {
+    from project(':zircon.core').configurations.compile.collect { zipTree it }
+}
+
 //apply plugin: 'maven-publish'
 //
 //task sourcesJar(type: Jar, dependsOn: classes) {
