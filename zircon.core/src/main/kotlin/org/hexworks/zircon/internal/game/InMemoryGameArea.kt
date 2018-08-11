@@ -55,9 +55,9 @@ class InMemoryGameArea(private val size: Size3D,
                 .map { blocks[it]!! }
     }
 
-    override fun fetchBlocksAt(z: Int, blockFetchMode: BlockFetchMode): Iterable<Block> {
+    override fun fetchBlocksAtLevel(z: Int, blockFetchMode: BlockFetchMode): Iterable<Block> {
         return if (blockFetchMode == BlockFetchMode.IGNORE_EMPTY) {
-            fetchBlocksAt(z)
+            fetchBlocksAtLevel(z)
         } else {
             fetchPositionsWithOffset(
                     offset = Position3D.defaultPosition(),
@@ -66,7 +66,7 @@ class InMemoryGameArea(private val size: Size3D,
         }
     }
 
-    override fun fetchBlocksAt(z: Int): Iterable<Block> {
+    override fun fetchBlocksAtLevel(z: Int): Iterable<Block> {
         return blocks.keys.filter { it.z == z }
                 .map { blocks[it]!! }
     }
