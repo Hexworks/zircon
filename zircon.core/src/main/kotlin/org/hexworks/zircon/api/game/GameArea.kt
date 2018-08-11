@@ -1,15 +1,14 @@
 package org.hexworks.zircon.api.game
 
-import org.hexworks.zircon.api.data.Block
-import org.hexworks.zircon.api.data.Position3D
-import org.hexworks.zircon.api.data.Size3D
-import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.TileGraphic
 import org.hexworks.zircon.api.util.Maybe
 
 /**
  * A [GameArea] represents the 3D space in which the entities of a
- * game take place.
+ * game take place. The space is composed of [Block]s which are just
+ * cubes (like in Minecraft) which have 6 sides (all optional), and
+ * layers within the cube itself (optional as well).
  */
 interface GameArea {
 
@@ -66,20 +65,6 @@ interface GameArea {
      * @param offset the position where the collection of Blocks will start.
      * @param size the size of the area which you need the blocks from.
      * @param fetchMode the [BlockFetchMode] to use.
-     *
-     * Example: offset=(x=2, y=4, z=8), size=(xLength=9,yLength=3,zLength=4)
-     *<pre>
-     *         ^ (2,4,12) (z)
-     *         \
-     *         \
-     *         \
-     *         \
-     *  (2,4,8)O---------> (11,4,8) (x)
-     *        /
-     *      /
-     *    /
-     *  L (2,7,8) (y)
-     *</pre>
      */
     fun fetchBlocksAt(offset: Position3D, size: Size3D, fetchMode: BlockFetchMode): Iterable<Block>
 
@@ -87,12 +72,12 @@ interface GameArea {
      * Returns the [Block]s at the given `z` level.
      * Empty positions are **ignored**.
      */
-    fun fetchBlocksAt(z: Int): Iterable<Block>
+    fun fetchBlocksAtLevel(z: Int): Iterable<Block>
 
     /**
      * Returns the [Block]s at the given `z` level.
      */
-    fun fetchBlocksAt(z: Int, blockFetchMode: BlockFetchMode): Iterable<Block>
+    fun fetchBlocksAtLevel(z: Int, blockFetchMode: BlockFetchMode): Iterable<Block>
 
     /**
      * Returns the [Block] at the given `position` (if any).

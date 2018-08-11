@@ -43,7 +43,7 @@ class InMemoryGameAreaTest {
 
     @Test
     fun shouldFetchBlocksAtZLevelInProperOrder() {
-        assertThat(target.fetchBlocksAt(7)
+        assertThat(target.fetchBlocksAtLevel(7)
                 .map { it.position })
                 .containsExactly(LEVEL_7_POS_0, LEVEL_7_POS_1)
 
