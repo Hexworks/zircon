@@ -11,7 +11,3 @@ dependencies {
     testCompile libraries.mockito
     testCompile libraries.assertj
 }
-
-jar {
-    from project(':zircon.jvm').configurations.compile.collect { zipTree it }
-}
