@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples
 
+import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
@@ -15,10 +16,6 @@ import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.input.InputType
-import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.TileColors
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.resource.CP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.screen.Screen
@@ -104,8 +101,7 @@ object IsometricGameArea {
                 .debugMode(true)
                 .build()
 
-        val app = LibgdxApplication.create(config)
-        app.start()
+        val app = SwingApplications.startApplication(config)
 
         val screen = ScreenBuilder.createScreenFor(app.tileGrid)
 

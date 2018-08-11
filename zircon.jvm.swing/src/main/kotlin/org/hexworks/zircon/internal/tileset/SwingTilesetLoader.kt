@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.GraphicTile
 import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.resource.CP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
@@ -34,9 +35,17 @@ class SwingTilesetLoader : TilesetLoader<BufferedImage>, Closeable {
 
         private val LOADERS: Map<KClass<out Tile>, (TilesetResource) -> Tileset<BufferedImage>> = mapOf(
                 CharacterTile::class to { resource: TilesetResource ->
+                    val source = if (resource is CP437TilesetResource) {
+                        // this loads it from the zircon jar
+                        ImageIO.read(File(resource.path))
+//                        ImageIO.read(this::class.java.classLoader.getResource(resource.path))
+                    } else {
+                        // and this loads it from an external source
+                        ImageIO.read(File(resource.path))
+                    }
                     BufferedImageCP437Tileset(
                             resource = resource,
-                            source = ImageIO.read(File(resource.path)))
+                            source = source)
                 },
                 ImageTile::class to { resource: TilesetResource ->
                     BufferedImageDictionaryTileset(
