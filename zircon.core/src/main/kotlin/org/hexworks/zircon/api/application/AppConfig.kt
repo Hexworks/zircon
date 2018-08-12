@@ -2,8 +2,8 @@ package org.hexworks.zircon.api.application
 
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
@@ -18,6 +18,7 @@ data class AppConfig(
         val isCursorBlinking: Boolean,
         val isClipboardAvailable: Boolean,
         val defaultTileset: TilesetResource,
+        val defaultColorTheme: ColorTheme,
         val debugMode: Boolean,
         val size: Size,
         val fullScreen: Boolean) {

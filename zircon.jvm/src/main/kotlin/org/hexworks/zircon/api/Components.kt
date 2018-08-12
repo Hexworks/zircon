@@ -5,27 +5,27 @@ import org.hexworks.zircon.api.builder.component.*
 object Components {
 
     @JvmStatic
-    fun newTextBoxBuilder() = TextBoxBuilder.newBuilder()
+    fun textBox() = TextBoxBuilder.newBuilder()
 
     @JvmStatic
-    fun newRadioButtonGroupBuilder() = RadioButtonGroupBuilder.newBuilder()
+    fun radioButtonGroup() = RadioButtonGroupBuilder.newBuilder()
 
     @JvmStatic
-    fun newPanelBuilder() = PanelBuilder.newBuilder()
+    fun panel() = PanelBuilder.newBuilder()
 
     @JvmStatic
-    fun newLabelBuilder() = LabelBuilder.newBuilder()
+    fun label() = LabelBuilder.newBuilder()
 
     @JvmStatic
-    fun newButtonBuilder() = ButtonBuilder.newBuilder()
+    fun button() = ButtonBuilder.newBuilder()
 
     @JvmStatic
-    fun newCheckBoxBuilder() = CheckBoxBuilder.newBuilder()
+    fun checkBox() = CheckBoxBuilder.newBuilder()
 
     @JvmStatic
-    fun newGameComponentBuilder() = GameComponentBuilder.newBuilder()
+    fun gameComponent() = GameComponentBuilder.newBuilder()
 
     @JvmStatic
-    fun newHeaderBuilder() = HeaderBuilder.newBuilder()
+    fun header() = HeaderBuilder.newBuilder()
 
 }

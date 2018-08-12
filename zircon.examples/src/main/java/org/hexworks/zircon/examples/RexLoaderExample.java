@@ -9,8 +9,6 @@ import org.hexworks.zircon.api.resource.CP437TilesetResource;
 import org.hexworks.zircon.api.resource.REXPaintResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
-import org.hexworks.zircon.internal.application.LibgdxApplication;
-import org.hexworks.zircon.internal.application.SwingApplication;
 
 import java.io.InputStream;
 import java.util.List;
@@ -25,7 +23,7 @@ public class RexLoaderExample {
     public static void main(String[] args) {
         REXPaintResource rex = REXPaintResource.loadREXFile(RESOURCE);
 
-        Application app = SwingApplications.startApplication(AppConfigs.newBuilder()
+        Application app = SwingApplications.startApplication(AppConfigs.newConfig()
                 .defaultTileset(CP437TilesetResource.TAFFER_20X20)
                 .defaultSize(SIZE)
                 .debugMode(true)

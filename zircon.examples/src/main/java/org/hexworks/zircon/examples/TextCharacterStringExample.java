@@ -15,7 +15,7 @@ public class TextCharacterStringExample {
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
 
     public static void main(String[] args) {
-        Application app = SwingApplications.startApplication(AppConfigs.newBuilder()
+        Application app = SwingApplications.startApplication(AppConfigs.newConfig()
                 .defaultTileset(CP437TilesetResource.TAFFER_20X20)
                 .defaultSize(SIZE)
                 .debugMode(true)

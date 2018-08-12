@@ -27,7 +27,7 @@ public class FontModifiersExample {
 
     public static void main(String[] args) {
 
-        Application app = SwingApplications.startApplication(AppConfigs.newBuilder()
+        Application app = SwingApplications.startApplication(AppConfigs.newConfig()
                 .defaultTileset(CP437TilesetResource.WANDERLUST_16X16)
                 .defaultSize(SIZE)
                 .debugMode(true)

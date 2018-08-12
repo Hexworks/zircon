@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.input
 
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.input.InputType.*
+import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.platform.util.SystemUtils
 
 
@@ -35,9 +36,9 @@ sealed class Input(private val inputType: InputType,
 
     fun isMouseAction() = this is MouseAction
 
-    fun asKeyStroke() = this as KeyStroke
+    fun asKeyStroke() = Maybe.ofNullable(this as? KeyStroke)
 
-    fun asMouseAction() = this as MouseAction
+    fun asMouseAction() = Maybe.ofNullable(this as? MouseAction)
 
 }
 

@@ -16,7 +16,7 @@ interface Tile : Drawable, Cacheable {
     /**
      * Returns the tile type of this [Tile].
      */
-    fun tileType(): KClass<out Tile>
+    fun tileType(): String = this::class.simpleName!!
 
     fun styleSet(): StyleSet
 

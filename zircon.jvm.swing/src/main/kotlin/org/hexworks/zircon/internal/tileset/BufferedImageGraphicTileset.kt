@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.tileset
 
 import org.hexworks.zircon.api.data.GraphicTile
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.resource.GraphicalTilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
@@ -13,6 +14,7 @@ import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
 import java.awt.image.BufferedImage
 import java.io.File
+import java.io.InputStream
 import javax.imageio.ImageIO
 
 @Suppress("unused")
@@ -30,7 +32,14 @@ class BufferedImageGraphicTileset(private val resource: TilesetResource)
             "Can't use a ${resource.tileType.simpleName}-based TilesetResource for" +
                     " a GraphicTile-based tileset."
         }
-        val files: List<File> = unZipIt(File(resource.path).inputStream(), createTempDir())
+
+        val resourceStream: InputStream = if (resource is GraphicalTilesetResource) {
+            this::class.java.getResourceAsStream(resource.path)
+        } else {
+            File(resource.path).inputStream()
+        }
+
+        val files: List<File> = unZipIt(resourceStream, createTempDir())
         val tileInfoSource = files.first { it.name == "tileinfo.yml" }.bufferedReader().use {
             it.readText()
         }

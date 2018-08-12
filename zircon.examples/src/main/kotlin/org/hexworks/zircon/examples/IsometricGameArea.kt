@@ -19,7 +19,6 @@ import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.resource.CP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.internal.application.LibgdxApplication
 import org.hexworks.zircon.internal.game.DefaultGameComponent
 import org.hexworks.zircon.internal.game.InMemoryGameArea
 import java.util.*
@@ -106,7 +105,7 @@ object IsometricGameArea {
         val screen = ScreenBuilder.createScreenFor(app.tileGrid)
 
 
-        val gamePanel = Components.newPanelBuilder()
+        val gamePanel = Components.panel()
                 .size(screen.size())
                 .title("Game area")
                 .wrapWithBox()
@@ -123,7 +122,7 @@ object IsometricGameArea {
                 1,
                 Tile.empty())
 
-        val gameComponent = Components.newGameComponentBuilder()
+        val gameComponent = Components.gameComponent()
                 .gameArea(gameArea)
                 .projectionMode(ProjectionMode.TOP_DOWN_OBLIQUE)
                 .visibleSize(visibleGameAreaSize)

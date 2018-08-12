@@ -17,7 +17,7 @@ data class ImageTile(
 
     private val cacheKey = "ImageTile(t=${tileset.path},n=$name)"
 
-    override fun tileType() = ImageTile::class
+    override fun tileType() = ImageTile::class.simpleName!!
 
     override fun generateCacheKey() = cacheKey
 

@@ -19,7 +19,7 @@ public class CreatingAScreen {
     public static void main(String[] args) {
 
         TileGrid tileGrid = SwingApplications.startTileGrid(
-                AppConfigs.newBuilder()
+                AppConfigs.newConfig()
                         .defaultSize(Sizes.create(20, 8))
                         .defaultTileset(CP437TilesetResources.wanderlust16x16())
                         .build());

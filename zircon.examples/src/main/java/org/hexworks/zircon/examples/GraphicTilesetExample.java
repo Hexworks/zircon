@@ -28,7 +28,7 @@ public class GraphicTilesetExample {
 
     public static void main(String[] args) {
 
-        Application app = SwingApplications.startApplication(AppConfigs.newBuilder()
+        Application app = SwingApplications.startApplication(AppConfigs.newConfig()
                 .defaultTileset(TILESET)
                 .defaultSize(SIZE)
                 .debugMode(true)

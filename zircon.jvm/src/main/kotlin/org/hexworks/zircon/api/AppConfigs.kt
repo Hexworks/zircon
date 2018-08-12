@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 object AppConfigs {
 
     @JvmStatic
-    fun newBuilder() = AppConfigBuilder.newBuilder()
+    fun newConfig() = AppConfigBuilder.newBuilder()
 
     /**
      * Returns the default [AppConfig].

@@ -25,7 +25,7 @@ public class FontSwitcherExample {
 
     public static void main(String[] args) {
 
-        Application app = SwingApplications.startApplication(AppConfigs.newBuilder()
+        Application app = SwingApplications.startApplication(AppConfigs.newConfig()
                 .defaultTileset(CP437TilesetResource.ADU_DHABI_16X16)
                 .defaultSize(SIZE)
                 .debugMode(true)
@@ -50,16 +50,16 @@ public class FontSwitcherExample {
         refreshLayer(tileGrid, switchLayer, random);
 
         tileGrid.onInput(input -> {
-            if (input.isKeyStroke()) {
-                if (input.asKeyStroke().inputTypeIs(InputType.ArrowRight)) {
+            input.asKeyStroke().ifPresent(ks -> {
+                if (ks.inputTypeIs(InputType.ArrowRight)) {
                     tileGrid.useTileset(TILESETS.get(random.nextInt(TILESETS.size())));
                     // this is needed because grid can't be forced to redraw
                     refreshText(tileGrid, switchFont, Positions.defaultPosition());
                 }
-                if (input.asKeyStroke().inputTypeIs(InputType.ArrowLeft)) {
+                if (ks.inputTypeIs(InputType.ArrowLeft)) {
                     refreshLayer(tileGrid, switchLayer, random);
                 }
-            }
+            });
         });
     }
 
@@ -71,7 +71,7 @@ public class FontSwitcherExample {
     }
 
     private static void refreshLayer(TileGrid tileGrid, String text, Random random) {
-        tileGrid.getLayers().forEach(t -> tileGrid.removeLayer(t));
+        tileGrid.getLayers().forEach(tileGrid::removeLayer);
         Layer layer = Layers.newBuilder()
                 .tileset(TILESETS.get(random.nextInt(TILESETS.size())))
                 .offset(Positions.create(0, 1))

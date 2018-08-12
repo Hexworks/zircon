@@ -14,7 +14,7 @@ public class CreatingATileGrid {
     public static void main(String[] args) {
 
         TileGrid tileGrid = SwingApplications.startTileGrid(
-                AppConfigs.newBuilder()
+                AppConfigs.newConfig()
                         .defaultSize(Sizes.create(10, 10))
                         .defaultTileset(CP437TilesetResources.rexPaint16x16())
                         .build());

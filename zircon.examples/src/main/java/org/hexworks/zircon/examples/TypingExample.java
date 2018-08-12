@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.data.CharacterTile;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.input.InputType;
-import org.hexworks.zircon.api.input.KeyStroke;
 import org.hexworks.zircon.api.resource.CP437TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 
@@ -56,11 +55,10 @@ public class TypingExample {
             } else if (input.inputTypeIs(InputType.Enter)) {
                 screen.putCursorAt(pos.withRelativeY(1).withX(0));
             } else {
-                if (input.isKeyStroke()) {
-                    final KeyStroke ks = input.asKeyStroke();
+                input.asKeyStroke().ifPresent(ks -> {
                     screen.setTileAt(pos, TEXT_CHAR_TEMPLATE.withCharacter(ks.getCharacter()));
                     screen.moveCursorForward();
-                }
+                });
             }
         });
     }
@@ -73,13 +71,12 @@ public class TypingExample {
             } else if (input.inputTypeIs(InputType.Enter)) {
                 tileGrid.putCursorAt(pos.withRelativeY(1).withX(0));
             } else {
-                if (input.isKeyStroke()) {
-                    final KeyStroke ks = input.asKeyStroke();
+                input.asKeyStroke().ifPresent(ks -> {
                     tileGrid.setBackgroundColor(ANSITileColor.BLACK);
                     tileGrid.setForegroundColor(ANSITileColor.RED);
                     tileGrid.putCharacter(ks.getCharacter());
                     tileGrid.resetColorsAndModifiers();
-                }
+                });
             }
         });
     }

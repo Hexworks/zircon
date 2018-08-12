@@ -43,7 +43,7 @@ public class GameMockupExample {
         double rows = screenSize.getHeight() / TILESET.getHeight();
         Size terminalSize = Sizes.create((int) columns, (int) rows);
 
-        Application app = SwingApplications.startApplication(AppConfigs.newBuilder()
+        Application app = SwingApplications.startApplication(AppConfigs.newConfig()
                 .defaultTileset(TILESET)
                 .defaultSize(terminalSize)
                 .debugMode(true)
@@ -61,32 +61,32 @@ public class GameMockupExample {
         Position menuPosition = Positions.create(
                 (terminalSize.getXLength() - MAIN_MENU_PANEL_WIDTH) / 2,
                 (terminalSize.getYLength() - MAIN_MENU_PANEL_HEIGHT) / 2);
-        Label mainMenuLabel = Components.newLabelBuilder()
+        Label mainMenuLabel = Components.label()
                 .text(MAIN_MENU_LABEL)
                 .position(menuPosition.withRelativeY(-3).withRelativeX(4))
                 .build();
         mainMenuScreen.addComponent(mainMenuLabel);
 
-        Panel menuPanel = Components.newPanelBuilder()
+        Panel menuPanel = Components.panel()
                 .boxType(BoxType.LEFT_RIGHT_DOUBLE)
                 .wrapWithBox()
                 .position(menuPosition)
                 .size(Sizes.create(MAIN_MENU_PANEL_WIDTH, MAIN_MENU_PANEL_HEIGHT))
                 .build();
 
-        Button newGameButton = Components.newButtonBuilder()
+        Button newGameButton = Components.button()
                 .text(NEW_GAME_BUTTON_LABEL)
                 .position(Positions.create(3, 1))
                 .build();
         menuPanel.addComponent(newGameButton);
 
-        Button optionsButton = Components.newButtonBuilder()
+        Button optionsButton = Components.button()
                 .text(OPTIONS_BUTTON_LABEL)
                 .position(Positions.create(4, 3))
                 .build();
         menuPanel.addComponent(optionsButton);
 
-        Button quitButton = Components.newButtonBuilder()
+        Button quitButton = Components.button()
                 .text(QUIT_BUTTON_LABEL)
                 .position(Positions.create(7, 5))
                 .build();
@@ -101,7 +101,7 @@ public class GameMockupExample {
 
         Screen optionsScreen = Screens.createScreenFor(tileGrid);
 
-        Button backButton = Components.newButtonBuilder()
+        Button backButton = Components.button()
                 .text(BACK_LABEL)
                 .position(Positions.create(
                         PANEL_SPACING,
@@ -109,14 +109,14 @@ public class GameMockupExample {
                 .build();
         optionsScreen.addComponent(backButton);
 
-        Button applyButton = Components.newButtonBuilder()
+        Button applyButton = Components.button()
                 .text(APPLY_LABEL)
                 // TODO: FIX CAST
                 .position((Positions.create(PANEL_SPACING, 0)).relativeToRightOf(backButton))
                 .build();
         optionsScreen.addComponent(applyButton);
 
-        Panel difficultyPanel = Components.newPanelBuilder()
+        Panel difficultyPanel = Components.panel()
                 .size(Sizes.create((terminalSize.getXLength() - PANEL_SPACING) / 3, 9))
                 .position(Positions.create(PANEL_SPACING, PANEL_SPACING))
                 .wrapWithBox()
@@ -124,7 +124,7 @@ public class GameMockupExample {
                 .title(DIFFICULTY_LABEL)
                 .build();
 
-        RadioButtonGroup difficultyRadio = Components.newRadioButtonGroupBuilder()
+        RadioButtonGroup difficultyRadio = Components.radioButtonGroup()
                 .position(Positions.create(1, 1))
                 .size(difficultyPanel.size().minus(Sizes.create(2, 2)))
                 .build();
