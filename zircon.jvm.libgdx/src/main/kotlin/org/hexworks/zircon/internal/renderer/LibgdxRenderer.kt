@@ -79,8 +79,8 @@ class LibgdxRenderer(private val grid: TileGrid,
                 tileset
             }
 
-            val width = actualTileset.width().toFloat()
-            val height = actualTileset.height().toFloat()
+            val tileWidth = actualTileset.width().toFloat()
+            val tileHeight = actualTileset.height().toFloat()
 
             val texture = actualTileset.fetchTextureForTile(tile)
             val drawable = TextureRegionDrawable(texture.getTexture())
@@ -97,9 +97,9 @@ class LibgdxRenderer(private val grid: TileGrid,
             val tinted = drawable.tint(Color(fr, fg, fb, fa)) as SpriteDrawable
             tinted.draw(batch,
                     x,
-                    y + height,
-                    width,
-                    height)
+                    y + tileHeight,
+                    tileWidth,
+                    tileHeight)
         }
     }
 }

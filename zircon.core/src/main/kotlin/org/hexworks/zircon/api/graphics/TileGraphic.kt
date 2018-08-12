@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.sam.TextCharacterTransformer
 import org.hexworks.zircon.api.util.Math
+import org.hexworks.zircon.internal.data.DefaultCell
 import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphic
 
 /**
@@ -110,7 +111,7 @@ interface TileGraphic
     fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell> {
         return size.fetchPositions()
                 .map { it + offset }
-                .map { Cell(it, getTileAt(it).get()) }
+                .map { DefaultCell(it, getTileAt(it).get()) }
     }
 
     /**

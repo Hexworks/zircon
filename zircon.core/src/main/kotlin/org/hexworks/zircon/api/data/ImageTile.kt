@@ -5,28 +5,21 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride
 
-data class ImageTile(
-        val tileset: TilesetResource,
-        val name: String,
-        private val style: StyleSet = StyleSet.defaultStyle(),
-        private val tilesetOverride: TilesetOverride = DefaultTilesetOverride(tileset))
-    : Tile,
-        TilesetOverride by tilesetOverride {
+interface ImageTile
+    : Tile, TilesetOverride {
 
-    private val cacheKey = "ImageTile(t=${tileset.path},n=$name)"
+    val tileset: TilesetResource
+    val name: String
 
     override fun tileType() = ImageTile::class.simpleName!!
 
-    override fun generateCacheKey() = cacheKey
+    override fun styleSet() = StyleSet.defaultStyle()
 
-    override fun styleSet() = style
-
-    fun withName(name: String) = ImageTile(
+    fun withName(name: String) = Tile.createImageTile(
             name = name,
             tileset = tileset,
-            style = style)
+            style = styleSet())
 
     override fun withForegroundColor(foregroundColor: TileColor) = this
 

@@ -1,3 +1,5 @@
+@file:Suppress("unused", "ReplaceSingleLineLet")
+
 package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.component.Component
@@ -7,6 +9,10 @@ interface Position : Comparable<Position> {
 
     val x: Int
     val y: Int
+
+    operator fun component1() = x
+
+    operator fun component2() = y
 
     fun toAbsolutePosition(tileset: Tileset<out Any>): AbsolutePosition
 
@@ -117,10 +123,6 @@ interface Position : Comparable<Position> {
      * Size(x=2, y=3).
      */
     fun toSize() = Size.create(x, y)
-
-    operator fun component1() = x
-
-    operator fun component2() = y
 
     /**
      * Creates a [Position] which is relative to the top of the given [Component].

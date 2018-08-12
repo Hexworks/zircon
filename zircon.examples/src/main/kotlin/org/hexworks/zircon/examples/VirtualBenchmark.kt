@@ -1,10 +1,14 @@
 package org.hexworks.zircon.examples
 
+import org.hexworks.zircon.api.StyleSets
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.VirtualApplications
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.*
-import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.data.GridPosition
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.CP437TilesetResource
 import org.hexworks.zircon.internal.graphics.DefaultLayer
@@ -30,7 +34,7 @@ fun main(args: Array<String>) {
     val layerWidth = 20
     val layerHeight = 10
     val layerSize = Size.create(layerWidth, layerHeight)
-    val filler = CharacterTile('x')
+    val filler = Tiles.defaultTile().withCharacter('x')
 
     val layers = (0..layerCount).map {
 
@@ -50,12 +54,20 @@ fun main(args: Array<String>) {
     }
 
     val tiles = listOf(
-            CharacterTile('a', StyleSet.create(
-                    foregroundColor = ANSITileColor.YELLOW,
-                    backgroundColor = ANSITileColor.BLUE)),
-            CharacterTile('b', StyleSet.create(
-                    foregroundColor = ANSITileColor.GREEN,
-                    backgroundColor = ANSITileColor.RED)))
+            Tiles.newBuilder()
+                    .character('a')
+                    .styleSet(StyleSets.newBuilder()
+                            .foregroundColor(ANSITileColor.YELLOW)
+                            .backgroundColor(ANSITileColor.BLUE)
+                            .build())
+                    .build(),
+            Tiles.newBuilder()
+                    .character('b')
+                    .styleSet(StyleSets.newBuilder()
+                            .foregroundColor(ANSITileColor.GREEN)
+                            .backgroundColor(ANSITileColor.RED)
+                            .build())
+                    .build())
 
     var currIdx = 0
 

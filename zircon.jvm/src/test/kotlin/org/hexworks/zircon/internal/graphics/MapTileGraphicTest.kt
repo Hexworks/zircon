@@ -180,8 +180,8 @@ class MapTileGraphicTest {
     fun shouldProperlyFetchCellsBy() {
         val result = target.fetchCellsBy(Position.offset1x1(), Size.create(2, 1))
         assertThat(result).containsExactly(
-                Cell(Position.create(1, 1), EMPTY_CHAR),
-                Cell(Position.create(2, 1), EMPTY_CHAR))
+                Cell.create(Position.create(1, 1), EMPTY_CHAR),
+                Cell.create(Position.create(2, 1), EMPTY_CHAR))
     }
 
     private fun fetchTargetChars(): List<Tile> {
