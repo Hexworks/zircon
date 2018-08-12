@@ -22,7 +22,7 @@ class LibgdxApplication(appConfig: AppConfig) : ApplicationAdapter(), Applicatio
 
     // libgdx overrides
     override fun create() {
-        println("create")
+        println("createCharacterTile")
         if (started.not()) {
             println("start")
             started = true

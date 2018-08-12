@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.game
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.*
@@ -52,7 +53,7 @@ class InMemoryGameAreaTest {
     @Test
     fun shouldProperlyFetchBlockAtPosition() {
         assertThat(target.fetchBlockAt(LEVEL_7_POS_0).get())
-                .isEqualTo(Block(position = LEVEL_7_POS_0, layers = BLOCK.toMutableList()))
+                .isEqualTo(BlockBuilder.create().position(LEVEL_7_POS_0).layers(BLOCK.toMutableList()).build())
 
     }
 
@@ -60,7 +61,10 @@ class InMemoryGameAreaTest {
     fun shouldProperlySetBlockAtPosition() {
         target.setBlockAt(EMPTY_POSITION, OTHER_BLOCK)
         assertThat(target.fetchBlockAt(EMPTY_POSITION).get())
-                .isEqualTo(Block(position = EMPTY_POSITION, layers = OTHER_BLOCK.plus(Tile.empty()).plus(Tile.empty()).toMutableList()))
+                .isEqualTo(BlockBuilder.create()
+                        .position(EMPTY_POSITION)
+                        .layers(OTHER_BLOCK.plus(Tile.empty()).plus(Tile.empty()).toMutableList())
+                        .build())
 
     }
 
@@ -121,31 +125,31 @@ class InMemoryGameAreaTest {
                 Position3D.create(999, 999, 999))
 
         val EXPECTED_LAYER_0 = listOf(
-                Cell(Position.create(0, 0), Tile.empty()),
-                Cell(Position.create(1, 0), BOTTOM_CHAR),
-                Cell(Position.create(2, 0), Tile.empty()),
-                Cell(Position.create(0, 1), Tile.empty()),
-                Cell(Position.create(1, 1), Tile.empty()),
-                Cell(Position.create(2, 1), Tile.empty()))
+                Cell.create(Position.create(0, 0), Tile.empty()),
+                Cell.create(Position.create(1, 0), BOTTOM_CHAR),
+                Cell.create(Position.create(2, 0), Tile.empty()),
+                Cell.create(Position.create(0, 1), Tile.empty()),
+                Cell.create(Position.create(1, 1), Tile.empty()),
+                Cell.create(Position.create(2, 1), Tile.empty()))
 
         val EXPECTED_LAYER_1 = EXPECTED_LAYER_0.toMutableList().also {
-            it[1] = Cell(it[1].position, MID_CHAR)
+            it[1] = Cell.create(it[1].position, MID_CHAR)
         }
         val EXPECTED_LAYER_2 = EXPECTED_LAYER_0.toMutableList().also {
-            it[1] = Cell(it[1].position, TOP_CHAR)
+            it[1] = Cell.create(it[1].position, TOP_CHAR)
         }
         val EXPECTED_LAYER_3 = listOf(
-                Cell(Position.create(0, 0), Tile.empty()),
-                Cell(Position.create(1, 0), Tile.empty()),
-                Cell(Position.create(2, 0), BOTTOM_CHAR),
-                Cell(Position.create(0, 1), Tile.empty()),
-                Cell(Position.create(1, 1), Tile.empty()),
-                Cell(Position.create(2, 1), Tile.empty()))
+                Cell.create(Position.create(0, 0), Tile.empty()),
+                Cell.create(Position.create(1, 0), Tile.empty()),
+                Cell.create(Position.create(2, 0), BOTTOM_CHAR),
+                Cell.create(Position.create(0, 1), Tile.empty()),
+                Cell.create(Position.create(1, 1), Tile.empty()),
+                Cell.create(Position.create(2, 1), Tile.empty()))
         val EXPECTED_LAYER_4 = EXPECTED_LAYER_3.toMutableList().also {
-            it[2] = Cell(it[2].position, MID_CHAR)
+            it[2] = Cell.create(it[2].position, MID_CHAR)
         }
         val EXPECTED_LAYER_5 = EXPECTED_LAYER_3.toMutableList().also {
-            it[2] = Cell(it[2].position, TOP_CHAR)
+            it[2] = Cell.create(it[2].position, TOP_CHAR)
         }
 
         val HUGE_SIZE = Size3D.create(Int.MAX_VALUE - 1, Int.MAX_VALUE - 1, Int.MAX_VALUE - 1)

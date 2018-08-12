@@ -146,14 +146,16 @@ data class Position3D private constructor(val x: Int,
     companion object {
 
         /**
-         * Position3d(0, 0, 0)
-         */
-        fun defaultPosition() = create(0, 0, 0)
-
-        /**
          * Factory method for [Position3D].
          */
         fun create(x: Int, y: Int, z: Int) = Position3D(x = x, y = y, z = z)
+
+        /**
+         * Position3d(0, 0, 0)
+         */
+        fun defaultPosition() = DEFAULT_POSITION
+
+        fun unknown() = UNKNOWN
 
         /**
          * Creates a new [Position3D] from a [Position].
@@ -163,5 +165,8 @@ data class Position3D private constructor(val x: Int,
                 x = position.x,
                 y = position.y,
                 z = z)
+
+        private val DEFAULT_POSITION = create(0, 0, 0)
+        private val UNKNOWN = create(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
     }
 }

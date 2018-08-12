@@ -10,6 +10,9 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.internal.data.DefaultCharacterTile
+import org.hexworks.zircon.internal.data.DefaultGraphicTile
+import org.hexworks.zircon.internal.data.DefaultImageTile
 
 /**
  * Builds [Tile]s.
@@ -69,25 +72,25 @@ data class TileBuilder(
     }
 
     override fun build(): Tile {
-        return CharacterTile(
+        return DefaultCharacterTile(
                 character = character,
                 style = styleSet)
     }
 
     fun buildCharacterTile(): CharacterTile {
-        return CharacterTile(
+        return DefaultCharacterTile(
                 character = character,
                 style = styleSet)
     }
 
     fun buildImageTile(): ImageTile {
-        return ImageTile(
+        return DefaultImageTile(
                 tileset = tileset,
                 name = name)
     }
 
     fun buildGraphicTile(): GraphicTile {
-        return GraphicTile(
+        return DefaultGraphicTile(
                 name = name,
                 tags = tags)
     }

@@ -1,58 +1,50 @@
 package org.hexworks.zircon.api.data
 
-import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 
-data class CharacterTile(
-        val character: Char,
-        private val style: StyleSet = StyleSet.defaultStyle())
-    : Drawable, Tile {
+interface CharacterTile : Tile {
 
-    private val cacheKey = "CharacterTile(c=$character,s=${style.generateCacheKey()})"
+    val character: Char
 
-    override fun generateCacheKey() = cacheKey
-
-    override fun styleSet() = style
-
-    override fun withForegroundColor(foregroundColor: TileColor): Tile {
+    override fun withForegroundColor(foregroundColor: TileColor): CharacterTile {
         return if (this.getForegroundColor() == foregroundColor) {
             this
         } else {
-            Tile.create(character, style.withForegroundColor(foregroundColor))
+            Tile.createCharacterTile(character, styleSet().withForegroundColor(foregroundColor))
         }
     }
 
-    override fun withBackgroundColor(backgroundColor: TileColor): Tile {
+    override fun withBackgroundColor(backgroundColor: TileColor): CharacterTile {
         return if (this.getBackgroundColor() == backgroundColor) {
             this
         } else {
-            Tile.create(character, style.withBackgroundColor(backgroundColor))
+            Tile.createCharacterTile(character, styleSet().withBackgroundColor(backgroundColor))
         }
     }
 
-    override fun withStyle(style: StyleSet): Tile {
-        return if (this.style == style) {
+    override fun withStyle(style: StyleSet): CharacterTile {
+        return if (this.styleSet() == style) {
             this
         } else {
-            Tile.create(character, style)
+            Tile.createCharacterTile(character, style)
         }
     }
 
-    override fun withModifiers(modifiers: Set<Modifier>): Tile {
+    override fun withModifiers(modifiers: Set<Modifier>): CharacterTile {
         return if (modifiers == this.getModifiers()) {
             this
         } else {
-            return Tile.create(character, style.withModifiers(modifiers))
+            return Tile.createCharacterTile(character, styleSet().withModifiers(modifiers))
         }
     }
 
-    override fun withoutModifiers(modifiers: Set<Modifier>): Tile {
+    override fun withoutModifiers(modifiers: Set<Modifier>): CharacterTile {
         return if (getModifiers().intersect(modifiers).isEmpty()) {
             this
         } else {
-            Tile.create(character, style.withRemovedModifiers(modifiers))
+            Tile.createCharacterTile(character, styleSet().withRemovedModifiers(modifiers))
         }
     }
 
@@ -60,7 +52,7 @@ data class CharacterTile(
         return if (this.character == character) {
             this
         } else {
-            Tile.create(character, style)
+            Tile.createCharacterTile(character, styleSet())
         }
     }
 }

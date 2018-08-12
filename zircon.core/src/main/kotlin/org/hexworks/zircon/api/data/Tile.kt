@@ -8,8 +8,10 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
-import kotlin.reflect.KClass
+import org.hexworks.zircon.internal.data.DefaultCharacterTile
+import org.hexworks.zircon.internal.data.DefaultImageTile
 
 interface Tile : Drawable, Cacheable {
 
@@ -115,7 +117,7 @@ interface Tile : Drawable, Cacheable {
          * - and default background
          * - and no modifiers.
          */
-        fun defaultTile() = DEFAULT_CHARACTER_TILE
+        fun defaultTile(): CharacterTile = DEFAULT_CHARACTER_TILE
 
         /**
          * Shorthand for an empty character tile which is:
@@ -124,21 +126,29 @@ interface Tile : Drawable, Cacheable {
          * - and transparent background
          * - and no modifiers.
          */
-        fun empty() = EMPTY_CHARACTER_TILE
+        fun empty(): CharacterTile = EMPTY_CHARACTER_TILE
 
         /**
          * Creates a new [Tile].
          */
-        fun create(character: Char,
-                   style: StyleSet) = CharacterTile(
-                character = character,
-                style = style)
+        fun createCharacterTile(character: Char, style: StyleSet): CharacterTile {
+            return DefaultCharacterTile(
+                    character = character,
+                    style = style)
+        }
 
-        private val DEFAULT_CHARACTER_TILE = CharacterTile(
+        fun createImageTile(name: String, tileset: TilesetResource, style: StyleSet): ImageTile {
+            return DefaultImageTile(
+                    tileset = tileset,
+                    name = name,
+                    style = style)
+        }
+
+        private val DEFAULT_CHARACTER_TILE: CharacterTile = DefaultCharacterTile(
                 character = ' ',
                 style = StyleSet.defaultStyle())
 
-        private val EMPTY_CHARACTER_TILE = CharacterTile(
+        private val EMPTY_CHARACTER_TILE: CharacterTile = DefaultCharacterTile(
                 character = ' ',
                 style = StyleSet.empty())
 

@@ -7,7 +7,7 @@ import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.tileset.impl.VirtualTileset
 import org.hexworks.zircon.platform.util.SystemUtils
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "UNUSED_VARIABLE", "unused")
 class VirtualRenderer(private val tileGrid: InternalTileGrid) : Renderer {
 
     val config = RuntimeConfig.config
@@ -46,9 +46,5 @@ class VirtualRenderer(private val tileGrid: InternalTileGrid) : Renderer {
             }
         }
     }
-
-    private fun getWidth() = tileGrid.widthInPixels()
-
-    private fun getHeight() = tileGrid.heightInPixels()
 
 }

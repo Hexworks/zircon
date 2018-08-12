@@ -21,7 +21,7 @@ class TileBuilderTest {
                 .build()
 
         assertThat(result).isEqualTo(
-                Tile.create(
+                Tile.createCharacterTile(
                         character = CHAR,
                         style = StyleSetBuilder.newBuilder()
                                 .foregroundColor(FG_COLOR)

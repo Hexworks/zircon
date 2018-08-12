@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.game
 
+import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position3D
@@ -76,7 +77,7 @@ class InMemoryGameArea(private val size: Size3D,
     }
 
     override fun fetchCharacterAt(position: Position3D, layerIdx: Int): Maybe<Tile> {
-        return blocks.getOrDefault(position, Block(position)).layers.getIfPresent(layerIdx)
+        return blocks.getOrDefault(position, Block.create(position)).layers.getIfPresent(layerIdx)
     }
 
     override fun fetchLayersAt(offset: Position3D, size: Size3D): Iterable<TileGraphic> {
@@ -118,13 +119,14 @@ class InMemoryGameArea(private val size: Size3D,
         val layers = emptyBlockLayers.toMutableList()
         blockChars.getOrDefault(GameModifiers.BLOCK_LAYER, listOf())
                 .forEachIndexed { idx, char -> layers[idx] = char }
-        blocks[position] = Block(
-                position = position,
-                top = blockChars.getOrDefault(GameModifiers.BLOCK_TOP, listOf(Tile.empty())).first(),
-                back = blockChars.getOrDefault(GameModifiers.BLOCK_BACK, listOf(Tile.empty())).first(),
-                front = blockChars.getOrDefault(GameModifiers.BLOCK_FRONT, listOf(Tile.empty())).first(),
-                bottom = blockChars.getOrDefault(GameModifiers.BLOCK_BOTTOM, listOf(Tile.empty())).first(),
-                layers = layers)
+        blocks[position] = BlockBuilder.create()
+                .position(position)
+                .top(blockChars.getOrDefault(GameModifiers.BLOCK_TOP, listOf(Tile.empty())).first())
+                .back(blockChars.getOrDefault(GameModifiers.BLOCK_BACK, listOf(Tile.empty())).first())
+                .front(blockChars.getOrDefault(GameModifiers.BLOCK_FRONT, listOf(Tile.empty())).first())
+                .bottom(blockChars.getOrDefault(GameModifiers.BLOCK_BOTTOM, listOf(Tile.empty())).first())
+                .layers(layers)
+                .build()
     }
 
     override fun setCharacterAt(position: Position3D, layerIdx: Int, character: Tile) {
@@ -147,5 +149,9 @@ class InMemoryGameArea(private val size: Size3D,
                     .map { it.plus(offset) }
 
     private fun fetchBlockAtPosition(position: Position3D) =
-            blocks.getOrDefault(position, Block(position = position, layers = emptyBlockLayers.toMutableList()))
+            blocks.getOrDefault(position,
+                    BlockBuilder.create()
+                            .position(position)
+                            .layers(emptyBlockLayers.toMutableList())
+                            .build())
 }

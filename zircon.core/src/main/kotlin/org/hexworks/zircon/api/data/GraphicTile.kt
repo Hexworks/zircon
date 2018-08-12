@@ -4,24 +4,16 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 
-data class GraphicTile(
-        val name: String,
-        val tags: Set<String>)
-    : Tile {
+interface GraphicTile : Tile {
 
-    private val cacheKey = "GraphicTile(n=$name,t=[${tags.sorted().joinToString()}])"
+    val name: String
+    val tags: Set<String>
 
-    override fun generateCacheKey() = cacheKey
+    fun withName(name: String): GraphicTile
+
+    fun withTags(tags: Set<String>): GraphicTile
 
     override fun styleSet() = StyleSet.defaultStyle()
-
-    fun withName(name: String) = GraphicTile(
-            name = name,
-            tags = tags)
-
-    fun withTags(tags: Set<String>) = GraphicTile(
-            name = name,
-            tags = tags)
 
     override fun withForegroundColor(foregroundColor: TileColor) = this
 

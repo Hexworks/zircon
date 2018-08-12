@@ -3,16 +3,20 @@ package org.hexworks.zircon.example
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.GridPosition
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.CP437TilesetResource
-import org.hexworks.zircon.internal.renderer.LibgdxRenderer
 import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.graphics.DefaultLayer
 import org.hexworks.zircon.internal.graphics.DefaultStyleSet
 import org.hexworks.zircon.internal.graphics.MapTileGraphic
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
+import org.hexworks.zircon.internal.renderer.LibgdxRenderer
 import java.util.*
 
 private val size = Size.create(80, 40)
@@ -30,7 +34,7 @@ class GdxExample : ApplicationAdapter() {
     private val layerWidth = 15
     private val layerHeight = 15
     private val layerSize = Size.create(layerWidth, layerHeight)
-    private val filler = CharacterTile('x')
+    private val filler = Tiles.defaultTile().withCharacter('x')
     private var layers: List<DefaultLayer> = (0..layerCount).map {
 
         val imageLayer = MapTileGraphic(layerSize, tileset)
@@ -65,9 +69,10 @@ class GdxExample : ApplicationAdapter() {
 
     override fun render() {
         RunTimeStats.addTimedStatFor("debug.render.time") {
-            val tile = CharacterTile(
-                    character = chars[currIdx],
-                    style = styles[currIdx])
+            val tile = Tiles.newBuilder()
+                    .character(chars[currIdx])
+                    .styleSet(styles[currIdx])
+                    .build()
             fillGrid(tileGrid, tile)
             layers.forEach {
                 it.moveTo(Position.create(

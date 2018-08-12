@@ -111,7 +111,7 @@ class DefaultTileTest {
 
     @Test
     fun shouldBeSameButWithCharChangedWhenWithCharIsCalled() {
-        assertThat(Tile.create(
+        assertThat(Tile.createCharacterTile(
                 character = 'a',
                 style = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -124,7 +124,7 @@ class DefaultTileTest {
 
     @Test
     fun shouldBeSameButWithFGChangedWhenWithForegroundColorIsCalled() {
-        assertThat(Tile.create(
+        assertThat(Tile.createCharacterTile(
                 character = EXPECTED_CHAR,
                 style = StyleSetBuilder.newBuilder()
                         .foregroundColor(GREEN)
@@ -137,7 +137,7 @@ class DefaultTileTest {
 
     @Test
     fun shouldBeSameButWithBGChangedWhenWithBackgroundColorIsCalled() {
-        assertThat(Tile.create(
+        assertThat(Tile.createCharacterTile(
                 character = EXPECTED_CHAR,
                 style = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -150,7 +150,7 @@ class DefaultTileTest {
 
     @Test
     fun shouldBeSameButWithModifiersChangedWhenWithModifiersIsCalled() {
-        assertThat(Tile.create(
+        assertThat(Tile.createCharacterTile(
                 character = EXPECTED_CHAR,
                 style = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -162,7 +162,7 @@ class DefaultTileTest {
 
     @Test
     fun shouldBeSameButWithModifierRemovedWhenWithModifierIsCalled() {
-        assertThat(Tile.create(
+        assertThat(Tile.createCharacterTile(
                 character = EXPECTED_CHAR,
                 style = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -170,7 +170,7 @@ class DefaultTileTest {
                         .modifiers(setOf(CrossedOut))
                         .build())
                 .withModifiers(Modifiers.verticalFlip())).isEqualTo(
-                Tile.create(
+                Tile.createCharacterTile(
                         character = EXPECTED_CHAR,
                         style = StyleSetBuilder.newBuilder()
                                 .foregroundColor(EXPECTED_FG_COLOR)
@@ -181,7 +181,7 @@ class DefaultTileTest {
 
     @Test
     fun shouldBeSameButWithModifierRemovedWhenWithoutModifierIsCalled() {
-        assertThat(Tile.create(
+        assertThat(Tile.createCharacterTile(
                 character = EXPECTED_CHAR,
                 style = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
@@ -234,7 +234,7 @@ class DefaultTileTest {
         val EXPECTED_BG_COLOR = TileColor.fromString("#223344")
         val EXPECTED_MODIFIERS = setOf(Modifiers.crossedOut(), Modifiers.verticalFlip())
 
-        val EXPECTED_TEXT_CHARACTER = Tile.create(
+        val EXPECTED_TEXT_CHARACTER = Tile.createCharacterTile(
                 character = EXPECTED_CHAR,
                 style = StyleSetBuilder.newBuilder()
                         .foregroundColor(EXPECTED_FG_COLOR)
