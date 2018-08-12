@@ -1,11 +1,6 @@
 allprojects {
     group "org.hexworks.zircon"
-    version "2018.3.8-PREVIEW"
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = "4.6"
-    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+    version "2018.3.9-PREVIEW"
 }
 
 buildscript {
@@ -52,8 +47,6 @@ ext {
 }
 
 subprojects {
-    apply plugin: 'maven-publish'
-
     repositories {
         jcenter()
         mavenCentral()
