@@ -1,5 +1,7 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.zircon.api.builder.Builder
+
 /**
  * Represents an object which can hold gui [Component]s.
  * **Note that** a [ComponentContainer] **will always** hold a "root" [Container]
@@ -14,6 +16,13 @@ interface ComponentContainer {
      * contain components within itself.
      */
     fun addComponent(component: Component)
+
+    /**
+     * Adds a child [Component] to this [Container]. It can either be
+     * a leaf component (like a label) or another container which can itself
+     * contain components within itself.
+     */
+    fun addComponent(builder: Builder<Component>)
 
     /**
      * Removes the given [Component] from this [Container].

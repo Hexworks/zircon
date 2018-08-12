@@ -12,8 +12,6 @@ data class CharacterTile(
 
     private val cacheKey = "CharacterTile(c=$character,s=${style.generateCacheKey()})"
 
-    override fun tileType() = CharacterTile::class
-
     override fun generateCacheKey() = cacheKey
 
     override fun styleSet() = style

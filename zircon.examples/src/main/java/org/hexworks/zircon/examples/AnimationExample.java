@@ -20,23 +20,23 @@ public class AnimationExample {
 
     public static void main(String[] args) {
 
-        Screen screen = Screens.createScreenFor(SwingApplications.startTileGrid(AppConfigs.newBuilder()
+        Screen screen = Screens.createScreenFor(SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .defaultTileset(TILESET)
                 .defaultSize(TERMINAL_SIZE)
                 .debugMode(true)
                 .build()));
 
-        final Panel panel = Components.newPanelBuilder()
+        final Panel panel = Components.panel()
                 .wrapWithBox()
                 .title("Animation example")
                 .size(TERMINAL_SIZE)
                 .build();
 
-        panel.addComponent(Components.newLabelBuilder()
+        panel.addComponent(Components.label()
                 .text("Looped:")
                 .position(LEFT_POS.withRelativeY(-3).withRelativeX(-1))
                 .build());
-        panel.addComponent(Components.newLabelBuilder()
+        panel.addComponent(Components.label()
                 .text("Non-looped:")
                 .position(RIGHT_POS.withRelativeY(-3).withRelativeX(-1))
                 .build());

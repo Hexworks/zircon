@@ -1,8 +1,11 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.event.EventBus
+import org.hexworks.zircon.api.event.Subscription
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.InputType.*
 import org.hexworks.zircon.api.input.KeyStroke
@@ -14,11 +17,9 @@ import org.hexworks.zircon.internal.component.ContainerHandlerState.DEACTIVATED
 import org.hexworks.zircon.internal.component.ContainerHandlerState.UNKNOWN
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
+import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.InternalEvent
 import org.hexworks.zircon.internal.event.InternalEvent.*
-import org.hexworks.zircon.api.event.EventBus
-import org.hexworks.zircon.api.event.Subscription
-import org.hexworks.zircon.internal.config.RuntimeConfig
 
 class DefaultComponentContainer(private var container: DefaultContainer) :
         InternalComponentContainer {
@@ -56,6 +57,10 @@ class DefaultComponentContainer(private var container: DefaultContainer) :
         refreshFocusableLookup()
     }
 
+    override fun addComponent(builder: Builder<Component>) {
+        addComponent(builder.build())
+    }
+
     override fun removeComponent(component: Component) =
             container.removeComponent(component).also {
                 refreshFocusableLookup()
@@ -68,7 +73,7 @@ class DefaultComponentContainer(private var container: DefaultContainer) :
     override fun isActive() = state == ContainerHandlerState.ACTIVE
 
     override fun activate() {
-        if(debug) println("Activating container handler")
+        if (debug) println("Activating container handler")
         state = ContainerHandlerState.ACTIVE
         refreshFocusableLookup()
         subscriptions.add(EventBus.subscribe<InternalEvent.Input> { (input) ->

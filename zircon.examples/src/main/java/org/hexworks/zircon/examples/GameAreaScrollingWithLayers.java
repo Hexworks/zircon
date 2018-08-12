@@ -38,7 +38,7 @@ public class GameAreaScrollingWithLayers {
 
     public static void main(String[] args) {
 
-        Application app = SwingApplications.startApplication(AppConfigs.newBuilder()
+        Application app = SwingApplications.startApplication(AppConfigs.newConfig()
                 .defaultTileset(TILESET)
                 .defaultSize(SIZE)
                 .debugMode(true)
@@ -52,16 +52,16 @@ public class GameAreaScrollingWithLayers {
         }
         final Screen screen = Screens.createScreenFor(tileGrid);
 
-        Panel actions = Components.newPanelBuilder()
+        Panel actions = Components.panel()
                 .size(screen.size().withXLength(20))
                 .wrapWithBox()
                 .title("Actions")
                 .boxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build();
-        Button wait = Components.newButtonBuilder()
+        Button wait = Components.button()
                 .text("Wait")
                 .build();
-        Button sleep = Components.newButtonBuilder()
+        Button sleep = Components.button()
                 .text("Sleep")
                 .position(Positions.defaultPosition().withRelativeY(1))
                 .build();
@@ -70,7 +70,7 @@ public class GameAreaScrollingWithLayers {
         screen.addComponent(actions);
 
 
-        final Panel gamePanel = Components.newPanelBuilder()
+        final Panel gamePanel = Components.panel()
                 .size(screen.size().withXLength(40))
                 .position((Positions.defaultPosition()).relativeToRightOf(actions))
                 .title("Game area")
@@ -97,7 +97,7 @@ public class GameAreaScrollingWithLayers {
                         5,
                         Tiles.empty());
 
-        final DefaultGameComponent gameComponent = Components.newGameComponentBuilder()
+        final DefaultGameComponent gameComponent = Components.gameComponent()
                 .gameArea(gameArea)
                 .visibleSize(visibleGameAreaSize)
                 .tileset(CP437TilesetResource.PHOEBUS_16X16)

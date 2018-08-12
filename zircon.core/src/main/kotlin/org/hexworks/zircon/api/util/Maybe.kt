@@ -52,6 +52,14 @@ class Maybe<T> {
         }
     }
 
+    fun <U> map(mapper: Function<T, U>): Maybe<U> {
+        return if (!isPresent)
+            empty()
+        else {
+            ofNullable(mapper.apply(value!!))
+        }
+    }
+
     fun <U> flatMap(mapper: (T?) -> Maybe<U>): Maybe<U> {
         return if (!isPresent)
             empty()

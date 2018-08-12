@@ -17,6 +17,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.WrappingStrategy
+import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.InternalEvent
 
 @Suppress("UNCHECKED_CAST")

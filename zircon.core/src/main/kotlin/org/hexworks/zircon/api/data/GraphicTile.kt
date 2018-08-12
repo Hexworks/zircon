@@ -11,8 +11,6 @@ data class GraphicTile(
 
     private val cacheKey = "GraphicTile(n=$name,t=[${tags.sorted().joinToString()}])"
 
-    override fun tileType() = GraphicTile::class
-
     override fun generateCacheKey() = cacheKey
 
     override fun styleSet() = StyleSet.defaultStyle()

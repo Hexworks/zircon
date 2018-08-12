@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.TileColors;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.application.CursorStyle;
-import org.hexworks.zircon.api.color.TileColor;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.CP437TilesetResource;
@@ -19,7 +18,7 @@ public class CursorExample {
 
     public static void main(String[] args) {
 
-        AppConfig config = AppConfigs.newBuilder()
+        AppConfig config = AppConfigs.newConfig()
                 .cursorColor(TileColors.fromString("#ff8844"))
                 .blinkLengthInMilliSeconds(500)
                 .cursorStyle(CursorStyle.FIXED_BACKGROUND)
