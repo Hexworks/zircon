@@ -106,9 +106,9 @@ class DefaultGameComponent(private val gameArea: GameArea,
                         val backIdx = frondIdx + 1
                         val topIdx = backIdx + 1
                         maybeBlock.ifPresent { block ->
-                            val bot = block.bottom
-                            val layers = block.layers
-                            val front = block.front
+                            val bot = block.bottom()
+                            val layers = block.layers()
+                            val front = block.front()
 
                             builders[bottomIdx].tile(screenPos, bot)
                             layers.forEachIndexed { idx, layer ->
@@ -117,8 +117,8 @@ class DefaultGameComponent(private val gameArea: GameArea,
                             builders[frondIdx].tile(screenPos, front)
                         }
                         maybeNext.ifPresent { block ->
-                            val back = block.back
-                            val top = block.top
+                            val back = block.back()
+                            val top = block.top()
                             builders[backIdx].tile(screenPos, back)
                             builders[topIdx].tile(screenPos, top)
                         }
