@@ -1,10 +1,9 @@
 package org.hexworks.zircon.api.builder.data
 
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.data.Block
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Position3D
-import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.BlockSide.*
+import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.data.DefaultBlock
 
 /**
@@ -18,10 +17,12 @@ import org.hexworks.zircon.internal.data.DefaultBlock
 @Suppress("UNCHECKED_CAST")
 data class BlockBuilder(
         private var position: Position3D = Position3D.unknown(),
-        private var top: Tile = Tile.empty(),
-        private var back: Tile = Tile.empty(),
-        private var front: Tile = Tile.empty(),
-        private var bottom: Tile = Tile.empty(),
+        private var top: Maybe<Tile> = Maybe.empty(),
+        private var bottom: Maybe<Tile> = Maybe.empty(),
+        private var front: Maybe<Tile> = Maybe.empty(),
+        private var back: Maybe<Tile> = Maybe.empty(),
+        private var left: Maybe<Tile> = Maybe.empty(),
+        private var right: Maybe<Tile> = Maybe.empty(),
         private var layers: MutableList<Tile> = mutableListOf()) : Builder<Block> {
 
     fun position(position: Position) = also {
@@ -32,20 +33,39 @@ data class BlockBuilder(
         this.position = position
     }
 
+    fun side(blockSide: BlockSide, tile: Tile) = also {
+        when(blockSide) {
+            TOP -> top(tile)
+            BOTTOM -> bottom(tile)
+            LEFT -> left(tile)
+            RIGHT -> right(tile)
+            FRONT -> front(tile)
+            BACK -> back(tile)
+        }
+    }
+
     fun top(top: Tile) = also {
-        this.top = top
-    }
-
-    fun back(back: Tile) = also {
-        this.back = back
-    }
-
-    fun front(front: Tile) = also {
-        this.front = front
+        this.top = Maybe.of(top)
     }
 
     fun bottom(bottom: Tile) = also {
-        this.bottom = bottom
+        this.bottom = Maybe.of(bottom)
+    }
+
+    fun front(front: Tile) = also {
+        this.front = Maybe.of(front)
+    }
+
+    fun back(back: Tile) = also {
+        this.back = Maybe.of(back)
+    }
+
+    fun left(left: Tile) = also {
+        this.left = Maybe.of(left)
+    }
+
+    fun right(right: Tile) = also {
+        this.right = Maybe.of(right)
     }
 
     fun layer(layer: Tile) = also {
@@ -61,13 +81,16 @@ data class BlockBuilder(
         require(position !== Position3D.unknown()) {
             "Can't build a Block with a missing Position3D."
         }
+        val sides = mutableMapOf<BlockSide, Tile>()
+        listOf(TOP to top, BOTTOM to bottom, LEFT to left, RIGHT to right, FRONT to front, BACK to back).forEach { pair ->
+            pair.second.map {
+                sides[pair.first] = it
+            }
+        }
         return DefaultBlock(
                 position = position,
-                top = top,
-                back = back,
-                front = front,
-                bottom = bottom,
-                layers = layers.toMutableList())
+                layers = layers.toMutableList(),
+                sides = sides.toMap())
     }
 
     override fun createCopy() = copy()

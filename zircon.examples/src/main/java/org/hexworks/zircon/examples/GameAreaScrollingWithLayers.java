@@ -2,6 +2,7 @@ package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.Application;
+import org.hexworks.zircon.api.builder.data.BlockBuilder;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.Panel;
 import org.hexworks.zircon.api.data.*;
@@ -127,11 +128,17 @@ public class GameAreaScrollingWithLayers {
                     .withRelativeX(-currSize)
                     .withRelativeY(-currSize);
             Size levelSize = Sizes.create(1 + currSize * 2, 1 + currSize * 2);
-            levelSize.fetchPositions().forEach(position -> gameArea.setBlockAt(
-                    Positions.from2DTo3D((position.plus(levelOffset)), currLevel.get()),
-                    Collections.singletonList(wall
-                            .withBackgroundColor(wall.getBackgroundColor().darkenByPercent(currPercent))
-                            .withForegroundColor(wall.getForegroundColor().darkenByPercent(currPercent)))));
+            levelSize.fetchPositions().forEach(position -> {
+                Position3D pos = Positions.from2DTo3D((position.plus(levelOffset)), currLevel.get());
+                gameArea.setBlockAt(
+                        pos,
+                        BlockBuilder.Companion.create()
+                                .layer(wall
+                                        .withBackgroundColor(wall.getBackgroundColor().darkenByPercent(currPercent))
+                                        .withForegroundColor(wall.getForegroundColor().darkenByPercent(currPercent)))
+                                .position(pos)
+                                .build());
+            });
             currLevel.decrementAndGet();
         }
     }

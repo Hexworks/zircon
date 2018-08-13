@@ -1,23 +1,24 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
-import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
+import org.hexworks.zircon.api.builder.data.BlockBuilder
+import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
+import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.data.BlockSide.*
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.game.GameModifiers
+import org.hexworks.zircon.api.game.GameModifiers.*
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.resource.CP437TilesetResource
-import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.internal.game.DefaultGameComponent
 import org.hexworks.zircon.internal.game.InMemoryGameArea
@@ -26,6 +27,12 @@ import java.util.*
 object IsometricGameArea {
 
     private val TILESET = CP437TilesetResource.WANDERLUST_16X16
+
+    private val MODIFIER_LOOKUP = mapOf(
+            BLOCK_BACK to BACK,
+            BLOCK_FRONT to FRONT,
+            BLOCK_TOP to TOP,
+            BLOCK_BOTTOM to BOTTOM)
 
     private val WALL_COLOR = TileColors.fromString("#333333")
     private val WALL_DECOR_COLOR = TileColors.fromString("#444444")
@@ -43,34 +50,34 @@ object IsometricGameArea {
     private val FRONT_WALL = Tiles.newBuilder()
             .backgroundColor(FRONT_WALL_COLOR)
             .foregroundColor(FRONT_WALL_DECOR_COLOR)
-            .modifiers(GameModifiers.BLOCK_FRONT)
+            .modifiers(BLOCK_FRONT)
             .character('-')
             .build()
 
     private val BACK_WALL = Tiles.newBuilder()
             .backgroundColor(FRONT_WALL_COLOR)
             .foregroundColor(FRONT_WALL_DECOR_COLOR)
-            .modifiers(GameModifiers.BLOCK_FRONT)
+            .modifiers(BLOCK_FRONT)
             .character('-')
             .build()
 
     private val WALL = Tiles.newBuilder()
             .backgroundColor(WALL_COLOR)
             .foregroundColor(WALL_DECOR_COLOR)
-            .modifiers(GameModifiers.BLOCK_TOP)
+            .modifiers(BLOCK_TOP)
             .character('#')
             .build()
 
     private val ROOF = Tiles.newBuilder()
             .backgroundColor(ROOF_COLOR)
             .foregroundColor(ROOF_DECOR_COLOR)
-            .modifiers(GameModifiers.BLOCK_TOP)
+            .modifiers(BLOCK_TOP)
             .build()
 
     private val ANTENNA = Tiles.newBuilder()
             .backgroundColor(WALL_COLOR)
             .foregroundColor(WALL_DECOR_COLOR)
-            .modifiers(GameModifiers.BLOCK_FRONT)
+            .modifiers(BLOCK_FRONT)
             .character('=')
             .build()
 
@@ -78,7 +85,7 @@ object IsometricGameArea {
             .backgroundColor(INTERIOR_COLOR)
             .foregroundColor(INTERIOR_DECOR_COLOR)
             .character(Symbols.BLOCK_SPARSE)
-            .modifiers(GameModifiers.BLOCK_BOTTOM)
+            .modifiers(BLOCK_BOTTOM)
             .build()
 
     private val GUY = Tiles.newBuilder()
@@ -149,7 +156,7 @@ object IsometricGameArea {
                     repeat = 2)
         }
 
-        screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_CYAN.getTheme())
+        screen.applyColorTheme(ColorThemes.oliveLeafTea())
         screen.display()
     }
 
@@ -158,7 +165,7 @@ object IsometricGameArea {
             (0 until size.yLength).forEach { y ->
                 (0 until size.xLength).forEach { x ->
                     val pos = Position3D.from2DPosition(Position.create(x, y).plus(offset.to2DPosition()), z + offset.z)
-                    val chars = if (y == size.yLength - 1) {
+                    val blockTiles = if (y == size.yLength - 1) {
                         mutableListOf(if (size.xLength < 3 || size.yLength < 3) {
                             ANTENNA
                         } else if (random.nextInt(5) < 1) {
@@ -186,12 +193,20 @@ object IsometricGameArea {
                         chars
                     }
                     if (z == size.zLength - 1) {
-                        chars.remove(WALL)
+                        blockTiles.remove(WALL)
                         if (repeat == 0 || x == 0 || x == size.xLength - 1 || y == 0 || y == size.yLength - 1) {
-                            chars.add(ROOF)
+                            blockTiles.add(ROOF)
                         }
                     }
-                    gameArea.setBlockAt(pos, chars)
+                    val bb = BlockBuilder.create()
+                    blockTiles.forEach { tile ->
+                        if (tile.getModifiers().isNotEmpty()) {
+                            bb.side(MODIFIER_LOOKUP[tile.getModifiers().first()]!!, tile)
+                        } else {
+                            bb.layer(tile)
+                        }
+                    }
+                    gameArea.setBlockAt(pos, bb.position(pos).build())
                 }
             }
         }

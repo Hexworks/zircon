@@ -16,7 +16,7 @@ class InMemoryGameAreaTest {
     fun setUp() {
         target = InMemoryGameArea(HUGE_SIZE, 3)
         POSITIONS_IN_ORDER.shuffled().forEach {
-            target.setBlockAt(it, BLOCK)
+            target.setBlockAt(it, BLOCK.position(it).build())
         }
     }
 
@@ -53,17 +53,17 @@ class InMemoryGameAreaTest {
     @Test
     fun shouldProperlyFetchBlockAtPosition() {
         assertThat(target.fetchBlockAt(LEVEL_7_POS_0).get())
-                .isEqualTo(BlockBuilder.create().position(LEVEL_7_POS_0).layers(BLOCK.toMutableList()).build())
+                .isEqualTo(BlockBuilder.create().position(LEVEL_7_POS_0).layers(BLOCK_LAYERS).build())
 
     }
 
     @Test
     fun shouldProperlySetBlockAtPosition() {
-        target.setBlockAt(EMPTY_POSITION, OTHER_BLOCK)
+        target.setBlockAt(EMPTY_POSITION, OTHER_BLOCK.position(EMPTY_POSITION).build())
         assertThat(target.fetchBlockAt(EMPTY_POSITION).get())
                 .isEqualTo(BlockBuilder.create()
                         .position(EMPTY_POSITION)
-                        .layers(OTHER_BLOCK.plus(Tile.empty()).plus(Tile.empty()).toMutableList())
+                        .layers(listOf(OTHER_BLOCK_LAYER).plus(Tile.empty()).plus(Tile.empty()))
                         .build())
 
     }
@@ -75,7 +75,8 @@ class InMemoryGameAreaTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotBeAbleToSetBlockAtPositionWhichIsNotWithinSize() {
-        target.setBlockAt(Position3D.create(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE), BLOCK)
+        val badPos = Position3D.create(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+        target.setBlockAt(badPos, BLOCK.position(badPos).build())
     }
 
     @Test
@@ -107,8 +108,13 @@ class InMemoryGameAreaTest {
         private val POS_FOR_LAYER_1 = Position3D.create(3, 1, 6)
 
 
-        val BLOCK = listOf(BOTTOM_CHAR, MID_CHAR, TOP_CHAR)
-        val OTHER_BLOCK = listOf(TileBuilder.newBuilder().backgroundColor(ANSITileColor.RED).build())
+        val BLOCK_LAYERS = listOf(BOTTOM_CHAR, MID_CHAR, TOP_CHAR)
+        val BLOCK = BlockBuilder.create()
+                .layers(BLOCK_LAYERS)
+
+        val OTHER_BLOCK_LAYER = TileBuilder.newBuilder().backgroundColor(ANSITileColor.RED).build()
+        val OTHER_BLOCK = BlockBuilder.create()
+                .layer(OTHER_BLOCK_LAYER)
 
         val EMPTY_POSITION = Position3D.create(323, 123, 654)
 
