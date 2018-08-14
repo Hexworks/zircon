@@ -139,7 +139,7 @@ interface GameArea {
     /**
      * Returns the [Tile] at the given `position` and `layerIdx` (if any).
      */
-    fun fetchCharacterAt(position: Position3D, layerIdx: Int): Maybe<Tile> {
+    fun fetchTileAt(position: Position3D, layerIdx: Int): Maybe<Tile> {
         return fetchBlockOrDefault(position).layers().getIfPresent(layerIdx)
     }
 
@@ -155,7 +155,7 @@ interface GameArea {
             (0 until getLayersPerBlock()).forEach { layerIdx ->
                 val builder = TileGraphicBuilder.newBuilder().size(size.to2DSize())
                 window.forEach { pos ->
-                    fetchCharacterAt(Position3D.from2DPosition(pos + offset2D, z), layerIdx).map { char ->
+                    fetchTileAt(Position3D.from2DPosition(pos + offset2D, z), layerIdx).map { char ->
                         builder.tile(pos, char)
                     }
                 }

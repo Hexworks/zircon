@@ -45,14 +45,10 @@ class InMemoryGameArea(private val size: Size3D,
             "The supplied position ($position) is not within the size ($size) of this game area."
         }
         val layerCount = block.layers().size
-        require(layerCount <= layersPerBlock) {
-            "The maximum number of layers per block for this game area is $layersPerBlock." +
+        require(layerCount == layersPerBlock) {
+            "The number of layers per block for this game area is $layersPerBlock." +
                     " The supplied layers have a size of $layerCount."
         }
-        val layers = emptyBlockLayers.toMutableList()
-        block.layers().forEachIndexed { idx, char -> layers[idx] = char }
-        block.layers().clear()
-        block.layers().addAll(layers)
         blocks[position] = block
     }
 }
