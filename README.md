@@ -37,7 +37,7 @@ Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki)
     - [Color themes](https://github.com/Hexworks/zircon#color-themes)
     - [Animations (BETA)](https://github.com/Hexworks/zircon#animations-beta)
     - [The API](https://github.com/Hexworks/zircon#the-api)
-- [A little Crash Course](https://github.com/Hexworks/zircon#a-little-crash-course)
+- [How Zircon works](https://github.com/Hexworks/zircon#how-zircon-works)
   - [TileGrid](https://github.com/Hexworks/zircon#tileGrid)
   - [Colors and StyleSets](https://github.com/Hexworks/zircon#colors-and-stylesets)
   - [Modifiers](https://github.com/Hexworks/zircon#modifiers)
@@ -159,8 +159,7 @@ public class CreatingATileGrid {
 }
 ```
 
-
-Adding and formatting [Tile]s is also very simple:
+Adding and formatting [Tile]s is very simple:
 
 ```java
 import org.hexworks.zircon.api.AppConfigs;
@@ -213,7 +212,20 @@ Running the above code will result in something like this:
 
 ![](https://cdn.discordapp.com/attachments/363771631727804416/477469640205926401/CreatingATileGrid.png)
 
-> You can do a lot of fancy stuff with [Modifier]s, like this:
+As you can see there is a helper for every class which you might want to use. Here we used `Positions.create`
+to create a [`Position`], `Sizes.create` for creating [`Size`]s and the `TileBuilder` to create tiles.
+
+A `Position` denotes a coordinate on a `TileGrid`, so for example a `Position` of (`3`, `4`) points to the 3rd column
+and the 4th row (x, y) on the grid.
+
+Conversely a `Size` denotes an area with a width and a height. These two classes are used throughout Zircon.
+
+A [Tile] is the most basic graphical unit Zircon supports. In most cases it is a simple character with a foreground
+and a background color (like in the example above).
+
+In addition to colors and characters you can also use [Modifier]s in your [Tile]s.
+
+> A lot of fancy stuff can be done with [Modifier]s, like this:
 >  
 > ![](https://cdn.discordapp.com/attachments/363771631727804416/477470683513880576/modifiers.gif)
 > 
@@ -226,6 +238,11 @@ custom fonts and other resources take a look at the [Resource handling wiki page
 ### Working with Screens
 
 [TileGrid]s alone won't suffice if you want to get any serious work done since they are rather rudimentary.
+
+A [Screen] has its own buffer and it can be `display`ed on
+a [TileGrid] any time. This means that you can have multiple [Screen]s at the same time representing your actual
+game screens. *Note that* only *one* [Screen] can be displayed at a given moment. `display`ing one deactivates
+the previous [Screen].
 
 Let's create a [Screen] and fill it up with some stuff:
 
@@ -285,6 +302,8 @@ What happens here is that we:
 - Create a [TileGraphic] with the colors added and fill it with `~`s
 - Draw the graphic onto the [Screen]
 
+For more explanation about these jump to the [How Zircon works](https://github.com/Hexworks/zircon#how-zircon-works) section.
+
 > You can do so much more with [Screen]s. If interested then check out [A primer on Screens][screen-primer] on the Wiki! 
 
 ### Components
@@ -297,7 +316,7 @@ Zircon supports a bunch of [Component]s out of the box:
 - `Header`: Like a label but this one has emphasis (useful when using [ColorTheme]s)
 - `Panel`: A [Container] which can hold multiple [Components]
 - `RadioButtonGroup` and `RadioButton`: Like a `CheckBox` but only one can be selected at a time
-- `TextBox`
+- `TextBox`: Similar to a text area in HTML this [Component] can be written into
 
 These components are rather simple and you can expect them to work in a way you might be familiar with:
 
@@ -309,68 +328,57 @@ These components are rather simple and you can expect them to work in a way you 
 Let's look at an example (notes about how it works are in the comments):
 
 ```java
-import org.hexworks.zircon.api.data.Position;
-import org.hexworks.zircon.api.data.Size;
-import org.hexworks.zircon.api.SwingTileGridBuilder;
-import org.hexworks.zircon.api.builder.ScreenBuilder;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.CheckBox;
 import org.hexworks.zircon.api.component.Header;
 import org.hexworks.zircon.api.component.Panel;
-import org.hexworks.zircon.api.component.builder.ButtonBuilder;
-import org.hexworks.zircon.api.component.builder.CheckBoxBuilder;
-import org.hexworks.zircon.api.component.builder.HeaderBuilder;
-import org.hexworks.zircon.api.component.builder.PanelBuilder;
-import org.hexworks.zircon.api.resource.CP437TilesetResource;
-import org.hexworks.zircon.api.resource.ColorThemeResource;
-import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.api.grid.TileGrid;
+import org.hexworks.zircon.api.screen.Screen;
 
-public class Playground {
-
+public class UsingComponents {
 
     public static void main(String[] args) {
 
-        final TileGrid tileGrid = SwingTileGridBuilder.newBuilder()
-                .initialTileGridSize(Size.create(34, 18))
-                .tileset(CP437TilesetResource.WANDERLUST_16X16.toFont())
-                .build();
-        final Screen screen = ScreenBuilder.createScreenFor(tileGrid);
+        final TileGrid tileGrid = SwingApplications.startTileGrid(
+                AppConfigs.newConfig()
+                        .defaultSize(Sizes.create(34, 18))
+                        .defaultTileset(CP437TilesetResources.wanderlust16x16())
+                        .build());
+        final Screen screen = Screens.createScreenFor(tileGrid);
 
-        // We create a Panel which will hold our components
-        // Note that you can add components to the screen without a panel as well
-        Panel panel = PanelBuilder.newBuilder()
+        Panel panel = Components.panel()
                 .wrapWithBox() // panels can be wrapped in a box
                 .title("Panel") // if a panel is wrapped in a box a title can be displayed
                 .wrapWithShadow() // shadow can be added
-                .size(Size.create(32, 16)) // the size must be smaller than the parent's size
-                .position(Position.offset1x1()) // position is always relative to the parent
-                .build();
+                .size(Sizes.create(32, 16)) // the size must be smaller than the parent's size
+                .position(Positions.offset1x1())
+                .build(); // position is always relative to the parent
 
-        final Header header = HeaderBuilder.newBuilder()
+        final Header header = Components.header()
                 // this will be 1x1 left and down from the top left
                 // corner of the panel
-                .position(Position.offset1x1())
+                .position(Positions.offset1x1())
                 .text("Header")
                 .build();
 
-        final CheckBox checkBox = CheckBoxBuilder.newBuilder()
+        final CheckBox checkBox = Components.checkBox()
                 .text("Check me!")
-                .position(Position.create(0, 1)
+                .position(Positions.create(0, 1)
                         // the position class has some convenience methods
                         // for you to specify your component's position as
                         // relative to another one
                         .relativeToBottomOf(header))
                 .build();
 
-        final Button left = ButtonBuilder.newBuilder()
-                .position(Position.create(0, 1) // this means 1 row below the check box
+        final Button left = Components.button()
+                .position(Positions.create(0, 1) // this means 1 row below the check box
                         .relativeToBottomOf(checkBox))
                 .text("Left")
                 .build();
 
-        final Button right = ButtonBuilder.newBuilder()
-                .position(Position.create(1, 0) // 1 column right relative to the left BUTTON
+        final Button right = Components.button()
+                .position(Positions.create(1, 0) // 1 column right relative to the left BUTTON
                         .relativeToRightOf(left))
                 .text("Right")
                 .build();
@@ -383,22 +391,21 @@ public class Playground {
         screen.addComponent(panel);
 
         // we can apply color themes to a screen
-        screen.applyColorTheme(ColorThemeResource.TECH_LIGHT.getTheme());
+        screen.applyColorTheme(ColorThemes.techLight());
 
         // this is how you can define interactions with a component
         left.onMouseReleased((mouseAction -> {
-            screen.applyColorTheme(ColorThemeResource.ADRIFT_IN_DREAMS.getTheme());
+            screen.applyColorTheme(ColorThemes.adriftInDreams());
         }));
 
         right.onMouseReleased((mouseAction -> {
-            screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_ORANGE.getTheme());
+            screen.applyColorTheme(ColorThemes.solarizedDarkOrange());
         }));
 
         // in order to see the changes you need to display your screen.
         screen.display();
     }
 }
-
 ```
 
 And the result will look like this:
@@ -602,8 +609,8 @@ Zircon is powered by:
 [AppConfigs]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/AppConfigs.kt
 
 # CORE
-[Application]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/application/Application.kt
-[Renderer]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/renderer/Renderer.kt
+[Application]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/application/Application.kt
+[Renderer]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/internal/renderer/Renderer.kt
 [Shape]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/shape/Shape.kt
 [ShapeFactory]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/shape/ShapeFactory.kt
 [ColorTheme]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/component/ColorTheme.kt
