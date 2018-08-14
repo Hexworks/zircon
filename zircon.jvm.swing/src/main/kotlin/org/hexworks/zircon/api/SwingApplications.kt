@@ -2,6 +2,7 @@ package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
+import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.application.SwingApplication
 
