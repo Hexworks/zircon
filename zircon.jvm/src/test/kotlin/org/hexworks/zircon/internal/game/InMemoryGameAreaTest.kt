@@ -53,7 +53,7 @@ class InMemoryGameAreaTest {
     @Test
     fun shouldProperlyFetchBlockAtPosition() {
         assertThat(target.fetchBlockAt(LEVEL_7_POS_0).get())
-                .isEqualTo(BlockBuilder.create().position(LEVEL_7_POS_0).layers(BLOCK_LAYERS).build())
+                .isEqualTo(BlockBuilder.create().position(LEVEL_7_POS_0).layers(BLOCK_LAYERS    ).build())
 
     }
 
@@ -63,7 +63,7 @@ class InMemoryGameAreaTest {
         assertThat(target.fetchBlockAt(EMPTY_POSITION).get())
                 .isEqualTo(BlockBuilder.create()
                         .position(EMPTY_POSITION)
-                        .layers(listOf(OTHER_BLOCK_LAYER).plus(Tile.empty()).plus(Tile.empty()))
+                        .layers(OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER)
                         .build())
 
     }
@@ -114,7 +114,7 @@ class InMemoryGameAreaTest {
 
         val OTHER_BLOCK_LAYER = TileBuilder.newBuilder().backgroundColor(ANSITileColor.RED).build()
         val OTHER_BLOCK = BlockBuilder.create()
-                .layer(OTHER_BLOCK_LAYER)
+                .layers(OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER)
 
         val EMPTY_POSITION = Position3D.create(323, 123, 654)
 
