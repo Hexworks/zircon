@@ -18,7 +18,7 @@ public class CustomGameArea extends BaseGameArea {
 
     private Size3D size;
     private int layersPerBlock;
-    private TreeMap<Position3D, CustomBlock> blocks = new TreeMap<>();
+    private TreeMap<Position3D, Block> blocks = new TreeMap<>();
     private BlockBuilder filler = Blocks.newBuilder()
             .layer(Tiles.empty());
 
