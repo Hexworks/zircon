@@ -11,8 +11,7 @@ import org.hexworks.zircon.api.data.BlockSide.*
 interface Block {
 
     val position: Position3D
-
-    fun layers(): MutableList<Tile>
+    val layers: MutableList<Tile>
 
     fun fetchSide(side: BlockSide): Tile = Tile.empty()
 
@@ -23,7 +22,7 @@ interface Block {
                 back() === Tile.empty() &&
                 left() === Tile.empty() &&
                 right() === Tile.empty() &&
-                layers().isEmpty()
+                layers.isEmpty()
     }
 
     fun top(): Tile = fetchSide(TOP)
