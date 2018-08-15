@@ -9,14 +9,7 @@ jobs:
       JVM_OPTS: -Xmx2048m
     steps:
       - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "build.gradle" }}
       - run: gradle dependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
       - run: gradle test
 test:
     post:
