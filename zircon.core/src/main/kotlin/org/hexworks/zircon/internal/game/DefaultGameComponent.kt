@@ -98,7 +98,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
                 (fromY until toY).forEach { screenY ->
                     (fromX until toX).forEach { x ->
                         val y = screenY + z // we need to add `z` to `y` because of isometric
-                        val maybeBlock: Maybe<Block> = gameArea.fetchBlockAt(Position3D.create(x, y, z))
+                        val maybeBlock: Maybe<out Block> = gameArea.fetchBlockAt(Position3D.create(x, y, z))
                         val maybeNext = gameArea.fetchBlockAt(Position3D.create(x, y + 1, z))
                         val screenPos = Position.create(x, screenY)
                         val bottomIdx = z * totalLayerCount
