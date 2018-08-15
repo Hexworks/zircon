@@ -58,7 +58,7 @@ from Maven:
 <dependency>
     <groupId>org.hexworks.zircon</groupId>
     <artifactId>zircon.jvm.swing</artifactId>
-    <version>2018.4.0-RELEASE</version>
+    <version>2018.3.12-PREVIEW</version>
 </dependency>
 
 ```
@@ -66,8 +66,10 @@ from Maven:
 or you can also use Gradle:
 
 ```groovy
-compile("org.hexworks.zircon:zircon.jvm.swing:2018.4.0-RELEASE")
+compile("org.hexworks.zircon:zircon.jvm.swing:2018.3.12-PREVIEW")
 ```
+
+Note that you need to use [Jitpack](https://jitpack.io/#Hexworks/Zircon) for the above dependencies to work.
 
 Want to use a `PREVIEW`?
  Check [this Wiki page](https://github.com/Hexworks/zircon/wiki/Release-process-and-versioning-scheme#snapshot-releases)
@@ -111,7 +113,6 @@ public class CreatingAnApplication {
         Application application = SwingApplications.startApplication();
     }
 }
-
 ```
 
 Running this snippet will result in this screen:
@@ -152,8 +153,8 @@ public class CreatingATileGrid {
     public static void main(String[] args) {
 
         TileGrid tileGrid = SwingApplications.startTileGrid(
-                AppConfigs.newBuilder()
-                        .defaultSize(Sizes.create(20, 10))
+                AppConfigs.newConfig()
+                        .defaultSize(Sizes.create(10, 10))
                         .defaultTileset(CP437TilesetResources.rexPaint16x16())
                         .build());
     }
@@ -177,7 +178,7 @@ public class CreatingATileGrid {
     public static void main(String[] args) {
 
         TileGrid tileGrid = SwingApplications.startTileGrid(
-                AppConfigs.newBuilder()
+                AppConfigs.newConfig()
                         .defaultSize(Sizes.create(10, 10))
                         .defaultTileset(CP437TilesetResources.rexPaint16x16())
                         .build());
