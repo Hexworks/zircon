@@ -42,7 +42,7 @@ object CustomGameAreaExample {
             require(size().containsPosition(position)) {
                 "The supplied position ($position) is not within the size ($size) of this game area."
             }
-            val layerCount = block.layers().size
+            val layerCount = block.layers.size
             require(layerCount == getLayersPerBlock()) {
                 "The number of layers per block for this game area is ${getLayersPerBlock()}." +
                         " The supplied layers have a size of $layerCount."

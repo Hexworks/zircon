@@ -39,7 +39,7 @@ interface GameArea {
     /**
      * Returns the [Block] at the given `position` (if any).
      */
-    fun fetchBlockAt(position: Position3D): Maybe<Block>
+    fun fetchBlockAt(position: Position3D): Maybe<out Block>
 
     /**
      * Returns the [Block] at the given `position` if present,
@@ -139,8 +139,8 @@ interface GameArea {
     /**
      * Returns the [Tile] at the given `position` and `layerIdx` (if any).
      */
-    fun fetchTileAt(position: Position3D, layerIdx: Int): Maybe<Tile> {
-        return fetchBlockOrDefault(position).layers().getIfPresent(layerIdx)
+    fun fetchTileAt(position: Position3D, layerIdx: Int): Maybe<out Tile> {
+        return fetchBlockOrDefault(position).layers.getIfPresent(layerIdx)
     }
 
     /**
