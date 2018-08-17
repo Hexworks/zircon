@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentState
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.CP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -73,7 +72,7 @@ class DefaultLabelTest {
         val FONT = CP437TilesetResource.WANDERLUST_16X16
         val POSITION = Position.create(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.getDarkForegroundColor())
+                .foregroundColor(THEME.secondaryForegroundColor())
                 .backgroundColor(TileColor.transparent())
                 .build()
         val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()

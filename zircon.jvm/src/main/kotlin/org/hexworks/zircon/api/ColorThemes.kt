@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
@@ -22,13 +24,6 @@ object ColorThemes {
      */
     @JvmStatic
     fun letThemEatCake() = ColorThemeResource.LET_THEM_EAT_CAKE.getTheme()
-
-    /**
-     * Taken from
-     * http://www.colourlovers.com/palette/559428/lucky_bubble_gum
-     */
-    @JvmStatic
-    fun luckyBubbleGum() = ColorThemeResource.LUCKY_BUBBLE_GUM.getTheme()
 
     @JvmStatic
     fun techLight() = ColorThemeResource.TECH_LIGHT.getTheme()
@@ -88,20 +83,6 @@ object ColorThemes {
      */
     @JvmStatic
     fun pabloNeruda() = ColorThemeResource.PABLO_NERUDA.getTheme()
-
-    /**
-     * Taken from
-     * http://www.colourlovers.com/palette/27905/threadless
-     */
-    @JvmStatic
-    fun threadless() = ColorThemeResource.THREADLESS.getTheme()
-
-    /**
-     * Taken from
-     * http://www.colourlovers.com/palette/38562/Hands_On
-     */
-    @JvmStatic
-    fun handsOn() = ColorThemeResource.HANDS_ON.getTheme()
 
     /**
      * Taken from

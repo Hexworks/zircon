@@ -4,13 +4,13 @@ import org.hexworks.zircon.api.color.TileColor
 
 interface ColorTheme {
 
-    fun getBrightForegroundColor(): TileColor
+    fun primaryForegroundColor(): TileColor
 
-    fun getDarkForegroundColor(): TileColor
+    fun secondaryForegroundColor(): TileColor
 
-    fun getBrightBackgroundColor(): TileColor
+    fun primaryBackgroundColor(): TileColor
 
-    fun getDarkBackgroundColor(): TileColor
+    fun secondaryBackgroundColor(): TileColor
 
-    fun getAccentColor(): TileColor
+    fun accentColor(): TileColor
 }

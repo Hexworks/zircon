@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.TextBox
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.event.Subscription
 import org.hexworks.zircon.api.input.Input
@@ -72,16 +71,16 @@ class DefaultTextBox constructor(
     override fun applyColorTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getDarkBackgroundColor())
-                        .backgroundColor(colorTheme.getDarkForegroundColor())
+                        .foregroundColor(colorTheme.secondaryBackgroundColor())
+                        .backgroundColor(colorTheme.secondaryForegroundColor())
                         .build())
                 .disabledStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getDarkForegroundColor())
-                        .backgroundColor(colorTheme.getDarkBackgroundColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor())
+                        .backgroundColor(colorTheme.secondaryBackgroundColor())
                         .build())
                 .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getBrightBackgroundColor())
-                        .backgroundColor(colorTheme.getBrightForegroundColor())
+                        .foregroundColor(colorTheme.primaryBackgroundColor())
+                        .backgroundColor(colorTheme.primaryForegroundColor())
                         .build())
                 .build())
     }

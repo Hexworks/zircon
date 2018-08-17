@@ -9,7 +9,6 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentState
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
@@ -143,23 +142,23 @@ class DefaultCheckBoxTest {
                 .build()
 
         val EXPECTED_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.getAccentColor())
+                .foregroundColor(THEME.accentColor())
                 .backgroundColor(TileColor.transparent())
                 .build()
 
         val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.getBrightBackgroundColor())
-                .backgroundColor(THEME.getAccentColor())
+                .foregroundColor(THEME.primaryBackgroundColor())
+                .backgroundColor(THEME.accentColor())
                 .build()
 
         val EXPECTED_FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.getDarkBackgroundColor())
-                .backgroundColor(THEME.getAccentColor())
+                .foregroundColor(THEME.secondaryBackgroundColor())
+                .backgroundColor(THEME.accentColor())
                 .build()
 
         val EXPECTED_ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.getDarkForegroundColor())
-                .backgroundColor(THEME.getAccentColor())
+                .foregroundColor(THEME.secondaryForegroundColor())
+                .backgroundColor(THEME.accentColor())
                 .build()
     }
 }

@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.WrappingStrategy
 
@@ -28,8 +27,8 @@ class DefaultPanel(private val title: String,
     override fun applyColorTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getBrightForegroundColor())
-                        .backgroundColor(colorTheme.getBrightBackgroundColor())
+                        .foregroundColor(colorTheme.primaryForegroundColor())
+                        .backgroundColor(colorTheme.primaryBackgroundColor())
                         .build())
                 .build())
         getComponents().forEach {

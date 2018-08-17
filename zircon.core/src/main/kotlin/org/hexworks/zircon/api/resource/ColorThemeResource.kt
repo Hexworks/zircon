@@ -13,10 +13,10 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
      */
     ADRIFT_IN_DREAMS(ColorThemeBuilder.newBuilder()
             .accentColor(TileColor.fromString("#CFF09E"))
-            .brightForegroundColor(TileColor.fromString("#A8DBA8"))
-            .darkForegroundColor(TileColor.fromString("#79BD9A"))
-            .brightBackgroundColor(TileColor.fromString("#3B8686"))
-            .darkBackgroundColor(TileColor.fromString("#0B486B"))
+            .primaryForegroundColor(TileColor.fromString("#A8DBA8"))
+            .secondaryForegroundColor(TileColor.fromString("#79BD9A"))
+            .primaryBackgroundColor(TileColor.fromString("#3B8686"))
+            .secondaryBackgroundColor(TileColor.fromString("#0B486B"))
             .build()),
     /**
      * Taken from
@@ -24,32 +24,22 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
      */
     LET_THEM_EAT_CAKE(ColorThemeBuilder.newBuilder()
             .accentColor(TileColor.fromString("#C5E0DC"))
-            .brightForegroundColor(TileColor.fromString("#ECE5CE"))
-            .darkForegroundColor(TileColor.fromString("#F1D4AF"))
-            .brightBackgroundColor(TileColor.fromString("#E08E79"))
-            .darkBackgroundColor(TileColor.fromString("#774F38"))
+            .primaryForegroundColor(TileColor.fromString("#ECE5CE"))
+            .secondaryForegroundColor(TileColor.fromString("#F1D4AF"))
+            .primaryBackgroundColor(TileColor.fromString("#E08E79"))
+            .secondaryBackgroundColor(TileColor.fromString("#774F38"))
             .build()),
-    /**
-     * Taken from
-     * http://www.colourlovers.com/palette/559428/lucky_bubble_gum
-     */
-    LUCKY_BUBBLE_GUM(ColorThemeBuilder.newBuilder()
-            .accentColor(TileColor.fromString("#E33258"))
-            .brightForegroundColor(TileColor.fromString("#CCBF82"))
-            .darkForegroundColor(TileColor.fromString("#B8AF03"))
-            .brightBackgroundColor(TileColor.fromString("#67917A"))
-            .darkBackgroundColor(TileColor.fromString("#170409"))
-            .build()),
+
     /**
      * Taken from
      * http://www.colourlovers.com/palette/15/tech_light
      */
     TECH_LIGHT(ColorThemeBuilder.newBuilder()
             .accentColor(TileColor.fromString("#D1E751"))
-            .brightForegroundColor(TileColor.fromString("#FFFFFF"))
-            .darkForegroundColor(TileColor.fromString("#FFFFFF"))
-            .brightBackgroundColor(TileColor.fromString("#26ADE4"))
-            .darkBackgroundColor(TileColor.fromString("#000000"))
+            .primaryForegroundColor(TileColor.fromString("#FFFFFF"))
+            .secondaryForegroundColor(TileColor.fromString("#FFFFFF"))
+            .primaryBackgroundColor(TileColor.fromString("#26ADE4"))
+            .secondaryBackgroundColor(TileColor.fromString("#000000"))
             .build()),
     /**
      * Taken from
@@ -57,10 +47,10 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
      */
     HEADACHE(ColorThemeBuilder.newBuilder()
             .accentColor(TileColor.fromString("#BF4D28"))
-            .brightForegroundColor(TileColor.fromString("#F6F7BD"))
-            .darkForegroundColor(TileColor.fromString("#E6AC27"))
-            .brightBackgroundColor(TileColor.fromString("#80BCA3"))
-            .darkBackgroundColor(TileColor.fromString("#655643"))
+            .primaryForegroundColor(TileColor.fromString("#F6F7BD"))
+            .secondaryForegroundColor(TileColor.fromString("#E6AC27"))
+            .primaryBackgroundColor(TileColor.fromString("#80BCA3"))
+            .secondaryBackgroundColor(TileColor.fromString("#655643"))
             .build()),
     /**
      * Taken from
@@ -68,10 +58,10 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
      */
     GAMEBOOKERS(ColorThemeBuilder.newBuilder()
             .accentColor(TileColor.fromString("#FF9900"))
-            .brightForegroundColor(TileColor.fromString("#E9E9E9"))
-            .darkForegroundColor(TileColor.fromString("#BCBCBC"))
-            .brightBackgroundColor(TileColor.fromString("#3299BB"))
-            .darkBackgroundColor(TileColor.fromString("#424242"))
+            .primaryForegroundColor(TileColor.fromString("#E9E9E9"))
+            .secondaryForegroundColor(TileColor.fromString("#BCBCBC"))
+            .primaryBackgroundColor(TileColor.fromString("#3299BB"))
+            .secondaryBackgroundColor(TileColor.fromString("#424242"))
             .build()),
     /**
      * Taken from
@@ -79,10 +69,10 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
      */
     ENTRAPPED_IN_A_PALETTE(ColorThemeBuilder.newBuilder()
             .accentColor(TileColor.fromString("#7B3B3B"))
-            .brightForegroundColor(TileColor.fromString("#B9D7D9"))
-            .darkForegroundColor(TileColor.fromString("#668284"))
-            .brightBackgroundColor(TileColor.fromString("#493736"))
-            .darkBackgroundColor(TileColor.fromString("#2A2829"))
+            .primaryForegroundColor(TileColor.fromString("#B9D7D9"))
+            .secondaryForegroundColor(TileColor.fromString("#668284"))
+            .primaryBackgroundColor(TileColor.fromString("#493736"))
+            .secondaryBackgroundColor(TileColor.fromString("#2A2829"))
             .build()),
     /**
      * Taken from
@@ -90,10 +80,10 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
      */
     WAR(ColorThemeBuilder.newBuilder()
             .accentColor(TileColor.fromString("#F21D41"))
-            .brightForegroundColor(TileColor.fromString("#EBEBBC"))
-            .darkForegroundColor(TileColor.fromString("#BCE3C5"))
-            .brightBackgroundColor(TileColor.fromString("#82B3AE"))
-            .darkBackgroundColor(TileColor.fromString("#230F2B"))
+            .primaryForegroundColor(TileColor.fromString("#EBEBBC"))
+            .secondaryForegroundColor(TileColor.fromString("#BCE3C5"))
+            .primaryBackgroundColor(TileColor.fromString("#82B3AE"))
+            .secondaryBackgroundColor(TileColor.fromString("#230F2B"))
             .build()),
     /**
      * Taken from
@@ -101,10 +91,10 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
      */
     CAPTURED_BY_PIRATES(ColorThemeBuilder.newBuilder()
             .accentColor(TileColor.fromString("#AB9597"))
-            .brightForegroundColor(TileColor.fromString("#FFFBF0"))
-            .darkForegroundColor(TileColor.fromString("#968F4B"))
-            .brightBackgroundColor(TileColor.fromString("#7A6248"))
-            .darkBackgroundColor(TileColor.fromString("#030506"))
+            .primaryForegroundColor(TileColor.fromString("#FFFBF0"))
+            .secondaryForegroundColor(TileColor.fromString("#968F4B"))
+            .primaryBackgroundColor(TileColor.fromString("#7A6248"))
+            .secondaryBackgroundColor(TileColor.fromString("#030506"))
             .build()),
     /**
      * Taken from
@@ -112,10 +102,10 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
      */
     GHOST_OF_A_CHANCE(ColorThemeBuilder.newBuilder()
             .accentColor(TileColor.fromString("#95AC54"))
-            .brightForegroundColor(TileColor.fromString("#F6F1CB"))
-            .darkForegroundColor(TileColor.fromString("#DFD4A7"))
-            .brightBackgroundColor(TileColor.fromString("#7F7C69"))
-            .darkBackgroundColor(TileColor.fromString("#29210A"))
+            .primaryForegroundColor(TileColor.fromString("#F6F1CB"))
+            .secondaryForegroundColor(TileColor.fromString("#DFD4A7"))
+            .primaryBackgroundColor(TileColor.fromString("#7F7C69"))
+            .secondaryBackgroundColor(TileColor.fromString("#29210A"))
             .build()),
     /**
      * Taken from
@@ -123,10 +113,10 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
      */
     AFTER_THE_HEIST(ColorThemeBuilder.newBuilder()
             .accentColor(TileColor.fromString("#b86A6A"))
-            .brightForegroundColor(TileColor.fromString("#F8EDD1"))
-            .darkForegroundColor(TileColor.fromString("#C5CFC6"))
-            .brightBackgroundColor(TileColor.fromString("#9D9D93"))
-            .darkBackgroundColor(TileColor.fromString("#474843"))
+            .primaryForegroundColor(TileColor.fromString("#F8EDD1"))
+            .secondaryForegroundColor(TileColor.fromString("#C5CFC6"))
+            .primaryBackgroundColor(TileColor.fromString("#9D9D93"))
+            .secondaryBackgroundColor(TileColor.fromString("#474843"))
             .build()),
     /**
      * Taken from
@@ -134,44 +124,113 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
      */
     PABLO_NERUDA(ColorThemeBuilder.newBuilder()
             .accentColor(TileColor.fromString("#E6324B"))
-            .brightForegroundColor(TileColor.fromString("#F2E3C6"))
-            .darkForegroundColor(TileColor.fromString("#FFC6A5"))
-            .brightBackgroundColor(TileColor.fromString("#353634"))
-            .darkBackgroundColor(TileColor.fromString("#2B2B2B"))
+            .primaryForegroundColor(TileColor.fromString("#F2E3C6"))
+            .secondaryForegroundColor(TileColor.fromString("#FFC6A5"))
+            .primaryBackgroundColor(TileColor.fromString("#353634"))
+            .secondaryBackgroundColor(TileColor.fromString("#2B2B2B"))
             .build()),
-    /**
-     * Taken from
-     * http://www.colourlovers.com/palette/27905/threadless
-     */
-    THREADLESS(ColorThemeBuilder.newBuilder()
-            .accentColor(TileColor.fromString("#b24C2F"))
-            .brightForegroundColor(TileColor.fromString("#E9F2F9"))
-            .darkForegroundColor(TileColor.fromString("#9CC4E4"))
-            .brightBackgroundColor(TileColor.fromString("#3A89C9"))
-            .darkBackgroundColor(TileColor.fromString("#1B325F"))
-            .build()),
-    /**
-     * Taken from
-     * http://www.colourlovers.com/palette/38562/Hands_On
-     */
-    HANDS_ON(ColorThemeBuilder.newBuilder()
-            .accentColor(TileColor.fromString("#94BA65"))
-            .brightForegroundColor(TileColor.fromString("#2790B0"))
-            .darkForegroundColor(TileColor.fromString("#4B6E92"))
-            .brightBackgroundColor(TileColor.fromString("#4E4D4A"))
-            .darkBackgroundColor(TileColor.fromString("#353432"))
-            .build()),
+
     /**
      * Taken from
      * http://www.colourlovers.com/palette/2031222/Olive_Leaf_Tea
      */
     OLIVE_LEAF_TEA(ColorThemeBuilder.newBuilder()
             .accentColor(TileColor.fromString("#e99A44"))
-            .brightForegroundColor(TileColor.fromString("#EAE7D1"))
-            .darkForegroundColor(TileColor.fromString("#CCC58E"))
-            .brightBackgroundColor(TileColor.fromString("#7B8455"))
-            .darkBackgroundColor(TileColor.fromString("#485C2B"))
+            .primaryForegroundColor(TileColor.fromString("#EAE7D1"))
+            .secondaryForegroundColor(TileColor.fromString("#CCC58E"))
+            .primaryBackgroundColor(TileColor.fromString("#7B8455"))
+            .secondaryBackgroundColor(TileColor.fromString("#485C2B"))
             .build()),
+
+
+    AFTERGLOW(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#ADBA4E"))
+            .primaryForegroundColor(TileColor.fromString("#DEDEDE"))
+            .secondaryForegroundColor(TileColor.fromString("#D2D6D6"))
+            .primaryBackgroundColor(TileColor.fromString("#2F2C2F"))
+            .secondaryBackgroundColor(TileColor.fromString("#252525"))
+            .build()),
+
+    AMIGA_OS(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#F08000"))
+            .primaryForegroundColor(TileColor.fromString("#FFFFFF"))
+            .secondaryForegroundColor(TileColor.fromString("#dddddd"))
+            .primaryBackgroundColor(TileColor.fromString("#0050A0"))
+            .secondaryBackgroundColor(TileColor.fromString("#000020"))
+            .build()),
+
+    ANCESTRY(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#F3B670"))
+            .primaryForegroundColor(TileColor.fromString("#9CBE30"))
+            .secondaryForegroundColor(TileColor.fromString("#7A9C0F"))
+            .primaryBackgroundColor(TileColor.fromString("#706B63"))
+            .secondaryBackgroundColor(TileColor.fromString("#534D46"))
+            .build()),
+
+    ARC(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#5294E2"))
+            .primaryForegroundColor(TileColor.fromString("#FFFFFF"))
+            .secondaryForegroundColor(TileColor.fromString("#dddddd"))
+            .primaryBackgroundColor(TileColor.fromString("#4A5664"))
+            .secondaryBackgroundColor(TileColor.fromString("#303641"))
+            .build()),
+
+    FOREST(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#94E864"))
+            .primaryForegroundColor(TileColor.fromString("#FFFFFF"))
+            .secondaryForegroundColor(TileColor.fromString("#dddddd"))
+            .primaryBackgroundColor(TileColor.fromString("#077A07"))
+            .secondaryBackgroundColor(TileColor.fromString("#033313"))
+            .build()),
+
+    LINUX_MINT_DARK(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#8FA876"))
+            .primaryForegroundColor(TileColor.fromString("#FFFFFF"))
+            .secondaryForegroundColor(TileColor.fromString("#818181"))
+            .primaryBackgroundColor(TileColor.fromString("#353535"))
+            .secondaryBackgroundColor(TileColor.fromString("#2F2F2F"))
+            .build()),
+
+    NORD(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#A3BE8C"))
+            .primaryForegroundColor(TileColor.fromString("#D8DEE9"))
+            .secondaryForegroundColor(TileColor.fromString("#81A1C1"))
+            .primaryBackgroundColor(TileColor.fromString("#3B4252"))
+            .secondaryBackgroundColor(TileColor.fromString("#2E3440"))
+            .build()),
+
+    TRON(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#1EB8EB"))
+            .primaryForegroundColor(TileColor.fromString("#ffffff"))
+            .secondaryForegroundColor(TileColor.fromString("#dddddd"))
+            .primaryBackgroundColor(TileColor.fromString("#424242"))
+            .secondaryBackgroundColor(TileColor.fromString("#000000"))
+            .build()),
+
+    SAIKU(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#ffffff"))
+            .primaryForegroundColor(TileColor.fromString("#cccccc"))
+            .secondaryForegroundColor(TileColor.fromString("#999999"))
+            .primaryBackgroundColor(TileColor.fromString("#AE1817"))
+            .secondaryBackgroundColor(TileColor.fromString("#232323"))
+            .build()),
+
+    INGRESS_RESISTANCE(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#F1C248"))
+            .primaryForegroundColor(TileColor.fromString("#34EAF5"))
+            .secondaryForegroundColor(TileColor.fromString("#0492D0"))
+            .primaryBackgroundColor(TileColor.fromString("#393218"))
+            .secondaryBackgroundColor(TileColor.fromString("#000E0F"))
+            .build()),
+
+    INGRESS_ENLIGHTENED(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#02BF02"))
+            .primaryForegroundColor(TileColor.fromString("#34EAF5"))
+            .secondaryForegroundColor(TileColor.fromString("#0492D0"))
+            .primaryBackgroundColor(TileColor.fromString("#393218"))
+            .secondaryBackgroundColor(TileColor.fromString("#000E0F"))
+            .build()),
+
     /**
      * All Solarized themes are taken from:
      * http://www.zovirl.com/2011/07/22/solarized_cheat_sheet/
@@ -244,15 +303,15 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
 
     enum class SolarizedBase(val colorThemeBuilder: ColorThemeBuilder) {
         SOLARIZED_DARK_BASE(ColorThemeBuilder.newBuilder()
-                .brightForegroundColor(TileColor.fromString("#93a1a1"))
-                .darkForegroundColor(TileColor.fromString("#839496"))
-                .brightBackgroundColor(TileColor.fromString("#073642"))
-                .darkBackgroundColor(TileColor.fromString("#002b36"))),
+                .primaryForegroundColor(TileColor.fromString("#93a1a1"))
+                .secondaryForegroundColor(TileColor.fromString("#839496"))
+                .primaryBackgroundColor(TileColor.fromString("#073642"))
+                .secondaryBackgroundColor(TileColor.fromString("#002b36"))),
 
         SOLARIZED_LIGHT_BASE(ColorThemeBuilder.newBuilder()
-                .brightForegroundColor(TileColor.fromString("#657b83"))
-                .darkForegroundColor(TileColor.fromString("#586e75"))
-                .brightBackgroundColor(TileColor.fromString("#fdf6e3"))
-                .darkBackgroundColor(TileColor.fromString("#eee8d5")))
+                .primaryForegroundColor(TileColor.fromString("#657b83"))
+                .secondaryForegroundColor(TileColor.fromString("#586e75"))
+                .primaryBackgroundColor(TileColor.fromString("#fdf6e3"))
+                .secondaryBackgroundColor(TileColor.fromString("#eee8d5")))
     }
 }

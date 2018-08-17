@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Header
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
@@ -40,7 +39,7 @@ class DefaultHeader(private val text: String,
     override fun applyColorTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getBrightForegroundColor())
+                        .foregroundColor(colorTheme.primaryForegroundColor())
                         .backgroundColor(TileColor.transparent())
                         .build())
                 .build())

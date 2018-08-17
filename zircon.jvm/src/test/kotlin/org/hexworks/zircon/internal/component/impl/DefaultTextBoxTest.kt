@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ComponentState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.KeyStroke
@@ -117,16 +116,16 @@ class DefaultTextBoxTest {
         val SIZE = Size.create(10, 6)
         val POSITION = Position.create(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.getDarkBackgroundColor())
-                .backgroundColor(THEME.getDarkForegroundColor())
+                .foregroundColor(THEME.secondaryBackgroundColor())
+                .backgroundColor(THEME.secondaryForegroundColor())
                 .build()
         val FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.getBrightBackgroundColor())
-                .backgroundColor(THEME.getBrightForegroundColor())
+                .foregroundColor(THEME.primaryBackgroundColor())
+                .backgroundColor(THEME.primaryForegroundColor())
                 .build()
         val DISABLED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.getDarkForegroundColor())
-                .backgroundColor(THEME.getDarkBackgroundColor())
+                .foregroundColor(THEME.secondaryForegroundColor())
+                .backgroundColor(THEME.secondaryBackgroundColor())
                 .build()
         val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)

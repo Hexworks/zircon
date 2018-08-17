@@ -17,7 +17,6 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.WrappingStrategy
-import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.InternalEvent
 
 @Suppress("UNCHECKED_CAST")
@@ -143,8 +142,8 @@ open class DefaultContainer(initialSize: Size,
     override fun applyColorTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getDarkForegroundColor())
-                        .backgroundColor(colorTheme.getDarkBackgroundColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor())
+                        .backgroundColor(colorTheme.secondaryBackgroundColor())
                         .build())
                 .build())
         components.forEach {

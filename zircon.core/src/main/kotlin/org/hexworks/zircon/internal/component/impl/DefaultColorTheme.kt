@@ -3,19 +3,19 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 
-data class DefaultColorTheme(private val brightForegroundColor: TileColor,
-                             private val brightBackgroundColor: TileColor,
-                             private val darkForegroundColor: TileColor,
-                             private val darkBackgroundColor: TileColor,
+data class DefaultColorTheme(private val primaryForegroundColor: TileColor,
+                             private val secondaryForegroundColor: TileColor,
+                             private val primaryBackgroundColor: TileColor,
+                             private val secondaryBackgroundColor: TileColor,
                              private val accentColor: TileColor) : ColorTheme {
 
-    override fun getBrightForegroundColor() = brightForegroundColor
+    override fun primaryForegroundColor() = primaryForegroundColor
 
-    override fun getDarkForegroundColor() = darkForegroundColor
+    override fun secondaryForegroundColor() = secondaryForegroundColor
 
-    override fun getBrightBackgroundColor() = brightBackgroundColor
+    override fun primaryBackgroundColor() = primaryBackgroundColor
 
-    override fun getDarkBackgroundColor() = darkBackgroundColor
+    override fun secondaryBackgroundColor() = secondaryBackgroundColor
 
-    override fun getAccentColor() = accentColor
+    override fun accentColor() = accentColor
 }

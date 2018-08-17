@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
@@ -83,20 +82,20 @@ class DefaultCheckBox(private val text: String,
     override fun applyColorTheme(colorTheme: ColorTheme) {
         setComponentStyles(ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getAccentColor())
+                        .foregroundColor(colorTheme.accentColor())
                         .backgroundColor(TileColor.transparent())
                         .build())
                 .mouseOverStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getBrightBackgroundColor())
-                        .backgroundColor(colorTheme.getAccentColor())
+                        .foregroundColor(colorTheme.primaryBackgroundColor())
+                        .backgroundColor(colorTheme.accentColor())
                         .build())
                 .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getDarkBackgroundColor())
-                        .backgroundColor(colorTheme.getAccentColor())
+                        .foregroundColor(colorTheme.secondaryBackgroundColor())
+                        .backgroundColor(colorTheme.accentColor())
                         .build())
                 .activeStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.getDarkForegroundColor())
-                        .backgroundColor(colorTheme.getAccentColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor())
+                        .backgroundColor(colorTheme.accentColor())
                         .build())
                 .build())
     }
