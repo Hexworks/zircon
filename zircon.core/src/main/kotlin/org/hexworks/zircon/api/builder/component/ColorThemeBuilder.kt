@@ -3,27 +3,27 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.internal.component.impl.DefaultColorTheme
 
-data class ColorThemeBuilder(private var brightForegroundColor: TileColor = TileColor.defaultForegroundColor(),
-                             private var brightBackgroundColor: TileColor = TileColor.defaultBackgroundColor(),
-                             private var darkForegroundColor: TileColor = TileColor.defaultForegroundColor(),
-                             private var darkBackgroundColor: TileColor = TileColor.defaultBackgroundColor(),
+data class ColorThemeBuilder(private var primaryForegroundColor: TileColor = TileColor.defaultForegroundColor(),
+                             private var secondaryForegroundColor: TileColor = TileColor.defaultForegroundColor(),
+                             private var primaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor(),
+                             private var secondaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor(),
                              private var accentColor: TileColor = TileColor.defaultForegroundColor()) {
 
 
-    fun brightForegroundColor(brightForegroundColor: TileColor) = also {
-        this.brightForegroundColor = brightForegroundColor
+    fun primaryForegroundColor(primaryForegroundColor: TileColor) = also {
+        this.primaryForegroundColor = primaryForegroundColor
     }
 
-    fun darkForegroundColor(darkForegroundColor: TileColor) = also {
-        this.darkForegroundColor = darkForegroundColor
+    fun secondaryForegroundColor(secondaryForegroundColor: TileColor) = also {
+        this.secondaryForegroundColor = secondaryForegroundColor
     }
 
-    fun brightBackgroundColor(brightBackgroundColor: TileColor) = also {
-        this.brightBackgroundColor = brightBackgroundColor
+    fun primaryBackgroundColor(primaryBackgroundColor: TileColor) = also {
+        this.primaryBackgroundColor = primaryBackgroundColor
     }
 
-    fun darkBackgroundColor(darkBackgroundColor: TileColor) = also {
-        this.darkBackgroundColor = darkBackgroundColor
+    fun secondaryBackgroundColor(secondaryBackgroundColor: TileColor) = also {
+        this.secondaryBackgroundColor = secondaryBackgroundColor
     }
 
     fun accentColor(accentColor: TileColor) = also {
@@ -31,10 +31,10 @@ data class ColorThemeBuilder(private var brightForegroundColor: TileColor = Tile
     }
 
     fun build() = DefaultColorTheme(
-            brightForegroundColor = brightForegroundColor,
-            brightBackgroundColor = brightBackgroundColor,
-            darkForegroundColor = darkForegroundColor,
-            darkBackgroundColor = darkBackgroundColor,
+            primaryForegroundColor = primaryForegroundColor,
+            primaryBackgroundColor = primaryBackgroundColor,
+            secondaryForegroundColor = secondaryForegroundColor,
+            secondaryBackgroundColor = secondaryBackgroundColor,
             accentColor = accentColor)
 
     companion object {

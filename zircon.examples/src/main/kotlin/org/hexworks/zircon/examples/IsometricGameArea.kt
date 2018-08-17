@@ -156,7 +156,7 @@ object IsometricGameArea {
                     repeat = 2)
         }
 
-        screen.applyColorTheme(ColorThemes.oliveLeafTea())
+        screen.applyColorTheme(ColorThemes.gamebookers())
         screen.display()
     }
 

@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.component.ComponentState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.modifier.BorderType
 import org.hexworks.zircon.api.resource.CP437TilesetResource
@@ -87,8 +86,8 @@ class DefaultPanelTest {
         val POSITION = Position.create(2, 3)
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val EXPECTED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.getBrightForegroundColor())
-                .backgroundColor(THEME.getBrightBackgroundColor())
+                .foregroundColor(THEME.primaryForegroundColor())
+                .backgroundColor(THEME.primaryBackgroundColor())
                 .build()
     }
 }

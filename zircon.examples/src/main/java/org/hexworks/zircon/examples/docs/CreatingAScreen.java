@@ -32,8 +32,8 @@ public class CreatingAScreen {
                 .size(tileGrid.size())
                 .build()
                 .fill(Tiles.newBuilder()
-                        .foregroundColor(theme.getBrightForegroundColor())
-                        .backgroundColor(theme.getBrightBackgroundColor())
+                        .foregroundColor(theme.primaryForegroundColor())
+                        .backgroundColor(theme.primaryBackgroundColor())
                         .character('~')
                         .build());
 

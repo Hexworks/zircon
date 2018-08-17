@@ -26,7 +26,7 @@ Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki)
 
 - [Getting Started](https://github.com/Hexworks/zircon#getting-started)
   - [Some rules of thumb](https://github.com/Hexworks/zircon#some-rules-of-thumb)
-  - [Creating a TileGrid](https://github.com/Hexworks/zircon#creating-a-tileGrid)
+  - [Creating an Application](https://github.com/Hexworks/zircon#creating-an-application)
   - [Working with Screens](https://github.com/Hexworks/zircon#working-with-screens)
   - [Components](https://github.com/Hexworks/zircon#components)
   - [Additional features](https://github.com/Hexworks/zircon#additional-features)
@@ -38,11 +38,11 @@ Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki)
     - [Color themes](https://github.com/Hexworks/zircon#color-themes)
     - [Animations (BETA)](https://github.com/Hexworks/zircon#animations-beta)
     - [The API](https://github.com/Hexworks/zircon#the-api)
-- [How Zircon works](https://github.com/Hexworks/zircon#how-zircon-works)
-  - [TileGrid](https://github.com/Hexworks/zircon#tileGrid)
+- [A Zircon Crash Course](https://github.com/Hexworks/zircon#a-zircon-crash-course)
+  - [TileGrid](https://github.com/Hexworks/zircon#tilegrid)
   - [Colors and StyleSets](https://github.com/Hexworks/zircon#colors-and-stylesets)
   - [Modifiers](https://github.com/Hexworks/zircon#modifiers)
-  - [TileGraphics](https://github.com/Hexworks/zircon#textimages)
+  - [TileGraphics](https://github.com/Hexworks/zircon#tilegraphics)
   - [Screens](https://github.com/Hexworks/zircon#screens)
 - [Road map](https://github.com/Hexworks/zircon#road-map)
 - [License](https://github.com/Hexworks/zircon#license)
@@ -434,10 +434,11 @@ in either the source code or the [Wiki](https://github.com/Hexworks/zircon/wiki)
 ### Layering
 Both the [TileGrid] and the [Screen] interfaces implement [Layerable] which means that you can add [Layer]s on top of
 them. Every [Layerable] can have an arbitrary amount of [Layer]s. [Layer]s are like [TileGraphic]s and you can also have
-transparency in them which can be used to create fancy effects. Look at the [Layers] to see how to use them.
+transparency in them which can be used to create fancy effects.
 For more details check the [layers][layers] Wiki page.
 
-> Note that when creating `Layer`s you can set its `offset` from the builder but after attaching it to a `TileGrid` or `Screen` you can change its position by calling `moveTo` with a new `Position`.
+> Note that when creating `Layer`s you can set their `offset` from the builder but after attaching it to a
+ `TileGrid` or `Screen` you can change its position by calling `moveTo` with a new `Position`.
 
 ### Input handling
 Both the [TileGrid] and the [Screen] interfaces implement [InputEmitter] which means that they re-emit all inputs from
@@ -448,19 +449,20 @@ You can draw [Shape]s like rectangles and triangles by using one of the [ShapeFa
 Check the corresponding [Wiki page][shapes] for more info.
 
 ### Fonts and tilesets
-Zircon comes with a bunch of built-in fonts and tilesets. These come in 3 flavors:
+Zircon comes with a bunch of built-in tilesets. These come in 2 flavors:
 
-- Physical fonts *(Want to use physical fonts? Check how to use them [here](https://github.com/Hexworks/zircon/wiki/Resource-Handling#physical-fonts))*
 - CP437 tilesets *(More on using them [here](https://github.com/Hexworks/zircon/wiki/Resource-Handling#cp437-tilesets))*
 - and Graphic tilesets *(Usage info [here](https://github.com/Hexworks/zircon/wiki/Resource-Handling#graphic-tilesets))*
 
 Read more about them in the [resource handling Wiki page][resource-handling] if you want to know more
 or if you want to use your own tilesets and fonts.
 
-Zircon also comes with **its own tileset format (`ztf`: Zircon Tileset Format)** which is **very easy to use**. Its usage is detailed [here](https://github.com/Hexworks/zircon/wiki/Resource-Handling#graphic-tilesets).
+Zircon also comes with **its own tileset format (`ztf`: Zircon Tileset Format)** which is **very easy to use**. 
+Its usage is detailed [here](https://github.com/Hexworks/zircon/wiki/Resource-Handling#graphic-tilesets).
 
 ### REXPaint file loading
-REXPaint files (`.xp`) can be loaded into Zircon `Layer`s. Read about this feature [here](https://github.com/Hexworks/zircon/wiki/Resource-Handling#rexpaint-files).
+REXPaint files (`.xp`) can be loaded into Zircon `Layer`s. Read about this feature
+ [here](https://github.com/Hexworks/zircon/wiki/Resource-Handling#rexpaint-files).
 
 ### Color themes
 Zircon comes with a bunch of built-in color themes which you can apply to your components.
@@ -472,74 +474,7 @@ Animations are a beta feature. More info [here][animations].
 ### The API
 
 If you just want to peruse the Zircon API just navigate [here][api].
-Everything which is intented to be the public API is there.
-
-## How Zircon works
-
-In order to work with Zircon you should get familiar with the core concepts. 
-Zircon provides multiple layers of abstractions and it depends on your needs which one you should pick.
-
-### TileGrid
-At the lowest level Zircon provides the [TileGrid] interface. This provides you with a surface on which 
-you can draw [Tile]s. A [Tile] is basically a character (like an `x`) with additional
-metadataTile like `foregroundColor` and `backgroundColor`. This surface sits on top of a GUI layer and
-completely abstracts away how that layer works. For example the default implementation of the [TileGrid] 
-interface uses Swing under the hood. The main advantage of using [TileGrid]s is that by implementing all
-its methods you can swap Swing with something else (like SWT) and use **all** higher
-level abstractions on top of it (like [Screen]s) which depend on [TileGrid] (more on [Screen]s later).
-Working with [TileGrid]s is *very* simple but somewhat limited. A [TileGrid] is responsible for:
-
-- drawing characters (by position or by cursor) on the screen
-- handling inputs (keyboard and mouse) which are emitted by the GUI layer
-- handling the cursor which is visible to the user
-- handling [Layer]ing
-- storing style information
-- drawing [TileGraphic]s on top of it
-
-This seems like a lot of things to do at once so you might ask "How is this [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design))?".
-Zircon solves this problem with composition: All of the above mentioned categories are handled by an object 
-within a [TileGrid] which is responsible for only one thing.
-For example [TileGrid] implements the [Layerable] interface and internally all operations defined by it are 
-delegated to an object which implements [Layerable] only.
-You can peruse these [here](https://github.com/Hexworks/zircon/tree/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/behavior).
-In this sense you can consider a [TileGrid] as a [Facade](https://en.wikipedia.org/wiki/Facade_pattern).
-
-### Colors and StyleSets
-
-Objects like [Tile]s can have foreground and background colors. You can either use the [ANSITileColor]
-`enum` to pick a pre-defined [TileColor] or you can create a new one by using [TileColors]. This class
-has some useful factory methods for this like: `fromAWTColor`, `fromRGB` and `fromString`. The latter can be
-called with simple CSS-like strings (eg: `#334455`).
-
-If you don't want to set all these colors by hand or you want to have a color template and use it to set colors to
-multiple things you can use a [StyleSet] which is basically a [Value Object](https://martinfowler.com/bliki/ValueObject.html)
-which holds fore/background colors and modifiers.
-
-### Modifiers
-When working with [Tile]s apart from giving them color you might want to apply some special
-[Modifier] to them like `UNDERLINE` or `VERTICAL_FLIP`.
-You can do this by picking the right [Modifier] from the [Modifiers] class.
-You can set any number of [Modifier]s to each [Tile] individually and when
-you refresh your [TileGrid] by calling `flush` on it you will see them applied.
-
-### TileGraphics
-An image built from [Tile]s with color and style information. 
-These are completely in memory and not visible, but can be used when drawing on other [DrawSurface]s,
-like a [Screen] or a [TileGrid]. In other words [TileGraphic]s are like real images but composed of
-[Tile]s to create ASCII art and the like. 
-
-### Screens 
-
-[Screen]s are in-memory representations of your [TileGrid]. They are double buffered
-which means that you write to a back-buffer and when you `refresh` your [Screen] only the changes will
-be written to the backing [TileGrid] instance. Multiple [Screen]s can be attached to the same [TileGrid]
-object which means that you can have more than one screen in your app and you can switch between them
-simultaneously by using the `display` method. [Screen]s also let you use [Component]s like [Button]s
-and [Panel]s.
-
-> If you want to read more about the design philosophy behind Zircon check [this][design-philosophy] page on Wiki!
-> 
-> If you are interested in how components work then [this][components] Wiki page can help you.
+Everything which is intended to be the public API is there.
 
 ## Road map
 
