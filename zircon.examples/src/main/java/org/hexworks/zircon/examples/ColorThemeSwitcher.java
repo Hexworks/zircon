@@ -218,38 +218,18 @@ public class ColorThemeSwitcher {
 
         slOptions.onSelection((selection -> {
             refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-            sdOptions.clearSelection();
-            zbOptions.clearSelection();
-            othOptions.clearSelection();
-            mOptions.clearSelection();
         }));
         sdOptions.onSelection((selection -> {
             refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-            slOptions.clearSelection();
-            zbOptions.clearSelection();
-            othOptions.clearSelection();
-            mOptions.clearSelection();
         }));
         zbOptions.onSelection((selection -> {
             refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-            slOptions.clearSelection();
-            sdOptions.clearSelection();
-            othOptions.clearSelection();
-            mOptions.clearSelection();
         }));
         mOptions.onSelection((selection -> {
             refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-            slOptions.clearSelection();
-            sdOptions.clearSelection();
-            zbOptions.clearSelection();
-            othOptions.clearSelection();
         }));
         othOptions.onSelection((selection -> {
             refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-            slOptions.clearSelection();
-            sdOptions.clearSelection();
-            zbOptions.clearSelection();
-            mOptions.clearSelection();
         }));
 
         screen.applyColorTheme(currentTheme.get().getTheme());
