@@ -91,6 +91,15 @@ object ColorThemes {
     @JvmStatic
     fun oliveLeafTea() = ColorThemeResource.OLIVE_LEAF_TEA.getTheme()
 
+    @JvmStatic
+    fun zenburnVanilla() = ColorThemeResource.ZENBURN_VANILLA.getTheme()
+
+    @JvmStatic
+    fun zenburnPink() = ColorThemeResource.ZENBURN_PINK.getTheme()
+
+    @JvmStatic
+    fun zenburnGreen() = ColorThemeResource.ZENBURN_GREEN.getTheme()
+
     /**
      * All Solarized themes are taken from:
      * http://www.zovirl.com/2011/07/22/solarized_cheat_sheet/

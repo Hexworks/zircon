@@ -1,61 +1,64 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.game.BaseGameArea
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.util.TreeMap
-import org.hexworks.zircon.platform.factory.TreeMapFactory
+import java.util.*
 
 object CustomGameAreaExample {
 
     data class CustomTile(val characterTile: CharacterTile) : CharacterTile by characterTile
 
-    class CustomGameArea(private val size: Size3D) : GameArea {
-
-        private val blocks: TreeMap<Position3D, Block> = TreeMapFactory.create()
-        private val filler = BlockBuilder.create()
+    class CustomGameArea(private val size: Size3D, private val layersPerBlock: Int) : BaseGameArea() {
+        private val blocks = java.util.TreeMap<Position3D, Block>()
+        private val filler = Blocks.newBuilder()
                 .layer(Tiles.empty())
 
-        override fun size() = size
-
-        override fun getLayersPerBlock() = 1
-
-        override fun hasBlockAt(position: Position3D) = blocks.containsKey(position)
-
-        override fun fetchBlockAt(position: Position3D): Maybe<Block> {
-            return Maybe.ofNullable(blocks[position])
+        override fun size(): Size3D {
+            return size
         }
 
-        override fun fetchBlockOrDefault(position: Position3D) =
-                blocks.getOrDefault(position, filler.position(position).build())
+        override fun getLayersPerBlock(): Int {
+            return layersPerBlock
+        }
+
+        override fun hasBlockAt(position: Position3D): Boolean {
+            return blocks.containsKey(position)
+        }
+
+        override fun fetchBlockAt(position: Position3D): Maybe<Block> {
+            return Maybes.ofNullable(blocks[position])
+        }
+
+        override fun fetchBlockOrDefault(position: Position3D): Block {
+            return blocks.getOrDefault(position, filler.position(position).build())
+        }
 
         override fun fetchBlocks(): Iterable<Block> {
-            return blocks.values.toList()
+            return ArrayList(blocks.values)
         }
 
         override fun setBlockAt(position: Position3D, block: Block) {
-            require(size().containsPosition(position)) {
-                "The supplied position ($position) is not within the size ($size) of this game area."
+            if (!size().containsPosition(position)) {
+                throw IllegalArgumentException("The supplied position (\$position) is not within the size (\$size) of this game area.")
             }
             val layerCount = block.layers.size
-            require(layerCount == getLayersPerBlock()) {
-                "The number of layers per block for this game area is ${getLayersPerBlock()}." +
-                        " The supplied layers have a size of $layerCount."
+            if (layerCount != getLayersPerBlock()) {
+                throw IllegalArgumentException("The number of layers per block for this game area is \${getLayersPerBlock()}." + " The supplied layers have a size of \$layerCount.")
             }
             blocks[position] = block
         }
-
     }
 
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val gameArea = CustomGameArea(Sizes.create3DSize(100, 100, 100))
+        val gameArea = CustomGameArea(Sizes.create3DSize(100, 100, 100), 1)
 
         makeCaves(gameArea)
 

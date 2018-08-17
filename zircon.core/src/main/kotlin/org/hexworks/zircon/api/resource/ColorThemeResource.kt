@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api.resource
 
+import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
 import org.hexworks.zircon.api.resource.ColorThemeResource.SolarizedBase.SOLARIZED_DARK_BASE
 import org.hexworks.zircon.api.resource.ColorThemeResource.SolarizedBase.SOLARIZED_LIGHT_BASE
 
@@ -229,6 +229,78 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
             .secondaryForegroundColor(TileColor.fromString("#0492D0"))
             .primaryBackgroundColor(TileColor.fromString("#393218"))
             .secondaryBackgroundColor(TileColor.fromString("#000E0F"))
+            .build()),
+
+    ZENBURN_VANILLA(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#f0dfaf"))
+            .primaryForegroundColor(TileColor.fromString("#dcdccc"))
+            .secondaryForegroundColor(TileColor.fromString("#9fafaf"))
+            .primaryBackgroundColor(TileColor.fromString("#333333"))
+            .secondaryBackgroundColor(TileColor.fromString("#1e2320"))
+            .build()),
+
+    ZENBURN_PINK(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#ecbcbc"))
+            .primaryForegroundColor(TileColor.fromString("#dcdccc"))
+            .secondaryForegroundColor(TileColor.fromString("#9fafaf"))
+            .primaryBackgroundColor(TileColor.fromString("#333333"))
+            .secondaryBackgroundColor(TileColor.fromString("#1e2320"))
+            .build()),
+
+    ZENBURN_GREEN(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#709080"))
+            .primaryForegroundColor(TileColor.fromString("#dcdccc"))
+            .secondaryForegroundColor(TileColor.fromString("#9fafaf"))
+            .primaryBackgroundColor(TileColor.fromString("#333333"))
+            .secondaryBackgroundColor(TileColor.fromString("#1e2320"))
+            .build()),
+
+    MONOKAI_YELLOW(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#ffd866"))
+            .primaryForegroundColor(TileColor.fromString("#ffffff"))
+            .secondaryForegroundColor(TileColor.fromString("#fdf9f3"))
+            .primaryBackgroundColor(TileColor.fromString("#3e3b3f"))
+            .secondaryBackgroundColor(TileColor.fromString("#2c292d"))
+            .build()),
+
+    MONOKAI_PINK(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#ff6188"))
+            .primaryForegroundColor(TileColor.fromString("#ffffff"))
+            .secondaryForegroundColor(TileColor.fromString("#fdf9f3"))
+            .primaryBackgroundColor(TileColor.fromString("#3e3b3f"))
+            .secondaryBackgroundColor(TileColor.fromString("#2c292d"))
+            .build()),
+
+    MONOKAI_GREEN(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#a9dc76"))
+            .primaryForegroundColor(TileColor.fromString("#ffffff"))
+            .secondaryForegroundColor(TileColor.fromString("#fdf9f3"))
+            .primaryBackgroundColor(TileColor.fromString("#3e3b3f"))
+            .secondaryBackgroundColor(TileColor.fromString("#2c292d"))
+            .build()),
+
+    MONOKAI_ORANGE(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#fc9867"))
+            .primaryForegroundColor(TileColor.fromString("#ffffff"))
+            .secondaryForegroundColor(TileColor.fromString("#fdf9f3"))
+            .primaryBackgroundColor(TileColor.fromString("#3e3b3f"))
+            .secondaryBackgroundColor(TileColor.fromString("#2c292d"))
+            .build()),
+
+    MONOKAI_VIOLET(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#ab9df2"))
+            .primaryForegroundColor(TileColor.fromString("#ffffff"))
+            .secondaryForegroundColor(TileColor.fromString("#fdf9f3"))
+            .primaryBackgroundColor(TileColor.fromString("#3e3b3f"))
+            .secondaryBackgroundColor(TileColor.fromString("#2c292d"))
+            .build()),
+
+    MONOKAI_BLUE(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#78dce8"))
+            .primaryForegroundColor(TileColor.fromString("#ffffff"))
+            .secondaryForegroundColor(TileColor.fromString("#fdf9f3"))
+            .primaryBackgroundColor(TileColor.fromString("#3e3b3f"))
+            .secondaryBackgroundColor(TileColor.fromString("#2c292d"))
             .build()),
 
     /**
