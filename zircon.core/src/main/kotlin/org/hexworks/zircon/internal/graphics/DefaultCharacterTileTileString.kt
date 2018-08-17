@@ -6,17 +6,17 @@ import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.TextCharacterString
+import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 
-data class DefaultCharacterTileString(private val textChars: List<CharacterTile>,
-                                      private val textWrap: TextWrap,
-                                      private val boundable: Boundable = DefaultBoundable(
+data class DefaultCharacterTileTileString(private val textChars: List<CharacterTile>,
+                                          private val textWrap: TextWrap,
+                                          private val boundable: Boundable = DefaultBoundable(
                                               size = Size.create(textChars.size, 1)))
-    : TextCharacterString,
+    : CharacterTileString,
         Boundable by boundable,
         Collection<CharacterTile> by textChars {
 
@@ -111,7 +111,7 @@ data class DefaultCharacterTileString(private val textChars: List<CharacterTile>
 
     override fun getTextCharacters() = textChars
 
-    override fun plus(other: TextCharacterString) = DefaultCharacterTileString(
+    override fun plus(other: CharacterTileString) = DefaultCharacterTileTileString(
             textChars = textChars.plus(other.getTextCharacters()),
             textWrap = textWrap)
 

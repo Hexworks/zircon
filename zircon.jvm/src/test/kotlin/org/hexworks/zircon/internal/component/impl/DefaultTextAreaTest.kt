@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.component.TextBoxBuilder
+import org.hexworks.zircon.api.builder.component.TextAreaBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ComponentState
 import org.hexworks.zircon.api.data.Position
@@ -17,21 +17,21 @@ import org.hexworks.zircon.internal.event.InternalEvent
 import org.junit.Before
 import org.junit.Test
 
-class DefaultTextBoxTest {
+class DefaultTextAreaTest {
 
-    lateinit var target: DefaultTextBox
+    lateinit var target: DefaultTextArea
     lateinit var tileset: TilesetResource
 
     @Before
     fun setUp() {
         tileset = DefaultLabelTest.FONT
-        target = TextBoxBuilder.newBuilder()
+        target = TextAreaBuilder.newBuilder()
                 .componentStyles(COMPONENT_STYLES)
                 .size(SIZE)
                 .tileset(tileset)
                 .position(POSITION)
                 .text(TEXT)
-                .build() as DefaultTextBox
+                .build() as DefaultTextArea
     }
 
     @Test

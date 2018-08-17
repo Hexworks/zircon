@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class ColorThemeSwitcher {
 
     private static final Size SCREEN_SIZE = Sizes.create(80, 40);
-    private static final CP437TilesetResource TILESET = CP437TilesetResource.ROGUE_YUN_16X16;
+    private static final CP437TilesetResource TILESET = CP437TilesetResource.WANDERLUST_16X16;
     private static final ColorThemeResource THEME_PICKER_THEME = ColorThemeResource.GAMEBOOKERS;
 
     public static void main(String[] args) {
@@ -84,7 +84,7 @@ public class ColorThemeSwitcher {
                         .relativeToRightOf(label))
                 .build();
 
-        TextBox textBox = Components.textBox()
+        TextArea textArea = Components.textArea()
                 .position(Positions.create(1, 0).relativeToRightOf(panel))
                 .size(Sizes.create(20, 6))
                 .text("Text box")
@@ -97,7 +97,7 @@ public class ColorThemeSwitcher {
         infoPanel.addComponent(label);
         infoPanel.addComponent(rbg);
         infoPanel.addComponent(panel);
-        infoPanel.addComponent(textBox);
+        infoPanel.addComponent(textArea);
 
         screen.addComponent(infoPanel);
 

@@ -36,7 +36,7 @@ class DefaultCharacterTileStringTest {
                 .modifiers(MODIFIER)
                 .text(TEXT)
                 .textWrap(TextWrap.NO_WRAPPING)
-                .build() as DefaultCharacterTileString
+                .build() as DefaultCharacterTileTileString
 
         val template = TileBuilder.newBuilder()
                 .foregroundColor(FOREGROUND)

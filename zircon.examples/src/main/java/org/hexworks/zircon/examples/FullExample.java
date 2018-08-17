@@ -1,7 +1,10 @@
 package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.animation.Animation;
+import org.hexworks.zircon.api.animation.AnimationResource;
 import org.hexworks.zircon.api.application.Application;
+import org.hexworks.zircon.api.builder.animation.AnimationBuilder;
 import org.hexworks.zircon.api.builder.component.PanelBuilder;
 import org.hexworks.zircon.api.component.*;
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection;
@@ -15,20 +18,25 @@ import org.hexworks.zircon.api.modifier.BorderType;
 import org.hexworks.zircon.api.resource.CP437TilesetResource;
 import org.hexworks.zircon.api.resource.ColorThemeResource;
 import org.hexworks.zircon.api.screen.Screen;
+import org.ietf.jgss.GSSContext;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class ComponentsExample {
+import static org.hexworks.zircon.api.resource.ColorThemeResource.*;
 
-    private static final Size PANEL_SIZE = Sizes.create(22, 6);
-    private static final Size TERMINAL_SIZE = Sizes.create(52, 28);
+public class FullExample {
+
+    private static final Size PANEL_SIZE = Sizes.create(29, 8);
+    private static final Size SCREEN_SIZE = Sizes.create(65, 33);
     private static final CP437TilesetResource TILESET = CP437TilesetResource.ROGUE_YUN_16X16;
-    private static final ColorTheme PANELS_THEME = ColorThemeResource.TECH_LIGHT.getTheme();
-    private static final ColorTheme INPUTS_THEME = ColorThemeResource.SOLARIZED_DARK_GREEN.getTheme();
-    private static final ColorTheme ADD_REMOVE_THEME = ColorThemeResource.GHOST_OF_A_CHANCE.getTheme();
-    private static final ColorThemeResource THEME_PICKER_THEME = ColorThemeResource.GAMEBOOKERS;
+    private static final ColorTheme INTRO_THEME = TRON.getTheme();
+    private static final ColorTheme PANELS_THEME = AMIGA_OS.getTheme();
+    private static final ColorTheme INPUTS_THEME = GAMEBOOKERS.getTheme();
+    private static final ColorTheme ADD_REMOVE_THEME = SOLARIZED_LIGHT_CYAN.getTheme();
+    private static final ColorThemeResource THEME_PICKER_THEME = MONOKAI_YELLOW;
+    private static final ColorTheme GAME_THEME = OLIVE_LEAF_TEA.getTheme();
 
     private static final PanelBuilder PANEL_TEMPLATE = PanelBuilder.Companion.newBuilder().size(PANEL_SIZE);
 
@@ -36,34 +44,95 @@ public class ComponentsExample {
 
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
                 .defaultTileset(TILESET)
-                .defaultSize(TERMINAL_SIZE)
+                .defaultSize(SCREEN_SIZE)
                 .debugMode(true)
                 .build());
 
         final TileGrid tileGrid = app.getTileGrid();
 
+        Screen introScreen = Screens.createScreenFor(tileGrid);
         Screen panelsScreen = Screens.createScreenFor(tileGrid);
         Screen inputsScreen = Screens.createScreenFor(tileGrid);
         Screen addAndRemoveScreen = Screens.createScreenFor(tileGrid);
         Screen colorThemesScreen = Screens.createScreenFor(tileGrid);
-        Screen multiFontScreen = Screens.createScreenFor(tileGrid);
+        Screen gameScreen = Screens.createScreenFor(tileGrid);
         final List<Screen> screens = Arrays.asList(
+                introScreen,
                 panelsScreen,
                 inputsScreen,
                 addAndRemoveScreen,
                 colorThemesScreen,
-                multiFontScreen);
+                gameScreen);
 
+        addScreenTitle(introScreen, "Zircon: fiendishly simple text GUI");
         addScreenTitle(panelsScreen, "Panels");
         addScreenTitle(inputsScreen, "Input controls");
         addScreenTitle(addAndRemoveScreen, "Add and remove panels");
         addScreenTitle(colorThemesScreen, "Color themes");
-        addScreenTitle(multiFontScreen, "Multi-tileset");
+        addScreenTitle(gameScreen, "Game");
 
 
         for (int i = 0; i < screens.size(); i++) {
             addNavigation(screens.get(i), screens, i);
         }
+
+        // ==============
+        // intro screen
+        // ==============
+
+        AnimationBuilder animBuilder = AnimationResource.loadAnimationFromStream(
+                AnimationExample.class.getResourceAsStream("/animations/skull.zap"),
+                TILESET).loopCount(0);
+        for (int i = 0; i  < animBuilder.getLength(); i++) {
+            animBuilder.addPosition(Positions.create(2, 6));
+        }
+        Animation zirconSplash = animBuilder.build();
+
+        Panel introPanel = Components.panel()
+                .position(Positions.create(17, 3))
+                .size(SCREEN_SIZE.withRelativeXLength(-18).withRelativeYLength(-4))
+                .boxType(BoxType.SINGLE)
+                .wrapWithBox()
+                .build();
+
+        introPanel.addComponent(Components.header()
+                .position(Positions.offset1x1())
+                .text("Do you plan to make a roguelike?")
+                .build());
+
+        TextBox introBox = Components.textBox()
+                .position(Positions.create(1, 3))
+                .size(Sizes.create(44, 25))
+                .paragraph("Look no further. Zircon is the right tool for the job.")
+                .newLine()
+                .paragraph("Zircon is a Text GUI library and a Tile Engine which is designed for simplicity and ease of use.")
+                .newLine()
+                .paragraph("It is usable out of the box for all JVM languages including Java, Kotlin, Clojure and Scala.")
+                .newLine()
+                .paragraph("Things Zircon knows:")
+                .newLine()
+                .listItem("Animations")
+                .listItem("A Component System with built-in components for games")
+                .listItem("Layering")
+                .listItem("Mouse and keyboard support")
+                .listItem("Shape and Box drawing")
+                .listItem("Tilesets, and Graphical tiles")
+                .listItem("REXPaint file loading")
+                .listItem("Color Themes and more!")
+                .newLine()
+                .paragraph("Interested in more details? Read on...", false)
+                .build();
+
+        introPanel.addComponent(introBox);
+
+        introScreen.addComponent(introPanel);
+
+        introScreen.applyColorTheme(INTRO_THEME);
+
+        introScreen.startAnimation(zirconSplash);
+
+        introScreen.display();
+
 
         // ==============
         // panels screen
@@ -165,7 +234,7 @@ public class ComponentsExample {
                 .title("Text boxes")
                 .wrapWithShadow()
                 .build();
-        textBoxesPanel.addComponent(Components.textBox()
+        textBoxesPanel.addComponent(Components.textArea()
                 .text("Panel" + System.lineSeparator() + "with editable text box" + System.lineSeparator() + "...")
                 .size(Sizes.create(13, 3))
                 .build());
@@ -227,7 +296,7 @@ public class ComponentsExample {
         final Deque<Position> usedPositions = new LinkedList<>();
         final Set<Panel> panels = new HashSet<>();
 
-        for (int row = 11; row < 20; row += 7) {
+        for (int row = 13; row < 22; row += 7) {
             for (int col = 2; col < 40; col += 9) {
                 remainingPositions.add(Positions.create(col, row));
             }
@@ -275,7 +344,7 @@ public class ComponentsExample {
         final Panel infoPanel = Components.panel()
                 .wrapWithBox()
                 .title("Current selection:")
-                .size(Sizes.create(48, 3))
+                .size(Sizes.create(62, 3))
                 .position(Positions.create(2, 4))
                 .build();
 
@@ -285,7 +354,7 @@ public class ComponentsExample {
         colorThemesScreen.addComponent(infoPanel);
 
 
-        final Size themePickerSize = Sizes.create(13, 19);
+        final Size themePickerSize = Sizes.create(17, 24);
         final Panel solarizedLightPanel = Components.panel()
                 .title("Sol. Light")
                 .position(Positions.create(0, 1).relativeToBottomOf(infoPanel))
@@ -302,7 +371,7 @@ public class ComponentsExample {
                 .title("Other")
                 .position(Positions.create(1, 0).relativeToRightOf(solarizedDarkPanel))
                 .wrapWithBox()
-                .size(themePickerSize.plus(Sizes.create(7, 0)))
+                .size(themePickerSize.plus(Sizes.create(9, 0)))
                 .build();
 
 
@@ -310,15 +379,26 @@ public class ComponentsExample {
         colorThemesScreen.addComponent(solarizedDarkPanel);
         colorThemesScreen.addComponent(otherPanel);
 
-        final List<ColorThemeResource> solarizedLightOptions = Arrays.stream(ColorThemeResource.values())
+        final List<ColorThemeResource> solarizedLightOptions = Arrays.stream(values())
                 .filter(option -> option.name().startsWith("SOLARIZED_LIGHT"))
                 .collect(Collectors.toList());
-        final List<ColorThemeResource> solarizedDarkOptions = Arrays.stream(ColorThemeResource.values())
+        final List<ColorThemeResource> solarizedDarkOptions = Arrays.stream(values())
                 .filter((option) -> option.name().startsWith("SOLARIZED_DARK"))
                 .collect(Collectors.toList());
-        final List<ColorThemeResource> otherOptions = Arrays.stream(ColorThemeResource.values())
-                .filter((option) -> !option.name().startsWith("SOLARIZED"))
-                .collect(Collectors.toList());
+        final List<ColorThemeResource> otherOptions = Arrays.asList(
+                ZENBURN_VANILLA,
+                MONOKAI_BLUE,
+                PABLO_NERUDA,
+                AFTER_THE_HEIST,
+                AFTERGLOW,
+                LET_THEM_EAT_CAKE,
+                OLIVE_LEAF_TEA,
+                GAMEBOOKERS,
+                TRON,
+                AMIGA_OS,
+                ENTRAPPED_IN_A_PALETTE,
+                FOREST,
+                GHOST_OF_A_CHANCE);
 
         final RadioButtonGroup slOptions = Components.radioButtonGroup()
                 .size(themePickerSize
@@ -373,44 +453,10 @@ public class ComponentsExample {
         // ==============
 
 
-        final Panel exampleComponentsPanel = Components.panel()
-                .wrapWithBox()
-                .title("Example components")
-                .size(Sizes.create(48, 22))
-                .position(Positions.create(2, 4))
-                .build();
+        IsometricGameArea.INSTANCE.addGamePanel(gameScreen, Positions.create(2, 4), Sizes.create(62, 28), Positions.create(5, 5));
 
-        Label aLabel = Components.label()
-                .position(Positions.create(2, 1))
-                .text("Something with 'a'!")
-                .build();
-//        final Layer aIcon = Layers.newBuilder()
-//                .size(Sizes.create(1, 1))
-//                .offset(exampleComponentsPanel.position().plus(Positions.create(2, 2)))
-//                .tileset(GraphicTilesetResource.NETHACK_16X16.toFont(new PickRandomMetaStrategy()))
-//                .build();
-//        exampleComponentsPanel.addComponent(aLabel);
-//        multiFontScreen.pushLayer(aIcon);
-//        refreshIcon(aIcon, 'a');
-//
-//        Label bLabel = Components.newLabelBuilder()
-//                .position(Positions.create(2, 2))
-//                .text("Something with 'b'!")
-//                .build();
-//        final Layer bIcon = Layers.newBuilder()
-//                .size(Sizes.create(1, 1))
-//                .offset(exampleComponentsPanel.position().plus(Positions.create(2, 3)))
-//                .tileset(GraphicTilesetResource.NETHACK_16X16.toFont(new PickRandomMetaStrategy()))
-//                .build();
-//        exampleComponentsPanel.addComponent(bLabel);
-//        multiFontScreen.pushLayer(bIcon);
-//        refreshIcon(bIcon, 'b');
+        gameScreen.applyColorTheme(GAME_THEME);
 
-
-        multiFontScreen.addComponent(exampleComponentsPanel);
-        multiFontScreen.applyColorTheme(currentTheme.get().getTheme());
-
-        multiFontScreen.display();
     }
 
     private static void refreshIcon(Layer icon, char c) {
@@ -425,7 +471,7 @@ public class ComponentsExample {
                                      AtomicReference<Label> labelRef,
                                      Panel infoPanel,
                                      Selection selection) {
-        themeRef.set(ColorThemeResource.valueOf(selection.getKey()));
+        themeRef.set(valueOf(selection.getKey()));
         infoPanel.removeComponent(labelRef.get());
         labelRef.set(createLabelForTheme(themeRef.get()));
         infoPanel.addComponent(labelRef.get());
@@ -452,7 +498,7 @@ public class ComponentsExample {
         if (currIdx > 0) {
             final Button prev = Components.button()
                     .text(Symbols.TRIANGLE_LEFT_POINTING_BLACK + " Prev")
-                    .position(Positions.create(33, 1))
+                    .position(Positions.create(46, 1))
                     .build();
             prev.onMouseReleased((a) -> screens.get(currIdx - 1).display());
             screen.addComponent(prev);
@@ -460,7 +506,7 @@ public class ComponentsExample {
         if (currIdx < screens.size() - 1) {
             final Button next = Components.button()
                     .text("Next " + Symbols.TRIANGLE_RIGHT_POINTING_BLACK)
-                    .position(Positions.create(42, 1))
+                    .position(Positions.create(56, 1))
                     .build();
             next.onMouseReleased((a) -> screens.get(currIdx + 1).display());
             screen.addComponent(next);

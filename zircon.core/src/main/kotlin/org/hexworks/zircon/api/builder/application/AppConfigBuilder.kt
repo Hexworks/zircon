@@ -23,7 +23,7 @@ data class AppConfigBuilder(
         private var cursorColor: TileColor = TileColor.defaultForegroundColor(),
         private var cursorBlinking: Boolean = false,
         private var clipboardAvailable: Boolean = true,
-        private var defaultTileset: TilesetResource = CP437TilesetResource.WANDERLUST_16X16,
+        private var defaultTileset: TilesetResource = CP437TilesetResource.ROGUE_YUN_16X16,
         private var defaultColorTheme: ColorTheme = ColorThemeResource.TECH_LIGHT.getTheme(),
         private var title: String = "Zircon Application",
         private var fullScreen: Boolean = false,
