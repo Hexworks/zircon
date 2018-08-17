@@ -5,6 +5,9 @@ import org.hexworks.zircon.api.builder.component.*
 object Components {
 
     @JvmStatic
+    fun textArea() = TextAreaBuilder.newBuilder()
+
+    @JvmStatic
     fun textBox() = TextBoxBuilder.newBuilder()
 
     @JvmStatic

@@ -4,14 +4,14 @@ import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.graphics.TextCharacterString
+import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.api.graphics.TextWrap.WRAP
-import org.hexworks.zircon.internal.graphics.DefaultCharacterTileString
+import org.hexworks.zircon.internal.graphics.DefaultCharacterTileTileString
 import org.hexworks.zircon.platform.factory.IdentifierFactory
 
 /**
- * Creates [org.hexworks.zircon.api.graphics.TextCharacterString]s.
+ * Creates [org.hexworks.zircon.api.graphics.CharacterTileString]s.
  * Defaults:
  * - `text` is **mandatory**
  */
@@ -22,17 +22,17 @@ data class CharacterTileStringBuilder(
         private val modifiers: MutableSet<Modifier> = mutableSetOf(),
         private var foregroundColor: TileColor = TileColor.defaultForegroundColor(),
         private var backgroundColor: TileColor = TileColor.defaultBackgroundColor())
-    : Builder<TextCharacterString> {
+    : Builder<CharacterTileString> {
 
 
-    override fun build(): TextCharacterString {
+    override fun build(): CharacterTileString {
         require(text != NO_VALUE) {
-            "You must set some text for a TextCharacterString!"
+            "You must set some text for a CharacterTileString!"
         }
         require(text.isNotBlank()) {
             "'text' must not be blank!"
         }
-        return DefaultCharacterTileString(
+        return DefaultCharacterTileTileString(
                 textChars = text.map {
                     TileBuilder.newBuilder()
                             .foregroundColor(foregroundColor)
@@ -69,7 +69,7 @@ data class CharacterTileStringBuilder(
     companion object {
 
         /**
-         * Creates a new [CharacterTileStringBuilder] to build [org.hexworks.zircon.api.graphics.TextCharacterString]s.
+         * Creates a new [CharacterTileStringBuilder] to build [org.hexworks.zircon.api.graphics.CharacterTileString]s.
          */
         fun newBuilder() = CharacterTileStringBuilder()
 

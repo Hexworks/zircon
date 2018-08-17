@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.color.ANSITileColor;
 import org.hexworks.zircon.api.data.Size;
-import org.hexworks.zircon.api.graphics.TextCharacterString;
+import org.hexworks.zircon.api.graphics.CharacterTileString;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.CP437TilesetResource;
 
@@ -23,7 +23,7 @@ public class TextCharacterStringExample {
 
         TileGrid tileGrid = app.getTileGrid();
 
-        TextCharacterString tcs = CharacterTileStrings.newBuilder()
+        CharacterTileString tcs = CharacterTileStrings.newBuilder()
                 .foregroundColor(TileColors.fromString("#eeffee"))
                 .backgroundColor(TileColors.fromString("#223344"))
                 .modifiers(Modifiers.underline())

@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.data.Position
 
 /**
  * Represents an object which manipulates a cursor (a [org.hexworks.zircon.api.grid.TileGrid]
- * or a [org.hexworks.zircon.api.component.TextBox] for example.
+ * or a [org.hexworks.zircon.api.component.TextArea] for example.
  * All operations which work with [Position]s are relative to the [CursorHandler]'s position!
  */
 interface CursorHandler {

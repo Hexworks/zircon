@@ -14,6 +14,10 @@ interface Size : Comparable<Size> {
 
     val yLength: Int
 
+    fun width() = xLength
+
+    fun height() = yLength
+
     operator fun plus(other: Size) = create(xLength + other.xLength, yLength + other.yLength)
 
     operator fun minus(other: Size) = create(xLength - other.xLength, yLength - other.yLength)
@@ -71,6 +75,14 @@ interface Size : Comparable<Size> {
     fun fetchBottomLeftPosition() = Position.create(0, yLength - 1)
 
     fun fetchBottomRightPosition() = Position.create(xLength - 1, yLength - 1)
+
+    fun withWidth(width: Int): Size = withXLength(width)
+
+    fun withRelativeWidth(delta: Int): Size = withRelativeXLength(delta)
+
+    fun withHeight(height: Int): Size = withYLength(height)
+
+    fun withRelativeHeight(delta: Int): Size = withRelativeYLength(delta)
 
     /**
      * Creates a new size based on this size, but with a different xLength.

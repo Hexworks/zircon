@@ -8,11 +8,8 @@ import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.data.BlockSide.*
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Position3D
-import org.hexworks.zircon.api.data.Size3D
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.game.GameModifiers.*
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
@@ -112,8 +109,15 @@ object IsometricGameArea {
         val screen = ScreenBuilder.createScreenFor(app.tileGrid)
 
 
+        addGamePanel(screen, Position.defaultPosition(), screen.size(), Position.create(15, 20))
+
+        screen.display()
+    }
+
+    fun addGamePanel(screen: Screen, position: Position, size: Size, offset: Position) {
         val gamePanel = Components.panel()
-                .size(screen.size())
+                .size(size)
+                .position(position)
                 .title("Game area")
                 .wrapWithBox()
                 .boxType(BoxType.TOP_BOTTOM_DOUBLE)
@@ -142,7 +146,7 @@ object IsometricGameArea {
 
         val buildingCount = random.nextInt(5) + 3
 
-        val pos = Position3D.create(15, random.nextInt(20) + 20, 0)
+        val pos = Position3D.create(offset.x, random.nextInt(20) + offset.y, 0)
 
         (0 until buildingCount).forEach { idx ->
 
@@ -155,9 +159,7 @@ object IsometricGameArea {
                     gameArea = gameArea,
                     repeat = 2)
         }
-
-        screen.applyColorTheme(ColorThemes.gamebookers())
-        screen.display()
+        gamePanel.applyColorTheme(ColorThemes.gamebookers())
     }
 
     private tailrec fun generateBuilding(size: Size3D, offset: Position3D, gameArea: InMemoryGameArea, repeat: Int) {
