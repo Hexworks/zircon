@@ -76,7 +76,7 @@ class DefaultTextArea constructor(
                         .build())
                 .disabledStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.secondaryForegroundColor())
-                        .backgroundColor(colorTheme.primaryBackgroundColor())
+                        .backgroundColor(colorTheme.secondaryBackgroundColor())
                         .build())
                 .focusedStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.primaryBackgroundColor())
