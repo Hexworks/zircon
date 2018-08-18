@@ -64,7 +64,7 @@ public class FullExample {
                 colorThemesScreen,
                 gameScreen);
 
-        addScreenTitle(introScreen, "Zircon: fiendishly simple text GUI");
+        addScreenTitle(introScreen, "Zircon: a user-friendly Text GUI & Tile Engine");
         addScreenTitle(panelsScreen, "Panels");
         addScreenTitle(inputsScreen, "Input controls");
         addScreenTitle(addAndRemoveScreen, "Add and remove panels");
