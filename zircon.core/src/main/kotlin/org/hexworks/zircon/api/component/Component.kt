@@ -2,13 +2,10 @@ package org.hexworks.zircon.api.component
 
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.behavior.Boundable
-import org.hexworks.zircon.api.behavior.TilesetOverride
-import org.hexworks.zircon.api.behavior.Positionable
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.api.util.Consumer
+import org.hexworks.zircon.internal.behavior.Identifiable
 
 /**
  * A [Component] is a GUI element which is used either to display information to the user
@@ -60,10 +57,10 @@ interface Component : Identifiable, Layer {
     /**
      * Gets the styles this [Component] uses.
      */
-    fun getComponentStyles() : ComponentStyleSet
+    fun getComponentStyles(): ComponentStyleSet
 
     /**
-     * Sets the styles this [Component] should use.
+     * Sets the styles this [Component] will be displayed with.
      */
     fun setComponentStyles(componentStyleSet: ComponentStyleSet)
 
