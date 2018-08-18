@@ -19,7 +19,7 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
  */
 data class AppConfigBuilder(
         private var blinkLengthInMilliSeconds: Long = 500,
-        private var cursorStyle: CursorStyle = CursorStyle.USE_CHARACTER_FOREGROUND,
+        private var cursorStyle: CursorStyle = CursorStyle.FIXED_BACKGROUND,
         private var cursorColor: TileColor = TileColor.defaultForegroundColor(),
         private var cursorBlinking: Boolean = false,
         private var clipboardAvailable: Boolean = true,
