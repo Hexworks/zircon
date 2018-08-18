@@ -171,15 +171,24 @@ interface TileGraphic
      * Offset is used to offset the starting position from the top left position
      * while size is used to determine the region (down and right) to overwrite
      * relative to `offset`.
+     * @param keepModifiers whether the modifiers currently present in the
+     * target [Tile]s should be kept or not
      */
     fun applyStyle(styleSet: StyleSet,
                    offset: Position = Position.defaultPosition(),
-                   size: Size = size()) {
+                   size: Size = size(),
+                   keepModifiers: Boolean = false) {
         setStyleFrom(styleSet)
         size.fetchPositions().forEach { pos ->
             pos.plus(offset).let { fixedPos ->
-                getTileAt(fixedPos).map { char: Tile ->
-                    setTileAt(fixedPos, char.withStyle(styleSet))
+                getTileAt(fixedPos).map { tile: Tile ->
+                    val oldMods = tile.styleSet().modifiers()
+                    val newTile = if (keepModifiers) {
+                        tile.withStyle(styleSet.withAddedModifiers(oldMods))
+                    } else {
+                        tile.withStyle(styleSet)
+                    }
+                    setTileAt(fixedPos, newTile)
                 }
             }
         }

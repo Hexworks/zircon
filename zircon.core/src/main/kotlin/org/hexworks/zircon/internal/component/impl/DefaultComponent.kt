@@ -146,7 +146,11 @@ abstract class DefaultComponent(
     override fun setComponentStyles(componentStyleSet: ComponentStyleSet) {
         this.componentStyleSet = componentStyleSet
 
-        drawSurface.applyStyle(componentStyleSet.getCurrentStyle(), getNonThemeableOffset(), getEffectiveThemeableSize())
+        drawSurface.applyStyle(
+                styleSet = componentStyleSet.getCurrentStyle(),
+                offset = getNonThemeableOffset(),
+                size = getEffectiveThemeableSize(),
+                keepModifiers = true)
     }
 
     fun getBoundable() = boundable
