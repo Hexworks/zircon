@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.sam.TextCharacterTransformer
+import org.hexworks.zircon.api.sam.TileTransformer
 import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.internal.data.DefaultCell
 import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphic
@@ -140,7 +140,7 @@ interface TileGraphic
      * Transforms all of the [Tile]s in this [TileGraphic] with the given
      * `transformer` and returns a new one with the transformed characters.
      */
-    fun transform(transformer: TextCharacterTransformer): TileGraphic {
+    fun transform(transformer: TileTransformer): TileGraphic {
         val result = ConcurrentTileGraphic(
                 size = size(),
                 tileset = tileset(),

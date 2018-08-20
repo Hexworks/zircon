@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandler
 import org.hexworks.zircon.api.animation.AnimationInfo
 import org.hexworks.zircon.api.animation.AnimationState
+import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Maybe
 
 /**
@@ -26,6 +27,10 @@ internal class DefaultAnimationInfo(private var state: AnimationState,
             "Can't wait for an infinite Animation to finish."
         }
         onFinishFn = Maybe.of(fn)
+    }
+
+    override fun onFinished(fn: Consumer<AnimationInfo>) {
+        onFinished { fn.accept(it) }
     }
 
     override fun stop() {
