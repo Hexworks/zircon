@@ -15,7 +15,7 @@ data class AnimationBuilder private constructor(
         private var tick: Long = 1000L / DEFAULT_FPS,
         private var loopCount: Int = 1,
         private var uniqueFrameCount: Int = -1,
-        private var totalFrameCount: Int = -1) : Builder<org.hexworks.zircon.api.animation.Animation> {
+        private var totalFrameCount: Int = -1) : Builder<Animation> {
 
     fun getLength() = totalFrameCount
 
@@ -63,7 +63,7 @@ data class AnimationBuilder private constructor(
         this.positions.add(position)
     }
 
-    override fun build(): org.hexworks.zircon.api.animation.Animation {
+    override fun build(): Animation {
         if (positions.size == 0) {
             setPositionForAll(Position.defaultPosition())
         } else {

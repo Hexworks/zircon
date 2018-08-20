@@ -13,12 +13,14 @@ import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.graphics.Symbols;
+import org.hexworks.zircon.api.graphics.TileGraphic;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.modifier.BorderType;
 import org.hexworks.zircon.api.resource.CP437TilesetResource;
 import org.hexworks.zircon.api.resource.ColorThemeResource;
+import org.hexworks.zircon.api.resource.REXPaintResource;
 import org.hexworks.zircon.api.screen.Screen;
-import org.ietf.jgss.GSSContext;
+import org.hexworks.zircon.internal.animation.DefaultAnimationFrame;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -50,6 +52,7 @@ public class FullExample {
 
         final TileGrid tileGrid = app.getTileGrid();
 
+        Screen splashScreen = Screens.createScreenFor(tileGrid);
         Screen introScreen = Screens.createScreenFor(tileGrid);
         Screen panelsScreen = Screens.createScreenFor(tileGrid);
         Screen inputsScreen = Screens.createScreenFor(tileGrid);
@@ -77,16 +80,66 @@ public class FullExample {
         }
 
         // ==============
+        // splash screen
+        // ==============
+
+        REXPaintResource rex = REXPaintResources.loadREXFile(RexLoaderExample.class.getResourceAsStream("/rex_files/zircon_logo.xp"));
+
+
+        TileGraphic img = TileGraphics.newBuilder().size(SCREEN_SIZE).build();
+
+        rex.toLayerList(CP437TilesetResources.rogueYun16x16()).forEach(layer -> img.draw(layer, Positions.defaultPosition()));
+
+        AnimationBuilder splashAnimBuilder = Animations.newBuilder();
+
+        for (int i = 20; i >= 0; i--) {
+            final int idx = i;
+            final int loopCount = i == 1 ? 40 : 1;
+            splashAnimBuilder.addFrame(
+                    new DefaultAnimationFrame(
+                            SCREEN_SIZE,
+                            Collections.singletonList(Layers.newBuilder()
+                                    .tileGraphic(img.transform(tile -> tile.withBackgroundColor(tile.getBackgroundColor()
+                                            .darkenByPercent(idx / 20d))
+                                            .withForegroundColor(tile.getForegroundColor()
+                                                    .darkenByPercent(idx / 20d))))
+                                    .build()),
+                            loopCount));
+        }
+
+        for (int i = 0; i <= 20; i++) {
+            final int idx = i;
+            final int loopCount = i == 20 ? 10 : 1;
+            splashAnimBuilder.addFrame(
+                    new DefaultAnimationFrame(
+                            SCREEN_SIZE,
+                            Collections.singletonList(Layers.newBuilder()
+                                    .tileGraphic(img.transform(tile -> tile.withBackgroundColor(tile.getBackgroundColor()
+                                            .darkenByPercent(idx / 20d))
+                                            .withForegroundColor(tile.getForegroundColor()
+                                                    .darkenByPercent(idx / 20d))))
+                                    .build()),
+                            loopCount));
+        }
+
+        Animation splashAnim = splashAnimBuilder
+                .setPositionForAll(Positions.create(2, 2))
+                .build();
+
+        splashScreen.display();
+
+
+        // ==============
         // intro screen
         // ==============
 
-        AnimationBuilder animBuilder = AnimationResource.loadAnimationFromStream(
+        AnimationBuilder skullAnimBuilder = AnimationResource.loadAnimationFromStream(
                 AnimationExample.class.getResourceAsStream("/animations/skull.zap"),
                 TILESET).loopCount(0);
-        for (int i = 0; i  < animBuilder.getLength(); i++) {
-            animBuilder.addPosition(Positions.create(2, 6));
+        for (int i = 0; i < skullAnimBuilder.getLength(); i++) {
+            skullAnimBuilder.addPosition(Positions.create(2, 6));
         }
-        Animation zirconSplash = animBuilder.build();
+        Animation skullAnim = skullAnimBuilder.build();
 
         Panel introPanel = Components.panel()
                 .position(Positions.create(17, 3))
@@ -129,9 +182,10 @@ public class FullExample {
 
         introScreen.applyColorTheme(INTRO_THEME);
 
-        introScreen.startAnimation(zirconSplash);
-
-        introScreen.display();
+        splashScreen.startAnimation(splashAnim).onFinished(info -> {
+            introScreen.display();
+            introScreen.startAnimation(skullAnim);
+        });
 
 
         // ==============
