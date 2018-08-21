@@ -17,16 +17,14 @@ object Logo {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val rex = REXPaintResource.loadREXFile(RexLoaderExample::class.java.getResourceAsStream("/rex_files/zircon_logo.xp"))
+        val rex = REXPaintResource.loadREXFile(RexLoaderExample::class.java.getResourceAsStream("/rex_files/zircon_logo_rex.xp"))
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(CP437TilesetResource.ROGUE_YUN_16X16)
+                .defaultTileset(CP437TilesetResource.REX_PAINT_20X20)
                 .defaultSize(size)
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
-
-        screen.applyColorTheme(ColorThemeResource.GAMEBOOKERS.getTheme())
 
         val img = TileGraphics.newBuilder().size(size).build()
 
@@ -37,6 +35,7 @@ object Logo {
         val builder = Animations.newBuilder()
 
         (20 downTo 1).forEach { idx ->
+            val repeat = if(idx == 1) 40 else 1
             builder.addFrame(
                     DefaultAnimationFrame(
                             size = size,
@@ -50,20 +49,35 @@ object Logo {
                                         }
                                     }))
                                     .build()),
-                            repeatCount = 1))
+                            repeatCount = repeat))
+        }
+
+        (0 .. 20).forEach { idx ->
+            val repeat = if(idx == 20) 20 else 1
+            builder.addFrame(
+                    DefaultAnimationFrame(
+                            size = size,
+                            layers = listOf(Layers.newBuilder()
+                                    .tileGraphic(img.transform(object : TileTransformer {
+                                        override fun transform(tc: Tile): Tile {
+                                            return tc.withBackgroundColor(tc.getBackgroundColor()
+                                                    .darkenByPercent(idx.toDouble().div(20)))
+                                                    .withForegroundColor(tc.getForegroundColor()
+                                                            .darkenByPercent(idx.toDouble().div(20)))
+                                        }
+                                    }))
+                                    .build()),
+                            repeatCount = repeat))
         }
 
         val anim = builder
+                .loopCount(0)
                 .setPositionForAll(Positions.defaultPosition())
                 .build()
 
         screen.display()
 
-        screen.startAnimation(anim).onFinished {
-            screen.pushLayer(LayerBuilder.newBuilder()
-                    .tileGraphic(img)
-                    .build())
-        }
+        screen.startAnimation(anim)
 
     }
 

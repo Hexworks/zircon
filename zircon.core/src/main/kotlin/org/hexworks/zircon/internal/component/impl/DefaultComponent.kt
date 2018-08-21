@@ -91,7 +91,7 @@ abstract class DefaultComponent(
     }
 
     override fun draw(drawable: Drawable, position: Position) {
-        throw UnsupportedOperationException()
+        drawSurface.draw(drawable, position)
     }
 
     override fun moveTo(position: Position): Boolean {
