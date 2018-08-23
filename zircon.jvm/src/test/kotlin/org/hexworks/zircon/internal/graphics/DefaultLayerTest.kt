@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.resource.CP437Tilesets
+import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.junit.Before
 import org.junit.Test
@@ -74,7 +74,7 @@ class DefaultLayerTest {
     }
 
     companion object {
-        val TILESET = CP437Tilesets.CLA_18X18
+        val TILESET = BuiltInCP437Tileset.CLA_18X18
         val CHAR = TileBuilder.newBuilder()
                 .character('x')
                 .build()

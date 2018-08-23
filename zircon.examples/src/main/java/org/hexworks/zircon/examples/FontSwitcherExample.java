@@ -7,14 +7,14 @@ import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.input.InputType;
-import org.hexworks.zircon.api.resource.CP437Tilesets;
+import org.hexworks.zircon.api.resource.BuiltInCP437Tileset;
 import org.hexworks.zircon.api.resource.TilesetResource;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static org.hexworks.zircon.api.resource.CP437Tilesets.*;
+import static org.hexworks.zircon.api.resource.BuiltInCP437Tileset.*;
 
 public class FontSwitcherExample {
 
@@ -26,7 +26,7 @@ public class FontSwitcherExample {
     public static void main(String[] args) {
 
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .defaultTileset(CP437Tilesets.ADU_DHABI_16X16)
+                .defaultTileset(BuiltInCP437Tileset.ADU_DHABI_16X16)
                 .defaultSize(SIZE)
                 .debugMode(true)
                 .build());

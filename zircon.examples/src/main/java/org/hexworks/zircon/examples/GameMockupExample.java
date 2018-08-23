@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.CP437Tilesets;
+import org.hexworks.zircon.api.resource.BuiltInCP437Tileset;
 import org.hexworks.zircon.api.resource.ColorThemeResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
@@ -31,7 +31,7 @@ public class GameMockupExample {
 
     private static final String[] DIFFICULTIES = new String[]{"TINGLE", "ANXIETY", "HORROR"};
 
-    private static final TilesetResource TILESET = CP437Tilesets.REX_PAINT_20X20;
+    private static final TilesetResource TILESET = BuiltInCP437Tileset.REX_PAINT_20X20;
     private static final int MAIN_MENU_PANEL_WIDTH = 25;
     private static final int MAIN_MENU_PANEL_HEIGHT = 10;
     private static final int PANEL_SPACING = 2;

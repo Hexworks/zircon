@@ -5,8 +5,9 @@ import org.hexworks.zircon.api.component.*;
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.CP437Tilesets;
+import org.hexworks.zircon.api.resource.BuiltInCP437Tileset;
 import org.hexworks.zircon.api.resource.ColorThemeResource;
+import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 
 import java.util.Arrays;
@@ -18,11 +19,7 @@ import java.util.stream.Collectors;
 public class ColorThemeSwitcher {
 
     private static final Size SCREEN_SIZE = Sizes.create(80, 40);
-<<<<<<< HEAD
-    private static final CP437TilesetResource TILESET = CP437TilesetResource.WANDERLUST_16X16;
-=======
-    private static final CP437Tilesets TILESET = CP437Tilesets.ROGUE_YUN_16X16;
->>>>>>> Add examples and CP437TilesetResource
+    private static final TilesetResource TILESET = BuiltInCP437Tileset.WANDERLUST_16X16;
     private static final ColorThemeResource THEME_PICKER_THEME = ColorThemeResource.GAMEBOOKERS;
 
     public static void main(String[] args) {
