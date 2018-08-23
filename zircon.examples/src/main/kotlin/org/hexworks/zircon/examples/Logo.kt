@@ -1,11 +1,9 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.resource.CP437TilesetResource
-import org.hexworks.zircon.api.resource.ColorThemeResource
+import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
 import org.hexworks.zircon.api.resource.REXPaintResource
 import org.hexworks.zircon.api.sam.TileTransformer
 import org.hexworks.zircon.internal.animation.DefaultAnimationFrame
@@ -20,7 +18,7 @@ object Logo {
         val rex = REXPaintResource.loadREXFile(RexLoaderExample::class.java.getResourceAsStream("/rex_files/zircon_logo_rex.xp"))
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(CP437TilesetResource.REX_PAINT_20X20)
+                .defaultTileset(BuiltInCP437Tileset.REX_PAINT_20X20)
                 .defaultSize(size)
                 .build())
 

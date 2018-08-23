@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
-import org.hexworks.zircon.api.resource.CP437Tilesets
+import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.event.InternalEvent
@@ -131,7 +131,7 @@ class DefaultCheckBoxTest {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
         val POSITION = Position.create(4, 5)
-        val FONT = CP437Tilesets.WANDERLUST_16X16
+        val FONT = BuiltInCP437Tileset.WANDERLUST_16X16
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITileColor.RED)
                 .foregroundColor(ANSITileColor.GREEN)
