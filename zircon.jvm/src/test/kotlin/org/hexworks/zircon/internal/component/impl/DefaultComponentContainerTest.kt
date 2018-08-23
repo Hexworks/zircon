@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType.*
-import org.hexworks.zircon.api.resource.CP437TilesetResource
+import org.hexworks.zircon.api.resource.CP437Tilesets
 import org.hexworks.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.hexworks.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.hexworks.zircon.internal.event.InternalEvent
@@ -214,7 +214,7 @@ class DefaultComponentContainerTest {
             .build()
 
     companion object {
-        val TILESET = CP437TilesetResource.REX_PAINT_16X16
+        val TILESET = CP437Tilesets.REX_PAINT_16X16
         val SIZE = Size.create(30, 20)
         val BUTTON_TEXT = "TEXT"
         val BUTTON_POSITION = Position.create(6, 7)

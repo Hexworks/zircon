@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api
 
-import org.hexworks.zircon.api.resource.CP437TilesetResource.*
+import org.hexworks.zircon.api.resource.CP437Tilesets.*
 
 object CP437TilesetResources {
 

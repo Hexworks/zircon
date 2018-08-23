@@ -5,8 +5,7 @@ import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.resource.CP437TilesetResource
+import org.hexworks.zircon.api.resource.CP437Tilesets
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.junit.Before
 import org.junit.Test
@@ -130,6 +129,6 @@ class DefaultLayerableTest {
 
     companion object {
         val SIZE = Size.create(10, 10)
-        val FONT = CP437TilesetResource.WANDERLUST_16X16
+        val FONT = CP437Tilesets.WANDERLUST_16X16
     }
 }

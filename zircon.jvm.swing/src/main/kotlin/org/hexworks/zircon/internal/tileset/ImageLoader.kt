@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.tileset
 
-import org.hexworks.zircon.api.resource.CP437TilesetResource
+import org.hexworks.zircon.api.resource.CP437Tilesets
 import org.hexworks.zircon.api.resource.GraphicalTilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import java.awt.image.BufferedImage
@@ -20,5 +20,5 @@ object ImageLoader {
     }
 
     private fun isInternalResource(resource: TilesetResource) =
-            resource is CP437TilesetResource || resource is GraphicalTilesetResource
+            resource is CP437Tilesets || resource is GraphicalTilesetResource
 }

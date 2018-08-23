@@ -11,9 +11,8 @@ import org.hexworks.zircon.api.builder.screen.ScreenBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.event.EventBus
-import org.hexworks.zircon.api.resource.CP437TilesetResource
+import org.hexworks.zircon.api.resource.CP437Tilesets
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.hexworks.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
@@ -45,7 +44,7 @@ class DefaultContainerTest {
     fun shouldProperlySetPositionsWhenAContainerWithComponentsIsAddedToTheComponentTree() {
         val grid = TileGridBuilder.newBuilder()
                 .size(Size.create(40, 25))
-                .tileset(CP437TilesetResource.REX_PAINT_16X16)
+                .tileset(CP437Tilesets.REX_PAINT_16X16)
                 .build()
 
         val screen = ScreenBuilder.createScreenFor(grid)
@@ -91,7 +90,7 @@ class DefaultContainerTest {
     fun shouldProperlySetPositionsWhenAContainerIsAddedToTheComponentTreeThenComponentsAreAddedToIt() {
         val grid = TileGridBuilder.newBuilder()
                 .size(Size.create(40, 25))
-                .tileset(CP437TilesetResource.REX_PAINT_16X16)
+                .tileset(CP437Tilesets.REX_PAINT_16X16)
                 .build()
         val screen = ScreenBuilder.createScreenFor(grid)
 
@@ -136,7 +135,7 @@ class DefaultContainerTest {
     fun shouldProperlySetPositionsWhenAComponentIsAddedToAContainerAfterItIsAttachedToTheScreen() {
         val grid = TileGridBuilder.newBuilder()
                 .size(Size.create(40, 25))
-                .tileset(CP437TilesetResource.REX_PAINT_16X16)
+                .tileset(CP437Tilesets.REX_PAINT_16X16)
                 .build()
         val screen = ScreenBuilder.createScreenFor(grid)
 
@@ -225,8 +224,8 @@ class DefaultContainerTest {
     }
 
     companion object {
-        val GOOD_FONT = CP437TilesetResource.AESOMATICA_16X16
-        val BAD_FONT = CP437TilesetResource.BISASAM_20X20
+        val GOOD_FONT = CP437Tilesets.AESOMATICA_16X16
+        val BAD_FONT = CP437Tilesets.BISASAM_20X20
         val SIZE = Size.create(4, 4)
         val POSITION = Position.create(2, 3)
         val NEW_POSITION = Position.create(6, 7)

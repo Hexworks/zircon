@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.KeyStroke
-import org.hexworks.zircon.api.resource.CP437TilesetResource
+import org.hexworks.zircon.api.resource.CP437Tilesets
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.event.InternalEvent
@@ -112,7 +112,7 @@ class DefaultTextAreaTest {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "text"
         val UPDATE_TEXT = 'U'
-        val FONT = CP437TilesetResource.WANDERLUST_16X16
+        val FONT = CP437Tilesets.WANDERLUST_16X16
         val SIZE = Size.create(10, 6)
         val POSITION = Position.create(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()

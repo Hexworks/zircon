@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.graphics.TileGraphic;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.input.InputType;
-import org.hexworks.zircon.api.resource.CP437TilesetResource;
+import org.hexworks.zircon.api.resource.CP437Tilesets;
 import org.hexworks.zircon.api.resource.ColorThemeResource;
 import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.internal.game.DefaultGameComponent;
@@ -30,7 +30,7 @@ public class GameAreaScrollingWithLayers {
     private static final int TERMINAL_HEIGHT = 30;
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static boolean headless = false;
-    private static final CP437TilesetResource TILESET = CP437TilesetResource.ROGUE_YUN_16X16;
+    private static final CP437Tilesets TILESET = CP437Tilesets.ROGUE_YUN_16X16;
 
     static {
         EXIT_CONDITIONS.add(InputType.Escape);
@@ -101,7 +101,7 @@ public class GameAreaScrollingWithLayers {
         final DefaultGameComponent gameComponent = Components.gameComponent()
                 .gameArea(gameArea)
                 .visibleSize(visibleGameAreaSize)
-                .tileset(CP437TilesetResource.PHOEBUS_16X16)
+                .tileset(CP437Tilesets.PHOEBUS_16X16)
                 .build();
 
         screen.addComponent(gamePanel);

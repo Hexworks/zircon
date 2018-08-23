@@ -1,20 +1,18 @@
 package org.hexworks.zircon.api.resource
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Symbols
-import org.hexworks.zircon.api.tileset.TileTextureMetadata
 import org.hexworks.zircon.internal.util.CP437Utils
 import org.junit.Before
 import org.junit.Test
 
-class CP437TilesetResourceTest {
+class CP437TilesetsTest {
 
     lateinit var target: TilesetResource
 
     @Before
     fun setUp() {
-        target = CP437TilesetResource.WANDERLUST_16X16
+        target = CP437Tilesets.WANDERLUST_16X16
     }
 
     @Test

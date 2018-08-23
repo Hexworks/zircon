@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.modifier.BorderType
-import org.hexworks.zircon.api.resource.CP437TilesetResource
+import org.hexworks.zircon.api.resource.CP437Tilesets
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.junit.Before
@@ -81,7 +81,7 @@ class DefaultPanelTest {
     companion object {
         val BOX_TYPE = BoxType.LEFT_RIGHT_DOUBLE
         val TITLE = "TITLE"
-        val FONT = CP437TilesetResource.WANDERLUST_16X16
+        val FONT = CP437Tilesets.WANDERLUST_16X16
         val SIZE = Size.create(5, 6)
         val POSITION = Position.create(2, 3)
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()

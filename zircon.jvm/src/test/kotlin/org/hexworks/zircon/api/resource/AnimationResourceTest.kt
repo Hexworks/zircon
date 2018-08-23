@@ -12,7 +12,7 @@ class AnimationResourceTest {
     fun shouldProperlyLoadAnimationFile() {
         val result = AnimationResource.loadAnimationFromStream(
                 zipStream = File("src/test/resources/animations/skull.zap").inputStream(),
-                tileset = CP437TilesetResource.ADU_DHABI_16X16)
+                tileset = CP437Tilesets.ADU_DHABI_16X16)
         Assertions.assertThat(result).isNotNull()
     }
 }

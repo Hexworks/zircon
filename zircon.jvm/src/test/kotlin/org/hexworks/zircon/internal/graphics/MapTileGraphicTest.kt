@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.data.Position.Companion.defaultPosition
 import org.hexworks.zircon.api.data.Position.Companion.offset1x1
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.resource.CP437TilesetResource
+import org.hexworks.zircon.api.resource.CP437Tilesets
 import org.junit.Before
 import org.junit.Test
 import java.util.function.Consumer
@@ -199,7 +199,7 @@ class MapTileGraphicTest {
     }
 
     companion object {
-        val TILESET = CP437TilesetResource.JOLLY_12X12
+        val TILESET = CP437Tilesets.JOLLY_12X12
         val EMPTY_CHAR = Tile.empty()
         val EMPTY_BY_DEFAULT_POS = Position.create(2, 1)
         val FILLED_POS = Position.create(1, 2)
