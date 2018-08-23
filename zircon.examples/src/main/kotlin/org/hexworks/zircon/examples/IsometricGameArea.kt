@@ -15,7 +15,7 @@ import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.input.InputType
-import org.hexworks.zircon.api.resource.CP437TilesetResource
+import org.hexworks.zircon.api.resource.CP437Tilesets
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.internal.game.DefaultGameComponent
 import org.hexworks.zircon.internal.game.InMemoryGameArea
@@ -23,7 +23,7 @@ import java.util.*
 
 object IsometricGameArea {
 
-    private val TILESET = CP437TilesetResource.WANDERLUST_16X16
+    private val TILESET = CP437Tilesets.WANDERLUST_16X16
 
     private val MODIFIER_LOOKUP = mapOf(
             BLOCK_BACK to BACK,

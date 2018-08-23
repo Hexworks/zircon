@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
-import org.hexworks.zircon.api.resource.CP437TilesetResource
+import org.hexworks.zircon.api.resource.CP437Tilesets
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Consumer
@@ -95,7 +95,7 @@ class DefaultRadioButtonGroupTest {
     companion object {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
-        val FONT = CP437TilesetResource.WANDERLUST_16X16
+        val FONT = CP437Tilesets.WANDERLUST_16X16
         val POSITION = Position.create(4, 5)
         val SIZE = Size.create(10, 20)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()

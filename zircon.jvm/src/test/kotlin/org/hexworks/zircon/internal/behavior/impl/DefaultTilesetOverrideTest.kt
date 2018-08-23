@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.resource.CP437TilesetResource
+import org.hexworks.zircon.api.resource.CP437Tilesets
 import org.junit.Before
 import org.junit.Test
 
@@ -22,7 +22,7 @@ class DefaultTilesetOverrideTest {
 
     @Test
     fun shouldBeAbleToUseSameSizeFont() {
-        val expected = CP437TilesetResource.ROGUE_YUN_16X16
+        val expected = CP437Tilesets.ROGUE_YUN_16X16
 
         target.useTileset(expected)
 
@@ -32,10 +32,10 @@ class DefaultTilesetOverrideTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionWhenTryingToSetNonCompatibleFont() {
-        target.useTileset(CP437TilesetResource.BISASAM_20X20)
+        target.useTileset(CP437Tilesets.BISASAM_20X20)
     }
 
     companion object {
-        val INITIAL_FONT = CP437TilesetResource.WANDERLUST_16X16
+        val INITIAL_FONT = CP437Tilesets.WANDERLUST_16X16
     }
 }

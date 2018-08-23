@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.CP437TilesetResource;
+import org.hexworks.zircon.api.resource.CP437Tilesets;
 import org.hexworks.zircon.api.screen.Screen;
 
 import java.util.Random;
@@ -56,7 +56,7 @@ public class TilesetExample {
     public static void main(String[] args) {
 
         Application app = SwingApplications.startApplication(AppConfigBuilder.Companion.newBuilder()
-                .defaultTileset(CP437TilesetResource.WANDERLUST_16X16)
+                .defaultTileset(CP437Tilesets.WANDERLUST_16X16)
                 .defaultSize(SIZE)
                 .debugMode(true)
                 .build());

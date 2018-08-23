@@ -16,7 +16,7 @@ import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.graphics.TileGraphic;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.modifier.BorderType;
-import org.hexworks.zircon.api.resource.CP437TilesetResource;
+import org.hexworks.zircon.api.resource.CP437Tilesets;
 import org.hexworks.zircon.api.resource.ColorThemeResource;
 import org.hexworks.zircon.api.resource.REXPaintResource;
 import org.hexworks.zircon.api.screen.Screen;
@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 
 import static org.hexworks.zircon.api.resource.ColorThemeResource.*;
 
+<<<<<<< HEAD:zircon.examples/src/main/java/org/hexworks/zircon/examples/FullExample.java
 public class FullExample {
 
     private static final Size PANEL_SIZE = Sizes.create(29, 8);
@@ -39,6 +40,15 @@ public class FullExample {
     private static final ColorTheme ADD_REMOVE_THEME = SOLARIZED_LIGHT_CYAN.getTheme();
     private static final ColorThemeResource THEME_PICKER_THEME = MONOKAI_YELLOW;
     private static final ColorTheme GAME_THEME = OLIVE_LEAF_TEA.getTheme();
+=======
+    private static final Size PANEL_SIZE = Sizes.create(22, 6);
+    private static final Size TERMINAL_SIZE = Sizes.create(52, 28);
+    private static final CP437Tilesets TILESET = CP437Tilesets.ROGUE_YUN_16X16;
+    private static final ColorTheme PANELS_THEME = ColorThemeResource.TECH_LIGHT.getTheme();
+    private static final ColorTheme INPUTS_THEME = ColorThemeResource.SOLARIZED_DARK_GREEN.getTheme();
+    private static final ColorTheme ADD_REMOVE_THEME = ColorThemeResource.GHOST_OF_A_CHANCE.getTheme();
+    private static final ColorThemeResource THEME_PICKER_THEME = ColorThemeResource.GAMEBOOKERS;
+>>>>>>> Add examples and CP437TilesetResource:zircon.examples/src/main/java/org/hexworks/zircon/examples/ComponentsExample.java
 
     private static final PanelBuilder PANEL_TEMPLATE = PanelBuilder.Companion.newBuilder().size(PANEL_SIZE);
 

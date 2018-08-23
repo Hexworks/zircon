@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.resource.CP437TilesetResource
+import org.hexworks.zircon.api.resource.CP437Tilesets
 import org.hexworks.zircon.internal.color.DefaultTextColor
 import org.junit.Before
 import org.junit.Ignore
@@ -92,6 +92,6 @@ class REXLayerTest {
 
     companion object {
 
-        val TILESET = CP437TilesetResource.CHEEPICUS_16X16
+        val TILESET = CP437Tilesets.CHEEPICUS_16X16
     }
 }

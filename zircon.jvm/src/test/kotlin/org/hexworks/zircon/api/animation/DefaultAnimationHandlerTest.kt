@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.api.builder.grid.TileGridBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.resource.CP437TilesetResource
+import org.hexworks.zircon.api.resource.CP437Tilesets
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.animation.DefaultAnimation
@@ -92,7 +92,7 @@ class DefaultAnimationHandlerTest {
 
         val tileGrid = TileGridBuilder.newBuilder()
                 .size(Size.create(50, 50))
-                .tileset(CP437TilesetResource.ADU_DHABI_16X16)
+                .tileset(CP437Tilesets.ADU_DHABI_16X16)
                 .build()
 
         val result = target.startAnimation(animationMock)

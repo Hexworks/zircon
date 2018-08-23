@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
-import org.hexworks.zircon.api.resource.CP437TilesetResource
+import org.hexworks.zircon.api.resource.CP437Tilesets
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Identifier
@@ -217,7 +217,7 @@ class DefaultComponentTest {
     }
 
     companion object {
-        val FONT = CP437TilesetResource.ROGUE_YUN_16X16
+        val FONT = CP437Tilesets.ROGUE_YUN_16X16
         val SIZE = Size.create(4, 4)
         val POSITION = Position.create(2, 3)
         val NEW_POSITION = Position.create(6, 7)

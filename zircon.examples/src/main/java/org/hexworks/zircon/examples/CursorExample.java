@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.application.CursorStyle;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.CP437TilesetResource;
+import org.hexworks.zircon.api.resource.CP437Tilesets;
 
 public class CursorExample {
 
@@ -24,7 +24,7 @@ public class CursorExample {
                 .cursorStyle(CursorStyle.FIXED_BACKGROUND)
                 .cursorBlinking(true)
                 .defaultSize(SIZE)
-                .defaultTileset(CP437TilesetResource.TAFFER_20X20)
+                .defaultTileset(CP437Tilesets.TAFFER_20X20)
                 .build();
 
         Application app = SwingApplications.startApplication(config);
