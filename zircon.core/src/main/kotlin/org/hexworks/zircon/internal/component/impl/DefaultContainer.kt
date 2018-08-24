@@ -44,13 +44,13 @@ open class DefaultContainer(initialSize: Size,
             if (isAttached()) {
                 dc.moveTo(dc.position() + getEffectivePosition())
             }
-            require(tileset().size() == component.tileset().size()) {
-                "Trying to add component with incompatible tileset size '${component.tileset().size()}' to" +
-                        "container with tileset size: '${tileset().size()}'!"
-            }
-            require(components.none { it.intersects(component) }) {
-                "You can't add a component to a container which intersects with other components!"
-            }
+//            require(tileset().size() == component.tileset().size()) {
+//                "Trying to add component with incompatible tileset size '${component.tileset().size()}' to" +
+//                        "container with tileset size: '${tileset().size()}'!"
+//            }
+//            require(components.none { it.intersects(component) }) {
+//                "You can't add a component to a container which intersects with other components!"
+//            }
             components.add(dc)
             EventBus.broadcast(InternalEvent.ComponentAddition)
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
@@ -61,11 +61,11 @@ open class DefaultContainer(initialSize: Size,
         components.forEach { comp ->
             comp.moveTo(comp.position() + getEffectivePosition())
             // TODO: if the component has the same size and position it adds it!!!
-            require(containsBoundable(comp)) {
-                "You can't add a component to a container which is not within its bounds " +
-                        "(target size: ${getEffectiveSize()}, component size: ${comp.size()}" +
-                        ", position: ${comp.position()})!"
-            }
+//            require(containsBoundable(comp)) {
+//                "You can't add a component to a container which is not within its bounds " +
+//                        "(target size: ${getEffectiveSize()}, component size: ${comp.size()}" +
+//                        ", position: ${comp.position()})!"
+//            }
         }
         return true
     }

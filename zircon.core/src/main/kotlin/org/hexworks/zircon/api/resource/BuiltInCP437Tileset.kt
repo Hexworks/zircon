@@ -37,6 +37,9 @@ enum class BuiltInCP437Tileset(private val tilesetName: String,
     REX_PAINT_14X14("rex_paint", 14, 14),
     REX_PAINT_16X16("rex_paint", 16, 16),
     REX_PAINT_18X18("rex_paint", 18, 18),
-    REX_PAINT_20X20("rex_paint", 20, 20);
+    REX_PAINT_20X20("rex_paint", 20, 20),
+    ACORN_8X16("acorn", 8, 16),
+    LORD_NIGHTMARE_8X16("lord_nightmare", 8, 16),
+    VGA_8X16("vga", 8, 16);
 
 }
