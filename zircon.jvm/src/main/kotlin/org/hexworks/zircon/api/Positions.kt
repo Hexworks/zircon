@@ -92,9 +92,4 @@ object Positions {
             y = position.y,
             z = z)
 
-    @JvmStatic
-    fun createAbsolutePosition(x: Int, y: Int): Position {
-        return AbsolutePosition(x, y)
-    }
-
 }

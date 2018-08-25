@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.sam.TileTransformer
+import org.hexworks.zircon.api.util.TileTransformer
 import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.internal.data.DefaultCell
 import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphic

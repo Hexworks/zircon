@@ -64,5 +64,13 @@ object CP437TilesetResources {
     @JvmStatic
     fun rexPaint20x20() = REX_PAINT_20X20
 
+    @JvmStatic
+    fun acorn8X16() = ACORN_8X16
+
+    @JvmStatic
+    fun lordNightmare8X16() = LORD_NIGHTMARE_8X16
+
+    @JvmStatic
+    fun vga8X16() = VGA_8X16
 
 }

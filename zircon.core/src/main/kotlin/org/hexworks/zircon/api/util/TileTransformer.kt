@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.sam
+package org.hexworks.zircon.api.util
 
 import org.hexworks.zircon.api.data.Tile
 

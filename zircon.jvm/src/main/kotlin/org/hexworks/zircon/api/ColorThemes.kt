@@ -17,7 +17,6 @@ object ColorThemes {
     @JvmStatic
     fun adriftInDreams() = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
 
-
     /**
      * Taken from
      * http://www.colourlovers.com/palette/49963/let_them_eat_cake
@@ -25,6 +24,10 @@ object ColorThemes {
     @JvmStatic
     fun letThemEatCake() = ColorThemeResource.LET_THEM_EAT_CAKE.getTheme()
 
+    /**
+     * Taken from
+     * https://www.colourlovers.com/palette/15/tech_light
+     */
     @JvmStatic
     fun techLight() = ColorThemeResource.TECH_LIGHT.getTheme()
 
@@ -91,6 +94,43 @@ object ColorThemes {
     @JvmStatic
     fun oliveLeafTea() = ColorThemeResource.OLIVE_LEAF_TEA.getTheme()
 
+    // These come from the Slack themes: https://slackthemes.net
+    @JvmStatic
+    fun afterglow() = ColorThemeResource.AFTERGLOW.getTheme()
+
+    @JvmStatic
+    fun amigaOs() = ColorThemeResource.AMIGA_OS.getTheme()
+
+    @JvmStatic
+    fun ancestry() = ColorThemeResource.ANCESTRY.getTheme()
+
+    @JvmStatic
+    fun arc() = ColorThemeResource.ARC.getTheme()
+
+    @JvmStatic
+    fun forest() = ColorThemeResource.FOREST.getTheme()
+
+    @JvmStatic
+    fun linuxMintDark() = ColorThemeResource.LINUX_MINT_DARK.getTheme()
+
+    @JvmStatic
+    fun nord() = ColorThemeResource.NORD.getTheme()
+
+    @JvmStatic
+    fun tron() = ColorThemeResource.TRON.getTheme()
+
+    @JvmStatic
+    fun saiku() = ColorThemeResource.SAIKU.getTheme()
+
+    @JvmStatic
+    fun ingressResistance() = ColorThemeResource.INGRESS_RESISTANCE.getTheme()
+
+    @JvmStatic
+    fun ingressEnlightened() = ColorThemeResource.INGRESS_ENLIGHTENED.getTheme()
+
+    /**
+     * Taken from the official Zenburn page.
+     */
     @JvmStatic
     fun zenburnVanilla() = ColorThemeResource.ZENBURN_VANILLA.getTheme()
 
@@ -100,10 +140,29 @@ object ColorThemes {
     @JvmStatic
     fun zenburnGreen() = ColorThemeResource.ZENBURN_GREEN.getTheme()
 
-    /**
-     * All Solarized themes are taken from:
-     * http://www.zovirl.com/2011/07/22/solarized_cheat_sheet/
-     */
+    //Taken form the official Monokai page.
+
+    @JvmStatic
+    fun monokaiYellow() = ColorThemeResource.MONOKAI_YELLOW.getTheme()
+
+    @JvmStatic
+    fun monokaiPink() = ColorThemeResource.MONOKAI_PINK.getTheme()
+
+    @JvmStatic
+    fun monokaiGreen() = ColorThemeResource.MONOKAI_GREEN.getTheme()
+
+    @JvmStatic
+    fun monokaiOrange() = ColorThemeResource.MONOKAI_ORANGE.getTheme()
+
+    @JvmStatic
+    fun monokaiViolet() = ColorThemeResource.MONOKAI_VIOLET.getTheme()
+
+    @JvmStatic
+    fun monokaiBlue() = ColorThemeResource.MONOKAI_BLUE.getTheme()
+
+    // All Solarized themes are taken from:
+    // http://www.zovirl.com/2011/07/22/solarized_cheat_sheet/
+
     @JvmStatic
     fun solarizedDarkYellow() = ColorThemeResource.SOLARIZED_DARK_YELLOW.getTheme()
 

@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
 import org.hexworks.zircon.api.resource.REXPaintResource
-import org.hexworks.zircon.api.sam.TileTransformer
+import org.hexworks.zircon.api.util.TileTransformer
 import org.hexworks.zircon.internal.animation.DefaultAnimationFrame
 
 object Logo {
