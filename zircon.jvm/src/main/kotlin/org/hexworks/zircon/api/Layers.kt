@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.data.Tile
 object Layers {
 
     /**
-     * Returns the default filler which is an emtpy [Tile].
+     * Returns the default filler which is an empty [Tile].
      */
     @JvmStatic
     fun defaultFiller() = Tile.empty()
