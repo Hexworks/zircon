@@ -39,6 +39,11 @@ open class DefaultContainer(initialSize: Size,
 
     override fun draw(drawable: Drawable, position: Position) {
         if (drawable is Component) {
+            require(position == drawable.position()) {
+                "The component to draw has different position (${drawable.position()}) than the " +
+                        "position given to the draw operation ($position). You may consider using " +
+                        "the addComponent function instead."
+            }
             addComponent(drawable)
         } else {
             super.draw(drawable, position)
