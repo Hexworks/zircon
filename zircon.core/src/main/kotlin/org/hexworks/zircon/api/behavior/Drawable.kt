@@ -10,5 +10,12 @@ interface Drawable {
     /**
      * Draws this [Drawable] onto the given [DrawSurface] at the given position.
      */
-    fun drawOnto(surface: DrawSurface, position: Position = Position.topLeftCorner())
+    fun drawOnto(surface: DrawSurface) {
+        drawOnto(surface, Position.defaultPosition())
+    }
+
+    /**
+     * Draws this [Drawable] onto the given [DrawSurface] at the given position.
+     */
+    fun drawOnto(surface: DrawSurface, position: Position)
 }

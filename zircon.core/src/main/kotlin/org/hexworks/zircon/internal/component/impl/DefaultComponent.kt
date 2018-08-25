@@ -63,31 +63,32 @@ abstract class DefaultComponent(
     }
 
     override fun createCopy(): Layer {
-        throw UnsupportedOperationException("No.")
+        TODO("Creating copies of Components is not supported yet.")
     }
 
     override fun getRelativeTileAt(position: Position): Maybe<Tile> {
-        throw UnsupportedOperationException()
+        return drawSurface.getTileAt(position)
     }
 
-    override fun setRelativeTileAt(position: Position, character: Tile) {
-        throw UnsupportedOperationException()
+    override fun setRelativeTileAt(position: Position, tile: Tile) {
+        drawSurface.setTileAt(position, tile)
     }
 
     override fun getTileAt(position: Position): Maybe<Tile> {
-        throw UnsupportedOperationException()
+        return drawSurface.getTileAt(position)
     }
 
     override fun setTileAt(position: Position, tile: Tile) {
-        throw UnsupportedOperationException()
+        drawSurface.setTileAt(position, tile)
     }
 
     override fun snapshot(): Map<Position, Tile> {
-        TODO("not implemented")
+        return drawSurface.snapshot()
     }
 
     override fun fill(filler: Tile): Layer {
-        TODO("not implemented")
+        drawSurface.fill(filler)
+        return this
     }
 
     override fun draw(drawable: Drawable, position: Position) {
