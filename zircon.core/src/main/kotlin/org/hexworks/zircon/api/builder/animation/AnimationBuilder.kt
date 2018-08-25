@@ -17,7 +17,7 @@ data class AnimationBuilder private constructor(
         private var uniqueFrameCount: Int = -1,
         private var totalFrameCount: Int = -1) : Builder<Animation> {
 
-    fun getLength() = totalFrameCount
+    fun getTotalFrameCount() = totalFrameCount
 
     fun loopCount(loopCount: Int) = also {
         require(loopCount >= 0) {

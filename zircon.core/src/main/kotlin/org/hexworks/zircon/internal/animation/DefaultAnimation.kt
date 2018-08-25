@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.animation
 
+import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationFrame
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.api.util.Maybe
@@ -9,7 +10,7 @@ internal class DefaultAnimation(private val frames: List<InternalAnimationFrame>
                                 private var tick: Long,
                                 private var loopCount: Int,
                                 private val uniqueFrameCount: Int,
-                                private var totalFrameCount: Int) : org.hexworks.zircon.api.animation.Animation {
+                                private var totalFrameCount: Int) : Animation {
 
     override val id: Identifier = Identifier.randomIdentifier()
     private val infiniteLoop = loopCount == 0
@@ -30,7 +31,7 @@ internal class DefaultAnimation(private val frames: List<InternalAnimationFrame>
 
     override fun getFrameCount() = uniqueFrameCount
 
-    override fun getLength() = totalFrameCount
+    override fun getTotalFrameCount() = totalFrameCount
 
     override fun getLoopCount() = loopCount
 
