@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.behavior.DrawSurface
+import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -33,6 +34,15 @@ open class DefaultContainer(initialSize: Size,
         Container {
 
     private val components = mutableListOf<InternalComponent>()
+
+
+    override fun draw(drawable: Drawable, position: Position) {
+        if (drawable is Component) {
+            addComponent(drawable)
+        } else {
+            super.draw(drawable, position)
+        }
+    }
 
     override fun addComponent(component: Component) {
         // TODO: refactor component to be a layer

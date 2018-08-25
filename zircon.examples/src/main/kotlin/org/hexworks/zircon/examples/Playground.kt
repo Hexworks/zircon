@@ -1,16 +1,10 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.data.*
-import org.hexworks.zircon.api.game.BaseGameArea
-import org.hexworks.zircon.api.game.GameArea
-import org.hexworks.zircon.api.graphics.Symbols
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.resource.ColorThemeResource
-import org.hexworks.zircon.api.util.Maybe
-import java.util.*
+import org.hexworks.zircon.api.util.Consumer
 
 object Playground {
 
@@ -26,12 +20,19 @@ object Playground {
         val component = Components.panel()
                 .size(Sizes.create(20, 10))
                 .position(Positions.offset1x1())
-                .addBorder(Borders.newBuilder().build())
-                .title("Title")
-//                .wrapWithBox()
-//                .wrapWithShadow()
+                .build()
 
         screen.addComponent(component)
+
+
+        val btn = Components.button().text("foo").build()
+        btn.onMouseReleased(object : Consumer<MouseAction> {
+            override fun accept(t: MouseAction) {
+                println("pressed")
+            }
+        })
+
+        component.draw(btn)
 
         screen.applyColorTheme(ColorThemeResource.GAMEBOOKERS.getTheme())
 
