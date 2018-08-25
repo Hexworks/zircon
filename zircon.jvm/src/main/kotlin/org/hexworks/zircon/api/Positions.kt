@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api
 
+import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.AbsolutePosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position3D
@@ -29,6 +30,38 @@ object Positions {
      */
     @JvmStatic
     fun unknown() = Position.unknown()
+
+    /**
+     * Creates a [Position] which is relative to the top of the given [Component].
+     * The x coordinate is used to shift right
+     * The y coordinate is used to shift up
+     */
+    @JvmStatic
+    fun relativeToTopOf(component: Component) = Position.relativeToTopOf(component)
+
+    /**
+     * Creates a [Position] which is relative to the right of the given [Component].
+     * The x coordinate is used to shift right
+     * The y coordinate is used to shift down
+     */
+    @JvmStatic
+    fun relativeToRightOf(component: Component) = Position.relativeToRightOf(component)
+
+    /**
+     * Creates a [Position] which is relative to the bottom of the given [Component].
+     * The x coordinate is used to shift right
+     * The y coordinate is used to shift down
+     */
+    @JvmStatic
+    fun relativeToBottomOf(component: Component) = Position.relativeToBottomOf(component)
+
+    /**
+     * Creates a [Position] which is relative to the left of the given [Component].
+     * The x coordinate is used to shift left
+     * The y coordinate is used to shift down
+     */
+    @JvmStatic
+    fun relativeToLeftOf(component: Component) = Position.relativeToLeftOf(component)
 
     /**
      * Factory method for creating a [Position].

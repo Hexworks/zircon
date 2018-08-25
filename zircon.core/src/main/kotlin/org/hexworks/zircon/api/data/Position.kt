@@ -199,6 +199,34 @@ interface Position : Comparable<Position> {
             return GridPosition(x, y)
         }
 
+        /**
+         * Creates a [Position] which is relative to the top of the given [Component].
+         * The x coordinate is used to shift right
+         * The y coordinate is used to shift up
+         */
+        fun relativeToTopOf(component: Component) = defaultPosition().relativeToTopOf(component)
+
+        /**
+         * Creates a [Position] which is relative to the right of the given [Component].
+         * The x coordinate is used to shift right
+         * The y coordinate is used to shift down
+         */
+        fun relativeToRightOf(component: Component) = defaultPosition().relativeToRightOf(component)
+
+        /**
+         * Creates a [Position] which is relative to the bottom of the given [Component].
+         * The x coordinate is used to shift right
+         * The y coordinate is used to shift down
+         */
+        fun relativeToBottomOf(component: Component) = defaultPosition().relativeToBottomOf(component)
+
+        /**
+         * Creates a [Position] which is relative to the left of the given [Component].
+         * The x coordinate is used to shift left
+         * The y coordinate is used to shift down
+         */
+        fun relativeToLeftOf(component: Component) = defaultPosition().relativeToLeftOf(component)
+
         private fun create(x: Int, y: Int, pos: Position): Position {
             require(x >= 0) {
                 "x must be greater than or equal to 0"
