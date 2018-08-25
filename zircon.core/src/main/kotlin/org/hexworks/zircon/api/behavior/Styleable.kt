@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.modifier.Modifier
 interface Styleable {
 
     /**
-     * Returns a copy of the style information stored in this [StyleSet].
+     * Returns a copy of the style information stored in this [Styleable].
      */
     fun styleSet(): StyleSet
 

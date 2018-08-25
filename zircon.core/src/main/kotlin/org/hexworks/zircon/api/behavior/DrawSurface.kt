@@ -31,6 +31,7 @@ interface DrawSurface : Boundable {
      * A snapshot is useful to see a consistent state of a [DrawSurface]
      * regardless of potential changes by other threads.
      */
+    // TODO: proper Snapshot object, not just a Map
     fun snapshot(): Map<Position, Tile>
 
     /**
