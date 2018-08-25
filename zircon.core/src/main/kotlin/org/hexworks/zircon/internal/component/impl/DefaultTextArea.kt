@@ -101,7 +101,7 @@ class DefaultTextArea constructor(
                 disableTyping()
             }
         }
-        getDrawSurface().applyStyle(getComponentStyles().disable())
+        getDrawSurface().applyStyle(getComponentStyles().applyDisabledStyle())
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
@@ -120,7 +120,7 @@ class DefaultTextArea constructor(
 
     private fun enableFocusedComponent() {
         cancelSubscriptions()
-        getDrawSurface().applyStyle(getComponentStyles().giveFocus())
+        getDrawSurface().applyStyle(getComponentStyles().applyFocusedStyle())
         enableTyping()
     }
 

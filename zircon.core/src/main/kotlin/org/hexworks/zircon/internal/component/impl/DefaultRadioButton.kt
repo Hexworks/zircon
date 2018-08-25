@@ -49,7 +49,7 @@ class DefaultRadioButton(private val text: String,
 
     fun select() {
         if (state != SELECTED) {
-            getDrawSurface().applyStyle(getComponentStyles().mouseOver())
+            getDrawSurface().applyStyle(getComponentStyles().applyMouseOverStyle())
             state = SELECTED
             redrawContent()
         }
@@ -70,7 +70,7 @@ class DefaultRadioButton(private val text: String,
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        getDrawSurface().applyStyle(getComponentStyles().giveFocus())
+        getDrawSurface().applyStyle(getComponentStyles().applyFocusedStyle())
         return true
     }
 

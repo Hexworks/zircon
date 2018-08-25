@@ -9,18 +9,39 @@ import org.hexworks.zircon.api.graphics.StyleSet
  */
 interface ComponentStyleSet {
 
+    /**
+     * Returns the style which is currently applied.
+     */
     fun getCurrentStyle(): StyleSet
 
+    /**
+     * Returns the [StyleSet] for the given `state`.
+     */
     fun getStyleFor(state: ComponentState): StyleSet
 
-    fun mouseOver(): StyleSet
+    /**
+     * Applies the style for the `MOUSE_OVER` state.
+     */
+    fun applyMouseOverStyle(): StyleSet
 
-    fun activate(): StyleSet
+    /**
+     * Applies the style for the `ACTIVE` state.
+     */
+    fun applyActiveStyle(): StyleSet
 
-    fun giveFocus(): StyleSet
+    /**
+     * Applies the style for the `FOCUSED` state.
+     */
+    fun applyFocusedStyle(): StyleSet
 
-    fun disable(): StyleSet
+    /**
+     * Applies the style for the `DISABLED` state.
+     */
+    fun applyDisabledStyle(): StyleSet
 
+    /**
+     * Resets the style to its initial state.
+     */
     fun reset(): StyleSet
 
     companion object {

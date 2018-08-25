@@ -15,28 +15,12 @@ object Playground {
                 .defaultSize(Size.create(60, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val color = TileColors.fromString("#ffaadd")
+        val tile = Tiles.defaultTile().withBackgroundColor(color).withCharacter('x')
 
-        val component = Components.panel()
-                .size(Sizes.create(20, 10))
-                .position(Positions.offset1x1())
-                .build()
-
-        screen.addComponent(component)
-
-
-        val btn = Components.button().text("foo").build()
-        btn.onMouseReleased(object : Consumer<MouseAction> {
-            override fun accept(t: MouseAction) {
-                println("pressed")
-            }
-        })
-
-        component.draw(btn)
-
-        screen.applyColorTheme(ColorThemeResource.GAMEBOOKERS.getTheme())
-
-        screen.display()
+        tileGrid.draw(tile, Positions.create(0, 0))
+        tileGrid.draw(tile.withBackgroundColor(color.tint()), Positions.create(1, 0))
+        tileGrid.draw(tile.withBackgroundColor(color.tint().tint()), Positions.create(2, 0))
 
     }
 

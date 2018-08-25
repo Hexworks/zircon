@@ -2,6 +2,9 @@ package org.hexworks.zircon.api.component
 
 import org.hexworks.zircon.api.behavior.Scrollable
 
+/**
+ * A [TextArea] is an editable [TextBox].
+ */
 interface TextArea : Component, Scrollable {
 
     /**

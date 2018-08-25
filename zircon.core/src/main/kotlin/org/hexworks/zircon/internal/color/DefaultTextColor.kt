@@ -20,13 +20,16 @@ data class DefaultTextColor(private val red: Int,
 
     override fun getAlpha() = alpha
 
-    override fun tint(): TileColor {
+    override fun tint(factor: Double): TileColor {
+        require(factor in 0.0..1.0) {
+            "The given percentage ($factor) is not between the required range (0 - 1)."
+        }
         var r = getRed()
         var g = getGreen()
         var b = getBlue()
         val alpha = getAlpha()
 
-        val i = (1.0 / (1.0 - FACTOR)).toInt()
+        val i = (1.0 / (1.0 - factor)).toInt()
         if (r == 0 && g == 0 && b == 0) {
             return DefaultTextColor(i, i, i, alpha)
         }
@@ -34,16 +37,19 @@ data class DefaultTextColor(private val red: Int,
         if (g in 1..(i - 1)) g = i
         if (b in 1..(i - 1)) b = i
 
-        return DefaultTextColor(Math.min((r / FACTOR).toInt(), 255),
-                Math.min((g / FACTOR).toInt(), 255),
-                Math.min((b / FACTOR).toInt(), 255),
+        return DefaultTextColor(Math.min((r / factor).toInt(), 255),
+                Math.min((g / factor).toInt(), 255),
+                Math.min((b / factor).toInt(), 255),
                 alpha)
     }
 
-    override fun shade(): TileColor {
-        return DefaultTextColor(Math.max((getRed() * FACTOR).toInt(), 0),
-                Math.max((getGreen() * FACTOR).toInt(), 0),
-                Math.max((getBlue() * FACTOR).toInt(), 0),
+    override fun shade(factor: Double): TileColor {
+        require(factor in 0.0..1.0) {
+            "The given percentage ($factor) is not between the required range (0 - 1)."
+        }
+        return TileColor.create(Math.max((getRed() * factor).toInt(), 0),
+                Math.max((getGreen() * factor).toInt(), 0),
+                Math.max((getBlue() * factor).toInt(), 0),
                 getAlpha())
     }
 
@@ -52,14 +58,13 @@ data class DefaultTextColor(private val red: Int,
     }
 
     override fun darkenByPercent(percentage: Double): TileColor {
+        require(percentage in 0.0..1.0) {
+            "The given percentage ($percentage) is not between the required range (0 - 1)."
+        }
         return TileColor.create(
                 red = (red * (1f - percentage)).toInt(),
                 green = (green * (1f - percentage)).toInt(),
                 blue = (blue * (1f - percentage)).toInt(),
                 alpha = alpha)
-    }
-
-    companion object {
-        private const val FACTOR = 0.7
     }
 }

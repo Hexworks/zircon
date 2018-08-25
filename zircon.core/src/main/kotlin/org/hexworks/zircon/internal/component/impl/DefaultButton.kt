@@ -32,10 +32,10 @@ class DefaultButton(private val text: String,
         getDrawSurface().putText(text, getWrapperOffset())
 
         EventBus.listenTo<InternalEvent.MousePressed>(id) {
-            getDrawSurface().applyStyle(getComponentStyles().activate())
+            getDrawSurface().applyStyle(getComponentStyles().applyActiveStyle())
         }
         EventBus.listenTo<InternalEvent.MouseReleased>(id) {
-            getDrawSurface().applyStyle(getComponentStyles().mouseOver())
+            getDrawSurface().applyStyle(getComponentStyles().applyMouseOverStyle())
         }
     }
 
@@ -44,7 +44,7 @@ class DefaultButton(private val text: String,
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        getDrawSurface().applyStyle(getComponentStyles().giveFocus())
+        getDrawSurface().applyStyle(getComponentStyles().applyFocusedStyle())
         return true
     }
 

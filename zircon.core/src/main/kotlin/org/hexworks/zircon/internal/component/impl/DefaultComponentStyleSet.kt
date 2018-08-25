@@ -19,22 +19,22 @@ data class DefaultComponentStyleSet(private val styles: Map<ComponentState, Styl
 
     override fun getCurrentStyle() = styles[currentState]!!
 
-    override fun mouseOver(): StyleSet {
+    override fun applyMouseOverStyle(): StyleSet {
         currentState = ComponentState.MOUSE_OVER
         return styles[currentState]!!
     }
 
-    override fun activate(): StyleSet {
+    override fun applyActiveStyle(): StyleSet {
         currentState = ComponentState.ACTIVE
         return styles[currentState]!!
     }
 
-    override fun giveFocus(): StyleSet {
+    override fun applyFocusedStyle(): StyleSet {
         currentState = ComponentState.FOCUSED
         return styles[currentState]!!
     }
 
-    override fun disable(): StyleSet {
+    override fun applyDisabledStyle(): StyleSet {
         currentState = ComponentState.DISABLED
         return styles[currentState]!!
     }

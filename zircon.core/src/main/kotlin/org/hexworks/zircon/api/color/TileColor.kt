@@ -15,12 +15,35 @@ interface TileColor : Cacheable {
 
     fun getBlue(): Int
 
-    fun tint(): TileColor
+    /**
+     * Returns a new [TileColor] which is tinted by the default factor (.7).
+     */
+    fun tint(): TileColor = tint(defaultFactor())
 
-    fun shade(): TileColor
+    /**
+     * Returns a new [TileColor] which is tinted by `factor`.
+     */
+    fun tint(factor: Double): TileColor
 
+    /**
+     * Returns a new [TileColor] which is shaded by the default factor (.7).
+     */
+    fun shade(): TileColor = shade(defaultFactor())
+
+    /**
+     * Returns a new [TileColor] which is shaded by `factor`.
+     */
+    fun shade(factor: Double): TileColor
+
+    /**
+     * Returns a new [TileColor] which is the inversion of this one.
+     */
     fun invert(): TileColor
 
+    /**
+     * Returns a new [TileColor] which is darkened by the given `percentage`.
+     * The number must be between `0` and `1`.
+     */
     fun darkenByPercent(percentage: Double): TileColor
 
     companion object {
@@ -41,6 +64,8 @@ interface TileColor : Cacheable {
         fun transparent() = TRANSPARENT
 
         fun defaultAlpha() = DEFAULT_ALPHA
+
+        fun defaultFactor() = DEFAULT_FACTOR
 
         /**
          * Parses a string into a color. Formats:
@@ -74,5 +99,6 @@ interface TileColor : Cacheable {
 
         private val TRANSPARENT = TileColor.create(0, 0, 0, 0)
         private const val DEFAULT_ALPHA = 255
+        private const val DEFAULT_FACTOR = 0.7
     }
 }

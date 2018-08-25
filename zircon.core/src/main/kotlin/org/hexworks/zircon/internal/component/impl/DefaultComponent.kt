@@ -32,7 +32,7 @@ abstract class DefaultComponent(
         private var attached: Boolean = false,
         private var componentStyleSet: ComponentStyleSet,
         private val wrappers: Iterable<WrappingStrategy>,
-        private val drawSurface: TileGraphic = TileGraphicBuilder
+        private val graphic: TileGraphic = TileGraphicBuilder
                 .newBuilder()
                 .tileset(tileset)
                 .size(size)
@@ -41,23 +41,23 @@ abstract class DefaultComponent(
                 size = size,
                 position = position))
     : InternalComponent,
-        Drawable by drawSurface,
-        TilesetOverride by drawSurface {
+        Drawable by graphic,
+        TilesetOverride by graphic {
 
     override val id = Identifier.randomIdentifier()
     private var currentOffset = Position.defaultPosition()
 
     init {
-        drawSurface.setStyleFrom(componentStyleSet.getCurrentStyle())
+        graphic.setStyleFrom(componentStyleSet.getCurrentStyle())
         applyWrappers()
         EventBus.listenTo<InternalEvent.MouseOver>(id) {
             if (componentStyleSet.getCurrentStyle() != componentStyleSet.getStyleFor(ComponentState.MOUSE_OVER)) {
-                drawSurface.applyStyle(componentStyleSet.mouseOver())
+                graphic.applyStyle(componentStyleSet.applyMouseOverStyle())
             }
         }
         EventBus.listenTo<InternalEvent.MouseOut>(id) {
             if (componentStyleSet.getCurrentStyle() != componentStyleSet.getStyleFor(ComponentState.DEFAULT)) {
-                drawSurface.applyStyle(componentStyleSet.reset())
+                graphic.applyStyle(componentStyleSet.reset())
             }
         }
     }
@@ -67,32 +67,32 @@ abstract class DefaultComponent(
     }
 
     override fun getRelativeTileAt(position: Position): Maybe<Tile> {
-        return drawSurface.getTileAt(position)
+        return graphic.getTileAt(position)
     }
 
     override fun setRelativeTileAt(position: Position, tile: Tile) {
-        drawSurface.setTileAt(position, tile)
+        graphic.setTileAt(position, tile)
     }
 
     override fun getTileAt(position: Position): Maybe<Tile> {
-        return drawSurface.getTileAt(position)
+        return graphic.getTileAt(position)
     }
 
     override fun setTileAt(position: Position, tile: Tile) {
-        drawSurface.setTileAt(position, tile)
+        graphic.setTileAt(position, tile)
     }
 
     override fun snapshot(): Map<Position, Tile> {
-        return drawSurface.snapshot()
+        return graphic.snapshot()
     }
 
     override fun fill(filler: Tile): Layer {
-        drawSurface.fill(filler)
+        graphic.fill(filler)
         return this
     }
 
     override fun draw(drawable: Drawable, position: Position) {
-        drawSurface.draw(drawable, position)
+        graphic.draw(drawable, position)
     }
 
     override fun moveTo(position: Position): Boolean {
@@ -114,7 +114,7 @@ abstract class DefaultComponent(
     override fun position() = boundable.position()
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
-        surface.draw(drawSurface, boundable.position())
+        surface.draw(graphic, boundable.position())
     }
 
     override fun fetchComponentByPosition(position: Position) =
@@ -147,7 +147,7 @@ abstract class DefaultComponent(
     override fun setComponentStyles(componentStyleSet: ComponentStyleSet) {
         this.componentStyleSet = componentStyleSet
 
-        drawSurface.applyStyle(
+        graphic.applyStyle(
                 styleSet = componentStyleSet.getCurrentStyle(),
                 offset = getNonThemeableOffset(),
                 size = getEffectiveThemeableSize(),
@@ -156,7 +156,7 @@ abstract class DefaultComponent(
 
     fun getBoundable() = boundable
 
-    fun getDrawSurface() = drawSurface
+    fun getDrawSurface() = graphic
 
     /**
      * Returns the size which this component takes up without its wrappers.
@@ -182,7 +182,7 @@ abstract class DefaultComponent(
 
     open fun transformToLayers() =
             listOf(LayerBuilder.newBuilder()
-                    .tileGraphic(drawSurface)
+                    .tileGraphic(graphic)
                     .offset(position())
                     .tileset(tileset())
                     .build())
@@ -210,7 +210,7 @@ abstract class DefaultComponent(
         currentOffset = Position.defaultPosition()
         wrappers.forEach {
             currSize += it.getOccupiedSize()
-            it.apply(drawSurface, currSize, currentOffset, componentStyleSet.getCurrentStyle())
+            it.apply(graphic, currSize, currentOffset, componentStyleSet.getCurrentStyle())
             currentOffset += it.getOffset()
         }
     }
