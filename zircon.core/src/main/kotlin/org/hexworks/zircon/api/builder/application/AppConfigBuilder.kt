@@ -28,7 +28,8 @@ data class AppConfigBuilder(
         private var title: String = "Zircon Application",
         private var fullScreen: Boolean = false,
         private var debugMode: Boolean = false,
-        private var defaultSize: Size = Size.defaultTerminalSize())
+        private var defaultSize: Size = Size.defaultTerminalSize(),
+        private var betaEnabled: Boolean = false)
     : Builder<AppConfig> {
 
     override fun build() = AppConfig(
@@ -41,7 +42,8 @@ data class AppConfigBuilder(
             defaultColorTheme = defaultColorTheme,
             debugMode = debugMode,
             size = defaultSize,
-            fullScreen = fullScreen).also {
+            fullScreen = fullScreen,
+            betaEnabled = betaEnabled).also {
         RuntimeConfig.config = it
     }
 
@@ -105,6 +107,10 @@ data class AppConfigBuilder(
 
     fun defaultTileset(defaultTileset: TilesetResource) = also {
         this.defaultTileset = defaultTileset
+    }
+
+    fun enableBetaFeatures() = also {
+        this.betaEnabled = true
     }
 
     companion object {

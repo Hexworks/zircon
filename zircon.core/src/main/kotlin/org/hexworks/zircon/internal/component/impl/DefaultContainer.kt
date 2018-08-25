@@ -18,6 +18,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.WrappingStrategy
+import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.InternalEvent
 
 @Suppress("UNCHECKED_CAST")
@@ -54,12 +55,14 @@ open class DefaultContainer(initialSize: Size,
             if (isAttached()) {
                 dc.moveTo(dc.position() + getEffectivePosition())
             }
-            require(tileset().size() == component.tileset().size()) {
-                "Trying to add component with incompatible tileset size '${component.tileset().size()}' to" +
-                        "container with tileset size: '${tileset().size()}'!"
-            }
-            require(components.none { it.intersects(component) }) {
-                "You can't add a component to a container which intersects with other components!"
+            if (RuntimeConfig.config.betaEnabled.not()) {
+                require(tileset().size() == component.tileset().size()) {
+                    "Trying to add component with incompatible tileset size '${component.tileset().size()}' to" +
+                            "container with tileset size: '${tileset().size()}'!"
+                }
+                require(components.none { it.intersects(component) }) {
+                    "You can't add a component to a container which intersects with other components!"
+                }
             }
             components.add(dc)
             EventBus.broadcast(InternalEvent.ComponentAddition)
@@ -71,10 +74,12 @@ open class DefaultContainer(initialSize: Size,
         components.forEach { comp ->
             comp.moveTo(comp.position() + getEffectivePosition())
             // TODO: if the component has the same size and position it adds it!!!
-            require(containsBoundable(comp)) {
-                "You can't add a component to a container which is not within its bounds " +
-                        "(target size: ${getEffectiveSize()}, component size: ${comp.size()}" +
-                        ", position: ${comp.position()})!"
+            if (RuntimeConfig.config.betaEnabled.not()) {
+                require(containsBoundable(comp)) {
+                    "You can't add a component to a container which is not within its bounds " +
+                            "(target size: ${getEffectiveSize()}, component size: ${comp.size()}" +
+                            ", position: ${comp.position()})!"
+                }
             }
         }
         return true
