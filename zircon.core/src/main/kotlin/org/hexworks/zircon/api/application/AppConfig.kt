@@ -21,7 +21,8 @@ data class AppConfig(
         val defaultColorTheme: ColorTheme,
         val debugMode: Boolean,
         val size: Size,
-        val fullScreen: Boolean) {
+        val fullScreen: Boolean,
+        val betaEnabled: Boolean) {
 
     companion object {
 
