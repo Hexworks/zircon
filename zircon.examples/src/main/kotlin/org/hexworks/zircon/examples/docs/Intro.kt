@@ -25,7 +25,7 @@ object Intro {
         val animBuilder = AnimationResource.loadAnimationFromStream(
                 AnimationExample::class.java.getResourceAsStream("/animations/skull.zap"),
                 tileset).loopCount(0)
-        for (i in 0 until animBuilder.getLength()) {
+        for (i in 0 until animBuilder.getTotalFrameCount()) {
             animBuilder.addPosition(Positions.create(2, 5))
         }
         val zirconSplash = animBuilder.build()

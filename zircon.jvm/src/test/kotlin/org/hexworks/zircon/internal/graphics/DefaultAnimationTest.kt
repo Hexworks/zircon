@@ -17,7 +17,7 @@ class DefaultAnimationTest {
             builder.addPosition(Position.defaultPosition())
         }
         val result = builder.build()
-        assertThat(result.getLength()).isEqualTo(EXPECTED_LENGTH)
+        assertThat(result.getTotalFrameCount()).isEqualTo(EXPECTED_LENGTH)
         assertThat(result.getFrameCount()).isEqualTo(EXPECTED_FRAME_COUNT)
         assertThat(result.getTick()).isEqualTo(EXPECTED_TICK)
         assertThat(result.getLoopCount()).isEqualTo(EXPECTED_LOOP_COUNT)

@@ -26,9 +26,10 @@ interface Animation : Identifiable {
     fun isLoopedIndefinitely(): Boolean
 
     /**
-     * TODO
+     * Returns the *total* number of frames in this animation
+     * (including those which are repeated as well).
      */
-    fun getLength(): Int
+    fun getTotalFrameCount(): Int
 
     /**
      * Tells how often an [AnimationFrame] should be drawn in milliseconds.

@@ -137,7 +137,7 @@ public class FullExample {
         AnimationBuilder skullAnimBuilder = AnimationResource.loadAnimationFromStream(
                 AnimationExample.class.getResourceAsStream("/animations/skull.zap"),
                 TILESET).loopCount(0);
-        for (int i = 0; i < skullAnimBuilder.getLength(); i++) {
+        for (int i = 0; i < skullAnimBuilder.getTotalFrameCount(); i++) {
             skullAnimBuilder.addPosition(Positions.create(2, 6));
         }
         Animation skullAnim = skullAnimBuilder.build();

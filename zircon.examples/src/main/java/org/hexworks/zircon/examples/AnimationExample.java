@@ -50,7 +50,7 @@ public class AnimationExample {
         AnimationBuilder second = first.createCopy();
         first.loopCount(0);
         second.loopCount(1);
-        for (int i = 0; i < first.getLength(); i++) {
+        for (int i = 0; i < first.getTotalFrameCount(); i++) {
             first.addPosition(LEFT_POS);
             second.addPosition(RIGHT_POS);
         }
