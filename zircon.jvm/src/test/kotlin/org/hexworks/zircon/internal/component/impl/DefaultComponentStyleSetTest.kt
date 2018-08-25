@@ -54,31 +54,31 @@ class DefaultComponentStyleSetTest {
 
     @Test
     fun shouldProperlyGiveFocus() {
-        assertThat(target.giveFocus()).isEqualTo(FOCUSED_STYLE)
+        assertThat(target.applyFocusedStyle()).isEqualTo(FOCUSED_STYLE)
         assertThat(target.getCurrentStyle()).isEqualTo(FOCUSED_STYLE)
     }
 
     @Test
     fun shouldProperlyActivate() {
-        assertThat(target.activate()).isEqualTo(ACTIVE_STYLE)
+        assertThat(target.applyActiveStyle()).isEqualTo(ACTIVE_STYLE)
         assertThat(target.getCurrentStyle()).isEqualTo(ACTIVE_STYLE)
     }
 
     @Test
     fun shouldProperlyDisable() {
-        assertThat(target.disable()).isEqualTo(DISABLED_STYLE)
+        assertThat(target.applyDisabledStyle()).isEqualTo(DISABLED_STYLE)
         assertThat(target.getCurrentStyle()).isEqualTo(DISABLED_STYLE)
     }
 
     @Test
     fun shouldProperlyMouseOver() {
-        assertThat(target.mouseOver()).isEqualTo(MOUSE_OVER_STYLE)
+        assertThat(target.applyMouseOverStyle()).isEqualTo(MOUSE_OVER_STYLE)
         assertThat(target.getCurrentStyle()).isEqualTo(MOUSE_OVER_STYLE)
     }
 
     @Test
     fun shouldProperlyReset() {
-        target.mouseOver()
+        target.applyMouseOverStyle()
         assertThat(target.reset()).isEqualTo(DEFAULT_STYLE)
         assertThat(target.getCurrentStyle()).isEqualTo(DEFAULT_STYLE)
     }

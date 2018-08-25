@@ -45,13 +45,13 @@ class DefaultCheckBox(private val text: String,
         // TODO: after it is pressed and released on another component
         // TODO: the pressed state persists
 //        EventBus.subscribe<MouseAction>(EventType.MousePressed(id), {
-//            getDrawSurface().applyStyle(getComponentStyles().activate())
+//            getDrawSurface().applyStyle(getComponentStyles().applyActiveStyle())
 //            checkBoxState = PRESSED
 //            redrawContent()
 //            EventBus.broadcast(EventType.ComponentChange)
 //        })
         EventBus.listenTo<InternalEvent.MouseReleased>(id) {
-            getDrawSurface().applyStyle(getComponentStyles().mouseOver())
+            getDrawSurface().applyStyle(getComponentStyles().applyMouseOverStyle())
             checkBoxState = if (checked) UNCHECKED else CHECKED
             checked = checked.not()
             redrawContent()
@@ -69,7 +69,7 @@ class DefaultCheckBox(private val text: String,
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        getDrawSurface().applyStyle(getComponentStyles().giveFocus())
+        getDrawSurface().applyStyle(getComponentStyles().applyFocusedStyle())
         return true
     }
 

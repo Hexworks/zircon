@@ -126,7 +126,7 @@ class DefaultComponentTest {
         val image = TileGraphicBuilder.newBuilder()
                 .size(SIZE + Size.create(POSITION.x, POSITION.y))
                 .build()
-        target.drawOnto(image)
+        target.drawOnto(image, POSITION)
 
         assertThat(image.getTileAt(POSITION - Position.offset1x1()).get())
                 .isEqualTo(Tile.empty())

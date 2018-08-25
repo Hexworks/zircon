@@ -30,19 +30,19 @@ enum class ANSITileColor(private val red: Int,
 
     override fun getAlpha() = alpha
 
-    override fun darkenByPercent(percentage: Double): TileColor {
-        return TileColor.create(red, green, blue, alpha).darkenByPercent(percentage)
+    override fun tint(factor: Double): TileColor {
+        return TileColor.create(red, green, blue, alpha).tint(factor)
     }
 
-    override fun tint(): TileColor {
-        return TileColor.create(red, green, blue, alpha).tint()
-    }
-
-    override fun shade(): TileColor {
-        return TileColor.create(red, green, blue, alpha).shade()
+    override fun shade(factor: Double): TileColor {
+        return TileColor.create(red, green, blue, alpha).shade(factor)
     }
 
     override fun invert(): TileColor {
         return TileColor.create(red, green, blue, alpha).invert()
+    }
+
+    override fun darkenByPercent(percentage: Double): TileColor {
+        return TileColor.create(red, green, blue, alpha).darkenByPercent(percentage)
     }
 }

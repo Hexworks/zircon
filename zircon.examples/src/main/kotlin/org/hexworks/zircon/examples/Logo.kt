@@ -15,7 +15,7 @@ object Logo {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val rex = REXPaintResource.loadREXFile(RexLoaderExample::class.java.getResourceAsStream("/rex_files/zircon_logo_rex.xp"))
+        val rex = REXPaintResource.loadREXFile(RexLoaderExample::class.java.getResourceAsStream("/rex_files/zircon_logo.xp"))
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .defaultTileset(BuiltInCP437Tileset.REX_PAINT_20X20)

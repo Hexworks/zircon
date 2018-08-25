@@ -168,7 +168,7 @@ class DefaultComponentContainerTest {
     // TODO: FIX THIS
 //    @Test
 //    fun shouldProperlyFocusPrevWhenShiftTabPressed() {
-//        target.activate()
+//        target.applyActiveStyle()
 //
 //        val button = createButton()
 //        target.addComponent(button)

@@ -11,7 +11,6 @@ import org.hexworks.zircon.api.component.RadioButtonGroup
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Consumer
@@ -43,7 +42,7 @@ class DefaultRadioButtonGroup constructor(
     init {
         refreshContent()
         EventBus.listenTo<InternalEvent.MouseReleased>(id) {
-            getDrawSurface().applyStyle(getComponentStyles().mouseOver())
+            getDrawSurface().applyStyle(getComponentStyles().applyMouseOverStyle())
             refreshContent()
         }
     }
