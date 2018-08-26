@@ -29,7 +29,7 @@ import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphic
 
 
@@ -66,7 +66,7 @@ class RectangleTileGrid(
     }
 
     override fun onInput(listener: Consumer<Input>) {
-        EventBus.subscribe<InternalEvent.Input> { (input) ->
+        EventBus.subscribe<ZirconEvent.Input> { (input) ->
             listener.accept(input)
         }
     }

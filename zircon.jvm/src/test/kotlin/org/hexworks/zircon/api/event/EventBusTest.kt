@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.event
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicReference
 
@@ -11,9 +11,9 @@ class EventBusTest {
 
     @Test
     fun shouldBeProperlyNotifiedWhenSubscribedEventIsEmitted() {
-        EventBus.subscribe<InternalEvent.HideCursor>(this::callback)
+        EventBus.subscribe<ZirconEvent.HideCursor>(this::callback)
 
-        EventBus.broadcast(InternalEvent.HideCursor)
+        EventBus.broadcast(ZirconEvent.HideCursor)
 
         assertThat(event.get()).isEqualToComparingFieldByField(EVENT)
     }
@@ -27,6 +27,6 @@ class EventBusTest {
     companion object {
         val KEYS = setOf("key")
         val OBJ = Obj("foo")
-        val EVENT = InternalEvent.HideCursor
+        val EVENT = ZirconEvent.HideCursor
     }
 }

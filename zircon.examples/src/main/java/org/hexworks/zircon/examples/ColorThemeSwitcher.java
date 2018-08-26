@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 public class ColorThemeSwitcher {
 
     private static final Size SCREEN_SIZE = Sizes.create(80, 40);
-    private static final TilesetResource TILESET = BuiltInCP437Tileset.WANDERLUST_16X16;
-    private static final ColorThemeResource THEME_PICKER_THEME = ColorThemeResource.GAMEBOOKERS;
+    private static final TilesetResource TILESET = BuiltInCP437Tileset.ROGUE_YUN_16X16;
+    private static final ColorThemeResource THEME = ColorThemeResource.GAMEBOOKERS;
 
     public static void main(String[] args) {
 
@@ -33,7 +33,7 @@ public class ColorThemeSwitcher {
 
         addScreenTitle(screen, "Color themes");
 
-        AtomicReference<ColorThemeResource> currentTheme = new AtomicReference<>(THEME_PICKER_THEME);
+        AtomicReference<ColorThemeResource> currentTheme = new AtomicReference<>(THEME);
         AtomicReference<Header> currentThemeLabel = new AtomicReference<>(createHeaderForTheme(currentTheme.get()));
 
         final Size infoPanelSize = SCREEN_SIZE.withYLength(10).withRelativeXLength(-4);
@@ -76,7 +76,6 @@ public class ColorThemeSwitcher {
 
 
         final Panel panel = Components.panel()
-                .addBorder(Borders.newBuilder().build())
                 .size(Sizes.create(20, 6))
                 .title("Panel")
                 .wrapWithBox()

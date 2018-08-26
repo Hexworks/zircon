@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.impl.DefaultLabelTest
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
 import org.hexworks.zircon.api.animation.AnimationResource
 import org.junit.Before
@@ -47,14 +47,14 @@ class TileGridScreenTest {
         target.onInput { inputFired.set(true) }
 
         //first of all lets make sure the default behaviour works. if a key is pressed I should get an input fired
-        EventBus.broadcast(InternalEvent.Input(KeyStroke('a')))
+        EventBus.broadcast(ZirconEvent.Input(KeyStroke('a')))
         assertThat(inputFired.get()).isTrue()
 
         //now lets add the animation and make sure we can still get input
         target.startAnimation(animation)
 
         inputFired.set(false)
-        EventBus.broadcast(InternalEvent.Input(KeyStroke('a')))
+        EventBus.broadcast(ZirconEvent.Input(KeyStroke('a')))
         assertThat(inputFired.get()).isTrue()
 
     }

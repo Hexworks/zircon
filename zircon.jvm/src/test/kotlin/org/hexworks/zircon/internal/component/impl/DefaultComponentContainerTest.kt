@@ -16,7 +16,7 @@ import org.hexworks.zircon.api.input.MouseActionType.*
 import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
 import org.hexworks.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.hexworks.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.api.Modifiers
 import org.junit.Before
 import org.junit.Test
@@ -63,11 +63,11 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val componentHovered = AtomicBoolean(false)
-        EventBus.listenTo<InternalEvent.MouseOver>(button.id) {
+        EventBus.listenTo<ZirconEvent.MouseOver>(button.id) {
             componentHovered.set(true)
         }
 
-        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
+        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
 
         assertThat(componentHovered.get()).isTrue()
     }
@@ -79,14 +79,14 @@ class DefaultComponentContainerTest {
         val button = createButton()
         target.addComponent(button)
 
-        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
+        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
 
         val componentHovered = AtomicBoolean(false)
-        EventBus.listenTo<InternalEvent.MouseOver>(button.id) {
+        EventBus.listenTo<ZirconEvent.MouseOver>(button.id) {
             componentHovered.set(true)
         }
 
-        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION.withRelativeX(1))))
+        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION.withRelativeX(1))))
 
         assertThat(componentHovered.get()).isFalse()
     }
@@ -99,11 +99,11 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val pressed = AtomicBoolean(false)
-        EventBus.listenTo<InternalEvent.MousePressed>(button.id) {
+        EventBus.listenTo<ZirconEvent.MousePressed>(button.id) {
             pressed.set(true)
         }
 
-        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)))
+        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)))
 
         assertThat(pressed.get()).isTrue()
     }
@@ -116,11 +116,11 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val released = AtomicBoolean(false)
-        EventBus.listenTo<InternalEvent.MouseReleased>(button.id) {
+        EventBus.listenTo<ZirconEvent.MouseReleased>(button.id) {
             released.set(true)
         }
 
-        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)))
+        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)))
 
         assertThat(released.get()).isTrue()
     }
@@ -133,19 +133,19 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val events = mutableListOf<Boolean>()
-        EventBus.listenTo<InternalEvent.MouseOver>(button.id) {
+        EventBus.listenTo<ZirconEvent.MouseOver>(button.id) {
             events.add(true)
         }
-        EventBus.listenTo<InternalEvent.MousePressed>(button.id) {
+        EventBus.listenTo<ZirconEvent.MousePressed>(button.id) {
             events.add(true)
         }
-        EventBus.listenTo<InternalEvent.MouseReleased>(button.id) {
+        EventBus.listenTo<ZirconEvent.MouseReleased>(button.id) {
             events.add(true)
         }
 
-        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
-        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)))
-        EventBus.broadcast(InternalEvent.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)))
+        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
+        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)))
+        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)))
 
 
         assertThat(events).isEmpty()
@@ -160,7 +160,7 @@ class DefaultComponentContainerTest {
 
         assertThat(button.getComponentStyles().getCurrentStyle()).isNotEqualTo(FOCUSED_STYLE)
 
-        EventBus.broadcast(InternalEvent.Input(KeyStroke(type = InputType.Tab)))
+        EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
 
         assertThat(button.getComponentStyles().getCurrentStyle()).isEqualTo(FOCUSED_STYLE)
     }
@@ -197,12 +197,12 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val released = AtomicBoolean(false)
-        EventBus.listenTo<InternalEvent.MouseReleased>(button.id) {
+        EventBus.listenTo<ZirconEvent.MouseReleased>(button.id) {
             released.set(true)
         }
 
-        EventBus.broadcast(InternalEvent.Input(KeyStroke(type = InputType.Tab)))
-        EventBus.broadcast(InternalEvent.Input(KeyStroke(type = InputType.Character, character = ' ')))
+        EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
+        EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Character, character = ' ')))
 
         assertThat(released.get()).isTrue()
     }

@@ -28,10 +28,17 @@ interface Layer : DrawSurface, Drawable, Movable, TilesetOverride {
      * Same as [Layer.setTileAt] but will not use the offset of this [Layer]
      * (eg: just position instead of position - offset).
      */
-    fun setRelativeTileAt(position: Position, character: Tile)
+    fun setRelativeTileAt(position: Position, tile: Tile)
 
+    /**
+     * Creates a copy of this [Layer].
+     */
     fun createCopy(): Layer
 
+    /**
+     * Fills the empty positions of this [Layer] with the
+     * given `filler` [Tile].
+     */
     fun fill(filler: Tile): Layer
 
 }

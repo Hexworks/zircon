@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
 import org.hexworks.zircon.api.input.MouseActionType.*
 import org.hexworks.zircon.gui.swing.internal.grid.TerminalMouseListener
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.junit.Before
 import org.junit.Test
 import java.awt.Component
@@ -32,7 +32,7 @@ class TileGridMouseListenerTest {
                 Pair(target::mouseExited, MOUSE_EXITED),
                 Pair(target::mousePressed, MOUSE_PRESSED),
                 Pair(target::mouseReleased, MOUSE_RELEASED))
-        EventBus.subscribe<InternalEvent.Input> {
+        EventBus.subscribe<ZirconEvent.Input> {
             inputs.add(it.input)
         }
     }

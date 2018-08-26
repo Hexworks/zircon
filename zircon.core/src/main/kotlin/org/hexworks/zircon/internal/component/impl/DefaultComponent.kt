@@ -22,7 +22,7 @@ import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.WrappingStrategy
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 
 @Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
@@ -50,12 +50,12 @@ abstract class DefaultComponent(
     init {
         graphic.setStyleFrom(componentStyleSet.getCurrentStyle())
         applyWrappers()
-        EventBus.listenTo<InternalEvent.MouseOver>(id) {
+        EventBus.listenTo<ZirconEvent.MouseOver>(id) {
             if (componentStyleSet.getCurrentStyle() != componentStyleSet.getStyleFor(ComponentState.MOUSE_OVER)) {
                 graphic.applyStyle(componentStyleSet.applyMouseOverStyle())
             }
         }
-        EventBus.listenTo<InternalEvent.MouseOut>(id) {
+        EventBus.listenTo<ZirconEvent.MouseOut>(id) {
             if (componentStyleSet.getCurrentStyle() != componentStyleSet.getStyleFor(ComponentState.DEFAULT)) {
                 graphic.applyStyle(componentStyleSet.reset())
             }
@@ -125,19 +125,19 @@ abstract class DefaultComponent(
             }
 
     override fun onMousePressed(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<InternalEvent.MousePressed>(id) { (mouseAction) ->
+        EventBus.listenTo<ZirconEvent.MousePressed>(id) { (mouseAction) ->
             callback.accept(mouseAction)
         }
     }
 
     override fun onMouseReleased(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<InternalEvent.MouseReleased>(id) { (mouseAction) ->
+        EventBus.listenTo<ZirconEvent.MouseReleased>(id) { (mouseAction) ->
             callback.accept(mouseAction)
         }
     }
 
     override fun onMouseMoved(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<InternalEvent.MouseMoved>(id) { (mouseAction) ->
+        EventBus.listenTo<ZirconEvent.MouseMoved>(id) { (mouseAction) ->
             callback.accept(mouseAction)
         }
     }

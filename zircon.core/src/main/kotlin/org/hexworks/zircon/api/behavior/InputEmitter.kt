@@ -22,8 +22,8 @@ interface InputEmitter {
      * by this object.
      */
     fun onInput(listener: (Input) -> Unit) = onInput(object : Consumer<Input> {
-        override fun accept(t: Input) {
-            listener.invoke(t)
+        override fun accept(p: Input) {
+            listener.invoke(p)
         }
     })
 }

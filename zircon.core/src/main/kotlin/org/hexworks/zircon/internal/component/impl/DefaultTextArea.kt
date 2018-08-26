@@ -20,7 +20,7 @@ import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.util.TextBuffer
 import org.hexworks.zircon.platform.extension.delete
 import org.hexworks.zircon.platform.extension.deleteCharAt
@@ -126,12 +126,12 @@ class DefaultTextArea constructor(
 
     private fun disableTyping() {
         cancelSubscriptions()
-        EventBus.broadcast(InternalEvent.HideCursor)
+        EventBus.broadcast(ZirconEvent.HideCursor)
     }
 
     private fun enableTyping() {
-        EventBus.broadcast(InternalEvent.RequestCursorAt(cursorPosition().withRelative(position())))
-        subscriptions.add(EventBus.subscribe<InternalEvent.KeyPressed> { (keyStroke) ->
+        EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition().withRelative(position())))
+        subscriptions.add(EventBus.subscribe<ZirconEvent.KeyPressed> { (keyStroke) ->
             val cursorPos = cursorPosition()
             val (offsetCols, offsetRows) = visibleOffset()
             val currColIdx = cursorPos.x + offsetCols
@@ -256,7 +256,7 @@ class DefaultTextArea constructor(
                     refreshDrawSurface()
                 }
             }
-            EventBus.broadcast(InternalEvent.RequestCursorAt(cursorPosition() + position()))
+            EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition() + position()))
         })
     }
 

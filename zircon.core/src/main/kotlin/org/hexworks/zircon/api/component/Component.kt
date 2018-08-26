@@ -19,7 +19,6 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  */
 interface Component : Identifiable, Layer {
 
-
     /**
      * Returns the effective [Size] of this [Component] which is the area remaining
      * after the area taken up by its wrappers are subtracted from its boundable size.

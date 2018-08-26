@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.InputType.Character
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.gui.swing.internal.grid.TerminalKeyListener
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.junit.Before
 import org.junit.Test
 import java.awt.Component
@@ -25,7 +25,7 @@ class TileGridKeyListenerTest {
     @Before
     fun setUp() {
         target = TerminalKeyListener()
-        EventBus.subscribe<InternalEvent.Input> {
+        EventBus.subscribe<ZirconEvent.Input> {
             inputs.add(it.input)
         }
     }

@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.WrappingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.internal.util.ThreadSafeQueue
 
@@ -50,7 +50,7 @@ class DefaultCheckBox(private val text: String,
 //            redrawContent()
 //            EventBus.broadcast(EventType.ComponentChange)
 //        })
-        EventBus.listenTo<InternalEvent.MouseReleased>(id) {
+        EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
             getDrawSurface().applyStyle(getComponentStyles().applyMouseOverStyle())
             checkBoxState = if (checked) UNCHECKED else CHECKED
             checked = checked.not()

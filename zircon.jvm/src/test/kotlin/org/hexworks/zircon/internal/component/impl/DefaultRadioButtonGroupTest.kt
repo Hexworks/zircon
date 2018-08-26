@@ -15,7 +15,7 @@ import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Consumer
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 import org.junit.Before
@@ -58,7 +58,7 @@ class DefaultRadioButtonGroupTest {
     fun shouldSelectChildButtonWhenClicked() {
         val button = target.addOption("foo", "bar")
 
-        EventBus.sendTo(button.id, InternalEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        EventBus.sendTo(button.id, ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(button.isSelected()).isTrue()
     }
@@ -69,8 +69,8 @@ class DefaultRadioButtonGroupTest {
         val newButton = target.addOption("baz", "qux")
 
 
-        EventBus.sendTo(oldButton.id, InternalEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
-        EventBus.sendTo(newButton.id, InternalEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        EventBus.sendTo(oldButton.id, ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        EventBus.sendTo(newButton.id, ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(oldButton.isSelected()).isFalse()
         assertThat(newButton.isSelected()).isTrue()
@@ -82,12 +82,12 @@ class DefaultRadioButtonGroupTest {
 
         val selected = AtomicBoolean(false)
         target.onSelection(object : Consumer<RadioButtonGroup.Selection> {
-            override fun accept(t: RadioButtonGroup.Selection) {
+            override fun accept(p: RadioButtonGroup.Selection) {
                 selected.set(true)
             }
         })
 
-        EventBus.sendTo(button.id, InternalEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        EventBus.sendTo(button.id, ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(selected.get()).isTrue()
     }
