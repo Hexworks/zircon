@@ -1,11 +1,7 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
-import org.hexworks.zircon.api.resource.ColorThemeResource
-import org.hexworks.zircon.api.util.Consumer
 
 object KotlinPlayground {
 
@@ -27,7 +23,6 @@ object KotlinPlayground {
 
         screen.addComponent(btn)
 
-        btn.onMouseMoved { mouseAction: MouseAction -> println(mouseAction) }
 
         screen.display()
 
