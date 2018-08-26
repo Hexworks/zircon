@@ -16,7 +16,7 @@ import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.hexworks.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.api.Modifiers
 import org.junit.Before
 import org.junit.Test
@@ -195,7 +195,7 @@ class DefaultContainerTest {
                 .build()
         target.addComponent(comp)
         val removalHappened = AtomicBoolean(false)
-        EventBus.subscribe<InternalEvent.ComponentRemoval> {
+        EventBus.subscribe<ZirconEvent.ComponentRemoval> {
             removalHappened.set(true)
         }
 
@@ -215,7 +215,7 @@ class DefaultContainerTest {
         panel.addComponent(comp)
         target.addComponent(panel)
         val removalHappened = AtomicBoolean(false)
-        EventBus.subscribe<InternalEvent.ComponentRemoval> {
+        EventBus.subscribe<ZirconEvent.ComponentRemoval> {
             removalHappened.set(true)
         }
 

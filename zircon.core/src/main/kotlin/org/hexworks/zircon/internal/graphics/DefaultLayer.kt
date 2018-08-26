@@ -42,8 +42,8 @@ data class DefaultLayer(private var position: Position,
 
     override fun getRelativeTileAt(position: Position) = backend.getTileAt(position)
 
-    override fun setRelativeTileAt(position: Position, character: Tile) {
-        backend.setTileAt(position, character)
+    override fun setRelativeTileAt(position: Position, tile: Tile) {
+        backend.setTileAt(position, tile)
     }
 
     override fun position() = position

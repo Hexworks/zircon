@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.junit.Before
 import org.junit.Test
 
@@ -49,7 +49,7 @@ class DefaultTextAreaTest {
     fun shouldProperlyHandleRightArrowWhenFocused() {
         target.giveFocus()
 
-        EventBus.broadcast(InternalEvent.KeyPressed(KeyStroke(type = InputType.ArrowRight)))
+        EventBus.broadcast(ZirconEvent.KeyPressed(KeyStroke(type = InputType.ArrowRight)))
 
         assertThat(target.cursorPosition()).isEqualTo(Position.defaultPosition().withRelativeX(1))
     }
@@ -60,7 +60,7 @@ class DefaultTextAreaTest {
         target.giveFocus()
 
         target.putCursorAt(Position.create(0, 1))
-        EventBus.broadcast(InternalEvent.KeyPressed(KeyStroke(type = InputType.ArrowLeft)))
+        EventBus.broadcast(ZirconEvent.KeyPressed(KeyStroke(type = InputType.ArrowLeft)))
 
         assertThat(target.cursorPosition()).isEqualTo(Position.create(3, 0))
     }
@@ -70,7 +70,7 @@ class DefaultTextAreaTest {
         target.giveFocus()
 
         target.putCursorAt(Position.create(1, 0))
-        EventBus.broadcast(InternalEvent.KeyPressed(KeyStroke(type = InputType.ArrowLeft)))
+        EventBus.broadcast(ZirconEvent.KeyPressed(KeyStroke(type = InputType.ArrowLeft)))
 
         assertThat(target.cursorPosition()).isEqualTo(Position.defaultPosition())
     }

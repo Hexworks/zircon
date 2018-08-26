@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.WrappingStrategy
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.util.ThreadSafeQueue
 
 class DefaultButton(private val text: String,
@@ -31,10 +31,10 @@ class DefaultButton(private val text: String,
     init {
         getDrawSurface().putText(text, getWrapperOffset())
 
-        EventBus.listenTo<InternalEvent.MousePressed>(id) {
+        EventBus.listenTo<ZirconEvent.MousePressed>(id) {
             getDrawSurface().applyStyle(getComponentStyles().applyActiveStyle())
         }
-        EventBus.listenTo<InternalEvent.MouseReleased>(id) {
+        EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
             getDrawSurface().applyStyle(getComponentStyles().applyMouseOverStyle())
         }
     }

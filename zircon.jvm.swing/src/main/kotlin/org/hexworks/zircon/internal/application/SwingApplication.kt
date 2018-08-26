@@ -25,7 +25,6 @@ class SwingApplication(private val appConfig: AppConfig) : Application {
 
     override fun start() {
         if (running.not()) {
-            frame.isVisible = true
             renderer.create()
             running = true
             renderJob = executor.submit {

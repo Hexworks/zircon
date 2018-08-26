@@ -15,7 +15,7 @@ public class UsingComponents {
         final TileGrid tileGrid = SwingApplications.startTileGrid(
                 AppConfigs.newConfig()
                         .defaultSize(Sizes.create(34, 18))
-                        .defaultTileset(CP437TilesetResources.wanderlust16x16())
+                        .defaultTileset(CP437TilesetResources.aduDhabi16x16())
                         .build());
         final Screen screen = Screens.createScreenFor(tileGrid);
 
@@ -63,16 +63,12 @@ public class UsingComponents {
         screen.addComponent(panel);
 
         // we can apply color themes to a screen
-        screen.applyColorTheme(ColorThemes.techLight());
+        screen.applyColorTheme(ColorThemes.monokaiBlue());
 
         // this is how you can define interactions with a component
-        left.onMouseReleased((mouseAction -> {
-            screen.applyColorTheme(ColorThemes.adriftInDreams());
-        }));
+        left.onMouseReleased((mouseAction -> screen.applyColorTheme(ColorThemes.monokaiGreen())));
 
-        right.onMouseReleased((mouseAction -> {
-            screen.applyColorTheme(ColorThemes.solarizedDarkOrange());
-        }));
+        right.onMouseReleased((mouseAction -> screen.applyColorTheme(ColorThemes.monokaiViolet())));
 
         // in order to see the changes you need to display your screen.
         screen.display();

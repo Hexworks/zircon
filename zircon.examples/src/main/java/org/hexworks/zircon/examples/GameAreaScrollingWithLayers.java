@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.builder.data.BlockBuilder;
 import org.hexworks.zircon.api.component.Button;
+import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.Panel;
 import org.hexworks.zircon.api.data.*;
 import org.hexworks.zircon.api.game.GameArea;
@@ -26,6 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class GameAreaScrollingWithLayers {
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
+    private static final ColorTheme THEME =ColorThemes.amigaOs();
     private static final int TERMINAL_WIDTH = 60;
     private static final int TERMINAL_HEIGHT = 30;
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
@@ -112,7 +114,7 @@ public class GameAreaScrollingWithLayers {
         generatePyramid(6, Positions.create3DPosition(15, 9, 5), gameArea);
         generatePyramid(5, Positions.create3DPosition(9, 21, 4), gameArea);
 
-        screen.applyColorTheme(ColorThemeResource.SOLARIZED_DARK_CYAN.getTheme());
+        screen.applyColorTheme(THEME);
         screen.display();
     }
 

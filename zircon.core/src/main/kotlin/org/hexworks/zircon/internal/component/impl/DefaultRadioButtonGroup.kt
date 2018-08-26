@@ -17,7 +17,7 @@ import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.WrappingStrategy
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.internal.util.ThreadSafeQueue
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
@@ -41,7 +41,7 @@ class DefaultRadioButtonGroup constructor(
 
     init {
         refreshContent()
-        EventBus.listenTo<InternalEvent.MouseReleased>(id) {
+        EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
             getDrawSurface().applyStyle(getComponentStyles().applyMouseOverStyle())
             refreshContent()
         }
@@ -60,7 +60,7 @@ class DefaultRadioButtonGroup constructor(
                 initialTileset = tileset()).also { button ->
             items[key] = button
             addComponent(button)
-            EventBus.listenTo<InternalEvent.MouseReleased>(button.id) {
+            EventBus.listenTo<ZirconEvent.MouseReleased>(button.id) {
                 selectedItem.map { lastSelected ->
                     if (lastSelected != key) {
                         items[lastSelected]?.removeSelection()

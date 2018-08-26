@@ -1,10 +1,6 @@
 package org.hexworks.zircon.examples.docs;
 
-import org.hexworks.zircon.api.ColorThemes;
-import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Screens;
-import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.screen.Screen;
@@ -29,8 +25,8 @@ public class SwitchingScreens {
                 .build();
         screen1.addComponent(prev);
 
-        next.onMouseReleased((mouseAction -> screen1.display()));
-        prev.onMouseReleased((mouseAction -> screen0.display()));
+        next.onMouseReleased(mouseAction -> screen1.display());
+        prev.onMouseReleased(mouseAction -> screen0.display());
 
         screen0.applyColorTheme(ColorThemes.adriftInDreams());
         screen1.applyColorTheme(ColorThemes.afterTheHeist());

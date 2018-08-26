@@ -21,7 +21,7 @@ import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.hexworks.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.api.Modifiers
 import org.junit.Before
 import org.junit.Test
@@ -76,7 +76,7 @@ class DefaultComponentTest {
     @Test
     fun shouldProperlyApplyStylesOnMouseOver() {
 
-        EventBus.sendTo(target.id, InternalEvent.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
+        EventBus.sendTo(target.id, ZirconEvent.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
 
         val targetChar = target.getDrawSurface().getTileAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(MOUSE_OVER_STYLE.backgroundColor())
@@ -85,9 +85,9 @@ class DefaultComponentTest {
 
     @Test
     fun shouldProperlyApplyStylesOnMouseOut() {
-        EventBus.sendTo(target.id, InternalEvent.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
+        EventBus.sendTo(target.id, ZirconEvent.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
 
-        EventBus.sendTo(target.id, InternalEvent.MouseOut(MouseAction(MouseActionType.MOUSE_EXITED, 1, Position.defaultPosition())))
+        EventBus.sendTo(target.id, ZirconEvent.MouseOut(MouseAction(MouseActionType.MOUSE_EXITED, 1, Position.defaultPosition())))
 
         val targetChar = target.getDrawSurface().getTileAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(DEFAULT_STYLE.backgroundColor())
@@ -151,12 +151,12 @@ class DefaultComponentTest {
     fun shouldProperlyListenToMousePress() {
         val pressed = AtomicBoolean(false)
         target.onMousePressed(object : Consumer<MouseAction> {
-            override fun accept(t: MouseAction) {
+            override fun accept(p: MouseAction) {
                 pressed.set(true)
             }
         })
 
-        EventBus.sendTo(target.id, InternalEvent.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION)))
+        EventBus.sendTo(target.id, ZirconEvent.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION)))
 
         assertThat(pressed.get()).isTrue()
     }
@@ -165,12 +165,12 @@ class DefaultComponentTest {
     fun shouldNotListenToMousePressOnOtherComponents() {
         val pressed = AtomicBoolean(false)
         target.onMousePressed(object : Consumer<MouseAction> {
-            override fun accept(t: MouseAction) {
+            override fun accept(p: MouseAction) {
                 pressed.set(true)
             }
         })
 
-        EventBus.sendTo(Identifier.randomIdentifier(), InternalEvent.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION)))
+        EventBus.sendTo(Identifier.randomIdentifier(), ZirconEvent.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION)))
 
         assertThat(pressed.get()).isFalse()
     }
@@ -179,12 +179,12 @@ class DefaultComponentTest {
     fun shouldProperlyListenToMouseRelease() {
         val pressed = AtomicBoolean(false)
         target.onMouseReleased(object : Consumer<MouseAction> {
-            override fun accept(t: MouseAction) {
+            override fun accept(p: MouseAction) {
                 pressed.set(true)
             }
         })
 
-        EventBus.sendTo(target.id, InternalEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        EventBus.sendTo(target.id, ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(pressed.get()).isTrue()
     }
@@ -193,12 +193,12 @@ class DefaultComponentTest {
     fun shouldNotListenToMouseReleaseOnOtherComponents() {
         val pressed = AtomicBoolean(false)
         target.onMouseReleased(object : Consumer<MouseAction> {
-            override fun accept(t: MouseAction) {
+            override fun accept(p: MouseAction) {
                 pressed.set(true)
             }
         })
 
-        EventBus.sendTo(Identifier.randomIdentifier(), InternalEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        EventBus.sendTo(Identifier.randomIdentifier(), ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
 
         assertThat(pressed.get()).isFalse()
     }

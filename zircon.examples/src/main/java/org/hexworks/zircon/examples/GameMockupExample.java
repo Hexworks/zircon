@@ -35,7 +35,7 @@ public class GameMockupExample {
     private static final int MAIN_MENU_PANEL_WIDTH = 25;
     private static final int MAIN_MENU_PANEL_HEIGHT = 10;
     private static final int PANEL_SPACING = 2;
-    private static final ColorTheme THEME = ColorThemeResource.SOLARIZED_DARK_YELLOW.getTheme();
+    private static final ColorTheme THEME = ColorThemes.arc();
 
     public static void main(String[] args) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -47,6 +47,7 @@ public class GameMockupExample {
                 .defaultTileset(TILESET)
                 .defaultSize(terminalSize)
                 .debugMode(true)
+                .fullScreen()
                 .build());
 
         final TileGrid tileGrid = app.getTileGrid();

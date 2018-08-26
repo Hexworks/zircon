@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.input.MouseActionType
 import org.hexworks.zircon.api.input.MouseActionType.*
 import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import java.awt.GraphicsEnvironment
 import java.awt.MouseInfo
 import java.awt.Toolkit
@@ -80,7 +80,7 @@ open class TerminalMouseListener(private val fontWidth: Int,
                 if (mouseMovedToNewPosition(actionType, position)
                                 .or(isNotMoveEvent(actionType))) {
                     lastMouseLocation = position
-                    EventBus.broadcast(InternalEvent.Input(it))
+                    EventBus.broadcast(ZirconEvent.Input(it))
                 }
             }
         } catch (e: Exception) {
@@ -104,7 +104,7 @@ open class TerminalMouseListener(private val fontWidth: Int,
         string.filter {
             TextUtils.isPrintableCharacter(it)
         }.forEach {
-            EventBus.broadcast(InternalEvent.Input(KeyStroke(character = it)))
+            EventBus.broadcast(ZirconEvent.Input(KeyStroke(character = it)))
         }
     }
 

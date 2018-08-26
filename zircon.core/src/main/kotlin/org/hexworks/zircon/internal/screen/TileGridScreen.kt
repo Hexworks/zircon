@@ -11,7 +11,7 @@ import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.impl.DefaultContainer
 import org.hexworks.zircon.internal.component.impl.DefaultComponentContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
 
@@ -41,20 +41,20 @@ class TileGridScreen(
         require(tileGrid is InternalTileGrid) {
             "The supplied TileGrid is not an instance of InternalTileGrid."
         }
-        EventBus.subscribe<InternalEvent.ScreenSwitch> { (screenId) ->
+        EventBus.subscribe<ZirconEvent.ScreenSwitch> { (screenId) ->
             if (debug) println("Screen switch event received. screenId: '$screenId'.")
             if (id != screenId) {
                 if (debug) println("Deactivating screen")
                 deactivate()
             }
         }
-        EventBus.subscribe<InternalEvent.RequestCursorAt> { (position) ->
+        EventBus.subscribe<ZirconEvent.RequestCursorAt> { (position) ->
             if (isActive()) {
                 tileGrid.setCursorVisibility(true)
                 tileGrid.putCursorAt(position)
             }
         }
-        EventBus.subscribe<InternalEvent.HideCursor> {
+        EventBus.subscribe<ZirconEvent.HideCursor> {
             if (isActive()) {
                 tileGrid.setCursorVisibility(false)
             }
@@ -62,7 +62,7 @@ class TileGridScreen(
     }
 
     override fun display() {
-        EventBus.broadcast(InternalEvent.ScreenSwitch(id))
+        EventBus.broadcast(ZirconEvent.ScreenSwitch(id))
         setCursorVisibility(false)
         putCursorAt(Position.defaultPosition())
         activate()

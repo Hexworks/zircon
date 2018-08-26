@@ -15,7 +15,7 @@ import org.hexworks.zircon.api.input.MouseActionType
 import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.api.Modifiers
 import org.junit.Before
 import org.junit.Test
@@ -122,7 +122,7 @@ class DefaultCheckBoxTest {
 
         EventBus.sendTo(
                 identifier = target.id,
-                event = InternalEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition())))
+                event = ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition())))
 
         Assertions.assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
     }

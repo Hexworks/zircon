@@ -12,8 +12,6 @@ import java.util.*
 
 object CustomGameAreaExample {
 
-    data class CustomTile(val characterTile: CharacterTile) : CharacterTile by characterTile
-
     class CustomGameArea(private val size: Size3D, private val layersPerBlock: Int) : BaseGameArea() {
         private val blocks = java.util.TreeMap<Position3D, Block>()
         private val filler = Blocks.newBuilder()

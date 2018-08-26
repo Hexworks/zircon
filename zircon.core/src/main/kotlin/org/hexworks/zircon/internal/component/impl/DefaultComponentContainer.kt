@@ -18,8 +18,8 @@ import org.hexworks.zircon.internal.component.ContainerHandlerState.UNKNOWN
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.event.InternalEvent
-import org.hexworks.zircon.internal.event.InternalEvent.*
+import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconEvent.*
 
 class DefaultComponentContainer(private var container: DefaultContainer) :
         InternalComponentContainer {
@@ -76,7 +76,7 @@ class DefaultComponentContainer(private var container: DefaultContainer) :
         if (debug) println("Activating container handler")
         state = ContainerHandlerState.ACTIVE
         refreshFocusableLookup()
-        subscriptions.add(EventBus.subscribe<InternalEvent.Input> { (input) ->
+        subscriptions.add(EventBus.subscribe<ZirconEvent.Input> { (input) ->
 
             keyStrokeHandlers[input]?.invoke()
 

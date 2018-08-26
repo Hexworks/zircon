@@ -11,6 +11,7 @@ object NonSquareTilesetExample {
 
         val tileGrid = SwingApplications.startTileGrid(
                 AppConfigs.newConfig()
+                        .enableBetaFeatures()
                         .defaultSize(Sizes.create(50, 40))
                         .defaultTileset(BuiltInCP437Tileset.REX_PAINT_16X16)
                         .build())
@@ -18,7 +19,7 @@ object NonSquareTilesetExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         val textBox = Components.textBox()
-                .position(Positions.create(4, 1))
+                .position(Positions.create(2, 0))
                 .size(Sizes.create(30, 20))
                 .paragraph("This text is more readable because it does not use a square tileset.")
                 .paragraph("This is a 8x16 tileset in fact...")
@@ -30,7 +31,7 @@ object NonSquareTilesetExample {
                 .title("Multi-size test")
                 .wrapWithBox()
                 .wrapWithShadow()
-                .position(Positions.create(5, 2))
+                .position(Positions.create(2, 0))
                 .size(Sizes.create(40, 30))
                 .build()
 

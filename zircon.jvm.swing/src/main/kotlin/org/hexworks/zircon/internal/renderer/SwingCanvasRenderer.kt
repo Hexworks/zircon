@@ -32,6 +32,11 @@ class SwingCanvasRenderer(private val canvas: Canvas,
     private var lastBlink: Long = lastRender
 
     override fun create() {
+        if (RuntimeConfig.config.fullScreen) {
+            frame.extendedState = JFrame.MAXIMIZED_BOTH
+            frame.isUndecorated = true
+        }
+        frame.isVisible = true
         frame.isResizable = false
         frame.addWindowStateListener {
             if (it.newState == Frame.NORMAL) {
@@ -70,10 +75,6 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         }
 
         frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-        if (RuntimeConfig.config.fullScreen) {
-            frame.extendedState = JFrame.MAXIMIZED_BOTH
-            frame.isUndecorated = true
-        }
         frame.pack()
         frame.setLocationRelativeTo(null)
 

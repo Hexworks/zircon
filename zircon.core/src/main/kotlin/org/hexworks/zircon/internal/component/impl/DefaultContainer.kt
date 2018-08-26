@@ -19,7 +19,7 @@ import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.WrappingStrategy
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.event.InternalEvent
+import org.hexworks.zircon.internal.event.ZirconEvent
 
 @Suppress("UNCHECKED_CAST")
 open class DefaultContainer(initialSize: Size,
@@ -70,7 +70,7 @@ open class DefaultContainer(initialSize: Size,
                 }
             }
             components.add(dc)
-            EventBus.broadcast(InternalEvent.ComponentAddition)
+            EventBus.broadcast(ZirconEvent.ComponentAddition)
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
     }
 
@@ -116,7 +116,7 @@ open class DefaultContainer(initialSize: Size,
             }
         }
         if (removalHappened) {
-            EventBus.broadcast(InternalEvent.ComponentRemoval)
+            EventBus.broadcast(ZirconEvent.ComponentRemoval)
         }
         return removalHappened
     }
