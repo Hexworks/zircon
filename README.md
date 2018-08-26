@@ -49,18 +49,17 @@ If you want to work with Zircon you can add it to your project as a dependency.
 from Maven:
 
 ```xml
-<dependency>
-    <groupId>org.hexworks.zircon</groupId>
-    <artifactId>zircon.jvm.swing</artifactId>
-    <version>2018.3.12-PREVIEW</version>
-</dependency>
-
+	<dependency>
+	    <groupId>com.github.Hexworks.Zircon</groupId>
+	    <artifactId>zircon.jvm.swing</artifactId>
+	    <version>2018.3.16-PREVIEW</version>
+	</dependency>
 ```
 
 or you can also use Gradle:
 
 ```groovy
-compile("org.hexworks.zircon:zircon.jvm.swing:2018.3.12-PREVIEW")
+compile("com.github.hexworks.zircon:zircon.swing:2018.3.16-PREVIEW")
 ```
 
 Note that you need to use [Jitpack](https://jitpack.io/#Hexworks/Zircon) for the above dependencies to work.
