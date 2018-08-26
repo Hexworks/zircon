@@ -12,6 +12,15 @@ dependencies {
     testCompile libraries.assertj
 }
 
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.kotlin
+}
+
+artifacts {
+    archives sourcesJar
+}
+
 jar {
     from project(':zircon.core').configurations.archives.allArtifacts.files.collect { zipTree it }
     from project(':zircon.jvm').configurations.archives.allArtifacts.files.collect { zipTree it }

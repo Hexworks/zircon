@@ -1,7 +1,11 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
+import org.hexworks.zircon.api.util.Consumer
 
 object KotlinPlayground {
 
@@ -14,17 +18,31 @@ object KotlinPlayground {
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .defaultTileset(TILESET)
                 .defaultSize(SIZE)
-                .debugMode(true)
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        val btn = Components.button().text("foo").build()
+        val c = Components.panel()
+                .size(Sizes.create(5, 5))
+                .wrapWithBox()
+                .position(Positions.create(1, 1))
+                .build()
 
-        screen.addComponent(btn)
+        c.setRelativeTileAt(Positions.create(1, 1), Tiles.defaultTile().withCharacter('x'))
+        c.setRelativeTileAt(Positions.create(2, 2), Tiles.defaultTile().withCharacter('y'))
+        c.setRelativeTileAt(Positions.create(3, 3), Tiles.defaultTile().withCharacter('z'))
 
+        screen.addComponent(c)
+
+        c.onMouseReleased(object : Consumer<MouseAction> {
+            override fun accept(t: MouseAction) {
+                println("Pos: ${c.position()}, EPos: ${c.getEffectivePosition()}")
+                println("Char: ${c.getTileAt(t.position).get().asCharacterTile().get().character}")
+            }
+        })
 
         screen.display()
+        screen.applyColorTheme(ColorThemes.adriftInDreams())
 
     }
 
