@@ -75,11 +75,11 @@ abstract class DefaultComponent(
     }
 
     override fun getTileAt(position: Position): Maybe<Tile> {
-        return graphic.getTileAt(position.minus(position()))
+        return graphic.getTileAt(position.minus(getEffectivePosition()))
     }
 
     override fun setTileAt(position: Position, tile: Tile) {
-        graphic.setTileAt(position.minus(position()), tile)
+        graphic.setTileAt(position.minus(getEffectivePosition()), tile)
     }
 
     override fun snapshot(): Map<Position, Tile> {
@@ -114,7 +114,7 @@ abstract class DefaultComponent(
     override fun position() = boundable.position()
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
-        surface.draw(graphic, boundable.position())
+        surface.draw(graphic, position)
     }
 
     override fun fetchComponentByPosition(position: Position) =
