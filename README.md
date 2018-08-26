@@ -2,7 +2,6 @@
 
 <img src="https://cdn.discordapp.com/attachments/205245036084985857/481213000540225550/full_example.gif" />
 
-
 *Note that* this library was inspired by [Lanterna](https://github.com/mabe02/lanterna). 
 Check it out if you are looking for a *terminal emulator* instead. 
 
