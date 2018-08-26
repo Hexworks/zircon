@@ -75,11 +75,11 @@ abstract class DefaultComponent(
     }
 
     override fun getTileAt(position: Position): Maybe<Tile> {
-        return graphic.getTileAt(position)
+        return graphic.getTileAt(position.minus(position()))
     }
 
     override fun setTileAt(position: Position, tile: Tile) {
-        graphic.setTileAt(position, tile)
+        graphic.setTileAt(position.minus(position()), tile)
     }
 
     override fun snapshot(): Map<Position, Tile> {
