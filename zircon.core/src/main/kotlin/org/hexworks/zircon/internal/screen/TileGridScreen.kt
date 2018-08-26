@@ -8,8 +8,8 @@ import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.behavior.impl.ComponentsLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
-import org.hexworks.zircon.internal.component.impl.DefaultContainer
 import org.hexworks.zircon.internal.component.impl.DefaultComponentContainer
+import org.hexworks.zircon.internal.component.impl.DefaultContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.grid.InternalTileGrid
@@ -35,6 +35,7 @@ class TileGridScreen(
         InternalComponentContainer by containerHandler {
 
     override val id = Identifier.randomIdentifier()
+    var activeScreenId = Identifier.randomIdentifier()
 
     init {
         val debug = RuntimeConfig.config.debugMode
@@ -43,6 +44,7 @@ class TileGridScreen(
         }
         EventBus.subscribe<ZirconEvent.ScreenSwitch> { (screenId) ->
             if (debug) println("Screen switch event received. screenId: '$screenId'.")
+            activeScreenId = screenId
             if (id != screenId) {
                 if (debug) println("Deactivating screen")
                 deactivate()
@@ -62,11 +64,13 @@ class TileGridScreen(
     }
 
     override fun display() {
-        EventBus.broadcast(ZirconEvent.ScreenSwitch(id))
-        setCursorVisibility(false)
-        putCursorAt(Position.defaultPosition())
-        activate()
-        (tileGrid as InternalTileGrid).useContentsOf(buffer)
+        if (activeScreenId != id) {
+            EventBus.broadcast(ZirconEvent.ScreenSwitch(id))
+            setCursorVisibility(false)
+            putCursorAt(Position.defaultPosition())
+            activate()
+            (tileGrid as InternalTileGrid).useContentsOf(buffer)
+        }
     }
 
 }
