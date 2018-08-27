@@ -1,9 +1,12 @@
 package org.hexworks.zircon.internal.tileset
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -40,7 +43,30 @@ class LibgdxTileset(private val path: String,
     override fun height() = height
 
     override fun drawTile(tile: Tile, surface: SpriteBatch, position: Position) {
-        TODO()
+//        val aPos = position.toAbsolutePosition(tileset) + offset
+//        val x = aPos.x.toFloat()
+//        val y = height - aPos.y.toFloat()
+//        val actualTileset = tilesetLoader.loadTilesetFrom(tileset)
+
+//        val tileWidth = actualTileset.width().toFloat()
+//        val tileHeight = actualTileset.height().toFloat()
+//        val drawable = TextureRegionDrawable(fetchTextureForTile(tile).getTexture())
+//        val fr = tile.getForegroundColor().getRed().toFloat().div(255)
+//        val fg = tile.getForegroundColor().getGreen().toFloat().div(255)
+//        val fb = tile.getForegroundColor().getBlue().toFloat().div(255)
+//        val fa = tile.getForegroundColor().getAlpha().toFloat().div(255)
+
+//            val br = tile.backgroundColor().getRed().toFloat().div(255)
+//            val bg = tile.backgroundColor().getGreen().toFloat().div(255)
+//            val bb = tile.backgroundColor().getBlue().toFloat().div(255)
+//            val ba = tile.backgroundColor().getAlpha().toFloat().div(255)
+
+//        val tinted = drawable.tint(Color(fr, fg, fb, fa)) as SpriteDrawable
+//        tinted.draw(surface,
+//                x,
+//                y + tileHeight,
+//                tileWidth,
+//                tileHeight)
     }
 
     private fun fetchTextureForTile(tile: Tile): TileTexture<TextureRegion> {
