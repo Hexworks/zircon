@@ -1,7 +1,7 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 
 object NonSquareTilesetExample {
@@ -13,7 +13,7 @@ object NonSquareTilesetExample {
                 AppConfigs.newConfig()
                         .enableBetaFeatures()
                         .defaultSize(Sizes.create(50, 40))
-                        .defaultTileset(BuiltInCP437Tileset.REX_PAINT_16X16)
+                        .defaultTileset(BuiltInCP437TilesetResource.REX_PAINT_16X16)
                         .build())
 
         val screen = Screens.createScreenFor(tileGrid)
@@ -24,7 +24,7 @@ object NonSquareTilesetExample {
                 .paragraph("This text is more readable because it does not use a square tileset.")
                 .paragraph("This is a 8x16 tileset in fact...")
                 .paragraph("It works fine with a Panel which uses a 16x16 tileset!")
-                .tileset(BuiltInCP437Tileset.VGA_8X16)
+                .tileset(BuiltInCP437TilesetResource.VGA_8X16)
                 .build()
 
         val panel = Components.panel()

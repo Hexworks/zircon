@@ -2,14 +2,17 @@ package org.hexworks.zircon.internal.tileset
 
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import java.io.File
+import kotlin.reflect.KClass
 
 /**
  * Represents a tileset which is backed by a sprite sheet.
@@ -17,10 +20,11 @@ import java.io.File
 class LibgdxTileset(private val path: String,
                     private val width: Int,
                     private val height: Int)
-    : Tileset<TextureRegion> {
+    : Tileset<TextureRegion, SpriteBatch> {
 
     override val id: Identifier = Identifier.randomIdentifier()
     override val sourceType = TextureRegion::class
+    override val targetType = SpriteBatch::class
 
     private val texture: Texture by lazy {
         val bytes = File(path).readBytes()
@@ -35,11 +39,11 @@ class LibgdxTileset(private val path: String,
 
     override fun height() = height
 
-    override fun supportsTile(tile: Tile): Boolean {
-        return true
+    override fun drawTile(tile: Tile, surface: SpriteBatch, position: Position) {
+        TODO()
     }
 
-    override fun fetchTextureForTile(tile: Tile): TileTexture<TextureRegion> {
+    private fun fetchTextureForTile(tile: Tile): TileTexture<TextureRegion> {
         tile as? CharacterTile ?: throw IllegalArgumentException("Wrong tile type")
         val meta = CP437_METADATA[tile.character]!!
         val tr = TextureRegion(texture, meta.x * width, meta.y * height, width, height)

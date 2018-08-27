@@ -1,8 +1,9 @@
 package org.hexworks.zircon.internal.tileset
 
 import org.hexworks.zircon.api.data.GraphicTile
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.resource.GraphicalTilesetResource
+import org.hexworks.zircon.api.resource.BuiltInGraphicalTilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
@@ -12,6 +13,7 @@ import org.hexworks.zircon.internal.tileset.impl.GraphicTileTextureMetadata
 import org.hexworks.zircon.internal.util.rex.unZipIt
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
+import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.InputStream
@@ -19,10 +21,11 @@ import javax.imageio.ImageIO
 
 @Suppress("unused")
 class BufferedImageGraphicTileset(private val resource: TilesetResource)
-    : Tileset<BufferedImage> {
+    : Tileset<BufferedImage, Graphics2D> {
 
     override val id: Identifier = resource.id
     override val sourceType = BufferedImage::class
+    override val targetType = Graphics2D::class
 
     private val metadata: Map<String, GraphicTileTextureMetadata>
     private val source: BufferedImage
@@ -33,7 +36,7 @@ class BufferedImageGraphicTileset(private val resource: TilesetResource)
                     " a GraphicTile-based tileset."
         }
 
-        val resourceStream: InputStream = if (resource is GraphicalTilesetResource) {
+        val resourceStream: InputStream = if (resource is BuiltInGraphicalTilesetResource) {
             this::class.java.getResourceAsStream(resource.path)
         } else {
             File(resource.path).inputStream()
@@ -76,11 +79,15 @@ class BufferedImageGraphicTileset(private val resource: TilesetResource)
         return resource.height
     }
 
-    override fun supportsTile(tile: Tile): Boolean {
-        TODO()
+    override fun drawTile(tile: Tile, surface: Graphics2D, position: Position) {
+        val texture = fetchTextureForTile(tile)
+        val x = position.x * width()
+        val y = position.y * height()
+        surface.drawImage(texture.getTexture(), x, y, null)
     }
 
-    override fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {
+
+    private fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {
         tile as? GraphicTile ?: throw IllegalArgumentException("Wrong tile type")
         return metadata[tile.name]?.let { meta ->
             DefaultTileTexture(

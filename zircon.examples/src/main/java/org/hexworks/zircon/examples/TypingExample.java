@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.data.CharacterTile;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.input.InputType;
-import org.hexworks.zircon.api.resource.BuiltInCP437Tileset;
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class TypingExample {
     public static void main(String[] args) {
 
         final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigBuilder.Companion.newBuilder()
-                .defaultTileset(BuiltInCP437Tileset.BISASAM_16X16)
+                .defaultTileset(BuiltInCP437TilesetResource.BISASAM_16X16)
                 .defaultSize(Sizes.create(TERMINAL_WIDTH, 10))
                 .cursorBlinking(true)
                 .cursorStyle(CursorStyle.FIXED_BACKGROUND)

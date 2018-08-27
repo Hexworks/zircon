@@ -157,26 +157,27 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         return gc
     }
 
-    private fun renderTiles(graphics: Graphics,
+    private fun renderTiles(graphics: Graphics2D,
                             tiles: Map<Position, Tile>,
-                            tileset: Tileset<BufferedImage>) {
+                            tileset: Tileset<BufferedImage, Graphics2D>) {
         tiles.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
-                val (x, y) = pos.toAbsolutePosition(tileset)
                 val actualTile = if (tile.isBlinking() && blinkOn) {
                     tile.withBackgroundColor(tile.getForegroundColor())
                             .withForegroundColor(tile.getBackgroundColor())
                 } else {
                     tile
                 }
-                val actualTileset: Tileset<BufferedImage> = if (actualTile is TilesetOverride) {
+                val actualTileset: Tileset<BufferedImage, Graphics2D> = if (actualTile is TilesetOverride) {
                     tilesetLoader.loadTilesetFrom(actualTile.tileset())
                 } else {
                     tileset
                 }
 
-                val texture = actualTileset.fetchTextureForTile(actualTile)
-                graphics.drawImage(texture.getTexture(), x, y, null)
+                actualTileset.drawTile(
+                        tile = actualTile,
+                        surface = graphics,
+                        position = pos)
             }
         }
     }

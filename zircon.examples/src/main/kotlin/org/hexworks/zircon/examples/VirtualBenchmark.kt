@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.graphics.DefaultLayer
 import org.hexworks.zircon.internal.graphics.MapTileGraphic
 import java.util.*
@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
 
     val size = Size.create(80, 40)
 
-    val tileset = BuiltInCP437Tileset.WANDERLUST_16X16
+    val tileset = BuiltInCP437TilesetResource.WANDERLUST_16X16
 
     val tileGrid = VirtualApplications.startTileGrid(AppConfigBuilder.newBuilder()
             .defaultSize(size)

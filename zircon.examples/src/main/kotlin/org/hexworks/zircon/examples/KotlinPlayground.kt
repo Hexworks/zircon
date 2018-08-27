@@ -1,16 +1,14 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.util.Consumer
 
 object KotlinPlayground {
 
     private val SIZE = Sizes.create(50, 30)
-    private val TILESET = BuiltInCP437Tileset.TAFFER_20X20
+    private val TILESET = BuiltInCP437TilesetResource.TAFFER_20X20
 
     @JvmStatic
     fun main(args: Array<String>) {

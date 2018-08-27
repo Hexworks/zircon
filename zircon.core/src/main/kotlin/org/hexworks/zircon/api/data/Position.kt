@@ -3,6 +3,7 @@
 package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 
 interface Position : Comparable<Position> {
@@ -14,7 +15,7 @@ interface Position : Comparable<Position> {
 
     operator fun component2() = y
 
-    fun toAbsolutePosition(tileset: Tileset<out Any>): AbsolutePosition
+    fun toAbsolutePosition(tileset: TilesetResource): AbsolutePosition
 
     override fun compareTo(other: Position): Int {
         checkType(this, other)

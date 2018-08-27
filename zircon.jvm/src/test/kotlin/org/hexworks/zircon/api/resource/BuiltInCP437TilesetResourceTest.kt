@@ -6,13 +6,13 @@ import org.hexworks.zircon.internal.util.CP437Utils
 import org.junit.Before
 import org.junit.Test
 
-class BuiltInCP437TilesetTest {
+class BuiltInCP437TilesetResourceTest {
 
     lateinit var target: TilesetResource
 
     @Before
     fun setUp() {
-        target = BuiltInCP437Tileset.WANDERLUST_16X16
+        target = BuiltInCP437TilesetResource.WANDERLUST_16X16
     }
 
     @Test

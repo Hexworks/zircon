@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
-import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.hexworks.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
@@ -44,7 +44,7 @@ class DefaultContainerTest {
     fun shouldProperlySetPositionsWhenAContainerWithComponentsIsAddedToTheComponentTree() {
         val grid = TileGridBuilder.newBuilder()
                 .size(Size.create(40, 25))
-                .tileset(BuiltInCP437Tileset.REX_PAINT_16X16)
+                .tileset(BuiltInCP437TilesetResource.REX_PAINT_16X16)
                 .build()
 
         val screen = ScreenBuilder.createScreenFor(grid)
@@ -90,7 +90,7 @@ class DefaultContainerTest {
     fun shouldProperlySetPositionsWhenAContainerIsAddedToTheComponentTreeThenComponentsAreAddedToIt() {
         val grid = TileGridBuilder.newBuilder()
                 .size(Size.create(40, 25))
-                .tileset(BuiltInCP437Tileset.REX_PAINT_16X16)
+                .tileset(BuiltInCP437TilesetResource.REX_PAINT_16X16)
                 .build()
         val screen = ScreenBuilder.createScreenFor(grid)
 
@@ -135,7 +135,7 @@ class DefaultContainerTest {
     fun shouldProperlySetPositionsWhenAComponentIsAddedToAContainerAfterItIsAttachedToTheScreen() {
         val grid = TileGridBuilder.newBuilder()
                 .size(Size.create(40, 25))
-                .tileset(BuiltInCP437Tileset.REX_PAINT_16X16)
+                .tileset(BuiltInCP437TilesetResource.REX_PAINT_16X16)
                 .build()
         val screen = ScreenBuilder.createScreenFor(grid)
 
@@ -224,8 +224,8 @@ class DefaultContainerTest {
     }
 
     companion object {
-        val GOOD_FONT = BuiltInCP437Tileset.AESOMATICA_16X16
-        val BAD_FONT = BuiltInCP437Tileset.BISASAM_20X20
+        val GOOD_FONT = BuiltInCP437TilesetResource.AESOMATICA_16X16
+        val BAD_FONT = BuiltInCP437TilesetResource.BISASAM_20X20
         val SIZE = Size.create(4, 4)
         val POSITION = Position.create(2, 3)
         val NEW_POSITION = Position.create(6, 7)

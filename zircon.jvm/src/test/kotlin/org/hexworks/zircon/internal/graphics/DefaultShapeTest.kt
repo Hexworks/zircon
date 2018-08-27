@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.graphics
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.shape.DefaultShape
 import org.junit.Test
 
@@ -42,7 +42,7 @@ class DefaultShapeTest {
     }
 
     companion object {
-        val TILESET = BuiltInCP437Tileset.ADU_DHABI_16X16
+        val TILESET = BuiltInCP437TilesetResource.ADU_DHABI_16X16
 
         val POS_0 = Position.create(2, 3)
         val POS_1 = Position.create(3, 4)

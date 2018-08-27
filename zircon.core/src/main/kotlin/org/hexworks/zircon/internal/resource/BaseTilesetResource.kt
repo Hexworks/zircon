@@ -1,10 +1,9 @@
-package org.hexworks.zircon.api.resource
+package org.hexworks.zircon.internal.resource
 
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Identifier
-import org.hexworks.zircon.internal.behavior.Identifiable
-import kotlin.reflect.KClass
 
 /**
  * Contains metadata about a tileset for a given [Tile] type.
