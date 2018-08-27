@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.color.ANSITileColor;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.CharacterTileString;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.BuiltInCP437Tileset;
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
 
 public class TextCharacterStringExample {
 
@@ -16,7 +16,7 @@ public class TextCharacterStringExample {
 
     public static void main(String[] args) {
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .defaultTileset(BuiltInCP437Tileset.TAFFER_20X20)
+                .defaultTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
                 .defaultSize(SIZE)
                 .debugMode(true)
                 .build());

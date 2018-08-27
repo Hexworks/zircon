@@ -1,9 +1,9 @@
 package org.hexworks.zircon.api
 
-import org.hexworks.zircon.api.resource.GraphicalTilesetResource
+import org.hexworks.zircon.api.resource.BuiltInGraphicalTilesetResource
 
 object GraphicalTilesetResources {
 
     @JvmStatic
-    fun nethack16x16() = GraphicalTilesetResource.NETHACK_16X16
+    fun nethack16x16() = BuiltInGraphicalTilesetResource.NETHACK_16X16
 }

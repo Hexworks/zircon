@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.tileset.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.tileset.SwingTilesetLoader
 import org.junit.Ignore
 import org.junit.Test
@@ -10,7 +10,7 @@ import org.junit.Test
 @Ignore
 class BufferedImageCP437TilesetTest {
 
-    val target = SwingTilesetLoader().loadTilesetFrom(BuiltInCP437Tileset.WANDERLUST_16X16)
+    val target = SwingTilesetLoader().loadTilesetFrom(BuiltInCP437TilesetResource.WANDERLUST_16X16)
 
     @Test
     fun shouldProperlyCacheFontWhenFetchingRegionTwice() {

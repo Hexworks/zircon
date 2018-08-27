@@ -5,17 +5,15 @@ import org.hexworks.zircon.api.util.Identifier
 import kotlin.reflect.KClass
 
 /**
- * This enum encapsulates the means of loading CP437 tilesets.
- * You can either use a built-in tileset (extracted from the Dwarf Fortress tileset
- * repository) or you can load your own using TODO
+ * This enum contains the metadata for the built-in CP437 tilesets.
  */
-enum class BuiltInCP437Tileset(private val tilesetName: String,
-                               override val width: Int,
-                               override val height: Int,
-                               private val fileName: String = "${tilesetName}_${width}x$height.png",
-                               override val id: Identifier = Identifier.randomIdentifier(),
-                               override val tileType: KClass<CharacterTile> = CharacterTile::class,
-                               override val path: String = "/cp_437_tilesets/$fileName")
+enum class BuiltInCP437TilesetResource(private val tilesetName: String,
+                                       override val width: Int,
+                                       override val height: Int,
+                                       private val fileName: String = "${tilesetName}_${width}x$height.png",
+                                       override val id: Identifier = Identifier.randomIdentifier(),
+                                       override val tileType: KClass<CharacterTile> = CharacterTile::class,
+                                       override val path: String = "/cp_437_tilesets/$fileName")
     : TilesetResource {
 
     JOLLY_12X12("jolly", 12, 12),

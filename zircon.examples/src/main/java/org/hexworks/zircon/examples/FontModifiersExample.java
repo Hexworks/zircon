@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.modifier.Border;
 import org.hexworks.zircon.api.modifier.RayShade;
 import org.hexworks.zircon.api.modifier.SimpleModifiers;
-import org.hexworks.zircon.api.resource.BuiltInCP437Tileset;
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,7 +28,7 @@ public class FontModifiersExample {
     public static void main(String[] args) {
 
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .defaultTileset(BuiltInCP437Tileset.WANDERLUST_16X16)
+                .defaultTileset(BuiltInCP437TilesetResource.WANDERLUST_16X16)
                 .defaultSize(SIZE)
                 .debugMode(true)
                 .build());

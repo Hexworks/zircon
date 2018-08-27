@@ -1,18 +1,15 @@
 package org.hexworks.zircon.api.resource
 
 import org.hexworks.zircon.api.data.GraphicTile
-import org.hexworks.zircon.api.util.Identifier
-import kotlin.reflect.KClass
+import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.internal.resource.BaseTilesetResource
 
-enum class GraphicalTilesetResource(private val tilesetName: String,
-                                    override val width: Int,
-                                    override val height: Int,
-                                    private val fileName: String = "${tilesetName}_${width}x$height.zip",
-                                    override val id: Identifier = Identifier.randomIdentifier(),
-                                    override val tileType: KClass<GraphicTile> = GraphicTile::class,
-                                    override val path: String = "/graphic_tilesets/$fileName")
-    : TilesetResource {
+/**
+ * Tileset resource class which can be used with [GraphicTile]s.
+ */
+class GraphicalTilesetResource(override val width: Int,
+                               override val height: Int,
+                               override val path: String) : BaseTilesetResource() {
 
-    NETHACK_16X16("nethack", 16, 16)
-
+    override val tileType = GraphicTile::class
 }

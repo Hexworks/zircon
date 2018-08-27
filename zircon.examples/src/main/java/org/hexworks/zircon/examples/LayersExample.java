@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.BuiltInCP437Tileset;
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +21,7 @@ public class LayersExample {
     public static void main(String[] args) {
 
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .defaultTileset(BuiltInCP437Tileset.ROGUE_YUN_16X16)
+                .defaultTileset(BuiltInCP437TilesetResource.ROGUE_YUN_16X16)
                 .defaultSize(SIZE)
                 .debugMode(true)
                 .build());

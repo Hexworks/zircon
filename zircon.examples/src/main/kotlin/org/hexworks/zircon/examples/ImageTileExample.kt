@@ -5,12 +5,10 @@ import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
-import org.hexworks.zircon.api.data.AbsolutePosition
-import org.hexworks.zircon.api.data.ImageTile
 
 object ImageTileExample {
 
-    val imageDictionary = ImageDictionaryTilesetResources.loadFromDirectory("zircon.examples/src/main/resources/image_dictionary")
+    private val imageDictionary = ImageDictionaryTilesetResources.loadFromDirectory("zircon.examples/src/main/resources/image_dictionary")
 
     @JvmStatic
     fun main(args: Array<String>) {

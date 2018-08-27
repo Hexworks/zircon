@@ -41,8 +41,7 @@ class VirtualRenderer(private val tileGrid: InternalTileGrid) : Renderer {
     private fun renderTiles(tiles: Map<Position, Tile>) {
         tiles.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
-                val (x, y) = pos.toAbsolutePosition(tileset)
-                val texture = tileset.fetchTextureForTile(tile)
+                tileset.drawTile(tile, 'x', pos)
             }
         }
     }

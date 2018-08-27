@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.input.KeyStroke
-import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.impl.DefaultLabelTest
 import org.hexworks.zircon.internal.event.ZirconEvent
@@ -83,7 +83,7 @@ class TileGridScreenTest {
 
     @Test
     fun shouldProperlyOverrideTerminalFontWhenHasOverrideFontAndDisplayIsCalled() {
-        val expectedFont = BuiltInCP437Tileset.AESOMATICA_16X16
+        val expectedFont = BuiltInCP437TilesetResource.AESOMATICA_16X16
         target.useTileset(expectedFont)
         target.display()
         assertThat(target.tileset().id).isEqualTo(expectedFont.id)
@@ -92,7 +92,7 @@ class TileGridScreenTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldProperlyThrowExceptionWhenTyringToSetNonCompatibleFont() {
-        target.useTileset(BuiltInCP437Tileset.BISASAM_20X20)
+        target.useTileset(BuiltInCP437TilesetResource.BISASAM_20X20)
     }
 
     @Test
@@ -117,7 +117,7 @@ class TileGridScreenTest {
 
     companion object {
         val SIZE = Size.create(10, 10)
-        val FONT = BuiltInCP437Tileset.ROGUE_YUN_16X16
+        val FONT = BuiltInCP437TilesetResource.ROGUE_YUN_16X16
         val CHAR = TileBuilder.newBuilder()
                 .character('x')
                 .build()

@@ -16,7 +16,7 @@ import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.graphics.TileGraphic;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.modifier.BorderType;
-import org.hexworks.zircon.api.resource.BuiltInCP437Tileset;
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.resource.ColorThemeResource;
 import org.hexworks.zircon.api.resource.REXPaintResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
@@ -33,7 +33,7 @@ public class FullExample {
 
     private static final Size PANEL_SIZE = Sizes.create(29, 8);
     private static final Size SCREEN_SIZE = Sizes.create(65, 33);
-    private static final TilesetResource TILESET = BuiltInCP437Tileset.ROGUE_YUN_16X16;
+    private static final TilesetResource TILESET = BuiltInCP437TilesetResource.ROGUE_YUN_16X16;
     private static final ColorTheme INTRO_THEME = TRON.getTheme();
     private static final ColorTheme PANELS_THEME = AMIGA_OS.getTheme();
     private static final ColorTheme INPUTS_THEME = GAMEBOOKERS.getTheme();

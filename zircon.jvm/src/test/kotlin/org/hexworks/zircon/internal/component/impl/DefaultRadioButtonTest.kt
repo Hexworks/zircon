@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentState
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
@@ -125,7 +125,7 @@ class DefaultRadioButtonTest {
             .get().asCharacterTile().get().character
 
     companion object {
-        val TILESET = BuiltInCP437Tileset.REX_PAINT_10X10
+        val TILESET = BuiltInCP437TilesetResource.REX_PAINT_10X10
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
         val WIDTH = 20

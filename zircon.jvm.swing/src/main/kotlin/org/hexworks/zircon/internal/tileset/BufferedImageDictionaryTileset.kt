@@ -3,21 +3,26 @@ package org.hexworks.zircon.internal.tileset
 import com.github.benmanes.caffeine.cache.Caffeine
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.ImageTile
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
+import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.imageio.ImageIO
+import kotlin.reflect.KClass
 
-class BufferedImageDictionaryTileset(resource: TilesetResource) : Tileset<BufferedImage> {
+class BufferedImageDictionaryTileset(resource: TilesetResource)
+    : Tileset<BufferedImage, Graphics2D> {
 
-    override val sourceType = BufferedImage::class
     override val id = Identifier.randomIdentifier()
+    override val sourceType = BufferedImage::class
+    override val targetType = Graphics2D::class
 
     private val cache = Caffeine.newBuilder()
             .initialCapacity(100)
@@ -40,12 +45,14 @@ class BufferedImageDictionaryTileset(resource: TilesetResource) : Tileset<Buffer
 
     override fun height() = 1
 
-    override fun supportsTile(tile: Tile): Boolean {
-        tile as? ImageTile ?: throw IllegalArgumentException()
-        return images.containsKey(tile.name)
+    override fun drawTile(tile: Tile, surface: Graphics2D, position: Position) {
+        val texture = fetchTextureForTile(tile)
+        val x = position.x * width()
+        val y = position.y * height()
+        surface.drawImage(texture.getTexture(), x, y, null)
     }
 
-    override fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {
+    private fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {
         tile as? ImageTile ?: throw IllegalArgumentException("Wrong tile type")
         val maybeRegion = cache.getIfPresent(tile.name)
         val file = images[tile.name]!!

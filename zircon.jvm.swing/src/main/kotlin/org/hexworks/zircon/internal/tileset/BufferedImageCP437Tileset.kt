@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.tileset
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.RayShade
@@ -13,12 +14,14 @@ import org.hexworks.zircon.api.tileset.lookup.CP437TileMetadataLoader
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.hexworks.zircon.internal.tileset.transformer.*
+import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 import java.util.concurrent.TimeUnit
+import kotlin.reflect.KClass
 
 class BufferedImageCP437Tileset(private val resource: TilesetResource,
                                 private val source: BufferedImage)
-    : Tileset<BufferedImage> {
+    : Tileset<BufferedImage, Graphics2D> {
 
     override val id: Identifier = Identifier.randomIdentifier()
 
@@ -33,6 +36,7 @@ class BufferedImageCP437Tileset(private val resource: TilesetResource,
             .build<String, TileTexture<BufferedImage>>()
 
     override val sourceType = BufferedImage::class
+    override val targetType = Graphics2D::class
 
     init {
         require(resource.tileType == CharacterTile::class) {
@@ -49,15 +53,14 @@ class BufferedImageCP437Tileset(private val resource: TilesetResource,
         return resource.height
     }
 
-    override fun supportsTile(tile: Tile): Boolean {
-        return if (tile is CharacterTile) {
-            lookup.supportsTile(tile)
-        } else {
-            false
-        }
+    override fun drawTile(tile: Tile, surface: Graphics2D, position: Position) {
+        val texture = fetchTextureForTile(tile)
+        val x = position.x * width()
+        val y = position.y * height()
+        surface.drawImage(texture.getTexture(), x, y, null)
     }
 
-    override fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {
+    private fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {
         tile as? CharacterTile ?: throw IllegalArgumentException("Wrong tile type")
         val key = tile.generateCacheKey()
         val meta = lookup.fetchMetaForTile(tile)

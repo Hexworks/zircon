@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.tileset
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.data.CharacterTile
@@ -11,11 +12,11 @@ import org.hexworks.zircon.api.util.Identifier
 import kotlin.reflect.KClass
 
 @Suppress("UNCHECKED_CAST")
-class LibgdxTilesetLoader : TilesetLoader<TextureRegion>, Closeable {
+class LibgdxTilesetLoader : TilesetLoader<TextureRegion, SpriteBatch>, Closeable {
 
-    private val tilesetCache = mutableMapOf<Identifier, Tileset<TextureRegion>>()
+    private val tilesetCache = mutableMapOf<Identifier, Tileset<TextureRegion, SpriteBatch>>()
 
-    override fun loadTilesetFrom(resource: TilesetResource): Tileset<TextureRegion> {
+    override fun loadTilesetFrom(resource: TilesetResource): Tileset<TextureRegion, SpriteBatch> {
         return tilesetCache.getOrPut(resource.id) {
             LOADERS[resource.tileType]?.invoke(resource)
                     ?: throw IllegalArgumentException("Unknown tile type '${resource.tileType}'.§")
@@ -28,7 +29,7 @@ class LibgdxTilesetLoader : TilesetLoader<TextureRegion>, Closeable {
 
     companion object {
 
-        private val LOADERS: Map<KClass<out Tile>, (TilesetResource) -> Tileset<TextureRegion>> = mapOf(
+        private val LOADERS: Map<KClass<out Tile>, (TilesetResource) -> Tileset<TextureRegion, SpriteBatch>> = mapOf(
                 CharacterTile::class to { resource: TilesetResource ->
                     LibgdxTileset(
                             path = resource.path,

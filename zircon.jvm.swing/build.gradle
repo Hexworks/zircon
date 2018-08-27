@@ -20,8 +20,3 @@ task sourcesJar(type: Jar) {
 artifacts {
     archives sourcesJar
 }
-
-jar {
-    from project(':zircon.core').configurations.archives.allArtifacts.files.collect { zipTree it }
-    from project(':zircon.jvm').configurations.archives.allArtifacts.files.collect { zipTree it }
-}

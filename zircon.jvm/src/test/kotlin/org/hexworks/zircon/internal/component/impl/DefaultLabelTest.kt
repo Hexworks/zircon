@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentState
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.resource.BuiltInCP437Tileset
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.junit.Before
@@ -69,7 +69,7 @@ class DefaultLabelTest {
     companion object {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val TEXT = "Button text"
-        val FONT = BuiltInCP437Tileset.WANDERLUST_16X16
+        val FONT = BuiltInCP437TilesetResource.WANDERLUST_16X16
         val POSITION = Position.create(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .foregroundColor(THEME.secondaryForegroundColor())
