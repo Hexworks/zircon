@@ -33,9 +33,9 @@ object KotlinPlayground {
         screen.addComponent(c)
 
         c.onMouseReleased(object : Consumer<MouseAction> {
-            override fun accept(t: MouseAction) {
+            override fun accept(p: MouseAction) {
                 println("Pos: ${c.position()}, EPos: ${c.getEffectivePosition()}")
-                println("Char: ${c.getTileAt(t.position).get().asCharacterTile().get().character}")
+                println("Char: ${c.getTileAt(p.position).get().asCharacterTile().get().character}")
             }
         })
 
