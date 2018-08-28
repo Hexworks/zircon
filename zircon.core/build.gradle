@@ -1,6 +1,16 @@
 apply plugin: 'kotlin-platform-common'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 archivesBaseName = 'zircon.core'
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
 
 dependencies {
     compile libraries.kotlin_stdlib_common
