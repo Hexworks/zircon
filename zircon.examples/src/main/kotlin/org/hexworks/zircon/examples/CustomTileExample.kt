@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples
 
+import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.data.CharacterTile
@@ -16,7 +17,7 @@ object CustomTileExample {
 
         val tileGrid = SwingApplications.startTileGrid()
 
-        tileGrid.setTileAt(Position.defaultPosition(), CustomTile(Tiles.defaultTile().withCharacter('x')))
+        tileGrid.setTileAt(Positions.defaultPosition(), CustomTile(Tiles.defaultTile().withCharacter('x')))
 
         val loader = CP437TileMetadataLoader(16, 16)
 

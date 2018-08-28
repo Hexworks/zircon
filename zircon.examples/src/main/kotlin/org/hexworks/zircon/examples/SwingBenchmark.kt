@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples
 
+import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
@@ -17,7 +18,7 @@ import java.util.*
 
 fun main(args: Array<String>) {
 
-    val size = Size.create(80, 40)
+    val size = Sizes.create(80, 40)
 
     val tileset = BuiltInCP437TilesetResource.WANDERLUST_16X16
 
@@ -33,7 +34,7 @@ fun main(args: Array<String>) {
     val layerCount = 20
     val layerWidth = 20
     val layerHeight = 10
-    val layerSize = Size.create(layerWidth, layerHeight)
+    val layerSize = Sizes.create(layerWidth, layerHeight)
     val filler = Tiles.defaultTile().withCharacter('x')
 
     val layers = (0..layerCount).map {

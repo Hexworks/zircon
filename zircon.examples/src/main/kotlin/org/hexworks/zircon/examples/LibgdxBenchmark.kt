@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples
 
+import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.LibgdxApplications
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.Tiles
@@ -22,7 +23,7 @@ fun main(args: Array<String>) {
 
     val tileset = BuiltInCP437TilesetResource.WANDERLUST_16X16
 
-    val tileGrid = LibgdxApplications.startTileGrid(AppConfigBuilder.newBuilder()
+    val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
             .defaultSize(size)
             .defaultTileset(tileset)
             .debugMode(true)

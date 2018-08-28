@@ -1,9 +1,6 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.ImageDictionaryTilesetResources
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 
 object ImageTileExample {
@@ -15,7 +12,7 @@ object ImageTileExample {
 
         val tileGrid = SwingApplications.startTileGrid()
 
-        tileGrid.draw(CharacterTileStringBuilder.newBuilder()
+        tileGrid.draw(CharacterTileStrings.newBuilder()
                 .text("You can see an image tile below...")
                 .build())
 

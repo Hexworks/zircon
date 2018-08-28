@@ -1,9 +1,6 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
@@ -23,8 +20,8 @@ object CP437CharsExample {
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        val cp437panel = PanelBuilder.newBuilder()
-                .size(Size.create(19, 19))
+        val cp437panel = Components.panel()
+                .size(Sizes.create(19, 19))
                 .position(Positions.create(2, 2))
                 .wrapWithBox()
                 .wrapWithShadow()
@@ -38,7 +35,7 @@ object CP437CharsExample {
 
         loader.fetchMetadata().forEach { char, meta ->
             cp437panel.draw(Tiles.defaultTile().withCharacter(char), Positions.create(meta.x, meta.y)
-                    .plus(Position.offset1x1()))
+                    .plus(Positions.offset1x1()))
         }
 
         screen.display()
