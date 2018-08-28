@@ -1,10 +1,10 @@
 allprojects {
     group "org.hexworks.zircon"
-    version "2018.3.21-PREVIEW"
+    version "2018.3.24-PREVIEW"
 }
 
 buildscript {
-    ext.kotlinVersion = "1.2.60"
+    ext.kotlinVersion = "1.2.61"
     repositories {
         jcenter()
         mavenCentral()
@@ -14,6 +14,7 @@ buildscript {
         classpath "com.eriwen:gradle-js-plugin:2.14.1"
         classpath "com.moowork.gradle:gradle-node-plugin:1.2.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
     }
 }
 
