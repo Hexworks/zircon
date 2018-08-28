@@ -32,7 +32,7 @@ publishing {
 }
 
 dependencies {
-    project(":zircon.jvm")
+    compile project(":zircon.jvm")
     compile libraries.kotlin_stdlib
     compile libraries.filters
 
