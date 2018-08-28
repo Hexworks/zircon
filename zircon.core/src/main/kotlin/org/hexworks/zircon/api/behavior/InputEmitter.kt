@@ -15,15 +15,4 @@ interface InputEmitter {
      * by this object.
      */
     fun onInput(listener: Consumer<Input>)
-
-    /**
-     * Adds an input listener to this [InputEmitter].
-     * It will be notified when an [Input] is consumed
-     * by this object.
-     */
-    fun onInput(listener: (Input) -> Unit) = onInput(object : Consumer<Input> {
-        override fun accept(p: Input) {
-            listener.invoke(p)
-        }
-    })
 }

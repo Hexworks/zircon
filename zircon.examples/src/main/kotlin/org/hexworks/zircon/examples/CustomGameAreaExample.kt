@@ -61,7 +61,7 @@ object CustomGameAreaExample {
         makeCaves(gameArea)
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultSize(Size.create(80, 60))
+                .defaultSize(Sizes.create(80, 60))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
@@ -123,7 +123,7 @@ object CustomGameAreaExample {
 
     val WALL = Tiles.newBuilder()
             .character('#')
-            .foregroundColor(TileColor.fromString("#999999"))
+            .foregroundColor(TileColors.fromString("#999999"))
             .buildCharacterTile()
 
 }

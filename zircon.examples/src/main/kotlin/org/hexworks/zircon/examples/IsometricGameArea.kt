@@ -14,9 +14,11 @@ import org.hexworks.zircon.api.game.GameModifiers.*
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
+import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.screen.Screen
+import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.internal.game.DefaultGameComponent
 import org.hexworks.zircon.internal.game.InMemoryGameArea
 import java.util.*
@@ -86,7 +88,7 @@ object IsometricGameArea {
             .build()
 
     private val GUY = Tiles.newBuilder()
-            .backgroundColor(TileColor.transparent())
+            .backgroundColor(TileColors.transparent())
             .foregroundColor(ANSITileColor.RED)
             .character(Symbols.FACE_BLACK)
             .build()
@@ -98,7 +100,7 @@ object IsometricGameArea {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val config = AppConfigBuilder.newBuilder()
+        val config = AppConfigs.newConfig()
                 .defaultTileset(TILESET)
                 .defaultSize(Sizes.create(80, 50))
                 .debugMode(true)
@@ -106,10 +108,10 @@ object IsometricGameArea {
 
         val app = SwingApplications.startApplication(config)
 
-        val screen = ScreenBuilder.createScreenFor(app.tileGrid)
+        val screen = Screens.createScreenFor(app.tileGrid)
 
 
-        addGamePanel(screen, Position.defaultPosition(), screen.size(), Position.create(15, 20))
+        addGamePanel(screen, Positions.defaultPosition(), screen.size(), Positions.create(15, 20))
 
         screen.display()
     }
@@ -123,15 +125,15 @@ object IsometricGameArea {
                 .boxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build()
 
-        val visibleGameAreaSize = Size3D.from2DSize(gamePanel.size()
+        val visibleGameAreaSize = Sizes.from2DTo3D(gamePanel.size()
                 .minus(Sizes.create(2, 2)), 8)
 
-        val virtualSize = Size3D.create(200, 200, 30)
+        val virtualSize = Sizes.create3DSize(200, 200, 30)
 
         val gameArea = InMemoryGameArea(
                 virtualSize,
                 1,
-                Tile.empty())
+                Tiles.empty())
 
         val gameComponent = Components.gameComponent()
                 .gameArea(gameArea)
@@ -146,7 +148,7 @@ object IsometricGameArea {
 
         val buildingCount = random.nextInt(5) + 3
 
-        val pos = Position3D.create(offset.x, random.nextInt(20) + offset.y, 0)
+        val pos = Positions.create3DPosition(offset.x, random.nextInt(20) + offset.y, 0)
 
         (0 until buildingCount).forEach { idx ->
 
@@ -154,7 +156,7 @@ object IsometricGameArea {
             val depth = random.nextInt(5) + 5
             val height = random.nextInt(5) + 5
 
-            generateBuilding(size = Size3D.create(width, depth, height),
+            generateBuilding(size = Sizes.create3DSize(width, depth, height),
                     offset = pos.withRelativeX(random.nextInt(5) + 10 * idx).withRelativeY(random.nextInt(10)),
                     gameArea = gameArea,
                     repeat = 2)
@@ -166,7 +168,7 @@ object IsometricGameArea {
         (0 until size.zLength).forEach { z ->
             (0 until size.yLength).forEach { y ->
                 (0 until size.xLength).forEach { x ->
-                    val pos = Position3D.from2DPosition(Position.create(x, y).plus(offset.to2DPosition()), z + offset.z)
+                    val pos = Positions.from2DTo3D(Positions.create(x, y).plus(offset.to2DPosition()), z + offset.z)
                     val blockTiles = if (y == size.yLength - 1) {
                         mutableListOf(if (size.xLength < 3 || size.yLength < 3) {
                             ANTENNA
@@ -188,7 +190,7 @@ object IsometricGameArea {
                         if (extra == 2) {
                             chars.add(Tiles.newBuilder()
                                     .foregroundColor(TileColors.fromString("#333333"))
-                                    .backgroundColor(TileColor.transparent())
+                                    .backgroundColor(TileColors.transparent())
                                     .character(Symbols.SINGLE_LINE_T_DOUBLE_DOWN)
                                     .build())
                         }
@@ -200,7 +202,7 @@ object IsometricGameArea {
                             blockTiles.add(ROOF)
                         }
                     }
-                    val bb = BlockBuilder.create()
+                    val bb = Blocks.newBuilder()
                     blockTiles.forEach { tile ->
                         if (tile.getModifiers().isNotEmpty()) {
                             bb.side(MODIFIER_LOOKUP[tile.getModifiers().first()]!!, tile)
@@ -214,7 +216,7 @@ object IsometricGameArea {
         }
         if (repeat > 0) {
             generateBuilding(
-                    size = Size3D.create(size.xLength - 2, size.yLength - 2, size.zLength),
+                    size = Sizes.create3DSize(size.xLength - 2, size.yLength - 2, size.zLength),
                     offset = offset.withRelativeZ(size.zLength).withRelativeX(1).withRelativeY(1),
                     gameArea = gameArea,
                     repeat = repeat - 1)
@@ -222,42 +224,44 @@ object IsometricGameArea {
     }
 
     private fun enableMovement(screen: Screen, gameComponent: DefaultGameComponent) {
-        screen.onInput { input ->
-            if (EXIT_CONDITIONS.contains(input.getInputType())) {
-                System.exit(0)
-            } else {
-                if (InputType.ArrowUp === input.getInputType()) {
-                    gameComponent.scrollOneBackward()
+        screen.onInput(object : Consumer<Input> {
+            override fun accept(input: Input) {
+                if (EXIT_CONDITIONS.contains(input.getInputType())) {
+                    System.exit(0)
+                } else {
+                    if (InputType.ArrowUp === input.getInputType()) {
+                        gameComponent.scrollOneBackward()
+                    }
+                    if (InputType.ArrowDown === input.getInputType()) {
+                        gameComponent.scrollOneForward()
+                    }
+                    if (InputType.ArrowLeft === input.getInputType()) {
+                        gameComponent.scrollOneLeft()
+                    }
+                    if (InputType.ArrowRight === input.getInputType()) {
+                        gameComponent.scrollOneRight()
+                    }
+                    if (InputType.PageUp === input.getInputType()) {
+                        gameComponent.scrollOneUp()
+                    }
+                    if (InputType.PageDown === input.getInputType()) {
+                        gameComponent.scrollOneDown()
+                    }
+                    screen.getLayers().forEach {
+                        screen.removeLayer(it)
+                    }
+                    val (x, y, z) = gameComponent.visibleOffset()
+                    screen.pushLayer(Layers.newBuilder()
+                            .tileGraphic(CharacterTileStringBuilder.newBuilder()
+                                    .backgroundColor(TileColors.transparent())
+                                    .foregroundColor(TileColors.fromString("#aaaadd"))
+                                    .text(String.format("Position: (x=%s, y=%s, z=%s)", x, y, z))
+                                    .build()
+                                    .toTileGraphic(TILESET))
+                            .offset(Position.create(21, 1))
+                            .build())
                 }
-                if (InputType.ArrowDown === input.getInputType()) {
-                    gameComponent.scrollOneForward()
-                }
-                if (InputType.ArrowLeft === input.getInputType()) {
-                    gameComponent.scrollOneLeft()
-                }
-                if (InputType.ArrowRight === input.getInputType()) {
-                    gameComponent.scrollOneRight()
-                }
-                if (InputType.PageUp === input.getInputType()) {
-                    gameComponent.scrollOneUp()
-                }
-                if (InputType.PageDown === input.getInputType()) {
-                    gameComponent.scrollOneDown()
-                }
-                screen.getLayers().forEach {
-                    screen.removeLayer(it)
-                }
-                val (x, y, z) = gameComponent.visibleOffset()
-                screen.pushLayer(LayerBuilder.newBuilder()
-                        .tileGraphic(CharacterTileStringBuilder.newBuilder()
-                                .backgroundColor(TileColor.transparent())
-                                .foregroundColor(TileColors.fromString("#aaaadd"))
-                                .text(String.format("Position: (x=%s, y=%s, z=%s)", x, y, z))
-                                .build()
-                                .toTileGraphic(TILESET))
-                        .offset(Position.create(21, 1))
-                        .build())
             }
-        }
+        })
     }
 }
