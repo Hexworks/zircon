@@ -3,11 +3,14 @@ package org.hexworks.zircon.api.data
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
+import org.hexworks.zircon.api.resource.TileType
 
 interface GraphicTile : Tile {
 
     val name: String
     val tags: Set<String>
+
+    override fun tileType(): TileType = TileType.GRAPHIC_TILE
 
     fun withName(name: String): GraphicTile
 

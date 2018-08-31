@@ -11,5 +11,6 @@ class ImageDictionaryTilesetResource(override val path: String,
                                      override val width: Int = 1,
                                      override val height: Int = 1) : BaseTilesetResource() {
 
-    override val tileType: KClass<ImageTile> = ImageTile::class
+    override val tileType: TileType = TileType.IMAGE_TILE
+    override val tilesetType: TilesetType = TilesetType.GRAPHICAL_TILESET
 }

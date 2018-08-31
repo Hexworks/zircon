@@ -7,6 +7,8 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.RayShade
 import org.hexworks.zircon.api.modifier.SimpleModifiers
+import org.hexworks.zircon.api.resource.TileType
+import org.hexworks.zircon.api.resource.TileType.*
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
@@ -19,9 +21,9 @@ import java.awt.image.BufferedImage
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.KClass
 
-class BufferedImageCP437Tileset(private val resource: TilesetResource,
-                                private val source: BufferedImage)
-    : Tileset<BufferedImage, Graphics2D> {
+class Java2DCP437Tileset(private val resource: TilesetResource,
+                         private val source: BufferedImage)
+    : Tileset<Graphics2D> {
 
     override val id: Identifier = Identifier.randomIdentifier()
 
@@ -35,12 +37,11 @@ class BufferedImageCP437Tileset(private val resource: TilesetResource,
             .expireAfterAccess(1, TimeUnit.MINUTES)
             .build<String, TileTexture<BufferedImage>>()
 
-    override val sourceType = BufferedImage::class
     override val targetType = Graphics2D::class
 
     init {
-        require(resource.tileType == CharacterTile::class) {
-            "Can't use a ${resource.tileType.simpleName}-based TilesetResource for" +
+        require(resource.tileType == CHARACTER_TILE) {
+            "Can't use a ${resource.tileType.name}-based TilesetResource for" +
                     " a CharacterTile-based tileset."
         }
     }

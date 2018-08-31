@@ -3,22 +3,21 @@ package org.hexworks.zircon.internal.tileset
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import org.hexworks.zircon.api.behavior.Closeable
-import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.resource.TileType.CHARACTER_TILE
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.resource.TilesetType.CP437_TILESET
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.api.util.Identifier
-import kotlin.reflect.KClass
 
 @Suppress("UNCHECKED_CAST")
-class LibgdxTilesetLoader : TilesetLoader<TextureRegion, SpriteBatch>, Closeable {
+class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
 
-    private val tilesetCache = mutableMapOf<Identifier, Tileset<TextureRegion, SpriteBatch>>()
+    private val tilesetCache = mutableMapOf<Identifier, Tileset<SpriteBatch>>()
 
-    override fun loadTilesetFrom(resource: TilesetResource): Tileset<TextureRegion, SpriteBatch> {
+    override fun loadTilesetFrom(resource: TilesetResource): Tileset<SpriteBatch> {
         return tilesetCache.getOrPut(resource.id) {
-            LOADERS[resource.tileType]?.invoke(resource)
+            LOADERS[resource.getLoaderKey()]?.invoke(resource)
                     ?: throw IllegalArgumentException("Unknown tile type '${resource.tileType}'.§")
         }
     }
@@ -29,8 +28,10 @@ class LibgdxTilesetLoader : TilesetLoader<TextureRegion, SpriteBatch>, Closeable
 
     companion object {
 
-        private val LOADERS: Map<KClass<out Tile>, (TilesetResource) -> Tileset<TextureRegion, SpriteBatch>> = mapOf(
-                CharacterTile::class to { resource: TilesetResource ->
+        fun TilesetResource.getLoaderKey() = "${this.tilesetType.name}-${this.tileType.name}"
+
+        private val LOADERS: Map<String, (TilesetResource) -> Tileset<SpriteBatch>> = mapOf(
+                "$CHARACTER_TILE-$CP437_TILESET" to { resource: TilesetResource ->
                     LibgdxTileset(
                             path = resource.path,
                             width = resource.width,

@@ -3,10 +3,13 @@ package org.hexworks.zircon.api.data
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
+import org.hexworks.zircon.api.resource.TileType
 
 interface CharacterTile : Tile {
 
     val character: Char
+
+    override fun tileType(): TileType = TileType.CHARACTER_TILE
 
     override fun withForegroundColor(foregroundColor: TileColor): CharacterTile {
         return if (this.getForegroundColor() == foregroundColor) {

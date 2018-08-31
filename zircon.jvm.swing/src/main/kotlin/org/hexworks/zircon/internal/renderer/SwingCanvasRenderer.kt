@@ -159,7 +159,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
 
     private fun renderTiles(graphics: Graphics2D,
                             tiles: Map<Position, Tile>,
-                            tileset: Tileset<BufferedImage, Graphics2D>) {
+                            tileset: Tileset<Graphics2D>) {
         tiles.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
                 val actualTile = if (tile.isBlinking() && blinkOn) {
@@ -168,7 +168,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                 } else {
                     tile
                 }
-                val actualTileset: Tileset<BufferedImage, Graphics2D> = if (actualTile is TilesetOverride) {
+                val actualTileset: Tileset<Graphics2D> = if (actualTile is TilesetOverride) {
                     tilesetLoader.loadTilesetFrom(actualTile.tileset())
                 } else {
                     tileset

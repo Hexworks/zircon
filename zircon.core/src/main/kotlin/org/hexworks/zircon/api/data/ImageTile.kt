@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
+import org.hexworks.zircon.api.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
 
 interface ImageTile
@@ -12,7 +13,7 @@ interface ImageTile
     val tileset: TilesetResource
     val name: String
 
-    override fun tileType() = ImageTile::class.simpleName!!
+    override fun tileType() = TileType.IMAGE_TILE
 
     override fun styleSet() = StyleSet.defaultStyle()
 

@@ -8,7 +8,9 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
+import org.hexworks.zircon.api.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.resource.TilesetType
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.data.DefaultCharacterTile
 import org.hexworks.zircon.internal.data.DefaultImageTile
@@ -18,7 +20,7 @@ interface Tile : Drawable, Cacheable {
     /**
      * Returns the tile type of this [Tile].
      */
-    fun tileType(): String = this::class.simpleName!!
+    fun tileType(): TileType
 
     fun styleSet(): StyleSet
 
