@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.api.util.TileTransformer
@@ -29,6 +30,12 @@ interface TileImage
     fun getTileAt(position: Position): Maybe<Tile>
 
     /**
+     * Returns a [List] of [Position]s which are not considered empty.
+     * @see [Tile.empty]
+     */
+    fun fetchFilledPositions(): List<Position>
+
+    /**
      * Sets a [Tile] at a specific position in the [DrawSurface] to `tile`.
      * If the position is outside of the [DrawSurface]'s size, this method has no effect.
      * Note that if this [DrawSurface] already has the given [Tile] on the supplied [Position]
@@ -45,18 +52,10 @@ interface TileImage
             return DefaultTileImage(
                     size = size(),
                     tileset = tileset(),
-                    tiles = tiles)
+                    tiles = tiles.toMap())
         } else {
             return this
         }
-    }
-
-    /**
-     * Returns a [List] of [Position]s which are not considered empty.
-     * @see [Tile.empty]
-     */
-    fun fetchFilledPositions(): List<Position> {
-        return size().fetchPositions().filter { getTileAt(it).isPresent }
     }
 
     /**
@@ -78,7 +77,21 @@ interface TileImage
                 .forEach {
                     tiles[it - offset] = getTileAt(it).get()
                 }
-        return DefaultTileImage(size(), tileset(), tiles)
+        return DefaultTileImage(
+                size = size,
+                tileset = tileset(),
+                tiles = tiles.toMap())
+    }
+
+    /**
+     * Returns a copy of this image resized to a new size and using
+     * an empty [Tile] if the new size is larger than the old and
+     * we need to fill in empty areas.
+     * The copy will be independent from the one this method is
+     * invoked on, so modifying one will not affect the other.
+     */
+    fun resize(newSize: Size): TileImage {
+        return resize(newSize, Tile.empty())
     }
 
     /**
@@ -105,32 +118,21 @@ interface TileImage
         return DefaultTileImage(
                 size = newSize,
                 tileset = tileset(),
-                tiles = tiles)
-    }
-
-    /**
-     * Returns a copy of this image resized to a new size and using
-     * an empty [Tile] if the new size is larger than the old and
-     * we need to fill in empty areas.
-     * The copy will be independent from the one this method is
-     * invoked on, so modifying one will not affect the other.
-     */
-    fun resize(newSize: Size): TileImage {
-        return resize(newSize, Tile.empty())
+                tiles = tiles.toMap())
     }
 
     /**
      * Fills the empty parts of this [TileImage] with the given `filler`.
      */
     fun fill(filler: Tile): TileImage {
-        val tiles = mutableMapOf<Position, Tile>()
-        size().fetchPositions().forEach {
-            tiles[it] = getTileAt(it).orElse(filler)
+        val tiles = toTileMap()
+        size().fetchPositions().subtract(fetchFilledPositions()).forEach { pos ->
+            tiles[pos] = filler
         }
         return DefaultTileImage(
                 size = size(),
                 tileset = tileset(),
-                tiles = tiles)
+                tiles = tiles.toMap())
     }
 
     /**
@@ -150,7 +152,7 @@ interface TileImage
     fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell> {
         return size.fetchPositions()
                 .map { pos -> pos + offset }
-                .map { pos -> DefaultCell(pos, getTileAt(pos).get()) }
+                .map { pos -> DefaultCell(pos, getTileAt(pos).orElse(Tile.empty())) }
     }
 
     /**
@@ -173,15 +175,11 @@ interface TileImage
         val newSize = Size.create(columns, rows)
 
         val tiles = toTileMap()
-        tileImage.fetchFilledPositions().forEach { pos ->
-            tileImage.getTileAt(pos).map { tile ->
-                tiles[pos + offset] = tile
-            }
-        }
+        tiles.putAll(tileImage.toTileMap().mapKeys { it.key + offset })
         return DefaultTileImage(
                 size = newSize,
                 tileset = tileset(),
-                tiles = tiles)
+                tiles = tiles.toMap())
     }
 
     /**
@@ -196,13 +194,13 @@ interface TileImage
         return DefaultTileImage(
                 size = size(),
                 tileset = tileset(),
-                tiles = tiles)
+                tiles = tiles.toMap())
     }
 
     /**
      * Returns a new [TileImage] with the given `text` written at the given `position`.
      */
-    fun withText(text: String, style: StyleSet, position: Position = Position.defaultPosition()) {
+    fun withText(text: String, style: StyleSet, position: Position = Position.defaultPosition()): TileImage {
         val tiles = toTileMap()
         text.forEachIndexed { col, char ->
             tiles[position.withRelativeX(col)] = TileBuilder
@@ -211,6 +209,10 @@ interface TileImage
                     .character(char)
                     .build()
         }
+        return DefaultTileImage(
+                size = size(),
+                tileset = tileset(),
+                tiles = tiles.toMap())
     }
 
     /**
@@ -245,7 +247,17 @@ interface TileImage
         return DefaultTileImage(
                 size = size(),
                 tileset = tileset(),
-                tiles = tiles)
+                tiles = tiles.toMap())
+    }
+
+    /**
+     * Creates a copy of this [TileImage] which uses the given `tileset`.
+     */
+    fun withTileset(tileset: TilesetResource): TileImage {
+        return DefaultTileImage(
+                size = size(),
+                tileset = tileset,
+                tiles = toTileMap().toMap())
     }
 
     /**

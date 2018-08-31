@@ -17,7 +17,11 @@ class DefaultTileImage(
         boundable: Boundable = DefaultBoundable(size))
     : TileImage, Boundable by boundable {
 
-    override fun getTileAt(position: Position) = Maybe.ofNullable(tiles[position])
+    override fun getTileAt(position: Position) = Maybe.of(tiles[position] ?: Tile.empty())
+
+    override fun fetchFilledPositions(): List<Position> {
+        return tiles.map { it.key }
+    }
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
         toTileMap().forEach { (pos, tile) ->
@@ -28,7 +32,7 @@ class DefaultTileImage(
     override fun tileset() = tileset
 
     override fun useTileset(tileset: TilesetResource) {
-        this.tileset = tileset
+        throw UnsupportedOperationException("Can't modify a TileImage.")
     }
 
 }
