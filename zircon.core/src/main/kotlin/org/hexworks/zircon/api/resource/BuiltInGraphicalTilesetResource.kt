@@ -9,7 +9,8 @@ enum class BuiltInGraphicalTilesetResource(private val tilesetName: String,
                                            override val height: Int,
                                            private val fileName: String = "${tilesetName}_${width}x$height.zip",
                                            override val id: Identifier = Identifier.randomIdentifier(),
-                                           override val tileType: KClass<GraphicTile> = GraphicTile::class,
+                                           override val tileType: TileType = TileType.GRAPHIC_TILE,
+                                           override val tilesetType: TilesetType = TilesetType.GRAPHICAL_TILESET,
                                            override val path: String = "/graphic_tilesets/$fileName")
     : TilesetResource {
 

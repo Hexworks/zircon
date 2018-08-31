@@ -7,9 +7,8 @@ import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.util.Identifier
 
-class VirtualTileset : Tileset<Char, Char> {
+class VirtualTileset : Tileset<Char> {
 
-    override val sourceType = Char::class
     override val targetType = Char::class
     override val id = Identifier.randomIdentifier()
 

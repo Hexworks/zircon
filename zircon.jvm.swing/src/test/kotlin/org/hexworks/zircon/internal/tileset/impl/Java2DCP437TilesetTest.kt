@@ -7,7 +7,7 @@ import org.junit.Ignore
 import org.junit.Test
 
 @Ignore
-class BufferedImageCP437TilesetTest {
+class Java2DCP437TilesetTest {
 
     val target = SwingTilesetLoader().loadTilesetFrom(BuiltInCP437TilesetResource.WANDERLUST_16X16)
 

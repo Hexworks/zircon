@@ -23,10 +23,9 @@ import kotlin.reflect.KClass
 class LibgdxTileset(private val path: String,
                     private val width: Int,
                     private val height: Int)
-    : Tileset<TextureRegion, SpriteBatch> {
+    : Tileset<SpriteBatch> {
 
     override val id: Identifier = Identifier.randomIdentifier()
-    override val sourceType = TextureRegion::class
     override val targetType = SpriteBatch::class
 
     private val texture: Texture by lazy {

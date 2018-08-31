@@ -1,26 +1,24 @@
 package org.hexworks.zircon.internal.tileset
 
 import org.hexworks.zircon.api.behavior.Closeable
-import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.api.data.GraphicTile
-import org.hexworks.zircon.api.data.ImageTile
-import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.resource.TileType.*
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.resource.TilesetType
+import org.hexworks.zircon.api.resource.TilesetType.*
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.api.util.Identifier
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
-import kotlin.reflect.KClass
 
 @Suppress("UNCHECKED_CAST")
-class SwingTilesetLoader : TilesetLoader<BufferedImage, Graphics2D>, Closeable {
+class SwingTilesetLoader : TilesetLoader<Graphics2D>, Closeable {
 
-    private val tilesetCache = mutableMapOf<Identifier, Tileset<BufferedImage, Graphics2D>>()
+    private val tilesetCache = mutableMapOf<Identifier, Tileset<Graphics2D>>()
 
-    override fun loadTilesetFrom(resource: TilesetResource): Tileset<BufferedImage, Graphics2D> {
+    override fun loadTilesetFrom(resource: TilesetResource): Tileset<Graphics2D> {
         return tilesetCache.getOrPut(resource.id) {
-            LOADERS[resource.tileType]?.invoke(resource)
+            LOADERS[resource.getLoaderKey()]?.invoke(resource)
                     ?: throw IllegalArgumentException("Unknown tile type '${resource.tileType}'.§")
         }
     }
@@ -31,19 +29,25 @@ class SwingTilesetLoader : TilesetLoader<BufferedImage, Graphics2D>, Closeable {
 
     companion object {
 
-        private val LOADERS: Map<KClass<out Tile>, (TilesetResource) -> Tileset<BufferedImage, Graphics2D>> = mapOf(
-                CharacterTile::class to { resource: TilesetResource ->
+        fun TilesetResource.getLoaderKey() = "${this.tileType.name}-${this.tilesetType.name}"
+
+        private val LOADERS: Map<String, (TilesetResource) -> Tileset<Graphics2D>> = mapOf(
+                "$CHARACTER_TILE-$CP437_TILESET" to { resource: TilesetResource ->
                     val source = ImageLoader.readImage(resource)
-                    BufferedImageCP437Tileset(
+                    Java2DCP437Tileset(
                             resource = resource,
                             source = source)
                 },
-                ImageTile::class to { resource: TilesetResource ->
-                    BufferedImageDictionaryTileset(
+                "$IMAGE_TILE-$GRAPHICAL_TILESET" to { resource: TilesetResource ->
+                    Java2DImageDictionaryTileset(
                             resource = resource)
                 },
-                GraphicTile::class to { resource: TilesetResource ->
-                    BufferedImageGraphicTileset(
+                "$GRAPHIC_TILE-$GRAPHICAL_TILESET" to { resource: TilesetResource ->
+                    Java2DGraphicTileset(
+                            resource = resource)
+                },
+                "$CHARACTER_TILE-$TRUE_TYPE_FONT" to { resource: TilesetResource ->
+                    MonospaceAwtFontTileset(
                             resource = resource)
                 })
     }

@@ -12,7 +12,8 @@ enum class BuiltInCP437TilesetResource(private val tilesetName: String,
                                        override val height: Int,
                                        private val fileName: String = "${tilesetName}_${width}x$height.png",
                                        override val id: Identifier = Identifier.randomIdentifier(),
-                                       override val tileType: KClass<CharacterTile> = CharacterTile::class,
+                                       override val tileType: TileType = TileType.CHARACTER_TILE,
+                                       override val tilesetType: TilesetType = TilesetType.CP437_TILESET,
                                        override val path: String = "/cp_437_tilesets/$fileName")
     : TilesetResource {
 

@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.data.BaseTile;
 import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.graphics.StyleSet;
 import org.hexworks.zircon.api.modifier.Modifier;
+import org.hexworks.zircon.api.resource.TileType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -17,6 +18,12 @@ public class CustomTile extends BaseTile {
     public CustomTile(StyleSet styleSet, char character) {
         this.styleSet = styleSet;
         this.character = character;
+    }
+
+    @NotNull
+    @Override
+    public TileType tileType() {
+        return TileType.CHARACTER_TILE;
     }
 
     @NotNull

@@ -6,13 +6,13 @@ import org.hexworks.zircon.api.resource.TilesetResource
  * A [TilesetLoader] can be used to load the actual [Tileset] textures
  * into memory, from a given [TilesetResource].
  *
- * @param S the type of the texture (eg.: BufferedImage)
+ * @param T the type of the draw surface (eg.: Graphics2D)
  */
-interface TilesetLoader<S : Any, T: Any> {
+interface TilesetLoader<T: Any> {
 
     /**
      * Loads a [Tileset] using the given `resource`.
      */
-    fun loadTilesetFrom(resource: TilesetResource): Tileset<S, T>
+    fun loadTilesetFrom(resource: TilesetResource): Tileset<T>
 
 }

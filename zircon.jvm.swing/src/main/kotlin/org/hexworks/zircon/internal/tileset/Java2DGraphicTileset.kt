@@ -4,6 +4,8 @@ import org.hexworks.zircon.api.data.GraphicTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.BuiltInGraphicalTilesetResource
+import org.hexworks.zircon.api.resource.TileType
+import org.hexworks.zircon.api.resource.TileType.*
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
@@ -20,19 +22,18 @@ import java.io.InputStream
 import javax.imageio.ImageIO
 
 @Suppress("unused")
-class BufferedImageGraphicTileset(private val resource: TilesetResource)
-    : Tileset<BufferedImage, Graphics2D> {
+class Java2DGraphicTileset(private val resource: TilesetResource)
+    : Tileset<Graphics2D> {
 
     override val id: Identifier = resource.id
-    override val sourceType = BufferedImage::class
     override val targetType = Graphics2D::class
 
     private val metadata: Map<String, GraphicTileTextureMetadata>
     private val source: BufferedImage
 
     init {
-        require(resource.tileType == GraphicTile::class) {
-            "Can't use a ${resource.tileType.simpleName}-based TilesetResource for" +
+        require(resource.tileType == GRAPHIC_TILE) {
+            "Can't use a ${resource.tileType.name}-based TilesetResource for" +
                     " a GraphicTile-based tileset."
         }
 

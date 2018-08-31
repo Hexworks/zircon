@@ -10,7 +10,8 @@ import kotlin.reflect.KClass
  */
 interface TilesetResource : Identifiable {
 
-    val tileType: KClass<out Tile>
+    val tileType: TileType
+    val tilesetType: TilesetType
     val width: Int
     val height: Int
     val path: String

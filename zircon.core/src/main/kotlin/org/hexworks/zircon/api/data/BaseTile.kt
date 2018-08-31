@@ -10,11 +10,6 @@ import org.hexworks.zircon.api.util.Maybe
 abstract class BaseTile : Tile {
 
     /**
-     * Returns the tile type of this [BaseTile].
-     */
-    override fun tileType(): String = this::class.simpleName!!
-
-    /**
      * Returns this [BaseTile] as a [CharacterTile] if possible.
      */
     override fun asCharacterTile() = Maybe.ofNullable(this as? CharacterTile)

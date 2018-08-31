@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.zircon.api.behavior.TilesetOverride
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 
 class DefaultTilesetOverride(
@@ -16,8 +15,8 @@ class DefaultTilesetOverride(
                     " different size: ${tileset.size()}"
         }
         require(this.tileset.isCompatibleWith(tileset)) {
-            "The supplied tileset (with type ${tileset.tileType.simpleName}) is not compatible with " +
-                    "the current one (with type '${tileset().tileType.simpleName}')."
+            "The supplied tileset (with type ${tileset.tileType.name}) is not compatible with " +
+                    "the current one (with type '${tileset().tileType.name}')."
         }
         this.tileset = tileset
     }

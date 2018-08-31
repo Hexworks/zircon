@@ -10,12 +10,7 @@ import kotlin.reflect.KClass
  * Handles the textures of a tileset, and provides
  * functionality to fetch them for rendering.
  */
-interface Tileset<S : Any, T: Any> : Identifiable {
-
-    /**
-     * The type of the textures this [Tileset] handles (eg.: BufferedImage)
-     */
-    val sourceType: KClass<S>
+interface Tileset<T: Any> : Identifiable {
 
     /**
      * The type of the target surface the textures are drawn.

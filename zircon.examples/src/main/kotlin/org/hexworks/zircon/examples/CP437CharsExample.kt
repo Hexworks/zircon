@@ -1,22 +1,21 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.builder.component.PanelBuilder
-import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.api.graphics.Symbols
+import org.hexworks.zircon.api.resource.BuiltInMonospaceFontResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.tileset.lookup.CP437TileMetadataLoader
 
 object CP437CharsExample {
 
+    private val theme = ColorThemes.monokaiYellow()
 
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid()
+        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+                .defaultTileset(BuiltInMonospaceFontResource.IBM_BIOS_20X20)
+                .build())
 
         val screen = Screens.createScreenFor(tileGrid)
 
@@ -31,11 +30,15 @@ object CP437CharsExample {
         val loader = CP437TileMetadataLoader(16, 16)
 
         screen.addComponent(cp437panel)
-        screen.applyColorTheme(ColorThemeResource.AMIGA_OS.getTheme())
+        screen.applyColorTheme(theme)
 
         loader.fetchMetadata().forEach { char, meta ->
-            cp437panel.draw(Tiles.defaultTile().withCharacter(char), Positions.create(meta.x, meta.y)
-                    .plus(Positions.offset1x1()))
+            cp437panel.draw(drawable = Tiles.defaultTile()
+                    .withCharacter(char)
+                    .withBackgroundColor(theme.primaryBackgroundColor())
+                    .withForegroundColor(theme.primaryForegroundColor()),
+                    position = Positions.create(meta.x, meta.y)
+                            .plus(Positions.offset1x1()))
         }
 
         screen.display()
