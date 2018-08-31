@@ -88,7 +88,7 @@ abstract class DefaultComponent(
     }
 
     override fun fill(filler: Tile): Layer {
-        graphic.fill(filler)
+        graphic.withFiller(filler)
         return this
     }
 

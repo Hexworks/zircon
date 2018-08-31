@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
 import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -36,106 +37,6 @@ interface TileImage
     fun fetchFilledPositions(): List<Position>
 
     /**
-     * Sets a [Tile] at a specific position in the [DrawSurface] to `tile`.
-     * If the position is outside of the [DrawSurface]'s size, this method has no effect.
-     * Note that if this [DrawSurface] already has the given [Tile] on the supplied [Position]
-     * nothing will change.
-     */
-    fun withTileAt(position: Position, tile: Tile): TileImage {
-        if (size().containsPosition(position)) {
-            val originalTile = getTileAt(position)
-            if (originalTile.isPresent && originalTile.get() == tile) {
-                return this
-            }
-            val tiles = toTileMap()
-            tiles[position] = tile
-            return DefaultTileImage(
-                    size = size(),
-                    tileset = tileset(),
-                    tiles = tiles.toMap())
-        } else {
-            return this
-        }
-    }
-
-    /**
-     * Returns a copy of this [TileImage] with the exact same content.
-     */
-    fun copyImage(): TileImage = toSubImage(Position.defaultPosition(), size())
-
-    /**
-     * Returns a part of this [TileImage] as a new [TileImage].
-     * @param offset the position from which copying will start
-     * @param size the size of the newly created image.
-     * If the new image would overflow an exception is thrown
-     */
-    fun toSubImage(offset: Position, size: Size): TileImage {
-        val tiles = mutableMapOf<Position, Tile>()
-        size.fetchPositions()
-                .map { it + offset }
-                .intersect(size().fetchPositions())
-                .forEach {
-                    tiles[it - offset] = getTileAt(it).get()
-                }
-        return DefaultTileImage(
-                size = size,
-                tileset = tileset(),
-                tiles = tiles.toMap())
-    }
-
-    /**
-     * Returns a copy of this image resized to a new size and using
-     * an empty [Tile] if the new size is larger than the old and
-     * we need to fill in empty areas.
-     * The copy will be independent from the one this method is
-     * invoked on, so modifying one will not affect the other.
-     */
-    fun resize(newSize: Size): TileImage {
-        return resize(newSize, Tile.empty())
-    }
-
-    /**
-     * Returns a copy of this image resized to a new size and using
-     * a specified filler [Tile] if the new size is larger than the old and
-     * we need to fill in empty areas.
-     * The copy will be independent from the one this method is
-     * invoked on, so modifying one will not affect the other.
-     */
-    fun resize(newSize: Size, filler: Tile): TileImage {
-        val tiles = mutableMapOf<Position, Tile>()
-        fetchFilledPositions()
-                .filter { pos -> newSize.containsPosition(pos) }
-                .forEach { pos ->
-                    getTileAt(pos).map {
-                        tiles[pos] = it
-                    }
-                }
-        if (filler != Tile.empty()) {
-            newSize.fetchPositions().subtract(size().fetchPositions()).forEach {
-                tiles[it] = filler
-            }
-        }
-        return DefaultTileImage(
-                size = newSize,
-                tileset = tileset(),
-                tiles = tiles.toMap())
-    }
-
-    /**
-     * Fills the empty parts of this [TileImage] with the given `filler`.
-     */
-    fun fill(filler: Tile): TileImage {
-        val tiles = toTileMap()
-        size().fetchPositions().subtract(fetchFilledPositions()).forEach { pos ->
-            tiles[pos] = filler
-        }
-        return DefaultTileImage(
-                size = size(),
-                tileset = tileset(),
-                tiles = tiles.toMap())
-    }
-
-    /**
      * Returns all the [Cell]s ([Tile]s with associated [Position] information)
      * of this [TileImage].
      */
@@ -156,26 +57,58 @@ interface TileImage
     }
 
     /**
-     * Combines this text image with another one. This method creates a new
-     * [TileImage] which is the combination of `this` one and the supplied `tileImage`.
-     * *Note that* if there are two [Position]s which are present in both [TileImage]s
-     * **and** at none of those positions is an `EMPTY` [Tile] then the
-     * [Tile] in the supplied `tileImage` will be used.
-     * This method creates a new object and **both** original [TileImage]s are left
-     * untouched!
-     * The size of the new [TileImage] will be the size of the current [TileImage] UNLESS the offset + `tileImage`
-     * would overflow. In that case the new [TileImage] will be resized to fit the new TileGraphic accordingly.
-     * The [org.hexworks.zircon.api.resource.TilesetResource] of the original [TileImage] will be used.
-     * @param tileImage the image which will be drawn onto `this` image
-     * @param offset The position on the target image where the `tileImage`'s top left corner will be
+     * Sets a [Tile] at a specific position in the [DrawSurface] to `tile`.
+     * If the position is outside of the [DrawSurface]'s size, this method has no effect.
+     * Note that if this [DrawSurface] already has the given [Tile] on the supplied [Position]
+     * nothing will change.
      */
-    fun combineWith(tileImage: TileImage, offset: Position): TileImage {
-        val columns = Math.max(size().xLength, offset.x + tileImage.size().xLength)
-        val rows = Math.max(size().yLength, offset.y + tileImage.size().yLength)
-        val newSize = Size.create(columns, rows)
+    fun withTileAt(position: Position, tile: Tile): TileImage {
+        if (size().containsPosition(position)) {
+            val tiles = toTileMap()
+            val originalTile = getTileAt(position)
+            if (originalTile.isPresent && originalTile.get() == tile) {
+                return this
+            }
+            tiles[position] = tile
+            return DefaultTileImage(
+                    size = size(),
+                    tileset = tileset(),
+                    tiles = tiles.toMap())
+        } else {
+            return this
+        }
+    }
 
-        val tiles = toTileMap()
-        tiles.putAll(tileImage.toTileMap().mapKeys { it.key + offset })
+    /**
+     * Returns a copy of this image resized to a new size and using
+     * an empty [Tile] if the new size is larger than the old and
+     * we need to fill in empty areas.
+     * The copy will be independent from the one this method is
+     * invoked on, so modifying one will not affect the other.
+     */
+    fun withNewSize(newSize: Size): TileImage {
+        return withNewSize(newSize, Tile.empty())
+    }
+
+    /**
+     * Returns a copy of this image resized to a new size and using
+     * a specified filler [Tile] if the new size is larger than the old and
+     * we need to fill in empty areas.
+     * The copy will be independent from the one this method is
+     * invoked on, so modifying one will not affect the other.
+     */
+    fun withNewSize(newSize: Size, filler: Tile): TileImage {
+        val oldTiles = toTileMap()
+        val tiles = mutableMapOf<Position, Tile>()
+        oldTiles.filterKeys { newSize.containsPosition(it) }
+                .forEach { (pos, tile) ->
+                    tiles[pos] = tile
+                }
+        if (filler != Tile.empty()) {
+            newSize.fetchPositions().subtract(size().fetchPositions()).forEach {
+                tiles[it] = filler
+            }
+        }
         return DefaultTileImage(
                 size = newSize,
                 tileset = tileset(),
@@ -183,13 +116,12 @@ interface TileImage
     }
 
     /**
-     * Transforms all of the [Tile]s in this [TileImage] with the given
-     * `transformer` and returns a new one with the transformed characters.
+     * Fills the empty parts of this [TileImage] with the given `filler`.
      */
-    fun transform(transformer: TileTransformer): TileImage {
-        val tiles = mutableMapOf<Position, Tile>()
-        fetchCells().forEach { (pos, tile) ->
-            tiles[pos] = transformer.transform(tile)
+    fun withFiller(filler: Tile): TileImage {
+        val tiles = toTileMap()
+        size().fetchPositions().subtract(fetchFilledPositions()).forEach { pos ->
+            tiles[pos] = filler
         }
         return DefaultTileImage(
                 size = size(),
@@ -261,6 +193,68 @@ interface TileImage
     }
 
     /**
+     * Combines this text image with another one. This method creates a new
+     * [TileImage] which is the combination of `this` one and the supplied `tileImage`.
+     * *Note that* if there are two [Position]s which are present in both [TileImage]s
+     * **and** at none of those positions is an `EMPTY` [Tile] then the
+     * [Tile] in the supplied `tileImage` will be used.
+     * This method creates a new object and **both** original [TileImage]s are left
+     * untouched!
+     * The size of the new [TileImage] will be the size of the current [TileImage] UNLESS the offset + `tileImage`
+     * would overflow. In that case the new [TileImage] will be resized to fit the new TileGraphic accordingly.
+     * The [org.hexworks.zircon.api.resource.TilesetResource] of the original [TileImage] will be used.
+     * @param tileImage the image which will be drawn onto `this` image
+     * @param offset The position on the target image where the `tileImage`'s top left corner will be
+     */
+    fun combineWith(tileImage: TileImage, offset: Position): TileImage {
+        val columns = Math.max(size().xLength, offset.x + tileImage.size().xLength)
+        val rows = Math.max(size().yLength, offset.y + tileImage.size().yLength)
+        val newSize = Size.create(columns, rows)
+
+        val tiles = toTileMap()
+        tiles.putAll(tileImage.toTileMap().mapKeys { it.key + offset })
+        return DefaultTileImage(
+                size = newSize,
+                tileset = tileset(),
+                tiles = tiles.toMap())
+    }
+
+    /**
+     * Transforms all of the [Tile]s in this [TileImage] with the given
+     * `transformer` and returns a new one with the transformed characters.
+     */
+    fun transform(transformer: TileTransformer): TileImage {
+        val tiles = mutableMapOf<Position, Tile>()
+        fetchCells().forEach { (pos, tile) ->
+            tiles[pos] = transformer.transform(tile)
+        }
+        return DefaultTileImage(
+                size = size(),
+                tileset = tileset(),
+                tiles = tiles.toMap())
+    }
+
+    /**
+     * Returns a part of this [TileImage] as a new [TileImage].
+     * @param offset the position from which copying will start
+     * @param size the size of the newly created image.
+     * If the new image would overflow an exception is thrown
+     */
+    fun toSubImage(offset: Position, size: Size): TileImage {
+        val tiles = mutableMapOf<Position, Tile>()
+        size.fetchPositions()
+                .map { it + offset }
+                .intersect(size().fetchPositions())
+                .forEach {
+                    tiles[it - offset] = getTileAt(it).get()
+                }
+        return DefaultTileImage(
+                size = size,
+                tileset = tileset(),
+                tiles = tiles.toMap())
+    }
+
+    /**
      * Returns the contents of this [TileImage] as a map of
      * [Position] - [Tile] pairs.
      */
@@ -272,5 +266,24 @@ interface TileImage
             }
         }
         return tileMap
+    }
+
+    /**
+     * Returns a copy of this [TileImage] with the exact same content.
+     */
+    fun toTileImage(): TileImage = toSubImage(Position.defaultPosition(), size())
+
+    /**
+     * Returns a copy of this [TileImage] with the exact same content as a
+     * [TileGraphic] which can be modified using the supplied style.
+     */
+    fun toTileGraphic(): TileGraphic {
+        val result = TileGraphicBuilder.newBuilder()
+                .size(size())
+                .tileset(tileset())
+        toTileMap().forEach { (pos, tile) ->
+            result.tile(pos, tile)
+        }
+        return result.build()
     }
 }
