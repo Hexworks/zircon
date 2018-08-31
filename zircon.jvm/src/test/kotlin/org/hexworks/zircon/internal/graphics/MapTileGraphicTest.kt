@@ -2,17 +2,14 @@ package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
 import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position.Companion.defaultPosition
-import org.hexworks.zircon.api.data.Position.Companion.offset1x1
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
-import java.util.function.Consumer
 
 class MapTileGraphicTest {
 
@@ -46,7 +43,7 @@ class MapTileGraphicTest {
 
     @Test
     fun shouldProperlyResizeWhenResizeCalledWithDifferentSize() {
-        val result = target.withNewSize(Size.create(4, 4), SET_ALL_CHAR)
+        val result = target.resize(Size.create(4, 4), SET_ALL_CHAR)
         assertThat(result.getTileAt(Position.defaultPosition()).get())
                 .isEqualTo(EMPTY_CHAR)
         assertThat(result.getTileAt(Position.create(1, 1)).get())
@@ -91,90 +88,6 @@ class MapTileGraphicTest {
                 .isEqualTo(SET_ALL_CHAR)
     }
 
-    @Test
-    fun givenATileGraphicThatOverFlowsWhenCombinedThenResizeNewTileGraphic() {
-        val sourceChar = Tile.defaultTile().withCharacter('x')
-        val overwriteChar = Tile.defaultTile().withCharacter('+')
-
-        val originalSize = Size.create(3, 1)
-        val source = TileGraphicBuilder.newBuilder()
-                .size(originalSize)
-                .build()
-        originalSize.fetchPositions().forEach {
-            source.setTileAt(it, sourceChar)
-        }
-
-        val newImage = TileGraphicBuilder.newBuilder()
-                .size(Size.create(2, 1))
-                .build()
-                .withFiller(overwriteChar)
-
-        val result = source.combineWith(newImage, Position.create(0, 2))
-        assertThat(result.size()).isEqualTo(Size.create(3, 3))
-
-        //first yLength should all be xLength's
-        for (x in 0..2) {
-            assertThat(result.getTileAt(Position.create(x, 0))
-                    .get()
-                    .asCharacterTile()
-                    .get().character).isEqualTo('x')
-        }
-
-        //as the second image was offset by 2 yLength there should be nothing here
-        for (x in 0..2) {
-            assertThat(result.getTileAt(Position.create(x, 1))
-                    .get()
-                    .asCharacterTile()
-                    .get().character).isEqualTo(' ')
-        }
-
-        //the 3rd yLength should be + for the first 2 xLength (as that's the size of the second image)
-        for (x in 0..1) {
-            assertThat(result.getTileAt(Position.create(x, 2))
-                    .get()
-                    .asCharacterTile()
-                    .get().character).isEqualTo('+')
-        }
-
-        //the bottom right character should be blank
-        assertThat(result.getTileAt(Position.create(2, 2))
-                .get()
-                .asCharacterTile()
-                .get().character).isEqualTo(' ')
-    }
-
-    @Test
-    fun shouldProperlyCombineTwoImages() {
-        val sourceChar = Tile.defaultTile().withCharacter('x')
-        val imageChar = Tile.defaultTile().withCharacter('+')
-        val filler = Tile.defaultTile().withCharacter('_')
-
-        val source = TileGraphicBuilder.newBuilder()
-                .size(Size.create(3, 3))
-                .build()
-                .fill(filler)
-
-        val image = TileGraphicBuilder.newBuilder()
-                .size(Size.create(2, 2))
-                .build()
-                .fill(filler)
-
-        source.setTileAt(Position.create(0, 0), sourceChar)
-        source.setTileAt(Position.create(1, 0), sourceChar)
-        source.setTileAt(Position.create(0, 1), sourceChar)
-        source.setTileAt(Position.create(1, 1), sourceChar)
-
-        image.size().fetchPositions().forEach(Consumer {
-            image.setTileAt(it,  imageChar)
-        })
-
-        val result = source.combineWith(image, offset1x1())
-
-        assertThat(result.getTileAt(offset1x1()).get()).isEqualTo(imageChar)
-        assertThat(result.size()).isEqualTo(source.size())
-        assertThat(source.getTileAt(offset1x1()).get()).isEqualTo(sourceChar)
-        assertThat(image.getTileAt(offset1x1()).get()).isEqualTo(imageChar)
-    }
 
     @Test
     fun shouldProperlyFetchCellsBy() {
@@ -216,10 +129,10 @@ class MapTileGraphicTest {
         val TO_COPY = arrayOf(arrayOf(TO_COPY_CHAR))
         val IMAGE_TO_COPY = ConcurrentTileGraphic(
                 size = Size.one(),
-                tileset = TILESET).withFiller(SET_ALL_CHAR)
+                tileset = TILESET).fill(SET_ALL_CHAR)
         val IMAGE_TO_COPY_AND_CROP = ConcurrentTileGraphic(
                 size = Size.create(2, 2),
-                tileset = TILESET).withFiller(SET_ALL_CHAR)
+                tileset = TILESET).fill(SET_ALL_CHAR)
 
     }
 

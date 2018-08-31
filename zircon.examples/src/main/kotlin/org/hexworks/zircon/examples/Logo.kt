@@ -38,7 +38,7 @@ object Logo {
                     DefaultAnimationFrame(
                             size = size,
                             layers = listOf(Layers.newBuilder()
-                                    .tileGraphic(img.transform(object : TileTransformer {
+                                    .tileGraphic(img.toTileImage().transform(object : TileTransformer {
                                         override fun transform(tc: Tile): Tile {
                                             return tc.withBackgroundColor(tc.getBackgroundColor()
                                                     .darkenByPercent(idx.toDouble().div(20)))
@@ -56,7 +56,7 @@ object Logo {
                     DefaultAnimationFrame(
                             size = size,
                             layers = listOf(Layers.newBuilder()
-                                    .tileGraphic(img.transform(object : TileTransformer {
+                                    .tileGraphic(img.toTileImage().transform(object : TileTransformer {
                                         override fun transform(tc: Tile): Tile {
                                             return tc.withBackgroundColor(tc.getBackgroundColor()
                                                     .darkenByPercent(idx.toDouble().div(20)))

@@ -31,7 +31,7 @@ public class CreatingAScreen {
         final TileGraphic image = TileGraphics.newBuilder()
                 .size(tileGrid.size())
                 .build()
-                .withFiller(Tiles.newBuilder()
+                .fill(Tiles.newBuilder()
                         .foregroundColor(theme.primaryForegroundColor())
                         .backgroundColor(theme.primaryBackgroundColor())
                         .character('~')

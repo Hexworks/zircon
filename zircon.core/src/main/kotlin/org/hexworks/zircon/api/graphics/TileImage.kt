@@ -119,6 +119,9 @@ interface TileImage
      * Fills the empty parts of this [TileImage] with the given `filler`.
      */
     fun withFiller(filler: Tile): TileImage {
+        if(filler == Tile.empty()) {
+            return this
+        }
         val tiles = toTileMap()
         size().fetchPositions().subtract(fetchFilledPositions()).forEach { pos ->
             tiles[pos] = filler
