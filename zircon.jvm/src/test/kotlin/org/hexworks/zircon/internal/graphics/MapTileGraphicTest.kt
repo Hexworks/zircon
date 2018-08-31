@@ -46,7 +46,7 @@ class MapTileGraphicTest {
 
     @Test
     fun shouldProperlyResizeWhenResizeCalledWithDifferentSize() {
-        val result = target.resize(Size.create(4, 4), SET_ALL_CHAR)
+        val result = target.withNewSize(Size.create(4, 4), SET_ALL_CHAR)
         assertThat(result.getTileAt(Position.defaultPosition()).get())
                 .isEqualTo(EMPTY_CHAR)
         assertThat(result.getTileAt(Position.create(1, 1)).get())
@@ -107,7 +107,7 @@ class MapTileGraphicTest {
         val newImage = TileGraphicBuilder.newBuilder()
                 .size(Size.create(2, 1))
                 .build()
-                .fill(overwriteChar)
+                .withFiller(overwriteChar)
 
         val result = source.combineWith(newImage, Position.create(0, 2))
         assertThat(result.size()).isEqualTo(Size.create(3, 3))
@@ -165,7 +165,7 @@ class MapTileGraphicTest {
         source.setTileAt(Position.create(1, 1), sourceChar)
 
         image.size().fetchPositions().forEach(Consumer {
-            image.setTileAt(it, imageChar)
+            image.setTileAt(it,  imageChar)
         })
 
         val result = source.combineWith(image, offset1x1())
@@ -216,10 +216,10 @@ class MapTileGraphicTest {
         val TO_COPY = arrayOf(arrayOf(TO_COPY_CHAR))
         val IMAGE_TO_COPY = ConcurrentTileGraphic(
                 size = Size.one(),
-                tileset = TILESET).fill(SET_ALL_CHAR)
+                tileset = TILESET).withFiller(SET_ALL_CHAR)
         val IMAGE_TO_COPY_AND_CROP = ConcurrentTileGraphic(
                 size = Size.create(2, 2),
-                tileset = TILESET).fill(SET_ALL_CHAR)
+                tileset = TILESET).withFiller(SET_ALL_CHAR)
 
     }
 

@@ -55,7 +55,7 @@ class DefaultTileImageTest {
 
     @Test
     fun shouldProperlyCopyImage() {
-        val result = IMAGE.copyImage()
+        val result = IMAGE.toTileImage()
 
         assertThat(result.fetchCells()).containsExactlyElementsOf(IMAGE.fetchCells())
     }
@@ -71,7 +71,7 @@ class DefaultTileImageTest {
 
     @Test
     fun shouldProperlyResizeToSmaller() {
-        val result = IMAGE.resize(Sizes.create(1, 1))
+        val result = IMAGE.withNewSize(Sizes.create(1, 1))
 
         assertThat(result.fetchCells()).containsExactly(
                 Cell.create(Positions.create(0, 0), FILLER_TILE))
@@ -79,7 +79,7 @@ class DefaultTileImageTest {
 
     @Test
     fun shouldProperlyResizeToLarger() {
-        val result = IMAGE.resize(Sizes.create(4, 1))
+        val result = IMAGE.withNewSize(Sizes.create(4, 1))
 
         assertThat(result.fetchCells()).containsExactly(
                 Cell.create(Positions.create(0, 0), FILLER_TILE),
@@ -90,7 +90,7 @@ class DefaultTileImageTest {
 
     @Test
     fun shouldProperlyResizeToLargerWithFiller() {
-        val result = IMAGE.resize(Sizes.create(4, 1), NEW_TILE)
+        val result = IMAGE.withNewSize(Sizes.create(4, 1), NEW_TILE)
 
         assertThat(result.fetchCells()).containsExactly(
                 Cell.create(Positions.create(0, 0), FILLER_TILE),
@@ -101,7 +101,7 @@ class DefaultTileImageTest {
 
     @Test
     fun shouldProperlyFill() {
-        val result = IMAGE.fill(NEW_TILE)
+        val result = IMAGE.withFiller(NEW_TILE)
 
 
         assertThat(result.fetchCells().map { it.tile }).containsExactly(
@@ -157,7 +157,7 @@ class DefaultTileImageTest {
     @Test
     fun shouldProperlyWithStyle() {
         val style = StyleSet.create(YELLOW, GREEN)
-        val result = IMAGE.fill(FILLER_TILE).withStyle(style)
+        val result = IMAGE.withFiller(FILLER_TILE).withStyle(style)
 
         assertThat(result.fetchCells().map { it.tile }.toSet()).containsExactly(
                 Tile.createCharacterTile('a', style))

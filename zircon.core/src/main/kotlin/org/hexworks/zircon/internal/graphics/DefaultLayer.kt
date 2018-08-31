@@ -90,7 +90,7 @@ data class DefaultLayer(private var position: Position,
             backend = backend)
 
     override fun fill(filler: Tile): Layer {
-        backend.fill(filler)
+        backend.withFiller(filler)
         return this
     }
 
