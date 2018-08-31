@@ -31,7 +31,7 @@ public class CreatingTileGraphicsFromShapes {
         final TileGraphic background = TileGraphics.newBuilder()
                 .size(tileGrid.size()) // you can fetch the size of a TileGrid like this
                 .build()
-                .withFiller(Tiles.newBuilder()
+                .fill(Tiles.newBuilder()
                         .character(Symbols.BULLET)
                         .backgroundColor(ANSITileColor.BLUE)
                         .foregroundColor(ANSITileColor.CYAN)

@@ -1,0 +1,68 @@
+package org.hexworks.zircon.api.builder.graphics
+
+import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.api.graphics.TileImage
+import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.internal.graphics.DefaultTileImage
+
+/**
+ * Creates [org.hexworks.zircon.api.graphics.TileGraphic]s.
+ * Defaults:
+ * - Default [Size] is `ONE` (1x1).
+ * - Default `filler` is an `EMPTY` character
+ */
+@Suppress("ArrayInDataClass")
+data class TileImageBuilder(
+        private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
+        private var filler: Tile = Tile.empty(),
+        private var size: Size = Size.one(),
+        private val tiles: MutableMap<Position, Tile> = mutableMapOf()) : Builder<TileImage> {
+
+    fun tileset(tileset: TilesetResource) = also {
+        this.tileset = tileset
+    }
+
+    fun filler(filler: Tile) = also {
+        this.filler = filler
+    }
+
+    /**
+     * Sets the size for the new [TileGraphic].
+     * Default is 1x1.
+     */
+    fun size(size: Size) = also {
+        this.size = size
+    }
+
+    /**
+     * Adds a [Tile] at the given [Position].
+     */
+    fun tile(position: Position, tile: Tile) = also {
+        require(size.containsPosition(position)) {
+            "The given character's position ($position) is out create bounds for text image size: $size."
+        }
+        tiles[position] = tile
+    }
+
+    override fun build(): TileImage {
+        return DefaultTileImage(
+                size = size,
+                tileset = tileset,
+                tiles = tiles.toMap()).withFiller(filler)
+    }
+
+    override fun createCopy() = copy()
+
+    companion object {
+
+        /**
+         * Creates a new [TileImageBuilder] to build [org.hexworks.zircon.api.graphics.TileGraphic]s.
+         */
+        fun newBuilder() = TileImageBuilder()
+    }
+}

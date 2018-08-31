@@ -1,12 +1,14 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.zircon.api.behavior.Clearable
-import org.hexworks.zircon.api.behavior.DrawSurface
-import org.hexworks.zircon.api.behavior.Styleable
+import org.hexworks.zircon.api.behavior.*
 import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.internal.data.DefaultCell
+import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphic
+import org.hexworks.zircon.internal.graphics.DefaultTileImage
 
 /**
  * An image built from [Tile]s with color and style information.
@@ -14,23 +16,12 @@ import org.hexworks.zircon.api.data.Tile
  * [DrawSurface]s like a [org.hexworks.zircon.api.grid.TileGrid].
  */
 interface TileGraphic
-    : Clearable, DrawSurface, Styleable, TileImage {
+    : Clearable, DrawSurface, Drawable, Styleable, TilesetOverride {
 
     /**
      * Returns a [List] of [Position]s which are not `EMPTY`.
      */
-    override fun fetchFilledPositions(): List<Position> = snapshot().keys.toList()
-
-    override fun toTileMap(): MutableMap<Position, Tile> = snapshot().toMutableMap()
-
-    /**
-     * Returns a copy of this image resized to a new size and using
-     * an empty [Tile] if the new size is larger than the old and
-     * we need to fill in empty areas.
-     * The copy will be independent from the one this method is
-     * invoked on, so modifying one will not affect the other.
-     */
-    fun resize(newSize: Size): TileGraphic = resize(newSize, Tile.empty())
+    fun fetchFilledPositions(): List<Position> = snapshot().keys.toList()
 
     /**
      * Returns a copy of this image resized to a new size and using
@@ -40,7 +31,32 @@ interface TileGraphic
      * invoked on, so modifying one will not affect the other.
      */
     fun resize(newSize: Size, filler: Tile): TileGraphic {
-        return withNewSize(newSize, filler).toTileGraphic()
+        // TODO: return same type, use factory for this
+        val result = ConcurrentTileGraphic(
+                size = newSize,
+                styleSet = styleSet(),
+                tileset = tileset())
+        snapshot().filter { (pos) -> newSize.containsPosition(pos) }
+                .forEach { (pos, tc) ->
+                    result.setTileAt(pos, tc)
+                }
+        if (filler != Tile.empty()) {
+            newSize.fetchPositions().subtract(size().fetchPositions()).forEach {
+                result.setTileAt(it, filler)
+            }
+        }
+        return result
+    }
+
+    /**
+     * Returns a copy of this image resized to a new size and using
+     * an empty [Tile] if the new size is larger than the old and
+     * we need to fill in empty areas.
+     * The copy will be independent from the one this method is
+     * invoked on, so modifying one will not affect the other.
+     */
+    fun resize(newSize: Size): TileGraphic {
+        return resize(newSize, Tile.empty())
     }
 
     /**
@@ -53,6 +69,26 @@ interface TileGraphic
             setTileAt(pos, filler)
         }
         return this
+    }
+
+    /**
+     * Returns all the [Cell]s ([Tile]s with associated [Position] information)
+     * of this [TileGraphic].
+     */
+    fun fetchCells(): Iterable<Cell> {
+        return fetchCellsBy(Position.defaultPosition(), size())
+    }
+
+    /**
+     * Returns the [Cell]s in this [TileGraphic] from the given `offset`
+     * position and area.
+     * Throws an exception if either `offset` or `size` would overlap
+     * with this [TileGraphic].
+     */
+    fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell> {
+        return size.fetchPositions()
+                .map { it + offset }
+                .map { DefaultCell(it, getTileAt(it).get()) }
     }
 
     /**
@@ -96,5 +132,12 @@ interface TileGraphic
                 }
             }
         }
+    }
+
+    fun toTileImage(): TileImage {
+        return DefaultTileImage(
+                size = size(),
+                tileset = tileset(),
+                tiles = snapshot().toMap())
     }
 }
