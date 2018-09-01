@@ -36,7 +36,7 @@ abstract class DefaultComponent(
                 .newBuilder()
                 .tileset(tileset)
                 .size(size)
-                .build(),
+                .buildThreadSafe(),
         private val boundable: DefaultBoundable = DefaultBoundable(
                 size = size,
                 position = position))
