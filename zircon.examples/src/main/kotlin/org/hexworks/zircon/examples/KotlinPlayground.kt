@@ -47,9 +47,15 @@ object KotlinPlayground {
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        screen.addComponent(LogPanel2(Sizes.create(30, 20), Position.defaultPosition()))
-
+        val log = LogPanel2(Sizes.create(30, 20), Position.defaultPosition())
         screen.display()
+        screen.addComponent(log)
+
+        repeat(500) {
+            log.addMessage("foo: $it")
+            Thread.sleep(200)
+        }
+
         screen.applyColorTheme(ColorThemes.adriftInDreams())
 
     }

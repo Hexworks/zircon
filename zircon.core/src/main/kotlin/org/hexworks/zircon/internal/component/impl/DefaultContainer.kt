@@ -20,6 +20,7 @@ import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.WrappingStrategy
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 @Suppress("UNCHECKED_CAST")
 open class DefaultContainer(initialSize: Size,
@@ -34,7 +35,7 @@ open class DefaultContainer(initialSize: Size,
         tileset = initialTileset),
         Container {
 
-    private val components = mutableListOf<InternalComponent>()
+    private val components = ThreadSafeQueueFactory.create<InternalComponent>()
 
 
     override fun draw(drawable: Drawable, position: Position) {

@@ -1,6 +1,6 @@
 allprojects {
     group "org.hexworks.zircon"
-    version "2018.3.25-PREVIEW"
+    version "2018.3.26-PREVIEW"
 }
 
 buildscript {

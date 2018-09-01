@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphic
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphic
 import org.hexworks.zircon.internal.graphics.MapTileGraphic
 
 /**
@@ -55,6 +56,15 @@ data class TileGraphicBuilder(
     }
 
     override fun build(): TileGraphic = MapTileGraphic(
+            size = size,
+            tileset = tileset,
+            styleSet = StyleSet.defaultStyle()).also { image ->
+        tiles.forEach { (pos, tile) ->
+            image.setTileAt(pos, tile)
+        }
+    }
+
+    fun buildThreadSafe(): TileGraphic = ConcurrentTileGraphic(
             size = size,
             tileset = tileset,
             styleSet = StyleSet.defaultStyle()).also { image ->
