@@ -17,6 +17,7 @@ import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.api.resource.BuiltInMonospaceFontResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.internal.game.DefaultGameComponent
@@ -25,7 +26,7 @@ import java.util.*
 
 object IsometricGameArea {
 
-    private val TILESET = BuiltInCP437TilesetResource.WANDERLUST_16X16
+    private val TILESET = BuiltInMonospaceFontResource.IBM_BIOS.toTilesetResource(20)
 
     private val MODIFIER_LOOKUP = mapOf(
             BLOCK_BACK to BACK,

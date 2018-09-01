@@ -1,43 +1,53 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.input.MouseAction
+import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.util.Consumer
+import org.hexworks.zircon.internal.component.impl.DefaultContainer
 
 object KotlinPlayground {
 
-    private val SIZE = Sizes.create(50, 30)
-    private val TILESET = BuiltInCP437TilesetResource.TAFFER_20X20
+    val TILESET = BuiltInCP437TilesetResource.CHEEPICUS_16X16
+
+    class LogPanel2(size: Size, position: Position) : DefaultContainer(
+            initialSize = size,
+            position = position,
+            initialTileset = TILESET,
+            wrappers = listOf(),
+            componentStyleSet = ComponentStyleSet.defaultStyleSet()) {
+        private val MAX_HISTORY = 100
+        private val lines = mutableListOf<String>()
+
+        private val panel = TileGraphics.newBuilder().size(getEffectiveSize()).build()
+
+        fun addMessage(message: String) {
+            lines.add(message)
+            if (lines.size > MAX_HISTORY)
+                lines.removeAt(0)
+            redraw()
+        }
+
+        private fun redraw() {
+            lines.subList(Math.max(0, lines.size - getEffectiveSize().height()), lines.size).forEachIndexed { idx, line ->
+                panel.putText(line, Positions.defaultPosition().withRelativeY(idx))
+            }
+            panel.drawOnto(this, getEffectivePosition())
+        }
+    }
 
     @JvmStatic
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .defaultTileset(TILESET)
-                .defaultSize(SIZE)
+                .defaultSize(Sizes.create(30, 20))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        val c = Components.panel()
-                .size(Sizes.create(5, 5))
-                .wrapWithBox()
-                .position(Positions.create(1, 1))
-                .build()
-
-        c.setRelativeTileAt(Positions.create(1, 1), Tiles.defaultTile().withCharacter('x'))
-        c.setRelativeTileAt(Positions.create(2, 2), Tiles.defaultTile().withCharacter('y'))
-        c.setRelativeTileAt(Positions.create(3, 3), Tiles.defaultTile().withCharacter('z'))
-
-        screen.addComponent(c)
-
-        c.onMouseReleased(object : Consumer<MouseAction> {
-            override fun accept(p: MouseAction) {
-                println("Pos: ${c.position()}, EPos: ${c.getEffectivePosition()}")
-                println("Char: ${c.getTileAt(p.position).get().asCharacterTile().get().character}")
-            }
-        })
+        screen.addComponent(LogPanel2(Sizes.create(30, 20), Position.defaultPosition()))
 
         screen.display()
         screen.applyColorTheme(ColorThemes.adriftInDreams())
