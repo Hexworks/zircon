@@ -2,6 +2,7 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.api.resource.BuiltInMonospaceFontResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 
 object NonSquareTilesetExample {
@@ -24,14 +25,14 @@ object NonSquareTilesetExample {
                 .paragraph("This text is more readable because it does not use a square tileset.")
                 .paragraph("This is a 8x16 tileset in fact...")
                 .paragraph("It works fine with a Panel which uses a 16x16 tileset!")
-                .tileset(BuiltInCP437TilesetResource.VGA_8X16)
+                .tileset(BuiltInMonospaceFontResource.UBUNTU_MONO.toTilesetResource(16))
                 .build()
 
         val panel = Components.panel()
                 .title("Multi-size test")
                 .wrapWithBox()
                 .wrapWithShadow()
-                .position(Positions.create(2, 0))
+                .position(Positions.create(2, 2))
                 .size(Sizes.create(40, 30))
                 .build()
 
