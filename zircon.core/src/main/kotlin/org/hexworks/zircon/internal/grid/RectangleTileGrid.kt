@@ -8,10 +8,7 @@ import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -121,6 +118,10 @@ class RectangleTileGrid(
 
     override fun getLayers(): List<Layer> {
         return layerable.getLayers()
+    }
+
+    override fun bounds(): Bounds {
+        return backend.bounds()
     }
 
     override fun size(): Size {

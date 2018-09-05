@@ -3,6 +3,7 @@ package org.hexworks.zircon.example
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
+import org.hexworks.zircon.api.TileGraphics
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.GridPosition
@@ -14,7 +15,6 @@ import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.graphics.DefaultLayer
 import org.hexworks.zircon.internal.graphics.DefaultStyleSet
-import org.hexworks.zircon.internal.graphics.MapTileGraphic
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
 import org.hexworks.zircon.internal.renderer.LibgdxRenderer
 import java.util.*
@@ -37,7 +37,10 @@ class GdxExample : ApplicationAdapter() {
     private val filler = Tiles.defaultTile().withCharacter('x')
     private var layers: List<DefaultLayer> = (0..layerCount).map {
 
-        val imageLayer = MapTileGraphic(layerSize, tileset)
+        val imageLayer = TileGraphics.newBuilder()
+                .size(layerSize)
+                .tileset(tileset)
+                .build()
         layerSize.fetchPositions().forEach {
             imageLayer.setTileAt(it, filler)
         }

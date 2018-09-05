@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.animation
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.api.builder.grid.TileGridBuilder
 import org.hexworks.zircon.api.data.Position
@@ -29,6 +30,7 @@ class DefaultAnimationHandlerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+        AppConfigs.newConfig().enableBetaFeatures().build()
         target = DefaultAnimationHandler()
     }
 

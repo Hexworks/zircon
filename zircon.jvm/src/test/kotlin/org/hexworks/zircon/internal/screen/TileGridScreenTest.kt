@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.screen
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -26,6 +27,7 @@ class TileGridScreenTest {
 
     @Before
     fun setUp() {
+        AppConfigs.newConfig().enableBetaFeatures().build()
         tileset = DefaultLabelTest.FONT
         terminal = RectangleTileGrid(
                 tileset = tileset,

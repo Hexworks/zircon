@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.builder.graphics.TileImageBuilder
 import org.hexworks.zircon.api.color.ANSITileColor.GREEN
 import org.hexworks.zircon.api.color.ANSITileColor.YELLOW
 import org.hexworks.zircon.api.data.Cell
@@ -20,6 +21,21 @@ class DefaultTileImageTest {
 
     @Test
     fun shouldProperlyGetExistingTile() {
+
+        val other = TileImageBuilder.newBuilder()
+                .filler(Tile.defaultTile())
+                .size(Sizes.create(3, 3))
+                .build()
+
+        TileImageBuilder.newBuilder()
+                .filler(Tiles.defaultTile())
+                .size(Sizes.create(5, 5))
+                .tileset(CP437TilesetResources.aduDhabi16x16())
+                .build()
+                .withTileAt(Positions.create(1, 1), Tiles.defaultTile().withCharacter('x'))
+                .combineWith(other, Positions.offset1x1())
+                .toTileGraphic()
+
         assertThat(IMAGE.getTileAt(FILLED_POS).get()).isEqualTo(FILLER_TILE)
     }
 

@@ -3,8 +3,7 @@ package org.hexworks.zircon.internal.tileset
 import org.hexworks.zircon.api.data.GraphicTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.resource.BuiltInGraphicalTilesetResource
-import org.hexworks.zircon.api.resource.TileType
+import org.hexworks.zircon.api.resource.BuiltInGraphicTilesetResource
 import org.hexworks.zircon.api.resource.TileType.*
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
@@ -37,7 +36,7 @@ class Java2DGraphicTileset(private val resource: TilesetResource)
                     " a GraphicTile-based tileset."
         }
 
-        val resourceStream: InputStream = if (resource is BuiltInGraphicalTilesetResource) {
+        val resourceStream: InputStream = if (resource is BuiltInGraphicTilesetResource) {
             this::class.java.getResourceAsStream(resource.path)
         } else {
             File(resource.path).inputStream()

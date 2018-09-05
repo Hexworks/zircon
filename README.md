@@ -10,7 +10,7 @@ Check it out if you are looking for a *terminal emulator* instead.
 Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki)
  | or [Create an issue](https://github.com/Hexworks/zircon/issues/new)
  | Check [our project Board](https://github.com/Hexworks/zircon/projects/2)
- | [Ask us on Discord][discord]
+ | [Ask us on Discord][discord] | Support us on [Patreon](https://www.patreon.com/hexworks)
 
 [![][circleci img]][circleci]
 [![][maven img]][maven]
@@ -516,7 +516,7 @@ Zircon is powered by:
 [screen-primer]:https://github.com/Hexworks/zircon/wiki/A-primer-on-Screens
 [text-images]:https://github.com/Hexworks/zircon/wiki/How-to-work-with-TileGraphics
 
-[discord]:https://discord.gg/p2vSMFc
+[discord]:https://discord.gg/hbzytQJ
 [examples]:https://github.com/Hexworks/zircon/tree/master/zircon.examples/src/main
 [api]:https://github.com/Hexworks/zircon/tree/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api
 [internal]:https://github.com/Hexworks/zircon/tree/master/zircon.core/src/main/kotlin/org/hexworks/zircon/internal

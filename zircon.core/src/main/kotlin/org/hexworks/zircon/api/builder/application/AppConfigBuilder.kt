@@ -113,6 +113,10 @@ data class AppConfigBuilder(
         this.betaEnabled = true
     }
 
+    fun disableBetaFeatures() = also {
+        this.betaEnabled = false
+    }
+
     companion object {
 
         fun newBuilder() = AppConfigBuilder()

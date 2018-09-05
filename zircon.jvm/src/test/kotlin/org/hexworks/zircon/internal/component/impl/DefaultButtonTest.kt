@@ -29,7 +29,7 @@ class DefaultButtonTest {
     fun setUp() {
         tileset = FONT
         target = ButtonBuilder.newBuilder()
-                .componentStyles(COMPONENT_STYLES)
+                .componentStyleSet(COMPONENT_STYLES)
                 .position(POSITION)
                 .tileset(tileset)
                 .text(TEXT)

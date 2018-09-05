@@ -9,7 +9,6 @@ import org.hexworks.zircon.api.graphics.TileGraphic
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphic
-import org.hexworks.zircon.internal.graphics.MapTileGraphic
 
 /**
  * Creates [org.hexworks.zircon.api.graphics.TileGraphic]s.
@@ -55,16 +54,7 @@ data class TileGraphicBuilder(
         tiles[position] = tile
     }
 
-    override fun build(): TileGraphic = MapTileGraphic(
-            size = size,
-            tileset = tileset,
-            styleSet = StyleSet.defaultStyle()).also { image ->
-        tiles.forEach { (pos, tile) ->
-            image.setTileAt(pos, tile)
-        }
-    }
-
-    fun buildThreadSafe(): TileGraphic = ConcurrentTileGraphic(
+    override fun build(): TileGraphic = ConcurrentTileGraphic(
             size = size,
             tileset = tileset,
             styleSet = StyleSet.defaultStyle()).also { image ->

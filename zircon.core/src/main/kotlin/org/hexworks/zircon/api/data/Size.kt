@@ -14,8 +14,14 @@ interface Size : Comparable<Size> {
 
     val yLength: Int
 
+    /**
+     * Shorthand for `xLength`
+     */
     fun width() = xLength
 
+    /**
+     * Shorthand for `yLength`
+     */
     fun height() = yLength
 
     operator fun plus(other: Size) = create(xLength + other.xLength, yLength + other.yLength)

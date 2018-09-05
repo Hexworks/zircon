@@ -6,12 +6,12 @@ import org.junit.Test
 import java.awt.Font
 import java.awt.GraphicsEnvironment
 
-class BuiltInMonospaceFontResourceTest {
+class BuiltInTrueTypeFontResourceTest {
 
     @Test
     fun test() {
 
-        BuiltInMonospaceFontResource.values().forEach {
+        BuiltInTrueTypeFontResource.values().forEach {
             val fr = it.toTilesetResource(20)
             val f = Font.createFont(
                     Font.TRUETYPE_FONT,

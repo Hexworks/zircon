@@ -1,12 +1,19 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.animation.AnimationResource
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.animation.AnimationResource
+import org.junit.Before
 import org.junit.Test
 
 class DefaultAnimationTest {
+
+    @Before
+    fun setUp() {
+        AppConfigs.newConfig().enableBetaFeatures().build()
+    }
 
     @Test
     fun shouldProperlyBuildFromResource() {

@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.HeaderBuilder
 import org.hexworks.zircon.api.builder.component.LabelBuilder
@@ -30,8 +31,8 @@ class DefaultContainerTest {
 
     @Before
     fun setUp() {
-        goodTileset = GOOD_FONT
-        badTileset = BAD_FONT
+        goodTileset = GOOD_TILESET
+        badTileset = BAD_TILESET
         target = DefaultContainer(
                 initialSize = SIZE,
                 position = POSITION,
@@ -162,6 +163,7 @@ class DefaultContainerTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionIfComponentWithUnsupportedFontSizeIsAdded() {
+        AppConfigs.newConfig().disableBetaFeatures().build()
         target.addComponent(LabelBuilder.newBuilder()
                 .text("foo")
                 .tileset(badTileset)
@@ -175,6 +177,7 @@ class DefaultContainerTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotLetToAddAComponentWhichIntersectsWithAnother() {
+        AppConfigs.newConfig().disableBetaFeatures().build()
         val pos = Position.create(1, 1)
         val comp = LabelBuilder.newBuilder().position(pos).text("text").build()
         val otherComp = LabelBuilder.newBuilder().position(pos.withRelativeX(1)).text("text").build()
@@ -224,8 +227,8 @@ class DefaultContainerTest {
     }
 
     companion object {
-        val GOOD_FONT = BuiltInCP437TilesetResource.AESOMATICA_16X16
-        val BAD_FONT = BuiltInCP437TilesetResource.BISASAM_20X20
+        val GOOD_TILESET = BuiltInCP437TilesetResource.AESOMATICA_16X16
+        val BAD_TILESET = BuiltInCP437TilesetResource.BISASAM_20X20
         val SIZE = Size.create(4, 4)
         val POSITION = Position.create(2, 3)
         val NEW_POSITION = Position.create(6, 7)

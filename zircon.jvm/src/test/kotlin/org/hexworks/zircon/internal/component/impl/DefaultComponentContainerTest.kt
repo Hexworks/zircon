@@ -210,7 +210,7 @@ class DefaultComponentContainerTest {
     private fun createButton() = ButtonBuilder.newBuilder()
             .position(BUTTON_POSITION)
             .text(BUTTON_TEXT)
-            .componentStyles(STYLES)
+            .componentStyleSet(STYLES)
             .build()
 
     companion object {

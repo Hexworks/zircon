@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.data.Position
 interface Movable : Positionable {
 
     /**
-     * Sets the (absolute) position of this [Movable].
+     * Sets the position of this [Movable].
      * Note that if the supplied `position` is same as the [Movable]'s current
      * position nothing will change.
      * @return `true` if the position was changed `false` otherwise

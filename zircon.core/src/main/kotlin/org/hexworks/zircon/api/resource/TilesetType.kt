@@ -4,5 +4,5 @@ enum class TilesetType {
 
     CP437_TILESET,
     TRUE_TYPE_FONT,
-    GRAPHICAL_TILESET
+    GRAPHIC_TILESET
 }

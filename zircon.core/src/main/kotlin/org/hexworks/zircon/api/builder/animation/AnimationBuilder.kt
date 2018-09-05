@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.animation.DefaultAnimation
 import org.hexworks.zircon.internal.animation.DefaultAnimationFrame
 import org.hexworks.zircon.internal.animation.InternalAnimationFrame
+import org.hexworks.zircon.internal.config.RuntimeConfig
 
 @Suppress("DataClassPrivateConstructor", "UNCHECKED_CAST")
 data class AnimationBuilder private constructor(
@@ -111,7 +112,13 @@ data class AnimationBuilder private constructor(
         /**
          * Creates a new [AnimationBuilder] to build [Animation]s.
          */
-        fun newBuilder() = AnimationBuilder()
+        fun newBuilder(): AnimationBuilder {
+            require(RuntimeConfig.config.betaEnabled) {
+                "Animations are a beta feature. Please enable them when setting up Zircon using an AppConfig."
+            }
+            return AnimationBuilder()
+        }
+
 
         private const val DEFAULT_FPS = 15L
 

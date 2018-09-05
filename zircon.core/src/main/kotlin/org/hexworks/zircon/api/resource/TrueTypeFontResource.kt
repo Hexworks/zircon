@@ -1,15 +1,14 @@
 package org.hexworks.zircon.api.resource
 
-import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.internal.resource.BaseTilesetResource
 
 /**
- * CP437 Tileset resource class which can be used with [CharacterTile]s.
+ * Tileset resource for true type fonts which can be used with [org.hexworks.zircon.api.data.CharacterTile]s.
  */
-class CP437TilesetResource(override val width: Int,
+class TrueTypeFontResource(override val width: Int,
                            override val height: Int,
                            override val path: String) : BaseTilesetResource() {
 
     override val tileType = TileType.CHARACTER_TILE
-    override val tilesetType: TilesetType = TilesetType.CP437_TILESET
+    override val tilesetType: TilesetType = TilesetType.TRUE_TYPE_FONT
 }

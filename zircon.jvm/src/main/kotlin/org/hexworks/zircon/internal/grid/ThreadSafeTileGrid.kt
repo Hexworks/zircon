@@ -5,7 +5,9 @@ import org.hexworks.zircon.api.animation.AnimationInfo
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Layerable
+import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
@@ -25,22 +27,19 @@ import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
 import org.hexworks.zircon.internal.animation.InternalAnimationHandler
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
-import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.graphics.MapTileGraphic
 import java.util.concurrent.Executors
-
 
 class ThreadSafeTileGrid(
         tileset: TilesetResource,
         size: Size,
-        override var backend: TileGraphic = MapTileGraphic(
-                size = size,
-                tileset = tileset,
-                styleSet = StyleSet.defaultStyle()),
+        override var backend: TileGraphic = TileGraphicBuilder.newBuilder()
+                .size(size)
+                .tileset(tileset)
+                .build(),
         override var layerable: Layerable = DefaultLayerable(size),
         override var animationHandler: InternalAnimationHandler = DefaultAnimationHandler(),
         private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(

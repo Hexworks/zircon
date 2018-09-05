@@ -1,8 +1,7 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.resource.BuiltInMonospaceFontResource
+import org.hexworks.zircon.api.resource.BuiltInTrueTypeFontResource
 
 object TrueTypeFontExample {
 
@@ -13,7 +12,7 @@ object TrueTypeFontExample {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .defaultSize(Sizes.create(20, 10))
-                .defaultTileset(BuiltInMonospaceFontResource.IBM_BIOS.toTilesetResource(60))
+                .defaultTileset(BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(60))
                 .build())
 
         tileGrid.draw(CharacterTileStrings.newBuilder()

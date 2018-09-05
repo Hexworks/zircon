@@ -9,33 +9,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultContainer
 
 object KotlinPlayground {
 
-    val TILESET = BuiltInCP437TilesetResource.CHEEPICUS_16X16
-
-    class LogPanel2(size: Size, position: Position) : DefaultContainer(
-            initialSize = size,
-            position = position,
-            initialTileset = TILESET,
-            wrappers = listOf(),
-            componentStyleSet = ComponentStyleSet.defaultStyleSet()) {
-        private val MAX_HISTORY = 100
-        private val lines = mutableListOf<String>()
-
-        private val panel = TileGraphics.newBuilder().size(getEffectiveSize()).build()
-
-        fun addMessage(message: String) {
-            lines.add(message)
-            if (lines.size > MAX_HISTORY)
-                lines.removeAt(0)
-            redraw()
-        }
-
-        private fun redraw() {
-            lines.subList(Math.max(0, lines.size - getEffectiveSize().height()), lines.size).forEachIndexed { idx, line ->
-                panel.putText(line, Positions.defaultPosition().withRelativeY(idx))
-            }
-            panel.drawOnto(this, getEffectivePosition())
-        }
-    }
+    val TILESET = BuiltInCP437TilesetResource.WANDERLUST_16X16
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -47,16 +21,12 @@ object KotlinPlayground {
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        val log = LogPanel2(Sizes.create(30, 20), Position.defaultPosition())
+
+
         screen.display()
-        screen.addComponent(log)
 
-        repeat(500) {
-            log.addMessage("foo: $it")
-            Thread.sleep(200)
-        }
 
-        screen.applyColorTheme(ColorThemes.adriftInDreams())
+        screen.applyColorTheme(ColorThemes.hexworks())
 
     }
 
