@@ -1,10 +1,6 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.AppConfigs
-import org.hexworks.zircon.api.LibgdxApplications
-import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.Tiles
-import org.hexworks.zircon.api.builder.application.AppConfigBuilder
+import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.GridPosition
 import org.hexworks.zircon.api.data.Position
@@ -14,7 +10,6 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.graphics.DefaultLayer
-import org.hexworks.zircon.internal.graphics.MapTileGraphic
 import java.util.*
 
 fun main(args: Array<String>) {
@@ -40,7 +35,10 @@ fun main(args: Array<String>) {
 
     val layers = (0..layerCount).map {
 
-        val imageLayer = MapTileGraphic(layerSize, tileset)
+        val imageLayer = TileGraphics.newBuilder()
+                .size(layerSize)
+                .tileset(tileset)
+                .build()
         layerSize.fetchPositions().forEach {
             imageLayer.setTileAt(it, filler)
         }

@@ -8,7 +8,7 @@ import kotlin.reflect.KClass
 
 /**
  * Handles the textures of a tileset, and provides
- * functionality to fetch them for rendering.
+ * functionality to render them on a surface.
  */
 interface Tileset<T: Any> : Identifiable {
 

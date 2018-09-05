@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.data.Position
 interface Positionable {
 
     /**
-     * Returns the (absolute) position of this [Positionable]. Default is (0, 0).
+     * Returns the position of this [Positionable]. Default is (0, 0).
      * The position of a [Positionable] is its position relative to the
      * gui window's top left corner. An offset of (0, 0) denotes
      * that corner.

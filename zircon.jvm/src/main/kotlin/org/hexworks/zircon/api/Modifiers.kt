@@ -2,6 +2,7 @@ package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.builder.modifier.BorderBuilder
+import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 
 /**
@@ -10,25 +11,25 @@ import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 object Modifiers {
 
     @JvmStatic
-    fun underline() = Underline
+    fun underline(): Modifier = Underline
 
     @JvmStatic
-    fun blink() = Blink
+    fun blink(): Modifier = Blink
 
     @JvmStatic
-    fun crossedOut() = CrossedOut
+    fun crossedOut(): Modifier = CrossedOut
 
     @JvmStatic
-    fun verticalFlip() = VerticalFlip
+    fun verticalFlip(): Modifier = VerticalFlip
 
     @JvmStatic
-    fun horizontalFlip() = HorizontalFlip
+    fun horizontalFlip(): Modifier = HorizontalFlip
 
     @JvmStatic
-    fun hidden() = Hidden
+    fun hidden(): Modifier = Hidden
 
     @JvmStatic
-    fun glow() = Glow
+    fun glow(): Modifier = Glow
 
     /**
      * Shorthand for the default border which is:

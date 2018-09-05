@@ -2,26 +2,24 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.TileGraphics
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.GridPosition
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.resource.BuiltInMonospaceFontResource
+import org.hexworks.zircon.api.resource.BuiltInTrueTypeFontResource
 import org.hexworks.zircon.internal.graphics.DefaultLayer
-import org.hexworks.zircon.internal.graphics.MapTileGraphic
 import java.util.*
 
 fun main(args: Array<String>) {
 
     val size = Sizes.create(80, 40)
 
-    val tileset = BuiltInMonospaceFontResource.IBM_BIOS.toTilesetResource(20)
+    val tileset = BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(20)
 
     val tileGrid = SwingApplications.startTileGrid(AppConfigBuilder.newBuilder()
             .defaultSize(size)
@@ -40,7 +38,10 @@ fun main(args: Array<String>) {
 
     val layers = (0..layerCount).map {
 
-        val imageLayer = MapTileGraphic(layerSize, tileset)
+        val imageLayer = TileGraphics.newBuilder()
+                .size(layerSize)
+                .tileset(tileset)
+                .build()
         layerSize.fetchPositions().forEach {
             imageLayer.setTileAt(it, filler)
         }

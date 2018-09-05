@@ -11,13 +11,13 @@ import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
 
-class MapTileGraphicTest {
+class ConcurrentTileGraphicTest {
 
-    lateinit var target: MapTileGraphic
+    lateinit var target: ConcurrentTileGraphic
 
     @Before
     fun setUp() {
-        target = MapTileGraphic(
+        target = ConcurrentTileGraphic(
                 size = SIZE_OF_3X3,
                 tileset = TILESET)
     }

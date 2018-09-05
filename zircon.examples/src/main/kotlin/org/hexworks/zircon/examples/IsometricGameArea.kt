@@ -1,13 +1,8 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.builder.application.AppConfigBuilder
-import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
-import org.hexworks.zircon.api.builder.screen.ScreenBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.data.BlockSide.*
 import org.hexworks.zircon.api.game.GameModifiers.*
@@ -16,8 +11,7 @@ import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.resource.BuiltInMonospaceFontResource
+import org.hexworks.zircon.api.resource.BuiltInTrueTypeFontResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.internal.game.DefaultGameComponent
@@ -26,7 +20,7 @@ import java.util.*
 
 object IsometricGameArea {
 
-    private val TILESET = BuiltInMonospaceFontResource.IBM_BIOS.toTilesetResource(20)
+    private val TILESET = BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(20)
 
     private val MODIFIER_LOOKUP = mapOf(
             BLOCK_BACK to BACK,

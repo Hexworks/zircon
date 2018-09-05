@@ -22,7 +22,7 @@ class DefaultHeaderTest {
     fun setUp() {
         tileset = FONT
         target = HeaderBuilder.newBuilder()
-                .componentStyles(COMPONENT_STYLES)
+                .componentStyleSet(COMPONENT_STYLES)
                 .position(POSITION)
                 .tileset(tileset)
                 .text(TEXT)

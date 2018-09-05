@@ -10,6 +10,9 @@ object ColorThemes {
     @JvmStatic
     fun newBuilder() = ColorThemeBuilder()
 
+    @JvmStatic
+    fun hexworks() = ColorThemeResource.HEXWORKS.getTheme()
+
     /**
      * Taken from
      * http://www.colourlovers.com/palette/580974/Adrift_in_Dreams

@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
 import org.hexworks.zircon.api.component.ComponentState
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.data.Bounds
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -36,7 +37,7 @@ abstract class DefaultComponent(
                 .newBuilder()
                 .tileset(tileset)
                 .size(size)
-                .buildThreadSafe(),
+                .build(),
         private val boundable: DefaultBoundable = DefaultBoundable(
                 size = size,
                 position = position))
@@ -105,6 +106,8 @@ abstract class DefaultComponent(
     override fun signalAttached() {
         this.attached = true
     }
+
+    override fun bounds() = this.boundable.bounds()
 
     override fun containsBoundable(boundable: Boundable) = this.boundable.containsBoundable(boundable)
 

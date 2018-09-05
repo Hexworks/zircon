@@ -29,7 +29,7 @@ class DefaultCheckBoxTest {
     fun setUp() {
         tileset = FONT
         target = CheckBoxBuilder.newBuilder()
-                .componentStyles(COMPONENT_STYLES)
+                .componentStyleSet(COMPONENT_STYLES)
                 .tileset(tileset)
                 .position(POSITION)
                 .text(TEXT)

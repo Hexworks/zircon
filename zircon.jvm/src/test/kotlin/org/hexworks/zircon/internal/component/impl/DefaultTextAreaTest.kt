@@ -26,7 +26,7 @@ class DefaultTextAreaTest {
     fun setUp() {
         tileset = DefaultLabelTest.FONT
         target = TextAreaBuilder.newBuilder()
-                .componentStyles(COMPONENT_STYLES)
+                .componentStyleSet(COMPONENT_STYLES)
                 .size(SIZE)
                 .tileset(tileset)
                 .position(POSITION)

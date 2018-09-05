@@ -22,11 +22,7 @@ object StyleSets {
      * - and no modifiers.
      */
     @JvmStatic
-    fun empty() = newBuilder()
-            .backgroundColor(TileColor.transparent())
-            .foregroundColor(TileColor.transparent())
-            .modifiers(setOf())
-            .build()
+    fun empty() = StyleSet.empty()
 
     /**
      * Creates a new [StyleSetBuilder] for creating [org.hexworks.zircon.api.graphics.StyleSet]s.

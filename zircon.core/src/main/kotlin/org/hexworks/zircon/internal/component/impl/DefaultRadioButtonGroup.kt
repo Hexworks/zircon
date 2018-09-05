@@ -60,7 +60,7 @@ class DefaultRadioButtonGroup constructor(
                 initialTileset = tileset()).also { button ->
             items[key] = button
             addComponent(button)
-            EventBus.listenTo<ZirconEvent.MouseReleased>(button.id) {
+            EventBus.listenTo<ZirconEvent.MouseReleased>(button.id) { _ ->
                 selectedItem.map { lastSelected ->
                     if (lastSelected != key) {
                         items[lastSelected]?.removeSelection()

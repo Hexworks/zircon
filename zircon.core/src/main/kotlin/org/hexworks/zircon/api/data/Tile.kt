@@ -22,6 +22,9 @@ interface Tile : Drawable, Cacheable {
      */
     fun tileType(): TileType
 
+    /**
+     * Returns the style of this [Tile].
+     */
     fun styleSet(): StyleSet
 
     /**

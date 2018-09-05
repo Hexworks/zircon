@@ -2,7 +2,7 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.api.resource.BuiltInMonospaceFontResource
+import org.hexworks.zircon.api.resource.BuiltInTrueTypeFontResource
 import org.hexworks.zircon.api.tileset.lookup.CP437TileMetadataLoader
 
 object CP437CharsExample {
@@ -14,7 +14,7 @@ object CP437CharsExample {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .defaultSize(Sizes.create(21, 21))
-                .defaultTileset(BuiltInMonospaceFontResource.IBM_BIOS_WIDE.toTilesetResource(20))
+                .defaultTileset(BuiltInTrueTypeFontResource.IBM_BIOS_WIDE.toTilesetResource(20))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)

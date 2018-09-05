@@ -4,12 +4,12 @@ import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.TilesetOverride
+import org.hexworks.zircon.api.data.Bounds
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphic
-import org.hexworks.zircon.internal.behavior.impl.Rectangle
 
 /**
  * this is a basic building block which can be re-used by complex image
@@ -22,7 +22,7 @@ data class DefaultLayer(private var position: Position,
                         val backend: TileGraphic)
     : Layer, TilesetOverride by backend {
 
-    private var rect: Rectangle = refreshRect()
+    private var bounds: Bounds = refreshBounds()
 
     override fun snapshot(): Map<Position, Tile> {
         return backend.snapshot().mapKeys { it.key + position }
@@ -36,44 +36,40 @@ data class DefaultLayer(private var position: Position,
         backend.drawOnto(surface, position)
     }
 
-    override fun size(): Size {
-        return backend.size()
-    }
-
     override fun getRelativeTileAt(position: Position) = backend.getTileAt(position)
 
     override fun setRelativeTileAt(position: Position, tile: Tile) {
         backend.setTileAt(position, tile)
     }
 
+    override fun bounds() = bounds
+
     override fun position() = position
+
+    override fun size(): Size {
+        return backend.size()
+    }
 
     override fun moveTo(position: Position) =
             if (this.position == position) {
                 false
             } else {
                 this.position = position
-                this.rect = refreshRect()
+                this.bounds = refreshBounds()
                 true
             }
 
-    override fun intersects(boundable: Boundable) = rect.intersects(
-            Rectangle(
-                    boundable.position().x,
-                    boundable.position().y,
-                    boundable.size().xLength,
-                    boundable.size().yLength))
-
-    override fun containsPosition(position: Position): Boolean {
-        return rect.contains(position)
+    override fun intersects(boundable: Boundable): Boolean {
+        return bounds.intersects(boundable.bounds())
     }
 
-    override fun containsBoundable(boundable: Boundable) = rect.contains(
-            Rectangle(
-                    position.x,
-                    position.y,
-                    boundable.size().xLength,
-                    boundable.size().yLength))
+    override fun containsPosition(position: Position): Boolean {
+        return bounds.containsPosition(position)
+    }
+
+    override fun containsBoundable(boundable: Boundable): Boolean {
+        return bounds.containsBounds(boundable.bounds())
+    }
 
     override fun getTileAt(position: Position) = backend.getTileAt(position - this.position)
 
@@ -81,8 +77,8 @@ data class DefaultLayer(private var position: Position,
         backend.setTileAt(position - this.position, tile)
     }
 
-    private fun refreshRect(): Rectangle {
-        return Rectangle(position.x, position.y, size().xLength, size().yLength)
+    private fun refreshBounds(): Bounds {
+        return Bounds.create(position, size())
     }
 
     override fun createCopy() = DefaultLayer(

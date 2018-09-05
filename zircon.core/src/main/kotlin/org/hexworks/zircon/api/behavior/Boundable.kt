@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.behavior
 
+import org.hexworks.zircon.api.data.Bounds
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 
@@ -9,6 +10,8 @@ import org.hexworks.zircon.api.data.Size
  * about its geometry relating to other [Boundable]s (like intersection).
  */
 interface Boundable : Positionable {
+
+    fun bounds(): Bounds
 
     /**
      * Returns the [Size] of this [Boundable].

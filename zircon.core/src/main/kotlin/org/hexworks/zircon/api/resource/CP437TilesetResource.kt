@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.internal.resource.BaseTilesetResource
 
 /**
- * Tileset resource class which can be used with [CharacterTile]s.
+ * CP437 Tileset resource class which can be used with [CharacterTile]s.
  */
 class CP437TilesetResource(override val width: Int,
                            override val height: Int,

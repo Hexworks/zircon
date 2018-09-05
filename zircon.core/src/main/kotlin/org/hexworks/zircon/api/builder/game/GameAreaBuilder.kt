@@ -1,9 +1,11 @@
 package org.hexworks.zircon.api.builder.game
 
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.game.InMemoryGameArea
 
 /**
@@ -52,6 +54,11 @@ data class GameAreaBuilder(private var size: Size3D = Size3D.one(),
 
     companion object {
 
-        fun newBuilder() = GameAreaBuilder()
+        fun newBuilder(): GameAreaBuilder {
+            require(RuntimeConfig.config.betaEnabled) {
+                "GameArea is a beta feature. Please enable them when setting up Zircon using an AppConfig."
+            }
+            return GameAreaBuilder()
+        }
     }
 }

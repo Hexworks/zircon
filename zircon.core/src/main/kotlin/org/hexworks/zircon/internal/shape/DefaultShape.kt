@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.shape
 
+import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -7,7 +8,6 @@ import org.hexworks.zircon.api.graphics.TileGraphic
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.shape.Shape
 import org.hexworks.zircon.api.util.Math
-import org.hexworks.zircon.internal.graphics.MapTileGraphic
 
 class DefaultShape(private val positions: Set<Position> = setOf())
     : Shape, Collection<Position> by positions {
@@ -22,9 +22,10 @@ class DefaultShape(private val positions: Set<Position> = setOf())
             maxCol = Math.max(maxCol, col)
             maxRow = Math.max(maxRow, row)
         }
-        // TODO: builder here
-        val result = MapTileGraphic(size = Size.create(maxCol + 1, maxRow + 1),
-                tileset = tileset)
+        val result = TileGraphicBuilder.newBuilder()
+                .size(Size.create(maxCol + 1, maxRow + 1))
+                .tileset(tileset)
+                .build()
         offsetPositions.forEach {
             result.setTileAt(it, tile)
         }

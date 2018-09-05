@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.resource
 
 import org.hexworks.zircon.api.data.GraphicTile
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.resource.BaseTilesetResource
 
 /**
@@ -12,5 +11,5 @@ class GraphicalTilesetResource(override val width: Int,
                                override val path: String) : BaseTilesetResource() {
 
     override val tileType = TileType.GRAPHIC_TILE
-    override val tilesetType: TilesetType = TilesetType.GRAPHICAL_TILESET
+    override val tilesetType: TilesetType = TilesetType.GRAPHIC_TILESET
 }
