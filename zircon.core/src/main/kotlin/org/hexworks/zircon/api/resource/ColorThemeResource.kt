@@ -9,14 +9,6 @@ import org.hexworks.zircon.api.resource.ColorThemeResource.SolarizedBase.SOLARIZ
 enum class ColorThemeResource(private val colorTheme: ColorTheme) {
 
 
-    HEXWORKS(ColorThemeBuilder.newBuilder()
-            .accentColor(TileColor.fromString("#52b61d"))
-            .primaryForegroundColor(TileColor.fromString("#90a8a4"))
-            .secondaryForegroundColor(TileColor.fromString("#8aa1a4"))
-            .primaryBackgroundColor(TileColor.fromString("#6e3dc5"))
-            .secondaryBackgroundColor(TileColor.fromString("#2d2837"))
-            .build()),
-
     /**
      * Taken from
      * http://www.colourlovers.com/palette/580974/Adrift_in_Dreams

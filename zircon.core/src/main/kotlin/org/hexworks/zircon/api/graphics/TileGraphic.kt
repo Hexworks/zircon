@@ -117,9 +117,15 @@ interface TileGraphic
     fun applyStyle(styleSet: StyleSet,
                    offset: Position = Position.defaultPosition(),
                    size: Size = size(),
-                   keepModifiers: Boolean = false) {
+                   keepModifiers: Boolean = false,
+                   applyToEmptyCells: Boolean = true) {
         setStyleFrom(styleSet)
-        size.fetchPositions().forEach { pos ->
+        val positions = if(applyToEmptyCells) {
+            size.fetchPositions()
+        } else {
+            fetchFilledPositions()
+        }
+        positions.forEach { pos ->
             pos.plus(offset).let { fixedPos ->
                 getTileAt(fixedPos).map { tile: Tile ->
                     val oldMods = tile.styleSet().modifiers()

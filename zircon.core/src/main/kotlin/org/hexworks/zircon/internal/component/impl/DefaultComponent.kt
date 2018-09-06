@@ -160,14 +160,15 @@ abstract class DefaultComponent(
 
     override fun getComponentStyles() = componentStyleSet
 
-    override fun setComponentStyles(componentStyleSet: ComponentStyleSet) {
+    override fun setComponentStyles(componentStyleSet: ComponentStyleSet,
+                                    applyToEmptyCells: Boolean) {
         this.componentStyleSet = componentStyleSet
-
         graphic.applyStyle(
                 styleSet = componentStyleSet.getCurrentStyle(),
                 offset = getNonThemeableOffset(),
                 size = getEffectiveThemeableSize(),
-                keepModifiers = true)
+                keepModifiers = true,
+                applyToEmptyCells = applyToEmptyCells)
     }
 
     fun getBoundable() = boundable

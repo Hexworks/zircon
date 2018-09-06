@@ -73,8 +73,17 @@ interface Component : Identifiable, Layer {
 
     /**
      * Sets the styles this [Component] will be displayed with.
+     * The styles will also be applied to empty cells.
      */
-    fun setComponentStyles(componentStyleSet: ComponentStyleSet)
+    fun setComponentStyles(componentStyleSet: ComponentStyleSet) = setComponentStyles(componentStyleSet, true)
+
+    /**
+     * Sets the styles this [Component] will be displayed with.
+     *
+     * @param applyToEmptyCells apply the styles to empty cells, or not
+     */
+    fun setComponentStyles(componentStyleSet: ComponentStyleSet,
+                           applyToEmptyCells: Boolean)
 
     /**
      * Applies a [ColorTheme] to this component and recursively to all its children (if any).
