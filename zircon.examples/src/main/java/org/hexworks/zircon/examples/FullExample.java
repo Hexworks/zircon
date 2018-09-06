@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.graphics.Symbols;
-import org.hexworks.zircon.api.graphics.TileGraphic;
+import org.hexworks.zircon.api.graphics.TileGraphics;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.modifier.BorderType;
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
@@ -86,7 +86,7 @@ public class FullExample {
         // ==============
 
         REXPaintResource rex = REXPaintResources.loadREXFile(RexLoaderExample.class.getResourceAsStream("/rex_files/zircon_logo.xp"));
-        TileGraphic img = TileGraphics.newBuilder().size(SCREEN_SIZE).build();
+        TileGraphics img = DrawSurfaces.tileGraphicsBuilder().size(SCREEN_SIZE).build();
         rex.toLayerList(CP437TilesetResources.rogueYun16x16()).forEach(layer -> img.draw(layer, Positions.defaultPosition()));
         AnimationBuilder splashAnimBuilder = Animations.newBuilder();
 

@@ -2,7 +2,7 @@ package org.hexworks.zircon.api.shape
 
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.shape.DefaultShape
 
@@ -32,9 +32,9 @@ interface Shape : Collection<Position> {
     }
 
     /**
-     * Creates a [TileGraphic] from this [Shape] using `tile` to fill the positions.
+     * Creates a [TileGraphics] from this [Shape] using `tile` to fill the positions.
      */
-    fun toTileGraphics(tile: Tile, tileset: TilesetResource): TileGraphic
+    fun toTileGraphics(tile: Tile, tileset: TilesetResource): TileGraphics
 
     /**
      * Offsets this [Shape] to the default position (column=0,row=0),

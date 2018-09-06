@@ -4,16 +4,16 @@ import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.Modifiers;
 import org.hexworks.zircon.api.Sizes;
 import org.hexworks.zircon.api.StyleSets;
-import org.hexworks.zircon.api.TileGraphics;
+import org.hexworks.zircon.api.DrawSurfaces;
 import org.hexworks.zircon.api.Tiles;
 import org.hexworks.zircon.api.color.ANSITileColor;
-import org.hexworks.zircon.api.graphics.TileGraphic;
+import org.hexworks.zircon.api.graphics.TileGraphics;
 
 public class CreatingATileGraphic {
 
     public static void main(String[] args) {
 
-        TileGraphic graphic = TileGraphics.newBuilder()
+        TileGraphics graphic = DrawSurfaces.tileGraphicsBuilder()
                 .size(Sizes.create(10, 10))
                 .style(StyleSets.newBuilder()
                         .backgroundColor(ANSITileColor.RED)

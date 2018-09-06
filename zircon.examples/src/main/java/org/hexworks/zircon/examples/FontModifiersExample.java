@@ -2,12 +2,14 @@ package org.hexworks.zircon.examples;
 
 import kotlin.collections.SetsKt;
 import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.Modifiers;
 import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.color.ANSITileColor;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.modifier.Border;
+import org.hexworks.zircon.api.modifier.Crop;
 import org.hexworks.zircon.api.modifier.RayShade;
 import org.hexworks.zircon.api.modifier.SimpleModifiers;
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
@@ -103,10 +105,17 @@ public class FontModifiersExample {
 
         putEmptySpace(tileGrid);
 
-        tileGrid.enableModifiers(SimpleModifiers.Glow.INSTANCE);
+        tileGrid.enableModifiers(Modifiers.glow());
         tileGrid.setBackgroundColor(ANSITileColor.WHITE);
         tileGrid.setForegroundColor(ANSITileColor.BLUE);
         tileGrid.putCharacter('J');
+
+        putEmptySpace(tileGrid);
+
+        tileGrid.enableModifiers(new Crop(8, 8, 8, 8));
+        tileGrid.setBackgroundColor(ANSITileColor.RED);
+        tileGrid.setForegroundColor(ANSITileColor.WHITE);
+        tileGrid.putCharacter('K');
 
     }
 

@@ -5,13 +5,13 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphic
+import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphics
 
 /**
- * Creates [org.hexworks.zircon.api.graphics.TileGraphic]s.
+ * Creates [org.hexworks.zircon.api.graphics.TileGraphics]s.
  * Defaults:
  * - Default [Size] is `ONE` (1x1).
  * - Default `filler` is an `EMPTY` character
@@ -22,7 +22,7 @@ data class TileGraphicBuilder(
         private var filler: Tile = Tile.empty(),
         private var size: Size = Size.one(),
         private var style: StyleSet = StyleSet.defaultStyle(),
-        private val tiles: MutableMap<Position, Tile> = mutableMapOf()) : Builder<TileGraphic> {
+        private val tiles: MutableMap<Position, Tile> = mutableMapOf()) : Builder<TileGraphics> {
 
     fun tileset(tileset: TilesetResource) = also {
         this.tileset = tileset
@@ -37,7 +37,7 @@ data class TileGraphicBuilder(
     }
 
     /**
-     * Sets the size for the new [TileGraphic].
+     * Sets the size for the new [TileGraphics].
      * Default is 1x1.
      */
     fun size(size: Size) = also {
@@ -54,7 +54,7 @@ data class TileGraphicBuilder(
         tiles[position] = tile
     }
 
-    override fun build(): TileGraphic = ConcurrentTileGraphic(
+    override fun build(): TileGraphics = ConcurrentTileGraphics(
             size = size,
             tileset = tileset,
             styleSet = StyleSet.defaultStyle()).also { image ->
@@ -68,7 +68,7 @@ data class TileGraphicBuilder(
     companion object {
 
         /**
-         * Creates a new [TileGraphicBuilder] to build [org.hexworks.zircon.api.graphics.TileGraphic]s.
+         * Creates a new [TileGraphicBuilder] to build [org.hexworks.zircon.api.graphics.TileGraphics]s.
          */
         fun newBuilder() = TileGraphicBuilder()
     }

@@ -7,10 +7,10 @@ import org.hexworks.zircon.api.Positions;
 import org.hexworks.zircon.api.Screens;
 import org.hexworks.zircon.api.Sizes;
 import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.TileGraphics;
+import org.hexworks.zircon.api.DrawSurfaces;
 import org.hexworks.zircon.api.Tiles;
 import org.hexworks.zircon.api.component.ColorTheme;
-import org.hexworks.zircon.api.graphics.TileGraphic;
+import org.hexworks.zircon.api.graphics.TileGraphics;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.screen.Screen;
 
@@ -28,7 +28,7 @@ public class CreatingAScreen {
 
         final ColorTheme theme = ColorThemes.adriftInDreams();
 
-        final TileGraphic image = TileGraphics.newBuilder()
+        final TileGraphics image = DrawSurfaces.tileGraphicsBuilder()
                 .size(tileGrid.size())
                 .build()
                 .fill(Tiles.newBuilder()

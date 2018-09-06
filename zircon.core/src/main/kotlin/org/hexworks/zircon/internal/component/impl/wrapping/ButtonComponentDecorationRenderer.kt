@@ -4,16 +4,16 @@ import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.graphics.TileGraphic
-import org.hexworks.zircon.internal.component.WrappingStrategy
+import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 
-class ButtonWrappingStrategy : WrappingStrategy {
+class ButtonComponentDecorationRenderer : ComponentDecorationRenderer {
 
     override fun getOccupiedSize() = Size.create(2, 0)
 
     override fun getOffset() = Position.create(1, 0)
 
-    override fun apply(tileGraphic: TileGraphic, size: Size, offset: Position, style: StyleSet) {
+    override fun render(tileGraphic: TileGraphics, size: Size, offset: Position, style: StyleSet) {
         tileGraphic.setTileAt(
                 position = offset,
                 tile = TileBuilder.newBuilder()
@@ -27,7 +27,5 @@ class ButtonWrappingStrategy : WrappingStrategy {
                         .styleSet(style)
                         .build())
     }
-
-    override fun isThemeNeutral() = false
 
 }

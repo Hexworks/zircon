@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.Border
+import org.hexworks.zircon.api.modifier.Crop
 import org.hexworks.zircon.api.modifier.RayShade
 import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.api.resource.TileType
@@ -99,6 +100,7 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
                 Pair(SimpleModifiers.Hidden::class, Java2DHiddenTransformer()),
                 Pair(SimpleModifiers.Glow::class, Java2DGlowTransformer()),
                 Pair(Border::class, Java2DBorderTransformer()),
+                Pair(Crop::class, Java2DCropTransformer()),
                 Pair(RayShade::class, Java2DRayShaderTransformer())
         ).toMap()
 

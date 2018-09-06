@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.tileset.lookup.CP437TileMetadataLoader
 
 object ComponentsExample {
 
-    private val theme = ColorThemes.hexworks()
+    private val theme = ColorThemes.amigaOs()
     private val tileset = CP437TilesetResources.rogueYun16x16()
 
     @JvmStatic

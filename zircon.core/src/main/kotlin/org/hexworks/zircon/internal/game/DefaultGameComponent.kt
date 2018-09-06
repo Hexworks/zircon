@@ -39,7 +39,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
     : GameComponent, Scrollable3D by scrollable, DefaultComponent(
         size = visibleSize.to2DSize(),
         position = position,
-        componentStyleSet = componentStyleSet,
+        componentStyles = componentStyleSet,
         wrappers = listOf(),
         tileset = initialTileset,
         boundable = boundable) {
@@ -62,7 +62,8 @@ class DefaultGameComponent(private val gameArea: GameArea,
     override fun takeFocus(input: Maybe<Input>) {
     }
 
-    override fun applyColorTheme(colorTheme: ColorTheme) {
+    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        return ComponentStyleSet.defaultStyleSet()
     }
 
     override fun transformToLayers(): List<Layer> {
@@ -138,22 +139,22 @@ class DefaultGameComponent(private val gameArea: GameArea,
     }
 
     override fun containsBoundable(boundable: Boundable): Boolean {
-        return getBoundable().containsBoundable(boundable)
+        return bounds().containsBounds(boundable.bounds())
     }
 
     override fun containsPosition(position: Position): Boolean {
-        return getBoundable().containsPosition(position)
+        return bounds().containsPosition(position)
     }
 
     override fun size(): Size {
-        return getBoundable().size()
+        return bounds().size()
     }
 
     override fun position(): Position {
-        return getBoundable().position()
+        return bounds().position()
     }
 
     override fun intersects(boundable: Boundable): Boolean {
-        return getBoundable().intersects(boundable)
+        return bounds().intersects(boundable.bounds())
     }
 }

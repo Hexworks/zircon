@@ -30,33 +30,29 @@ public class LayersExample {
 
         app.start();
 
-        final Screen screen = Screens.createScreenFor(tileGrid);
-        screen.setCursorVisibility(false); // we don't want the cursor right now
-
         final String firstRow = "This is white title on black";
         for (int x = 0; x < firstRow.length(); x++) {
-            screen.setTileAt(
+            tileGrid.setTileAt(
                     Positions.create(x + 1, 1),
                     buildWhiteOnBlack(firstRow.charAt(x)));
         }
 
         final String secondRow = "Like the row above but with blue overlay.";
         for (int x = 0; x < secondRow.length(); x++) {
-            screen.setTileAt(
+            tileGrid.setTileAt(
                     Positions.create(x + 1, 2),
                     buildWhiteOnBlack(secondRow.charAt(x)));
         }
 
-        addOverlayAt(screen,
+        addOverlayAt(tileGrid,
                 Positions.create(1, 2),
                 Sizes.create(secondRow.length(), 1),
                 TileColors.create(50, 50, 200, 127));
 
-        screen.display();
     }
 
-    private static void addOverlayAt(Screen screen, Position offset, Size size, TileColor color) {
-        screen.pushLayer(new LayerBuilder()
+    private static void addOverlayAt(TileGrid tileGrid, Position offset, Size size, TileColor color) {
+        tileGrid.pushLayer(new LayerBuilder()
                 .offset(offset)
                 .size(size)
                 .build()

@@ -24,6 +24,7 @@ public class AnimationExample {
                 .defaultTileset(TILESET)
                 .defaultSize(TERMINAL_SIZE)
                 .debugMode(true)
+                .enableBetaFeatures()
                 .build()));
 
         final Panel panel = Components.panel()

@@ -62,7 +62,7 @@ class DefaultPanelTest {
         target.applyColorTheme(THEME)
 
         ComponentState.values().forEach {
-            assertThat(target.getComponentStyles().getStyleFor(it)).isEqualTo(EXPECTED_STYLE)
+            assertThat(target.componentStyleSet().getStyleFor(it)).isEqualTo(EXPECTED_STYLE)
         }
     }
 
@@ -74,7 +74,7 @@ class DefaultPanelTest {
         target.addComponent(component)
         target.applyColorTheme(THEME)
 
-        assertThat(component.getComponentStyles().getCurrentStyle())
+        assertThat(component.componentStyleSet().getCurrentStyle())
                 .isEqualTo(DefaultLabelTest.DEFAULT_STYLE)
     }
 

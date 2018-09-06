@@ -87,7 +87,7 @@ class DefaultTextAreaTest {
     @Test
     fun shouldProperlyApplyTheme() {
         target.applyColorTheme(THEME)
-        val styles = target.getComponentStyles()
+        val styles = target.componentStyleSet()
         assertThat(styles.getStyleFor(ComponentState.DEFAULT))
                 .isEqualTo(DEFAULT_STYLE)
         assertThat(styles.getStyleFor(ComponentState.MOUSE_OVER))
@@ -103,7 +103,7 @@ class DefaultTextAreaTest {
     @Test
     fun shouldRefreshDrawSurfaceIfSetText() {
         target.setText(UPDATE_TEXT.toString())
-        val character = target.getDrawSurface().getTileAt(Position.defaultPosition())
+        val character = target.tileGraphic().getTileAt(Position.defaultPosition())
         assertThat(character.get().asCharacterTile().get().character)
                 .isEqualTo(UPDATE_TEXT)
     }

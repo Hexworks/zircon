@@ -38,7 +38,7 @@ class DefaultCheckBoxTest {
 
     @Test
     fun shouldProperlyAddCheckBoxText() {
-        val surface = target.getDrawSurface()
+        val surface = target.tileGraphic()
         val offset = 4
         TEXT.forEachIndexed { i, char ->
             Assertions.assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
@@ -63,7 +63,7 @@ class DefaultCheckBoxTest {
     @Test
     fun shouldProperlyApplyTheme() {
         target.applyColorTheme(THEME)
-        val styles = target.getComponentStyles()
+        val styles = target.componentStyleSet()
         Assertions.assertThat(styles.getStyleFor(ComponentState.DEFAULT))
                 .isEqualTo(EXPECTED_DEFAULT_STYLE)
         Assertions.assertThat(styles.getStyleFor(ComponentState.MOUSE_OVER))
@@ -88,7 +88,7 @@ class DefaultCheckBoxTest {
         val result = target.giveFocus()
 
         Assertions.assertThat(result).isTrue()
-        Assertions.assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
+        Assertions.assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
     }
 
     @Test
@@ -97,7 +97,7 @@ class DefaultCheckBoxTest {
 
         target.takeFocus()
 
-        Assertions.assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
+        Assertions.assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
 //    @Test TODO: re-enable in next release
@@ -113,7 +113,7 @@ class DefaultCheckBoxTest {
 //                data = MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.defaultPosition()))
 //
 //        Assertions.assertThat(componentChanged.get()).isTrue()
-//        Assertions.assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_ACTIVE_STYLE)
+//        Assertions.assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_ACTIVE_STYLE)
 //    }
 
     @Test
@@ -124,7 +124,7 @@ class DefaultCheckBoxTest {
                 identifier = target.id,
                 event = ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition())))
 
-        Assertions.assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
+        Assertions.assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
     }
 
     companion object {

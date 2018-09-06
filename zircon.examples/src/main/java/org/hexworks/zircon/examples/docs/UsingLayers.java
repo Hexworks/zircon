@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.Positions;
 import org.hexworks.zircon.api.Sizes;
 import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.TileColors;
-import org.hexworks.zircon.api.TileGraphics;
+import org.hexworks.zircon.api.DrawSurfaces;
 import org.hexworks.zircon.api.Tiles;
 import org.hexworks.zircon.api.color.ANSITileColor;
 import org.hexworks.zircon.api.graphics.Layer;
@@ -18,7 +18,7 @@ public class UsingLayers {
         TileGrid tileGrid = SwingApplications.startTileGrid();
 
         Layer layer0 = Layers.newBuilder()
-                .tileGraphic(TileGraphics.newBuilder()
+                .tileGraphic(DrawSurfaces.tileGraphicsBuilder()
                         .size(Sizes.create(3, 3))
                         .build()
                         .fill(Tiles.newBuilder()
@@ -30,7 +30,7 @@ public class UsingLayers {
                 .build();
 
         Layer layer1 = Layers.newBuilder()
-                .tileGraphic(TileGraphics.newBuilder()
+                .tileGraphic(DrawSurfaces.tileGraphicsBuilder()
                         .size(Sizes.create(3, 3))
                         .build()
                         .fill(Tiles.newBuilder()

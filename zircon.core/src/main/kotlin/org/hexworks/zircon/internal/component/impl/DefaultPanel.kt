@@ -8,14 +8,14 @@ import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.component.WrappingStrategy
+import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 
 class DefaultPanel(private val title: String,
                    initialSize: Size,
                    position: Position,
                    initialTileset: TilesetResource,
                    componentStyleSet: ComponentStyleSet,
-                   wrappers: Iterable<WrappingStrategy> = listOf())
+                   wrappers: Iterable<ComponentDecorationRenderer> = listOf())
     : Panel, DefaultContainer(initialSize = initialSize,
         position = position,
         componentStyleSet = componentStyleSet,
@@ -24,15 +24,17 @@ class DefaultPanel(private val title: String,
 
     override fun getTitle() = title
 
-    override fun applyColorTheme(colorTheme: ColorTheme) {
-        setComponentStyles(ComponentStyleSetBuilder.newBuilder()
+    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.primaryForegroundColor())
                         .backgroundColor(colorTheme.primaryBackgroundColor())
                         .build())
-                .build())
-        getComponents().forEach {
-            it.applyColorTheme(colorTheme)
-        }
+                .build().also { css ->
+                    setComponentStyleSet(css)
+                    getComponents().forEach {
+                        it.applyColorTheme(colorTheme)
+                    }
+                }
     }
 }

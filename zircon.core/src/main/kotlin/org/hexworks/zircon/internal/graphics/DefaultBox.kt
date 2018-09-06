@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Box
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.shape.LineFactory
 
@@ -17,11 +17,11 @@ class DefaultBox(
         styleSet: StyleSet,
         boxType: BoxType,
         tileset: TilesetResource,
-        private val backend: TileGraphic = TileGraphicBuilder.newBuilder()
+        private val backend: TileGraphics = TileGraphicBuilder.newBuilder()
                 .tileset(tileset)
                 .size(size)
                 .build())
-    : Box, TileGraphic by backend {
+    : Box, TileGraphics by backend {
 
     init {
         setStyleFrom(styleSet)

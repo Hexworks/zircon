@@ -4,20 +4,20 @@ import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.BorderPosition
 import org.hexworks.zircon.api.modifier.BorderPosition.*
 import org.hexworks.zircon.api.shape.LineFactory
-import org.hexworks.zircon.internal.component.WrappingStrategy
+import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 
-class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
+class BorderComponentDecorationRenderer(private val border: Border) : ComponentDecorationRenderer {
 
     override fun getOccupiedSize() = Size.create(0, 0)
 
     override fun getOffset() = Position.defaultPosition()
 
-    override fun apply(tileGraphic: TileGraphic, size: Size, offset: Position, style: StyleSet) {
+    override fun render(tileGraphic: TileGraphics, size: Size, offset: Position, style: StyleSet) {
         val drawTop = border.borderPositions.contains(TOP)
         val drawBottom = border.borderPositions.contains(BOTTOM)
         val drawLeft = border.borderPositions.contains(LEFT)
@@ -143,19 +143,5 @@ class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
             }
         }
     }
-
-    override fun remove(tileGraphic: TileGraphic, size: Size, offset: Position, style: StyleSet) {
-        // TODO: FIX CAST
-        size.fetchBoundingBoxPositions().forEach { pos ->
-            val fixedPos = pos.withRelative(offset)
-            tileGraphic.getTileAt(fixedPos).map { char ->
-                if (char.hasBorder()) {
-                    tileGraphic.setTileAt(fixedPos, char.withoutModifiers(*char.fetchBorderData().toTypedArray()))
-                }
-            }
-        }
-    }
-
-    override fun isThemeNeutral() = false
 
 }

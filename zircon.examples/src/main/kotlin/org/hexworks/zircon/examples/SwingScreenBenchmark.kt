@@ -1,7 +1,7 @@
 package org.hexworks.zircon.examples
 
+import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.TileGraphics
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.data.GridPosition
@@ -39,7 +39,7 @@ fun main(args: Array<String>) {
 
     val layers = (0..layerCount).map {
 
-        val imageLayer = TileGraphics.newBuilder()
+        val imageLayer = DrawSurfaces.tileGraphicsBuilder()
                 .size(layerSize)
                 .tileset(tileset)
                 .build()

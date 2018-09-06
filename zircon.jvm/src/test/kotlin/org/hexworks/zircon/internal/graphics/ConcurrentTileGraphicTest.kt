@@ -13,11 +13,11 @@ import org.junit.Test
 
 class ConcurrentTileGraphicTest {
 
-    lateinit var target: ConcurrentTileGraphic
+    lateinit var target: ConcurrentTileGraphics
 
     @Before
     fun setUp() {
-        target = ConcurrentTileGraphic(
+        target = ConcurrentTileGraphics(
                 size = SIZE_OF_3X3,
                 tileset = TILESET)
     }
@@ -127,10 +127,10 @@ class ConcurrentTileGraphicTest {
                 .character('c')
                 .build()
         val TO_COPY = arrayOf(arrayOf(TO_COPY_CHAR))
-        val IMAGE_TO_COPY = ConcurrentTileGraphic(
+        val IMAGE_TO_COPY = ConcurrentTileGraphics(
                 size = Size.one(),
                 tileset = TILESET).fill(SET_ALL_CHAR)
-        val IMAGE_TO_COPY_AND_CROP = ConcurrentTileGraphic(
+        val IMAGE_TO_COPY_AND_CROP = ConcurrentTileGraphics(
                 size = Size.create(2, 2),
                 tileset = TILESET).fill(SET_ALL_CHAR)
 

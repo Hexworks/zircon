@@ -2,12 +2,9 @@ package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.*
 import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.data.Cell
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.internal.data.DefaultCell
-import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphic
+import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphics
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
 
 /**
@@ -15,7 +12,7 @@ import org.hexworks.zircon.internal.graphics.DefaultTileImage
  * It is completely in memory but it can be drawn onto other
  * [DrawSurface]s like a [org.hexworks.zircon.api.grid.TileGrid].
  */
-interface TileGraphic
+interface TileGraphics
     : Clearable, DrawSurface, Drawable, Styleable, TilesetOverride {
 
     /**
@@ -30,9 +27,9 @@ interface TileGraphic
      * The copy will be independent from the one this method is
      * invoked on, so modifying one will not affect the other.
      */
-    fun resize(newSize: Size, filler: Tile): TileGraphic {
+    fun resize(newSize: Size, filler: Tile): TileGraphics {
         // TODO: return same type, use factory for this
-        val result = ConcurrentTileGraphic(
+        val result = ConcurrentTileGraphics(
                 size = newSize,
                 styleSet = styleSet(),
                 tileset = tileset())
@@ -55,14 +52,14 @@ interface TileGraphic
      * The copy will be independent from the one this method is
      * invoked on, so modifying one will not affect the other.
      */
-    fun resize(newSize: Size): TileGraphic {
+    fun resize(newSize: Size): TileGraphics {
         return resize(newSize, Tile.empty())
     }
 
     /**
-     * Fills the empty parts of this [TileGraphic] with the given `filler`.
+     * Fills the empty parts of this [TileGraphics] with the given `filler`.
      */
-    fun fill(filler: Tile): TileGraphic {
+    fun fill(filler: Tile): TileGraphics {
         size().fetchPositions().filter { pos ->
             getTileAt(pos).map { it == Tile.empty() }.orElse(false)
         }.forEach { pos ->
@@ -73,17 +70,17 @@ interface TileGraphic
 
     /**
      * Returns all the [Cell]s ([Tile]s with associated [Position] information)
-     * of this [TileGraphic].
+     * of this [TileGraphics].
      */
     fun fetchCells(): Iterable<Cell> {
         return fetchCellsBy(Position.defaultPosition(), size())
     }
 
     /**
-     * Returns the [Cell]s in this [TileGraphic] from the given `offset`
+     * Returns the [Cell]s in this [TileGraphics] from the given `offset`
      * position and area.
      * Throws an exception if either `offset` or `size` would overlap
-     * with this [TileGraphic].
+     * with this [TileGraphics].
      */
     fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell> {
         return size.fetchPositions()
@@ -105,7 +102,7 @@ interface TileGraphic
     }
 
     /**
-     * Sets the style of this [TileGraphic] from the given `styleSet`
+     * Sets the style of this [TileGraphics] from the given `styleSet`
      * and also applies it to all currently present
      * [Tile]s within the bounds delimited by `offset` and `size`.
      * Offset is used to offset the starting position from the top left position
@@ -115,11 +112,19 @@ interface TileGraphic
      * target [Tile]s should be kept or not
      */
     fun applyStyle(styleSet: StyleSet,
-                   offset: Position = Position.defaultPosition(),
-                   size: Size = size(),
-                   keepModifiers: Boolean = false) {
+                   bounds: Bounds = bounds(),
+                   keepModifiers: Boolean = false,
+                   applyToEmptyCells: Boolean = true) {
+        val offset = bounds.position()
+        val size = bounds.size()
         setStyleFrom(styleSet)
-        size.fetchPositions().forEach { pos ->
+        // TODO: test this properly
+        val positions = if(applyToEmptyCells) {
+            size.fetchPositions()
+        } else {
+            fetchFilledPositions()
+        }
+        positions.forEach { pos ->
             pos.plus(offset).let { fixedPos ->
                 getTileAt(fixedPos).map { tile: Tile ->
                     val oldMods = tile.styleSet().modifiers()
@@ -139,5 +144,16 @@ interface TileGraphic
                 size = size(),
                 tileset = tileset(),
                 tiles = snapshot().toMap())
+    }
+
+    /**
+     * Creates a new [TileGraphics] which will use this one as the underlying subsystem.
+     * Writing is restricted to the area denoted by `bounds` so if `bounds` consists
+     * of Position(1, 1) and Size(2, 2), the resulting [TileGraphics] will have a size
+     * of (2, 2) and writing to it will write to the original graphics' surface, offset
+     * by Position(1, 1).
+     */
+    fun toSubTileGraphics(bounds: Bounds): TileGraphics {
+        return SubTileGraphics(this, bounds)
     }
 }

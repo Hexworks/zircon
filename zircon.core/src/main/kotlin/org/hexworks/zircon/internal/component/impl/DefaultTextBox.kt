@@ -20,14 +20,14 @@ class DefaultTextBox(private val text: String,
                      componentStyleSet: ComponentStyleSet) : TextBox, DefaultComponent(
         size = initialSize,
         position = position,
-        componentStyleSet = componentStyleSet,
+        componentStyles = componentStyleSet,
         wrappers = listOf(),
         tileset = initialTileset) {
 
 
     init {
         text.trim().split(SystemUtils.getLineSeparator()).forEachIndexed { idx, line ->
-            getDrawSurface().putText(line, Position.create(0, idx))
+            tileGraphic().putText(line, Position.create(0, idx))
         }
     }
 
@@ -39,12 +39,14 @@ class DefaultTextBox(private val text: String,
 
     override fun takeFocus(input: Maybe<Input>) {}
 
-    override fun applyColorTheme(colorTheme: ColorTheme) {
-        setComponentStyles(ComponentStyleSetBuilder.newBuilder()
+    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.secondaryForegroundColor())
                         .backgroundColor(TileColor.transparent())
                         .build())
-                .build())
+                .build().also {
+                    setComponentStyleSet(it)
+                }
     }
 }

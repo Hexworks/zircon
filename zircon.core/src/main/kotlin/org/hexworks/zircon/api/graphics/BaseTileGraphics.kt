@@ -17,7 +17,7 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride
  * use this class as a base class just like how the TileGrid uses it
  */
 
-abstract class BaseTileGraphic(
+abstract class BaseTileGraphics(
         styleSet: StyleSet,
         tileset: TilesetResource,
         size: Size,
@@ -26,7 +26,7 @@ abstract class BaseTileGraphic(
         private val contents: MutableMap<Position, Tile>,
         styleable: Styleable = DefaultStyleable(styleSet),
         boundable: Boundable = DefaultBoundable(size = size))
-    : TileGraphic,
+    : TileGraphics,
         Styleable by styleable,
         Boundable by boundable,
         TilesetOverride by tilesetOverride {

@@ -4,15 +4,15 @@ import com.romix.scala.collection.concurrent.TrieMap
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.BaseTileGraphic
+import org.hexworks.zircon.api.graphics.BaseTileGraphics
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.resource.TilesetResource
 
-class CtrieTileGraphic(
+class CtrieTileGraphics(
         size: Size,
         tileset: TilesetResource,
         styleSet: StyleSet = StyleSet.defaultStyle())
-    : BaseTileGraphic(
+    : BaseTileGraphics(
         tileset = tileset,
         contents = TrieMap<Position, Tile>(),
         styleSet = styleSet,

@@ -3,9 +3,9 @@ package org.hexworks.zircon.internal.component
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.api.graphics.TileGraphics
 
-interface WrappingStrategy {
+interface ComponentDecorationRenderer {
 
     /**
      * Returns the size the wrapping occupies.
@@ -13,25 +13,19 @@ interface WrappingStrategy {
      */
     fun getOccupiedSize(): Size
 
+    /**
+     * Tells how many positions this wrapper
+     * offsets the component. For example the default button
+     * wrapper offsets the button with (1, 0).
+     */
     fun getOffset(): Position
 
     /**
-     * Applies the [WrappingStrategy] to a [TileGraphic] at the given offset (position)
+     * Applies the [ComponentDecorationRenderer] to a [TileGraphics] at the given offset (position)
      * and in a given [Size] using the given style. The offset/size is necessary because
      * if you apply border and shadow as well you need to know where the border should
      * end and the shadow should start.
      */
-    fun apply(tileGraphic: TileGraphic, size: Size, offset: Position, style: StyleSet)
+    fun render(tileGraphic: TileGraphics, size: Size, offset: Position, style: StyleSet)
 
-    /**
-     * Removes the last change made by this [WrappingStrategy].
-     */
-    fun remove(tileGraphic: TileGraphic, size: Size, offset: Position, style: StyleSet): Unit {
-
-    }
-
-    /**
-     * Themes don't apply to this wrapper.
-     */
-    fun isThemeNeutral(): Boolean
 }

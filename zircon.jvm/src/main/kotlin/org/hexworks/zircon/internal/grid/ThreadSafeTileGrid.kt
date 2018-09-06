@@ -16,7 +16,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.modifier.Modifier
@@ -36,7 +36,7 @@ import java.util.concurrent.Executors
 class ThreadSafeTileGrid(
         tileset: TilesetResource,
         size: Size,
-        override var backend: TileGraphic = TileGraphicBuilder.newBuilder()
+        override var backend: TileGraphics = TileGraphicBuilder.newBuilder()
                 .size(size)
                 .tileset(tileset)
                 .build(),

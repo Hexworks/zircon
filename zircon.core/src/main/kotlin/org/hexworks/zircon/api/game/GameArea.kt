@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.extensions.getIfPresent
 
@@ -144,14 +144,14 @@ interface GameArea {
     }
 
     /**
-     * Returns all the layers from bottom to top as a collection of [org.hexworks.zircon.api.graphics.TileGraphic]s.
+     * Returns all the layers from bottom to top as a collection of [org.hexworks.zircon.api.graphics.TileGraphics]s.
      * A layer is a collection of [Tile]s at a given `z` level and `layerIndex`.
      */
-    fun fetchLayersAt(offset: Position3D, size: Size3D): Iterable<TileGraphic> {
+    fun fetchLayersAt(offset: Position3D, size: Size3D): Iterable<TileGraphics> {
         val offset2D = offset.to2DPosition()
         val window = size.to2DSize().fetchPositions()
         return (offset.z until size.zLength + offset.z).flatMap { z ->
-            val images = mutableListOf<TileGraphic>()
+            val images = mutableListOf<TileGraphics>()
             (0 until getLayersPerBlock()).forEach { layerIdx ->
                 val builder = TileGraphicBuilder.newBuilder().size(size.to2DSize())
                 window.forEach { pos ->

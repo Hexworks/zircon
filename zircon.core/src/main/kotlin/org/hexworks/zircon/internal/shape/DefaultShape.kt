@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.shape.Shape
 import org.hexworks.zircon.api.util.Math
@@ -14,7 +14,7 @@ class DefaultShape(private val positions: Set<Position> = setOf())
 
     override fun positions() = positions
 
-    override fun toTileGraphics(tile: Tile, tileset: TilesetResource): TileGraphic {
+    override fun toTileGraphics(tile: Tile, tileset: TilesetResource): TileGraphics {
         val offsetPositions = offsetToDefaultPosition()
         var maxCol = Int.MIN_VALUE
         var maxRow = Int.MIN_VALUE

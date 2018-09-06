@@ -25,7 +25,7 @@ interface CharacterTileString : Drawable, Collection<CharacterTile> {
 
     fun getTextCharacters(): List<CharacterTile>
 
-    fun toTileGraphic(tileset: TilesetResource): TileGraphic
+    fun toTileGraphic(tileset: TilesetResource): TileGraphics
 
     /**
      * Creates a new [CharacterTileString] which contains the contents of `this` string

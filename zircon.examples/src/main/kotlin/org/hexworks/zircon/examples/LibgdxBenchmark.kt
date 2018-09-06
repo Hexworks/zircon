@@ -35,7 +35,7 @@ fun main(args: Array<String>) {
 
     val layers = (0..layerCount).map {
 
-        val imageLayer = TileGraphics.newBuilder()
+        val imageLayer = DrawSurfaces.tileGraphicsBuilder()
                 .size(layerSize)
                 .tileset(tileset)
                 .build()

@@ -15,8 +15,8 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
-import org.hexworks.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
+import org.hexworks.zircon.internal.component.impl.wrapping.BorderComponentDecorationRenderer
+import org.hexworks.zircon.internal.component.impl.wrapping.ShadowComponentDecorationRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.Positions
@@ -122,10 +122,6 @@ class DefaultContainerTest {
         val header0 = HeaderBuilder.newBuilder()
                 .position(Position.create(1, 0))
                 .text("Header")
-                .build()
-        val header1 = HeaderBuilder.newBuilder()
-                .position(Position.create(1, 0))
-                .text("Header2")
                 .build()
 
         screen.addComponent(panel0)
@@ -243,7 +239,7 @@ class DefaultContainerTest {
                 .mouseOverStyle(MOUSE_OVER_STYLE)
                 .build()
         val WRAPPERS = listOf(
-                ShadowWrappingStrategy(),
-                BorderWrappingStrategy(Modifiers.border()))
+                ShadowComponentDecorationRenderer(),
+                BorderComponentDecorationRenderer(Modifiers.border()))
     }
 }

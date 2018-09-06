@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.util.Maybe
@@ -22,7 +22,7 @@ data class LayerBuilder(
         private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
         private var size: Size = Size.defaultTerminalSize(),
         private var offset: Position = Position.defaultPosition(),
-        private var tileGraphic: Maybe<TileGraphic> = Maybe.empty()) : Builder<Layer> {
+        private var tileGraphic: Maybe<TileGraphics> = Maybe.empty()) : Builder<Layer> {
 
     /**
      * Sets the [Tileset] to use with the resulting [Layer].
@@ -48,9 +48,9 @@ data class LayerBuilder(
     }
 
     /**
-     * Uses the given [TileGraphic] and converts it to a [Layer].
+     * Uses the given [TileGraphics] and converts it to a [Layer].
      */
-    fun tileGraphic(tileGraphic: TileGraphic) = also {
+    fun tileGraphic(tileGraphic: TileGraphics) = also {
         this.tileGraphic = Maybe.of(tileGraphic)
     }
 
