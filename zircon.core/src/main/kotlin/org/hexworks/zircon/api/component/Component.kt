@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.util.Consumer
+import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.Identifiable
 
 /**
@@ -18,6 +19,11 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  * display information is a [Component].
  */
 interface Component : Identifiable, Layer {
+
+    /**
+     * Tells whether this [Component] is attached to a parent or not.
+     */
+    fun isAttached(): Boolean
 
     /**
      * Returns the effective [Size] of this [Component] which is the area remaining
@@ -34,6 +40,13 @@ interface Component : Identifiable, Layer {
      * its effective position will be (3, 4).
      */
     fun getEffectivePosition(): Position
+
+    /**
+     * Returns the absolute position of this [Component].
+     * The absolute position is the position of the top left corner
+     * of this component relative to the top left corner of the grid.
+     */
+    fun absolutePosition(): Position
 
     /**
      * Adds a callback to this [Component] which will be called

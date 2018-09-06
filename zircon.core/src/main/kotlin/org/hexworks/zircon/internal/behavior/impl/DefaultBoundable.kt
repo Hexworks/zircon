@@ -6,24 +6,23 @@ import org.hexworks.zircon.api.data.Bounds
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 
-class DefaultBoundable(private val size: Size,
-                       private var position: Position = Position.defaultPosition())
+class DefaultBoundable(size: Size,
+                       position: Position = Position.defaultPosition())
     : Boundable, Movable {
 
-    private var bounds = refreshBounds()
+    private var bounds = Bounds.create(position, size)
 
-    override fun position() = position
+    override fun position() = bounds.position()
 
-    override fun size() = size
+    override fun size() = bounds.size()
 
     override fun bounds() = bounds
 
     override fun moveTo(position: Position): Boolean {
-        return if (this.position == position) {
+        return if (position() == position) {
             false
         } else {
-            this.position = position
-            this.bounds = refreshBounds()
+            this.bounds = bounds.withPosition(position)
             true
         }
     }
@@ -40,5 +39,4 @@ class DefaultBoundable(private val size: Size,
         return bounds.containsBounds(boundable.bounds())
     }
 
-    private fun refreshBounds() = Bounds.create(position, size())
 }

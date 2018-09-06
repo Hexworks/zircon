@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.*
 import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.HeaderBuilder
@@ -19,6 +19,7 @@ import org.hexworks.zircon.internal.component.impl.wrapping.BorderWrappingStrate
 import org.hexworks.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.api.Modifiers
+import org.hexworks.zircon.api.Positions
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -42,12 +43,68 @@ class DefaultContainerTest {
     }
 
     @Test
-    fun shouldProperlySetPositionsWhenAContainerWithComponentsIsAddedToTheComponentTree() {
+    fun shouldProperlySetUpComponentsWhenNestedComponentsAreAdded() {
         val grid = TileGridBuilder.newBuilder()
                 .size(Size.create(40, 25))
                 .tileset(BuiltInCP437TilesetResource.REX_PAINT_16X16)
                 .build()
 
+        val screen = ScreenBuilder.createScreenFor(grid)
+
+        val panel = PanelBuilder.newBuilder()
+                .wrapWithBox()
+                .title("Panel")
+                .size(Size.create(32, 16))
+                .position(Position.create(1, 1))
+                .build()
+        val panelHeader = HeaderBuilder.newBuilder()
+                .position(Positions.create(1, 0))
+                .text("Header")
+                .build()
+
+        val innerPanelHeader = HeaderBuilder.newBuilder()
+                .position(Position.create(1, 0))
+                .text("Header2")
+                .build()
+        val innerPanel = PanelBuilder.newBuilder()
+                .wrapWithBox()
+                .title("Panel2")
+                .size(Size.create(16, 10))
+                .position(Positions.create(1, 2))
+                .build()
+
+        assertThat(panel.isAttached()).isFalse()
+        assertThat(panelHeader.isAttached()).isFalse()
+        assertThat(innerPanel.isAttached()).isFalse()
+        assertThat(innerPanelHeader.isAttached()).isFalse()
+
+        innerPanel.addComponent(innerPanelHeader)
+        assertThat(innerPanelHeader.isAttached()).isTrue()
+
+        panel.addComponent(panelHeader)
+        assertThat(panelHeader.isAttached()).isTrue()
+
+        panel.addComponent(innerPanel)
+        assertThat(innerPanel.isAttached()).isTrue()
+
+        assertThat(panel.isAttached()).isFalse()
+
+        screen.addComponent(panel)
+
+        assertThat(panel.isAttached()).isTrue()
+
+        assertThat(panel.absolutePosition()).isEqualTo(Positions.create(1, 1))
+        assertThat(panelHeader.absolutePosition()).isEqualTo(Positions.create(3, 2)) // + 1x1 because of the wrapper
+        assertThat(innerPanel.absolutePosition()).isEqualTo(Positions.create(3, 4))
+        assertThat(innerPanelHeader.absolutePosition()).isEqualTo(Positions.create(4, 4))
+    }
+
+    @Test
+    fun shouldProperlySetUpComponentsWhenAContainerIsAddedThenComponentsAreAddedToIt() {
+        val grid = TileGridBuilder.newBuilder()
+                .size(Size.create(40, 25))
+                .tileset(BuiltInCP437TilesetResource.REX_PAINT_16X16)
+                .build()
         val screen = ScreenBuilder.createScreenFor(grid)
 
         val panel0 = PanelBuilder.newBuilder()
@@ -56,109 +113,35 @@ class DefaultContainerTest {
                 .size(Size.create(32, 16))
                 .position(Position.offset1x1())
                 .build()
-
         val panel1 = PanelBuilder.newBuilder()
                 .wrapWithBox()
                 .title("Panel2")
                 .size(Size.create(16, 10))
-                .position(Position.offset1x1())
+                .position(Positions.create(1, 1))
                 .build()
-
         val header0 = HeaderBuilder.newBuilder()
                 .position(Position.create(1, 0))
                 .text("Header")
                 .build()
-
         val header1 = HeaderBuilder.newBuilder()
                 .position(Position.create(1, 0))
                 .text("Header2")
                 .build()
 
+        screen.addComponent(panel0)
+
+        assertThat(panel0.isAttached()).isTrue()
 
         panel0.addComponent(header0)
-        panel1.addComponent(header1)
+
+        assertThat(header0.isAttached()).isTrue()
+        assertThat(header0.absolutePosition()).isEqualTo(Positions.create(3, 2))
+
         panel0.addComponent(panel1)
 
-        screen.addComponent(panel0)
+        assertThat(panel1.isAttached())
+        assertThat(panel1.absolutePosition()).isEqualTo(Positions.create(3, 3))
 
-        assertThat(panel0.position()).isEqualTo(Position.create(1, 1))
-        assertThat(panel1.position()).isEqualTo(Position.create(3, 3))
-        assertThat(header0.position()).isEqualTo(Position.create(3, 2))
-        assertThat(header1.position()).isEqualTo(Position.create(5, 4))
-    }
-
-    @Test
-    fun shouldProperlySetPositionsWhenAContainerIsAddedToTheComponentTreeThenComponentsAreAddedToIt() {
-        val grid = TileGridBuilder.newBuilder()
-                .size(Size.create(40, 25))
-                .tileset(BuiltInCP437TilesetResource.REX_PAINT_16X16)
-                .build()
-        val screen = ScreenBuilder.createScreenFor(grid)
-
-        val panel0 = PanelBuilder.newBuilder()
-                .wrapWithBox()
-                .title("Panel")
-                .size(Size.create(32, 16))
-                .position(Position.offset1x1())
-                .build()
-
-        val panel1 = PanelBuilder.newBuilder()
-                .wrapWithBox()
-                .title("Panel2")
-                .size(Size.create(16, 10))
-                .position(Position.offset1x1())
-                .build()
-
-        val header0 = HeaderBuilder.newBuilder()
-                .position(Position.create(1, 0))
-                .text("Header")
-                .build()
-
-        val header1 = HeaderBuilder.newBuilder()
-                .position(Position.create(1, 0))
-                .text("Header2")
-                .build()
-
-
-        panel0.addComponent(panel1)
-        panel0.addComponent(header0)
-        panel1.addComponent(header1)
-
-        screen.addComponent(panel0)
-
-        assertThat(panel0.position()).isEqualTo(Position.create(1, 1))
-        assertThat(panel1.position()).isEqualTo(Position.create(3, 3))
-        assertThat(header0.position()).isEqualTo(Position.create(3, 2))
-        assertThat(header1.position()).isEqualTo(Position.create(5, 4))
-    }
-
-    @Test
-    fun shouldProperlySetPositionsWhenAComponentIsAddedToAContainerAfterItIsAttachedToTheScreen() {
-        val grid = TileGridBuilder.newBuilder()
-                .size(Size.create(40, 25))
-                .tileset(BuiltInCP437TilesetResource.REX_PAINT_16X16)
-                .build()
-        val screen = ScreenBuilder.createScreenFor(grid)
-
-        val panel0 = PanelBuilder.newBuilder()
-                .wrapWithBox()
-                .title("Panel")
-                .size(Size.create(32, 16))
-                .position(Position.offset1x1())
-                .build()
-
-        val header0 = HeaderBuilder.newBuilder()
-                .position(Position.create(1, 0))
-                .text("Header")
-                .build()
-
-        screen.addComponent(panel0)
-
-        panel0.addComponent(header0)
-
-
-        assertThat(panel0.position()).isEqualTo(Position.create(1, 1))
-        assertThat(header0.position()).isEqualTo(Position.create(3, 2))
     }
 
     @Test(expected = IllegalArgumentException::class)

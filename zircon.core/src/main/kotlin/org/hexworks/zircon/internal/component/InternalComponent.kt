@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.component
 
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.Focusable
@@ -29,12 +30,17 @@ interface InternalComponent : Component, Drawable, Focusable {
     fun fetchComponentByPosition(position: Position): Maybe<out InternalComponent>
 
     /**
-     * Tells whether this [Component] is attached to a [org.hexworks.zircon.api.component.ComponentContainer] or not.
+     * Returns the parent of this [Component] (if any).
      */
-    fun isAttached(): Boolean
+    fun parent(): Maybe<Container>
 
     /**
-     * Signals this [Component] that it has been attached to a [org.hexworks.zircon.api.component.ComponentContainer].
+     * Attaches this [Component] to the given parent [Container].
+     * Note that if this component is already attached to a [Container]
+     * it will be removed from that one.
      */
-    fun signalAttached()
+    fun attachTo(parent: Container)
+
+    override fun isAttached(): Boolean = parent().isPresent
+
 }

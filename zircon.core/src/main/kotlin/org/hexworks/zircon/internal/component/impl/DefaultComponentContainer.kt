@@ -41,8 +41,6 @@ class DefaultComponentContainer(private var container: DefaultContainer) :
 
     override fun addComponent(component: Component) {
         (component as? DefaultComponent)?.let { dc ->
-            dc.moveTo(dc.position() + container.getEffectivePosition())
-            // TODO: if the component has the same size and position it adds it!!!
             require(container.containsBoundable(dc)) {
                 "You can't add a component to a container which is not within its bounds " +
                         "(target size: ${container.getEffectiveSize()}, component size: ${dc.size()}" +
@@ -51,8 +49,10 @@ class DefaultComponentContainer(private var container: DefaultContainer) :
             require(container.getComponents().none { it.intersects(dc) }) {
                 "You can't add a component to a container which intersects with other components!"
             }
+            require(container.getComponents().none { it.containsBoundable(dc) }) {
+                "You can't add a component to a container which intersects with other components!"
+            }
             container.addComponent(dc)
-            dc.signalAttached()
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
         refreshFocusableLookup()
     }

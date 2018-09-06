@@ -49,6 +49,7 @@ public class FullExample {
                 .defaultTileset(TILESET)
                 .defaultSize(SCREEN_SIZE)
                 .debugMode(true)
+                .enableBetaFeatures()
                 .build());
 
         final TileGrid tileGrid = app.getTileGrid();
@@ -85,12 +86,8 @@ public class FullExample {
         // ==============
 
         REXPaintResource rex = REXPaintResources.loadREXFile(RexLoaderExample.class.getResourceAsStream("/rex_files/zircon_logo.xp"));
-
-
         TileGraphic img = TileGraphics.newBuilder().size(SCREEN_SIZE).build();
-
         rex.toLayerList(CP437TilesetResources.rogueYun16x16()).forEach(layer -> img.draw(layer, Positions.defaultPosition()));
-
         AnimationBuilder splashAnimBuilder = Animations.newBuilder();
 
         for (int i = 20; i >= 0; i--) {
