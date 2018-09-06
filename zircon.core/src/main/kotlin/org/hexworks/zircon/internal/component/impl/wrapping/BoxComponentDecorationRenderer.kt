@@ -6,18 +6,18 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.component.WrappingStrategy
+import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 
-class BoxWrappingStrategy(private val boxType: BoxType,
-                          private val title: Maybe<String> = Maybe.empty()) : WrappingStrategy {
+class BoxComponentDecorationRenderer(private val boxType: BoxType,
+                                     private val title: Maybe<String> = Maybe.empty()) : ComponentDecorationRenderer {
 
     override fun getOccupiedSize() = Size.create(2, 2)
 
     override fun getOffset() = Position.offset1x1()
 
-    override fun apply(tileGraphic: TileGraphic, size: Size, offset: Position, style: StyleSet) {
+    override fun render(tileGraphic: TileGraphics, size: Size, offset: Position, style: StyleSet) {
         BoxBuilder.newBuilder()
                 .boxType(boxType)
                 .size(size)
@@ -54,6 +54,4 @@ class BoxWrappingStrategy(private val boxType: BoxType,
             }
         }
     }
-
-    override fun isThemeNeutral() = false
 }

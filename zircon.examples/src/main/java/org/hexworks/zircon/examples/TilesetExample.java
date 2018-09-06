@@ -1,6 +1,10 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.Positions;
+import org.hexworks.zircon.api.Sizes;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.TileColors;
+import org.hexworks.zircon.api.Tiles;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder;
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder;
@@ -12,7 +16,6 @@ import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
-import org.hexworks.zircon.api.screen.Screen;
 
 import java.util.Random;
 
@@ -63,18 +66,15 @@ public class TilesetExample {
 
         final TileGrid tileGrid = app.getTileGrid();
 
-        final Screen screen = Screens.createScreenFor(tileGrid);
-        screen.setCursorVisibility(false);
-
         final Random random = new Random();
         for (int y = 0; y < TERMINAL_HEIGHT; y++) {
             for (int x = 0; x < TERMINAL_WIDTH; x++) {
-                screen.setTileAt(Positions.create(x, y), GRASSES[random.nextInt(3)]);
+                tileGrid.setTileAt(Positions.create(x, y), GRASSES[random.nextInt(3)]);
             }
         }
         final String text = "Tileset Example";
         for (int i = 0; i < text.length(); i++) {
-            screen.setTileAt(Positions.create(i + 2, 1),
+            tileGrid.setTileAt(Positions.create(i + 2, 1),
                     Tiles.newBuilder()
                             .character(text.charAt(i))
                             .foregroundColor(TEXT_COLOR)
@@ -86,7 +86,7 @@ public class TilesetExample {
         final int ansiCount = ANSITileColor.values().length;
 
         final Layer overlay = new LayerBuilder()
-                .size(screen.size())
+                .size(tileGrid.size())
                 .build()
                 .fill(Tiles.empty()
                         .withBackgroundColor(TileColors.create(0, 0, 0, 50)));
@@ -102,7 +102,6 @@ public class TilesetExample {
                             .backgroundColor(TileColors.transparent())
                             .build());
         }
-        screen.pushLayer(overlay);
-        screen.display();
+        tileGrid.pushLayer(overlay);
     }
 }

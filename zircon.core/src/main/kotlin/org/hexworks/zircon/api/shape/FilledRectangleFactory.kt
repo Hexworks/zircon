@@ -11,7 +11,7 @@ object FilledRectangleFactory : ShapeFactory<RectangleParameters> {
             (0 until size.xLength).map { x ->
                 Position.create(topLeft.x + x, topLeft.y + y)
             }
-        }.toSet()).offsetToDefaultPosition()
+        }.toSet())
     }
 
     /**

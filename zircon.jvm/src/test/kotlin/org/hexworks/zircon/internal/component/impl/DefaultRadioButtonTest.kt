@@ -32,7 +32,7 @@ class DefaultRadioButtonTest {
 
     @Test
     fun shouldProperlyAddRadioButtonText() {
-        val surface = target.getDrawSurface()
+        val surface = target.tileGraphic()
         val offset = 4
         TEXT.forEachIndexed { i, char ->
             assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
@@ -51,7 +51,7 @@ class DefaultRadioButtonTest {
     @Test
     fun shouldProperlyApplyTheme() {
         target.applyColorTheme(THEME)
-        val styles = target.getComponentStyles()
+        val styles = target.componentStyleSet()
         assertThat(styles.getStyleFor(ComponentState.DEFAULT))
                 .isEqualTo(EXPECTED_DEFAULT_STYLE)
         assertThat(styles.getStyleFor(ComponentState.MOUSE_OVER))
@@ -76,7 +76,7 @@ class DefaultRadioButtonTest {
         val result = target.giveFocus()
 
         assertThat(result).isTrue()
-        assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
+        assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
     }
 
     @Test
@@ -85,7 +85,7 @@ class DefaultRadioButtonTest {
 
         target.takeFocus()
 
-        assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
+        assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
     @Test
@@ -95,7 +95,7 @@ class DefaultRadioButtonTest {
 
         assertThat(getButtonChar()).isEqualTo('O')
         assertThat(target.isSelected()).isTrue()
-        assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
+        assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
     }
 
     @Test
@@ -118,10 +118,10 @@ class DefaultRadioButtonTest {
 
         assertThat(getButtonChar()).isEqualTo(' ')
         assertThat(target.isSelected()).isFalse()
-        assertThat(target.getComponentStyles().getCurrentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
+        assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
-    private fun getButtonChar() = target.getDrawSurface().getTileAt(Position.create(1, 0))
+    private fun getButtonChar() = target.tileGraphic().getTileAt(Position.create(1, 0))
             .get().asCharacterTile().get().character
 
     companion object {

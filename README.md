@@ -51,14 +51,14 @@ from Maven:
 <dependency>
     <groupId>com.github.hexworks.zircon</groupId>
     <artifactId>zircon.jvm.swing</artifactId>
-    <version>2018.3.24-PREVIEW</version>
+    <version>2018.3.27-PREVIEW</version>
 </dependency>
 ```
 
 or you can also use Gradle:
 
 ```groovy
-compile("com.github.hexworks.zircon:zircon.swing:2018.3.24-PREVIEW")
+compile("com.github.hexworks.zircon:zircon.swing:2018.3.27-PREVIEW")
 ```
 
 Note that you need to use [Jitpack](https://jitpack.io/#Hexworks/Zircon) for the above dependencies to work.
@@ -70,9 +70,9 @@ Want to use a `PREVIEW`?
 
 Before we start there are some guidelines which can help you if you are stuck:
 
-- If you want to build something (a `TileGraphic`, a `Component` or anything which is part of the public API) it is almost
-  sure that there is a `Builder` or a `Factory` for it. The convention is that if you want to create an `TileGraphic` for example,
-  then you can use the `TileGraphics` class to do so. (so it is the plural form of the thing which you want to build). Your IDE
+- If you want to build something (a `TileGraphics`, a `Component` or anything which is part of the public API) it is almost
+  sure that there is a `Builder` or a `Factory` for it. The convention is that if you want to create an `TileGraphics` for example,
+  then you can use the `DrawSurfaces` class to do so. (so it is the plural form of the thing which you want to build). Your IDE
   will help you with this. These classes reside in the `org.hexworks.zircon.api` package.
 - If you want to work with external files like tilesets or REXPaint files check the same package (`org.hexworks.zircon.api`), and look for
   classes which end with `*Resources`. There are a bunch of built-in tilesets for example which you can choose from but you can also
@@ -248,10 +248,10 @@ import org.hexworks.zircon.api.Positions;
 import org.hexworks.zircon.api.Screens;
 import org.hexworks.zircon.api.Sizes;
 import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.TileGraphics;
+import org.hexworks.zircon.api.DrawSurfaces;
 import org.hexworks.zircon.api.Tiles;
 import org.hexworks.zircon.api.component.ColorTheme;
-import org.hexworks.zircon.api.graphics.TileGraphic;
+import org.hexworks.zircon.api.graphics.TileGraphics;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.screen.Screen;
 
@@ -269,7 +269,7 @@ public class CreatingAScreen {
 
         final ColorTheme theme = ColorThemes.adriftInDreams();
 
-        final TileGraphic image = TileGraphics.newBuilder()
+        final TileGraphics image = DrawSurfaces.tileGraphicsBuilder()
                 .size(tileGrid.size())
                 .build()
                 .fill(Tiles.newBuilder()
@@ -293,7 +293,7 @@ What happens here is that we:
 
 - Create a [Screen]
 - Fetch a nice [ColorTheme] which has colors we need
-- Create a [TileGraphic] with the colors added and fill it with `~`s
+- Create a [TileGraphics] with the colors added and fill it with `~`s
 - Draw the graphic onto the [Screen]
 
 For more explanation about these jump to the [How Zircon works](https://github.com/Hexworks/zircon#how-zircon-works) section.
@@ -425,7 +425,7 @@ in either the source code or the [Wiki](https://github.com/Hexworks/zircon/wiki)
 
 ### Layering
 Both the [TileGrid] and the [Screen] interfaces implement [Layerable] which means that you can add [Layer]s on top of
-them. Every [Layerable] can have an arbitrary amount of [Layer]s. [Layer]s are like [TileGraphic]s and you can also have
+them. Every [Layerable] can have an arbitrary amount of [Layer]s. [Layer]s are like [TileGraphics]s and you can also have
 transparency in them which can be used to create fancy effects.
 For more details check the [layers][layers] Wiki page.
 
@@ -565,7 +565,7 @@ Zircon is powered by:
 [TileColor]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/color/TileColor.kt
 [TileColors]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/TileColors.kt
 [Tile]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/data/Tile.kt
-[TileGraphic]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/graphics/TileGraphic.kt
+[TileGraphics]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/graphics/TileGraphics.kt
 [TileGrid]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/grid/TileGrid.kt
 [TileBuilder]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/builder/data/TileBuilder.kt
 [TilesetOverride]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/behavior/TilesetOverride.kt

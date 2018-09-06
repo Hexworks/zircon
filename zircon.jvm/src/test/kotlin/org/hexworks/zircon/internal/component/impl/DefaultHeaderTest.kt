@@ -43,7 +43,7 @@ class DefaultHeaderTest {
     @Test
     fun shouldProperlyApplyTheme() {
         target.applyColorTheme(THEME)
-        val styles = target.getComponentStyles()
+        val styles = target.componentStyleSet()
         assertThat(styles.getStyleFor(ComponentState.DEFAULT))
                 .isEqualTo(DEFAULT_STYLE)
         assertThat(styles.getStyleFor(ComponentState.MOUSE_OVER))

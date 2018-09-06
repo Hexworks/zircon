@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.modifier.Modifier
@@ -27,13 +27,13 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphic
+import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphics
 
 
 class RectangleTileGrid(
         tileset: TilesetResource,
         size: Size,
-        override var backend: TileGraphic = ConcurrentTileGraphic(
+        override var backend: TileGraphics = ConcurrentTileGraphics(
                 size = size,
                 tileset = tileset,
                 styleSet = StyleSet.defaultStyle()),

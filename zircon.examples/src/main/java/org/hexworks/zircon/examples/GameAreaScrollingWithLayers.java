@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.game.GameArea;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.graphics.Symbols;
-import org.hexworks.zircon.api.graphics.TileGraphic;
+import org.hexworks.zircon.api.graphics.TileGraphics;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.input.InputType;
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
@@ -44,6 +44,7 @@ public class GameAreaScrollingWithLayers {
                 .defaultTileset(TILESET)
                 .defaultSize(SIZE)
                 .debugMode(true)
+                .enableBetaFeatures()
                 .build());
 
         TileGrid tileGrid = app.getTileGrid();
@@ -85,10 +86,10 @@ public class GameAreaScrollingWithLayers {
         final Size virtualGameAreaSize = Sizes.create(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
 
-        final Map<Integer, List<TileGraphic>> levels = new HashMap<>();
+        final Map<Integer, List<TileGraphics>> levels = new HashMap<>();
         final int totalLevels = 10;
         for (int i = 0; i < totalLevels; i++) {
-            levels.put(i, Collections.singletonList(TileGraphics.newBuilder()
+            levels.put(i, Collections.singletonList(DrawSurfaces.tileGraphicsBuilder()
                     .size(virtualGameAreaSize)
                     .build()));
         }

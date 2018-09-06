@@ -8,24 +8,24 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.component.WrappingStrategy
+import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.internal.util.ThreadSafeQueue
 
 class DefaultCheckBox(private val text: String,
-                      wrappers: ThreadSafeQueue<WrappingStrategy>,
+                      wrappers: ThreadSafeQueue<ComponentDecorationRenderer>,
                       width: Int,
                       initialTileset: TilesetResource,
                       position: Position,
                       componentStyleSet: ComponentStyleSet)
     : CheckBox, DefaultComponent(size = Size.create(width, 1),
         position = position,
-        componentStyleSet = componentStyleSet,
+        componentStyles = componentStyleSet,
         wrappers = wrappers,
         tileset = initialTileset) {
 
@@ -45,13 +45,13 @@ class DefaultCheckBox(private val text: String,
         // TODO: after it is pressed and released on another component
         // TODO: the pressed state persists
 //        EventBus.subscribe<MouseAction>(EventType.MousePressed(id), {
-//            getDrawSurface().applyStyle(getComponentStyles().applyActiveStyle())
+//            getDrawSurface().applyStyle(componentStyleSet().applyActiveStyle())
 //            checkBoxState = PRESSED
 //            redrawContent()
 //            EventBus.broadcast(EventType.ComponentChange)
 //        })
         EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
-            getDrawSurface().applyStyle(getComponentStyles().applyMouseOverStyle())
+            tileGraphic().applyStyle(componentStyleSet().applyMouseOverStyle())
             checkBoxState = if (checked) UNCHECKED else CHECKED
             checked = checked.not()
             redrawContent()
@@ -59,7 +59,7 @@ class DefaultCheckBox(private val text: String,
     }
 
     private fun redrawContent() {
-        getDrawSurface().putText("${STATES["$checkBoxState$checked"]!!} $clearedText")
+        tileGraphic().putText("${STATES["$checkBoxState$checked"]!!} $clearedText")
     }
 
     override fun isChecked() = checkBoxState == CHECKED
@@ -69,18 +69,18 @@ class DefaultCheckBox(private val text: String,
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        getDrawSurface().applyStyle(getComponentStyles().applyFocusedStyle())
+        tileGraphic().applyStyle(componentStyleSet().applyFocusedStyle())
         return true
     }
 
     override fun takeFocus(input: Maybe<Input>) {
-        getDrawSurface().applyStyle(getComponentStyles().reset())
+        tileGraphic().applyStyle(componentStyleSet().reset())
     }
 
     override fun getText() = text
 
-    override fun applyColorTheme(colorTheme: ColorTheme) {
-        setComponentStyles(ComponentStyleSetBuilder.newBuilder()
+    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.accentColor())
                         .backgroundColor(TileColor.transparent())
@@ -97,7 +97,9 @@ class DefaultCheckBox(private val text: String,
                         .foregroundColor(colorTheme.secondaryForegroundColor())
                         .backgroundColor(colorTheme.accentColor())
                         .build())
-                .build())
+                .build().also {
+                    setComponentStyleSet(it)
+                }
     }
 
     private enum class CheckBoxState {

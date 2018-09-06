@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.api.graphics.TileGraphics
 
 /**
  * this is a basic building block which can be re-used by complex image
@@ -19,7 +19,7 @@ import org.hexworks.zircon.api.graphics.TileGraphic
  */
 
 data class DefaultLayer(private var position: Position,
-                        val backend: TileGraphic)
+                        val backend: TileGraphics)
     : Layer, TilesetOverride by backend {
 
     private var bounds: Bounds = refreshBounds()

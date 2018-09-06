@@ -37,7 +37,7 @@ class DefaultTextArea constructor(
     : TextArea, Scrollable by scrollable, CursorHandler by cursorHandler, DefaultComponent(
         size = initialSize,
         position = position,
-        componentStyleSet = componentStyleSet,
+        componentStyles = componentStyleSet,
         wrappers = listOf(),
         tileset = initialTileset) {
 
@@ -68,8 +68,8 @@ class DefaultTextArea constructor(
 
     override fun acceptsFocus() = enabled
 
-    override fun applyColorTheme(colorTheme: ColorTheme) {
-        setComponentStyles(ComponentStyleSetBuilder.newBuilder()
+    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.secondaryBackgroundColor())
                         .backgroundColor(colorTheme.secondaryForegroundColor())
@@ -82,7 +82,9 @@ class DefaultTextArea constructor(
                         .foregroundColor(colorTheme.primaryBackgroundColor())
                         .backgroundColor(colorTheme.primaryForegroundColor())
                         .build())
-                .build())
+                .build().also {
+                    setComponentStyleSet(it)
+                }
     }
 
     override fun enable() {
@@ -101,7 +103,7 @@ class DefaultTextArea constructor(
                 disableTyping()
             }
         }
-        getDrawSurface().applyStyle(getComponentStyles().applyDisabledStyle())
+        tileGraphic().applyStyle(componentStyleSet().applyDisabledStyle())
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
@@ -115,12 +117,12 @@ class DefaultTextArea constructor(
     override fun takeFocus(input: Maybe<Input>) {
         focused = false
         disableTyping()
-        getDrawSurface().applyStyle(getComponentStyles().reset())
+        tileGraphic().applyStyle(componentStyleSet().reset())
     }
 
     private fun enableFocusedComponent() {
         cancelSubscriptions()
-        getDrawSurface().applyStyle(getComponentStyles().applyFocusedStyle())
+        tileGraphic().applyStyle(componentStyleSet().applyFocusedStyle())
         enableTyping()
     }
 
@@ -323,7 +325,7 @@ class DefaultTextArea constructor(
     private fun refreshDrawSurface() {
         size().fetchPositions().forEach { pos ->
             val fixedPos = pos + visibleOffset()
-            getDrawSurface().setTileAt(pos, TileBuilder.newBuilder()
+            tileGraphic().setTileAt(pos, TileBuilder.newBuilder()
                     .character(textBuffer.getCharAt(fixedPos).orElse(' '))
                     .build())
         }

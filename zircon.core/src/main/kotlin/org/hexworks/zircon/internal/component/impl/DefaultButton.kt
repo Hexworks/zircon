@@ -12,30 +12,30 @@ import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.component.WrappingStrategy
+import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.util.ThreadSafeQueue
 
 class DefaultButton(private val text: String,
                     initialTileset: TilesetResource,
-                    wrappers: ThreadSafeQueue<WrappingStrategy>,
+                    wrappers: ThreadSafeQueue<ComponentDecorationRenderer>,
                     initialSize: Size,
                     position: Position,
                     componentStyleSet: ComponentStyleSet)
     : Button, DefaultComponent(size = initialSize,
         position = position,
-        componentStyleSet = componentStyleSet,
+        componentStyles = componentStyleSet,
         wrappers = wrappers,
         tileset = initialTileset) {
 
     init {
-        getDrawSurface().putText(text, getWrapperOffset())
+        tileGraphic().putText(text, wrapperOffset())
 
         EventBus.listenTo<ZirconEvent.MousePressed>(id) {
-            getDrawSurface().applyStyle(getComponentStyles().applyActiveStyle())
+            applyStyle(componentStyleSet().applyActiveStyle())
         }
         EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
-            getDrawSurface().applyStyle(getComponentStyles().applyMouseOverStyle())
+            applyStyle(componentStyleSet().applyMouseOverStyle())
         }
     }
 
@@ -44,18 +44,18 @@ class DefaultButton(private val text: String,
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        getDrawSurface().applyStyle(getComponentStyles().applyFocusedStyle())
+        tileGraphic().applyStyle(componentStyleSet().applyFocusedStyle())
         return true
     }
 
     override fun takeFocus(input: Maybe<Input>) {
-        getDrawSurface().applyStyle(getComponentStyles().reset())
+        tileGraphic().applyStyle(componentStyleSet().reset())
     }
 
     override fun getText() = text
 
-    override fun applyColorTheme(colorTheme: ColorTheme) {
-        setComponentStyles(ComponentStyleSetBuilder.newBuilder()
+    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.accentColor())
                         .backgroundColor(TileColor.transparent())
@@ -72,6 +72,8 @@ class DefaultButton(private val text: String,
                         .foregroundColor(colorTheme.secondaryForegroundColor())
                         .backgroundColor(colorTheme.accentColor())
                         .build())
-                .build())
+                .build().also {
+                    setComponentStyleSet(it)
+                }
     }
 }

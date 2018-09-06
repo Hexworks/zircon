@@ -6,11 +6,11 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.component.WrappingStrategy
+import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultPanel
-import org.hexworks.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
-import org.hexworks.zircon.internal.component.impl.wrapping.BoxWrappingStrategy
-import org.hexworks.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
+import org.hexworks.zircon.internal.component.impl.wrapping.BorderComponentDecorationRenderer
+import org.hexworks.zircon.internal.component.impl.wrapping.BoxComponentDecorationRenderer
+import org.hexworks.zircon.internal.component.impl.wrapping.ShadowComponentDecorationRenderer
 
 data class PanelBuilder(private var boxType: BoxType = BoxType.SINGLE,
                         private var title: String = "",
@@ -48,17 +48,17 @@ data class PanelBuilder(private var boxType: BoxType = BoxType.SINGLE,
         require(size != Size.unknown()) {
             "You must set a size for a Panel!"
         }
-        val wrappers = mutableListOf<WrappingStrategy>()
+        val wrappers = mutableListOf<ComponentDecorationRenderer>()
         if (drawBox) {
-            wrappers.add(BoxWrappingStrategy(
+            wrappers.add(BoxComponentDecorationRenderer(
                     boxType = boxType,
                     title = if (title.isNotBlank()) Maybe.of(title) else Maybe.empty()))
         }
         if (border.isPresent) {
-            wrappers.add(BorderWrappingStrategy(border.get()))
+            wrappers.add(BorderComponentDecorationRenderer(border.get()))
         }
         if (drawShadow) {
-            wrappers.add(ShadowWrappingStrategy())
+            wrappers.add(ShadowComponentDecorationRenderer())
         }
         return DefaultPanel(
                 title = title,

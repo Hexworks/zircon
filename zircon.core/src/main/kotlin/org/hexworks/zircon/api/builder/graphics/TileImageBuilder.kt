@@ -4,14 +4,14 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.TileGraphic
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
 
 /**
- * Creates [org.hexworks.zircon.api.graphics.TileGraphic]s.
+ * Creates [org.hexworks.zircon.api.graphics.TileGraphics]s.
  * Defaults:
  * - Default [Size] is `ONE` (1x1).
  * - Default `filler` is an `EMPTY` character
@@ -32,7 +32,7 @@ data class TileImageBuilder(
     }
 
     /**
-     * Sets the size for the new [TileGraphic].
+     * Sets the size for the new [TileGraphics].
      * Default is 1x1.
      */
     fun size(size: Size) = also {
@@ -61,7 +61,7 @@ data class TileImageBuilder(
     companion object {
 
         /**
-         * Creates a new [TileImageBuilder] to build [org.hexworks.zircon.api.graphics.TileGraphic]s.
+         * Creates a new [TileImageBuilder] to build [org.hexworks.zircon.api.graphics.TileGraphics]s.
          */
         fun newBuilder() = TileImageBuilder()
     }

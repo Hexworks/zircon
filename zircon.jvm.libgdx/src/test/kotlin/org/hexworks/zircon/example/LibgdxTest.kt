@@ -3,7 +3,7 @@ package org.hexworks.zircon.example
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
-import org.hexworks.zircon.api.TileGraphics
+import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.GridPosition
@@ -37,7 +37,7 @@ class GdxExample : ApplicationAdapter() {
     private val filler = Tiles.defaultTile().withCharacter('x')
     private var layers: List<DefaultLayer> = (0..layerCount).map {
 
-        val imageLayer = TileGraphics.newBuilder()
+        val imageLayer = DrawSurfaces.tileGraphicsBuilder()
                 .size(layerSize)
                 .tileset(tileset)
                 .build()

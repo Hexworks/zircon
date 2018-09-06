@@ -14,8 +14,8 @@ import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType.*
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
-import org.hexworks.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
+import org.hexworks.zircon.internal.component.impl.wrapping.BorderComponentDecorationRenderer
+import org.hexworks.zircon.internal.component.impl.wrapping.ShadowComponentDecorationRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.api.Modifiers
 import org.junit.Before
@@ -158,11 +158,11 @@ class DefaultComponentContainerTest {
         val button = createButton()
         target.addComponent(button)
 
-        assertThat(button.getComponentStyles().getCurrentStyle()).isNotEqualTo(FOCUSED_STYLE)
+        assertThat(button.componentStyleSet().getCurrentStyle()).isNotEqualTo(FOCUSED_STYLE)
 
         EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
 
-        assertThat(button.getComponentStyles().getCurrentStyle()).isEqualTo(FOCUSED_STYLE)
+        assertThat(button.componentStyleSet().getCurrentStyle()).isEqualTo(FOCUSED_STYLE)
     }
 
     // TODO: FIX THIS
@@ -182,11 +182,11 @@ class DefaultComponentContainerTest {
 //        EventBus.broadcast<Input>(EventType.Input, KeyStroke(type = InputType.Tab))
 //        EventBus.broadcast<Input>(EventType.Input, KeyStroke(type = InputType.Tab))
 //
-//        assertThat(button.getComponentStyles().getCurrentStyle()).isEqualTo(DEFAULT_STYLE)
+//        assertThat(button.componentStyleSet().getCurrentStyle()).isEqualTo(DEFAULT_STYLE)
 //
 //        EventBus.broadcast<Input>(EventType.Input, KeyStroke(shiftDown = true, type = InputType.ReverseTab))
 //
-//        assertThat(button.getComponentStyles().getCurrentStyle()).isEqualTo(FOCUSED_STYLE)
+//        assertThat(button.componentStyleSet().getCurrentStyle()).isEqualTo(FOCUSED_STYLE)
 //    }
 
     @Test
@@ -246,7 +246,7 @@ class DefaultComponentContainerTest {
                 .mouseOverStyle(MOUSE_OVER_STYLE)
                 .build()
         val WRAPPERS = listOf(
-                ShadowWrappingStrategy(),
-                BorderWrappingStrategy(Modifiers.border()))
+                ShadowComponentDecorationRenderer(),
+                BorderComponentDecorationRenderer(Modifiers.border()))
     }
 }

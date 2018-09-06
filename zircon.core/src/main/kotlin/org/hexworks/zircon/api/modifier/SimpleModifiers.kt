@@ -13,6 +13,7 @@ sealed class SimpleModifiers : Modifier {
     object Hidden : SimpleModifiers()
     object Glow : SimpleModifiers()
 
+
     override fun generateCacheKey(): String {
         return "Modifier.${this::class.simpleName}"
     }

@@ -14,7 +14,7 @@ object CP437CharsExample {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .defaultSize(Sizes.create(21, 21))
-                .defaultTileset(BuiltInTrueTypeFontResource.IBM_BIOS_WIDE.toTilesetResource(20))
+                .defaultTileset(TrueTypeFontResources.amstrad(20))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)

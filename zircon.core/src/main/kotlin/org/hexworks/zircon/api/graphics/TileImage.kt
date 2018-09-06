@@ -19,7 +19,7 @@ import org.hexworks.zircon.internal.graphics.DefaultTileImage
 
 /**
  * An immutable image built from [Tile]s. It is completely in memory but it can be drawn onto
- * [DrawSurface]s like a [org.hexworks.zircon.api.grid.TileGrid] or a [TileGraphic].
+ * [DrawSurface]s like a [org.hexworks.zircon.api.grid.TileGrid] or a [TileGraphics].
  */
 interface TileImage
     : Boundable, Drawable, TilesetOverride {
@@ -278,9 +278,9 @@ interface TileImage
 
     /**
      * Returns a copy of this [TileImage] with the exact same content as a
-     * [TileGraphic] which can be modified using the supplied style.
+     * [TileGraphics] which can be modified using the supplied style.
      */
-    fun toTileGraphic(): TileGraphic {
+    fun toTileGraphic(): TileGraphics {
         val result = TileGraphicBuilder.newBuilder()
                 .size(size())
                 .tileset(tileset())

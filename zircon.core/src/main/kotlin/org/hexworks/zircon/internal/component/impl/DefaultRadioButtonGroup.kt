@@ -11,19 +11,19 @@ import org.hexworks.zircon.api.component.RadioButtonGroup
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
-import org.hexworks.zircon.internal.component.WrappingStrategy
+import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.internal.util.ThreadSafeQueue
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 class DefaultRadioButtonGroup constructor(
-        wrappers: ThreadSafeQueue<WrappingStrategy>,
+        wrappers: ThreadSafeQueue<ComponentDecorationRenderer>,
         private val size: Size,
         initialTileset: TilesetResource,
         position: Position,
@@ -42,7 +42,7 @@ class DefaultRadioButtonGroup constructor(
     init {
         refreshContent()
         EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
-            getDrawSurface().applyStyle(getComponentStyles().applyMouseOverStyle())
+            tileGraphic().applyStyle(componentStyleSet().applyMouseOverStyle())
             refreshContent()
         }
     }
@@ -56,7 +56,7 @@ class DefaultRadioButtonGroup constructor(
                 wrappers = ThreadSafeQueueFactory.create(),
                 width = size.xLength,
                 position = Position.create(0, items.size),
-                componentStyleSet = getComponentStyles(),
+                componentStyleSet = componentStyleSet(),
                 initialTileset = tileset()).also { button ->
             items[key] = button
             addComponent(button)
@@ -93,14 +93,16 @@ class DefaultRadioButtonGroup constructor(
                 false
             }
 
-    override fun applyColorTheme(colorTheme: ColorTheme) {
-        setComponentStyles(ComponentStyleSetBuilder.newBuilder()
+    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(TileColor.transparent())
                         .backgroundColor(TileColor.transparent())
                         .build())
-                .build())
-        getComponents().forEach { it.applyColorTheme(colorTheme) }
+                .build().also { css ->
+                    setComponentStyleSet(css)
+                    getComponents().forEach { it.applyColorTheme(colorTheme) }
+                }
     }
 
     override fun onSelection(callback: Consumer<Selection>) {

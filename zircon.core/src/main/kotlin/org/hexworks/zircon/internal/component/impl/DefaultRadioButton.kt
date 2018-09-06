@@ -11,12 +11,12 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.component.WrappingStrategy
+import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 import org.hexworks.zircon.internal.util.ThreadSafeQueue
 
 class DefaultRadioButton(private val text: String,
-                         wrappers: ThreadSafeQueue<WrappingStrategy>,
+                         wrappers: ThreadSafeQueue<ComponentDecorationRenderer>,
                          width: Int,
                          initialTileset: TilesetResource,
                          position: Position,
@@ -24,7 +24,7 @@ class DefaultRadioButton(private val text: String,
     : RadioButton, DefaultComponent(
         size = Size.create(width, 1),
         position = position,
-        componentStyleSet = componentStyleSet,
+        componentStyles = componentStyleSet,
         wrappers = wrappers,
         tileset = initialTileset) {
 
@@ -42,14 +42,14 @@ class DefaultRadioButton(private val text: String,
     }
 
     private fun redrawContent() {
-        getDrawSurface().putText("${STATES[state]} $clearedText")
+        tileGraphic().putText("${STATES[state]} $clearedText")
     }
 
     override fun isSelected() = state == SELECTED
 
     fun select() {
         if (state != SELECTED) {
-            getDrawSurface().applyStyle(getComponentStyles().applyMouseOverStyle())
+            tileGraphic().applyStyle(componentStyleSet().applyMouseOverStyle())
             state = SELECTED
             redrawContent()
         }
@@ -57,7 +57,7 @@ class DefaultRadioButton(private val text: String,
 
     fun removeSelection() =
             if (state != NOT_SELECTED) {
-                getDrawSurface().applyStyle(getComponentStyles().reset())
+                tileGraphic().applyStyle(componentStyleSet().reset())
                 state = NOT_SELECTED
                 redrawContent()
                 true
@@ -70,18 +70,18 @@ class DefaultRadioButton(private val text: String,
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        getDrawSurface().applyStyle(getComponentStyles().applyFocusedStyle())
+        tileGraphic().applyStyle(componentStyleSet().applyFocusedStyle())
         return true
     }
 
     override fun takeFocus(input: Maybe<Input>) {
-        getDrawSurface().applyStyle(getComponentStyles().reset())
+        tileGraphic().applyStyle(componentStyleSet().reset())
     }
 
     override fun getText() = text
 
-    override fun applyColorTheme(colorTheme: ColorTheme) {
-        setComponentStyles(ComponentStyleSetBuilder.newBuilder()
+    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.accentColor())
                         .backgroundColor(TileColor.transparent())
@@ -98,7 +98,9 @@ class DefaultRadioButton(private val text: String,
                         .foregroundColor(colorTheme.secondaryForegroundColor())
                         .backgroundColor(colorTheme.accentColor())
                         .build())
-                .build())
+                .build().also {
+                    setComponentStyleSet(it)
+                }
     }
 
     enum class RadioButtonState {

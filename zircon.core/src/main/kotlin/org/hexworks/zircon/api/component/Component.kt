@@ -1,11 +1,14 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.zircon.api.data.Bounds
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.util.Consumer
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.Identifiable
 
 /**
@@ -41,6 +44,12 @@ interface Component : Identifiable, Layer {
      */
     fun getEffectivePosition(): Position
 
+    fun wrapperOffset(): Position
+
+    /**
+     * Calculate the size taken by all the wrappers.
+     */
+    fun wrappersSize(): Size
     /**
      * Returns the absolute position of this [Component].
      * The absolute position is the position of the top left corner
@@ -69,16 +78,35 @@ interface Component : Identifiable, Layer {
     /**
      * Gets the styles this [Component] uses.
      */
-    fun getComponentStyles(): ComponentStyleSet
+    fun componentStyleSet(): ComponentStyleSet
 
     /**
-     * Sets the styles this [Component] will be displayed with.
+     * Sets the styles this [Component] will be displayed with and also
+     * applies the style which corresponds to the current state of the [Component].
+     * The styles will also be applied to empty cells.
      */
-    fun setComponentStyles(componentStyleSet: ComponentStyleSet)
+    fun setComponentStyleSet(componentStyleSet: ComponentStyleSet) = setComponentStyleSet(componentStyleSet, true)
+
+    /**
+     * Sets the styles this [Component] will be displayed with and also
+     * applies the style which corresponds to the current state of the [Component].
+     *
+     * @param applyToEmptyCells apply the styles to empty cells, or not
+     */
+    fun setComponentStyleSet(componentStyleSet: ComponentStyleSet,
+                             applyToEmptyCells: Boolean)
+
+    /**
+     * Sets the style of this [Component] from the given `styleSet`
+     * and also applies it to all currently present
+     * [Tile]s.
+     */
+    fun applyStyle(styleSet: StyleSet)
 
     /**
      * Applies a [ColorTheme] to this component and recursively to all its children (if any).
+     * @return the [ComponentStyleSet] which the [ColorTheme] was converted to
      */
-    fun applyColorTheme(colorTheme: ColorTheme)
+    fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
 }

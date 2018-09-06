@@ -213,7 +213,7 @@ interface Size : Comparable<Size> {
         fun create(xLength: Int, yLength: Int): Size = DefaultSize(xLength, yLength)
 
         private val UNKNOWN = create(Int.MAX_VALUE, Int.MAX_VALUE)
-        private val DEFAULT_TERMINAL_SIZE = create(80, 24)
+        private val DEFAULT_TERMINAL_SIZE = create(60, 30)
         private val ZERO = create(0, 0)
         private val ONE = create(1, 1)
     }
