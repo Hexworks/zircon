@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
 import org.hexworks.zircon.api.component.ComponentState
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.data.Bounds
+import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -30,7 +30,6 @@ abstract class DefaultComponent(
         size: Size,
         tileset: TilesetResource,
         position: Position,
-        private var attached: Boolean = false,
         private var componentStyleSet: ComponentStyleSet,
         private val wrappers: Iterable<WrappingStrategy>,
         private val graphic: TileGraphic = TileGraphicBuilder
@@ -45,8 +44,9 @@ abstract class DefaultComponent(
         Drawable by graphic,
         TilesetOverride by graphic {
 
-    override val id = Identifier.randomIdentifier()
+    final override val id = Identifier.randomIdentifier()
     private var currentOffset = Position.defaultPosition()
+    private var parent = Maybe.empty<Container>()
 
     init {
         graphic.setStyleFrom(componentStyleSet.getCurrentStyle())
@@ -61,6 +61,24 @@ abstract class DefaultComponent(
                 graphic.applyStyle(componentStyleSet.reset())
             }
         }
+    }
+
+    override fun parent() = parent
+
+    override fun attachTo(parent: Container) {
+        this.parent.map {
+            it.removeComponent(this)
+        }
+        this.parent = Maybe.of(parent)
+    }
+
+    override fun absolutePosition(): Position {
+        val parentPos = if (parent.isPresent) {
+            parent.get().position()
+        } else {
+            Position.defaultPosition()
+        }
+        return position() + parentPos
     }
 
     override fun createCopy(): Layer {
@@ -97,14 +115,8 @@ abstract class DefaultComponent(
         graphic.draw(drawable, position)
     }
 
-    override fun moveTo(position: Position): Boolean {
+    final override fun moveTo(position: Position): Boolean {
         return boundable.moveTo(position)
-    }
-
-    override fun isAttached() = attached
-
-    override fun signalAttached() {
-        this.attached = true
     }
 
     override fun bounds() = this.boundable.bounds()
@@ -194,7 +206,8 @@ abstract class DefaultComponent(
     override fun size() = boundable.size()
 
     override fun toString(): String {
-        return "${this::class.simpleName}(id=${id.toString().substring(0, 4)})"
+        return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}," +
+                "position=${position()})"
     }
 
     override fun equals(other: Any?): Boolean {

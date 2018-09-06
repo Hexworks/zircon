@@ -52,50 +52,26 @@ open class DefaultContainer(initialSize: Size,
     }
 
     override fun addComponent(component: Component) {
-        // TODO: refactor component to be a layer
-        // TODO: and use the layering functionality out of the box
         require(component !== this) {
             "You can't add a component to itself!"
         }
         (component as? DefaultComponent)?.let { dc ->
-            if (isAttached()) {
-                dc.moveTo(dc.position() + getEffectivePosition())
-            }
+            // TODO: this move can be removed when the new decorator system gets into place
+            dc.moveTo(dc.position().withRelative(getWrapperOffset()))
             if (RuntimeConfig.config.betaEnabled.not()) {
                 require(tileset().size() == component.tileset().size()) {
                     "Trying to add component with incompatible tileset size '${component.tileset().size()}' to" +
                             "container with tileset size: '${tileset().size()}'!"
                 }
-                require(components.none { it.intersects(component) }) {
-                    "You can't add a component to a container which intersects with other components!"
+                components.firstOrNull { it.intersects(component) }?.let {
+                    throw IllegalArgumentException(
+                            "You can't add a component ($component) to a container which intersects with another component ($it)!")
                 }
             }
             components.add(dc)
+            dc.attachTo(this)
             EventBus.broadcast(ZirconEvent.ComponentAddition)
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
-    }
-
-    override fun moveTo(position: Position): Boolean {
-        super.moveTo(position)
-        components.forEach { comp ->
-            comp.moveTo(comp.position() + getEffectivePosition())
-            // TODO: if the component has the same size and position it adds it!!!
-            if (RuntimeConfig.config.betaEnabled.not()) {
-                require(containsBoundable(comp)) {
-                    "You can't add a component to a container which is not within its bounds " +
-                            "(target size: ${getEffectiveSize()}, component size: ${comp.size()}" +
-                            ", position: ${comp.position()})!"
-                }
-            }
-        }
-        return true
-    }
-
-    override fun signalAttached() {
-        super.signalAttached()
-        components.forEach {
-            it.signalAttached()
-        }
     }
 
     override fun acceptsFocus() = false
@@ -123,12 +99,20 @@ open class DefaultContainer(initialSize: Size,
     }
 
     override fun transformToLayers(): List<Layer> {
-        return mutableListOf(LayerBuilder.newBuilder()
+        return listOf(LayerBuilder.newBuilder()
                 .tileGraphic(getDrawSurface())
                 .offset(position())
-                .build()).also {
-            it.addAll(components.flatMap { (it as DefaultComponent).transformToLayers() })
-        }
+                .build())
+                .flatMap { layer ->
+                    listOf(layer).plus(
+                            components.flatMap {
+                                (it as DefaultComponent).transformToLayers()
+                                        .map { childLayer ->
+                                            childLayer.moveTo(childLayer.position() + position())
+                                            childLayer
+                                        }
+                            })
+                }
     }
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
@@ -143,7 +127,7 @@ open class DefaultContainer(initialSize: Size,
                 Maybe.empty()
             } else {
                 components.map {
-                    it.fetchComponentByPosition(position)
+                    it.fetchComponentByPosition(position - position())
                 }.filter {
                     it.isPresent
                 }.let { hits ->
@@ -157,7 +141,9 @@ open class DefaultContainer(initialSize: Size,
 
 
     override fun toString(): String {
-        return "${this::class.simpleName}(id=${id.toString().substring(0, 4)})"
+        return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}," +
+                "position=${position()}," +
+                "components=[${components.joinToString()}])"
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme) {

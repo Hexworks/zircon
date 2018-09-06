@@ -54,6 +54,14 @@ interface Bounds {
      */
     operator fun component4() = height()
 
+    operator fun plus(bounds: Bounds) = Bounds.create(
+            position = position() + bounds.position(),
+            size = size() + bounds.size())
+
+    operator fun minus(bounds: Bounds) = Bounds.create(
+            position = position() - bounds.position(),
+            size = size() - bounds.size())
+
     /**
      * Tells whether `position` is within the bounds.
      */
@@ -71,6 +79,14 @@ interface Bounds {
      * a containment).
      */
     fun containsBounds(otherBounds: Bounds): Boolean
+
+    fun withPosition(position: Position) = create(position, size())
+
+    fun withSize(size: Size) = create(position(), size)
+
+    fun withRelativePosition(position: Position) = create(position() + position, size())
+
+    fun withRelativeSize(size: Size) = create(position(), size() + size)
 
     companion object {
 
