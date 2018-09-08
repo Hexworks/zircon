@@ -99,6 +99,7 @@ object IsometricGameArea {
                 .defaultTileset(TILESET)
                 .defaultSize(Sizes.create(80, 50))
                 .debugMode(true)
+                .enableBetaFeatures()
                 .build()
 
         val app = SwingApplications.startApplication(config)

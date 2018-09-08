@@ -44,6 +44,7 @@ public class GameAreaScrollingWithLayers {
                 .defaultTileset(TILESET)
                 .defaultSize(SIZE)
                 .debugMode(true)
+                .enableBetaFeatures()
                 .build());
 
         TileGrid tileGrid = app.getTileGrid();

@@ -61,13 +61,14 @@ object CustomGameAreaExample {
         makeCaves(gameArea)
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultSize(Sizes.create(80, 60))
+                .defaultSize(Sizes.create(60, 30))
+                .enableBetaFeatures()
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
 
         screen.addComponent(GameComponents.newGameComponentBuilder()
-                .visibleSize(Sizes.create3DSize(80, 60, 1))
+                .visibleSize(Sizes.create3DSize(60, 30, 1))
                 .gameArea(gameArea)
                 .build())
 

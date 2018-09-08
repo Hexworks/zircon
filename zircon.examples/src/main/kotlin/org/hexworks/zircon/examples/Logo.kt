@@ -17,7 +17,8 @@ object Logo {
         val rex = REXPaintResource.loadREXFile(RexLoaderExample::class.java.getResourceAsStream("/rex_files/zircon_logo.xp"))
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(BuiltInCP437TilesetResource.OBSIDIAN_16X16)
+                .defaultTileset(BuiltInCP437TilesetResource.REX_PAINT_20X20)
+                .enableBetaFeatures()
                 .defaultSize(size)
                 .build())
 

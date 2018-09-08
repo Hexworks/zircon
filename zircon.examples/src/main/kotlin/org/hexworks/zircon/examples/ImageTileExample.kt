@@ -22,6 +22,8 @@ object ImageTileExample {
                 .name("hexworks_logo.png")
                 .buildImageTile()
 
+        // TODO: fix positioning
+
         tileGrid.setTileAt(Positions.create(5, 5), imageTile)
 
     }
