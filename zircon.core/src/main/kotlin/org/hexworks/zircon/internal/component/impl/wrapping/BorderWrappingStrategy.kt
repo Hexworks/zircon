@@ -144,18 +144,4 @@ class BorderWrappingStrategy(private val border: Border) : WrappingStrategy {
         }
     }
 
-    override fun remove(tileGraphic: TileGraphic, size: Size, offset: Position, style: StyleSet) {
-        // TODO: FIX CAST
-        size.fetchBoundingBoxPositions().forEach { pos ->
-            val fixedPos = pos.withRelative(offset)
-            tileGraphic.getTileAt(fixedPos).map { char ->
-                if (char.hasBorder()) {
-                    tileGraphic.setTileAt(fixedPos, char.withoutModifiers(*char.fetchBorderData().toTypedArray()))
-                }
-            }
-        }
-    }
-
-    override fun isThemeNeutral() = false
-
 }

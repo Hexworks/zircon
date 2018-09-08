@@ -30,13 +30,12 @@ open class DefaultContainer(initialSize: Size,
                             wrappers: Iterable<WrappingStrategy> = listOf())
     : DefaultComponent(size = initialSize,
         position = position,
-        componentStyleSet = componentStyleSet,
+        componentStyles = componentStyleSet,
         wrappers = wrappers,
         tileset = initialTileset),
         Container {
 
     private val components = ThreadSafeQueueFactory.create<InternalComponent>()
-
 
     override fun draw(drawable: Drawable, position: Position) {
         if (drawable is Component) {
@@ -57,7 +56,7 @@ open class DefaultContainer(initialSize: Size,
         }
         (component as? DefaultComponent)?.let { dc ->
             // TODO: this move can be removed when the new decorator system gets into place
-            dc.moveTo(dc.position().withRelative(getWrapperOffset()))
+            dc.moveTo(dc.position().withRelative(wrapperOffset()))
             if (RuntimeConfig.config.betaEnabled.not()) {
                 require(tileset().size() == component.tileset().size()) {
                     "Trying to add component with incompatible tileset size '${component.tileset().size()}' to" +
@@ -73,12 +72,6 @@ open class DefaultContainer(initialSize: Size,
             EventBus.broadcast(ZirconEvent.ComponentAddition)
         } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
     }
-
-    override fun acceptsFocus() = false
-
-    override fun giveFocus(input: Maybe<Input>) = false
-
-    override fun takeFocus(input: Maybe<Input>) {}
 
     override fun removeComponent(component: Component): Boolean {
         var removalHappened = components.remove(component)
@@ -98,9 +91,15 @@ open class DefaultContainer(initialSize: Size,
         return removalHappened
     }
 
+    override fun acceptsFocus() = false
+
+    override fun giveFocus(input: Maybe<Input>) = false
+
+    override fun takeFocus(input: Maybe<Input>) {}
+
     override fun transformToLayers(): List<Layer> {
         return listOf(LayerBuilder.newBuilder()
-                .tileGraphic(getDrawSurface())
+                .tileGraphic(tileGraphic())
                 .offset(position())
                 .build())
                 .flatMap { layer ->
@@ -116,7 +115,7 @@ open class DefaultContainer(initialSize: Size,
     }
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
-        surface.draw(getDrawSurface(), position())
+        surface.draw(tileGraphic(), position())
         components.forEach {
             it.drawOnto(surface)
         }
@@ -146,16 +145,18 @@ open class DefaultContainer(initialSize: Size,
                 "components=[${components.joinToString()}])"
     }
 
-    override fun applyColorTheme(colorTheme: ColorTheme) {
-        setComponentStyles(ComponentStyleSetBuilder.newBuilder()
+    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        val css = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.secondaryForegroundColor())
                         .backgroundColor(colorTheme.secondaryBackgroundColor())
                         .build())
-                .build())
+                .build()
+        setComponentStyleSet(css)
         components.forEach {
             it.applyColorTheme(colorTheme)
         }
+        return css
     }
 
     fun getComponents() = components

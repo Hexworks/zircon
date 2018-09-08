@@ -54,6 +54,4 @@ class BoxWrappingStrategy(private val boxType: BoxType,
             }
         }
     }
-
-    override fun isThemeNeutral() = false
 }

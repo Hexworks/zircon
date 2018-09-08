@@ -9,11 +9,13 @@ import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
 import org.hexworks.zircon.api.component.ComponentState
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.data.Bounds
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphic
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -30,7 +32,7 @@ abstract class DefaultComponent(
         size: Size,
         tileset: TilesetResource,
         position: Position,
-        private var componentStyleSet: ComponentStyleSet,
+        private var componentStyles: ComponentStyleSet,
         private val wrappers: Iterable<WrappingStrategy>,
         private val graphic: TileGraphic = TileGraphicBuilder
                 .newBuilder()
@@ -49,16 +51,15 @@ abstract class DefaultComponent(
     private var parent = Maybe.empty<Container>()
 
     init {
-        graphic.setStyleFrom(componentStyleSet.getCurrentStyle())
-        applyWrappers()
+        applyStyle(componentStyles.getCurrentStyle())
         EventBus.listenTo<ZirconEvent.MouseOver>(id) {
-            if (componentStyleSet.getCurrentStyle() != componentStyleSet.getStyleFor(ComponentState.MOUSE_OVER)) {
-                graphic.applyStyle(componentStyleSet.applyMouseOverStyle())
+            if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.MOUSE_OVER)) {
+                applyStyle(componentStyles.applyMouseOverStyle())
             }
         }
         EventBus.listenTo<ZirconEvent.MouseOut>(id) {
-            if (componentStyleSet.getCurrentStyle() != componentStyleSet.getStyleFor(ComponentState.DEFAULT)) {
-                graphic.applyStyle(componentStyleSet.reset())
+            if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.DEFAULT)) {
+                applyStyle(componentStyles.reset())
             }
         }
     }
@@ -158,44 +159,34 @@ abstract class DefaultComponent(
         }
     }
 
-    override fun getComponentStyles() = componentStyleSet
+    override fun componentStyleSet() = componentStyles
 
-    override fun setComponentStyles(componentStyleSet: ComponentStyleSet,
-                                    applyToEmptyCells: Boolean) {
-        this.componentStyleSet = componentStyleSet
-        graphic.applyStyle(
-                styleSet = componentStyleSet.getCurrentStyle(),
-                offset = getNonThemeableOffset(),
-                size = getEffectiveThemeableSize(),
-                keepModifiers = true,
-                applyToEmptyCells = applyToEmptyCells)
+    override fun setComponentStyleSet(componentStyleSet: ComponentStyleSet,
+                                      applyToEmptyCells: Boolean) {
+        this.componentStyles = componentStyleSet
+        applyStyle(componentStyleSet.getCurrentStyle())
     }
 
-    fun getBoundable() = boundable
+    final override fun applyStyle(styleSet: StyleSet) {
+        applyWrappers()
+        graphic.applyStyle(
+                styleSet = styleSet,
+                bounds = Bounds.create(
+                        position = wrapperOffset(),
+                        size = getEffectiveSize()))
+    }
 
-    fun getDrawSurface() = graphic
+    override fun tileGraphic() = graphic
 
     /**
      * Returns the size which this component takes up without its wrappers.
      */
-    override fun getEffectiveSize() = size() - getWrappersSize()
+    override fun getEffectiveSize() = size() - wrappersSize()
 
     /**
      * Returns the position of this component offset by the wrappers it has.
      */
-    override fun getEffectivePosition() = position() + getWrapperOffset()
-
-    /**
-     * Returns the position from which themes should be applied.
-     */
-    fun getEffectiveThemeablePosition() = position() + getNonThemeableOffset()
-
-    /**
-     * Returns the offset which is caused by the wrappers of this component.
-     * So basically this is the value of the component's position (`position()`)
-     * plus the space which is taken up by the wrappers.
-     */
-    fun getWrapperOffset() = wrappers.map { it.getOffset() }.fold(Position.topLeftCorner()) { acc, position -> acc + position }
+    override fun getEffectivePosition() = position() + wrapperOffset()
 
     open fun transformToLayers() =
             listOf(LayerBuilder.newBuilder()
@@ -228,32 +219,17 @@ abstract class DefaultComponent(
         currentOffset = Position.defaultPosition()
         wrappers.forEach {
             currSize += it.getOccupiedSize()
-            it.apply(graphic, currSize, currentOffset, componentStyleSet.getCurrentStyle())
+            it.apply(graphic, currSize, currentOffset, componentStyles.getCurrentStyle())
             currentOffset += it.getOffset()
         }
     }
 
-    /**
-     * Returns the size which this component takes up with only its themeable wrappers.
-     */
-    private fun getEffectiveThemeableSize() = size() - getNonThemedWrapperSize()
+    override fun wrapperOffset() = wrappers.map { it.getOffset() }.fold(Position.topLeftCorner(), Position::plus)
 
     /**
      * Calculate the size taken by all the wrappers.
      */
-    private fun getWrappersSize() = wrappers.map { it.getOccupiedSize() }.fold(Size.zero()) { acc, size -> acc + size }
+    override fun wrappersSize() = wrappers.map { it.getOccupiedSize() }.fold(Size.zero(), Size::plus)
 
-    /**
-     * Returns the size of all wrappers which are not themeable.
-     */
-    private fun getNonThemedWrapperSize() = wrappers
-            .filter { it.isThemeNeutral() }
-            .map { it.getOccupiedSize() }
-            .fold(Size.zero()) { acc, size -> acc + size }
-
-    private fun getNonThemeableOffset() = wrappers
-            .filter { it.isThemeNeutral() }
-            .map { it.getOffset() }
-            .fold(Position.topLeftCorner()) { acc, position -> acc + position }
 
 }

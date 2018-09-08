@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.graphics.TileGraphic
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.Focusable
 
@@ -42,5 +43,11 @@ interface InternalComponent : Component, Drawable, Focusable {
     fun attachTo(parent: Container)
 
     override fun isAttached(): Boolean = parent().isPresent
+
+    /**
+     * Returns the [org.hexworks.zircon.api.graphics.TileGraphic] which this
+     * component uses for drawing.
+     */
+    fun tileGraphic(): TileGraphic
 
 }

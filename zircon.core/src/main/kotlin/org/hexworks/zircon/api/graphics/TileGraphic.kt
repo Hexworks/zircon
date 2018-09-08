@@ -2,10 +2,7 @@ package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.*
 import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.data.Cell
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.internal.data.DefaultCell
 import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphic
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
@@ -115,11 +112,13 @@ interface TileGraphic
      * target [Tile]s should be kept or not
      */
     fun applyStyle(styleSet: StyleSet,
-                   offset: Position = Position.defaultPosition(),
-                   size: Size = size(),
+                   bounds: Bounds = bounds(),
                    keepModifiers: Boolean = false,
                    applyToEmptyCells: Boolean = true) {
+        val offset = bounds.position()
+        val size = bounds.size()
         setStyleFrom(styleSet)
+        // TODO: test this properly
         val positions = if(applyToEmptyCells) {
             size.fetchPositions()
         } else {

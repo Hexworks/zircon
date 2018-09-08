@@ -13,6 +13,11 @@ interface WrappingStrategy {
      */
     fun getOccupiedSize(): Size
 
+    /**
+     * Tells how many positions this wrapper
+     * offsets the component. For example the default button
+     * wrapper offsets the button with (1, 0).
+     */
     fun getOffset(): Position
 
     /**
@@ -23,15 +28,4 @@ interface WrappingStrategy {
      */
     fun apply(tileGraphic: TileGraphic, size: Size, offset: Position, style: StyleSet)
 
-    /**
-     * Removes the last change made by this [WrappingStrategy].
-     */
-    fun remove(tileGraphic: TileGraphic, size: Size, offset: Position, style: StyleSet): Unit {
-
-    }
-
-    /**
-     * Themes don't apply to this wrapper.
-     */
-    fun isThemeNeutral(): Boolean
 }

@@ -28,6 +28,4 @@ class ButtonWrappingStrategy : WrappingStrategy {
                         .build())
     }
 
-    override fun isThemeNeutral() = false
-
 }

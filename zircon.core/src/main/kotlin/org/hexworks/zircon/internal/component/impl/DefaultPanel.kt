@@ -24,15 +24,17 @@ class DefaultPanel(private val title: String,
 
     override fun getTitle() = title
 
-    override fun applyColorTheme(colorTheme: ColorTheme) {
-        setComponentStyles(ComponentStyleSetBuilder.newBuilder()
+    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
                         .foregroundColor(colorTheme.primaryForegroundColor())
                         .backgroundColor(colorTheme.primaryBackgroundColor())
                         .build())
-                .build())
-        getComponents().forEach {
-            it.applyColorTheme(colorTheme)
-        }
+                .build().also { css ->
+                    setComponentStyleSet(css)
+                    getComponents().forEach {
+                        it.applyColorTheme(colorTheme)
+                    }
+                }
     }
 }

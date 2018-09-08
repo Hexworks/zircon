@@ -11,33 +11,32 @@ import org.hexworks.zircon.api.shape.LineFactory
 import org.hexworks.zircon.internal.component.WrappingStrategy
 
 class ShadowWrappingStrategy(
-        private val shadowChar: Char = DEFAULT_SHADOW_CHAR) : WrappingStrategy {
+        shadowChar: Char = DEFAULT_SHADOW_CHAR) : WrappingStrategy {
+
+    private val shadowTile = TileBuilder.newBuilder()
+            .backgroundColor(TileColor.transparent())
+            .foregroundColor(TileColor.create(100, 100, 100))
+            .character(shadowChar)
+            .build()
 
     override fun getOccupiedSize() = Size.create(1, 1)
 
     override fun getOffset() = Position.topLeftCorner()
 
     override fun apply(tileGraphic: TileGraphic, size: Size, offset: Position, style: StyleSet) {
-        val tc = TileBuilder.newBuilder()
-                .backgroundColor(TileColor.transparent())
-                .foregroundColor(TileColor.create(100, 100, 100))
-                .character(shadowChar)
-                .build()
         LineFactory.buildLine(
                 fromPoint = Position.create(1, 0),
                 toPoint = Position.create(size.xLength - 1, 0))
-                .toTileGraphics(tc, tileGraphic.tileset())
+                .toTileGraphics(shadowTile, tileGraphic.tileset())
                 .drawOnto(tileGraphic, Position.create(1, size.yLength - 1))
         LineFactory.buildLine(
                 fromPoint = Position.create(0, 1),
                 toPoint = Position.create(0, size.yLength - 1))
-                .toTileGraphics(tc, tileGraphic.tileset())
+                .toTileGraphics(shadowTile, tileGraphic.tileset())
                 .drawOnto(tileGraphic, Position.create(size.xLength - 1, 1))
     }
 
-    override fun isThemeNeutral() = true
-
     companion object {
-        val DEFAULT_SHADOW_CHAR = Symbols.BLOCK_SPARSE
+        const val DEFAULT_SHADOW_CHAR = Symbols.BLOCK_SPARSE
     }
 }

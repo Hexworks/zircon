@@ -220,26 +220,26 @@ object IsometricGameArea {
 
     private fun enableMovement(screen: Screen, gameComponent: DefaultGameComponent) {
         screen.onInput(object : Consumer<Input> {
-            override fun accept(input: Input) {
-                if (EXIT_CONDITIONS.contains(input.getInputType())) {
+            override fun accept(p: Input) {
+                if (EXIT_CONDITIONS.contains(p.getInputType())) {
                     System.exit(0)
                 } else {
-                    if (InputType.ArrowUp === input.getInputType()) {
+                    if (InputType.ArrowUp === p.getInputType()) {
                         gameComponent.scrollOneBackward()
                     }
-                    if (InputType.ArrowDown === input.getInputType()) {
+                    if (InputType.ArrowDown === p.getInputType()) {
                         gameComponent.scrollOneForward()
                     }
-                    if (InputType.ArrowLeft === input.getInputType()) {
+                    if (InputType.ArrowLeft === p.getInputType()) {
                         gameComponent.scrollOneLeft()
                     }
-                    if (InputType.ArrowRight === input.getInputType()) {
+                    if (InputType.ArrowRight === p.getInputType()) {
                         gameComponent.scrollOneRight()
                     }
-                    if (InputType.PageUp === input.getInputType()) {
+                    if (InputType.PageUp === p.getInputType()) {
                         gameComponent.scrollOneUp()
                     }
-                    if (InputType.PageDown === input.getInputType()) {
+                    if (InputType.PageDown === p.getInputType()) {
                         gameComponent.scrollOneDown()
                     }
                     screen.getLayers().forEach {

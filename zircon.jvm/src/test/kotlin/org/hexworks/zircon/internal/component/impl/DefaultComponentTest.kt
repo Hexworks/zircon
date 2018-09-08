@@ -1,11 +1,13 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -22,7 +24,6 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.component.impl.wrapping.BorderWrappingStrategy
 import org.hexworks.zircon.internal.component.impl.wrapping.ShadowWrappingStrategy
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.api.Modifiers
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -38,10 +39,11 @@ class DefaultComponentTest {
         target = object : DefaultComponent(
                 size = SIZE,
                 position = POSITION,
-                componentStyleSet = STYLES,
+                componentStyles = STYLES,
                 wrappers = WRAPPERS,
                 tileset = tileset) {
-            override fun applyColorTheme(colorTheme: ColorTheme) {
+
+            override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
                 TODO("not implemented")
             }
 
@@ -69,7 +71,7 @@ class DefaultComponentTest {
 
     @Test
     fun shouldProperlyApplyStylesOnInit() {
-        assertThat(target.getComponentStyles().getCurrentStyle())
+        assertThat(target.componentStyleSet().getCurrentStyle())
                 .isEqualTo(STYLES.getCurrentStyle())
     }
 
@@ -78,7 +80,7 @@ class DefaultComponentTest {
 
         EventBus.sendTo(target.id, ZirconEvent.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
 
-        val targetChar = target.getDrawSurface().getTileAt(Position.defaultPosition()).get()
+        val targetChar = target.tileGraphic().getTileAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(MOUSE_OVER_STYLE.backgroundColor())
         assertThat(targetChar.getForegroundColor()).isEqualTo(MOUSE_OVER_STYLE.foregroundColor())
     }
@@ -89,7 +91,7 @@ class DefaultComponentTest {
 
         EventBus.sendTo(target.id, ZirconEvent.MouseOut(MouseAction(MouseActionType.MOUSE_EXITED, 1, Position.defaultPosition())))
 
-        val targetChar = target.getDrawSurface().getTileAt(Position.defaultPosition()).get()
+        val targetChar = target.tileGraphic().getTileAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(DEFAULT_STYLE.backgroundColor())
         assertThat(targetChar.getForegroundColor()).isEqualTo(DEFAULT_STYLE.foregroundColor())
     }
@@ -133,7 +135,7 @@ class DefaultComponentTest {
 
         target.size().fetchPositions().forEach {
             assertThat(image.getTileAt(it + POSITION).get())
-                    .isEqualTo(target.getDrawSurface().getTileAt(it).get())
+                    .isEqualTo(target.tileGraphic().getTileAt(it).get())
         }
     }
 
