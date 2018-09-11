@@ -99,7 +99,7 @@ open class DefaultContainer(initialSize: Size,
 
     override fun transformToLayers(): List<Layer> {
         return listOf(LayerBuilder.newBuilder()
-                .tileGraphic(tileGraphic())
+                .tileGraphic(tileGraphics())
                 .offset(position())
                 .build())
                 .flatMap { layer ->
@@ -115,7 +115,7 @@ open class DefaultContainer(initialSize: Size,
     }
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
-        surface.draw(tileGraphic(), position())
+        surface.draw(tileGraphics(), position())
         components.forEach {
             it.drawOnto(surface)
         }

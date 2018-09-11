@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.behavior.impl.DefaultStyleable
 import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride
+import org.hexworks.zircon.platform.util.SystemUtils
 
 /**
  * this is a basic building block which can be re-used by complex image
@@ -71,7 +72,7 @@ abstract class BaseTileGraphics(
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
         contents.entries.forEach { (pos, tile) ->
-            tile.drawOnto(surface, pos + position)
+            surface.setTileAt(pos + position, tile)
         }
     }
 }

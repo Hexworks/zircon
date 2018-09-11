@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ComponentState
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
@@ -34,7 +34,7 @@ abstract class DefaultComponent(
         position: Position,
         private var componentStyles: ComponentStyleSet,
         private val wrappers: Iterable<ComponentDecorationRenderer>,
-        private val graphic: TileGraphics = TileGraphicBuilder
+        private val graphic: TileGraphics = TileGraphicsBuilder
                 .newBuilder()
                 .tileset(tileset)
                 .size(size)
@@ -176,7 +176,7 @@ abstract class DefaultComponent(
                         size = getEffectiveSize()))
     }
 
-    override fun tileGraphic() = graphic
+    override fun tileGraphics() = graphic
 
     /**
      * Returns the size which this component takes up without its wrappers.

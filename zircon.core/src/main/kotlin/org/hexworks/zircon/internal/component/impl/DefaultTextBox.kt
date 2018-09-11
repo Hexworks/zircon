@@ -27,7 +27,7 @@ class DefaultTextBox(private val text: String,
 
     init {
         text.trim().split(SystemUtils.getLineSeparator()).forEachIndexed { idx, line ->
-            tileGraphic().putText(line, Position.create(0, idx))
+            tileGraphics().putText(line, Position.create(0, idx))
         }
     }
 

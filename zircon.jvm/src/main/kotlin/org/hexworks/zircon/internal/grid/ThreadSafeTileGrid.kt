@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
@@ -36,7 +36,7 @@ import java.util.concurrent.Executors
 class ThreadSafeTileGrid(
         tileset: TilesetResource,
         size: Size,
-        override var backend: TileGraphics = TileGraphicBuilder.newBuilder()
+        override var backend: TileGraphics = TileGraphicsBuilder.newBuilder()
                 .size(size)
                 .tileset(tileset)
                 .build(),

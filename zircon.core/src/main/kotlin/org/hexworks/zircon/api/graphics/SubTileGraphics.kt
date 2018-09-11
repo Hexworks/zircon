@@ -1,18 +1,15 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.zircon.api.behavior.Boundable
-import org.hexworks.zircon.api.behavior.DrawSurface
-import org.hexworks.zircon.api.behavior.Drawable
-import org.hexworks.zircon.api.behavior.Styleable
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.behavior.*
 import org.hexworks.zircon.api.data.Bounds
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.modifier.Modifier
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.behavior.impl.DefaultStyleable
+import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride
+import org.hexworks.zircon.internal.graphics.DefaultTileImage
 
 /**
  * this is a basic building block which can be re-used by complex image
@@ -28,8 +25,10 @@ class SubTileGraphics(
                 size = bounds.size(),
                 position = bounds.position()),
         private val styleable: Styleable = DefaultStyleable(
-                styleSet = backend.styleSet()))
-    : TileGraphics, Boundable by boundable, Styleable by styleable {
+                styleSet = backend.styleSet()),
+        private val tilesetOverride: TilesetOverride = DefaultTilesetOverride(
+                tileset = backend.tileset()))
+    : TileGraphics, Boundable by boundable, Styleable by styleable, TilesetOverride by tilesetOverride {
 
     private val offset = bounds.position()
     private val size = bounds.size()
@@ -43,6 +42,30 @@ class SubTileGraphics(
         }
     }
 
+    override fun fetchFilledPositions(): List<Position> {
+        return backend.snapshot().filterKeys { bounds.containsPosition(it) }.keys.map { it - offset }
+    }
+
+    override fun resize(newSize: Size) = restrictOperation()
+
+    override fun resize(newSize: Size, filler: Tile) = restrictOperation()
+
+    override fun applyStyle(styleSet: StyleSet, bounds: Bounds, keepModifiers: Boolean, applyToEmptyCells: Boolean) {
+        super.applyStyle(
+                styleSet = styleSet,
+                // this is needed because I don't want to reimplement applyStyle...
+                bounds = bounds.withPosition(Position.defaultPosition()),
+                keepModifiers = keepModifiers,
+                applyToEmptyCells = applyToEmptyCells)
+    }
+
+    override fun toTileImage(): TileImage {
+        return DefaultTileImage(
+                size = size(),
+                tileset = tileset(),
+                tiles = fetchCells().map { it.position to it.tile }.toMap())
+    }
+
     override fun clear() {
         size.fetchPositions().forEach {
             backend.setTileAt(it + offset, Tile.empty())
@@ -50,13 +73,15 @@ class SubTileGraphics(
     }
 
     override fun getTileAt(position: Position): Maybe<Tile> {
-        return if(size.containsPosition(position)) {
+        return if (size.containsPosition(position)) {
             return backend.getTileAt(position + offset)
         } else Maybe.empty()
     }
 
     override fun setTileAt(position: Position, tile: Tile) {
-        backend.setTileAt(position + offset, tile)
+        if (size.containsPosition(position)) {
+            backend.setTileAt(position + offset, tile)
+        }
     }
 
     override fun snapshot(): Map<Position, Tile> {
@@ -64,28 +89,19 @@ class SubTileGraphics(
     }
 
     override fun draw(drawable: Drawable, position: Position) {
-        restrictDraw()
+        restrictOperation()
     }
-
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
-        TODO("not implemented")
+        bounds.size().fetchPositions().forEach { pos ->
+            getTileAt(pos).map { tile ->
+                surface.setTileAt(pos + offset + position, tile)
+            }
+        }
     }
 
-
-    override fun tileset(): TilesetResource {
-        TODO("not implemented")
-    }
-
-    override fun useTileset(tileset: TilesetResource) {
-        TODO("not implemented")
-    }
-
-    private fun restrictDraw() {
-        throw UnsupportedOperationException(
-                "Drawing onto sub tile graphics is not supported due to the inability" +
-                        " to determine the drawable's size which would result in drawing" +
-                        " to restricted positions on the underlying tile graphics")
+    private fun restrictOperation(): Nothing {
+        throw UnsupportedOperationException("This operation is not supported for sub tile graphics.")
     }
 
 }

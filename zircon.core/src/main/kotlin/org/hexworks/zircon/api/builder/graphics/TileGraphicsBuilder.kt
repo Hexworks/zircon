@@ -17,9 +17,8 @@ import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphics
  * - Default `filler` is an `EMPTY` character
  */
 @Suppress("ArrayInDataClass")
-data class TileGraphicBuilder(
+data class TileGraphicsBuilder(
         private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
-        private var filler: Tile = Tile.empty(),
         private var size: Size = Size.one(),
         private var style: StyleSet = StyleSet.defaultStyle(),
         private val tiles: MutableMap<Position, Tile> = mutableMapOf()) : Builder<TileGraphics> {
@@ -30,10 +29,6 @@ data class TileGraphicBuilder(
 
     fun style(style: StyleSet) = also {
         this.style = style
-    }
-
-    fun filler(filler: Tile) = also {
-        this.filler = filler
     }
 
     /**
@@ -68,8 +63,8 @@ data class TileGraphicBuilder(
     companion object {
 
         /**
-         * Creates a new [TileGraphicBuilder] to build [org.hexworks.zircon.api.graphics.TileGraphics]s.
+         * Creates a new [TileGraphicsBuilder] to build [org.hexworks.zircon.api.graphics.TileGraphics]s.
          */
-        fun newBuilder() = TileGraphicBuilder()
+        fun newBuilder() = TileGraphicsBuilder()
     }
 }

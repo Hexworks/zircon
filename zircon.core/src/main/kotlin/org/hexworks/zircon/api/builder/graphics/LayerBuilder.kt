@@ -61,7 +61,7 @@ data class LayerBuilder(
     } else {
         DefaultLayer(
                 position = offset,
-                backend = TileGraphicBuilder(
+                backend = TileGraphicsBuilder(
                         tileset = tileset,
                         size = size).build())
     }

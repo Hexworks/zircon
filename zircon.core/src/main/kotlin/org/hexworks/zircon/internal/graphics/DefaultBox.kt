@@ -1,10 +1,9 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Box
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -17,7 +16,7 @@ class DefaultBox(
         styleSet: StyleSet,
         boxType: BoxType,
         tileset: TilesetResource,
-        private val backend: TileGraphics = TileGraphicBuilder.newBuilder()
+        private val backend: TileGraphics = TileGraphicsBuilder.newBuilder()
                 .tileset(tileset)
                 .size(size)
                 .build())

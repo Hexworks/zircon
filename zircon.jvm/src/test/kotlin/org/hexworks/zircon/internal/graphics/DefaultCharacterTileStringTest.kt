@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.graphics
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -53,7 +53,7 @@ class DefaultCharacterTileStringTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionWhenOffsetColIsTooBig() {
-        val surface = TileGraphicBuilder.newBuilder()
+        val surface = TileGraphicsBuilder.newBuilder()
                 .size(Size.create(2, 2))
                 .build()
 
@@ -65,7 +65,7 @@ class DefaultCharacterTileStringTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionWhenOffsetRowIsTooBig() {
-        val surface = TileGraphicBuilder.newBuilder()
+        val surface = TileGraphicsBuilder.newBuilder()
                 .size(Size.create(2, 2))
                 .build()
 
@@ -77,7 +77,7 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldProperlyWriteNoWrapOverlappingStringToTileGraphic() {
-        val surface = TileGraphicBuilder.newBuilder()
+        val surface = TileGraphicsBuilder.newBuilder()
                 .size(Size.create(2, 2))
                 .build()
 
@@ -111,7 +111,7 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun WordWrapShouldWorkCorrectlyFirstTest() {
-        val surface = TileGraphicBuilder.newBuilder()
+        val surface = TileGraphicsBuilder.newBuilder()
                 .size(Size.create(5, 1))
                 .build()
 
@@ -146,7 +146,7 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun WordWrapShouldWorkMultipleWords() {
-        val surface = TileGraphicBuilder.newBuilder()
+        val surface = TileGraphicsBuilder.newBuilder()
                 .size(Size.create(4, 2))
                 .build()
 
@@ -185,7 +185,7 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun WordWrapShouldWrapAsWordTooBigForSingleColumn() {
-        val surface = TileGraphicBuilder.newBuilder()
+        val surface = TileGraphicsBuilder.newBuilder()
                 .size(Size.create(4, 2))
                 .build()
 
@@ -220,7 +220,7 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun WordWrapShouldWorkCorrectly() {
-        val surface = TileGraphicBuilder.newBuilder()
+        val surface = TileGraphicsBuilder.newBuilder()
                 .size(Size.create(5, 4))
                 .build()
 
@@ -290,7 +290,7 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldProperlyWriteNoWrapStringToTileGraphicWithOffset() {
-        val surface = TileGraphicBuilder.newBuilder()
+        val surface = TileGraphicsBuilder.newBuilder()
                 .size(Size.create(2, 2))
                 .build()
 
@@ -325,7 +325,7 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldProperlyWriteWrapStringToTileGraphicWithoutOffset() {
-        val surface = TileGraphicBuilder.newBuilder()
+        val surface = TileGraphicsBuilder.newBuilder()
                 .size(Size.create(2, 2))
                 .build()
 
@@ -359,7 +359,7 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldProperlyWriteWrapStringToTileGraphicWithOffset() {
-        val surface = TileGraphicBuilder.newBuilder()
+        val surface = TileGraphicsBuilder.newBuilder()
                 .size(Size.create(2, 2))
                 .build()
 
@@ -393,7 +393,7 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldProperlyWriteStringToTileGraphicWhenLengthIs1() {
-        val surface = TileGraphicBuilder.newBuilder()
+        val surface = TileGraphicsBuilder.newBuilder()
                 .size(Size.create(2, 2))
                 .build()
 
@@ -427,7 +427,7 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldProperlyTruncateStringWhenDoesNotFitOnTileGraphic() {
-        val surface = TileGraphicBuilder.newBuilder()
+        val surface = TileGraphicsBuilder.newBuilder()
                 .size(Size.create(2, 2))
                 .build()
 

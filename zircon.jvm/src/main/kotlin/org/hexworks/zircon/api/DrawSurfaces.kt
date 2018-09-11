@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api
 
-import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.builder.graphics.TileImageBuilder
 
 object DrawSurfaces {
@@ -12,8 +12,8 @@ object DrawSurfaces {
     fun tileImageBuilder() = TileImageBuilder.newBuilder()
 
     /**
-     * Creates a new [TileGraphicBuilder] to build [org.hexworks.zircon.api.graphics.TileGraphics]s.
+     * Creates a new [TileGraphicsBuilder] to build [org.hexworks.zircon.api.graphics.TileGraphics]s.
      */
     @JvmStatic
-    fun tileGraphicsBuilder() = TileGraphicBuilder.newBuilder()
+    fun tileGraphicsBuilder() = TileGraphicsBuilder.newBuilder()
 }

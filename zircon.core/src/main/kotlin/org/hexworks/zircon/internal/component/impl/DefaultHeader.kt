@@ -25,7 +25,7 @@ class DefaultHeader(private val text: String,
 
 
     init {
-        tileGraphic().putText(text, Position.defaultPosition())
+        tileGraphics().putText(text, Position.defaultPosition())
     }
 
     override fun getText() = text

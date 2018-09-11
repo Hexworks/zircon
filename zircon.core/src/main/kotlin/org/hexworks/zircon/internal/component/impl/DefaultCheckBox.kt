@@ -51,7 +51,7 @@ class DefaultCheckBox(private val text: String,
 //            EventBus.broadcast(EventType.ComponentChange)
 //        })
         EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
-            tileGraphic().applyStyle(componentStyleSet().applyMouseOverStyle())
+            tileGraphics().applyStyle(componentStyleSet().applyMouseOverStyle())
             checkBoxState = if (checked) UNCHECKED else CHECKED
             checked = checked.not()
             redrawContent()
@@ -59,7 +59,7 @@ class DefaultCheckBox(private val text: String,
     }
 
     private fun redrawContent() {
-        tileGraphic().putText("${STATES["$checkBoxState$checked"]!!} $clearedText")
+        tileGraphics().putText("${STATES["$checkBoxState$checked"]!!} $clearedText")
     }
 
     override fun isChecked() = checkBoxState == CHECKED
@@ -69,12 +69,12 @@ class DefaultCheckBox(private val text: String,
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        tileGraphic().applyStyle(componentStyleSet().applyFocusedStyle())
+        tileGraphics().applyStyle(componentStyleSet().applyFocusedStyle())
         return true
     }
 
     override fun takeFocus(input: Maybe<Input>) {
-        tileGraphic().applyStyle(componentStyleSet().reset())
+        tileGraphics().applyStyle(componentStyleSet().reset())
     }
 
     override fun getText() = text

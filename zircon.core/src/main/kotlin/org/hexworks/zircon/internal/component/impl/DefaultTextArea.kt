@@ -103,7 +103,7 @@ class DefaultTextArea constructor(
                 disableTyping()
             }
         }
-        tileGraphic().applyStyle(componentStyleSet().applyDisabledStyle())
+        tileGraphics().applyStyle(componentStyleSet().applyDisabledStyle())
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
@@ -117,12 +117,12 @@ class DefaultTextArea constructor(
     override fun takeFocus(input: Maybe<Input>) {
         focused = false
         disableTyping()
-        tileGraphic().applyStyle(componentStyleSet().reset())
+        tileGraphics().applyStyle(componentStyleSet().reset())
     }
 
     private fun enableFocusedComponent() {
         cancelSubscriptions()
-        tileGraphic().applyStyle(componentStyleSet().applyFocusedStyle())
+        tileGraphics().applyStyle(componentStyleSet().applyFocusedStyle())
         enableTyping()
     }
 
@@ -325,7 +325,7 @@ class DefaultTextArea constructor(
     private fun refreshDrawSurface() {
         size().fetchPositions().forEach { pos ->
             val fixedPos = pos + visibleOffset()
-            tileGraphic().setTileAt(pos, TileBuilder.newBuilder()
+            tileGraphics().setTileAt(pos, TileBuilder.newBuilder()
                     .character(textBuffer.getCharAt(fixedPos).orElse(' '))
                     .build())
         }

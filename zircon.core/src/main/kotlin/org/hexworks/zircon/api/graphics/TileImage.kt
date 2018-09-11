@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -281,7 +281,7 @@ interface TileImage
      * [TileGraphics] which can be modified using the supplied style.
      */
     fun toTileGraphic(): TileGraphics {
-        val result = TileGraphicBuilder.newBuilder()
+        val result = TileGraphicsBuilder.newBuilder()
                 .size(size())
                 .tileset(tileset())
         toTileMap().forEach { (pos, tile) ->

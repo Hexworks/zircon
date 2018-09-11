@@ -41,7 +41,7 @@ class DefaultButtonTest {
     @Ignore
     @Test
     fun shouldProperlyAddButtonText() {
-        val surface = target.tileGraphic()
+        val surface = target.tileGraphics()
         val offset = target.getEffectivePosition().x
         TEXT.forEachIndexed { i, char ->
             assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())

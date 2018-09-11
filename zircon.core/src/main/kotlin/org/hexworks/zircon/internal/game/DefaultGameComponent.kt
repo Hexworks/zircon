@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.game
 
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.data.*
@@ -90,7 +90,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
             val customLayersPerBlock = gameArea.getLayersPerBlock()
             val totalLayerCount = fixedLayerCount + customLayersPerBlock
             val builders = (0 until totalLayerCount * height).map {
-                TileGraphicBuilder.newBuilder().size(screenSize)
+                TileGraphicsBuilder.newBuilder().size(screenSize)
             }
             val (fromX, fromY) = visibleOffset().to2DPosition()
             val toX = fromX + size().xLength
