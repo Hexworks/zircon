@@ -29,7 +29,7 @@ class DefaultButton(private val text: String,
         tileset = initialTileset) {
 
     init {
-        tileGraphic().putText(text, wrapperOffset())
+        tileGraphics().putText(text, wrapperOffset())
 
         EventBus.listenTo<ZirconEvent.MousePressed>(id) {
             applyStyle(componentStyleSet().applyActiveStyle())
@@ -44,12 +44,12 @@ class DefaultButton(private val text: String,
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        tileGraphic().applyStyle(componentStyleSet().applyFocusedStyle())
+        tileGraphics().applyStyle(componentStyleSet().applyFocusedStyle())
         return true
     }
 
     override fun takeFocus(input: Maybe<Input>) {
-        tileGraphic().applyStyle(componentStyleSet().reset())
+        tileGraphics().applyStyle(componentStyleSet().reset())
     }
 
     override fun getText() = text

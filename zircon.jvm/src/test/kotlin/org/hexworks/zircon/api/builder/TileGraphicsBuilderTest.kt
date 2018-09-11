@@ -4,14 +4,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.junit.Test
 
-class TileGraphicBuilderTest {
+class TileGraphicsBuilderTest {
 
     @Test
     fun shouldBuildProperTileGraphic() {
-        val result = TileGraphicBuilder.newBuilder()
+        val result = TileGraphicsBuilder.newBuilder()
                 .size(SIZE)
                 .build()
                 .fill(FILLER)

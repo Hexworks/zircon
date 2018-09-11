@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -80,7 +80,7 @@ class DefaultComponentTest {
 
         EventBus.sendTo(target.id, ZirconEvent.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
 
-        val targetChar = target.tileGraphic().getTileAt(Position.defaultPosition()).get()
+        val targetChar = target.tileGraphics().getTileAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(MOUSE_OVER_STYLE.backgroundColor())
         assertThat(targetChar.getForegroundColor()).isEqualTo(MOUSE_OVER_STYLE.foregroundColor())
     }
@@ -91,7 +91,7 @@ class DefaultComponentTest {
 
         EventBus.sendTo(target.id, ZirconEvent.MouseOut(MouseAction(MouseActionType.MOUSE_EXITED, 1, Position.defaultPosition())))
 
-        val targetChar = target.tileGraphic().getTileAt(Position.defaultPosition()).get()
+        val targetChar = target.tileGraphics().getTileAt(Position.defaultPosition()).get()
         assertThat(targetChar.getBackgroundColor()).isEqualTo(DEFAULT_STYLE.backgroundColor())
         assertThat(targetChar.getForegroundColor()).isEqualTo(DEFAULT_STYLE.foregroundColor())
     }
@@ -125,7 +125,7 @@ class DefaultComponentTest {
 
     @Test
     fun shouldProperlyDrawOntoTileGraphic() {
-        val image = TileGraphicBuilder.newBuilder()
+        val image = TileGraphicsBuilder.newBuilder()
                 .size(SIZE + Size.create(POSITION.x, POSITION.y))
                 .build()
         target.drawOnto(image, POSITION)
@@ -135,7 +135,7 @@ class DefaultComponentTest {
 
         target.size().fetchPositions().forEach {
             assertThat(image.getTileAt(it + POSITION).get())
-                    .isEqualTo(target.tileGraphic().getTileAt(it).get())
+                    .isEqualTo(target.tileGraphics().getTileAt(it).get())
         }
     }
 

@@ -42,7 +42,7 @@ class DefaultRadioButtonGroup constructor(
     init {
         refreshContent()
         EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
-            tileGraphic().applyStyle(componentStyleSet().applyMouseOverStyle())
+            tileGraphics().applyStyle(componentStyleSet().applyMouseOverStyle())
             refreshContent()
         }
     }

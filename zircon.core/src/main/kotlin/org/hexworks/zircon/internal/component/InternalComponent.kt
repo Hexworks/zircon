@@ -48,6 +48,6 @@ interface InternalComponent : Component, Drawable, Focusable {
      * Returns the [org.hexworks.zircon.api.graphics.TileGraphics] which this
      * component uses for drawing.
      */
-    fun tileGraphic(): TileGraphics
+    fun tileGraphics(): TileGraphics
 
 }

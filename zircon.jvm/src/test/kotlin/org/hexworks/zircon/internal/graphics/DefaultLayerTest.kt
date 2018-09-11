@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
@@ -79,7 +79,7 @@ class DefaultLayerTest {
                 .character('x')
                 .build()
         val SIZE = Size.create(10, 10)
-        val TILE_IMAGE = TileGraphicBuilder.newBuilder()
+        val TILE_IMAGE = TileGraphicsBuilder.newBuilder()
                 .size(SIZE)
                 .tileset(TILESET)
                 .build()

@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.graphics
 
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.DrawSurface
-import org.hexworks.zircon.api.builder.graphics.TileGraphicBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -100,7 +100,7 @@ data class DefaultCharacterTileTileString(private val textChars: List<CharacterT
     }
 
     override fun toTileGraphic(tileset: TilesetResource) =
-            TileGraphicBuilder.newBuilder()
+            TileGraphicsBuilder.newBuilder()
                     .tileset(tileset)
                     .size(size())
                     .build().apply {

@@ -42,14 +42,14 @@ class DefaultRadioButton(private val text: String,
     }
 
     private fun redrawContent() {
-        tileGraphic().putText("${STATES[state]} $clearedText")
+        tileGraphics().putText("${STATES[state]} $clearedText")
     }
 
     override fun isSelected() = state == SELECTED
 
     fun select() {
         if (state != SELECTED) {
-            tileGraphic().applyStyle(componentStyleSet().applyMouseOverStyle())
+            tileGraphics().applyStyle(componentStyleSet().applyMouseOverStyle())
             state = SELECTED
             redrawContent()
         }
@@ -57,7 +57,7 @@ class DefaultRadioButton(private val text: String,
 
     fun removeSelection() =
             if (state != NOT_SELECTED) {
-                tileGraphic().applyStyle(componentStyleSet().reset())
+                tileGraphics().applyStyle(componentStyleSet().reset())
                 state = NOT_SELECTED
                 redrawContent()
                 true
@@ -70,12 +70,12 @@ class DefaultRadioButton(private val text: String,
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        tileGraphic().applyStyle(componentStyleSet().applyFocusedStyle())
+        tileGraphics().applyStyle(componentStyleSet().applyFocusedStyle())
         return true
     }
 
     override fun takeFocus(input: Maybe<Input>) {
-        tileGraphic().applyStyle(componentStyleSet().reset())
+        tileGraphics().applyStyle(componentStyleSet().reset())
     }
 
     override fun getText() = text

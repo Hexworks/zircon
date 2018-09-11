@@ -9,21 +9,21 @@ import org.hexworks.zircon.api.Tiles;
 import org.hexworks.zircon.api.color.ANSITileColor;
 import org.hexworks.zircon.api.graphics.TileGraphics;
 
-public class CreatingATileGraphic {
+public class CreatingATileGraphics {
 
     public static void main(String[] args) {
 
-        TileGraphics graphic = DrawSurfaces.tileGraphicsBuilder()
+        TileGraphics graphics = DrawSurfaces.tileGraphicsBuilder()
                 .size(Sizes.create(10, 10))
                 .style(StyleSets.newBuilder()
                         .backgroundColor(ANSITileColor.RED)
                         .foregroundColor(ANSITileColor.MAGENTA)
                         .modifiers(Modifiers.glow())
                         .build())
-                .filler(Tiles.newBuilder()
-                        .character('x')
-                        .build())
                 .tileset(CP437TilesetResources.rexPaint16x16())
-                .build();
+                .build()
+                .fill(Tiles.newBuilder()
+                        .character('x')
+                        .build());
     }
 }
