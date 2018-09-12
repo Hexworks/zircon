@@ -23,8 +23,8 @@ import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
-import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
+import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.event.ZirconEvent
 
 @Suppress("UNCHECKED_CAST")
@@ -34,7 +34,7 @@ abstract class DefaultComponent(
         position: Position,
         private var componentStyles: ComponentStyleSet,
         private val wrappers: Iterable<ComponentDecorationRenderer>,
-        private val graphic: TileGraphics = TileGraphicsBuilder
+        private val graphics: TileGraphics = TileGraphicsBuilder
                 .newBuilder()
                 .tileset(tileset)
                 .size(size)
@@ -43,8 +43,8 @@ abstract class DefaultComponent(
                 size = size,
                 position = position))
     : InternalComponent,
-        Drawable by graphic,
-        TilesetOverride by graphic {
+        Drawable by graphics,
+        TilesetOverride by graphics {
 
     final override val id = Identifier.randomIdentifier()
     private var currentOffset = Position.defaultPosition()
@@ -87,33 +87,33 @@ abstract class DefaultComponent(
     }
 
     override fun getRelativeTileAt(position: Position): Maybe<Tile> {
-        return graphic.getTileAt(position)
+        return graphics.getTileAt(position)
     }
 
     override fun setRelativeTileAt(position: Position, tile: Tile) {
-        graphic.setTileAt(position, tile)
+        graphics.setTileAt(position, tile)
     }
 
     override fun getTileAt(position: Position): Maybe<Tile> {
         position()
-        return graphic.getTileAt(position.minus(position()))
+        return graphics.getTileAt(position.minus(position()))
     }
 
     override fun setTileAt(position: Position, tile: Tile) {
-        graphic.setTileAt(position.minus(position()), tile)
+        graphics.setTileAt(position.minus(position()), tile)
     }
 
     override fun snapshot(): Map<Position, Tile> {
-        return graphic.snapshot()
+        return graphics.snapshot()
     }
 
     override fun fill(filler: Tile): Layer {
-        graphic.fill(filler)
+        graphics.fill(filler)
         return this
     }
 
     override fun draw(drawable: Drawable, position: Position) {
-        graphic.draw(drawable, position)
+        graphics.draw(drawable, position)
     }
 
     final override fun moveTo(position: Position): Boolean {
@@ -131,7 +131,7 @@ abstract class DefaultComponent(
     override fun position() = boundable.position()
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
-        surface.draw(graphic, position)
+        surface.draw(graphics, position)
     }
 
     override fun fetchComponentByPosition(position: Position) =
@@ -169,14 +169,14 @@ abstract class DefaultComponent(
 
     final override fun applyStyle(styleSet: StyleSet) {
         applyWrappers()
-        graphic.applyStyle(
+        graphics.applyStyle(
                 styleSet = styleSet,
                 bounds = Bounds.create(
                         position = wrapperOffset(),
                         size = getEffectiveSize()))
     }
 
-    override fun tileGraphics() = graphic
+    override fun tileGraphics() = graphics
 
     /**
      * Returns the size which this component takes up without its wrappers.
@@ -190,7 +190,7 @@ abstract class DefaultComponent(
 
     open fun transformToLayers() =
             listOf(LayerBuilder.newBuilder()
-                    .tileGraphic(graphic)
+                    .tileGraphic(graphics)
                     .offset(position())
                     .tileset(tileset())
                     .build())
@@ -219,7 +219,7 @@ abstract class DefaultComponent(
         currentOffset = Position.defaultPosition()
         wrappers.forEach {
             currSize += it.getOccupiedSize()
-            it.render(graphic, currSize, currentOffset, componentStyles.getCurrentStyle())
+            it.render(graphics, currSize, currentOffset, componentStyles.getCurrentStyle())
             currentOffset += it.getOffset()
         }
     }

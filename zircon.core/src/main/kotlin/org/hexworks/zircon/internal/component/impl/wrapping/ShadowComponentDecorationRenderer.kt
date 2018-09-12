@@ -1,11 +1,11 @@
 package org.hexworks.zircon.internal.component.impl.wrapping
 
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.shape.LineFactory
 import org.hexworks.zircon.internal.component.ComponentDecorationRenderer

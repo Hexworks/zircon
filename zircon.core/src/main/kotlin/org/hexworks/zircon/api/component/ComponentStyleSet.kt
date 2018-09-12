@@ -9,6 +9,8 @@ import org.hexworks.zircon.api.graphics.StyleSet
  */
 interface ComponentStyleSet {
 
+    fun currentState(): ComponentState
+
     /**
      * Returns the style which is currently applied.
      */

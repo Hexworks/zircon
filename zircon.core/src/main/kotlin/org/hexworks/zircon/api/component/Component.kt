@@ -23,6 +23,7 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  */
 interface Component : Identifiable, Layer {
 
+
     /**
      * Tells whether this [Component] is attached to a parent or not.
      */

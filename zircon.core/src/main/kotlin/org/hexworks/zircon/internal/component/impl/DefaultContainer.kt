@@ -16,8 +16,8 @@ import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
+import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory

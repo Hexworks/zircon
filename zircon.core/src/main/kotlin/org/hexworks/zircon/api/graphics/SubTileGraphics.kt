@@ -34,10 +34,10 @@ class SubTileGraphics(
     private val size = bounds.size()
 
     init {
-        require(size < backend.size()) {
+        require(size <= backend.size()) {
             "The size of a sub tile graphics can't be bigger than the original tile graphics."
         }
-        require(offset.toSize() + size < backend.size()) {
+        require(offset.toSize() + size <= backend.size()) {
             "sub tile graphics offset ($offset) is too big for size '$size'."
         }
     }
