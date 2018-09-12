@@ -152,7 +152,7 @@ interface TileGraphics
      * of (2, 2) and writing to it will write to the original graphics' surface, offset
      * by Position(1, 1).
      */
-    fun toSubTileGraphics(bounds: Bounds): TileGraphics {
+    fun toSubTileGraphics(bounds: Bounds): SubTileGraphics {
         return SubTileGraphics(this, bounds)
     }
 }
