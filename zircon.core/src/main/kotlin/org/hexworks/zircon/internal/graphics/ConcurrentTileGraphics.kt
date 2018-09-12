@@ -11,7 +11,7 @@ class ConcurrentTileGraphics(
         tileset: TilesetResource,
         styleSet: StyleSet = StyleSet.defaultStyle())
     : BaseTileGraphics(
-        size = size,
+        styleSet = styleSet,
         tileset = tileset,
-        contents = ThreadSafeMapFactory.create(),
-        styleSet = styleSet)
+        size = size,
+        contents = ThreadSafeMapFactory.create())

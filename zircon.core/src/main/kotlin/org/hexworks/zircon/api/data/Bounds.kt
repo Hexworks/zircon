@@ -90,7 +90,7 @@ interface Bounds {
 
     companion object {
 
-        fun create(position: Position, size: Size): Bounds {
+        fun create(position: Position = Position.defaultPosition(), size: Size): Bounds {
             return DefaultBounds(position, size)
         }
     }

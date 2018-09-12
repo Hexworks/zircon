@@ -1,6 +1,9 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.zircon.api.behavior.*
+import org.hexworks.zircon.api.behavior.Boundable
+import org.hexworks.zircon.api.behavior.DrawSurface
+import org.hexworks.zircon.api.behavior.Styleable
+import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -9,7 +12,6 @@ import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.behavior.impl.DefaultStyleable
 import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride
-import org.hexworks.zircon.platform.util.SystemUtils
 
 /**
  * this is a basic building block which can be re-used by complex image
@@ -63,11 +65,7 @@ abstract class BaseTileGraphics(
     }
 
     override fun snapshot(): Map<Position, Tile> {
-        return contents
-    }
-
-    override fun draw(drawable: Drawable, position: Position) {
-        drawable.drawOnto(this, position)
+        return contents.toMap()
     }
 
     override fun drawOnto(surface: DrawSurface, position: Position) {

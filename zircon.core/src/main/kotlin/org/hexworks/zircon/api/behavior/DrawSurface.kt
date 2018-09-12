@@ -39,5 +39,7 @@ interface DrawSurface : Boundable {
      * this [Drawable], the areas outside of the area that is written to will be untouched.
      * @param position the starting position of the drawing relative to the [DrawSurface]'s top left corner.
      */
-    fun draw(drawable: Drawable, position: Position = Position.defaultPosition())
+    fun draw(drawable: Drawable, position: Position = Position.defaultPosition()) {
+        drawable.drawOnto(this, position)
+    }
 }
