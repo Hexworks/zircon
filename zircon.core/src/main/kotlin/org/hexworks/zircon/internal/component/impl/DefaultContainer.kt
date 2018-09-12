@@ -46,7 +46,7 @@ open class DefaultContainer(initialSize: Size,
             }
             addComponent(drawable)
         } else {
-            super.draw(drawable, position)
+            super<DefaultComponent>.draw(drawable, position)
         }
     }
 

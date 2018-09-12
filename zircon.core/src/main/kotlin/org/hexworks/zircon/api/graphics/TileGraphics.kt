@@ -22,6 +22,17 @@ interface TileGraphics
 
     /**
      * Returns a copy of this image resized to a new size and using
+     * an empty [Tile] if the new size is larger than the old and
+     * we need to fill in empty areas.
+     * The copy will be independent from the one this method is
+     * invoked on, so modifying one will not affect the other.
+     */
+    fun resize(newSize: Size): TileGraphics {
+        return resize(newSize, Tile.empty())
+    }
+
+    /**
+     * Returns a copy of this image resized to a new size and using
      * a specified filler [Tile] if the new size is larger than the old and
      * we need to fill in empty areas.
      * The copy will be independent from the one this method is
@@ -43,17 +54,6 @@ interface TileGraphics
             }
         }
         return result
-    }
-
-    /**
-     * Returns a copy of this image resized to a new size and using
-     * an empty [Tile] if the new size is larger than the old and
-     * we need to fill in empty areas.
-     * The copy will be independent from the one this method is
-     * invoked on, so modifying one will not affect the other.
-     */
-    fun resize(newSize: Size): TileGraphics {
-        return resize(newSize, Tile.empty())
     }
 
     /**
@@ -118,8 +118,7 @@ interface TileGraphics
         val offset = bounds.position()
         val size = bounds.size()
         setStyleFrom(styleSet)
-        // TODO: test this properly
-        val positions = if(applyToEmptyCells) {
+        val positions = if (applyToEmptyCells) {
             size.fetchPositions()
         } else {
             fetchFilledPositions()

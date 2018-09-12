@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.behavior
 import org.hexworks.zircon.api.data.Bounds
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 
 /**
  * Represents an object which has bounds and a position in 2D space.
@@ -11,6 +12,9 @@ import org.hexworks.zircon.api.data.Size
  */
 interface Boundable : Positionable {
 
+    /**
+     * Returns the [Bounds] (its [Position] and [Size]) of this [Boundable].
+     */
     fun bounds(): Bounds
 
     /**
@@ -35,4 +39,11 @@ interface Boundable : Positionable {
      * a containment).
      */
     fun containsBoundable(boundable: Boundable): Boolean
+
+    companion object {
+
+        fun create(position: Position = Position.defaultPosition(), size: Size): Boundable {
+            return DefaultBoundable(size, position)
+        }
+    }
 }

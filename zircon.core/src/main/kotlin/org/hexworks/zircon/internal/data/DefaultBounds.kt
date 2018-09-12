@@ -79,4 +79,22 @@ class DefaultBounds(private val position: Position,
         return true
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as DefaultBounds
+
+        if (position != other.position) return false
+        if (size != other.size) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = position.hashCode()
+        result = 31 * result + size.hashCode()
+        return result
+    }
+
 }
