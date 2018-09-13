@@ -21,6 +21,31 @@ interface TileGraphics
     fun fetchFilledPositions(): List<Position> = snapshot().keys.toList()
 
     /**
+     * Returns a [List] of [Tile]s which are not `EMPTY`.
+     */
+    fun fetchFilledTiles(): List<Tile> = snapshot().values.toList()
+
+    /**
+     * Returns all the [Cell]s ([Tile]s with associated [Position] information)
+     * of this [TileGraphics].
+     */
+    fun fetchCells(): Iterable<Cell> {
+        return fetchCellsBy(Position.defaultPosition(), size())
+    }
+
+    /**
+     * Returns the [Cell]s in this [TileGraphics] from the given `offset`
+     * position and area.
+     * Throws an exception if either `offset` or `size` would overlap
+     * with this [TileGraphics].
+     */
+    fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell> {
+        return size.fetchPositions()
+                .map { it + offset }
+                .map { DefaultCell(it, getTileAt(it).get()) }
+    }
+
+    /**
      * Returns a copy of this image resized to a new size and using
      * an empty [Tile] if the new size is larger than the old and
      * we need to fill in empty areas.
@@ -66,26 +91,6 @@ interface TileGraphics
             setTileAt(pos, filler)
         }
         return this
-    }
-
-    /**
-     * Returns all the [Cell]s ([Tile]s with associated [Position] information)
-     * of this [TileGraphics].
-     */
-    fun fetchCells(): Iterable<Cell> {
-        return fetchCellsBy(Position.defaultPosition(), size())
-    }
-
-    /**
-     * Returns the [Cell]s in this [TileGraphics] from the given `offset`
-     * position and area.
-     * Throws an exception if either `offset` or `size` would overlap
-     * with this [TileGraphics].
-     */
-    fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell> {
-        return size.fetchPositions()
-                .map { it + offset }
-                .map { DefaultCell(it, getTileAt(it).get()) }
     }
 
     /**

@@ -15,11 +15,12 @@ class BoxDecorationRenderer(private val boxType: BoxType = BoxType.SINGLE) : Com
     override val occupiedSize: Size = Size.create(2, 2)
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
-        BoxBuilder.newBuilder()
+        val box = BoxBuilder.newBuilder()
                 .boxType(boxType)
                 .size(tileGraphics.size())
                 .style(context.component.componentStyleSet().getCurrentStyle())
                 .tileset(context.component.tileset())
                 .build()
+        box.drawOnto(tileGraphics)
     }
 }
