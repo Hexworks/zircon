@@ -58,7 +58,7 @@ from Maven:
 or you can also use Gradle:
 
 ```groovy
-compile("com.github.hexworks.zircon:zircon.swing:2018.3.27-PREVIEW")
+compile("com.github.hexworks.zircon:zircon.jvm.swing:2018.3.27-PREVIEW")
 ```
 
 Note that you need to use [Jitpack](https://jitpack.io/#Hexworks/Zircon) for the above dependencies to work.
