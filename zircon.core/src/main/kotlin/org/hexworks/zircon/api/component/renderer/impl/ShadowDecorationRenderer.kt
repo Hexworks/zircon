@@ -12,9 +12,9 @@ import org.hexworks.zircon.api.shape.LineFactory
 
 class ShadowDecorationRenderer(shadowChar: Char = DEFAULT_SHADOW_CHAR) : ComponentDecorationRenderer {
 
-    override val offset: Position = Position.offset1x1()
+    override val offset: Position = Position.create(0, 0)
 
-    override val occupiedSize: Size = Size.create(2, 2)
+    override val occupiedSize: Size = Size.create(1, 1)
 
     private val shadowTile = TileBuilder.newBuilder()
             .backgroundColor(TileColor.transparent())

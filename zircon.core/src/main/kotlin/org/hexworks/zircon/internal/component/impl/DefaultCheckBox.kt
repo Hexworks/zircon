@@ -44,12 +44,11 @@ class DefaultCheckBox(private val text: String,
         // TODO: re-enable in next release and fix the bug when the mouse is moved
         // TODO: after it is pressed and released on another component
         // TODO: the pressed state persists
-//        EventBus.subscribe<MouseAction>(EventType.MousePressed(id), {
-//            getDrawSurface().applyStyle(componentStyleSet().applyActiveStyle())
+//        EventBus.subscribe<ZirconEvent.MousePressed> {
+//            tileGraphics().applyStyle(componentStyleSet().applyActiveStyle())
 //            checkBoxState = PRESSED
 //            redrawContent()
-//            EventBus.broadcast(EventType.ComponentChange)
-//        })
+//        }
         EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
             tileGraphics().applyStyle(componentStyleSet().applyMouseOverStyle())
             checkBoxState = if (checked) UNCHECKED else CHECKED
