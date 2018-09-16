@@ -11,7 +11,7 @@ data class Border(val borderType: BorderType,
     }
 
     override fun generateCacheKey(): String {
-        return "Border(t=${borderType.name},bp=[" + borderPositions.joinToString(separator = ",") { it.name } + "])"
+        return "Modifier.Border(t=${borderType.name},bp=[" + borderPositions.joinToString(separator = ",") { it.name } + "])"
     }
 
 }

@@ -4,12 +4,8 @@ import com.github.benmanes.caffeine.cache.Caffeine
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.modifier.Border
-import org.hexworks.zircon.api.modifier.Crop
-import org.hexworks.zircon.api.modifier.RayShade
-import org.hexworks.zircon.api.modifier.SimpleModifiers
-import org.hexworks.zircon.api.resource.TileType
-import org.hexworks.zircon.api.resource.TileType.*
+import org.hexworks.zircon.api.modifier.*
+import org.hexworks.zircon.api.resource.TileType.CHARACTER_TILE
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
@@ -20,7 +16,6 @@ import org.hexworks.zircon.internal.tileset.transformer.*
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 import java.util.concurrent.TimeUnit
-import kotlin.reflect.KClass
 
 class Java2DCP437Tileset(private val resource: TilesetResource,
                          private val source: BufferedImage)
@@ -63,9 +58,12 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
     }
 
     private fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {
-        tile as? CharacterTile ?: throw IllegalArgumentException("Wrong tile type")
-        val key = tile.generateCacheKey()
-        val meta = lookup.fetchMetaForTile(tile)
+        var fixedTile = tile as? CharacterTile ?: throw IllegalArgumentException("Wrong tile type")
+        fixedTile.getModifiers().filterIsInstance(TileSwitchModifier::class.java).forEach {
+            fixedTile = it.transform(fixedTile) as CharacterTile
+        }
+        val key = fixedTile.generateCacheKey()
+        val meta = lookup.fetchMetaForTile(fixedTile)
         val maybeRegion = cache.getIfPresent(key)
         return if (maybeRegion != null) {
             maybeRegion
@@ -75,10 +73,10 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
                     height = height(),
                     texture = source.getSubimage(meta.x * width(), meta.y * height(), width(), height()))
             TILE_INITIALIZERS.forEach {
-                image = it.transform(image, tile)
+                image = it.transform(image, fixedTile)
             }
-            tile.getModifiers().forEach {
-                image = MODIFIER_TRANSFORMER_LOOKUP[it::class]?.transform(image, tile) ?: image
+            fixedTile.getModifiers().filterNot { it is TileSwitchModifier }.forEach {
+                image = TEXTURE_TRANSFORMER_LOOKUP[it::class]?.transform(image, fixedTile) ?: image
             }
             cache.put(key, image)
             image
@@ -91,7 +89,10 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
                 Java2DTileTextureCloner(),
                 Java2DTileTextureColorizer())
 
-        val MODIFIER_TRANSFORMER_LOOKUP = mapOf(
+        val TILE_TRANSFORMER_LOOKUP = mapOf(
+                Markov::class to Java2DMarkovTransformer())
+
+        val TEXTURE_TRANSFORMER_LOOKUP = mapOf(
                 Pair(SimpleModifiers.Underline::class, Java2DUnderlineTransformer()),
                 Pair(SimpleModifiers.VerticalFlip::class, Java2DVerticalFlipper()),
                 Pair(SimpleModifiers.HorizontalFlip::class, Java2DHorizontalFlipper()),

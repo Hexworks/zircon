@@ -24,6 +24,6 @@ class BorderTest {
                 .borderPositions(BOTTOM, TOP)
                 .borderType(DASHED)
                 .build().generateCacheKey()
-        assertThat(result).isEqualTo("Border(t=DASHED,bp=[BOTTOM,TOP])")
+        assertThat(result).isEqualTo("Modifier.Border(t=DASHED,bp=[BOTTOM,TOP])")
     }
 }
