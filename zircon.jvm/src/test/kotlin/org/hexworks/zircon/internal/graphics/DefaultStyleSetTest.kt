@@ -20,7 +20,7 @@ class DefaultStyleSetTest {
                 .foregroundColor(TileColor.fromString("#aabbcc"))
                 .modifiers(Modifiers.crossedOut(), BorderBuilder.newBuilder().borderPositions(BorderPosition.TOP).build())
                 .build().generateCacheKey()
-        assertThat(result).isEqualTo("StyleSet(fg=TextColor(r=170,g=187,b=204,a=255),bg=TextColor(r=170,g=170,b=170,a=255),m=[Modifier.CrossedOut,Border(t=SOLID,bp=[TOP])])")
+        assertThat(result).isEqualTo("StyleSet(fg=TextColor(r=170,g=187,b=204,a=255),bg=TextColor(r=170,g=170,b=170,a=255),m=[Modifier.CrossedOut,Modifier.Border(t=SOLID,bp=[TOP])])")
     }
 
     @Test
