@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage
 
 
 class Java2DBorderTransformer : TileTextureTransformer<BufferedImage> {
+
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         return texture.also {
             val txt = it.getTexture()

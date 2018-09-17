@@ -23,8 +23,8 @@ object InCP437WeTrust {
         val cp437panel = Components.panel()
                 .size(Sizes.create(19, 19))
                 .position(Positions.create(2, 2))
-                .wrapWithBox()
-                .wrapWithShadow()
+                .wrapWithBox(true)
+                .wrapWithShadow(true)
                 .boxType(BoxType.SINGLE)
                 .build()
 

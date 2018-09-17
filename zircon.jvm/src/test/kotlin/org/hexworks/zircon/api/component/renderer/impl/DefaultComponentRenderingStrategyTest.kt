@@ -12,7 +12,6 @@ import org.hexworks.zircon.internal.component.impl.DefaultButton
 import org.hexworks.zircon.internal.component.impl.DefaultLabel
 import org.hexworks.zircon.internal.component.renderer.DefaultButtonRenderer
 import org.hexworks.zircon.internal.component.renderer.DefaultLabelRenderer
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 import org.junit.Before
 import org.junit.Test
 
@@ -27,6 +26,39 @@ class DefaultComponentRenderingStrategyTest {
                         ShadowDecorationRenderer(),
                         BoxDecorationRenderer()),
                 componentRenderer = DefaultButtonRenderer())
+    }
+
+    @Test
+    fun `Should render button with all possible decorations`() {
+        val size = Sizes.create(8, 4)
+        val graphics = TileGraphicsBuilder.newBuilder()
+                .size(size)
+                .build()
+                .fill(Tile.defaultTile().withCharacter('_'))
+
+        val target = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(
+                        ShadowDecorationRenderer(),
+                        BoxDecorationRenderer(),
+                        ButtonSideDecorationRenderer()),
+                componentRenderer = DefaultButtonRenderer())
+
+        val btn = DefaultButton(
+                text = "qux",
+                initialTileset = CP437TilesetResources.aduDhabi16x16(),
+                initialSize = size,
+                position = Position.defaultPosition(),
+                componentStyleSet = ComponentStyleSet.defaultStyleSet(),
+                renderingStrategy = target)
+
+        target.render(btn, graphics)
+
+        assertThat(graphics.fetchCells().map { it.tile }.map { it.asCharacterTile().get().character }).containsExactly(
+                '┌', '─', '─', '─', '─', '─', '┐', '_',
+                '│', '[', 'q', 'u', 'x', ']', '│', '░',
+                '└', '─', '─', '─', '─', '─', '┘', '░',
+                '_', '░', '░', '░', '░', '░', '░', '░')
+
     }
 
     @Test
@@ -48,7 +80,7 @@ class DefaultComponentRenderingStrategyTest {
                 decorationRenderers = listOf(),
                 componentRenderer = DefaultLabelRenderer())
 
-        target.apply(label, graphics)
+        target.render(label, graphics)
 
         println(graphics)
     }
@@ -65,12 +97,12 @@ class DefaultComponentRenderingStrategyTest {
         val button = DefaultButton(
                 text = "foo",
                 initialTileset = CP437TilesetResources.aduDhabi16x16(),
-                wrappers = ThreadSafeQueueFactory.create(),
                 initialSize = size,
                 position = Position.defaultPosition(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet())
+                componentStyleSet = ComponentStyleSet.defaultStyleSet(),
+                renderingStrategy = target)
 
-        target.apply(button, graphics)
+        target.render(button, graphics)
 
         println(graphics)
 
@@ -93,12 +125,12 @@ class DefaultComponentRenderingStrategyTest {
         val button = DefaultButton(
                 text = "bar",
                 initialTileset = CP437TilesetResources.aduDhabi16x16(),
-                wrappers = ThreadSafeQueueFactory.create(),
                 initialSize = size,
                 position = Position.defaultPosition(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet())
+                componentStyleSet = ComponentStyleSet.defaultStyleSet(),
+                renderingStrategy = target)
 
-        target.apply(button, graphics)
+        target.render(button, graphics)
 
         println(graphics)
 

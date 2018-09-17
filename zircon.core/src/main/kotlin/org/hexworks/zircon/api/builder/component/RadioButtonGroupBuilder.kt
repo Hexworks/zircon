@@ -10,10 +10,6 @@ data class RadioButtonGroupBuilder(
         private var size: Size = Size.one())
     : BaseComponentBuilder<RadioButtonGroup, RadioButtonGroupBuilder>() {
 
-    fun size(size: Size) = also {
-        this.size = size
-    }
-
     override fun build(): RadioButtonGroup {
         return DefaultRadioButtonGroup(
                 wrappers = ThreadSafeQueueFactory.create(),

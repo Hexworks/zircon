@@ -13,7 +13,7 @@ import org.hexworks.zircon.platform.util.SystemUtils
  * For ordinary letters, numbers and symbols, the <code>inputType</code> will be <code>InputType.Character</code>
  * and the actual character value of the key is in the <code>character</code> field.
  * Please note that
- * - return (`\n`)
+ * - returnThis (`\n`)
  * - tab (`\t`) and
  * - backspace (`\b`)
  * are not sorted under type

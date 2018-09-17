@@ -64,7 +64,7 @@ interface TileGraphics
      * invoked on, so modifying one will not affect the other.
      */
     fun resize(newSize: Size, filler: Tile): TileGraphics {
-        // TODO: return same type, use factory for this
+        // TODO: returnThis same type, use factory for this
         val result = ConcurrentTileGraphics(
                 size = newSize,
                 styleSet = styleSet(),

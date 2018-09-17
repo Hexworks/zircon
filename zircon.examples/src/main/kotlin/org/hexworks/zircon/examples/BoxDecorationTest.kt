@@ -2,7 +2,6 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.internal.component.impl.wrapping.HalfBlockComponentDecorationRenderer
 
 object BoxDecorationTest {
 
@@ -20,8 +19,8 @@ object BoxDecorationTest {
         screen.addComponent(Components.panel()
                 .size(Sizes.create(20, 8))
                 .position(Positions.create(1, 1))
-                .wrapWithBox()
-                .wrapWithShadow()
+                .wrapWithBox(true)
+                .wrapWithShadow(true)
                 .build().apply {
                     addComponent(Components.button()
                             .position(Positions.create(0, 0))
@@ -48,11 +47,6 @@ object BoxDecorationTest {
                 .text("Foo")
                 .build())
 
-        screen.addComponent(Components.button()
-                .position(Positions.create(22, 9))
-                .wrapper(HalfBlockComponentDecorationRenderer())
-                .text("Qux")
-                .build())
 
         screen.display()
         screen.applyColorTheme(ColorThemes.gamebookers())

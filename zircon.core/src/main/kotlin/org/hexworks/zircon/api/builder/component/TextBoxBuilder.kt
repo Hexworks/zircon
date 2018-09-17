@@ -50,9 +50,6 @@ data class TextBoxBuilder(
         this.text = text
     }
 
-    fun size(size: Size) = also {
-        this.size = size
-    }
 
     override fun build(): TextBox {
         return DefaultTextBox(

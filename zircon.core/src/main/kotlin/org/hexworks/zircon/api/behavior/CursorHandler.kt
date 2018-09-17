@@ -17,7 +17,7 @@ interface CursorHandler {
     /**
      * Moves the cursor to a new location on this [CursorHandler].
      * Does nothing if the cursor is already at the given position.
-     * @return `true` if the cursor position changed `false` if not.
+     * @returnThis `true` if the cursor position changed `false` if not.
      */
     fun putCursorAt(cursorPosition: Position): Boolean
 
@@ -25,7 +25,7 @@ interface CursorHandler {
      * Moves the cursor one [Position] to the right. If the [Position] would be out
      * of bound regards to columns, the cursor will be moved the the 0th position
      * in the next row or left where it was if there is no next row.
-     * @return `true` if the cursor position changed `false` if not.
+     * @returnThis `true` if the cursor position changed `false` if not.
      */
     fun moveCursorForward(): Boolean
 
@@ -33,7 +33,7 @@ interface CursorHandler {
      * Moves the cursor one [Position] to the left. If the [Position] would be out
      * of bounds regards to columns, the cursor will be moved the the last position
      * in the previous row or left where it was if there is no previous row.
-     * @return `true` if the cursor position changed `false` if not.
+     * @returnThis `true` if the cursor position changed `false` if not.
      */
     fun moveCursorBackward(): Boolean
 
@@ -64,7 +64,7 @@ interface CursorHandler {
 
     /**
      * Sets the visibility of the cursor. `true` is visible, `false` is not.
-     * @return `true` if change happened, `false` if not.
+     * @returnThis `true` if change happened, `false` if not.
      */
     fun setCursorVisibility(cursorVisible: Boolean): Boolean
 }

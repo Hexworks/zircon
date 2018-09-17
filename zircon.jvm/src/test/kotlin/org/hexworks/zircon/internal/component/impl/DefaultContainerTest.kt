@@ -1,7 +1,9 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.Modifiers
+import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.HeaderBuilder
 import org.hexworks.zircon.api.builder.component.LabelBuilder
@@ -18,8 +20,6 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.impl.wrapping.BorderComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.impl.wrapping.ShadowComponentDecorationRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.api.Modifiers
-import org.hexworks.zircon.api.Positions
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -52,7 +52,7 @@ class DefaultContainerTest {
         val screen = ScreenBuilder.createScreenFor(grid)
 
         val panel = PanelBuilder.newBuilder()
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .title("Panel")
                 .size(Size.create(32, 16))
                 .position(Position.create(1, 1))
@@ -67,7 +67,7 @@ class DefaultContainerTest {
                 .text("Header2")
                 .build()
         val innerPanel = PanelBuilder.newBuilder()
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .title("Panel2")
                 .size(Size.create(16, 10))
                 .position(Positions.create(1, 2))
@@ -108,13 +108,13 @@ class DefaultContainerTest {
         val screen = ScreenBuilder.createScreenFor(grid)
 
         val panel0 = PanelBuilder.newBuilder()
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .title("Panel")
                 .size(Size.create(32, 16))
                 .position(Position.offset1x1())
                 .build()
         val panel1 = PanelBuilder.newBuilder()
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .title("Panel2")
                 .size(Size.create(16, 10))
                 .position(Positions.create(1, 1))

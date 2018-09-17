@@ -14,10 +14,6 @@ data class TextAreaBuilder(
         this.text = text
     }
 
-    fun size(size: Size) = also {
-        this.size = size
-    }
-
     override fun build(): TextArea {
         return DefaultTextArea(
                 text = text,

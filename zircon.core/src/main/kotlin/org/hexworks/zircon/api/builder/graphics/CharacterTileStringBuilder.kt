@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.api.graphics.TextWrap.WRAP
-import org.hexworks.zircon.internal.graphics.DefaultCharacterTileTileString
+import org.hexworks.zircon.internal.graphics.DefaultCharacterTileString
 import org.hexworks.zircon.platform.factory.IdentifierFactory
 
 /**
@@ -32,7 +32,7 @@ data class CharacterTileStringBuilder(
         require(text.isNotBlank()) {
             "'text' must not be blank!"
         }
-        return DefaultCharacterTileTileString(
+        return DefaultCharacterTileString(
                 textChars = text.map {
                     TileBuilder.newBuilder()
                             .foregroundColor(foregroundColor)

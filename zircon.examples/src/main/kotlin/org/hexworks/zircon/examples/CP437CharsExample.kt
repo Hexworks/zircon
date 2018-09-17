@@ -22,8 +22,8 @@ object CP437CharsExample {
         val cp437panel = Components.panel()
                 .size(Sizes.create(19, 19))
                 .position(Positions.create(1, 1))
-                .wrapWithBox()
-                .wrapWithShadow()
+                .wrapWithBox(true)
+                .wrapWithShadow(true)
                 .boxType(BoxType.SINGLE)
                 .build()
 

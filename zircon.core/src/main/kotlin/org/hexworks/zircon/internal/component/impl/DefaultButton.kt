@@ -6,36 +6,44 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.util.ThreadSafeQueue
 
 class DefaultButton(private val text: String,
+                    private val renderingStrategy: ComponentRenderingStrategy<Button>,
                     initialTileset: TilesetResource,
-                    wrappers: ThreadSafeQueue<ComponentDecorationRenderer>,
                     initialSize: Size,
                     position: Position,
                     componentStyleSet: ComponentStyleSet)
     : Button, DefaultComponent(size = initialSize,
         position = position,
         componentStyles = componentStyleSet,
-        wrappers = wrappers,
+        wrappers = listOf(),
         tileset = initialTileset) {
 
     init {
-        tileGraphics().putText(text, wrapperOffset())
-
+        render()
+        EventBus.listenTo<ZirconEvent.MouseOver>(id) {
+            componentStyleSet().applyMouseOverStyle()
+            render()
+        }
+        EventBus.listenTo<ZirconEvent.MouseOut>(id) {
+            componentStyleSet().reset()
+            render()
+        }
         EventBus.listenTo<ZirconEvent.MousePressed>(id) {
-            applyStyle(componentStyleSet().applyActiveStyle())
+            componentStyleSet().applyActiveStyle()
+            render()
         }
         EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
-            applyStyle(componentStyleSet().applyMouseOverStyle())
+            componentStyleSet().applyMouseOverStyle()
+            render()
         }
     }
 
@@ -44,12 +52,14 @@ class DefaultButton(private val text: String,
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        tileGraphics().applyStyle(componentStyleSet().applyFocusedStyle())
+        componentStyleSet().applyFocusedStyle()
+        render()
         return true
     }
 
     override fun takeFocus(input: Maybe<Input>) {
-        tileGraphics().applyStyle(componentStyleSet().reset())
+        componentStyleSet().reset()
+        render()
     }
 
     override fun getText() = text
@@ -74,6 +84,11 @@ class DefaultButton(private val text: String,
                         .build())
                 .build().also {
                     setComponentStyleSet(it)
+                    render()
                 }
+    }
+
+    private fun render() {
+        renderingStrategy.render(this, tileGraphics())
     }
 }

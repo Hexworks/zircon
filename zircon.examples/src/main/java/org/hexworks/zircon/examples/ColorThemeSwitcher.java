@@ -39,7 +39,7 @@ public class ColorThemeSwitcher {
         final Size infoPanelSize = SCREEN_SIZE.withYLength(10).withRelativeXLength(-4);
 
         final Panel infoPanel = Components.panel()
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .title("Components example:")
                 .size(infoPanelSize)
                 .position(Positions.create(2, 2).relativeToBottomOf(currentThemeLabel.get()))
@@ -78,8 +78,8 @@ public class ColorThemeSwitcher {
         final Panel panel = Components.panel()
                 .size(Sizes.create(20, 6))
                 .title("Panel")
-                .wrapWithBox()
-                .wrapWithShadow()
+                .wrapWithBox(true)
+                .wrapWithShadow(true)
                 .position(Positions.create(10, 0)
                         .relativeToRightOf(label))
                 .build();
@@ -113,31 +113,31 @@ public class ColorThemeSwitcher {
         final Panel solarizedLightPanel = Components.panel()
                 .title("Solarized Light")
                 .position(Positions.create(0, 1).relativeToBottomOf(infoPanel))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .size(smallPanelSize)
                 .build();
         final Panel solarizedDarkPanel = Components.panel()
                 .title("Solarized Dark")
                 .position(Positions.create(0, 1).relativeToBottomOf(solarizedLightPanel))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .size(smallPanelSize)
                 .build();
         final Panel zenburnPanel = Components.panel()
                 .title("Zenburn")
                 .position(Positions.create(1, 0).relativeToRightOf(solarizedLightPanel))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .size(smallPanelSize)
                 .build();
         final Panel monokaiPanel = Components.panel()
                 .title("Monokai")
                 .position(Positions.create(1, 0).relativeToRightOf(solarizedDarkPanel))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .size(smallPanelSize)
                 .build();
         final Panel otherPanel = Components.panel()
                 .title("Other")
                 .position(Positions.create(1, 0).relativeToRightOf(zenburnPanel))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .size(themePickerSize.withRelativeXLength(3).withRelativeYLength(-1))
                 .build();
 

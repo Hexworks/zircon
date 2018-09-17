@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class GameAreaScrollingWithLayers {
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
-    private static final ColorTheme THEME =ColorThemes.amigaOs();
+    private static final ColorTheme THEME = ColorThemes.amigaOs();
     private static final int TERMINAL_WIDTH = 60;
     private static final int TERMINAL_HEIGHT = 30;
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
@@ -57,7 +57,7 @@ public class GameAreaScrollingWithLayers {
 
         Panel actions = Components.panel()
                 .size(screen.size().withXLength(20))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .title("Actions")
                 .boxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build();
@@ -77,7 +77,7 @@ public class GameAreaScrollingWithLayers {
                 .size(screen.size().withXLength(40))
                 .position((Positions.defaultPosition()).relativeToRightOf(actions))
                 .title("Game area")
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .boxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build();
 

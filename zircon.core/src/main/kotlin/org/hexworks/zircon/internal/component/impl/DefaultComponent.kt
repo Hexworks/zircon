@@ -51,15 +51,24 @@ abstract class DefaultComponent(
     private var parent = Maybe.empty<Container>()
 
     init {
-        applyStyle(componentStyles.getCurrentStyle())
+        // TODO: temporary
+        if (this !is DefaultButton) {
+            applyStyle(componentStyles.getCurrentStyle())
+        }
         EventBus.listenTo<ZirconEvent.MouseOver>(id) {
             if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.MOUSE_OVER)) {
-                applyStyle(componentStyles.applyMouseOverStyle())
+                // TODO: temporary
+                if (this !is DefaultButton) {
+                    applyStyle(componentStyles.applyMouseOverStyle())
+                }
             }
         }
         EventBus.listenTo<ZirconEvent.MouseOut>(id) {
-            if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.DEFAULT)) {
-                applyStyle(componentStyles.reset())
+            // TODO: temporary
+            if (this !is DefaultButton) {
+                if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.DEFAULT)) {
+                    applyStyle(componentStyles.reset())
+                }
             }
         }
     }
@@ -164,16 +173,22 @@ abstract class DefaultComponent(
     override fun setComponentStyleSet(componentStyleSet: ComponentStyleSet,
                                       applyToEmptyCells: Boolean) {
         this.componentStyles = componentStyleSet
-        applyStyle(componentStyleSet.getCurrentStyle())
+        // TODO: temporary
+        if (this !is DefaultButton) {
+            applyStyle(componentStyleSet.getCurrentStyle())
+        }
     }
 
     final override fun applyStyle(styleSet: StyleSet) {
-        applyWrappers()
-        graphics.applyStyle(
-                styleSet = styleSet,
-                bounds = Bounds.create(
-                        position = wrapperOffset(),
-                        size = getEffectiveSize()))
+        // TODO: temporary
+        if (this !is DefaultButton) {
+            applyWrappers()
+            graphics.applyStyle(
+                    styleSet = styleSet,
+                    bounds = Bounds.create(
+                            position = wrapperOffset(),
+                            size = getEffectiveSize()))
+        }
     }
 
     override fun tileGraphics() = graphics

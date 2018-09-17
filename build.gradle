@@ -4,7 +4,7 @@ allprojects {
 }
 
 buildscript {
-    ext.kotlinVersion = "1.2.61"
+    ext.kotlinVersion = "1.2.70"
     repositories {
         jcenter()
         mavenCentral()
