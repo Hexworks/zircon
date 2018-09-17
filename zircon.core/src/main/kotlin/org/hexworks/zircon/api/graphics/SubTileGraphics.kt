@@ -53,7 +53,7 @@ class SubTileGraphics(
     override fun applyStyle(styleSet: StyleSet, bounds: Bounds, keepModifiers: Boolean, applyToEmptyCells: Boolean) {
         super.applyStyle(
                 styleSet = styleSet,
-                // this is needed because I don't want to reimplement applyStyle...
+                // this is needed because I don't want to re-implement applyStyle...
                 bounds = bounds.withPosition(Position.defaultPosition()),
                 keepModifiers = keepModifiers,
                 applyToEmptyCells = applyToEmptyCells)

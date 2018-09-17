@@ -28,7 +28,7 @@ public class AnimationExample {
                 .build()));
 
         final Panel panel = Components.panel()
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .title("Animation example")
                 .size(TERMINAL_SIZE)
                 .build();

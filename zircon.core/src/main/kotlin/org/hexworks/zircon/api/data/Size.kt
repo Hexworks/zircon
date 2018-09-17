@@ -34,6 +34,8 @@ interface Size : Comparable<Size> {
 
     operator fun component2() = yLength
 
+    fun isUnknown() = this === UNKNOWN
+
     /**
      * Creates a list of [Position]s in the order in which they should
      * be iterated when drawing (first rows, then columns in those rows).
@@ -112,8 +114,8 @@ interface Size : Comparable<Size> {
 
     /**
      * Creates a new [Size] object representing a size with the same number of yLength, but with
-     * a xLength size offset by a supplied value. Calling this method with delta 0 will return this,
-     * calling it with a positive delta will return
+     * a xLength size offset by a supplied value. Calling this method with delta 0 will returnThis this,
+     * calling it with a positive delta will returnThis
      * a grid size <code>delta</code> number of xLength wider and for negative numbers shorter.
      */
     fun withRelativeXLength(delta: Int): Size {
@@ -125,8 +127,8 @@ interface Size : Comparable<Size> {
 
     /**
      * Creates a new [Size] object representing a size with the same number of xLength, but with a yLength
-     * size offset by a supplied value. Calling this method with delta 0 will return this, calling
-     * it with a positive delta will return
+     * size offset by a supplied value. Calling this method with delta 0 will returnThis this, calling
+     * it with a positive delta will returnThis
      * a grid size <code>delta</code> number of yLength longer and for negative numbers shorter.
      */
     fun withRelativeYLength(delta: Int): Size {
@@ -146,7 +148,7 @@ interface Size : Comparable<Size> {
 
     /**
      * Takes a different [Size] and returns a new [Size] that has the largest dimensions of the two,
-     * measured separately. So calling 3x5 on a 5x3 will return 5x5.
+     * measured separately. So calling 3x5 on a 5x3 will returnThis 5x5.
      */
     fun max(other: Size): Size {
         return withXLength(Math.max(xLength, other.xLength))
@@ -155,7 +157,7 @@ interface Size : Comparable<Size> {
 
     /**
      * Takes a different [Size] and returns a new [Size] that has the smallest dimensions of the two,
-     * measured separately. So calling 3x5 on a 5x3 will return 3x3.
+     * measured separately. So calling 3x5 on a 5x3 will returnThis 3x3.
      */
     fun min(other: Size): Size {
         return withXLength(Math.min(xLength, other.xLength))

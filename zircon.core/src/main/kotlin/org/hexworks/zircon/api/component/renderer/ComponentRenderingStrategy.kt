@@ -12,5 +12,5 @@ interface ComponentRenderingStrategy<T : Component> {
     val decorationRenderers: List<ComponentDecorationRenderer>
     val componentRenderer: ComponentRenderer<T>
 
-    fun apply(component: T, graphics: TileGraphics)
+    fun render(component: T, graphics: TileGraphics)
 }

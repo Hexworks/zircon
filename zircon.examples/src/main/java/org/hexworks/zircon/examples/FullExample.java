@@ -15,7 +15,6 @@ import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.graphics.TileGraphics;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.modifier.BorderType;
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.resource.ColorThemeResource;
 import org.hexworks.zircon.api.resource.REXPaintResource;
@@ -143,7 +142,7 @@ public class FullExample {
                 .position(Positions.create(17, 3))
                 .size(SCREEN_SIZE.withRelativeXLength(-18).withRelativeYLength(-4))
                 .boxType(BoxType.SINGLE)
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .build();
 
         introPanel.addComponent(Components.header()
@@ -202,7 +201,7 @@ public class FullExample {
         final Panel boxedPanel = PANEL_TEMPLATE.createCopy()
                 .title("Boxed panel")
                 .position(Positions.create(0, 2).relativeToBottomOf(simplePanel))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .boxType(BoxType.DOUBLE)
                 .build();
         panelsScreen.addComponent(boxedPanel);
@@ -210,7 +209,7 @@ public class FullExample {
 
         final Panel panelWithShadow = PANEL_TEMPLATE.createCopy()
                 .position(Positions.create(4, 0).relativeToRightOf(simplePanel))
-                .wrapWithShadow()
+                .wrapWithShadow(true)
                 .build();
         panelWithShadow.addComponent(Components.label()
                 .text("Panel with shadow")
@@ -221,9 +220,9 @@ public class FullExample {
 
         final Panel panelWithShadowAndBox = PANEL_TEMPLATE.createCopy()
                 .position(Positions.create(0, 2).relativeToBottomOf(panelWithShadow))
-                .wrapWithShadow()
+                .wrapWithShadow(true)
                 .title("Panel with shadow")
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .build();
         panelWithShadowAndBox.addComponent(Components.label()
                 .text("and box")
@@ -235,7 +234,6 @@ public class FullExample {
         final Panel borderedPanel = PANEL_TEMPLATE.createCopy()
                 .title("Bordered panel")
                 .position(Positions.create(0, 2).relativeToBottomOf(boxedPanel))
-                .addBorder(Modifiers.border())
                 .build();
         borderedPanel.addComponent(Components.label()
                 .text("Bordered panel")
@@ -246,8 +244,7 @@ public class FullExample {
         final Panel borderedPanelWithShadow = PANEL_TEMPLATE.createCopy()
                 .title("Bordered panel")
                 .position(Positions.create(0, 2).relativeToBottomOf(panelWithShadowAndBox))
-                .addBorder(Borders.newBuilder().borderType(BorderType.DOTTED).build())
-                .wrapWithShadow()
+                .wrapWithShadow(true)
                 .build();
         borderedPanelWithShadow.addComponent(Components.label()
                 .text("Border+shadow panel")
@@ -263,9 +260,9 @@ public class FullExample {
 
         final Panel checkBoxesPanel = PANEL_TEMPLATE.createCopy()
                 .position(Positions.create(2, 4))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .title("Check boxes")
-                .wrapWithShadow()
+                .wrapWithShadow(true)
                 .build();
         for (int i = 0; i < 2; i++) {
             checkBoxesPanel.addComponent(Components.checkBox()
@@ -282,9 +279,9 @@ public class FullExample {
 
         final Panel textBoxesPanel = PANEL_TEMPLATE.createCopy()
                 .position(Positions.create(0, 2).relativeToBottomOf(checkBoxesPanel))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .title("Text boxes")
-                .wrapWithShadow()
+                .wrapWithShadow(true)
                 .build();
         textBoxesPanel.addComponent(Components.textArea()
                 .text("Panel" + System.lineSeparator() + "with editable text box" + System.lineSeparator() + "...")
@@ -294,9 +291,9 @@ public class FullExample {
 
         final Panel buttonsPanel = PANEL_TEMPLATE.createCopy()
                 .position(Positions.create(0, 2).relativeToBottomOf(textBoxesPanel))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .title("Buttons")
-                .wrapWithShadow()
+                .wrapWithShadow(true)
                 .build();
         for (int i = 0; i < 3; i++) {
             buttonsPanel.addComponent(Components.button()
@@ -308,9 +305,9 @@ public class FullExample {
 
         final Panel radioPanel = PANEL_TEMPLATE.createCopy()
                 .position(Positions.create(2, 0).relativeToRightOf(checkBoxesPanel))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .title("Radio buttons")
-                .wrapWithShadow()
+                .wrapWithShadow(true)
                 .build();
         final RadioButtonGroup radios = Components.radioButtonGroup()
                 .size(Sizes.create(15, 3))
@@ -329,7 +326,7 @@ public class FullExample {
 
         final Panel addAndRemovePanel = PANEL_TEMPLATE.createCopy()
                 .position(Positions.create(2, 4))
-                .wrapWithShadow()
+                .wrapWithShadow(true)
                 .build();
         final Button addButton = Components.button()
                 .text("Add new panel")
@@ -394,7 +391,7 @@ public class FullExample {
         AtomicReference<Label> currentThemeLabel = new AtomicReference<>(createLabelForTheme(currentTheme.get()));
 
         final Panel infoPanel = Components.panel()
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .title("Current selection:")
                 .size(Sizes.create(62, 3))
                 .position(Positions.create(2, 4))
@@ -410,19 +407,19 @@ public class FullExample {
         final Panel solarizedLightPanel = Components.panel()
                 .title("Sol. Light")
                 .position(Positions.create(0, 1).relativeToBottomOf(infoPanel))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .size(themePickerSize)
                 .build();
         final Panel solarizedDarkPanel = Components.panel()
                 .title("Sol. Dark")
                 .position(Positions.create(1, 0).relativeToRightOf(solarizedLightPanel))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .size(themePickerSize)
                 .build();
         final Panel otherPanel = Components.panel()
                 .title("Other")
                 .position(Positions.create(1, 0).relativeToRightOf(solarizedDarkPanel))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .size(themePickerSize.plus(Sizes.create(9, 0)))
                 .build();
 
@@ -540,7 +537,6 @@ public class FullExample {
         Panel result = Components.panel()
                 .size(Sizes.create(8, 6))
                 .position(position)
-                .addBorder(Modifiers.border())
                 .build();
         result.applyColorTheme(ADD_REMOVE_THEME);
         return result;

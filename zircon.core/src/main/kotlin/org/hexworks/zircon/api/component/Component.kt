@@ -23,7 +23,6 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  */
 interface Component : Identifiable, Layer {
 
-
     /**
      * Tells whether this [Component] is attached to a parent or not.
      */
@@ -106,7 +105,7 @@ interface Component : Identifiable, Layer {
 
     /**
      * Applies a [ColorTheme] to this component and recursively to all its children (if any).
-     * @return the [ComponentStyleSet] which the [ColorTheme] was converted to
+     * @returnThis the [ComponentStyleSet] which the [ColorTheme] was converted to
      */
     fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 

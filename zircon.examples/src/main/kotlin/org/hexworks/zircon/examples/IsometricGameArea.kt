@@ -117,7 +117,7 @@ object IsometricGameArea {
                 .size(size)
                 .position(position)
                 .title("Game area")
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .boxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build()
 

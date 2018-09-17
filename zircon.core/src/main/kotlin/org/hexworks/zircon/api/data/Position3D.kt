@@ -101,7 +101,7 @@ data class Position3D private constructor(val x: Int,
     /**
      * Creates a new [Position3D] object representing a position on the same `y` and `y`,
      * but with an `x` offset by the supplied `deltaX`.
-     * Calling this method with `deltaX` 0 will return `this`.
+     * Calling this method with `deltaX` 0 will returnThis `this`.
      * A positive `deltaX` will be added, a negative will be subtracted from the original `x`.
      */
     fun withRelativeX(deltaX: Int) = if (deltaX == 0) this else withX(x + deltaX)
@@ -109,7 +109,7 @@ data class Position3D private constructor(val x: Int,
     /**
      * Creates a new [Position3D] object representing a position on the same `x` and `y`,
      * but with an `y` offset by the supplied `deltaY`.
-     * Calling this method with `deltaY` 0 will return `this`.
+     * Calling this method with `deltaY` 0 will returnThis `this`.
      * A positive `deltaY` will be added, a negative will be subtracted from the original `x`.
      */
     fun withRelativeY(deltaY: Int) = if (deltaY == 0) this else withY(y + deltaY)
@@ -117,7 +117,7 @@ data class Position3D private constructor(val x: Int,
     /**
      * Creates a new [Position3D] object representing a position on the same `x` and `y`,
      * but with a `y` offset by the supplied `deltaZ`.
-     * Calling this method with `deltaZ` 0 will return `this`.
+     * Calling this method with `deltaZ` 0 will returnThis `this`.
      * A positive `deltaZ` will be added, a negative will be subtracted from the original `x`.
      */
     fun withRelativeZ(deltaZ: Int) = if (deltaZ == 0) this else withZ(z + deltaZ)

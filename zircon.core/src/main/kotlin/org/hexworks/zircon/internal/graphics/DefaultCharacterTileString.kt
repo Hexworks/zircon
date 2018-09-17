@@ -12,9 +12,9 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 
-data class DefaultCharacterTileTileString(private val textChars: List<CharacterTile>,
-                                          private val textWrap: TextWrap,
-                                          private val boundable: Boundable = DefaultBoundable(
+data class DefaultCharacterTileString(private val textChars: List<CharacterTile>,
+                                      private val textWrap: TextWrap,
+                                      private val boundable: Boundable = DefaultBoundable(
                                               size = Size.create(textChars.size, 1)))
     : CharacterTileString,
         Boundable by boundable,
@@ -111,7 +111,7 @@ data class DefaultCharacterTileTileString(private val textChars: List<CharacterT
 
     override fun getTextCharacters() = textChars
 
-    override fun plus(other: CharacterTileString) = DefaultCharacterTileTileString(
+    override fun plus(other: CharacterTileString) = DefaultCharacterTileString(
             textChars = textChars.plus(other.getTextCharacters()),
             textWrap = textWrap)
 

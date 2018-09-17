@@ -30,8 +30,8 @@ object NonSquareTilesetExample {
 
         val panel = Components.panel()
                 .title("Multi-size test")
-                .wrapWithBox()
-                .wrapWithShadow()
+                .wrapWithBox(true)
+                .wrapWithShadow(true)
                 .position(Positions.create(2, 2))
                 .size(Sizes.create(40, 30))
                 .build()

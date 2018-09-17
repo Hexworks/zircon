@@ -1,14 +1,17 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.TextWrap
-import org.hexworks.zircon.api.Modifiers
+import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.graphics.TextWrap.NO_WRAPPING
+import org.hexworks.zircon.api.graphics.TextWrap.WORD_WRAP
 import org.junit.Test
 
 class DefaultCharacterTileStringTest {
@@ -35,8 +38,8 @@ class DefaultCharacterTileStringTest {
                 .foregroundColor(FOREGROUND)
                 .modifiers(MODIFIER)
                 .text(TEXT)
-                .textWrap(TextWrap.NO_WRAPPING)
-                .build() as DefaultCharacterTileTileString
+                .textWrap(NO_WRAPPING)
+                .build() as DefaultCharacterTileString
 
         val template = TileBuilder.newBuilder()
                 .foregroundColor(FOREGROUND)
@@ -59,7 +62,7 @@ class DefaultCharacterTileStringTest {
 
         CharacterTileStringBuilder.newBuilder()
                 .text(TEXT)
-                .textWrap(TextWrap.NO_WRAPPING)
+                .textWrap(NO_WRAPPING)
                 .build().drawOnto(surface, Position.create(2, 1))
     }
 
@@ -71,7 +74,7 @@ class DefaultCharacterTileStringTest {
 
         CharacterTileStringBuilder.newBuilder()
                 .text(TEXT)
-                .textWrap(TextWrap.NO_WRAPPING)
+                .textWrap(NO_WRAPPING)
                 .build().drawOnto(surface, Position.create(1, 2))
     }
 
@@ -83,7 +86,7 @@ class DefaultCharacterTileStringTest {
 
         CharacterTileStringBuilder.newBuilder()
                 .text(TEXT)
-                .textWrap(TextWrap.NO_WRAPPING)
+                .textWrap(NO_WRAPPING)
                 .build().drawOnto(surface)
 
         assertThat(surface.getTileAt(Position.create(0, 0))
@@ -117,7 +120,7 @@ class DefaultCharacterTileStringTest {
 
         val textCharacterString = CharacterTileStringBuilder.newBuilder()
                 .text("atest")
-                .textWrap(TextWrap.WORD_WRAP)
+                .textWrap(WORD_WRAP)
                 .build()
         textCharacterString.drawOnto(surface)
 
@@ -152,7 +155,7 @@ class DefaultCharacterTileStringTest {
 
         val textCharacterString = CharacterTileStringBuilder.newBuilder()
                 .text("a test")
-                .textWrap(TextWrap.WORD_WRAP)
+                .textWrap(WORD_WRAP)
                 .build()
         textCharacterString.drawOnto(surface)
 
@@ -184,108 +187,69 @@ class DefaultCharacterTileStringTest {
     }
 
     @Test
-    fun WordWrapShouldWrapAsWordTooBigForSingleColumn() {
+    fun wordWrapShouldWrapAsWordTooBigForSingleRow() {
         val surface = TileGraphicsBuilder.newBuilder()
                 .size(Size.create(4, 2))
                 .build()
 
         val textCharacterString = CharacterTileStringBuilder.newBuilder()
                 .text("atest")
-                .textWrap(TextWrap.WORD_WRAP)
+                .textWrap(WORD_WRAP)
                 .build()
         textCharacterString.drawOnto(surface)
 
-        // a and space should fit on the first line
-        assertThat(surface.getTileAt(Position.create(0, 0)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('a')
-        assertThat(surface.getTileAt(Position.create(1, 0)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('t')
-        assertThat(surface.getTileAt(Position.create(2, 0)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('e')
-        assertThat(surface.getTileAt(Position.create(3, 0)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('s')
-        assertThat(surface.getTileAt(Position.create(0, 1)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('t')
+        val expectedTiles = listOf(
+                Cell.create(Position.create(0, 0), Tile.defaultTile().withCharacter('a')),
+                Cell.create(Position.create(1, 0), Tile.defaultTile().withCharacter('t')),
+                Cell.create(Position.create(2, 0), Tile.defaultTile().withCharacter('e')),
+                Cell.create(Position.create(3, 0), Tile.defaultTile().withCharacter('s')),
+                Cell.create(Position.create(0, 1), Tile.defaultTile().withCharacter('t')),
+                Cell.create(Position.create(1, 1), Tile.empty()),
+                Cell.create(Position.create(2, 1), Tile.empty()),
+                Cell.create(Position.create(3, 1), Tile.empty()))
+
+        assertThat(surface.fetchCells()).containsExactlyElementsOf(expectedTiles)
+
     }
 
     @Test
-    fun WordWrapShouldWorkCorrectly() {
+    fun wordWrapShouldWorkCorrectly() {
         val surface = TileGraphicsBuilder.newBuilder()
                 .size(Size.create(5, 4))
                 .build()
 
         val textCharacterString = CharacterTileStringBuilder.newBuilder()
                 .text("a test thghty")
-                .textWrap(TextWrap.WORD_WRAP)
+                .textWrap(WORD_WRAP)
                 .build()
         textCharacterString.drawOnto(surface)
 
-        // a and space should fit on the first line
-        assertThat(surface.getTileAt(Position.create(0, 0)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('a')
-        assertThat(surface.getTileAt(Position.create(1, 0)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo(' ')
+        val expectedTiles = listOf(
+                Cell.create(Position.create(0, 0), Tile.defaultTile().withCharacter('a')),
+                Cell.create(Position.create(1, 0), Tile.defaultTile().withCharacter(' ')),
+                Cell.create(Position.create(2, 0), Tile.empty()),
+                Cell.create(Position.create(3, 0), Tile.empty()),
+                Cell.create(Position.create(4, 0), Tile.empty()),
 
-        //words a, ` ` and test would make up 6 characters so test should wrap to the next line
-        assertThat(surface.getTileAt(Position.create(0, 1)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('t')
-        assertThat(surface.getTileAt(Position.create(1, 1)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('e')
-        assertThat(surface.getTileAt(Position.create(2, 1)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('s')
-        assertThat(surface.getTileAt(Position.create(3, 1)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('t')
-        assertThat(surface.getTileAt(Position.create(4, 1)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo(' ')
-        //thghty makes up 6 characters which is larger then the number of rows. So it should character wrap
-        assertThat(surface.getTileAt(Position.create(0, 2)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('t')
-        assertThat(surface.getTileAt(Position.create(1, 2)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('h')
-        assertThat(surface.getTileAt(Position.create(2, 2)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('g')
-        assertThat(surface.getTileAt(Position.create(3, 2)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('h')
-        assertThat(surface.getTileAt(Position.create(4, 2)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('t')
-        assertThat(surface.getTileAt(Position.create(0, 3)).get()
-                .asCharacterTile()
-                .get()
-                .character).isEqualTo('y')
+                Cell.create(Position.create(0, 1), Tile.defaultTile().withCharacter('t')),
+                Cell.create(Position.create(1, 1), Tile.defaultTile().withCharacter('e')),
+                Cell.create(Position.create(2, 1), Tile.defaultTile().withCharacter('s')),
+                Cell.create(Position.create(3, 1), Tile.defaultTile().withCharacter('t')),
+                Cell.create(Position.create(4, 1), Tile.defaultTile().withCharacter(' ')),
+
+                Cell.create(Position.create(0, 2), Tile.defaultTile().withCharacter('t')),
+                Cell.create(Position.create(1, 2), Tile.defaultTile().withCharacter('h')),
+                Cell.create(Position.create(2, 2), Tile.defaultTile().withCharacter('g')),
+                Cell.create(Position.create(3, 2), Tile.defaultTile().withCharacter('h')),
+                Cell.create(Position.create(4, 2), Tile.defaultTile().withCharacter('t')),
+
+                Cell.create(Position.create(0, 3), Tile.defaultTile().withCharacter('y')),
+                Cell.create(Position.create(1, 3), Tile.empty()),
+                Cell.create(Position.create(2, 3), Tile.empty()),
+                Cell.create(Position.create(3, 3), Tile.empty()),
+                Cell.create(Position.create(4, 3), Tile.empty()))
+
+        assertThat(surface.fetchCells()).containsExactlyElementsOf(expectedTiles)
     }
 
     @Test
@@ -296,7 +260,7 @@ class DefaultCharacterTileStringTest {
 
         CharacterTileStringBuilder.newBuilder()
                 .text(TEXT)
-                .textWrap(TextWrap.NO_WRAPPING)
+                .textWrap(NO_WRAPPING)
                 .build().drawOnto(surface, Position.offset1x1())
 
         assertThat(surface.getTileAt(Position.create(0, 0)).get()

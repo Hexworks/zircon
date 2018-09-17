@@ -1,18 +1,16 @@
 package org.hexworks.zircon.api.modifier
 
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.util.markovchain.MarkovChain
 
-data class Markov(val markovData: MarkovData) : TileSwitchModifier {
-
-    private var current = markovData.first()
+data class Markov(private val chain: MarkovChain<out Tile>) : TileSwitchModifier {
 
     override fun generateCacheKey(): String {
-        return "Modifier.Markov.$markovData"
+        return "Modifier.Markov.${chain.current().id}"
     }
 
     override fun transform(tile: Tile): Tile {
-        current = current.next()
-        return current.tile()
+        return chain.next().data().get()
     }
 
 }

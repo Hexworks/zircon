@@ -69,7 +69,7 @@ public class GameMockupExample {
 
         Panel menuPanel = Components.panel()
                 .boxType(BoxType.LEFT_RIGHT_DOUBLE)
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .position(menuPosition)
                 .size(Sizes.create(MAIN_MENU_PANEL_WIDTH, MAIN_MENU_PANEL_HEIGHT))
                 .build();
@@ -119,7 +119,7 @@ public class GameMockupExample {
         Panel difficultyPanel = Components.panel()
                 .size(Sizes.create((terminalSize.getXLength() - PANEL_SPACING) / 3, 9))
                 .position(Positions.create(PANEL_SPACING, PANEL_SPACING))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .boxType(BoxType.LEFT_RIGHT_DOUBLE)
                 .title(DIFFICULTY_LABEL)
                 .build();

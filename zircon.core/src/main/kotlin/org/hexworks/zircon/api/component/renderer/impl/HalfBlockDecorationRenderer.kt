@@ -1,27 +1,29 @@
-package org.hexworks.zircon.internal.component.impl.wrapping
+package org.hexworks.zircon.api.component.renderer.impl
 
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.graphics.SubTileGraphics
 import org.hexworks.zircon.api.graphics.Symbols
-import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.modifier.Crop
 import org.hexworks.zircon.api.shape.LineFactory
-import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 
-class HalfBlockComponentDecorationRenderer : ComponentDecorationRenderer {
+class HalfBlockDecorationRenderer : ComponentDecorationRenderer {
 
-    override fun getOccupiedSize() = Size.create(2, 2)
+    override fun occupiedSize() = Size.create(2, 2)
 
-    override fun getOffset() = Position.offset1x1()
+    override fun offset() = Position.offset1x1()
 
-    override fun render(tileGraphic: TileGraphics, size: Size, offset: Position, style: StyleSet) {
-        val topLeft = offset
-        val topRight = offset + size.fetchTopRightPosition()
-        val bottomLeft = offset + size.fetchBottomLeftPosition()
-        val bottomRight = offset + size.fetchBottomRightPosition()
+    override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
+        val size = tileGraphics.size()
+        val style = context.component.componentStyleSet().getCurrentStyle()
+        val topLeft = Position.defaultPosition()
+        val topRight = size.fetchTopRightPosition()
+        val bottomLeft = size.fetchBottomLeftPosition()
+        val bottomRight = size.fetchBottomRightPosition()
 
         val topTile = Tile.defaultTile()
                 .withCharacter(Symbols.LOWER_HALF_BLOCK)
@@ -32,25 +34,25 @@ class HalfBlockComponentDecorationRenderer : ComponentDecorationRenderer {
         LineFactory.buildLine(topLeft, topRight).positions()
                 .drop(1)
                 .dropLast(1).forEach {
-            tileGraphic.setTileAt(it, topTile)
-        }
+                    tileGraphics.setTileAt(it, topTile)
+                }
         LineFactory.buildLine(topLeft, bottomLeft).positions()
                 .drop(1)
                 .dropLast(1).forEach {
-            tileGraphic.setTileAt(it, topTile.withCharacter(Symbols.RIGHT_HALF_BLOCK))
-        }
+                    tileGraphics.setTileAt(it, topTile.withCharacter(Symbols.RIGHT_HALF_BLOCK))
+                }
         LineFactory.buildLine(topRight, bottomRight).positions()
                 .drop(1)
                 .dropLast(1).forEach {
-            tileGraphic.setTileAt(it, topTile.withCharacter(Symbols.LEFT_HALF_BLOCK))
-        }
+                    tileGraphics.setTileAt(it, topTile.withCharacter(Symbols.LEFT_HALF_BLOCK))
+                }
         LineFactory.buildLine(bottomLeft, bottomRight).positions()
                 .drop(1)
                 .dropLast(1).forEach {
-            tileGraphic.setTileAt(it, topTile.withCharacter(Symbols.UPPER_HALF_BLOCK))
-        }
+                    tileGraphics.setTileAt(it, topTile.withCharacter(Symbols.UPPER_HALF_BLOCK))
+                }
 
-        val tileset = tileGraphic.tileset()
+        val tileset = tileGraphics.tileset()
 
         val cropRight = Crop(
                 x = tileset.width.div(2),
@@ -80,18 +82,17 @@ class HalfBlockComponentDecorationRenderer : ComponentDecorationRenderer {
         val bottomRightTile = bottomLeftTile
                 .withModifiers(cropLeft)
 
-        tileGraphic.setTileAt(
+        tileGraphics.setTileAt(
                 position = topLeft,
                 tile = topLeftTile)
-        tileGraphic.setTileAt(
+        tileGraphics.setTileAt(
                 position = topRight,
                 tile = topRightTile)
-        tileGraphic.setTileAt(
+        tileGraphics.setTileAt(
                 position = bottomLeft,
                 tile = bottomLeftTile)
-        tileGraphic.setTileAt(
+        tileGraphics.setTileAt(
                 position = bottomRight,
                 tile = bottomRightTile)
-
     }
 }

@@ -20,9 +20,9 @@ public class UsingComponents {
         final Screen screen = Screens.createScreenFor(tileGrid);
 
         Panel panel = Components.panel()
-                .wrapWithBox() // panels can be wrapped in a box
+                .wrapWithBox(true) // panels can be wrapped in a box
                 .title("Panel") // if a panel is wrapped in a box a title can be displayed
-                .wrapWithShadow() // shadow can be added
+                .wrapWithShadow(true) // shadow can be added
                 .size(Sizes.create(32, 16)) // the size must be smaller than the parent's size
                 .position(Positions.offset1x1())
                 .build(); // position is always relative to the parent

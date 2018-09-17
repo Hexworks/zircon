@@ -27,7 +27,7 @@ class CharacterTileIterator(private val tileIterator: Iterator<CharacterTile>) :
             val charTile = tileIterator.next()
 
             //this means we have hit the end of a word. Therefore we should store that ending so that we do not
-            //lose it and return the word we just got
+            //lose it and returnThis the word we just got
             if (WORD_ENDINGS.contains(charTile.character)) {
                 //if we have not been storing any word we don't need to do anything
                 if (textCharacters.isEmpty()) {

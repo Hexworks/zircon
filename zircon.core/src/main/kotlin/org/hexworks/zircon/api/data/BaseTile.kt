@@ -65,7 +65,7 @@ abstract class BaseTile : Tile {
     /**
      * Returns a copy of this [BaseTile] with [Modifier] (s) removed.
      * The currently active [Modifier]s will be carried over to the copy, except for the one(s) specified.
-     * If the current [BaseTile] doesn't have the [Modifier] (s) specified, it will return itself.
+     * If the current [BaseTile] doesn't have the [Modifier] (s) specified, it will returnThis itself.
      */
     override fun withoutModifiers(vararg modifiers: Modifier): Tile = withoutModifiers(modifiers.toSet())
 

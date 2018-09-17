@@ -102,14 +102,14 @@ interface Tile : Drawable, Cacheable {
     /**
      * Returns a copy of this [Tile] with [Modifier] (s) removed.
      * The currently active [Modifier]s will be carried over to the copy, except for the one(s) specified.
-     * If the current [Tile] doesn't have the [Modifier] (s) specified, it will return itself.
+     * If the current [Tile] doesn't have the [Modifier] (s) specified, it will returnThis itself.
      */
     fun withoutModifiers(vararg modifiers: Modifier): Tile = withoutModifiers(modifiers.toSet())
 
     /**
      * Returns a copy of this [Tile] with [Modifier] (s) removed.
      * The currently active [Modifier]s will be carried over to the copy, except for the one(s) specified.
-     * If the current [Tile] doesn't have the [Modifier] (s) specified, it will return itself.
+     * If the current [Tile] doesn't have the [Modifier] (s) specified, it will returnThis itself.
      */
     fun withoutModifiers(modifiers: Set<Modifier>): Tile
 

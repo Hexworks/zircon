@@ -14,7 +14,7 @@ object MouseMovedExample {
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        val panel = Components.panel().size(Sizes.create(4, 5)).wrapWithBox().build()
+        val panel = Components.panel().size(Sizes.create(4, 5)).wrapWithBox(true).build()
 
         screen.addComponent(panel)
 

@@ -18,12 +18,12 @@ object ComponentMoveExample {
 
         val panel = Components.panel()
                 .size(Sizes.create(20, 10))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .build()
 
         val innerPanel = Components.panel()
                 .size(Sizes.create(10, 5))
-                .wrapWithBox()
+                .wrapWithBox(true)
                 .build()
 
         innerPanel.addComponent(Components.button()
