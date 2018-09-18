@@ -182,9 +182,7 @@ class DefaultComponentContainer(private var container: DefaultContainer) :
             container.fetchComponentByPosition(lastMousePosition)
                     .map { currComponent ->
                         if (lastHoveredComponentId == currComponent.id) {
-                            if (lastFocusedComponent.id == currComponent.id) {
-                                EventBus.sendTo(currComponent.id, MouseMoved(mouseAction))
-                            }
+                            EventBus.sendTo(currComponent.id, MouseMoved(mouseAction))
                         } else {
                             EventBus.sendTo(lastHoveredComponentId, MouseOut(mouseAction))
                             lastHoveredComponentId = currComponent.id
