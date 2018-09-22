@@ -6,9 +6,11 @@ import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
-import org.hexworks.zircon.api.component.ComponentState
+import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
+import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Bounds
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -33,7 +35,7 @@ abstract class DefaultComponent(
         tileset: TilesetResource,
         position: Position,
         private var componentStyles: ComponentStyleSet,
-        private val wrappers: Iterable<ComponentDecorationRenderer>,
+        private val wrappers: Iterable<ComponentDecorationRenderer> = listOf(),
         private val graphics: TileGraphics = TileGraphicsBuilder
                 .newBuilder()
                 .tileset(tileset)
@@ -49,29 +51,6 @@ abstract class DefaultComponent(
     final override val id = Identifier.randomIdentifier()
     private var currentOffset = Position.defaultPosition()
     private var parent = Maybe.empty<Container>()
-
-    init {
-        // TODO: temporary
-        if (this !is DefaultButton) {
-            applyStyle(componentStyles.getCurrentStyle())
-        }
-        EventBus.listenTo<ZirconEvent.MouseOver>(id) {
-            if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.MOUSE_OVER)) {
-                // TODO: temporary
-                if (this !is DefaultButton) {
-                    applyStyle(componentStyles.applyMouseOverStyle())
-                }
-            }
-        }
-        EventBus.listenTo<ZirconEvent.MouseOut>(id) {
-            // TODO: temporary
-            if (this !is DefaultButton) {
-                if (componentStyles.getCurrentStyle() != componentStyles.getStyleFor(ComponentState.DEFAULT)) {
-                    applyStyle(componentStyles.reset())
-                }
-            }
-        }
-    }
 
     override fun parent() = parent
 
@@ -173,22 +152,10 @@ abstract class DefaultComponent(
     override fun setComponentStyleSet(componentStyleSet: ComponentStyleSet,
                                       applyToEmptyCells: Boolean) {
         this.componentStyles = componentStyleSet
-        // TODO: temporary
-        if (this !is DefaultButton) {
-            applyStyle(componentStyleSet.getCurrentStyle())
-        }
     }
 
     final override fun applyStyle(styleSet: StyleSet) {
-        // TODO: temporary
-        if (this !is DefaultButton) {
-            applyWrappers()
-            graphics.applyStyle(
-                    styleSet = styleSet,
-                    bounds = Bounds.create(
-                            position = wrapperOffset(),
-                            size = getEffectiveSize()))
-        }
+        // TODO: should the user be able to do this?
     }
 
     override fun tileGraphics() = graphics

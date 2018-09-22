@@ -5,22 +5,25 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Panel
+import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 
 class DefaultPanel(private val title: String,
+                   private val renderingStrategy: ComponentRenderingStrategy<Panel>,
                    initialSize: Size,
                    position: Position,
                    initialTileset: TilesetResource,
-                   componentStyleSet: ComponentStyleSet,
-                   wrappers: Iterable<ComponentDecorationRenderer> = listOf())
-    : Panel, DefaultContainer(initialSize = initialSize,
+                   componentStyleSet: ComponentStyleSet)
+    : Panel, DefaultContainer(size = initialSize,
         position = position,
-        componentStyleSet = componentStyleSet,
-        wrappers = wrappers,
-        initialTileset = initialTileset) {
+        componentStyles = componentStyleSet,
+        tileset = initialTileset) {
+
+    init {
+        render()
+    }
 
     override fun getTitle() = title
 
@@ -32,9 +35,14 @@ class DefaultPanel(private val title: String,
                         .build())
                 .build().also { css ->
                     setComponentStyleSet(css)
+                    render()
                     getComponents().forEach {
                         it.applyColorTheme(colorTheme)
                     }
                 }
+    }
+
+    private fun render() {
+        renderingStrategy.render(this, tileGraphics())
     }
 }

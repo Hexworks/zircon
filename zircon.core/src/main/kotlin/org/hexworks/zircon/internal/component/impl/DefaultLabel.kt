@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Label
+import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.input.Input
@@ -13,19 +14,20 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 
 class DefaultLabel(private val text: String,
-                   initialSize: Size,
+                   private val renderingStrategy: ComponentRenderingStrategy<Label>,
                    initialTileset: TilesetResource,
+                   initialSize: Size,
                    position: Position,
-                   componentStyleSet: ComponentStyleSet) : Label, DefaultComponent(
+                   componentStyleSet: ComponentStyleSet)
+    : Label, DefaultComponent(
         size = initialSize,
         position = position,
         componentStyles = componentStyleSet,
-        wrappers = listOf(),
         tileset = initialTileset) {
 
 
     init {
-        tileGraphics().putText(text, Position.defaultPosition())
+        render()
     }
 
     override fun getText() = text
@@ -44,6 +46,11 @@ class DefaultLabel(private val text: String,
                         .build())
                 .build().also {
                     setComponentStyleSet(it)
+                    render()
                 }
+    }
+
+    private fun render() {
+        renderingStrategy.render(this, tileGraphics())
     }
 }

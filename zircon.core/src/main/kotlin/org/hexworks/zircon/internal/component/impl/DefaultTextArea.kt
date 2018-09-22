@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.TextArea
+import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
@@ -27,19 +28,19 @@ import org.hexworks.zircon.platform.extension.deleteCharAt
 import org.hexworks.zircon.platform.extension.insert
 
 class DefaultTextArea constructor(
-        text: String,
-        initialSize: Size,
-        initialTileset: TilesetResource,
+        private val text: String,
+        private val renderingStrategy: ComponentRenderingStrategy<TextArea>,
+        tileset: TilesetResource,
+        size: Size,
         position: Position,
         componentStyleSet: ComponentStyleSet,
-        scrollable: Scrollable = DefaultScrollable(initialSize, initialSize),
-        cursorHandler: CursorHandler = DefaultCursorHandler(initialSize))
+        scrollable: Scrollable = DefaultScrollable(size, size),
+        cursorHandler: CursorHandler = DefaultCursorHandler(size))
     : TextArea, Scrollable by scrollable, CursorHandler by cursorHandler, DefaultComponent(
-        size = initialSize,
+        size = size,
         position = position,
         componentStyles = componentStyleSet,
-        wrappers = listOf(),
-        tileset = initialTileset) {
+        tileset = tileset) {
 
     private val textBuffer = TextBuffer(text)
     private val subscriptions = mutableListOf<Subscription<*>>()
@@ -48,11 +49,13 @@ class DefaultTextArea constructor(
 
     init {
         setText(text)
-        refreshDrawSurface()
         refreshVirtualSpaceSize()
+        render()
     }
 
     override fun getText() = textBuffer.getText() // TODO: line sep?
+
+    override fun textBuffer() = textBuffer
 
     override fun setText(text: String): Boolean {
         val isChanged = if (this.textBuffer.toString() == text) {
@@ -61,8 +64,7 @@ class DefaultTextArea constructor(
             textBuffer.setText(text)
             true
         }
-
-        refreshDrawSurface()
+        render()
         return isChanged
     }
 
@@ -84,6 +86,7 @@ class DefaultTextArea constructor(
                         .build())
                 .build().also {
                     setComponentStyleSet(it)
+                    render()
                 }
     }
 
@@ -103,7 +106,8 @@ class DefaultTextArea constructor(
                 disableTyping()
             }
         }
-        tileGraphics().applyStyle(componentStyleSet().applyDisabledStyle())
+        componentStyleSet().applyDisabledStyle()
+        render()
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
@@ -117,12 +121,14 @@ class DefaultTextArea constructor(
     override fun takeFocus(input: Maybe<Input>) {
         focused = false
         disableTyping()
-        tileGraphics().applyStyle(componentStyleSet().reset())
+        componentStyleSet().reset()
+        render()
     }
 
     private fun enableFocusedComponent() {
         cancelSubscriptions()
-        tileGraphics().applyStyle(componentStyleSet().applyFocusedStyle())
+        componentStyleSet().applyFocusedStyle()
+        render()
         enableTyping()
     }
 
@@ -150,7 +156,7 @@ class DefaultTextArea constructor(
                 if (nextChar.isPresent) {
                     if (isCursorAtTheEndOfTheLine()) {
                         scrollOneRight()
-                        refreshDrawSurface()
+                        render()
                     } else {
                         moveCursorForward()
                     }
@@ -160,7 +166,7 @@ class DefaultTextArea constructor(
                     if (visibleOffset().x > 0) {
                         // we can still scroll left because there are hidden parts of the left section
                         scrollOneLeft()
-                        refreshDrawSurface()
+                        render()
                     } else if (maybePrevRow.isPresent) {
                         scrollUpToEndOfPreviousLine(maybePrevRow.get())
                     }
@@ -198,7 +204,7 @@ class DefaultTextArea constructor(
                     } else {
                         row.deleteCharAt(currColIdx)
                     }
-                    refreshDrawSurface()
+                    render()
                     refreshVirtualSpaceSize()
                 }
             } else if (keyStroke.inputTypeIs(InputType.Backspace)) {
@@ -214,7 +220,7 @@ class DefaultTextArea constructor(
                         row.deleteCharAt(currColIdx - 1)
                         scrollCursorOrScrollableOneLeft()
                     }
-                    refreshDrawSurface()
+                    render()
                     refreshVirtualSpaceSize()
                 }
             } else if (keyStroke.inputTypeIs(InputType.Enter)) {
@@ -234,7 +240,7 @@ class DefaultTextArea constructor(
                 }
                 scrollLeftBy(0)
                 putCursorAt(cursorPosition().withX(0))
-                refreshDrawSurface()
+                render()
             } else if (keyStroke.inputTypeIs(InputType.Home)) {
                 scrollLeftBy(0)
                 putCursorAt(cursorPosition().withX(0))
@@ -248,14 +254,14 @@ class DefaultTextArea constructor(
                     } else {
                         it.insert(currColIdx, keyStroke.getCharacter().toString())
                     }
-                    refreshDrawSurface()
+                    render()
                     refreshVirtualSpaceSize()
                     if (isCursorAtTheEndOfTheLine()) {
                         scrollOneRight()
                     } else {
                         moveCursorForward()
                     }
-                    refreshDrawSurface()
+                    render()
                 }
             }
             EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition() + position()))
@@ -270,8 +276,8 @@ class DefaultTextArea constructor(
         // we fix the cursor if the yLength does not fill the visible space
         putCursorAt(cursorPosition()
                 .withX(Math.min(prevRow.length, cursorPosition().x)))
-        refreshDrawSurface()
         refreshVirtualSpaceSize()
+        render()
     }
 
     private fun scrollCursorOrScrollableOneLeft() {
@@ -300,13 +306,13 @@ class DefaultTextArea constructor(
             scrollLeftBy(row.length)
             putCursorAt(cursorPosition().withX(0))
         }
-        refreshDrawSurface()
+        render()
     }
 
     private fun scrollRightToRowEnd(row: StringBuilder) {
         scrollRightBy(Math.max(0, row.length - size().xLength))
         putCursorAt(cursorPosition().withX(size().xLength - 1))
-        refreshDrawSurface()
+        render()
     }
 
     private fun deleteRowIfNotLast(bufferRowIdx: Int) {
@@ -322,20 +328,15 @@ class DefaultTextArea constructor(
         subscriptions.clear()
     }
 
-    private fun refreshDrawSurface() {
-        size().fetchPositions().forEach { pos ->
-            val fixedPos = pos + visibleOffset()
-            tileGraphics().setTileAt(pos, TileBuilder.newBuilder()
-                    .character(textBuffer.getCharAt(fixedPos).orElse(' '))
-                    .build())
-        }
-    }
-
     private fun refreshVirtualSpaceSize() {
         val (visibleCols, visibleRows) = size()
         val (textCols, textRows) = textBuffer.getBoundingBoxSize()
         if (textCols >= visibleCols && textRows >= visibleRows) {
             setActualSize(textBuffer.getBoundingBoxSize())
         }
+    }
+
+    private fun render() {
+        renderingStrategy.render(this, tileGraphics())
     }
 }

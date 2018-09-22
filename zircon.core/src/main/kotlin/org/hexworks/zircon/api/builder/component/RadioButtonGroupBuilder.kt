@@ -1,25 +1,32 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
+import org.hexworks.zircon.api.component.CommonComponentProperties
 import org.hexworks.zircon.api.component.RadioButtonGroup
+import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButtonGroup
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
+import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
 
 data class RadioButtonGroupBuilder(
-        private var size: Size = Size.one())
-    : BaseComponentBuilder<RadioButtonGroup, RadioButtonGroupBuilder>() {
+        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+    : BaseComponentBuilder<RadioButtonGroup, RadioButtonGroupBuilder>(commonComponentProperties) {
 
     override fun build(): RadioButtonGroup {
+        fillMissingValues()
+        val size = decorationRenderers().map { it.occupiedSize() }
+                .fold(size(), Size::plus)
         return DefaultRadioButtonGroup(
-                wrappers = ThreadSafeQueueFactory.create(),
+                renderingStrategy = DefaultComponentRenderingStrategy(
+                        decorationRenderers = decorationRenderers(),
+                        componentRenderer = DefaultRadioButtonGroupRenderer()),
                 size = size,
                 position = position(),
                 componentStyleSet = componentStyleSet(),
-                initialTileset = tileset())
+                tileset = tileset())
     }
 
-    override fun createCopy() = copy()
+    override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())
 
     companion object {
 

@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.config.RuntimeConfig
 
 data class CommonComponentProperties(
@@ -15,4 +16,5 @@ data class CommonComponentProperties(
         var boxType: BoxType = BoxType.SINGLE,
         var wrapWithBox: Boolean = false,
         var wrapWithShadow: Boolean = false,
+        var title: Maybe<String> = Maybe.empty(),
         var decorationRenderers: List<ComponentDecorationRenderer> = listOf())

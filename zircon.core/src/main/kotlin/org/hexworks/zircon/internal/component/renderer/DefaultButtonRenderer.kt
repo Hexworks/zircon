@@ -12,4 +12,5 @@ class DefaultButtonRenderer : ComponentRenderer<Button>() {
         tileGraphics.applyStyle(style)
         tileGraphics.putText(context.component.getText())
     }
+
 }

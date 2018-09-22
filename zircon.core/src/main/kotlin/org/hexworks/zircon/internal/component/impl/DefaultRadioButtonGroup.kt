@@ -3,12 +3,13 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.RadioButtonGroup
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection
+import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
+import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
@@ -17,47 +18,45 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
-import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.util.ThreadSafeQueue
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 class DefaultRadioButtonGroup constructor(
-        wrappers: ThreadSafeQueue<ComponentDecorationRenderer>,
-        private val size: Size,
-        initialTileset: TilesetResource,
+        private val renderingStrategy: ComponentRenderingStrategy<RadioButtonGroup>,
+        tileset: TilesetResource,
+        size: Size,
         position: Position,
         componentStyleSet: ComponentStyleSet,
         scrollable: Scrollable = DefaultScrollable(size, size))
-    : RadioButtonGroup, Scrollable by scrollable, DefaultContainer(initialSize = size,
+    : RadioButtonGroup, Scrollable by scrollable, DefaultContainer(
+        size = size,
         position = position,
-        componentStyleSet = componentStyleSet,
-        wrappers = wrappers,
-        initialTileset = initialTileset) {
+        componentStyles = componentStyleSet,
+        tileset = tileset) {
 
     private val items = LinkedHashMap<String, DefaultRadioButton>()
     private val selectionListeners = mutableListOf<Consumer<Selection>>()
     private var selectedItem: Maybe<String> = Maybe.empty()
+    private val buttonRenderingStrategy = DefaultComponentRenderingStrategy(
+            decorationRenderers = listOf(),
+            componentRenderer = DefaultRadioButtonRenderer())
 
     init {
         refreshContent()
-        EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
-            tileGraphics().applyStyle(componentStyleSet().applyMouseOverStyle())
-            refreshContent()
-        }
+        render()
     }
 
     override fun addOption(key: String, text: String): RadioButton {
-        require(items.size + 1 < size.xLength) {
+        require(items.size < renderingStrategy.effectiveSize(size()).yLength) {
             "This RadioButtonGroup does not have enough space for another option!"
         }
         return DefaultRadioButton(
                 text = text,
-                wrappers = ThreadSafeQueueFactory.create(),
-                width = size.xLength,
-                position = Position.create(0, items.size),
+                renderingStrategy = buttonRenderingStrategy,
+                size = Size.create(renderingStrategy.effectiveSize(size()).width(), 1),
+                position = Position.create(0, items.size) + renderingStrategy.effectivePosition(),
                 componentStyleSet = componentStyleSet(),
-                initialTileset = tileset()).also { button ->
+                tileset = tileset()).also { button ->
             items[key] = button
             addComponent(button)
             EventBus.listenTo<ZirconEvent.MouseReleased>(button.id) { _ ->
@@ -70,7 +69,7 @@ class DefaultRadioButtonGroup constructor(
                 items[key]?.let { button ->
                     button.select()
                     selectionListeners.forEach {
-                        it.accept(DefaultSelection(key, button.getText()))
+                        it.accept(DefaultSelection(key, button.text()))
                     }
                 }
 
@@ -96,12 +95,15 @@ class DefaultRadioButtonGroup constructor(
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(TileColor.transparent())
-                        .backgroundColor(TileColor.transparent())
+                        .foregroundColor(colorTheme.primaryForegroundColor())
+                        .backgroundColor(colorTheme.primaryBackgroundColor())
                         .build())
                 .build().also { css ->
                     setComponentStyleSet(css)
-                    getComponents().forEach { it.applyColorTheme(colorTheme) }
+                    render()
+                    getComponents().forEach {
+                        it.applyColorTheme(colorTheme)
+                    }
                 }
     }
 
@@ -117,6 +119,11 @@ class DefaultRadioButtonGroup constructor(
             comp.moveTo(Position.create(0, idx))
             addComponent(comp)
         }
+        render()
+    }
+
+    private fun render() {
+        renderingStrategy.render(this, tileGraphics())
     }
 
     data class DefaultSelection(private val key: String,

@@ -16,23 +16,20 @@ import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 @Suppress("UNCHECKED_CAST")
-open class DefaultContainer(initialSize: Size,
+open class DefaultContainer(size: Size,
                             position: Position,
-                            initialTileset: TilesetResource,
-                            componentStyleSet: ComponentStyleSet,
-                            wrappers: Iterable<ComponentDecorationRenderer> = listOf())
-    : DefaultComponent(size = initialSize,
+                            tileset: TilesetResource,
+                            componentStyles: ComponentStyleSet)
+    : DefaultComponent(size = size,
         position = position,
-        componentStyles = componentStyleSet,
-        wrappers = wrappers,
-        tileset = initialTileset),
+        componentStyles = componentStyles,
+        tileset = tileset),
         Container {
 
     private val components = ThreadSafeQueueFactory.create<InternalComponent>()
@@ -153,6 +150,8 @@ open class DefaultContainer(initialSize: Size,
                         .build())
                 .build()
         setComponentStyleSet(css)
+        // TODO: do we fill the background with the secondary background color?
+        // TODO: add a default background renderer?
         components.forEach {
             it.applyColorTheme(colorTheme)
         }

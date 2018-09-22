@@ -7,10 +7,18 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.util.Maybe
 
 @Suppress("UNCHECKED_CAST")
 abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
-        private val props: CommonComponentProperties = CommonComponentProperties()) : ComponentBuilder<T, U> {
+        private val props: CommonComponentProperties) : ComponentBuilder<T, U> {
+
+    override fun title() = props.title
+
+    override fun title(title: String): U {
+        props.title = Maybe.of(title)
+        return this as U
+    }
 
     override fun componentStyleSet() = props.componentStyleSet
 
@@ -77,7 +85,9 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
                 decorationRenderers.add(ShadowDecorationRenderer())
             }
             if (props.wrapWithBox) {
-                decorationRenderers.add(BoxDecorationRenderer())
+                decorationRenderers.add(BoxDecorationRenderer(
+                        boxType = boxType(),
+                        title = title()))
             }
             props.decorationRenderers = decorationRenderers.toList()
         }

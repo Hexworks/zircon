@@ -35,7 +35,7 @@ class DefaultRadioButtonGroupTest {
                 size = SIZE,
                 position = POSITION,
                 componentStyleSet = COMPONENT_STYLES,
-                initialTileset = tileset)
+                tileset = tileset)
     }
 
     @Test

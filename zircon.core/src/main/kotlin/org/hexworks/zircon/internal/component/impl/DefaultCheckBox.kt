@@ -6,77 +6,84 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.CheckBox
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.util.ThreadSafeQueue
 
 class DefaultCheckBox(private val text: String,
-                      wrappers: ThreadSafeQueue<ComponentDecorationRenderer>,
-                      width: Int,
+                      private val renderingStrategy: ComponentRenderingStrategy<CheckBox>,
                       initialTileset: TilesetResource,
+                      initialSize: Size,
                       position: Position,
                       componentStyleSet: ComponentStyleSet)
-    : CheckBox, DefaultComponent(size = Size.create(width, 1),
+    : CheckBox, DefaultComponent(
+        size = initialSize,
         position = position,
         componentStyles = componentStyleSet,
-        wrappers = wrappers,
         tileset = initialTileset) {
 
-    private val maxTextLength = width - BUTTON_WIDTH - 1
-    private val clearedText = if (text.length > maxTextLength) {
-        text.substring(0, maxTextLength - 3).plus("...")
-    } else {
-        text
-    }
     private var checkBoxState = UNCHECKED
     private var checked = false
+    private var pressing = false
 
     init {
-        redrawContent()
-
-        // TODO: re-enable in next release and fix the bug when the mouse is moved
-        // TODO: after it is pressed and released on another component
-        // TODO: the pressed state persists
-//        EventBus.subscribe<ZirconEvent.MousePressed> {
-//            tileGraphics().applyStyle(componentStyleSet().applyActiveStyle())
-//            checkBoxState = PRESSED
-//            redrawContent()
-//        }
+        render()
+        // TODO: test this rudimentary state machine
+        EventBus.listenTo<ZirconEvent.MouseOver>(id) {
+            componentStyleSet().applyMouseOverStyle()
+            render()
+        }
+        EventBus.listenTo<ZirconEvent.MouseOut>(id) {
+            pressing = false
+            checkBoxState = if (checked) CHECKED else UNCHECKED
+            componentStyleSet().reset()
+            render()
+        }
+        EventBus.listenTo<ZirconEvent.MousePressed>(id) {
+            pressing = true
+            checkBoxState = if (checked) UNCHECKING else CHECKING
+            componentStyleSet().applyActiveStyle()
+            render()
+        }
         EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
-            tileGraphics().applyStyle(componentStyleSet().applyMouseOverStyle())
-            checkBoxState = if (checked) UNCHECKED else CHECKED
-            checked = checked.not()
-            redrawContent()
+            componentStyleSet().applyMouseOverStyle()
+            if (pressing) {
+                // this is the case when the user starts pressing outside of this
+                // component but releases here
+                pressing = false
+                checked = checked.not()
+                checkBoxState = if (checked) CHECKED else UNCHECKED
+            }
+            render()
         }
     }
 
-    private fun redrawContent() {
-        tileGraphics().putText("${STATES["$checkBoxState$checked"]!!} $clearedText")
-    }
-
     override fun isChecked() = checkBoxState == CHECKED
+
+    override fun state() = checkBoxState
 
     override fun acceptsFocus(): Boolean {
         return true
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        tileGraphics().applyStyle(componentStyleSet().applyFocusedStyle())
+        componentStyleSet().applyFocusedStyle()
+        render()
         return true
     }
 
     override fun takeFocus(input: Maybe<Input>) {
-        tileGraphics().applyStyle(componentStyleSet().reset())
+        componentStyleSet().reset()
+        render()
     }
 
-    override fun getText() = text
+    override fun text() = text
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
@@ -98,29 +105,18 @@ class DefaultCheckBox(private val text: String,
                         .build())
                 .build().also {
                     setComponentStyleSet(it)
+                    render()
                 }
     }
 
-    private enum class CheckBoxState {
-        PRESSED,
-        CHECKED,
-        UNCHECKED
+    private fun render() {
+        renderingStrategy.render(this, tileGraphics())
     }
 
-    companion object {
-
-        private val PRESS_TO_CHECK_BUTTON = "[+]"
-        private val PRESS_TO_UNCHECK_BUTTON = "[-]"
-        private val CHECKED_BUTTON = "[*]"
-        private val UNCHECKED_BUTTON = "[ ]"
-
-        private val BUTTON_WIDTH = PRESS_TO_CHECK_BUTTON.length
-
-        private val STATES = mapOf(
-                Pair("${PRESSED}false", PRESS_TO_CHECK_BUTTON),
-                Pair("${PRESSED}true", PRESS_TO_UNCHECK_BUTTON),
-                Pair("${CHECKED}true", CHECKED_BUTTON),
-                Pair("${UNCHECKED}false", UNCHECKED_BUTTON))
-
+    enum class CheckBoxState {
+        CHECKING,
+        CHECKED,
+        UNCHECKING,
+        UNCHECKED
     }
 }

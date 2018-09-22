@@ -57,10 +57,6 @@ class DefaultComponentContainer(private var container: DefaultContainer) :
         refreshFocusableLookup()
     }
 
-    override fun addComponent(builder: Builder<Component>) {
-        addComponent(builder.build())
-    }
-
     override fun removeComponent(component: Component) =
             container.removeComponent(component).also {
                 refreshFocusableLookup()

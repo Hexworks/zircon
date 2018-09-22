@@ -10,7 +10,12 @@ import org.hexworks.zircon.api.graphics.TextWrap
 class DefaultLabelRenderer : ComponentRenderer<Label>() {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<Label>) {
+        val style = context.componentStyle().getCurrentStyle()
+        tileGraphics.applyStyle(style)
         CharacterTileStringBuilder.newBuilder()
+                .backgroundColor(style.backgroundColor())
+                .foregroundColor(style.foregroundColor())
+                .modifiers(*style.modifiers().toTypedArray())
                 .text(context.component.getText())
                 .textWrap(TextWrap.WORD_WRAP)
                 .build()

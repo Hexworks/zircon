@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
+import org.hexworks.zircon.api.component.CommonComponentProperties
 import org.hexworks.zircon.api.component.ComponentBuilder
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.data.Position
@@ -20,8 +21,9 @@ import org.hexworks.zircon.internal.game.DefaultGameComponent
 data class GameComponentBuilder(
         private var gameArea: Maybe<GameArea> = Maybe.empty(),
         private var projectionMode: ProjectionMode = DEFAULT_PROJECTION_MODE,
-        private var visibleSize: Size3D = Size3D.one())
-    : BaseComponentBuilder<GameComponent, GameComponentBuilder>() {
+        private var visibleSize: Size3D = Size3D.one(),
+        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+    : BaseComponentBuilder<GameComponent, GameComponentBuilder>(commonComponentProperties) {
 
     override fun createCopy() = copy()
 

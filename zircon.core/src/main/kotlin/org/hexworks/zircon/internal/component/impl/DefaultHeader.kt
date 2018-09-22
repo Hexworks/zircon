@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Header
+import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.input.Input
@@ -13,6 +14,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 
 class DefaultHeader(private val text: String,
+                    private val renderingStrategy: ComponentRenderingStrategy<Header>,
                     initialSize: Size,
                     initialTileset: TilesetResource,
                     position: Position,
@@ -20,12 +22,11 @@ class DefaultHeader(private val text: String,
         size = initialSize,
         position = position,
         componentStyles = componentStyleSet,
-        wrappers = listOf(),
         tileset = initialTileset) {
 
 
     init {
-        tileGraphics().putText(text, Position.defaultPosition())
+        render()
     }
 
     override fun getText() = text
@@ -44,6 +45,11 @@ class DefaultHeader(private val text: String,
                         .build())
                 .build().also {
                     setComponentStyleSet(it)
+                    render()
                 }
+    }
+
+    private fun render() {
+        renderingStrategy.render(this, tileGraphics())
     }
 }

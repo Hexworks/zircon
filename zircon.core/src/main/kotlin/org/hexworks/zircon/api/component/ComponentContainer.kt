@@ -22,7 +22,7 @@ interface ComponentContainer {
      * a leaf component (like a label) or another container which can itself
      * contain components within itself.
      */
-    fun addComponent(builder: Builder<Component>)
+    fun addComponent(builder: Builder<Component>) = addComponent(builder.build())
 
     /**
      * Removes the given [Component] from this [Container].

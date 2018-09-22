@@ -21,10 +21,10 @@ class DefaultButton(private val text: String,
                     initialSize: Size,
                     position: Position,
                     componentStyleSet: ComponentStyleSet)
-    : Button, DefaultComponent(size = initialSize,
+    : Button, DefaultComponent(
+        size = initialSize,
         position = position,
         componentStyles = componentStyleSet,
-        wrappers = listOf(),
         tileset = initialTileset) {
 
     init {

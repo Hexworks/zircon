@@ -1,5 +1,7 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.zircon.api.builder.Builder
+
 /**
  * A [Container] is a [Component] which can contain other components.
  * Those components will be bounded by this container.
@@ -14,6 +16,13 @@ interface Container : Component {
      * contain components within itself.
      */
     fun addComponent(component: Component)
+
+    /**
+     * Adds a child [Component] to this [Container]. It can either be
+     * a leaf component (like a label) or another container which can itself
+     * contain components within itself.
+     */
+    fun addComponent(builder: Builder<Component>) = addComponent(builder.build())
 
     /**
      * Removes the given [Component] from this [Container].
