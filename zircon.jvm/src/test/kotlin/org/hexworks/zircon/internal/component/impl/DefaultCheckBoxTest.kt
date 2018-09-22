@@ -57,7 +57,7 @@ class DefaultCheckBoxTest {
 
     @Test
     fun shouldProperlyReturnText() {
-        Assertions.assertThat(target.getText()).isEqualTo(TEXT)
+        Assertions.assertThat(target.text()).isEqualTo(TEXT)
     }
 
     @Test

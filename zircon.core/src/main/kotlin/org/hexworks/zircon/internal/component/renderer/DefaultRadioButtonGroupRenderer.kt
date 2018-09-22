@@ -1,16 +1,14 @@
 package org.hexworks.zircon.internal.component.renderer
 
-import org.hexworks.zircon.api.component.Button
+import org.hexworks.zircon.api.component.RadioButtonGroup
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.SubTileGraphics
 
-class DefaultButtonRenderer : ComponentRenderer<Button>() {
+class DefaultRadioButtonGroupRenderer : ComponentRenderer<RadioButtonGroup>() {
 
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<Button>) {
+    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<RadioButtonGroup>) {
         val style = context.componentStyle().getCurrentStyle()
         tileGraphics.applyStyle(style)
-        tileGraphics.putText(context.component.getText())
     }
-
 }

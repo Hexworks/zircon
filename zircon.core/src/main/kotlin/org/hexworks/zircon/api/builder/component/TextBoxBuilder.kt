@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
+import org.hexworks.zircon.api.component.CommonComponentProperties
 import org.hexworks.zircon.api.component.TextBox
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultTextBox
@@ -8,8 +9,9 @@ import org.hexworks.zircon.platform.util.SystemUtils
 
 data class TextBoxBuilder(
         private var text: String = "",
-        private var size: Size = Size.one())
-    : BaseComponentBuilder<TextBox, TextBoxBuilder>() {
+        private var size: Size = Size.one(),
+        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+    : BaseComponentBuilder<TextBox, TextBoxBuilder>(commonComponentProperties) {
 
     fun paragraph(paragraph: String) = also {
         paragraph(paragraph, true)

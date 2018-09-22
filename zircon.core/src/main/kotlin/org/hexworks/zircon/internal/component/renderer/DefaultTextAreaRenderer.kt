@@ -1,0 +1,22 @@
+package org.hexworks.zircon.internal.component.renderer
+
+import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.component.TextArea
+import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.api.graphics.SubTileGraphics
+
+class DefaultTextAreaRenderer : ComponentRenderer<TextArea>() {
+
+    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<TextArea>) {
+        val style = context.componentStyle().getCurrentStyle()
+        val component = context.component
+        tileGraphics.applyStyle(style)
+        tileGraphics.size().fetchPositions().forEach { pos ->
+            val fixedPos = pos + component.visibleOffset()
+            tileGraphics.setTileAt(pos, TileBuilder.newBuilder()
+                    .character(component.textBuffer().getCharAt(fixedPos).orElse(' '))
+                    .build())
+        }
+    }
+}

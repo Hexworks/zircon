@@ -27,7 +27,7 @@ class DefaultRadioButtonTest {
                 width = WIDTH,
                 position = POSITION,
                 componentStyleSet = COMPONENT_STYLES,
-                initialTileset = TILESET)
+                tileset = TILESET)
     }
 
     @Test
@@ -45,7 +45,7 @@ class DefaultRadioButtonTest {
 
     @Test
     fun shouldProperlyReturnText() {
-        assertThat(target.getText()).isEqualTo(TEXT)
+        assertThat(target.text()).isEqualTo(TEXT)
     }
 
     @Test

@@ -7,8 +7,13 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
+import org.hexworks.zircon.api.util.Maybe
 
 interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<T> {
+
+    fun title(): Maybe<String>
+
+    fun title(title: String): U
 
     /**
      * Returns the [ComponentStyleSet] the resulting [Component] will use

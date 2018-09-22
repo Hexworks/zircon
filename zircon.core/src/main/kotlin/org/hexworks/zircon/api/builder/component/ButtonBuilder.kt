@@ -15,6 +15,10 @@ data class ButtonBuilder(
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
     : BaseComponentBuilder<Button, ButtonBuilder>(commonComponentProperties) {
 
+    override fun title(title: String): ButtonBuilder {
+        throw UnsupportedOperationException("You can't set a title for a button")
+    }
+
     fun wrapSides(wrapSides: Boolean) = also {
         this.wrapSides = wrapSides
     }

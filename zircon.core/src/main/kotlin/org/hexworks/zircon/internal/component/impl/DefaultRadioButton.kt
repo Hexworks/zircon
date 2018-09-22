@@ -6,60 +6,74 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.RadioButton
+import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
-import org.hexworks.zircon.internal.util.ThreadSafeQueue
+import org.hexworks.zircon.internal.event.ZirconEvent
 
 class DefaultRadioButton(private val text: String,
-                         wrappers: ThreadSafeQueue<ComponentDecorationRenderer>,
-                         width: Int,
-                         initialTileset: TilesetResource,
+                         private val renderingStrategy: ComponentRenderingStrategy<RadioButton>,
+                         tileset: TilesetResource,
+                         size: Size,
                          position: Position,
                          componentStyleSet: ComponentStyleSet)
     : RadioButton, DefaultComponent(
-        size = Size.create(width, 1),
+        size = size,
         position = position,
         componentStyles = componentStyleSet,
-        wrappers = wrappers,
-        tileset = initialTileset) {
-
-    private val maxTextLength = width - BUTTON_WIDTH - 1
-    private val clearedText = if (text.length > maxTextLength) {
-        text.substring(0, maxTextLength - 3).plus("...")
-    } else {
-        text
-    }
+        tileset = tileset) {
 
     private var state = NOT_SELECTED
+    private var selected = false
 
     init {
-        redrawContent()
+        render()
+        EventBus.listenTo<ZirconEvent.MouseOver>(id) {
+            componentStyleSet().applyMouseOverStyle()
+            render()
+        }
+        EventBus.listenTo<ZirconEvent.MouseOut>(id) {
+            state = if (selected) SELECTED else NOT_SELECTED
+            componentStyleSet().reset()
+            render()
+        }
+        EventBus.listenTo<ZirconEvent.MousePressed>(id) {
+            state = PRESSED
+            componentStyleSet().applyActiveStyle()
+            render()
+        }
+        EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
+            componentStyleSet().applyMouseOverStyle()
+            selected = true
+            state = SELECTED
+            render()
+        }
     }
 
-    private fun redrawContent() {
-        tileGraphics().putText("${STATES[state]} $clearedText")
-    }
+    override fun isSelected() = selected
 
-    override fun isSelected() = state == SELECTED
+    override fun state() = state
 
     fun select() {
-        if (state != SELECTED) {
-            tileGraphics().applyStyle(componentStyleSet().applyMouseOverStyle())
+        if (selected) {
+            componentStyleSet().applyMouseOverStyle()
             state = SELECTED
-            redrawContent()
+            selected = true
+            render()
         }
     }
 
     fun removeSelection() =
-            if (state != NOT_SELECTED) {
-                tileGraphics().applyStyle(componentStyleSet().reset())
+            if (selected) {
+                componentStyleSet().reset()
+                selected = false
                 state = NOT_SELECTED
-                redrawContent()
+                render()
                 true
             } else {
                 false
@@ -70,15 +84,17 @@ class DefaultRadioButton(private val text: String,
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        tileGraphics().applyStyle(componentStyleSet().applyFocusedStyle())
+        componentStyleSet().applyFocusedStyle()
+        render()
         return true
     }
 
     override fun takeFocus(input: Maybe<Input>) {
-        tileGraphics().applyStyle(componentStyleSet().reset())
+        componentStyleSet().reset()
+        render()
     }
 
-    override fun getText() = text
+    override fun text() = text
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
@@ -100,27 +116,17 @@ class DefaultRadioButton(private val text: String,
                         .build())
                 .build().also {
                     setComponentStyleSet(it)
+                    render()
                 }
+    }
+
+    private fun render() {
+        renderingStrategy.render(this, tileGraphics())
     }
 
     enum class RadioButtonState {
         PRESSED,
         SELECTED,
         NOT_SELECTED
-    }
-
-    companion object {
-
-        private val PRESSED_BUTTON = "<o>" // TODO: not used now
-        private val SELECTED_BUTTON = "<O>"
-        private val NOT_SELECTED_BUTTON = "< >"
-
-        private val BUTTON_WIDTH = NOT_SELECTED_BUTTON.length
-
-        private val STATES = mapOf(
-                Pair(PRESSED, PRESSED_BUTTON),
-                Pair(SELECTED, SELECTED_BUTTON),
-                Pair(NOT_SELECTED, NOT_SELECTED_BUTTON))
-
     }
 }

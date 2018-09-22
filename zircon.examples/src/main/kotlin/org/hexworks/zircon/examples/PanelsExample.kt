@@ -1,6 +1,8 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
+import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
 import org.hexworks.zircon.api.graphics.BoxType
 
 object PanelsExample {
@@ -48,34 +50,46 @@ object PanelsExample {
 
         screen.addComponent(Components.panel()
                 .wrapWithBox(true)
-                .title("Title")
+                .title("Qux")
                 .size(Sizes.create(18, 5))
                 .position(Positions.create(21, 8)))
 
         screen.addComponent(Components.panel()
-
+                .decorationRenderers(
+                        ShadowDecorationRenderer(),
+                        HalfBlockDecorationRenderer())
                 .size(Sizes.create(18, 5))
                 .position(Positions.create(21, 15)))
 
         screen.addComponent(Components.panel()
                 .size(Sizes.create(18, 5))
+                .title("Wombat")
+                .wrapWithBox(true)
+                .boxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .position(Positions.create(21, 22)))
 
         screen.addComponent(Components.panel()
                 .size(Sizes.create(18, 5))
+                .wrapWithBox(true)
+                .boxType(BoxType.LEFT_RIGHT_DOUBLE)
                 .position(Positions.create(41, 1)))
 
-        screen.addComponent(Components.panel()
-                .size(Sizes.create(18, 5))
-                .position(Positions.create(41, 8)))
+        val panel = Components.panel()
+                .size(Sizes.create(18, 19))
+                .wrapWithBox(true)
+                .title("Parent")
+                .position(Positions.create(41, 8))
+                .build()
 
-        screen.addComponent(Components.panel()
-                .size(Sizes.create(18, 5))
-                .position(Positions.create(41, 15)))
+        screen.addComponent(panel)
 
-        screen.addComponent(Components.panel()
-                .size(Sizes.create(18, 5))
-                .position(Positions.create(41, 22)))
+        panel.addComponent(Components.panel()
+                .size(Sizes.create(14, 8))
+                .position(Positions.create(2, 2))
+                .wrapWithBox(true)
+                .title("Nested")
+                .boxType(BoxType.DOUBLE)
+                .build())
 
         screen.display()
         screen.applyColorTheme(theme)

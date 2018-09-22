@@ -107,15 +107,15 @@ object LavaMarkovChainExample {
         val subsidingBubbleNode0 = MarkovChainNode.create(subsidingBubble0)
         val subsidingBubbleNode1 = MarkovChainNode.create(subsidingBubble1)
 
-        initialNode.addNext(.001, heatedNode0)
+        initialNode.addNext(.0005, heatedNode0)
         heatedNode0.addNext(.0005, heatedNode1)
         heatedNode1.addNext(.0005, heatedNode0)
         heatedNode0.addNext(.0005, initialNode)
 
-        initialNode.addNext(.0005, smallBubbleNode)
+        initialNode.addNext(.00025, smallBubbleNode)
         smallBubbleNode.addNext(.025, mediumBubbleNode)
         mediumBubbleNode.addNext(.05, largeBubbleNode)
-        largeBubbleNode.addNext(.075, explodingBubbleNode)
+        largeBubbleNode.addNext(.025, explodingBubbleNode)
         explodingBubbleNode.addNext(.1, subsidingBubbleNode0)
         subsidingBubbleNode0.addNext(.075, subsidingBubbleNode1)
         subsidingBubbleNode1.addNext(.05, initialNode)

@@ -18,10 +18,10 @@ import org.hexworks.zircon.internal.grid.RectangleTileGrid
 class TileGridScreen(
         private val tileGrid: TileGrid,
         private val componentsContainer: DefaultContainer = DefaultContainer(
-                initialSize = tileGrid.size(),
+                size = tileGrid.size(),
                 position = Position.defaultPosition(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet(),
-                initialTileset = tileGrid.tileset()),
+                componentStyles = ComponentStyleSet.defaultStyleSet(),
+                tileset = tileGrid.tileset()),
         private val buffer: InternalTileGrid = RectangleTileGrid(
                 tileset = tileGrid.tileset(),
                 size = tileGrid.size(),

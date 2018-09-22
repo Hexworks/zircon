@@ -35,11 +35,11 @@ class DefaultContainerTest {
         goodTileset = GOOD_TILESET
         badTileset = BAD_TILESET
         target = DefaultContainer(
-                initialSize = SIZE,
+                size = SIZE,
                 position = POSITION,
-                componentStyleSet = STYLES,
+                componentStyles = STYLES,
                 wrappers = WRAPPERS,
-                initialTileset = goodTileset)
+                tileset = goodTileset)
     }
 
     @Test

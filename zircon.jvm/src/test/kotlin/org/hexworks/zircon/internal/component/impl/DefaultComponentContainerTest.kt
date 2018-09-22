@@ -29,11 +29,11 @@ class DefaultComponentContainerTest {
     @Before
     fun setUp() {
         target = DefaultComponentContainer(DefaultContainer(
-                initialSize = SIZE,
+                size = SIZE,
                 position = Position.defaultPosition(),
-                componentStyleSet = STYLES,
+                componentStyles = STYLES,
                 wrappers = WRAPPERS,
-                initialTileset = TILESET))
+                tileset = TILESET))
     }
 
     @Test

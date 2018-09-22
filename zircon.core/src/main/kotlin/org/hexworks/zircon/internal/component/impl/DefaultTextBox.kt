@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
+import org.hexworks.zircon.internal.util.TextBuffer
 import org.hexworks.zircon.platform.util.SystemUtils
 
 class DefaultTextBox(private val text: String,
