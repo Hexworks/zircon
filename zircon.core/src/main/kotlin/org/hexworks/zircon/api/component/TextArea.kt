@@ -17,7 +17,7 @@ interface TextArea : Component, Scrollable {
 
     /**
      * Sets the text of this [TextArea].
-     * @returnThis `true` if the box was changed `false` if the old text was the same as the new
+     * @return `true` if the box was changed `false` if the old text was the same as the new
      */
     fun setText(text: String): Boolean
 

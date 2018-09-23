@@ -29,7 +29,7 @@ interface ComponentContainer {
      * *Note that* this function is applied recursively until
      * it either traverses the whole component tree or finds
      * the component to remove.
-     * @returnThis `true` if change happened, `false` if not
+     * @return `true` if change happened, `false` if not
      */
     fun removeComponent(component: Component): Boolean
 

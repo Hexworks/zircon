@@ -25,7 +25,7 @@ interface RadioButtonGroup : Component, Scrollable {
 
     /**
      * Clears the selected item in this [RadioButtonGroup].
-     * @returnThis `true` if the selection changed `false` if not
+     * @return `true` if the selection changed `false` if not
      */
     fun clearSelection(): Boolean
 
