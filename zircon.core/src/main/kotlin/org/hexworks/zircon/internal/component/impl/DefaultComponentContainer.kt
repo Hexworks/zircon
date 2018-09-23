@@ -101,6 +101,14 @@ class DefaultComponentContainer(private var container: DefaultContainer) :
                                 focusComponent(component)
                                 EventBus.sendTo(component.id, MouseReleased(input))
                             }
+
+                    MOUSE_DRAGGED -> container
+                            .fetchComponentByPosition(input.position)
+                            .map { component ->
+                                focusComponent(component)
+                                EventBus.sendTo(component.id, MouseDragged(input))
+                            }
+
                     else -> {
                         // we don't handle other actions yet
                     }

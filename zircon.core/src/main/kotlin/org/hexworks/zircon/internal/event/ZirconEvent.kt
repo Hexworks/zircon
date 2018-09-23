@@ -28,6 +28,11 @@ sealed class ZirconEvent : Event {
     data class MouseReleased(val mouseAction: MouseAction) : ZirconEvent()
 
     /**
+     * The mouse moved while a button was being pressed.
+     */
+    data class MouseDragged(val mouseAction: MouseAction) : ZirconEvent()
+
+    /**
      * The mouse moved.
      */
     data class MouseMoved(val mouseAction: MouseAction) : ZirconEvent()
