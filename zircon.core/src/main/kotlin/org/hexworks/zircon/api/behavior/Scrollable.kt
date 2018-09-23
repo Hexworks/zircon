@@ -35,49 +35,49 @@ interface Scrollable {
     /**
      * Scrolls this [Scrollable] with one width to the right.
      * If the bounds of the virtual space are already reached this method has no effect.
-     * @returnThis the new visible offset
+     * @return the new visible offset
      */
     fun scrollOneRight(): Position
 
     /**
      * Scrolls this [Scrollable] with one width to the left.
      * If the bounds of the virtual space are already reached this method has no effect.
-     * @returnThis the new visible offset
+     * @return the new visible offset
      */
     fun scrollOneLeft(): Position
 
     /**
      * Scrolls this [Scrollable] with one depth up.
      * If the bounds of the virtual space are already reached this method has no effect.
-     * @returnThis the new visible offset
+     * @return the new visible offset
      */
     fun scrollOneUp(): Position
 
     /**
      * Scrolls this [Scrollable] with one depth down.
      * If the bounds of the virtual space are already reached this method has no effect.
-     * @returnThis the new visible offset
+     * @return the new visible offset
      */
     fun scrollOneDown(): Position
 
     /**
      * Scrolls this [Scrollable] by `width` width to the right.
      * If the bounds of the virtual space are already reached this method has no effect.
-     * @returnThis the new visible offset
+     * @return the new visible offset
      */
     fun scrollRightBy(columns: Int): Position
 
     /**
      * Scrolls this [Scrollable] with `width` width to the left.
      * If the bounds of the virtual space are already reached this method has no effect.
-     * @returnThis the new visible offset
+     * @return the new visible offset
      */
     fun scrollLeftBy(columns: Int): Position
 
     /**
      * Scrolls this [Scrollable] by `depth` depth up.
      * If the bounds of the virtual space are already reached this method has no effect.
-     * @returnThis the new visible offset
+     * @return the new visible offset
      */
     fun scrollUpBy(rows: Int): Position
 
@@ -85,7 +85,7 @@ interface Scrollable {
     /**
      * Scrolls this [Scrollable] with `depth` depth down.
      * If the bounds of the virtual space are already reached this method has no effect.
-     * @returnThis the new visible offset
+     * @return the new visible offset
      */
     fun scrollDownBy(rows: Int): Position
 

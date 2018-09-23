@@ -16,7 +16,7 @@ interface Focusable {
     /**
      * Gives focus to this [Focusable].
      * @param input the [Input] (if any) which triggered the focus change
-     * @returnThis true if the focus was accepted, false if not
+     * @return true if the focus was accepted, false if not
      */
     fun giveFocus(input: Maybe<Input> = Maybe.empty()): Boolean
 
