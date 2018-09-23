@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.zircon.api.behavior.CursorHandler
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -28,8 +27,8 @@ import org.hexworks.zircon.platform.extension.deleteCharAt
 import org.hexworks.zircon.platform.extension.insert
 
 class DefaultTextArea constructor(
-        private val text: String,
         private val renderingStrategy: ComponentRenderingStrategy<TextArea>,
+        text: String,
         tileset: TilesetResource,
         size: Size,
         position: Position,
@@ -37,10 +36,11 @@ class DefaultTextArea constructor(
         scrollable: Scrollable = DefaultScrollable(size, size),
         cursorHandler: CursorHandler = DefaultCursorHandler(size))
     : TextArea, Scrollable by scrollable, CursorHandler by cursorHandler, DefaultComponent(
-        size = size,
         position = position,
+        size = size,
+        tileset = tileset,
         componentStyles = componentStyleSet,
-        tileset = tileset) {
+        renderer = renderingStrategy) {
 
     private val textBuffer = TextBuffer(text)
     private val subscriptions = mutableListOf<Subscription<*>>()
@@ -123,6 +123,10 @@ class DefaultTextArea constructor(
         disableTyping()
         componentStyleSet().reset()
         render()
+    }
+
+    override fun render() {
+        renderingStrategy.render(this, tileGraphics())
     }
 
     private fun enableFocusedComponent() {
@@ -334,9 +338,5 @@ class DefaultTextArea constructor(
         if (textCols >= visibleCols && textRows >= visibleRows) {
             setActualSize(textBuffer.getBoundingBoxSize())
         }
-    }
-
-    private fun render() {
-        renderingStrategy.render(this, tileGraphics())
     }
 }

@@ -2,17 +2,16 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.CommonComponentProperties
-import org.hexworks.zircon.api.component.Label
+import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.internal.component.impl.DefaultLabel
-import org.hexworks.zircon.internal.component.renderer.DefaultLabelRenderer
-import org.hexworks.zircon.platform.util.SystemUtils
+import org.hexworks.zircon.internal.component.impl.DefaultParagraph
+import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 
-data class LabelBuilder(
+data class ParagraphBuilder(
         private var text: String = "",
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
-    : BaseComponentBuilder<Label, LabelBuilder>(commonComponentProperties) {
+    : BaseComponentBuilder<Paragraph, ParagraphBuilder>(commonComponentProperties) {
 
     override fun title(title: String) = also { }
 
@@ -20,27 +19,24 @@ data class LabelBuilder(
         this.text = text
     }
 
-    override fun build(): Label {
+    override fun build(): Paragraph {
         require(text.isNotBlank()) {
             "A Label can't be blank!"
         }
         fillMissingValues()
+        // TODO: calculate size based on text size
         val size = if (size().isUnknown()) {
-            decorationRenderers().map { it.occupiedSize() }
+            decorationRenderers().asSequence()
+                    .map { it.occupiedSize() }
                     .fold(Size.create(text.length, 1), Size::plus)
         } else {
             size()
         }
-        val fixedText = text
-                .split(SystemUtils.getLineSeparator())
-                .first()
-                .split("\n")
-                .first()
-        return DefaultLabel(
-                text = fixedText,
+        return DefaultParagraph(
+                text = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
-                        componentRenderer = DefaultLabelRenderer()),
+                        componentRenderer = DefaultParagraphRenderer()),
                 size = size,
                 position = position(),
                 componentStyleSet = componentStyleSet(),
@@ -51,6 +47,6 @@ data class LabelBuilder(
 
     companion object {
 
-        fun newBuilder() = LabelBuilder()
+        fun newBuilder() = ParagraphBuilder()
     }
 }

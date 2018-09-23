@@ -13,7 +13,7 @@ class VirtualTileset : Tileset<Char> {
     override val id = Identifier.randomIdentifier()
 
     override fun drawTile(tile: Tile, surface: Char, position: Position) {
-        TODO("not implemented")
+        fetchTextureForTile(tile)
     }
     
     private fun fetchTextureForTile(tile: Tile): TileTexture<Char> {

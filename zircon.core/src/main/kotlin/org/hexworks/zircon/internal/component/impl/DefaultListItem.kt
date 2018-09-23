@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.Header
+import org.hexworks.zircon.api.component.ListItem
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -13,16 +13,16 @@ import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 
-class DefaultHeader(private val text: String,
-                    private val renderingStrategy: ComponentRenderingStrategy<Header>,
-                    initialSize: Size,
-                    initialTileset: TilesetResource,
-                    position: Position,
-                    componentStyleSet: ComponentStyleSet)
-    : Header, DefaultComponent(
+class DefaultListItem(private val text: String,
+                      private val renderingStrategy: ComponentRenderingStrategy<ListItem>,
+                      position: Position,
+                      size: Size,
+                      tileset: TilesetResource,
+                      componentStyleSet: ComponentStyleSet)
+    : ListItem, DefaultComponent(
         position = position,
-        size = initialSize,
-        tileset = initialTileset,
+        size = size,
+        tileset = tileset,
         componentStyles = componentStyleSet,
         renderer = renderingStrategy) {
 
@@ -31,7 +31,7 @@ class DefaultHeader(private val text: String,
         render()
     }
 
-    override fun getText() = text
+    override fun text() = text
 
     override fun acceptsFocus() = false
 
@@ -42,7 +42,7 @@ class DefaultHeader(private val text: String,
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.primaryForegroundColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor())
                         .backgroundColor(TileColor.transparent())
                         .build())
                 .build().also {

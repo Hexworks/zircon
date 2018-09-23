@@ -1,11 +1,14 @@
 package org.hexworks.zircon.internal.game
 
-import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.api.data.Block
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameComponent
 import org.hexworks.zircon.api.game.ProjectionMode
@@ -15,9 +18,9 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.Scrollable3D
-import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.hexworks.zircon.internal.component.impl.DefaultComponent
+import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
 /**
  * Note that this class is in **BETA**!
@@ -25,26 +28,26 @@ import org.hexworks.zircon.internal.component.impl.DefaultComponent
  */
 class DefaultGameComponent(private val gameArea: GameArea,
                            private val projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
-                           visibleSize: Size3D,
-                           initialTileset: TilesetResource,
                            position: Position,
+                           size: Size3D,
+                           tileset: TilesetResource,
                            componentStyleSet: ComponentStyleSet,
-                           boundable: DefaultBoundable = DefaultBoundable(
-                                   size = visibleSize.to2DSize(),
-                                   position = position),
                            private val scrollable: Scrollable3D = DefaultScrollable3D(
-                                   visibleSpaceSize = visibleSize,
+                                   visibleSpaceSize = size,
                                    virtualSpaceSize = gameArea.size()))
 
-    : GameComponent, Scrollable3D by scrollable, DefaultComponent(
-        size = visibleSize.to2DSize(),
-        position = position,
-        componentStyles = componentStyleSet,
-        wrappers = listOf(),
-        tileset = initialTileset,
-        boundable = boundable) {
+    : GameComponent,
+        Scrollable3D by scrollable,
+        DefaultComponent(
+                position = position,
+                size = size.to2DSize(),
+                componentStyles = componentStyleSet,
+                tileset = tileset,
+                renderer = DefaultComponentRenderingStrategy(
+                        decorationRenderers = listOf(),
+                        componentRenderer = NoOpComponentRenderer())) {
 
-    private val visibleLevelCount = visibleSize.zLength
+    private val visibleLevelCount = size.zLength
 
     init {
         refreshVirtualSpaceSize()
@@ -130,7 +133,6 @@ class DefaultGameComponent(private val gameArea: GameArea,
                 result.add(LayerBuilder.newBuilder().tileGraphic(it.build()).build())
             }
         }
-
         return result
     }
 
@@ -138,23 +140,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
         setActualSize(gameArea.size())
     }
 
-    override fun containsBoundable(boundable: Boundable): Boolean {
-        return bounds().containsBounds(boundable.bounds())
-    }
-
-    override fun containsPosition(position: Position): Boolean {
-        return bounds().containsPosition(position)
-    }
-
-    override fun size(): Size {
-        return bounds().size()
-    }
-
-    override fun position(): Position {
-        return bounds().position()
-    }
-
-    override fun intersects(boundable: Boundable): Boolean {
-        return bounds().intersects(boundable.bounds())
+    override fun render() {
+        // no-op
     }
 }

@@ -20,6 +20,12 @@ object Positions {
     fun offset1x1() = Position.offset1x1()
 
     /**
+     * Constant for the 0x0 position
+     */
+    @JvmStatic
+    fun zero() = Position.defaultPosition()
+
+    /**
      * This position can be considered as the default
      */
     @JvmStatic

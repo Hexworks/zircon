@@ -31,7 +31,7 @@ class DefaultLabelTest {
 
     @Test
     fun shouldProperlyReturnText() {
-        assertThat(target.getText()).isEqualTo(TEXT)
+        assertThat(target.text()).isEqualTo(TEXT)
     }
 
     @Test

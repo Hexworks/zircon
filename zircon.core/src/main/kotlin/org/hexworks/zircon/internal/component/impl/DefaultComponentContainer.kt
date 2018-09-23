@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
@@ -21,7 +20,7 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconEvent.*
 
-class DefaultComponentContainer(private var container: DefaultContainer) :
+class DefaultComponentContainer(private var container: RootContainer) :
         InternalComponentContainer {
 
     private var lastMousePosition = Position.defaultPosition()
@@ -43,13 +42,13 @@ class DefaultComponentContainer(private var container: DefaultContainer) :
         (component as? DefaultComponent)?.let { dc ->
             require(container.containsBoundable(dc)) {
                 "You can't add a component to a container which is not within its bounds " +
-                        "(target size: ${container.getEffectiveSize()}, component size: ${dc.size()}" +
+                        "(target size: ${container.size()}, component size: ${dc.size()}" +
                         ", position: ${dc.position()})!"
             }
-            require(container.getComponents().none { it.intersects(dc) }) {
+            require(container.children().none { it.intersects(dc) }) {
                 "You can't add a component to a container which intersects with other components!"
             }
-            require(container.getComponents().none { it.containsBoundable(dc) }) {
+            require(container.children().none { it.containsBoundable(dc) }) {
                 "You can't add a component to a container which intersects with other components!"
             }
             container.addComponent(dc)

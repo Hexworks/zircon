@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.component
 
-interface Label : Component {
+interface ListItem : Component {
 
     fun text(): String
 }

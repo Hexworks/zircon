@@ -66,7 +66,7 @@ class DefaultPanelTest {
     @Test
     fun shouldProperlyApplyThemeToChildren() {
         val component = LabelBuilder.newBuilder()
-                .text("text")
+                .text("fo")
                 .build()
         target.addComponent(component)
         target.applyColorTheme(THEME)
@@ -83,7 +83,7 @@ class DefaultPanelTest {
         val POSITION = Position.create(2, 3)
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val EXPECTED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.primaryForegroundColor())
+                .foregroundColor(THEME.secondaryForegroundColor())
                 .backgroundColor(THEME.primaryBackgroundColor())
                 .build()
     }

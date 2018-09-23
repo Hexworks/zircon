@@ -2,14 +2,10 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.CommonComponentProperties
-import org.hexworks.zircon.api.component.ComponentBuilder
-import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameComponent
 import org.hexworks.zircon.api.game.ProjectionMode
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.game.DefaultGameComponent
@@ -46,8 +42,8 @@ data class GameComponentBuilder(
         return DefaultGameComponent(
                 gameArea = gameArea.get(),
                 projectionMode = projectionMode,
-                visibleSize = visibleSize,
-                initialTileset = tileset(),
+                size = visibleSize,
+                tileset = tileset(),
                 position = position(),
                 componentStyleSet = componentStyleSet())
     }

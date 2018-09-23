@@ -1,11 +1,13 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.RadioButtonGroup
+import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
@@ -15,9 +17,9 @@ import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Consumer
+import org.hexworks.zircon.api.util.Maybe
+import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.api.Modifiers
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -31,11 +33,13 @@ class DefaultRadioButtonGroupTest {
     fun setUp() {
         tileset = DefaultLabelTest.FONT
         target = DefaultRadioButtonGroup(
-                wrappers = ThreadSafeQueueFactory.create(),
                 size = SIZE,
                 position = POSITION,
                 componentStyleSet = COMPONENT_STYLES,
-                tileset = tileset)
+                tileset = tileset,
+                renderingStrategy = DefaultComponentRenderingStrategy(
+                        decorationRenderers = listOf(),
+                        componentRenderer = DefaultRadioButtonGroupRenderer()))
     }
 
     @Test
@@ -51,7 +55,8 @@ class DefaultRadioButtonGroupTest {
 
     @Test
     fun shouldNotTakeGivenFocus() {
-        assertThat(target.giveFocus()).isFalse()
+
+        assertThat(target.giveFocus(Maybe.empty())).isFalse()
     }
 
     @Test

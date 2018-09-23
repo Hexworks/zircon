@@ -17,15 +17,16 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 
 class DefaultButton(private val text: String,
                     private val renderingStrategy: ComponentRenderingStrategy<Button>,
-                    initialTileset: TilesetResource,
-                    initialSize: Size,
                     position: Position,
+                    size: Size,
+                    tileset: TilesetResource,
                     componentStyleSet: ComponentStyleSet)
     : Button, DefaultComponent(
-        size = initialSize,
         position = position,
+        size = size,
+        tileset = tileset,
         componentStyles = componentStyleSet,
-        tileset = initialTileset) {
+        renderer = renderingStrategy) {
 
     init {
         render()
@@ -88,7 +89,7 @@ class DefaultButton(private val text: String,
                 }
     }
 
-    private fun render() {
+    override fun render() {
         renderingStrategy.render(this, tileGraphics())
     }
 }

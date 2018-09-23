@@ -9,7 +9,6 @@ class DefaultTextBoxRenderer : ComponentRenderer<TextBox>() {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<TextBox>) {
         val style = context.componentStyle().getCurrentStyle()
-        val component = context.component
-
+        tileGraphics.applyStyle(style)
     }
 }

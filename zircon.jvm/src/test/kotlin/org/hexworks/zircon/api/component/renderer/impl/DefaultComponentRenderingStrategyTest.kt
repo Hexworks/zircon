@@ -45,8 +45,8 @@ class DefaultComponentRenderingStrategyTest {
 
         val btn = DefaultButton(
                 text = "qux",
-                initialTileset = CP437TilesetResources.aduDhabi16x16(),
-                initialSize = size,
+                tileset = CP437TilesetResources.aduDhabi16x16(),
+                size = size,
                 position = Position.defaultPosition(),
                 componentStyleSet = ComponentStyleSet.defaultStyleSet(),
                 renderingStrategy = target)
@@ -71,10 +71,13 @@ class DefaultComponentRenderingStrategyTest {
 
         val label = DefaultLabel(
                 text = "Long text",
-                initialTileset = CP437TilesetResources.aduDhabi16x16(),
-                initialSize = size,
+                tileset = CP437TilesetResources.aduDhabi16x16(),
+                size = size,
                 position = Position.defaultPosition(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet())
+                componentStyleSet = ComponentStyleSet.defaultStyleSet(),
+                renderingStrategy = DefaultComponentRenderingStrategy(
+                        decorationRenderers = listOf(),
+                        componentRenderer = DefaultLabelRenderer()))
 
         val target = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),
@@ -96,8 +99,8 @@ class DefaultComponentRenderingStrategyTest {
 
         val button = DefaultButton(
                 text = "foo",
-                initialTileset = CP437TilesetResources.aduDhabi16x16(),
-                initialSize = size,
+                tileset = CP437TilesetResources.aduDhabi16x16(),
+                size = size,
                 position = Position.defaultPosition(),
                 componentStyleSet = ComponentStyleSet.defaultStyleSet(),
                 renderingStrategy = target)
@@ -124,8 +127,8 @@ class DefaultComponentRenderingStrategyTest {
 
         val button = DefaultButton(
                 text = "bar",
-                initialTileset = CP437TilesetResources.aduDhabi16x16(),
-                initialSize = size,
+                tileset = CP437TilesetResources.aduDhabi16x16(),
+                size = size,
                 position = Position.defaultPosition(),
                 componentStyleSet = ComponentStyleSet.defaultStyleSet(),
                 renderingStrategy = target)

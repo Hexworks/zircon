@@ -2,17 +2,17 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.CommonComponentProperties
-import org.hexworks.zircon.api.component.Label
+import org.hexworks.zircon.api.component.ListItem
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.internal.component.impl.DefaultLabel
-import org.hexworks.zircon.internal.component.renderer.DefaultLabelRenderer
+import org.hexworks.zircon.internal.component.impl.DefaultListItem
+import org.hexworks.zircon.internal.component.renderer.DefaultListItemRenderer
 import org.hexworks.zircon.platform.util.SystemUtils
 
-data class LabelBuilder(
+data class ListItemBuilder(
         private var text: String = "",
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
-    : BaseComponentBuilder<Label, LabelBuilder>(commonComponentProperties) {
+    : BaseComponentBuilder<ListItem, ListItemBuilder>(commonComponentProperties) {
 
     override fun title(title: String) = also { }
 
@@ -20,13 +20,14 @@ data class LabelBuilder(
         this.text = text
     }
 
-    override fun build(): Label {
+    override fun build(): ListItem {
         require(text.isNotBlank()) {
-            "A Label can't be blank!"
+            "A list item can't be blank!"
         }
         fillMissingValues()
         val size = if (size().isUnknown()) {
-            decorationRenderers().map { it.occupiedSize() }
+            decorationRenderers().asSequence()
+                    .map { it.occupiedSize() }
                     .fold(Size.create(text.length, 1), Size::plus)
         } else {
             size()
@@ -36,11 +37,11 @@ data class LabelBuilder(
                 .first()
                 .split("\n")
                 .first()
-        return DefaultLabel(
+        return DefaultListItem(
                 text = fixedText,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
-                        componentRenderer = DefaultLabelRenderer()),
+                        componentRenderer = DefaultListItemRenderer()),
                 size = size,
                 position = position(),
                 componentStyleSet = componentStyleSet(),
@@ -51,6 +52,6 @@ data class LabelBuilder(
 
     companion object {
 
-        fun newBuilder() = LabelBuilder()
+        fun newBuilder() = ListItemBuilder()
     }
 }

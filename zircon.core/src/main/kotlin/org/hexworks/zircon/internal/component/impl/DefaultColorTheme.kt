@@ -17,5 +17,6 @@ data class DefaultColorTheme(private val primaryForegroundColor: TileColor,
 
     override fun secondaryBackgroundColor() = secondaryBackgroundColor
 
+    // TODO: secondary accent color
     override fun accentColor() = accentColor
 }

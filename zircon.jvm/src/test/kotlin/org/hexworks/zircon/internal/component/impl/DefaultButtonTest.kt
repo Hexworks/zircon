@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.component.ButtonBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
@@ -16,7 +16,6 @@ import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.api.Modifiers
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -41,15 +40,15 @@ class DefaultButtonTest {
     @Ignore
     @Test
     fun shouldProperlyAddButtonText() {
-        val surface = target.tileGraphics()
-        val offset = target.getEffectivePosition().x
-        TEXT.forEachIndexed { i, char ->
-            assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
-                    .isEqualTo(TileBuilder.newBuilder()
-                            .character(char)
-                            .styleSet(DEFAULT_STYLE)
-                            .build())
-        }
+//        val surface = target.tileGraphics()
+//        val offset = target.getEffectivePosition().x
+//        TEXT.forEachIndexed { i, char ->
+//            assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
+//                    .isEqualTo(TileBuilder.newBuilder()
+//                            .character(char)
+//                            .styleSet(DEFAULT_STYLE)
+//                            .build())
+//        }
     }
 
     @Test

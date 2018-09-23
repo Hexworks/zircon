@@ -12,14 +12,16 @@ import org.hexworks.zircon.api.resource.TilesetResource
 
 class DefaultPanel(private val title: String,
                    private val renderingStrategy: ComponentRenderingStrategy<Panel>,
-                   initialSize: Size,
                    position: Position,
-                   initialTileset: TilesetResource,
+                   size: Size,
+                   tileset: TilesetResource,
                    componentStyleSet: ComponentStyleSet)
-    : Panel, DefaultContainer(size = initialSize,
+    : Panel, DefaultContainer(
         position = position,
+        size = size,
+        tileset = tileset,
         componentStyles = componentStyleSet,
-        tileset = initialTileset) {
+        renderer = renderingStrategy) {
 
     init {
         render()
@@ -30,19 +32,19 @@ class DefaultPanel(private val title: String,
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.primaryForegroundColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor())
                         .backgroundColor(colorTheme.primaryBackgroundColor())
                         .build())
                 .build().also { css ->
                     setComponentStyleSet(css)
                     render()
-                    getComponents().forEach {
+                    children().forEach {
                         it.applyColorTheme(colorTheme)
                     }
                 }
     }
 
-    private fun render() {
+    override fun render() {
         renderingStrategy.render(this, tileGraphics())
     }
 }

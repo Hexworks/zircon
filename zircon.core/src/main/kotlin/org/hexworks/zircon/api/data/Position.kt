@@ -178,6 +178,11 @@ interface Position : Comparable<Position> {
         fun offset1x1() = OFFSET_1X1
 
         /**
+         * Constant for the 0x0 position.
+         */
+        fun zero() = DEFAULT_POSITION
+
+        /**
          * This position can be considered as the default
          */
         fun defaultPosition() = DEFAULT_POSITION

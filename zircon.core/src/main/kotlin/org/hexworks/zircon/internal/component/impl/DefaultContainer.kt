@@ -2,18 +2,15 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -22,15 +19,17 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 @Suppress("UNCHECKED_CAST")
-open class DefaultContainer(size: Size,
-                            position: Position,
-                            tileset: TilesetResource,
-                            componentStyles: ComponentStyleSet)
-    : DefaultComponent(size = size,
+abstract class DefaultContainer(position: Position,
+                                size: Size,
+                                tileset: TilesetResource,
+                                componentStyles: ComponentStyleSet,
+                                renderer: ComponentRenderingStrategy<out Component>)
+    : Container, DefaultComponent(
         position = position,
+        size = size,
+        tileset = tileset,
         componentStyles = componentStyles,
-        tileset = tileset),
-        Container {
+        renderer = renderer) {
 
     private val components = ThreadSafeQueueFactory.create<InternalComponent>()
 
@@ -47,17 +46,26 @@ open class DefaultContainer(size: Size,
         }
     }
 
+    override fun children(): List<Component> {
+        return components.toList()
+    }
+
     override fun addComponent(component: Component) {
         require(component !== this) {
             "You can't add a component to itself!"
         }
         (component as? DefaultComponent)?.let { dc ->
-            // TODO: this move can be removed when the new decorator system gets into place
-            dc.moveTo(dc.position().withRelative(wrapperOffset()))
+            dc.moveTo(dc.position() + contentPosition())
             if (RuntimeConfig.config.betaEnabled.not()) {
                 require(tileset().size() == component.tileset().size()) {
                     "Trying to add component with incompatible tileset size '${component.tileset().size()}' to" +
                             "container with tileset size: '${tileset().size()}'!"
+                }
+                val contentBounds = contentSize().toBounds()
+                val originalDcBounds = dc.bounds().withPosition(dc.position() - contentPosition())
+                require(contentBounds.containsBounds(originalDcBounds)) {
+                    "Trying to add a component ($component) with bounds($originalDcBounds)" +
+                            " to a container ($this) with content bounds ($contentBounds) which is out of bounds."
                 }
                 components.firstOrNull { it.intersects(component) }?.let {
                     throw IllegalArgumentException(
@@ -87,12 +95,6 @@ open class DefaultContainer(size: Size,
         }
         return removalHappened
     }
-
-    override fun acceptsFocus() = false
-
-    override fun giveFocus(input: Maybe<Input>) = false
-
-    override fun takeFocus(input: Maybe<Input>) {}
 
     override fun transformToLayers(): List<Layer> {
         return listOf(LayerBuilder.newBuilder()
@@ -139,26 +141,9 @@ open class DefaultContainer(size: Size,
     override fun toString(): String {
         return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}," +
                 "position=${position()}," +
+                "size=${size()}," +
                 "components=[${components.joinToString()}])"
     }
-
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        val css = ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor())
-                        .backgroundColor(colorTheme.secondaryBackgroundColor())
-                        .build())
-                .build()
-        setComponentStyleSet(css)
-        // TODO: do we fill the background with the secondary background color?
-        // TODO: add a default background renderer?
-        components.forEach {
-            it.applyColorTheme(colorTheme)
-        }
-        return css
-    }
-
-    fun getComponents() = components
 
     fun fetchFlattenedComponentTree(): List<InternalComponent> {
         val result = mutableListOf<InternalComponent>()

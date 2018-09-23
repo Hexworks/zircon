@@ -35,10 +35,10 @@ data class CheckBoxBuilder(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultCheckBoxRenderer()),
-                initialSize = size,
+                size = size,
                 position = position(),
                 componentStyleSet = componentStyleSet(),
-                initialTileset = tileset())
+                tileset = tileset())
     }
 
     override fun createCopy() = copy()

@@ -12,6 +12,9 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.builder.grid.TileGridBuilder
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
@@ -19,6 +22,7 @@ import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.impl.wrapping.BorderComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.impl.wrapping.ShadowComponentDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.junit.Before
 import org.junit.Test
@@ -34,12 +38,23 @@ class DefaultContainerTest {
     fun setUp() {
         goodTileset = GOOD_TILESET
         badTileset = BAD_TILESET
-        target = DefaultContainer(
+        target = object : DefaultContainer(
                 size = SIZE,
                 position = POSITION,
                 componentStyles = STYLES,
-                wrappers = WRAPPERS,
-                tileset = goodTileset)
+                tileset = goodTileset,
+                renderer = DefaultComponentRenderingStrategy(
+                        decorationRenderers = listOf(),
+                        componentRenderer = DefaultRadioButtonGroupRenderer())){
+            override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun render() {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        }
     }
 
     @Test
@@ -96,7 +111,7 @@ class DefaultContainerTest {
         assertThat(panel.absolutePosition()).isEqualTo(Positions.create(1, 1))
         assertThat(panelHeader.absolutePosition()).isEqualTo(Positions.create(3, 2)) // + 1x1 because of the wrapper
         assertThat(innerPanel.absolutePosition()).isEqualTo(Positions.create(3, 4))
-        assertThat(innerPanelHeader.absolutePosition()).isEqualTo(Positions.create(4, 4))
+        assertThat(innerPanelHeader.absolutePosition()).isEqualTo(Positions.create(5, 5))
     }
 
     @Test
@@ -172,7 +187,7 @@ class DefaultContainerTest {
     @Test
     fun shouldProperlyRemoveComponentFromSelf() {
         val comp = LabelBuilder.newBuilder()
-                .text("xLength")
+                .text("x")
                 .position(Position.defaultPosition())
                 .build()
         target.addComponent(comp)
@@ -188,7 +203,7 @@ class DefaultContainerTest {
     @Test
     fun shouldProperlyRemoveComponentFromChild() {
         val comp = LabelBuilder.newBuilder()
-                .text("xLength")
+                .text("x")
                 .position(Position.defaultPosition())
                 .build()
         val panel = PanelBuilder.newBuilder()

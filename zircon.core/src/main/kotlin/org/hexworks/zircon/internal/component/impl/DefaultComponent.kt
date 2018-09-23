@@ -10,8 +10,6 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Bounds
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -25,17 +23,16 @@ import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
-import org.hexworks.zircon.internal.component.ComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.event.ZirconEvent
 
 @Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
+        position: Position,
         size: Size,
         tileset: TilesetResource,
-        position: Position,
         private var componentStyles: ComponentStyleSet,
-        private val wrappers: Iterable<ComponentDecorationRenderer> = listOf(),
+        private val renderer: ComponentRenderingStrategy<out Component>,
         private val graphics: TileGraphics = TileGraphicsBuilder
                 .newBuilder()
                 .tileset(tileset)
@@ -46,77 +43,101 @@ abstract class DefaultComponent(
                 position = position))
     : InternalComponent,
         Drawable by graphics,
-        TilesetOverride by graphics {
+        TilesetOverride by graphics,
+        Boundable by boundable {
 
     final override val id = Identifier.randomIdentifier()
-    private var currentOffset = Position.defaultPosition()
+
     private var parent = Maybe.empty<Container>()
 
-    override fun parent() = parent
+    final override fun contentPosition() = renderer.contentPosition()
 
-    override fun attachTo(parent: Container) {
+    final override fun contentSize() = renderer.contentSize(size())
+
+    final override fun moveTo(position: Position): Boolean {
+        return boundable.moveTo(position)
+    }
+
+    final override fun parent() = parent
+
+    final override fun attachTo(parent: Container) {
         this.parent.map {
             it.removeComponent(this)
         }
         this.parent = Maybe.of(parent)
     }
 
-    override fun absolutePosition(): Position {
-        val parentPos = if (parent.isPresent) {
-            parent.get().position()
-        } else {
-            Position.defaultPosition()
-        }
-        return position() + parentPos
+    final override fun absolutePosition(): Position {
+        // TODO: regression test this -> 3 nested components
+        return position() + parent.map { it.absolutePosition() }.orElse(Position.zero())
     }
+
+    // TODO: delegate these to behavior
+    // TODO: move all tile getters / setters into their own behavior
+    final override fun getRelativeTileAt(position: Position): Maybe<Tile> {
+        return graphics.getTileAt(position)
+    }
+
+    final override fun setRelativeTileAt(position: Position, tile: Tile) {
+        graphics.setTileAt(position, tile)
+    }
+
+    final override fun getTileAt(position: Position): Maybe<Tile> {
+        return graphics.getTileAt(position.minus(position()))
+    }
+
+    final override fun setTileAt(position: Position, tile: Tile) {
+        graphics.setTileAt(position.minus(position()), tile)
+    }
+
+    final override fun snapshot(): Map<Position, Tile> {
+        return graphics.snapshot()
+    }
+
+    final override fun fill(filler: Tile): Layer {
+        graphics.fill(filler)
+        return this
+    }
+
+    // TODO: support all mouse events --> extract to own behavior
+    final override fun onMousePressed(callback: Consumer<MouseAction>) {
+        EventBus.listenTo<ZirconEvent.MousePressed>(id) { (mouseAction) ->
+            callback.accept(mouseAction)
+        }
+    }
+
+    final override fun onMouseReleased(callback: Consumer<MouseAction>) {
+        EventBus.listenTo<ZirconEvent.MouseReleased>(id) { (mouseAction) ->
+            callback.accept(mouseAction)
+        }
+    }
+
+    final override fun onMouseMoved(callback: Consumer<MouseAction>) {
+        EventBus.listenTo<ZirconEvent.MouseMoved>(id) { (mouseAction) ->
+            callback.accept(mouseAction)
+        }
+    }
+
+    final override fun componentStyleSet() = componentStyles
+
+    final override fun setComponentStyleSet(componentStyleSet: ComponentStyleSet) {
+        // TODO: render?
+        this.componentStyles = componentStyleSet
+    }
+
+    final override fun applyStyle(styleSet: StyleSet) {
+        // TODO: should the user be able to do this?
+    }
+
+    final override fun tileGraphics() = graphics
 
     override fun createCopy(): Layer {
         TODO("Creating copies of Components is not supported yet.")
     }
 
-    override fun getRelativeTileAt(position: Position): Maybe<Tile> {
-        return graphics.getTileAt(position)
-    }
-
-    override fun setRelativeTileAt(position: Position, tile: Tile) {
-        graphics.setTileAt(position, tile)
-    }
-
-    override fun getTileAt(position: Position): Maybe<Tile> {
-        position()
-        return graphics.getTileAt(position.minus(position()))
-    }
-
-    override fun setTileAt(position: Position, tile: Tile) {
-        graphics.setTileAt(position.minus(position()), tile)
-    }
-
-    override fun snapshot(): Map<Position, Tile> {
-        return graphics.snapshot()
-    }
-
-    override fun fill(filler: Tile): Layer {
-        graphics.fill(filler)
-        return this
-    }
-
     override fun draw(drawable: Drawable, position: Position) {
         graphics.draw(drawable, position)
     }
-
-    final override fun moveTo(position: Position): Boolean {
-        return boundable.moveTo(position)
-    }
-
-    override fun bounds() = this.boundable.bounds()
-
-    override fun containsBoundable(boundable: Boundable) = this.boundable.containsBoundable(boundable)
-
-    override fun containsPosition(position: Position) = boundable.containsPosition(position)
-
-    override fun intersects(boundable: Boundable) = this.boundable.intersects(boundable)
-
-    override fun position() = boundable.position()
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
         surface.draw(graphics, position)
@@ -129,47 +150,6 @@ abstract class DefaultComponent(
                 Maybe.empty<InternalComponent>()
             }
 
-    override fun onMousePressed(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<ZirconEvent.MousePressed>(id) { (mouseAction) ->
-            callback.accept(mouseAction)
-        }
-    }
-
-    override fun onMouseReleased(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<ZirconEvent.MouseReleased>(id) { (mouseAction) ->
-            callback.accept(mouseAction)
-        }
-    }
-
-    override fun onMouseMoved(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<ZirconEvent.MouseMoved>(id) { (mouseAction) ->
-            callback.accept(mouseAction)
-        }
-    }
-
-    override fun componentStyleSet() = componentStyles
-
-    override fun setComponentStyleSet(componentStyleSet: ComponentStyleSet,
-                                      applyToEmptyCells: Boolean) {
-        this.componentStyles = componentStyleSet
-    }
-
-    final override fun applyStyle(styleSet: StyleSet) {
-        // TODO: should the user be able to do this?
-    }
-
-    override fun tileGraphics() = graphics
-
-    /**
-     * Returns the size which this component takes up without its wrappers.
-     */
-    override fun getEffectiveSize() = size() - wrappersSize()
-
-    /**
-     * Returns the position of this component offset by the wrappers it has.
-     */
-    override fun getEffectivePosition() = position() + wrapperOffset()
-
     open fun transformToLayers() =
             listOf(LayerBuilder.newBuilder()
                     .tileGraphic(graphics)
@@ -177,11 +157,10 @@ abstract class DefaultComponent(
                     .tileset(tileset())
                     .build())
 
-    override fun size() = boundable.size()
-
     override fun toString(): String {
         return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}," +
-                "position=${position()})"
+                "position=${position()}," +
+                "size=${size()})"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -195,23 +174,5 @@ abstract class DefaultComponent(
     override fun hashCode(): Int {
         return id.hashCode()
     }
-
-    private fun applyWrappers() {
-        var currSize = getEffectiveSize()
-        currentOffset = Position.defaultPosition()
-        wrappers.forEach {
-            currSize += it.getOccupiedSize()
-            it.render(graphics, currSize, currentOffset, componentStyles.getCurrentStyle())
-            currentOffset += it.getOffset()
-        }
-    }
-
-    override fun wrapperOffset() = wrappers.map { it.getOffset() }.fold(Position.topLeftCorner(), Position::plus)
-
-    /**
-     * Calculate the size taken by all the wrappers.
-     */
-    override fun wrappersSize() = wrappers.map { it.getOccupiedSize() }.fold(Size.zero(), Size::plus)
-
 
 }

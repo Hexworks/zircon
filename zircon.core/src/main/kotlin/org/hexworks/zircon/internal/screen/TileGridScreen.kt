@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.screen
 
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.grid.TileGrid
@@ -9,7 +10,8 @@ import org.hexworks.zircon.internal.behavior.impl.ComponentsLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.impl.DefaultComponentContainer
-import org.hexworks.zircon.internal.component.impl.DefaultContainer
+import org.hexworks.zircon.internal.component.impl.RootContainer
+import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.grid.InternalTileGrid
@@ -17,11 +19,14 @@ import org.hexworks.zircon.internal.grid.RectangleTileGrid
 
 class TileGridScreen(
         private val tileGrid: TileGrid,
-        private val componentsContainer: DefaultContainer = DefaultContainer(
+        private val componentsContainer: RootContainer = RootContainer(
+                renderingStrategy = DefaultComponentRenderingStrategy(
+                        decorationRenderers = listOf(),
+                        componentRenderer = RootContainerRenderer()),
                 size = tileGrid.size(),
                 position = Position.defaultPosition(),
-                componentStyles = ComponentStyleSet.defaultStyleSet(),
-                tileset = tileGrid.tileset()),
+                tileset = tileGrid.tileset(),
+                componentStyleSet = ComponentStyleSet.defaultStyleSet()),
         private val buffer: InternalTileGrid = RectangleTileGrid(
                 tileset = tileGrid.tileset(),
                 size = tileGrid.size(),

@@ -2,64 +2,105 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.CommonComponentProperties
+import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.TextBox
+import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultTextBox
-import org.hexworks.zircon.platform.util.SystemUtils
+import org.hexworks.zircon.internal.component.renderer.DefaultTextBoxRenderer
 
 data class TextBoxBuilder(
         private var text: String = "",
         private var size: Size = Size.one(),
+        private var contentWidth: Int = 0,
+        private var nextPosition: Position = Position.defaultPosition(),
+        private var currentSize: Size = Size.one(),
+        private val components: MutableList<Component> = mutableListOf(),
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
     : BaseComponentBuilder<TextBox, TextBoxBuilder>(commonComponentProperties) {
+
+    fun contentWidth(width: Int) = also {
+        this.contentWidth = width
+        currentSize = currentSize.withWidth(width)
+    }
+
+    override fun size(size: Size): TextBoxBuilder {
+        throw UnsupportedOperationException("You can't set a size for a TextBox by hand. Try setting width instead.")
+    }
+
+    fun header(text: String) = also {
+        header(text, true)
+    }
+
+    fun header(text: String, withNewLine: Boolean = true) = also {
+        val size = Size.create(contentWidth, text.length.div(contentWidth) + 1)
+        components.add(HeaderBuilder.newBuilder()
+                .size(size)
+                .text(text)
+                .position(nextPosition)
+                .build())
+        currentSize = currentSize.withRelativeYLength(size.yLength)
+        nextPosition = nextPosition.withRelativeY(size.yLength)
+        if (withNewLine) {
+            newLine()
+        }
+    }
 
     fun paragraph(paragraph: String) = also {
         paragraph(paragraph, true)
     }
 
     fun paragraph(paragraph: String, withNewLine: Boolean = true) = also {
-        paragraph.forEachIndexed { idx, char ->
-            val needsNewLine = idx.rem(size.width()) == 0 && idx != 0
-            if (needsNewLine) {
-                this.text += SystemUtils.getLineSeparator()
-            }
-            if ((needsNewLine && char == ' ').not()) {
-                this.text += char
-            }
+        val size = Size.create(contentWidth, paragraph.length.div(contentWidth) + 1)
+        components.add(ParagraphBuilder.newBuilder()
+                .size(size)
+                .text(paragraph)
+                .position(nextPosition)
+                .build())
+        currentSize = currentSize.withRelativeYLength(size.yLength)
+        nextPosition = nextPosition.withRelativeY(size.yLength)
+        if (withNewLine) {
+            newLine()
         }
-        if (withNewLine) newLine()
     }
 
     fun listItem(item: String) = also {
-        this.text += "- "
-        item.forEachIndexed { idx, char ->
-            val needsNewLine = idx.rem(size.width()) == 0 && idx != 0
-            if (needsNewLine) {
-                this.text += SystemUtils.getLineSeparator() + "  "
-            }
-            if ((needsNewLine && char == ' ').not()) {
-                this.text += "$char"
-            }
-        }
-        newLine()
+        val size = Size.create(contentWidth, item.length.div(contentWidth) + 1)
+        components.add(ListItemBuilder.newBuilder()
+                .size(size)
+                .text(item)
+                .position(nextPosition)
+                .build())
+        currentSize = currentSize.withRelativeYLength(size.yLength)
+        nextPosition = nextPosition.withRelativeY(size.yLength)
     }
 
     fun newLine() = also {
-        this.text += SystemUtils.getLineSeparator()
+        nextPosition = nextPosition.withRelativeY(1)
+        currentSize = currentSize.withRelativeYLength(1)
     }
-
-    fun text(text: String) = also {
-        this.text = text
-    }
-
 
     override fun build(): TextBox {
+        require(currentSize != Size.unknown()) {
+            "You must set a size for a TextBox!"
+        }
+        fillMissingValues()
+        val decorationSize = decorationRenderers().asSequence()
+                .map { it.occupiedSize() }
+                .fold(Size.zero(), Size::plus)
         return DefaultTextBox(
-                text = text,
-                initialSize = size,
+                renderingStrategy = DefaultComponentRenderingStrategy(
+                        decorationRenderers = decorationRenderers(),
+                        componentRenderer = DefaultTextBoxRenderer()),
+                size = currentSize + decorationSize,
                 position = position(),
                 componentStyleSet = componentStyleSet(),
-                initialTileset = tileset())
+                tileset = tileset()).also { textBox ->
+            components.forEach {
+                textBox.addComponent(it)
+            }
+        }
     }
 
     override fun createCopy() = copy()
