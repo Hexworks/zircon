@@ -2,11 +2,6 @@ package org.hexworks.zircon.api.component
 
 /**
  * A TextBox is a component which contains non-editable
- * text. It differs from [Label] in that a [TextBox]
- * can be multi-line.
+ * stylized text (headers, paragraphs, list items, etc.)
  */
-interface TextBox : Component {
-
-    fun getText(): String
-
-}
+interface TextBox : Component

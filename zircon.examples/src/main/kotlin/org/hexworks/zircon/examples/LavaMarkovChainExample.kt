@@ -78,24 +78,6 @@ object LavaMarkovChainExample {
                 .debugMode(true)
                 .build())
 
-//        val positions0 = Sizes.create(100, 1).fetchPositions().iterator()
-//
-//        tileGrid.setTileAt(positions0.next(), defaultLava)
-//        tileGrid.setTileAt(positions0.next(), smallBubble)
-//        tileGrid.setTileAt(positions0.next(), mediumBubble)
-//        tileGrid.setTileAt(positions0.next(), largeBubble)
-//        tileGrid.setTileAt(positions0.next(), explodingBubble)
-//        tileGrid.setTileAt(positions0.next(), subsidingBubble0)
-//        tileGrid.setTileAt(positions0.next(), subsidingBubble1)
-//        tileGrid.setTileAt(positions0.next(), defaultLava)
-//
-//
-//        val positions1 = Sizes.create(100, 1).fetchPositions().iterator()
-//
-//        tileGrid.setTileAt(positions1.next().withRelativeY(1), defaultLava)
-//        tileGrid.setTileAt(positions1.next().withRelativeY(1), heatedLava)
-//        tileGrid.setTileAt(positions1.next().withRelativeY(1), defaultLava)
-
         val initialNode = MarkovChainNode.create(defaultLava)
         val heatedNode0 = MarkovChainNode.create(heatedLava0)
         val heatedNode1 = MarkovChainNode.create(heatedLava1)

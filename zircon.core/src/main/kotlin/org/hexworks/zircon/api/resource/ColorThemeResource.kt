@@ -377,13 +377,13 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
 
     enum class SolarizedBase(val colorThemeBuilder: ColorThemeBuilder) {
         SOLARIZED_DARK_BASE(ColorThemeBuilder.newBuilder()
-                .primaryForegroundColor(TileColor.fromString("#93a1a1"))
-                .secondaryForegroundColor(TileColor.fromString("#839496"))
+                .primaryForegroundColor(TileColor.fromString("#fdf6e3"))
+                .secondaryForegroundColor(TileColor.fromString("#eee8d5"))
                 .primaryBackgroundColor(TileColor.fromString("#073642"))
                 .secondaryBackgroundColor(TileColor.fromString("#002b36"))),
 
         SOLARIZED_LIGHT_BASE(ColorThemeBuilder.newBuilder()
-                .primaryForegroundColor(TileColor.fromString("#657b83"))
+                .primaryForegroundColor(TileColor.fromString("#002b36"))
                 .secondaryForegroundColor(TileColor.fromString("#586e75"))
                 .primaryBackgroundColor(TileColor.fromString("#fdf6e3"))
                 .secondaryBackgroundColor(TileColor.fromString("#eee8d5")))

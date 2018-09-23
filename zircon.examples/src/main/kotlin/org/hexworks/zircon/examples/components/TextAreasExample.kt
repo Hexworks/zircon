@@ -1,8 +1,6 @@
-package org.hexworks.zircon.examples
+package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
 import org.hexworks.zircon.api.graphics.BoxType
 
 object TextAreasExample {

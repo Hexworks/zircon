@@ -21,7 +21,7 @@ object NonSquareTilesetExample {
 
         val textBox = Components.textBox()
                 .position(Positions.create(2, 0))
-                .size(Sizes.create(30, 20))
+                .contentWidth(20)
                 .paragraph("This text is more readable because it does not use a square tileset.")
                 .paragraph("This is a 8x16 tileset in fact...")
                 .paragraph("It works fine with a Panel which uses a 16x16 tileset!")

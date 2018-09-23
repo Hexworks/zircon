@@ -15,22 +15,23 @@ import org.hexworks.zircon.api.util.Maybe
 
 class DefaultLabel(private val text: String,
                    private val renderingStrategy: ComponentRenderingStrategy<Label>,
-                   initialTileset: TilesetResource,
-                   initialSize: Size,
                    position: Position,
+                   size: Size,
+                   tileset: TilesetResource,
                    componentStyleSet: ComponentStyleSet)
     : Label, DefaultComponent(
-        size = initialSize,
         position = position,
+        size = size,
+        tileset = tileset,
         componentStyles = componentStyleSet,
-        tileset = initialTileset) {
+        renderer = renderingStrategy) {
 
 
     init {
         render()
     }
 
-    override fun getText() = text
+    override fun text() = text
 
     override fun acceptsFocus() = false
 
@@ -50,7 +51,7 @@ class DefaultLabel(private val text: String,
                 }
     }
 
-    private fun render() {
+    override fun render() {
         renderingStrategy.render(this, tileGraphics())
     }
 }

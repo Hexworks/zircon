@@ -1,12 +1,10 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.zircon.api.data.Bounds
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.internal.behavior.Identifiable
@@ -29,27 +27,19 @@ interface Component : Identifiable, Layer {
     fun isAttached(): Boolean
 
     /**
-     * Returns the effective [Size] of this [Component] which is the area remaining
-     * after the area taken up by its wrappers are subtracted from its boundable size.
-     * So if a [Component] has a box around it and it has a boundable size of (5, 5)
-     * its inner size will be (3, 3).
+     * The [Position] where the content of this [Component] starts
+     * relative to the top left corner. In other words the content position
+     * is the sum of the offset positions for each decoration.
      */
-    fun getEffectiveSize(): Size
+    fun contentPosition(): Position
 
     /**
-     * Returns the effective [Position] of this [Component] which is the component's `position`
-     * offset by the space taken up by its wrappers.
-     * So if a [Component] has a box around it and it has a Position of (2, 3)
-     * its effective position will be (3, 4).
+     * Calculates the [Size] of the content of this [Component].
+     * In other words the content size is the total size of
+     * the component minus the size of the decorations.
      */
-    fun getEffectivePosition(): Position
+    fun contentSize(): Size
 
-    fun wrapperOffset(): Position
-
-    /**
-     * Calculate the size taken by all the wrappers.
-     */
-    fun wrappersSize(): Size
     /**
      * Returns the absolute position of this [Component].
      * The absolute position is the position of the top left corner
@@ -83,18 +73,8 @@ interface Component : Identifiable, Layer {
     /**
      * Sets the styles this [Component] will be displayed with and also
      * applies the style which corresponds to the current state of the [Component].
-     * The styles will also be applied to empty cells.
      */
-    fun setComponentStyleSet(componentStyleSet: ComponentStyleSet) = setComponentStyleSet(componentStyleSet, true)
-
-    /**
-     * Sets the styles this [Component] will be displayed with and also
-     * applies the style which corresponds to the current state of the [Component].
-     *
-     * @param applyToEmptyCells apply the styles to empty cells, or not
-     */
-    fun setComponentStyleSet(componentStyleSet: ComponentStyleSet,
-                             applyToEmptyCells: Boolean)
+    fun setComponentStyleSet(componentStyleSet: ComponentStyleSet)
 
     /**
      * Sets the style of this [Component] from the given `styleSet`

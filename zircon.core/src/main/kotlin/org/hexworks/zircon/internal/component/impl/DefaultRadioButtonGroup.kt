@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
+import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.RadioButton
@@ -23,16 +24,17 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 
 class DefaultRadioButtonGroup constructor(
         private val renderingStrategy: ComponentRenderingStrategy<RadioButtonGroup>,
-        tileset: TilesetResource,
-        size: Size,
         position: Position,
+        size: Size,
+        tileset: TilesetResource,
         componentStyleSet: ComponentStyleSet,
         scrollable: Scrollable = DefaultScrollable(size, size))
     : RadioButtonGroup, Scrollable by scrollable, DefaultContainer(
-        size = size,
         position = position,
+        size = size,
+        tileset = tileset,
         componentStyles = componentStyleSet,
-        tileset = tileset) {
+        renderer = renderingStrategy) {
 
     private val items = LinkedHashMap<String, DefaultRadioButton>()
     private val selectionListeners = mutableListOf<Consumer<Selection>>()
@@ -47,14 +49,14 @@ class DefaultRadioButtonGroup constructor(
     }
 
     override fun addOption(key: String, text: String): RadioButton {
-        require(items.size < renderingStrategy.effectiveSize(size()).yLength) {
+        require(items.size < renderingStrategy.contentSize(size()).yLength) {
             "This RadioButtonGroup does not have enough space for another option!"
         }
         return DefaultRadioButton(
                 text = text,
                 renderingStrategy = buttonRenderingStrategy,
-                size = Size.create(renderingStrategy.effectiveSize(size()).width(), 1),
-                position = Position.create(0, items.size) + renderingStrategy.effectivePosition(),
+                size = Size.create(renderingStrategy.contentSize(size()).width(), 1),
+                position = Position.create(0, items.size),
                 componentStyleSet = componentStyleSet(),
                 tileset = tileset()).also { button ->
             items[key] = button
@@ -95,13 +97,13 @@ class DefaultRadioButtonGroup constructor(
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.primaryForegroundColor())
-                        .backgroundColor(colorTheme.primaryBackgroundColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor())
+                        .backgroundColor(TileColor.transparent())
                         .build())
                 .build().also { css ->
                     setComponentStyleSet(css)
                     render()
-                    getComponents().forEach {
+                    children().forEach {
                         it.applyColorTheme(colorTheme)
                     }
                 }
@@ -109,6 +111,10 @@ class DefaultRadioButtonGroup constructor(
 
     override fun onSelection(callback: Consumer<Selection>) {
         selectionListeners.add(callback)
+    }
+
+    override fun render() {
+        renderingStrategy.render(this, tileGraphics())
     }
 
     private fun refreshContent() {
@@ -120,10 +126,6 @@ class DefaultRadioButtonGroup constructor(
             addComponent(comp)
         }
         render()
-    }
-
-    private fun render() {
-        renderingStrategy.render(this, tileGraphics())
     }
 
     data class DefaultSelection(private val key: String,

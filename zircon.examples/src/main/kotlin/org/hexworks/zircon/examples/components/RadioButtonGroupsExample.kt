@@ -1,4 +1,4 @@
-package org.hexworks.zircon.examples
+package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.graphics.BoxType
@@ -30,7 +30,7 @@ object RadioButtonGroupsExample {
                 .size(Sizes.create(14, 3))
                 .build()
         val simpleRadioButtonGroup1 = Components.radioButtonGroup()
-                .position(Positions.create(2, 2))
+                .position(Positions.create(0, 0))
                 .size(Sizes.create(14, 3))
                 .build()
 
@@ -48,14 +48,14 @@ object RadioButtonGroupsExample {
                 .wrapWithShadow(true)
                 .wrapWithBox(true)
                 .size(Sizes.create(14, 3))
-                .position(Positions.create(2, 10))
+                .position(Positions.create(2, 8))
                 .build()
         val decoratedRadioButtonGroup1 = Components.radioButtonGroup()
                 .boxType(BoxType.DOUBLE)
                 .wrapWithShadow(true)
                 .wrapWithBox(true)
                 .size(Sizes.create(14, 3))
-                .position(Positions.create(2, 10))
+                .position(Positions.create(0, 6))
                 .build()
 
         screen.addComponent(decoratedRadioButtonGroup0)

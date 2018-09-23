@@ -1,14 +1,14 @@
-package org.hexworks.zircon.examples
+package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
 import org.hexworks.zircon.api.graphics.BoxType
 
-object CheckBoxesExample {
+object HeadersExample {
 
-    private val theme = ColorThemes.solarizedLightOrange()
-    private val tileset = CP437TilesetResources.rogueYun16x16()
+    private val theme = ColorThemes.oliveLeafTea()
+    private val tileset = TrueTypeFontResources.amstrad(20)
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -27,41 +27,41 @@ object CheckBoxesExample {
                 .build()
         screen.addComponent(panel)
 
-        val simpleCheckBox = Components.checkBox()
-                .text("Check me")
+        val simpleHeader = Components.header()
+                .text("Some header")
                 .position(Positions.create(2, 2))
 
-        screen.addComponent(simpleCheckBox)
-        panel.addComponent(simpleCheckBox)
+        screen.addComponent(simpleHeader)
+        panel.addComponent(simpleHeader)
 
-        val decoratedCheckBox = Components.checkBox()
-                .text("Check me")
+        val decoratedLabel = Components.label()
+                .text("Some label")
                 .boxType(BoxType.DOUBLE)
                 .wrapWithShadow(true)
                 .wrapWithBox(true)
                 .position(Positions.create(2, 4))
 
-        screen.addComponent(decoratedCheckBox)
-        panel.addComponent(decoratedCheckBox)
+        screen.addComponent(decoratedLabel)
+        panel.addComponent(decoratedLabel)
 
-        val shadowedCheckBox = Components.checkBox()
-                .text("Check me")
+        val shadowedHeader = Components.header()
+                .text("Some header")
                 .wrapWithShadow(true)
                 .position(Positions.create(2, 9))
 
-        screen.addComponent(shadowedCheckBox)
-        panel.addComponent(shadowedCheckBox)
+        screen.addComponent(shadowedHeader)
+        panel.addComponent(shadowedHeader)
 
-        val tooLongCheckBox = Components.checkBox()
-                .text("Too long text")
-                .width(12)
+        val tooLongHeader = Components.header()
+                .text("Too long header")
+                .size(Sizes.create(10, 1))
                 .position(Positions.create(2, 13))
 
-        screen.addComponent(tooLongCheckBox)
-        panel.addComponent(tooLongCheckBox)
+        screen.addComponent(tooLongHeader)
+        panel.addComponent(tooLongHeader)
 
-        val overTheTopCheckBox = Components.checkBox()
-                .text("Over the top")
+        val overTheTopHeader = Components.header()
+                .text("WTF header")
                 .decorationRenderers(
                         ShadowDecorationRenderer(),
                         BoxDecorationRenderer(BoxType.DOUBLE),
@@ -69,8 +69,8 @@ object CheckBoxesExample {
                         BoxDecorationRenderer(BoxType.LEFT_RIGHT_DOUBLE))
                 .position(Positions.create(2, 16))
 
-        screen.addComponent(overTheTopCheckBox)
-        panel.addComponent(overTheTopCheckBox)
+        screen.addComponent(overTheTopHeader)
+        panel.addComponent(overTheTopHeader)
 
 
         screen.display()

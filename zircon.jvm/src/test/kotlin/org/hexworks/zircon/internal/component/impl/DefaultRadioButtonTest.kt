@@ -1,17 +1,19 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentState
+import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
-import org.hexworks.zircon.api.Modifiers
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
+import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
 import org.junit.Before
 import org.junit.Test
 
@@ -23,11 +25,13 @@ class DefaultRadioButtonTest {
     fun setUp() {
         target = DefaultRadioButton(
                 text = TEXT,
-                wrappers = ThreadSafeQueueFactory.create(),
-                width = WIDTH,
+                size = Size.create(WIDTH, 1),
                 position = POSITION,
                 componentStyleSet = COMPONENT_STYLES,
-                tileset = TILESET)
+                tileset = TILESET,
+                renderingStrategy = DefaultComponentRenderingStrategy(
+                        decorationRenderers = listOf(),
+                        componentRenderer = DefaultRadioButtonRenderer()))
     }
 
     @Test

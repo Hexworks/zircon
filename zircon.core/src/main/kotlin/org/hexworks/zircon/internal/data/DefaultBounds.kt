@@ -12,20 +12,20 @@ class DefaultBounds(private val position: Position,
     override fun size() = size
 
     override fun containsPosition(position: Position): Boolean {
-        val (px, py) = position
-        var w = width()
-        var h = height()
-        if (w or h < 0) {
+        val (otherX, otherY) = position
+        var width = width()
+        var height = height()
+        if (width or height < 0) {
             return false
         }
         val x = x()
         val y = y()
-        if (px < x || py < y) {
+        if (otherX < x || otherY < y) {
             return false
         }
-        w += x
-        h += y
-        return (w < x || w > px) && (h < y || h > py)
+        width += x
+        height += y
+        return (width < x || width > otherX) && (height < y || height > otherY)
     }
 
     override fun intersects(otherBounds: Bounds): Boolean {
@@ -48,6 +48,11 @@ class DefaultBounds(private val position: Position,
                 (rh < ry || rh > ty) &&
                 (tw < tx || tw > rx) &&
                 (th < ty || th > ry)
+    }
+
+    override fun toString(): String {
+        return "${this::class.simpleName}(position=${position()}," +
+                "size=${size()})"
     }
 
     override fun containsBounds(otherBounds: Bounds): Boolean {

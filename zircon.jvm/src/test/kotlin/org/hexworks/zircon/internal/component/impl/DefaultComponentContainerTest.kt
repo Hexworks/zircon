@@ -1,11 +1,13 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.component.ButtonBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
@@ -16,8 +18,8 @@ import org.hexworks.zircon.api.input.MouseActionType.*
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.component.impl.wrapping.BorderComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.impl.wrapping.ShadowComponentDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.api.Modifiers
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -28,12 +30,14 @@ class DefaultComponentContainerTest {
 
     @Before
     fun setUp() {
-        target = DefaultComponentContainer(DefaultContainer(
-                size = SIZE,
+        target = DefaultComponentContainer(RootContainer(
+                renderingStrategy = DefaultComponentRenderingStrategy(
+                        decorationRenderers = listOf(),
+                        componentRenderer = RootContainerRenderer()),
                 position = Position.defaultPosition(),
-                componentStyles = STYLES,
-                wrappers = WRAPPERS,
-                tileset = TILESET))
+                size = SIZE,
+                tileset = TILESET,
+                componentStyleSet = STYLES))
     }
 
     @Test

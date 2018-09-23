@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultLabel
 import org.hexworks.zircon.internal.component.renderer.DefaultLabelRenderer
+import org.hexworks.zircon.platform.util.SystemUtils
 
 data class LabelBuilder(
         private var text: String = "",
@@ -30,15 +31,20 @@ data class LabelBuilder(
         } else {
             size()
         }
+        val fixedText = text
+                .split(SystemUtils.getLineSeparator())
+                .first()
+                .split("\n")
+                .first()
         return DefaultLabel(
-                text = text,
+                text = fixedText,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultLabelRenderer()),
-                initialSize = size,
+                size = size,
                 position = position(),
                 componentStyleSet = componentStyleSet(),
-                initialTileset = tileset())
+                tileset = tileset())
     }
 
     override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())

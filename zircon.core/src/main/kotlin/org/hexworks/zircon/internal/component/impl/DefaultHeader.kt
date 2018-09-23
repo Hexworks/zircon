@@ -18,11 +18,13 @@ class DefaultHeader(private val text: String,
                     initialSize: Size,
                     initialTileset: TilesetResource,
                     position: Position,
-                    componentStyleSet: ComponentStyleSet) : Header, DefaultComponent(
-        size = initialSize,
+                    componentStyleSet: ComponentStyleSet)
+    : Header, DefaultComponent(
         position = position,
+        size = initialSize,
+        tileset = initialTileset,
         componentStyles = componentStyleSet,
-        tileset = initialTileset) {
+        renderer = renderingStrategy) {
 
 
     init {
@@ -49,7 +51,7 @@ class DefaultHeader(private val text: String,
                 }
     }
 
-    private fun render() {
+    override fun render() {
         renderingStrategy.render(this, tileGraphics())
     }
 }

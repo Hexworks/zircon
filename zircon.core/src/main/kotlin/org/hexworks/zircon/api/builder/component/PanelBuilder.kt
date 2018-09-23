@@ -22,10 +22,10 @@ data class PanelBuilder(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultPanelRenderer()),
-                initialSize = size(),
+                size = size(),
                 position = position(),
                 componentStyleSet = componentStyleSet(),
-                initialTileset = tileset())
+                tileset = tileset())
     }
 
     override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())

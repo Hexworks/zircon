@@ -18,15 +18,16 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 
 class DefaultCheckBox(private val text: String,
                       private val renderingStrategy: ComponentRenderingStrategy<CheckBox>,
-                      initialTileset: TilesetResource,
-                      initialSize: Size,
                       position: Position,
+                      size: Size,
+                      tileset: TilesetResource,
                       componentStyleSet: ComponentStyleSet)
     : CheckBox, DefaultComponent(
-        size = initialSize,
         position = position,
+        size = size,
+        tileset = tileset,
         componentStyles = componentStyleSet,
-        tileset = initialTileset) {
+        renderer = renderingStrategy) {
 
     private var checkBoxState = UNCHECKED
     private var checked = false
@@ -109,7 +110,7 @@ class DefaultCheckBox(private val text: String,
                 }
     }
 
-    private fun render() {
+    override fun render() {
         renderingStrategy.render(this, tileGraphics())
     }
 

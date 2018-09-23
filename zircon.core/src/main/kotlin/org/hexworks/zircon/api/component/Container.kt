@@ -1,6 +1,8 @@
 package org.hexworks.zircon.api.component
 
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.api.util.Maybe
 
 /**
  * A [Container] is a [Component] which can contain other components.
@@ -9,6 +11,11 @@ import org.hexworks.zircon.api.builder.Builder
  * components to a [Component].
  */
 interface Container : Component {
+
+    /**
+     * Returns the immediate child [Component]s of this [Container].
+     */
+    fun children(): List<Component>
 
     /**
      * Adds a child [Component] to this [Container]. It can either be
@@ -32,4 +39,10 @@ interface Container : Component {
      * @returnThis true if a removal happened
      */
     fun removeComponent(component: Component): Boolean
+
+    fun acceptsFocus() = false
+
+    fun giveFocus(input: Maybe<Input>) = false
+
+    fun takeFocus(input: Maybe<Input>) {}
 }

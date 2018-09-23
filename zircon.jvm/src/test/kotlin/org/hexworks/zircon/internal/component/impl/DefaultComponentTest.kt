@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -23,6 +24,7 @@ import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.component.impl.wrapping.BorderComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.impl.wrapping.ShadowComponentDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.junit.Before
 import org.junit.Test
@@ -40,8 +42,13 @@ class DefaultComponentTest {
                 size = SIZE,
                 position = POSITION,
                 componentStyles = STYLES,
-                wrappers = WRAPPERS,
-                tileset = tileset) {
+                tileset = tileset,
+                renderer = DefaultComponentRenderingStrategy(
+                        decorationRenderers = listOf(),
+                        componentRenderer = DefaultRadioButtonGroupRenderer())) {
+            override fun render() {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
 
             override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
                 TODO("not implemented")
@@ -73,27 +80,6 @@ class DefaultComponentTest {
     fun shouldProperlyApplyStylesOnInit() {
         assertThat(target.componentStyleSet().getCurrentStyle())
                 .isEqualTo(STYLES.getCurrentStyle())
-    }
-
-    @Test
-    fun shouldProperlyApplyStylesOnMouseOver() {
-
-        EventBus.sendTo(target.id, ZirconEvent.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
-
-        val targetChar = target.tileGraphics().getTileAt(Position.defaultPosition()).get()
-        assertThat(targetChar.getBackgroundColor()).isEqualTo(MOUSE_OVER_STYLE.backgroundColor())
-        assertThat(targetChar.getForegroundColor()).isEqualTo(MOUSE_OVER_STYLE.foregroundColor())
-    }
-
-    @Test
-    fun shouldProperlyApplyStylesOnMouseOut() {
-        EventBus.sendTo(target.id, ZirconEvent.MouseOver(MouseAction(MouseActionType.MOUSE_ENTERED, 1, Position.defaultPosition())))
-
-        EventBus.sendTo(target.id, ZirconEvent.MouseOut(MouseAction(MouseActionType.MOUSE_EXITED, 1, Position.defaultPosition())))
-
-        val targetChar = target.tileGraphics().getTileAt(Position.defaultPosition()).get()
-        assertThat(targetChar.getBackgroundColor()).isEqualTo(DEFAULT_STYLE.backgroundColor())
-        assertThat(targetChar.getForegroundColor()).isEqualTo(DEFAULT_STYLE.foregroundColor())
     }
 
     @Test

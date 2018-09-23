@@ -48,10 +48,10 @@ data class ButtonBuilder(
         return DefaultButton(
                 text = text,
                 renderingStrategy = componentRenderer,
-                initialSize = size,
+                size = size,
                 position = position(),
                 componentStyleSet = componentStyleSet(),
-                initialTileset = tileset())
+                tileset = tileset())
     }
 
     override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())

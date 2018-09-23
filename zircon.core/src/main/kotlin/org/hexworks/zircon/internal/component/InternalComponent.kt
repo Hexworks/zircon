@@ -50,4 +50,9 @@ interface InternalComponent : Component, Drawable, Focusable {
      */
     fun tileGraphics(): TileGraphics
 
+    /**
+     * Renders this component to the underlying [TileGraphics].
+     */
+    fun render()
+
 }

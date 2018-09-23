@@ -1,4 +1,4 @@
-package org.hexworks.zircon.examples
+package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
@@ -83,13 +83,24 @@ object PanelsExample {
 
         screen.addComponent(panel)
 
-        panel.addComponent(Components.panel()
-                .size(Sizes.create(14, 8))
-                .position(Positions.create(2, 2))
+        val nested0 = Components.panel()
+                .size(Sizes.create(14, 15))
+                .position(Positions.create(1, 1))
                 .wrapWithBox(true)
-                .title("Nested")
+                .title("Nested 0")
                 .boxType(BoxType.DOUBLE)
-                .build())
+                .build()
+
+        val nested1 = Components.panel()
+                .size(Sizes.create(10, 11))
+                .position(Positions.create(1, 1))
+                .wrapWithBox(true)
+                .title("Nested 1")
+                .boxType(BoxType.DOUBLE)
+                .build()
+
+        panel.addComponent(nested0)
+        nested0.addComponent(nested1)
 
         screen.display()
         screen.applyColorTheme(theme)

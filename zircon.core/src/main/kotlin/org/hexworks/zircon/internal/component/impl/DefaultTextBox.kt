@@ -6,39 +6,26 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.TextBox
+import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.util.TextBuffer
-import org.hexworks.zircon.platform.util.SystemUtils
 
-class DefaultTextBox(private val text: String,
-                     initialSize: Size,
-                     initialTileset: TilesetResource,
+class DefaultTextBox(private val renderingStrategy: ComponentRenderingStrategy<TextBox>,
                      position: Position,
-                     componentStyleSet: ComponentStyleSet) : TextBox, DefaultComponent(
-        size = initialSize,
+                     size: Size,
+                     tileset: TilesetResource,
+                     componentStyleSet: ComponentStyleSet)
+    : TextBox, DefaultContainer(
         position = position,
+        size = size,
+        tileset = tileset,
         componentStyles = componentStyleSet,
-        wrappers = listOf(),
-        tileset = initialTileset) {
-
+        renderer = renderingStrategy) {
 
     init {
-        text.trim().split(SystemUtils.getLineSeparator()).forEachIndexed { idx, line ->
-            tileGraphics().putText(line, Position.create(0, idx))
-        }
+        render()
     }
-
-    override fun getText() = text
-
-    override fun acceptsFocus() = false
-
-    override fun giveFocus(input: Maybe<Input>) = false
-
-    override fun takeFocus(input: Maybe<Input>) {}
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
@@ -46,8 +33,16 @@ class DefaultTextBox(private val text: String,
                         .foregroundColor(colorTheme.secondaryForegroundColor())
                         .backgroundColor(TileColor.transparent())
                         .build())
-                .build().also {
-                    setComponentStyleSet(it)
+                .build().also { css ->
+                    setComponentStyleSet(css)
+                    render()
+                    children().forEach {
+                        it.applyColorTheme(colorTheme)
+                    }
                 }
+    }
+
+    override fun render() {
+        renderingStrategy.render(this, tileGraphics())
     }
 }

@@ -16,6 +16,7 @@ interface DrawSurface : Boundable {
      * Returns the character stored at a particular position on this [DrawSurface].
      * Returns an empty [Maybe] if no [Tile] is present at the given [Position].
      */
+    // TODO: clarify difference between `getTileAt` and `getRelativeTileAt`
     fun getTileAt(position: Position): Maybe<Tile>
 
     /**

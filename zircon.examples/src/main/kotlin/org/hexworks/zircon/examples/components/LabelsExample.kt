@@ -1,11 +1,9 @@
-package org.hexworks.zircon.examples
+package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.BoxType.*
 
 object LabelsExample {

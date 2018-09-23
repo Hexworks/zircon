@@ -18,15 +18,16 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 
 class DefaultRadioButton(private val text: String,
                          private val renderingStrategy: ComponentRenderingStrategy<RadioButton>,
-                         tileset: TilesetResource,
-                         size: Size,
                          position: Position,
+                         size: Size,
+                         tileset: TilesetResource,
                          componentStyleSet: ComponentStyleSet)
     : RadioButton, DefaultComponent(
-        size = size,
         position = position,
+        size = size,
+        tileset = tileset,
         componentStyles = componentStyleSet,
-        tileset = tileset) {
+        renderer = renderingStrategy) {
 
     private var state = NOT_SELECTED
     private var selected = false
@@ -58,26 +59,6 @@ class DefaultRadioButton(private val text: String,
     override fun isSelected() = selected
 
     override fun state() = state
-
-    fun select() {
-        if (selected) {
-            componentStyleSet().applyMouseOverStyle()
-            state = SELECTED
-            selected = true
-            render()
-        }
-    }
-
-    fun removeSelection() =
-            if (selected) {
-                componentStyleSet().reset()
-                selected = false
-                state = NOT_SELECTED
-                render()
-                true
-            } else {
-                false
-            }
 
     override fun acceptsFocus(): Boolean {
         return true
@@ -120,9 +101,29 @@ class DefaultRadioButton(private val text: String,
                 }
     }
 
-    private fun render() {
+    override fun render() {
         renderingStrategy.render(this, tileGraphics())
     }
+
+    fun select() {
+        if (selected.not()) {
+            componentStyleSet().applyMouseOverStyle()
+            state = SELECTED
+            selected = true
+            render()
+        }
+    }
+
+    fun removeSelection() =
+            if (selected) {
+                componentStyleSet().reset()
+                selected = false
+                state = NOT_SELECTED
+                render()
+                true
+            } else {
+                false
+            }
 
     enum class RadioButtonState {
         PRESSED,
