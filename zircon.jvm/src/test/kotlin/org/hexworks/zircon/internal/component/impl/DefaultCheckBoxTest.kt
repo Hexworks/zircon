@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions
+import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.component.CheckBoxBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
@@ -9,14 +10,11 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentState
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.api.Modifiers
 import org.junit.Before
 import org.junit.Test
 
@@ -100,29 +98,12 @@ class DefaultCheckBoxTest {
         Assertions.assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
-//    @Test TODO: re-enable in next release
-//    fun shouldProperlyHandleMousePress() {
-//        target.applyColorTheme(THEME)
-//        val componentChanged = AtomicBoolean(false)
-//        EventBus.subscribe(EventType.ComponentChange, {
-//            componentChanged.set(true)
-//        })
-//
-//        EventBus.broadcast(
-//                type = EventType.MousePressed(target.id),
-//                data = MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.defaultPosition()))
-//
-//        Assertions.assertThat(componentChanged.get()).isTrue()
-//        Assertions.assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_ACTIVE_STYLE)
-//    }
 
     @Test
     fun shouldProperlyHandleMouseRelease() {
         target.applyColorTheme(THEME)
 
-        EventBus.sendTo(
-                identifier = target.id,
-                event = ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition())))
+        target.mouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition()))
 
         Assertions.assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
     }

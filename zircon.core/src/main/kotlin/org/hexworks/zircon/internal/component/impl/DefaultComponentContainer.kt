@@ -4,12 +4,13 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.event.EventBus
-import org.hexworks.zircon.api.event.Subscription
+import org.hexworks.zircon.api.event.EventBusSubscription
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.InputType.*
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType.*
+import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.component.ContainerHandlerState
 import org.hexworks.zircon.internal.component.ContainerHandlerState.DEACTIVATED
@@ -18,16 +19,17 @@ import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.event.ZirconEvent.*
+import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAddition
+import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoval
 
 class DefaultComponentContainer(private var container: RootContainer) :
         InternalComponentContainer {
 
     private var lastMousePosition = Position.defaultPosition()
-    private var lastHoveredComponentId = Identifier.randomIdentifier()
+    private var lastHoveredComponent: InternalComponent = container
     private var lastFocusedComponent: InternalComponent = container
     private var state = UNKNOWN
-    private val subscriptions = mutableListOf<Subscription<*>>()
+    private val subscriptions = mutableListOf<EventBusSubscription<*>>()
     private val nextsLookup = mutableMapOf<Identifier, InternalComponent>(Pair(container.id, container))
     private val prevsLookup = nextsLookup.toMutableMap()
     private val debug = RuntimeConfig.config.debugMode
@@ -75,37 +77,36 @@ class DefaultComponentContainer(private var container: RootContainer) :
 
             keyStrokeHandlers[input]?.invoke()
 
-            if (input is KeyStroke) {
-                EventBus.broadcast(KeyPressed(input))
-            }
-
-            if (input is MouseAction) {
-                when (input.actionType) {
-                    MOUSE_MOVED -> handleMouseMoved(input)
-
-                    MOUSE_PRESSED -> container
-                            .fetchComponentByPosition(input.position)
-                            .map { component ->
-                                focusComponent(component)
-                                EventBus.sendTo(component.id, MousePressed(input))
-                            }
-
-                    MOUSE_RELEASED -> container
-                            .fetchComponentByPosition(input.position)
-                            .map { component ->
-                                focusComponent(component)
-                                EventBus.sendTo(component.id, MouseReleased(input))
-                            }
-
-                    MOUSE_DRAGGED -> container
-                            .fetchComponentByPosition(input.position)
-                            .map { component ->
-                                focusComponent(component)
-                                EventBus.sendTo(component.id, MouseDragged(input))
-                            }
-
-                    else -> {
-                        // we don't handle other actions yet
+            when (input) {
+                is KeyStroke -> {
+                    lastFocusedComponent.inputEmitted(input)
+                    lastFocusedComponent.keyStroked(input)
+                }
+                is MouseAction -> {
+                    val component = container.fetchComponentByPosition(input.position)
+                    component.map {
+                        // this is necessary because listeners are notified this way
+                        it.inputEmitted(input)
+                    }
+                    when (input.actionType) {
+                        MOUSE_CLICKED -> component.map { it.mouseClicked(input) }
+                        MOUSE_PRESSED -> component.map {
+                            focusComponent(it)
+                            it.mousePressed(input)
+                        }
+                        MOUSE_RELEASED -> component.map {
+                            focusComponent(it)
+                            it.mouseReleased(input)
+                        }
+                        MOUSE_ENTERED -> component.map { it.mouseEntered(input) }
+                        MOUSE_EXITED -> component.map { it.mouseExited(input) }
+                        MOUSE_WHEEL_ROTATED_UP -> component.map { it.mouseWheelRotatedUp(input) }
+                        MOUSE_WHEEL_ROTATED_DOWN -> component.map { it.mouseWheelRotatedDown(input) }
+                        MOUSE_DRAGGED -> component.map {
+                            focusComponent(it)
+                            it.mouseDragged(input)
+                        }
+                        MOUSE_MOVED -> handleMouseMoved(input)
                     }
                 }
             }
@@ -132,10 +133,9 @@ class DefaultComponentContainer(private var container: RootContainer) :
         return container.transformToLayers()
     }
 
+    // TODO: test this!
     private fun clickFocused() {
-        EventBus.sendTo(
-                identifier = lastFocusedComponent.id,
-                event = MouseReleased(MouseAction(MOUSE_RELEASED, 1, lastFocusedComponent.position())))
+        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, lastFocusedComponent.absolutePosition())))
     }
 
     private fun focusComponent(component: InternalComponent) {
@@ -182,16 +182,21 @@ class DefaultComponentContainer(private var container: RootContainer) :
     private fun handleMouseMoved(mouseAction: MouseAction) {
         if (mouseAction.position != lastMousePosition) {
             lastMousePosition = mouseAction.position
-            container.fetchComponentByPosition(lastMousePosition)
-                    .map { currComponent ->
-                        if (lastHoveredComponentId == currComponent.id) {
-                            EventBus.sendTo(currComponent.id, MouseMoved(mouseAction))
-                        } else {
-                            EventBus.sendTo(lastHoveredComponentId, MouseOut(mouseAction))
-                            lastHoveredComponentId = currComponent.id
-                            EventBus.sendTo(currComponent.id, MouseOver(mouseAction))
-                        }
-                    }
+            container.fetchComponentByPosition(lastMousePosition).map { currentComponent ->
+
+                val lastHoveredComponentId = lastHoveredComponent.id
+                if (lastHoveredComponentId == currentComponent.id) {
+                    currentComponent.mouseMoved(mouseAction)
+                } else {
+                    // we also need to emit input because listeners
+                    // dispatch on the input event
+                    lastHoveredComponent.inputEmitted(mouseAction.copy(actionType = MOUSE_EXITED))
+                    lastHoveredComponent.mouseExited(mouseAction)
+                    lastHoveredComponent = currentComponent
+                    currentComponent.inputEmitted(mouseAction.copy(actionType = MOUSE_ENTERED))
+                    currentComponent.mouseEntered(mouseAction)
+                }
+            }
         }
     }
 

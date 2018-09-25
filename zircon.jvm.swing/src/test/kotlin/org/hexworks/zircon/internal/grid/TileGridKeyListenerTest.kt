@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.InputType.Character
 import org.hexworks.zircon.api.input.KeyStroke
-import org.hexworks.zircon.gui.swing.internal.grid.TerminalKeyListener
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.junit.Before
 import org.junit.Test

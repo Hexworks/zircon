@@ -10,14 +10,14 @@ import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.event.EventBus
+import org.hexworks.zircon.api.event.Subscription
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
@@ -62,9 +62,9 @@ class RectangleTileGrid(
         animationHandler.updateAnimations(currentTimeMs, tileGrid)
     }
 
-    override fun onInput(listener: Consumer<Input>) {
-        EventBus.subscribe<ZirconEvent.Input> { (input) ->
-            listener.accept(input)
+    override fun onInput(listener: InputListener): Subscription {
+        return EventBus.subscribe<ZirconEvent.Input> { (input) ->
+            listener.inputEmitted(input)
         }
     }
 

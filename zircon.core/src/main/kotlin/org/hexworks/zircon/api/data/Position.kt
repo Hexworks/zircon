@@ -4,7 +4,6 @@ package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.tileset.Tileset
 
 interface Position : Comparable<Position> {
 
@@ -15,7 +14,7 @@ interface Position : Comparable<Position> {
 
     operator fun component2() = y
 
-    fun toAbsolutePosition(tileset: TilesetResource): AbsolutePosition
+    fun toPixelPosition(tileset: TilesetResource): PixelPosition
 
     override fun compareTo(other: Position): Int {
         checkType(this, other)
@@ -38,7 +37,7 @@ interface Position : Comparable<Position> {
             return this
         }
         return when (this) {
-            is AbsolutePosition -> AbsolutePosition(
+            is PixelPosition -> PixelPosition(
                     x = x + other.x,
                     y = y + other.y)
             is GridPosition -> GridPosition(
@@ -59,7 +58,7 @@ interface Position : Comparable<Position> {
             return this
         }
         return when (this) {
-            is AbsolutePosition -> AbsolutePosition(
+            is PixelPosition -> PixelPosition(
                     x = x - other.x,
                     y = y - other.y)
             is GridPosition -> GridPosition(
@@ -242,7 +241,7 @@ interface Position : Comparable<Position> {
             }
             return when (pos) {
                 is GridPosition -> GridPosition(x, y)
-                is AbsolutePosition -> AbsolutePosition(x, y)
+                is PixelPosition -> PixelPosition(x, y)
                 else -> throw UnsupportedOperationException("Unsupported Position type: ${pos::class.simpleName}")
             }
         }

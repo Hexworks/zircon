@@ -9,12 +9,11 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
-import org.hexworks.zircon.internal.event.ZirconEvent
 
 class DefaultCheckBox(private val text: String,
                       private val renderingStrategy: ComponentRenderingStrategy<CheckBox>,
@@ -35,34 +34,38 @@ class DefaultCheckBox(private val text: String,
 
     init {
         render()
-        // TODO: test this rudimentary state machine
-        EventBus.listenTo<ZirconEvent.MouseOver>(id) {
-            componentStyleSet().applyMouseOverStyle()
-            render()
-        }
-        EventBus.listenTo<ZirconEvent.MouseOut>(id) {
+    }
+
+    // TODO: test this rudimentary state machine
+    override fun mouseEntered(action: MouseAction) {
+        componentStyleSet().applyMouseOverStyle()
+        render()
+    }
+
+    override fun mouseExited(action: MouseAction) {
+        pressing = false
+        checkBoxState = if (checked) CHECKED else UNCHECKED
+        componentStyleSet().reset()
+        render()
+    }
+
+    override fun mousePressed(action: MouseAction) {
+        pressing = true
+        checkBoxState = if (checked) UNCHECKING else CHECKING
+        componentStyleSet().applyActiveStyle()
+        render()
+    }
+
+    override fun mouseReleased(action: MouseAction) {
+        componentStyleSet().applyMouseOverStyle()
+        if (pressing) {
+            // this is the case when the user starts pressing outside of this
+            // component but releases here
             pressing = false
+            checked = checked.not()
             checkBoxState = if (checked) CHECKED else UNCHECKED
-            componentStyleSet().reset()
-            render()
         }
-        EventBus.listenTo<ZirconEvent.MousePressed>(id) {
-            pressing = true
-            checkBoxState = if (checked) UNCHECKING else CHECKING
-            componentStyleSet().applyActiveStyle()
-            render()
-        }
-        EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
-            componentStyleSet().applyMouseOverStyle()
-            if (pressing) {
-                // this is the case when the user starts pressing outside of this
-                // component but releases here
-                pressing = false
-                checked = checked.not()
-                checkBoxState = if (checked) CHECKED else UNCHECKED
-            }
-            render()
-        }
+        render()
     }
 
     override fun isChecked() = checkBoxState == CHECKED

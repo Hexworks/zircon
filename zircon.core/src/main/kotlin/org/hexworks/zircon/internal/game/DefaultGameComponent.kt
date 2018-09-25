@@ -14,6 +14,7 @@ import org.hexworks.zircon.api.game.GameComponent
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.api.kotlin.ifPresent
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.api.util.Maybe

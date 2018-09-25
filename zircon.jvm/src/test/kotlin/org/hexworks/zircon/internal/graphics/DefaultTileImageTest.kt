@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.util.TileTransformer
+import org.hexworks.zircon.api.kotlin.transform
 import org.junit.Test
 
 class DefaultTileImageTest {
@@ -148,11 +148,9 @@ class DefaultTileImageTest {
 
     @Test
     fun shouldProperlyTransform() {
-        val result = IMAGE.transform(object : TileTransformer {
-            override fun transform(tc: Tile): Tile {
-                return NEW_TILE
-            }
-        })
+        val result = IMAGE.transform {
+            NEW_TILE
+        }
 
         assertThat(result.fetchCells().map { it.tile }.toSet()).containsExactly(
                 NEW_TILE)

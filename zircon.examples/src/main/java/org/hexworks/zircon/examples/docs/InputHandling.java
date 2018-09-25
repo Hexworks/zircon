@@ -12,10 +12,10 @@ public class InputHandling {
         TileGrid tileGrid = SwingApplications.startTileGrid();
 
         tileGrid.onInput((input -> {
-            if(input.isKeyStroke()) {
+            if (input.isKeyStroke()) {
                 KeyStroke keyStroke = input.asKeyStroke().get();
                 System.out.println(keyStroke);
-            } else if(input.isMouseAction()) {
+            } else if (input.isMouseAction()) {
                 MouseAction mouseAction = input.asMouseAction().get();
                 System.out.println(mouseAction);
             }

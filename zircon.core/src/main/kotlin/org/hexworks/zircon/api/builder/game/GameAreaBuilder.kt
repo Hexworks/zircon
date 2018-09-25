@@ -1,9 +1,8 @@
 package org.hexworks.zircon.api.builder.game
 
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.builder.animation.AnimationBuilder
-import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.game.InMemoryGameArea
@@ -23,8 +22,8 @@ data class GameAreaBuilder(private var size: Size3D = Size3D.one(),
     fun size(size: Size3D) = also {
         this.size = size
         levels = mutableMapOf()
-        (0 until size.zLength).forEach {
-            levels[it] = mutableListOf()
+        (0 until size.zLength).forEach { z ->
+            levels[z] = mutableListOf()
         }
     }
 
@@ -34,7 +33,7 @@ data class GameAreaBuilder(private var size: Size3D = Size3D.one(),
         require(level in 0.rangeTo(size.zLength)) {
             "Level '$level' is out create bounds (0 - ${size.zLength})!"
         }
-        require(images.all { it.size() == size.to2DSize() }) {
+        require(images.all { image -> image.size() == size.to2DSize() }) {
             "The supplied image(s) do(es) not match the size create the GameArea (${size.to2DSize()})!"
         }
         this.levels[level] = images.toMutableList()

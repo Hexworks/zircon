@@ -11,9 +11,9 @@ import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
+import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.resource.BuiltInTrueTypeFontResource
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.internal.game.DefaultGameComponent
 import org.hexworks.zircon.internal.game.InMemoryGameArea
 import java.util.*
@@ -220,27 +220,27 @@ object IsometricGameArea {
     }
 
     private fun enableMovement(screen: Screen, gameComponent: DefaultGameComponent) {
-        screen.onInput(object : Consumer<Input> {
-            override fun accept(p: Input) {
-                if (EXIT_CONDITIONS.contains(p.getInputType())) {
+        screen.onInput(object : InputListener {
+            override fun inputEmitted(input: Input) {
+                if (EXIT_CONDITIONS.contains(input.getInputType())) {
                     System.exit(0)
                 } else {
-                    if (InputType.ArrowUp === p.getInputType()) {
+                    if (InputType.ArrowUp === input.getInputType()) {
                         gameComponent.scrollOneBackward()
                     }
-                    if (InputType.ArrowDown === p.getInputType()) {
+                    if (InputType.ArrowDown === input.getInputType()) {
                         gameComponent.scrollOneForward()
                     }
-                    if (InputType.ArrowLeft === p.getInputType()) {
+                    if (InputType.ArrowLeft === input.getInputType()) {
                         gameComponent.scrollOneLeft()
                     }
-                    if (InputType.ArrowRight === p.getInputType()) {
+                    if (InputType.ArrowRight === input.getInputType()) {
                         gameComponent.scrollOneRight()
                     }
-                    if (InputType.PageUp === p.getInputType()) {
+                    if (InputType.PageUp === input.getInputType()) {
                         gameComponent.scrollOneUp()
                     }
-                    if (InputType.PageDown === p.getInputType()) {
+                    if (InputType.PageDown === input.getInputType()) {
                         gameComponent.scrollOneDown()
                     }
                     screen.getLayers().forEach {

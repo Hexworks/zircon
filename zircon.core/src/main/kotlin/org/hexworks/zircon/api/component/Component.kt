@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.zircon.api.behavior.InputEmitter
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -19,7 +20,7 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  * like a label or a check box is a [Container] while a label which is only intended to
  * display information is a [Component].
  */
-interface Component : Identifiable, Layer {
+interface Component : Identifiable, Layer, InputEmitter {
 
     /**
      * Tells whether this [Component] is attached to a parent or not.
@@ -46,24 +47,6 @@ interface Component : Identifiable, Layer {
      * of this component relative to the top left corner of the grid.
      */
     fun absolutePosition(): Position
-
-    /**
-     * Adds a callback to this [Component] which will be called
-     * when the mouse is pressed on this component.
-     */
-    fun onMousePressed(callback: Consumer<MouseAction>)
-
-    /**
-     * Adds a callback to this [Component] which will be called
-     * when the mouse is released on this component.
-     */
-    fun onMouseReleased(callback: Consumer<MouseAction>)
-
-    /**
-     * Adds a callback to this [Component] which will be called
-     * when the mouse is moved over this component (to a new [org.hexworks.zircon.api.data.Position]).
-     */
-    fun onMouseMoved(callback: Consumer<MouseAction>)
 
     /**
      * Gets the styles this [Component] uses.

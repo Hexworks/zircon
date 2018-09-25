@@ -6,24 +6,22 @@ import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.component.RadioButtonGroup
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
+import org.hexworks.zircon.api.kotlin.onSelection
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
-import org.hexworks.zircon.internal.event.ZirconEvent
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
 
+@Suppress("MemberVisibilityCanBePrivate")
 class DefaultRadioButtonGroupTest {
 
     lateinit var target: DefaultRadioButtonGroup
@@ -61,21 +59,22 @@ class DefaultRadioButtonGroupTest {
 
     @Test
     fun shouldSelectChildButtonWhenClicked() {
-        val button = target.addOption("foo", "bar")
+        val button = target.addOption("foo", "bar") as DefaultRadioButton
 
-        EventBus.sendTo(button.id, ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        button.mouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
 
         assertThat(button.isSelected()).isTrue()
     }
 
     @Test
     fun shouldProperlyDeselectPreviouslySelectedButton() {
-        val oldButton = target.addOption("foo", "bar")
-        val newButton = target.addOption("baz", "qux")
+        val oldButton = target.addOption("foo", "bar") as DefaultRadioButton
+        val newButton = target.addOption("baz", "qux") as DefaultRadioButton
 
-
-        EventBus.sendTo(oldButton.id, ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
-        EventBus.sendTo(newButton.id, ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        oldButton.inputEmitted(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+        newButton.inputEmitted(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+        // this is necessary because ComponentContainer handles this but it is not present in this test
+        newButton.mouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
 
         assertThat(oldButton.isSelected()).isFalse()
         assertThat(newButton.isSelected()).isTrue()
@@ -83,23 +82,21 @@ class DefaultRadioButtonGroupTest {
 
     @Test
     fun shouldProperlyNotifyListenersWhenAButtonIsClicked() {
-        val button = target.addOption("foo", "bar")
+        val button = target.addOption("foo", "bar") as DefaultRadioButton
 
         val selected = AtomicBoolean(false)
-        target.onSelection(object : Consumer<RadioButtonGroup.Selection> {
-            override fun accept(p: RadioButtonGroup.Selection) {
-                selected.set(true)
-            }
-        })
+        target.onSelection {
+            selected.set(true)
+        }
 
-        EventBus.sendTo(button.id, ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
+        button.inputEmitted(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
 
         assertThat(selected.get()).isTrue()
     }
 
     companion object {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
-        val TEXT = "Button text"
+        const val TEXT = "Button text"
         val FONT = BuiltInCP437TilesetResource.WANDERLUST_16X16
         val POSITION = Position.create(4, 5)
         val SIZE = Size.create(10, 20)

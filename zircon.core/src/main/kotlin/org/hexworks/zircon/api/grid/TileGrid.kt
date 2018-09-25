@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.grid
 
 import org.hexworks.zircon.api.animation.AnimationHandler
 import org.hexworks.zircon.api.behavior.*
-import org.hexworks.zircon.api.behavior.ShutdownHook
 
 /**
  * This is the main grid interface, at the lowest level supported. You can write your own
@@ -17,7 +16,7 @@ import org.hexworks.zircon.api.behavior.ShutdownHook
  * this is the interface you should be programming against.
  */
 interface TileGrid
-    : AnimationHandler, Clearable, DrawSurface, InputEmitter, Layerable, ShutdownHook, Styleable, TilesetOverride, TypingSupport {
+    : AnimationHandler, Clearable, DrawSurface, InputEmitter, Layerable, ShutdownHook, Styleable, TypingSupport {
 
     fun widthInPixels() = tileset().width * size().xLength
 

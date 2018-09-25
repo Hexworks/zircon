@@ -18,7 +18,7 @@ data class PanelBuilder(
         }
         fillMissingValues()
         return DefaultPanel(
-                title = title().orElseGet { "" },
+                title = title().orElse(""),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultPanelRenderer()),

@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.util.Maybe
 
-interface Layer : DrawSurface, Drawable, Movable, TilesetOverride {
+interface Layer : DrawSurface, Drawable, Movable {
 
     /**
      * Fetches all the (absolute) [Position]s which this

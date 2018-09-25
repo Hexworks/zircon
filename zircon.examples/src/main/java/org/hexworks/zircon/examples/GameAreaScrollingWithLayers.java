@@ -1,12 +1,27 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.CharacterTileStrings;
+import org.hexworks.zircon.api.ColorThemes;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.DrawSurfaces;
+import org.hexworks.zircon.api.Layers;
+import org.hexworks.zircon.api.Positions;
+import org.hexworks.zircon.api.Screens;
+import org.hexworks.zircon.api.Sizes;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.TileColors;
+import org.hexworks.zircon.api.Tiles;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.builder.data.BlockBuilder;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.Panel;
-import org.hexworks.zircon.api.data.*;
+import org.hexworks.zircon.api.data.Position;
+import org.hexworks.zircon.api.data.Position3D;
+import org.hexworks.zircon.api.data.Size;
+import org.hexworks.zircon.api.data.Size3D;
+import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.game.GameArea;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.graphics.Layer;
@@ -19,7 +34,11 @@ import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.internal.game.DefaultGameComponent;
 import org.hexworks.zircon.internal.game.InMemoryGameArea;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 

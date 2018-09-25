@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.builder.data
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.data.BlockSide.*
+import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.data.DefaultBlock
 

@@ -1,8 +1,12 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.zircon.api.behavior.*
+import org.hexworks.zircon.api.behavior.Clearable
+import org.hexworks.zircon.api.behavior.DrawSurface
+import org.hexworks.zircon.api.behavior.Drawable
+import org.hexworks.zircon.api.behavior.Styleable
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.internal.data.DefaultCell
 import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphics
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
@@ -13,7 +17,7 @@ import org.hexworks.zircon.internal.graphics.DefaultTileImage
  * [DrawSurface]s like a [org.hexworks.zircon.api.grid.TileGrid].
  */
 interface TileGraphics
-    : Clearable, DrawSurface, Drawable, Styleable, TilesetOverride {
+    : Clearable, DrawSurface, Drawable, Styleable {
 
     /**
      * Returns a [List] of [Position]s which are not `EMPTY`.

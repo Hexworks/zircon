@@ -4,11 +4,12 @@ import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.gui.swing.internal.grid.TerminalKeyListener
-import org.hexworks.zircon.gui.swing.internal.grid.TerminalMouseListener
+import org.hexworks.zircon.internal.grid.TerminalKeyListener
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.grid.InternalTileGrid
+import org.hexworks.zircon.internal.grid.TerminalMouseListener
 import org.hexworks.zircon.internal.tileset.SwingTilesetLoader
 import org.hexworks.zircon.internal.tileset.transformer.toAWTColor
 import org.hexworks.zircon.platform.util.SystemUtils

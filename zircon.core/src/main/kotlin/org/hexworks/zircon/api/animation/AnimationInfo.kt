@@ -25,11 +25,6 @@ interface AnimationInfo {
     /**
      * Adds a callback which will be called when the [Animation] finishes.
      */
-    fun onFinished(fn: (AnimationInfo) -> Unit)
-
-    /**
-     * Adds a callback which will be called when the [Animation] finishes.
-     */
     fun onFinished(fn: Consumer<AnimationInfo>)
 
     /**

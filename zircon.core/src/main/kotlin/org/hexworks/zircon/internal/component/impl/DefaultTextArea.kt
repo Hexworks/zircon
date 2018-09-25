@@ -11,9 +11,10 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
-import org.hexworks.zircon.api.event.Subscription
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
+import org.hexworks.zircon.api.input.KeyStroke
+import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.api.util.Maybe
@@ -43,7 +44,7 @@ class DefaultTextArea constructor(
         renderer = renderingStrategy) {
 
     private val textBuffer = TextBuffer(text)
-    private val subscriptions = mutableListOf<Subscription<*>>()
+    private var typingEnabled = false
     private var enabled = true
     private var focused = false
 
@@ -130,20 +131,23 @@ class DefaultTextArea constructor(
     }
 
     private fun enableFocusedComponent() {
-        cancelSubscriptions()
         componentStyleSet().applyFocusedStyle()
         render()
         enableTyping()
     }
 
     private fun disableTyping() {
-        cancelSubscriptions()
+        typingEnabled = false
         EventBus.broadcast(ZirconEvent.HideCursor)
     }
 
     private fun enableTyping() {
+        typingEnabled = true
         EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition().withRelative(position())))
-        subscriptions.add(EventBus.subscribe<ZirconEvent.KeyPressed> { (keyStroke) ->
+    }
+
+    override fun keyStroked(keyStroke: KeyStroke) {
+        if (typingEnabled) {
             val cursorPos = cursorPosition()
             val (offsetCols, offsetRows) = visibleOffset()
             val currColIdx = cursorPos.x + offsetCols
@@ -269,7 +273,7 @@ class DefaultTextArea constructor(
                 }
             }
             EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition() + position()))
-        })
+        }
     }
 
     private fun scrollUpToEndOfPreviousLine(prevRow: StringBuilder) {
@@ -323,13 +327,6 @@ class DefaultTextArea constructor(
         if (textBuffer.getSize() > 1) {
             textBuffer.deleteRowAt(bufferRowIdx)
         }
-    }
-
-    private fun cancelSubscriptions() {
-        subscriptions.forEach {
-            EventBus.unsubscribe(it)
-        }
-        subscriptions.clear()
     }
 
     private fun refreshVirtualSpaceSize() {

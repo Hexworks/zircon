@@ -5,8 +5,8 @@ import org.hexworks.zircon.api.resource.TilesetResource
 data class GridPosition(override val x: Int,
                         override val y: Int) : Position {
 
-    override fun toAbsolutePosition(tileset: TilesetResource): AbsolutePosition {
-        return AbsolutePosition(x * tileset.width, y * tileset.height)
+    override fun toPixelPosition(tileset: TilesetResource): PixelPosition {
+        return PixelPosition(x * tileset.width, y * tileset.height)
     }
 
     companion object {

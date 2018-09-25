@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
@@ -12,24 +11,20 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
+import org.hexworks.zircon.api.kotlin.onMousePressed
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.Consumer
-import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
-import org.hexworks.zircon.internal.component.impl.wrapping.BorderComponentDecorationRenderer
-import org.hexworks.zircon.internal.component.impl.wrapping.ShadowComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
-import org.hexworks.zircon.internal.event.ZirconEvent
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
 
+@Suppress("MemberVisibilityCanBePrivate")
 class DefaultComponentTest {
 
     lateinit var target: DefaultComponent
@@ -138,57 +133,28 @@ class DefaultComponentTest {
     @Test
     fun shouldProperlyListenToMousePress() {
         val pressed = AtomicBoolean(false)
-        target.onMousePressed(object : Consumer<MouseAction> {
-            override fun accept(p: MouseAction) {
-                pressed.set(true)
-            }
-        })
+        target.onMousePressed {
+            pressed.set(true)
+        }
 
-        EventBus.sendTo(target.id, ZirconEvent.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION)))
+        target.inputEmitted(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION))
 
         assertThat(pressed.get()).isTrue()
     }
 
     @Test
     fun shouldNotListenToMousePressOnOtherComponents() {
-        val pressed = AtomicBoolean(false)
-        target.onMousePressed(object : Consumer<MouseAction> {
-            override fun accept(p: MouseAction) {
-                pressed.set(true)
-            }
-        })
-
-        EventBus.sendTo(Identifier.randomIdentifier(), ZirconEvent.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION)))
-
-        assertThat(pressed.get()).isFalse()
+        // TODO: move this test to component container!
     }
 
     @Test
     fun shouldProperlyListenToMouseRelease() {
-        val pressed = AtomicBoolean(false)
-        target.onMouseReleased(object : Consumer<MouseAction> {
-            override fun accept(p: MouseAction) {
-                pressed.set(true)
-            }
-        })
-
-        EventBus.sendTo(target.id, ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
-
-        assertThat(pressed.get()).isTrue()
+        // TODO: move this test to component container!
     }
 
     @Test
     fun shouldNotListenToMouseReleaseOnOtherComponents() {
-        val pressed = AtomicBoolean(false)
-        target.onMouseReleased(object : Consumer<MouseAction> {
-            override fun accept(p: MouseAction) {
-                pressed.set(true)
-            }
-        })
-
-        EventBus.sendTo(Identifier.randomIdentifier(), ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)))
-
-        assertThat(pressed.get()).isFalse()
+        // TODO: move this test to component container!
     }
 
     @Test
@@ -236,8 +202,5 @@ class DefaultComponentTest {
                 .focusedStyle(FOCUSED_STYLE)
                 .mouseOverStyle(MOUSE_OVER_STYLE)
                 .build()
-        val WRAPPERS = listOf(
-                ShadowComponentDecorationRenderer(),
-                BorderComponentDecorationRenderer(Modifiers.border()))
     }
 }

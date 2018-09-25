@@ -7,10 +7,10 @@ import kotlin.reflect.KClass
 /**
  * This enum contains the metadata for the built-in CP437 tilesets.
  */
-enum class BuiltInCP437TilesetResource(private val tilesetName: String,
+enum class BuiltInCP437TilesetResource(val tilesetName: String,
                                        override val width: Int,
                                        override val height: Int,
-                                       private val fileName: String = "${tilesetName}_${width}x$height.png",
+                                       val fileName: String = "${tilesetName}_${width}x$height.png",
                                        override val id: Identifier = Identifier.randomIdentifier(),
                                        override val tileType: TileType = TileType.CHARACTER_TILE,
                                        override val tilesetType: TilesetType = TilesetType.CP437_TILESET,

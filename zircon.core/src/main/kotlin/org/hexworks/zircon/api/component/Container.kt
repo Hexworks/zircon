@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.util.Maybe
  */
 interface Container : Component {
 
+    // TODO: implement ComponentContainer
     /**
      * Returns the immediate child [Component]s of this [Container].
      */

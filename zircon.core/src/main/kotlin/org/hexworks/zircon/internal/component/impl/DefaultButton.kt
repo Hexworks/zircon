@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.event.ZirconEvent
@@ -30,22 +31,28 @@ class DefaultButton(private val text: String,
 
     init {
         render()
-        EventBus.listenTo<ZirconEvent.MouseOver>(id) {
-            componentStyleSet().applyMouseOverStyle()
-            render()
-        }
-        EventBus.listenTo<ZirconEvent.MouseOut>(id) {
-            componentStyleSet().reset()
-            render()
-        }
-        EventBus.listenTo<ZirconEvent.MousePressed>(id) {
-            componentStyleSet().applyActiveStyle()
-            render()
-        }
-        EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
-            componentStyleSet().applyMouseOverStyle()
-            render()
-        }
+    }
+
+    // TODO: move these to DefaultComponent since this is applicable almost everywhere
+
+    override fun mouseEntered(action: MouseAction) {
+        componentStyleSet().applyMouseOverStyle()
+        render()
+    }
+
+    override fun mouseExited(action: MouseAction) {
+        componentStyleSet().reset()
+        render()
+    }
+
+    override fun mousePressed(action: MouseAction) {
+        componentStyleSet().applyActiveStyle()
+        render()
+    }
+
+    override fun mouseReleased(action: MouseAction) {
+        componentStyleSet().applyMouseOverStyle()
+        render()
     }
 
     override fun acceptsFocus(): Boolean {
