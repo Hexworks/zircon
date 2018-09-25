@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.util
 
+// TODO: fix lambda
 interface Predicate<T> {
 
     fun test(t: T): Boolean

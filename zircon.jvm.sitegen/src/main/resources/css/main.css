@@ -1,0 +1,32 @@
+body {
+    background-color: beige;
+}
+
+.page {
+    width: 960px;
+    height: 480px;
+    margin: auto;
+    background-color: dimgrey;
+}
+
+.tile {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+}
+
+.cp437-0 {
+    background: url('http://localhost:63342/zircon/zircon.jvm.sitegen/build/site/tileset/tileset.png') 0 0;
+}
+
+.cp437-1 {
+    background: url('http://localhost:63342/zircon/zircon.jvm.sitegen/build/site/tileset/tileset.png') 16px 0;
+}
+
+.cp437-2 {
+    background: url('http://localhost:63342/zircon/zircon.jvm.sitegen/build/site/tileset/tileset.png') 32px 0;
+}
+
+.cp437-3 {
+    background: url('http://localhost:63342/zircon/zircon.jvm.sitegen/build/site/tileset/tileset.png') 48px 0;
+}

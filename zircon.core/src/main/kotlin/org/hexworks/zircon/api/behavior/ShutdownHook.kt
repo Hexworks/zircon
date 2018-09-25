@@ -14,15 +14,4 @@ interface ShutdownHook {
      */
     fun onShutdown(listener: Runnable)
 
-    /**
-     * Adds a listener which will be notified when the environment shuts down.
-     * Note that this is only true for graceful termination.
-     * If a `SIGKILL` is sent for example graceful termination is not possible.
-     */
-    fun onShutdown(listener: () -> Unit) = onShutdown(object : Runnable {
-        override fun run() {
-            listener.invoke()
-        }
-    })
-
 }

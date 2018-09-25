@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.api.util.Maybe
@@ -119,7 +120,7 @@ interface TileImage
      * Fills the empty parts of this [TileImage] with the given `filler`.
      */
     fun withFiller(filler: Tile): TileImage {
-        if(filler == Tile.empty()) {
+        if (filler == Tile.empty()) {
             return this
         }
         val tiles = toTileMap()

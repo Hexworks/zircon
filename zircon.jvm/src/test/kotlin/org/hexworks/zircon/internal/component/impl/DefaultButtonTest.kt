@@ -4,20 +4,19 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.component.ButtonBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
+import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentState
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
+import org.hexworks.zircon.api.input.MouseActionType.*
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.event.ZirconEvent
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 
 class DefaultButtonTest {
@@ -36,19 +35,17 @@ class DefaultButtonTest {
                 .build() as DefaultButton
     }
 
-    // TODO: fix
-    @Ignore
     @Test
     fun shouldProperlyAddButtonText() {
-//        val surface = target.tileGraphics()
-//        val offset = target.getEffectivePosition().x
-//        TEXT.forEachIndexed { i, char ->
-//            assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
-//                    .isEqualTo(TileBuilder.newBuilder()
-//                            .character(char)
-//                            .styleSet(DEFAULT_STYLE)
-//                            .build())
-//        }
+        val surface = target.tileGraphics()
+        val offset = target.contentPosition().x
+        TEXT.forEachIndexed { i, char ->
+            assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
+                    .isEqualTo(TileBuilder.newBuilder()
+                            .character(char)
+                            .styleSet(DEFAULT_STYLE)
+                            .build())
+        }
     }
 
     @Test
@@ -106,9 +103,7 @@ class DefaultButtonTest {
     fun shouldProperlyHandleMousePress() {
         target.applyColorTheme(THEME)
 
-        EventBus.sendTo(
-                identifier = target.id,
-                event = ZirconEvent.MousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.defaultPosition())))
+        target.mousePressed(MouseAction(MOUSE_PRESSED, 1, Position.defaultPosition()))
 
         assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_ACTIVE_STYLE)
     }
@@ -117,9 +112,7 @@ class DefaultButtonTest {
     fun shouldProperlyHandleMouseRelease() {
         target.applyColorTheme(THEME)
 
-        EventBus.sendTo(
-                identifier = target.id,
-                event = ZirconEvent.MouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition())))
+        target.mouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition()))
 
         assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
     }

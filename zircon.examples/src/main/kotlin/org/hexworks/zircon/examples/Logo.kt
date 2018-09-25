@@ -2,9 +2,9 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.resource.*
-import org.hexworks.zircon.api.util.TileTransformer
+import org.hexworks.zircon.api.kotlin.transform
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.api.resource.REXPaintResource
 import org.hexworks.zircon.internal.animation.DefaultAnimationFrame
 
 object Logo {
@@ -33,37 +33,34 @@ object Logo {
         val builder = Animations.newBuilder()
 
         (20 downTo 1).forEach { idx ->
-            val repeat = if(idx == 1) 40 else 1
+            val repeat = if (idx == 1) 40 else 1
             builder.addFrame(
                     DefaultAnimationFrame(
                             size = size,
                             layers = listOf(Layers.newBuilder()
-                                    .tileGraphic(img.toTileImage().transform(object : TileTransformer {
-                                        override fun transform(tc: Tile): Tile {
-                                            return tc.withBackgroundColor(tc.getBackgroundColor()
-                                                    .darkenByPercent(idx.toDouble().div(20)))
-                                                    .withForegroundColor(tc.getForegroundColor()
-                                                            .darkenByPercent(idx.toDouble().div(20)))
-                                        }
-                                    }).toTileGraphic())
+                                    .tileGraphic(img.toTileImage()
+                                            .transform { tc ->
+                                                tc.withBackgroundColor(tc.getBackgroundColor()
+                                                        .darkenByPercent(idx.toDouble().div(20)))
+                                                        .withForegroundColor(tc.getForegroundColor()
+                                                                .darkenByPercent(idx.toDouble().div(20)))
+                                            }.toTileGraphic())
                                     .build()),
                             repeatCount = repeat))
         }
 
-        (0 .. 20).forEach { idx ->
-            val repeat = if(idx == 20) 20 else 1
+        (0..20).forEach { idx ->
+            val repeat = if (idx == 20) 20 else 1
             builder.addFrame(
                     DefaultAnimationFrame(
                             size = size,
                             layers = listOf(Layers.newBuilder()
-                                    .tileGraphic(img.toTileImage().transform(object : TileTransformer {
-                                        override fun transform(tc: Tile): Tile {
-                                            return tc.withBackgroundColor(tc.getBackgroundColor()
-                                                    .darkenByPercent(idx.toDouble().div(20)))
-                                                    .withForegroundColor(tc.getForegroundColor()
-                                                            .darkenByPercent(idx.toDouble().div(20)))
-                                        }
-                                    }).toTileGraphic())
+                                    .tileGraphic(img.toTileImage().transform { tc ->
+                                        tc.withBackgroundColor(tc.getBackgroundColor()
+                                                .darkenByPercent(idx.toDouble().div(20)))
+                                                .withForegroundColor(tc.getForegroundColor()
+                                                        .darkenByPercent(idx.toDouble().div(20)))
+                                    }.toTileGraphic())
                                     .build()),
                             repeatCount = repeat))
         }

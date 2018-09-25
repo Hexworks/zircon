@@ -1,4 +1,4 @@
-package org.hexworks.zircon.gui.swing.internal.grid
+package org.hexworks.zircon.internal.grid
 
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.event.EventBus

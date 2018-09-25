@@ -9,12 +9,11 @@ import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
-import org.hexworks.zircon.internal.event.ZirconEvent
 
 class DefaultRadioButton(private val text: String,
                          private val renderingStrategy: ComponentRenderingStrategy<RadioButton>,
@@ -34,26 +33,27 @@ class DefaultRadioButton(private val text: String,
 
     init {
         render()
-        EventBus.listenTo<ZirconEvent.MouseOver>(id) {
-            componentStyleSet().applyMouseOverStyle()
-            render()
-        }
-        EventBus.listenTo<ZirconEvent.MouseOut>(id) {
-            state = if (selected) SELECTED else NOT_SELECTED
-            componentStyleSet().reset()
-            render()
-        }
-        EventBus.listenTo<ZirconEvent.MousePressed>(id) {
-            state = PRESSED
-            componentStyleSet().applyActiveStyle()
-            render()
-        }
-        EventBus.listenTo<ZirconEvent.MouseReleased>(id) {
-            componentStyleSet().applyMouseOverStyle()
-            selected = true
-            state = SELECTED
-            render()
-        }
+    }
+
+    override fun mouseEntered(action: MouseAction) {
+        componentStyleSet().applyMouseOverStyle()
+        render()
+    }
+
+    override fun mouseExited(action: MouseAction) {
+        state = if (selected) SELECTED else NOT_SELECTED
+        componentStyleSet().reset()
+        render()
+    }
+
+    override fun mousePressed(action: MouseAction) {
+        state = PRESSED
+        componentStyleSet().applyActiveStyle()
+        render()
+    }
+
+    override fun mouseReleased(action: MouseAction) {
+        select()
     }
 
     override fun isSelected() = selected
@@ -106,24 +106,18 @@ class DefaultRadioButton(private val text: String,
     }
 
     fun select() {
-        if (selected.not()) {
-            componentStyleSet().applyMouseOverStyle()
-            state = SELECTED
-            selected = true
-            render()
-        }
+        componentStyleSet().applyMouseOverStyle()
+        state = SELECTED
+        selected = true
+        render()
     }
 
-    fun removeSelection() =
-            if (selected) {
-                componentStyleSet().reset()
-                selected = false
-                state = NOT_SELECTED
-                render()
-                true
-            } else {
-                false
-            }
+    fun removeSelection() {
+        componentStyleSet().reset()
+        state = NOT_SELECTED
+        selected = false
+        render()
+    }
 
     enum class RadioButtonState {
         PRESSED,

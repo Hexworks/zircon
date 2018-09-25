@@ -13,14 +13,15 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.api.kotlin.map
+import org.hexworks.zircon.api.kotlin.onMouseReleased
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
-import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
 
 class DefaultRadioButtonGroup constructor(
         private val renderingStrategy: ComponentRenderingStrategy<RadioButtonGroup>,
@@ -36,7 +37,7 @@ class DefaultRadioButtonGroup constructor(
         componentStyles = componentStyleSet,
         renderer = renderingStrategy) {
 
-    private val items = LinkedHashMap<String, DefaultRadioButton>()
+    private val items = ThreadSafeMapFactory.create<String, DefaultRadioButton>()
     private val selectionListeners = mutableListOf<Consumer<Selection>>()
     private var selectedItem: Maybe<String> = Maybe.empty()
     private val buttonRenderingStrategy = DefaultComponentRenderingStrategy(
@@ -60,22 +61,21 @@ class DefaultRadioButtonGroup constructor(
                 componentStyleSet = componentStyleSet(),
                 tileset = tileset()).also { button ->
             items[key] = button
-            addComponent(button)
-            EventBus.listenTo<ZirconEvent.MouseReleased>(button.id) { _ ->
+            button.onMouseReleased { _ ->
                 selectedItem.map { lastSelected ->
                     if (lastSelected != key) {
+                        println("Removing selection from $lastSelected")
                         items[lastSelected]?.removeSelection()
                     }
                 }
                 selectedItem = Maybe.of(key)
                 items[key]?.let { button ->
-                    button.select()
                     selectionListeners.forEach {
                         it.accept(DefaultSelection(key, button.text()))
                     }
                 }
-
             }
+            addComponent(button)
         }
     }
 
@@ -87,12 +87,9 @@ class DefaultRadioButtonGroup constructor(
 
     override fun takeFocus(input: Maybe<Input>) {}
 
-    override fun clearSelection() =
-            if (selectedItem.isPresent) {
-                items[selectedItem.get()]?.removeSelection() ?: false
-            } else {
-                false
-            }
+    override fun clearSelection() {
+        items[selectedItem.get()]?.removeSelection()
+    }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()

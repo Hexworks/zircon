@@ -5,20 +5,19 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.listener.InputListener
+import org.hexworks.zircon.api.listener.KeyStrokeListener
+import org.hexworks.zircon.api.listener.MouseListener
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.Focusable
 
 /**
- * A [InternalComponent] is a GUI element which is used either to display information to the user
- * or to enable the user to interact with the program.
- * Components are basically a tree structure of GUI elements nested in each other.
- * The component hierarchy **always** has a [Container] as its root. A child [InternalComponent]
- * is **always** bounded by its parent. Containers are branches in this tree while components
- * are leaves. So for example a panel which is intended to be able to hold other components
- * like a label or a check box is a [Container] while a label which is only intended to
- * display information is a [InternalComponent].
+ * A [InternalComponent] is a specialization of the [Component] interface which adds
+ * functionality which will be used by Zircon internally. This makes it possible to have
+ * a clean API for [Component]s but enables Zircon and the developers of custom [Component]s
+ * to interact with them in a more meaningful manner.
  */
-interface InternalComponent : Component, Drawable, Focusable {
+interface InternalComponent : Component, Drawable, Focusable, InputListener, KeyStrokeListener, MouseListener {
 
     /**
      * Returns the innermost [InternalComponent] for a given [Position].

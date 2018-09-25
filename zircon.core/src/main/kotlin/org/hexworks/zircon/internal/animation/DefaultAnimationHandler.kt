@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.animation.AnimationInfo
 import org.hexworks.zircon.api.animation.AnimationState.*
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.platform.extension.getOrDefault

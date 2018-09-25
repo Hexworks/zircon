@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandler
 import org.hexworks.zircon.api.animation.AnimationInfo
 import org.hexworks.zircon.api.animation.AnimationState
+import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Maybe
 
@@ -14,7 +15,7 @@ internal class DefaultAnimationInfo(private var state: AnimationState,
                                     private val animationHandler: AnimationHandler,
                                     private val animation: Animation) : AnimationInfo {
 
-    private var onFinishFn = Maybe.empty<(AnimationInfo) -> Unit>()
+    private var onFinishFn = Maybe.empty<Consumer<AnimationInfo>>()
 
     override fun isFinished() = state == AnimationState.FINISHED
 
@@ -22,15 +23,11 @@ internal class DefaultAnimationInfo(private var state: AnimationState,
 
     override fun isInfinite() = state == AnimationState.INFINITE
 
-    override fun onFinished(fn: (AnimationInfo) -> Unit) {
+    override fun onFinished(fn: Consumer<AnimationInfo>) {
         require(state != AnimationState.INFINITE) {
             "Can't wait for an infinite Animation to finish."
         }
         onFinishFn = Maybe.of(fn)
-    }
-
-    override fun onFinished(fn: Consumer<AnimationInfo>) {
-        onFinished { fn.accept(it) }
     }
 
     override fun stop() {
@@ -40,7 +37,7 @@ internal class DefaultAnimationInfo(private var state: AnimationState,
     fun setState(state: AnimationState) {
         this.state = state
         if (state == AnimationState.FINISHED) {
-            onFinishFn.map { it.invoke(this) }
+            onFinishFn.map { it.accept(this) }
         }
     }
 

@@ -13,18 +13,20 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.event.EventBus
+import org.hexworks.zircon.api.event.ComponentSubscription
+import org.hexworks.zircon.api.event.Subscription
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.input.MouseAction
+import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.api.kotlin.map
+import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.component.InternalComponent
-import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 @Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
@@ -46,9 +48,23 @@ abstract class DefaultComponent(
         TilesetOverride by graphics,
         Boundable by boundable {
 
+
     final override val id = Identifier.randomIdentifier()
 
+    private val subscriptions = ThreadSafeQueueFactory.create<ComponentSubscription>()
     private var parent = Maybe.empty<Container>()
+
+    final override fun inputEmitted(input: Input) {
+        subscriptions.forEach {
+            it.listener.inputEmitted(input)
+        }
+    }
+
+    final override fun onInput(listener: InputListener): Subscription {
+        return ComponentSubscription(listener, subscriptions).also {
+            subscriptions.add(it)
+        }
+    }
 
     final override fun contentPosition() = renderer.contentPosition()
 
@@ -97,25 +113,6 @@ abstract class DefaultComponent(
     final override fun fill(filler: Tile): Layer {
         graphics.fill(filler)
         return this
-    }
-
-    // TODO: support all mouse events --> extract to own behavior
-    final override fun onMousePressed(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<ZirconEvent.MousePressed>(id) { (mouseAction) ->
-            callback.accept(mouseAction)
-        }
-    }
-
-    final override fun onMouseReleased(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<ZirconEvent.MouseReleased>(id) { (mouseAction) ->
-            callback.accept(mouseAction)
-        }
-    }
-
-    final override fun onMouseMoved(callback: Consumer<MouseAction>) {
-        EventBus.listenTo<ZirconEvent.MouseMoved>(id) { (mouseAction) ->
-            callback.accept(mouseAction)
-        }
     }
 
     final override fun componentStyleSet() = componentStyles

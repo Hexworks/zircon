@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
 import org.hexworks.zircon.api.input.MouseActionType.*
-import org.hexworks.zircon.gui.swing.internal.grid.TerminalMouseListener
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.junit.Before
 import org.junit.Test

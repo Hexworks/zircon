@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.data.Bounds
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.behavior.impl.DefaultStyleable

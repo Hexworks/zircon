@@ -2,18 +2,19 @@ package org.hexworks.zircon.internal.screen
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.animation.AnimationResource
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.input.KeyStroke
+import org.hexworks.zircon.api.kotlin.onInput
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.impl.DefaultLabelTest
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
-import org.hexworks.zircon.api.animation.AnimationResource
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations

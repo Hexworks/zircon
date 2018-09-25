@@ -1,7 +1,5 @@
 package org.hexworks.zircon.api.event
 
-import org.hexworks.zircon.api.util.Identifier
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.util.ThreadSafeQueue
 import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
@@ -9,41 +7,18 @@ import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 @Suppress("UNCHECKED_CAST")
 object EventBus {
 
-    val subscriptions = ThreadSafeMapFactory.create<String, ThreadSafeQueue<Subscription<*>>>()
+    val subscriptions = ThreadSafeMapFactory.create<String, ThreadSafeQueue<EventBusSubscription<*>>>()
 
     /**
      * Subscribes to all events of the given event type.
      */
-    inline fun <reified T : Event> subscribe(noinline callback: (T) -> Unit): Subscription<T> {
+    inline fun <reified T : Event> subscribe(noinline callback: (T) -> Unit): EventBusSubscription<T> {
         val eventType = T::class.simpleName!!
-        val subscription = Subscription(
+        val subscription = EventBusSubscription(
                 callback = callback,
                 eventType = eventType)
         subscriptions.getOrPut(eventType) { ThreadSafeQueueFactory.create() }.add(subscription)
         return subscription
-    }
-
-    /**
-     * Subscribes to all events of the given event type
-     * which have the given `identifier`.
-     */
-    inline fun <reified T : Event> listenTo(identifier: Identifier, noinline callback: (T) -> Unit): Subscription<T> {
-        val eventType = T::class.simpleName!!
-        val subscription = Subscription(
-                callback = callback,
-                eventType = eventType,
-                identifier = Maybe.of(identifier))
-        subscriptions.getOrPut(eventType) { ThreadSafeQueueFactory.create() }.add(subscription)
-        return subscription
-    }
-
-    /**
-     * Sends the given `event` to the subscriber having the given [Identifier].
-     */
-    fun sendTo(identifier: Identifier, event: Event) {
-        subscriptions.getOrPut(event::class.simpleName!!) { ThreadSafeQueueFactory.create() }
-                .filter { it.hasIdentifier(identifier) }
-                .forEach { (it.callback as (Event) -> Unit).invoke(event) }
     }
 
     /**
@@ -55,7 +30,7 @@ object EventBus {
         }
     }
 
-    fun unsubscribe(subscription: Subscription<*>) {
+    fun unsubscribe(subscription: EventBusSubscription<*>) {
         subscriptions[subscription.eventType]?.remove(subscription)
     }
 

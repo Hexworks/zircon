@@ -8,9 +8,10 @@ import org.hexworks.zircon.api.util.Maybe
  * Represents an object which can be drawn upon.
  * A [DrawSurface] is the most basic interface for all drawable surfaces
  * which exposes simple get and set functions for getting and setting
- * [Tile]s and drawing [Drawable]s.
+ * [Tile]s and drawing [Drawable]s. Each [DrawSurface] can use its own
+ * tileset, so it also implements [TilesetOverride].
  */
-interface DrawSurface : Boundable {
+interface DrawSurface : Boundable, TilesetOverride {
 
     /**
      * Returns the character stored at a particular position on this [DrawSurface].

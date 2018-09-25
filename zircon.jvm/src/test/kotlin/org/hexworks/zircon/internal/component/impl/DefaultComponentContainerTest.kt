@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.component.ButtonBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
@@ -15,9 +14,10 @@ import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType.*
+import org.hexworks.zircon.api.kotlin.onMouseEntered
+import org.hexworks.zircon.api.kotlin.onMousePressed
+import org.hexworks.zircon.api.kotlin.onMouseReleased
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.internal.component.impl.wrapping.BorderComponentDecorationRenderer
-import org.hexworks.zircon.internal.component.impl.wrapping.ShadowComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.junit.Before
@@ -67,7 +67,7 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val componentHovered = AtomicBoolean(false)
-        EventBus.listenTo<ZirconEvent.MouseOver>(button.id) {
+        button.onMouseEntered {
             componentHovered.set(true)
         }
 
@@ -86,7 +86,7 @@ class DefaultComponentContainerTest {
         EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
 
         val componentHovered = AtomicBoolean(false)
-        EventBus.listenTo<ZirconEvent.MouseOver>(button.id) {
+        button.onMouseEntered {
             componentHovered.set(true)
         }
 
@@ -103,10 +103,9 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val pressed = AtomicBoolean(false)
-        EventBus.listenTo<ZirconEvent.MousePressed>(button.id) {
+        button.onMousePressed {
             pressed.set(true)
         }
-
         EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)))
 
         assertThat(pressed.get()).isTrue()
@@ -120,7 +119,7 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val released = AtomicBoolean(false)
-        EventBus.listenTo<ZirconEvent.MouseReleased>(button.id) {
+        button.onMouseReleased {
             released.set(true)
         }
 
@@ -137,13 +136,13 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val events = mutableListOf<Boolean>()
-        EventBus.listenTo<ZirconEvent.MouseOver>(button.id) {
+        button.onMouseEntered {
             events.add(true)
         }
-        EventBus.listenTo<ZirconEvent.MousePressed>(button.id) {
+        button.onMousePressed {
             events.add(true)
         }
-        EventBus.listenTo<ZirconEvent.MouseReleased>(button.id) {
+        button.onMouseReleased {
             events.add(true)
         }
 
@@ -169,29 +168,29 @@ class DefaultComponentContainerTest {
         assertThat(button.componentStyleSet().getCurrentStyle()).isEqualTo(FOCUSED_STYLE)
     }
 
-    // TODO: FIX THIS
-//    @Test
-//    fun shouldProperlyFocusPrevWhenShiftTabPressed() {
-//        target.applyActiveStyle()
-//
-//        val button = createButton()
-//        target.addComponent(button)
-//        val other = ButtonBuilder.newBuilder()
-//                .text(BUTTON_TEXT)
-//                .position(Position.create(0, 1)
-//                        .relativeToBottomOf(button))
-//                .build()
-//        target.addComponent(other)
-//
-//        EventBus.broadcast<Input>(EventType.Input, KeyStroke(type = InputType.Tab))
-//        EventBus.broadcast<Input>(EventType.Input, KeyStroke(type = InputType.Tab))
-//
-//        assertThat(button.componentStyleSet().getCurrentStyle()).isEqualTo(DEFAULT_STYLE)
-//
-//        EventBus.broadcast<Input>(EventType.Input, KeyStroke(shiftDown = true, type = InputType.ReverseTab))
-//
-//        assertThat(button.componentStyleSet().getCurrentStyle()).isEqualTo(FOCUSED_STYLE)
-//    }
+    @Test
+    fun shouldProperlyFocusPrevWhenShiftTabPressed() {
+        target.activate()
+
+        val button = createButton()
+        target.addComponent(button)
+        val other = ButtonBuilder.newBuilder()
+                .text(BUTTON_TEXT)
+                .position(Position.create(0, 1)
+                        .relativeToBottomOf(button))
+                .build()
+        target.addComponent(other)
+
+        EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
+        EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
+
+        assertThat(button.componentStyleSet().getCurrentStyle()).isEqualTo(DEFAULT_STYLE)
+
+        EventBus.broadcast(ZirconEvent.Input(KeyStroke(shiftDown = true, type = InputType.ReverseTab)))
+
+
+        assertThat(button.componentStyleSet().getCurrentStyle()).isEqualTo(FOCUSED_STYLE)
+    }
 
     @Test
     fun shouldProperlyHandleSpacePressedOnFocusedWhenActive() {
@@ -201,7 +200,7 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val released = AtomicBoolean(false)
-        EventBus.listenTo<ZirconEvent.MouseReleased>(button.id) {
+        button.onMouseReleased {
             released.set(true)
         }
 
@@ -249,8 +248,5 @@ class DefaultComponentContainerTest {
                 .focusedStyle(FOCUSED_STYLE)
                 .mouseOverStyle(MOUSE_OVER_STYLE)
                 .build()
-        val WRAPPERS = listOf(
-                ShadowComponentDecorationRenderer(),
-                BorderComponentDecorationRenderer(Modifiers.border()))
     }
 }

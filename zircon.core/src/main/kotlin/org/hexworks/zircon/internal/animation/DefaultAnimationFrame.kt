@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.util.Maybe
 
 /**

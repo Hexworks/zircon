@@ -2,7 +2,6 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.AppConfigs
-import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.HeaderBuilder
@@ -20,8 +19,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.component.impl.wrapping.BorderComponentDecorationRenderer
-import org.hexworks.zircon.internal.component.impl.wrapping.ShadowComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.junit.Before
@@ -45,7 +42,7 @@ class DefaultContainerTest {
                 tileset = goodTileset,
                 renderer = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
-                        componentRenderer = DefaultRadioButtonGroupRenderer())){
+                        componentRenderer = DefaultRadioButtonGroupRenderer())) {
             override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
@@ -253,8 +250,5 @@ class DefaultContainerTest {
                 .focusedStyle(FOCUSED_STYLE)
                 .mouseOverStyle(MOUSE_OVER_STYLE)
                 .build()
-        val WRAPPERS = listOf(
-                ShadowComponentDecorationRenderer(),
-                BorderComponentDecorationRenderer(Modifiers.border()))
     }
 }

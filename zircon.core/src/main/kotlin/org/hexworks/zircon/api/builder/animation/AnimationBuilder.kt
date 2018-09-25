@@ -92,17 +92,22 @@ data class AnimationBuilder private constructor(
 
     override fun createCopy() = copy(
             frames = frames
-                    .map {
+                    .asSequence()
+                    .map { frame ->
                         DefaultAnimationFrame(
-                                size = it.getSize(),
-                                layers = it.getLayers().map { it.createCopy() }.toList(),
-                                repeatCount = it.getRepeatCount())
+                                size = frame.getSize(),
+                                layers = frame.getLayers().asSequence()
+                                        .map { it.createCopy() }
+                                        .toList(),
+                                repeatCount = frame.getRepeatCount())
                     }
                     .toMutableList(),
             positions = positions.toMutableList())
 
     private fun recalculateFrameCountAndLength() {
-        totalFrameCount = frames.map { it.getRepeatCount() }.reduce(Int::plus)
+        totalFrameCount = frames.asSequence()
+                .map { it.getRepeatCount() }
+                .reduce(Int::plus)
         uniqueFrameCount = frames.size
     }
 

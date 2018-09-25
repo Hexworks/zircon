@@ -19,8 +19,8 @@ object MouseMovedExample {
         screen.addComponent(panel)
 
         panel.onMouseMoved(object : Consumer<MouseAction> {
-            override fun accept(p: MouseAction) {
-                println(p)
+            override fun accept(value: MouseAction) {
+                println(value)
             }
         })
 
