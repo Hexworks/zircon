@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.modifier
 
 data class Border(val borderType: BorderType,
-                  val borderPositions: Set<BorderPosition>) : Modifier {
+                  val borderPositions: Set<BorderPosition>) : TextureTransformModifier {
 
     /**
      * Creates a new [Border] which has its border positions added to this border.

@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.util
 
-import org.hexworks.zircon.internal.tileset.impl.CP437TileTextureMetadata
+import org.hexworks.zircon.internal.tileset.impl.CP437TextureMetadata
 
 object CP437Utils {
 
@@ -15,7 +15,7 @@ object CP437Utils {
     val CP437_METADATA = UNICODE_TO_CP437_LOOKUP.map { (char, index) ->
         val x = index.rem(16)
         val y = index.div(16)
-        Pair(char.toChar(), listOf(CP437TileTextureMetadata(
+        Pair(char.toChar(), listOf(CP437TextureMetadata(
                 character = char.toChar(),
                 x = x,
                 y = y,

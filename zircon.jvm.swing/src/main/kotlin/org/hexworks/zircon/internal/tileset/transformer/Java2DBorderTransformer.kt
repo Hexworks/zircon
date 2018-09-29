@@ -5,17 +5,17 @@ import org.hexworks.zircon.api.modifier.BorderPosition.*
 import org.hexworks.zircon.api.modifier.BorderType
 import org.hexworks.zircon.api.modifier.BorderType.*
 import org.hexworks.zircon.api.tileset.TileTexture
-import org.hexworks.zircon.api.tileset.TileTextureTransformer
+import org.hexworks.zircon.api.tileset.TextureTransformer
 import java.awt.BasicStroke
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
 
-class Java2DBorderTransformer : TileTextureTransformer<BufferedImage> {
+class Java2DBorderTransformer : TextureTransformer<BufferedImage> {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         return texture.also {
-            val txt = it.getTexture()
+            val txt = it.texture()
             txt.graphics.apply {
                 color = tile.getForegroundColor().toAWTColor()
                 if (tile.hasBorder()) {
