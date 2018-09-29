@@ -5,7 +5,6 @@ import org.hexworks.zircon.api.component.*;
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.resource.ColorThemeResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 public class ColorThemeSwitcher {
 
     private static final Size SCREEN_SIZE = Sizes.create(80, 40);
-    private static final TilesetResource TILESET = BuiltInCP437TilesetResource.ROGUE_YUN_16X16;
+    private static final TilesetResource TILESET = CP437TilesetResources.wanderlust16x16();
     private static final ColorThemeResource THEME = ColorThemeResource.GAMEBOOKERS;
 
     public static void main(String[] args) {
@@ -169,7 +168,7 @@ public class ColorThemeSwitcher {
         final RadioButtonGroup slOptions = Components.radioButtonGroup()
                 .size(themePickerSize
                         .withYLength(solarizedLightOptions.size())
-                        .withRelativeXLength(-2))
+                        .withRelativeXLength(-4))
                 .build();
         solarizedLightOptions.forEach((option) -> slOptions.addOption(
                 option.name(),
@@ -179,7 +178,7 @@ public class ColorThemeSwitcher {
         final RadioButtonGroup sdOptions = Components.radioButtonGroup()
                 .size(themePickerSize
                         .withYLength(solarizedDarkOptions.size())
-                        .withRelativeXLength(-2))
+                        .withRelativeXLength(-4))
                 .build();
         solarizedDarkOptions.forEach((option) -> sdOptions.addOption(
                 option.name(),
@@ -189,7 +188,7 @@ public class ColorThemeSwitcher {
         final RadioButtonGroup zbOptions = Components.radioButtonGroup()
                 .size(themePickerSize
                         .withYLength(zenburnOptions.size())
-                        .withRelativeXLength(-2))
+                        .withRelativeXLength(-4))
                 .build();
         zenburnOptions.forEach((option) -> zbOptions.addOption(
                 option.name(),
@@ -199,7 +198,7 @@ public class ColorThemeSwitcher {
         final RadioButtonGroup mOptions = Components.radioButtonGroup()
                 .size(themePickerSize
                         .withYLength(monokaiOptions.size())
-                        .withRelativeXLength(-2))
+                        .withRelativeXLength(-4))
                 .build();
         monokaiOptions.forEach((option) -> mOptions.addOption(
                 option.name(),

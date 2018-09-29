@@ -7,8 +7,8 @@ import org.hexworks.zircon.api.graphics.BoxType
 
 object PanelsExample {
 
-    private val theme = ColorThemes.gamebookers()
-    private val tileset = CP437TilesetResources.rogueYun16x16()
+    private val theme = ColorThemes.techLight()
+    private val tileset = CP437TilesetResources.rexPaint20x20()
 
     @JvmStatic
     fun main(args: Array<String>) {

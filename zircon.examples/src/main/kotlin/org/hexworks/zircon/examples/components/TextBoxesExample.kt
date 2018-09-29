@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.*
 
 object TextBoxesExample {
 
-    private val theme = ColorThemes.solarizedLightOrange()
+    private val theme = ColorThemes.oliveLeafTea()
     private val tileset = CP437TilesetResources.rogueYun16x16()
 
     @JvmStatic

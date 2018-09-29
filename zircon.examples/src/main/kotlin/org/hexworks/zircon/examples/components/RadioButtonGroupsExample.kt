@@ -5,8 +5,8 @@ import org.hexworks.zircon.api.graphics.BoxType
 
 object RadioButtonGroupsExample {
 
-    private val theme = ColorThemes.solarizedLightOrange()
-    private val tileset = CP437TilesetResources.rogueYun16x16()
+    private val theme = ColorThemes.ghostOfAChance()
+    private val tileset = CP437TilesetResources.cheepicus16x16()
 
     @JvmStatic
     fun main(args: Array<String>) {

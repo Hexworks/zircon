@@ -1,8 +1,7 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.util.Consumer
+import org.hexworks.zircon.api.kotlin.onMouseMoved
 
 object MouseMovedExample {
 
@@ -18,11 +17,9 @@ object MouseMovedExample {
 
         screen.addComponent(panel)
 
-        panel.onMouseMoved(object : Consumer<MouseAction> {
-            override fun accept(value: MouseAction) {
-                println(value)
-            }
-        })
+        panel.onMouseMoved {
+            println(it)
+        }
 
         screen.display()
         screen.applyColorTheme(ColorThemes.adriftInDreams())

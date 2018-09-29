@@ -7,14 +7,14 @@ import org.hexworks.zircon.api.tileset.lookup.CP437TileMetadataLoader
 
 object CP437CharsExample {
 
-    private val theme = ColorThemes.entrappedInAPalette()
+    private val theme = ColorThemes.solarizedLightBlue()
 
     @JvmStatic
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .defaultSize(Sizes.create(21, 21))
-                .defaultTileset(TrueTypeFontResources.amstrad(20))
+                .defaultTileset(CP437TilesetResources.wanderlust16x16())
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
