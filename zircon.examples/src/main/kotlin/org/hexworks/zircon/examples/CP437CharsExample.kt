@@ -2,8 +2,7 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.api.resource.BuiltInTrueTypeFontResource
-import org.hexworks.zircon.api.tileset.lookup.CP437TileMetadataLoader
+import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
 
 object CP437CharsExample {
 

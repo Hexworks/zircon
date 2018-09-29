@@ -3,18 +3,18 @@ package org.hexworks.zircon.internal.tileset.transformer
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.tileset.TileTexture
-import org.hexworks.zircon.api.tileset.TileTextureTransformer
+import org.hexworks.zircon.api.tileset.TextureTransformer
 import java.awt.Color
 import java.awt.image.BufferedImage
 
-class Java2DTileTextureColorizer : TileTextureTransformer<BufferedImage> {
+class Java2DTextureColorizer : TextureTransformer<BufferedImage> {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         val r = tile.getForegroundColor().getRed().toFloat() / 255
         val g = tile.getForegroundColor().getGreen().toFloat() / 255
         val b = tile.getForegroundColor().getBlue().toFloat() / 255
 
-        val backend = texture.getTexture()
+        val backend = texture.texture()
         (0 until backend.width).forEach { x ->
             (0 until backend.height).forEach { y ->
                 val ax = backend.colorModel.getAlpha(backend.raster.getDataElements(x, y, null))

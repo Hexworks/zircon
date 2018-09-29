@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.modifier
 /**
  * Represents the built-in SimpleModifiers supported by zircon.
  */
-sealed class SimpleModifiers : Modifier {
+sealed class SimpleModifiers : TextureTransformModifier {
 
     object Underline : SimpleModifiers()
     object Blink : SimpleModifiers()
