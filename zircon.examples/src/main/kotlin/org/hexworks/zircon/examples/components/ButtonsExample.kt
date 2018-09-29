@@ -8,8 +8,8 @@ import org.hexworks.zircon.api.graphics.BoxType
 
 object ButtonsExample {
 
-    private val theme = ColorThemes.gamebookers()
-    private val tileset = CP437TilesetResources.rogueYun16x16()
+    private val theme = ColorThemes.solarizedLightOrange()
+    private val tileset = CP437TilesetResources.wanderlust16x16()
 
     @JvmStatic
     fun main(args: Array<String>) {

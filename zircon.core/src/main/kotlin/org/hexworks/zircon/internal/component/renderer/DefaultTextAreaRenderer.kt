@@ -1,10 +1,11 @@
 package org.hexworks.zircon.internal.component.renderer
 
-import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.SubTileGraphics
+import org.hexworks.zircon.api.kotlin.map
 
 class DefaultTextAreaRenderer : ComponentRenderer<TextArea>() {
 
@@ -12,11 +13,12 @@ class DefaultTextAreaRenderer : ComponentRenderer<TextArea>() {
         val style = context.componentStyle().getCurrentStyle()
         val component = context.component
         tileGraphics.applyStyle(style)
+        val tileTemplate = Tile.createCharacterTile(' ', style)
         tileGraphics.size().fetchPositions().forEach { pos ->
             val fixedPos = pos + component.visibleOffset()
-            tileGraphics.setTileAt(pos, TileBuilder.newBuilder()
-                    .character(component.textBuffer().getCharAt(fixedPos).orElse(' '))
-                    .build())
+            component.textBuffer().getCharAt(fixedPos).map { char ->
+                tileGraphics.setTileAt(pos, tileTemplate.withCharacter(char))
+            }
         }
     }
 }

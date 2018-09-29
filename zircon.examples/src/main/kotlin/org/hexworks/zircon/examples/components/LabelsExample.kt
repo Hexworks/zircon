@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.graphics.BoxType.*
 object LabelsExample {
 
     private val theme = ColorThemes.solarizedLightOrange()
-    private val tileset = CP437TilesetResources.rogueYun16x16()
+    private val tileset = CP437TilesetResources.taffer20x20()
 
     @JvmStatic
     fun main(args: Array<String>) {

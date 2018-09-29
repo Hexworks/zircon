@@ -21,8 +21,9 @@ interface TextArea : Component, Scrollable {
      */
     fun setText(text: String): Boolean
 
+    fun enable()
+
     fun disable()
 
-    fun enable()
 
 }

@@ -143,7 +143,7 @@ class DefaultTextArea constructor(
 
     private fun enableTyping() {
         typingEnabled = true
-        EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition().withRelative(position())))
+        EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition().withRelative(position() + contentPosition())))
     }
 
     override fun keyStroked(keyStroke: KeyStroke) {
