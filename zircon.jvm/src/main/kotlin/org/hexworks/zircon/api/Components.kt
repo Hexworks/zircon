@@ -8,6 +8,9 @@ object Components {
     fun textArea() = TextAreaBuilder.newBuilder()
 
     @JvmStatic
+    fun logArea() = LogAreaBuilder.newBuilder()
+
+    @JvmStatic
     fun textBox() = TextBoxBuilder.newBuilder()
 
     @JvmStatic

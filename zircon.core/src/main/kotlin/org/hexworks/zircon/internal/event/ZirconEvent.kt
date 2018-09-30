@@ -37,4 +37,10 @@ sealed class ZirconEvent : Event {
      * A component was removed
      */
     object ComponentRemoval : ZirconEvent()
+
+    /**
+     * A Hyperlink was triggered
+     * *eg. used in [org.hexworks.zircon.api.component.LogArea]
+     * */
+    data class TriggeredHyperLink(val linkId: String) : ZirconEvent()
 }
