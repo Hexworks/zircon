@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.component.LogArea
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.SubTileGraphics
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.internal.component.impl.log.LogElement
@@ -11,7 +12,12 @@ import org.hexworks.zircon.internal.component.impl.log.RenderedPositionArea
 
 class DefaultLogAreaRenderer : ComponentRenderer<LogArea>() {
 
+    private lateinit var visibleRenderArea: VisibleRenderArea
+
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<LogArea>) {
+        context.component.getLogElementBuffer().clearLogRenderPositions()
+        visibleRenderArea = VisibleRenderArea(context.component.visibleOffset(), context.component.visibleSize())
+
         val style = context.componentStyle().getCurrentStyle()
         val component = context.component
         tileGraphics.applyStyle(style)
@@ -27,41 +33,63 @@ class DefaultLogAreaRenderer : ComponentRenderer<LogArea>() {
 
     private fun renderLogElement(tileGraphics: SubTileGraphics, context: ComponentRenderContext<LogArea>,
                                  logElement: LogElement, targetYPosition: Int, logElementY: Int): Int {
-        var currentX = logElement.position.x
-        var currentY = targetYPosition
+        var currentPosX = logElement.position.x
+        var currentPosY = targetYPosition
         var currentLogElementY = logElementY
 
-        val words = if (logElement.getTextAsString() != "")
+        val logElementRenderInfo = mutableListOf<Pair<Position, Int>>()
+        getWordsOfLogElement(logElement)
+                .forEach { word ->
+                    if (logElement.position.y > currentLogElementY)
+                        currentPosY += logElement.position.y - currentLogElementY
+                    if (context.component.textWrap == TextWrap.WORD_WRAP && (currentPosX + word.length) > tileGraphics.size().width()) {
+                        currentPosX = 0
+                        currentPosY += 1
+                    }
+
+                    if (logElement.modifiers != null)
+                        tileGraphics.enableModifiers(logElement.modifiers!!)
+
+                    val position = Position.create(currentPosX, currentPosY)
+                    if (visibleRenderArea.contains(position)) {
+                        renderWord(position, context, tileGraphics, word, logElementRenderInfo, logElement)
+
+                        currentPosX += word.length
+                        currentLogElementY = logElement.position.y
+                    }
+                }
+
+        if (logElementRenderInfo.isNotEmpty()) {
+            val startRenderPosition = logElementRenderInfo.first().first
+            val endRenderPosition = logElementRenderInfo.last().first.plus(Position.create(logElementRenderInfo.last().second, 0))
+            logElement.renderedPositionArea = RenderedPositionArea(startRenderPosition, endRenderPosition, context.component.contentSize())
+        }
+        return currentPosY
+    }
+
+    private fun renderWord(position: Position, context: ComponentRenderContext<LogArea>, tileGraphics: SubTileGraphics,
+                           word: String, logElementRenderInfo: MutableList<Pair<Position, Int>>, logElement: LogElement) {
+        val visiblePosition = position.minus(context.component.visibleOffset())
+        tileGraphics.putText(word, visiblePosition)
+        logElementRenderInfo.add(Pair(visiblePosition, word.length))
+
+        if (logElement.modifiers != null)
+            tileGraphics.disableModifiers(logElement.modifiers!!)
+    }
+
+    private fun getWordsOfLogElement(logElement: LogElement): List<String> {
+        return if (logElement.getTextAsString() != "")
             logElement.getTextAsString().split(" ").map { "$it " }
         else
             listOf("")
-
-        val logElementRenderInfo = mutableListOf<Pair<Position, Int>>()
-        words.forEach { word ->
-            if (logElement.position.y > currentLogElementY)
-                currentY += logElement.position.y - currentLogElementY
-            if (context.component.textWrap == TextWrap.WORD_WRAP && (currentX + word.length) > tileGraphics.size().width()) {
-                currentX = 0
-                currentY += 1
-            }
-
-            if (logElement.modifiers != null)
-                tileGraphics.enableModifiers(logElement.modifiers!!)
-
-            val position = Position.create(currentX, currentY).plus(context.component.visibleOffset())
-            tileGraphics.putText(word, position)
-            logElementRenderInfo.add(Pair(position, word.length))
-
-            if (logElement.modifiers != null)
-                tileGraphics.disableModifiers(logElement.modifiers!!)
-
-            currentX += word.length
-            currentLogElementY = logElement.position.y
-        }
-
-        val startRenderPosition = logElementRenderInfo.first().first
-        val endRenderPosition = logElementRenderInfo.last().first.plus(Position.create(logElementRenderInfo.last().second, 0))
-        logElement.renderedPositionArea = RenderedPositionArea(startRenderPosition, endRenderPosition, context.component.contentSize())
-        return currentY
     }
+}
+
+data class VisibleRenderArea(val topLeft: Position, val size: Size) {
+    fun contains(position: Position): Boolean {
+        return topLeft.x <= position.x && position.x + size.width() >= position.x
+                && topLeft.y <= position.y && topLeft.y + size.height() >= topLeft.y
+
+    }
+
 }

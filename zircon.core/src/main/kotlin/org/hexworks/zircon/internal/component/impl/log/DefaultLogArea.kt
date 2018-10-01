@@ -39,7 +39,7 @@ class DefaultLogArea constructor(
         componentStyles = componentStyleSet,
         renderer = renderingStrategy) {
 
-    private var logElementBuffer = LogElementBuffer()
+    private var logElementBuffer = LogElementBuffer(visibleSize())
     private var hyperLinkElementOnMouseOver: HyperLinkElement? = null
 
 

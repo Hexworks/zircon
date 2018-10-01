@@ -71,14 +71,23 @@ class DefaultLogAreaTest {
         EventBus.subscribe<ZirconEvent.TriggeredHyperLink> { (hyperLinkId) ->
             hyperLinkIds.add(hyperLinkId)
         }
-        val hyperLinkElementRenderPos = target.getLogElementBuffer().getAllLogElements().first()
+        target.getLogElementBuffer().getAllLogElements().first()
                 .renderedPositionArea!!.startPosition
         target.mousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.create(4,5 )))
         assertThat(hyperLinkIds.first())
                 .isEqualTo(HYPERLINK_ID)
-
     }
 
+    @Test
+    fun shouldProperlyScrollDown()
+    {
+        target.addNewRows(10)
+        target.addText(TEXT)
+        target.scrollDownBy(1)
+        assertThat(target.visibleOffset())
+                .isEqualTo(Position.create(0, 1))
+
+    }
 
 
     companion object {

@@ -8,8 +8,8 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 
 object LogAreaExample {
 
-    private val theme = ColorThemes.linuxMintDark()
-    private val tileset = CP437TilesetResources.rogueYun16x16()
+    private val theme = ColorThemes.amigaOs()
+    private val tileset = CP437TilesetResources.aduDhabi16x16()
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -43,7 +43,7 @@ object LogAreaExample {
         logArea.addText("This is a long log row, which gets wrapped, since it is long")
         logArea.addNewRows(4)
         logArea.addText("ScrollTest")
-        logArea.scrollDownBy(2  )
+        logArea.scrollDownBy(2 )
 
         panel.addComponent(logArea)
 
