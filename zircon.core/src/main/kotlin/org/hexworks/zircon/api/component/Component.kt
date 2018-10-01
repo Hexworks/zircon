@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.InputEmitter
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -8,6 +9,7 @@ import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.util.Consumer
+import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.Identifiable
 
 /**
@@ -21,6 +23,22 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  * display information is a [Component].
  */
 interface Component : Identifiable, Layer, InputEmitter {
+
+
+    /**
+     * Returns the character stored at a particular position on this [DrawSurface].
+     * Returns an empty [Maybe] if no [Tile] is present at the given [Position].
+     */
+    // TODO: clarify difference between `getTileAt` and `getRelativeTileAt`
+    override fun getTileAt(position: Position): Maybe<Tile>
+
+    /**
+     * Sets a [Tile] at a specific position in the [DrawSurface] to `tile`.
+     * If the position is outside of the [DrawSurface]'s size, this method has no effect.
+     * Note that if this [DrawSurface] already has the given [Tile] on the supplied [Position]
+     * nothing will change.
+     */
+    override fun setTileAt(position: Position, tile: Tile)
 
     /**
      * Tells whether this [Component] is attached to a parent or not.

@@ -45,13 +45,13 @@ class LibgdxRenderer(private val grid: TileGrid,
             batch.begin()
 
             renderTiles(
-                    tiles = grid.snapshot(),
+                    tiles = grid.createSnapshot(),
                     tileset = grid.tileset(),
                     offset = PixelPosition(0, 0),
                     batch = batch)
             grid.getLayers().forEach { layer ->
                 renderTiles(
-                        tiles = layer.snapshot(),
+                        tiles = layer.createSnapshot(),
                         tileset = grid.tileset(),
                         offset = layer.position().toPixelPosition(grid.tileset()),
                         batch = batch)

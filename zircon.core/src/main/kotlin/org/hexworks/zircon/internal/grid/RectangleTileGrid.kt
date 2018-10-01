@@ -96,8 +96,8 @@ class RectangleTileGrid(
         backend.setTileAt(position, tile)
     }
 
-    override fun snapshot(): Map<Position, Tile> {
-        return backend.snapshot()
+    override fun createSnapshot(): Map<Position, Tile> {
+        return backend.createSnapshot()
     }
 
     override fun draw(drawable: Drawable, position: Position) {

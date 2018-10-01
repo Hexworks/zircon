@@ -1,7 +1,8 @@
 package org.hexworks.zircon.api
 
-import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.builder.modifier.BorderBuilder
+import org.hexworks.zircon.api.modifier.Border
+import org.hexworks.zircon.api.modifier.Glow
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 
@@ -29,7 +30,8 @@ object Modifiers {
     fun hidden(): Modifier = Hidden
 
     @JvmStatic
-    fun glow(): Modifier = Glow
+    @JvmOverloads
+    fun glow(radius: Float = 5.0f): Modifier = Glow(radius)
 
     /**
      * Shorthand for the default border which is:

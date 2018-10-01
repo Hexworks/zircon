@@ -25,7 +25,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                           private val frame: JFrame,
                           private val tileGrid: InternalTileGrid) : Renderer {
 
-    val config = RuntimeConfig.config
+    private val config = RuntimeConfig.config
     private var firstDraw = true
     private val tilesetLoader = SwingTilesetLoader()
     private var blinkOn = true
@@ -102,7 +102,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         val gc = configureGraphics(img.graphics)
         gc.fillRect(0, 0, tileGrid.widthInPixels(), tileGrid.heightInPixels())
 
-        val snapshot = tileGrid.snapshot()
+        val snapshot = tileGrid.createSnapshot()
         tileGrid.updateAnimations(now, tileGrid)
         renderTiles(
                 graphics = gc,
@@ -111,7 +111,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         tileGrid.getLayers().forEach { layer ->
             renderTiles(
                     graphics = gc,
-                    tiles = layer.snapshot(),
+                    tiles = layer.createSnapshot(),
                     tileset = tilesetLoader.loadTilesetFrom(layer.tileset()))
         }
         if (shouldDrawCursor()) {

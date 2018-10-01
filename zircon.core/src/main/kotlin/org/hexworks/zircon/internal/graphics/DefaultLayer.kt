@@ -24,8 +24,8 @@ data class DefaultLayer(private var position: Position,
 
     private var bounds: Bounds = refreshBounds()
 
-    override fun snapshot(): Map<Position, Tile> {
-        return backend.snapshot().mapKeys { it.key + position }
+    override fun createSnapshot(): Map<Position, Tile> {
+        return backend.createSnapshot().mapKeys { it.key + position }
     }
 
     override fun draw(drawable: Drawable, position: Position) {
@@ -36,10 +36,16 @@ data class DefaultLayer(private var position: Position,
         backend.drawOnto(surface, position)
     }
 
-    override fun getRelativeTileAt(position: Position) = backend.getTileAt(position)
+    override fun getTileAt(position: Position) = backend.getTileAt(position)
 
-    override fun setRelativeTileAt(position: Position, tile: Tile) {
+    override fun setTileAt(position: Position, tile: Tile) {
         backend.setTileAt(position, tile)
+    }
+
+    override fun getAbsoluteTileAt(position: Position) = backend.getTileAt(position - this.position)
+
+    override fun setAbsoluteTileAt(position: Position, tile: Tile) {
+        backend.setTileAt(position - this.position, tile)
     }
 
     override fun bounds() = bounds
@@ -69,12 +75,6 @@ data class DefaultLayer(private var position: Position,
 
     override fun containsBoundable(boundable: Boundable): Boolean {
         return bounds.containsBounds(boundable.bounds())
-    }
-
-    override fun getTileAt(position: Position) = backend.getTileAt(position - this.position)
-
-    override fun setTileAt(position: Position, tile: Tile) {
-        backend.setTileAt(position - this.position, tile)
     }
 
     private fun refreshBounds(): Bounds {

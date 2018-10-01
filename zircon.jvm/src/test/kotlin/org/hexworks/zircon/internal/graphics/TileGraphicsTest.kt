@@ -34,11 +34,6 @@ class TileGraphicsTest {
     }
 
     @Test
-    fun shouldReportProperPosition() {
-        assertThat(target.position()).isEqualTo(Position.defaultPosition())
-    }
-
-    @Test
     fun shouldReportProperSize() {
         assertThat(target.size()).isEqualTo(SIZE_OF_3X3)
     }
@@ -129,13 +124,13 @@ class TileGraphicsTest {
     fun shouldProperlyCreateSnapshot() {
         target.setTileAt(FILLED_POS, FILLER)
 
-        assertThat(target.snapshot().toMap()).isEqualTo(mapOf(FILLED_POS to FILLER))
+        assertThat(target.createSnapshot().toMap()).isEqualTo(mapOf(FILLED_POS to FILLER))
     }
 
     @Test
     fun shouldNotChangeSnapshotAfterCreation() {
 
-        val result = target.snapshot()
+        val result = target.createSnapshot()
 
         target.setTileAt(FILLED_POS, FILLER)
 
@@ -305,7 +300,7 @@ class TileGraphicsTest {
         val newStyle = StyleSet.defaultStyle()
                 .withForegroundColor(ANSITileColor.GREEN)
                 .withBackgroundColor(ANSITileColor.YELLOW)
-        
+
         target.applyStyle(newStyle, Bounds.create(Position.offset1x1(), Size.one()))
 
         assertThat(target.fetchCells().map { it.tile.styleSet() }).containsExactly(

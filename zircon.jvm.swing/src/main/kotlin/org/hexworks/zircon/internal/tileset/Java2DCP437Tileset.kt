@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.*
 import org.hexworks.zircon.api.resource.TileType.CHARACTER_TILE
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.TileTransformer
 import org.hexworks.zircon.api.tileset.Tileset
@@ -99,16 +100,17 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
 
         val TILE_TRANSFORMER_LOOKUP:
                 Map<KClass<out TileTransformModifier<out Tile>>, TileTransformer<out TileTransformModifier<out Tile>, out Tile>> = mapOf(
-                Markov::class to Java2DMarkovTransformer())
+                Markov::class to Java2DMarkovTransformer(),
+                FadeIn::class to Java2DFadeInTransformer())
 
-        val TEXTURE_TRANSFORMER_LOOKUP = mapOf(
+        val TEXTURE_TRANSFORMER_LOOKUP: Map<KClass<out TextureTransformModifier>, TextureTransformer<BufferedImage>> = mapOf(
                 Pair(SimpleModifiers.Underline::class, Java2DUnderlineTransformer()),
                 Pair(SimpleModifiers.VerticalFlip::class, Java2DVerticalFlipper()),
+                Pair(SimpleModifiers.Blink::class, Java2DNoOpTransformer()),
                 Pair(SimpleModifiers.HorizontalFlip::class, Java2DHorizontalFlipper()),
                 Pair(SimpleModifiers.CrossedOut::class, Java2DCrossedOutTransformer()),
-                Pair(SimpleModifiers.Blink::class, NoOpTransformer()),
                 Pair(SimpleModifiers.Hidden::class, Java2DHiddenTransformer()),
-                Pair(SimpleModifiers.Glow::class, Java2DGlowTransformer()),
+                Pair(Glow::class, Java2DGlowTransformer()),
                 Pair(Border::class, Java2DBorderTransformer()),
                 Pair(Crop::class, Java2DCropTransformer()),
                 Pair(RayShade::class, Java2DRayShaderTransformer())

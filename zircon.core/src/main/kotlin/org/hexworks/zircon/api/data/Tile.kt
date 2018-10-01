@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 import org.hexworks.zircon.api.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.resource.TilesetType
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.data.DefaultCharacterTile
 import org.hexworks.zircon.internal.data.DefaultImageTile
@@ -64,6 +63,7 @@ interface Tile : Drawable, Cacheable {
     fun hasBorder(): Boolean = getModifiers().any { it is Border }
 
     fun fetchBorderData(): Set<Border> = getModifiers()
+            .asSequence()
             .filter { it is Border }
             .map { it as Border }
             .toSet()
@@ -88,6 +88,8 @@ interface Tile : Drawable, Cacheable {
      * Returns a copy of this [Tile] with the specified style.
      */
     fun withStyle(style: StyleSet): Tile
+
+    fun withAddedModifier(modifier: Modifier): Tile = withModifiers(getModifiers().plus(modifier))
 
     /**
      * Returns a copy of this [Tile] with the specified modifiers.

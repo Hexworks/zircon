@@ -10,10 +10,10 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
  * A [Boundable] object can provide useful information
  * about its geometry relating to other [Boundable]s (like intersection).
  */
-interface Boundable : Positionable {
+interface Boundable {
 
     /**
-     * Returns the [Bounds] (its [Position] and [Size]) of this [Boundable].
+     * Returns the [Bounds] of this [Boundable].
      */
     fun bounds(): Bounds
 

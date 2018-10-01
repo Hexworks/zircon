@@ -22,12 +22,12 @@ interface TileGraphics
     /**
      * Returns a [List] of [Position]s which are not `EMPTY`.
      */
-    fun fetchFilledPositions(): List<Position> = snapshot().keys.toList()
+    fun fetchFilledPositions(): List<Position> = createSnapshot().keys.toList()
 
     /**
      * Returns a [List] of [Tile]s which are not `EMPTY`.
      */
-    fun fetchFilledTiles(): List<Tile> = snapshot().values.toList()
+    fun fetchFilledTiles(): List<Tile> = createSnapshot().values.toList()
 
     /**
      * Returns all the [Cell]s ([Tile]s with associated [Position] information)
@@ -73,7 +73,7 @@ interface TileGraphics
                 size = newSize,
                 styleSet = styleSet(),
                 tileset = tileset())
-        snapshot().filter { (pos) -> newSize.containsPosition(pos) }
+        createSnapshot().filter { (pos) -> newSize.containsPosition(pos) }
                 .forEach { (pos, tc) ->
                     result.setTileAt(pos, tc)
                 }
@@ -151,7 +151,7 @@ interface TileGraphics
         return DefaultTileImage(
                 size = size(),
                 tileset = tileset(),
-                tiles = snapshot().toMap())
+                tiles = createSnapshot().toMap())
     }
 
     /**
