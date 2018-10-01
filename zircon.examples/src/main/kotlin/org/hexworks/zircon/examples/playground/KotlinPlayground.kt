@@ -22,20 +22,6 @@ object KotlinPlayground {
                 .debugMode(true)
                 .build())
 
-
-        tileGrid.onInput {
-            println(it)
-        }
-
-
-
-
-        tileGrid.onMouseAction(object : MouseListener {
-            override fun mouseClicked(action: MouseAction) {
-                println("click")
-            }
-        })
-
     }
 
 }

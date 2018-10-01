@@ -116,8 +116,8 @@ class RectangleTileGrid(
         layerable.removeLayer(layer)
     }
 
-    override fun getLayers(): List<Layer> {
-        return layerable.getLayers()
+    override fun layers(): List<Layer> {
+        return layerable.layers()
     }
 
     override fun bounds(): Bounds {
@@ -140,16 +140,16 @@ class RectangleTileGrid(
         return backend.containsBoundable(boundable)
     }
 
-    override fun tileset(): TilesetResource {
-        return backend.tileset()
+    override fun currentTileset(): TilesetResource {
+        return backend.currentTileset()
     }
 
     override fun useTileset(tileset: TilesetResource) {
         backend.useTileset(tileset)
     }
 
-    override fun styleSet(): StyleSet {
-        return backend.styleSet()
+    override fun toStyleSet(): StyleSet {
+        return backend.toStyleSet()
     }
 
     override fun backgroundColor(): TileColor {

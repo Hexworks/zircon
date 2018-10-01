@@ -158,8 +158,8 @@ class SubTileGraphicsTest {
         backend.useTileset(backendTileset)
         target.useTileset(subTileset)
 
-        assertThat(backend.tileset()).isEqualTo(backendTileset)
-        assertThat(target.tileset()).isEqualTo(subTileset)
+        assertThat(backend.currentTileset()).isEqualTo(backendTileset)
+        assertThat(target.currentTileset()).isEqualTo(subTileset)
     }
 
     @Test
@@ -167,8 +167,8 @@ class SubTileGraphicsTest {
         backend.setStyleFrom(BACKEND_STYLE)
         target.setStyleFrom(TARGET_STYLE)
 
-        assertThat(backend.styleSet()).isEqualTo(BACKEND_STYLE)
-        assertThat(target.styleSet()).isEqualTo(TARGET_STYLE)
+        assertThat(backend.toStyleSet()).isEqualTo(BACKEND_STYLE)
+        assertThat(target.toStyleSet()).isEqualTo(TARGET_STYLE)
     }
 
     companion object {

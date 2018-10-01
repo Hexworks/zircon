@@ -25,10 +25,10 @@ class TileGridScreen(
                         componentRenderer = RootContainerRenderer()),
                 size = tileGrid.size(),
                 position = Position.defaultPosition(),
-                tileset = tileGrid.tileset(),
+                tileset = tileGrid.currentTileset(),
                 componentStyleSet = ComponentStyleSet.defaultStyleSet()),
         private val buffer: InternalTileGrid = RectangleTileGrid(
-                tileset = tileGrid.tileset(),
+                tileset = tileGrid.currentTileset(),
                 size = tileGrid.size(),
                 layerable = ComponentsLayerable(
                         layers = DefaultLayerable(tileGrid.size()),

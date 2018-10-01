@@ -195,7 +195,7 @@ class TileGraphicsTest {
 
         target.useTileset(tileset)
 
-        assertThat(target.tileset()).isEqualTo(tileset)
+        assertThat(target.currentTileset()).isEqualTo(tileset)
     }
 
     @Test
@@ -205,7 +205,7 @@ class TileGraphicsTest {
                 .withBackgroundColor(ANSITileColor.YELLOW)
         target.setStyleFrom(style)
 
-        assertThat(target.styleSet()).isEqualTo(style)
+        assertThat(target.toStyleSet()).isEqualTo(style)
     }
 
     @Test
@@ -214,7 +214,7 @@ class TileGraphicsTest {
                 .withForegroundColor(ANSITileColor.GREEN)
                 .withBackgroundColor(ANSITileColor.YELLOW)
         target.setStyleFrom(style)
-        assertThat(target.styleSet()).isEqualTo(style)
+        assertThat(target.toStyleSet()).isEqualTo(style)
     }
 
     @Test

@@ -59,7 +59,7 @@ class DefaultRadioButtonGroup constructor(
                 size = Size.create(renderingStrategy.contentSize(size()).width(), 1),
                 position = Position.create(0, items.size),
                 componentStyleSet = componentStyleSet(),
-                tileset = tileset()).also { button ->
+                tileset = currentTileset()).also { button ->
             items[key] = button
             button.onMouseReleased { _ ->
                 selectedItem.map { lastSelected ->

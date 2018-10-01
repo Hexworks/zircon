@@ -40,7 +40,7 @@ class DefaultPanelTest {
 
     @Test
     fun shouldUseProperFont() {
-        assertThat(target.tileset().id)
+        assertThat(target.currentTileset().id)
                 .isEqualTo(tileset.id)
     }
 

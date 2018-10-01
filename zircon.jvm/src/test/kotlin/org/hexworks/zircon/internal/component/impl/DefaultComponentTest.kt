@@ -67,7 +67,7 @@ class DefaultComponentTest {
     fun shouldUseFontFromComponentWhenTransformingToLayer() {
         val result = target.transformToLayers()
         result.forEach {
-            assertThat(it.tileset().id).isEqualTo(tileset.id)
+            assertThat(it.currentTileset().id).isEqualTo(tileset.id)
         }
     }
 

@@ -243,7 +243,7 @@ object IsometricGameArea {
                     if (InputType.PageDown === input.getInputType()) {
                         gameComponent.scrollOneDown()
                     }
-                    screen.getLayers().forEach {
+                    screen.layers().forEach {
                         screen.removeLayer(it)
                     }
                     val (x, y, z) = gameComponent.visibleOffset()

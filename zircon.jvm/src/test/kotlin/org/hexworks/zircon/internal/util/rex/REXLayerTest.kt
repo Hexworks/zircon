@@ -43,7 +43,7 @@ class REXLayerTest {
     fun shouldHaveNoFontByDefault() {
         val layer = target.toLayer(TILESET)
 
-        assertThat(layer.tileset()).isSameAs(TILESET)
+        assertThat(layer.currentTileset()).isSameAs(TILESET)
     }
 
     @Test
