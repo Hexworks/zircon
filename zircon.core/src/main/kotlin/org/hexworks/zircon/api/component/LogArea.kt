@@ -19,7 +19,7 @@ interface LogArea : Component, Scrollable {
 
     fun addHyperLink(linkText: String, linkId: String)
 
-    fun addNewRow()
+    fun addNewRows(numberOfRows: Int = 1)
 
     fun getLogElementBuffer(): LogElementBuffer
 

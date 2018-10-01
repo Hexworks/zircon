@@ -12,13 +12,13 @@ class LogElementBuffer {
     fun getLogElementRows() = logElementRows.toList()
 
     init {
-        addNewRow()
+        addNewRows(1)
     }
 
     fun currentLogElementRow() = logElementRows.last()
     fun getAllLogElements() = getLogElementRows().flatMap { it.logElements }
     fun getLogElementContainingPosition(position: Position) =
-            getAllLogElements().filter { it.renderedPositionArea != null }.firstOrNull { it.renderedPositionArea!!.containsPosition(position) }
+            getAllLogElements().asSequence().filter { it.renderedPositionArea != null }.firstOrNull { it.renderedPositionArea!!.containsPosition(position) }
 
 
     fun getBoundingBoxSize() = Size.create(logElementRows.flatMap { it.logElements }.asSequence().map { it.length() }.max()
@@ -30,8 +30,10 @@ class LogElementBuffer {
     }
 
 
-    fun addNewRow() {
-        logElementRows.add(LogElementRow(logElementRows.size))
+    fun addNewRows(numberOfRows: Int) {
+        (1..numberOfRows).forEach { _ ->
+            logElementRows.add(LogElementRow(logElementRows.size))
+        }
     }
 
     fun clear() {

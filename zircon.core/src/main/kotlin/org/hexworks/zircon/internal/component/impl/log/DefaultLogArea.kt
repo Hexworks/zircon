@@ -15,12 +15,14 @@ import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.modifier.Modifier
+import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.impl.DefaultComponent
 import org.hexworks.zircon.internal.event.ZirconEvent
+import kotlin.math.max
 
 class DefaultLogArea constructor(
         private val renderingStrategy: ComponentRenderingStrategy<LogArea>,
@@ -38,6 +40,7 @@ class DefaultLogArea constructor(
         renderer = renderingStrategy) {
 
     private var logElementBuffer = LogElementBuffer()
+    private var hyperLinkElementOnMouseOver: HyperLinkElement? = null
 
 
     init {
@@ -68,8 +71,8 @@ class DefaultLogArea constructor(
         return Position.create(xPos, logElementBuffer.currentLogElementRow().yPosition)
     }
 
-    override fun addNewRow() {
-        logElementBuffer.addNewRow()
+    override fun addNewRows(numberOfRows: Int) {
+        logElementBuffer.addNewRows(numberOfRows)
         render()
     }
 
@@ -81,13 +84,30 @@ class DefaultLogArea constructor(
         logElementBuffer.clear()
     }
 
+
     override fun mousePressed(action: MouseAction) {
         componentStyleSet().applyActiveStyle()
         render()
 
-        val mouseOnLogElement = logElementBuffer.getLogElementContainingPosition(action.position)
-        if (mouseOnLogElement != null && mouseOnLogElement is HyperLinkElement)
-            EventBus.broadcast(ZirconEvent.TriggeredHyperLink(mouseOnLogElement.linkId))
+        val mouseOverLogElement = logElementBuffer.getLogElementContainingPosition(action.position - absolutePosition() - contentPosition())
+        if (mouseOverLogElement != null && mouseOverLogElement is HyperLinkElement)
+            EventBus.broadcast(ZirconEvent.TriggeredHyperLink(mouseOverLogElement.linkId))
+
+    }
+
+    override fun mouseMoved(action: MouseAction) {
+        val mouseOverLogElement = logElementBuffer.getLogElementContainingPosition(action.position - absolutePosition() - contentPosition())
+        if (mouseOverLogElement is HyperLinkElement) {
+            hyperLinkElementOnMouseOver = mouseOverLogElement
+            mouseOverLogElement.modifiers = setOf(SimpleModifiers.Glow)
+            render()
+        }
+        if (mouseOverLogElement !is HyperLinkElement && hyperLinkElementOnMouseOver != null) {
+            hyperLinkElementOnMouseOver!!.modifiers = null
+            hyperLinkElementOnMouseOver = null
+            render()
+        }
+
 
     }
 
@@ -134,6 +154,15 @@ class DefaultLogArea constructor(
 
     override fun render() {
         renderingStrategy.render(this, tileGraphics())
+
+        val maxWidth = logElementBuffer.getAllLogElements().lastOrNull { it.renderedPositionArea != null }?.renderedPositionArea?.endPosition?.x?.plus(1)
+        val maxHeight = logElementBuffer.getAllLogElements().lastOrNull { it.renderedPositionArea != null }?.renderedPositionArea?.endPosition?.y?.plus(1)
+
+        if (maxWidth != null) {
+            if (size().width() < maxWidth || size().height() < maxHeight!!) {
+                setActualSize(Size.create(max(maxWidth, size().width()), max(maxHeight!!, size().height())))
+            }
+        }
     }
 
     private fun enableFocusedComponent() {
