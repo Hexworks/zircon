@@ -19,11 +19,11 @@ object CP437CharsExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         val cp437panel = Components.panel()
-                .size(Sizes.create(19, 19))
-                .position(Positions.create(1, 1))
+                .withSize(Sizes.create(19, 19))
+                .withPosition(Positions.create(1, 1))
                 .wrapWithBox(true)
                 .wrapWithShadow(true)
-                .boxType(BoxType.SINGLE)
+                .withBoxType(BoxType.SINGLE)
                 .build()
 
         val loader = CP437TileMetadataLoader(16, 16)

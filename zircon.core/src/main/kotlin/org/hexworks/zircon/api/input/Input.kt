@@ -26,7 +26,7 @@ import org.hexworks.zircon.platform.util.SystemUtils
 sealed class Input(private val inputType: InputType,
                    private val eventTime: Long = SystemUtils.getCurrentTimeMs()) {
 
-    fun getInputType() = inputType
+    fun inputType() = inputType
 
     fun inputTypeIs(inputType: InputType) = inputType == this.inputType
 
@@ -58,7 +58,7 @@ data class KeyStroke(
 
     fun getCharacter() = char
 
-    private val char: Char = when (getInputType()) {
+    private val char: Char = when (inputType()) {
         Backspace -> '\b'
         Enter -> '\n'
         Tab -> '\t'

@@ -70,7 +70,7 @@ class DefaultButton(private val text: String,
         render()
     }
 
-    override fun getText() = text
+    override fun text() = text
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()

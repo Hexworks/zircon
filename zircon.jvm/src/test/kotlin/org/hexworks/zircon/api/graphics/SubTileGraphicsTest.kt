@@ -136,7 +136,7 @@ class SubTileGraphicsTest {
     fun shouldProperlyCreateSubSubTileGraphics() {
         val subFiller = FILLER.withCharacter('x')
 
-        val result = target.toSubTileGraphics(Bounds.create(Position.offset1x1(), Size.create(2, 1)))
+        val result = target.toSubTileGraphics(Rect.create(Position.offset1x1(), Size.create(2, 1)))
         result.fill(subFiller)
 
         val chars = backend.fetchCells().map { it.tile.asCharacterTile().get().character }
@@ -178,7 +178,7 @@ class SubTileGraphicsTest {
         private val BACKEND_SIZE = Size.create(5, 5)
         private val FILLER = Tiles.defaultTile().withCharacter('_')
 
-        val SUB_GRAPHICS_BOUNDS = Bounds.create(Position.offset1x1(), Size.create(3, 3))
+        val SUB_GRAPHICS_BOUNDS = Rect.create(Position.offset1x1(), Size.create(3, 3))
     }
 
 }

@@ -31,7 +31,7 @@ class DefaultHeader(private val text: String,
         render()
     }
 
-    override fun getText() = text
+    override fun text() = text
 
     override fun acceptsFocus() = false
 

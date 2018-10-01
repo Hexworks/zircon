@@ -54,7 +54,7 @@ class DefaultTextArea constructor(
         render()
     }
 
-    override fun getText() = textBuffer.getText() // TODO: line sep?
+    override fun text() = textBuffer.getText() // TODO: line sep?
 
     override fun textBuffer() = textBuffer
 

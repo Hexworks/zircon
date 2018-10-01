@@ -21,22 +21,22 @@ public class UsingComponents {
 
         Panel panel = Components.panel()
                 .wrapWithBox(true) // panels can be wrapped in a box
-                .title("Panel") // if a panel is wrapped in a box a title can be displayed
+                .withTitle("Panel") // if a panel is wrapped in a box a title can be displayed
                 .wrapWithShadow(true) // shadow can be added
-                .size(Sizes.create(32, 16)) // the size must be smaller than the parent's size
-                .position(Positions.offset1x1())
+                .withSize(Sizes.create(32, 16)) // the size must be smaller than the parent's size
+                .withPosition(Positions.offset1x1())
                 .build(); // position is always relative to the parent
 
         final Header header = Components.header()
                 // this will be 1x1 left and down from the top left
                 // corner of the panel
-                .position(Positions.offset1x1())
+                .withPosition(Positions.offset1x1())
                 .text("Header")
                 .build();
 
         final CheckBox checkBox = Components.checkBox()
                 .text("Check me!")
-                .position(Positions.create(0, 1)
+                .withPosition(Positions.create(0, 1)
                         // the position class has some convenience methods
                         // for you to specify your component's position as
                         // relative to another one
@@ -44,13 +44,13 @@ public class UsingComponents {
                 .build();
 
         final Button left = Components.button()
-                .position(Positions.create(0, 1) // this means 1 row below the check box
+                .withPosition(Positions.create(0, 1) // this means 1 row below the check box
                         .relativeToBottomOf(checkBox))
                 .text("Left")
                 .build();
 
         final Button right = Components.button()
-                .position(Positions.create(1, 0) // 1 column right relative to the left BUTTON
+                .withPosition(Positions.create(1, 0) // 1 column right relative to the left BUTTON
                         .relativeToRightOf(left))
                 .text("Right")
                 .build();

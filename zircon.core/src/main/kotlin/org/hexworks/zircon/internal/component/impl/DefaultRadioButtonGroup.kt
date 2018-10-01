@@ -79,7 +79,7 @@ class DefaultRadioButtonGroup constructor(
         }
     }
 
-    override fun getSelectedOption() = selectedItem
+    override fun selectedOption() = selectedItem
 
     override fun acceptsFocus() = false
 
@@ -127,9 +127,9 @@ class DefaultRadioButtonGroup constructor(
 
     data class DefaultSelection(private val key: String,
                                 private val value: String) : Selection {
-        override fun getKey() = key
+        override fun key() = key
 
-        override fun getValue() = value
+        override fun value() = value
 
     }
 }

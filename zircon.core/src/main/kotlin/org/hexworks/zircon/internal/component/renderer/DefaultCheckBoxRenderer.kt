@@ -9,7 +9,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState
 class DefaultCheckBoxRenderer : ComponentRenderer<CheckBox>() {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<CheckBox>) {
-        val style = context.componentStyle().getCurrentStyle()
+        val style = context.componentStyle().currentStyle()
         tileGraphics.applyStyle(style)
         val checkBoxState = context.component.state()
         val text = context.component.text()

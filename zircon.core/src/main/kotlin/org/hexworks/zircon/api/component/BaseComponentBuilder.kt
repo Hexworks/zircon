@@ -15,54 +15,54 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
 
     override fun title() = props.title
 
-    override fun title(title: String): U {
+    override fun withTitle(title: String): U {
         props.title = Maybe.of(title)
         return this as U
     }
 
     override fun componentStyleSet() = props.componentStyleSet
 
-    override fun componentStyleSet(componentStyleSet: ComponentStyleSet): U {
+    override fun withComponentStyleSet(componentStyleSet: ComponentStyleSet): U {
         props.componentStyleSet = componentStyleSet
         return this as U
     }
 
     override fun tileset() = props.tileset
 
-    override fun tileset(tileset: TilesetResource): U {
+    override fun withTileset(tileset: TilesetResource): U {
         props.tileset = tileset
         return this as U
     }
 
     override fun position() = props.position
 
-    override fun position(position: Position): U {
+    override fun withPosition(position: Position): U {
         props.position = position
         return this as U
     }
 
     override fun size() = props.size
 
-    override fun size(size: Size): U {
+    override fun withSize(size: Size): U {
         props.size = size
         return this as U
     }
 
     override fun boxType() = props.boxType
 
-    override fun boxType(boxType: BoxType): U {
+    override fun withBoxType(boxType: BoxType): U {
         props.boxType = boxType
         return this as U
     }
 
-    override fun wrapWithBox() = props.wrapWithBox
+    override fun isWrappedWithBox() = props.wrapWithBox
 
     override fun wrapWithBox(wrapWithBox: Boolean): U {
         props.wrapWithBox = wrapWithBox
         return this as U
     }
 
-    override fun wrapWithShadow() = props.wrapWithShadow
+    override fun isWrappedWithShadow() = props.wrapWithShadow
 
     override fun wrapWithShadow(wrapWithShadow: Boolean): U {
         props.wrapWithShadow = wrapWithShadow
@@ -71,7 +71,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
 
     override fun decorationRenderers() = props.decorationRenderers
 
-    override fun decorationRenderers(vararg renderers: ComponentDecorationRenderer): U {
+    override fun withDecorationRenderers(vararg renderers: ComponentDecorationRenderer): U {
         props.decorationRenderers = renderers.toList()
         return this as U
     }

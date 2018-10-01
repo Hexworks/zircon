@@ -62,8 +62,8 @@ abstract class DefaultContainer(position: Position,
                             "container with tileset size: '${currentTileset().size()}'!"
                 }
                 val contentBounds = contentSize().toBounds()
-                val originalDcBounds = dc.bounds().withPosition(dc.position() - contentPosition())
-                require(contentBounds.containsBounds(originalDcBounds)) {
+                val originalDcBounds = dc.rect().withPosition(dc.position() - contentPosition())
+                require(contentBounds.containsBoundable(originalDcBounds)) {
                     "Trying to add a component ($component) with bounds($originalDcBounds)" +
                             " to a container ($this) with content bounds ($contentBounds) which is out of bounds."
                 }

@@ -22,9 +22,9 @@ class DefaultLabelTest {
     fun setUp() {
         tileset = FONT
         target = LabelBuilder.newBuilder()
-                .componentStyleSet(COMPONENT_STYLES)
-                .position(POSITION)
-                .tileset(tileset)
+                .withComponentStyleSet(COMPONENT_STYLES)
+                .withPosition(POSITION)
+                .withTileset(tileset)
                 .text(TEXT)
                 .build() as DefaultLabel
     }

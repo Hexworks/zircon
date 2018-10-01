@@ -22,13 +22,13 @@ enum class ANSITileColor(private val red: Int,
 
     override fun generateCacheKey() = cacheKey
 
-    override fun getRed() = red
+    override fun red() = red
 
-    override fun getGreen() = green
+    override fun green() = green
 
-    override fun getBlue() = blue
+    override fun blue() = blue
 
-    override fun getAlpha() = alpha
+    override fun alpha() = alpha
 
     override fun tint(factor: Double): TileColor {
         return TileColor.create(red, green, blue, alpha).tint(factor)

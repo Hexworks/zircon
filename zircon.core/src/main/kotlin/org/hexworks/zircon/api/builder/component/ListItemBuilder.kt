@@ -14,7 +14,7 @@ data class ListItemBuilder(
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
     : BaseComponentBuilder<ListItem, ListItemBuilder>(commonComponentProperties) {
 
-    override fun title(title: String) = also { }
+    override fun withTitle(title: String) = also { }
 
     fun text(text: String) = also {
         this.text = text

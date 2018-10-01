@@ -13,7 +13,7 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
 
     fun title(): Maybe<String>
 
-    fun title(title: String): U
+    fun withTitle(title: String): U
 
     /**
      * Returns the [ComponentStyleSet] the resulting [Component] will use
@@ -23,7 +23,7 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
     /**
      * Sets the [ComponentStyleSet] the resulting [Component] will use
      */
-    fun componentStyleSet(componentStyleSet: ComponentStyleSet): U
+    fun withComponentStyleSet(componentStyleSet: ComponentStyleSet): U
 
     /**
      * Returns the [TilesetResource] the resulting [Component] will use.
@@ -33,7 +33,7 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
     /**
      * Sets the [Tileset] to use with the resulting [Component].
      */
-    fun tileset(tileset: TilesetResource): U
+    fun withTileset(tileset: TilesetResource): U
 
     /**
      * Returns the [Position] where the resulting [Component] will
@@ -45,7 +45,7 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
      * Sets the [Position] where the resulting [Component] will
      * be placed.
      */
-    fun position(position: Position): U
+    fun withPosition(position: Position): U
 
     /**
      * Returns the [Size] of the resulting [Component].
@@ -55,7 +55,7 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
     /**
      * Sets the [Size] of the resulting [Component].
      */
-    fun size(size: Size): U
+    fun withSize(size: Size): U
 
     /**
      * Returns the box type which can be used for wrapping.
@@ -65,31 +65,31 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
     /**
      * Sets the box type which can be used for wrapping.
      */
-    fun boxType(boxType: BoxType): U
+    fun withBoxType(boxType: BoxType): U
 
     /**
      * Tells whether the resulting [Component] will be
      * wrapped in a box.
      */
-    fun wrapWithBox(): Boolean
+    fun isWrappedWithBox(): Boolean
 
     /**
      * Sets whether the resulting [Component] will be
      * wrapped in a box.
      */
-    fun wrapWithBox(wrapWithBox: Boolean): U
+    fun wrapWithBox(wrapWithBox: Boolean = true): U
 
     /**
      * Tells whether the resulting [Component] will be
      * wrapped with a shadow.
      */
-    fun wrapWithShadow(): Boolean
+    fun isWrappedWithShadow(): Boolean
 
     /**
      * Sets whether the resulting [Component] will be
      * wrapped with a shadow.
      */
-    fun wrapWithShadow(wrapWithShadow: Boolean): U
+    fun wrapWithShadow(wrapWithShadow: Boolean = true): U
 
     /**
      * Returns the [ComponentDecorationRenderer]s (if any).
@@ -99,5 +99,5 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
     /**
      * Sets the [ComponentDecorationRenderer]s for the resulting [Component].
      */
-    fun decorationRenderers(vararg renderers: ComponentDecorationRenderer): U
+    fun withDecorationRenderers(vararg renderers: ComponentDecorationRenderer): U
 }

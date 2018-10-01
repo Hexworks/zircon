@@ -11,7 +11,7 @@ class Java2DUnderlineTransformer : TextureTransformer<BufferedImage> {
         return texture.also {
             it.texture().let { txt ->
                 txt.graphics.apply {
-                    color = tile.getForegroundColor().toAWTColor()
+                    color = tile.foregroundColor().toAWTColor()
                     fillRect(0, txt.height - 2, txt.width, 2)
                     dispose()
                 }

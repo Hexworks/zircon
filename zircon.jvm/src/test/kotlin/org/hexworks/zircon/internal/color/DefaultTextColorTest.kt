@@ -17,10 +17,10 @@ class DefaultTextColorTest {
     fun shouldCreateDefaultTextColorWithProperDefaultAlpha() {
         val result = DefaultTextColor(RED, GREEN, BLUE)
 
-        assertThat(result.getRed()).isEqualTo(RED)
-        assertThat(result.getGreen()).isEqualTo(GREEN)
-        assertThat(result.getBlue()).isEqualTo(BLUE)
-        assertThat(result.getAlpha()).isEqualTo(TileColor.defaultAlpha())
+        assertThat(result.red()).isEqualTo(RED)
+        assertThat(result.green()).isEqualTo(GREEN)
+        assertThat(result.blue()).isEqualTo(BLUE)
+        assertThat(result.alpha()).isEqualTo(TileColor.defaultAlpha())
     }
 
     companion object {

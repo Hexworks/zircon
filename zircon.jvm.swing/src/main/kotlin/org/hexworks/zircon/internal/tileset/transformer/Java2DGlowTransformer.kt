@@ -19,26 +19,26 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
             t.texture().let { txt ->
                 txt.graphics.apply {
 
-                    if (tile.getForegroundColor() == tile.getBackgroundColor()) {
+                    if (tile.foregroundColor() == tile.backgroundColor()) {
                         return t
                     }
 
                     // Get character image:
                     val charImage = swapColor(t,
-                            tile.getBackgroundColor().toAWTColor(),
+                            tile.backgroundColor().toAWTColor(),
                             Color(0, 0, 0, 0),
                             tile)
 
                     // Generate glow image:
                     val filter = GaussianFilter()
-                    filter.radius = tile.getModifiers().filterIsInstance<Glow>().first().radius
+                    filter.radius = tile.modifiers().filterIsInstance<Glow>().first().radius
                     val glowImage = filter.filter(charImage.texture(), null)
 
                     // Combine images and background:
                     val result = BufferedImage(txt.width, txt.height, BufferedImage.TYPE_INT_ARGB)
                     val gc = result.graphics as Graphics2D
 
-                    gc.color = tile.getBackgroundColor().toAWTColor()
+                    gc.color = tile.backgroundColor().toAWTColor()
                     gc.fillRect(0, 0, result.width, result.height)
                     gc.drawImage(glowImage, 0, 0, null)
                     gc.drawImage(charImage.texture(), 0, 0, null)

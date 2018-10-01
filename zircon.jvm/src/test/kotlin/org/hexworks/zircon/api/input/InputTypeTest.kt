@@ -18,7 +18,7 @@ class InputTypeTest {
             EventBus.broadcast(ZirconEvent.Input(KeyStroke(
                     character = ' ',
                     type = inputType)))
-            assertThat(result.get().asKeyStroke().get().getInputType())
+            assertThat(result.get().asKeyStroke().get().inputType())
                     .isEqualTo(inputType)
             subscription.cancel()
         }

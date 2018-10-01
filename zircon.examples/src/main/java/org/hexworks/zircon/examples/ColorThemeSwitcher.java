@@ -39,35 +39,35 @@ public class ColorThemeSwitcher {
 
         final Panel infoPanel = Components.panel()
                 .wrapWithBox(true)
-                .title("Components example:")
-                .size(infoPanelSize)
-                .position(Positions.create(2, 2).relativeToBottomOf(currentThemeLabel.get()))
+                .withTitle("Components example:")
+                .withSize(infoPanelSize)
+                .withPosition(Positions.create(2, 2).relativeToBottomOf(currentThemeLabel.get()))
                 .build();
 
         final Button testButton = Components.button()
                 .text("Button")
-                .position(Positions.create(0, 2))
+                .withPosition(Positions.create(0, 2))
                 .build();
 
         final CheckBox checkBox = Components.checkBox()
                 .text("Checkbox")
-                .position(Positions.create(0, 1).relativeToBottomOf(testButton))
+                .withPosition(Positions.create(0, 1).relativeToBottomOf(testButton))
                 .build();
 
         final Header header = Components.header()
                 .text("Header")
-                .position(Positions.create(0, 1).relativeToBottomOf(checkBox))
+                .withPosition(Positions.create(0, 1).relativeToBottomOf(checkBox))
                 .build();
 
         final Label label = Components.label()
                 .text("Label")
-                .position(Positions.create(8, 0)
+                .withPosition(Positions.create(8, 0)
                         .relativeToRightOf(testButton))
                 .build();
 
         RadioButtonGroup rbg = Components.radioButtonGroup()
-                .size(Sizes.create(15, 3))
-                .position(Positions.create(0, 1).relativeToBottomOf(label))
+                .withSize(Sizes.create(15, 3))
+                .withPosition(Positions.create(0, 1).relativeToBottomOf(label))
                 .build();
         rbg.addOption("0", "Option 0");
         rbg.addOption("1", "Option 1");
@@ -75,17 +75,17 @@ public class ColorThemeSwitcher {
 
 
         final Panel panel = Components.panel()
-                .size(Sizes.create(20, 6))
-                .title("Panel")
+                .withSize(Sizes.create(20, 6))
+                .withTitle("Panel")
                 .wrapWithBox(true)
                 .wrapWithShadow(true)
-                .position(Positions.create(10, 0)
+                .withPosition(Positions.create(10, 0)
                         .relativeToRightOf(label))
                 .build();
 
         TextArea textArea = Components.textArea()
-                .position(Positions.create(1, 0).relativeToRightOf(panel))
-                .size(Sizes.create(20, 6))
+                .withPosition(Positions.create(1, 0).relativeToRightOf(panel))
+                .withSize(Sizes.create(20, 6))
                 .text("Text box")
                 .build();
 
@@ -110,34 +110,34 @@ public class ColorThemeSwitcher {
                 .withYLength(themePickerSize.getYLength() / 2 - 1);
 
         final Panel solarizedLightPanel = Components.panel()
-                .title("Solarized Light")
-                .position(Positions.create(0, 1).relativeToBottomOf(infoPanel))
+                .withTitle("Solarized Light")
+                .withPosition(Positions.create(0, 1).relativeToBottomOf(infoPanel))
                 .wrapWithBox(true)
-                .size(smallPanelSize)
+                .withSize(smallPanelSize)
                 .build();
         final Panel solarizedDarkPanel = Components.panel()
-                .title("Solarized Dark")
-                .position(Positions.create(0, 1).relativeToBottomOf(solarizedLightPanel))
+                .withTitle("Solarized Dark")
+                .withPosition(Positions.create(0, 1).relativeToBottomOf(solarizedLightPanel))
                 .wrapWithBox(true)
-                .size(smallPanelSize)
+                .withSize(smallPanelSize)
                 .build();
         final Panel zenburnPanel = Components.panel()
-                .title("Zenburn")
-                .position(Positions.create(1, 0).relativeToRightOf(solarizedLightPanel))
+                .withTitle("Zenburn")
+                .withPosition(Positions.create(1, 0).relativeToRightOf(solarizedLightPanel))
                 .wrapWithBox(true)
-                .size(smallPanelSize)
+                .withSize(smallPanelSize)
                 .build();
         final Panel monokaiPanel = Components.panel()
-                .title("Monokai")
-                .position(Positions.create(1, 0).relativeToRightOf(solarizedDarkPanel))
+                .withTitle("Monokai")
+                .withPosition(Positions.create(1, 0).relativeToRightOf(solarizedDarkPanel))
                 .wrapWithBox(true)
-                .size(smallPanelSize)
+                .withSize(smallPanelSize)
                 .build();
         final Panel otherPanel = Components.panel()
-                .title("Other")
-                .position(Positions.create(1, 0).relativeToRightOf(zenburnPanel))
+                .withTitle("Other")
+                .withPosition(Positions.create(1, 0).relativeToRightOf(zenburnPanel))
                 .wrapWithBox(true)
-                .size(themePickerSize.withRelativeXLength(3).withRelativeYLength(-1))
+                .withSize(themePickerSize.withRelativeXLength(3).withRelativeYLength(-1))
                 .build();
 
 
@@ -166,7 +166,7 @@ public class ColorThemeSwitcher {
                 .collect(Collectors.toList());
 
         final RadioButtonGroup slOptions = Components.radioButtonGroup()
-                .size(themePickerSize
+                .withSize(themePickerSize
                         .withYLength(solarizedLightOptions.size())
                         .withRelativeXLength(-4))
                 .build();
@@ -176,7 +176,7 @@ public class ColorThemeSwitcher {
         solarizedLightPanel.addComponent(slOptions);
 
         final RadioButtonGroup sdOptions = Components.radioButtonGroup()
-                .size(themePickerSize
+                .withSize(themePickerSize
                         .withYLength(solarizedDarkOptions.size())
                         .withRelativeXLength(-4))
                 .build();
@@ -186,7 +186,7 @@ public class ColorThemeSwitcher {
         solarizedDarkPanel.addComponent(sdOptions);
 
         final RadioButtonGroup zbOptions = Components.radioButtonGroup()
-                .size(themePickerSize
+                .withSize(themePickerSize
                         .withYLength(zenburnOptions.size())
                         .withRelativeXLength(-4))
                 .build();
@@ -196,7 +196,7 @@ public class ColorThemeSwitcher {
         zenburnPanel.addComponent(zbOptions);
 
         final RadioButtonGroup mOptions = Components.radioButtonGroup()
-                .size(themePickerSize
+                .withSize(themePickerSize
                         .withYLength(monokaiOptions.size())
                         .withRelativeXLength(-4))
                 .build();
@@ -206,7 +206,7 @@ public class ColorThemeSwitcher {
         monokaiPanel.addComponent(mOptions);
 
         final RadioButtonGroup othOptions = Components.radioButtonGroup()
-                .size(otherPanel.size()
+                .withSize(otherPanel.size()
                         .withYLength(otherOptions.size())
                         .withRelativeXLength(-2))
                 .build();
@@ -241,7 +241,7 @@ public class ColorThemeSwitcher {
                                      AtomicReference<Header> labelRef,
                                      Panel infoPanel,
                                      Selection selection) {
-        themeRef.set(ColorThemeResource.valueOf(selection.getKey()));
+        themeRef.set(ColorThemeResource.valueOf(selection.key()));
         infoPanel.removeComponent(labelRef.get());
         labelRef.set(createHeaderForTheme(themeRef.get()));
         infoPanel.addComponent(labelRef.get());
@@ -257,7 +257,7 @@ public class ColorThemeSwitcher {
     private static void addScreenTitle(Screen screen, String title) {
         final Header header = Components.header()
                 .text(title)
-                .position(Positions.create(2, 1))
+                .withPosition(Positions.create(2, 1))
                 .build();
         screen.addComponent(header);
     }

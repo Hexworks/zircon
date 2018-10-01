@@ -24,18 +24,18 @@ class DefaultPanelTest {
         tileset = DefaultLabelTest.FONT
         target = PanelBuilder.newBuilder()
                 .wrapWithShadow(true)
-                .boxType(BOX_TYPE)
-                .title(TITLE)
-                .tileset(tileset)
-                .size(SIZE)
+                .withBoxType(BOX_TYPE)
+                .withTitle(TITLE)
+                .withTileset(tileset)
+                .withSize(SIZE)
                 .wrapWithBox(true)
-                .position(POSITION)
+                .withPosition(POSITION)
                 .build() as DefaultPanel
     }
 
     @Test
     fun shouldHaveProperTitle() {
-        assertThat(target.getTitle()).isEqualTo(TITLE)
+        assertThat(target.title()).isEqualTo(TITLE)
     }
 
     @Test
@@ -71,7 +71,7 @@ class DefaultPanelTest {
         target.addComponent(component)
         target.applyColorTheme(THEME)
 
-        assertThat(component.componentStyleSet().getCurrentStyle())
+        assertThat(component.componentStyleSet().currentStyle())
                 .isEqualTo(DefaultLabelTest.DEFAULT_STYLE)
     }
 

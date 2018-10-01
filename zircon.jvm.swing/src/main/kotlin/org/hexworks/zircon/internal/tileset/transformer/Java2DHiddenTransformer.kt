@@ -11,7 +11,7 @@ class Java2DHiddenTransformer : TextureTransformer<BufferedImage> {
         return texture.also {
             it.texture().let { txt ->
                 txt.graphics.apply {
-                    color = tile.getBackgroundColor().toAWTColor()
+                    color = tile.backgroundColor().toAWTColor()
                     fillRect(0, 0, txt.width, txt.height)
                     dispose()
                 }

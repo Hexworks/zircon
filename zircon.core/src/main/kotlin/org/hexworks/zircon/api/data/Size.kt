@@ -181,9 +181,9 @@ interface Size : Comparable<Size> {
 
     fun toPosition() = Position.create(xLength, yLength)
 
-    fun toBounds(): Bounds = toBounds(Position.defaultPosition())
+    fun toBounds(): Rect = toBounds(Position.defaultPosition())
 
-    fun toBounds(position: Position): Bounds = Bounds.create(position, this)
+    fun toBounds(position: Position): Rect = Rect.create(position, this)
 
     private fun returnZeroIfZero(size: Size): Size {
         return if (size.xLength == 0 || size.yLength == 0) {

@@ -42,7 +42,7 @@ public class TypingExample {
     private static void startTypingSupport(TileGrid tileGrid) {
         tileGrid.onInput((input) -> {
             final Position pos = tileGrid.cursorPosition();
-            if (EXIT_CONDITIONS.contains(input.getInputType())) {
+            if (EXIT_CONDITIONS.contains(input.inputType())) {
                 System.exit(0);
             } else if (input.inputTypeIs(InputType.Enter)) {
                 tileGrid.putCursorAt(pos.withRelativeY(1).withX(0));

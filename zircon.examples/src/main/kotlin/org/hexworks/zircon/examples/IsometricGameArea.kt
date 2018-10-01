@@ -114,11 +114,11 @@ object IsometricGameArea {
 
     fun addGamePanel(screen: Screen, position: Position, size: Size, offset: Position) {
         val gamePanel = Components.panel()
-                .size(size)
-                .position(position)
-                .title("Game area")
+                .withSize(size)
+                .withPosition(position)
+                .withTitle("Game area")
                 .wrapWithBox(true)
-                .boxType(BoxType.TOP_BOTTOM_DOUBLE)
+                .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build()
 
         val visibleGameAreaSize = Sizes.from2DTo3D(gamePanel.size()
@@ -200,8 +200,8 @@ object IsometricGameArea {
                     }
                     val bb = Blocks.newBuilder()
                     blockTiles.forEach { tile ->
-                        if (tile.getModifiers().isNotEmpty()) {
-                            bb.side(MODIFIER_LOOKUP[tile.getModifiers().first()]!!, tile)
+                        if (tile.modifiers().isNotEmpty()) {
+                            bb.side(MODIFIER_LOOKUP[tile.modifiers().first()]!!, tile)
                         } else {
                             bb.layer(tile)
                         }
@@ -222,25 +222,25 @@ object IsometricGameArea {
     private fun enableMovement(screen: Screen, gameComponent: DefaultGameComponent) {
         screen.onInput(object : InputListener {
             override fun inputEmitted(input: Input) {
-                if (EXIT_CONDITIONS.contains(input.getInputType())) {
+                if (EXIT_CONDITIONS.contains(input.inputType())) {
                     System.exit(0)
                 } else {
-                    if (InputType.ArrowUp === input.getInputType()) {
+                    if (InputType.ArrowUp === input.inputType()) {
                         gameComponent.scrollOneBackward()
                     }
-                    if (InputType.ArrowDown === input.getInputType()) {
+                    if (InputType.ArrowDown === input.inputType()) {
                         gameComponent.scrollOneForward()
                     }
-                    if (InputType.ArrowLeft === input.getInputType()) {
+                    if (InputType.ArrowLeft === input.inputType()) {
                         gameComponent.scrollOneLeft()
                     }
-                    if (InputType.ArrowRight === input.getInputType()) {
+                    if (InputType.ArrowRight === input.inputType()) {
                         gameComponent.scrollOneRight()
                     }
-                    if (InputType.PageUp === input.getInputType()) {
+                    if (InputType.PageUp === input.inputType()) {
                         gameComponent.scrollOneUp()
                     }
-                    if (InputType.PageDown === input.getInputType()) {
+                    if (InputType.PageDown === input.inputType()) {
                         gameComponent.scrollOneDown()
                     }
                     screen.layers().forEach {

@@ -24,7 +24,7 @@ class DefaultCharacterTileStringTest {
 
         val template = TileBuilder.newBuilder().buildCharacterTile()
 
-        assertThat(result.getTextCharacters()).containsExactly(
+        assertThat(result.textCharacters()).containsExactly(
                 template.withCharacter('T'),
                 template.withCharacter('E'),
                 template.withCharacter('X'),
@@ -47,7 +47,7 @@ class DefaultCharacterTileStringTest {
                 .modifiers(MODIFIER)
                 .buildCharacterTile()
 
-        assertThat(result.getTextCharacters()).containsExactly(
+        assertThat(result.textCharacters()).containsExactly(
                 template.withCharacter('T'),
                 template.withCharacter('E'),
                 template.withCharacter('X'),
@@ -436,7 +436,7 @@ class DefaultCharacterTileStringTest {
 
         val template = TileBuilder.newBuilder().buildCharacterTile()
 
-        assertThat(string.plus(other).getTextCharacters()).containsExactly(
+        assertThat(string.plus(other).textCharacters()).containsExactly(
                 template.withCharacter('T'),
                 template.withCharacter('E'),
                 template.withCharacter('X'),
