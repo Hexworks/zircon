@@ -1,13 +1,11 @@
 package org.hexworks.zircon.api.data
 
-import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Positionable
 import org.hexworks.zircon.internal.data.DefaultBounds
 
 /**
- * Represents a snapshot of the state of a [Boundable]
- * eg: its [Position] and its [Size]. While [Boundable] represents a behavior of an
- * object [Bounds] represents a value object which encapsulates is state.
+ * Represents a rectangular area with a given [Size] on a 2D plane.
+ * The [Position]
  */
 interface Bounds {
 

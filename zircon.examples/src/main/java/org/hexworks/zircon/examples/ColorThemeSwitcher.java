@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 @SuppressWarnings("ALL")
 public class ColorThemeSwitcher {
 
-    private static final Size SCREEN_SIZE = Sizes.create(80, 40);
-    private static final TilesetResource TILESET = CP437TilesetResources.wanderlust16x16();
+    private static final Size SCREEN_SIZE = Sizes.create(80, 41);
+    private static final TilesetResource TILESET = CP437TilesetResources.rogueYun16x16();
     private static final ColorThemeResource THEME = ColorThemeResource.GAMEBOOKERS;
 
     public static void main(String[] args) {

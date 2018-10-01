@@ -509,7 +509,7 @@ public class FullExample {
     }
 
     private static void refreshIcon(Layer icon, char c) {
-        icon.setRelativeTileAt(Positions.defaultPosition(), Tiles.newBuilder()
+        icon.setAbsoluteTileAt(Positions.defaultPosition(), Tiles.newBuilder()
                 .character(c)
                 .backgroundColor(TileColors.transparent())
                 .build());

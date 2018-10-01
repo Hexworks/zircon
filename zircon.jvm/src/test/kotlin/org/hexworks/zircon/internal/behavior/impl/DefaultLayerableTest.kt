@@ -91,7 +91,7 @@ class DefaultLayerableTest {
         target.pushLayer(offset2x2layer)
 
         val result = target.getLayers()
-                .flatMap { it.snapshot().toList() }
+                .flatMap { it.createSnapshot().toList() }
                 .filter { it.first == Position.offset1x1() }
 
 
@@ -120,7 +120,7 @@ class DefaultLayerableTest {
         target.pushLayer(offset2x2layer)
 
         val result = target.getLayers()
-                .flatMap { it.snapshot().toList() }
+                .flatMap { it.createSnapshot().toList() }
                 .filter { it.first == Position.offset1x1() }
 
 

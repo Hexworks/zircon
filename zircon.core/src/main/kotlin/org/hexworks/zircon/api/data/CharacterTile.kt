@@ -35,6 +35,8 @@ interface CharacterTile : Tile {
         }
     }
 
+    override fun withModifiers(vararg modifiers: Modifier) = withModifiers(modifiers.toSet())
+
     override fun withModifiers(modifiers: Set<Modifier>): CharacterTile {
         return if (modifiers == this.getModifiers()) {
             this

@@ -44,7 +44,7 @@ class SubTileGraphics(
     }
 
     override fun fetchFilledPositions(): List<Position> {
-        return backend.snapshot().filterKeys { bounds.containsPosition(it) }.keys.map { it - offset }
+        return backend.createSnapshot().filterKeys { bounds.containsPosition(it) }.keys.map { it - offset }
     }
 
     override fun resize(newSize: Size) = restrictOperation()
@@ -85,7 +85,7 @@ class SubTileGraphics(
         }
     }
 
-    override fun snapshot(): Map<Position, Tile> {
+    override fun createSnapshot(): Map<Position, Tile> {
         throw UnsupportedOperationException("Sub tile images don't support snapshots.")
     }
 
@@ -93,6 +93,7 @@ class SubTileGraphics(
         restrictOperation()
     }
 
+    // TODO: test this
     override fun drawOnto(surface: DrawSurface, position: Position) {
         bounds.size().fetchPositions().forEach { pos ->
             getTileAt(pos).map { tile ->

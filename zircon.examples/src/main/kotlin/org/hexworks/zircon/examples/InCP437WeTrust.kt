@@ -36,7 +36,7 @@ object InCP437WeTrust {
                 .text("In CP437 we trust!")
                 .position(Positions.create(1, 22))
 
-//        screen.addComponent(btn.build())
+        screen.addComponent(btn.build())
 
         screen.applyColorTheme(theme)
 

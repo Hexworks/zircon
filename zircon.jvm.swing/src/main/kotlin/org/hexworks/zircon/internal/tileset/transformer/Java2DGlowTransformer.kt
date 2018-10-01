@@ -2,8 +2,9 @@ package org.hexworks.zircon.internal.tileset.transformer
 
 import com.jhlabs.image.GaussianFilter
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.tileset.TileTexture
+import org.hexworks.zircon.api.modifier.Glow
 import org.hexworks.zircon.api.tileset.TextureTransformer
+import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import java.awt.Color
 import java.awt.Graphics2D
@@ -14,23 +15,23 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
     val cloner = Java2DTextureCloner()
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
-        return texture.also {
-            it.texture().let { txt ->
+        return texture.also { t ->
+            t.texture().let { txt ->
                 txt.graphics.apply {
 
                     if (tile.getForegroundColor() == tile.getBackgroundColor()) {
-                        return texture
+                        return t
                     }
 
                     // Get character image:
-                    val charImage = swapColor(texture,
+                    val charImage = swapColor(t,
                             tile.getBackgroundColor().toAWTColor(),
                             Color(0, 0, 0, 0),
                             tile)
 
                     // Generate glow image:
                     val filter = GaussianFilter()
-                    filter.radius = 5f
+                    filter.radius = tile.getModifiers().filterIsInstance<Glow>().first().radius
                     val glowImage = filter.filter(charImage.texture(), null)
 
                     // Combine images and background:

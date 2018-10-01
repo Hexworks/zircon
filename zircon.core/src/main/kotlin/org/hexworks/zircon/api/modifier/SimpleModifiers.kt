@@ -11,8 +11,6 @@ sealed class SimpleModifiers : TextureTransformModifier {
     object VerticalFlip : SimpleModifiers()
     object HorizontalFlip : SimpleModifiers()
     object Hidden : SimpleModifiers()
-    object Glow : SimpleModifiers()
-
 
     override fun generateCacheKey(): String {
         return "Modifier.${this::class.simpleName}"
