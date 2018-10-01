@@ -30,7 +30,7 @@ class VirtualRenderer(private val tileGrid: InternalTileGrid) : Renderer {
         val snapshot = tileGrid.createSnapshot()
         tileGrid.updateAnimations(now, tileGrid)
         renderTiles(tiles = snapshot)
-        tileGrid.getLayers().forEach { layer ->
+        tileGrid.layers().forEach { layer ->
             renderTiles(
                     tiles = layer.createSnapshot())
         }

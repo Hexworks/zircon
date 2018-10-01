@@ -52,7 +52,7 @@ class HalfBlockDecorationRenderer : ComponentDecorationRenderer {
                     tileGraphics.setTileAt(it, topTile.withCharacter(Symbols.UPPER_HALF_BLOCK))
                 }
 
-        val tileset = tileGraphics.tileset()
+        val tileset = tileGraphics.currentTileset()
 
         val cropRight = Crop(
                 x = tileset.width.div(2),

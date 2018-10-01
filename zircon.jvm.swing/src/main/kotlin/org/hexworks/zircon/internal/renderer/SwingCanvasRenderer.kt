@@ -48,15 +48,15 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         canvas.preferredSize = Dimension(
                 tileGrid.widthInPixels(),
                 tileGrid.heightInPixels())
-        canvas.minimumSize = Dimension(tileGrid.tileset().width, tileGrid.tileset().height)
+        canvas.minimumSize = Dimension(tileGrid.currentTileset().width, tileGrid.currentTileset().height)
         canvas.isFocusable = true
         canvas.requestFocusInWindow()
         canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.addKeyListener(TerminalKeyListener())
         val listener = object : TerminalMouseListener(
-                fontWidth = tileGrid.tileset().width,
-                fontHeight = tileGrid.tileset().height) {
+                fontWidth = tileGrid.currentTileset().width,
+                fontHeight = tileGrid.currentTileset().height) {
             override fun mouseClicked(e: MouseEvent) {
                 super.mouseClicked(e)
                 canvas.requestFocusInWindow()
@@ -107,12 +107,12 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         renderTiles(
                 graphics = gc,
                 tiles = snapshot,
-                tileset = tilesetLoader.loadTilesetFrom(tileGrid.tileset()))
-        tileGrid.getLayers().forEach { layer ->
+                tileset = tilesetLoader.loadTilesetFrom(tileGrid.currentTileset()))
+        tileGrid.layers().forEach { layer ->
             renderTiles(
                     graphics = gc,
                     tiles = layer.createSnapshot(),
-                    tileset = tilesetLoader.loadTilesetFrom(layer.tileset()))
+                    tileset = tilesetLoader.loadTilesetFrom(layer.currentTileset()))
         }
         if (shouldDrawCursor()) {
             tileGrid.getTileAt(tileGrid.cursorPosition()).map {
@@ -170,7 +170,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                     tile
                 }
                 val actualTileset: Tileset<Graphics2D> = if (actualTile is TilesetOverride) {
-                    tilesetLoader.loadTilesetFrom(actualTile.tileset())
+                    tilesetLoader.loadTilesetFrom(actualTile.currentTileset())
                 } else {
                     tileset
                 }
@@ -184,8 +184,8 @@ class SwingCanvasRenderer(private val canvas: Canvas,
     }
 
     private fun drawCursor(graphics: Graphics, character: Tile, position: Position) {
-        val tileWidth = tileGrid.tileset().width
-        val tileHeight = tileGrid.tileset().height
+        val tileWidth = tileGrid.currentTileset().width
+        val tileHeight = tileGrid.currentTileset().height
         val x = position.x * tileWidth
         val y = position.y * tileHeight
         val cursorColor = config.cursorColor.toAWTColor()

@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.data
 
-import org.hexworks.zircon.api.behavior.Positionable
 import org.hexworks.zircon.internal.data.DefaultBounds
 
 /**

@@ -26,9 +26,9 @@ class SubTileGraphics(
                 size = bounds.size(),
                 position = bounds.position()),
         private val styleable: Styleable = DefaultStyleable(
-                styleSet = backend.styleSet()),
+                styleSet = backend.toStyleSet()),
         private val tilesetOverride: TilesetOverride = DefaultTilesetOverride(
-                tileset = backend.tileset()))
+                tileset = backend.currentTileset()))
     : TileGraphics, Boundable by boundable, Styleable by styleable, TilesetOverride by tilesetOverride {
 
     private val offset = bounds.position()
@@ -63,7 +63,7 @@ class SubTileGraphics(
     override fun toTileImage(): TileImage {
         return DefaultTileImage(
                 size = size(),
-                tileset = tileset(),
+                tileset = currentTileset(),
                 tiles = fetchCells().map { it.position to it.tile }.toMap())
     }
 

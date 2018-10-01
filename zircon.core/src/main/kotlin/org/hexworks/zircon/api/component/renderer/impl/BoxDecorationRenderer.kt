@@ -25,7 +25,7 @@ class BoxDecorationRenderer(private val boxType: BoxType = BoxType.SINGLE,
                 .boxType(boxType)
                 .size(size)
                 .style(style)
-                .tileset(context.component.tileset())
+                .tileset(context.component.currentTileset())
                 .build()
         box.drawOnto(tileGraphics)
         if (size.xLength > 4) {

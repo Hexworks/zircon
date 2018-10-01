@@ -66,7 +66,7 @@ class TileGridScreenTest {
     fun shouldBeAbleToPutCharacterWhenPutCharacterIsCalled() {
         val char = 'x'
         val expected = TileBuilder.newBuilder()
-                .styleSet(target.styleSet())
+                .styleSet(target.toStyleSet())
                 .character(char)
                 .build()
         val currCursorPos = target.cursorPosition()
@@ -80,8 +80,8 @@ class TileGridScreenTest {
 
     @Test
     fun shouldUseTerminalsFontWhenCreating() {
-        assertThat(target.tileset().id)
-                .isEqualTo(terminal.tileset().id)
+        assertThat(target.currentTileset().id)
+                .isEqualTo(terminal.currentTileset().id)
     }
 
     @Test
@@ -89,8 +89,8 @@ class TileGridScreenTest {
         val expectedFont = BuiltInCP437TilesetResource.AESOMATICA_16X16
         target.useTileset(expectedFont)
         target.display()
-        assertThat(target.tileset().id).isEqualTo(expectedFont.id)
-        assertThat(terminal.tileset().id).isEqualTo(expectedFont.id)
+        assertThat(target.currentTileset().id).isEqualTo(expectedFont.id)
+        assertThat(terminal.currentTileset().id).isEqualTo(expectedFont.id)
     }
 
     @Test(expected = IllegalArgumentException::class)

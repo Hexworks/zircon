@@ -49,7 +49,7 @@ class DefaultCheckBoxTest {
 
     @Test
     fun shouldUseProperFont() {
-        Assertions.assertThat(target.tileset().id)
+        Assertions.assertThat(target.currentTileset().id)
                 .isEqualTo(tileset.id)
     }
 

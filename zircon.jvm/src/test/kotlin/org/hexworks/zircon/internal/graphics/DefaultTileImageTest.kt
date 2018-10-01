@@ -187,7 +187,7 @@ class DefaultTileImageTest {
                 FILLER_TILE, FILLER_TILE, FILLER_TILE,
                 FILLER_TILE, FILLER_TILE, Tile.empty(),
                 FILLER_TILE, FILLER_TILE, FILLER_TILE)
-        assertThat(result.tileset() == tileset)
+        assertThat(result.currentTileset() == tileset)
     }
 
 

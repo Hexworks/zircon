@@ -7,11 +7,8 @@ import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.input.InputType;
-import org.hexworks.zircon.api.input.KeyStroke;
-import org.hexworks.zircon.api.listener.KeyStrokeListener;
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +69,7 @@ public class FontSwitcherExample {
     }
 
     private static void refreshLayer(TileGrid tileGrid, String text, Random random) {
-        tileGrid.getLayers().forEach(tileGrid::removeLayer);
+        tileGrid.layers().forEach(tileGrid::removeLayer);
         Layer layer = Layers.newBuilder()
                 .tileset(TILESETS.get(random.nextInt(TILESETS.size())))
                 .offset(Positions.create(0, 1))

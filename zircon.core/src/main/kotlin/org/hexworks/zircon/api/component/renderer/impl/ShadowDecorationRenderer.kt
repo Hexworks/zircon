@@ -27,12 +27,12 @@ class ShadowDecorationRenderer(shadowChar: Char = DEFAULT_SHADOW_CHAR) : Compone
         LineFactory.buildLine(
                 fromPoint = Position.create(1, 0),
                 toPoint = Position.create(graphicsSize.xLength - 1, 0))
-                .toTileGraphics(shadowTile, tileGraphics.tileset())
+                .toTileGraphics(shadowTile, tileGraphics.currentTileset())
                 .drawOnto(tileGraphics, Position.create(1, graphicsSize.yLength - 1))
         LineFactory.buildLine(
                 fromPoint = Position.create(0, 1),
                 toPoint = Position.create(0, graphicsSize.yLength - 1))
-                .toTileGraphics(shadowTile, tileGraphics.tileset())
+                .toTileGraphics(shadowTile, tileGraphics.currentTileset())
                 .drawOnto(tileGraphics, Position.create(graphicsSize.xLength - 1, 1))
     }
 

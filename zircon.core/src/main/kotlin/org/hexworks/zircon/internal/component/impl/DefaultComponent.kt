@@ -156,7 +156,7 @@ abstract class DefaultComponent(
             listOf(LayerBuilder.newBuilder()
                     .tileGraphic(graphics)
                     .offset(position())
-                    .tileset(tileset())
+                    .tileset(currentTileset())
                     .build())
 
     override fun toString(): String {

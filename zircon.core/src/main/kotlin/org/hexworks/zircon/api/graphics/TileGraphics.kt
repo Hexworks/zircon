@@ -71,8 +71,8 @@ interface TileGraphics
         // TODO: returnThis same type, use factory for this
         val result = ConcurrentTileGraphics(
                 size = newSize,
-                styleSet = styleSet(),
-                tileset = tileset())
+                styleSet = toStyleSet(),
+                tileset = currentTileset())
         createSnapshot().filter { (pos) -> newSize.containsPosition(pos) }
                 .forEach { (pos, tc) ->
                     result.setTileAt(pos, tc)
@@ -104,7 +104,7 @@ interface TileGraphics
         text.forEachIndexed { col, char ->
             setTileAt(position.withRelativeX(col), TileBuilder
                     .newBuilder()
-                    .styleSet(styleSet())
+                    .styleSet(toStyleSet())
                     .character(char)
                     .build())
         }
@@ -150,7 +150,7 @@ interface TileGraphics
     fun toTileImage(): TileImage {
         return DefaultTileImage(
                 size = size(),
-                tileset = tileset(),
+                tileset = currentTileset(),
                 tiles = createSnapshot().toMap())
     }
 

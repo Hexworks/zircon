@@ -18,8 +18,8 @@ import org.hexworks.zircon.api.behavior.*
 interface TileGrid
     : AnimationHandler, Clearable, DrawSurface, InputEmitter, Layerable, ShutdownHook, Styleable, TypingSupport {
 
-    fun widthInPixels() = tileset().width * size().xLength
+    fun widthInPixels() = currentTileset().width * size().xLength
 
-    fun heightInPixels() = tileset().height * size().yLength
+    fun heightInPixels() = currentTileset().height * size().yLength
 
 }

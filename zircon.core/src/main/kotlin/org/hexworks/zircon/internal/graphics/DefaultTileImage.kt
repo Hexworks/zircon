@@ -29,7 +29,7 @@ class DefaultTileImage(
         }
     }
 
-    override fun tileset() = tileset
+    override fun currentTileset() = tileset
 
     override fun useTileset(tileset: TilesetResource) {
         throw UnsupportedOperationException("Can't modify a TileImage.")
