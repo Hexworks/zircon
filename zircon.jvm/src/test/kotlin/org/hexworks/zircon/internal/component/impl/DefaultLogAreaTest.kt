@@ -42,7 +42,7 @@ class DefaultLogAreaTest {
 
     @Test
     fun shouldProperlyAddNewRow() {
-        target.addNewRow()
+        target.addNewRows()
         assertThat(target.getLogElementBuffer().getLogElementRows().size)
                 .isEqualTo(2)
     }
@@ -73,33 +73,13 @@ class DefaultLogAreaTest {
         }
         val hyperLinkElementRenderPos = target.getLogElementBuffer().getAllLogElements().first()
                 .renderedPositionArea!!.startPosition
-        target.mousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, hyperLinkElementRenderPos))
+        target.mousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.create(4,5 )))
         assertThat(hyperLinkIds.first())
                 .isEqualTo(HYPERLINK_ID)
 
     }
 
-    @Test
-    fun shouldUseProperFont() {
-        assertThat(target.tileset().id)
-                .isEqualTo(tileset.id)
-    }
 
-    @Test
-    fun shouldProperlyApplyTheme() {
-        target.applyColorTheme(THEME)
-        val styles = target.componentStyleSet()
-        assertThat(styles.getStyleFor(ComponentState.DEFAULT))
-                .isEqualTo(DEFAULT_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.MOUSE_OVER))
-                .isEqualTo(DEFAULT_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.FOCUSED))
-                .isEqualTo(DEFAULT_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.ACTIVE))
-                .isEqualTo(DEFAULT_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.DISABLED))
-                .isEqualTo(DEFAULT_STYLE)
-    }
 
     companion object {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
