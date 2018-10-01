@@ -121,11 +121,11 @@ interface TileGraphics
      * target [Tile]s should be kept or not
      */
     fun applyStyle(styleSet: StyleSet,
-                   bounds: Bounds = bounds(),
+                   rect: Rect = rect(),
                    keepModifiers: Boolean = false,
                    applyToEmptyCells: Boolean = true) {
-        val offset = bounds.position()
-        val size = bounds.size()
+        val offset = rect.position()
+        val size = rect.size()
         setStyleFrom(styleSet)
         val positions = if (applyToEmptyCells) {
             size.fetchPositions()
@@ -161,7 +161,7 @@ interface TileGraphics
      * of (2, 2) and writing to it will write to the original graphics' surface, offset
      * by Position(1, 1).
      */
-    fun toSubTileGraphics(bounds: Bounds): SubTileGraphics {
-        return SubTileGraphics(this, bounds)
+    fun toSubTileGraphics(rect: Rect): SubTileGraphics {
+        return SubTileGraphics(this, rect)
     }
 }

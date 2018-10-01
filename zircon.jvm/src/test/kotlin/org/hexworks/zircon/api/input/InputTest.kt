@@ -18,7 +18,7 @@ class InputTest {
 
     @Test
     fun aMouseActionShouldHaveMouseActionInputType() {
-        assertThat(fetchMouseAction().getInputType())
+        assertThat(fetchMouseAction().inputType())
                 .isEqualTo(InputType.MouseEvent)
     }
 

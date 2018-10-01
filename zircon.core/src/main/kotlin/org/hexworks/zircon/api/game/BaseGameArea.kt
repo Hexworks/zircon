@@ -25,8 +25,10 @@ abstract class BaseGameArea : GameArea {
 
     override fun fetchBlocksAt(offset: Position3D, size: Size3D): Iterable<Block> {
         return fetchPositionsWithOffset(offset, size)
+                .asSequence()
                 .filter { hasBlockAt(it) }
                 .map { fetchBlockOrDefault(it) }
+                .toList()
     }
 
     override fun fetchBlocksAt(offset: Position3D, size: Size3D, fetchMode: GameArea.BlockFetchMode): Iterable<Block> {
@@ -79,7 +81,7 @@ abstract class BaseGameArea : GameArea {
         val window = size.to2DSize().fetchPositions()
         return (offset.z until size.zLength + offset.z).flatMap { z ->
             val images = mutableListOf<TileGraphics>()
-            (0 until getLayersPerBlock()).forEach { layerIdx ->
+            (0 until layersPerBlock()).forEach { layerIdx ->
                 val builder = TileGraphicsBuilder.newBuilder().size(size.to2DSize())
                 window.forEach { pos ->
                     fetchTileAt(Position3D.from2DPosition(pos + offset2D, z), layerIdx).map { char ->

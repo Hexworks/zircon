@@ -86,8 +86,8 @@ class REXLayerTest {
 
     private fun assertChar(expChar: Char, expBgColor: DefaultTextColor, expFgColor: DefaultTextColor, textChar: Tile) {
         assertThat(textChar.asCharacterTile().get().character).isEqualTo(expChar)
-        assertThat(textChar.getBackgroundColor()).isEqualTo(expBgColor)
-        assertThat(textChar.getForegroundColor()).isEqualTo(expFgColor)
+        assertThat(textChar.backgroundColor()).isEqualTo(expBgColor)
+        assertThat(textChar.foregroundColor()).isEqualTo(expFgColor)
     }
 
     companion object {

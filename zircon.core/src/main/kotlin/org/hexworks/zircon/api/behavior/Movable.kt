@@ -8,14 +8,7 @@ import org.hexworks.zircon.api.data.Position
  * relative to is parent or an [org.hexworks.zircon.api.graphics.Layer]
  * can be positioned within a [org.hexworks.zircon.api.grid.TileGrid].
  */
-interface Movable {
-
-    /**
-     * Returns the position of this [Movable]. The position of a [Movable] is
-     * its position relative to its parent. A position of (0, 0) denotes the top left
-     * corner of the parent.
-     */
-    fun position(): Position
+interface Movable : Boundable {
 
     /**
      * Sets the position of this [Movable].

@@ -24,57 +24,57 @@ object ButtonsExample {
         val panel = Components.panel()
                 .wrapWithBox(true)
                 .wrapWithShadow(true)
-                .size(Sizes.create(30, 28))
-                .position(Positions.create(29, 1))
-                .title("Buttons on panel")
+                .withSize(Sizes.create(30, 28))
+                .withPosition(Positions.create(29, 1))
+                .withTitle("Buttons on panel")
                 .build()
         screen.addComponent(panel)
 
         val simpleBtn = Components.button()
                 .text("Button")
                 .wrapSides(true)
-                .position(Positions.create(1, 3))
+                .withPosition(Positions.create(1, 3))
         val boxedBtn = Components.button()
                 .text("Boxed Button")
                 .wrapWithBox(true)
                 .wrapSides(false)
-                .position(Positions.create(1, 5))
+                .withPosition(Positions.create(1, 5))
         val tooLongBtn = Components.button()
                 .text("Too long name for button")
                 .wrapWithBox(true)
                 .wrapWithShadow(true)
                 .wrapSides(false)
-                .position(Positions.create(1, 9))
-                .size(Sizes.create(10, 4))
+                .withPosition(Positions.create(1, 9))
+                .withSize(Sizes.create(10, 4))
         val overTheTopBtn = Components.button()
                 .text("Over the top button")
-                .decorationRenderers(
+                .withDecorationRenderers(
                         ShadowDecorationRenderer(),
                         HalfBlockDecorationRenderer(),
                         BoxDecorationRenderer(BoxType.DOUBLE))
-                .position(Positions.create(1, 14))
+                .withPosition(Positions.create(1, 14))
         val halfBlockBtn = Components.button()
                 .text("Half block button")
-                .decorationRenderers(
+                .withDecorationRenderers(
                         ShadowDecorationRenderer(),
                         HalfBlockDecorationRenderer())
-                .position(Positions.create(1, 23))
+                .withPosition(Positions.create(1, 23))
 
 
         screen.addComponent(simpleBtn)
-        panel.addComponent(simpleBtn.position(Positions.create(1, 1)).build())
+        panel.addComponent(simpleBtn.withPosition(Positions.create(1, 1)).build())
 
         screen.addComponent(boxedBtn)
-        panel.addComponent(boxedBtn.position(Positions.create(1, 3)).build())
+        panel.addComponent(boxedBtn.withPosition(Positions.create(1, 3)).build())
 
         screen.addComponent(tooLongBtn)
-        panel.addComponent(tooLongBtn.position(Positions.create(1, 7)).build())
+        panel.addComponent(tooLongBtn.withPosition(Positions.create(1, 7)).build())
 
         screen.addComponent(overTheTopBtn)
-        panel.addComponent(overTheTopBtn.position(Positions.create(1, 12)).build())
+        panel.addComponent(overTheTopBtn.withPosition(Positions.create(1, 12)).build())
 
         screen.addComponent(halfBlockBtn)
-        panel.addComponent(halfBlockBtn.position(Positions.create(1, 21)).build())
+        panel.addComponent(halfBlockBtn.withPosition(Positions.create(1, 21)).build())
 
         screen.display()
         screen.applyColorTheme(theme)

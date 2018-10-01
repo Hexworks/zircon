@@ -27,9 +27,9 @@ class DefaultCheckBoxTest {
     fun setUp() {
         tileset = FONT
         target = CheckBoxBuilder.newBuilder()
-                .componentStyleSet(COMPONENT_STYLES)
-                .tileset(tileset)
-                .position(POSITION)
+                .withComponentStyleSet(COMPONENT_STYLES)
+                .withTileset(tileset)
+                .withPosition(POSITION)
                 .text(TEXT)
                 .build() as DefaultCheckBox
     }
@@ -86,7 +86,7 @@ class DefaultCheckBoxTest {
         val result = target.giveFocus()
 
         Assertions.assertThat(result).isTrue()
-        Assertions.assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
+        Assertions.assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
     }
 
     @Test
@@ -95,7 +95,7 @@ class DefaultCheckBoxTest {
 
         target.takeFocus()
 
-        Assertions.assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
+        Assertions.assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
 
@@ -105,7 +105,7 @@ class DefaultCheckBoxTest {
 
         target.mouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition()))
 
-        Assertions.assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
+        Assertions.assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
     }
 
     companion object {

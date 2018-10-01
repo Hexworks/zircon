@@ -80,7 +80,7 @@ class DefaultRadioButtonTest {
         val result = target.giveFocus()
 
         assertThat(result).isTrue()
-        assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
+        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
     }
 
     @Test
@@ -89,7 +89,7 @@ class DefaultRadioButtonTest {
 
         target.takeFocus()
 
-        assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
+        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
     @Test
@@ -99,7 +99,7 @@ class DefaultRadioButtonTest {
 
         assertThat(getButtonChar()).isEqualTo('O')
         assertThat(target.isSelected()).isTrue()
-        assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
+        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
     }
 
     @Test
@@ -122,7 +122,7 @@ class DefaultRadioButtonTest {
 
         assertThat(getButtonChar()).isEqualTo(' ')
         assertThat(target.isSelected()).isFalse()
-        assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
+        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
     private fun getButtonChar() = target.tileGraphics().getTileAt(Position.create(1, 0))

@@ -120,8 +120,8 @@ class RectangleTileGrid(
         return layerable.layers()
     }
 
-    override fun bounds(): Bounds {
-        return backend.bounds()
+    override fun rect(): Rect {
+        return backend.rect()
     }
 
     override fun size(): Size {

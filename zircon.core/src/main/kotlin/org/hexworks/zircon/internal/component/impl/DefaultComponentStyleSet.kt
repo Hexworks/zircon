@@ -19,7 +19,7 @@ data class DefaultComponentStyleSet(private val styles: Map<ComponentState, Styl
 
     override fun getStyleFor(state: ComponentState) = styles[state]!!
 
-    override fun getCurrentStyle() = styles[currentState]!!
+    override fun currentStyle() = styles[currentState]!!
 
     override fun applyMouseOverStyle(): StyleSet {
         currentState = ComponentState.MOUSE_OVER

@@ -28,9 +28,9 @@ class DefaultButtonTest {
     fun setUp() {
         tileset = FONT
         target = ButtonBuilder.newBuilder()
-                .componentStyleSet(COMPONENT_STYLES)
-                .position(POSITION)
-                .tileset(tileset)
+                .withComponentStyleSet(COMPONENT_STYLES)
+                .withPosition(POSITION)
+                .withTileset(tileset)
                 .text(TEXT)
                 .build() as DefaultButton
     }
@@ -56,7 +56,7 @@ class DefaultButtonTest {
 
     @Test
     fun shouldProperlyReturnText() {
-        assertThat(target.getText()).isEqualTo(TEXT)
+        assertThat(target.text()).isEqualTo(TEXT)
     }
 
     @Test
@@ -87,7 +87,7 @@ class DefaultButtonTest {
         val result = target.giveFocus()
 
         assertThat(result).isTrue()
-        assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
+        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
     }
 
     @Test
@@ -96,7 +96,7 @@ class DefaultButtonTest {
 
         target.takeFocus()
 
-        assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
+        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
     @Test
@@ -105,7 +105,7 @@ class DefaultButtonTest {
 
         target.mousePressed(MouseAction(MOUSE_PRESSED, 1, Position.defaultPosition()))
 
-        assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_ACTIVE_STYLE)
+        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_ACTIVE_STYLE)
     }
 
     @Test
@@ -114,7 +114,7 @@ class DefaultButtonTest {
 
         target.mouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition()))
 
-        assertThat(target.componentStyleSet().getCurrentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
+        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
     }
 
     companion object {

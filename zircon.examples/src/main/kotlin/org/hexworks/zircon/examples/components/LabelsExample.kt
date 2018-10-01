@@ -24,45 +24,45 @@ object LabelsExample {
         screen.addComponent(Components.label()
                 .text("Foobar")
                 .wrapWithShadow(true)
-                .position(Positions.create(2, 2))
+                .withPosition(Positions.create(2, 2))
                 .build())
 
         screen.addComponent(Components.label()
                 .text("Barbaz wombat")
-                .size(Sizes.create(5, 2))
-                .position(Positions.create(2, 6))
+                .withSize(Sizes.create(5, 2))
+                .withPosition(Positions.create(2, 6))
                 .build())
 
         screen.addComponent(Components.label()
                 .text("Qux")
                 .wrapWithShadow(true)
                 .wrapWithBox(true)
-                .position(Positions.create(2, 10))
+                .withPosition(Positions.create(2, 10))
                 .build())
 
         screen.addComponent(Components.label()
                 .text("Qux")
                 .wrapWithShadow(true)
-                .boxType(DOUBLE)
+                .withBoxType(DOUBLE)
                 .wrapWithBox(true)
-                .position(Positions.create(15, 2))
+                .withPosition(Positions.create(15, 2))
                 .build())
 
         screen.addComponent(Components.label()
                 .text("Wtf")
-                .decorationRenderers(
+                .withDecorationRenderers(
                         ShadowDecorationRenderer(),
                         BoxDecorationRenderer(DOUBLE),
                         BoxDecorationRenderer(SINGLE))
-                .position(Positions.create(15, 7))
+                .withPosition(Positions.create(15, 7))
                 .build())
 
         screen.addComponent(Components.label()
                 .text("Wtf")
-                .decorationRenderers(
+                .withDecorationRenderers(
                         ShadowDecorationRenderer(),
                         HalfBlockDecorationRenderer())
-                .position(Positions.create(15, 14))
+                .withPosition(Positions.create(15, 14))
                 .build())
 
         screen.display()

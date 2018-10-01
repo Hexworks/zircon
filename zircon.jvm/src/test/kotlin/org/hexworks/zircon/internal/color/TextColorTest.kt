@@ -41,9 +41,9 @@ class TextColorTest {
     @Test
     fun shouldProperlyCreateFromRedGreenBlueWhenCreateFromIsCalled() {
         assertThat(TileColor.create(
-                red = EXPECTED_RESULT_COLOR.getRed(),
-                green = EXPECTED_RESULT_COLOR.getGreen(),
-                blue = EXPECTED_RESULT_COLOR.getBlue()))
+                red = EXPECTED_RESULT_COLOR.red(),
+                green = EXPECTED_RESULT_COLOR.green(),
+                blue = EXPECTED_RESULT_COLOR.blue()))
                 .isEqualTo(EXPECTED_RESULT_COLOR)
     }
 

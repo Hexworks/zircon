@@ -1,11 +1,12 @@
 package org.hexworks.zircon.internal.data
 
-import org.hexworks.zircon.api.data.Bounds
+import org.hexworks.zircon.api.behavior.Boundable
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 
-class DefaultBounds(private val position: Position,
-                    private val size: Size) : Bounds {
+class DefaultRect(private val position: Position,
+                  private val size: Size) : Rect {
 
     override fun position() = position
 
@@ -28,7 +29,8 @@ class DefaultBounds(private val position: Position,
         return (width < x || width > otherX) && (height < y || height > otherY)
     }
 
-    override fun intersects(otherBounds: Bounds): Boolean {
+    override fun intersects(boundable: Boundable): Boolean {
+        val otherBounds = boundable.rect()
         var tw = size.width()
         var th = size.height()
         var rw = otherBounds.width()
@@ -55,8 +57,8 @@ class DefaultBounds(private val position: Position,
                 "size=${size()})"
     }
 
-    override fun containsBounds(otherBounds: Bounds): Boolean {
-        var (otherX, otherY, otherWidth, otherHeight) = otherBounds
+    override fun containsBoundable(boundable: Boundable): Boolean {
+        var (otherX, otherY, otherWidth, otherHeight) = boundable.rect()
         var w = width()
         var h = height()
         val x = x()
@@ -88,7 +90,7 @@ class DefaultBounds(private val position: Position,
         if (this === other) return true
         if (other == null || this::class != other::class) return false
 
-        other as DefaultBounds
+        other as DefaultRect
 
         if (position != other.position) return false
         if (size != other.size) return false

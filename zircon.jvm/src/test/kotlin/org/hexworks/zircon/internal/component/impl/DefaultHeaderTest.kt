@@ -22,16 +22,16 @@ class DefaultHeaderTest {
     fun setUp() {
         tileset = FONT
         target = HeaderBuilder.newBuilder()
-                .componentStyleSet(COMPONENT_STYLES)
-                .position(POSITION)
-                .tileset(tileset)
+                .withComponentStyleSet(COMPONENT_STYLES)
+                .withPosition(POSITION)
+                .withTileset(tileset)
                 .text(TEXT)
                 .build() as DefaultHeader
     }
 
     @Test
     fun shouldProperlyReturnText() {
-        assertThat(target.getText()).isEqualTo(TEXT)
+        assertThat(target.text()).isEqualTo(TEXT)
     }
 
     @Test

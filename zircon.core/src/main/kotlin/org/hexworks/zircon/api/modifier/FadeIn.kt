@@ -34,9 +34,9 @@ data class FadeIn(private val steps: Int = 20,
     }
 
     private fun generateTile(tile: CharacterTile): CharacterTile {
-        return tile.withBackgroundColor(tile.getBackgroundColor()
+        return tile.withBackgroundColor(tile.backgroundColor()
                 .darkenByPercent(1.0.minus(currentStep.toDouble().div(steps))))
-                .withForegroundColor(tile.getForegroundColor()
+                .withForegroundColor(tile.foregroundColor()
                         .darkenByPercent(1.0.minus(currentStep.toDouble().div(steps))))
     }
 

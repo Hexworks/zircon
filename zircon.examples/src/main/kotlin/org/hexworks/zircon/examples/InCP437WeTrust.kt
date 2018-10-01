@@ -21,11 +21,11 @@ object InCP437WeTrust {
         val screen = Screens.createScreenFor(tileGrid)
 
         val cp437panel = Components.panel()
-                .size(Sizes.create(19, 19))
-                .position(Positions.create(2, 2))
+                .withSize(Sizes.create(19, 19))
+                .withPosition(Positions.create(2, 2))
                 .wrapWithBox(true)
                 .wrapWithShadow(true)
-                .boxType(BoxType.SINGLE)
+                .withBoxType(BoxType.SINGLE)
                 .build()
 
         val loader = CP437TileMetadataLoader(16, 16)
@@ -34,7 +34,7 @@ object InCP437WeTrust {
 
         val btn = Components.checkBox()
                 .text("In CP437 we trust!")
-                .position(Positions.create(1, 22))
+                .withPosition(Positions.create(1, 22))
 
         screen.addComponent(btn.build())
 

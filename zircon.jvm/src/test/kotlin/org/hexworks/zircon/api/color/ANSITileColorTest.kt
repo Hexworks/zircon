@@ -16,25 +16,25 @@ class ANSITileColorTest {
 
     @Test
     fun shouldReturnProperRed() {
-        assertThat(ANSITileColor.YELLOW.getRed())
+        assertThat(ANSITileColor.YELLOW.red())
                 .isEqualTo(RED)
     }
 
     @Test
     fun shouldReturnProperGreen() {
-        assertThat(ANSITileColor.YELLOW.getGreen())
+        assertThat(ANSITileColor.YELLOW.green())
                 .isEqualTo(GREEN)
     }
 
     @Test
     fun shouldReturnProperBlue() {
-        assertThat(ANSITileColor.YELLOW.getBlue())
+        assertThat(ANSITileColor.YELLOW.blue())
                 .isEqualTo(BLUE)
     }
 
     @Test
     fun shouldReturnProperAlpha() {
-        assertThat(ANSITileColor.YELLOW.getAlpha())
+        assertThat(ANSITileColor.YELLOW.alpha())
                 .isEqualTo(ALPHA)
     }
 

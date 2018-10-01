@@ -91,7 +91,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
             }
         } else {
             val fixedLayerCount = 4
-            val customLayersPerBlock = gameArea.getLayersPerBlock()
+            val customLayersPerBlock = gameArea.layersPerBlock()
             val totalLayerCount = fixedLayerCount + customLayersPerBlock
             val builders = (0 until totalLayerCount * height).map {
                 TileGraphicsBuilder.newBuilder().size(screenSize)

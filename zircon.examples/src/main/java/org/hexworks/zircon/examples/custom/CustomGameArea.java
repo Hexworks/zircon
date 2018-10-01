@@ -34,7 +34,7 @@ public class CustomGameArea extends BaseGameArea {
     }
 
     @Override
-    public int getLayersPerBlock() {
+    public int layersPerBlock() {
         return layersPerBlock;
     }
 
@@ -67,7 +67,7 @@ public class CustomGameArea extends BaseGameArea {
             throw new IllegalArgumentException("The supplied position ($position) is not within the size ($size) of this game area.");
         }
         int layerCount = block.getLayers().size();
-        if (layerCount != getLayersPerBlock()) {
+        if (layerCount != layersPerBlock()) {
             throw new IllegalArgumentException("The number of layers per block for this game area is ${getLayersPerBlock()}." +
                     " The supplied layers have a size of $layerCount.");
         }

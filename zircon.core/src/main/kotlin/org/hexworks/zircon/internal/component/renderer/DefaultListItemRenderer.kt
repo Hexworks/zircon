@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.graphics.TextWrap
 class DefaultListItemRenderer(private val listItemChar: Char = '-') : ComponentRenderer<ListItem>() {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<ListItem>) {
-        val style = context.componentStyle().getCurrentStyle()
+        val style = context.componentStyle().currentStyle()
         tileGraphics.applyStyle(style)
         CharacterTileStringBuilder.newBuilder()
                 .backgroundColor(style.backgroundColor())

@@ -27,7 +27,7 @@ class DefaultPanel(private val title: String,
         render()
     }
 
-    override fun getTitle() = title
+    override fun title() = title
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()

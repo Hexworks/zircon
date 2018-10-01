@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.behavior
 
-import org.hexworks.zircon.api.data.Bounds
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
@@ -13,14 +13,19 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 interface Boundable {
 
     /**
-     * Returns the [Bounds] of this [Boundable].
+     * Returns the [Position] of this [Boundable].
      */
-    fun bounds(): Bounds
+    fun position(): Position = Position.defaultPosition()
 
     /**
      * Returns the [Size] of this [Boundable].
      */
     fun size(): Size
+
+    /**
+     * Returns a [Rect] of this [Boundable].
+     */
+    fun rect(): Rect
 
     /**
      * Tells whether this [Boundable] intersects the other `boundable` or not.

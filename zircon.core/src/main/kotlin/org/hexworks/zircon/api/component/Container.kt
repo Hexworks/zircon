@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.util.Maybe
  */
 interface Container : Component {
 
-    // TODO: implement ComponentContainer
+    // TODO: implement ComponentContainer?
     /**
      * Returns the immediate child [Component]s of this [Container].
      */
@@ -41,6 +41,7 @@ interface Container : Component {
      */
     fun removeComponent(component: Component): Boolean
 
+    // TODO: move these to `InternalContainer`
     fun acceptsFocus() = false
 
     fun giveFocus(input: Maybe<Input>) = false

@@ -29,17 +29,17 @@ public class AnimationExample {
 
         final Panel panel = Components.panel()
                 .wrapWithBox(true)
-                .title("Animation example")
-                .size(TERMINAL_SIZE)
+                .withTitle("Animation example")
+                .withSize(TERMINAL_SIZE)
                 .build();
 
         panel.addComponent(Components.label()
                 .text("Looped:")
-                .position(LEFT_POS.withRelativeY(-3).withRelativeX(-1))
+                .withPosition(LEFT_POS.withRelativeY(-3).withRelativeX(-1))
                 .build());
         panel.addComponent(Components.label()
                 .text("Non-looped:")
-                .position(RIGHT_POS.withRelativeY(-3).withRelativeX(-1))
+                .withPosition(RIGHT_POS.withRelativeY(-3).withRelativeX(-1))
                 .build());
         screen.addComponent(panel);
 

@@ -73,8 +73,8 @@ class DefaultComponentTest {
 
     @Test
     fun shouldProperlyApplyStylesOnInit() {
-        assertThat(target.componentStyleSet().getCurrentStyle())
-                .isEqualTo(STYLES.getCurrentStyle())
+        assertThat(target.componentStyleSet().currentStyle())
+                .isEqualTo(STYLES.currentStyle())
     }
 
     @Test
