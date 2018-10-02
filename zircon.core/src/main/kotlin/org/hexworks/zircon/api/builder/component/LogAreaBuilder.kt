@@ -11,6 +11,7 @@ import org.hexworks.zircon.internal.component.renderer.DefaultLogAreaRenderer
 
 data class LogAreaBuilder(
         private var textWrap: TextWrap = TextWrap.WORD_WRAP,
+        private var logRowHistorySize: Int = 100,
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
     : BaseComponentBuilder<LogArea, LogAreaBuilder>(commonComponentProperties) {
 
@@ -28,13 +29,18 @@ data class LogAreaBuilder(
                 position = position(),
                 componentStyleSet = componentStyleSet(),
                 tileset = tileset(),
-                textWrap = textWrap)
+                textWrapMode = textWrap,
+                logRowHistorySize = logRowHistorySize)
     }
 
     fun textWrap(textWrap: TextWrap) = also {
         if (textWrap == TextWrap.WRAP)
             throw NotImplementedError(TextWrap.WRAP.toString())
         this.textWrap = textWrap
+    }
+
+    fun logRowHistorySize(numberOfRows: Int) = also {
+        logRowHistorySize = numberOfRows
     }
 
     override fun createCopy() = copy()

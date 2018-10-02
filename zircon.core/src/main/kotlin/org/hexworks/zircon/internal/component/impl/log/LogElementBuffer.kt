@@ -7,7 +7,7 @@ data class LogElementRow(val yPosition: Int, val logElements: MutableList<LogEle
     fun size() = logElements.size
 }
 
-class LogElementBuffer(val visibleSize: Size) {
+class LogElementBuffer(val visibleSize: Size, val numberOfBufferedRows: Int = 100) {
     private val logElementRows = mutableListOf<LogElementRow>()
     fun getLogElementRows() = logElementRows.toList()
 
@@ -23,18 +23,22 @@ class LogElementBuffer(val visibleSize: Size) {
 
 
     fun addLogElement(logElement: LogElement) {
+        logElement.logElementRow = currentLogElementRow()
         currentLogElementRow().logElements.add(logElement)
     }
 
 
     fun addNewRows(numberOfRows: Int) {
         (1..numberOfRows).forEach {
+            if (logElementRows.size >= numberOfBufferedRows)
+                logElementRows.removeAt(0)
             logElementRows.add(LogElementRow(logElementRows.size))
         }
     }
 
     fun clear() {
         logElementRows.clear()
+        addNewRows(1)
     }
 
     fun clearLogRenderPositions() {

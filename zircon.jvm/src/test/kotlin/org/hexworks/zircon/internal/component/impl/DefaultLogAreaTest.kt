@@ -35,6 +35,7 @@ class DefaultLogAreaTest {
                 .componentStyleSet(COMPONENT_STYLES)
                 .position(POSITION)
                 .size(SIZE)
+                .logRowHistorySize(ROW_HISTORY_SIZE)
                 .tileset(tileset)
                 .textWrap(TextWrap.WORD_WRAP)
                 .build() as DefaultLogArea
@@ -73,20 +74,28 @@ class DefaultLogAreaTest {
         }
         target.getLogElementBuffer().getAllLogElements().first()
                 .renderedPositionArea!!.startPosition
-        target.mousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.create(4,5 )))
+        target.mousePressed(MouseAction(MouseActionType.MOUSE_PRESSED, 1, Position.create(4, 5)))
         assertThat(hyperLinkIds.first())
                 .isEqualTo(HYPERLINK_ID)
     }
 
     @Test
-    fun shouldProperlyScrollDown()
-    {
+    fun shouldProperlyScrollDown() {
         target.addNewRows(10)
         target.addText(TEXT)
         target.scrollDownBy(1)
         assertThat(target.visibleOffset())
                 .isEqualTo(Position.create(0, 1))
+    }
 
+    @Test
+    fun shouldProperlySize()
+    {
+        target.addText(TEXT)
+        target.addNewRows(15)
+        target.addText(TEXT_ALTERNATIVE)
+        assertThat(target.getLogElementBuffer().getAllLogElements().first().getTextAsString())
+                .isEqualTo(TEXT_ALTERNATIVE)
     }
 
 
@@ -95,7 +104,9 @@ class DefaultLogAreaTest {
         val FONT = BuiltInCP437TilesetResource.WANDERLUST_16X16
         val POSITION = Position.create(4, 5)
         val SIZE = Size.create(40, 10)
+        val ROW_HISTORY_SIZE = 15
         val TEXT = "This is my log row"
+        val TEXT_ALTERNATIVE = "This is my other log row"
         val HYPERLINK_TEXT = "This is a hyper link"
         val HYPERLINK_ID = "HyperLinkId"
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
