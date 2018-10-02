@@ -304,7 +304,7 @@ class TileGraphicsTest {
 
         target.applyStyle(newStyle, Rect.create(Position.offset1x1(), Size.one()))
 
-        assertThat(target.fetchCells().map { it.tile.styleSet() }).containsExactly(
+        assertThat(target.fetchCells().map { it.tile.styleSet }).containsExactly(
                 oldStyle, oldStyle, oldStyle,
                 oldStyle, newStyle, oldStyle,
                 oldStyle, oldStyle, oldStyle)
@@ -322,7 +322,7 @@ class TileGraphicsTest {
                 rect = Rect.create(Position.offset1x1(), Size.one()),
                 applyToEmptyCells = false)
 
-        assertThat(target.fetchCells().map { it.tile.styleSet() }).containsExactly(
+        assertThat(target.fetchCells().map { it.tile.styleSet }).containsExactly(
                 oldStyle, oldStyle, oldStyle,
                 oldStyle, oldStyle, oldStyle,
                 oldStyle, oldStyle, oldStyle)
@@ -347,7 +347,7 @@ class TileGraphicsTest {
                 rect = Rect.create(Position.offset1x1(), Size.create(2, 1)),
                 keepModifiers = true)
 
-        assertThat(target.fetchCells().map { it.tile.styleSet() }).containsExactly(
+        assertThat(target.fetchCells().map { it.tile.styleSet }).containsExactly(
                 oldStyle, oldStyle, oldStyle,
                 oldStyle, newStyle, newStyle,
                 oldStyle, oldStyle, oldStyle)

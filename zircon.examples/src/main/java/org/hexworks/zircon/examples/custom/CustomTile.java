@@ -22,13 +22,14 @@ public class CustomTile extends BaseTile {
 
     @NotNull
     @Override
-    public TileType tileType() {
+    public TileType getTileType() {
         return TileType.CHARACTER_TILE;
     }
 
+
     @NotNull
     @Override
-    public StyleSet styleSet() {
+    public StyleSet getStyleSet() {
         return styleSet;
     }
 

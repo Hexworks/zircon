@@ -9,26 +9,27 @@ interface CharacterTile : Tile {
 
     val character: Char
 
-    override fun tileType(): TileType = TileType.CHARACTER_TILE
+    override val tileType: TileType
+        get() = TileType.CHARACTER_TILE
 
     override fun withForegroundColor(foregroundColor: TileColor): CharacterTile {
-        return if (this.foregroundColor() == foregroundColor) {
+        return if (this.foregroundColor == foregroundColor) {
             this
         } else {
-            Tile.createCharacterTile(character, styleSet().withForegroundColor(foregroundColor))
+            Tile.createCharacterTile(character, styleSet.withForegroundColor(foregroundColor))
         }
     }
 
     override fun withBackgroundColor(backgroundColor: TileColor): CharacterTile {
-        return if (this.backgroundColor() == backgroundColor) {
+        return if (this.backgroundColor == backgroundColor) {
             this
         } else {
-            Tile.createCharacterTile(character, styleSet().withBackgroundColor(backgroundColor))
+            Tile.createCharacterTile(character, styleSet.withBackgroundColor(backgroundColor))
         }
     }
 
     override fun withStyle(style: StyleSet): CharacterTile {
-        return if (this.styleSet() == style) {
+        return if (this.styleSet == style) {
             this
         } else {
             Tile.createCharacterTile(character, style)
@@ -38,18 +39,18 @@ interface CharacterTile : Tile {
     override fun withModifiers(vararg modifiers: Modifier) = withModifiers(modifiers.toSet())
 
     override fun withModifiers(modifiers: Set<Modifier>): CharacterTile {
-        return if (modifiers == this.modifiers()) {
+        return if (this.modifiers == modifiers) {
             this
         } else {
-            return Tile.createCharacterTile(character, styleSet().withModifiers(modifiers))
+            return Tile.createCharacterTile(character, styleSet.withModifiers(modifiers))
         }
     }
 
     override fun withoutModifiers(modifiers: Set<Modifier>): CharacterTile {
-        return if (modifiers().intersect(modifiers).isEmpty()) {
+        return if (this.modifiers.intersect(modifiers).isEmpty()) {
             this
         } else {
-            Tile.createCharacterTile(character, styleSet().withRemovedModifiers(modifiers))
+            Tile.createCharacterTile(character, styleSet.withRemovedModifiers(modifiers))
         }
     }
 
@@ -57,7 +58,7 @@ interface CharacterTile : Tile {
         return if (this.character == character) {
             this
         } else {
-            Tile.createCharacterTile(character, styleSet())
+            Tile.createCharacterTile(character, styleSet)
         }
     }
 }

@@ -136,8 +136,8 @@ public class GameAreaScrollingWithLayers {
                         pos,
                         BlockBuilder.Companion.create()
                                 .layer(wall
-                                        .withBackgroundColor(wall.backgroundColor().darkenByPercent(currPercent))
-                                        .withForegroundColor(wall.foregroundColor().darkenByPercent(currPercent)))
+                                        .withBackgroundColor(wall.getBackgroundColor().darkenByPercent(currPercent))
+                                        .withForegroundColor(wall.getForegroundColor().darkenByPercent(currPercent)))
                                 .position(pos)
                                 .build());
             });

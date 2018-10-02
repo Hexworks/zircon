@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage
 class Java2DCropTransformer : TextureTransformer<BufferedImage> {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
-        val (x, y, width, height) = tile.modifiers().first { it is Crop } as Crop
+        val (x, y, width, height) = tile.modifiers.first { it is Crop } as Crop
         val txt = texture.texture()
         val newImage = BufferedImage(texture.width(), texture.width(), BufferedImage.TRANSLUCENT)
         newImage.createGraphics()

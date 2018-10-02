@@ -96,9 +96,9 @@ public class FullExample {
                     new DefaultAnimationFrame(
                             SCREEN_SIZE,
                             Collections.singletonList(Layers.newBuilder()
-                                    .tileGraphic(img.toTileImage().transform(tile -> tile.withBackgroundColor(tile.backgroundColor()
+                                    .tileGraphic(img.toTileImage().transform(tile -> tile.withBackgroundColor(tile.getBackgroundColor()
                                             .darkenByPercent(idx / 20d))
-                                            .withForegroundColor(tile.foregroundColor()
+                                            .withForegroundColor(tile.getForegroundColor()
                                                     .darkenByPercent(idx / 20d))).toTileGraphic())
                                     .build()),
                             loopCount));
@@ -111,9 +111,9 @@ public class FullExample {
                     new DefaultAnimationFrame(
                             SCREEN_SIZE,
                             Collections.singletonList(Layers.newBuilder()
-                                    .tileGraphic(img.toTileImage().transform(tile -> tile.withBackgroundColor(tile.backgroundColor()
+                                    .tileGraphic(img.toTileImage().transform(tile -> tile.withBackgroundColor(tile.getBackgroundColor()
                                             .darkenByPercent(idx / 20d))
-                                            .withForegroundColor(tile.foregroundColor()
+                                            .withForegroundColor(tile.getForegroundColor()
                                                     .darkenByPercent(idx / 20d))).toTileGraphic())
                                     .build()),
                             loopCount));
