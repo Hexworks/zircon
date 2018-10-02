@@ -7,8 +7,8 @@ import org.hexworks.zircon.api.graphics.BoxType
 
 object HeadersExample {
 
-    private val theme = ColorThemes.oliveLeafTea()
-    private val tileset = TrueTypeFontResources.amstrad(20)
+    private val theme = ColorThemes.headache()
+    private val tileset = TrueTypeFontResources.vtech(16)
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -22,24 +22,24 @@ object HeadersExample {
 
         val panel = Components.panel()
                 .wrapWithBox(true)
-                .size(Sizes.create(28, 28))
-                .position(Positions.create(31, 1))
+                .withSize(Sizes.create(28, 28))
+                .withPosition(Positions.create(31, 1))
                 .build()
         screen.addComponent(panel)
 
         val simpleHeader = Components.header()
                 .text("Some header")
-                .position(Positions.create(2, 2))
+                .withPosition(Positions.create(2, 2))
 
         screen.addComponent(simpleHeader)
         panel.addComponent(simpleHeader)
 
         val decoratedLabel = Components.label()
                 .text("Some label")
-                .boxType(BoxType.DOUBLE)
+                .withBoxType(BoxType.DOUBLE)
                 .wrapWithShadow(true)
                 .wrapWithBox(true)
-                .position(Positions.create(2, 4))
+                .withPosition(Positions.create(2, 4))
 
         screen.addComponent(decoratedLabel)
         panel.addComponent(decoratedLabel)
@@ -47,27 +47,27 @@ object HeadersExample {
         val shadowedHeader = Components.header()
                 .text("Some header")
                 .wrapWithShadow(true)
-                .position(Positions.create(2, 9))
+                .withPosition(Positions.create(2, 9))
 
         screen.addComponent(shadowedHeader)
         panel.addComponent(shadowedHeader)
 
         val tooLongHeader = Components.header()
                 .text("Too long header")
-                .size(Sizes.create(10, 1))
-                .position(Positions.create(2, 13))
+                .withSize(Sizes.create(10, 1))
+                .withPosition(Positions.create(2, 13))
 
         screen.addComponent(tooLongHeader)
         panel.addComponent(tooLongHeader)
 
         val overTheTopHeader = Components.header()
                 .text("WTF header")
-                .decorationRenderers(
+                .withDecorationRenderers(
                         ShadowDecorationRenderer(),
                         BoxDecorationRenderer(BoxType.DOUBLE),
                         BoxDecorationRenderer(BoxType.SINGLE),
                         BoxDecorationRenderer(BoxType.LEFT_RIGHT_DOUBLE))
-                .position(Positions.create(2, 16))
+                .withPosition(Positions.create(2, 16))
 
         screen.addComponent(overTheTopHeader)
         panel.addComponent(overTheTopHeader)

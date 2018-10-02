@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.*
-import org.hexworks.zircon.api.data.Bounds
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -21,18 +21,18 @@ import org.hexworks.zircon.internal.graphics.DefaultTileImage
 
 class SubTileGraphics(
         private val backend: TileGraphics,
-        private val bounds: Bounds,
+        private val rect: Rect,
         private val boundable: Boundable = DefaultBoundable(
-                size = bounds.size(),
-                position = bounds.position()),
+                size = rect.size(),
+                position = rect.position()),
         private val styleable: Styleable = DefaultStyleable(
-                styleSet = backend.styleSet()),
+                styleSet = backend.toStyleSet()),
         private val tilesetOverride: TilesetOverride = DefaultTilesetOverride(
-                tileset = backend.tileset()))
+                tileset = backend.currentTileset()))
     : TileGraphics, Boundable by boundable, Styleable by styleable, TilesetOverride by tilesetOverride {
 
-    private val offset = bounds.position()
-    private val size = bounds.size()
+    private val offset = rect.position()
+    private val size = rect.size()
 
     init {
         require(size <= backend.size()) {
@@ -44,18 +44,18 @@ class SubTileGraphics(
     }
 
     override fun fetchFilledPositions(): List<Position> {
-        return backend.snapshot().filterKeys { bounds.containsPosition(it) }.keys.map { it - offset }
+        return backend.createSnapshot().filterKeys { rect.containsPosition(it) }.keys.map { it - offset }
     }
 
     override fun resize(newSize: Size) = restrictOperation()
 
     override fun resize(newSize: Size, filler: Tile) = restrictOperation()
 
-    override fun applyStyle(styleSet: StyleSet, bounds: Bounds, keepModifiers: Boolean, applyToEmptyCells: Boolean) {
+    override fun applyStyle(styleSet: StyleSet, rect: Rect, keepModifiers: Boolean, applyToEmptyCells: Boolean) {
         super.applyStyle(
                 styleSet = styleSet,
                 // this is needed because I don't want to re-implement applyStyle...
-                bounds = bounds.withPosition(Position.defaultPosition()),
+                rect = rect.withPosition(Position.defaultPosition()),
                 keepModifiers = keepModifiers,
                 applyToEmptyCells = applyToEmptyCells)
     }
@@ -63,7 +63,7 @@ class SubTileGraphics(
     override fun toTileImage(): TileImage {
         return DefaultTileImage(
                 size = size(),
-                tileset = tileset(),
+                tileset = currentTileset(),
                 tiles = fetchCells().map { it.position to it.tile }.toMap())
     }
 
@@ -85,7 +85,7 @@ class SubTileGraphics(
         }
     }
 
-    override fun snapshot(): Map<Position, Tile> {
+    override fun createSnapshot(): Map<Position, Tile> {
         throw UnsupportedOperationException("Sub tile images don't support snapshots.")
     }
 
@@ -93,8 +93,9 @@ class SubTileGraphics(
         restrictOperation()
     }
 
+    // TODO: test this
     override fun drawOnto(surface: DrawSurface, position: Position) {
-        bounds.size().fetchPositions().forEach { pos ->
+        rect.size().fetchPositions().forEach { pos ->
             getTileAt(pos).map { tile ->
                 surface.setTileAt(pos + offset + position, tile)
             }

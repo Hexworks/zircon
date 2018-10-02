@@ -11,9 +11,7 @@ interface TextArea : Component, Scrollable {
     /**
      * Returns the text of this [TextArea].
      */
-    fun getText(): String
-
-    fun textBuffer(): TextBuffer
+    fun text(): String
 
     /**
      * Sets the text of this [TextArea].
@@ -21,8 +19,11 @@ interface TextArea : Component, Scrollable {
      */
     fun setText(text: String): Boolean
 
-    fun disable()
+    fun textBuffer(): TextBuffer
 
     fun enable()
+
+    fun disable()
+
 
 }

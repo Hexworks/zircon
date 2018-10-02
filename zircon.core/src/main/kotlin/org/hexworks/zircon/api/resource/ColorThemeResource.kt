@@ -233,6 +233,14 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
             .secondaryBackgroundColor(TileColor.fromString("#000E0F"))
             .build()),
 
+    CYBERPUNK(ColorThemeBuilder.newBuilder()
+            .accentColor(TileColor.fromString("#61D6C4"))
+            .primaryForegroundColor(TileColor.fromString("#71918C"))
+            .secondaryForegroundColor(TileColor.fromString("#3D615F"))
+            .primaryBackgroundColor(TileColor.fromString("#25343B"))
+            .secondaryBackgroundColor(TileColor.fromString("#212429"))
+            .build()),
+
     ZENBURN_VANILLA(ColorThemeBuilder.newBuilder()
             .accentColor(TileColor.fromString("#f0dfaf"))
             .primaryForegroundColor(TileColor.fromString("#dcdccc"))

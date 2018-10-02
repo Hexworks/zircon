@@ -19,16 +19,18 @@ interface Layer : DrawSurface, Drawable, Movable {
             .toSet()
 
     /**
-     * Same as [Layer.getTileAt] but will not use the offset of this [Layer]
-     * (eg: just position instead of position - offset).
+     * Same as [DrawSurface.getTileAt] but will consider the given `position`
+     * as an absolute position (the position is relative to the top left corner
+     * of the screen, not the top left corner of the [DrawSurface]).
      */
-    fun getRelativeTileAt(position: Position): Maybe<Tile>
+    fun getAbsoluteTileAt(position: Position): Maybe<Tile>
 
     /**
-     * Same as [Layer.setTileAt] but will not use the offset of this [Layer]
-     * (eg: just position instead of position - offset).
+     * Same as [DrawSurface.setTileAt] but will consider the given `position`
+     * as an absolute position (the position is relative to the top left corner
+     * of the screen, not the top left corner of the [DrawSurface]).
      */
-    fun setRelativeTileAt(position: Position, tile: Tile)
+    fun setAbsoluteTileAt(position: Position, tile: Tile)
 
     /**
      * Creates a copy of this [Layer].

@@ -28,7 +28,7 @@ interface GameArea {
      * **Note that** front/back/top/bottom characters are not considered
      * a layer!
      */
-    fun getLayersPerBlock(): Int
+    fun layersPerBlock(): Int
 
     /**
      * Tells whether there is an actual [Block] at the given `position`.
@@ -153,7 +153,7 @@ interface GameArea {
         val window = size.to2DSize().fetchPositions()
         return (offset.z until size.zLength + offset.z).flatMap { z ->
             val images = mutableListOf<TileGraphics>()
-            (0 until getLayersPerBlock()).forEach { layerIdx ->
+            (0 until layersPerBlock()).forEach { layerIdx ->
                 val builder = TileGraphicsBuilder.newBuilder().size(size.to2DSize())
                 window.forEach { pos ->
                     fetchTileAt(Position3D.from2DPosition(pos + offset2D, z), layerIdx).map { char ->

@@ -3,10 +3,8 @@ package org.hexworks.zircon.internal.graphics
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
-import org.hexworks.zircon.api.behavior.TilesetOverride
-import org.hexworks.zircon.api.data.Bounds
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
@@ -20,65 +18,53 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 
 data class DefaultLayer(private var position: Position,
                         val backend: TileGraphics)
-    : Layer, TilesetOverride by backend {
+    : Layer,
+        DrawSurface by backend,
+        Drawable by backend {
 
-    private var bounds: Bounds = refreshBounds()
+    // note that we could delegate to bounds but delegation of
+    // mutable vars is broken in Kotlin:
+    // http://the-cogitator.com/2018/09/29/by-the-way-exploring-delegation-in-kotlin.html#the-pitfall-of-interface-delegation
 
-    override fun snapshot(): Map<Position, Tile> {
-        return backend.snapshot().mapKeys { it.key + position }
+    private var rect: Rect = refreshBounds()
+
+    override fun createSnapshot(): Map<Position, Tile> {
+        return backend.createSnapshot().mapKeys { it.key + position }
     }
 
-    override fun draw(drawable: Drawable, position: Position) {
-        backend.draw(drawable, position)
+    override fun getAbsoluteTileAt(position: Position) = backend.getTileAt(position - this.position)
+
+    override fun setAbsoluteTileAt(position: Position, tile: Tile) {
+        backend.setTileAt(position - this.position, tile)
     }
 
-    override fun drawOnto(surface: DrawSurface, position: Position) {
-        backend.drawOnto(surface, position)
-    }
-
-    override fun getRelativeTileAt(position: Position) = backend.getTileAt(position)
-
-    override fun setRelativeTileAt(position: Position, tile: Tile) {
-        backend.setTileAt(position, tile)
-    }
-
-    override fun bounds() = bounds
+    override fun rect() = rect
 
     override fun position() = position
-
-    override fun size(): Size {
-        return backend.size()
-    }
 
     override fun moveTo(position: Position) =
             if (this.position == position) {
                 false
             } else {
                 this.position = position
-                this.bounds = refreshBounds()
+                this.rect = refreshBounds()
                 true
             }
 
     override fun intersects(boundable: Boundable): Boolean {
-        return bounds.intersects(boundable.bounds())
+        return rect.intersects(boundable.rect())
     }
 
     override fun containsPosition(position: Position): Boolean {
-        return bounds.containsPosition(position)
+        return rect.containsPosition(position)
     }
 
     override fun containsBoundable(boundable: Boundable): Boolean {
-        return bounds.containsBounds(boundable.bounds())
+        return rect.containsBoundable(boundable.rect())
     }
 
-    override fun getTileAt(position: Position) = backend.getTileAt(position - this.position)
-
-    override fun setTileAt(position: Position, tile: Tile) {
-        backend.setTileAt(position - this.position, tile)
-    }
-
-    private fun refreshBounds(): Bounds {
-        return Bounds.create(position, size())
+    private fun refreshBounds(): Rect {
+        return Rect.create(position, size())
     }
 
     override fun createCopy() = DefaultLayer(

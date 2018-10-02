@@ -11,6 +11,11 @@ import org.hexworks.zircon.api.util.Maybe
 interface Layerable : Boundable {
 
     /**
+     * Returns a list of [Layer]s which are currently present in this [Layerable].
+     */
+    fun layers(): List<Layer>
+
+    /**
      * Adds a layer on top of the currently present layers.
      */
     fun pushLayer(layer: Layer)
@@ -25,9 +30,4 @@ interface Layerable : Boundable {
      * Removes a [Layer] from the current layers.
      */
     fun removeLayer(layer: Layer)
-
-    /**
-     * Returns a list of [Layer]s which are currently present in this [Layerable].
-     */
-    fun getLayers(): List<Layer>
 }

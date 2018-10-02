@@ -12,7 +12,7 @@ interface CharacterTile : Tile {
     override fun tileType(): TileType = TileType.CHARACTER_TILE
 
     override fun withForegroundColor(foregroundColor: TileColor): CharacterTile {
-        return if (this.getForegroundColor() == foregroundColor) {
+        return if (this.foregroundColor() == foregroundColor) {
             this
         } else {
             Tile.createCharacterTile(character, styleSet().withForegroundColor(foregroundColor))
@@ -20,7 +20,7 @@ interface CharacterTile : Tile {
     }
 
     override fun withBackgroundColor(backgroundColor: TileColor): CharacterTile {
-        return if (this.getBackgroundColor() == backgroundColor) {
+        return if (this.backgroundColor() == backgroundColor) {
             this
         } else {
             Tile.createCharacterTile(character, styleSet().withBackgroundColor(backgroundColor))
@@ -35,8 +35,10 @@ interface CharacterTile : Tile {
         }
     }
 
+    override fun withModifiers(vararg modifiers: Modifier) = withModifiers(modifiers.toSet())
+
     override fun withModifiers(modifiers: Set<Modifier>): CharacterTile {
-        return if (modifiers == this.getModifiers()) {
+        return if (modifiers == this.modifiers()) {
             this
         } else {
             return Tile.createCharacterTile(character, styleSet().withModifiers(modifiers))
@@ -44,7 +46,7 @@ interface CharacterTile : Tile {
     }
 
     override fun withoutModifiers(modifiers: Set<Modifier>): CharacterTile {
-        return if (getModifiers().intersect(modifiers).isEmpty()) {
+        return if (modifiers().intersect(modifiers).isEmpty()) {
             this
         } else {
             Tile.createCharacterTile(character, styleSet().withRemovedModifiers(modifiers))

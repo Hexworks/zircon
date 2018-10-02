@@ -73,7 +73,7 @@ interface TileImage
             tiles[position] = tile
             return DefaultTileImage(
                     size = size(),
-                    tileset = tileset(),
+                    tileset = currentTileset(),
                     tiles = tiles.toMap())
         } else {
             return this
@@ -112,7 +112,7 @@ interface TileImage
         }
         return DefaultTileImage(
                 size = newSize,
-                tileset = tileset(),
+                tileset = currentTileset(),
                 tiles = tiles.toMap())
     }
 
@@ -129,7 +129,7 @@ interface TileImage
         }
         return DefaultTileImage(
                 size = size(),
-                tileset = tileset(),
+                tileset = currentTileset(),
                 tiles = tiles.toMap())
     }
 
@@ -147,7 +147,7 @@ interface TileImage
         }
         return DefaultTileImage(
                 size = size(),
-                tileset = tileset(),
+                tileset = currentTileset(),
                 tiles = tiles.toMap())
     }
 
@@ -182,7 +182,7 @@ interface TileImage
         }
         return DefaultTileImage(
                 size = size(),
-                tileset = tileset(),
+                tileset = currentTileset(),
                 tiles = tiles.toMap())
     }
 
@@ -219,7 +219,7 @@ interface TileImage
         tiles.putAll(tileImage.toTileMap().mapKeys { it.key + offset })
         return DefaultTileImage(
                 size = newSize,
-                tileset = tileset(),
+                tileset = currentTileset(),
                 tiles = tiles.toMap())
     }
 
@@ -234,7 +234,7 @@ interface TileImage
         }
         return DefaultTileImage(
                 size = size(),
-                tileset = tileset(),
+                tileset = currentTileset(),
                 tiles = tiles.toMap())
     }
 
@@ -254,7 +254,7 @@ interface TileImage
                 }
         return DefaultTileImage(
                 size = size,
-                tileset = tileset(),
+                tileset = currentTileset(),
                 tiles = tiles.toMap())
     }
 
@@ -284,7 +284,7 @@ interface TileImage
     fun toTileGraphic(): TileGraphics {
         val result = TileGraphicsBuilder.newBuilder()
                 .size(size())
-                .tileset(tileset())
+                .tileset(currentTileset())
         toTileMap().forEach { (pos, tile) ->
             result.tile(pos, tile)
         }

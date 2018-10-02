@@ -12,22 +12,22 @@ data class DefaultTextColor(private val red: Int,
 
     override fun generateCacheKey() = cacheKey
 
-    override fun getRed() = red
+    override fun red() = red
 
-    override fun getGreen() = green
+    override fun green() = green
 
-    override fun getBlue() = blue
+    override fun blue() = blue
 
-    override fun getAlpha() = alpha
+    override fun alpha() = alpha
 
     override fun tint(factor: Double): TileColor {
         require(factor in 0.0..1.0) {
             "The given percentage ($factor) is not between the required range (0 - 1)."
         }
-        var r = getRed()
-        var g = getGreen()
-        var b = getBlue()
-        val alpha = getAlpha()
+        var r = red()
+        var g = green()
+        var b = blue()
+        val alpha = alpha()
 
         val i = (1.0 / (1.0 - factor)).toInt()
         if (r == 0 && g == 0 && b == 0) {
@@ -47,10 +47,10 @@ data class DefaultTextColor(private val red: Int,
         require(factor in 0.0..1.0) {
             "The given percentage ($factor) is not between the required range (0 - 1)."
         }
-        return TileColor.create(Math.max((getRed() * factor).toInt(), 0),
-                Math.max((getGreen() * factor).toInt(), 0),
-                Math.max((getBlue() * factor).toInt(), 0),
-                getAlpha())
+        return TileColor.create(Math.max((red() * factor).toInt(), 0),
+                Math.max((green() * factor).toInt(), 0),
+                Math.max((blue() * factor).toInt(), 0),
+                alpha())
     }
 
     override fun invert(): TileColor {

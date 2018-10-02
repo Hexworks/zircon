@@ -109,10 +109,10 @@ data class DefaultCharacterTileString(private val textChars: List<CharacterTile>
                         }
                     }
 
-    override fun getTextCharacters() = textChars
+    override fun textCharacters() = textChars
 
     override fun plus(other: CharacterTileString) = DefaultCharacterTileString(
-            textChars = textChars.plus(other.getTextCharacters()),
+            textChars = textChars.plus(other.textCharacters()),
             textWrap = textWrap)
 
     private fun cursorIsNotAtBottomRightCorner(cursorHandler: DefaultCursorHandler) =

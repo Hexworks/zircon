@@ -15,7 +15,7 @@ public class CustomTile extends BaseTile {
     private StyleSet styleSet;
     private char character;
 
-    public CustomTile(StyleSet styleSet, char character) {
+    private CustomTile(StyleSet styleSet, char character) {
         this.styleSet = styleSet;
         this.character = character;
     }

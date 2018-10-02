@@ -1,8 +1,6 @@
 package org.hexworks.zircon.api.resource
 
-import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.util.Identifier
-import kotlin.reflect.KClass
 
 /**
  * This enum contains the metadata for the built-in CP437 tilesets.

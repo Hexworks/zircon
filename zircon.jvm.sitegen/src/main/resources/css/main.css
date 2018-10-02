@@ -1,3 +1,12 @@
+@font-face {
+    font-family: 'px437_vtech_biosregular';
+    src: url('/font/vtech-webfont.woff2') format('woff2'),
+    url('/font/vtech-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 body {
     background-color: beige;
 }
@@ -10,23 +19,8 @@ body {
 }
 
 .tile {
+    font-family: 'px437_vtech_biosregular', Windings, sans-serif;
     display: inline-block;
     width: 16px;
     height: 16px;
-}
-
-.cp437-0 {
-    background: url('http://localhost:63342/zircon/zircon.jvm.sitegen/build/site/tileset/tileset.png') 0 0;
-}
-
-.cp437-1 {
-    background: url('http://localhost:63342/zircon/zircon.jvm.sitegen/build/site/tileset/tileset.png') 16px 0;
-}
-
-.cp437-2 {
-    background: url('http://localhost:63342/zircon/zircon.jvm.sitegen/build/site/tileset/tileset.png') 32px 0;
-}
-
-.cp437-3 {
-    background: url('http://localhost:63342/zircon/zircon.jvm.sitegen/build/site/tileset/tileset.png') 48px 0;
 }

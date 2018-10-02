@@ -19,7 +19,7 @@ class InMemoryGameArea(private val size: Size3D,
 
     override fun size() = size
 
-    override fun getLayersPerBlock() = layersPerBlock
+    override fun layersPerBlock() = layersPerBlock
 
     override fun hasBlockAt(position: Position3D): Boolean {
         return blocks.containsKey(position)

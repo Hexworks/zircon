@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 import org.hexworks.zircon.api.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.resource.TilesetType
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.data.DefaultCharacterTile
 import org.hexworks.zircon.internal.data.DefaultImageTile
@@ -42,28 +41,29 @@ interface Tile : Drawable, Cacheable {
      */
     fun asGraphicTile() = Maybe.ofNullable(this as? GraphicTile)
 
-    fun isOpaque(): Boolean = getForegroundColor().isOpaque().and(
-            getBackgroundColor().isOpaque())
+    fun isOpaque(): Boolean = foregroundColor().isOpaque().and(
+            backgroundColor().isOpaque())
 
-    fun getForegroundColor(): TileColor = styleSet().foregroundColor()
+    fun foregroundColor(): TileColor = styleSet().foregroundColor()
 
-    fun getBackgroundColor(): TileColor = styleSet().backgroundColor()
+    fun backgroundColor(): TileColor = styleSet().backgroundColor()
 
-    fun getModifiers(): Set<Modifier> = styleSet().modifiers()
+    fun modifiers(): Set<Modifier> = styleSet().modifiers()
 
-    fun isUnderlined(): Boolean = getModifiers().contains(Underline)
+    fun isUnderlined(): Boolean = modifiers().contains(Underline)
 
-    fun isCrossedOut(): Boolean = getModifiers().contains(CrossedOut)
+    fun isCrossedOut(): Boolean = modifiers().contains(CrossedOut)
 
-    fun isBlinking(): Boolean = getModifiers().contains(Blink)
+    fun isBlinking(): Boolean = modifiers().contains(Blink)
 
-    fun isVerticalFlipped(): Boolean = getModifiers().contains(VerticalFlip)
+    fun isVerticalFlipped(): Boolean = modifiers().contains(VerticalFlip)
 
-    fun isHorizontalFlipped(): Boolean = getModifiers().contains(HorizontalFlip)
+    fun isHorizontalFlipped(): Boolean = modifiers().contains(HorizontalFlip)
 
-    fun hasBorder(): Boolean = getModifiers().any { it is Border }
+    fun hasBorder(): Boolean = modifiers().any { it is Border }
 
-    fun fetchBorderData(): Set<Border> = getModifiers()
+    fun fetchBorderData(): Set<Border> = modifiers()
+            .asSequence()
             .filter { it is Border }
             .map { it as Border }
             .toSet()
@@ -88,6 +88,8 @@ interface Tile : Drawable, Cacheable {
      * Returns a copy of this [Tile] with the specified style.
      */
     fun withStyle(style: StyleSet): Tile
+
+    fun withAddedModifier(modifier: Modifier): Tile = withModifiers(modifiers().plus(modifier))
 
     /**
      * Returns a copy of this [Tile] with the specified modifiers.

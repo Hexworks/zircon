@@ -75,17 +75,17 @@ public class GameAreaScrollingWithLayers {
         final Screen screen = Screens.createScreenFor(tileGrid);
 
         Panel actions = Components.panel()
-                .size(screen.size().withXLength(20))
+                .withSize(screen.size().withXLength(20))
                 .wrapWithBox(true)
-                .title("Actions")
-                .boxType(BoxType.TOP_BOTTOM_DOUBLE)
+                .withTitle("Actions")
+                .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build();
         Button wait = Components.button()
                 .text("Wait")
                 .build();
         Button sleep = Components.button()
                 .text("Sleep")
-                .position(Positions.defaultPosition().withRelativeY(1))
+                .withPosition(Positions.defaultPosition().withRelativeY(1))
                 .build();
         actions.addComponent(wait);
         actions.addComponent(sleep);
@@ -93,11 +93,11 @@ public class GameAreaScrollingWithLayers {
 
 
         final Panel gamePanel = Components.panel()
-                .size(screen.size().withXLength(40))
-                .position((Positions.defaultPosition()).relativeToRightOf(actions))
-                .title("Game area")
+                .withSize(screen.size().withXLength(40))
+                .withPosition((Positions.defaultPosition()).relativeToRightOf(actions))
+                .withTitle("Game area")
                 .wrapWithBox(true)
-                .boxType(BoxType.TOP_BOTTOM_DOUBLE)
+                .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build();
 
         final Size3D visibleGameAreaSize = Sizes.from2DTo3D(gamePanel.size()
@@ -122,7 +122,7 @@ public class GameAreaScrollingWithLayers {
         final DefaultGameComponent gameComponent = Components.gameComponent()
                 .gameArea(gameArea)
                 .visibleSize(visibleGameAreaSize)
-                .tileset(BuiltInCP437TilesetResource.PHOEBUS_16X16)
+                .withTileset(BuiltInCP437TilesetResource.PHOEBUS_16X16)
                 .build();
 
         screen.addComponent(gamePanel);
@@ -155,8 +155,8 @@ public class GameAreaScrollingWithLayers {
                         pos,
                         BlockBuilder.Companion.create()
                                 .layer(wall
-                                        .withBackgroundColor(wall.getBackgroundColor().darkenByPercent(currPercent))
-                                        .withForegroundColor(wall.getForegroundColor().darkenByPercent(currPercent)))
+                                        .withBackgroundColor(wall.backgroundColor().darkenByPercent(currPercent))
+                                        .withForegroundColor(wall.foregroundColor().darkenByPercent(currPercent)))
                                 .position(pos)
                                 .build());
             });
@@ -175,25 +175,25 @@ public class GameAreaScrollingWithLayers {
                 .offset(Positions.create(21, 1))
                 .build());
         screen.onInput((input) -> {
-            if (EXIT_CONDITIONS.contains(input.getInputType()) && !headless) {
+            if (EXIT_CONDITIONS.contains(input.inputType()) && !headless) {
                 System.exit(0);
             } else {
-                if (InputType.ArrowUp == input.getInputType()) {
+                if (InputType.ArrowUp == input.inputType()) {
                     gameComponent.scrollOneBackward();
                 }
-                if (InputType.ArrowDown == input.getInputType()) {
+                if (InputType.ArrowDown == input.inputType()) {
                     gameComponent.scrollOneForward();
                 }
-                if (InputType.ArrowLeft == input.getInputType()) {
+                if (InputType.ArrowLeft == input.inputType()) {
                     gameComponent.scrollOneLeft();
                 }
-                if (InputType.ArrowRight == input.getInputType()) {
+                if (InputType.ArrowRight == input.inputType()) {
                     gameComponent.scrollOneRight();
                 }
-                if (InputType.PageUp == input.getInputType()) {
+                if (InputType.PageUp == input.inputType()) {
                     gameComponent.scrollOneUp();
                 }
-                if (InputType.PageDown == input.getInputType()) {
+                if (InputType.PageDown == input.inputType()) {
                     gameComponent.scrollOneDown();
                 }
                 screen.removeLayer(coordinates.get());

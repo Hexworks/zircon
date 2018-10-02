@@ -13,7 +13,7 @@ class ButtonSideDecorationRenderer : ComponentDecorationRenderer {
     override fun occupiedSize(): Size = Size.create(2, 0)
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
-        tileGraphics.applyStyle(context.component.componentStyleSet().getCurrentStyle())
+        tileGraphics.applyStyle(context.component.componentStyleSet().currentStyle())
         tileGraphics.putText("[", Position.defaultPosition())
         tileGraphics.putText("]", Position.create(tileGraphics.size().xLength - 1, 0))
     }

@@ -54,7 +54,7 @@ class DefaultTextArea constructor(
         render()
     }
 
-    override fun getText() = textBuffer.getText() // TODO: line sep?
+    override fun text() = textBuffer.getText() // TODO: line sep?
 
     override fun textBuffer() = textBuffer
 
@@ -143,7 +143,7 @@ class DefaultTextArea constructor(
 
     private fun enableTyping() {
         typingEnabled = true
-        EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition().withRelative(position())))
+        EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition().withRelative(position() + contentPosition())))
     }
 
     override fun keyStroked(keyStroke: KeyStroke) {

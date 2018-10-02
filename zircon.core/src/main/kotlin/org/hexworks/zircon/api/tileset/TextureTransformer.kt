@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.data.Tile
  * Transforms a tile texture. A [TileTexture] is a part of a
  * tileset sprite sheet or other tileset source which represents a [Tile].
  */
-interface TileTextureTransformer<T> {
+interface TextureTransformer<T> {
 
     /**
      * Transforms a tileset texture and returns the transformed version.

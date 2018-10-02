@@ -6,13 +6,13 @@ import org.junit.Before
 import org.junit.Test
 import java.awt.image.BufferedImage
 
-class NoOpTransformerTest {
+class Java2DNoOpTransformerTest {
 
-    lateinit var target: NoOpTransformer
+    lateinit var target: Java2DNoOpTransformer
 
     @Before
     fun setUp() {
-        target = NoOpTransformer()
+        target = Java2DNoOpTransformer()
     }
 
     @Test

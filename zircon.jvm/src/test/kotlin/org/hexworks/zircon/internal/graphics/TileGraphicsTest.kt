@@ -30,12 +30,7 @@ class TileGraphicsTest {
 
     @Test
     fun shouldReportProperBounds() {
-        assertThat(target.bounds()).isEqualTo(Bounds.create(size = SIZE_OF_3X3))
-    }
-
-    @Test
-    fun shouldReportProperPosition() {
-        assertThat(target.position()).isEqualTo(Position.defaultPosition())
+        assertThat(target.rect()).isEqualTo(Rect.create(size = SIZE_OF_3X3))
     }
 
     @Test
@@ -129,13 +124,13 @@ class TileGraphicsTest {
     fun shouldProperlyCreateSnapshot() {
         target.setTileAt(FILLED_POS, FILLER)
 
-        assertThat(target.snapshot().toMap()).isEqualTo(mapOf(FILLED_POS to FILLER))
+        assertThat(target.createSnapshot().toMap()).isEqualTo(mapOf(FILLED_POS to FILLER))
     }
 
     @Test
     fun shouldNotChangeSnapshotAfterCreation() {
 
-        val result = target.snapshot()
+        val result = target.createSnapshot()
 
         target.setTileAt(FILLED_POS, FILLER)
 
@@ -200,7 +195,7 @@ class TileGraphicsTest {
 
         target.useTileset(tileset)
 
-        assertThat(target.tileset()).isEqualTo(tileset)
+        assertThat(target.currentTileset()).isEqualTo(tileset)
     }
 
     @Test
@@ -210,7 +205,7 @@ class TileGraphicsTest {
                 .withBackgroundColor(ANSITileColor.YELLOW)
         target.setStyleFrom(style)
 
-        assertThat(target.styleSet()).isEqualTo(style)
+        assertThat(target.toStyleSet()).isEqualTo(style)
     }
 
     @Test
@@ -219,7 +214,7 @@ class TileGraphicsTest {
                 .withForegroundColor(ANSITileColor.GREEN)
                 .withBackgroundColor(ANSITileColor.YELLOW)
         target.setStyleFrom(style)
-        assertThat(target.styleSet()).isEqualTo(style)
+        assertThat(target.toStyleSet()).isEqualTo(style)
     }
 
     @Test
@@ -305,8 +300,8 @@ class TileGraphicsTest {
         val newStyle = StyleSet.defaultStyle()
                 .withForegroundColor(ANSITileColor.GREEN)
                 .withBackgroundColor(ANSITileColor.YELLOW)
-        
-        target.applyStyle(newStyle, Bounds.create(Position.offset1x1(), Size.one()))
+
+        target.applyStyle(newStyle, Rect.create(Position.offset1x1(), Size.one()))
 
         assertThat(target.fetchCells().map { it.tile.styleSet() }).containsExactly(
                 oldStyle, oldStyle, oldStyle,
@@ -323,7 +318,7 @@ class TileGraphicsTest {
 
         target.applyStyle(
                 styleSet = newStyle,
-                bounds = Bounds.create(Position.offset1x1(), Size.one()),
+                rect = Rect.create(Position.offset1x1(), Size.one()),
                 applyToEmptyCells = false)
 
         assertThat(target.fetchCells().map { it.tile.styleSet() }).containsExactly(
@@ -348,7 +343,7 @@ class TileGraphicsTest {
 
         target.applyStyle(
                 styleSet = styleToApply,
-                bounds = Bounds.create(Position.offset1x1(), Size.create(2, 1)),
+                rect = Rect.create(Position.offset1x1(), Size.create(2, 1)),
                 keepModifiers = true)
 
         assertThat(target.fetchCells().map { it.tile.styleSet() }).containsExactly(

@@ -16,7 +16,7 @@ class DefaultTilesetOverrideTest {
 
     @Test
     fun shouldReturnInitialFontInitially() {
-        assertThat(target.tileset().id)
+        assertThat(target.currentTileset().id)
                 .isEqualTo(INITIAL_FONT.id)
     }
 
@@ -26,7 +26,7 @@ class DefaultTilesetOverrideTest {
 
         target.useTileset(expected)
 
-        assertThat(target.tileset().id)
+        assertThat(target.currentTileset().id)
                 .isEqualTo(expected.id)
     }
 

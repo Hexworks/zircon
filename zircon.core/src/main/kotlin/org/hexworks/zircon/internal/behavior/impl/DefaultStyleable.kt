@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.modifier.Modifier
 
 data class DefaultStyleable(private var styleSet: StyleSet) : Styleable {
 
-    override fun styleSet() = styleSet
+    override fun toStyleSet() = styleSet
 
     override fun foregroundColor() = styleSet.foregroundColor()
 

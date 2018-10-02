@@ -1,15 +1,15 @@
 package org.hexworks.zircon.internal.tileset.transformer
 
 import org.hexworks.zircon.api.tileset.TileTexture
-import org.hexworks.zircon.api.tileset.TileTextureTransformer
+import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.hexworks.zircon.api.data.Tile
 import java.awt.image.BufferedImage
 
-class Java2DTileTextureCloner : TileTextureTransformer<BufferedImage> {
+class Java2DTextureCloner : TextureTransformer<BufferedImage> {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
-        val txt = texture.getTexture()
+        val txt = texture.texture()
         return DefaultTileTexture(
                 width = txt.width,
                 height = txt.height,

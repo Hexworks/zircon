@@ -136,7 +136,7 @@ class SubTileGraphicsTest {
     fun shouldProperlyCreateSubSubTileGraphics() {
         val subFiller = FILLER.withCharacter('x')
 
-        val result = target.toSubTileGraphics(Bounds.create(Position.offset1x1(), Size.create(2, 1)))
+        val result = target.toSubTileGraphics(Rect.create(Position.offset1x1(), Size.create(2, 1)))
         result.fill(subFiller)
 
         val chars = backend.fetchCells().map { it.tile.asCharacterTile().get().character }
@@ -158,8 +158,8 @@ class SubTileGraphicsTest {
         backend.useTileset(backendTileset)
         target.useTileset(subTileset)
 
-        assertThat(backend.tileset()).isEqualTo(backendTileset)
-        assertThat(target.tileset()).isEqualTo(subTileset)
+        assertThat(backend.currentTileset()).isEqualTo(backendTileset)
+        assertThat(target.currentTileset()).isEqualTo(subTileset)
     }
 
     @Test
@@ -167,8 +167,8 @@ class SubTileGraphicsTest {
         backend.setStyleFrom(BACKEND_STYLE)
         target.setStyleFrom(TARGET_STYLE)
 
-        assertThat(backend.styleSet()).isEqualTo(BACKEND_STYLE)
-        assertThat(target.styleSet()).isEqualTo(TARGET_STYLE)
+        assertThat(backend.toStyleSet()).isEqualTo(BACKEND_STYLE)
+        assertThat(target.toStyleSet()).isEqualTo(TARGET_STYLE)
     }
 
     companion object {
@@ -178,7 +178,7 @@ class SubTileGraphicsTest {
         private val BACKEND_SIZE = Size.create(5, 5)
         private val FILLER = Tiles.defaultTile().withCharacter('_')
 
-        val SUB_GRAPHICS_BOUNDS = Bounds.create(Position.offset1x1(), Size.create(3, 3))
+        val SUB_GRAPHICS_BOUNDS = Rect.create(Position.offset1x1(), Size.create(3, 3))
     }
 
 }

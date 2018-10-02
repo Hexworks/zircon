@@ -9,7 +9,7 @@ class ComponentsLayerable(
         private val components: DefaultContainer)
     : Layerable by layers {
 
-    override fun getLayers(): List<Layer> {
-        return components.transformToLayers().plus(layers.getLayers())
+    override fun layers(): List<Layer> {
+        return components.transformToLayers().plus(layers.layers())
     }
 }

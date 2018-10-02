@@ -13,9 +13,9 @@ import org.hexworks.zircon.api.shape.LineFactory
 
 class BorderDecorationRenderer(private val border: Border) : ComponentDecorationRenderer {
 
-    override fun occupiedSize() = Size.create(0, 0)
-
     override fun offset() = Position.defaultPosition()
+
+    override fun occupiedSize() = Size.create(0, 0)
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
         val drawTop = border.borderPositions.contains(BorderPosition.TOP)

@@ -24,28 +24,28 @@ abstract class BaseTile : Tile {
      */
     override fun asGraphicTile() = Maybe.ofNullable(this as? GraphicTile)
 
-    override fun isOpaque(): Boolean = getForegroundColor().isOpaque().and(
-            getBackgroundColor().isOpaque())
+    override fun isOpaque(): Boolean = foregroundColor().isOpaque().and(
+            backgroundColor().isOpaque())
 
-    override fun getForegroundColor(): TileColor = styleSet().foregroundColor()
+    override fun foregroundColor(): TileColor = styleSet().foregroundColor()
 
-    override fun getBackgroundColor(): TileColor = styleSet().backgroundColor()
+    override fun backgroundColor(): TileColor = styleSet().backgroundColor()
 
-    override fun getModifiers(): Set<Modifier> = styleSet().modifiers()
+    override fun modifiers(): Set<Modifier> = styleSet().modifiers()
 
-    override fun isUnderlined(): Boolean = getModifiers().contains(Underline)
+    override fun isUnderlined(): Boolean = modifiers().contains(Underline)
 
-    override fun isCrossedOut(): Boolean = getModifiers().contains(CrossedOut)
+    override fun isCrossedOut(): Boolean = modifiers().contains(CrossedOut)
 
-    override fun isBlinking(): Boolean = getModifiers().contains(Blink)
+    override fun isBlinking(): Boolean = modifiers().contains(Blink)
 
-    override fun isVerticalFlipped(): Boolean = getModifiers().contains(VerticalFlip)
+    override fun isVerticalFlipped(): Boolean = modifiers().contains(VerticalFlip)
 
-    override fun isHorizontalFlipped(): Boolean = getModifiers().contains(HorizontalFlip)
+    override fun isHorizontalFlipped(): Boolean = modifiers().contains(HorizontalFlip)
 
-    override fun hasBorder(): Boolean = getModifiers().any { it is Border }
+    override fun hasBorder(): Boolean = modifiers().any { it is Border }
 
-    override fun fetchBorderData(): Set<Border> = getModifiers()
+    override fun fetchBorderData(): Set<Border> = modifiers()
             .filter { it is Border }
             .map { it as Border }
             .toSet()

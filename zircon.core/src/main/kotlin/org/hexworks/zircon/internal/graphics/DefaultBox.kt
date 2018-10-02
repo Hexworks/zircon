@@ -36,7 +36,7 @@ class DefaultBox(
                 toPoint = Position.create(size.xLength - 3, 0))
                 .toTileGraphics(
                         tile = horizontalChar,
-                        tileset = backend.tileset())
+                        tileset = backend.currentTileset())
         val verticalLine = LineFactory.buildLine(
                 fromPoint = Position.create(0, 0),
                 toPoint = Position.create(0, size.yLength - 3))

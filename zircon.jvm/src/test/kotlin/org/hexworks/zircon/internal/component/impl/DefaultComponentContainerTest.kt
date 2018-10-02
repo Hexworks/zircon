@@ -55,7 +55,7 @@ class DefaultComponentContainerTest {
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotLetToAddAComponentWhichIsBiggerThanTheContainer() {
         target.addComponent(PanelBuilder.newBuilder()
-                .size(Size.create(999, 999))
+                .withSize(Size.create(999, 999))
                 .build())
     }
 
@@ -161,11 +161,11 @@ class DefaultComponentContainerTest {
         val button = createButton()
         target.addComponent(button)
 
-        assertThat(button.componentStyleSet().getCurrentStyle()).isNotEqualTo(FOCUSED_STYLE)
+        assertThat(button.componentStyleSet().currentStyle()).isNotEqualTo(FOCUSED_STYLE)
 
         EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
 
-        assertThat(button.componentStyleSet().getCurrentStyle()).isEqualTo(FOCUSED_STYLE)
+        assertThat(button.componentStyleSet().currentStyle()).isEqualTo(FOCUSED_STYLE)
     }
 
     @Test
@@ -176,7 +176,7 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
         val other = ButtonBuilder.newBuilder()
                 .text(BUTTON_TEXT)
-                .position(Position.create(0, 1)
+                .withPosition(Position.create(0, 1)
                         .relativeToBottomOf(button))
                 .build()
         target.addComponent(other)
@@ -184,12 +184,12 @@ class DefaultComponentContainerTest {
         EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
         EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
 
-        assertThat(button.componentStyleSet().getCurrentStyle()).isEqualTo(DEFAULT_STYLE)
+        assertThat(button.componentStyleSet().currentStyle()).isEqualTo(DEFAULT_STYLE)
 
         EventBus.broadcast(ZirconEvent.Input(KeyStroke(shiftDown = true, type = InputType.ReverseTab)))
 
 
-        assertThat(button.componentStyleSet().getCurrentStyle()).isEqualTo(FOCUSED_STYLE)
+        assertThat(button.componentStyleSet().currentStyle()).isEqualTo(FOCUSED_STYLE)
     }
 
     @Test
@@ -211,9 +211,9 @@ class DefaultComponentContainerTest {
     }
 
     private fun createButton() = ButtonBuilder.newBuilder()
-            .position(BUTTON_POSITION)
+            .withPosition(BUTTON_POSITION)
             .text(BUTTON_TEXT)
-            .componentStyleSet(STYLES)
+            .withComponentStyleSet(STYLES)
             .build()
 
     companion object {

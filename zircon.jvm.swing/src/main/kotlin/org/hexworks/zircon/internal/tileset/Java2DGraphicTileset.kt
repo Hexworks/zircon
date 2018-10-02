@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
-import org.hexworks.zircon.internal.tileset.impl.GraphicTileTextureMetadata
+import org.hexworks.zircon.internal.tileset.impl.GraphicTextureMetadata
 import org.hexworks.zircon.internal.util.rex.unZipIt
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
@@ -27,7 +27,7 @@ class Java2DGraphicTileset(private val resource: TilesetResource)
     override val id: Identifier = resource.id
     override val targetType = Graphics2D::class
 
-    private val metadata: Map<String, GraphicTileTextureMetadata>
+    private val metadata: Map<String, GraphicTextureMetadata>
     private val source: BufferedImage
 
     init {
@@ -61,7 +61,7 @@ class Java2DGraphicTileset(private val resource: TilesetResource)
             }
             tileData.x = i.rem(imageData.tilesPerRow)
             tileData.y = i.div(imageData.tilesPerRow)
-            tileData.name to GraphicTileTextureMetadata(
+            tileData.name to GraphicTextureMetadata(
                     name = tileData.name,
                     tags = tileData.tags,
                     x = tileData.x,
@@ -83,7 +83,7 @@ class Java2DGraphicTileset(private val resource: TilesetResource)
         val texture = fetchTextureForTile(tile)
         val x = position.x * width()
         val y = position.y * height()
-        surface.drawImage(texture.getTexture(), x, y, null)
+        surface.drawImage(texture.texture(), x, y, null)
     }
 
 

@@ -15,7 +15,7 @@ interface RadioButtonGroup : Component, Scrollable {
     /**
      * Returns the currently selected item's key (if any).
      */
-    fun getSelectedOption(): Maybe<String>
+    fun selectedOption(): Maybe<String>
 
     /**
      * Adds a callback to this [RadioButtonGroup] which will be called
@@ -29,7 +29,7 @@ interface RadioButtonGroup : Component, Scrollable {
     fun clearSelection()
 
     interface Selection {
-        fun getKey(): String
-        fun getValue(): String
+        fun key(): String
+        fun value(): String
     }
 }

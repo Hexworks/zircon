@@ -14,7 +14,7 @@ interface ComponentStyleSet {
     /**
      * Returns the style which is currently applied.
      */
-    fun getCurrentStyle(): StyleSet
+    fun currentStyle(): StyleSet
 
     /**
      * Returns the [StyleSet] for the given `state`.
