@@ -23,7 +23,7 @@ class ShadowDecorationRenderer(shadowChar: Char = DEFAULT_SHADOW_CHAR) : Compone
     override fun occupiedSize(): Size = Size.create(1, 1)
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
-        val graphicsSize = tileGraphics.size()
+        val graphicsSize = tileGraphics.size
         LineFactory.buildLine(
                 fromPoint = Position.create(1, 0),
                 toPoint = Position.create(graphicsSize.xLength - 1, 0))

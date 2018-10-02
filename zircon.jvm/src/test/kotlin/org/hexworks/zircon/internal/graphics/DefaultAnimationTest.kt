@@ -20,21 +20,21 @@ class DefaultAnimationTest {
         val builder = AnimationResource.loadAnimationFromStream(
                 zipStream = this.javaClass.getResourceAsStream("/animations/skull.zap"),
                 tileset = BuiltInCP437TilesetResource.AESOMATICA_16X16)
-        (0 until EXPECTED_LENGTH).forEach {
+        (0 until EXPECTED_LENGTH).forEach { _ ->
             builder.addPosition(Position.defaultPosition())
         }
         val result = builder.build()
-        assertThat(result.getTotalFrameCount()).isEqualTo(EXPECTED_LENGTH)
-        assertThat(result.getFrameCount()).isEqualTo(EXPECTED_FRAME_COUNT)
-        assertThat(result.getTick()).isEqualTo(EXPECTED_TICK)
-        assertThat(result.getLoopCount()).isEqualTo(EXPECTED_LOOP_COUNT)
+        assertThat(result.totalFrameCount).isEqualTo(EXPECTED_LENGTH)
+        assertThat(result.uniqueFrameCount).isEqualTo(EXPECTED_FRAME_COUNT)
+        assertThat(result.tick).isEqualTo(EXPECTED_TICK)
+        assertThat(result.loopCount).isEqualTo(EXPECTED_LOOP_COUNT)
     }
 
     companion object {
-        val EXPECTED_FRAME_COUNT = 58
-        val EXPECTED_LENGTH = 90
-        val EXPECTED_TICK = 66L
-        val EXPECTED_LOOP_COUNT = 1
+        const val EXPECTED_FRAME_COUNT = 58
+        const val EXPECTED_LENGTH = 90
+        const val EXPECTED_TICK = 66L
+        const val EXPECTED_LOOP_COUNT = 1
 
     }
 }

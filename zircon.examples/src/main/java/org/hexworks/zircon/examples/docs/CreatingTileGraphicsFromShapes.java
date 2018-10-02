@@ -1,13 +1,6 @@
 package org.hexworks.zircon.examples.docs;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Shapes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.TileColors;
-import org.hexworks.zircon.api.DrawSurfaces;
-import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.color.ANSITileColor;
 import org.hexworks.zircon.api.graphics.Symbols;
@@ -29,7 +22,7 @@ public class CreatingTileGraphicsFromShapes {
                 config);
 
         final TileGraphics background = DrawSurfaces.tileGraphicsBuilder()
-                .size(tileGrid.size()) // you can fetch the size of a TileGrid like this
+                .size(tileGrid.getSize()) // you can fetch the size of a TileGrid like this
                 .build()
                 .fill(Tiles.newBuilder()
                         .character(Symbols.BULLET)
@@ -39,7 +32,7 @@ public class CreatingTileGraphicsFromShapes {
 
         final TileGraphics rectangle = Shapes.buildRectangle(
                 Positions.defaultPosition(),
-                tileGrid.size())
+                tileGrid.getSize())
                 .toTileGraphics(Tiles.newBuilder()
                                 .character(Symbols.BLOCK_DENSE)
                                 .backgroundColor(TileColors.transparent())

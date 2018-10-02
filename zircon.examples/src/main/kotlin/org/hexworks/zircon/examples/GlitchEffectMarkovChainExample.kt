@@ -43,7 +43,7 @@ object GlitchEffectMarkovChainExample {
 
         val defaultGlow = Glow()
 
-        tileGrid.size().fetchPositions().forEach { _ ->
+        tileGrid.size.fetchPositions().forEach { _ ->
 
             val tile = Tile.empty()
                     .withForegroundColor(normal)

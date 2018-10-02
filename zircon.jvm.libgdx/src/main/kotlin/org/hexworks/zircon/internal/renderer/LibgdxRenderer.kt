@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import org.hexworks.zircon.api.data.PixelPosition
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -45,26 +44,26 @@ class LibgdxRenderer(private val grid: TileGrid,
             batch.begin()
 
             renderTiles(
-                    tiles = grid.createSnapshot(),
+                    snapshot = grid.createSnapshot(),
                     tileset = grid.currentTileset(),
                     offset = PixelPosition(0, 0),
                     batch = batch)
             grid.layers().forEach { layer ->
                 renderTiles(
-                        tiles = layer.createSnapshot(),
+                        snapshot = layer.createSnapshot(),
                         tileset = grid.currentTileset(),
-                        offset = layer.position().toPixelPosition(grid.currentTileset()),
+                        offset = layer.position.toPixelPosition(grid.currentTileset()),
                         batch = batch)
             }
             batch.end()
         }
     }
 
-    private fun renderTiles(tiles: Map<Position, Tile>,
+    private fun renderTiles(snapshot: Snapshot,
                             tileset: TilesetResource,
                             offset: PixelPosition,
                             batch: SpriteBatch) {
-        tiles.forEach { (pos, tile) ->
+        snapshot.cells.forEach { (pos, tile) ->
             val actualTileset = tilesetLoader.loadTilesetFrom(tileset)
 
             actualTileset.drawTile(tile, batch, pos)

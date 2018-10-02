@@ -21,14 +21,14 @@ data class TextAreaBuilder(
         fillMissingValues()
         val size = decorationRenderers().asSequence()
                 .map { it.occupiedSize() }
-                .fold(size(), Size::plus)
+                .fold(size, Size::plus)
         return DefaultTextArea(
                 text = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultTextAreaRenderer()),
                 size = size,
-                position = position(),
+                position = position,
                 componentStyleSet = componentStyleSet(),
                 tileset = tileset())
     }

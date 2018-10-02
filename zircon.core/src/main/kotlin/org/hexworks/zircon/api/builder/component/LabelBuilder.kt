@@ -25,11 +25,12 @@ data class LabelBuilder(
             "A Label can't be blank!"
         }
         fillMissingValues()
-        val size = if (size().isUnknown()) {
-            decorationRenderers().map { it.occupiedSize() }
+        val finalSize = if (size.isUnknown()) {
+            decorationRenderers().asSequence()
+                    .map { it.occupiedSize() }
                     .fold(Size.create(text.length, 1), Size::plus)
         } else {
-            size()
+            size
         }
         val fixedText = text
                 .split(SystemUtils.getLineSeparator())
@@ -41,8 +42,8 @@ data class LabelBuilder(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultLabelRenderer()),
-                size = size,
-                position = position(),
+                size = finalSize,
+                position = position,
                 componentStyleSet = componentStyleSet(),
                 tileset = tileset())
     }

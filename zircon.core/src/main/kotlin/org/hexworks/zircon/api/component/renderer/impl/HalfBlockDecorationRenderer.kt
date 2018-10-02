@@ -18,7 +18,7 @@ class HalfBlockDecorationRenderer : ComponentDecorationRenderer {
     override fun occupiedSize() = Size.create(2, 2)
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
-        val size = tileGraphics.size()
+        val size = tileGraphics.size
         val style = context.component.componentStyleSet().currentStyle()
         val topLeft = Position.defaultPosition()
         val topRight = size.fetchTopRightPosition()

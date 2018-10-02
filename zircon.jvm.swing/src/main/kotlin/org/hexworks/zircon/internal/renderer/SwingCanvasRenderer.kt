@@ -3,12 +3,13 @@ package org.hexworks.zircon.internal.renderer
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.internal.grid.TerminalKeyListener
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.grid.InternalTileGrid
+import org.hexworks.zircon.internal.grid.TerminalKeyListener
 import org.hexworks.zircon.internal.grid.TerminalMouseListener
 import org.hexworks.zircon.internal.tileset.SwingTilesetLoader
 import org.hexworks.zircon.internal.tileset.transformer.toAWTColor
@@ -106,12 +107,12 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         tileGrid.updateAnimations(now, tileGrid)
         renderTiles(
                 graphics = gc,
-                tiles = snapshot,
+                snapshot = snapshot,
                 tileset = tilesetLoader.loadTilesetFrom(tileGrid.currentTileset()))
         tileGrid.layers().forEach { layer ->
             renderTiles(
                     graphics = gc,
-                    tiles = layer.createSnapshot(),
+                    snapshot = layer.createSnapshot(),
                     tileset = tilesetLoader.loadTilesetFrom(layer.currentTileset()))
         }
         if (shouldDrawCursor()) {
@@ -159,9 +160,9 @@ class SwingCanvasRenderer(private val canvas: Canvas,
     }
 
     private fun renderTiles(graphics: Graphics2D,
-                            tiles: Map<Position, Tile>,
+                            snapshot: Snapshot,
                             tileset: Tileset<Graphics2D>) {
-        tiles.forEach { (pos, tile) ->
+        snapshot.cells.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
                 val actualTile = if (tile.isBlinking() && blinkOn) {
                     tile.withBackgroundColor(tile.foregroundColor())

@@ -1,6 +1,9 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.DrawSurfaces
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.VirtualApplications
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.GridPosition
@@ -44,7 +47,7 @@ fun main(args: Array<String>) {
         }
 
         val layer = DefaultLayer(
-                position = Position.create(
+                currentPosition = Position.create(
                         x = random.nextInt(terminalWidth - layerWidth),
                         y = random.nextInt(terminalHeight - layerHeight)),
                 backend = imageLayer)
@@ -79,8 +82,8 @@ fun main(args: Array<String>) {
 
 
 private fun fillGrid(tileGrid: TileGrid, tile: Tile) {
-    (0..tileGrid.size().yLength).forEach { y ->
-        (0..tileGrid.size().xLength).forEach { x ->
+    (0..tileGrid.size.yLength).forEach { y ->
+        (0..tileGrid.size.xLength).forEach { x ->
             tileGrid.setTileAt(GridPosition(x, y), tile)
         }
     }

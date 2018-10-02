@@ -42,7 +42,7 @@ interface TileImage
      * of this [TileImage].
      */
     fun fetchCells(): Iterable<Cell> {
-        return fetchCellsBy(Position.defaultPosition(), size())
+        return fetchCellsBy(Position.defaultPosition(), size)
     }
 
     /**
@@ -64,7 +64,7 @@ interface TileImage
      * nothing will change.
      */
     fun withTileAt(position: Position, tile: Tile): TileImage {
-        if (size().containsPosition(position)) {
+        if (size.containsPosition(position)) {
             val tiles = toTileMap()
             val originalTile = getTileAt(position)
             if (originalTile.isPresent && originalTile.get() == tile) {
@@ -72,7 +72,7 @@ interface TileImage
             }
             tiles[position] = tile
             return DefaultTileImage(
-                    size = size(),
+                    size = size,
                     tileset = currentTileset(),
                     tiles = tiles.toMap())
         } else {
@@ -106,7 +106,7 @@ interface TileImage
                     tiles[pos] = tile
                 }
         if (filler != Tile.empty()) {
-            newSize.fetchPositions().subtract(size().fetchPositions()).forEach {
+            newSize.fetchPositions().subtract(size.fetchPositions()).forEach {
                 tiles[it] = filler
             }
         }
@@ -124,11 +124,11 @@ interface TileImage
             return this
         }
         val tiles = toTileMap()
-        size().fetchPositions().subtract(fetchFilledPositions()).forEach { pos ->
+        size.fetchPositions().subtract(fetchFilledPositions()).forEach { pos ->
             tiles[pos] = filler
         }
         return DefaultTileImage(
-                size = size(),
+                size = size,
                 tileset = currentTileset(),
                 tiles = tiles.toMap())
     }
@@ -146,7 +146,7 @@ interface TileImage
                     .build()
         }
         return DefaultTileImage(
-                size = size(),
+                size = size,
                 tileset = currentTileset(),
                 tiles = tiles.toMap())
     }
@@ -164,7 +164,7 @@ interface TileImage
      */
     fun withStyle(styleSet: StyleSet,
                   offset: Position = Position.defaultPosition(),
-                  size: Size = size(),
+                  size: Size = this.size,
                   keepModifiers: Boolean = false): TileImage {
         val tiles = toTileMap()
         size.fetchPositions().forEach { pos ->
@@ -181,7 +181,7 @@ interface TileImage
             }
         }
         return DefaultTileImage(
-                size = size(),
+                size = size,
                 tileset = currentTileset(),
                 tiles = tiles.toMap())
     }
@@ -191,7 +191,7 @@ interface TileImage
      */
     fun withTileset(tileset: TilesetResource): TileImage {
         return DefaultTileImage(
-                size = size(),
+                size = size,
                 tileset = tileset,
                 tiles = toTileMap().toMap())
     }
@@ -211,8 +211,8 @@ interface TileImage
      * @param offset The position on the target image where the `tileImage`'s top left corner will be
      */
     fun combineWith(tileImage: TileImage, offset: Position): TileImage {
-        val columns = Math.max(size().xLength, offset.x + tileImage.size().xLength)
-        val rows = Math.max(size().yLength, offset.y + tileImage.size().yLength)
+        val columns = Math.max(width, offset.x + tileImage.width)
+        val rows = Math.max(height, offset.y + tileImage.height)
         val newSize = Size.create(columns, rows)
 
         val tiles = toTileMap()
@@ -233,7 +233,7 @@ interface TileImage
             tiles[pos] = transformer.transform(tile)
         }
         return DefaultTileImage(
-                size = size(),
+                size = size,
                 tileset = currentTileset(),
                 tiles = tiles.toMap())
     }
@@ -248,7 +248,7 @@ interface TileImage
         val tiles = mutableMapOf<Position, Tile>()
         size.fetchPositions()
                 .map { it + offset }
-                .intersect(size().fetchPositions())
+                .intersect(this.size.fetchPositions())
                 .forEach {
                     tiles[it - offset] = getTileAt(it).get()
                 }
@@ -275,7 +275,7 @@ interface TileImage
     /**
      * Returns a copy of this [TileImage] with the exact same content.
      */
-    fun toTileImage(): TileImage = toSubImage(Position.defaultPosition(), size())
+    fun toTileImage(): TileImage = toSubImage(Position.defaultPosition(), size)
 
     /**
      * Returns a copy of this [TileImage] with the exact same content as a
@@ -283,7 +283,7 @@ interface TileImage
      */
     fun toTileGraphic(): TileGraphics {
         val result = TileGraphicsBuilder.newBuilder()
-                .size(size())
+                .size(size)
                 .tileset(currentTileset())
         toTileMap().forEach { (pos, tile) ->
             result.tile(pos, tile)

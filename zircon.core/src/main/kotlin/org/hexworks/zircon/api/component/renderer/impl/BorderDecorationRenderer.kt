@@ -22,7 +22,7 @@ class BorderDecorationRenderer(private val border: Border) : ComponentDecoration
         val drawBottom = border.borderPositions.contains(BorderPosition.BOTTOM)
         val drawLeft = border.borderPositions.contains(BorderPosition.LEFT)
         val drawRight = border.borderPositions.contains(BorderPosition.RIGHT)
-        val size = tileGraphics.size()
+        val size = tileGraphics.size
 
         val topLeftBorders = mutableSetOf<BorderPosition>()
         val topRightBorders = mutableSetOf<BorderPosition>()

@@ -12,7 +12,6 @@ import org.hexworks.zircon.internal.component.renderer.DefaultTextBoxRenderer
 
 data class TextBoxBuilder(
         private var text: String = "",
-        private var size: Size = Size.one(),
         private var contentWidth: Int = 0,
         private var nextPosition: Position = Position.defaultPosition(),
         private var currentSize: Size = Size.one(),
@@ -94,7 +93,7 @@ data class TextBoxBuilder(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultTextBoxRenderer()),
                 size = currentSize + decorationSize,
-                position = position(),
+                position = position,
                 componentStyleSet = componentStyleSet(),
                 tileset = tileset()).also { textBox ->
             components.forEach {

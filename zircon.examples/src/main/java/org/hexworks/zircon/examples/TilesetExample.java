@@ -1,10 +1,6 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.TileColors;
-import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder;
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder;
@@ -86,7 +82,7 @@ public class TilesetExample {
         final int ansiCount = ANSITileColor.values().length;
 
         final Layer overlay = new LayerBuilder()
-                .size(tileGrid.size())
+                .size(tileGrid.getSize())
                 .build()
                 .fill(Tiles.empty()
                         .withBackgroundColor(TileColors.create(0, 0, 0, 50)));

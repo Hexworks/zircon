@@ -25,10 +25,10 @@ class LayerBuilderTest {
                 .build()
                 .fill(FILLER)
 
-        assertThat(result.size())
+        assertThat(result.size)
                 .isEqualTo(SIZE)
 
-        assertThat(result.position())
+        assertThat(result.position)
                 .isEqualTo(OFFSET)
 
         assertThat(result.getTileAt(OFFSET).get())

@@ -18,13 +18,13 @@ interface Movable : Boundable {
      */
     fun moveTo(position: Position): Boolean
 
-    fun moveBy(position: Position) = moveTo(position() + position)
+    fun moveBy(position: Position) = moveTo(this.position + position)
 
-    fun moveRightBy(delta: Int) = moveTo(position().withRelativeX(delta))
+    fun moveRightBy(delta: Int) = moveTo(position.withRelativeX(delta))
 
-    fun moveLeftBy(delta: Int) = moveTo(position().withRelativeX(-delta))
+    fun moveLeftBy(delta: Int) = moveTo(position.withRelativeX(-delta))
 
-    fun moveUpBy(delta: Int) = moveTo(position().withRelativeY(-delta))
+    fun moveUpBy(delta: Int) = moveTo(position.withRelativeY(-delta))
 
-    fun moveDownBy(delta: Int) = moveTo(position().withRelativeY(delta))
+    fun moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
 }

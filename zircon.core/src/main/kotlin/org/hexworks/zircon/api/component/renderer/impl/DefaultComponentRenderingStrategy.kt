@@ -12,7 +12,7 @@ class DefaultComponentRenderingStrategy<T : Component>(
 
     override fun render(component: T, graphics: TileGraphics) {
         var currentOffset = Position.defaultPosition()
-        var currentSize = graphics.size()
+        var currentSize = graphics.size
         decorationRenderers.forEach { renderer ->
             val bounds = Rect.create(currentOffset, currentSize)
             renderer.render(graphics.toSubTileGraphics(bounds), ComponentDecorationRenderContext(component))

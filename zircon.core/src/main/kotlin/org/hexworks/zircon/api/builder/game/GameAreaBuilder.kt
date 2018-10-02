@@ -33,7 +33,7 @@ data class GameAreaBuilder(private var size: Size3D = Size3D.one(),
         require(level in 0.rangeTo(size.zLength)) {
             "Level '$level' is out create bounds (0 - ${size.zLength})!"
         }
-        require(images.all { image -> image.size() == size.to2DSize() }) {
+        require(images.all { image -> image.size == size.to2DSize() }) {
             "The supplied image(s) do(es) not match the size create the GameArea (${size.to2DSize()})!"
         }
         this.levels[level] = images.toMutableList()

@@ -91,11 +91,11 @@ class DefaultLayerableTest {
         target.pushLayer(offset2x2layer)
 
         val result = target.layers()
-                .flatMap { it.createSnapshot().toList() }
-                .filter { it.first == Position.offset1x1() }
+                .flatMap { it.createSnapshot().cells }
+                .filter { it.position == Position.offset1x1() }
 
 
-        assertThat(result.map { it.second }).containsExactly(expectedChar)
+        assertThat(result.map { it.tile }).containsExactly(expectedChar)
     }
 
     @Test
@@ -120,11 +120,11 @@ class DefaultLayerableTest {
         target.pushLayer(offset2x2layer)
 
         val result = target.layers()
-                .flatMap { it.createSnapshot().toList() }
-                .filter { it.first == Position.offset1x1() }
+                .flatMap { it.createSnapshot().cells }
+                .filter { it.position == Position.offset1x1() }
 
 
-        assertThat(result.map { it.second }).containsExactly(expectedChar, expectedChar)
+        assertThat(result.map { it.tile }).containsExactly(expectedChar, expectedChar)
     }
 
     companion object {

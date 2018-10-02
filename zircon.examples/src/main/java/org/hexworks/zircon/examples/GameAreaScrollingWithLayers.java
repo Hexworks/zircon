@@ -1,27 +1,12 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CharacterTileStrings;
-import org.hexworks.zircon.api.ColorThemes;
-import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.DrawSurfaces;
-import org.hexworks.zircon.api.Layers;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Screens;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.TileColors;
-import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.builder.data.BlockBuilder;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.Panel;
-import org.hexworks.zircon.api.data.Position;
-import org.hexworks.zircon.api.data.Position3D;
-import org.hexworks.zircon.api.data.Size;
-import org.hexworks.zircon.api.data.Size3D;
-import org.hexworks.zircon.api.data.Tile;
+import org.hexworks.zircon.api.data.*;
 import org.hexworks.zircon.api.game.GameArea;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.graphics.Layer;
@@ -34,11 +19,7 @@ import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.internal.game.DefaultGameComponent;
 import org.hexworks.zircon.internal.game.InMemoryGameArea;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -75,7 +56,7 @@ public class GameAreaScrollingWithLayers {
         final Screen screen = Screens.createScreenFor(tileGrid);
 
         Panel actions = Components.panel()
-                .withSize(screen.size().withXLength(20))
+                .withSize(screen.getSize().withXLength(20))
                 .wrapWithBox(true)
                 .withTitle("Actions")
                 .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)
@@ -93,14 +74,14 @@ public class GameAreaScrollingWithLayers {
 
 
         final Panel gamePanel = Components.panel()
-                .withSize(screen.size().withXLength(40))
+                .withSize(screen.getSize().withXLength(40))
                 .withPosition((Positions.defaultPosition()).relativeToRightOf(actions))
                 .withTitle("Game area")
                 .wrapWithBox(true)
                 .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build();
 
-        final Size3D visibleGameAreaSize = Sizes.from2DTo3D(gamePanel.size()
+        final Size3D visibleGameAreaSize = Sizes.from2DTo3D(gamePanel.getSize()
                 .minus(Sizes.create(2, 2)), 5);
         final Size virtualGameAreaSize = Sizes.create(Integer.MAX_VALUE, Integer.MAX_VALUE);
 

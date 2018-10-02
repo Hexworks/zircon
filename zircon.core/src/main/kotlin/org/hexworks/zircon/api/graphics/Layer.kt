@@ -14,8 +14,8 @@ interface Layer : DrawSurface, Drawable, Movable {
      * Fetches all the (absolute) [Position]s which this
      * [Layer] contains.
      */
-    fun fetchPositions(): Set<Position> = size().fetchPositions()
-            .map { it + position() }
+    fun fetchPositions(): Set<Position> = size.fetchPositions()
+            .map { it + position }
             .toSet()
 
     /**

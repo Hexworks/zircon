@@ -143,7 +143,7 @@ class DefaultTextArea constructor(
 
     private fun enableTyping() {
         typingEnabled = true
-        EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition().withRelative(position() + contentPosition())))
+        EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition().withRelative(position + contentPosition())))
     }
 
     override fun keyStroked(keyStroke: KeyStroke) {
@@ -254,7 +254,7 @@ class DefaultTextArea constructor(
                 putCursorAt(cursorPosition().withX(0))
             } else if (keyStroke.inputTypeIs(InputType.End)) {
                 scrollRightToRowEnd(maybeCurrRow.get())
-                putCursorAt(cursorPosition().withX(size().xLength - 1))
+                putCursorAt(cursorPosition().withX(size.xLength - 1))
             } else if (TextUtils.isPrintableCharacter(keyStroke.getCharacter())) {
                 textBuffer.getRow(currRowIdx).map {
                     if (isCursorAtTheEndOfTheLine()) {
@@ -272,7 +272,7 @@ class DefaultTextArea constructor(
                     render()
                 }
             }
-            EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition() + position()))
+            EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition() + position))
         }
     }
 
@@ -318,8 +318,8 @@ class DefaultTextArea constructor(
     }
 
     private fun scrollRightToRowEnd(row: StringBuilder) {
-        scrollRightBy(Math.max(0, row.length - size().xLength))
-        putCursorAt(cursorPosition().withX(size().xLength - 1))
+        scrollRightBy(Math.max(0, row.length - size.xLength))
+        putCursorAt(cursorPosition().withX(size.xLength - 1))
         render()
     }
 
@@ -330,7 +330,7 @@ class DefaultTextArea constructor(
     }
 
     private fun refreshVirtualSpaceSize() {
-        val (visibleCols, visibleRows) = size()
+        val (visibleCols, visibleRows) = size
         val (textCols, textRows) = textBuffer.getBoundingBoxSize()
         if (textCols >= visibleCols && textRows >= visibleRows) {
             setActualSize(textBuffer.getBoundingBoxSize())

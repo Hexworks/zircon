@@ -206,7 +206,7 @@ public class ColorThemeSwitcher {
         monokaiPanel.addComponent(mOptions);
 
         final RadioButtonGroup othOptions = Components.radioButtonGroup()
-                .withSize(otherPanel.size()
+                .withSize(otherPanel.getSize()
                         .withYLength(otherOptions.size())
                         .withRelativeXLength(-2))
                 .build();

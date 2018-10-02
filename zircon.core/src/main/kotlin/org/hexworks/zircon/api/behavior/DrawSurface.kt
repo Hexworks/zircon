@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.behavior
 
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.util.Maybe
 
@@ -33,7 +34,7 @@ interface DrawSurface : Boundable, TilesetOverride {
      * regardless of potential changes by other threads.
      */
     // TODO: proper Snapshot object, not just a Map
-    fun createSnapshot(): Map<Position, Tile>
+    fun createSnapshot(): Snapshot
 
     /**
      * Draws a [Drawable] onto this [DrawSurface]. If the destination [DrawSurface] is larger than

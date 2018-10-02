@@ -6,17 +6,18 @@ import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
-internal class DefaultAnimation(private val frames: List<InternalAnimationFrame>,
-                                private var tick: Long,
-                                private var loopCount: Int,
-                                private val uniqueFrameCount: Int,
-                                private var totalFrameCount: Int) : Animation {
+internal class DefaultAnimation(override val tick: Long,
+                                override val loopCount: Int,
+                                override val totalFrameCount: Int,
+                                override val uniqueFrameCount: Int,
+                                private val frames: List<InternalAnimationFrame>) : Animation {
 
     override val id: Identifier = Identifier.randomIdentifier()
+
     private val infiniteLoop = loopCount == 0
     private var currentLoopCount = loopCount
-
     private val framesInOrder = ThreadSafeQueueFactory.create<InternalAnimationFrame>()
+
     private var currentFrame: InternalAnimationFrame
 
     init {
@@ -29,15 +30,7 @@ internal class DefaultAnimation(private val frames: List<InternalAnimationFrame>
         currentFrame = framesInOrder.peek().get()
     }
 
-    override fun getFrameCount() = uniqueFrameCount
-
-    override fun getTotalFrameCount() = totalFrameCount
-
-    override fun getLoopCount() = loopCount
-
     override fun isLoopedIndefinitely() = loopCount == 0
-
-    override fun getTick() = tick
 
     override fun hasNextFrame() = infiniteLoop || currentLoopCount > 0
 
@@ -45,7 +38,7 @@ internal class DefaultAnimation(private val frames: List<InternalAnimationFrame>
         currentFrame.remove()
     }
 
-    override fun getCurrentFrame() = currentFrame
+    override fun fetchCurrentFrame() = currentFrame
 
     override fun fetchNextFrame(): Maybe<out AnimationFrame> {
         return if (hasNextFrame()) {
@@ -61,10 +54,10 @@ internal class DefaultAnimation(private val frames: List<InternalAnimationFrame>
         }
     }
 
-    override fun getAllFrames() = frames
+    override fun fetchAllFrames() = frames
 
     private fun flattenFrames() =
             frames.flatMap { frame ->
-                (0 until frame.getRepeatCount()).map { frame }
+                (0 until frame.repeatCount).map { frame }
             }
 }

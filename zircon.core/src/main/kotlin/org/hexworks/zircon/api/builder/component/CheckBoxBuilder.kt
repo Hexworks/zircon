@@ -36,7 +36,7 @@ data class CheckBoxBuilder(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultCheckBoxRenderer()),
                 size = size,
-                position = position(),
+                position = position,
                 componentStyleSet = componentStyleSet(),
                 tileset = tileset())
     }

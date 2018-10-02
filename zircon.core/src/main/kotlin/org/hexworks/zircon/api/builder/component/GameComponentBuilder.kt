@@ -44,7 +44,7 @@ data class GameComponentBuilder(
                 projectionMode = projectionMode,
                 size = visibleSize,
                 tileset = tileset(),
-                position = position(),
+                position = position,
                 componentStyleSet = componentStyleSet())
     }
 
