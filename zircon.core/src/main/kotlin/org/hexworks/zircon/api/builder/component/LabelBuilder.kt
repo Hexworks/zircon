@@ -27,7 +27,7 @@ data class LabelBuilder(
         fillMissingValues()
         val finalSize = if (size.isUnknown()) {
             decorationRenderers().asSequence()
-                    .map { it.occupiedSize() }
+                    .map { it.occupiedSize }
                     .fold(Size.create(text.length, 1), Size::plus)
         } else {
             size
@@ -44,7 +44,7 @@ data class LabelBuilder(
                         componentRenderer = DefaultLabelRenderer()),
                 size = finalSize,
                 position = position,
-                componentStyleSet = componentStyleSet(),
+                componentStyleSet = componentStyleSet,
                 tileset = tileset())
     }
 

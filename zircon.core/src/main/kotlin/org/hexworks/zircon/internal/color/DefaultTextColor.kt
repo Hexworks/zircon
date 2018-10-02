@@ -3,31 +3,23 @@ package org.hexworks.zircon.internal.color
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.util.Math
 
-data class DefaultTextColor(private val red: Int,
-                            private val green: Int,
-                            private val blue: Int,
-                            private val alpha: Int = TileColor.defaultAlpha()) : TileColor {
+data class DefaultTextColor(override val red: Int,
+                            override val green: Int,
+                            override val blue: Int,
+                            override val alpha: Int = TileColor.defaultAlpha()) : TileColor {
 
     private val cacheKey = "TextColor(r=$red,g=$green,b=$blue,a=$alpha)"
 
     override fun generateCacheKey() = cacheKey
 
-    override fun red() = red
-
-    override fun green() = green
-
-    override fun blue() = blue
-
-    override fun alpha() = alpha
-
     override fun tint(factor: Double): TileColor {
         require(factor in 0.0..1.0) {
             "The given percentage ($factor) is not between the required range (0 - 1)."
         }
-        var r = red()
-        var g = green()
-        var b = blue()
-        val alpha = alpha()
+        var r = red
+        var g = green
+        var b = blue
+        val alpha = alpha
 
         val i = (1.0 / (1.0 - factor)).toInt()
         if (r == 0 && g == 0 && b == 0) {
@@ -47,10 +39,10 @@ data class DefaultTextColor(private val red: Int,
         require(factor in 0.0..1.0) {
             "The given percentage ($factor) is not between the required range (0 - 1)."
         }
-        return TileColor.create(Math.max((red() * factor).toInt(), 0),
-                Math.max((green() * factor).toInt(), 0),
-                Math.max((blue() * factor).toInt(), 0),
-                alpha())
+        return TileColor.create(Math.max((red * factor).toInt(), 0),
+                Math.max((green * factor).toInt(), 0),
+                Math.max((blue * factor).toInt(), 0),
+                alpha)
     }
 
     override fun invert(): TileColor {

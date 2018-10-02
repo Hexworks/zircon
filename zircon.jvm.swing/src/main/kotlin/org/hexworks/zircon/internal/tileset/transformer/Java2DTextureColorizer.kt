@@ -10,9 +10,9 @@ import java.awt.image.BufferedImage
 class Java2DTextureColorizer : TextureTransformer<BufferedImage> {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
-        val r = tile.foregroundColor().red().toFloat() / 255
-        val g = tile.foregroundColor().green().toFloat() / 255
-        val b = tile.foregroundColor().blue().toFloat() / 255
+        val r = tile.foregroundColor().red.toFloat() / 255
+        val g = tile.foregroundColor().green.toFloat() / 255
+        val b = tile.foregroundColor().blue.toFloat() / 255
 
         val backend = texture.texture()
         (0 until backend.width).forEach { x ->
@@ -39,5 +39,5 @@ class Java2DTextureColorizer : TextureTransformer<BufferedImage> {
 /**
  * Extension for easy conversion between [TileColor] and awt [Color].
  */
-fun TileColor.toAWTColor(): java.awt.Color = Color(red(), green(), blue(), alpha())
+fun TileColor.toAWTColor(): java.awt.Color = Color(red, green, blue, alpha)
 

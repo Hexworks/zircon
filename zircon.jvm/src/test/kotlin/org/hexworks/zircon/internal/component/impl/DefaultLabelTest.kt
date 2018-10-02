@@ -31,7 +31,7 @@ class DefaultLabelTest {
 
     @Test
     fun shouldProperlyReturnText() {
-        assertThat(target.text()).isEqualTo(TEXT)
+        assertThat(target.text).isEqualTo(TEXT)
     }
 
     @Test
@@ -43,16 +43,16 @@ class DefaultLabelTest {
     @Test
     fun shouldProperlyApplyTheme() {
         target.applyColorTheme(THEME)
-        val styles = target.componentStyleSet()
-        assertThat(styles.getStyleFor(ComponentState.DEFAULT))
+        val styles = target.componentStyleSet
+        assertThat(styles.fetchStyleFor(ComponentState.DEFAULT))
                 .isEqualTo(DEFAULT_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.MOUSE_OVER))
+        assertThat(styles.fetchStyleFor(ComponentState.MOUSE_OVER))
                 .isEqualTo(DEFAULT_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.FOCUSED))
+        assertThat(styles.fetchStyleFor(ComponentState.FOCUSED))
                 .isEqualTo(DEFAULT_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.ACTIVE))
+        assertThat(styles.fetchStyleFor(ComponentState.ACTIVE))
                 .isEqualTo(DEFAULT_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.DISABLED))
+        assertThat(styles.fetchStyleFor(ComponentState.DISABLED))
                 .isEqualTo(DEFAULT_STYLE)
     }
 
@@ -72,7 +72,7 @@ class DefaultLabelTest {
         val FONT = BuiltInCP437TilesetResource.WANDERLUST_16X16
         val POSITION = Position.create(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor())
+                .foregroundColor(THEME.secondaryForegroundColor)
                 .backgroundColor(TileColor.transparent())
                 .build()
         val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()

@@ -17,7 +17,7 @@ data class DefaultComponentStyleSet(private val styles: Map<ComponentState, Styl
 
     override fun currentState() = currentState
 
-    override fun getStyleFor(state: ComponentState) = styles[state]!!
+    override fun fetchStyleFor(state: ComponentState) = styles[state]!!
 
     override fun currentStyle() = styles[currentState]!!
 

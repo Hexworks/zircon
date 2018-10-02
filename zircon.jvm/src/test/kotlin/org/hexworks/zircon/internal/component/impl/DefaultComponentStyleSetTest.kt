@@ -38,13 +38,13 @@ class DefaultComponentStyleSetTest {
                 .mouseOverStyle(MOUSE_OVER_STYLE)
                 .build()
 
-        assertThat(styles.getStyleFor(ComponentState.DISABLED))
+        assertThat(styles.fetchStyleFor(ComponentState.DISABLED))
                 .isEqualTo(DEFAULT_STYLE)
     }
 
     @Test
     fun shouldProperlyReturnStyleByKey() {
-        assertThat(target.getStyleFor(ComponentState.DISABLED)).isEqualTo(DISABLED_STYLE)
+        assertThat(target.fetchStyleFor(ComponentState.DISABLED)).isEqualTo(DISABLED_STYLE)
     }
 
     @Test

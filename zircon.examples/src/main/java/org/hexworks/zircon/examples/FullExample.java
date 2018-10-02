@@ -520,7 +520,7 @@ public class FullExample {
                                      AtomicReference<Label> labelRef,
                                      Panel infoPanel,
                                      Selection selection) {
-        themeRef.set(valueOf(selection.key()));
+        themeRef.set(valueOf(selection.getKey()));
         infoPanel.removeComponent(labelRef.get());
         labelRef.set(createLabelForTheme(themeRef.get()));
         infoPanel.addComponent(labelRef.get());

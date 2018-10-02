@@ -110,23 +110,23 @@ class DefaultRadioButtonGroupTest {
                 .build()
 
         val EXPECTED_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.accentColor())
+                .foregroundColor(THEME.accentColor)
                 .backgroundColor(TileColor.transparent())
                 .build()
 
         val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.primaryBackgroundColor())
-                .backgroundColor(THEME.accentColor())
+                .foregroundColor(THEME.primaryBackgroundColor)
+                .backgroundColor(THEME.accentColor)
                 .build()
 
         val EXPECTED_FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryBackgroundColor())
-                .backgroundColor(THEME.accentColor())
+                .foregroundColor(THEME.secondaryBackgroundColor)
+                .backgroundColor(THEME.accentColor)
                 .build()
 
         val EXPECTED_ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor())
-                .backgroundColor(THEME.accentColor())
+                .foregroundColor(THEME.secondaryForegroundColor)
+                .backgroundColor(THEME.accentColor)
                 .build()
     }
 }

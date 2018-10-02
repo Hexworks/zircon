@@ -52,6 +52,24 @@ abstract class DefaultComponent(
 
     final override val id = Identifier.randomIdentifier()
 
+    final override val position: Position
+        get() = boundable.position
+
+    final override val contentPosition: Position
+        get() = renderer.calculateContentPosition()
+
+    // TODO: regression test this -> 3 nested components
+    final override val absolutePosition: Position
+        get() = position + parent.map { it.absolutePosition }.orElse(Position.zero())
+
+    final override val contentSize: Size
+        get() = renderer.calculateContentSize(size)
+
+    // TODO: render on set?
+    final override var componentStyleSet = componentStyles
+
+    final override val tileGraphics = graphics
+
     private val subscriptions = ThreadSafeQueueFactory.create<ComponentSubscription>()
     private var parent = Maybe.empty<Container>()
 
@@ -67,30 +85,17 @@ abstract class DefaultComponent(
         }
     }
 
-    final override fun contentPosition() = renderer.contentPosition()
-
-    final override fun contentSize() = renderer.contentSize(size)
-
-    final override val position: Position
-        get() = boundable.position
-
-
     final override fun moveTo(position: Position): Boolean {
         return boundable.moveTo(position)
     }
 
-    final override fun parent() = parent
+    final override fun fetchParent() = parent
 
     final override fun attachTo(parent: Container) {
         this.parent.map {
             it.removeComponent(this)
         }
         this.parent = Maybe.of(parent)
-    }
-
-    final override fun absolutePosition(): Position {
-        // TODO: regression test this -> 3 nested components
-        return position + parent.map { it.absolutePosition() }.orElse(Position.zero())
     }
 
     // TODO: delegate these to behavior
@@ -121,18 +126,10 @@ abstract class DefaultComponent(
         return this
     }
 
-    final override fun componentStyleSet() = componentStyles
-
-    final override fun setComponentStyleSet(componentStyleSet: ComponentStyleSet) {
-        // TODO: render?
-        this.componentStyles = componentStyleSet
-    }
-
     final override fun applyStyle(styleSet: StyleSet) {
         // TODO: should the user be able to do this?
     }
 
-    final override fun tileGraphics() = graphics
 
     override fun createCopy(): Layer {
         TODO("Creating copies of Components is not supported yet.")

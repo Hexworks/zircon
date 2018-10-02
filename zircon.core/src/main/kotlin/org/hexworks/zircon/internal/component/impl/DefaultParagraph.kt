@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 
-class DefaultParagraph(private val text: String,
+class DefaultParagraph(override val text: String,
                        private val renderingStrategy: ComponentRenderingStrategy<Paragraph>,
                        tileset: TilesetResource,
                        size: Size,
@@ -31,8 +31,6 @@ class DefaultParagraph(private val text: String,
         render()
     }
 
-    override fun text() = text
-
     override fun acceptsFocus() = false
 
     override fun giveFocus(input: Maybe<Input>) = false
@@ -42,16 +40,16 @@ class DefaultParagraph(private val text: String,
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor)
                         .backgroundColor(TileColor.transparent())
                         .build())
                 .build().also {
-                    setComponentStyleSet(it)
+                    componentStyleSet = it
                     render()
                 }
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics())
+        renderingStrategy.render(this, tileGraphics)
     }
 }

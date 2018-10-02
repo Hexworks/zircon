@@ -3,10 +3,10 @@ package org.hexworks.zircon.api.color
 /**
  * Default ANSI colors.
  */
-enum class ANSITileColor(private val red: Int,
-                         private val green: Int,
-                         private val blue: Int,
-                         private val alpha: Int) : TileColor {
+enum class ANSITileColor(final override val red: Int,
+                         final override val green: Int,
+                         final override val blue: Int,
+                         final override val alpha: Int) : TileColor {
 
     BLACK(0, 0, 0, TileColor.defaultAlpha()),
     RED(170, 0, 0, TileColor.defaultAlpha()),
@@ -21,14 +21,6 @@ enum class ANSITileColor(private val red: Int,
     private val cacheKey = "TextColor(r=$red,g=$green,b=$blue,a=$alpha)"
 
     override fun generateCacheKey() = cacheKey
-
-    override fun red() = red
-
-    override fun green() = green
-
-    override fun blue() = blue
-
-    override fun alpha() = alpha
 
     override fun tint(factor: Double): TileColor {
         return TileColor.create(red, green, blue, alpha).tint(factor)

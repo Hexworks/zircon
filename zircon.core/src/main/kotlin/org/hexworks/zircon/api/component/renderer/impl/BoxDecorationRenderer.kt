@@ -14,13 +14,13 @@ import org.hexworks.zircon.api.util.Maybe
 class BoxDecorationRenderer(private val boxType: BoxType = BoxType.SINGLE,
                             private val title: Maybe<String> = Maybe.empty()) : ComponentDecorationRenderer {
 
-    override fun offset(): Position = Position.offset1x1()
+    override val offset = Position.offset1x1()
 
-    override fun occupiedSize(): Size = Size.create(2, 2)
+    override val occupiedSize = Size.create(2, 2)
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
         val size = tileGraphics.size
-        val style = context.component.componentStyleSet().currentStyle()
+        val style = context.component.componentStyleSet.currentStyle()
         val box = BoxBuilder.newBuilder()
                 .boxType(boxType)
                 .size(size)

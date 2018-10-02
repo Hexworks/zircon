@@ -35,7 +35,7 @@ class DefaultPanelTest {
 
     @Test
     fun shouldHaveProperTitle() {
-        assertThat(target.title()).isEqualTo(TITLE)
+        assertThat(target.title).isEqualTo(TITLE)
     }
 
     @Test
@@ -59,7 +59,7 @@ class DefaultPanelTest {
         target.applyColorTheme(THEME)
 
         ComponentState.values().forEach {
-            assertThat(target.componentStyleSet().getStyleFor(it)).isEqualTo(EXPECTED_STYLE)
+            assertThat(target.componentStyleSet.fetchStyleFor(it)).isEqualTo(EXPECTED_STYLE)
         }
     }
 
@@ -71,7 +71,7 @@ class DefaultPanelTest {
         target.addComponent(component)
         target.applyColorTheme(THEME)
 
-        assertThat(component.componentStyleSet().currentStyle())
+        assertThat(component.componentStyleSet.currentStyle())
                 .isEqualTo(DefaultLabelTest.DEFAULT_STYLE)
     }
 
@@ -83,8 +83,8 @@ class DefaultPanelTest {
         val POSITION = Position.create(2, 3)
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val EXPECTED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor())
-                .backgroundColor(THEME.primaryBackgroundColor())
+                .foregroundColor(THEME.secondaryForegroundColor)
+                .backgroundColor(THEME.primaryBackgroundColor)
                 .build()
     }
 }
