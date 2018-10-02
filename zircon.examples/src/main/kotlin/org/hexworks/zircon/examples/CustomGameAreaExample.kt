@@ -11,14 +11,11 @@ import java.util.*
 
 object CustomGameAreaExample {
 
-    class CustomGameArea(private val size: Size3D, private val layersPerBlock: Int) : BaseGameArea() {
+    class CustomGameArea(override val size: Size3D, private val layersPerBlock: Int) : BaseGameArea() {
         private val blocks = java.util.TreeMap<Position3D, Block>()
         private val filler = Blocks.newBuilder()
                 .layer(Tiles.empty())
 
-        override fun size(): Size3D {
-            return size
-        }
 
         override fun layersPerBlock(): Int {
             return layersPerBlock
@@ -41,7 +38,7 @@ object CustomGameAreaExample {
         }
 
         override fun setBlockAt(position: Position3D, block: Block) {
-            if (!size().containsPosition(position)) {
+            if (!size.containsPosition(position)) {
                 throw IllegalArgumentException("The supplied position (\$position) is not within the size (\$size) of this game area.")
             }
             val layerCount = block.layers.size
@@ -76,10 +73,10 @@ object CustomGameAreaExample {
     }
 
     fun makeCaves(gameArea: GameArea, smoothTimes: Int = 8) {
-        val width = gameArea.size().xLength
-        val height = gameArea.size().yLength
+        val width = gameArea.size.xLength
+        val height = gameArea.size.yLength
         var tiles: MutableMap<Position, Tile> = mutableMapOf()
-        gameArea.size().to2DSize().fetchPositions().forEach { pos ->
+        gameArea.size.to2DSize().fetchPositions().forEach { pos ->
             tiles[pos] = if (Math.random() < 0.5) FLOOR else WALL
         }
         val newTiles: MutableMap<Position, Tile> = mutableMapOf()

@@ -13,7 +13,7 @@ data class PanelBuilder(
     : BaseComponentBuilder<Panel, PanelBuilder>(commonComponentProperties) {
 
     override fun build(): Panel {
-        require(size() != Size.unknown()) {
+        require(size != Size.unknown()) {
             "You must set a size for a Panel!"
         }
         fillMissingValues()
@@ -22,8 +22,8 @@ data class PanelBuilder(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultPanelRenderer()),
-                size = size(),
-                position = position(),
+                size = size,
+                position = position,
                 componentStyleSet = componentStyleSet(),
                 tileset = tileset())
     }

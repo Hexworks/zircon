@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.behavior.Styleable
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.kotlin.map
+import org.hexworks.zircon.api.kotlin.toMap
 import org.hexworks.zircon.internal.data.DefaultCell
 import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphics
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
@@ -22,19 +23,19 @@ interface TileGraphics
     /**
      * Returns a [List] of [Position]s which are not `EMPTY`.
      */
-    fun fetchFilledPositions(): List<Position> = createSnapshot().keys.toList()
+    fun fetchFilledPositions(): List<Position> = createSnapshot().fetchPositions()
 
     /**
      * Returns a [List] of [Tile]s which are not `EMPTY`.
      */
-    fun fetchFilledTiles(): List<Tile> = createSnapshot().values.toList()
+    fun fetchFilledTiles(): List<Tile> = createSnapshot().fetchTiles()
 
     /**
      * Returns all the [Cell]s ([Tile]s with associated [Position] information)
      * of this [TileGraphics].
      */
     fun fetchCells(): Iterable<Cell> {
-        return fetchCellsBy(Position.defaultPosition(), size())
+        return fetchCellsBy(Position.defaultPosition(), size)
     }
 
     /**
@@ -73,12 +74,12 @@ interface TileGraphics
                 size = newSize,
                 styleSet = toStyleSet(),
                 tileset = currentTileset())
-        createSnapshot().filter { (pos) -> newSize.containsPosition(pos) }
+        createSnapshot().cells.filter { (pos) -> newSize.containsPosition(pos) }
                 .forEach { (pos, tc) ->
                     result.setTileAt(pos, tc)
                 }
         if (filler != Tile.empty()) {
-            newSize.fetchPositions().subtract(size().fetchPositions()).forEach {
+            newSize.fetchPositions().subtract(size.fetchPositions()).forEach {
                 result.setTileAt(it, filler)
             }
         }
@@ -89,7 +90,7 @@ interface TileGraphics
      * Fills the empty parts of this [TileGraphics] with the given `filler`.
      */
     fun fill(filler: Tile): TileGraphics {
-        size().fetchPositions().filter { pos ->
+        size.fetchPositions().filter { pos ->
             getTileAt(pos).map { it == Tile.empty() }.orElse(false)
         }.forEach { pos ->
             setTileAt(pos, filler)
@@ -121,11 +122,11 @@ interface TileGraphics
      * target [Tile]s should be kept or not
      */
     fun applyStyle(styleSet: StyleSet,
-                   rect: Rect = rect(),
+                   rect: Rect = this.rect,
                    keepModifiers: Boolean = false,
                    applyToEmptyCells: Boolean = true) {
-        val offset = rect.position()
-        val size = rect.size()
+        val offset = rect.position
+        val size = rect.size
         setStyleFrom(styleSet)
         val positions = if (applyToEmptyCells) {
             size.fetchPositions()
@@ -149,9 +150,9 @@ interface TileGraphics
 
     fun toTileImage(): TileImage {
         return DefaultTileImage(
-                size = size(),
+                size = size,
                 tileset = currentTileset(),
-                tiles = createSnapshot().toMap())
+                tiles = createSnapshot().cells.toMap())
     }
 
     /**
@@ -162,6 +163,8 @@ interface TileGraphics
      * by Position(1, 1).
      */
     fun toSubTileGraphics(rect: Rect): SubTileGraphics {
-        return SubTileGraphics(this, rect)
+        return SubTileGraphics(
+                rect = rect,
+                backend = this)
     }
 }

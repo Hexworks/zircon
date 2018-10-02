@@ -44,8 +44,8 @@ class DefaultComponentContainer(private var container: RootContainer) :
         (component as? DefaultComponent)?.let { dc ->
             require(container.containsBoundable(dc)) {
                 "You can't add a component to a container which is not within its bounds " +
-                        "(target size: ${container.size()}, component size: ${dc.size()}" +
-                        ", position: ${dc.position()})!"
+                        "(target size: ${container.size}, component size: ${dc.size}" +
+                        ", position: ${dc.position})!"
             }
             require(container.children().none { it.intersects(dc) }) {
                 "You can't add a component to a container which intersects with other components!"

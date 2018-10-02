@@ -46,12 +46,12 @@ class DefaultPanelTest {
 
     @Test
     fun shouldProperlySetPosition() {
-        assertThat(target.position()).isEqualTo(POSITION)
+        assertThat(target.position).isEqualTo(POSITION)
     }
 
     @Test
     fun shouldProperlySetSize() {
-        assertThat(target.size()).isEqualTo(SIZE)
+        assertThat(target.size).isEqualTo(SIZE)
     }
 
     @Test

@@ -107,7 +107,7 @@ object IsometricGameArea {
         val screen = Screens.createScreenFor(app.tileGrid)
 
 
-        addGamePanel(screen, Positions.defaultPosition(), screen.size(), Positions.create(15, 20))
+        addGamePanel(screen, Positions.defaultPosition(), screen.size, Positions.create(15, 20))
 
         screen.display()
     }
@@ -121,7 +121,7 @@ object IsometricGameArea {
                 .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build()
 
-        val visibleGameAreaSize = Sizes.from2DTo3D(gamePanel.size()
+        val visibleGameAreaSize = Sizes.from2DTo3D(gamePanel.size
                 .minus(Sizes.create(2, 2)), 8)
 
         val virtualSize = Sizes.create3DSize(200, 200, 30)

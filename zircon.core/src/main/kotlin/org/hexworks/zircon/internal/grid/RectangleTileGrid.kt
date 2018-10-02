@@ -2,10 +2,7 @@ package org.hexworks.zircon.internal.grid
 
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationInfo
-import org.hexworks.zircon.api.behavior.Boundable
-import org.hexworks.zircon.api.behavior.Drawable
-import org.hexworks.zircon.api.behavior.Layerable
-import org.hexworks.zircon.api.behavior.ShutdownHook
+import org.hexworks.zircon.api.behavior.*
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.*
@@ -44,7 +41,8 @@ class RectangleTileGrid(
         private val shutdownHook: ShutdownHook = DefaultShutdownHook())
     : InternalTileGrid,
         InternalCursorHandler by cursorHandler,
-        ShutdownHook by shutdownHook {
+        ShutdownHook by shutdownHook,
+        DrawSurface by backend {
 
     private var originalBackend = backend
     private var originalLayerable = layerable
@@ -96,7 +94,7 @@ class RectangleTileGrid(
         backend.setTileAt(position, tile)
     }
 
-    override fun createSnapshot(): Map<Position, Tile> {
+    override fun createSnapshot(): Snapshot {
         return backend.createSnapshot()
     }
 
@@ -118,14 +116,6 @@ class RectangleTileGrid(
 
     override fun layers(): List<Layer> {
         return layerable.layers()
-    }
-
-    override fun rect(): Rect {
-        return backend.rect()
-    }
-
-    override fun size(): Size {
-        return backend.size()
     }
 
     override fun intersects(boundable: Boundable): Boolean {
@@ -222,7 +212,7 @@ class RectangleTileGrid(
 
     override fun clear() {
         backend.clear()
-        layerable = DefaultLayerable(backend.size())
+        layerable = DefaultLayerable(backend.size)
     }
 
     private fun moveCursorToNextLine() {

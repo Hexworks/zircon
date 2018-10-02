@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.event.ComponentSubscription
 import org.hexworks.zircon.api.event.Subscription
@@ -68,11 +69,11 @@ abstract class DefaultComponent(
 
     final override fun contentPosition() = renderer.contentPosition()
 
-    final override fun contentSize() = renderer.contentSize(size())
+    final override fun contentSize() = renderer.contentSize(size)
 
-    final override fun position(): Position {
-        return boundable.position()
-    }
+    final override val position: Position
+        get() = boundable.position
+
 
     final override fun moveTo(position: Position): Boolean {
         return boundable.moveTo(position)
@@ -89,7 +90,7 @@ abstract class DefaultComponent(
 
     final override fun absolutePosition(): Position {
         // TODO: regression test this -> 3 nested components
-        return position() + parent.map { it.absolutePosition() }.orElse(Position.zero())
+        return position + parent.map { it.absolutePosition() }.orElse(Position.zero())
     }
 
     // TODO: delegate these to behavior
@@ -104,14 +105,14 @@ abstract class DefaultComponent(
     }
 
     final override fun getAbsoluteTileAt(position: Position): Maybe<Tile> {
-        return graphics.getTileAt(position.minus(position()))
+        return graphics.getTileAt(position.minus(this.position))
     }
 
     final override fun setAbsoluteTileAt(position: Position, tile: Tile) {
-        graphics.setTileAt(position.minus(position()), tile)
+        graphics.setTileAt(position.minus(this.position), tile)
     }
 
-    final override fun createSnapshot(): Map<Position, Tile> {
+    final override fun createSnapshot(): Snapshot {
         return graphics.createSnapshot()
     }
 
@@ -155,14 +156,14 @@ abstract class DefaultComponent(
     open fun transformToLayers() =
             listOf(LayerBuilder.newBuilder()
                     .tileGraphic(graphics)
-                    .offset(position())
+                    .offset(position)
                     .tileset(currentTileset())
                     .build())
 
     override fun toString(): String {
         return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}," +
-                "position=${position()}," +
-                "size=${size()})"
+                "position=$position," +
+                "size=$size)"
     }
 
     override fun equals(other: Any?): Boolean {

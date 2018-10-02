@@ -20,7 +20,7 @@ object HalfBlockDecorationExample {
                 .defaultTileset(tileset)
                 .build())
 
-        tileGrid.size().fetchPositions().forEach {
+        tileGrid.size.fetchPositions().forEach {
             tileGrid.setTileAt(it, Tiles.defaultTile()
                     .withBackgroundColor(theme.secondaryBackgroundColor()))
         }

@@ -35,7 +35,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
                            componentStyleSet: ComponentStyleSet,
                            private val scrollable: Scrollable3D = DefaultScrollable3D(
                                    visibleSpaceSize = size,
-                                   virtualSpaceSize = gameArea.size()))
+                                   virtualSpaceSize = gameArea.size))
 
     : GameComponent,
         Scrollable3D by scrollable,
@@ -81,11 +81,11 @@ class DefaultGameComponent(private val gameArea: GameArea,
             (fromZ until Math.min(fromZ + visibleLevelCount, height)).forEach { levelIdx ->
                 val segment = gameArea.fetchLayersAt(
                         offset = Position3D.from2DPosition(visibleOffset().to2DPosition(), levelIdx),
-                        size = Size3D.from2DSize(size(), 1))
+                        size = Size3D.from2DSize(size, 1))
                 segment.forEach {
                     result.add(LayerBuilder.newBuilder()
                             .tileGraphic(it)
-                            .offset(position())
+                            .offset(position)
                             .build())
                 }
             }
@@ -97,8 +97,8 @@ class DefaultGameComponent(private val gameArea: GameArea,
                 TileGraphicsBuilder.newBuilder().size(screenSize)
             }
             val (fromX, fromY) = visibleOffset().to2DPosition()
-            val toX = fromX + size().xLength
-            val toY = fromY + size().yLength
+            val toX = fromX + size.xLength
+            val toY = fromY + size.yLength
             (fromZ until Math.min(fromZ + visibleLevelCount, height)).forEach { z ->
                 (fromY until toY).forEach { screenY ->
                     (fromX until toX).forEach { x ->
@@ -138,7 +138,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
     }
 
     private fun refreshVirtualSpaceSize() {
-        setActualSize(gameArea.size())
+        setActualSize(gameArea.size)
     }
 
     override fun render() {

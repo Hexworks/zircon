@@ -103,7 +103,7 @@ object LavaMarkovChainExample {
         subsidingBubbleNode1.addNext(.05, initialNode)
 
 
-        tileGrid.size().fetchPositions().forEach {
+        tileGrid.size.fetchPositions().forEach {
             tileGrid.setTileAt(it, defaultLava.withModifiers(Markov(MarkovChain.create(initialNode))))
         }
 

@@ -470,7 +470,7 @@ public class FullExample {
         solarizedDarkPanel.addComponent(sdOptions);
 
         final RadioButtonGroup othOptions = Components.radioButtonGroup()
-                .withSize(otherPanel.size()
+                .withSize(otherPanel.getSize()
                         .withYLength(otherOptions.size())
                         .withRelativeXLength(-2))
                 .build();

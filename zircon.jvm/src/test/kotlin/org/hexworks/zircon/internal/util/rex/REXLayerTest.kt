@@ -25,7 +25,7 @@ class REXLayerTest {
     @Ignore
     fun shouldProperlyLoadFromByteBuffer() {
         val layer = target.toLayer(TILESET)
-        assertThat(layer.size()).isEqualTo(Size.create(2, 1))
+        assertThat(layer.size).isEqualTo(Size.create(2, 1))
 
         assertChar(
                 'A',

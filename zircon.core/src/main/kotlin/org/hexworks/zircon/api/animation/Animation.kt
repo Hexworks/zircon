@@ -10,36 +10,36 @@ import org.hexworks.zircon.internal.behavior.Identifiable
 interface Animation : Identifiable {
 
     /**
-     * Returns the number of [AnimationFrame]s which are in this animation.
+     * The number of [AnimationFrame]s which are in this animation.
      */
-    fun getFrameCount(): Int
+    val uniqueFrameCount: Int
 
     /**
-     * Returns how many times this [Animation] will be looped.
+     * How many times this [Animation] will be looped.
      * `0` stands for an infinite loop (continuous animation).
      */
-    fun getLoopCount(): Int
+    val loopCount: Int
+
+    /**
+     * The *total* number of frames in this animation
+     * (including those which are repeated as well).
+     */
+    val totalFrameCount: Int
+
+    /**
+     * Tells how often an [AnimationFrame] should be drawn in milliseconds.
+     */
+    val tick: Long
+
+    /**
+     * Returns the next [AnimationFrame] to be drawn.
+     */
+    fun fetchCurrentFrame(): AnimationFrame
 
     /**
      * Returns whether this [Animation] is looped indefinitely.
      */
     fun isLoopedIndefinitely(): Boolean
-
-    /**
-     * Returns the *total* number of frames in this animation
-     * (including those which are repeated as well).
-     */
-    fun getTotalFrameCount(): Int
-
-    /**
-     * Tells how often an [AnimationFrame] should be drawn in milliseconds.
-     */
-    fun getTick(): Long
-
-    /**
-     * Returns the next [AnimationFrame] to be drawn.
-     */
-    fun getCurrentFrame(): AnimationFrame
 
     /**
      * Removes the current frame from the screen (if it is displayed)
@@ -59,6 +59,6 @@ interface Animation : Identifiable {
     /**
      * Returns all the [AnimationFrame]s of this [Animation].
      */
-    fun getAllFrames(): List<AnimationFrame>
+    fun fetchAllFrames(): List<AnimationFrame>
 
 }

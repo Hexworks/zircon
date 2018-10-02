@@ -21,7 +21,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
  * [CharacterTileString] comes with its own builder and you can create them in a simple
  * way from plain Java [String]s.
  */
-interface CharacterTileString : Drawable, Collection<CharacterTile> {
+interface CharacterTileString : Drawable, Iterable<CharacterTile> {
 
     fun textCharacters(): List<CharacterTile>
 

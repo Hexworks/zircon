@@ -22,19 +22,19 @@ data class HeaderBuilder(
             "A Header can't be blank!"
         }
         fillMissingValues()
-        val size = if (size().isUnknown()) {
+        val finalSize = if (size.isUnknown()) {
             decorationRenderers().map { it.occupiedSize() }
                     .fold(Size.create(text.length, 1), Size::plus)
         } else {
-            size()
+            size
         }
         return DefaultHeader(
                 text = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultHeaderRenderer()),
-                initialSize = size,
-                position = position(),
+                initialSize = finalSize,
+                position = position,
                 componentStyleSet = componentStyleSet(),
                 initialTileset = tileset())
     }

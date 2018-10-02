@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.kotlin.toMap
 import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
@@ -30,12 +31,12 @@ class TileGraphicsTest {
 
     @Test
     fun shouldReportProperBounds() {
-        assertThat(target.rect()).isEqualTo(Rect.create(size = SIZE_OF_3X3))
+        assertThat(target.rect).isEqualTo(Rect.create(size = SIZE_OF_3X3))
     }
 
     @Test
     fun shouldReportProperSize() {
-        assertThat(target.size()).isEqualTo(SIZE_OF_3X3)
+        assertThat(target.size).isEqualTo(SIZE_OF_3X3)
     }
 
     @Test
@@ -124,7 +125,7 @@ class TileGraphicsTest {
     fun shouldProperlyCreateSnapshot() {
         target.setTileAt(FILLED_POS, FILLER)
 
-        assertThat(target.createSnapshot().toMap()).isEqualTo(mapOf(FILLED_POS to FILLER))
+        assertThat(target.createSnapshot().cells.toMap()).isEqualTo(mapOf(FILLED_POS to FILLER))
     }
 
     @Test
@@ -134,7 +135,7 @@ class TileGraphicsTest {
 
         target.setTileAt(FILLED_POS, FILLER)
 
-        assertThat(result).isEmpty()
+        assertThat(result.cells).isEmpty()
     }
 
     @Test

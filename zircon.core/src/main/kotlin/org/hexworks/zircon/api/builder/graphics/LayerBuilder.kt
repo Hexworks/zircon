@@ -56,11 +56,11 @@ data class LayerBuilder(
 
     override fun build(): Layer = if (tileGraphic.isPresent) {
         DefaultLayer(
-                position = offset,
+                currentPosition = offset,
                 backend = tileGraphic.get())
     } else {
         DefaultLayer(
-                position = offset,
+                currentPosition = offset,
                 backend = TileGraphicsBuilder(
                         tileset = tileset,
                         size = size).build())

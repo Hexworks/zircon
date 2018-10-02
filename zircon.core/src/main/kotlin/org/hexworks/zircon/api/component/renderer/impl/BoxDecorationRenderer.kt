@@ -19,7 +19,7 @@ class BoxDecorationRenderer(private val boxType: BoxType = BoxType.SINGLE,
     override fun occupiedSize(): Size = Size.create(2, 2)
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
-        val size = tileGraphics.size()
+        val size = tileGraphics.size
         val style = context.component.componentStyleSet().currentStyle()
         val box = BoxBuilder.newBuilder()
                 .boxType(boxType)

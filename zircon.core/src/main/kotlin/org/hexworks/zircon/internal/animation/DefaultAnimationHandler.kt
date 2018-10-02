@@ -45,21 +45,21 @@ class DefaultAnimationHandler : InternalAnimationHandler, Closeable {
                 val animation = animations[key]!!
                 val updateTime = nextUpdatesForAnimations.getOrDefault(key, currentTimeMs)
                 if (updateTime <= currentTimeMs) {
-                    val currentFrame = animation.getCurrentFrame()
-                    currentFrame.getLayers().forEach { tileGrid.removeLayer(it) }
+                    val currentFrame = animation.fetchCurrentFrame()
+                    currentFrame.layers.forEach { tileGrid.removeLayer(it) }
                     animation.fetchNextFrame().map { frame ->
-                        frame.getLayers().forEach { layer ->
-                            layer.moveTo(frame.getPosition())
+                        frame.layers.forEach { layer ->
+                            layer.moveTo(frame.position)
                             tileGrid.pushLayer(layer)
                         }
                     }
                     if (animation.hasNextFrame()) {
-                        nextUpdatesForAnimations[key] = currentTimeMs + animation.getTick()
+                        nextUpdatesForAnimations[key] = currentTimeMs + animation.tick
                     } else {
                         animations.remove(key)?.let {
                             results[key]?.setState(FINISHED)
                         }
-                        animation.getCurrentFrame().getLayers().forEach {
+                        animation.fetchCurrentFrame().layers.forEach {
                             tileGrid.removeLayer(it)
                         }
                     }

@@ -13,7 +13,7 @@ class DefaultCheckBoxRenderer : ComponentRenderer<CheckBox>() {
         tileGraphics.applyStyle(style)
         val checkBoxState = context.component.state()
         val text = context.component.text()
-        val maxTextLength = tileGraphics.size().width() - BUTTON_WIDTH - 1
+        val maxTextLength = tileGraphics.width - BUTTON_WIDTH - 1
         val clearedText = if (text.length > maxTextLength) {
             text.substring(0, maxTextLength - 3).plus("...")
         } else {

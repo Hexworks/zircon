@@ -81,7 +81,7 @@ class DefaultComponentTest {
     fun shouldProperlySetNewPosition() {
         target.moveTo(NEW_POSITION)
 
-        assertThat(target.position()).isEqualTo(NEW_POSITION)
+        assertThat(target.position).isEqualTo(NEW_POSITION)
     }
 
     @Test
@@ -114,7 +114,7 @@ class DefaultComponentTest {
         assertThat(image.getTileAt(POSITION - Position.offset1x1()).get())
                 .isEqualTo(Tile.empty())
 
-        target.size().fetchPositions().forEach {
+        target.size.fetchPositions().forEach {
             assertThat(image.getTileAt(it + POSITION).get())
                     .isEqualTo(target.tileGraphics().getTileAt(it).get())
         }
@@ -161,8 +161,8 @@ class DefaultComponentTest {
     fun shouldProperlyTransformToLayers() {
         val result = target.transformToLayers()
         assertThat(result).hasSize(1)
-        assertThat(result.first().size()).isEqualTo(target.size())
-        assertThat(result.first().position()).isEqualTo(target.position())
+        assertThat(result.first().size).isEqualTo(target.size)
+        assertThat(result.first().position).isEqualTo(target.position)
     }
 
     @Test

@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.renderer
 
-import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.grid.InternalTileGrid
@@ -29,16 +29,15 @@ class VirtualRenderer(private val tileGrid: InternalTileGrid) : Renderer {
         val now = SystemUtils.getCurrentTimeMs()
         val snapshot = tileGrid.createSnapshot()
         tileGrid.updateAnimations(now, tileGrid)
-        renderTiles(tiles = snapshot)
+        renderTiles(snapshot)
         tileGrid.layers().forEach { layer ->
-            renderTiles(
-                    tiles = layer.createSnapshot())
+            renderTiles(layer.createSnapshot())
         }
         lastRender = now
     }
 
-    private fun renderTiles(tiles: Map<Position, Tile>) {
-        tiles.forEach { (pos, tile) ->
+    private fun renderTiles(snapshot: Snapshot) {
+        snapshot.cells.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
                 tileset.drawTile(tile, 'x', pos)
             }
