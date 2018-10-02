@@ -12,21 +12,20 @@ class DefaultLayerable(
         boundable: Boundable = DefaultBoundable(size))
     : Layerable, Boundable by boundable {
 
-    private val layers = ThreadSafeQueueFactory.create<Layer>()
+    override val layers: List<Layer>
+        get() = currentLayers.toList()
+
+    private val currentLayers = ThreadSafeQueueFactory.create<Layer>()
 
     override fun pushLayer(layer: Layer) {
-        layers.offer(layer)
+        currentLayers.offer(layer)
     }
 
     override fun popLayer(): Maybe<Layer> {
-        return layers.poll()
+        return currentLayers.poll()
     }
 
     override fun removeLayer(layer: Layer) {
-        layers.remove(layer)
-    }
-
-    override fun layers(): List<Layer> {
-        return layers.toList()
+        currentLayers.remove(layer)
     }
 }

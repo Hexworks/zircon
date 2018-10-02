@@ -44,6 +44,9 @@ class RectangleTileGrid(
         ShutdownHook by shutdownHook,
         DrawSurface by backend {
 
+    override val layers: List<Layer>
+        get() = layerable.layers
+
     private var originalBackend = backend
     private var originalLayerable = layerable
     private var originalAnimationHandler = animationHandler
@@ -112,10 +115,6 @@ class RectangleTileGrid(
 
     override fun removeLayer(layer: Layer) {
         layerable.removeLayer(layer)
-    }
-
-    override fun layers(): List<Layer> {
-        return layerable.layers()
     }
 
     override fun intersects(boundable: Boundable): Boolean {

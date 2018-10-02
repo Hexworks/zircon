@@ -109,7 +109,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                 graphics = gc,
                 snapshot = snapshot,
                 tileset = tilesetLoader.loadTilesetFrom(tileGrid.currentTileset()))
-        tileGrid.layers().forEach { layer ->
+        tileGrid.layers.forEach { layer ->
             renderTiles(
                     graphics = gc,
                     snapshot = layer.createSnapshot(),

@@ -5,25 +5,24 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.util.Math
 
-class DefaultScrollable(private var visibleSize: Size,
-                        private var actualSize: Size) : Scrollable {
+class DefaultScrollable(override val visibleSize: Size,
+                        initialActualSize: Size) : Scrollable {
+
+
+    override var actualSize: Size = initialActualSize
+        set(value) {
+            checkSizes()
+            field = value
+        }
+
+    override val visibleOffset: Position
+        get() = offset
 
     private var offset = Position.defaultPosition()
 
     init {
         checkSizes()
     }
-
-    override fun actualSize() = actualSize
-
-    override fun setActualSize(size: Size) {
-        checkSizes()
-        this.actualSize = size
-    }
-
-    override fun visibleSize() = visibleSize
-
-    override fun visibleOffset() = offset
 
     override fun scrollOneRight(): Position {
         if (visibleSize.xLength + offset.x < actualSize.xLength) {

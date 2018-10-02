@@ -34,8 +34,8 @@ class DefaultGameComponent(private val gameArea: GameArea,
                            tileset: TilesetResource,
                            componentStyleSet: ComponentStyleSet,
                            private val scrollable: Scrollable3D = DefaultScrollable3D(
-                                   visibleSpaceSize = size,
-                                   virtualSpaceSize = gameArea.size))
+                                   visibleSize = size,
+                                   actualSize = gameArea.size))
 
     : GameComponent,
         Scrollable3D by scrollable,

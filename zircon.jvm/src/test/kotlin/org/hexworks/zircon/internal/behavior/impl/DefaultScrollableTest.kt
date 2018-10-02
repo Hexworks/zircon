@@ -14,12 +14,12 @@ class DefaultScrollableTest {
     fun setUp() {
         target = DefaultScrollable(
                 visibleSize = VISIBLE_SPACE_SIZE,
-                actualSize = VIRTUAL_SPACE_SIZE)
+                initialActualSize = VIRTUAL_SPACE_SIZE)
     }
 
     @Test
     fun shouldProperlyReportVirtualSpaceSize() {
-        assertThat(target.actualSize())
+        assertThat(target.actualSize)
                 .isEqualTo(VIRTUAL_SPACE_SIZE)
     }
 
@@ -27,7 +27,7 @@ class DefaultScrollableTest {
     fun shouldProperlyScrollOneRightWhenCanScroll() {
         target.scrollOneRight()
 
-        assertThat(target.visibleOffset())
+        assertThat(target.visibleOffset)
                 .isEqualTo(Position.create(1, 0))
     }
 
@@ -37,7 +37,7 @@ class DefaultScrollableTest {
         target.scrollOneRight()
         target.scrollOneLeft()
 
-        assertThat(target.visibleOffset())
+        assertThat(target.visibleOffset)
                 .isEqualTo(Position.create(1, 0))
     }
 
@@ -45,7 +45,7 @@ class DefaultScrollableTest {
     fun shouldProperlyScrollOneDownWhenCanScroll() {
         target.scrollOneDown()
 
-        assertThat(target.visibleOffset())
+        assertThat(target.visibleOffset)
                 .isEqualTo(Position.create(0, 1))
     }
 
@@ -55,7 +55,7 @@ class DefaultScrollableTest {
         target.scrollOneDown()
         target.scrollOneUp()
 
-        assertThat(target.visibleOffset())
+        assertThat(target.visibleOffset)
                 .isEqualTo(Position.create(0, 1))
     }
 
@@ -63,7 +63,7 @@ class DefaultScrollableTest {
     fun shouldProperlyScrollRightWhenCanScroll() {
         target.scrollRightBy(5)
 
-        assertThat(target.visibleOffset())
+        assertThat(target.visibleOffset)
                 .isEqualTo(Position.create(5, 0))
     }
 
@@ -72,7 +72,7 @@ class DefaultScrollableTest {
         target.scrollRightBy(5)
         target.scrollLeftBy(3)
 
-        assertThat(target.visibleOffset())
+        assertThat(target.visibleOffset)
                 .isEqualTo(Position.create(2, 0))
     }
 
@@ -80,7 +80,7 @@ class DefaultScrollableTest {
     fun shouldProperlyScrollDownWhenCanScroll() {
         target.scrollDownBy(5)
 
-        assertThat(target.visibleOffset())
+        assertThat(target.visibleOffset)
                 .isEqualTo(Position.create(0, 5))
     }
 
@@ -89,7 +89,7 @@ class DefaultScrollableTest {
         target.scrollDownBy(5)
         target.scrollUpBy(3)
 
-        assertThat(target.visibleOffset())
+        assertThat(target.visibleOffset)
                 .isEqualTo(Position.create(0, 2))
     }
 
@@ -97,7 +97,7 @@ class DefaultScrollableTest {
     fun shouldProperlyScrollRightToMaxWhenScrollingTooMuch() {
         target.scrollRightBy(Int.MAX_VALUE)
 
-        assertThat(target.visibleOffset())
+        assertThat(target.visibleOffset)
                 .isEqualTo(Position.create(5, 0))
     }
 
@@ -106,7 +106,7 @@ class DefaultScrollableTest {
         target.scrollRightBy(5)
         target.scrollLeftBy(Int.MAX_VALUE)
 
-        assertThat(target.visibleOffset())
+        assertThat(target.visibleOffset)
                 .isEqualTo(Position.create(0, 0))
     }
 
@@ -115,7 +115,7 @@ class DefaultScrollableTest {
         target.scrollDownBy(5)
         target.scrollUpBy(Int.MAX_VALUE)
 
-        assertThat(target.visibleOffset())
+        assertThat(target.visibleOffset)
                 .isEqualTo(Position.create(0, 0))
     }
 
@@ -123,7 +123,7 @@ class DefaultScrollableTest {
     fun shouldProperlyScrollDownToMaxWhenScrollingTooMuch() {
         target.scrollDownBy(Int.MAX_VALUE)
 
-        assertThat(target.visibleOffset())
+        assertThat(target.visibleOffset)
                 .isEqualTo(Position.create(0, 5))
     }
 

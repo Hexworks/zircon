@@ -149,7 +149,7 @@ class DefaultTextArea constructor(
     override fun keyStroked(keyStroke: KeyStroke) {
         if (typingEnabled) {
             val cursorPos = cursorPosition()
-            val (offsetCols, offsetRows) = visibleOffset()
+            val (offsetCols, offsetRows) = visibleOffset
             val currColIdx = cursorPos.x + offsetCols
             val currRowIdx = cursorPos.y + offsetRows
             val prevRowIdx = offsetRows + cursorPos.y - 1
@@ -157,7 +157,7 @@ class DefaultTextArea constructor(
             val maybePrevRow = textBuffer.getRow(prevRowIdx)
             val maybeNextRow = textBuffer.getRow(nextRowIdx)
             val maybeCurrRow = textBuffer.getRow(currRowIdx)
-            val nextChar = textBuffer.getCharAt(visibleOffset() + cursorPosition())
+            val nextChar = textBuffer.getCharAt(visibleOffset + cursorPosition())
             // TODO: this should be a state machine
             // refactor this later
             if (keyStroke.inputTypeIs(InputType.ArrowRight)) {
@@ -171,7 +171,7 @@ class DefaultTextArea constructor(
                 }
             } else if (keyStroke.inputTypeIs(InputType.ArrowLeft)) {
                 if (isCursorAtTheStartOfTheLine()) {
-                    if (visibleOffset().x > 0) {
+                    if (visibleOffset.x > 0) {
                         // we can still scroll left because there are hidden parts of the left section
                         scrollOneLeft()
                         render()
@@ -305,10 +305,10 @@ class DefaultTextArea constructor(
     }
 
     private fun scrollLeftToRowEnd(row: StringBuilder) {
-        val visibleCharCount = row.length - visibleOffset().x
-        if (row.length > visibleOffset().x) {
+        val visibleCharCount = row.length - visibleOffset.x
+        if (row.length > visibleOffset.x) {
             if (visibleCharCount < cursorPosition().x) {
-                putCursorAt(cursorPosition().withX(row.length - visibleOffset().x))
+                putCursorAt(cursorPosition().withX(row.length - visibleOffset.x))
             }
         } else {
             scrollLeftBy(row.length)
@@ -333,7 +333,7 @@ class DefaultTextArea constructor(
         val (visibleCols, visibleRows) = size
         val (textCols, textRows) = textBuffer.getBoundingBoxSize()
         if (textCols >= visibleCols && textRows >= visibleRows) {
-            setActualSize(textBuffer.getBoundingBoxSize())
+            actualSize = textBuffer.getBoundingBoxSize()
         }
     }
 }

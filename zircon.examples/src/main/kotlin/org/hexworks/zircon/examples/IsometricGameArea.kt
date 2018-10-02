@@ -3,8 +3,11 @@ package org.hexworks.zircon.examples
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.data.BlockSide.*
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.game.GameModifiers.*
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
@@ -243,7 +246,7 @@ object IsometricGameArea {
                     if (InputType.PageDown === input.inputType()) {
                         gameComponent.scrollOneDown()
                     }
-                    screen.layers().forEach {
+                    screen.layers.forEach {
                         screen.removeLayer(it)
                     }
                     val (x, y, z) = gameComponent.visibleOffset()

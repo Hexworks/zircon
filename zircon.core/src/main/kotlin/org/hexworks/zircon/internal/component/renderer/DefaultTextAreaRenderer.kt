@@ -15,7 +15,7 @@ class DefaultTextAreaRenderer : ComponentRenderer<TextArea>() {
         tileGraphics.applyStyle(style)
         val tileTemplate = Tile.createCharacterTile(' ', style)
         tileGraphics.size.fetchPositions().forEach { pos ->
-            val fixedPos = pos + component.visibleOffset()
+            val fixedPos = pos + component.visibleOffset
             component.textBuffer().getCharAt(fixedPos).map { char ->
                 tileGraphics.setTileAt(pos, tileTemplate.withCharacter(char))
             }
