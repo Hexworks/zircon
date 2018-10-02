@@ -36,7 +36,7 @@ class DefaultRadioButtonTest {
 
     @Test
     fun shouldProperlyAddRadioButtonText() {
-        val surface = target.tileGraphics()
+        val surface = target.tileGraphics
         val offset = 4
         TEXT.forEachIndexed { i, char ->
             assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
@@ -49,22 +49,22 @@ class DefaultRadioButtonTest {
 
     @Test
     fun shouldProperlyReturnText() {
-        assertThat(target.text()).isEqualTo(TEXT)
+        assertThat(target.text).isEqualTo(TEXT)
     }
 
     @Test
     fun shouldProperlyApplyTheme() {
         target.applyColorTheme(THEME)
-        val styles = target.componentStyleSet()
-        assertThat(styles.getStyleFor(ComponentState.DEFAULT))
+        val styles = target.componentStyleSet
+        assertThat(styles.fetchStyleFor(ComponentState.DEFAULT))
                 .isEqualTo(EXPECTED_DEFAULT_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.MOUSE_OVER))
+        assertThat(styles.fetchStyleFor(ComponentState.MOUSE_OVER))
                 .isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.FOCUSED))
+        assertThat(styles.fetchStyleFor(ComponentState.FOCUSED))
                 .isEqualTo(EXPECTED_FOCUSED_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.ACTIVE))
+        assertThat(styles.fetchStyleFor(ComponentState.ACTIVE))
                 .isEqualTo(EXPECTED_ACTIVE_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.DISABLED))
+        assertThat(styles.fetchStyleFor(ComponentState.DISABLED))
                 .isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
@@ -80,7 +80,7 @@ class DefaultRadioButtonTest {
         val result = target.giveFocus()
 
         assertThat(result).isTrue()
-        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
+        assertThat(target.componentStyleSet.currentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
     }
 
     @Test
@@ -89,7 +89,7 @@ class DefaultRadioButtonTest {
 
         target.takeFocus()
 
-        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
+        assertThat(target.componentStyleSet.currentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
     @Test
@@ -99,7 +99,7 @@ class DefaultRadioButtonTest {
 
         assertThat(getButtonChar()).isEqualTo('O')
         assertThat(target.isSelected()).isTrue()
-        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
+        assertThat(target.componentStyleSet.currentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
     }
 
     @Test
@@ -122,10 +122,10 @@ class DefaultRadioButtonTest {
 
         assertThat(getButtonChar()).isEqualTo(' ')
         assertThat(target.isSelected()).isFalse()
-        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
+        assertThat(target.componentStyleSet.currentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
-    private fun getButtonChar() = target.tileGraphics().getTileAt(Position.create(1, 0))
+    private fun getButtonChar() = target.tileGraphics.getTileAt(Position.create(1, 0))
             .get().asCharacterTile().get().character
 
     companion object {
@@ -144,23 +144,23 @@ class DefaultRadioButtonTest {
                 .build()
 
         val EXPECTED_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.accentColor())
+                .foregroundColor(THEME.accentColor)
                 .backgroundColor(TileColor.transparent())
                 .build()
 
         val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.primaryBackgroundColor())
-                .backgroundColor(THEME.accentColor())
+                .foregroundColor(THEME.primaryBackgroundColor)
+                .backgroundColor(THEME.accentColor)
                 .build()
 
         val EXPECTED_FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryBackgroundColor())
-                .backgroundColor(THEME.accentColor())
+                .foregroundColor(THEME.secondaryBackgroundColor)
+                .backgroundColor(THEME.accentColor)
                 .build()
 
         val EXPECTED_ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor())
-                .backgroundColor(THEME.accentColor())
+                .foregroundColor(THEME.secondaryForegroundColor)
+                .backgroundColor(THEME.accentColor)
                 .build()
     }
 }

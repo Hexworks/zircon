@@ -23,7 +23,7 @@ data class HeaderBuilder(
         }
         fillMissingValues()
         val finalSize = if (size.isUnknown()) {
-            decorationRenderers().map { it.occupiedSize() }
+            decorationRenderers().map { it.occupiedSize }
                     .fold(Size.create(text.length, 1), Size::plus)
         } else {
             size
@@ -35,7 +35,7 @@ data class HeaderBuilder(
                         componentRenderer = DefaultHeaderRenderer()),
                 initialSize = finalSize,
                 position = position,
-                componentStyleSet = componentStyleSet(),
+                componentStyleSet = componentStyleSet,
                 initialTileset = tileset())
     }
 

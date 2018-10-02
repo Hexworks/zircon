@@ -24,7 +24,7 @@ data class PanelBuilder(
                         componentRenderer = DefaultPanelRenderer()),
                 size = size,
                 position = position,
-                componentStyleSet = componentStyleSet(),
+                componentStyleSet = commonComponentProperties.componentStyleSet,
                 tileset = tileset())
     }
 

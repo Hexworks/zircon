@@ -105,10 +105,10 @@ class DefaultContainerTest {
 
         assertThat(panel.isAttached()).isTrue()
 
-        assertThat(panel.absolutePosition()).isEqualTo(Positions.create(1, 1))
-        assertThat(panelHeader.absolutePosition()).isEqualTo(Positions.create(3, 2)) // + 1x1 because of the wrapper
-        assertThat(innerPanel.absolutePosition()).isEqualTo(Positions.create(3, 4))
-        assertThat(innerPanelHeader.absolutePosition()).isEqualTo(Positions.create(5, 5))
+        assertThat(panel.absolutePosition).isEqualTo(Positions.create(1, 1))
+        assertThat(panelHeader.absolutePosition).isEqualTo(Positions.create(3, 2)) // + 1x1 because of the wrapper
+        assertThat(innerPanel.absolutePosition).isEqualTo(Positions.create(3, 4))
+        assertThat(innerPanelHeader.absolutePosition).isEqualTo(Positions.create(5, 5))
     }
 
     @Test
@@ -143,12 +143,12 @@ class DefaultContainerTest {
         panel0.addComponent(header0)
 
         assertThat(header0.isAttached()).isTrue()
-        assertThat(header0.absolutePosition()).isEqualTo(Positions.create(3, 2))
+        assertThat(header0.absolutePosition).isEqualTo(Positions.create(3, 2))
 
         panel0.addComponent(panel1)
 
         assertThat(panel1.isAttached())
-        assertThat(panel1.absolutePosition()).isEqualTo(Positions.create(3, 3))
+        assertThat(panel1.absolutePosition).isEqualTo(Positions.create(3, 3))
 
     }
 

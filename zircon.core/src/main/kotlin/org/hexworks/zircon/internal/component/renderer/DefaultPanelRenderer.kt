@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.graphics.SubTileGraphics
 class DefaultPanelRenderer : ComponentRenderer<Panel>() {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<Panel>) {
-        val style = context.componentStyle().currentStyle()
+        val style = context.componentStyle.currentStyle()
         tileGraphics.applyStyle(style)
     }
 }

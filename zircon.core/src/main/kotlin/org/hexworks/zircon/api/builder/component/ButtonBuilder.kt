@@ -42,7 +42,7 @@ data class ButtonBuilder(
                 componentRenderer = DefaultButtonRenderer())
         val finalSize = if (size.isUnknown()) {
             renderers.asSequence()
-                    .map { it.occupiedSize() }
+                    .map { it.occupiedSize }
                     .fold(Size.create(text.length, 1), Size::plus)
         } else {
             size
@@ -52,7 +52,7 @@ data class ButtonBuilder(
                 renderingStrategy = componentRenderer,
                 size = finalSize,
                 position = position,
-                componentStyleSet = componentStyleSet(),
+                componentStyleSet = componentStyleSet,
                 tileset = tileset())
     }
 

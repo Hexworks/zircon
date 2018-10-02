@@ -5,15 +5,15 @@ import org.hexworks.zircon.internal.color.DefaultTextColor
 
 interface TileColor : Cacheable {
 
-    fun isOpaque() = alpha() == 255
+    fun isOpaque() = alpha == 255
 
-    fun alpha(): Int
+    val alpha: Int
 
-    fun red(): Int
+    val red: Int
 
-    fun green(): Int
+    val green: Int
 
-    fun blue(): Int
+    val blue: Int
 
     /**
      * Returns a new [TileColor] which is tinted by the default factor (.7).

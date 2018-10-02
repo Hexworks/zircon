@@ -46,23 +46,22 @@ abstract class DefaultContainer(position: Position,
         }
     }
 
-    override fun children(): List<Component> {
-        return components.toList()
-    }
+    override val children: List<Component>
+        get() = components.toList()
 
     override fun addComponent(component: Component) {
         require(component !== this) {
             "You can't add a component to itself!"
         }
         (component as? DefaultComponent)?.let { dc ->
-            dc.moveTo(dc.position + contentPosition())
+            dc.moveTo(dc.position + contentPosition)
             if (RuntimeConfig.config.betaEnabled.not()) {
                 require(currentTileset().size == component.currentTileset().size) {
                     "Trying to add component with incompatible tileset size '${component.currentTileset().size}' to" +
                             "container with tileset size: '${currentTileset().size}'!"
                 }
-                val contentBounds = contentSize().toBounds()
-                val originalDcBounds = dc.rect.withPosition(dc.position - contentPosition())
+                val contentBounds = contentSize.toBounds()
+                val originalDcBounds = dc.rect.withPosition(dc.position - contentPosition)
                 require(contentBounds.containsBoundable(originalDcBounds)) {
                     "Trying to add a component ($component) with bounds($originalDcBounds)" +
                             " to a container ($this) with content bounds ($contentBounds) which is out of bounds."
@@ -98,7 +97,7 @@ abstract class DefaultContainer(position: Position,
 
     override fun transformToLayers(): List<Layer> {
         return listOf(LayerBuilder.newBuilder()
-                .tileGraphic(tileGraphics())
+                .tileGraphic(tileGraphics)
                 .offset(position)
                 .build())
                 .flatMap { layer ->
@@ -114,7 +113,7 @@ abstract class DefaultContainer(position: Position,
     }
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
-        surface.draw(tileGraphics(), position)
+        surface.draw(tileGraphics, position)
         components.forEach {
             it.drawOnto(surface)
         }

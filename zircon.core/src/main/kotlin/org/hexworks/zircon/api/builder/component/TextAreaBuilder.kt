@@ -20,16 +20,16 @@ data class TextAreaBuilder(
     override fun build(): TextArea {
         fillMissingValues()
         val size = decorationRenderers().asSequence()
-                .map { it.occupiedSize() }
+                .map { it.occupiedSize }
                 .fold(size, Size::plus)
         return DefaultTextArea(
-                text = text,
+                initialText = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultTextAreaRenderer()),
                 size = size,
                 position = position,
-                componentStyleSet = componentStyleSet(),
+                componentStyleSet = componentStyleSet,
                 tileset = tileset())
     }
 

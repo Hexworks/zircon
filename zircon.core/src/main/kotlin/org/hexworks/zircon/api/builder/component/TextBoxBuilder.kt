@@ -86,7 +86,7 @@ data class TextBoxBuilder(
         }
         fillMissingValues()
         val decorationSize = decorationRenderers().asSequence()
-                .map { it.occupiedSize() }
+                .map { it.occupiedSize }
                 .fold(Size.zero(), Size::plus)
         return DefaultTextBox(
                 renderingStrategy = DefaultComponentRenderingStrategy(
@@ -94,7 +94,7 @@ data class TextBoxBuilder(
                         componentRenderer = DefaultTextBoxRenderer()),
                 size = currentSize + decorationSize,
                 position = position,
-                componentStyleSet = componentStyleSet(),
+                componentStyleSet = componentStyleSet,
                 tileset = tileset()).also { textBox ->
             components.forEach {
                 textBox.addComponent(it)

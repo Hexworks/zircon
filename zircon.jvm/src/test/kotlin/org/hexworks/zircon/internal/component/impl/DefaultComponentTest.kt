@@ -73,7 +73,7 @@ class DefaultComponentTest {
 
     @Test
     fun shouldProperlyApplyStylesOnInit() {
-        assertThat(target.componentStyleSet().currentStyle())
+        assertThat(target.componentStyleSet.currentStyle())
                 .isEqualTo(STYLES.currentStyle())
     }
 
@@ -116,7 +116,7 @@ class DefaultComponentTest {
 
         target.size.fetchPositions().forEach {
             assertThat(image.getTileAt(it + POSITION).get())
-                    .isEqualTo(target.tileGraphics().getTileAt(it).get())
+                    .isEqualTo(target.tileGraphics.getTileAt(it).get())
         }
     }
 

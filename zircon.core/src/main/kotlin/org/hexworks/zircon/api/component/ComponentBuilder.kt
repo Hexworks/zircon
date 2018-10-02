@@ -22,14 +22,15 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
      */
     val size: Size
 
+    /**
+     * The [ComponentStyleSet] the resulting [Component] will use
+     */
+    val componentStyleSet: ComponentStyleSet
+
+
     fun title(): Maybe<String>
 
     fun withTitle(title: String): U
-
-    /**
-     * Returns the [ComponentStyleSet] the resulting [Component] will use
-     */
-    fun componentStyleSet(): ComponentStyleSet
 
     /**
      * Sets the [ComponentStyleSet] the resulting [Component] will use

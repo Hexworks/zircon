@@ -7,8 +7,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.Identifiable
 
@@ -24,12 +22,36 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  */
 interface Component : Identifiable, Layer, InputEmitter {
 
+    /**
+     * The [Position] where the content of this [Component] starts
+     * relative to the top left corner. In other words the content position
+     * is the sum of the offset positions for each decoration.
+     */
+    val contentPosition: Position
+
+    /**
+     * The [Size] of the content of this [Component].
+     * In other words the content size is the total size of
+     * the component minus the size of the decorations.
+     */
+    val contentSize: Size
+
+    /**
+     * The absolute position of this [Component].
+     * The absolute position is the position of the top left corner
+     * of this component relative to the top left corner of the grid.
+     */
+    val absolutePosition: Position
+
+    /**
+     * The styles this [Component] uses.
+     */
+    var componentStyleSet: ComponentStyleSet
 
     /**
      * Returns the character stored at a particular position on this [DrawSurface].
      * Returns an empty [Maybe] if no [Tile] is present at the given [Position].
      */
-    // TODO: clarify difference between `getTileAt` and `getRelativeTileAt`
     override fun getTileAt(position: Position): Maybe<Tile>
 
     /**
@@ -44,38 +66,6 @@ interface Component : Identifiable, Layer, InputEmitter {
      * Tells whether this [Component] is attached to a parent or not.
      */
     fun isAttached(): Boolean
-
-    /**
-     * The [Position] where the content of this [Component] starts
-     * relative to the top left corner. In other words the content position
-     * is the sum of the offset positions for each decoration.
-     */
-    fun contentPosition(): Position
-
-    /**
-     * Calculates the [Size] of the content of this [Component].
-     * In other words the content size is the total size of
-     * the component minus the size of the decorations.
-     */
-    fun contentSize(): Size
-
-    /**
-     * Returns the absolute position of this [Component].
-     * The absolute position is the position of the top left corner
-     * of this component relative to the top left corner of the grid.
-     */
-    fun absolutePosition(): Position
-
-    /**
-     * Gets the styles this [Component] uses.
-     */
-    fun componentStyleSet(): ComponentStyleSet
-
-    /**
-     * Sets the styles this [Component] will be displayed with and also
-     * applies the style which corresponds to the current state of the [Component].
-     */
-    fun setComponentStyleSet(componentStyleSet: ComponentStyleSet)
 
     /**
      * Sets the style of this [Component] from the given `styleSet`

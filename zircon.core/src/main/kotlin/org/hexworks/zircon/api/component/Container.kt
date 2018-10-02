@@ -14,9 +14,9 @@ interface Container : Component {
 
     // TODO: implement ComponentContainer?
     /**
-     * Returns the immediate child [Component]s of this [Container].
+     * The immediate child [Component]s of this [Container].
      */
-    fun children(): List<Component>
+    val children: List<Component>
 
     /**
      * Adds a child [Component] to this [Container]. It can either be

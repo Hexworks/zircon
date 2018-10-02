@@ -27,7 +27,7 @@ data class ParagraphBuilder(
         // TODO: calculate size based on text size
         val finalSize = if (size.isUnknown()) {
             decorationRenderers().asSequence()
-                    .map { it.occupiedSize() }
+                    .map { it.occupiedSize }
                     .fold(Size.create(text.length, 1), Size::plus)
         } else {
             size
@@ -39,7 +39,7 @@ data class ParagraphBuilder(
                         componentRenderer = DefaultParagraphRenderer()),
                 size = finalSize,
                 position = position,
-                componentStyleSet = componentStyleSet(),
+                componentStyleSet = componentStyleSet,
                 tileset = tileset())
     }
 

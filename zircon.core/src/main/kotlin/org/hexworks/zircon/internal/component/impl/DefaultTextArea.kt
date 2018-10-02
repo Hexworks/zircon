@@ -29,7 +29,7 @@ import org.hexworks.zircon.platform.extension.insert
 
 class DefaultTextArea constructor(
         private val renderingStrategy: ComponentRenderingStrategy<TextArea>,
-        text: String,
+        initialText: String,
         tileset: TilesetResource,
         size: Size,
         position: Position,
@@ -43,50 +43,44 @@ class DefaultTextArea constructor(
         componentStyles = componentStyleSet,
         renderer = renderingStrategy) {
 
-    private val textBuffer = TextBuffer(text)
+    override var text: String
+        get() = textBuffer.getText()  // TODO: line sep?
+        set(value) {
+            textBuffer.setText(value)
+            render()
+        }
+
+    private val textBuffer = TextBuffer(initialText)
     private var typingEnabled = false
     private var enabled = true
     private var focused = false
 
     init {
-        setText(text)
+        this.text = initialText
         refreshVirtualSpaceSize()
         render()
     }
 
-    override fun text() = textBuffer.getText() // TODO: line sep?
-
     override fun textBuffer() = textBuffer
-
-    override fun setText(text: String): Boolean {
-        val isChanged = if (this.textBuffer.toString() == text) {
-            false
-        } else {
-            textBuffer.setText(text)
-            true
-        }
-        render()
-        return isChanged
-    }
 
     override fun acceptsFocus() = enabled
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryBackgroundColor())
-                        .backgroundColor(colorTheme.secondaryForegroundColor())
+                        .foregroundColor(colorTheme.secondaryBackgroundColor)
+                        .backgroundColor(colorTheme.secondaryForegroundColor)
                         .build())
                 .disabledStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor())
-                        .backgroundColor(colorTheme.secondaryBackgroundColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor)
+                        .backgroundColor(colorTheme.secondaryBackgroundColor)
                         .build())
                 .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.primaryBackgroundColor())
-                        .backgroundColor(colorTheme.primaryForegroundColor())
+                        .foregroundColor(colorTheme.primaryBackgroundColor)
+                        .backgroundColor(colorTheme.primaryForegroundColor)
                         .build())
                 .build().also {
-                    setComponentStyleSet(it)
+                    componentStyleSet = it
                     render()
                 }
     }
@@ -107,7 +101,7 @@ class DefaultTextArea constructor(
                 disableTyping()
             }
         }
-        componentStyleSet().applyDisabledStyle()
+        componentStyleSet.applyDisabledStyle()
         render()
     }
 
@@ -122,16 +116,16 @@ class DefaultTextArea constructor(
     override fun takeFocus(input: Maybe<Input>) {
         focused = false
         disableTyping()
-        componentStyleSet().reset()
+        componentStyleSet.reset()
         render()
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics())
+        renderingStrategy.render(this, tileGraphics)
     }
 
     private fun enableFocusedComponent() {
-        componentStyleSet().applyFocusedStyle()
+        componentStyleSet.applyFocusedStyle()
         render()
         enableTyping()
     }
@@ -143,7 +137,7 @@ class DefaultTextArea constructor(
 
     private fun enableTyping() {
         typingEnabled = true
-        EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition().withRelative(position + contentPosition())))
+        EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition().withRelative(position + contentPosition)))
     }
 
     override fun keyStroked(keyStroke: KeyStroke) {

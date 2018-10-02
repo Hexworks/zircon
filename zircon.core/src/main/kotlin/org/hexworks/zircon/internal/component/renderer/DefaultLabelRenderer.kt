@@ -8,8 +8,8 @@ import org.hexworks.zircon.api.graphics.SubTileGraphics
 class DefaultLabelRenderer : ComponentRenderer<Label>() {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<Label>) {
-        val style = context.componentStyle().currentStyle()
+        val style = context.componentStyle.currentStyle()
         tileGraphics.applyStyle(style)
-        tileGraphics.putText(context.component.text())
+        tileGraphics.putText(context.component.text)
     }
 }

@@ -19,14 +19,15 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
     override val size: Size
         get() = props.size
 
+    override val componentStyleSet: ComponentStyleSet
+        get() = props.componentStyleSet
+
     override fun title() = props.title
 
     override fun withTitle(title: String): U {
         props.title = Maybe.of(title)
         return this as U
     }
-
-    override fun componentStyleSet() = props.componentStyleSet
 
     override fun withComponentStyleSet(componentStyleSet: ComponentStyleSet): U {
         props.componentStyleSet = componentStyleSet
