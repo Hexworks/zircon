@@ -203,8 +203,8 @@ object IsometricGameArea {
                     }
                     val bb = Blocks.newBuilder()
                     blockTiles.forEach { tile ->
-                        if (tile.modifiers().isNotEmpty()) {
-                            bb.side(MODIFIER_LOOKUP[tile.modifiers().first()]!!, tile)
+                        if (tile.modifiers.isNotEmpty()) {
+                            bb.side(MODIFIER_LOOKUP[tile.modifiers.first()]!!, tile)
                         } else {
                             bb.layer(tile)
                         }

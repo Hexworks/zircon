@@ -49,9 +49,9 @@ class MonospaceAwtFontTileset(private val resource: TilesetResource)
         val y = position.y * height()
 
         surface.font = font
-        surface.color = tile.backgroundColor().toAWTColor()
+        surface.color = tile.backgroundColor.toAWTColor()
         surface.fillRect(x, y, resource.width, resource.height)
-        surface.color = tile.foregroundColor().toAWTColor()
+        surface.color = tile.foregroundColor.toAWTColor()
         surface.drawString(s, x, y + fm.ascent)
     }
 }

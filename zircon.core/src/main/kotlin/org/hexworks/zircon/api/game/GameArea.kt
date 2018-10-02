@@ -92,8 +92,10 @@ interface GameArea {
      */
     fun fetchBlocksAt(offset: Position3D, size: Size3D): Iterable<Block> {
         return fetchPositionsWithOffset(offset, size)
+                .asSequence()
                 .filter { hasBlockAt(it) }
                 .map { fetchBlockOrDefault(it) }
+                .toList()
     }
 
     /**

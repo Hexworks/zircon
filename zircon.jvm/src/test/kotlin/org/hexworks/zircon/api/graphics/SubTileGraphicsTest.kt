@@ -108,7 +108,7 @@ class SubTileGraphicsTest {
 
         target.applyStyle(TARGET_STYLE)
 
-        assertThat(backend.fetchCells().map { it.tile.styleSet() }).containsExactly(
+        assertThat(backend.fetchCells().map { it.tile.styleSet }).containsExactly(
                 BACKEND_STYLE, BACKEND_STYLE, BACKEND_STYLE, BACKEND_STYLE, BACKEND_STYLE,
                 BACKEND_STYLE, TARGET_STYLE, TARGET_STYLE, TARGET_STYLE, BACKEND_STYLE,
                 BACKEND_STYLE, TARGET_STYLE, TARGET_STYLE, TARGET_STYLE, BACKEND_STYLE,

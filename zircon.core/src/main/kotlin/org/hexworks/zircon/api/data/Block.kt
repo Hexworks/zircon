@@ -13,29 +13,35 @@ interface Block {
     val position: Position3D
     val layers: MutableList<Tile>
 
+    val top: Tile
+        get() = fetchSide(TOP)
+
+    val bottom: Tile
+        get() = fetchSide(BOTTOM)
+
+    val front: Tile
+        get() = fetchSide(FRONT)
+
+    val back: Tile
+        get() = fetchSide(BACK)
+
+    val left: Tile
+        get() = fetchSide(LEFT)
+
+    val right: Tile
+        get() = fetchSide(RIGHT)
+
     fun fetchSide(side: BlockSide): Tile = Tile.empty()
 
     fun isEmpty(): Boolean {
-        return top() === Tile.empty() &&
-                bottom() === Tile.empty() &&
-                front() === Tile.empty() &&
-                back() === Tile.empty() &&
-                left() === Tile.empty() &&
-                right() === Tile.empty() &&
+        return top === Tile.empty() &&
+                bottom === Tile.empty() &&
+                front === Tile.empty() &&
+                back === Tile.empty() &&
+                left === Tile.empty() &&
+                right === Tile.empty() &&
                 layers.isEmpty()
     }
-
-    fun top(): Tile = fetchSide(TOP)
-
-    fun bottom(): Tile = fetchSide(BOTTOM)
-
-    fun front(): Tile = fetchSide(FRONT)
-
-    fun back(): Tile = fetchSide(BACK)
-
-    fun left(): Tile = fetchSide(LEFT)
-
-    fun right(): Tile = fetchSide(RIGHT)
 
     companion object {
 

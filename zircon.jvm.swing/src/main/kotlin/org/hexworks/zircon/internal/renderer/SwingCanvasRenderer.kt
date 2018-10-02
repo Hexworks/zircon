@@ -165,8 +165,8 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         snapshot.cells.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
                 val actualTile = if (tile.isBlinking() && blinkOn) {
-                    tile.withBackgroundColor(tile.foregroundColor())
-                            .withForegroundColor(tile.backgroundColor())
+                    tile.withBackgroundColor(tile.foregroundColor)
+                            .withForegroundColor(tile.backgroundColor)
                 } else {
                     tile
                 }
@@ -194,7 +194,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         when (config.cursorStyle) {
             CursorStyle.USE_CHARACTER_FOREGROUND -> {
                 if (blinkOn) {
-                    graphics.color = character.foregroundColor().toAWTColor()
+                    graphics.color = character.foregroundColor.toAWTColor()
                     graphics.fillRect(x, y, tileWidth, tileHeight)
                 }
             }

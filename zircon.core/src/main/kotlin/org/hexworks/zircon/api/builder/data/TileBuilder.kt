@@ -74,13 +74,13 @@ data class TileBuilder(
     override fun build(): Tile {
         return DefaultCharacterTile(
                 character = character,
-                style = styleSet)
+                styleSet = styleSet)
     }
 
     fun buildCharacterTile(): CharacterTile {
         return DefaultCharacterTile(
                 character = character,
-                style = styleSet)
+                styleSet = styleSet)
     }
 
     fun buildImageTile(): ImageTile {

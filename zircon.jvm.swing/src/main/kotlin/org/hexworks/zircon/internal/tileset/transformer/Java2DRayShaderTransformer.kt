@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage
 class Java2DRayShaderTransformer : TextureTransformer<BufferedImage> {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
-        val rayShade: RayShade = tile.modifiers().first { it is RayShade } as RayShade
+        val rayShade: RayShade = tile.modifiers.first { it is RayShade } as RayShade
         return texture.also {
             it.texture().let { txt ->
                 txt.graphics.apply {
