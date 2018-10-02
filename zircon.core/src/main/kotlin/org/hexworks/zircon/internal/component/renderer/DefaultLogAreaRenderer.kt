@@ -27,22 +27,22 @@ class DefaultLogAreaRenderer : ComponentRenderer<LogArea>() {
         tileGraphics.clear()
         logElements.forEach { element ->
             currentY = renderLogElement(tileGraphics, context, element, currentY, currentLogElementY)
-            currentLogElementY = element.position.y
+            currentLogElementY = element.getPosition().y
         }
     }
 
     private fun renderLogElement(tileGraphics: SubTileGraphics, context: ComponentRenderContext<LogArea>,
                                  logElement: LogElement, targetYPosition: Int, logElementY: Int): Int {
-        var currentPosX = logElement.position.x
+        var currentPosX = logElement.getPosition().x
         var currentPosY = targetYPosition
         var currentLogElementY = logElementY
 
         val logElementRenderInfo = mutableListOf<Pair<Position, Int>>()
         getWordsOfLogElement(logElement)
                 .forEach { word ->
-                    if (logElement.position.y > currentLogElementY)
-                        currentPosY += logElement.position.y - currentLogElementY
-                    if (context.component.textWrap == TextWrap.WORD_WRAP && (currentPosX + word.length) > tileGraphics.size().width()) {
+                    if (logElement.getPosition().y > currentLogElementY)
+                        currentPosY += logElement.getPosition().y - currentLogElementY
+                    if (context.component.textWrapMode == TextWrap.WORD_WRAP && (currentPosX + word.length) > tileGraphics.size().width()) {
                         currentPosX = 0
                         currentPosY += 1
                     }
@@ -55,7 +55,7 @@ class DefaultLogAreaRenderer : ComponentRenderer<LogArea>() {
                         renderWord(position, context, tileGraphics, word, logElementRenderInfo, logElement)
 
                         currentPosX += word.length
-                        currentLogElementY = logElement.position.y
+                        currentLogElementY = logElement.getPosition().y
                     }
                 }
 

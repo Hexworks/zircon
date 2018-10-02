@@ -7,24 +7,24 @@ import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.api.shape.LineParameters
 import kotlin.math.*
 
-abstract class LogElement(open val position: Position) {
+sealed class LogElement(private val xPosition: Int) {
     var modifiers: Set<Modifier>? = null
     var renderedPositionArea: RenderedPositionArea? = null
+    lateinit var logElementRow: LogElementRow
 
     abstract fun getTextAsString(): String
 
-
+    fun getPosition() = Position.create(xPosition, logElementRow.yPosition)
     fun length() = getTextAsString().length
 }
 
-data class TextElement(val text: String, override val position: Position) : LogElement(position) {
+data class TextElement(val text: String, private val xPosition: Int) : LogElement(xPosition) {
     override fun getTextAsString(): String {
         return text
     }
 }
 
-data class HyperLinkElement(val linkText: String, val linkId: String, override val position: Position) : LogElement(position) {
-
+data class HyperLinkElement(val linkText: String, val linkId: String, private val xPosition: Int) : LogElement(xPosition) {
     init {
         modifiers = setOf(SimpleModifiers.Underline)
     }
@@ -34,14 +34,13 @@ data class HyperLinkElement(val linkText: String, val linkId: String, override v
     }
 }
 
-data class RenderedPositionArea(val startPosition: Position, val endPosition: Position, val logAreaSize: Size)  {
+data class RenderedPositionArea(val startPosition: Position, val endPosition: Position, val logAreaSize: Size) {
     fun containsPosition(position: Position): Boolean {
         val lines = getLines()
 
-        val contains = lines.any {
+        return lines.any {
             lineDistance(LineParameters(it.fromPoint, position)) + lineDistance(LineParameters(it.toPoint, position)) == lineDistance(LineParameters(it.fromPoint, it.toPoint))
         }
-        return  contains
     }
 
     private fun getLines(): List<LineParameters> {

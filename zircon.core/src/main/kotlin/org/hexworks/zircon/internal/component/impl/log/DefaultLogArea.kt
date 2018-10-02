@@ -31,7 +31,9 @@ class DefaultLogArea constructor(
         position: Position,
         componentStyleSet: ComponentStyleSet,
         scrollable: Scrollable = DefaultScrollable(size, size),
-        cursorHandler: CursorHandler = DefaultCursorHandler(size), override var textWrap: TextWrap)
+        cursorHandler: CursorHandler = DefaultCursorHandler(size),
+        override var textWrapMode: TextWrap,
+        var logRowHistorySize: Int)
     : LogArea, Scrollable by scrollable, CursorHandler by cursorHandler, DefaultComponent(
         position = position,
         size = size,
@@ -39,7 +41,7 @@ class DefaultLogArea constructor(
         componentStyles = componentStyleSet,
         renderer = renderingStrategy) {
 
-    private var logElementBuffer = LogElementBuffer(visibleSize())
+    private var logElementBuffer = LogElementBuffer(visibleSize(), logRowHistorySize)
     private var hyperLinkElementOnMouseOver: HyperLinkElement? = null
 
 
@@ -49,7 +51,7 @@ class DefaultLogArea constructor(
     }
 
     override fun addText(text: String, modifiers: Set<Modifier>?) {
-        val position = getNewElementPosition()
+        val position = getNewElementPositionX()
         val textElement = TextElement(text, position)
         textElement.modifiers = modifiers
         logElementBuffer.addLogElement(textElement)
@@ -57,18 +59,18 @@ class DefaultLogArea constructor(
     }
 
     override fun addHyperLink(linkText: String, linkId: String) {
-        val position = getNewElementPosition()
+        val position = getNewElementPositionX()
         logElementBuffer.addLogElement(HyperLinkElement(linkText, linkId, position))
         render()
     }
 
-    private fun getNewElementPosition(): Position {
+    private fun getNewElementPositionX(): Int {
         val lastElementInRow = logElementBuffer.currentLogElementRow().logElements.lastOrNull()
         val xPos = if (lastElementInRow != null)
-            lastElementInRow.position.x + lastElementInRow.length()
+            lastElementInRow.getPosition().x + lastElementInRow.length()
         else
             0
-        return Position.create(xPos, logElementBuffer.currentLogElementRow().yPosition)
+        return xPos
     }
 
     override fun addNewRows(numberOfRows: Int) {
@@ -82,6 +84,8 @@ class DefaultLogArea constructor(
 
     override fun clear() {
         logElementBuffer.clear()
+        setActualSize(size())
+        scrollUpBy(visibleOffset().y)
     }
 
 

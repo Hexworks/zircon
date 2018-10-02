@@ -13,17 +13,36 @@ import org.hexworks.zircon.internal.event.ZirconEvent
  */
 interface LogArea : Component, Scrollable {
 
-    var textWrap: TextWrap
 
+    /**
+     * Mode of Text Wrap. TextWrap.Wrap is currently not supported
+     */
+    var textWrapMode: TextWrap
+
+
+    /**
+     * Adds a new text element in the current row
+     */
     fun addText(text: String, modifiers: Set<Modifier>? = null)
 
+    /**
+     * Adds a new hyper link in the current row
+     */
     fun addHyperLink(linkText: String, linkId: String)
 
+    /**
+     * Adds new rows
+     */
     fun addNewRows(numberOfRows: Int = 1)
+
+    /**
+     * Clears the complete log
+     */
+    fun clear()
 
     fun getLogElementBuffer(): LogElementBuffer
 
-    fun clear()
+
 
 }
 
