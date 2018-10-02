@@ -48,7 +48,7 @@ class LibgdxRenderer(private val grid: TileGrid,
                     tileset = grid.currentTileset(),
                     offset = PixelPosition(0, 0),
                     batch = batch)
-            grid.layers().forEach { layer ->
+            grid.layers.forEach { layer ->
                 renderTiles(
                         snapshot = layer.createSnapshot(),
                         tileset = grid.currentTileset(),

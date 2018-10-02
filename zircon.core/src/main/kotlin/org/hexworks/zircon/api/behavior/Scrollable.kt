@@ -13,24 +13,19 @@ import org.hexworks.zircon.internal.behavior.Scrollable3D
 interface Scrollable {
 
     /**
-     * Returns the [Size] of the virtual space this [Scrollable] can scroll through.
+     * the [Size] of the virtual space this [Scrollable] can scroll through
      */
-    fun actualSize(): Size
+    var actualSize: Size
 
     /**
-     * Sets the [Size] of the virtual space this [Scrollable] can scroll through.
+     * the size of the visible part of this [Scrollable3D].
      */
-    fun setActualSize(size: Size)
+    val visibleSize: Size
 
     /**
-     * Returns the size of the visible part of this [Scrollable3D].
+     * The offset where the visible part of this [Scrollable] starts.
      */
-    fun visibleSize(): Size
-
-    /**
-     * Returns the offset where the visible part of this [Scrollable] starts.
-     */
-    fun visibleOffset(): Position
+    val visibleOffset: Position
 
     /**
      * Scrolls this [Scrollable] with one width to the right.
