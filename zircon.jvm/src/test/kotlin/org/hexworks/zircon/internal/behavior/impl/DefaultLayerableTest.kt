@@ -31,7 +31,7 @@ class DefaultLayerableTest {
 
         target.pushLayer(layer)
 
-        assertThat(target.getLayers())
+        assertThat(target.layers())
                 .isNotEmpty
 
     }
@@ -46,7 +46,7 @@ class DefaultLayerableTest {
         target.pushLayer(layer)
         target.removeLayer(layer)
 
-        assertThat(target.getLayers())
+        assertThat(target.layers())
                 .isEmpty()
 
     }
@@ -61,7 +61,7 @@ class DefaultLayerableTest {
         target.pushLayer(layer)
         val result = target.popLayer()
 
-        assertThat(target.getLayers())
+        assertThat(target.layers())
                 .isEmpty()
         assertThat(result.get()).isSameAs(layer)
 
@@ -90,8 +90,8 @@ class DefaultLayerableTest {
         target.pushLayer(offset1x1layer)
         target.pushLayer(offset2x2layer)
 
-        val result = target.getLayers()
-                .flatMap { it.snapshot().toList() }
+        val result = target.layers()
+                .flatMap { it.createSnapshot().toList() }
                 .filter { it.first == Position.offset1x1() }
 
 
@@ -119,8 +119,8 @@ class DefaultLayerableTest {
         target.pushLayer(offset1x1layer)
         target.pushLayer(offset2x2layer)
 
-        val result = target.getLayers()
-                .flatMap { it.snapshot().toList() }
+        val result = target.layers()
+                .flatMap { it.createSnapshot().toList() }
                 .filter { it.first == Position.offset1x1() }
 
 

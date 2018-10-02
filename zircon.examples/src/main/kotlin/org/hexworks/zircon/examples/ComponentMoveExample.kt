@@ -1,8 +1,6 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.util.Consumer
 
 object ComponentMoveExample {
 
@@ -17,18 +15,18 @@ object ComponentMoveExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         val panel = Components.panel()
-                .size(Sizes.create(20, 10))
+                .withSize(Sizes.create(20, 10))
                 .wrapWithBox(true)
                 .build()
 
         val innerPanel = Components.panel()
-                .size(Sizes.create(10, 5))
+                .withSize(Sizes.create(10, 5))
                 .wrapWithBox(true)
                 .build()
 
         innerPanel.addComponent(Components.button()
                 .text("Foo")
-                .position(Positions.offset1x1())
+                .withPosition(Positions.offset1x1())
                 .build())
 
         panel.addComponent(innerPanel)

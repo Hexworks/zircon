@@ -26,7 +26,7 @@ class DefaultLayerable(
         layers.remove(layer)
     }
 
-    override fun getLayers(): List<Layer> {
+    override fun layers(): List<Layer> {
         return layers.toList()
     }
 }

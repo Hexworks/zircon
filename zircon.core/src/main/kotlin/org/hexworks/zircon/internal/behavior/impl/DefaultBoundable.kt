@@ -2,41 +2,44 @@ package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Movable
-import org.hexworks.zircon.api.data.Bounds
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 
 class DefaultBoundable(size: Size,
-                       position: Position = Position.defaultPosition())
+                       position: Position = Position.defaultPosition(),
+                       private var rect: Rect = Rect.create(position, size))
     : Boundable, Movable {
 
-    private var bounds = Bounds.create(position, size)
+    // note that we could delegate `Boundable` to bounds but delegation of
+    // mutable vars is broken in Kotlin:
+    // http://the-cogitator.com/2018/09/29/by-the-way-exploring-delegation-in-kotlin.html#the-pitfall-of-interface-delegation
 
-    override fun position() = bounds.position()
+    override fun position() = rect.position()
 
-    override fun size() = bounds.size()
+    override fun size() = rect.size()
 
-    override fun bounds() = bounds
+    override fun rect() = rect
 
     override fun moveTo(position: Position): Boolean {
         return if (position() == position) {
             false
         } else {
-            this.bounds = bounds.withPosition(position)
+            this.rect = rect.withPosition(position)
             true
         }
     }
 
     override fun intersects(boundable: Boundable): Boolean {
-        return bounds.intersects(boundable.bounds())
+        return rect.intersects(boundable.rect())
     }
 
     override fun containsPosition(position: Position): Boolean {
-        return bounds.containsPosition(position)
+        return rect.containsPosition(position)
     }
 
     override fun containsBoundable(boundable: Boundable): Boolean {
-        return bounds.containsBounds(boundable.bounds())
+        return rect.containsBoundable(boundable)
     }
 
 }

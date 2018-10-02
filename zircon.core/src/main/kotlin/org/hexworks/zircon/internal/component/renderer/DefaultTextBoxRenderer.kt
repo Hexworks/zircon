@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.graphics.SubTileGraphics
 class DefaultTextBoxRenderer : ComponentRenderer<TextBox>() {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<TextBox>) {
-        val style = context.componentStyle().getCurrentStyle()
+        val style = context.componentStyle().currentStyle()
         tileGraphics.applyStyle(style)
     }
 }

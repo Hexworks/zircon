@@ -12,17 +12,7 @@ interface Styleable {
     /**
      * Returns a copy of the style information stored in this [Styleable].
      */
-    fun styleSet(): StyleSet
-
-    /**
-     * Returns the current background color.
-     */
-    fun backgroundColor(): TileColor
-
-    /**
-     * Updates the current background color.
-     */
-    fun setBackgroundColor(backgroundColor: TileColor)
+    fun toStyleSet(): StyleSet
 
     /**
      * Returns the current foreground color.
@@ -33,6 +23,16 @@ interface Styleable {
      * Updates the current foreground color.
      */
     fun setForegroundColor(foregroundColor: TileColor)
+
+    /**
+     * Returns the current background color.
+     */
+    fun backgroundColor(): TileColor
+
+    /**
+     * Updates the current background color.
+     */
+    fun setBackgroundColor(backgroundColor: TileColor)
 
     /**
      * Adds zero or more modifiers to the set of currently active modifiers.

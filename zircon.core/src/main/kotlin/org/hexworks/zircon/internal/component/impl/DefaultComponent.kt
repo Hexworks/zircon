@@ -70,6 +70,10 @@ abstract class DefaultComponent(
 
     final override fun contentSize() = renderer.contentSize(size())
 
+    final override fun position(): Position {
+        return boundable.position()
+    }
+
     final override fun moveTo(position: Position): Boolean {
         return boundable.moveTo(position)
     }
@@ -90,24 +94,25 @@ abstract class DefaultComponent(
 
     // TODO: delegate these to behavior
     // TODO: move all tile getters / setters into their own behavior
-    final override fun getRelativeTileAt(position: Position): Maybe<Tile> {
+
+    final override fun getTileAt(position: Position): Maybe<Tile> {
         return graphics.getTileAt(position)
     }
 
-    final override fun setRelativeTileAt(position: Position, tile: Tile) {
+    final override fun setTileAt(position: Position, tile: Tile) {
         graphics.setTileAt(position, tile)
     }
 
-    final override fun getTileAt(position: Position): Maybe<Tile> {
+    final override fun getAbsoluteTileAt(position: Position): Maybe<Tile> {
         return graphics.getTileAt(position.minus(position()))
     }
 
-    final override fun setTileAt(position: Position, tile: Tile) {
+    final override fun setAbsoluteTileAt(position: Position, tile: Tile) {
         graphics.setTileAt(position.minus(position()), tile)
     }
 
-    final override fun snapshot(): Map<Position, Tile> {
-        return graphics.snapshot()
+    final override fun createSnapshot(): Map<Position, Tile> {
+        return graphics.createSnapshot()
     }
 
     final override fun fill(filler: Tile): Layer {
@@ -151,7 +156,7 @@ abstract class DefaultComponent(
             listOf(LayerBuilder.newBuilder()
                     .tileGraphic(graphics)
                     .offset(position())
-                    .tileset(tileset())
+                    .tileset(currentTileset())
                     .build())
 
     override fun toString(): String {

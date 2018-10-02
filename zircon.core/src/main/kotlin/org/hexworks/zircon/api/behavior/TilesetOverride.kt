@@ -12,7 +12,7 @@ interface TilesetOverride {
     /**
      * Returns the currently used [Tileset].
      */
-    fun tileset(): TilesetResource
+    fun currentTileset(): TilesetResource
 
     /**
      * Sets the [Tileset] to use.

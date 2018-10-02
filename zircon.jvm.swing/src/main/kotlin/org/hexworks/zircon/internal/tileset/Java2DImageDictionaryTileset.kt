@@ -47,7 +47,7 @@ class Java2DImageDictionaryTileset(resource: TilesetResource)
         val texture = fetchTextureForTile(tile)
         val x = position.x * width()
         val y = position.y * height()
-        surface.drawImage(texture.getTexture(), x, y, null)
+        surface.drawImage(texture.texture(), x, y, null)
     }
 
     private fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {

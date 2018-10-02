@@ -10,7 +10,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButto
 class DefaultRadioButtonRenderer : ComponentRenderer<RadioButton>() {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<RadioButton>) {
-        val style = context.componentStyle().getCurrentStyle()
+        val style = context.componentStyle().currentStyle()
         tileGraphics.applyStyle(style)
         val checkBoxState = context.component.state()
         val text = context.component.text()

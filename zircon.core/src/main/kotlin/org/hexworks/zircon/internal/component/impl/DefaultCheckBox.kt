@@ -58,13 +58,9 @@ class DefaultCheckBox(private val text: String,
 
     override fun mouseReleased(action: MouseAction) {
         componentStyleSet().applyMouseOverStyle()
-        if (pressing) {
-            // this is the case when the user starts pressing outside of this
-            // component but releases here
-            pressing = false
-            checked = checked.not()
-            checkBoxState = if (checked) CHECKED else UNCHECKED
-        }
+        pressing = false
+        checked = checked.not()
+        checkBoxState = if (checked) CHECKED else UNCHECKED
         render()
     }
 

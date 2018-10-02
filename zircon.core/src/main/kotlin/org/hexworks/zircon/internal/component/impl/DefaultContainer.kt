@@ -57,13 +57,13 @@ abstract class DefaultContainer(position: Position,
         (component as? DefaultComponent)?.let { dc ->
             dc.moveTo(dc.position() + contentPosition())
             if (RuntimeConfig.config.betaEnabled.not()) {
-                require(tileset().size() == component.tileset().size()) {
-                    "Trying to add component with incompatible tileset size '${component.tileset().size()}' to" +
-                            "container with tileset size: '${tileset().size()}'!"
+                require(currentTileset().size() == component.currentTileset().size()) {
+                    "Trying to add component with incompatible tileset size '${component.currentTileset().size()}' to" +
+                            "container with tileset size: '${currentTileset().size()}'!"
                 }
                 val contentBounds = contentSize().toBounds()
-                val originalDcBounds = dc.bounds().withPosition(dc.position() - contentPosition())
-                require(contentBounds.containsBounds(originalDcBounds)) {
+                val originalDcBounds = dc.rect().withPosition(dc.position() - contentPosition())
+                require(contentBounds.containsBoundable(originalDcBounds)) {
                     "Trying to add a component ($component) with bounds($originalDcBounds)" +
                             " to a container ($this) with content bounds ($contentBounds) which is out of bounds."
                 }

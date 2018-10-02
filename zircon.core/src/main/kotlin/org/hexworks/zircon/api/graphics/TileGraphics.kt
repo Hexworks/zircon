@@ -22,12 +22,12 @@ interface TileGraphics
     /**
      * Returns a [List] of [Position]s which are not `EMPTY`.
      */
-    fun fetchFilledPositions(): List<Position> = snapshot().keys.toList()
+    fun fetchFilledPositions(): List<Position> = createSnapshot().keys.toList()
 
     /**
      * Returns a [List] of [Tile]s which are not `EMPTY`.
      */
-    fun fetchFilledTiles(): List<Tile> = snapshot().values.toList()
+    fun fetchFilledTiles(): List<Tile> = createSnapshot().values.toList()
 
     /**
      * Returns all the [Cell]s ([Tile]s with associated [Position] information)
@@ -71,9 +71,9 @@ interface TileGraphics
         // TODO: returnThis same type, use factory for this
         val result = ConcurrentTileGraphics(
                 size = newSize,
-                styleSet = styleSet(),
-                tileset = tileset())
-        snapshot().filter { (pos) -> newSize.containsPosition(pos) }
+                styleSet = toStyleSet(),
+                tileset = currentTileset())
+        createSnapshot().filter { (pos) -> newSize.containsPosition(pos) }
                 .forEach { (pos, tc) ->
                     result.setTileAt(pos, tc)
                 }
@@ -104,7 +104,7 @@ interface TileGraphics
         text.forEachIndexed { col, char ->
             setTileAt(position.withRelativeX(col), TileBuilder
                     .newBuilder()
-                    .styleSet(styleSet())
+                    .styleSet(toStyleSet())
                     .character(char)
                     .build())
         }
@@ -121,11 +121,11 @@ interface TileGraphics
      * target [Tile]s should be kept or not
      */
     fun applyStyle(styleSet: StyleSet,
-                   bounds: Bounds = bounds(),
+                   rect: Rect = rect(),
                    keepModifiers: Boolean = false,
                    applyToEmptyCells: Boolean = true) {
-        val offset = bounds.position()
-        val size = bounds.size()
+        val offset = rect.position()
+        val size = rect.size()
         setStyleFrom(styleSet)
         val positions = if (applyToEmptyCells) {
             size.fetchPositions()
@@ -150,8 +150,8 @@ interface TileGraphics
     fun toTileImage(): TileImage {
         return DefaultTileImage(
                 size = size(),
-                tileset = tileset(),
-                tiles = snapshot().toMap())
+                tileset = currentTileset(),
+                tiles = createSnapshot().toMap())
     }
 
     /**
@@ -161,7 +161,7 @@ interface TileGraphics
      * of (2, 2) and writing to it will write to the original graphics' surface, offset
      * by Position(1, 1).
      */
-    fun toSubTileGraphics(bounds: Bounds): SubTileGraphics {
-        return SubTileGraphics(this, bounds)
+    fun toSubTileGraphics(rect: Rect): SubTileGraphics {
+        return SubTileGraphics(this, rect)
     }
 }

@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
     outDir.mkdirs()
 
     File("$projRoot/src/main/resources/css/").copyRecursively(File("$outRoot/css/"))
-    File("$projRoot/src/main/resources/tileset/$tilesetFile").copyTo(File("$outRoot/tileset/tileset.png"))
+    File("$projRoot/src/main/resources/font/").copyRecursively(File("$outRoot/font/"))
 
     val htmlContent = createHTML().html {
         head {
@@ -27,25 +27,7 @@ fun main(args: Array<String>) {
         body {
             div("page") {
                 span("tile") {
-                    style = """
-                        background: url('http://localhost:63342/zircon/zircon.jvm.sitegen/build/site/tileset/tileset.png') 16px 0;
-                        filter: hue-rotate(180deg);
-                    """.trimIndent()
-                }
-                span("tile") {
-                    style = """
-                        background: url('http://localhost:63342/zircon/zircon.jvm.sitegen/build/site/tileset/tileset.png') 16px 0;
-                    """.trimIndent()
-                }
-                span("tile") {
-                    style = """
-                        background: url('http://localhost:63342/zircon/zircon.jvm.sitegen/build/site/tileset/tileset.png') 16px 0;
-                    """.trimIndent()
-                }
-                span("tile") {
-                    style = """
-                        background: url('http://localhost:63342/zircon/zircon.jvm.sitegen/build/site/tileset/tileset.png') 16px 0;
-                    """.trimIndent()
+                    text(0x2554)
                 }
             }
         }

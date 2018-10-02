@@ -1,10 +1,6 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.Layers;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
@@ -18,11 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource.ADU_DHABI_16X16;
-import static org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource.BISASAM_16X16;
-import static org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource.REX_PAINT_16X16;
-import static org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource.ROGUE_YUN_16X16;
-import static org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource.WANDERLUST_16X16;
+import static org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource.*;
 
 public class FontSwitcherExample {
 
@@ -57,17 +49,15 @@ public class FontSwitcherExample {
         refreshText(tileGrid, switchFont, Positions.defaultPosition());
         refreshLayer(tileGrid, switchLayer, random);
 
-        tileGrid.onInput(input -> {
-            input.asKeyStroke().ifPresent(ks -> {
-                if (ks.inputTypeIs(InputType.ArrowRight)) {
-                    tileGrid.useTileset(TILESETS.get(random.nextInt(TILESETS.size())));
-                    // this is needed because grid can't be forced to redraw
-                    refreshText(tileGrid, switchFont, Positions.defaultPosition());
-                }
-                if (ks.inputTypeIs(InputType.ArrowLeft)) {
-                    refreshLayer(tileGrid, switchLayer, random);
-                }
-            });
+        tileGrid.onKeyStroke(keyStroke -> {
+            if (keyStroke.inputTypeIs(InputType.ArrowRight)) {
+                tileGrid.useTileset(TILESETS.get(random.nextInt(TILESETS.size())));
+                // this is needed because grid can't be forced to redraw
+                refreshText(tileGrid, switchFont, Positions.defaultPosition());
+            }
+            if (keyStroke.inputTypeIs(InputType.ArrowLeft)) {
+                refreshLayer(tileGrid, switchLayer, random);
+            }
         });
     }
 
@@ -79,7 +69,7 @@ public class FontSwitcherExample {
     }
 
     private static void refreshLayer(TileGrid tileGrid, String text, Random random) {
-        tileGrid.getLayers().forEach(tileGrid::removeLayer);
+        tileGrid.layers().forEach(tileGrid::removeLayer);
         Layer layer = Layers.newBuilder()
                 .tileset(TILESETS.get(random.nextInt(TILESETS.size())))
                 .offset(Positions.create(0, 1))

@@ -64,7 +64,7 @@ abstract class BaseTileGraphics(
         }
     }
 
-    override fun snapshot(): Map<Position, Tile> {
+    override fun createSnapshot(): Map<Position, Tile> {
         return contents.toMap()
     }
 

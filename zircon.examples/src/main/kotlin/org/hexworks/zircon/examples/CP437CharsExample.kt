@@ -2,29 +2,28 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.api.resource.BuiltInTrueTypeFontResource
-import org.hexworks.zircon.api.tileset.lookup.CP437TileMetadataLoader
+import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
 
 object CP437CharsExample {
 
-    private val theme = ColorThemes.entrappedInAPalette()
+    private val theme = ColorThemes.solarizedLightBlue()
 
     @JvmStatic
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .defaultSize(Sizes.create(21, 21))
-                .defaultTileset(TrueTypeFontResources.amstrad(20))
+                .defaultTileset(CP437TilesetResources.wanderlust16x16())
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
 
         val cp437panel = Components.panel()
-                .size(Sizes.create(19, 19))
-                .position(Positions.create(1, 1))
+                .withSize(Sizes.create(19, 19))
+                .withPosition(Positions.create(1, 1))
                 .wrapWithBox(true)
                 .wrapWithShadow(true)
-                .boxType(BoxType.SINGLE)
+                .withBoxType(BoxType.SINGLE)
                 .build()
 
         val loader = CP437TileMetadataLoader(16, 16)

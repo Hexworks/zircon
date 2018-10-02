@@ -29,9 +29,9 @@ class DefaultTileTest {
     @Test
     fun defaultCharacterShouldBeEmptyStringWithBlackAndWhiteAndNoModifiers() {
         assertThat(Tile.defaultTile().character).isEqualTo(' ')
-        assertThat(Tile.defaultTile().getBackgroundColor()).isEqualTo(BLACK)
-        assertThat(Tile.defaultTile().getForegroundColor()).isEqualTo(WHITE)
-        assertThat(Tile.defaultTile().getModifiers()).isEmpty()
+        assertThat(Tile.defaultTile().backgroundColor()).isEqualTo(BLACK)
+        assertThat(Tile.defaultTile().foregroundColor()).isEqualTo(WHITE)
+        assertThat(Tile.defaultTile().modifiers()).isEmpty()
     }
 
     @Test
@@ -63,7 +63,7 @@ class DefaultTileTest {
                 .modifiers(Modifiers.crossedOut())
                 .build()
                 .withoutModifiers(setOf(Modifiers.crossedOut()))
-                .getModifiers())
+                .modifiers())
                 .isEmpty()
     }
 
@@ -79,9 +79,9 @@ class DefaultTileTest {
                 .build()
                 .withStyle(style)
 
-        assertThat(copy.getModifiers()).isEqualTo(style.modifiers())
-        assertThat(copy.getBackgroundColor()).isEqualTo(style.backgroundColor())
-        assertThat(copy.getForegroundColor()).isEqualTo(style.foregroundColor())
+        assertThat(copy.modifiers()).isEqualTo(style.modifiers())
+        assertThat(copy.backgroundColor()).isEqualTo(style.backgroundColor())
+        assertThat(copy.foregroundColor()).isEqualTo(style.foregroundColor())
     }
 
     @Test

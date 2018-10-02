@@ -2,7 +2,6 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.game.BaseGameArea
 import org.hexworks.zircon.api.game.GameArea
@@ -21,7 +20,7 @@ object CustomGameAreaExample {
             return size
         }
 
-        override fun getLayersPerBlock(): Int {
+        override fun layersPerBlock(): Int {
             return layersPerBlock
         }
 
@@ -46,7 +45,7 @@ object CustomGameAreaExample {
                 throw IllegalArgumentException("The supplied position (\$position) is not within the size (\$size) of this game area.")
             }
             val layerCount = block.layers.size
-            if (layerCount != getLayersPerBlock()) {
+            if (layerCount != layersPerBlock()) {
                 throw IllegalArgumentException("The number of layers per block for this game area is \${getLayersPerBlock()}." + " The supplied layers have a size of \$layerCount.")
             }
             blocks[position] = block

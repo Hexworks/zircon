@@ -24,22 +24,22 @@ class DefaultTextAreaTest {
     fun setUp() {
         tileset = DefaultLabelTest.FONT
         target = TextAreaBuilder.newBuilder()
-                .componentStyleSet(COMPONENT_STYLES)
-                .size(SIZE)
-                .tileset(tileset)
-                .position(POSITION)
+                .withComponentStyleSet(COMPONENT_STYLES)
+                .withSize(SIZE)
+                .withTileset(tileset)
+                .withPosition(POSITION)
                 .text(TEXT)
                 .build() as DefaultTextArea
     }
 
     @Test
     fun shouldProperlyReturnText() {
-        assertThat(target.getText()).isEqualTo(TEXT)
+        assertThat(target.text()).isEqualTo(TEXT)
     }
 
     @Test
     fun shouldUseProperFont() {
-        assertThat(target.tileset().id)
+        assertThat(target.currentTileset().id)
                 .isEqualTo(tileset.id)
     }
 

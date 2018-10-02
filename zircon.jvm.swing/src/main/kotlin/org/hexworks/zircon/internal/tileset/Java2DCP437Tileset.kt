@@ -7,16 +7,20 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.*
 import org.hexworks.zircon.api.resource.TileType.CHARACTER_TILE
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.api.tileset.TileTexture
+import org.hexworks.zircon.api.tileset.TileTransformer
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.api.tileset.lookup.CP437TileMetadataLoader
+import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.hexworks.zircon.internal.tileset.transformer.*
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 import java.util.concurrent.TimeUnit
+import kotlin.reflect.KClass
 
+@Suppress("UNCHECKED_CAST")
 class Java2DCP437Tileset(private val resource: TilesetResource,
                          private val source: BufferedImage)
     : Tileset<Graphics2D> {
@@ -54,13 +58,18 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
         val texture = fetchTextureForTile(tile)
         val x = position.x * width()
         val y = position.y * height()
-        surface.drawImage(texture.getTexture(), x, y, null)
+        surface.drawImage(texture.texture(), x, y, null)
     }
 
     private fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {
         var fixedTile = tile as? CharacterTile ?: throw IllegalArgumentException("Wrong tile type")
-        fixedTile.getModifiers().filterIsInstance(TileSwitchModifier::class.java).forEach {
-            fixedTile = it.transform(fixedTile) as CharacterTile
+        fixedTile.modifiers().filterIsInstance<TileTransformModifier<CharacterTile>>().forEach { modifier ->
+            TILE_TRANSFORMER_LOOKUP[modifier::class]?.let {
+                if (it.canTransform(fixedTile)) {
+                    val transformer = it as TileTransformer<TileTransformModifier<CharacterTile>, CharacterTile>
+                    fixedTile = transformer.transform(fixedTile, modifier)
+                }
+            }
         }
         val key = fixedTile.generateCacheKey()
         val meta = lookup.fetchMetaForTile(fixedTile)
@@ -75,7 +84,7 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
             TILE_INITIALIZERS.forEach {
                 image = it.transform(image, fixedTile)
             }
-            fixedTile.getModifiers().filterNot { it is TileSwitchModifier }.forEach {
+            fixedTile.modifiers().filterIsInstance<TextureTransformModifier>().forEach {
                 image = TEXTURE_TRANSFORMER_LOOKUP[it::class]?.transform(image, fixedTile) ?: image
             }
             cache.put(key, image)
@@ -86,20 +95,22 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
     companion object {
 
         private val TILE_INITIALIZERS = listOf(
-                Java2DTileTextureCloner(),
-                Java2DTileTextureColorizer())
+                Java2DTextureCloner(),
+                Java2DTextureColorizer())
 
-        val TILE_TRANSFORMER_LOOKUP = mapOf(
-                Markov::class to Java2DMarkovTransformer())
+        val TILE_TRANSFORMER_LOOKUP:
+                Map<KClass<out TileTransformModifier<out Tile>>, TileTransformer<out TileTransformModifier<out Tile>, out Tile>> = mapOf(
+                Markov::class to Java2DMarkovTransformer(),
+                FadeIn::class to Java2DFadeInTransformer())
 
-        val TEXTURE_TRANSFORMER_LOOKUP = mapOf(
+        val TEXTURE_TRANSFORMER_LOOKUP: Map<KClass<out TextureTransformModifier>, TextureTransformer<BufferedImage>> = mapOf(
                 Pair(SimpleModifiers.Underline::class, Java2DUnderlineTransformer()),
                 Pair(SimpleModifiers.VerticalFlip::class, Java2DVerticalFlipper()),
+                Pair(SimpleModifiers.Blink::class, Java2DNoOpTransformer()),
                 Pair(SimpleModifiers.HorizontalFlip::class, Java2DHorizontalFlipper()),
                 Pair(SimpleModifiers.CrossedOut::class, Java2DCrossedOutTransformer()),
-                Pair(SimpleModifiers.Blink::class, NoOpTransformer()),
                 Pair(SimpleModifiers.Hidden::class, Java2DHiddenTransformer()),
-                Pair(SimpleModifiers.Glow::class, Java2DGlowTransformer()),
+                Pair(Glow::class, Java2DGlowTransformer()),
                 Pair(Border::class, Java2DBorderTransformer()),
                 Pair(Crop::class, Java2DCropTransformer()),
                 Pair(RayShade::class, Java2DRayShaderTransformer())

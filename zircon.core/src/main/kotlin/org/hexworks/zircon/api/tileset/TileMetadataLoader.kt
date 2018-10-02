@@ -6,5 +6,5 @@ interface TileMetadataLoader<T: Tile> {
 
     fun supportsTile(tile: Tile): Boolean
 
-    fun fetchMetaForTile(tile: T): TileTextureMetadata<T>
+    fun fetchMetaForTile(tile: T): TextureMetadata<T>
 }

@@ -25,7 +25,7 @@ data class TextBoxBuilder(
         currentSize = currentSize.withWidth(width)
     }
 
-    override fun size(size: Size): TextBoxBuilder {
+    override fun withSize(size: Size): TextBoxBuilder {
         throw UnsupportedOperationException("You can't set a size for a TextBox by hand. Try setting width instead.")
     }
 
@@ -36,9 +36,9 @@ data class TextBoxBuilder(
     fun header(text: String, withNewLine: Boolean = true) = also {
         val size = Size.create(contentWidth, text.length.div(contentWidth) + 1)
         components.add(HeaderBuilder.newBuilder()
-                .size(size)
+                .withSize(size)
                 .text(text)
-                .position(nextPosition)
+                .withPosition(nextPosition)
                 .build())
         currentSize = currentSize.withRelativeYLength(size.yLength)
         nextPosition = nextPosition.withRelativeY(size.yLength)
@@ -54,9 +54,9 @@ data class TextBoxBuilder(
     fun paragraph(paragraph: String, withNewLine: Boolean = true) = also {
         val size = Size.create(contentWidth, paragraph.length.div(contentWidth) + 1)
         components.add(ParagraphBuilder.newBuilder()
-                .size(size)
+                .withSize(size)
                 .text(paragraph)
-                .position(nextPosition)
+                .withPosition(nextPosition)
                 .build())
         currentSize = currentSize.withRelativeYLength(size.yLength)
         nextPosition = nextPosition.withRelativeY(size.yLength)
@@ -68,9 +68,9 @@ data class TextBoxBuilder(
     fun listItem(item: String) = also {
         val size = Size.create(contentWidth, item.length.div(contentWidth) + 1)
         components.add(ListItemBuilder.newBuilder()
-                .size(size)
+                .withSize(size)
                 .text(item)
-                .position(nextPosition)
+                .withPosition(nextPosition)
                 .build())
         currentSize = currentSize.withRelativeYLength(size.yLength)
         nextPosition = nextPosition.withRelativeY(size.yLength)

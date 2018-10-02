@@ -14,7 +14,7 @@ data class LabelBuilder(
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
     : BaseComponentBuilder<Label, LabelBuilder>(commonComponentProperties) {
 
-    override fun title(title: String) = also { }
+    override fun withTitle(title: String) = also { }
 
     fun text(text: String) = also {
         this.text = text
