@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -57,25 +56,26 @@ class DefaultLogAreaTest {
                 .isInstanceOf(LogComponentElement::class.java)
     }
 
+    @Test
+    fun shouldProperlyRemoveComponentIfItGetsDisposedDueHistorySize() {
+        target.addComponentElement(COMPONENT)
+        target.addNewRows(ROW_HISTORY_SIZE)
+        target.addTextElement(TEXT)
+
+        assertThat(target.children.contains(COMPONENT))
+                .isFalse()
+    }
+
 
     @Test
-    fun shouldProperlyScrollDown() {
-        target.addNewRows(10)
+    fun logElementShouldProperlyScrollDownIfNecessary() {
         target.addTextElement(TEXT)
-        target.scrollDownBy(1)
-        assertThat(target.visibleOffset())
+        target.addNewRows(10)
+        target.addTextElement(ALTERNATE_TEXT)
+        assertThat(target.visibleOffset)
                 .isEqualTo(Position.create(0, 1))
     }
 
-//    @Test
-//    fun shouldProperlySize() {
-//        target.addTextElement(TEXT)
-//        target.addNewRows(15)
-//        target.addTextElement(TEXT_ALTERNATIVE)
-//        assertThat(target.getLogElementBuffer().getAllLogElements().first().getTextAsString())
-//                .isEqualTo(TEXT_ALTERNATIVE)
-//    }
-//
 
     companion object {
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
@@ -84,13 +84,13 @@ class DefaultLogAreaTest {
         val SIZE = Size.create(40, 10)
         val ROW_HISTORY_SIZE = 15
         val TEXT = "This is my log row"
-        val TEXT_ALTERNATIVE = "This is my other log row"
+        val ALTERNATE_TEXT = "This is my other log row"
         val COMPONENT = Components.button()
                 .withDecorationRenderers()
                 .text("Button")
                 .build()
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor())
+                .foregroundColor(THEME.secondaryForegroundColor)
                 .backgroundColor(TileColor.transparent())
                 .build()
         val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()

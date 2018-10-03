@@ -43,12 +43,8 @@ object LogAreaExample {
                 .build()
         logArea.addComponentElement(btn)
 
-        logArea.clear()
         logArea.addNewRows(2)
         logArea.addTextElement("This is a long log row, which gets wrapped, since it is long")
-        logArea.addNewRows(5)
-        logArea.addTextElement("ScrollTest")
-        logArea.scrollDownBy(2 )
 
         panel.addComponent(logArea)
 

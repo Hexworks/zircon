@@ -35,7 +35,7 @@ class DefaultLogArea constructor(
         componentStyles = componentStyleSet,
         renderer = renderingStrategy) {
 
-    private var logElementBuffer = LogElementBuffer(visibleSize(), this,  logRowHistorySize)
+    private var logElementBuffer = LogElementBuffer(visibleSize, this, logRowHistorySize)
 
     init {
         render()
@@ -47,15 +47,17 @@ class DefaultLogArea constructor(
         textElement.modifiers = modifiers
         logElementBuffer.addLogElement(textElement)
         render()
+        determineActualSizeAndOffset()
     }
 
     override fun addComponentElement(component: Component) {
-        require(component.size().yLength == 1) { "only components with height of 1 are supported" }
+        require(component.size.yLength == 1) { "only components with height of 1 are supported" }
 
         val position = getNewElementPositionX()
         logElementBuffer.addLogElement(LogComponentElement(component, position))
         addComponent(component)
         render()
+        determineActualSizeAndOffset()
     }
 
 
@@ -71,6 +73,7 @@ class DefaultLogArea constructor(
     override fun addNewRows(numberOfRows: Int) {
         logElementBuffer.addNewRows(numberOfRows)
         render()
+        determineActualSizeAndOffset()
     }
 
     override fun getLogElementBuffer(): LogElementBuffer {
@@ -79,40 +82,43 @@ class DefaultLogArea constructor(
 
     override fun clear() {
         logElementBuffer.clear()
-        children().forEach { removeComponent(it) }
-        setActualSize(size())
-        scrollUpBy(visibleOffset().y)
+        children.forEach { removeComponent(it) }
+        actualSize = size
+        scrollUpBy(visibleOffset.y)
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor())
-                        .backgroundColor(colorTheme.primaryBackgroundColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor)
+                        .backgroundColor(colorTheme.primaryBackgroundColor)
                         .build())
                 .build().also { css ->
-                    setComponentStyleSet(css)
+                    componentStyleSet = css
                     render()
-                    children().forEach {
+                    children.forEach {
                         it.applyColorTheme(colorTheme)
                     }
                 }
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics())
-
-        val maxWidth = logElementBuffer.getAllLogElements()
-                .lastOrNull { it.renderedPositionArea != null }?.renderedPositionArea?.endPosition?.x?.plus(1)
-        val maxHeight = logElementBuffer.getAllLogElements()
-                .lastOrNull { it.renderedPositionArea != null }?.renderedPositionArea?.endPosition?.y?.plus(1)
-
-        if (maxWidth != null) {
-            if (size().width() < maxWidth || size().height() < maxHeight!!) {
-                setActualSize(Size.create(max(maxWidth, size().width()), max(maxHeight!!, size().height())))
-            }
-        }
+        renderingStrategy.render(this, tileGraphics)
     }
 
+    private fun determineActualSizeAndOffset() {
+        val maxWidth = logElementBuffer.getAllLogElements()
+                .lastOrNull { it.screenPositionArea != null }?.screenPositionArea?.endPosition?.x?.plus(1)
+        val maxHeight = logElementBuffer.getAllLogElements()
+                .lastOrNull { it.screenPositionArea != null }?.screenPositionArea?.endPosition?.y?.plus(1)
+
+        if (maxWidth != null) {
+            if (size.width() < maxWidth || size.height() < maxHeight!!) {
+                actualSize = (Size.create(max(maxWidth, size.width()), max(maxHeight!!, size.height())))
+            }
+        }
+
+        scrollDownBy(actualSize.height() - visibleSize.height() - visibleOffset.y)
+    }
 
 }

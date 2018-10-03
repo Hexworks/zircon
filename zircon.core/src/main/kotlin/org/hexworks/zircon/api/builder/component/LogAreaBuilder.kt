@@ -18,15 +18,15 @@ data class LogAreaBuilder(
     override fun build(): LogArea {
         fillMissingValues()
         val size = decorationRenderers().asSequence()
-                .map { it.occupiedSize() }
-                .fold(size(), Size::plus)
+                .map { it.occupiedSize }
+                .fold(size, Size::plus)
         return DefaultLogArea(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultLogAreaRenderer()),
                 size = size,
-                position = position(),
-                componentStyleSet = componentStyleSet(),
+                position = position,
+                componentStyleSet = componentStyleSet,
                 tileset = tileset(),
                 wrapLogElements = wrapLogElements,
                 logRowHistorySize = logRowHistorySize)
