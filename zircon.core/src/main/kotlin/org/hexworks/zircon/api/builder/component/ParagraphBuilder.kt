@@ -25,21 +25,21 @@ data class ParagraphBuilder(
         }
         fillMissingValues()
         // TODO: calculate size based on text size
-        val size = if (size().isUnknown()) {
+        val finalSize = if (size.isUnknown()) {
             decorationRenderers().asSequence()
-                    .map { it.occupiedSize() }
+                    .map { it.occupiedSize }
                     .fold(Size.create(text.length, 1), Size::plus)
         } else {
-            size()
+            size
         }
         return DefaultParagraph(
                 text = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultParagraphRenderer()),
-                size = size,
-                position = position(),
-                componentStyleSet = componentStyleSet(),
+                size = finalSize,
+                position = position,
+                componentStyleSet = componentStyleSet,
                 tileset = tileset())
     }
 

@@ -18,10 +18,11 @@ data class DefaultCharacterTileString(private val textChars: List<CharacterTile>
                                               size = Size.create(textChars.size, 1)))
     : CharacterTileString,
         Boundable by boundable,
-        Collection<CharacterTile> by textChars {
+        Iterable<CharacterTile> by textChars {
+
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
-        val (cols, rows) = surface.size()
+        val (cols, rows) = surface.size
         require(position.x < cols) {
             "Can't draw string at position xLength '${position.x}' because the draw surface is smaller: $cols"
         }
@@ -29,7 +30,7 @@ data class DefaultCharacterTileString(private val textChars: List<CharacterTile>
             "Can't draw string at position yLength '${position.y}' because the draw surface is smaller: $rows"
         }
         val charIter = textChars.iterator()
-        val cursorHandler = DefaultCursorHandler(surface.size())
+        val cursorHandler = DefaultCursorHandler(surface.size)
         cursorHandler.putCursorAt(position)
 
         if (textWrap == TextWrap.WORD_WRAP) {
@@ -102,7 +103,7 @@ data class DefaultCharacterTileString(private val textChars: List<CharacterTile>
     override fun toTileGraphic(tileset: TilesetResource) =
             TileGraphicsBuilder.newBuilder()
                     .tileset(tileset)
-                    .size(size())
+                    .size(size)
                     .build().apply {
                         textChars.forEachIndexed { idx, tc ->
                             setTileAt(Position.create(idx, 0), tc)

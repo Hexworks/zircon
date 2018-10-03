@@ -16,8 +16,8 @@ class PositionTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        Mockito.`when`(componentMock.size()).thenReturn(COMPONENT_SIZE)
-        Mockito.`when`(componentMock.position()).thenReturn(COMPONENT_POSITION)
+        Mockito.`when`(componentMock.size).thenReturn(COMPONENT_SIZE)
+        Mockito.`when`(componentMock.position).thenReturn(COMPONENT_POSITION)
     }
 
     @Test

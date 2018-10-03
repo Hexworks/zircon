@@ -5,11 +5,10 @@ import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.internal.component.impl.DefaultContainer
 
 class ComponentsLayerable(
-        private val layers: Layerable,
+        private val layerable: Layerable,
         private val components: DefaultContainer)
-    : Layerable by layers {
+    : Layerable by layerable {
 
-    override fun layers(): List<Layer> {
-        return components.transformToLayers().plus(layers.layers())
-    }
+    override val layers: List<Layer>
+        get() = components.transformToLayers().plus(layerable.layers)
 }

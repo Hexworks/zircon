@@ -50,15 +50,15 @@ class DefaultRadioButtonGroup constructor(
     }
 
     override fun addOption(key: String, text: String): RadioButton {
-        require(items.size < renderingStrategy.contentSize(size()).yLength) {
+        require(items.size < renderingStrategy.calculateContentSize(size).height()) {
             "This RadioButtonGroup does not have enough space for another option!"
         }
         return DefaultRadioButton(
                 text = text,
                 renderingStrategy = buttonRenderingStrategy,
-                size = Size.create(renderingStrategy.contentSize(size()).width(), 1),
+                size = Size.create(renderingStrategy.calculateContentSize(size).width(), 1),
                 position = Position.create(0, items.size),
-                componentStyleSet = componentStyleSet(),
+                componentStyleSet = componentStyleSet,
                 tileset = currentTileset()).also { button ->
             items[key] = button
             button.onMouseReleased { _ ->
@@ -71,7 +71,7 @@ class DefaultRadioButtonGroup constructor(
                 selectedItem = Maybe.of(key)
                 items[key]?.let { button ->
                     selectionListeners.forEach {
-                        it.accept(DefaultSelection(key, button.text()))
+                        it.accept(DefaultSelection(key, button.text))
                     }
                 }
             }
@@ -79,7 +79,7 @@ class DefaultRadioButtonGroup constructor(
         }
     }
 
-    override fun selectedOption() = selectedItem
+    override fun fetchSelectedOption() = selectedItem
 
     override fun acceptsFocus() = false
 
@@ -94,13 +94,13 @@ class DefaultRadioButtonGroup constructor(
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor)
                         .backgroundColor(TileColor.transparent())
                         .build())
                 .build().also { css ->
-                    setComponentStyleSet(css)
+                    componentStyleSet = css
                     render()
-                    children().forEach {
+                    children.forEach {
                         it.applyColorTheme(colorTheme)
                     }
                 }
@@ -111,7 +111,7 @@ class DefaultRadioButtonGroup constructor(
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics())
+        renderingStrategy.render(this, tileGraphics)
     }
 
     private fun refreshContent() {
@@ -125,11 +125,6 @@ class DefaultRadioButtonGroup constructor(
         render()
     }
 
-    data class DefaultSelection(private val key: String,
-                                private val value: String) : Selection {
-        override fun key() = key
-
-        override fun value() = value
-
-    }
+    data class DefaultSelection(override val key: String,
+                                override val value: String) : Selection
 }

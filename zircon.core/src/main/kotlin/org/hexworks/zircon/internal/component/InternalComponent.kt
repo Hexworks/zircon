@@ -20,6 +20,14 @@ import org.hexworks.zircon.internal.behavior.Focusable
 interface InternalComponent : Component, Drawable, Focusable, InputListener, KeyStrokeListener, MouseListener {
 
     /**
+     * The [org.hexworks.zircon.api.graphics.TileGraphics] which this
+     * component uses for drawing.
+     */
+    val tileGraphics: TileGraphics
+
+    override fun isAttached(): Boolean = fetchParent().isPresent
+
+    /**
      * Returns the innermost [InternalComponent] for a given [Position].
      * This means that if you call this method on a [Container] and it
      * contains a [InternalComponent] which intersects with `position` the
@@ -32,7 +40,7 @@ interface InternalComponent : Component, Drawable, Focusable, InputListener, Key
     /**
      * Returns the parent of this [Component] (if any).
      */
-    fun parent(): Maybe<Container>
+    fun fetchParent(): Maybe<Container>
 
     /**
      * Attaches this [Component] to the given parent [Container].
@@ -40,14 +48,6 @@ interface InternalComponent : Component, Drawable, Focusable, InputListener, Key
      * it will be removed from that one.
      */
     fun attachTo(parent: Container)
-
-    override fun isAttached(): Boolean = parent().isPresent
-
-    /**
-     * Returns the [org.hexworks.zircon.api.graphics.TileGraphics] which this
-     * component uses for drawing.
-     */
-    fun tileGraphics(): TileGraphics
 
     /**
      * Renders this component to the underlying [TileGraphics].

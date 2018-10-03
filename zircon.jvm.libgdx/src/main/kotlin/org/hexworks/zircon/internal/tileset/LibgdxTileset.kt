@@ -55,10 +55,10 @@ class LibgdxTileset(private val path: String,
 //        val fb = tile.getForegroundColor().getBlue().toFloat().div(255)
 //        val fa = tile.getForegroundColor().getAlpha().toFloat().div(255)
 
-//            val br = tile.backgroundColor().getRed().toFloat().div(255)
-//            val bg = tile.backgroundColor().getGreen().toFloat().div(255)
-//            val bb = tile.backgroundColor().getBlue().toFloat().div(255)
-//            val ba = tile.backgroundColor().getAlpha().toFloat().div(255)
+//            val br = tile.backgroundColor.getRed().toFloat().div(255)
+//            val bg = tile.backgroundColor.getGreen().toFloat().div(255)
+//            val bb = tile.backgroundColor.getBlue().toFloat().div(255)
+//            val ba = tile.backgroundColor.getAlpha().toFloat().div(255)
 
 //        val tinted = drawable.tint(Color(fr, fg, fb, fa)) as SpriteDrawable
 //        tinted.draw(surface,

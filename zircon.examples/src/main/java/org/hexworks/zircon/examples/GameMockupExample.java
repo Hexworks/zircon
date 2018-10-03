@@ -125,7 +125,7 @@ public class GameMockupExample {
                 .build();
 
         RadioButtonGroup difficultyRadio = Components.radioButtonGroup()
-                .withSize(difficultyPanel.size().minus(Sizes.create(2, 2)))
+                .withSize(difficultyPanel.getSize().minus(Sizes.create(2, 2)))
                 .build();
 
         Arrays.asList(DIFFICULTIES).forEach((diff) -> {

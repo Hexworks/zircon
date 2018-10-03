@@ -36,7 +36,7 @@ class DefaultCheckBoxTest {
 
     @Test
     fun shouldProperlyAddCheckBoxText() {
-        val surface = target.tileGraphics()
+        val surface = target.tileGraphics
         val offset = 4
         TEXT.forEachIndexed { i, char ->
             Assertions.assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
@@ -55,22 +55,22 @@ class DefaultCheckBoxTest {
 
     @Test
     fun shouldProperlyReturnText() {
-        Assertions.assertThat(target.text()).isEqualTo(TEXT)
+        Assertions.assertThat(target.text).isEqualTo(TEXT)
     }
 
     @Test
     fun shouldProperlyApplyTheme() {
         target.applyColorTheme(THEME)
-        val styles = target.componentStyleSet()
-        Assertions.assertThat(styles.getStyleFor(ComponentState.DEFAULT))
+        val styles = target.componentStyleSet
+        Assertions.assertThat(styles.fetchStyleFor(ComponentState.DEFAULT))
                 .isEqualTo(EXPECTED_DEFAULT_STYLE)
-        Assertions.assertThat(styles.getStyleFor(ComponentState.MOUSE_OVER))
+        Assertions.assertThat(styles.fetchStyleFor(ComponentState.MOUSE_OVER))
                 .isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
-        Assertions.assertThat(styles.getStyleFor(ComponentState.FOCUSED))
+        Assertions.assertThat(styles.fetchStyleFor(ComponentState.FOCUSED))
                 .isEqualTo(EXPECTED_FOCUSED_STYLE)
-        Assertions.assertThat(styles.getStyleFor(ComponentState.ACTIVE))
+        Assertions.assertThat(styles.fetchStyleFor(ComponentState.ACTIVE))
                 .isEqualTo(EXPECTED_ACTIVE_STYLE)
-        Assertions.assertThat(styles.getStyleFor(ComponentState.DISABLED))
+        Assertions.assertThat(styles.fetchStyleFor(ComponentState.DISABLED))
                 .isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
@@ -86,7 +86,7 @@ class DefaultCheckBoxTest {
         val result = target.giveFocus()
 
         Assertions.assertThat(result).isTrue()
-        Assertions.assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
+        Assertions.assertThat(target.componentStyleSet.currentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
     }
 
     @Test
@@ -95,7 +95,7 @@ class DefaultCheckBoxTest {
 
         target.takeFocus()
 
-        Assertions.assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
+        Assertions.assertThat(target.componentStyleSet.currentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
 
@@ -105,7 +105,7 @@ class DefaultCheckBoxTest {
 
         target.mouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition()))
 
-        Assertions.assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
+        Assertions.assertThat(target.componentStyleSet.currentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
     }
 
     companion object {
@@ -123,23 +123,23 @@ class DefaultCheckBoxTest {
                 .build()
 
         val EXPECTED_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.accentColor())
+                .foregroundColor(THEME.accentColor)
                 .backgroundColor(TileColor.transparent())
                 .build()
 
         val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.primaryBackgroundColor())
-                .backgroundColor(THEME.accentColor())
+                .foregroundColor(THEME.primaryBackgroundColor)
+                .backgroundColor(THEME.accentColor)
                 .build()
 
         val EXPECTED_FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryBackgroundColor())
-                .backgroundColor(THEME.accentColor())
+                .foregroundColor(THEME.secondaryBackgroundColor)
+                .backgroundColor(THEME.accentColor)
                 .build()
 
         val EXPECTED_ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor())
-                .backgroundColor(THEME.accentColor())
+                .foregroundColor(THEME.secondaryForegroundColor)
+                .backgroundColor(THEME.accentColor)
                 .build()
     }
 }

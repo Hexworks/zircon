@@ -63,7 +63,7 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
 
     private fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {
         var fixedTile = tile as? CharacterTile ?: throw IllegalArgumentException("Wrong tile type")
-        fixedTile.modifiers().filterIsInstance<TileTransformModifier<CharacterTile>>().forEach { modifier ->
+        fixedTile.modifiers.filterIsInstance<TileTransformModifier<CharacterTile>>().forEach { modifier ->
             TILE_TRANSFORMER_LOOKUP[modifier::class]?.let {
                 if (it.canTransform(fixedTile)) {
                     val transformer = it as TileTransformer<TileTransformModifier<CharacterTile>, CharacterTile>
@@ -84,7 +84,7 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
             TILE_INITIALIZERS.forEach {
                 image = it.transform(image, fixedTile)
             }
-            fixedTile.modifiers().filterIsInstance<TextureTransformModifier>().forEach {
+            fixedTile.modifiers.filterIsInstance<TextureTransformModifier>().forEach {
                 image = TEXTURE_TRANSFORMER_LOOKUP[it::class]?.transform(image, fixedTile) ?: image
             }
             cache.put(key, image)

@@ -12,7 +12,6 @@ import org.hexworks.zircon.internal.component.renderer.DefaultTextBoxRenderer
 
 data class TextBoxBuilder(
         private var text: String = "",
-        private var size: Size = Size.one(),
         private var contentWidth: Int = 0,
         private var nextPosition: Position = Position.defaultPosition(),
         private var currentSize: Size = Size.one(),
@@ -87,15 +86,15 @@ data class TextBoxBuilder(
         }
         fillMissingValues()
         val decorationSize = decorationRenderers().asSequence()
-                .map { it.occupiedSize() }
+                .map { it.occupiedSize }
                 .fold(Size.zero(), Size::plus)
         return DefaultTextBox(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultTextBoxRenderer()),
                 size = currentSize + decorationSize,
-                position = position(),
-                componentStyleSet = componentStyleSet(),
+                position = position,
+                componentStyleSet = componentStyleSet,
                 tileset = tileset()).also { textBox ->
             components.forEach {
                 textBox.addComponent(it)

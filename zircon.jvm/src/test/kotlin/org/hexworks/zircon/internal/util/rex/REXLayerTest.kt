@@ -25,7 +25,7 @@ class REXLayerTest {
     @Ignore
     fun shouldProperlyLoadFromByteBuffer() {
         val layer = target.toLayer(TILESET)
-        assertThat(layer.size()).isEqualTo(Size.create(2, 1))
+        assertThat(layer.size).isEqualTo(Size.create(2, 1))
 
         assertChar(
                 'A',
@@ -86,8 +86,8 @@ class REXLayerTest {
 
     private fun assertChar(expChar: Char, expBgColor: DefaultTextColor, expFgColor: DefaultTextColor, textChar: Tile) {
         assertThat(textChar.asCharacterTile().get().character).isEqualTo(expChar)
-        assertThat(textChar.backgroundColor()).isEqualTo(expBgColor)
-        assertThat(textChar.foregroundColor()).isEqualTo(expFgColor)
+        assertThat(textChar.backgroundColor).isEqualTo(expBgColor)
+        assertThat(textChar.foregroundColor).isEqualTo(expFgColor)
     }
 
     companion object {

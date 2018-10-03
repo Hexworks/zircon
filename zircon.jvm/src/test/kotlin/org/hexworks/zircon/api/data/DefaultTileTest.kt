@@ -1,13 +1,13 @@
 package org.hexworks.zircon.api.data
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
-import org.hexworks.zircon.api.Modifiers
 import org.junit.Test
 
 @Suppress("UsePropertyAccessSyntax")
@@ -29,9 +29,9 @@ class DefaultTileTest {
     @Test
     fun defaultCharacterShouldBeEmptyStringWithBlackAndWhiteAndNoModifiers() {
         assertThat(Tile.defaultTile().character).isEqualTo(' ')
-        assertThat(Tile.defaultTile().backgroundColor()).isEqualTo(BLACK)
-        assertThat(Tile.defaultTile().foregroundColor()).isEqualTo(WHITE)
-        assertThat(Tile.defaultTile().modifiers()).isEmpty()
+        assertThat(Tile.defaultTile().backgroundColor).isEqualTo(BLACK)
+        assertThat(Tile.defaultTile().foregroundColor).isEqualTo(WHITE)
+        assertThat(Tile.defaultTile().modifiers).isEmpty()
     }
 
     @Test
@@ -63,7 +63,7 @@ class DefaultTileTest {
                 .modifiers(Modifiers.crossedOut())
                 .build()
                 .withoutModifiers(setOf(Modifiers.crossedOut()))
-                .modifiers())
+                .modifiers)
                 .isEmpty()
     }
 
@@ -79,9 +79,9 @@ class DefaultTileTest {
                 .build()
                 .withStyle(style)
 
-        assertThat(copy.modifiers()).isEqualTo(style.modifiers())
-        assertThat(copy.backgroundColor()).isEqualTo(style.backgroundColor())
-        assertThat(copy.foregroundColor()).isEqualTo(style.foregroundColor())
+        assertThat(copy.modifiers).isEqualTo(style.modifiers())
+        assertThat(copy.backgroundColor).isEqualTo(style.backgroundColor())
+        assertThat(copy.foregroundColor).isEqualTo(style.foregroundColor())
     }
 
     @Test

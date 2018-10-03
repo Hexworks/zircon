@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.behavior.DrawSurface
-import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
@@ -24,28 +23,23 @@ abstract class BaseTile : Tile {
      */
     override fun asGraphicTile() = Maybe.ofNullable(this as? GraphicTile)
 
-    override fun isOpaque(): Boolean = foregroundColor().isOpaque().and(
-            backgroundColor().isOpaque())
+    override fun isOpaque(): Boolean = foregroundColor.isOpaque().and(
+            backgroundColor.isOpaque())
 
-    override fun foregroundColor(): TileColor = styleSet().foregroundColor()
+    override fun isUnderlined(): Boolean = modifiers.contains(Underline)
 
-    override fun backgroundColor(): TileColor = styleSet().backgroundColor()
+    override fun isCrossedOut(): Boolean = modifiers.contains(CrossedOut)
 
-    override fun modifiers(): Set<Modifier> = styleSet().modifiers()
+    override fun isBlinking(): Boolean = modifiers.contains(Blink)
 
-    override fun isUnderlined(): Boolean = modifiers().contains(Underline)
+    override fun isVerticalFlipped(): Boolean = modifiers.contains(VerticalFlip)
 
-    override fun isCrossedOut(): Boolean = modifiers().contains(CrossedOut)
+    override fun isHorizontalFlipped(): Boolean = modifiers.contains(HorizontalFlip)
 
-    override fun isBlinking(): Boolean = modifiers().contains(Blink)
+    override fun hasBorder(): Boolean = modifiers.any { it is Border }
 
-    override fun isVerticalFlipped(): Boolean = modifiers().contains(VerticalFlip)
-
-    override fun isHorizontalFlipped(): Boolean = modifiers().contains(HorizontalFlip)
-
-    override fun hasBorder(): Boolean = modifiers().any { it is Border }
-
-    override fun fetchBorderData(): Set<Border> = modifiers()
+    override fun fetchBorderData(): Set<Border> = modifiers
+            .asSequence()
             .filter { it is Border }
             .map { it as Border }
             .toSet()

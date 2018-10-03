@@ -1,14 +1,6 @@
 package org.hexworks.zircon.examples.docs;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.ColorThemes;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Screens;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.DrawSurfaces;
-import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.graphics.TileGraphics;
 import org.hexworks.zircon.api.grid.TileGrid;
@@ -29,11 +21,11 @@ public class CreatingAScreen {
         final ColorTheme theme = ColorThemes.adriftInDreams();
 
         final TileGraphics image = DrawSurfaces.tileGraphicsBuilder()
-                .size(tileGrid.size())
+                .size(tileGrid.getSize())
                 .build()
                 .fill(Tiles.newBuilder()
-                        .foregroundColor(theme.primaryForegroundColor())
-                        .backgroundColor(theme.primaryBackgroundColor())
+                        .foregroundColor(theme.getPrimaryForegroundColor())
+                        .backgroundColor(theme.getPrimaryBackgroundColor())
                         .character('~')
                         .build());
 

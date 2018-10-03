@@ -17,8 +17,8 @@ object TrueTypeFontExample {
 
         tileGrid.draw(CharacterTileStrings.newBuilder()
                 .text("This is written with a true type font...")
-                .foregroundColor(theme.primaryForegroundColor())
-                .backgroundColor(theme.primaryBackgroundColor())
+                .foregroundColor(theme.primaryForegroundColor)
+                .backgroundColor(theme.primaryBackgroundColor)
                 .build())
 
 

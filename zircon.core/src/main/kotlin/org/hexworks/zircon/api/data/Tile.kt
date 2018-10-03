@@ -17,14 +17,14 @@ import org.hexworks.zircon.internal.data.DefaultImageTile
 interface Tile : Drawable, Cacheable {
 
     /**
-     * Returns the tile type of this [Tile].
+     * The tile type of this [Tile].
      */
-    fun tileType(): TileType
+    val tileType: TileType
 
     /**
-     * Returns the style of this [Tile].
+     * The style of this [Tile].
      */
-    fun styleSet(): StyleSet
+    val styleSet: StyleSet
 
     /**
      * Returns this [Tile] as a [CharacterTile] if possible.
@@ -41,28 +41,31 @@ interface Tile : Drawable, Cacheable {
      */
     fun asGraphicTile() = Maybe.ofNullable(this as? GraphicTile)
 
-    fun isOpaque(): Boolean = foregroundColor().isOpaque().and(
-            backgroundColor().isOpaque())
+    fun isOpaque(): Boolean = foregroundColor.isOpaque().and(
+            backgroundColor.isOpaque())
 
-    fun foregroundColor(): TileColor = styleSet().foregroundColor()
+    val foregroundColor: TileColor
+        get() = styleSet.foregroundColor()
 
-    fun backgroundColor(): TileColor = styleSet().backgroundColor()
+    val backgroundColor: TileColor
+        get() = styleSet.backgroundColor()
 
-    fun modifiers(): Set<Modifier> = styleSet().modifiers()
+    val modifiers: Set<Modifier>
+        get() = styleSet.modifiers()
 
-    fun isUnderlined(): Boolean = modifiers().contains(Underline)
+    fun isUnderlined(): Boolean = modifiers.contains(Underline)
 
-    fun isCrossedOut(): Boolean = modifiers().contains(CrossedOut)
+    fun isCrossedOut(): Boolean = modifiers.contains(CrossedOut)
 
-    fun isBlinking(): Boolean = modifiers().contains(Blink)
+    fun isBlinking(): Boolean = modifiers.contains(Blink)
 
-    fun isVerticalFlipped(): Boolean = modifiers().contains(VerticalFlip)
+    fun isVerticalFlipped(): Boolean = modifiers.contains(VerticalFlip)
 
-    fun isHorizontalFlipped(): Boolean = modifiers().contains(HorizontalFlip)
+    fun isHorizontalFlipped(): Boolean = modifiers.contains(HorizontalFlip)
 
-    fun hasBorder(): Boolean = modifiers().any { it is Border }
+    fun hasBorder(): Boolean = modifiers.any { it is Border }
 
-    fun fetchBorderData(): Set<Border> = modifiers()
+    fun fetchBorderData(): Set<Border> = modifiers
             .asSequence()
             .filter { it is Border }
             .map { it as Border }
@@ -89,7 +92,10 @@ interface Tile : Drawable, Cacheable {
      */
     fun withStyle(style: StyleSet): Tile
 
-    fun withAddedModifier(modifier: Modifier): Tile = withModifiers(modifiers().plus(modifier))
+    /**
+     * Returns a copy of this [Tile] with the given `modifier` added to the current modifiers
+     */
+    fun withAddedModifier(modifier: Modifier): Tile = withModifiers(modifiers + modifier)
 
     /**
      * Returns a copy of this [Tile] with the specified modifiers.
@@ -141,7 +147,7 @@ interface Tile : Drawable, Cacheable {
         fun createCharacterTile(character: Char, style: StyleSet): CharacterTile {
             return DefaultCharacterTile(
                     character = character,
-                    style = style)
+                    styleSet = style)
         }
 
         fun createImageTile(name: String, tileset: TilesetResource, style: StyleSet): ImageTile {
@@ -153,11 +159,11 @@ interface Tile : Drawable, Cacheable {
 
         private val DEFAULT_CHARACTER_TILE: CharacterTile = DefaultCharacterTile(
                 character = ' ',
-                style = StyleSet.defaultStyle())
+                styleSet = StyleSet.defaultStyle())
 
         private val EMPTY_CHARACTER_TILE: CharacterTile = DefaultCharacterTile(
                 character = ' ',
-                style = StyleSet.empty())
+                styleSet = StyleSet.empty())
 
     }
 }

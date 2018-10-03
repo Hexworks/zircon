@@ -161,11 +161,11 @@ class DefaultComponentContainerTest {
         val button = createButton()
         target.addComponent(button)
 
-        assertThat(button.componentStyleSet().currentStyle()).isNotEqualTo(FOCUSED_STYLE)
+        assertThat(button.componentStyleSet.currentStyle()).isNotEqualTo(FOCUSED_STYLE)
 
         EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
 
-        assertThat(button.componentStyleSet().currentStyle()).isEqualTo(FOCUSED_STYLE)
+        assertThat(button.componentStyleSet.currentStyle()).isEqualTo(FOCUSED_STYLE)
     }
 
     @Test
@@ -184,12 +184,12 @@ class DefaultComponentContainerTest {
         EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
         EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
 
-        assertThat(button.componentStyleSet().currentStyle()).isEqualTo(DEFAULT_STYLE)
+        assertThat(button.componentStyleSet.currentStyle()).isEqualTo(DEFAULT_STYLE)
 
         EventBus.broadcast(ZirconEvent.Input(KeyStroke(shiftDown = true, type = InputType.ReverseTab)))
 
 
-        assertThat(button.componentStyleSet().currentStyle()).isEqualTo(FOCUSED_STYLE)
+        assertThat(button.componentStyleSet.currentStyle()).isEqualTo(FOCUSED_STYLE)
     }
 
     @Test

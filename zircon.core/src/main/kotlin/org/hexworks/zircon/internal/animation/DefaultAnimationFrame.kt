@@ -11,11 +11,15 @@ import org.hexworks.zircon.api.util.Maybe
 /**
  * Default implementation of the [AnimationFrame] interface.
  */
-data class DefaultAnimationFrame(private val size: Size,
-                                 private val layers: List<Layer>,
-                                 private val repeatCount: Int) : InternalAnimationFrame {
+data class DefaultAnimationFrame(override val size: Size,
+                                 override val layers: List<Layer>,
+                                 override val repeatCount: Int) : InternalAnimationFrame {
 
-    private var position: Position = Position.defaultPosition()
+    override var position: Position = Position.defaultPosition()
+        set(value) {
+            field = value
+            layers.forEach { it.moveTo(value) }
+        }
 
     private var displayedOn: Maybe<TileGrid> = Maybe.empty()
 
@@ -30,18 +34,5 @@ data class DefaultAnimationFrame(private val size: Size,
         displayedOn.map { prevDisplay ->
             layers.forEach(prevDisplay::removeLayer)
         }
-    }
-
-    override fun getSize() = size
-
-    override fun getRepeatCount() = repeatCount
-
-    override fun getLayers() = layers
-
-    override fun getPosition() = position
-
-    override fun setPosition(position: Position) {
-        this.position = position
-        layers.forEach { it.moveTo(position) }
     }
 }

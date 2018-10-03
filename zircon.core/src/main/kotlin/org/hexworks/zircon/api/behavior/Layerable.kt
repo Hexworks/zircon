@@ -11,9 +11,9 @@ import org.hexworks.zircon.api.util.Maybe
 interface Layerable : Boundable {
 
     /**
-     * Returns a list of [Layer]s which are currently present in this [Layerable].
+     * The list of [Layer]s which are currently present in this [Layerable].
      */
-    fun layers(): List<Layer>
+    val layers: List<Layer>
 
     /**
      * Adds a layer on top of the currently present layers.

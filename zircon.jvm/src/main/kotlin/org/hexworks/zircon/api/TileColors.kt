@@ -50,4 +50,4 @@ object TileColors {
 /**
  * Extension for easy conversion between [TileColor] and awt [Color].
  */
-fun TileColor.toAWTColor(): java.awt.Color = Color(red(), green(), blue(), alpha())
+fun TileColor.toAWTColor(): java.awt.Color = Color(red, green, blue, alpha)

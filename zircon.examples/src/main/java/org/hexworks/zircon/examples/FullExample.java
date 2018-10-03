@@ -96,9 +96,9 @@ public class FullExample {
                     new DefaultAnimationFrame(
                             SCREEN_SIZE,
                             Collections.singletonList(Layers.newBuilder()
-                                    .tileGraphic(img.toTileImage().transform(tile -> tile.withBackgroundColor(tile.backgroundColor()
+                                    .tileGraphic(img.toTileImage().transform(tile -> tile.withBackgroundColor(tile.getBackgroundColor()
                                             .darkenByPercent(idx / 20d))
-                                            .withForegroundColor(tile.foregroundColor()
+                                            .withForegroundColor(tile.getForegroundColor()
                                                     .darkenByPercent(idx / 20d))).toTileGraphic())
                                     .build()),
                             loopCount));
@@ -111,9 +111,9 @@ public class FullExample {
                     new DefaultAnimationFrame(
                             SCREEN_SIZE,
                             Collections.singletonList(Layers.newBuilder()
-                                    .tileGraphic(img.toTileImage().transform(tile -> tile.withBackgroundColor(tile.backgroundColor()
+                                    .tileGraphic(img.toTileImage().transform(tile -> tile.withBackgroundColor(tile.getBackgroundColor()
                                             .darkenByPercent(idx / 20d))
-                                            .withForegroundColor(tile.foregroundColor()
+                                            .withForegroundColor(tile.getForegroundColor()
                                                     .darkenByPercent(idx / 20d))).toTileGraphic())
                                     .build()),
                             loopCount));
@@ -470,7 +470,7 @@ public class FullExample {
         solarizedDarkPanel.addComponent(sdOptions);
 
         final RadioButtonGroup othOptions = Components.radioButtonGroup()
-                .withSize(otherPanel.size()
+                .withSize(otherPanel.getSize()
                         .withYLength(otherOptions.size())
                         .withRelativeXLength(-2))
                 .build();
@@ -520,7 +520,7 @@ public class FullExample {
                                      AtomicReference<Label> labelRef,
                                      Panel infoPanel,
                                      Selection selection) {
-        themeRef.set(valueOf(selection.key()));
+        themeRef.set(valueOf(selection.getKey()));
         infoPanel.removeComponent(labelRef.get());
         labelRef.set(createLabelForTheme(themeRef.get()));
         infoPanel.addComponent(labelRef.get());

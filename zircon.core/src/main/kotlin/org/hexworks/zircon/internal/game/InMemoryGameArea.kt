@@ -10,14 +10,12 @@ import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.util.TreeMap
 import org.hexworks.zircon.platform.factory.TreeMapFactory
 
-class InMemoryGameArea(private val size: Size3D,
+class InMemoryGameArea(override val size: Size3D,
                        private val layersPerBlock: Int,
                        private val filler: Tile = Tile.empty()) : GameArea {
 
     private val emptyBlockLayers = (0 until layersPerBlock).map { filler }
     private val blocks: TreeMap<Position3D, Block> = TreeMapFactory.create()
-
-    override fun size() = size
 
     override fun layersPerBlock() = layersPerBlock
 
@@ -41,7 +39,7 @@ class InMemoryGameArea(private val size: Size3D,
     }
 
     override fun setBlockAt(position: Position3D, block: Block) {
-        require(size().containsPosition(position)) {
+        require(size.containsPosition(position)) {
             "The supplied position ($position) is not within the size ($size) of this game area."
         }
         val layerCount = block.layers.size
@@ -49,7 +47,7 @@ class InMemoryGameArea(private val size: Size3D,
             "The number of layers per block for this game area is $layersPerBlock." +
                     " The supplied layers have a size of $layerCount."
         }
-        if(layerCount < layersPerBlock) {
+        if (layerCount < layersPerBlock) {
             (layerCount until layersPerBlock).forEach {
                 block.layers.add(Tile.empty())
             }

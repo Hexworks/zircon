@@ -20,17 +20,17 @@ object HalfBlockDecorationExample {
                 .defaultTileset(tileset)
                 .build())
 
-        tileGrid.size().fetchPositions().forEach {
+        tileGrid.size.fetchPositions().forEach {
             tileGrid.setTileAt(it, Tiles.defaultTile()
-                    .withBackgroundColor(theme.secondaryBackgroundColor()))
+                    .withBackgroundColor(theme.secondaryBackgroundColor))
         }
 
         val filler = Tiles.defaultTile()
-                .withBackgroundColor(theme.secondaryBackgroundColor())
+                .withBackgroundColor(theme.secondaryBackgroundColor)
         val rightHalf = Tiles.defaultTile()
                 .withCharacter(Symbols.RIGHT_HALF_BLOCK)
-                .withBackgroundColor(theme.secondaryBackgroundColor())
-                .withForegroundColor(theme.primaryBackgroundColor())
+                .withBackgroundColor(theme.secondaryBackgroundColor)
+                .withForegroundColor(theme.primaryBackgroundColor)
         val leftHalf = rightHalf
                 .withCharacter(Symbols.LEFT_HALF_BLOCK)
         val topHalf = rightHalf

@@ -19,7 +19,7 @@ interface ComponentStyleSet {
     /**
      * Returns the [StyleSet] for the given `state`.
      */
-    fun getStyleFor(state: ComponentState): StyleSet
+    fun fetchStyleFor(state: ComponentState): StyleSet
 
     /**
      * Applies the style for the `MOUSE_OVER` state.

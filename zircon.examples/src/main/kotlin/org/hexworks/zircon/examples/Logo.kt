@@ -40,9 +40,9 @@ object Logo {
                             layers = listOf(Layers.newBuilder()
                                     .tileGraphic(img.toTileImage()
                                             .transform { tc ->
-                                                tc.withBackgroundColor(tc.backgroundColor()
+                                                tc.withBackgroundColor(tc.backgroundColor
                                                         .darkenByPercent(idx.toDouble().div(20)))
-                                                        .withForegroundColor(tc.foregroundColor()
+                                                        .withForegroundColor(tc.foregroundColor
                                                                 .darkenByPercent(idx.toDouble().div(20)))
                                             }.toTileGraphic())
                                     .build()),
@@ -56,9 +56,9 @@ object Logo {
                             size = size,
                             layers = listOf(Layers.newBuilder()
                                     .tileGraphic(img.toTileImage().transform { tc ->
-                                        tc.withBackgroundColor(tc.backgroundColor()
+                                        tc.withBackgroundColor(tc.backgroundColor
                                                 .darkenByPercent(idx.toDouble().div(20)))
-                                                .withForegroundColor(tc.foregroundColor()
+                                                .withForegroundColor(tc.foregroundColor
                                                         .darkenByPercent(idx.toDouble().div(20)))
                                     }.toTileGraphic())
                                     .build()),

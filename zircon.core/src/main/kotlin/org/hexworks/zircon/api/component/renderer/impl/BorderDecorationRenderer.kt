@@ -13,16 +13,16 @@ import org.hexworks.zircon.api.shape.LineFactory
 
 class BorderDecorationRenderer(private val border: Border) : ComponentDecorationRenderer {
 
-    override fun offset() = Position.defaultPosition()
+    override val offset = Position.defaultPosition()
 
-    override fun occupiedSize() = Size.create(0, 0)
+    override val occupiedSize = Size.create(0, 0)
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
         val drawTop = border.borderPositions.contains(BorderPosition.TOP)
         val drawBottom = border.borderPositions.contains(BorderPosition.BOTTOM)
         val drawLeft = border.borderPositions.contains(BorderPosition.LEFT)
         val drawRight = border.borderPositions.contains(BorderPosition.RIGHT)
-        val size = tileGraphics.size()
+        val size = tileGraphics.size
 
         val topLeftBorders = mutableSetOf<BorderPosition>()
         val topRightBorders = mutableSetOf<BorderPosition>()

@@ -43,7 +43,7 @@ object InCP437WeTrust {
         loader.fetchMetadata().forEach { char, meta ->
             cp437panel.draw(drawable = Tiles.defaultTile()
                     .withCharacter(char)
-                    .withBackgroundColor(theme.primaryBackgroundColor())
+                    .withBackgroundColor(theme.primaryBackgroundColor)
                     .withForegroundColor(ANSITileColor.values()[Random().nextInt(ANSITileColor.values().size)]),
                     position = Positions.create(meta.x, meta.y)
                             .plus(Positions.offset1x1()))

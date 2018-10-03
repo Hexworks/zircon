@@ -53,17 +53,17 @@ class SubTileGraphicsTest {
         val chars = backend.fetchCells().map { it.tile.asCharacterTile().get().character }
 
         assertThat(chars).containsExactly(
-                ' ',' ',' ',' ',' ',
-                ' ','x','x','x',' ',
-                ' ','x','x','x',' ',
-                ' ','x','x','x',' ',
-                ' ',' ',' ',' ',' ')
+                ' ', ' ', ' ', ' ', ' ',
+                ' ', 'x', 'x', 'x', ' ',
+                ' ', 'x', 'x', 'x', ' ',
+                ' ', 'x', 'x', 'x', ' ',
+                ' ', ' ', ' ', ' ', ' ')
     }
 
     @Test
     fun shouldProperlyFetchCells() {
         assertThat(target.fetchCells().map { it.position })
-                .containsExactlyElementsOf(SUB_GRAPHICS_BOUNDS.size().fetchPositions().toList())
+                .containsExactlyElementsOf(SUB_GRAPHICS_BOUNDS.size.fetchPositions().toList())
     }
 
     @Test
@@ -81,11 +81,11 @@ class SubTileGraphicsTest {
         val chars = backend.fetchCells().map { it.tile.asCharacterTile().get().character }
 
         assertThat(chars).containsExactly(
-                ' ',' ',' ',' ',' ',
-                ' ','f','o','o',' ',
-                ' ',' ',' ',' ',' ',
-                ' ',' ',' ',' ',' ',
-                ' ',' ',' ',' ',' ')
+                ' ', ' ', ' ', ' ', ' ',
+                ' ', 'f', 'o', 'o', ' ',
+                ' ', ' ', ' ', ' ', ' ',
+                ' ', ' ', ' ', ' ', ' ',
+                ' ', ' ', ' ', ' ', ' ')
     }
 
     @Test
@@ -95,11 +95,11 @@ class SubTileGraphicsTest {
         val chars = backend.fetchCells().map { it.tile.asCharacterTile().get().character }
 
         assertThat(chars).containsExactly(
-                ' ',' ',' ',' ',' ',
-                ' ',' ',' ',' ',' ',
-                ' ',' ','f','o',' ',
-                ' ',' ',' ',' ',' ',
-                ' ',' ',' ',' ',' ')
+                ' ', ' ', ' ', ' ', ' ',
+                ' ', ' ', ' ', ' ', ' ',
+                ' ', ' ', 'f', 'o', ' ',
+                ' ', ' ', ' ', ' ', ' ',
+                ' ', ' ', ' ', ' ', ' ')
     }
 
     @Test
@@ -108,7 +108,7 @@ class SubTileGraphicsTest {
 
         target.applyStyle(TARGET_STYLE)
 
-        assertThat(backend.fetchCells().map { it.tile.styleSet() }).containsExactly(
+        assertThat(backend.fetchCells().map { it.tile.styleSet }).containsExactly(
                 BACKEND_STYLE, BACKEND_STYLE, BACKEND_STYLE, BACKEND_STYLE, BACKEND_STYLE,
                 BACKEND_STYLE, TARGET_STYLE, TARGET_STYLE, TARGET_STYLE, BACKEND_STYLE,
                 BACKEND_STYLE, TARGET_STYLE, TARGET_STYLE, TARGET_STYLE, BACKEND_STYLE,
@@ -127,9 +127,9 @@ class SubTileGraphicsTest {
         val expectedTile = FILLER.withStyle(TARGET_STYLE)
 
         assertThat(result.toTileMap().map { it.value }).containsExactly(
-                expectedTile,expectedTile,expectedTile,
-                expectedTile,expectedTile,expectedTile,
-                expectedTile,expectedTile,expectedTile)
+                expectedTile, expectedTile, expectedTile,
+                expectedTile, expectedTile, expectedTile,
+                expectedTile, expectedTile, expectedTile)
     }
 
     @Test
@@ -142,11 +142,11 @@ class SubTileGraphicsTest {
         val chars = backend.fetchCells().map { it.tile.asCharacterTile().get().character }
 
         assertThat(chars).containsExactly(
-                ' ',' ',' ',' ',' ',
-                ' ',' ',' ',' ',' ',
-                ' ',' ','x','x',' ',
-                ' ',' ',' ',' ',' ',
-                ' ',' ',' ',' ',' ')
+                ' ', ' ', ' ', ' ', ' ',
+                ' ', ' ', ' ', ' ', ' ',
+                ' ', ' ', 'x', 'x', ' ',
+                ' ', ' ', ' ', ' ', ' ',
+                ' ', ' ', ' ', ' ', ' ')
 
     }
 

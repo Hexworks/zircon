@@ -69,7 +69,7 @@ public class FontSwitcherExample {
     }
 
     private static void refreshLayer(TileGrid tileGrid, String text, Random random) {
-        tileGrid.layers().forEach(tileGrid::removeLayer);
+        tileGrid.getLayers().forEach(tileGrid::removeLayer);
         Layer layer = Layers.newBuilder()
                 .tileset(TILESETS.get(random.nextInt(TILESETS.size())))
                 .offset(Positions.create(0, 1))

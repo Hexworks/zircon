@@ -270,7 +270,7 @@ public class CreatingAScreen {
         final ColorTheme theme = ColorThemes.adriftInDreams();
 
         final TileGraphics image = DrawSurfaces.tileGraphicsBuilder()
-                .size(tileGrid.size())
+                .size(tileGrid.size)
                 .build()
                 .fill(Tiles.newBuilder()
                         .foregroundColor(theme.getBrightForegroundColor())

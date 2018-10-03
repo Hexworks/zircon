@@ -4,9 +4,7 @@ import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Styleable
 import org.hexworks.zircon.api.behavior.TilesetOverride
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
@@ -35,8 +33,8 @@ abstract class BaseTileGraphics(
         TilesetOverride by tilesetOverride {
 
     override fun toString(): String {
-        return (0 until size().yLength).joinToString("") { y ->
-            (0 until size().xLength).joinToString("") { x ->
+        return (0 until height).joinToString("") { y ->
+            (0 until width).joinToString("") { x ->
                 getTileAt(Position.create(x, y))
                         .get()
                         .asCharacterTile()
@@ -59,13 +57,17 @@ abstract class BaseTileGraphics(
     }
 
     override fun setTileAt(position: Position, tile: Tile) {
-        if (position.x < size().xLength && position.y < size().yLength) {
+        if (position.x < width && position.y < height) {
             contents[position] = tile
         }
     }
 
-    override fun createSnapshot(): Map<Position, Tile> {
-        return contents.toMap()
+    override fun createSnapshot(): Snapshot {
+        return Snapshot.create(
+                cells = contents.entries.map { (pos, tile) ->
+                    Cell.create(pos, tile)
+                },
+                tileset = currentTileset())
     }
 
     override fun drawOnto(surface: DrawSurface, position: Position) {

@@ -9,11 +9,11 @@ import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState
 class DefaultCheckBoxRenderer : ComponentRenderer<CheckBox>() {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<CheckBox>) {
-        val style = context.componentStyle().currentStyle()
+        val style = context.componentStyle.currentStyle()
         tileGraphics.applyStyle(style)
-        val checkBoxState = context.component.state()
-        val text = context.component.text()
-        val maxTextLength = tileGraphics.size().width() - BUTTON_WIDTH - 1
+        val checkBoxState = context.component.state
+        val text = context.component.text
+        val maxTextLength = tileGraphics.width - BUTTON_WIDTH - 1
         val clearedText = if (text.length > maxTextLength) {
             text.substring(0, maxTextLength - 3).plus("...")
         } else {

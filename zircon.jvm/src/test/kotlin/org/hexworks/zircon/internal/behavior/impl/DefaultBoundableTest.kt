@@ -26,14 +26,14 @@ class DefaultBoundableTest {
 
     @Test
     fun shouldNotContainPositionWhenPositionIsOutOfBounds() {
-        assertThat(target.containsPosition(target.position()
+        assertThat(target.containsPosition(target.position
                         .withRelative(Position.create(TARGET_SIZE.yLength, TARGET_SIZE.xLength))))
                 .isFalse()
     }
 
     @Test
     fun shouldKnowItsSizeCorrectly() {
-        assertThat(target.size())
+        assertThat(target.size)
                 .isEqualTo(TARGET_SIZE)
     }
 

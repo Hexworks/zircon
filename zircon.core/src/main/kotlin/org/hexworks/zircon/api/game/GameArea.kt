@@ -21,7 +21,7 @@ interface GameArea {
     /**
      * Returns the size of the 3D space this [GameArea] represents.
      */
-    fun size(): Size3D
+    val size: Size3D
 
     /**
      * Tells how many layers are in each [Block].
@@ -63,7 +63,7 @@ interface GameArea {
         return if (fetchMode == BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocks()
         } else {
-            size().fetchPositions().map {
+            size.fetchPositions().map {
                 fetchBlockOrDefault(it)
             }
         }
@@ -92,8 +92,10 @@ interface GameArea {
      */
     fun fetchBlocksAt(offset: Position3D, size: Size3D): Iterable<Block> {
         return fetchPositionsWithOffset(offset, size)
+                .asSequence()
                 .filter { hasBlockAt(it) }
                 .map { fetchBlockOrDefault(it) }
+                .toList()
     }
 
     /**
@@ -132,7 +134,7 @@ interface GameArea {
         } else {
             fetchPositionsWithOffset(
                     offset = Position3D.defaultPosition(),
-                    size = Size3D.create(size().xLength, size().yLength, z))
+                    size = Size3D.create(size.xLength, size.yLength, z))
                     .map { fetchBlockOrDefault(it) }
         }
     }

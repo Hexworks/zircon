@@ -13,8 +13,8 @@ class DefaultScrollable3DTest {
     @Before
     fun setUp() {
         target = DefaultScrollable3D(
-                visibleSpaceSize = VISIBLE_SPACE_SIZE,
-                virtualSpaceSize = VIRTUAL_SPACE_SIZE)
+                visibleSize = VISIBLE_SPACE_SIZE,
+                actualSize = VIRTUAL_SPACE_SIZE)
     }
 
     @Test

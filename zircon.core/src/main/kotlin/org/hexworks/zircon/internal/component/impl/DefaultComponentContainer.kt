@@ -44,13 +44,13 @@ class DefaultComponentContainer(private var container: RootContainer) :
         (component as? DefaultComponent)?.let { dc ->
             require(container.containsBoundable(dc)) {
                 "You can't add a component to a container which is not within its bounds " +
-                        "(target size: ${container.size()}, component size: ${dc.size()}" +
-                        ", position: ${dc.position()})!"
+                        "(target size: ${container.size}, component size: ${dc.size}" +
+                        ", position: ${dc.position})!"
             }
-            require(container.children().none { it.intersects(dc) }) {
+            require(container.children.none { it.intersects(dc) }) {
                 "You can't add a component to a container which intersects with other components!"
             }
-            require(container.children().none { it.containsBoundable(dc) }) {
+            require(container.children.none { it.containsBoundable(dc) }) {
                 "You can't add a component to a container which intersects with other components!"
             }
             container.addComponent(dc)
@@ -135,7 +135,7 @@ class DefaultComponentContainer(private var container: RootContainer) :
 
     // TODO: test this!
     private fun clickFocused() {
-        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, lastFocusedComponent.absolutePosition())))
+        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, lastFocusedComponent.absolutePosition)))
     }
 
     private fun focusComponent(component: InternalComponent) {

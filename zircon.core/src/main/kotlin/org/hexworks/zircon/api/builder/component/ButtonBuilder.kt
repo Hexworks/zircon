@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.CommonComponentProperties
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.ButtonSideDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
@@ -39,19 +40,25 @@ data class ButtonBuilder(
         val componentRenderer = DefaultComponentRenderingStrategy(
                 decorationRenderers = renderers,
                 componentRenderer = DefaultButtonRenderer())
-        val size = if (size().isUnknown()) {
-            renderers.map { it.occupiedSize() }
+        val finalSize = if (size.isUnknown()) {
+            renderers.asSequence()
+                    .map { it.occupiedSize }
                     .fold(Size.create(text.length, 1), Size::plus)
         } else {
-            size()
+            size
         }
         return DefaultButton(
                 text = text,
                 renderingStrategy = componentRenderer,
-                size = size,
-                position = position(),
-                componentStyleSet = componentStyleSet(),
+                size = finalSize,
+                position = position,
+                componentStyleSet = componentStyleSet,
                 tileset = tileset())
+    }
+
+    override fun withDecorationRenderers(vararg renderers: ComponentDecorationRenderer): ButtonBuilder {
+        wrapSides(false)
+        return super.withDecorationRenderers(*renderers)
     }
 
     override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())

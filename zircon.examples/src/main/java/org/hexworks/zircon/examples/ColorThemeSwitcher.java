@@ -206,7 +206,7 @@ public class ColorThemeSwitcher {
         monokaiPanel.addComponent(mOptions);
 
         final RadioButtonGroup othOptions = Components.radioButtonGroup()
-                .withSize(otherPanel.size()
+                .withSize(otherPanel.getSize()
                         .withYLength(otherOptions.size())
                         .withRelativeXLength(-2))
                 .build();
@@ -241,7 +241,7 @@ public class ColorThemeSwitcher {
                                      AtomicReference<Header> labelRef,
                                      Panel infoPanel,
                                      Selection selection) {
-        themeRef.set(ColorThemeResource.valueOf(selection.key()));
+        themeRef.set(ColorThemeResource.valueOf(selection.getKey()));
         infoPanel.removeComponent(labelRef.get());
         labelRef.set(createHeaderForTheme(themeRef.get()));
         infoPanel.addComponent(labelRef.get());

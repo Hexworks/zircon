@@ -34,8 +34,8 @@ object CP437CharsExample {
         loader.fetchMetadata().forEach { char, meta ->
             cp437panel.draw(drawable = Tiles.defaultTile()
                     .withCharacter(char)
-                    .withBackgroundColor(theme.primaryBackgroundColor())
-                    .withForegroundColor(theme.primaryForegroundColor()),
+                    .withBackgroundColor(theme.primaryBackgroundColor)
+                    .withForegroundColor(theme.primaryForegroundColor),
                     position = Positions.create(meta.x, meta.y)
                             .plus(Positions.offset1x1()))
         }
