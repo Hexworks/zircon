@@ -1,14 +1,11 @@
 package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.graphics.TextWrap
-import org.hexworks.zircon.api.modifier.SimpleModifiers
-import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.api.resource.ColorThemeResource
 
 object LogAreaExample {
 
-    private val theme = ColorThemes.amigaOs()
     private val tileset = CP437TilesetResources.aduDhabi16x16()
 
     @JvmStatic
@@ -16,46 +13,47 @@ object LogAreaExample {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .defaultTileset(tileset)
-                .defaultSize(Sizes.create(80, 20))
+                .defaultSize(Sizes.create(60, 20))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
 
         val panel = Components.panel()
                 .wrapWithBox(true)
-                .size(Sizes.create(60, 15))
-                .title("Log")
+                .withSize((Sizes.create(52, 15)))
+                .withTitle("Log")
                 .build()
 
         screen.addComponent(panel)
         val logArea = Components.logArea()
-                .size(Sizes.create(50, 10))
-                .position(Positions.create(0, 0))
-                .textWrap(TextWrap.WORD_WRAP)
+                .withSize(Sizes.create(50, 10))
+                .withPosition(Positions.create(0, 0))
+                .wrapLogElements(true)
                 .build()
 
-        logArea.addText("This is a log row")
+        logArea.addTextElement("This is a simple log row")
         logArea.addNewRows()
-        logArea.addText("This is a further log row with a modifier", setOf(Modifiers.crossedOut()))
+        logArea.addTextElement("This is a further log row with a modifier", setOf(Modifiers.crossedOut()))
         logArea.addNewRows(2)
-        logArea.addHyperLink("Click me, I am a Hyperlink", "IdOfHyperlink")
+
+        logArea.addTextElement("This is a log row with a ")
+        val btn = Components.button()
+                .withDecorationRenderers()
+                .text("Button")
+                .build()
+        logArea.addComponentElement(btn)
+
+        logArea.clear()
         logArea.addNewRows(2)
-        logArea.addText("This is a long log row, which gets wrapped, since it is long")
-        logArea.addNewRows(4)
-        logArea.addText("ScrollTest")
+        logArea.addTextElement("This is a long log row, which gets wrapped, since it is long")
+        logArea.addNewRows(5)
+        logArea.addTextElement("ScrollTest")
         logArea.scrollDownBy(2 )
 
         panel.addComponent(logArea)
 
-        //event handler if user has clicked on the hyper link
-        EventBus.subscribe<ZirconEvent.TriggeredHyperLink> {
-            logArea.addNewRows(2)
-            logArea.addText("You clicked on Hyperlink with ID ${it.linkId}", setOf(SimpleModifiers.Blink))
-            screen.display()
-        }
-
         screen.display()
-        screen.applyColorTheme(theme)
+        screen.applyColorTheme(ColorThemeResource.CYBERPUNK.getTheme())
 
     }
 

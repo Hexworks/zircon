@@ -10,25 +10,36 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 
 /**
  * A [LogArea] provides the possibility to display messages.
+ * The messages are composed of log elements, which can be
+ * for instance text or other Zircon components
+ * New rows have to be explicitly created by calling
+ * [LogArea.addNewRows]
+
+ * Currently the log area scrolls automatically down. When later
+ * Zircon provides scrollbars, this behavior will be then configurable
  */
-interface LogArea : Component, Scrollable {
+interface LogArea : Container, Scrollable {
 
 
     /**
-     * Mode of Text Wrap. TextWrap.Wrap is currently not supported
+     * If true, words of text elements get wrapped, components are also
+     * inserted at a new row if they do not fit
      */
-    var textWrapMode: TextWrap
+    var wrapLogElements: Boolean
 
 
     /**
      * Adds a new text element in the current row
      */
-    fun addText(text: String, modifiers: Set<Modifier>? = null)
+    fun addTextElement(text: String, modifiers: Set<Modifier>? = null)
 
     /**
-     * Adds a new hyper link in the current row
+     * Adds a new component in the current Row
+     * You do not need to specify a position of the component,
+     * since it is auto-arranged in the text flow
+     * Only components with a height of 1 are supported
      */
-    fun addHyperLink(linkText: String, linkId: String)
+    fun addComponentElement(component: Component)
 
     /**
      * Adds new rows
@@ -40,8 +51,8 @@ interface LogArea : Component, Scrollable {
      */
     fun clear()
 
-    fun getLogElementBuffer(): LogElementBuffer
 
+    fun getLogElementBuffer(): LogElementBuffer
 
 
 }
