@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 
 object StyleSets {

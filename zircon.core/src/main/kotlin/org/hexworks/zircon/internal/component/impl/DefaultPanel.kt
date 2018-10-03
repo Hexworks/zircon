@@ -10,12 +10,12 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
 
-class DefaultPanel(override val title: String,
-                   private val renderingStrategy: ComponentRenderingStrategy<Panel>,
-                   position: Position,
-                   size: Size,
-                   tileset: TilesetResource,
-                   componentStyleSet: ComponentStyleSet)
+open class DefaultPanel(override val title: String,
+                        private val renderingStrategy: ComponentRenderingStrategy<Panel>,
+                        position: Position,
+                        size: Size,
+                        tileset: TilesetResource,
+                        componentStyleSet: ComponentStyleSet)
     : Panel, DefaultContainer(
         position = position,
         size = size,
@@ -42,7 +42,7 @@ class DefaultPanel(override val title: String,
                 }
     }
 
-    override fun render() {
+    final override fun render() {
         renderingStrategy.render(this, tileGraphics)
     }
 }

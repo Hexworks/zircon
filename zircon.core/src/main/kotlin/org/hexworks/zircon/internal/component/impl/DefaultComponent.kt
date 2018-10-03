@@ -49,11 +49,7 @@ abstract class DefaultComponent(
         TilesetOverride by graphics,
         Boundable by boundable {
 
-
     final override val id = Identifier.randomIdentifier()
-
-    final override val position: Position
-        get() = boundable.position
 
     final override val contentPosition: Position
         get() = renderer.calculateContentPosition()
@@ -85,10 +81,6 @@ abstract class DefaultComponent(
         }
     }
 
-    final override fun moveTo(position: Position): Boolean {
-        return boundable.moveTo(position)
-    }
-
     final override fun fetchParent() = parent
 
     final override fun attachTo(parent: Container) {
@@ -98,9 +90,9 @@ abstract class DefaultComponent(
         this.parent = Maybe.of(parent)
     }
 
-    // TODO: delegate these to behavior
-    // TODO: move all tile getters / setters into their own behavior
-
+    // to future delegator person:
+    // these can't be delegated because DrawSurface is Boundable
+    // and a Component has its own Boundable
     final override fun getTileAt(position: Position): Maybe<Tile> {
         return graphics.getTileAt(position)
     }
@@ -126,21 +118,16 @@ abstract class DefaultComponent(
         return this
     }
 
+    final override fun moveTo(position: Position): Boolean {
+        return boundable.moveTo(position)
+    }
+
     final override fun applyStyle(styleSet: StyleSet) {
         // TODO: should the user be able to do this?
     }
 
-
     override fun createCopy(): Layer {
         TODO("Creating copies of Components is not supported yet.")
-    }
-
-    override fun draw(drawable: Drawable, position: Position) {
-        graphics.draw(drawable, position)
-    }
-
-    override fun drawOnto(surface: DrawSurface, position: Position) {
-        surface.draw(graphics, position)
     }
 
     override fun fetchComponentByPosition(position: Position) =

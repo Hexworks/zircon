@@ -1,10 +1,10 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.internal.behavior.impl.DefaultStyleable
-import org.hexworks.zircon.api.Modifiers
 import org.junit.Before
 import org.junit.Test
 
@@ -19,18 +19,18 @@ class DefaultStyleableTest {
 
     @Test
     fun shouldHaveNoModifiersByDefault() {
-        assertThat(target.activeModifiers()).isEmpty()
+        assertThat(target.modifiers).isEmpty()
     }
 
     @Test
     fun shouldHaveProperFGByDefault() {
-        assertThat(target.foregroundColor())
+        assertThat(target.foregroundColor)
                 .isEqualTo(TileColor.defaultForegroundColor())
     }
 
     @Test
     fun shouldHaveProperBGByDefault() {
-        assertThat(target.backgroundColor())
+        assertThat(target.backgroundColor)
                 .isEqualTo(TileColor.defaultBackgroundColor())
     }
 
@@ -40,7 +40,7 @@ class DefaultStyleableTest {
 
         target.enableModifiers(modifier)
 
-        assertThat(target.activeModifiers()).containsExactly(modifier)
+        assertThat(target.modifiers).containsExactly(modifier)
     }
 
     @Test
@@ -50,23 +50,23 @@ class DefaultStyleableTest {
         target.enableModifiers(modifier)
         target.disableModifiers(modifier)
 
-        assertThat(target.activeModifiers()).isEmpty()
+        assertThat(target.modifiers).isEmpty()
     }
 
     @Test
     fun shouldProperlyEnableModifiers() {
         target.enableModifiers(setOf(Modifiers.verticalFlip(), Modifiers.crossedOut()))
 
-        assertThat(target.activeModifiers()).containsExactlyInAnyOrder(Modifiers.verticalFlip(), Modifiers.crossedOut())
+        assertThat(target.modifiers).containsExactlyInAnyOrder(Modifiers.verticalFlip(), Modifiers.crossedOut())
     }
 
     @Test
     fun shouldProperlySetModifiers() {
         val modifiers = setOf(Modifiers.verticalFlip(), Modifiers.crossedOut())
 
-        target.setModifiers(modifiers)
+        target.modifiers = modifiers
 
-        assertThat(target.activeModifiers()).containsExactlyInAnyOrder(Modifiers.verticalFlip(), Modifiers.crossedOut())
+        assertThat(target.modifiers).containsExactlyInAnyOrder(Modifiers.verticalFlip(), Modifiers.crossedOut())
     }
 
     @Test
@@ -75,7 +75,7 @@ class DefaultStyleableTest {
 
         target.clearModifiers()
 
-        assertThat(target.activeModifiers())
+        assertThat(target.modifiers)
                 .isEmpty()
     }
 

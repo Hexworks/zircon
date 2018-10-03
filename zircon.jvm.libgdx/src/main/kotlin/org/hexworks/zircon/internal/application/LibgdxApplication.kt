@@ -45,8 +45,8 @@ class LibgdxApplication(appConfig: AppConfig) : ApplicationAdapter(), Applicatio
     override fun start() {
         val cfg = LwjglApplicationConfiguration()
         cfg.title = "LibGDX Test"
-        cfg.height = tileGrid.heightInPixels()
-        cfg.width = tileGrid.widthInPixels()
+        cfg.height = tileGrid.heightInPixels
+        cfg.width = tileGrid.widthInPixels
         LwjglApplication(this, cfg)
     }
 

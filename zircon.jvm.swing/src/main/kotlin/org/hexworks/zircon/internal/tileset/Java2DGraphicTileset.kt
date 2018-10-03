@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.data.GraphicTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.BuiltInGraphicTilesetResource
-import org.hexworks.zircon.api.resource.TileType.*
+import org.hexworks.zircon.api.resource.TileType.GRAPHIC_TILE
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
@@ -26,6 +26,10 @@ class Java2DGraphicTileset(private val resource: TilesetResource)
 
     override val id: Identifier = resource.id
     override val targetType = Graphics2D::class
+    override val width: Int
+        get() = resource.width
+    override val height: Int
+        get() = resource.height
 
     private val metadata: Map<String, GraphicTextureMetadata>
     private val source: BufferedImage
@@ -71,19 +75,11 @@ class Java2DGraphicTileset(private val resource: TilesetResource)
         }.toMap()
     }
 
-    override fun width(): Int {
-        return resource.width
-    }
-
-    override fun height(): Int {
-        return resource.height
-    }
-
     override fun drawTile(tile: Tile, surface: Graphics2D, position: Position) {
         val texture = fetchTextureForTile(tile)
-        val x = position.x * width()
-        val y = position.y * height()
-        surface.drawImage(texture.texture(), x, y, null)
+        val x = position.x * width
+        val y = position.y * height
+        surface.drawImage(texture.texture, x, y, null)
     }
 
 
@@ -91,9 +87,9 @@ class Java2DGraphicTileset(private val resource: TilesetResource)
         tile as? GraphicTile ?: throw IllegalArgumentException("Wrong tile type")
         return metadata[tile.name]?.let { meta ->
             DefaultTileTexture(
-                    width = width(),
-                    height = height(),
-                    texture = source.getSubimage(meta.x * width(), meta.y * height(), width(), height()))
+                    width = width,
+                    height = height,
+                    texture = source.getSubimage(meta.x * width, meta.y * height, width, height))
         } ?: throw NoSuchElementException("No texture with name '${tile.name}'.")
     }
 

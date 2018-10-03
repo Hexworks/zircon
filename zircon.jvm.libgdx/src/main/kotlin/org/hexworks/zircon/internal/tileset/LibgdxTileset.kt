@@ -1,12 +1,9 @@
 package org.hexworks.zircon.internal.tileset
 
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -15,14 +12,13 @@ import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import java.io.File
-import kotlin.reflect.KClass
 
 /**
  * Represents a tileset which is backed by a sprite sheet.
  */
-class LibgdxTileset(private val path: String,
-                    private val width: Int,
-                    private val height: Int)
+class LibgdxTileset(override val width: Int,
+                    override val height: Int,
+                    private val path: String)
     : Tileset<SpriteBatch> {
 
     override val id: Identifier = Identifier.randomIdentifier()
@@ -36,10 +32,6 @@ class LibgdxTileset(private val path: String,
         }
         tex
     }
-
-    override fun width() = width
-
-    override fun height() = height
 
     override fun drawTile(tile: Tile, surface: SpriteBatch, position: Position) {
 //        val aPos = position.toAbsolutePosition(tileset) + offset

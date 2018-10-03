@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage
 class Java2DVerticalFlipper : TextureTransformer<BufferedImage> {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
-        val txt = texture.texture()
+        val txt = texture.texture
         val tx = AffineTransform.getScaleInstance(1.0, -1.0)
         tx.translate(0.0, -txt.height.toDouble())
         return DefaultTileTexture(

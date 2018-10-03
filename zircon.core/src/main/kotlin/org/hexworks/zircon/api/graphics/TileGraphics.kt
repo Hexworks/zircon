@@ -136,7 +136,7 @@ interface TileGraphics
         positions.forEach { pos ->
             pos.plus(offset).let { fixedPos ->
                 getTileAt(fixedPos).map { tile: Tile ->
-                    val oldMods = tile.styleSet.modifiers()
+                    val oldMods = tile.styleSet.modifiers
                     val newTile = if (keepModifiers) {
                         tile.withStyle(styleSet.withAddedModifiers(oldMods))
                     } else {

@@ -29,9 +29,9 @@ class DefaultStyleSetTest {
 
         val result = styleSet.withAddedModifiers(HorizontalFlip)
 
-        assertThat(StyleSet.defaultStyle().modifiers()).isEmpty()
-        assertThat(styleSet.modifiers()).containsExactlyInAnyOrder(VerticalFlip)
-        assertThat(result.modifiers()).containsExactlyInAnyOrder(VerticalFlip, HorizontalFlip)
+        assertThat(StyleSet.defaultStyle().modifiers).isEmpty()
+        assertThat(styleSet.modifiers).containsExactlyInAnyOrder(VerticalFlip)
+        assertThat(result.modifiers).containsExactlyInAnyOrder(VerticalFlip, HorizontalFlip)
     }
 
     @Test
@@ -40,9 +40,9 @@ class DefaultStyleSetTest {
 
         val result = styleSet.withRemovedModifiers(HorizontalFlip)
 
-        assertThat(StyleSet.defaultStyle().modifiers()).isEmpty()
-        assertThat(styleSet.modifiers()).containsExactlyInAnyOrder(VerticalFlip, HorizontalFlip)
-        assertThat(result.modifiers()).containsExactlyInAnyOrder(VerticalFlip)
+        assertThat(StyleSet.defaultStyle().modifiers).isEmpty()
+        assertThat(styleSet.modifiers).containsExactlyInAnyOrder(VerticalFlip, HorizontalFlip)
+        assertThat(result.modifiers).containsExactlyInAnyOrder(VerticalFlip)
     }
 
     @Test
@@ -51,14 +51,14 @@ class DefaultStyleSetTest {
 
         val result = styleSet.withModifiers(HorizontalFlip, CrossedOut)
 
-        assertThat(StyleSet.defaultStyle().modifiers()).isEmpty()
-        assertThat(styleSet.modifiers()).containsExactlyInAnyOrder(VerticalFlip, HorizontalFlip)
-        assertThat(result.modifiers()).containsExactlyInAnyOrder(CrossedOut, HorizontalFlip)
+        assertThat(StyleSet.defaultStyle().modifiers).isEmpty()
+        assertThat(styleSet.modifiers).containsExactlyInAnyOrder(VerticalFlip, HorizontalFlip)
+        assertThat(result.modifiers).containsExactlyInAnyOrder(CrossedOut, HorizontalFlip)
     }
 
     @Test
     fun shouldNotHaveModifiersByDefault() {
-        assertThat(StyleSet.defaultStyle().modifiers()).isEmpty()
+        assertThat(StyleSet.defaultStyle().modifiers).isEmpty()
     }
 
     @Test

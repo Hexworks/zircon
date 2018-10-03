@@ -12,7 +12,6 @@ interface ThreadSafeQueue<E> : MutableCollection<E> {
 
     fun drainTo(c: MutableCollection<E>): Int
 
-
     fun peek(): Maybe<E>
 
     fun poll(): Maybe<E>

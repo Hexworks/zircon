@@ -14,7 +14,7 @@ class Java2DTextureColorizer : TextureTransformer<BufferedImage> {
         val g = tile.foregroundColor.green.toFloat() / 255
         val b = tile.foregroundColor.blue.toFloat() / 255
 
-        val backend = texture.texture()
+        val backend = texture.texture
         (0 until backend.width).forEach { x ->
             (0 until backend.height).forEach { y ->
                 val ax = backend.colorModel.getAlpha(backend.raster.getDataElements(x, y, null))

@@ -1,53 +1,37 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.zircon.api.behavior.Styleable
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 
-data class DefaultStyleable(private var styleSet: StyleSet) : Styleable {
+data class DefaultStyleable(private val initialStyle: StyleSet) : Styleable {
 
-    override fun toStyleSet() = styleSet
-
-    override fun foregroundColor() = styleSet.foregroundColor()
-
-    override fun backgroundColor() = styleSet.backgroundColor()
-
-    override fun activeModifiers() = styleSet.modifiers()
-
-    override fun setBackgroundColor(backgroundColor: TileColor) {
-        styleSet = styleSet.withBackgroundColor(backgroundColor)
-    }
-
-    override fun setForegroundColor(foregroundColor: TileColor) {
-        styleSet = styleSet.withForegroundColor(foregroundColor)
-    }
+    override var foregroundColor = initialStyle.foregroundColor
+    override var backgroundColor = initialStyle.backgroundColor
+    override var modifiers = initialStyle.modifiers
 
     override fun enableModifiers(modifiers: Set<Modifier>) {
-        styleSet = styleSet.withAddedModifiers(modifiers)
+        this.modifiers = this.modifiers.plus(modifiers)
     }
-
-    override fun enableModifiers(vararg modifiers: Modifier) = enableModifiers(modifiers.toSet())
 
     override fun disableModifiers(modifiers: Set<Modifier>) {
-        styleSet = styleSet.withRemovedModifiers(modifiers)
-    }
-
-    override fun disableModifiers(vararg modifiers: Modifier) = disableModifiers(modifiers.toSet())
-
-    override fun setModifiers(modifiers: Set<Modifier>) {
-        styleSet = styleSet.withModifiers(modifiers)
+        this.modifiers = this.modifiers.minus(modifiers)
     }
 
     override fun clearModifiers() {
-        styleSet = styleSet.withoutModifiers()
+        modifiers = setOf()
     }
 
-    override fun resetColorsAndModifiers() {
-        styleSet = StyleSet.defaultStyle()
-    }
+    override fun toStyleSet() = StyleSetBuilder.newBuilder()
+            .foregroundColor(foregroundColor)
+            .backgroundColor(backgroundColor)
+            .modifiers(modifiers)
+            .build()
 
     override fun setStyleFrom(source: StyleSet) {
-        styleSet = source
+        this.foregroundColor = source.foregroundColor
+        this.backgroundColor = source.backgroundColor
+        this.modifiers = source.modifiers.toSet()
     }
 }

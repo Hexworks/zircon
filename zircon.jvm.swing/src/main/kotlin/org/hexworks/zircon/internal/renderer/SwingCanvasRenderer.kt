@@ -47,8 +47,8 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         }
 
         canvas.preferredSize = Dimension(
-                tileGrid.widthInPixels(),
-                tileGrid.heightInPixels())
+                tileGrid.widthInPixels,
+                tileGrid.heightInPixels)
         canvas.minimumSize = Dimension(tileGrid.currentTileset().width, tileGrid.currentTileset().height)
         canvas.isFocusable = true
         canvas.requestFocusInWindow()
@@ -97,11 +97,11 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         handleFirstDraw(bs)
         handleBlink(now)
         val img = BufferedImage(
-                tileGrid.widthInPixels(),
-                tileGrid.heightInPixels(),
+                tileGrid.widthInPixels,
+                tileGrid.heightInPixels,
                 BufferedImage.TRANSLUCENT)
         val gc = configureGraphics(img.graphics)
-        gc.fillRect(0, 0, tileGrid.widthInPixels(), tileGrid.heightInPixels())
+        gc.fillRect(0, 0, tileGrid.widthInPixels, tileGrid.heightInPixels)
 
         val snapshot = tileGrid.createSnapshot()
         tileGrid.updateAnimations(now, tileGrid)
@@ -209,9 +209,9 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                 (config.isCursorBlinking.not() || config.isCursorBlinking && blinkOn)
     }
 
-    private fun getWidth() = tileGrid.widthInPixels()
+    private fun getWidth() = tileGrid.widthInPixels
 
-    private fun getHeight() = tileGrid.heightInPixels()
+    private fun getHeight() = tileGrid.heightInPixels
 
     private tailrec fun initializeBufferStrategy() {
         val bs = canvas.bufferStrategy

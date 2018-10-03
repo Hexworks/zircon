@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.data.DefaultCharacterTile
 import org.hexworks.zircon.internal.data.DefaultImageTile
 
-interface Tile : Drawable, Cacheable {
+interface Tile : Drawable, Cacheable, StyleSet {
 
     /**
      * The tile type of this [Tile].
@@ -25,6 +25,68 @@ interface Tile : Drawable, Cacheable {
      * The style of this [Tile].
      */
     val styleSet: StyleSet
+
+    /**
+     * Returns a copy of this [Tile] with the specified style.
+     */
+    fun withStyle(style: StyleSet): Tile
+
+    override fun drawOnto(surface: DrawSurface, position: Position) {
+        surface.setTileAt(position, this)
+    }
+
+    /**
+     * Returns a copy of the style information stored in this [StyleSet].
+     */
+    override fun createCopy(): Tile
+
+    /**
+     * Creates a copy of this [StyleSet] with the given foreground color.
+     */
+    override fun withForegroundColor(foregroundColor: TileColor): Tile
+
+    /**
+     * Creates a copy of this [StyleSet] with the given background color.
+     */
+    override fun withBackgroundColor(backgroundColor: TileColor): Tile
+
+    /**
+     * Creates a copy of this [StyleSet] with the given modifiers.
+     */
+    override fun withModifiers(modifiers: Set<Modifier>): Tile
+
+    /**
+     * Creates a copy of this [StyleSet] with the given modifiers.
+     */
+    override fun withModifiers(vararg modifiers: Modifier): Tile =
+            withModifiers(modifiers.toSet())
+
+    /**
+     * Creates a copy of this [StyleSet] with the given modifiers added.
+     */
+    override fun withAddedModifiers(modifiers: Set<Modifier>): Tile
+
+    /**
+     * Creates a copy of this [StyleSet] with the given modifiers added.
+     */
+    override fun withAddedModifiers(vararg modifiers: Modifier): Tile =
+            withAddedModifiers(modifiers.toSet())
+
+    /**
+     * Creates a copy of this [StyleSet] with the given modifiers removed.
+     */
+    override fun withRemovedModifiers(modifiers: Set<Modifier>): Tile
+
+    /**
+     * Creates a copy of this [StyleSet] with the given modifiers removed.
+     */
+    override fun withRemovedModifiers(vararg modifiers: Modifier): Tile =
+            withRemovedModifiers(modifiers.toSet())
+
+    /**
+     * Creates a copy of this [StyleSet] with no modifiers.
+     */
+    override fun withNoModifiers(): Tile
 
     /**
      * Returns this [Tile] as a [CharacterTile] if possible.
@@ -43,15 +105,6 @@ interface Tile : Drawable, Cacheable {
 
     fun isOpaque(): Boolean = foregroundColor.isOpaque().and(
             backgroundColor.isOpaque())
-
-    val foregroundColor: TileColor
-        get() = styleSet.foregroundColor()
-
-    val backgroundColor: TileColor
-        get() = styleSet.backgroundColor()
-
-    val modifiers: Set<Modifier>
-        get() = styleSet.modifiers()
 
     fun isUnderlined(): Boolean = modifiers.contains(Underline)
 
@@ -72,54 +125,6 @@ interface Tile : Drawable, Cacheable {
             .toSet()
 
     fun isNotEmpty(): Boolean = this !== empty()
-
-    override fun drawOnto(surface: DrawSurface, position: Position) {
-        surface.setTileAt(position, this)
-    }
-
-    /**
-     * Returns a copy of this [Tile] with the specified foreground color.
-     */
-    fun withForegroundColor(foregroundColor: TileColor): Tile
-
-    /**
-     * Returns a copy of this [Tile] with the specified background color.
-     */
-    fun withBackgroundColor(backgroundColor: TileColor): Tile
-
-    /**
-     * Returns a copy of this [Tile] with the specified style.
-     */
-    fun withStyle(style: StyleSet): Tile
-
-    /**
-     * Returns a copy of this [Tile] with the given `modifier` added to the current modifiers
-     */
-    fun withAddedModifier(modifier: Modifier): Tile = withModifiers(modifiers + modifier)
-
-    /**
-     * Returns a copy of this [Tile] with the specified modifiers.
-     */
-    fun withModifiers(vararg modifiers: Modifier): Tile = withModifiers(modifiers.toSet())
-
-    /**
-     * Returns a copy of this [Tile] with the specified modifiers.
-     */
-    fun withModifiers(modifiers: Set<Modifier>): Tile
-
-    /**
-     * Returns a copy of this [Tile] with [Modifier] (s) removed.
-     * The currently active [Modifier]s will be carried over to the copy, except for the one(s) specified.
-     * If the current [Tile] doesn't have the [Modifier] (s) specified, it will returnThis itself.
-     */
-    fun withoutModifiers(vararg modifiers: Modifier): Tile = withoutModifiers(modifiers.toSet())
-
-    /**
-     * Returns a copy of this [Tile] with [Modifier] (s) removed.
-     * The currently active [Modifier]s will be carried over to the copy, except for the one(s) specified.
-     * If the current [Tile] doesn't have the [Modifier] (s) specified, it will returnThis itself.
-     */
-    fun withoutModifiers(modifiers: Set<Modifier>): Tile
 
     companion object {
 

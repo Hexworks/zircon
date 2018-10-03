@@ -7,10 +7,6 @@ import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Symbols
-import org.hexworks.zircon.api.graphics.Symbols.ALPHA
-import org.hexworks.zircon.api.graphics.Symbols.APPROXIMATION
-import org.hexworks.zircon.api.graphics.Symbols.ARROW_UP
-import org.hexworks.zircon.api.graphics.Symbols.BETA
 import org.hexworks.zircon.api.modifier.Glow
 import org.hexworks.zircon.api.modifier.Markov
 import org.hexworks.zircon.api.util.markovchain.MarkovChain
@@ -34,7 +30,6 @@ object StaticEffectMarkovChainExample {
 
     @JvmStatic
     fun main(args: Array<String>) {
-
 
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
@@ -97,7 +92,7 @@ object StaticEffectMarkovChainExample {
             val markov = Markov(MarkovChain.create(initialNode))
 
 
-            tileGrid.putTile(tile.withAddedModifier(markov))
+            tileGrid.putTile(tile.withAddedModifiers(markov))
         }
 
 

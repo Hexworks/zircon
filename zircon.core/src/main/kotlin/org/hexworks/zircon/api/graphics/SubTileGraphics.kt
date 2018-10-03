@@ -23,7 +23,7 @@ class SubTileGraphics(
                 size = rect.size,
                 position = rect.position),
         private val styleable: Styleable = DefaultStyleable(
-                styleSet = backend.toStyleSet()),
+                initialStyle = backend.toStyleSet()),
         private val tilesetOverride: TilesetOverride = DefaultTilesetOverride(
                 tileset = backend.currentTileset()))
     : TileGraphics, Boundable by boundable, Styleable by styleable, TilesetOverride by tilesetOverride {
