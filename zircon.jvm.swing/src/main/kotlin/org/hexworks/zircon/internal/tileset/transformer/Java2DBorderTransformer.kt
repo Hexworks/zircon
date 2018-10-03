@@ -15,7 +15,7 @@ class Java2DBorderTransformer : TextureTransformer<BufferedImage> {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         return texture.also {
-            val txt = it.texture()
+            val txt = it.texture
             txt.graphics.apply {
                 color = tile.foregroundColor.toAWTColor()
                 if (tile.hasBorder()) {

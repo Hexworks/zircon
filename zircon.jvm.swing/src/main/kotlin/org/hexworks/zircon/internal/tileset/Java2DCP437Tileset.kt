@@ -26,6 +26,10 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
     : Tileset<Graphics2D> {
 
     override val id: Identifier = Identifier.randomIdentifier()
+    override val width: Int
+        get() = resource.width
+    override val height: Int
+        get() = resource.height
 
     private val lookup = CP437TileMetadataLoader(
             width = resource.width,
@@ -46,19 +50,11 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
         }
     }
 
-    override fun width(): Int {
-        return resource.width
-    }
-
-    override fun height(): Int {
-        return resource.height
-    }
-
     override fun drawTile(tile: Tile, surface: Graphics2D, position: Position) {
         val texture = fetchTextureForTile(tile)
-        val x = position.x * width()
-        val y = position.y * height()
-        surface.drawImage(texture.texture(), x, y, null)
+        val x = position.x * width
+        val y = position.y * height
+        surface.drawImage(texture.texture, x, y, null)
     }
 
     private fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {
@@ -78,9 +74,9 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
             maybeRegion
         } else {
             var image: TileTexture<BufferedImage> = DefaultTileTexture(
-                    width = width(),
-                    height = height(),
-                    texture = source.getSubimage(meta.x * width(), meta.y * height(), width(), height()))
+                    width = width,
+                    height = height,
+                    texture = source.getSubimage(meta.x * width, meta.y * height, width, height))
             TILE_INITIALIZERS.forEach {
                 image = it.transform(image, fixedTile)
             }

@@ -1,8 +1,20 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.*;
-import org.hexworks.zircon.api.component.*;
+import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.Positions;
+import org.hexworks.zircon.api.Screens;
+import org.hexworks.zircon.api.Sizes;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.component.Button;
+import org.hexworks.zircon.api.component.CheckBox;
+import org.hexworks.zircon.api.component.Header;
+import org.hexworks.zircon.api.component.Label;
+import org.hexworks.zircon.api.component.Panel;
+import org.hexworks.zircon.api.component.RadioButtonGroup;
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection;
+import org.hexworks.zircon.api.component.TextArea;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.ColorThemeResource;

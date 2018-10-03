@@ -10,6 +10,15 @@ interface GraphicTile : Tile {
     val name: String
     val tags: Set<String>
 
+    override val foregroundColor: TileColor
+        get() = TileColor.transparent()
+
+    override val backgroundColor: TileColor
+        get() = TileColor.transparent()
+
+    override val modifiers: Set<Modifier>
+        get() = setOf()
+
     override val tileType: TileType
         get() = TileType.GRAPHIC_TILE
 
@@ -28,6 +37,10 @@ interface GraphicTile : Tile {
 
     override fun withModifiers(modifiers: Set<Modifier>) = this
 
-    override fun withoutModifiers(modifiers: Set<Modifier>) = this
+    override fun withAddedModifiers(modifiers: Set<Modifier>) = this
+
+    override fun withRemovedModifiers(modifiers: Set<Modifier>) = this
+
+    override fun withNoModifiers() = this
 
 }

@@ -14,7 +14,7 @@ class Java2DCP437TilesetTest {
     @Test
     fun shouldProperlyReportSize() {
         val expectedSize = 16
-        assertThat(target.width()).isEqualTo(expectedSize)
-        assertThat(target.height()).isEqualTo(expectedSize)
+        assertThat(target.width).isEqualTo(expectedSize)
+        assertThat(target.height).isEqualTo(expectedSize)
     }
 }

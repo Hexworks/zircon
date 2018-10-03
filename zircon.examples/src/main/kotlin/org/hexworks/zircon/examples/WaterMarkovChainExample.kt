@@ -7,9 +7,6 @@ import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Symbols
-import org.hexworks.zircon.api.modifier.Markov
-import org.hexworks.zircon.api.util.markovchain.MarkovChain
-import org.hexworks.zircon.api.util.markovchain.MarkovChainNode
 
 object WaterMarkovChainExample {
 
