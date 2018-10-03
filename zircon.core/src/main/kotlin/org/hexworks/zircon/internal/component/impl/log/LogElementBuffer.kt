@@ -1,13 +1,15 @@
 package org.hexworks.zircon.internal.component.impl.log
 
-import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.component.LogArea
 import org.hexworks.zircon.api.data.Size
 
 data class LogElementRow(val yPosition: Int, val logElements: MutableList<LogElement> = mutableListOf()) {
     fun size() = logElements.size
+    fun getComponentsOfRow() = logElements.filter { it is LogComponentElement }
+            .map { (it as LogComponentElement).component }
 }
 
-class LogElementBuffer(val visibleSize: Size, val numberOfBufferedRows: Int = 100) {
+class LogElementBuffer(val visibleSize: Size, private val logArea: LogArea, private val numberOfBufferedRows: Int = 100) {
     private val logElementRows = mutableListOf<LogElementRow>()
     fun getLogElementRows() = logElementRows.toList()
 
@@ -17,9 +19,6 @@ class LogElementBuffer(val visibleSize: Size, val numberOfBufferedRows: Int = 10
 
     fun currentLogElementRow() = logElementRows.last()
     fun getAllLogElements() = getLogElementRows().flatMap { it.logElements }
-    fun getLogElementContainingPosition(position: Position) =
-            getAllLogElements().asSequence().filter { it.renderedPositionArea != null }
-                    .firstOrNull { it.renderedPositionArea!!.containsPosition(position) }
 
 
     fun addLogElement(logElement: LogElement) {
@@ -29,9 +28,11 @@ class LogElementBuffer(val visibleSize: Size, val numberOfBufferedRows: Int = 10
 
 
     fun addNewRows(numberOfRows: Int) {
-        (1..numberOfRows).forEach {
-            if (logElementRows.size >= numberOfBufferedRows)
+        (1..numberOfRows).forEach { _ ->
+            if (logElementRows.size >= numberOfBufferedRows) {
+                logElementRows[0].getComponentsOfRow().forEach { logArea.removeComponent(it) }
                 logElementRows.removeAt(0)
+            }
             logElementRows.add(LogElementRow(logElementRows.size))
         }
     }
