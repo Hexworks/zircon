@@ -11,14 +11,26 @@ import org.hexworks.zircon.api.util.Maybe
 
 interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<T> {
 
+    /**
+     * Returns the [Position] where the resulting [Component] will
+     * be placed.
+     */
+    val position: Position
+
+    /**
+     * Returns the [Size] of the resulting [Component].
+     */
+    val size: Size
+
+    /**
+     * The [ComponentStyleSet] the resulting [Component] will use
+     */
+    val componentStyleSet: ComponentStyleSet
+
+
     fun title(): Maybe<String>
 
     fun withTitle(title: String): U
-
-    /**
-     * Returns the [ComponentStyleSet] the resulting [Component] will use
-     */
-    fun componentStyleSet(): ComponentStyleSet
 
     /**
      * Sets the [ComponentStyleSet] the resulting [Component] will use
@@ -36,21 +48,10 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
     fun withTileset(tileset: TilesetResource): U
 
     /**
-     * Returns the [Position] where the resulting [Component] will
-     * be placed.
-     */
-    fun position(): Position
-
-    /**
      * Sets the [Position] where the resulting [Component] will
      * be placed.
      */
     fun withPosition(position: Position): U
-
-    /**
-     * Returns the [Size] of the resulting [Component].
-     */
-    fun size(): Size
 
     /**
      * Sets the [Size] of the resulting [Component].

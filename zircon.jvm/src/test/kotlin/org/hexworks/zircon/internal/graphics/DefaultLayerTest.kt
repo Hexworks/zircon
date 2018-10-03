@@ -17,7 +17,7 @@ class DefaultLayerTest {
     @Before
     fun setUp() {
         target = DefaultLayer(
-                position = OFFSET,
+                currentPosition = OFFSET,
                 backend = TILE_IMAGE)
 
     }
@@ -26,7 +26,7 @@ class DefaultLayerTest {
     fun shouldProperlySetOffset() {
         val expectedOffset = Position.defaultPosition()
         target.moveTo(expectedOffset)
-        assertThat(target.position())
+        assertThat(target.position)
                 .isEqualTo(expectedOffset)
     }
 

@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 package org.hexworks.zircon.sitegen
 
 import kotlinx.html.*

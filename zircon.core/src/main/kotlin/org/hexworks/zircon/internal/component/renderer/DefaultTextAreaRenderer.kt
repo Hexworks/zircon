@@ -10,12 +10,12 @@ import org.hexworks.zircon.api.kotlin.map
 class DefaultTextAreaRenderer : ComponentRenderer<TextArea>() {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<TextArea>) {
-        val style = context.componentStyle().currentStyle()
+        val style = context.componentStyle.currentStyle()
         val component = context.component
         tileGraphics.applyStyle(style)
         val tileTemplate = Tile.createCharacterTile(' ', style)
-        tileGraphics.size().fetchPositions().forEach { pos ->
-            val fixedPos = pos + component.visibleOffset()
+        tileGraphics.size.fetchPositions().forEach { pos ->
+            val fixedPos = pos + component.visibleOffset
             component.textBuffer().getCharAt(fixedPos).map { char ->
                 tileGraphics.setTileAt(pos, tileTemplate.withCharacter(char))
             }

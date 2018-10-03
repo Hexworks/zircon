@@ -34,7 +34,7 @@ class DefaultTextAreaTest {
 
     @Test
     fun shouldProperlyReturnText() {
-        assertThat(target.text()).isEqualTo(TEXT)
+        assertThat(target.text).isEqualTo(TEXT)
     }
 
     @Test
@@ -54,7 +54,7 @@ class DefaultTextAreaTest {
 
     @Test
     fun shouldProperlyHandleLeftArrowWhenFocusedAndMustScrollToEndOfPrevLine() {
-        target.setText("Foo${System.lineSeparator()}bar")
+        target.text = "Foo${System.lineSeparator()}bar"
         target.giveFocus()
 
         target.putCursorAt(Position.create(0, 1))
@@ -85,23 +85,23 @@ class DefaultTextAreaTest {
     @Test
     fun shouldProperlyApplyTheme() {
         target.applyColorTheme(THEME)
-        val styles = target.componentStyleSet()
-        assertThat(styles.getStyleFor(ComponentState.DEFAULT))
+        val styles = target.componentStyleSet
+        assertThat(styles.fetchStyleFor(ComponentState.DEFAULT))
                 .isEqualTo(DEFAULT_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.MOUSE_OVER))
+        assertThat(styles.fetchStyleFor(ComponentState.MOUSE_OVER))
                 .isEqualTo(DEFAULT_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.FOCUSED))
+        assertThat(styles.fetchStyleFor(ComponentState.FOCUSED))
                 .isEqualTo(FOCUSED_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.ACTIVE))
+        assertThat(styles.fetchStyleFor(ComponentState.ACTIVE))
                 .isEqualTo(DEFAULT_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.DISABLED))
+        assertThat(styles.fetchStyleFor(ComponentState.DISABLED))
                 .isEqualTo(DISABLED_STYLE)
     }
 
     @Test
     fun shouldRefreshDrawSurfaceIfSetText() {
-        target.setText(UPDATE_TEXT.toString())
-        val character = target.tileGraphics().getTileAt(Position.defaultPosition())
+        target.text = UPDATE_TEXT.toString()
+        val character = target.tileGraphics.getTileAt(Position.defaultPosition())
         assertThat(character.get().asCharacterTile().get().character)
                 .isEqualTo(UPDATE_TEXT)
     }
@@ -114,16 +114,16 @@ class DefaultTextAreaTest {
         val SIZE = Size.create(10, 6)
         val POSITION = Position.create(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryBackgroundColor())
-                .backgroundColor(THEME.secondaryForegroundColor())
+                .foregroundColor(THEME.secondaryBackgroundColor)
+                .backgroundColor(THEME.secondaryForegroundColor)
                 .build()
         val FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.primaryBackgroundColor())
-                .backgroundColor(THEME.primaryForegroundColor())
+                .foregroundColor(THEME.primaryBackgroundColor)
+                .backgroundColor(THEME.primaryForegroundColor)
                 .build()
         val DISABLED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor())
-                .backgroundColor(THEME.secondaryBackgroundColor())
+                .foregroundColor(THEME.secondaryForegroundColor)
+                .backgroundColor(THEME.secondaryBackgroundColor)
                 .build()
         val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(DEFAULT_STYLE)

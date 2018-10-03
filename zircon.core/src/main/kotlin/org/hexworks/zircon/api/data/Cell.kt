@@ -10,6 +10,22 @@ interface Cell {
 
     operator fun component2() = tile
 
+    fun withPosition(position: Position): Cell {
+        return if (position == this.position) {
+            this
+        } else {
+            create(position, tile)
+        }
+    }
+
+    fun withTile(tile: Tile): Cell {
+        return if (tile == this.tile) {
+            this
+        } else {
+            create(position, tile)
+        }
+    }
+
     companion object {
 
         /**

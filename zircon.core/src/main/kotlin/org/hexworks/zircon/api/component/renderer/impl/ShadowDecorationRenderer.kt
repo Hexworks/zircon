@@ -12,18 +12,18 @@ import org.hexworks.zircon.api.shape.LineFactory
 
 class ShadowDecorationRenderer(shadowChar: Char = DEFAULT_SHADOW_CHAR) : ComponentDecorationRenderer {
 
+    override val offset = Position.create(0, 0)
+
+    override val occupiedSize = Size.create(1, 1)
+
     private val shadowTile = TileBuilder.newBuilder()
             .backgroundColor(TileColor.transparent())
             .foregroundColor(TileColor.create(100, 100, 100))
             .character(shadowChar)
             .build()
 
-    override fun offset(): Position = Position.create(0, 0)
-
-    override fun occupiedSize(): Size = Size.create(1, 1)
-
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
-        val graphicsSize = tileGraphics.size()
+        val graphicsSize = tileGraphics.size
         LineFactory.buildLine(
                 fromPoint = Position.create(1, 0),
                 toPoint = Position.create(graphicsSize.xLength - 1, 0))

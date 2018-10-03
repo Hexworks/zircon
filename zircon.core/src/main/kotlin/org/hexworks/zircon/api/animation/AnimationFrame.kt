@@ -9,28 +9,17 @@ import org.hexworks.zircon.api.graphics.Layer
  */
 interface AnimationFrame {
 
-    /**
-     * Returns the [Size] of this [AnimationFrame].
-     */
-    fun getSize(): Size
+    val size: Size
 
+    val layers: List<Layer>
     /**
-     * Returns a list of [Layer]s which this [AnimationFrame] consists of.
+     * How many times this frame will be repeated.
      */
-    fun getLayers(): List<Layer>
+    val repeatCount: Int
 
+    // TODO: immutable + builder
     /**
-     * Returns how many times this frame will be repeated.
+     * The [Position] at which this [AnimationFrame] should be drawn.
      */
-    fun getRepeatCount(): Int
-
-    /**
-     * Returns the [Position] at which this [AnimationFrame] should be drawn.
-     */
-    fun getPosition(): Position
-
-    /**
-     * Sets the [Position] at which this [AnimationFrame] should be drawn.
-     */
-    fun setPosition(position: Position)
+    var position: Position
 }

@@ -29,7 +29,7 @@ import org.hexworks.zircon.platform.extension.insert
 
 class DefaultTextArea constructor(
         private val renderingStrategy: ComponentRenderingStrategy<TextArea>,
-        text: String,
+        initialText: String,
         tileset: TilesetResource,
         size: Size,
         position: Position,
@@ -43,50 +43,44 @@ class DefaultTextArea constructor(
         componentStyles = componentStyleSet,
         renderer = renderingStrategy) {
 
-    private val textBuffer = TextBuffer(text)
+    override var text: String
+        get() = textBuffer.getText()  // TODO: line sep?
+        set(value) {
+            textBuffer.setText(value)
+            render()
+        }
+
+    private val textBuffer = TextBuffer(initialText)
     private var typingEnabled = false
     private var enabled = true
     private var focused = false
 
     init {
-        setText(text)
+        this.text = initialText
         refreshVirtualSpaceSize()
         render()
     }
 
-    override fun text() = textBuffer.getText() // TODO: line sep?
-
     override fun textBuffer() = textBuffer
-
-    override fun setText(text: String): Boolean {
-        val isChanged = if (this.textBuffer.toString() == text) {
-            false
-        } else {
-            textBuffer.setText(text)
-            true
-        }
-        render()
-        return isChanged
-    }
 
     override fun acceptsFocus() = enabled
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryBackgroundColor())
-                        .backgroundColor(colorTheme.secondaryForegroundColor())
+                        .foregroundColor(colorTheme.secondaryBackgroundColor)
+                        .backgroundColor(colorTheme.secondaryForegroundColor)
                         .build())
                 .disabledStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor())
-                        .backgroundColor(colorTheme.secondaryBackgroundColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor)
+                        .backgroundColor(colorTheme.secondaryBackgroundColor)
                         .build())
                 .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.primaryBackgroundColor())
-                        .backgroundColor(colorTheme.primaryForegroundColor())
+                        .foregroundColor(colorTheme.primaryBackgroundColor)
+                        .backgroundColor(colorTheme.primaryForegroundColor)
                         .build())
                 .build().also {
-                    setComponentStyleSet(it)
+                    componentStyleSet = it
                     render()
                 }
     }
@@ -107,7 +101,7 @@ class DefaultTextArea constructor(
                 disableTyping()
             }
         }
-        componentStyleSet().applyDisabledStyle()
+        componentStyleSet.applyDisabledStyle()
         render()
     }
 
@@ -122,16 +116,16 @@ class DefaultTextArea constructor(
     override fun takeFocus(input: Maybe<Input>) {
         focused = false
         disableTyping()
-        componentStyleSet().reset()
+        componentStyleSet.reset()
         render()
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics())
+        renderingStrategy.render(this, tileGraphics)
     }
 
     private fun enableFocusedComponent() {
-        componentStyleSet().applyFocusedStyle()
+        componentStyleSet.applyFocusedStyle()
         render()
         enableTyping()
     }
@@ -143,13 +137,13 @@ class DefaultTextArea constructor(
 
     private fun enableTyping() {
         typingEnabled = true
-        EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition().withRelative(position() + contentPosition())))
+        EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition().withRelative(position + contentPosition)))
     }
 
     override fun keyStroked(keyStroke: KeyStroke) {
         if (typingEnabled) {
             val cursorPos = cursorPosition()
-            val (offsetCols, offsetRows) = visibleOffset()
+            val (offsetCols, offsetRows) = visibleOffset
             val currColIdx = cursorPos.x + offsetCols
             val currRowIdx = cursorPos.y + offsetRows
             val prevRowIdx = offsetRows + cursorPos.y - 1
@@ -157,7 +151,7 @@ class DefaultTextArea constructor(
             val maybePrevRow = textBuffer.getRow(prevRowIdx)
             val maybeNextRow = textBuffer.getRow(nextRowIdx)
             val maybeCurrRow = textBuffer.getRow(currRowIdx)
-            val nextChar = textBuffer.getCharAt(visibleOffset() + cursorPosition())
+            val nextChar = textBuffer.getCharAt(visibleOffset + cursorPosition())
             // TODO: this should be a state machine
             // refactor this later
             if (keyStroke.inputTypeIs(InputType.ArrowRight)) {
@@ -171,7 +165,7 @@ class DefaultTextArea constructor(
                 }
             } else if (keyStroke.inputTypeIs(InputType.ArrowLeft)) {
                 if (isCursorAtTheStartOfTheLine()) {
-                    if (visibleOffset().x > 0) {
+                    if (visibleOffset.x > 0) {
                         // we can still scroll left because there are hidden parts of the left section
                         scrollOneLeft()
                         render()
@@ -254,7 +248,7 @@ class DefaultTextArea constructor(
                 putCursorAt(cursorPosition().withX(0))
             } else if (keyStroke.inputTypeIs(InputType.End)) {
                 scrollRightToRowEnd(maybeCurrRow.get())
-                putCursorAt(cursorPosition().withX(size().xLength - 1))
+                putCursorAt(cursorPosition().withX(size.xLength - 1))
             } else if (TextUtils.isPrintableCharacter(keyStroke.getCharacter())) {
                 textBuffer.getRow(currRowIdx).map {
                     if (isCursorAtTheEndOfTheLine()) {
@@ -272,7 +266,7 @@ class DefaultTextArea constructor(
                     render()
                 }
             }
-            EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition() + position()))
+            EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition() + position))
         }
     }
 
@@ -305,10 +299,10 @@ class DefaultTextArea constructor(
     }
 
     private fun scrollLeftToRowEnd(row: StringBuilder) {
-        val visibleCharCount = row.length - visibleOffset().x
-        if (row.length > visibleOffset().x) {
+        val visibleCharCount = row.length - visibleOffset.x
+        if (row.length > visibleOffset.x) {
             if (visibleCharCount < cursorPosition().x) {
-                putCursorAt(cursorPosition().withX(row.length - visibleOffset().x))
+                putCursorAt(cursorPosition().withX(row.length - visibleOffset.x))
             }
         } else {
             scrollLeftBy(row.length)
@@ -318,8 +312,8 @@ class DefaultTextArea constructor(
     }
 
     private fun scrollRightToRowEnd(row: StringBuilder) {
-        scrollRightBy(Math.max(0, row.length - size().xLength))
-        putCursorAt(cursorPosition().withX(size().xLength - 1))
+        scrollRightBy(Math.max(0, row.length - size.xLength))
+        putCursorAt(cursorPosition().withX(size.xLength - 1))
         render()
     }
 
@@ -330,10 +324,10 @@ class DefaultTextArea constructor(
     }
 
     private fun refreshVirtualSpaceSize() {
-        val (visibleCols, visibleRows) = size()
+        val (visibleCols, visibleRows) = size
         val (textCols, textRows) = textBuffer.getBoundingBoxSize()
         if (textCols >= visibleCols && textRows >= visibleRows) {
-            setActualSize(textBuffer.getBoundingBoxSize())
+            actualSize = textBuffer.getBoundingBoxSize()
         }
     }
 }

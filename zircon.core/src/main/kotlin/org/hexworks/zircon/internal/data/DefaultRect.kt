@@ -1,16 +1,14 @@
 package org.hexworks.zircon.internal.data
 
 import org.hexworks.zircon.api.behavior.Boundable
-import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 
-class DefaultRect(private val position: Position,
-                  private val size: Size) : Rect {
+class DefaultRect(override val position: Position,
+                  override val size: Size) : Rect {
 
-    override fun position() = position
-
-    override fun size() = size
+    override val rect: Rect = this
 
     override fun containsPosition(position: Position): Boolean {
         val (otherX, otherY) = position
@@ -30,7 +28,7 @@ class DefaultRect(private val position: Position,
     }
 
     override fun intersects(boundable: Boundable): Boolean {
-        val otherBounds = boundable.rect()
+        val otherBounds = boundable.rect
         var tw = size.width()
         var th = size.height()
         var rw = otherBounds.width()
@@ -53,12 +51,11 @@ class DefaultRect(private val position: Position,
     }
 
     override fun toString(): String {
-        return "${this::class.simpleName}(position=${position()}," +
-                "size=${size()})"
+        return "${this::class.simpleName}(position=$position,size=$size)"
     }
 
     override fun containsBoundable(boundable: Boundable): Boolean {
-        var (otherX, otherY, otherWidth, otherHeight) = boundable.rect()
+        var (otherX, otherY, otherWidth, otherHeight) = boundable.rect
         var w = width()
         var h = height()
         val x = x()

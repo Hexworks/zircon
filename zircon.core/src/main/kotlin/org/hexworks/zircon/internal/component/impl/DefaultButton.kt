@@ -9,14 +9,12 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.event.ZirconEvent
 
-class DefaultButton(private val text: String,
+class DefaultButton(override val text: String,
                     private val renderingStrategy: ComponentRenderingStrategy<Button>,
                     position: Position,
                     size: Size,
@@ -36,22 +34,22 @@ class DefaultButton(private val text: String,
     // TODO: move these to DefaultComponent since this is applicable almost everywhere
 
     override fun mouseEntered(action: MouseAction) {
-        componentStyleSet().applyMouseOverStyle()
+        componentStyleSet.applyMouseOverStyle()
         render()
     }
 
     override fun mouseExited(action: MouseAction) {
-        componentStyleSet().reset()
+        componentStyleSet.reset()
         render()
     }
 
     override fun mousePressed(action: MouseAction) {
-        componentStyleSet().applyActiveStyle()
+        componentStyleSet.applyActiveStyle()
         render()
     }
 
     override fun mouseReleased(action: MouseAction) {
-        componentStyleSet().applyMouseOverStyle()
+        componentStyleSet.applyMouseOverStyle()
         render()
     }
 
@@ -60,43 +58,41 @@ class DefaultButton(private val text: String,
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        componentStyleSet().applyFocusedStyle()
+        componentStyleSet.applyFocusedStyle()
         render()
         return true
     }
 
     override fun takeFocus(input: Maybe<Input>) {
-        componentStyleSet().reset()
+        componentStyleSet.reset()
         render()
     }
-
-    override fun text() = text
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.accentColor())
+                        .foregroundColor(colorTheme.accentColor)
                         .backgroundColor(TileColor.transparent())
                         .build())
                 .mouseOverStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.primaryBackgroundColor())
-                        .backgroundColor(colorTheme.accentColor())
+                        .foregroundColor(colorTheme.primaryBackgroundColor)
+                        .backgroundColor(colorTheme.accentColor)
                         .build())
                 .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryBackgroundColor())
-                        .backgroundColor(colorTheme.accentColor())
+                        .foregroundColor(colorTheme.secondaryBackgroundColor)
+                        .backgroundColor(colorTheme.accentColor)
                         .build())
                 .activeStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor())
-                        .backgroundColor(colorTheme.accentColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor)
+                        .backgroundColor(colorTheme.accentColor)
                         .build())
                 .build().also {
-                    setComponentStyleSet(it)
+                    componentStyleSet = it
                     render()
                 }
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics())
+        renderingStrategy.render(this, tileGraphics)
     }
 }

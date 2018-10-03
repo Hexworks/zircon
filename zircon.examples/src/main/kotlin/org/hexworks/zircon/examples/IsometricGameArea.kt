@@ -3,8 +3,11 @@ package org.hexworks.zircon.examples
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.data.BlockSide.*
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.game.GameModifiers.*
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
@@ -107,7 +110,7 @@ object IsometricGameArea {
         val screen = Screens.createScreenFor(app.tileGrid)
 
 
-        addGamePanel(screen, Positions.defaultPosition(), screen.size(), Positions.create(15, 20))
+        addGamePanel(screen, Positions.defaultPosition(), screen.size, Positions.create(15, 20))
 
         screen.display()
     }
@@ -121,7 +124,7 @@ object IsometricGameArea {
                 .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build()
 
-        val visibleGameAreaSize = Sizes.from2DTo3D(gamePanel.size()
+        val visibleGameAreaSize = Sizes.from2DTo3D(gamePanel.size
                 .minus(Sizes.create(2, 2)), 8)
 
         val virtualSize = Sizes.create3DSize(200, 200, 30)
@@ -200,8 +203,8 @@ object IsometricGameArea {
                     }
                     val bb = Blocks.newBuilder()
                     blockTiles.forEach { tile ->
-                        if (tile.modifiers().isNotEmpty()) {
-                            bb.side(MODIFIER_LOOKUP[tile.modifiers().first()]!!, tile)
+                        if (tile.modifiers.isNotEmpty()) {
+                            bb.side(MODIFIER_LOOKUP[tile.modifiers.first()]!!, tile)
                         } else {
                             bb.layer(tile)
                         }
@@ -243,7 +246,7 @@ object IsometricGameArea {
                     if (InputType.PageDown === input.inputType()) {
                         gameComponent.scrollOneDown()
                     }
-                    screen.layers().forEach {
+                    screen.layers.forEach {
                         screen.removeLayer(it)
                     }
                     val (x, y, z) = gameComponent.visibleOffset()

@@ -29,7 +29,7 @@ public class CustomGameArea extends BaseGameArea {
 
     @NotNull
     @Override
-    public Size3D size() {
+    public Size3D getSize() {
         return size;
     }
 
@@ -63,7 +63,7 @@ public class CustomGameArea extends BaseGameArea {
 
     @Override
     public void setBlockAt(@NotNull Position3D position, @NotNull Block block) {
-        if (!size().containsPosition(position)) {
+        if (!size.containsPosition(position)) {
             throw new IllegalArgumentException("The supplied position ($position) is not within the size ($size) of this game area.");
         }
         int layerCount = block.getLayers().size();

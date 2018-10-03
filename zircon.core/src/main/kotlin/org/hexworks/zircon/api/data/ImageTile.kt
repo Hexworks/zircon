@@ -13,14 +13,16 @@ interface ImageTile
     val tileset: TilesetResource
     val name: String
 
-    override fun tileType() = TileType.IMAGE_TILE
+    override val tileType: TileType
+        get() = TileType.IMAGE_TILE
 
-    override fun styleSet() = StyleSet.defaultStyle()
+    override val styleSet: StyleSet
+        get() = StyleSet.defaultStyle()
 
     fun withName(name: String) = Tile.createImageTile(
             name = name,
             tileset = tileset,
-            style = styleSet())
+            style = styleSet)
 
     override fun withForegroundColor(foregroundColor: TileColor) = this
 

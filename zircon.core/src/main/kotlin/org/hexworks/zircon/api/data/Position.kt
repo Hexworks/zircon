@@ -129,7 +129,7 @@ interface Position : Comparable<Position> {
      * The x coordinate is used to shift right
      * The y coordinate is used to shift up
      */
-    fun relativeToTopOf(component: Component) = component.position().let { (compX, compY) ->
+    fun relativeToTopOf(component: Component) = component.position.let { (compX, compY) ->
         create(compX + x, maxOf(compY - y, 0))
     }
 
@@ -138,9 +138,9 @@ interface Position : Comparable<Position> {
      * The x coordinate is used to shift right
      * The y coordinate is used to shift down
      */
-    fun relativeToRightOf(component: Component) = component.position().let { (compX, compY) ->
+    fun relativeToRightOf(component: Component) = component.position.let { (compX, compY) ->
         create(
-                x = compX + component.size().xLength + x,
+                x = compX + component.width + x,
                 y = compY + y)
     }
 
@@ -149,10 +149,10 @@ interface Position : Comparable<Position> {
      * The x coordinate is used to shift right
      * The y coordinate is used to shift down
      */
-    fun relativeToBottomOf(component: Component) = component.position().let { (compX, compY) ->
+    fun relativeToBottomOf(component: Component) = component.position.let { (compX, compY) ->
         create(
                 x = compX + x,
-                y = compY + component.size().yLength + y)
+                y = compY + component.size.yLength + y)
     }
 
     /**
@@ -160,7 +160,7 @@ interface Position : Comparable<Position> {
      * The x coordinate is used to shift left
      * The y coordinate is used to shift down
      */
-    fun relativeToLeftOf(component: Component) = component.position().let { (compX, compY) ->
+    fun relativeToLeftOf(component: Component) = component.position.let { (compX, compY) ->
         create(maxOf(compX - x, 0), compY + y)
     }
 

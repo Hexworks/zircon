@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.graphics.SubTileGraphics
 class DefaultRadioButtonGroupRenderer : ComponentRenderer<RadioButtonGroup>() {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<RadioButtonGroup>) {
-        val style = context.componentStyle().currentStyle()
+        val style = context.componentStyle.currentStyle()
         tileGraphics.applyStyle(style)
     }
 }

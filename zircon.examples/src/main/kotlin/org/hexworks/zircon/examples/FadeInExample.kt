@@ -24,7 +24,7 @@ object FadeInExample {
         text.forEach { c ->
             tileGrid.putTile(Tiles.defaultTile()
                     .withBackgroundColor(TileColor.transparent())
-                    .withForegroundColor(ColorThemeResource.NORD.getTheme().accentColor())
+                    .withForegroundColor(ColorThemeResource.NORD.getTheme().accentColor)
                     .withCharacter(c)
                     .withModifiers(FadeIn()))
         }

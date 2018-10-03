@@ -8,19 +8,6 @@ import org.hexworks.zircon.internal.data.DefaultRect
  */
 interface Rect : Boundable {
 
-
-    override fun rect(): Rect = this
-
-    /**
-     * Returns the [Position] of this [Rect].
-     */
-    override fun position(): Position
-
-    /**
-     * Returns the [Size] of this [Rect].
-     */
-    override fun size(): Size
-
     /**
      * Tells whether this [Rect] intersects with `boundable` or not.
      */
@@ -39,13 +26,13 @@ interface Rect : Boundable {
      */
     override fun containsBoundable(boundable: Boundable): Boolean
 
-    fun x() = position().x
+    fun x() = position.x
 
-    fun y() = position().y
+    fun y() = position.y
 
-    fun width() = size().width()
+    fun width() = size.width()
 
-    fun height() = size().height()
+    fun height() = size.height()
 
     /**
      * The first component (for destructuring) is `x` position.
@@ -68,20 +55,20 @@ interface Rect : Boundable {
     operator fun component4() = height()
 
     operator fun plus(rect: Rect) = Rect.create(
-            position = position() + rect.position(),
-            size = size() + rect.size())
+            position = position + rect.position,
+            size = size + rect.size)
 
     operator fun minus(rect: Rect) = Rect.create(
-            position = position() - rect.position(),
-            size = size() - rect.size())
+            position = position - rect.position,
+            size = size - rect.size)
 
-    fun withPosition(position: Position) = create(position, size())
+    fun withPosition(position: Position) = create(position, size)
 
-    fun withSize(size: Size) = create(position(), size)
+    fun withSize(size: Size) = create(position, size)
 
-    fun withRelativePosition(position: Position) = create(position() + position, size())
+    fun withRelativePosition(position: Position) = create(position + position, size)
 
-    fun withRelativeSize(size: Size) = create(position(), size() + size)
+    fun withRelativeSize(size: Size) = create(position, size + size)
 
     companion object {
 

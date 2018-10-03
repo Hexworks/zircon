@@ -17,7 +17,7 @@ abstract class BaseGameArea : GameArea {
         return if (fetchMode == GameArea.BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocks()
         } else {
-            size().fetchPositions().map {
+            size.fetchPositions().map {
                 fetchBlockOrDefault(it)
             }
         }
@@ -60,7 +60,7 @@ abstract class BaseGameArea : GameArea {
         } else {
             GameArea.fetchPositionsWithOffset(
                     offset = Position3D.defaultPosition(),
-                    size = Size3D.create(size().xLength, size().yLength, z))
+                    size = Size3D.create(size.xLength, size.yLength, z))
                     .map { fetchBlockOrDefault(it) }
         }
     }

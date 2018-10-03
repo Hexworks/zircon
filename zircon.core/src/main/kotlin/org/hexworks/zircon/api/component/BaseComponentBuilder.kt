@@ -13,14 +13,21 @@ import org.hexworks.zircon.api.util.Maybe
 abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         private val props: CommonComponentProperties) : ComponentBuilder<T, U> {
 
+    override val position: Position
+        get() = props.position
+
+    override val size: Size
+        get() = props.size
+
+    override val componentStyleSet: ComponentStyleSet
+        get() = props.componentStyleSet
+
     override fun title() = props.title
 
     override fun withTitle(title: String): U {
         props.title = Maybe.of(title)
         return this as U
     }
-
-    override fun componentStyleSet() = props.componentStyleSet
 
     override fun withComponentStyleSet(componentStyleSet: ComponentStyleSet): U {
         props.componentStyleSet = componentStyleSet
@@ -34,14 +41,10 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         return this as U
     }
 
-    override fun position() = props.position
-
     override fun withPosition(position: Position): U {
         props.position = position
         return this as U
     }
-
-    override fun size() = props.size
 
     override fun withSize(size: Size): U {
         props.size = size

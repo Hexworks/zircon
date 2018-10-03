@@ -3,8 +3,9 @@ package org.hexworks.zircon.internal.graphics
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
-import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
@@ -16,7 +17,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
  * use this class as a base class just like how the TileGrid uses it
  */
 
-data class DefaultLayer(private var position: Position,
+data class DefaultLayer(private var currentPosition: Position,
                         val backend: TileGraphics)
     : Layer,
         DrawSurface by backend,
@@ -26,10 +27,20 @@ data class DefaultLayer(private var position: Position,
     // mutable vars is broken in Kotlin:
     // http://the-cogitator.com/2018/09/29/by-the-way-exploring-delegation-in-kotlin.html#the-pitfall-of-interface-delegation
 
-    private var rect: Rect = refreshBounds()
+    override val rect: Rect
+        get() = currentRect
 
-    override fun createSnapshot(): Map<Position, Tile> {
-        return backend.createSnapshot().mapKeys { it.key + position }
+    override val position: Position
+        get() = currentPosition
+
+    private var currentRect: Rect = refreshBounds()
+
+    override fun createSnapshot(): Snapshot {
+        return backend.createSnapshot().let { snapshot ->
+            Snapshot.create(
+                    cells = snapshot.cells.map { it.withPosition(it.position + position) },
+                    tileset = snapshot.tileset)
+        }
     }
 
     override fun getAbsoluteTileAt(position: Position) = backend.getTileAt(position - this.position)
@@ -38,21 +49,17 @@ data class DefaultLayer(private var position: Position,
         backend.setTileAt(position - this.position, tile)
     }
 
-    override fun rect() = rect
-
-    override fun position() = position
-
     override fun moveTo(position: Position) =
             if (this.position == position) {
                 false
             } else {
-                this.position = position
-                this.rect = refreshBounds()
+                currentPosition = position
+                currentRect = refreshBounds()
                 true
             }
 
     override fun intersects(boundable: Boundable): Boolean {
-        return rect.intersects(boundable.rect())
+        return rect.intersects(boundable.rect)
     }
 
     override fun containsPosition(position: Position): Boolean {
@@ -60,15 +67,15 @@ data class DefaultLayer(private var position: Position,
     }
 
     override fun containsBoundable(boundable: Boundable): Boolean {
-        return rect.containsBoundable(boundable.rect())
+        return rect.containsBoundable(boundable.rect)
     }
 
     private fun refreshBounds(): Rect {
-        return Rect.create(position, size())
+        return Rect.create(position, size)
     }
 
     override fun createCopy() = DefaultLayer(
-            position = position,
+            currentPosition = position,
             backend = backend)
 
     override fun fill(filler: Tile): Layer {

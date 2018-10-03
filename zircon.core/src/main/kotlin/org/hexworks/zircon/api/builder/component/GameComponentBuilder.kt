@@ -44,8 +44,8 @@ data class GameComponentBuilder(
                 projectionMode = projectionMode,
                 size = visibleSize,
                 tileset = tileset(),
-                position = position(),
-                componentStyleSet = componentStyleSet())
+                position = position,
+                componentStyleSet = componentStyleSet)
     }
 
     companion object {

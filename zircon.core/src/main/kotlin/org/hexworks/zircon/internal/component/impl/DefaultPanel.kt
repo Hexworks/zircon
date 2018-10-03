@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
 
-class DefaultPanel(private val title: String,
+class DefaultPanel(override val title: String,
                    private val renderingStrategy: ComponentRenderingStrategy<Panel>,
                    position: Position,
                    size: Size,
@@ -27,24 +27,22 @@ class DefaultPanel(private val title: String,
         render()
     }
 
-    override fun title() = title
-
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor())
-                        .backgroundColor(colorTheme.primaryBackgroundColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor)
+                        .backgroundColor(colorTheme.primaryBackgroundColor)
                         .build())
                 .build().also { css ->
-                    setComponentStyleSet(css)
+                    componentStyleSet = css
                     render()
-                    children().forEach {
+                    children.forEach {
                         it.applyColorTheme(colorTheme)
                     }
                 }
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics())
+        renderingStrategy.render(this, tileGraphics)
     }
 }

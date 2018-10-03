@@ -10,13 +10,15 @@ interface GraphicTile : Tile {
     val name: String
     val tags: Set<String>
 
-    override fun tileType(): TileType = TileType.GRAPHIC_TILE
+    override val tileType: TileType
+        get() = TileType.GRAPHIC_TILE
+
+    override val styleSet: StyleSet
+        get() = StyleSet.defaultStyle()
 
     fun withName(name: String): GraphicTile
 
     fun withTags(tags: Set<String>): GraphicTile
-
-    override fun styleSet() = StyleSet.defaultStyle()
 
     override fun withForegroundColor(foregroundColor: TileColor) = this
 

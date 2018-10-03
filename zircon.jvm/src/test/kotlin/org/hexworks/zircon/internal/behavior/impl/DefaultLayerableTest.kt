@@ -31,7 +31,7 @@ class DefaultLayerableTest {
 
         target.pushLayer(layer)
 
-        assertThat(target.layers())
+        assertThat(target.layers)
                 .isNotEmpty
 
     }
@@ -46,7 +46,7 @@ class DefaultLayerableTest {
         target.pushLayer(layer)
         target.removeLayer(layer)
 
-        assertThat(target.layers())
+        assertThat(target.layers)
                 .isEmpty()
 
     }
@@ -61,7 +61,7 @@ class DefaultLayerableTest {
         target.pushLayer(layer)
         val result = target.popLayer()
 
-        assertThat(target.layers())
+        assertThat(target.layers)
                 .isEmpty()
         assertThat(result.get()).isSameAs(layer)
 
@@ -90,12 +90,12 @@ class DefaultLayerableTest {
         target.pushLayer(offset1x1layer)
         target.pushLayer(offset2x2layer)
 
-        val result = target.layers()
-                .flatMap { it.createSnapshot().toList() }
-                .filter { it.first == Position.offset1x1() }
+        val result = target.layers
+                .flatMap { it.createSnapshot().cells }
+                .filter { it.position == Position.offset1x1() }
 
 
-        assertThat(result.map { it.second }).containsExactly(expectedChar)
+        assertThat(result.map { it.tile }).containsExactly(expectedChar)
     }
 
     @Test
@@ -119,12 +119,12 @@ class DefaultLayerableTest {
         target.pushLayer(offset1x1layer)
         target.pushLayer(offset2x2layer)
 
-        val result = target.layers()
-                .flatMap { it.createSnapshot().toList() }
-                .filter { it.first == Position.offset1x1() }
+        val result = target.layers
+                .flatMap { it.createSnapshot().cells }
+                .filter { it.position == Position.offset1x1() }
 
 
-        assertThat(result.map { it.second }).containsExactly(expectedChar, expectedChar)
+        assertThat(result.map { it.tile }).containsExactly(expectedChar, expectedChar)
     }
 
     companion object {

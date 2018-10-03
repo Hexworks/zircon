@@ -29,19 +29,19 @@ class RootContainer(private val renderingStrategy: ComponentRenderingStrategy<Ro
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         val css = ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor())
-                        .backgroundColor(colorTheme.secondaryBackgroundColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor)
+                        .backgroundColor(colorTheme.secondaryBackgroundColor)
                         .build())
                 .build()
-        setComponentStyleSet(css)
+        componentStyleSet = css
         render()
-        children().forEach {
+        children.forEach {
             it.applyColorTheme(colorTheme)
         }
         return css
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics())
+        renderingStrategy.render(this, tileGraphics)
     }
 }

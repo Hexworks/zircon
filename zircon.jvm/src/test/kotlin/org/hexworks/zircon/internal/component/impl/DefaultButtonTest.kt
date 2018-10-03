@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.component.ComponentState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
-import org.hexworks.zircon.api.input.MouseActionType.*
+import org.hexworks.zircon.api.input.MouseActionType.MOUSE_PRESSED
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -37,8 +37,8 @@ class DefaultButtonTest {
 
     @Test
     fun shouldProperlyAddButtonText() {
-        val surface = target.tileGraphics()
-        val offset = target.contentPosition().x
+        val surface = target.tileGraphics
+        val offset = target.contentPosition.x
         TEXT.forEachIndexed { i, char ->
             assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
                     .isEqualTo(TileBuilder.newBuilder()
@@ -56,22 +56,22 @@ class DefaultButtonTest {
 
     @Test
     fun shouldProperlyReturnText() {
-        assertThat(target.text()).isEqualTo(TEXT)
+        assertThat(target.text).isEqualTo(TEXT)
     }
 
     @Test
     fun shouldProperlyApplyTheme() {
         target.applyColorTheme(THEME)
-        val styles = target.componentStyleSet()
-        assertThat(styles.getStyleFor(ComponentState.DEFAULT))
+        val styles = target.componentStyleSet
+        assertThat(styles.fetchStyleFor(ComponentState.DEFAULT))
                 .isEqualTo(EXPECTED_DEFAULT_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.MOUSE_OVER))
+        assertThat(styles.fetchStyleFor(ComponentState.MOUSE_OVER))
                 .isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.FOCUSED))
+        assertThat(styles.fetchStyleFor(ComponentState.FOCUSED))
                 .isEqualTo(EXPECTED_FOCUSED_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.ACTIVE))
+        assertThat(styles.fetchStyleFor(ComponentState.ACTIVE))
                 .isEqualTo(EXPECTED_ACTIVE_STYLE)
-        assertThat(styles.getStyleFor(ComponentState.DISABLED))
+        assertThat(styles.fetchStyleFor(ComponentState.DISABLED))
                 .isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
@@ -87,7 +87,7 @@ class DefaultButtonTest {
         val result = target.giveFocus()
 
         assertThat(result).isTrue()
-        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
+        assertThat(target.componentStyleSet.currentStyle()).isEqualTo(EXPECTED_FOCUSED_STYLE)
     }
 
     @Test
@@ -96,7 +96,7 @@ class DefaultButtonTest {
 
         target.takeFocus()
 
-        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
+        assertThat(target.componentStyleSet.currentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
     @Test
@@ -105,7 +105,7 @@ class DefaultButtonTest {
 
         target.mousePressed(MouseAction(MOUSE_PRESSED, 1, Position.defaultPosition()))
 
-        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_ACTIVE_STYLE)
+        assertThat(target.componentStyleSet.currentStyle()).isEqualTo(EXPECTED_ACTIVE_STYLE)
     }
 
     @Test
@@ -114,7 +114,7 @@ class DefaultButtonTest {
 
         target.mouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition()))
 
-        assertThat(target.componentStyleSet().currentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
+        assertThat(target.componentStyleSet.currentStyle()).isEqualTo(EXPECTED_MOUSE_OVER_STYLE)
     }
 
     companion object {
@@ -132,23 +132,23 @@ class DefaultButtonTest {
                 .build()
 
         val EXPECTED_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.accentColor())
+                .foregroundColor(THEME.accentColor)
                 .backgroundColor(TileColor.transparent())
                 .build()
 
         val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.primaryBackgroundColor())
-                .backgroundColor(THEME.accentColor())
+                .foregroundColor(THEME.primaryBackgroundColor)
+                .backgroundColor(THEME.accentColor)
                 .build()
 
         val EXPECTED_FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryBackgroundColor())
-                .backgroundColor(THEME.accentColor())
+                .foregroundColor(THEME.secondaryBackgroundColor)
+                .backgroundColor(THEME.accentColor)
                 .build()
 
         val EXPECTED_ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor())
-                .backgroundColor(THEME.accentColor())
+                .foregroundColor(THEME.secondaryForegroundColor)
+                .backgroundColor(THEME.accentColor)
                 .build()
     }
 }

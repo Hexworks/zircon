@@ -13,13 +13,13 @@ import org.hexworks.zircon.api.shape.LineFactory
 
 class HalfBlockDecorationRenderer : ComponentDecorationRenderer {
 
-    override fun offset() = Position.offset1x1()
+    override val offset = Position.offset1x1()
 
-    override fun occupiedSize() = Size.create(2, 2)
+    override val occupiedSize = Size.create(2, 2)
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
-        val size = tileGraphics.size()
-        val style = context.component.componentStyleSet().currentStyle()
+        val size = tileGraphics.size
+        val style = context.component.componentStyleSet.currentStyle()
         val topLeft = Position.defaultPosition()
         val topRight = size.fetchTopRightPosition()
         val bottomLeft = size.fetchBottomLeftPosition()

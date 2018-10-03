@@ -38,7 +38,12 @@ class DefaultAnimationHandlerTest {
     fun shouldCloseProperlyWhenClosed() {
         target.close()
 
-        target.startAnimation(DefaultAnimation(listOf(), 1L, 1, 1, 1))
+        target.startAnimation(DefaultAnimation(
+                tick = 1,
+                loopCount = 1,
+                totalFrameCount = 1,
+                uniqueFrameCount = 1,
+                frames = listOf()))
     }
 
     @Test
@@ -64,7 +69,7 @@ class DefaultAnimationHandlerTest {
 
         Mockito.`when`(animationMock.id).thenReturn(uuid)
         Mockito.`when`(animationMock.isLoopedIndefinitely()).thenReturn(false)
-        Mockito.`when`(animationMock.getCurrentFrame()).then {
+        Mockito.`when`(animationMock.fetchCurrentFrame()).then {
             lock.lock()
             cond.await(2, TimeUnit.SECONDS)
             DefaultAnimationFrame(Size.one(), listOf(), 1)
@@ -86,7 +91,7 @@ class DefaultAnimationHandlerTest {
         Mockito.`when`(animationMock.id).thenReturn(uuid)
         Mockito.`when`(animationMock.isLoopedIndefinitely()).thenReturn(false)
         Mockito.`when`(animationMock.fetchNextFrame()).thenReturn(Maybe.empty())
-        Mockito.`when`(animationMock.getCurrentFrame())
+        Mockito.`when`(animationMock.fetchCurrentFrame())
                 .then {
                     currFrame
                 }

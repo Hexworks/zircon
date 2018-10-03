@@ -30,19 +30,19 @@ class DefaultTextBox(private val renderingStrategy: ComponentRenderingStrategy<T
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor)
                         .backgroundColor(TileColor.transparent())
                         .build())
                 .build().also { css ->
-                    setComponentStyleSet(css)
+                    componentStyleSet = css
                     render()
-                    children().forEach {
+                    children.forEach {
                         it.applyColorTheme(colorTheme)
                     }
                 }
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics())
+        renderingStrategy.render(this, tileGraphics)
     }
 }

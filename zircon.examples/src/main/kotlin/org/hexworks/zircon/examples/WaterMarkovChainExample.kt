@@ -70,7 +70,7 @@ object WaterMarkovChainExample {
         tileGrid.setTileAt(positions0.next(), smallWave)
         tileGrid.setTileAt(positions0.next(), defaultWater)
 
-//        tileGrid.size().fetchPositions().forEach {
+//        tileGrid.size.fetchPositions().forEach {
 //            tileGrid.setTileAt(it, defaultWater.withModifiers(Markov(MarkovChain.create(initialNode))))
 //        }
 

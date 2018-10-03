@@ -46,7 +46,7 @@ class GdxExample : ApplicationAdapter() {
         }
 
         val layer = DefaultLayer(
-                position = Position.create(
+                currentPosition = Position.create(
                         x = random.nextInt(terminalWidth - layerWidth),
                         y = random.nextInt(terminalHeight - layerHeight)),
                 backend = imageLayer)
@@ -105,8 +105,8 @@ object GdxLauncher {
 }
 
 private fun fillGrid(tileGrid: TileGrid, tile: Tile) {
-    (0..tileGrid.size().yLength).forEach { y ->
-        (0..tileGrid.size().xLength).forEach { x ->
+    (0..tileGrid.size.yLength).forEach { y ->
+        (0..tileGrid.size.xLength).forEach { x ->
             tileGrid.setTileAt(GridPosition(x, y), tile)
         }
     }

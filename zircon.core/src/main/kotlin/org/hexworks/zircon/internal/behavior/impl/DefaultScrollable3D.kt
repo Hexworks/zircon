@@ -3,30 +3,30 @@ package org.hexworks.zircon.internal.behavior.impl
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
-import org.hexworks.zircon.internal.behavior.Scrollable3D
 import org.hexworks.zircon.api.util.Math
+import org.hexworks.zircon.internal.behavior.Scrollable3D
 
-class DefaultScrollable3D(private var visibleSpaceSize: Size3D,
-                          private var virtualSpaceSize: Size3D)
+class DefaultScrollable3D(private var visibleSize: Size3D,
+                          private var actualSize: Size3D)
     : Scrollable3D {
 
     private var offset = Position3D.from2DPosition(Position.defaultPosition())
 
     private var scrollable2D = DefaultScrollable(
-            visibleSize = visibleSpaceSize.to2DSize(),
-            actualSize = virtualSpaceSize.to2DSize())
+            visibleSize = visibleSize.to2DSize(),
+            initialActualSize = actualSize.to2DSize())
 
     init {
         checkSizes()
     }
 
-    override fun visibleSize() = visibleSpaceSize
+    override fun visibleSize() = visibleSize
 
-    override fun actualSize() = virtualSpaceSize
+    override fun actualSize() = actualSize
 
     override fun setActualSize(size: Size3D) {
         checkSizes()
-        this.virtualSpaceSize = size
+        this.actualSize = size
     }
 
     override fun visibleOffset() = offset
@@ -56,7 +56,7 @@ class DefaultScrollable3D(private var visibleSpaceSize: Size3D,
     }
 
     override fun scrollOneUp(): Position3D {
-        if (visibleSpaceSize.zLength + offset.z < virtualSpaceSize.zLength) {
+        if (visibleSize.zLength + offset.z < actualSize.zLength) {
             this.offset = offset.withRelativeZ(1)
         }
         return offset
@@ -98,7 +98,7 @@ class DefaultScrollable3D(private var visibleSpaceSize: Size3D,
             "You can only scroll up by a positive amount!"
         }
         val levelToScrollTo = offset.z + z
-        val lastScrollableLevel = virtualSpaceSize.zLength - visibleSpaceSize.zLength
+        val lastScrollableLevel = actualSize.zLength - visibleSize.zLength
         offset = offset.copy(z = Math.min(levelToScrollTo, lastScrollableLevel))
         return offset
     }
@@ -113,13 +113,13 @@ class DefaultScrollable3D(private var visibleSpaceSize: Size3D,
     }
 
     private fun checkSizes() {
-        require(virtualSpaceSize.xLength >= visibleSpaceSize.xLength) {
-            "Can't have a virtual space (${virtualSpaceSize.xLength}, ${virtualSpaceSize.zLength})" +
-                    " with less xLength than the visible space (${visibleSpaceSize.xLength}, ${visibleSpaceSize.zLength})!"
+        require(actualSize.xLength >= visibleSize.xLength) {
+            "Can't have a virtual space (${actualSize.xLength}, ${actualSize.zLength})" +
+                    " with less xLength than the visible space (${visibleSize.xLength}, ${visibleSize.zLength})!"
         }
-        require(virtualSpaceSize.zLength >= visibleSpaceSize.zLength) {
-            "Can't have a virtual space (${virtualSpaceSize.xLength}, ${virtualSpaceSize.zLength})" +
-                    " with less yLength than the visible space (${visibleSpaceSize.xLength}, ${visibleSpaceSize.zLength})!"
+        require(actualSize.zLength >= visibleSize.zLength) {
+            "Can't have a virtual space (${actualSize.xLength}, ${actualSize.zLength})" +
+                    " with less yLength than the visible space (${visibleSize.xLength}, ${visibleSize.zLength})!"
         }
     }
 }

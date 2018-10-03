@@ -15,7 +15,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 
-class DefaultRadioButton(private val text: String,
+class DefaultRadioButton(override val text: String,
                          private val renderingStrategy: ComponentRenderingStrategy<RadioButton>,
                          position: Position,
                          size: Size,
@@ -28,7 +28,10 @@ class DefaultRadioButton(private val text: String,
         componentStyles = componentStyleSet,
         renderer = renderingStrategy) {
 
-    private var state = NOT_SELECTED
+    override val state: RadioButtonState
+        get() = currentState
+
+    private var currentState = NOT_SELECTED
     private var selected = false
 
     init {
@@ -36,19 +39,19 @@ class DefaultRadioButton(private val text: String,
     }
 
     override fun mouseEntered(action: MouseAction) {
-        componentStyleSet().applyMouseOverStyle()
+        componentStyleSet.applyMouseOverStyle()
         render()
     }
 
     override fun mouseExited(action: MouseAction) {
-        state = if (selected) SELECTED else NOT_SELECTED
-        componentStyleSet().reset()
+        currentState = if (selected) SELECTED else NOT_SELECTED
+        componentStyleSet.reset()
         render()
     }
 
     override fun mousePressed(action: MouseAction) {
-        state = PRESSED
-        componentStyleSet().applyActiveStyle()
+        currentState = PRESSED
+        componentStyleSet.applyActiveStyle()
         render()
     }
 
@@ -58,63 +61,59 @@ class DefaultRadioButton(private val text: String,
 
     override fun isSelected() = selected
 
-    override fun state() = state
-
     override fun acceptsFocus(): Boolean {
         return true
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        componentStyleSet().applyFocusedStyle()
+        componentStyleSet.applyFocusedStyle()
         render()
         return true
     }
 
     override fun takeFocus(input: Maybe<Input>) {
-        componentStyleSet().reset()
+        componentStyleSet.reset()
         render()
     }
-
-    override fun text() = text
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.accentColor())
+                        .foregroundColor(colorTheme.accentColor)
                         .backgroundColor(TileColor.transparent())
                         .build())
                 .mouseOverStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.primaryBackgroundColor())
-                        .backgroundColor(colorTheme.accentColor())
+                        .foregroundColor(colorTheme.primaryBackgroundColor)
+                        .backgroundColor(colorTheme.accentColor)
                         .build())
                 .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryBackgroundColor())
-                        .backgroundColor(colorTheme.accentColor())
+                        .foregroundColor(colorTheme.secondaryBackgroundColor)
+                        .backgroundColor(colorTheme.accentColor)
                         .build())
                 .activeStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor())
-                        .backgroundColor(colorTheme.accentColor())
+                        .foregroundColor(colorTheme.secondaryForegroundColor)
+                        .backgroundColor(colorTheme.accentColor)
                         .build())
                 .build().also {
-                    setComponentStyleSet(it)
+                    componentStyleSet = it
                     render()
                 }
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics())
+        renderingStrategy.render(this, tileGraphics)
     }
 
     fun select() {
-        componentStyleSet().applyMouseOverStyle()
-        state = SELECTED
+        componentStyleSet.applyMouseOverStyle()
+        currentState = SELECTED
         selected = true
         render()
     }
 
     fun removeSelection() {
-        componentStyleSet().reset()
-        state = NOT_SELECTED
+        componentStyleSet.reset()
+        currentState = NOT_SELECTED
         selected = false
         render()
     }

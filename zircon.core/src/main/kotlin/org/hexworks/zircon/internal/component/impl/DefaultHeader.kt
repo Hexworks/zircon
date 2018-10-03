@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 
-class DefaultHeader(private val text: String,
+class DefaultHeader(override val text: String,
                     private val renderingStrategy: ComponentRenderingStrategy<Header>,
                     initialSize: Size,
                     initialTileset: TilesetResource,
@@ -31,8 +31,6 @@ class DefaultHeader(private val text: String,
         render()
     }
 
-    override fun text() = text
-
     override fun acceptsFocus() = false
 
     override fun giveFocus(input: Maybe<Input>) = false
@@ -42,16 +40,16 @@ class DefaultHeader(private val text: String,
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.primaryForegroundColor())
+                        .foregroundColor(colorTheme.primaryForegroundColor)
                         .backgroundColor(TileColor.transparent())
                         .build())
                 .build().also {
-                    setComponentStyleSet(it)
+                    componentStyleSet = it
                     render()
                 }
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics())
+        renderingStrategy.render(this, tileGraphics)
     }
 }

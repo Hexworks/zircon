@@ -4,10 +4,10 @@ import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButto
 
 interface RadioButton : Component {
 
-    fun text(): String
+    val text: String
+    val state: RadioButtonState
 
     fun isSelected(): Boolean
 
-    fun state(): RadioButtonState
 
 }

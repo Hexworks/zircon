@@ -6,13 +6,11 @@ import org.hexworks.zircon.api.graphics.StyleSet
 
 data class DefaultCharacterTile(
         override val character: Char,
-        private val style: StyleSet = StyleSet.defaultStyle())
+        override val styleSet: StyleSet = StyleSet.defaultStyle())
     : Drawable, CharacterTile {
 
-    private val cacheKey = "CharacterTile(c=$character,s=${style.generateCacheKey()})"
+    private val cacheKey = "CharacterTile(c=$character,s=${styleSet.generateCacheKey()})"
 
     override fun generateCacheKey() = cacheKey
-
-    override fun styleSet() = style
 
 }

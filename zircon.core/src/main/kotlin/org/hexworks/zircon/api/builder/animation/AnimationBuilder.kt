@@ -80,7 +80,7 @@ data class AnimationBuilder private constructor(
             "An Animation must have a length greater than zero!"
         }
         frames.forEachIndexed { i, frame ->
-            frame.setPosition(positions[i])
+            frame.position = positions[i]
         }
         return DefaultAnimation(
                 frames = frames,
@@ -95,18 +95,18 @@ data class AnimationBuilder private constructor(
                     .asSequence()
                     .map { frame ->
                         DefaultAnimationFrame(
-                                size = frame.getSize(),
-                                layers = frame.getLayers().asSequence()
+                                size = frame.size,
+                                layers = frame.layers.asSequence()
                                         .map { it.createCopy() }
                                         .toList(),
-                                repeatCount = frame.getRepeatCount())
+                                repeatCount = frame.repeatCount)
                     }
                     .toMutableList(),
             positions = positions.toMutableList())
 
     private fun recalculateFrameCountAndLength() {
         totalFrameCount = frames.asSequence()
-                .map { it.getRepeatCount() }
+                .map { it.repeatCount }
                 .reduce(Int::plus)
         uniqueFrameCount = frames.size
     }
