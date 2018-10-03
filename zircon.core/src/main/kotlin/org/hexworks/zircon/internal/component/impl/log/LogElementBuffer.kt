@@ -43,7 +43,7 @@ class LogElementBuffer(val visibleSize: Size, private val logArea: LogArea, priv
     }
 
     fun clearLogRenderPositions() {
-        getAllLogElements().forEach { it.renderedPositionArea = null }
+        getAllLogElements().forEach { it.screenPositionArea = null }
     }
 
 

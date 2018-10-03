@@ -12,7 +12,7 @@ import org.hexworks.zircon.internal.component.renderer.VisibleRenderArea
 
 sealed class LogElement(private val xPosition: Int) {
     var modifiers: Set<Modifier>? = null
-    var renderedPositionArea: RenderedPositionArea? = null
+    var screenPositionArea: ScreenPositionArea? = null
     lateinit var logElementRow: LogElementRow
 
     abstract fun getSize(): Size
@@ -30,7 +30,7 @@ data class LogTextElement(val text: String, private val xPosition: Int) : LogEle
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<LogArea>,
                         positionRenderContext: PositionRenderContext): Int {
-        val visibleRenderArea = VisibleRenderArea(context.component.visibleOffset(), context.component.visibleSize())
+        val visibleRenderArea = VisibleRenderArea(context.component.visibleOffset, context.component.visibleSize)
         var currentPosX = getPosition().x
         var currentPosY = positionRenderContext.currentScreenPosY
         var currentLogElementY = positionRenderContext.currentLogElementPosY
@@ -40,7 +40,7 @@ data class LogTextElement(val text: String, private val xPosition: Int) : LogEle
                 .forEach { word ->
                     if (getPosition().y > currentLogElementY)
                         currentPosY += getPosition().y - currentLogElementY
-                    if (context.component.wrapLogElements && (currentPosX + word.length) > tileGraphics.size().width()) {
+                    if (context.component.wrapLogElements && (currentPosX + word.length) > tileGraphics.size.width()) {
                         currentPosX = 0
                         currentPosY += 1
                     }
@@ -61,14 +61,14 @@ data class LogTextElement(val text: String, private val xPosition: Int) : LogEle
         if (logElementRenderInfo.isNotEmpty()) {
             val startRenderPosition = logElementRenderInfo.first().first
             val endRenderPosition = logElementRenderInfo.last().first.plus(Position.create(logElementRenderInfo.last().second, 0))
-            renderedPositionArea = RenderedPositionArea(startRenderPosition, endRenderPosition)
+            screenPositionArea = ScreenPositionArea(startRenderPosition, endRenderPosition)
         }
         return currentPosY
     }
 
     private fun renderWord(position: Position, context: ComponentRenderContext<LogArea>, tileGraphics: SubTileGraphics,
                            word: String) {
-        val visiblePosition = position.minus(context.component.visibleOffset())
+        val visiblePosition = position.minus(context.component.visibleOffset)
         tileGraphics.putText(word, visiblePosition)
 
         if (modifiers != null)
@@ -86,32 +86,32 @@ data class LogTextElement(val text: String, private val xPosition: Int) : LogEle
 
 data class LogComponentElement(val component: Component, private val xPosition: Int) : LogElement(xPosition) {
     override fun getSize(): Size {
-        return component.size()
+        return component.size
     }
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<LogArea>,
                         positionRenderContext: PositionRenderContext): Int {
-        VisibleRenderArea(context.component.visibleOffset(), context.component.visibleSize())
+        VisibleRenderArea(context.component.visibleOffset, context.component.visibleSize)
         var currentPosX = getPosition().x
         var currentPosY = positionRenderContext.currentScreenPosY
         val currentLogElementY = positionRenderContext.currentLogElementPosY
 
         if (getPosition().y > currentLogElementY)
             currentPosY += getPosition().y - currentLogElementY
-        if (context.component.wrapLogElements && (currentPosX + component.size().width()) > tileGraphics.size().width()) {
+        if (context.component.wrapLogElements && (currentPosX + component.size.width()) > tileGraphics.size.width()) {
             currentPosX = 0
             currentPosY += 1
         }
 
-        val position = Position.create(currentPosX, currentPosY).minus(context.component.visibleOffset())
+        val position = Position.create(currentPosX, currentPosY).minus(context.component.visibleOffset)
         component.moveTo(position)
-        currentPosX += component.size().width()
+        currentPosX += component.size.width()
 
-        renderedPositionArea = RenderedPositionArea(position, position.plus(Position.create(component.size().width(), position.y)))
+        screenPositionArea = ScreenPositionArea(position, position.plus(Position.create(component.size.width(), position.y)))
         return currentPosY
     }
 
 }
 
-data class RenderedPositionArea(val startPosition: Position, val endPosition: Position)
+data class ScreenPositionArea(val startPosition: Position, val endPosition: Position)
 

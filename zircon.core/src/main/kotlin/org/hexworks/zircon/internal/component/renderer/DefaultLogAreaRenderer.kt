@@ -12,7 +12,7 @@ class DefaultLogAreaRenderer : ComponentRenderer<LogArea>() {
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<LogArea>) {
         context.component.getLogElementBuffer().clearLogRenderPositions()
 
-        val style = context.componentStyle().currentStyle()
+        val style = context.componentStyle.currentStyle()
         val component = context.component
         tileGraphics.applyStyle(style)
         val logElements = component.getLogElementBuffer().getAllLogElements()
