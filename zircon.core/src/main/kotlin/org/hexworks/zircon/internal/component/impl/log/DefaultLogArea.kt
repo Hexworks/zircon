@@ -27,7 +27,8 @@ class DefaultLogArea constructor(
         scrollable: Scrollable = DefaultScrollable(size, size),
         cursorHandler: CursorHandler = DefaultCursorHandler(size),
         override var wrapLogElements: Boolean,
-        var logRowHistorySize: Int)
+        val logRowHistorySize: Int,
+        override val delayInMsForTypewriterEffect: Int = 100)
     : LogArea, Scrollable by scrollable, CursorHandler by cursorHandler, DefaultContainer(
         position = position,
         size = size,
@@ -44,7 +45,8 @@ class DefaultLogArea constructor(
     override fun addTextElement(text: String, modifiers: Set<Modifier>?) {
         val position = getNewElementPositionX()
         val textElement = LogTextElement(text, position)
-        textElement.modifiers = modifiers
+        if (modifiers != null)
+            textElement.modifiers = modifiers
         logElementBuffer.addLogElement(textElement)
         render()
         determineActualSizeAndOffset()
@@ -63,11 +65,10 @@ class DefaultLogArea constructor(
 
     private fun getNewElementPositionX(): Int {
         val lastElementInRow = logElementBuffer.currentLogElementRow().logElements.lastOrNull()
-        val xPos = if (lastElementInRow != null)
+        return if (lastElementInRow != null)
             lastElementInRow.getPosition().x + lastElementInRow.getSize().width()
         else
             0
-        return xPos
     }
 
     override fun addNewRows(numberOfRows: Int) {
@@ -114,7 +115,7 @@ class DefaultLogArea constructor(
 
         if (maxWidth != null) {
             if (size.width() < maxWidth || size.height() < maxHeight!!) {
-                actualSize = (Size.create(max(maxWidth, size.width()), max(maxHeight!!, size.height())))
+                actualSize = Size.create(max(maxWidth, size.width()), max(maxHeight!!, size.height()))
             }
         }
 

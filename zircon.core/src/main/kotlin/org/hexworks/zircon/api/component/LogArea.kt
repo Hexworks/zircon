@@ -27,6 +27,8 @@ interface LogArea : Container, Scrollable {
      */
     var wrapLogElements: Boolean
 
+    val delayInMsForTypewriterEffect: Int
+
 
     /**
      * Adds a new text element in the current row

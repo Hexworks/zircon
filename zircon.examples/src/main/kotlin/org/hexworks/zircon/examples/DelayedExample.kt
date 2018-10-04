@@ -2,10 +2,10 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.modifier.FadeIn
+import org.hexworks.zircon.api.modifier.Delay
 import org.hexworks.zircon.api.resource.ColorThemeResource
 
-object FadeInExample {
+object DelayedExample {
 
     private val tileset = CP437TilesetResources.taffer20x20()
 
@@ -14,19 +14,20 @@ object FadeInExample {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .defaultTileset(tileset)
-                .defaultSize(Sizes.create(30, 10))
+                .defaultSize(Sizes.create(50, 10))
                 .debugMode(true)
                 .build())
 
-        val text = "This text fades in"
+        val text = "This text is typed like on a typewriter"
 
         tileGrid.putCursorAt(Positions.create(1, 1))
-        text.forEach { c ->
+        text.forEachIndexed { index, c ->
+            val delayTime = 250 + index * 250
             tileGrid.putTile(Tiles.defaultTile()
                     .withBackgroundColor(TileColor.transparent())
                     .withForegroundColor(ColorThemeResource.NORD.getTheme().accentColor)
                     .withCharacter(c)
-                    .withModifiers(FadeIn(1, 2000)))
+                    .withModifiers(Delay(delayTime.toLong())))
         }
 
     }
