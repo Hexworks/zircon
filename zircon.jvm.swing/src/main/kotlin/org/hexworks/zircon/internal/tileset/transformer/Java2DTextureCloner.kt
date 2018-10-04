@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage
 class Java2DTextureCloner : TextureTransformer<BufferedImage> {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
-        val txt = texture.texture()
+        val txt = texture.texture
         return DefaultTileTexture(
                 width = txt.width,
                 height = txt.height,

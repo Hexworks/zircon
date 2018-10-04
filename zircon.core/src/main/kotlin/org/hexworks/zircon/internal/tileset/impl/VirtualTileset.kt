@@ -9,25 +9,23 @@ import org.hexworks.zircon.api.util.Identifier
 
 class VirtualTileset : Tileset<Char> {
 
+    override val width = 16
+    override val height = 16
     override val targetType = Char::class
     override val id = Identifier.randomIdentifier()
 
     override fun drawTile(tile: Tile, surface: Char, position: Position) {
         fetchTextureForTile(tile)
     }
-    
+
     private fun fetchTextureForTile(tile: Tile): TileTexture<Char> {
         require(tile is CharacterTile) {
             "A VirtualTileset only works with CharacterTiles."
         }
         return DefaultTileTexture(
-                width = width(),
-                height = height(),
+                width = width,
+                height = height,
                 texture = tile.asCharacterTile().get().character)
     }
-
-    override fun width() = 16
-
-    override fun height() = 16
 
 }

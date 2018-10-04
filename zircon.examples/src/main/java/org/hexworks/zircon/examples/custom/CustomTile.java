@@ -67,7 +67,7 @@ public class CustomTile extends BaseTile {
 
     @NotNull
     @Override
-    public Tile withoutModifiers(@NotNull Set<? extends Modifier> modifiers) {
+    public Tile withRemovedModifiers(@NotNull Set<? extends Modifier> modifiers) {
         return new CustomTile(
                 styleSet.withRemovedModifiers(modifiers),
                 character);
@@ -78,5 +78,47 @@ public class CustomTile extends BaseTile {
     public String generateCacheKey() {
         return String.format("CustomTile(style=%s,char=%s)",
                 styleSet.generateCacheKey(), character);
+    }
+
+    @NotNull
+    @Override
+    public Tile createCopy() {
+        return new CustomTile(
+                styleSet,
+                character);
+    }
+
+    @NotNull
+    @Override
+    public Tile withAddedModifiers(@NotNull Set<? extends Modifier> modifiers) {
+        return new CustomTile(
+                styleSet.withAddedModifiers(modifiers),
+                character);
+    }
+
+    @NotNull
+    @Override
+    public Tile withNoModifiers() {
+        return new CustomTile(
+                styleSet.withNoModifiers(),
+                character);
+    }
+
+    @NotNull
+    @Override
+    public TileColor getForegroundColor() {
+        return styleSet.getForegroundColor();
+    }
+
+    @NotNull
+    @Override
+    public TileColor getBackgroundColor() {
+        return styleSet.getBackgroundColor();
+    }
+
+    @NotNull
+    @Override
+    public Set<Modifier> getModifiers() {
+        return styleSet.getModifiers();
     }
 }

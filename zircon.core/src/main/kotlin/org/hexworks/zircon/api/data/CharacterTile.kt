@@ -36,7 +36,8 @@ interface CharacterTile : Tile {
         }
     }
 
-    override fun withModifiers(vararg modifiers: Modifier) = withModifiers(modifiers.toSet())
+    override fun withModifiers(vararg modifiers: Modifier): CharacterTile =
+            withModifiers(modifiers.toSet())
 
     override fun withModifiers(modifiers: Set<Modifier>): CharacterTile {
         return if (this.modifiers == modifiers) {
@@ -46,11 +47,33 @@ interface CharacterTile : Tile {
         }
     }
 
-    override fun withoutModifiers(modifiers: Set<Modifier>): CharacterTile {
+    override fun withAddedModifiers(vararg modifiers: Modifier): CharacterTile =
+            withAddedModifiers(modifiers.toSet())
+
+    override fun withAddedModifiers(modifiers: Set<Modifier>): CharacterTile {
+        return if (this.modifiers == modifiers) {
+            this
+        } else {
+            return Tile.createCharacterTile(character, styleSet.withAddedModifiers(modifiers))
+        }
+    }
+
+    override fun withRemovedModifiers(vararg modifiers: Modifier): CharacterTile =
+            withRemovedModifiers(modifiers.toSet())
+
+    override fun withRemovedModifiers(modifiers: Set<Modifier>): CharacterTile {
         return if (this.modifiers.intersect(modifiers).isEmpty()) {
             this
         } else {
             Tile.createCharacterTile(character, styleSet.withRemovedModifiers(modifiers))
+        }
+    }
+
+    override fun withNoModifiers(): CharacterTile {
+        return if (this.modifiers.isEmpty()) {
+            this
+        } else {
+            Tile.createCharacterTile(character, styleSet.withNoModifiers())
         }
     }
 

@@ -16,7 +16,7 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         return texture.also { t ->
-            t.texture().let { txt ->
+            t.texture.let { txt ->
                 txt.graphics.apply {
 
                     if (tile.foregroundColor == tile.backgroundColor) {
@@ -32,7 +32,7 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
                     // Generate glow image:
                     val filter = GaussianFilter()
                     filter.radius = tile.modifiers.filterIsInstance<Glow>().first().radius
-                    val glowImage = filter.filter(charImage.texture(), null)
+                    val glowImage = filter.filter(charImage.texture, null)
 
                     // Combine images and background:
                     val result = BufferedImage(txt.width, txt.height, BufferedImage.TYPE_INT_ARGB)
@@ -41,7 +41,7 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
                     gc.color = tile.backgroundColor.toAWTColor()
                     gc.fillRect(0, 0, result.width, result.height)
                     gc.drawImage(glowImage, 0, 0, null)
-                    gc.drawImage(charImage.texture(), 0, 0, null)
+                    gc.drawImage(charImage.texture, 0, 0, null)
                     gc.dispose()
 
                     return DefaultTileTexture(
@@ -56,7 +56,7 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
     private fun swapColor(texture: TileTexture<BufferedImage>, oldColor: Color, newColor: Color, tile: Tile)
             : TileTexture<BufferedImage> {
         val result = cloner.transform(texture, tile)
-        val image = result.texture()
+        val image = result.texture
         val newRGB = newColor.rgb
         val oldRGB = oldColor.rgb
 
@@ -71,8 +71,8 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
         }
 
         return DefaultTileTexture(
-                width = texture.width(),
-                height = texture.height(),
+                width = texture.width,
+                height = texture.height,
                 texture = image)
     }
 }

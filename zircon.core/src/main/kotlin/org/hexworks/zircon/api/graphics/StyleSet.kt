@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.behavior.Cacheable
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.graphics.DefaultStyleSet
+import kotlin.jvm.JvmStatic
 
 /**
  * Represents style information which is handled by Zircon like
@@ -14,20 +15,9 @@ import org.hexworks.zircon.internal.graphics.DefaultStyleSet
  */
 interface StyleSet : Cacheable {
 
-    /**
-     * Returns the foreground color.
-     */
-    fun foregroundColor(): TileColor
-
-    /**
-     * Returns the background color.
-     */
-    fun backgroundColor(): TileColor
-
-    /**
-     * Returns the modifiers.
-     */
-    fun modifiers(): Set<Modifier>
+    val foregroundColor: TileColor
+    val backgroundColor: TileColor
+    val modifiers: Set<Modifier>
 
     /**
      * Returns a copy of the style information stored in this [StyleSet].
@@ -35,34 +25,14 @@ interface StyleSet : Cacheable {
     fun createCopy(): StyleSet
 
     /**
-     * Creates a copy of this [StyleSet] with the given background color.
-     */
-    fun withBackgroundColor(backgroundColor: TileColor): StyleSet
-
-    /**
      * Creates a copy of this [StyleSet] with the given foreground color.
      */
     fun withForegroundColor(foregroundColor: TileColor): StyleSet
 
     /**
-     * Creates a copy of this [StyleSet] with the given modifiers added.
+     * Creates a copy of this [StyleSet] with the given background color.
      */
-    fun withAddedModifiers(modifiers: Set<Modifier>): StyleSet
-
-    /**
-     * Creates a copy of this [StyleSet] with the given modifiers added.
-     */
-    fun withAddedModifiers(vararg modifiers: Modifier): StyleSet
-
-    /**
-     * Creates a copy of this [StyleSet] with the given modifiers removed.
-     */
-    fun withRemovedModifiers(modifiers: Set<Modifier>): StyleSet
-
-    /**
-     * Creates a copy of this [StyleSet] with the given modifiers removed.
-     */
-    fun withRemovedModifiers(vararg modifiers: Modifier): StyleSet
+    fun withBackgroundColor(backgroundColor: TileColor): StyleSet
 
     /**
      * Creates a copy of this [StyleSet] with the given modifiers.
@@ -72,12 +42,35 @@ interface StyleSet : Cacheable {
     /**
      * Creates a copy of this [StyleSet] with the given modifiers.
      */
-    fun withModifiers(vararg modifiers: Modifier): StyleSet
+    fun withModifiers(vararg modifiers: Modifier): StyleSet =
+            withModifiers(modifiers.toSet())
+
+    /**
+     * Creates a copy of this [StyleSet] with the given modifiers added.
+     */
+    fun withAddedModifiers(modifiers: Set<Modifier>): StyleSet
+
+    /**
+     * Creates a copy of this [StyleSet] with the given modifiers added.
+     */
+    fun withAddedModifiers(vararg modifiers: Modifier): StyleSet =
+            withAddedModifiers(modifiers.toSet())
+
+    /**
+     * Creates a copy of this [StyleSet] with the given modifiers removed.
+     */
+    fun withRemovedModifiers(modifiers: Set<Modifier>): StyleSet
+
+    /**
+     * Creates a copy of this [StyleSet] with the given modifiers removed.
+     */
+    fun withRemovedModifiers(vararg modifiers: Modifier): StyleSet =
+            withRemovedModifiers(modifiers.toSet())
 
     /**
      * Creates a copy of this [StyleSet] with no modifiers.
      */
-    fun withoutModifiers(): StyleSet
+    fun withNoModifiers(): StyleSet
 
     companion object {
 

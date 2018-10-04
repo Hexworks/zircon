@@ -18,6 +18,8 @@ data class DefaultImageTile(
 
     private val cacheKey = "ImageTile(t=${tileset.path},n=$name)"
 
+    override fun createCopy() = copy()
+
     override fun generateCacheKey() = cacheKey
 
     override fun withName(name: String) = DefaultImageTile(
@@ -25,14 +27,5 @@ data class DefaultImageTile(
             tileset = tileset,
             style = style)
 
-    override fun withForegroundColor(foregroundColor: TileColor) = this
-
-    override fun withBackgroundColor(backgroundColor: TileColor) = this
-
-    override fun withStyle(style: StyleSet) = this
-
-    override fun withModifiers(modifiers: Set<Modifier>) = this
-
-    override fun withoutModifiers(modifiers: Set<Modifier>) = this
 
 }

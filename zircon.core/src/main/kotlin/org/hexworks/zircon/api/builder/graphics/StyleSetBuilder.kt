@@ -10,9 +10,9 @@ import org.hexworks.zircon.api.modifier.Modifier
  * [TileColor]. Modifiers are empty by default.
  */
 data class StyleSetBuilder(
-        private var foregroundColor: TileColor = StyleSet.defaultStyle().foregroundColor(),
-        private var backgroundColor: TileColor = StyleSet.defaultStyle().backgroundColor(),
-        private var modifiers: Set<Modifier> = StyleSet.defaultStyle().modifiers()) : Builder<StyleSet> {
+        private var foregroundColor: TileColor = StyleSet.defaultStyle().foregroundColor,
+        private var backgroundColor: TileColor = StyleSet.defaultStyle().backgroundColor,
+        private var modifiers: Set<Modifier> = StyleSet.defaultStyle().modifiers) : Builder<StyleSet> {
 
     override fun build(): StyleSet = StyleSet.create(
             foregroundColor = foregroundColor,

@@ -13,7 +13,7 @@ class Java2DRayShaderTransformer : TextureTransformer<BufferedImage> {
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         val rayShade: RayShade = tile.modifiers.first { it is RayShade } as RayShade
         return texture.also {
-            it.texture().let { txt ->
+            it.texture.let { txt ->
                 txt.graphics.apply {
                     val filter = RaysFilter()
                     filter.opacity = rayShade.opacity
@@ -21,9 +21,9 @@ class Java2DRayShaderTransformer : TextureTransformer<BufferedImage> {
                     filter.strength = rayShade.strength
                     filter.raysOnly = rayShade.raysOnly
                     return DefaultTileTexture(
-                            width = texture.width(),
-                            height = texture.height(),
-                            texture = filter.filter(texture.texture(), null))
+                            width = texture.width,
+                            height = texture.height,
+                            texture = filter.filter(texture.texture, null))
                 }
             }
         }
