@@ -11,6 +11,7 @@ import org.hexworks.zircon.internal.component.renderer.DefaultLogAreaRenderer
 data class LogAreaBuilder(
         private var wrapLogElements: Boolean = true,
         private var logRowHistorySize: Int = 100,
+        private var delayInMsForTypewriterEffect: Int = 0,
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
     : BaseComponentBuilder<LogArea, LogAreaBuilder>(commonComponentProperties) {
 
@@ -29,7 +30,9 @@ data class LogAreaBuilder(
                 componentStyleSet = componentStyleSet,
                 tileset = tileset(),
                 wrapLogElements = wrapLogElements,
-                logRowHistorySize = logRowHistorySize)
+                logRowHistorySize = logRowHistorySize,
+                delayInMsForTypewriterEffect = delayInMsForTypewriterEffect
+        )
     }
 
     fun wrapLogElements(wrap: Boolean) = also {
@@ -38,6 +41,10 @@ data class LogAreaBuilder(
 
     fun logRowHistorySize(numberOfRows: Int) = also {
         logRowHistorySize = numberOfRows
+    }
+
+    fun delayInMsForTypewriterEffect(delayInMs: Int) = also {
+        delayInMsForTypewriterEffect = delayInMs
     }
 
     override fun createCopy() = copy()

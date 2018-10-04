@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.SubTileGraphics
+import org.hexworks.zircon.internal.component.impl.log.LogTextElement
 
 class DefaultLogAreaRenderer : ComponentRenderer<LogArea>() {
 
@@ -17,13 +18,27 @@ class DefaultLogAreaRenderer : ComponentRenderer<LogArea>() {
         tileGraphics.applyStyle(style)
         val logElements = component.getLogElementBuffer().getAllLogElements()
         var currentLogElementY = 0
-        var currentY = 0
+        var currentScreenPosY = 0
         tileGraphics.clear()
+        var delayTimeInMs = if (isTypewriterEffectIsSupported(context))
+            context.component.delayInMsForTypewriterEffect!!.toLong()
+        else
+            0L
+
         logElements.forEach { element ->
-            currentY = element.render(tileGraphics, context, PositionRenderContext(currentY, currentLogElementY))
+            val result = element.render(tileGraphics,
+                    LogElementRenderContext(context, PositionRenderContext(currentScreenPosY, currentLogElementY), delayTimeInMs))
+            currentScreenPosY = result.currentScreenPosY
             currentLogElementY = element.getPosition().y
+            delayTimeInMs = result.delayTimeInMs
         }
     }
+
+    private fun isTypewriterEffectIsSupported(context: ComponentRenderContext<LogArea>) =
+            (context.component.delayInMsForTypewriterEffect != null
+                    && context.component.getLogElementBuffer().getAllLogElements().all { it is LogTextElement })
+
+
 }
 
 data class VisibleRenderArea(val topLeft: Position, val size: Size) {
@@ -34,4 +49,8 @@ data class VisibleRenderArea(val topLeft: Position, val size: Size) {
     }
 }
 
+data class LogElementRenderContext(val componentRenderContext: ComponentRenderContext<LogArea>,
+                                   val positionRenderContext: PositionRenderContext, val delayTimeInMs: Long)
+
+data class LogElementRenderResult(val currentScreenPosY: Int, val delayTimeInMs: Long = 0)
 data class PositionRenderContext(val currentScreenPosY: Int, val currentLogElementPosY: Int)
