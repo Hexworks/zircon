@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.SubTileGraphics
 import org.hexworks.zircon.api.modifier.Delay
-import org.hexworks.zircon.api.modifier.FadeIn
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.component.renderer.LogElementRenderContext
 import org.hexworks.zircon.internal.component.renderer.LogElementRenderResult
@@ -30,8 +29,8 @@ data class LogTextElement(val text: String, private val xPosition: Int) : LogEle
     }
 
     override fun render(tileGraphics: SubTileGraphics, context: LogElementRenderContext): LogElementRenderResult {
-        val component = context.componentRenderContext.component
-        val visibleRenderArea = VisibleRenderArea(component.visibleOffset, component.visibleSize)
+        val logArea = context.componentRenderContext.component
+        val visibleRenderArea = VisibleRenderArea(logArea.visibleOffset, logArea.visibleSize)
         var currentScreenPosX = getPosition().x
         var currentScreenPosY = context.positionRenderContext.currentScreenPosY
         var currentLogElementY = context.positionRenderContext.currentLogElementPosY
@@ -42,20 +41,17 @@ data class LogTextElement(val text: String, private val xPosition: Int) : LogEle
                 .forEach { word ->
                     if (getPosition().y > currentLogElementY)
                         currentScreenPosY += getPosition().y - currentLogElementY
-                    if (component.wrapLogElements && (currentScreenPosX + word.length) > tileGraphics.size.width()) {
+                    if (logArea.wrapLogElements && (currentScreenPosX + word.length) > tileGraphics.size.width()) {
                         currentScreenPosX = 0
                         currentScreenPosY += 1
                     }
-//
-//                    if (modifiers != null)
-//                        tileGraphics.enableModifiers(modifiers!!)
 
                     val position = Position.create(currentScreenPosX, currentScreenPosY)
                     logElementRenderInfo.add(Pair(position, word.length))
                     if (visibleRenderArea.contains(position)) {
                         val wordContext = LogElementRenderContext(context.componentRenderContext, context.positionRenderContext, delayInMs)
                         renderWord(position, wordContext, tileGraphics, word)
-                        delayInMs += word.length * component.delayInMsForTypewriterEffect
+                        delayInMs += word.length * logArea.delayInMsForTypewriterEffect
                         currentScreenPosX += word.length
                         currentLogElementY = getPosition().y
                     }
@@ -73,19 +69,20 @@ data class LogTextElement(val text: String, private val xPosition: Int) : LogEle
     private fun renderWord(position: Position, context: LogElementRenderContext, tileGraphics: SubTileGraphics,
                            word: String) {
         val visiblePosition = position.minus(context.componentRenderContext.component.visibleOffset)
-        tileGraphics.putText(word, visiblePosition)
         var delayTimeInMs = context.delayTimeInMs
         word.forEachIndexed { col, char ->
-            val wordModifiers = modifiers.plus(Delay(delayTimeInMs))
-            tileGraphics.setTileAt(position.withRelativeX(col), TileBuilder
+            val wordModifiers = if (delayTimeInMs == 0L)
+                modifiers
+            else
+                modifiers.plus(Delay(delayTimeInMs))
+            tileGraphics.setTileAt(visiblePosition.withRelativeX(col), TileBuilder
                     .newBuilder()
                     .character(char)
+                    .styleSet(context.componentRenderContext.componentStyle.currentStyle())
                     .modifiers(wordModifiers)
                     .build())
             delayTimeInMs += context.componentRenderContext.component.delayInMsForTypewriterEffect
         }
-//        if (modifiers != null)
-//            tileGraphics.disableModifiers(modifiers!!)
     }
 
     private fun getWordsOfLogElement(): List<String> {
@@ -103,20 +100,21 @@ data class LogComponentElement(val component: Component, private val xPosition: 
     }
 
     override fun render(tileGraphics: SubTileGraphics, context: LogElementRenderContext): LogElementRenderResult {
-        val component = context.componentRenderContext.component
-        VisibleRenderArea(component.visibleOffset, component.visibleSize)
+        val logArea = context.componentRenderContext.component
+
+        VisibleRenderArea(logArea.visibleOffset, logArea.visibleSize)
         var currentScreenPosX = getPosition().x
         var currentScreenPosY = context.positionRenderContext.currentScreenPosY
         val currentLogElementY = context.positionRenderContext.currentLogElementPosY
 
         if (getPosition().y > currentLogElementY)
             currentScreenPosY += getPosition().y - currentLogElementY
-        if (component.wrapLogElements && (currentScreenPosX + component.size.width()) > tileGraphics.size.width()) {
+        if (logArea.wrapLogElements && (currentScreenPosX + component.size.width()) > tileGraphics.size.width()) {
             currentScreenPosX = 0
             currentScreenPosY += 1
         }
 
-        val position = Position.create(currentScreenPosX, currentScreenPosY).minus(component.visibleOffset)
+        val position = Position.create(currentScreenPosX, currentScreenPosY).minus(logArea.visibleOffset)
         component.moveTo(position)
         currentScreenPosX += component.size.width()
 

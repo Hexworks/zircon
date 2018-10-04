@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.modifier
 
-import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.platform.util.SystemUtils
 
 data class Delay(private val timeMs: Long = 2000) : TileTransformModifier<CharacterTile> {
@@ -35,13 +35,12 @@ data class Delay(private val timeMs: Long = 2000) : TileTransformModifier<Charac
     }
 
     private fun generateTile(tile: CharacterTile): CharacterTile {
-        val hiddenModifier = if (currentStep == 1)
-            setOf(SimpleModifiers.Hidden)
-        else
-            setOf<Modifier>()
-
-        return tile
-                .withModifiers(hiddenModifier)
+        val transformedTile =
+                if (currentStep == 1)
+                    Tile.empty()
+                else
+                    tile
+        return transformedTile
     }
 
     private fun isFirstRender() = lastRender == Long.MIN_VALUE

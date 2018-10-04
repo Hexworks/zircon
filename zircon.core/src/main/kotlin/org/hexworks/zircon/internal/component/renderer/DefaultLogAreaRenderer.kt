@@ -14,14 +14,16 @@ class DefaultLogAreaRenderer : ComponentRenderer<LogArea>() {
         context.component.getLogElementBuffer().clearLogRenderPositions()
 
         val style = context.componentStyle.currentStyle()
-        val component = context.component
         tileGraphics.applyStyle(style)
+        tileGraphics.clear()
+
+        val component = context.component
         val logElements = component.getLogElementBuffer().getAllLogElements()
         var currentLogElementY = 0
         var currentScreenPosY = 0
-        tileGraphics.clear()
-        var delayTimeInMs = if (isTypewriterEffectIsSupported(context))
-            context.component.delayInMsForTypewriterEffect!!.toLong()
+
+        var delayTimeInMs = if (isTypewriterEffectSupported(context))
+            context.component.delayInMsForTypewriterEffect.toLong()
         else
             0L
 
@@ -34,8 +36,8 @@ class DefaultLogAreaRenderer : ComponentRenderer<LogArea>() {
         }
     }
 
-    private fun isTypewriterEffectIsSupported(context: ComponentRenderContext<LogArea>) =
-            (context.component.delayInMsForTypewriterEffect != null
+    private fun isTypewriterEffectSupported(context: ComponentRenderContext<LogArea>) =
+            (context.component.delayInMsForTypewriterEffect != 0
                     && context.component.getLogElementBuffer().getAllLogElements().all { it is LogTextElement })
 
 

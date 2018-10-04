@@ -94,6 +94,14 @@ class DefaultLogArea constructor(
                         .foregroundColor(colorTheme.secondaryForegroundColor)
                         .backgroundColor(colorTheme.primaryBackgroundColor)
                         .build())
+                .disabledStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(colorTheme.secondaryForegroundColor)
+                        .backgroundColor(colorTheme.secondaryBackgroundColor)
+                        .build())
+                .focusedStyle(StyleSetBuilder.newBuilder()
+                        .foregroundColor(colorTheme.primaryBackgroundColor)
+                        .backgroundColor(colorTheme.primaryForegroundColor)
+                        .build())
                 .build().also { css ->
                     componentStyleSet = css
                     render()
