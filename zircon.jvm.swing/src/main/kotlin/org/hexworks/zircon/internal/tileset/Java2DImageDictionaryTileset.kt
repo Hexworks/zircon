@@ -21,6 +21,8 @@ class Java2DImageDictionaryTileset(resource: TilesetResource)
 
     override val id = Identifier.randomIdentifier()
     override val targetType = Graphics2D::class
+    override val width = 1
+    override val height = 1
 
     private val cache = Caffeine.newBuilder()
             .initialCapacity(100)
@@ -39,15 +41,11 @@ class Java2DImageDictionaryTileset(resource: TilesetResource)
         }
     }
 
-    override fun width() = 1
-
-    override fun height() = 1
-
     override fun drawTile(tile: Tile, surface: Graphics2D, position: Position) {
         val texture = fetchTextureForTile(tile)
-        val x = position.x * width()
-        val y = position.y * height()
-        surface.drawImage(texture.texture(), x, y, null)
+        val x = position.x * width
+        val y = position.y * height
+        surface.drawImage(texture.texture, x, y, null)
     }
 
     private fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {
@@ -65,11 +63,5 @@ class Java2DImageDictionaryTileset(resource: TilesetResource)
             cache.put(tile.name, image)
             image
         }
-    }
-
-    companion object {
-
-//        fun fromResourceDir() = Java2DImageDictionaryTileset(
-//                File("src/main/resources/images"))
     }
 }

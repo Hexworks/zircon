@@ -17,6 +17,11 @@ class MonospaceAwtFontTileset(private val resource: TilesetResource)
 
     override val id: Identifier = Identifier.randomIdentifier()
     override val targetType = Graphics2D::class
+    override val width: Int
+        get() = resource.width
+    override val height: Int
+        get() = resource.height
+
     private val font: Font
 
     init {
@@ -32,21 +37,13 @@ class MonospaceAwtFontTileset(private val resource: TilesetResource)
         ge.registerFont(font)
     }
 
-    override fun width(): Int {
-        return resource.width
-    }
-
-    override fun height(): Int {
-        return resource.height
-    }
-
     override fun drawTile(tile: Tile, surface: Graphics2D, position: Position) {
         val s = tile.asCharacterTile().get().character.toString()
 
         val fm = surface.getFontMetrics(font)
 
-        val x = position.x * width()
-        val y = position.y * height()
+        val x = position.x * width
+        val y = position.y * height
 
         surface.font = font
         surface.color = tile.backgroundColor.toAWTColor()

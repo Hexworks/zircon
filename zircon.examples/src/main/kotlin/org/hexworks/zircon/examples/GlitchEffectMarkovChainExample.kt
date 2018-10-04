@@ -95,7 +95,7 @@ object GlitchEffectMarkovChainExample {
             deterioratingNode2.addNext(.16, initialNode)
 
 
-            tileGrid.putTile(tile.withAddedModifier(Markov(MarkovChain.create(initialNode))))
+            tileGrid.putTile(tile.withAddedModifiers(Markov(MarkovChain.create(initialNode))))
         }
 
 

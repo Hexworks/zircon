@@ -10,29 +10,29 @@ import org.hexworks.zircon.api.modifier.Modifier
 interface Styleable {
 
     /**
+     * The current foreground color.
+     */
+    var foregroundColor: TileColor
+
+    /**
+     * The current background color.
+     */
+    var backgroundColor: TileColor
+
+    /**
+     * The currently active modifiers.
+     */
+    var modifiers: Set<Modifier>
+
+    /**
      * Returns a copy of the style information stored in this [Styleable].
      */
     fun toStyleSet(): StyleSet
 
     /**
-     * Returns the current foreground color.
+     * Copies colors and modifiers from another style.
      */
-    fun foregroundColor(): TileColor
-
-    /**
-     * Updates the current foreground color.
-     */
-    fun setForegroundColor(foregroundColor: TileColor)
-
-    /**
-     * Returns the current background color.
-     */
-    fun backgroundColor(): TileColor
-
-    /**
-     * Updates the current background color.
-     */
-    fun setBackgroundColor(backgroundColor: TileColor)
+    fun setStyleFrom(source: StyleSet)
 
     /**
      * Adds zero or more modifiers to the set of currently active modifiers.
@@ -42,7 +42,8 @@ interface Styleable {
     /**
      * Adds zero or more modifiers to the set of currently active modifiers.
      */
-    fun enableModifiers(vararg modifiers: Modifier)
+    fun enableModifiers(vararg modifiers: Modifier) =
+            enableModifiers(modifiers.toSet())
 
     /**
      * Removes zero or more modifiers from the set of currently active modifiers.
@@ -52,12 +53,8 @@ interface Styleable {
     /**
      * Removes zero or more modifiers from the set of currently active modifiers.
      */
-    fun disableModifiers(vararg modifiers: Modifier)
-
-    /**
-     * Sets the active modifiers to exactly the set passed in to this method.
-     */
-    fun setModifiers(modifiers: Set<Modifier>)
+    fun disableModifiers(vararg modifiers: Modifier) =
+            disableModifiers(modifiers.toSet())
 
     /**
      * Removes all active modifiers.
@@ -67,15 +64,7 @@ interface Styleable {
     /**
      * Removes all currently active [Modifier]s and sets foreground and background colors back to default.
      */
-    fun resetColorsAndModifiers()
+    fun resetColorsAndModifiers() = setStyleFrom(StyleSet.defaultStyle())
 
-    /**
-     * Returns the currently active modifiers.
-     */
-    fun activeModifiers(): Set<Modifier>
 
-    /**
-     * Copies colors and modifiers from another style.
-     */
-    fun setStyleFrom(source: StyleSet)
 }

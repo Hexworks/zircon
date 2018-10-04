@@ -6,12 +6,10 @@ package org.hexworks.zircon.api.tileset
  */
 interface TileTexture<out T> {
 
-    fun width(): Int
-
-    fun height(): Int
-
+    val width: Int
+    val height: Int
     /**
-     * Returns the actual texture.
+     * The actual texture.
      */
-    fun texture(): T
+    val texture: T
 }

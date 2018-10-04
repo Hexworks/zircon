@@ -23,7 +23,7 @@ data class DefaultLayer(private var currentPosition: Position,
         DrawSurface by backend,
         Drawable by backend {
 
-    // note that we could delegate to bounds but delegation of
+    // note that we could delegate to rect but delegation of
     // mutable vars is broken in Kotlin:
     // http://the-cogitator.com/2018/09/29/by-the-way-exploring-delegation-in-kotlin.html#the-pitfall-of-interface-delegation
 
@@ -33,7 +33,7 @@ data class DefaultLayer(private var currentPosition: Position,
     override val position: Position
         get() = currentPosition
 
-    private var currentRect: Rect = refreshBounds()
+    private var currentRect: Rect = regenerateRect()
 
     override fun createSnapshot(): Snapshot {
         return backend.createSnapshot().let { snapshot ->
@@ -54,7 +54,7 @@ data class DefaultLayer(private var currentPosition: Position,
                 false
             } else {
                 currentPosition = position
-                currentRect = refreshBounds()
+                currentRect = regenerateRect()
                 true
             }
 
@@ -70,10 +70,6 @@ data class DefaultLayer(private var currentPosition: Position,
         return rect.containsBoundable(boundable.rect)
     }
 
-    private fun refreshBounds(): Rect {
-        return Rect.create(position, size)
-    }
-
     override fun createCopy() = DefaultLayer(
             currentPosition = position,
             backend = backend)
@@ -81,6 +77,10 @@ data class DefaultLayer(private var currentPosition: Position,
     override fun fill(filler: Tile): Layer {
         backend.fill(filler)
         return this
+    }
+
+    private fun regenerateRect(): Rect {
+        return Rect.create(position, size)
     }
 
 }

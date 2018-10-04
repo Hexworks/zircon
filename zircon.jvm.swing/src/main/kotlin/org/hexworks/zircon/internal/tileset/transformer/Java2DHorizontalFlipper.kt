@@ -11,12 +11,12 @@ import java.awt.image.BufferedImage
 class Java2DHorizontalFlipper : TextureTransformer<BufferedImage> {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
-        val backend = texture.texture()
+        val backend = texture.texture
         val tx = AffineTransform.getScaleInstance(-1.0, 1.0)
         tx.translate(-backend.width.toDouble(), 0.0)
         return DefaultTileTexture(
-                width = texture.width(),
-                height = texture.height(),
+                width = texture.width,
+                height = texture.height,
                 texture = AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR).filter(backend, null))
 
     }

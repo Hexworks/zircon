@@ -10,7 +10,7 @@ import kotlin.reflect.KClass
  * Handles the textures of a tileset, and provides
  * functionality to render them on a surface.
  */
-interface Tileset<T: Any> : Identifiable {
+interface Tileset<T : Any> : Identifiable {
 
     /**
      * The type of the target surface the textures are drawn.
@@ -20,17 +20,18 @@ interface Tileset<T: Any> : Identifiable {
     /**
      * The width of a texture in pixels.
      */
-    fun width(): Int
+    val width: Int
 
     /**
      * The height of a texture in pixels.
      */
-    fun height(): Int
+    val height: Int
 
     /**
      * width * height
      */
-    fun getSize() = Size.create(width(), height())
+    val size: Size
+        get() = Size.create(width, height)
 
     /**
      * Draws the given `tile` on the given `surface` at the

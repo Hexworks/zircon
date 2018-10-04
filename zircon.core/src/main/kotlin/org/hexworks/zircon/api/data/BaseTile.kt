@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.modifier.Border
-import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 import org.hexworks.zircon.api.util.Maybe
 
@@ -49,18 +48,5 @@ abstract class BaseTile : Tile {
     override fun drawOnto(surface: DrawSurface, position: Position) {
         surface.setTileAt(position, this)
     }
-
-    /**
-     * Returns a copy of this [BaseTile] with the specified modifiers.
-     */
-    override fun withModifiers(vararg modifiers: Modifier): Tile = withModifiers(modifiers.toSet())
-
-
-    /**
-     * Returns a copy of this [BaseTile] with [Modifier] (s) removed.
-     * The currently active [Modifier]s will be carried over to the copy, except for the one(s) specified.
-     * If the current [BaseTile] doesn't have the [Modifier] (s) specified, it will returnThis itself.
-     */
-    override fun withoutModifiers(vararg modifiers: Modifier): Tile = withoutModifiers(modifiers.toSet())
 
 }

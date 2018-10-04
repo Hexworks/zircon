@@ -2,12 +2,10 @@ package org.hexworks.zircon.api.builder.graphics
 
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Box
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.graphics.DefaultBox
 

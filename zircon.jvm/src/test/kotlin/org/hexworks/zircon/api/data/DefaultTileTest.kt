@@ -62,7 +62,7 @@ class DefaultTileTest {
         assertThat(TileBuilder.newBuilder()
                 .modifiers(Modifiers.crossedOut())
                 .build()
-                .withoutModifiers(setOf(Modifiers.crossedOut()))
+                .withRemovedModifiers(setOf(Modifiers.crossedOut()))
                 .modifiers)
                 .isEmpty()
     }
@@ -79,9 +79,9 @@ class DefaultTileTest {
                 .build()
                 .withStyle(style)
 
-        assertThat(copy.modifiers).isEqualTo(style.modifiers())
-        assertThat(copy.backgroundColor).isEqualTo(style.backgroundColor())
-        assertThat(copy.foregroundColor).isEqualTo(style.foregroundColor())
+        assertThat(copy.modifiers).isEqualTo(style.modifiers)
+        assertThat(copy.backgroundColor).isEqualTo(style.backgroundColor)
+        assertThat(copy.foregroundColor).isEqualTo(style.foregroundColor)
     }
 
     @Test
@@ -188,7 +188,7 @@ class DefaultTileTest {
                         .backgroundColor(EXPECTED_BG_COLOR)
                         .modifiers(setOf(Modifiers.crossedOut(), Modifiers.verticalFlip(), Modifiers.blink()))
                         .build())
-                .withoutModifiers(Modifiers.blink()))
+                .withRemovedModifiers(Modifiers.blink()))
                 .isEqualTo(EXPECTED_TEXT_CHARACTER)
     }
 
@@ -224,7 +224,7 @@ class DefaultTileTest {
 
     @Test
     fun shouldReturnSameTextCharacterWhenWithoutModifierIsCalledWithNonPresentModifier() {
-        assertThat(EXPECTED_TEXT_CHARACTER.withoutModifiers(Modifiers.blink()))
+        assertThat(EXPECTED_TEXT_CHARACTER.withRemovedModifiers(Modifiers.blink()))
                 .isSameAs(EXPECTED_TEXT_CHARACTER)
     }
 

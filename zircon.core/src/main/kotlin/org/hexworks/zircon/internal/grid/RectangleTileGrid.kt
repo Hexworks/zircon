@@ -4,7 +4,6 @@ import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationInfo
 import org.hexworks.zircon.api.behavior.*
 import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.event.Subscription
@@ -13,7 +12,6 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.listener.InputListener
-import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.api.util.TextUtils
@@ -25,7 +23,6 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphics
-
 
 class RectangleTileGrid(
         tileset: TilesetResource,
@@ -42,7 +39,8 @@ class RectangleTileGrid(
     : InternalTileGrid,
         InternalCursorHandler by cursorHandler,
         ShutdownHook by shutdownHook,
-        DrawSurface by backend {
+        DrawSurface by backend,
+        Styleable by backend {
 
     override val layers: List<Layer>
         get() = layerable.layers
@@ -50,18 +48,6 @@ class RectangleTileGrid(
     private var originalBackend = backend
     private var originalLayerable = layerable
     private var originalAnimationHandler = animationHandler
-
-    override fun startAnimation(animation: org.hexworks.zircon.api.animation.Animation): AnimationInfo {
-        return animationHandler.startAnimation(animation)
-    }
-
-    override fun stopAnimation(animation: Animation) {
-        animationHandler.stopAnimation(animation)
-    }
-
-    override fun updateAnimations(currentTimeMs: Long, tileGrid: TileGrid) {
-        animationHandler.updateAnimations(currentTimeMs, tileGrid)
-    }
 
     override fun onInput(listener: InputListener): Subscription {
         return EventBus.subscribe<ZirconEvent.Input> { (input) ->
@@ -73,9 +59,9 @@ class RectangleTileGrid(
         if (TextUtils.isPrintableCharacter(c)) {
             putTile(TileBuilder.newBuilder()
                     .character(c)
-                    .foregroundColor(foregroundColor())
-                    .backgroundColor(backgroundColor())
-                    .modifiers(activeModifiers())
+                    .foregroundColor(foregroundColor)
+                    .backgroundColor(backgroundColor)
+                    .modifiers(modifiers)
                     .build())
         }
     }
@@ -87,6 +73,43 @@ class RectangleTileGrid(
             backend.setTileAt(cursorPosition(), tile)
             moveCursorForward()
         }
+    }
+
+    override fun close() {
+        animationHandler.close()
+    }
+
+    override fun useContentsOf(tileGrid: InternalTileGrid) {
+        backend = tileGrid.backend
+        layerable = tileGrid.layerable
+        animationHandler = tileGrid.animationHandler
+    }
+
+    override fun reset() {
+        backend = originalBackend
+        layerable = originalLayerable
+        animationHandler = originalAnimationHandler
+    }
+
+    override fun clear() {
+        backend.clear()
+        layerable = DefaultLayerable(backend.size)
+    }
+
+    // note that we need all of the below functions here and can't delegate to the corresponding
+    // objects because delegating to mutable vars is broken in Kotlin:
+    // http://the-cogitator.com/2018/09/29/by-the-way-exploring-delegation-in-kotlin.html#the-pitfall-of-interface-delegation
+
+    override fun startAnimation(animation: org.hexworks.zircon.api.animation.Animation): AnimationInfo {
+        return animationHandler.startAnimation(animation)
+    }
+
+    override fun stopAnimation(animation: Animation) {
+        animationHandler.stopAnimation(animation)
+    }
+
+    override fun updateAnimations(currentTimeMs: Long, tileGrid: TileGrid) {
+        animationHandler.updateAnimations(currentTimeMs, tileGrid)
     }
 
     override fun getTileAt(position: Position): Maybe<Tile> {
@@ -103,18 +126,6 @@ class RectangleTileGrid(
 
     override fun draw(drawable: Drawable, position: Position) {
         backend.draw(drawable, position)
-    }
-
-    override fun pushLayer(layer: Layer) {
-        layerable.pushLayer(layer)
-    }
-
-    override fun popLayer(): Maybe<Layer> {
-        return layerable.popLayer()
-    }
-
-    override fun removeLayer(layer: Layer) {
-        layerable.removeLayer(layer)
     }
 
     override fun intersects(boundable: Boundable): Boolean {
@@ -137,86 +148,20 @@ class RectangleTileGrid(
         backend.useTileset(tileset)
     }
 
-    override fun toStyleSet(): StyleSet {
-        return backend.toStyleSet()
+    override fun pushLayer(layer: Layer) {
+        layerable.pushLayer(layer)
     }
 
-    override fun backgroundColor(): TileColor {
-        return backend.backgroundColor()
+    override fun popLayer(): Maybe<Layer> {
+        return layerable.popLayer()
     }
 
-    override fun setBackgroundColor(backgroundColor: TileColor) {
-        backend.setBackgroundColor(backgroundColor)
-    }
-
-    override fun foregroundColor(): TileColor {
-        return backend.foregroundColor()
-    }
-
-    override fun setForegroundColor(foregroundColor: TileColor) {
-        backend.setForegroundColor(foregroundColor)
-    }
-
-    override fun enableModifiers(modifiers: Set<Modifier>) {
-        backend.enableModifiers(modifiers)
-    }
-
-    override fun enableModifiers(vararg modifiers: Modifier) {
-        enableModifiers(modifiers.toSet())
-    }
-
-    override fun disableModifiers(modifiers: Set<Modifier>) {
-        backend.disableModifiers(modifiers)
-    }
-
-    override fun disableModifiers(vararg modifiers: Modifier) {
-        disableModifiers(modifiers.toSet())
-    }
-
-    override fun setModifiers(modifiers: Set<Modifier>) {
-        backend.setModifiers(modifiers)
-    }
-
-    override fun clearModifiers() {
-        backend.clearModifiers()
-    }
-
-    override fun resetColorsAndModifiers() {
-        backend.resetColorsAndModifiers()
-    }
-
-    override fun activeModifiers(): Set<Modifier> {
-        return backend.activeModifiers()
-    }
-
-    override fun setStyleFrom(source: StyleSet) {
-        backend.setStyleFrom(source)
-    }
-
-    override fun useContentsOf(tileGrid: InternalTileGrid) {
-        backend = tileGrid.backend
-        layerable = tileGrid.layerable
-        animationHandler = tileGrid.animationHandler
-    }
-
-    override fun reset() {
-        backend = originalBackend
-        layerable = originalLayerable
-        animationHandler = originalAnimationHandler
-    }
-
-    override fun close() {
-        animationHandler.close()
-    }
-
-    override fun clear() {
-        backend.clear()
-        layerable = DefaultLayerable(backend.size)
+    override fun removeLayer(layer: Layer) {
+        layerable.removeLayer(layer)
     }
 
     private fun moveCursorToNextLine() {
         putCursorAt(cursorPosition().withRelativeY(1).withX(0))
     }
-
 
 }

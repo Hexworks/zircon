@@ -2,10 +2,12 @@ package org.hexworks.zircon.internal.data
 
 import org.hexworks.zircon.api.data.GraphicTile
 
-class DefaultGraphicTile(override val name: String,
-                         override val tags: Set<String>) : GraphicTile {
+data class DefaultGraphicTile(override val name: String,
+                              override val tags: Set<String>) : GraphicTile {
 
-    private val cacheKey = "GraphicTile(n=$name,t=[${tags.sorted().joinToString()}])"
+    private val cacheKey = "GraphicTile(n=$name,t=[${tags.asSequence().sorted().joinToString()}])"
+
+    override fun createCopy() = copy()
 
     override fun generateCacheKey() = cacheKey
 

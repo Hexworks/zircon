@@ -10,7 +10,7 @@ class DefaultBoundable(size: Size,
                        position: Position = Position.defaultPosition())
     : Boundable, Movable {
 
-    // note that we could delegate `Boundable` to bounds but delegation of
+    // note that we could delegate `Boundable` to rect but delegation of
     // mutable vars is broken in Kotlin:
     // http://the-cogitator.com/2018/09/29/by-the-way-exploring-delegation-in-kotlin.html#the-pitfall-of-interface-delegation
 
