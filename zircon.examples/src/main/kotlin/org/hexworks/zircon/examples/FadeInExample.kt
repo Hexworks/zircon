@@ -26,7 +26,7 @@ object FadeInExample {
                     .withBackgroundColor(TileColor.transparent())
                     .withForegroundColor(ColorThemeResource.NORD.getTheme().accentColor)
                     .withCharacter(c)
-                    .withModifiers(FadeIn()))
+                    .withModifiers(FadeIn(1, 2000)))
         }
 
     }
