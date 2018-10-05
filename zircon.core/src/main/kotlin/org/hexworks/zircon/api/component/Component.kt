@@ -64,4 +64,9 @@ interface Component : Identifiable, Layer, InputEmitter {
      */
     fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
+    /**
+     * Removes this [Component] from its parent (if any).
+     */
+    fun removeFromParent()
+
 }

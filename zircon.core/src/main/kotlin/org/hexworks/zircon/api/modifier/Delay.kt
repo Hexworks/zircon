@@ -44,5 +44,4 @@ data class Delay(private val timeMs: Long = 2000) : TileTransformModifier<Charac
     }
 
     private fun isFirstRender() = lastRender == Long.MIN_VALUE
-
 }

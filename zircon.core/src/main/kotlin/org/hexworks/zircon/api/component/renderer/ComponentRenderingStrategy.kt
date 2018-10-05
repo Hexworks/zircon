@@ -20,6 +20,10 @@ interface ComponentRenderingStrategy<T : Component> {
      * the *content* of this [Component].
      */
     val componentRenderer: ComponentRenderer<T>
+    /**
+     * The [ComponentPostProcessor]s this [Component] has.
+     */
+    val componentPostProcessors: List<ComponentPostProcessor<T>>
 
     /**
      * Renders the given `component` onto the given `graphics`.

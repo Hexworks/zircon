@@ -8,7 +8,8 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 
 class DefaultComponentRenderingStrategy<T : Component>(
         override val decorationRenderers: List<ComponentDecorationRenderer>,
-        override val componentRenderer: ComponentRenderer<T>) : ComponentRenderingStrategy<T> {
+        override val componentRenderer: ComponentRenderer<T>,
+        override val componentPostProcessors: List<ComponentPostProcessor<T>> = listOf()) : ComponentRenderingStrategy<T> {
 
     override fun render(component: T, graphics: TileGraphics) {
         var currentOffset = Position.defaultPosition()
@@ -20,9 +21,15 @@ class DefaultComponentRenderingStrategy<T : Component>(
             currentSize -= renderer.occupiedSize
         }
 
+        val componentArea = graphics.toSubTileGraphics(Rect.create(currentOffset, currentSize))
+
         componentRenderer.render(
-                tileGraphics = graphics.toSubTileGraphics(Rect.create(currentOffset, currentSize)),
+                tileGraphics = componentArea,
                 context = ComponentRenderContext(component))
+
+        componentPostProcessors.forEach { renderer ->
+            renderer.render(componentArea, ComponentPostProcessorContext(component))
+        }
 
     }
 }
