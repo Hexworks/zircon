@@ -1,10 +1,6 @@
 package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.api.graphics.TextWrap
-import org.hexworks.zircon.api.resource.ColorThemeResource
 
 object LogAreaExample {
 
@@ -23,37 +19,34 @@ object LogAreaExample {
         val panel = Components.panel()
                 .wrapWithBox(true)
                 .withSize((Sizes.create(60, 25)))
-                .withPosition(Position.defaultPosition())
                 .withTitle("Log")
                 .build()
 
         screen.addComponent(panel)
         val logArea = Components.logArea()
-                .withSize(Sizes.create(50, 10))
-                .wrapLogElements(true)
-                //.delayInMsForTypewriterEffect(500)
-                .withPosition(Position.defaultPosition())
+                .withSize(Sizes.create(58, 23))
                 .build()
 
-        logArea.addTextElement("This is a simple log row")
-        logArea.addNewRows()
-        logArea.addTextElement("This is a further log row with a modifier", setOf(Modifiers.crossedOut()))
+        logArea.addParagraph("This is a simple log row")
+        logArea.addParagraph("This is a further log row with a modifier", withTypingEffect = true)
         logArea.addNewRows(2)
 
-        logArea.addTextElement("This is a log row with a ")
+        logArea.addInlineText("This is a log row with a ")
         val btn = Components.button()
                 .withDecorationRenderers()
                 .text("Button")
                 .build()
-        logArea.addComponentElement(btn)
+        logArea.addInlineComponent(btn)
+        logArea.commitInlineElements()
 
         logArea.addNewRows(2)
-        logArea.addTextElement("This is a long log row, which gets wrapped, since it is long")
+        logArea.addParagraph("This is a long log row, which gets wrapped, since it is long")
 
         panel.addComponent(logArea)
 
         screen.display()
         screen.applyColorTheme(theme)
+
 
     }
 

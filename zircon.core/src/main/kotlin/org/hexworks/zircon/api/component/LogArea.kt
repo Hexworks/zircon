@@ -1,12 +1,6 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.zircon.api.behavior.Scrollable
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.event.Event
-import org.hexworks.zircon.api.graphics.TextWrap
-import org.hexworks.zircon.api.modifier.Modifier
-import org.hexworks.zircon.internal.component.impl.log.LogElementBuffer
-import org.hexworks.zircon.internal.event.ZirconEvent
+import kotlin.jvm.JvmOverloads
 
 /**
  * A [LogArea] provides the possibility to display messages.
@@ -18,30 +12,19 @@ import org.hexworks.zircon.internal.event.ZirconEvent
  * Currently the log area scrolls automatically down. When later
  * Zircon provides scrollbars, this behavior will be then configurable
  */
-interface LogArea : Container, Scrollable {
+interface LogArea : Component {
 
+    fun addHeader(text: String, withNewLine: Boolean = true)
 
-    /**
-     * If true, words of text elements get wrapped, components are also
-     * inserted at a new row if they do not fit
-     */
-    var wrapLogElements: Boolean
+    fun addParagraph(paragraph: String, withNewLine: Boolean = true, withTypingEffect: Boolean = false)
 
-    val delayInMsForTypewriterEffect: Int
+    fun addListItem(item: String)
 
+    fun addInlineText(text: String)
 
-    /**
-     * Adds a new text element in the current row
-     */
-    fun addTextElement(text: String, modifiers: Set<Modifier>? = null)
+    fun addInlineComponent(component: Component)
 
-    /**
-     * Adds a new component in the current Row
-     * You do not need to specify a position of the component,
-     * since it is auto-arranged in the text flow
-     * Only components with a height of 1 are supported
-     */
-    fun addComponentElement(component: Component)
+    fun commitInlineElements()
 
     /**
      * Adds new rows
@@ -52,10 +35,6 @@ interface LogArea : Container, Scrollable {
      * Clears the complete log
      */
     fun clear()
-
-
-    fun getLogElementBuffer(): LogElementBuffer
-
 
 }
 

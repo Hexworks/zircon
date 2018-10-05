@@ -11,6 +11,12 @@ class DefaultThreadSafeQueue<E>(private val backend: BlockingDeque<E> = LinkedBl
 
     override fun drainTo(c: MutableCollection<E>): Int = backend.drainTo(c)
 
+    override fun drainAll(): Collection<E> {
+        return mutableListOf<E>().also {
+            backend.drainTo(it)
+        }
+    }
+
     override fun remove(element: E): Boolean = backend.remove(element)
 
     override fun peek(): Maybe<E> = Maybe.ofNullable(backend.peek())

@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.listener.KeyStrokeListener
 import org.hexworks.zircon.api.listener.MouseListener
@@ -53,5 +54,11 @@ interface InternalComponent : Component, Drawable, Focusable, InputListener, Key
      * Renders this component to the underlying [TileGraphics].
      */
     fun render()
+
+    override fun removeFromParent() {
+        fetchParent().map {
+            it.removeComponent(this)
+        }
+    }
 
 }
