@@ -78,7 +78,7 @@ interface Scrollable {
 
 
     /**
-     * Scrolls this [Scrollable] with `depth` depth down.
+     * Scrolls this [Scrollable] with `rows` rows down.
      * If the bounds of the virtual space are already reached this method has no effect.
      * @return the new visible offset
      */
