@@ -97,8 +97,9 @@ abstract class DefaultContainer(position: Position,
 
     override fun removeAllComponents(): Boolean {
         val removalHappened = components.isNotEmpty()
-        components.clear()
-
+        children.forEach {
+            removeComponent(it)
+        }
         if (removalHappened) {
             EventBus.broadcast(ZirconEvent.ComponentRemoval)
         }
