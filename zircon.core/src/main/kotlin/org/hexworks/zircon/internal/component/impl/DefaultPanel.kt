@@ -5,22 +5,14 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Panel
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.resource.TilesetResource
 
-open class DefaultPanel(override val title: String,
-                        private val renderingStrategy: ComponentRenderingStrategy<Panel>,
-                        position: Position,
-                        size: Size,
-                        tileset: TilesetResource,
-                        componentStyleSet: ComponentStyleSet)
+open class DefaultPanel(componentMetadata: ComponentMetadata,
+                        override val title: String,
+                        private val renderingStrategy: ComponentRenderingStrategy<Panel>)
     : Panel, DefaultContainer(
-        position = position,
-        size = size,
-        tileset = tileset,
-        componentStyles = componentStyleSet,
+        componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
     init {

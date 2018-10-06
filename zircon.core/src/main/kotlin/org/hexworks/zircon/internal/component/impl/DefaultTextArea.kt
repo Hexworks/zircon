@@ -6,14 +6,13 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.TextArea
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.KeyStroke
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.api.util.TextUtils
@@ -29,21 +28,17 @@ import org.hexworks.zircon.internal.component.impl.textedit.transformation.MoveC
 import org.hexworks.zircon.internal.event.ZirconEvent
 
 class DefaultTextArea constructor(
-        private val renderingStrategy: ComponentRenderingStrategy<TextArea>,
-        position: Position,
-        size: Size,
-        tileset: TilesetResource,
-        componentStyleSet: ComponentStyleSet,
-        initialText: String)
-    : TextArea, Scrollable by DefaultScrollable(size, size), DefaultComponent(
-        position = position,
-        size = size,
-        tileset = tileset,
-        componentStyles = componentStyleSet,
-        renderer = renderingStrategy) {
+        initialText: String,
+        componentMetadata: ComponentMetadata,
+        private val renderingStrategy: ComponentRenderingStrategy<TextArea>)
+    : TextArea,
+        Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
+        DefaultComponent(
+                componentMetadata = componentMetadata,
+                renderer = renderingStrategy) {
 
     override var text: String
-        get() = textBuffer.getText()  // TODO: line sep?
+        get() = textBuffer.getText()
         set(value) {
             textBuffer = EditableTextBuffer.create(value)
             render()

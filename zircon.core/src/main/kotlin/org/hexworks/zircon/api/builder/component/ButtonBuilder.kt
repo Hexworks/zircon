@@ -2,7 +2,8 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.Button
-import org.hexworks.zircon.api.component.CommonComponentProperties
+import org.hexworks.zircon.api.component.data.CommonComponentProperties
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.ButtonSideDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
@@ -48,12 +49,13 @@ data class ButtonBuilder(
             size
         }
         return DefaultButton(
+                componentMetadata = ComponentMetadata(
+                        size = finalSize,
+                        position = position,
+                        componentStyleSet = componentStyleSet,
+                        tileset = tileset()),
                 text = text,
-                renderingStrategy = componentRenderer,
-                size = finalSize,
-                position = position,
-                componentStyleSet = componentStyleSet,
-                tileset = tileset())
+                renderingStrategy = componentRenderer)
     }
 
     override fun withDecorationRenderers(vararg renderers: ComponentDecorationRenderer): ButtonBuilder {

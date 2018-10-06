@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.component
+package org.hexworks.zircon.api.component.data
 
 /**
  * Represents the states a [Component] can be in.

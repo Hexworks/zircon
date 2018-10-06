@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
@@ -15,7 +16,6 @@ import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.kotlin.ifPresent
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.Scrollable3D
@@ -27,12 +27,10 @@ import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
-class DefaultGameComponent(private val gameArea: GameArea,
-                           private val projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
-                           position: Position,
+class DefaultGameComponent(componentMetadata: ComponentMetadata,
                            size: Size3D,
-                           tileset: TilesetResource,
-                           componentStyleSet: ComponentStyleSet,
+                           private val gameArea: GameArea,
+                           private val projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
                            private val scrollable: Scrollable3D = DefaultScrollable3D(
                                    visibleSize = size,
                                    actualSize = gameArea.size))
@@ -40,10 +38,7 @@ class DefaultGameComponent(private val gameArea: GameArea,
     : GameComponent,
         Scrollable3D by scrollable,
         DefaultComponent(
-                position = position,
-                size = size.to2DSize(),
-                componentStyles = componentStyleSet,
-                tileset = tileset,
+                componentMetadata = componentMetadata,
                 renderer = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = NoOpComponentRenderer())) {

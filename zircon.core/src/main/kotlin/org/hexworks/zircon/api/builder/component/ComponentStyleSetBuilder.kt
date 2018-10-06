@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.component.ComponentState
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.internal.component.impl.DefaultComponentStyleSet

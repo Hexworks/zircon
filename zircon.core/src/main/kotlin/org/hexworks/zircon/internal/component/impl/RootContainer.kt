@@ -5,21 +5,13 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.resource.TilesetResource
 
-class RootContainer(private val renderingStrategy: ComponentRenderingStrategy<RootContainer>,
-                    position: Position,
-                    size: Size,
-                    tileset: TilesetResource,
-                    componentStyleSet: ComponentStyleSet)
+class RootContainer(componentMetadata: ComponentMetadata,
+                    private val renderingStrategy: ComponentRenderingStrategy<RootContainer>)
     : Container, DefaultContainer(
-        position = position,
-        size = size,
-        tileset = tileset,
-        componentStyles = componentStyleSet,
+        componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
     init {

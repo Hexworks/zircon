@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.component.impl.DefaultButton
@@ -44,11 +45,12 @@ class DefaultComponentRenderingStrategyTest {
                 componentRenderer = DefaultButtonRenderer())
 
         val btn = DefaultButton(
+                componentMetadata = ComponentMetadata(
+                        tileset = CP437TilesetResources.aduDhabi16x16(),
+                        size = size,
+                        position = Position.defaultPosition(),
+                        componentStyleSet = ComponentStyleSet.defaultStyleSet()),
                 text = "qux",
-                tileset = CP437TilesetResources.aduDhabi16x16(),
-                size = size,
-                position = Position.defaultPosition(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet(),
                 renderingStrategy = target)
 
         target.render(btn, graphics)
@@ -70,11 +72,12 @@ class DefaultComponentRenderingStrategyTest {
                 .fill(Tile.defaultTile().withCharacter('_'))
 
         val label = DefaultLabel(
+                componentMetadata = ComponentMetadata(
+                        tileset = CP437TilesetResources.aduDhabi16x16(),
+                        size = size,
+                        position = Position.defaultPosition(),
+                        componentStyleSet = ComponentStyleSet.defaultStyleSet()),
                 text = "Long text",
-                tileset = CP437TilesetResources.aduDhabi16x16(),
-                size = size,
-                position = Position.defaultPosition(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet(),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = DefaultLabelRenderer()))
@@ -98,11 +101,12 @@ class DefaultComponentRenderingStrategyTest {
                 .fill(Tile.defaultTile().withCharacter('_'))
 
         val button = DefaultButton(
+                componentMetadata = ComponentMetadata(
+                        tileset = CP437TilesetResources.aduDhabi16x16(),
+                        size = size,
+                        position = Position.defaultPosition(),
+                        componentStyleSet = ComponentStyleSet.defaultStyleSet()),
                 text = "foo",
-                tileset = CP437TilesetResources.aduDhabi16x16(),
-                size = size,
-                position = Position.defaultPosition(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet(),
                 renderingStrategy = target)
 
         target.render(button, graphics)
@@ -126,11 +130,12 @@ class DefaultComponentRenderingStrategyTest {
                 .build()
 
         val button = DefaultButton(
+                componentMetadata = ComponentMetadata(
+                        tileset = CP437TilesetResources.aduDhabi16x16(),
+                        size = size,
+                        position = Position.defaultPosition(),
+                        componentStyleSet = ComponentStyleSet.defaultStyleSet()),
                 text = "bar",
-                tileset = CP437TilesetResources.aduDhabi16x16(),
-                size = size,
-                position = Position.defaultPosition(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet(),
                 renderingStrategy = target)
 
         target.render(button, graphics)
