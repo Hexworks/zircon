@@ -164,6 +164,10 @@ interface Position : Comparable<Position> {
         create(maxOf(compX - x, 0), compY + y)
     }
 
+    fun isUnknown() = this === UNKNOWN
+
+    fun isNotUnknown() = this !== UNKNOWN
+
     companion object {
 
         /**

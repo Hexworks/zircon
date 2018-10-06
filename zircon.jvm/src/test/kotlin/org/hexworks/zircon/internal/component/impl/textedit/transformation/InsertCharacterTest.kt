@@ -11,7 +11,7 @@ class InsertCharacterTest {
     fun shouldProperlyInsertCharacterAndMoveCursorsWhenInserting() {
         val cursor = Cursor(0, 1)
 
-        val buffer = generateTextBuffer(cursor)
+        val buffer = generateBuffer(cursor)
 
         val target = InsertCharacter(CHAR_TO_INSERT)
 
@@ -25,7 +25,7 @@ class InsertCharacterTest {
         private const val CHAR_TO_INSERT = 'x'
         private const val OTHER_CHAR = 'a'
 
-        fun generateTextBuffer(cursor: Cursor) = DefaultEditableTextBuffer(
+        fun generateBuffer(cursor: Cursor) = DefaultEditableTextBuffer(
                 source = "$OTHER_CHAR$OTHER_CHAR$OTHER_CHAR$OTHER_CHAR",
                 cursor = cursor)
     }

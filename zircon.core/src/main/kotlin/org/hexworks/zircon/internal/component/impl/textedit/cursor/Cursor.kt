@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl.textedit.cursor
 
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
 
 /**
@@ -7,6 +8,9 @@ import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
  */
 data class Cursor constructor(val rowIdx: Int = 0,
                               val colIdx: Int = 0) {
+
+    val position: Position
+        get() = Position.create(colIdx, rowIdx)
 
     /**
      * Moves this [Cursor] in a direction.

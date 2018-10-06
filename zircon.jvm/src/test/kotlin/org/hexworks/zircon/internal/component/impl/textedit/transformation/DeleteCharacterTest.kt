@@ -12,7 +12,7 @@ class DeleteCharacterTest {
     fun shouldProperlyDeleteMiddleCharacterInFirstRow() {
 
         val cursor = Cursor(0, 2)
-        val buffer = generateTwoRowDocument(cursor)
+        val buffer = generateBuffer(cursor)
 
         val target = DeleteCharacter()
 
@@ -29,7 +29,7 @@ class DeleteCharacterTest {
     @Test
     fun shouldProperlyDeleteSecondRowWhenCursorIsAtTheStartOfTheSecondRow() {
         val cursor = Cursor(1, 0)
-        val buffer = generateTwoRowDocument(cursor)
+        val buffer = generateBuffer(cursor)
 
         val target = DeleteCharacter()
 
@@ -46,7 +46,7 @@ class DeleteCharacterTest {
     fun shouldDoNothingWhenDeletingFromTheStartOfTheBuffer() {
 
         val cursor = Cursor(0, 0)
-        val buffer = generateTwoRowDocument(cursor)
+        val buffer = generateBuffer(cursor)
 
         val target = DeleteCharacter()
 
@@ -62,7 +62,7 @@ class DeleteCharacterTest {
     companion object {
         const val OTHER_CHAR = 'a'
         const val CHAR_TO_DELETE = 'x'
-        fun generateTwoRowDocument(cursor: Cursor) = DefaultEditableTextBuffer(
+        fun generateBuffer(cursor: Cursor) = DefaultEditableTextBuffer(
                 source = "$OTHER_CHAR$CHAR_TO_DELETE$OTHER_CHAR" + SystemUtils.getLineSeparator() +
                         "$OTHER_CHAR$OTHER_CHAR$OTHER_CHAR",
                 cursor = cursor

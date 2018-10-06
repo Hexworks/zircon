@@ -1,6 +1,10 @@
 package org.hexworks.zircon.internal.component.impl.textedit
 
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.Cursor
+import org.hexworks.zircon.platform.util.SystemUtils
 
 interface EditableTextBuffer {
 
@@ -10,18 +14,38 @@ interface EditableTextBuffer {
 
     fun applyTransformation(transformation: TextBufferTransformation): EditableTextBuffer
 
-    fun getLastRowIdx() = textBuffer.size - 1
+    fun getLastRowIdx(): Int = textBuffer.size - 1
 
-    fun getLastColumnIdxForRow(rowIdx: Int) = textBuffer[rowIdx].size - 1
+    fun getLastColumnIdxForRow(rowIdx: Int): Int = textBuffer[rowIdx].size - 1
 
-    fun getRowCount() = textBuffer.size
+    fun getColumnCount(rowIdx: Int): Int = textBuffer[rowIdx].size
 
-    fun getColumnCount(rowIdx: Int) = textBuffer[rowIdx].size
+    fun getRow(rowIdx: Int): MutableList<Char> = textBuffer[rowIdx]
 
-    fun getRow(rowIdx: Int) = textBuffer[rowIdx]
+    fun deleteRow(rowIdx: Int): MutableList<Char> = textBuffer.removeAt(rowIdx)
 
-    fun getRowsInRange(range: IntRange) = range.toList().map { textBuffer[it] }
+    fun getBoundingBoxSize(): Size = Size.create(
+            xLength = textBuffer.asSequence()
+                    .map { it.size }
+                    .max() ?: 0,
+            yLength = textBuffer.size)
 
-    fun deleteRow(rowIdx: Int) = textBuffer.removeAt(rowIdx)
+    fun getText(): String = textBuffer.joinToString(SystemUtils.getLineSeparator()) { it.toString() }
 
+    fun getSize() = textBuffer.size
+
+    fun getCharAt(position: Position): Maybe<Char> =
+            if (position.y >= textBuffer.size || textBuffer[position.y].size <= position.x) {
+                Maybe.empty()
+            } else {
+                Maybe.of(textBuffer[position.y][position.x])
+            }
+
+    fun rowCount(): Int = textBuffer.size
+
+    companion object {
+
+        fun create(text: String = "", cursor: Cursor = Cursor()): EditableTextBuffer =
+                DefaultEditableTextBuffer(text, cursor)
+    }
 }
