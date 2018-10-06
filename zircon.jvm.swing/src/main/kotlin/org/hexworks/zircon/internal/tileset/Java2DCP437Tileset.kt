@@ -98,8 +98,7 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
                 Map<KClass<out TileTransformModifier<out Tile>>, TileTransformer<out TileTransformModifier<out Tile>, out Tile>> = mapOf(
                 Markov::class to Java2DMarkovTransformer(),
                 FadeIn::class to Java2DFadeInTransformer(),
-                Delay::class to Java2DDelayedTransformer()
-                )
+                Delay::class to Java2DDelayedTransformer())
 
         val TEXTURE_TRANSFORMER_LOOKUP: Map<KClass<out TextureTransformModifier>, TextureTransformer<BufferedImage>> = mapOf(
                 Pair(SimpleModifiers.Underline::class, Java2DUnderlineTransformer()),

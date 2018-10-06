@@ -99,7 +99,7 @@ interface Size : Comparable<Size> {
         if (this.xLength == xLength) {
             return this
         }
-        return returnZeroIfZero(create(xLength, this.yLength))
+        return create(xLength, this.yLength)
     }
 
     /**
@@ -109,7 +109,7 @@ interface Size : Comparable<Size> {
         if (this.yLength == yLength) {
             return this
         }
-        return returnZeroIfZero(create(this.xLength, yLength))
+        return create(this.xLength, yLength)
     }
 
     /**
@@ -184,14 +184,6 @@ interface Size : Comparable<Size> {
     fun toBounds(): Rect = toBounds(Position.defaultPosition())
 
     fun toBounds(position: Position): Rect = Rect.create(position, this)
-
-    private fun returnZeroIfZero(size: Size): Size {
-        return if (size.xLength == 0 || size.yLength == 0) {
-            zero()
-        } else {
-            size
-        }
-    }
 
     companion object {
 

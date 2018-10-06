@@ -4,12 +4,14 @@ import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.CommonComponentProperties
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.api.component.renderer.impl.TypingEffectPostProcessor
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultParagraph
 import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 
 data class ParagraphBuilder(
         private var text: String = "",
+        private var typingEffect: Boolean = false,
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
     : BaseComponentBuilder<Paragraph, ParagraphBuilder>(commonComponentProperties) {
 
@@ -17,6 +19,10 @@ data class ParagraphBuilder(
 
     fun text(text: String) = also {
         this.text = text
+    }
+
+    fun withTypingEffect(typingEffect: Boolean) = also {
+        this.typingEffect = typingEffect
     }
 
     override fun build(): Paragraph {
@@ -32,11 +38,17 @@ data class ParagraphBuilder(
         } else {
             size
         }
+        val postProcessors = if (typingEffect) {
+            listOf(TypingEffectPostProcessor<Paragraph>())
+        } else {
+            listOf()
+        }
         return DefaultParagraph(
                 text = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
-                        componentRenderer = DefaultParagraphRenderer()),
+                        componentRenderer = DefaultParagraphRenderer(),
+                        componentPostProcessors = postProcessors),
                 size = finalSize,
                 position = position,
                 componentStyleSet = componentStyleSet,
