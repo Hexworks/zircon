@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -34,10 +35,11 @@ class DefaultComponentTest {
     fun setUp() {
         tileset = FONT
         target = object : DefaultComponent(
-                size = SIZE,
-                position = POSITION,
-                componentStyles = STYLES,
-                tileset = tileset,
+                componentMetadata = ComponentMetadata(
+                        size = SIZE,
+                        position = POSITION,
+                        componentStyleSet = STYLES,
+                        tileset = tileset),
                 renderer = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = DefaultRadioButtonGroupRenderer())) {

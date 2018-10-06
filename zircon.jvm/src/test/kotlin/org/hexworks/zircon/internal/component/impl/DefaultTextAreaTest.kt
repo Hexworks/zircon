@@ -4,11 +4,9 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.TextAreaBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.component.ComponentState
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.input.InputType
-import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -41,45 +39,6 @@ class DefaultTextAreaTest {
     fun shouldUseProperFont() {
         assertThat(target.currentTileset().id)
                 .isEqualTo(tileset.id)
-    }
-
-    @Test
-    fun shouldProperlyHandleRightArrowWhenFocused() {
-        target.giveFocus()
-
-        target.keyStroked(KeyStroke(type = InputType.ArrowRight))
-
-        assertThat(target.cursorPosition()).isEqualTo(Position.defaultPosition().withRelativeX(1))
-    }
-
-    @Test
-    fun shouldProperlyHandleLeftArrowWhenFocusedAndMustScrollToEndOfPrevLine() {
-        target.text = "Foo${System.lineSeparator()}bar"
-        target.giveFocus()
-
-        target.putCursorAt(Position.create(0, 1))
-        target.keyStroked(KeyStroke(type = InputType.ArrowLeft))
-
-        assertThat(target.cursorPosition()).isEqualTo(Position.create(3, 0))
-    }
-
-    @Test
-    fun shouldProperlyHandleLeftArrowWhenFocusedAndCanMoveLeftInLine() {
-        target.giveFocus()
-
-        target.putCursorAt(Position.create(1, 0))
-        target.keyStroked(KeyStroke(type = InputType.ArrowLeft))
-
-        assertThat(target.cursorPosition()).isEqualTo(Position.defaultPosition())
-    }
-
-    @Test
-    fun shouldProperlyTakeFocus() {
-        target.giveFocus()
-
-        target.takeFocus()
-
-        // TODO: assert
     }
 
     @Test

@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.screen
 
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.event.EventBus
@@ -20,13 +21,14 @@ import org.hexworks.zircon.internal.grid.RectangleTileGrid
 class TileGridScreen(
         private val tileGrid: TileGrid,
         private val componentsContainer: RootContainer = RootContainer(
+                componentMetadata = ComponentMetadata(
+                        size = tileGrid.size,
+                        position = Position.defaultPosition(),
+                        tileset = tileGrid.currentTileset(),
+                        componentStyleSet = ComponentStyleSet.defaultStyleSet()),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
-                        componentRenderer = RootContainerRenderer()),
-                size = tileGrid.size,
-                position = Position.defaultPosition(),
-                tileset = tileGrid.currentTileset(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet()),
+                        componentRenderer = RootContainerRenderer())),
         private val buffer: InternalTileGrid = RectangleTileGrid(
                 tileset = tileGrid.currentTileset(),
                 size = tileGrid.size,

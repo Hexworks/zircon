@@ -1,8 +1,9 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
-import org.hexworks.zircon.api.component.CommonComponentProperties
 import org.hexworks.zircon.api.component.ListItem
+import org.hexworks.zircon.api.component.data.CommonComponentProperties
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultListItem
@@ -38,14 +39,15 @@ data class ListItemBuilder(
                 .split("\n")
                 .first()
         return DefaultListItem(
+                componentMetadata = ComponentMetadata(
+                        size = finalSize,
+                        position = position,
+                        componentStyleSet = componentStyleSet,
+                        tileset = tileset()),
                 text = fixedText,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
-                        componentRenderer = DefaultListItemRenderer()),
-                size = finalSize,
-                position = position,
-                componentStyleSet = componentStyleSet,
-                tileset = tileset())
+                        componentRenderer = DefaultListItemRenderer()))
     }
 
     override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())

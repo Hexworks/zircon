@@ -30,7 +30,7 @@ interface EditableTextBuffer {
                     .max() ?: 0,
             yLength = textBuffer.size)
 
-    fun getText(): String = textBuffer.joinToString(SystemUtils.getLineSeparator()) { it.toString() }
+    fun getText(): String = textBuffer.joinToString(SystemUtils.getLineSeparator()) { it.joinToString("") }
 
     fun getSize() = textBuffer.size
 

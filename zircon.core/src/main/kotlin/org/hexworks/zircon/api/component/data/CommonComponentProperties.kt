@@ -1,5 +1,6 @@
-package org.hexworks.zircon.api.component
+package org.hexworks.zircon.api.component.data
 
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size

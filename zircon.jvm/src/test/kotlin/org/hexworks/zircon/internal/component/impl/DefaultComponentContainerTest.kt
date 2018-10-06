@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -31,13 +32,14 @@ class DefaultComponentContainerTest {
     @Before
     fun setUp() {
         target = DefaultComponentContainer(RootContainer(
+                componentMetadata = ComponentMetadata(
+                        position = Position.defaultPosition(),
+                        size = SIZE,
+                        tileset = TILESET,
+                        componentStyleSet = STYLES),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
-                        componentRenderer = RootContainerRenderer()),
-                position = Position.defaultPosition(),
-                size = SIZE,
-                tileset = TILESET,
-                componentStyleSet = STYLES))
+                        componentRenderer = RootContainerRenderer())))
     }
 
     @Test

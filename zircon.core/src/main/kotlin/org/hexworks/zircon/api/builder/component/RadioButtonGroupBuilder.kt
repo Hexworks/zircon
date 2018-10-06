@@ -1,8 +1,9 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
-import org.hexworks.zircon.api.component.CommonComponentProperties
 import org.hexworks.zircon.api.component.RadioButtonGroup
+import org.hexworks.zircon.api.component.data.CommonComponentProperties
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButtonGroup
@@ -18,13 +19,14 @@ data class RadioButtonGroupBuilder(
                 .map { it.occupiedSize }
                 .fold(size, Size::plus)
         return DefaultRadioButtonGroup(
+                componentMetadata = ComponentMetadata(
+                        size = size,
+                        position = position,
+                        componentStyleSet = componentStyleSet,
+                        tileset = tileset()),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
-                        componentRenderer = DefaultRadioButtonGroupRenderer()),
-                size = size,
-                position = position,
-                componentStyleSet = componentStyleSet,
-                tileset = tileset())
+                        componentRenderer = DefaultRadioButtonGroupRenderer()))
     }
 
     override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())

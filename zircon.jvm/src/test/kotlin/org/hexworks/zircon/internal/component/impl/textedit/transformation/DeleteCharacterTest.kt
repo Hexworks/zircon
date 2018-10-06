@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.component.impl.textedit.transformation
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.internal.component.impl.textedit.DefaultEditableTextBuffer
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.Cursor
+import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter.DeleteKind.BACKSPACE
 import org.hexworks.zircon.platform.util.SystemUtils
 import org.junit.Test
 
@@ -14,7 +15,7 @@ class DeleteCharacterTest {
         val cursor = Cursor(0, 2)
         val buffer = generateBuffer(cursor)
 
-        val target = DeleteCharacter()
+        val target = DeleteCharacter(BACKSPACE)
 
         target.applyTo(buffer)
 
@@ -31,7 +32,7 @@ class DeleteCharacterTest {
         val cursor = Cursor(1, 0)
         val buffer = generateBuffer(cursor)
 
-        val target = DeleteCharacter()
+        val target = DeleteCharacter(BACKSPACE)
 
         target.applyTo(buffer)
 
@@ -48,7 +49,7 @@ class DeleteCharacterTest {
         val cursor = Cursor(0, 0)
         val buffer = generateBuffer(cursor)
 
-        val target = DeleteCharacter()
+        val target = DeleteCharacter(BACKSPACE)
 
         target.applyTo(buffer)
 

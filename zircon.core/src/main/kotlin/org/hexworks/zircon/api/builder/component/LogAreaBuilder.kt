@@ -1,8 +1,9 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
-import org.hexworks.zircon.api.component.CommonComponentProperties
 import org.hexworks.zircon.api.component.LogArea
+import org.hexworks.zircon.api.component.data.CommonComponentProperties
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultLogArea
@@ -21,15 +22,14 @@ data class LogAreaBuilder(
                 .map { it.occupiedSize }
                 .fold(size, Size::plus)
         return DefaultLogArea(
+                componentMetadata = ComponentMetadata(
+                        position = position,
+                        size = size,
+                        tileset = tileset(),
+                        componentStyleSet = componentStyleSet),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
-                        componentRenderer = DefaultLogAreaRenderer()),
-                position = position,
-                size = size,
-                tileset = tileset(),
-                componentStyleSet = componentStyleSet,
-                delayInMsForTypewriterEffect = delayInMsForTypewriterEffect
-        )
+                        componentRenderer = DefaultLogAreaRenderer()))
     }
 
     fun logRowHistorySize(numberOfRows: Int) = also {

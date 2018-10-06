@@ -6,26 +6,18 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.RadioButton
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 
-class DefaultRadioButton(override val text: String,
-                         private val renderingStrategy: ComponentRenderingStrategy<RadioButton>,
-                         position: Position,
-                         size: Size,
-                         tileset: TilesetResource,
-                         componentStyleSet: ComponentStyleSet)
+class DefaultRadioButton(componentMetadata: ComponentMetadata,
+                         override val text: String,
+                         private val renderingStrategy: ComponentRenderingStrategy<RadioButton>)
     : RadioButton, DefaultComponent(
-        position = position,
-        size = size,
-        tileset = tileset,
-        componentStyles = componentStyleSet,
+        componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
     override val state: RadioButtonState

@@ -1,8 +1,9 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
-import org.hexworks.zircon.api.component.CommonComponentProperties
 import org.hexworks.zircon.api.component.Paragraph
+import org.hexworks.zircon.api.component.data.CommonComponentProperties
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.component.renderer.impl.TypingEffectPostProcessor
 import org.hexworks.zircon.api.data.Size
@@ -44,15 +45,16 @@ data class ParagraphBuilder(
             listOf()
         }
         return DefaultParagraph(
+                componentMetadata = ComponentMetadata(
+                        position = position,
+                        size = finalSize,
+                        tileset = tileset(),
+                        componentStyleSet = componentStyleSet),
                 text = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
                         componentRenderer = DefaultParagraphRenderer(),
-                        componentPostProcessors = postProcessors),
-                size = finalSize,
-                position = position,
-                componentStyleSet = componentStyleSet,
-                tileset = tileset())
+                        componentPostProcessors = postProcessors))
     }
 
     override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())
