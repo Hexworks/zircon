@@ -41,6 +41,12 @@ interface Container : Component {
      */
     fun removeComponent(component: Component): Boolean
 
+    /**
+     * Removes all [Component]s from this [Container].
+     * @return true if at least one component was removed
+     */
+    fun removeAllComponents(): Boolean
+
     // TODO: move these to `InternalContainer`
     fun acceptsFocus() = false
 

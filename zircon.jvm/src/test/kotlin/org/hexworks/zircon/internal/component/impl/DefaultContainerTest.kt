@@ -200,6 +200,28 @@ class DefaultContainerTest {
     }
 
     @Test
+    fun shouldProperlyRemoveAllComponentsFromSelf() {
+        val comp1 = LabelBuilder.newBuilder()
+                .text("x")
+                .withPosition(Position.defaultPosition())
+                .build()
+        target.addComponent(comp1)
+        val comp2 = LabelBuilder.newBuilder()
+                .text("x")
+                .withPosition(Position.create(1,2))
+                .build()
+        target.addComponent(comp2)
+        val removalHappened = AtomicBoolean(false)
+        EventBus.subscribe<ZirconEvent.ComponentRemoval> {
+            removalHappened.set(true)
+        }
+
+        assertThat(target.removeAllComponents()).isTrue()
+        assertThat(removalHappened.get()).isTrue()
+        assertThat(target.children).isEmpty()
+    }
+
+    @Test
     fun shouldProperlyRemoveComponentFromChild() {
         val comp = LabelBuilder.newBuilder()
                 .text("x")
