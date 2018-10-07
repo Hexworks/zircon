@@ -1,7 +1,8 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
-import org.hexworks.zircon.api.component.CommonComponentProperties
+import org.hexworks.zircon.api.component.data.CommonComponentProperties
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameComponent
@@ -43,9 +44,11 @@ data class GameComponentBuilder(
                 gameArea = gameArea.get(),
                 projectionMode = projectionMode,
                 size = visibleSize,
-                tileset = tileset(),
-                position = position,
-                componentStyleSet = componentStyleSet)
+                componentMetadata = ComponentMetadata(
+                        position = position,
+                        size = visibleSize.to2DSize(),
+                        componentStyleSet = componentStyleSet,
+                        tileset = tileset()))
     }
 
     companion object {

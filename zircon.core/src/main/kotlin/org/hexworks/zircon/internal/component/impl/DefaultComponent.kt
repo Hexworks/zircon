@@ -1,14 +1,13 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.behavior.Boundable
-import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -22,7 +21,6 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.listener.InputListener
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
@@ -31,19 +29,16 @@ import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 @Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
-        position: Position,
-        size: Size,
-        tileset: TilesetResource,
-        private var componentStyles: ComponentStyleSet,
+        componentMetadata: ComponentMetadata,
         private val renderer: ComponentRenderingStrategy<out Component>,
         private val graphics: TileGraphics = TileGraphicsBuilder
                 .newBuilder()
-                .tileset(tileset)
-                .size(size)
+                .tileset(componentMetadata.tileset)
+                .size(componentMetadata.size)
                 .build(),
         private val boundable: DefaultBoundable = DefaultBoundable(
-                size = size,
-                position = position))
+                size = componentMetadata.size,
+                position = componentMetadata.position))
     : InternalComponent,
         Drawable by graphics,
         TilesetOverride by graphics,
@@ -62,7 +57,7 @@ abstract class DefaultComponent(
         get() = renderer.calculateContentSize(size)
 
     // TODO: render on set?
-    final override var componentStyleSet = componentStyles
+    final override var componentStyleSet = componentMetadata.componentStyleSet
 
     final override val tileGraphics = graphics
 

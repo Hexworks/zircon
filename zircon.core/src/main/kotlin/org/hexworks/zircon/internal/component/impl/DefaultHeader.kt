@@ -6,24 +6,16 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Header
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.input.Input
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 
-class DefaultHeader(override val text: String,
-                    private val renderingStrategy: ComponentRenderingStrategy<Header>,
-                    initialSize: Size,
-                    initialTileset: TilesetResource,
-                    position: Position,
-                    componentStyleSet: ComponentStyleSet)
+class DefaultHeader(componentMetadata: ComponentMetadata,
+                    override val text: String,
+                    private val renderingStrategy: ComponentRenderingStrategy<Header>)
     : Header, DefaultComponent(
-        position = position,
-        size = initialSize,
-        tileset = initialTileset,
-        componentStyles = componentStyleSet,
+        componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
 

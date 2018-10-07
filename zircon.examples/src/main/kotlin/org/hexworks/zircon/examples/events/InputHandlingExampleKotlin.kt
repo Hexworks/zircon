@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.kotlin.onInput
 import org.hexworks.zircon.api.kotlin.onKeyStroke
+import org.hexworks.zircon.api.kotlin.onMousePressed
 import org.hexworks.zircon.api.listener.MouseAdapter
 import org.hexworks.zircon.api.listener.MouseListener
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
@@ -36,7 +37,15 @@ object InputHandlingExampleKotlin {
             override fun mousePressed(action: MouseAction) {
                 println("Mouse is pressed")
             }
+
+            override fun mouseDragged(action: MouseAction) {
+                println("Mouse is dragged")
+            }
         })
+
+        tileGrid.onMousePressed {
+
+        }
 
         // methods are called for specific mouse action types
         // with Kotlin as opposed to Java the MouseListener can also be used with only

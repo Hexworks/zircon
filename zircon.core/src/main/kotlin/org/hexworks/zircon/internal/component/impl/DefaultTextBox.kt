@@ -6,21 +6,13 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.TextBox
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.resource.TilesetResource
 
-class DefaultTextBox(private val renderingStrategy: ComponentRenderingStrategy<TextBox>,
-                     position: Position,
-                     size: Size,
-                     tileset: TilesetResource,
-                     componentStyleSet: ComponentStyleSet)
+class DefaultTextBox(componentMetadata: ComponentMetadata,
+                     private val renderingStrategy: ComponentRenderingStrategy<TextBox>)
     : TextBox, DefaultContainer(
-        position = position,
-        size = size,
-        tileset = tileset,
-        componentStyles = componentStyleSet,
+        componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
     init {

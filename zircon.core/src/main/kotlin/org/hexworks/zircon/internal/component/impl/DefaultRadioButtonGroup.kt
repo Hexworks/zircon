@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.RadioButtonGroup
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
@@ -16,7 +17,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.kotlin.onMouseReleased
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
@@ -24,18 +24,13 @@ import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRendere
 import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
 
 class DefaultRadioButtonGroup constructor(
-        private val renderingStrategy: ComponentRenderingStrategy<RadioButtonGroup>,
-        position: Position,
-        size: Size,
-        tileset: TilesetResource,
-        componentStyleSet: ComponentStyleSet,
-        scrollable: Scrollable = DefaultScrollable(size, size))
-    : RadioButtonGroup, Scrollable by scrollable, DefaultContainer(
-        position = position,
-        size = size,
-        tileset = tileset,
-        componentStyles = componentStyleSet,
-        renderer = renderingStrategy) {
+        componentMetadata: ComponentMetadata,
+        private val renderingStrategy: ComponentRenderingStrategy<RadioButtonGroup>)
+    : RadioButtonGroup,
+        Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
+        DefaultContainer(
+                componentMetadata = componentMetadata,
+                renderer = renderingStrategy) {
 
     private val items = ThreadSafeMapFactory.create<String, DefaultRadioButton>()
     private val selectionListeners = mutableListOf<Consumer<Selection>>()
@@ -56,10 +51,11 @@ class DefaultRadioButtonGroup constructor(
         return DefaultRadioButton(
                 text = text,
                 renderingStrategy = buttonRenderingStrategy,
-                size = Size.create(renderingStrategy.calculateContentSize(size).width(), 1),
-                position = Position.create(0, items.size),
-                componentStyleSet = componentStyleSet,
-                tileset = currentTileset()).also { button ->
+                componentMetadata = ComponentMetadata(
+                        position = Position.create(0, items.size),
+                        size = Size.create(renderingStrategy.calculateContentSize(size).width(), 1),
+                        tileset = currentTileset(),
+                        componentStyleSet = componentStyleSet)).also { button ->
             items[key] = button
             button.onMouseReleased { _ ->
                 selectedItem.map { lastSelected ->

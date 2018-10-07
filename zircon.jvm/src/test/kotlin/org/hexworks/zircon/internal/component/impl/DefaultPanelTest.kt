@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.component.LabelBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.component.ComponentState
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType

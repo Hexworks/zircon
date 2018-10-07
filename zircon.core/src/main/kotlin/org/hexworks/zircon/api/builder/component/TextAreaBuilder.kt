@@ -1,8 +1,9 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
-import org.hexworks.zircon.api.component.CommonComponentProperties
 import org.hexworks.zircon.api.component.TextArea
+import org.hexworks.zircon.api.component.data.CommonComponentProperties
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultTextArea
@@ -23,14 +24,15 @@ data class TextAreaBuilder(
                 .map { it.occupiedSize }
                 .fold(size, Size::plus)
         return DefaultTextArea(
+                componentMetadata = ComponentMetadata(
+                        size = size,
+                        position = position,
+                        componentStyleSet = componentStyleSet,
+                        tileset = tileset()),
                 initialText = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
-                        componentRenderer = DefaultTextAreaRenderer()),
-                size = size,
-                position = position,
-                componentStyleSet = componentStyleSet,
-                tileset = tileset())
+                        componentRenderer = DefaultTextAreaRenderer()))
     }
 
     override fun createCopy() = copy()
