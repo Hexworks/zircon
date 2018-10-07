@@ -105,18 +105,6 @@ class DefaultRadioButtonTest {
     }
 
     @Test
-    fun shouldSelectOnlyWhenNotAlreadySelected() {
-//        target.select()
-//        val componentChanged = AtomicBoolean(false)
-//        EventBus.subscribe<Event.ComponentChange> {
-//            componentChanged.set(true)
-//        }
-//        target.select()
-//
-//        assertThat(componentChanged.get()).isFalse()
-    }
-
-    @Test
     fun shouldProperlyRemoveSelection() {
         target.applyColorTheme(THEME)
         target.select()

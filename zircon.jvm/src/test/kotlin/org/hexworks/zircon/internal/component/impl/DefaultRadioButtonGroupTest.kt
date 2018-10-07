@@ -61,11 +61,24 @@ class DefaultRadioButtonGroupTest {
 
     @Test
     fun shouldSelectChildButtonWhenClicked() {
+        target.addOption("qux", "baz") as DefaultRadioButton
         val button = target.addOption("foo", "bar") as DefaultRadioButton
 
-        button.mouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+        button.mouseReleased(MOUSE_RELEASED)
 
         assertThat(button.isSelected()).isTrue()
+        assertThat(target.fetchSelectedOption().get()).isEqualTo("foo")
+    }
+
+    @Test
+    fun shouldSelectChildButtonWhenSelected() {
+        target.addOption("qux", "baz") as DefaultRadioButton
+        val button = target.addOption("foo", "bar") as DefaultRadioButton
+
+        button.select()
+
+        assertThat(button.isSelected()).isTrue()
+        assertThat(target.fetchSelectedOption().get()).isEqualTo("foo")
     }
 
     @Test
@@ -73,10 +86,8 @@ class DefaultRadioButtonGroupTest {
         val oldButton = target.addOption("foo", "bar") as DefaultRadioButton
         val newButton = target.addOption("baz", "qux") as DefaultRadioButton
 
-        oldButton.inputEmitted(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
-        newButton.inputEmitted(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
         // this is necessary because ComponentContainer handles this but it is not present in this test
-        newButton.mouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+        newButton.mouseReleased(MOUSE_RELEASED)
 
         assertThat(oldButton.isSelected()).isFalse()
         assertThat(newButton.isSelected()).isTrue()
@@ -91,7 +102,7 @@ class DefaultRadioButtonGroupTest {
             selected.set(true)
         }
 
-        button.inputEmitted(MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION))
+        button.mouseReleased(MOUSE_RELEASED)
 
         assertThat(selected.get()).isTrue()
     }
@@ -102,6 +113,7 @@ class DefaultRadioButtonGroupTest {
         val FONT = BuiltInCP437TilesetResource.WANDERLUST_16X16
         val POSITION = Position.create(4, 5)
         val SIZE = Size.create(10, 20)
+        val MOUSE_RELEASED = MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .backgroundColor(ANSITileColor.RED)
                 .foregroundColor(ANSITileColor.GREEN)

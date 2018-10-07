@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.kotlin
 
 import org.hexworks.zircon.api.behavior.InputEmitter
-import org.hexworks.zircon.api.event.Subscription
+import org.hexworks.zircon.api.behavior.Subscription
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction

@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.behavior.*
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.event.EventBus
-import org.hexworks.zircon.api.event.Subscription
+import org.hexworks.zircon.api.behavior.Subscription
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
