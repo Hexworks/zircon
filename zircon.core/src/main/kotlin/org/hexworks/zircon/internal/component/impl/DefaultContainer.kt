@@ -87,6 +87,18 @@ abstract class DefaultContainer(componentMetadata: ComponentMetadata,
         return removalHappened
     }
 
+    override fun removeAllComponents(): Boolean {
+        val removalHappened = components.isNotEmpty()
+        children.forEach {
+            removeComponent(it)
+        }
+        if (removalHappened) {
+            EventBus.broadcast(ZirconEvent.ComponentRemoval)
+        }
+
+        return removalHappened
+    }
+
     override fun transformToLayers(): List<Layer> {
         return listOf(LayerBuilder.newBuilder()
                 .tileGraphic(tileGraphics)
