@@ -1,9 +1,10 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
-import org.hexworks.zircon.api.component.CommonComponentProperties
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.TextBox
+import org.hexworks.zircon.api.component.data.CommonComponentProperties
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -116,13 +117,14 @@ data class TextBoxBuilder(
                 .map { it.occupiedSize }
                 .fold(Size.zero(), Size::plus)
         return DefaultTextBox(
+                componentMetadata = ComponentMetadata(
+                        size = currentSize + decorationSize,
+                        position = position,
+                        componentStyleSet = componentStyleSet,
+                        tileset = tileset()),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
-                        componentRenderer = DefaultTextBoxRenderer()),
-                size = currentSize + decorationSize,
-                position = position,
-                componentStyleSet = componentStyleSet,
-                tileset = tileset()).also { textBox ->
+                        componentRenderer = DefaultTextBoxRenderer())).also { textBox ->
             components.forEach {
                 textBox.addComponent(it)
             }

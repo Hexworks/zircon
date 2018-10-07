@@ -2,7 +2,8 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.CheckBox
-import org.hexworks.zircon.api.component.CommonComponentProperties
+import org.hexworks.zircon.api.component.data.CommonComponentProperties
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox
@@ -31,14 +32,15 @@ data class CheckBoxBuilder(
                 .fold(Size.zero(), Size::plus)
                 .plus(Size.create(if (width == -1) text.length + 4 else width, 1))
         return DefaultCheckBox(
+                componentMetadata = ComponentMetadata(
+                        size = size,
+                        position = position,
+                        componentStyleSet = componentStyleSet,
+                        tileset = tileset()),
                 text = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
-                        componentRenderer = DefaultCheckBoxRenderer()),
-                size = size,
-                position = position,
-                componentStyleSet = componentStyleSet,
-                tileset = tileset())
+                        componentRenderer = DefaultCheckBoxRenderer()))
     }
 
     override fun createCopy() = copy()

@@ -5,23 +5,14 @@ import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.TextBoxBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.*
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.resource.TilesetResource
 
-class DefaultLogArea constructor(
-        private val renderingStrategy: ComponentRenderingStrategy<LogArea>,
-        position: Position,
-        size: Size,
-        tileset: TilesetResource,
-        componentStyleSet: ComponentStyleSet,
-        private val delayInMsForTypewriterEffect: Int = 100)
+class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
+                                 private val renderingStrategy: ComponentRenderingStrategy<LogArea>)
     : LogArea, DefaultContainer(
-        position = position,
-        size = size,
-        tileset = tileset,
-        componentStyles = componentStyleSet,
+        componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
     private var currentInlineBuilder = createTextBoxBuilder()

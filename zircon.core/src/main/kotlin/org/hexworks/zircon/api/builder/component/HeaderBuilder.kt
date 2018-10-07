@@ -1,8 +1,9 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.BaseComponentBuilder
-import org.hexworks.zircon.api.component.CommonComponentProperties
 import org.hexworks.zircon.api.component.Header
+import org.hexworks.zircon.api.component.data.CommonComponentProperties
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultHeader
@@ -29,14 +30,15 @@ data class HeaderBuilder(
             size
         }
         return DefaultHeader(
+                componentMetadata = ComponentMetadata(
+                        size = finalSize,
+                        position = position,
+                        componentStyleSet = componentStyleSet,
+                        tileset = tileset()),
                 text = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers(),
-                        componentRenderer = DefaultHeaderRenderer()),
-                initialSize = finalSize,
-                position = position,
-                componentStyleSet = componentStyleSet,
-                initialTileset = tileset())
+                        componentRenderer = DefaultHeaderRenderer()))
     }
 
     override fun createCopy() = copy()

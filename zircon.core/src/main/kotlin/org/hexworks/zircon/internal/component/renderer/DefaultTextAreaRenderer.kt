@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.SubTileGraphics
-import org.hexworks.zircon.api.kotlin.map
+import org.hexworks.zircon.api.kotlin.fold
 
 class DefaultTextAreaRenderer : ComponentRenderer<TextArea>() {
 
@@ -16,9 +16,13 @@ class DefaultTextAreaRenderer : ComponentRenderer<TextArea>() {
         val tileTemplate = Tile.createCharacterTile(' ', style)
         tileGraphics.size.fetchPositions().forEach { pos ->
             val fixedPos = pos + component.visibleOffset
-            component.textBuffer().getCharAt(fixedPos).map { char ->
-                tileGraphics.setTileAt(pos, tileTemplate.withCharacter(char))
-            }
+            component.textBuffer().getCharAt(fixedPos).fold(
+                    whenEmpty = {
+                        tileGraphics.setTileAt(pos, tileTemplate)
+                    },
+                    whenPresent = { char ->
+                        tileGraphics.setTileAt(pos, tileTemplate.withCharacter(char))
+                    })
         }
     }
 }

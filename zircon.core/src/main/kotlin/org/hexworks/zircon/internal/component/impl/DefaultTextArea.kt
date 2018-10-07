@@ -1,59 +1,50 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.zircon.api.behavior.CursorHandler
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.TextArea
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.KeyStroke
-import org.hexworks.zircon.api.kotlin.map
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.api.util.TextUtils
-import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
+import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
+import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.*
+import org.hexworks.zircon.internal.component.impl.textedit.transformation.AddRowBreak
+import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter
+import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter.DeleteKind.BACKSPACE
+import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter.DeleteKind.DEL
+import org.hexworks.zircon.internal.component.impl.textedit.transformation.InsertCharacter
+import org.hexworks.zircon.internal.component.impl.textedit.transformation.MoveCursor
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.util.TextBuffer
-import org.hexworks.zircon.platform.extension.delete
-import org.hexworks.zircon.platform.extension.deleteCharAt
-import org.hexworks.zircon.platform.extension.insert
 
 class DefaultTextArea constructor(
-        private val renderingStrategy: ComponentRenderingStrategy<TextArea>,
         initialText: String,
-        tileset: TilesetResource,
-        size: Size,
-        position: Position,
-        componentStyleSet: ComponentStyleSet,
-        scrollable: Scrollable = DefaultScrollable(size, size),
-        cursorHandler: CursorHandler = DefaultCursorHandler(size))
-    : TextArea, Scrollable by scrollable, CursorHandler by cursorHandler, DefaultComponent(
-        position = position,
-        size = size,
-        tileset = tileset,
-        componentStyles = componentStyleSet,
-        renderer = renderingStrategy) {
+        componentMetadata: ComponentMetadata,
+        private val renderingStrategy: ComponentRenderingStrategy<TextArea>)
+    : TextArea,
+        Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
+        DefaultComponent(
+                componentMetadata = componentMetadata,
+                renderer = renderingStrategy) {
 
     override var text: String
-        get() = textBuffer.getText()  // TODO: line sep?
+        get() = textBuffer.getText()
         set(value) {
-            textBuffer.setText(value)
+            textBuffer = EditableTextBuffer.create(value)
             render()
         }
 
-    private val textBuffer = TextBuffer(initialText)
-    private var typingEnabled = false
-    private var enabled = true
-    private var focused = false
+    private var textBuffer = EditableTextBuffer.create(initialText)
 
     init {
         this.text = initialText
@@ -63,7 +54,7 @@ class DefaultTextArea constructor(
 
     override fun textBuffer() = textBuffer
 
-    override fun acceptsFocus() = enabled
+    override fun acceptsFocus() = true
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
@@ -85,249 +76,120 @@ class DefaultTextArea constructor(
                 }
     }
 
-    override fun enable() {
-        if (enabled.not()) {
-            enabled = true
-            if (focused) {
-                enableFocusedComponent()
-            }
-        }
-    }
-
-    override fun disable() {
-        if (enabled) {
-            enabled = false
-            if (focused) {
-                disableTyping()
-            }
-        }
-        componentStyleSet.applyDisabledStyle()
-        render()
-    }
-
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        focused = true
-        if (enabled) {
-            enableFocusedComponent()
-        }
-        return enabled
+        componentStyleSet.applyFocusedStyle()
+        render()
+        refreshCursor()
+        return true
     }
 
     override fun takeFocus(input: Maybe<Input>) {
-        focused = false
-        disableTyping()
         componentStyleSet.reset()
         render()
+        EventBus.broadcast(ZirconEvent.HideCursor)
     }
+
+    override fun keyStroked(keyStroke: KeyStroke) {
+        if (isNavigationKey(keyStroke)) {
+            return
+        }
+        when {
+            keyStroke.inputTypeIs(InputType.ArrowRight) -> {
+                textBuffer.applyTransformation(MoveCursor(RIGHT))
+            }
+            keyStroke.inputTypeIs(InputType.ArrowLeft) -> {
+                textBuffer.applyTransformation(MoveCursor(LEFT))
+            }
+            keyStroke.inputTypeIs(InputType.ArrowDown) -> {
+                textBuffer.applyTransformation(MoveCursor(DOWN))
+            }
+            keyStroke.inputTypeIs(InputType.ArrowUp) -> {
+                textBuffer.applyTransformation(MoveCursor(UP))
+            }
+            keyStroke.inputTypeIs(InputType.Delete) -> {
+                textBuffer.applyTransformation(DeleteCharacter(DEL))
+            }
+            keyStroke.inputTypeIs(InputType.Backspace) -> {
+                textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
+            }
+            keyStroke.inputTypeIs(InputType.Enter) -> {
+                textBuffer.applyTransformation(AddRowBreak())
+            }
+            keyStroke.inputTypeIs(InputType.Home) -> {
+                // TODO:
+            }
+            keyStroke.inputTypeIs(InputType.End) -> {
+                // TODO:
+            }
+            TextUtils.isPrintableCharacter(keyStroke.getCharacter()) -> {
+                textBuffer.applyTransformation(InsertCharacter(keyStroke.getCharacter()))
+            }
+        }
+        refreshVirtualSpaceSize()
+        scrollToCursor()
+        refreshCursor()
+        render()
+    }
+
+    private fun isNavigationKey(keyStroke: KeyStroke) =
+            keyStroke.inputType() == InputType.Tab || keyStroke.inputType() == InputType.ReverseTab
 
     override fun render() {
         renderingStrategy.render(this, tileGraphics)
     }
 
-    private fun enableFocusedComponent() {
-        componentStyleSet.applyFocusedStyle()
-        render()
-        enableTyping()
-    }
-
-    private fun disableTyping() {
-        typingEnabled = false
-        EventBus.broadcast(ZirconEvent.HideCursor)
-    }
-
-    private fun enableTyping() {
-        typingEnabled = true
-        EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition().withRelative(position + contentPosition)))
-    }
-
-    override fun keyStroked(keyStroke: KeyStroke) {
-        if (typingEnabled) {
-            val cursorPos = cursorPosition()
-            val (offsetCols, offsetRows) = visibleOffset
-            val currColIdx = cursorPos.x + offsetCols
-            val currRowIdx = cursorPos.y + offsetRows
-            val prevRowIdx = offsetRows + cursorPos.y - 1
-            val nextRowIdx = offsetRows + cursorPos.y + 1
-            val maybePrevRow = textBuffer.getRow(prevRowIdx)
-            val maybeNextRow = textBuffer.getRow(nextRowIdx)
-            val maybeCurrRow = textBuffer.getRow(currRowIdx)
-            val nextChar = textBuffer.getCharAt(visibleOffset + cursorPosition())
-            // TODO: this should be a state machine
-            // refactor this later
-            if (keyStroke.inputTypeIs(InputType.ArrowRight)) {
-                if (nextChar.isPresent) {
-                    if (isCursorAtTheEndOfTheLine()) {
-                        scrollOneRight()
-                        render()
-                    } else {
-                        moveCursorForward()
-                    }
-                }
-            } else if (keyStroke.inputTypeIs(InputType.ArrowLeft)) {
-                if (isCursorAtTheStartOfTheLine()) {
-                    if (visibleOffset.x > 0) {
-                        // we can still scroll left because there are hidden parts of the left section
-                        scrollOneLeft()
-                        render()
-                    } else if (maybePrevRow.isPresent) {
-                        scrollUpToEndOfPreviousLine(maybePrevRow.get())
-                    }
-                } else {
-                    moveCursorBackward()
-                }
-            } else if (keyStroke.inputTypeIs(InputType.ArrowDown)) {
-                maybeNextRow.map { nextRow ->
-                    if (isCursorAtTheLastRow()) {
-                        scrollOneDown()
-                    } else {
-                        putCursorAt(cursorPosition().withRelativeY(1))
-                    }
-                    scrollLeftToRowEnd(nextRow)
-                }
-            } else if (keyStroke.inputTypeIs(InputType.ArrowUp)) {
-                maybePrevRow.map { prevRow ->
-                    scrollCursorOrScrollableOneUp()
-                    scrollLeftToRowEnd(prevRow)
-                }
-            } else if (keyStroke.inputTypeIs(InputType.Delete)) {
-                textBuffer.getRow(currRowIdx).map { row: StringBuilder ->
-                    if (currColIdx == row.length) { // end of the line
-                        // this is necessary because if there is no next yLength and we
-                        // delete the current yLength we won't be able to type anything (since the yLength is deleted)
-                        maybeNextRow.map { nextRow ->
-                            val nextRowContent = nextRow.toString()
-                            if (row.isBlank()) {
-                                deleteRowIfNotLast(currRowIdx)
-                            } else {
-                                deleteRowIfNotLast(nextRowIdx)
-                            }
-                            row.append(nextRowContent)
-                        }
-                    } else {
-                        row.deleteCharAt(currColIdx)
-                    }
-                    render()
-                    refreshVirtualSpaceSize()
-                }
-            } else if (keyStroke.inputTypeIs(InputType.Backspace)) {
-                textBuffer.getRow(currRowIdx).map { row ->
-                    if (currColIdx == 0) { // start of the line
-                        maybePrevRow.map { prevRow ->
-                            val currRowContent = row.toString()
-                            deleteRowIfNotLast(currRowIdx)
-                            scrollUpToEndOfPreviousLine(prevRow)
-                            prevRow.append(currRowContent)
-                        }
-                    } else {
-                        row.deleteCharAt(currColIdx - 1)
-                        scrollCursorOrScrollableOneLeft()
-                    }
-                    render()
-                    refreshVirtualSpaceSize()
-                }
-            } else if (keyStroke.inputTypeIs(InputType.Enter)) {
-                val newRowIdx = currRowIdx + 1
-                textBuffer.addNewRowAt(newRowIdx)
-                textBuffer.getRow(currRowIdx).map { oldRow ->
-                    textBuffer.getRow(newRowIdx).map { newRow ->
-                        newRow.append(oldRow.substring(currColIdx).trim())
-                    }
-                    oldRow.delete(currColIdx, oldRow.length)
-                }
-                refreshVirtualSpaceSize()
-                if (isCursorAtTheLastRow()) {
-                    scrollOneDown()
-                } else {
-                    putCursorAt(cursorPosition().withRelativeY(1))
-                }
-                scrollLeftBy(0)
-                putCursorAt(cursorPosition().withX(0))
-                render()
-            } else if (keyStroke.inputTypeIs(InputType.Home)) {
-                scrollLeftBy(0)
-                putCursorAt(cursorPosition().withX(0))
-            } else if (keyStroke.inputTypeIs(InputType.End)) {
-                scrollRightToRowEnd(maybeCurrRow.get())
-                putCursorAt(cursorPosition().withX(size.xLength - 1))
-            } else if (TextUtils.isPrintableCharacter(keyStroke.getCharacter())) {
-                textBuffer.getRow(currRowIdx).map {
-                    if (isCursorAtTheEndOfTheLine()) {
-                        it.append(keyStroke.getCharacter())
-                    } else {
-                        it.insert(currColIdx, keyStroke.getCharacter().toString())
-                    }
-                    render()
-                    refreshVirtualSpaceSize()
-                    if (isCursorAtTheEndOfTheLine()) {
-                        scrollOneRight()
-                    } else {
-                        moveCursorForward()
-                    }
-                    render()
-                }
+    private fun scrollToCursor() {
+        val bufferCursorPos = textBuffer.cursor.position
+        when {
+            bufferCursorOverflowsLeft(bufferCursorPos) -> {
+                val delta = visibleOffset.x - bufferCursorPos.x
+                scrollLeftBy(delta)
             }
-            EventBus.broadcast(ZirconEvent.RequestCursorAt(cursorPosition() + position))
-        }
-    }
-
-    private fun scrollUpToEndOfPreviousLine(prevRow: StringBuilder) {
-        // we move the cursor up
-        scrollCursorOrScrollableOneUp()
-        // we set the position to be able to see the end of the yLength
-        scrollRightToRowEnd(prevRow)
-        // we fix the cursor if the yLength does not fill the visible space
-        putCursorAt(cursorPosition()
-                .withX(Math.min(prevRow.length, cursorPosition().x)))
-        refreshVirtualSpaceSize()
-        render()
-    }
-
-    private fun scrollCursorOrScrollableOneLeft() {
-        if (isCursorAtTheStartOfTheLine()) {
-            scrollOneLeft()
-        } else {
-            moveCursorBackward()
-        }
-    }
-
-    private fun scrollCursorOrScrollableOneUp() {
-        if (isCursorAtTheFirstRow()) {
-            scrollOneUp()
-        } else {
-            putCursorAt(cursorPosition().withRelativeY(-1))
-        }
-    }
-
-    private fun scrollLeftToRowEnd(row: StringBuilder) {
-        val visibleCharCount = row.length - visibleOffset.x
-        if (row.length > visibleOffset.x) {
-            if (visibleCharCount < cursorPosition().x) {
-                putCursorAt(cursorPosition().withX(row.length - visibleOffset.x))
+            bufferCursorPosOverlapsRight(bufferCursorPos) -> {
+                val delta = bufferCursorPos.x - visibleOffset.x - visibleSize.width()
+                scrollRightBy(delta + 1)
             }
-        } else {
-            scrollLeftBy(row.length)
-            putCursorAt(cursorPosition().withX(0))
+            bufferCursorOverflowsUp(bufferCursorPos) -> {
+                val delta = visibleOffset.y - bufferCursorPos.y
+                scrollUpBy(delta)
+            }
+            bufferCursorPosOverlapsDown(bufferCursorPos) -> {
+                val delta = bufferCursorPos.y - visibleOffset.y - visibleSize.height()
+                scrollDownBy(delta + 1)
+            }
         }
-        render()
     }
 
-    private fun scrollRightToRowEnd(row: StringBuilder) {
-        scrollRightBy(Math.max(0, row.length - size.xLength))
-        putCursorAt(cursorPosition().withX(size.xLength - 1))
-        render()
-    }
+    private fun bufferCursorPosOverlapsDown(bufferCursorPos: Position) =
+            bufferCursorPos.y >= visibleOffset.y + visibleSize.height()
 
-    private fun deleteRowIfNotLast(bufferRowIdx: Int) {
-        if (textBuffer.getSize() > 1) {
-            textBuffer.deleteRowAt(bufferRowIdx)
-        }
+    private fun bufferCursorOverflowsUp(bufferCursorPos: Position) =
+            bufferCursorPos.y < visibleOffset.y
+
+    private fun bufferCursorPosOverlapsRight(bufferCursorPos: Position) =
+            bufferCursorPos.x >= visibleOffset.x + visibleSize.width()
+
+    private fun bufferCursorOverflowsLeft(bufferPos: Position) =
+            bufferPos.x < visibleOffset.x
+
+    private fun refreshCursor() {
+        var pos = textBuffer.cursor.position
+                .minus(visibleOffset)
+        pos = pos.withX(Math.min(pos.x, contentSize.width()))
+        pos = pos.withY(Math.min(pos.y, contentSize.height()))
+        EventBus.broadcast(ZirconEvent.RequestCursorAt(pos
+                .withRelative(absolutePosition + contentPosition)))
     }
 
     private fun refreshVirtualSpaceSize() {
-        val (visibleCols, visibleRows) = size
-        val (textCols, textRows) = textBuffer.getBoundingBoxSize()
-        if (textCols >= visibleCols && textRows >= visibleRows) {
-            actualSize = textBuffer.getBoundingBoxSize()
+        val (actualWidth, actualHeight) = actualSize
+        val (bufferWidth, bufferHeight) = textBuffer.getBoundingBoxSize()
+        if (bufferWidth >= actualWidth) {
+            actualSize = actualSize.withWidth(bufferWidth)
+        }
+        if (bufferHeight >= actualHeight) {
+            actualSize = actualSize.withHeight(bufferHeight)
         }
     }
+
 }

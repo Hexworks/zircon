@@ -4,14 +4,12 @@ import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.config.RuntimeConfig
@@ -19,16 +17,10 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 @Suppress("UNCHECKED_CAST")
-abstract class DefaultContainer(position: Position,
-                                size: Size,
-                                tileset: TilesetResource,
-                                componentStyles: ComponentStyleSet,
+abstract class DefaultContainer(componentMetadata: ComponentMetadata,
                                 renderer: ComponentRenderingStrategy<out Component>)
     : Container, DefaultComponent(
-        position = position,
-        size = size,
-        tileset = tileset,
-        componentStyles = componentStyles,
+        componentMetadata = componentMetadata,
         renderer = renderer) {
 
     private val components = ThreadSafeQueueFactory.create<InternalComponent>()
