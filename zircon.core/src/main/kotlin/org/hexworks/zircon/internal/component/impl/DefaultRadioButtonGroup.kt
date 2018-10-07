@@ -16,9 +16,11 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.kotlin.map
-import org.hexworks.zircon.api.kotlin.onMouseReleased
+import org.hexworks.zircon.api.kotlin.onSelected
 import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Maybe
+import org.hexworks.zircon.internal.behavior.Observable
+import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
 import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
@@ -28,12 +30,12 @@ class DefaultRadioButtonGroup constructor(
         private val renderingStrategy: ComponentRenderingStrategy<RadioButtonGroup>)
     : RadioButtonGroup,
         Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
+        Observable<Selection> by DefaultObservable(),
         DefaultContainer(
                 componentMetadata = componentMetadata,
                 renderer = renderingStrategy) {
 
     private val items = ThreadSafeMapFactory.create<String, DefaultRadioButton>()
-    private val selectionListeners = mutableListOf<Consumer<Selection>>()
     private var selectedItem: Maybe<String> = Maybe.empty()
     private val buttonRenderingStrategy = DefaultComponentRenderingStrategy(
             decorationRenderers = listOf(),
@@ -57,7 +59,7 @@ class DefaultRadioButtonGroup constructor(
                         tileset = currentTileset(),
                         componentStyleSet = componentStyleSet)).also { button ->
             items[key] = button
-            button.onMouseReleased { _ ->
+            button.onSelected {
                 selectedItem.map { lastSelected ->
                     if (lastSelected != key) {
                         println("Removing selection from $lastSelected")
@@ -66,9 +68,7 @@ class DefaultRadioButtonGroup constructor(
                 }
                 selectedItem = Maybe.of(key)
                 items[key]?.let { button ->
-                    selectionListeners.forEach {
-                        it.accept(DefaultSelection(key, button.text))
-                    }
+                    notifyObservers(DefaultSelection(key, button.text))
                 }
             }
             addComponent(button)
@@ -103,7 +103,7 @@ class DefaultRadioButtonGroup constructor(
     }
 
     override fun onSelection(callback: Consumer<Selection>) {
-        selectionListeners.add(callback)
+        addObserver(callback)
     }
 
     override fun render() {

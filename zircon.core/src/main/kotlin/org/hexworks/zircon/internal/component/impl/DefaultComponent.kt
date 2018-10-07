@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Drawable
+import org.hexworks.zircon.api.behavior.Subscription
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
@@ -13,8 +14,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.event.ComponentSubscription
-import org.hexworks.zircon.api.event.Subscription
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
@@ -24,6 +23,7 @@ import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
+import org.hexworks.zircon.internal.component.ComponentSubscription
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.event
 
+import org.hexworks.zircon.api.behavior.Subscription
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.api.util.Maybe
 
