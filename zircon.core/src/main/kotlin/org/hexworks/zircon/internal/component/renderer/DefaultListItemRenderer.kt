@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 import org.hexworks.zircon.api.component.ListItem
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.api.graphics.SubTileGraphics
+import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.graphics.TextWrap
 
 class DefaultListItemRenderer(private val listItemChar: Char = '-') : ComponentRenderer<ListItem>() {
