@@ -52,7 +52,7 @@ abstract class DefaultContainer(componentMetadata: ComponentMetadata,
                     "Trying to add component with incompatible tileset size '${component.currentTileset().size}' to" +
                             "container with tileset size: '${currentTileset().size}'!"
                 }
-                val contentBounds = contentSize.toBounds()
+                val contentBounds = contentSize.toRect()
                 val originalDcBounds = dc.rect.withPosition(dc.position - contentPosition)
                 require(contentBounds.containsBoundable(originalDcBounds)) {
                     "Trying to add a component ($component) with bounds($originalDcBounds)" +

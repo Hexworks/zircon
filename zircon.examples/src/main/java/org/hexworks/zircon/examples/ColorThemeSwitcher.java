@@ -47,7 +47,7 @@ public class ColorThemeSwitcher {
         AtomicReference<ColorThemeResource> currentTheme = new AtomicReference<>(THEME);
         AtomicReference<Header> currentThemeLabel = new AtomicReference<>(createHeaderForTheme(currentTheme.get()));
 
-        final Size infoPanelSize = SCREEN_SIZE.withYLength(10).withRelativeXLength(-4);
+        final Size infoPanelSize = SCREEN_SIZE.withHeight(10).withRelativeWidth(-4);
 
         final Panel infoPanel = Components.panel()
                 .wrapWithBox(true)
@@ -114,12 +114,12 @@ public class ColorThemeSwitcher {
 
 
         final Size themePickerSize = SCREEN_SIZE
-                .withRelativeYLength(-infoPanelSize.getHeight() - 4)
-                .withXLength(SCREEN_SIZE.getWidth() / 3 - 1);
+                .withRelativeHeight(-infoPanelSize.getHeight() - 4)
+                .withWidth(SCREEN_SIZE.getWidth() / 3 - 1);
 
         final Size smallPanelSize = themePickerSize
-                .withRelativeXLength(-2)
-                .withYLength(themePickerSize.getHeight() / 2 - 1);
+                .withRelativeWidth(-2)
+                .withHeight(themePickerSize.getHeight() / 2 - 1);
 
         final Panel solarizedLightPanel = Components.panel()
                 .withTitle("Solarized Light")
@@ -149,7 +149,7 @@ public class ColorThemeSwitcher {
                 .withTitle("Other")
                 .withPosition(Positions.create(1, 0).relativeToRightOf(zenburnPanel))
                 .wrapWithBox(true)
-                .withSize(themePickerSize.withRelativeXLength(3).withRelativeYLength(-1))
+                .withSize(themePickerSize.withRelativeWidth(3).withRelativeHeight(-1))
                 .build();
 
 
@@ -179,8 +179,8 @@ public class ColorThemeSwitcher {
 
         final RadioButtonGroup slOptions = Components.radioButtonGroup()
                 .withSize(themePickerSize
-                        .withYLength(solarizedLightOptions.size())
-                        .withRelativeXLength(-4))
+                        .withHeight(solarizedLightOptions.size())
+                        .withRelativeWidth(-4))
                 .build();
         solarizedLightOptions.forEach((option) -> slOptions.addOption(
                 option.name(),
@@ -189,8 +189,8 @@ public class ColorThemeSwitcher {
 
         final RadioButtonGroup sdOptions = Components.radioButtonGroup()
                 .withSize(themePickerSize
-                        .withYLength(solarizedDarkOptions.size())
-                        .withRelativeXLength(-4))
+                        .withHeight(solarizedDarkOptions.size())
+                        .withRelativeWidth(-4))
                 .build();
         solarizedDarkOptions.forEach((option) -> sdOptions.addOption(
                 option.name(),
@@ -199,8 +199,8 @@ public class ColorThemeSwitcher {
 
         final RadioButtonGroup zbOptions = Components.radioButtonGroup()
                 .withSize(themePickerSize
-                        .withYLength(zenburnOptions.size())
-                        .withRelativeXLength(-4))
+                        .withHeight(zenburnOptions.size())
+                        .withRelativeWidth(-4))
                 .build();
         zenburnOptions.forEach((option) -> zbOptions.addOption(
                 option.name(),
@@ -209,8 +209,8 @@ public class ColorThemeSwitcher {
 
         final RadioButtonGroup mOptions = Components.radioButtonGroup()
                 .withSize(themePickerSize
-                        .withYLength(monokaiOptions.size())
-                        .withRelativeXLength(-4))
+                        .withHeight(monokaiOptions.size())
+                        .withRelativeWidth(-4))
                 .build();
         monokaiOptions.forEach((option) -> mOptions.addOption(
                 option.name(),
@@ -219,8 +219,8 @@ public class ColorThemeSwitcher {
 
         final RadioButtonGroup othOptions = Components.radioButtonGroup()
                 .withSize(otherPanel.getSize()
-                        .withYLength(otherOptions.size())
-                        .withRelativeXLength(-2))
+                        .withHeight(otherOptions.size())
+                        .withRelativeWidth(-2))
                 .build();
         otherOptions.forEach((option) -> othOptions.addOption(
                 option.name(),

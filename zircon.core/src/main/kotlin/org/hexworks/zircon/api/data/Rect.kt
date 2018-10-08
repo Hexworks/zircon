@@ -28,13 +28,9 @@ interface Rect : Boundable {
      */
     operator fun component4() = height
 
-    operator fun plus(rect: Rect) = Rect.create(
-            position = position + rect.position,
-            size = size + rect.size)
+    operator fun plus(rect: Rect): Rect
 
-    operator fun minus(rect: Rect) = Rect.create(
-            position = position - rect.position,
-            size = size - rect.size)
+    operator fun minus(rect: Rect): Rect
 
     fun withPosition(position: Position): Rect
 

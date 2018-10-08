@@ -23,6 +23,18 @@ class DefaultBoundable(size: Size,
     override val rect: Rect
         get() = currentRect
 
+    override val x: Int
+        get() = position.x
+
+    override val y: Int
+        get() = position.y
+
+    override val width: Int
+        get() = size.width
+
+    override val height: Int
+        get() = size.height
+
     private var currentRect: Rect = Rect.create(position, size)
 
     override fun moveTo(position: Position): Boolean {

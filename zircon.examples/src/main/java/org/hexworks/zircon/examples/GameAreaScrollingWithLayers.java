@@ -58,7 +58,7 @@ public class GameAreaScrollingWithLayers {
         final Screen screen = Screens.createScreenFor(tileGrid);
 
         Panel actions = Components.panel()
-                .withSize(screen.getSize().withXLength(20))
+                .withSize(screen.getSize().withWidth(20))
                 .wrapWithBox(true)
                 .withTitle("Actions")
                 .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)
@@ -76,7 +76,7 @@ public class GameAreaScrollingWithLayers {
 
 
         final Panel gamePanel = Components.panel()
-                .withSize(screen.getSize().withXLength(40))
+                .withSize(screen.getSize().withWidth(40))
                 .withPosition(Positions.topRightOf(actions))
                 .withTitle("Game area")
                 .wrapWithBox(true)

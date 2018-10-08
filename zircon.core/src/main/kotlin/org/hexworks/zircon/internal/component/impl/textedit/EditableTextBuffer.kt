@@ -25,10 +25,10 @@ interface EditableTextBuffer {
     fun deleteRow(rowIdx: Int): MutableList<Char> = textBuffer.removeAt(rowIdx)
 
     fun getBoundingBoxSize(): Size = Size.create(
-            xLength = textBuffer.asSequence()
+            width = textBuffer.asSequence()
                     .map { it.size }
                     .max() ?: 0,
-            yLength = textBuffer.size)
+            height = textBuffer.size)
 
     fun getText(): String = textBuffer.joinToString(SystemUtils.getLineSeparator()) { it.joinToString("") }
 

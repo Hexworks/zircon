@@ -105,7 +105,7 @@ data class TextBoxBuilder(
 
     fun newLine() = also {
         nextPosition = nextPosition.withRelativeY(1)
-        currentSize = currentSize.withRelativeYLength(1)
+        currentSize = currentSize.withRelativeHeight(1)
     }
 
     override fun build(): TextBox {
@@ -132,7 +132,7 @@ data class TextBoxBuilder(
     }
 
     private fun updateSizeAndPosition(lastComponentHeight: Int) {
-        currentSize = currentSize.withRelativeYLength(lastComponentHeight)
+        currentSize = currentSize.withRelativeHeight(lastComponentHeight)
         nextPosition = nextPosition.withRelativeY(lastComponentHeight)
     }
 

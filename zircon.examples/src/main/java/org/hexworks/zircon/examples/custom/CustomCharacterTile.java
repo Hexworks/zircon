@@ -10,7 +10,7 @@ public class CustomCharacterTile extends BaseCharacterTile {
     private StyleSet styleSet;
     private char character;
 
-    Custo   mCharacterTile(StyleSet styleSet, char character) {
+    CustomCharacterTile(StyleSet styleSet, char character) {
         this.styleSet = styleSet;
         this.character = character;
     }
