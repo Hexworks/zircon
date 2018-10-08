@@ -21,6 +21,12 @@ jacocoTestReport {
     }
 }
 
+test {
+    jacoco {
+        exclude("*equals", "*hashCode")
+    }
+}
+
 test.finalizedBy(jacocoTestReport)
 
 dependencies {

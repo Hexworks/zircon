@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.SubTileGraphics
+import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.kotlin.fold
 
 class DefaultTextAreaRenderer : ComponentRenderer<TextArea>() {

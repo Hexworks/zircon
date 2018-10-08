@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.component.renderer
 
-import org.hexworks.zircon.api.graphics.SubTileGraphics
+import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.graphics.TileGraphics
 
 /**

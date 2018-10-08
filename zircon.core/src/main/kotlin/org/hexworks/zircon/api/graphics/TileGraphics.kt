@@ -4,13 +4,9 @@ import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Styleable
-import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.kotlin.map
-import org.hexworks.zircon.api.kotlin.toMap
-import org.hexworks.zircon.internal.data.DefaultCell
-import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphics
-import org.hexworks.zircon.internal.graphics.DefaultTileImage
 
 /**
  * An image built from [Tile]s with color and style information.
@@ -23,20 +19,18 @@ interface TileGraphics
     /**
      * Returns a [List] of [Position]s which are not `EMPTY`.
      */
-    fun fetchFilledPositions(): Iterable<Position> = createSnapshot().fetchPositions()
+    fun fetchFilledPositions(): Iterable<Position>
 
     /**
      * Returns a [List] of [Tile]s which are not `EMPTY`.
      */
-    fun fetchFilledTiles(): Iterable<Tile> = createSnapshot().fetchTiles()
+    fun fetchFilledTiles(): Iterable<Tile>
 
     /**
      * Returns all the [Cell]s ([Tile]s with associated [Position] information)
      * of this [TileGraphics].
      */
-    fun fetchCells(): Iterable<Cell> {
-        return fetchCellsBy(Position.defaultPosition(), size)
-    }
+    fun fetchCells(): Iterable<Cell>
 
     /**
      * Returns the [Cell]s in this [TileGraphics] from the given `offset`
@@ -44,11 +38,7 @@ interface TileGraphics
      * Throws an exception if either `offset` or `size` would overlap
      * with this [TileGraphics].
      */
-    fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell> {
-        return size.fetchPositions()
-                .map { it + offset }
-                .map { DefaultCell(it, getTileAt(it).get()) }
-    }
+    fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell>
 
     /**
      * Returns a copy of this image resized to a new size and using
@@ -57,9 +47,7 @@ interface TileGraphics
      * The copy will be independent from the one this method is
      * invoked on, so modifying one will not affect the other.
      */
-    fun resize(newSize: Size): TileGraphics {
-        return resize(newSize, Tile.empty())
-    }
+    fun resize(newSize: Size): TileGraphics
 
     /**
      * Returns a copy of this image resized to a new size and using
@@ -68,48 +56,17 @@ interface TileGraphics
      * The copy will be independent from the one this method is
      * invoked on, so modifying one will not affect the other.
      */
-    fun resize(newSize: Size, filler: Tile): TileGraphics {
-        // TODO: returnThis same type, use factory for this
-        val result = ConcurrentTileGraphics(
-                size = newSize,
-                styleSet = toStyleSet(),
-                tileset = currentTileset())
-        createSnapshot().cells.filter { (pos) -> newSize.containsPosition(pos) }
-                .forEach { (pos, tc) ->
-                    result.setTileAt(pos, tc)
-                }
-        if (filler != Tile.empty()) {
-            newSize.fetchPositions().subtract(size.fetchPositions()).forEach {
-                result.setTileAt(it, filler)
-            }
-        }
-        return result
-    }
+    fun resize(newSize: Size, filler: Tile): TileGraphics
 
     /**
      * Fills the empty parts of this [TileGraphics] with the given `filler`.
      */
-    fun fill(filler: Tile): TileGraphics {
-        size.fetchPositions().filter { pos ->
-            getTileAt(pos).map { it == Tile.empty() }.orElse(false)
-        }.forEach { pos ->
-            setTileAt(pos, filler)
-        }
-        return this
-    }
+    fun fill(filler: Tile): TileGraphics
 
     /**
      * Writes the given `text` at the given `position`.
      */
-    fun putText(text: String, position: Position = Position.defaultPosition()) {
-        text.forEachIndexed { col, char ->
-            setTileAt(position.withRelativeX(col), TileBuilder
-                    .newBuilder()
-                    .styleSet(toStyleSet())
-                    .character(char)
-                    .build())
-        }
-    }
+    fun putText(text: String, position: Position = Position.zero())
 
     /**
      * Sets the style of this [TileGraphics] from the given `styleSet`
@@ -148,12 +105,7 @@ interface TileGraphics
         }
     }
 
-    fun toTileImage(): TileImage {
-        return DefaultTileImage(
-                size = size,
-                tileset = currentTileset(),
-                tiles = createSnapshot().cells.toMap())
-    }
+    fun toTileImage(): TileImage
 
     /**
      * Creates a new [TileGraphics] which will use this one as the underlying subsystem.
@@ -162,9 +114,5 @@ interface TileGraphics
      * of (2, 2) and writing to it will write to the original graphics' surface, offset
      * by Position(1, 1).
      */
-    fun toSubTileGraphics(rect: Rect): SubTileGraphics {
-        return SubTileGraphics(
-                rect = rect,
-                backend = this)
-    }
+    fun toSubTileGraphics(rect: Rect): SubTileGraphics
 }

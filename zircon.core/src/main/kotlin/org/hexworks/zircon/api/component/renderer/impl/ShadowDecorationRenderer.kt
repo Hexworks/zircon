@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderConte
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.SubTileGraphics
+import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.shape.LineFactory
 

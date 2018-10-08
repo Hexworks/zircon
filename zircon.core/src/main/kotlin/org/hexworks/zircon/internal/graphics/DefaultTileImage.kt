@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.TileImage
+import org.hexworks.zircon.api.graphics.base.BaseTileImage
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
@@ -15,7 +15,7 @@ class DefaultTileImage(
         private var tileset: TilesetResource,
         private val tiles: Map<Position, Tile> = mapOf(),
         boundable: Boundable = DefaultBoundable(size))
-    : TileImage, Boundable by boundable {
+    : BaseTileImage(), Boundable by boundable {
 
     override fun getTileAt(position: Position) = Maybe.of(tiles[position] ?: Tile.empty())
 
