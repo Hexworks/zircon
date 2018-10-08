@@ -10,29 +10,19 @@ import org.hexworks.zircon.internal.data.DefaultSize
  */
 interface Size : Comparable<Size> {
 
-    val xLength: Int
+    val width: Int
 
-    val yLength: Int
+    val height: Int
 
-    /**
-     * Shorthand for `xLength`
-     */
-    fun width() = xLength
+    operator fun plus(other: Size) = create(width + other.width, height + other.height)
 
-    /**
-     * Shorthand for `yLength`
-     */
-    fun height() = yLength
+    operator fun minus(other: Size) = create(width - other.width, height - other.height)
 
-    operator fun plus(other: Size) = create(xLength + other.xLength, yLength + other.yLength)
+    operator fun component1() = width
 
-    operator fun minus(other: Size) = create(xLength - other.xLength, yLength - other.yLength)
+    operator fun component2() = height
 
-    override fun compareTo(other: Size) = (this.xLength * this.yLength).compareTo(other.xLength * other.yLength)
-
-    operator fun component1() = xLength
-
-    operator fun component2() = yLength
+    override fun compareTo(other: Size) = (this.width * this.height).compareTo(other.width * other.height)
 
     fun isUnknown() = this === UNKNOWN
 
@@ -43,8 +33,8 @@ interface Size : Comparable<Size> {
     fun fetchPositions(): Iterable<Position> = Iterable {
         var currY = 0
         var currX = 0
-        val endX = xLength
-        val endY = yLength
+        val endX = width
+        val endY = height
 
         object : Iterator<Position> {
 
@@ -78,11 +68,11 @@ interface Size : Comparable<Size> {
 
     fun fetchTopLeftPosition() = Position.topLeftCorner()
 
-    fun fetchTopRightPosition() = Position.create(xLength - 1, 0)
+    fun fetchTopRightPosition() = Position.create(width - 1, 0)
 
-    fun fetchBottomLeftPosition() = Position.create(0, yLength - 1)
+    fun fetchBottomLeftPosition() = Position.create(0, height - 1)
 
-    fun fetchBottomRightPosition() = Position.create(xLength - 1, yLength - 1)
+    fun fetchBottomRightPosition() = Position.create(width - 1, height - 1)
 
     fun withWidth(width: Int): Size = withXLength(width)
 
@@ -96,20 +86,20 @@ interface Size : Comparable<Size> {
      * Creates a new size based on this size, but with a different xLength.
      */
     fun withXLength(xLength: Int): Size {
-        if (this.xLength == xLength) {
+        if (this.width == xLength) {
             return this
         }
-        return create(xLength, this.yLength)
+        return create(xLength, this.height)
     }
 
     /**
      * Creates a new size based on this size, but with a different yLength.
      */
     fun withYLength(yLength: Int): Size {
-        if (this.yLength == yLength) {
+        if (this.height == yLength) {
             return this
         }
-        return create(this.xLength, yLength)
+        return create(this.width, yLength)
     }
 
     /**
@@ -122,7 +112,7 @@ interface Size : Comparable<Size> {
         if (delta == 0) {
             return this
         }
-        return withXLength(xLength + delta)
+        return withXLength(width + delta)
     }
 
     /**
@@ -135,7 +125,7 @@ interface Size : Comparable<Size> {
         if (delta == 0) {
             return this
         }
-        return withYLength(yLength + delta)
+        return withYLength(height + delta)
     }
 
     /**
@@ -143,7 +133,7 @@ interface Size : Comparable<Size> {
      * This is the same as calling `withRelativeXLength(delta.getXLength()).withRelativeYLength(delta.getYLength())`
      */
     fun withRelative(delta: Size): Size {
-        return withRelativeYLength(delta.yLength).withRelativeXLength(delta.xLength)
+        return withRelativeYLength(delta.height).withRelativeXLength(delta.width)
     }
 
     /**
@@ -151,8 +141,8 @@ interface Size : Comparable<Size> {
      * measured separately. So calling 3x5 on a 5x3 will returnThis 5x5.
      */
     fun max(other: Size): Size {
-        return withXLength(Math.max(xLength, other.xLength))
-                .withYLength(Math.max(yLength, other.yLength))
+        return withXLength(Math.max(width, other.width))
+                .withYLength(Math.max(height, other.height))
     }
 
     /**
@@ -160,8 +150,8 @@ interface Size : Comparable<Size> {
      * measured separately. So calling 3x5 on a 5x3 will returnThis 3x3.
      */
     fun min(other: Size): Size {
-        return withXLength(Math.min(xLength, other.xLength))
-                .withYLength(Math.min(yLength, other.yLength))
+        return withXLength(Math.min(width, other.width))
+                .withYLength(Math.min(height, other.height))
     }
 
     /**
@@ -177,13 +167,18 @@ interface Size : Comparable<Size> {
         return size
     }
 
-    fun containsPosition(position: Position) = xLength > position.x && yLength > position.y
+    fun containsPosition(position: Position) = width > position.x && height > position.y
 
-    fun toPosition() = Position.create(xLength, yLength)
+    fun toPosition() = Position.create(width, height)
 
     fun toBounds(): Rect = toBounds(Position.defaultPosition())
 
     fun toBounds(position: Position): Rect = Rect.create(position, this)
+
+    /**
+     * Tells whether this [Size] has a negative component (xLength or yLength) or not.
+     */
+    fun hasNegativeComponent(): Boolean = width < 0 || height < 0
 
     companion object {
 

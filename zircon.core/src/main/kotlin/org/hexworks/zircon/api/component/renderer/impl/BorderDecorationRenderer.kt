@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderConte
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.SubTileGraphics
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.modifier.Border
@@ -52,7 +53,7 @@ class BorderDecorationRenderer(private val border: Border) : ComponentDecoration
         val bottomRightPos = size.fetchBottomRightPosition()
 
         if (drawTop.or(drawLeft)) {
-            tileGraphics.getTileAt(topLeftPos).map { char ->
+            tileGraphics.getTileAt(topLeftPos).map { char: Tile ->
                 tileGraphics.setTileAt(topLeftPos, char
                         .withModifiers(BorderBuilder.newBuilder()
                                 .borderType(border.borderType)
@@ -87,7 +88,7 @@ class BorderDecorationRenderer(private val border: Border) : ComponentDecoration
                                 .build()))
             }
         }
-        if (size.xLength > 2) {
+        if (size.width > 2) {
             val horizontalLine = LineFactory.buildLine(topLeftPos, topRightPos.withRelativeX(-2))
             if (drawTop.or(drawBottom)) {
                 horizontalLine.positions().forEach {
@@ -103,7 +104,7 @@ class BorderDecorationRenderer(private val border: Border) : ComponentDecoration
                     }
                     if (drawBottom) {
                         val bottomOffset = it.withRelativeX(1)
-                                .withRelativeY(size.yLength - 1)
+                                .withRelativeY(size.height - 1)
                         tileGraphics.getTileAt(bottomOffset).map { char ->
                             tileGraphics.setTileAt(bottomOffset, char
                                     .withModifiers(BorderBuilder.newBuilder()
@@ -115,7 +116,7 @@ class BorderDecorationRenderer(private val border: Border) : ComponentDecoration
                 }
             }
         }
-        if (size.yLength > 2) {
+        if (size.height > 2) {
             val verticalLine = LineFactory.buildLine(topLeftPos, bottomLeftPos.withRelativeY(-2))
             if (drawLeft.or(drawRight)) {
                 verticalLine.positions().forEach {
@@ -131,7 +132,7 @@ class BorderDecorationRenderer(private val border: Border) : ComponentDecoration
                     }
                     if (drawRight) {
                         val rightOffset = it.withRelativeY(1)
-                                .withRelativeX(size.xLength - 1)
+                                .withRelativeX(size.width - 1)
                         tileGraphics.getTileAt(rightOffset).map { char ->
                             tileGraphics.setTileAt(rightOffset, char
                                     .withModifiers(BorderBuilder.newBuilder()

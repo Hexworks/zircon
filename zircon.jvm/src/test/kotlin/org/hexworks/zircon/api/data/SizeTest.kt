@@ -77,14 +77,14 @@ class SizeTest {
     @Test
     fun shouldReturnItselfWhenWithXLengthIsCalledAndXLengthIsTheSame() {
         val target = Size.defaultTerminalSize()
-        val result = target.withXLength(target.xLength)
+        val result = target.withXLength(target.width)
         assertThat(target).isSameAs(result)
     }
 
     @Test
     fun shouldReturnItselfWhenWithYLengthIsCalledAndYLengthIsTheSame() {
         val target = Size.defaultTerminalSize()
-        val result = target.withYLength(target.yLength)
+        val result = target.withYLength(target.height)
         assertThat(target).isSameAs(result)
     }
 

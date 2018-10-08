@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.GridPosition
+import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -28,8 +28,8 @@ fun main(args: Array<String>) {
             .build())
 
     val random = Random()
-    val terminalWidth = size.xLength
-    val terminalHeight = size.yLength
+    val terminalWidth = size.width
+    val terminalHeight = size.height
     val layerCount = 20
     val layerWidth = 20
     val layerHeight = 10
@@ -82,8 +82,8 @@ fun main(args: Array<String>) {
 
 
 private fun fillGrid(tileGrid: TileGrid, tile: Tile) {
-    (0..tileGrid.size.yLength).forEach { y ->
-        (0..tileGrid.size.xLength).forEach { x ->
+    (0..tileGrid.size.height).forEach { y ->
+        (0..tileGrid.size.width).forEach { x ->
             tileGrid.setTileAt(GridPosition(x, y), tile)
         }
     }

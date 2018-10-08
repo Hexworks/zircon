@@ -59,8 +59,8 @@ public class GameMockupExample {
 
         Screen mainMenuScreen = Screens.createScreenFor(tileGrid);
         Position menuPosition = Positions.create(
-                (terminalSize.getXLength() - MAIN_MENU_PANEL_WIDTH) / 2,
-                (terminalSize.getYLength() - MAIN_MENU_PANEL_HEIGHT) / 2);
+                (terminalSize.getWidth() - MAIN_MENU_PANEL_WIDTH) / 2,
+                (terminalSize.getHeight() - MAIN_MENU_PANEL_HEIGHT) / 2);
         Label mainMenuLabel = Components.label()
                 .text(MAIN_MENU_LABEL)
                 .withPosition(menuPosition.withRelativeY(-3).withRelativeX(4))
@@ -105,7 +105,7 @@ public class GameMockupExample {
                 .text(BACK_LABEL)
                 .withPosition(Positions.create(
                         PANEL_SPACING,
-                        terminalSize.getYLength() - (PANEL_SPACING * 2)))
+                        terminalSize.getHeight() - (PANEL_SPACING * 2)))
                 .build();
         optionsScreen.addComponent(backButton);
 
@@ -117,7 +117,7 @@ public class GameMockupExample {
         optionsScreen.addComponent(applyButton);
 
         Panel difficultyPanel = Components.panel()
-                .withSize(Sizes.create((terminalSize.getXLength() - PANEL_SPACING) / 3, 9))
+                .withSize(Sizes.create((terminalSize.getWidth() - PANEL_SPACING) / 3, 9))
                 .withPosition(Positions.create(PANEL_SPACING, PANEL_SPACING))
                 .wrapWithBox(true)
                 .withBoxType(BoxType.LEFT_RIGHT_DOUBLE)

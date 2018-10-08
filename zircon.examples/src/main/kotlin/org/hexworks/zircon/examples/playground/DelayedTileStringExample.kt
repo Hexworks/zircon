@@ -35,7 +35,7 @@ object DelayedTileStringExample {
         val myText = "This is a very long string I'd like to add with a typrewriter effect"
 
         panel.addComponent(Components.textBox()
-                .contentWidth(panel.contentSize.width())
+                .contentWidth(panel.contentSize.width)
                 .paragraph(paragraph = myText,
                         withTypingEffect = true))
 

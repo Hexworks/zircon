@@ -5,9 +5,9 @@ import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.BlockSide.*
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.GameModifiers.*
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
@@ -110,7 +110,7 @@ object IsometricGameArea {
         val screen = Screens.createScreenFor(app.tileGrid)
 
 
-        addGamePanel(screen, Positions.defaultPosition(), screen.size, Positions.create(15, 20))
+        addGamePanel(screen, Positions.zero(), screen.size, Positions.create(15, 20))
 
         screen.display()
     }

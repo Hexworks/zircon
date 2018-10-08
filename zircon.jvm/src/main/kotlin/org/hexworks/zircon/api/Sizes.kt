@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.data.impl.Size3D
 
 object Sizes {
 
@@ -57,7 +57,7 @@ object Sizes {
     @JvmStatic
     @JvmOverloads
     fun from2DTo3D(size: Size, zLength: Int = 0) = create3DSize(
-            xLength = size.xLength,
-            yLength = size.yLength,
+            xLength = size.width,
+            yLength = size.height,
             zLength = zLength)
 }

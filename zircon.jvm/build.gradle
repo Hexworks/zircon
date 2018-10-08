@@ -1,6 +1,7 @@
 apply plugin: 'kotlin-platform-jvm'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
+apply plugin: 'jacoco'
 
 archivesBaseName = 'zircon.jvm'
 
@@ -11,6 +12,16 @@ publishing {
         }
     }
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+test.finalizedBy(jacocoTestReport)
 
 dependencies {
     expectedBy project(':zircon.core')

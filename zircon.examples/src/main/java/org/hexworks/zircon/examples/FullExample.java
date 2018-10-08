@@ -86,7 +86,7 @@ public class FullExample {
 
         REXPaintResource rex = REXPaintResources.loadREXFile(RexLoaderExample.class.getResourceAsStream("/rex_files/zircon_logo.xp"));
         TileGraphics img = DrawSurfaces.tileGraphicsBuilder().size(SCREEN_SIZE).build();
-        rex.toLayerList(CP437TilesetResources.rogueYun16x16()).forEach(layer -> img.draw(layer, Positions.defaultPosition()));
+        rex.toLayerList(CP437TilesetResources.rogueYun16x16()).forEach(layer -> img.draw(layer, Positions.zero()));
         AnimationBuilder splashAnimBuilder = Animations.newBuilder();
 
         for (int i = 20; i >= 0; i--) {
@@ -509,7 +509,7 @@ public class FullExample {
     }
 
     private static void refreshIcon(Layer icon, char c) {
-        icon.setAbsoluteTileAt(Positions.defaultPosition(), Tiles.newBuilder()
+        icon.setAbsoluteTileAt(Positions.zero(), Tiles.newBuilder()
                 .character(c)
                 .backgroundColor(TileColors.transparent())
                 .build());

@@ -28,10 +28,10 @@ class BoxDecorationRenderer(private val boxType: BoxType = BoxType.SINGLE,
                 .tileset(context.component.currentTileset())
                 .build()
         box.drawOnto(tileGraphics)
-        if (size.xLength > 4) {
+        if (size.width > 4) {
             title.map { titleText ->
-                val cleanText = if (titleText.length > size.xLength - 4) {
-                    titleText.substring(0, size.xLength - 4)
+                val cleanText = if (titleText.length > size.width - 4) {
+                    titleText.substring(0, size.width - 4)
                 } else {
                     titleText
                 }

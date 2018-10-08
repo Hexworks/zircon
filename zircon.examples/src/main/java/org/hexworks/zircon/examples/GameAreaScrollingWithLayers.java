@@ -7,6 +7,8 @@ import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.Panel;
 import org.hexworks.zircon.api.data.*;
+import org.hexworks.zircon.api.data.impl.Position3D;
+import org.hexworks.zircon.api.data.impl.Size3D;
 import org.hexworks.zircon.api.game.GameArea;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.graphics.Layer;
@@ -66,7 +68,7 @@ public class GameAreaScrollingWithLayers {
                 .build();
         Button sleep = Components.button()
                 .text("Sleep")
-                .withPosition(Positions.defaultPosition().withRelativeY(1))
+                .withPosition(Positions.zero().withRelativeY(1))
                 .build();
         actions.addComponent(wait);
         actions.addComponent(sleep);
@@ -75,7 +77,7 @@ public class GameAreaScrollingWithLayers {
 
         final Panel gamePanel = Components.panel()
                 .withSize(screen.getSize().withXLength(40))
-                .withPosition((Positions.defaultPosition()).relativeToRightOf(actions))
+                .withPosition(Positions.topRightOf(actions))
                 .withTitle("Game area")
                 .wrapWithBox(true)
                 .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)

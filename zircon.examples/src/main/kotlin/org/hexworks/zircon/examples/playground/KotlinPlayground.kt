@@ -38,13 +38,13 @@ object KotlinPlayground {
                 .text("Label left ")
                 .build()
         val btn = Components.button()
-                .withPosition(Positions.relativeToRightOf(labelLeft))
+                .withPosition(Positions.topRightOf(labelLeft))
                 .withDecorationRenderers()
                 .text("Button")
                 .build()
 
         val labelRight = Components.label()
-                .withPosition(Positions.relativeToRightOf(btn))
+                .withPosition(Positions.topRightOf(btn))
                 .text(" Label right")
 
 

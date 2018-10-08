@@ -34,7 +34,7 @@ object CustomPanelExample {
         screen.addComponent(CustomPanel(
                 title = "Whatever",
                 componentMetadata = ComponentMetadata(
-                        position = Positions.defaultPosition(),
+                        position = Positions.zero(),
                         size = Sizes.create(20, 10),
                         tileset = CP437TilesetResources.acorn8X16(),
                         componentStyleSet = ComponentStyleSet.defaultStyleSet())))

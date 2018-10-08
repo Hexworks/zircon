@@ -14,9 +14,12 @@ class DefaultCursorHandler(private var cursorSpace: Size)
     override fun cursorPosition(): Position = cursorPosition
 
     override fun putCursorAt(cursorPosition: Position): Boolean {
+        require(cursorPosition.hasNegativeComponent().not()) {
+            "Can't put the cursor at a negative position: $cursorPosition"
+        }
         val newCursorPos = cursorPosition
-                .withX(Math.min(cursorPosition.x, cursorSpace.xLength - 1))
-                .withY(Math.min(cursorPosition.y, cursorSpace.yLength - 1))
+                .withX(Math.min(cursorPosition.x, cursorSpace.width - 1))
+                .withY(Math.min(cursorPosition.y, cursorSpace.height - 1))
         return if (this.cursorPosition == newCursorPos) {
             false
         } else {
@@ -38,7 +41,7 @@ class DefaultCursorHandler(private var cursorSpace: Size)
             putCursorAt(cursorPosition().let { (column) ->
                 if (cursorIsAtTheStartOfTheLine(column)) {
                     if (cursorPosition().y > 0) {
-                        cursorPosition().withX(cursorSpace.xLength - 1).withRelativeY(-1)
+                        cursorPosition().withX(cursorSpace.width - 1).withRelativeY(-1)
                     } else {
                         cursorPosition()
                     }
@@ -49,13 +52,13 @@ class DefaultCursorHandler(private var cursorSpace: Size)
 
     override fun isCursorVisible() = cursorVisible
 
-    override fun isCursorAtTheEndOfTheLine() = cursorPosition.x == cursorSpace.xLength - 1
+    override fun isCursorAtTheEndOfTheLine() = cursorPosition.x == cursorSpace.width - 1
 
     override fun isCursorAtTheStartOfTheLine() = cursorPosition.x == 0
 
     override fun isCursorAtTheFirstRow() = cursorPosition.y == 0
 
-    override fun isCursorAtTheLastRow() = cursorPosition.y == cursorSpace.yLength - 1
+    override fun isCursorAtTheLastRow() = cursorPosition.y == cursorSpace.height - 1
 
     override fun setCursorVisibility(cursorVisible: Boolean): Boolean {
         return if (this.cursorVisible == cursorVisible) {
@@ -69,11 +72,14 @@ class DefaultCursorHandler(private var cursorSpace: Size)
     override fun getCursorSpaceSize() = cursorSpace
 
     override fun resizeCursorSpace(size: Size) {
+        require(size.hasNegativeComponent().not()) {
+            "Can't resize cursor space to a negative size."
+        }
         this.cursorSpace = size
         putCursorAt(cursorPosition())
     }
 
-    private fun cursorIsAtTheEndOfTheLine(column: Int) = column + 1 == cursorSpace.xLength
+    private fun cursorIsAtTheEndOfTheLine(column: Int) = column + 1 == cursorSpace.width
 
     private fun cursorIsAtTheStartOfTheLine(column: Int) = column == 0
 

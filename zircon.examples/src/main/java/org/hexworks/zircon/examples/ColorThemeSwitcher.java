@@ -114,12 +114,12 @@ public class ColorThemeSwitcher {
 
 
         final Size themePickerSize = SCREEN_SIZE
-                .withRelativeYLength(-infoPanelSize.getYLength() - 4)
-                .withXLength(SCREEN_SIZE.getXLength() / 3 - 1);
+                .withRelativeYLength(-infoPanelSize.getHeight() - 4)
+                .withXLength(SCREEN_SIZE.getWidth() / 3 - 1);
 
         final Size smallPanelSize = themePickerSize
                 .withRelativeXLength(-2)
-                .withYLength(themePickerSize.getYLength() / 2 - 1);
+                .withYLength(themePickerSize.getHeight() / 2 - 1);
 
         final Panel solarizedLightPanel = Components.panel()
                 .withTitle("Solarized Light")

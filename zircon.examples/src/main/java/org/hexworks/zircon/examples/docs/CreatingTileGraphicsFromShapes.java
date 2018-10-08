@@ -31,7 +31,7 @@ public class CreatingTileGraphicsFromShapes {
                         .build());
 
         final TileGraphics rectangle = Shapes.buildRectangle(
-                Positions.defaultPosition(),
+                Positions.zero(),
                 tileGrid.getSize())
                 .toTileGraphics(Tiles.newBuilder()
                                 .character(Symbols.BLOCK_DENSE)
@@ -40,10 +40,10 @@ public class CreatingTileGraphicsFromShapes {
                                 .build(),
                         config.getDefaultTileset());
 
-        background.draw(rectangle, Positions.defaultPosition());
+        background.draw(rectangle, Positions.zero());
 
         // the default position is (0x0) which is the top left corner
-        tileGrid.draw(background, Positions.defaultPosition());
+        tileGrid.draw(background, Positions.zero());
 
     }
 }

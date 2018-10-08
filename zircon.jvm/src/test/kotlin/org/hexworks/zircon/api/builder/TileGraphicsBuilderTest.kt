@@ -18,7 +18,7 @@ class TileGraphicsBuilderTest {
 
         assertThat(result.size).isEqualTo(SIZE)
 
-        assertThat(result.getTileAt(Position.create(SIZE.xLength - 1, SIZE.yLength - 1)).get())
+        assertThat(result.getTileAt(Position.create(SIZE.width - 1, SIZE.height - 1)).get())
                 .isEqualTo(FILLER)
     }
 

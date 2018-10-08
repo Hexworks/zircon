@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.modifier.Delay
 class TypingEffectPostProcessor<T : Component> : ComponentPostProcessor<T>() {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentPostProcessorContext<T>) {
-        val width = tileGraphics.size.width()
+        val width = tileGraphics.size.width
         val baseDelay = 200L
         tileGraphics.size.fetchPositions().forEach { position ->
             val (x, y) = position

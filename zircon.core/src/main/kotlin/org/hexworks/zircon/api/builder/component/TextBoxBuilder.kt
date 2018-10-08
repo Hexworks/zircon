@@ -41,7 +41,7 @@ data class TextBoxBuilder(
                 .text(text)
                 .withPosition(nextPosition)
                 .build())
-        updateSizeAndPosition(size.height())
+        updateSizeAndPosition(size.height)
         if (withNewLine) {
             newLine()
         }
@@ -56,7 +56,7 @@ data class TextBoxBuilder(
                 .withTypingEffect(withTypingEffect)
                 .withPosition(nextPosition)
                 .build())
-        updateSizeAndPosition(size.height())
+        updateSizeAndPosition(size.height)
         if (withNewLine) {
             newLine()
         }
@@ -69,7 +69,7 @@ data class TextBoxBuilder(
                 .text(item)
                 .withPosition(nextPosition)
                 .build())
-        updateSizeAndPosition(size.height())
+        updateSizeAndPosition(size.height)
     }
 
     fun inlineText(text: String) = also {
@@ -138,7 +138,7 @@ data class TextBoxBuilder(
 
     private fun currentInlineLength(): Int {
         return inlineElements.asSequence()
-                .map { it.size.width() }
+                .map { it.size.width }
                 .fold(0, Int::plus)
     }
 

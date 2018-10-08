@@ -363,8 +363,8 @@ class TileGraphicsTest {
     }
 
     private fun fetchOutOfBoundsPositions(): List<Position> {
-        return listOf(Position.create(SIZE_OF_3X3.xLength - 1, Int.MAX_VALUE),
-                Position.create(Int.MAX_VALUE, SIZE_OF_3X3.xLength - 1),
+        return listOf(Position.create(SIZE_OF_3X3.width - 1, Int.MAX_VALUE),
+                Position.create(Int.MAX_VALUE, SIZE_OF_3X3.width - 1),
                 Position.create(Int.MAX_VALUE, Int.MAX_VALUE))
     }
 

@@ -33,25 +33,25 @@ class DefaultBox(
 
         val horizontalLine = LineFactory.buildLine(
                 fromPoint = Position.create(0, 0),
-                toPoint = Position.create(size.xLength - 3, 0))
+                toPoint = Position.create(size.width - 3, 0))
                 .toTileGraphics(
                         tile = horizontalChar,
                         tileset = backend.currentTileset())
         val verticalLine = LineFactory.buildLine(
                 fromPoint = Position.create(0, 0),
-                toPoint = Position.create(0, size.yLength - 3))
+                toPoint = Position.create(0, size.height - 3))
                 .toTileGraphics(verticalChar, tileset)
         draw(horizontalLine, Position.create(1, 0))
-        draw(horizontalLine, Position.create(1, size.yLength - 1))
+        draw(horizontalLine, Position.create(1, size.height - 1))
         draw(verticalLine, Position.create(0, 1))
-        draw(verticalLine, Position.create(size.xLength - 1, 1))
+        draw(verticalLine, Position.create(size.width - 1, 1))
         setTileAt(Position.create(0, 0),
                 verticalChar.withCharacter(boxType.topLeft))
-        setTileAt(Position.create(size.xLength - 1, 0),
+        setTileAt(Position.create(size.width - 1, 0),
                 verticalChar.withCharacter(boxType.topRight))
-        setTileAt(Position.create(0, size.yLength - 1),
+        setTileAt(Position.create(0, size.height - 1),
                 verticalChar.withCharacter(boxType.bottomLeft))
-        setTileAt(Position.create(size.xLength - 1, size.yLength - 1),
+        setTileAt(Position.create(size.width - 1, size.height - 1),
                 verticalChar.withCharacter(boxType.bottomRight))
     }
 
