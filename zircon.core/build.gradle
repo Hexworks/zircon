@@ -14,8 +14,8 @@ publishing {
 
 dependencies {
     compile libraries.kotlin_stdlib_common
-    testCompile libraries.kotlin_test_annotations_common
     testCompile libraries.kotlin_test_common
+    testCompile libraries.kotlin_test_annotations_common
 }
 
 task sourcesJar(type: Jar) {

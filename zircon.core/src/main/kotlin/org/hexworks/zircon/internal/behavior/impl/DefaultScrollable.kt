@@ -25,14 +25,14 @@ class DefaultScrollable(override val visibleSize: Size,
     }
 
     override fun scrollOneRight(): Position {
-        if (visibleSize.xLength + offset.x < actualSize.xLength) {
+        if (visibleSize.width + offset.x < actualSize.width) {
             this.offset = offset.withRelativeX(1)
         }
         return offset
     }
 
     override fun scrollOneDown(): Position {
-        if (visibleSize.yLength + offset.y < actualSize.yLength) {
+        if (visibleSize.height + offset.y < actualSize.height) {
             this.offset = offset.withRelativeY(1)
         }
         return offset
@@ -57,7 +57,7 @@ class DefaultScrollable(override val visibleSize: Size,
             "You can only scroll right by a positive amount!"
         }
         val columnToScrollTo = offset.x + columns
-        val lastScrollableColumn = actualSize.xLength - visibleSize.xLength
+        val lastScrollableColumn = actualSize.width - visibleSize.width
         offset = offset.withX(Math.min(columnToScrollTo, lastScrollableColumn))
         return offset
     }
@@ -85,19 +85,19 @@ class DefaultScrollable(override val visibleSize: Size,
             "You can only scroll down by a positive amount!"
         }
         val rowToScrollTo = offset.y + rows
-        val lastScrollableRow = actualSize.yLength - visibleSize.yLength
+        val lastScrollableRow = actualSize.height - visibleSize.height
         offset = offset.withY(Math.min(rowToScrollTo, lastScrollableRow))
         return offset
     }
 
     private fun checkSizes() {
-        require(actualSize.xLength >= visibleSize.xLength) {
-            "Can't have a virtual space (${actualSize.xLength}, ${actualSize.yLength})" +
-                    " with less xLength than the visible space (${visibleSize.xLength}, ${visibleSize.yLength})!"
+        require(actualSize.width >= visibleSize.width) {
+            "Can't have a virtual space (${actualSize.width}, ${actualSize.height})" +
+                    " with less xLength than the visible space (${visibleSize.width}, ${visibleSize.height})!"
         }
-        require(actualSize.yLength >= visibleSize.yLength) {
-            "Can't have a virtual space (${actualSize.xLength}, ${actualSize.yLength})" +
-                    " with less yLength than the visible space (${visibleSize.xLength}, ${visibleSize.yLength})!"
+        require(actualSize.height >= visibleSize.height) {
+            "Can't have a virtual space (${actualSize.width}, ${actualSize.height})" +
+                    " with less yLength than the visible space (${visibleSize.width}, ${visibleSize.height})!"
         }
     }
 }

@@ -18,11 +18,17 @@ interface Boundable {
 
     val rect: Rect
 
+    val x: Int
+        get() = position.x
+
+    val y: Int
+        get() = position.y
+
     val width: Int
-        get() = size.xLength
+        get() = size.width
 
     val height: Int
-        get() = size.yLength
+        get() = size.height
 
     /**
      * Tells whether this [Boundable] intersects the other `boundable` or not.

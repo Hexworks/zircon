@@ -16,7 +16,7 @@ object CustomTileExample {
 
         val tileGrid = SwingApplications.startTileGrid()
 
-        tileGrid.setTileAt(Positions.defaultPosition(), CustomTile(Tiles.defaultTile().withCharacter('x')))
+        tileGrid.setTileAt(Positions.zero(), CustomTile(Tiles.defaultTile().withCharacter('x')))
 
         val loader = CP437TileMetadataLoader(16, 16)
 

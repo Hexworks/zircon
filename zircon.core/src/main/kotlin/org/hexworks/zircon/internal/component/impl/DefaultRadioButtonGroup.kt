@@ -47,7 +47,7 @@ class DefaultRadioButtonGroup constructor(
     }
 
     override fun addOption(key: String, text: String): RadioButton {
-        require(items.size < renderingStrategy.calculateContentSize(size).height()) {
+        require(items.size < renderingStrategy.calculateContentSize(size).height) {
             "This RadioButtonGroup does not have enough space for another option!"
         }
         return DefaultRadioButton(
@@ -55,7 +55,7 @@ class DefaultRadioButtonGroup constructor(
                 renderingStrategy = buttonRenderingStrategy,
                 componentMetadata = ComponentMetadata(
                         position = Position.create(0, items.size),
-                        size = Size.create(renderingStrategy.calculateContentSize(size).width(), 1),
+                        size = Size.create(renderingStrategy.calculateContentSize(size).width, 1),
                         tileset = currentTileset(),
                         componentStyleSet = componentStyleSet)).also { button ->
             items[key] = button

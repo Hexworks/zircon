@@ -46,14 +46,14 @@ public class FontSwitcherExample {
 
         final Random random = new Random();
 
-        refreshText(tileGrid, switchFont, Positions.defaultPosition());
+        refreshText(tileGrid, switchFont, Positions.zero());
         refreshLayer(tileGrid, switchLayer, random);
 
         tileGrid.onKeyStroke(keyStroke -> {
             if (keyStroke.inputTypeIs(InputType.ArrowRight)) {
                 tileGrid.useTileset(TILESETS.get(random.nextInt(TILESETS.size())));
                 // this is needed because grid can't be forced to redraw
-                refreshText(tileGrid, switchFont, Positions.defaultPosition());
+                refreshText(tileGrid, switchFont, Positions.zero());
             }
             if (keyStroke.inputTypeIs(InputType.ArrowLeft)) {
                 refreshLayer(tileGrid, switchLayer, random);

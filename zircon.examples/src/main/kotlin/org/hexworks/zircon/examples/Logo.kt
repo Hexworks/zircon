@@ -67,7 +67,7 @@ object Logo {
 
         val anim = builder
                 .loopCount(0)
-                .setPositionForAll(Positions.defaultPosition())
+                .setPositionForAll(Positions.zero())
                 .build()
 
         screen.display()

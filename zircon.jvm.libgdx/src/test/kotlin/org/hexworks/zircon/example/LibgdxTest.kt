@@ -6,7 +6,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.GridPosition
+import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -28,8 +28,8 @@ class GdxExample : ApplicationAdapter() {
     private val renderer = LibgdxRenderer(grid = tileGrid)
 
     private val random = Random()
-    private val terminalWidth = size.xLength
-    private val terminalHeight = size.yLength
+    private val terminalWidth = size.width
+    private val terminalHeight = size.height
     private val layerCount = 1
     private val layerWidth = 15
     private val layerHeight = 15
@@ -98,15 +98,15 @@ object GdxLauncher {
     fun main(arg: Array<String>) {
         val cfg = LwjglApplicationConfiguration()
         cfg.title = "LibGDX Test"
-        cfg.height = size.yLength * tileset.height
-        cfg.width = size.xLength * tileset.width
+        cfg.height = size.height * tileset.height
+        cfg.width = size.width * tileset.width
         LwjglApplication(GdxExample(), cfg)
     }
 }
 
 private fun fillGrid(tileGrid: TileGrid, tile: Tile) {
-    (0..tileGrid.size.yLength).forEach { y ->
-        (0..tileGrid.size.xLength).forEach { x ->
+    (0..tileGrid.size.height).forEach { y ->
+        (0..tileGrid.size.width).forEach { x ->
             tileGrid.setTileAt(GridPosition(x, y), tile)
         }
     }

@@ -29,7 +29,7 @@ public class CreatingAScreen {
                         .character('~')
                         .build());
 
-        screen.draw(image, Positions.defaultPosition());
+        screen.draw(image, Positions.zero());
 
         screen.display();
     }

@@ -1,13 +1,13 @@
 package org.hexworks.zircon.examples.custom;
 
-import org.hexworks.zircon.api.data.BaseBlock;
-import org.hexworks.zircon.api.data.Position3D;
+import org.hexworks.zircon.api.data.base.BlockBase;
+import org.hexworks.zircon.api.data.impl.Position3D;
 import org.hexworks.zircon.api.data.Tile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class CustomBlock extends BaseBlock {
+public class CustomBlock extends BlockBase {
 
     private Position3D position3D;
     private List<Tile> layers;

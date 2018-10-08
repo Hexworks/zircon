@@ -1,4 +1,6 @@
-package org.hexworks.zircon.api.data
+package org.hexworks.zircon.api.data.impl
+
+import org.hexworks.zircon.api.data.Size
 
 /**
  * Represents the size of a 3D space. Extends [org.hexworks.zircon.api.data.Size]
@@ -88,8 +90,8 @@ data class Size3D private constructor(val xLength: Int,
          * If `zLength` is not supplied, it defaults to `0`.
          */
         fun from2DSize(size: Size, zLength: Int = 0) = Size3D(
-                xLength = size.xLength,
-                yLength = size.yLength,
+                xLength = size.width,
+                yLength = size.height,
                 zLength = zLength)
     }
 }

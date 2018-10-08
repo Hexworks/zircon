@@ -8,8 +8,8 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Position3D
-import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.data.impl.Position3D
+import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameComponent
 import org.hexworks.zircon.api.game.ProjectionMode
@@ -92,8 +92,8 @@ class DefaultGameComponent(componentMetadata: ComponentMetadata,
                 TileGraphicsBuilder.newBuilder().size(screenSize)
             }
             val (fromX, fromY) = visibleOffset().to2DPosition()
-            val toX = fromX + size.xLength
-            val toY = fromY + size.yLength
+            val toX = fromX + size.width
+            val toY = fromY + size.height
             (fromZ until Math.min(fromZ + visibleLevelCount, height)).forEach { z ->
                 (fromY until toY).forEach { screenY ->
                     (fromX until toX).forEach { x ->

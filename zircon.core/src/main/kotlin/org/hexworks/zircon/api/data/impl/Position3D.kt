@@ -1,4 +1,6 @@
-package org.hexworks.zircon.api.data
+package org.hexworks.zircon.api.data.impl
+
+import org.hexworks.zircon.api.data.Position
 
 /**
  * Represents a coordinate in 3D space. Extends [Position] with

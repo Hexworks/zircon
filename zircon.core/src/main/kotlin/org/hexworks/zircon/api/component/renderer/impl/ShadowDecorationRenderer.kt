@@ -26,14 +26,14 @@ class ShadowDecorationRenderer(shadowChar: Char = DEFAULT_SHADOW_CHAR) : Compone
         val graphicsSize = tileGraphics.size
         LineFactory.buildLine(
                 fromPoint = Position.create(1, 0),
-                toPoint = Position.create(graphicsSize.xLength - 1, 0))
+                toPoint = Position.create(graphicsSize.width - 1, 0))
                 .toTileGraphics(shadowTile, tileGraphics.currentTileset())
-                .drawOnto(tileGraphics, Position.create(1, graphicsSize.yLength - 1))
+                .drawOnto(tileGraphics, Position.create(1, graphicsSize.height - 1))
         LineFactory.buildLine(
                 fromPoint = Position.create(0, 1),
-                toPoint = Position.create(0, graphicsSize.yLength - 1))
+                toPoint = Position.create(0, graphicsSize.height - 1))
                 .toTileGraphics(shadowTile, tileGraphics.currentTileset())
-                .drawOnto(tileGraphics, Position.create(graphicsSize.xLength - 1, 1))
+                .drawOnto(tileGraphics, Position.create(graphicsSize.width - 1, 1))
     }
 
     companion object {

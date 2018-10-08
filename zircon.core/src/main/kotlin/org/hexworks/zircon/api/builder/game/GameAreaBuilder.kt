@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.builder.game
 
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.config.RuntimeConfig

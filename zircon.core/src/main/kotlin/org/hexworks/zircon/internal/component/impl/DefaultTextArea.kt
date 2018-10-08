@@ -146,7 +146,7 @@ class DefaultTextArea constructor(
                 scrollLeftBy(delta)
             }
             bufferCursorPosOverlapsRight(bufferCursorPos) -> {
-                val delta = bufferCursorPos.x - visibleOffset.x - visibleSize.width()
+                val delta = bufferCursorPos.x - visibleOffset.x - visibleSize.width
                 scrollRightBy(delta + 1)
             }
             bufferCursorOverflowsUp(bufferCursorPos) -> {
@@ -154,20 +154,20 @@ class DefaultTextArea constructor(
                 scrollUpBy(delta)
             }
             bufferCursorPosOverlapsDown(bufferCursorPos) -> {
-                val delta = bufferCursorPos.y - visibleOffset.y - visibleSize.height()
+                val delta = bufferCursorPos.y - visibleOffset.y - visibleSize.height
                 scrollDownBy(delta + 1)
             }
         }
     }
 
     private fun bufferCursorPosOverlapsDown(bufferCursorPos: Position) =
-            bufferCursorPos.y >= visibleOffset.y + visibleSize.height()
+            bufferCursorPos.y >= visibleOffset.y + visibleSize.height
 
     private fun bufferCursorOverflowsUp(bufferCursorPos: Position) =
             bufferCursorPos.y < visibleOffset.y
 
     private fun bufferCursorPosOverlapsRight(bufferCursorPos: Position) =
-            bufferCursorPos.x >= visibleOffset.x + visibleSize.width()
+            bufferCursorPos.x >= visibleOffset.x + visibleSize.width
 
     private fun bufferCursorOverflowsLeft(bufferPos: Position) =
             bufferPos.x < visibleOffset.x
@@ -175,8 +175,8 @@ class DefaultTextArea constructor(
     private fun refreshCursor() {
         var pos = textBuffer.cursor.position
                 .minus(visibleOffset)
-        pos = pos.withX(Math.min(pos.x, contentSize.width()))
-        pos = pos.withY(Math.min(pos.y, contentSize.height()))
+        pos = pos.withX(Math.min(pos.x, contentSize.width))
+        pos = pos.withY(Math.min(pos.y, contentSize.height))
         EventBus.broadcast(ZirconEvent.RequestCursorAt(pos
                 .withRelative(absolutePosition + contentPosition)))
     }

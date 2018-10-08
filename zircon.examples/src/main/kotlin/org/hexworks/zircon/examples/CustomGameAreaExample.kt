@@ -3,6 +3,8 @@ package org.hexworks.zircon.examples
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.impl.Position3D
+import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.BaseGameArea
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.graphics.Symbols

@@ -23,12 +23,12 @@ interface TileGraphics
     /**
      * Returns a [List] of [Position]s which are not `EMPTY`.
      */
-    fun fetchFilledPositions(): List<Position> = createSnapshot().fetchPositions()
+    fun fetchFilledPositions(): Iterable<Position> = createSnapshot().fetchPositions()
 
     /**
      * Returns a [List] of [Tile]s which are not `EMPTY`.
      */
-    fun fetchFilledTiles(): List<Tile> = createSnapshot().fetchTiles()
+    fun fetchFilledTiles(): Iterable<Tile> = createSnapshot().fetchTiles()
 
     /**
      * Returns all the [Cell]s ([Tile]s with associated [Position] information)

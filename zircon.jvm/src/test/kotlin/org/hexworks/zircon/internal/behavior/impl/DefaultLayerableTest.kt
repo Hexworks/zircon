@@ -26,7 +26,7 @@ class DefaultLayerableTest {
     fun shouldContainLayerWhenLayerIsAdded() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .offset(Position.topLeftCorner())
+                .offset(Position.zero())
                 .build()
 
         target.pushLayer(layer)
@@ -40,7 +40,7 @@ class DefaultLayerableTest {
     fun shouldNotContainLayerWhenLayerIsAddedThenRemoved() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .offset(Position.topLeftCorner())
+                .offset(Position.zero())
                 .build()
 
         target.pushLayer(layer)
@@ -55,7 +55,7 @@ class DefaultLayerableTest {
     fun shouldNotContainLayerWhenLayerIsAddedThenPopped() {
         val layer = LayerBuilder.newBuilder()
                 .size(Size.one())
-                .offset(Position.topLeftCorner())
+                .offset(Position.zero())
                 .build()
 
         target.pushLayer(layer)

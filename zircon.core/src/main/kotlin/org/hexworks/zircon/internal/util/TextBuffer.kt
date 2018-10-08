@@ -36,7 +36,7 @@ class TextBuffer(text: String) {
 
     fun getTextSection(position: Position, size: Size): List<String> {
         val fromRow = position.y
-        val toRow = Math.min(currentText.size - 1, fromRow + size.yLength - 1)
+        val toRow = Math.min(currentText.size - 1, fromRow + size.height - 1)
         val fromCol = position.x
         return if (requestedRowsHaveNoIntersectionWithBuffer(fromRow, toRow)) {
             listOf()
@@ -45,7 +45,7 @@ class TextBuffer(text: String) {
             val list = mutableListOf<String>()
             do {
                 val row = currentText[rowIdx]
-                val toCol = Math.min(fromCol + size.xLength, row.length)
+                val toCol = Math.min(fromCol + size.width, row.length)
                 list.add(if (requestedColsHaveNoIntersectionWithBuffer(fromCol, toCol, row)) {
                     ""
                 } else {

@@ -69,7 +69,7 @@ object Intro {
                 .build()
 
         val nextButton = Components.button()
-                .withPosition(Positions.defaultPosition().relativeToBottomOf(introBox))
+                .withPosition(Positions.bottomLeftOf(introBox))
                 .text("Next")
                 .build()
 

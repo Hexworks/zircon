@@ -27,7 +27,7 @@ class DefaultBoundableTest {
     @Test
     fun shouldNotContainPositionWhenPositionIsOutOfBounds() {
         assertThat(target.containsPosition(target.position
-                        .withRelative(Position.create(TARGET_SIZE.yLength, TARGET_SIZE.xLength))))
+                        .withRelative(Position.create(TARGET_SIZE.height, TARGET_SIZE.width))))
                 .isFalse()
     }
 

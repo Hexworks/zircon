@@ -30,7 +30,7 @@ public class TextCharacterStringExample {
                 .text("This is some text which is too long to fit on one line...")
                 .build();
 
-        tileGrid.draw(tcs, Positions.defaultPosition());
+        tileGrid.draw(tcs, Positions.zero());
 
     }
 

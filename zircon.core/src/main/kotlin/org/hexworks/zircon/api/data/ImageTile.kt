@@ -4,47 +4,33 @@ import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
-import org.hexworks.zircon.api.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
 
-interface ImageTile
-    : Tile, TilesetOverride {
+interface ImageTile : Tile, TilesetOverride {
 
     val tileset: TilesetResource
     val name: String
 
-    override val foregroundColor: TileColor
-        get() = TileColor.transparent()
+    fun withName(name: String): ImageTile
 
-    override val backgroundColor: TileColor
-        get() = TileColor.transparent()
+    override fun withForegroundColor(foregroundColor: TileColor): ImageTile
 
-    override val modifiers: Set<Modifier>
-        get() = setOf()
+    override fun withBackgroundColor(backgroundColor: TileColor): ImageTile
 
-    override val tileType: TileType
-        get() = TileType.IMAGE_TILE
+    override fun withStyle(style: StyleSet): ImageTile
 
-    override val styleSet: StyleSet
-        get() = StyleSet.defaultStyle()
+    override fun withModifiers(modifiers: Set<Modifier>): ImageTile
 
-    fun withName(name: String) = Tile.createImageTile(
-            name = name,
-            tileset = tileset,
-            style = styleSet)
+    override fun withModifiers(vararg modifiers: Modifier): ImageTile
 
-    override fun withForegroundColor(foregroundColor: TileColor) = this
+    override fun withAddedModifiers(modifiers: Set<Modifier>): ImageTile
 
-    override fun withBackgroundColor(backgroundColor: TileColor) = this
+    override fun withAddedModifiers(vararg modifiers: Modifier): ImageTile
 
-    override fun withStyle(style: StyleSet) = this
+    override fun withRemovedModifiers(modifiers: Set<Modifier>): ImageTile
 
-    override fun withModifiers(modifiers: Set<Modifier>) = this
+    override fun withRemovedModifiers(vararg modifiers: Modifier): ImageTile
 
-    override fun withAddedModifiers(modifiers: Set<Modifier>) = this
-
-    override fun withRemovedModifiers(modifiers: Set<Modifier>) = this
-
-    override fun withNoModifiers() = this
+    override fun withNoModifiers(): ImageTile
 
 }

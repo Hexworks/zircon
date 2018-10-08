@@ -5,6 +5,8 @@ import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.impl.Position3D
+import org.hexworks.zircon.api.data.impl.Size3D
 import org.junit.Before
 import org.junit.Test
 

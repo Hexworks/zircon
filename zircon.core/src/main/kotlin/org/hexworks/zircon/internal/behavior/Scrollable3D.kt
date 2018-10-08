@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.behavior
 
-import org.hexworks.zircon.api.data.Position3D
-import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.data.impl.Position3D
+import org.hexworks.zircon.api.data.impl.Size3D
 
 /**
  * A [Scrollable3D] object has a visible 3D space which might be smaller than
