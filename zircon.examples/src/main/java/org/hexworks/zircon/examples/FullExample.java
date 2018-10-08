@@ -140,7 +140,7 @@ public class FullExample {
 
         Panel introPanel = Components.panel()
                 .withPosition(Positions.create(17, 3))
-                .withSize(SCREEN_SIZE.withRelativeXLength(-18).withRelativeYLength(-4))
+                .withSize(SCREEN_SIZE.withRelativeWidth(-18).withRelativeHeight(-4))
                 .withBoxType(BoxType.SINGLE)
                 .wrapWithBox(true)
                 .build();
@@ -451,8 +451,8 @@ public class FullExample {
 
         final RadioButtonGroup slOptions = Components.radioButtonGroup()
                 .withSize(themePickerSize
-                        .withYLength(solarizedLightOptions.size())
-                        .withRelativeXLength(-2))
+                        .withHeight(solarizedLightOptions.size())
+                        .withRelativeWidth(-2))
                 .build();
         solarizedLightOptions.forEach((option) -> slOptions.addOption(
                 option.name(),
@@ -461,8 +461,8 @@ public class FullExample {
 
         final RadioButtonGroup sdOptions = Components.radioButtonGroup()
                 .withSize(themePickerSize
-                        .withYLength(solarizedDarkOptions.size())
-                        .withRelativeXLength(-2))
+                        .withHeight(solarizedDarkOptions.size())
+                        .withRelativeWidth(-2))
                 .build();
         solarizedDarkOptions.forEach((option) -> sdOptions.addOption(
                 option.name(),
@@ -471,8 +471,8 @@ public class FullExample {
 
         final RadioButtonGroup othOptions = Components.radioButtonGroup()
                 .withSize(otherPanel.getSize()
-                        .withYLength(otherOptions.size())
-                        .withRelativeXLength(-2))
+                        .withHeight(otherOptions.size())
+                        .withRelativeWidth(-2))
                 .build();
         otherOptions.forEach((option) -> othOptions.addOption(
                 option.name(),

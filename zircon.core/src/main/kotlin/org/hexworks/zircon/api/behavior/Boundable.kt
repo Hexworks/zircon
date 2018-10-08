@@ -13,22 +13,12 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 interface Boundable {
 
     val position: Position
-
     val size: Size
-
     val rect: Rect
-
     val x: Int
-        get() = position.x
-
     val y: Int
-        get() = position.y
-
     val width: Int
-        get() = size.width
-
     val height: Int
-        get() = size.height
 
     /**
      * Tells whether this [Boundable] intersects the other `boundable` or not.
