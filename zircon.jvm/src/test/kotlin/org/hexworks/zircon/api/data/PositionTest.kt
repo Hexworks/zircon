@@ -4,12 +4,16 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.data.impl.GridPosition
+import org.hexworks.zircon.api.data.impl.PixelPosition
+import org.hexworks.zircon.api.data.impl.Size3D
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
 
 class PositionTest {
 
-    lateinit var componentStub: Component
+    private lateinit var componentStub: Component
 
     @Before
     fun setUp() {
@@ -17,6 +21,52 @@ class PositionTest {
                 .withPosition(COMPONENT_POSITION)
                 .withSize(COMPONENT_SIZE)
                 .build()
+    }
+
+    @Test
+    fun shouldBeUnknownWhenUnknown() {
+        assertThat(Position.unknown().isUnknown()).isTrue()
+    }
+
+    @Test
+    fun shouldNotBeUnknownWhenNotUnknown() {
+        assertThat(Position.unknown().isNotUnknown()).isFalse()
+    }
+
+    @Test
+    fun shouldBeGreaterThanWhenYIsGreater() {
+        assertThat(Position.create(1, 2)).isGreaterThan(Position.create(1, 1))
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldThrowExceptionWhenTryingToPlusDifferentTypes() {
+        PixelPosition.create(1, 2) + GridPosition.create(1, 2)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldThrowExceptionWhenTryingToMinusDifferentTypes() {
+        PixelPosition.create(1, 2) - GridPosition.create(1, 2)
+    }
+
+    @Test
+    fun shouldBeGreaterThanWhenYIsEqualAndXIsGreater() {
+        assertThat(Position.create(2, 2)).isGreaterThan(Position.create(1, 2))
+    }
+
+    @Test
+    fun shouldBeEqualThanWhenYIsEqualAndXIsEqual() {
+        assertThat(Position.create(2, 2)).isEqualByComparingTo(Position.create(2, 2))
+    }
+
+    @Test
+    fun shouldBeLessThenWhenYIsLessThan() {
+        assertThat(Position.create(1, 2)).isLessThan(Position.create(1, 3))
+    }
+
+    @Test
+    fun shouldProperlyConvertToPixelPosition() {
+        assertThat(Position.create(2, 2).toPixelPosition(BuiltInCP437TilesetResource.WANDERLUST_16X16))
+                .isEqualTo(PixelPosition.create(32, 32))
     }
 
     @Test
@@ -32,6 +82,18 @@ class PositionTest {
     }
 
     @Test
+    fun shouldProperlyPlusTwoPixelPositionsWhenBothArePositive() {
+        assertThat(PixelPosition.create(1, 2).plus(PixelPosition.create(2, 3)))
+                .isEqualTo(PixelPosition.create(3, 5))
+    }
+
+    @Test
+    fun shouldProperlyPlusTwoPixelPositionsWhenOneIsNegative() {
+        assertThat(PixelPosition.create(-1, -2).plus(PixelPosition.create(2, 3)))
+                .isEqualTo(PixelPosition.create(1, 1))
+    }
+
+    @Test
     fun shouldProperlyMinusTwoPositionsWhenBothArePositive() {
         assertThat(Positions.create(5, 4).minus(Positions.create(1, 2)))
                 .isEqualTo(Positions.create(4, 2))
@@ -41,6 +103,18 @@ class PositionTest {
     fun shouldProperlyMinusTwoPositionsWhenOneIsNegative() {
         assertThat(Positions.create(-1, -2).minus(Positions.create(2, 3)))
                 .isEqualTo(Positions.create(-3, -5))
+    }
+
+    @Test
+    fun shouldProperlyMinusTwoPixelPositionsWhenBothArePositive() {
+        assertThat(PixelPosition.create(5, 4).minus(PixelPosition.create(1, 2)))
+                .isEqualTo(PixelPosition.create(4, 2))
+    }
+
+    @Test
+    fun shouldProperlyMinusTwoPixelPositionsWhenOneIsNegative() {
+        assertThat(PixelPosition.create(-1, -2).minus(PixelPosition.create(2, 3)))
+                .isEqualTo(PixelPosition.create(-3, -5))
     }
 
     @Test

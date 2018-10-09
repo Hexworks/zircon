@@ -46,7 +46,7 @@ class DefaultBoundableTest {
     @Test
     fun shouldNotIntersectWhenIntersectIsCalledWithNonIntersectingBoundable() {
         assertThat(target.intersects(LayerBuilder.newBuilder()
-                .offset(NON_INTERSECTING_OFFSET)
+                .withOffset(NON_INTERSECTING_OFFSET)
                 .build()))
                 .isFalse()
     }
@@ -54,8 +54,8 @@ class DefaultBoundableTest {
     @Test
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundableWithOffset() {
         assertThat(target.intersects(LayerBuilder.newBuilder()
-                .offset(INTERSECTION_OFFSET)
-                .size(Size.one())
+                .withOffset(INTERSECTION_OFFSET)
+                .withSize(Size.one())
                 .build()))
                 .isTrue()
     }

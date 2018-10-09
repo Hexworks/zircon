@@ -30,8 +30,8 @@ class InMemoryGameArea(override val size: Size3D,
     override fun fetchBlockOrDefault(position: Position3D) =
             blocks.getOrDefault(position,
                     BlockBuilder.create()
-                            .position(position)
-                            .layers(emptyBlockLayers.toMutableList())
+                            .withPosition(position)
+                            .withLayers(emptyBlockLayers.toMutableList())
                             .build())
 
     override fun fetchBlocks(): Iterable<Block> {

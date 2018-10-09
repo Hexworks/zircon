@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.component.BaseComponentBuilder
+import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.impl.Size3D
@@ -24,15 +24,15 @@ data class GameComponentBuilder(
 
     override fun createCopy() = copy()
 
-    fun gameArea(gameArea: GameArea) = also {
+    fun withGameArea(gameArea: GameArea) = also {
         this.gameArea = Maybe.of(gameArea)
     }
 
-    fun projectionMode(projectionMode: ProjectionMode) = also {
+    fun withProjectionMode(projectionMode: ProjectionMode) = also {
         this.projectionMode = projectionMode
     }
 
-    fun visibleSize(visibleSize: Size3D) = also {
+    fun withVisibleSize(visibleSize: Size3D) = also {
         this.visibleSize = visibleSize
     }
 
@@ -48,7 +48,7 @@ data class GameComponentBuilder(
                         position = position,
                         size = visibleSize.to2DSize(),
                         componentStyleSet = componentStyleSet,
-                        tileset = tileset()))
+                        tileset = tileset))
     }
 
     companion object {

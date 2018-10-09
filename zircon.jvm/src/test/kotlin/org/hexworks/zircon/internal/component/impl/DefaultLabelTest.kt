@@ -25,7 +25,7 @@ class DefaultLabelTest {
                 .withComponentStyleSet(COMPONENT_STYLES)
                 .withPosition(POSITION)
                 .withTileset(tileset)
-                .text(TEXT)
+                .withText(TEXT)
                 .build() as DefaultLabel
     }
 
@@ -72,11 +72,11 @@ class DefaultLabelTest {
         val FONT = BuiltInCP437TilesetResource.WANDERLUST_16X16
         val POSITION = Position.create(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor)
-                .backgroundColor(TileColor.transparent())
+                .withForegroundColor(THEME.secondaryForegroundColor)
+                .withBackgroundColor(TileColor.transparent())
                 .build()
         val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(DEFAULT_STYLE)
+                .withDefaultStyle(DEFAULT_STYLE)
                 .build()
     }
 }

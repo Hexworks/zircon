@@ -12,9 +12,9 @@ public class CreatingAnApplication {
 
         Application application = SwingApplications.startApplication(
                 AppConfigs.newConfig()
-                        .defaultSize(Sizes.create(30, 20))
-                        .defaultTileset(CP437TilesetResources.rexPaint16x16())
-                        .clipboardAvailable(true)
+                        .withSize(Sizes.create(30, 20))
+                        .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
+                        .withClipboardAvailable(true)
                         .build());
     }
 }

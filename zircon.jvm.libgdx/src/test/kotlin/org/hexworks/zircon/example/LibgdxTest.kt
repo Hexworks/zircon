@@ -38,8 +38,8 @@ class GdxExample : ApplicationAdapter() {
     private var layers: List<DefaultLayer> = (0..layerCount).map {
 
         val imageLayer = DrawSurfaces.tileGraphicsBuilder()
-                .size(layerSize)
-                .tileset(tileset)
+                .withSize(layerSize)
+                .withTileset(tileset)
                 .build()
         layerSize.fetchPositions().forEach {
             imageLayer.setTileAt(it, filler)
@@ -73,8 +73,8 @@ class GdxExample : ApplicationAdapter() {
     override fun render() {
         RunTimeStats.addTimedStatFor("debug.render.time") {
             val tile = Tiles.newBuilder()
-                    .character(chars[currIdx])
-                    .styleSet(styles[currIdx])
+                    .withCharacter(chars[currIdx])
+                    .withStyleSet(styles[currIdx])
                     .build()
             fillGrid(tileGrid, tile)
             layers.forEach {

@@ -29,8 +29,6 @@ abstract class BlockBase : Block {
     override val right: Tile
         get() = fetchSide(RIGHT)
 
-    override fun fetchSide(side: BlockSide): Tile = Tile.empty()
-
     override fun isEmpty(): Boolean {
         return layers.isEmpty() and
                 listOf(top, bottom, front, back, left, right).all { it.isEmpty() }

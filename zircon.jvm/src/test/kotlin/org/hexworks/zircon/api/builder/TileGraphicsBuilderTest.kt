@@ -12,7 +12,7 @@ class TileGraphicsBuilderTest {
     @Test
     fun shouldBuildProperTileGraphic() {
         val result = TileGraphicsBuilder.newBuilder()
-                .size(SIZE)
+                .withSize(SIZE)
                 .build()
                 .fill(FILLER)
 
@@ -23,7 +23,7 @@ class TileGraphicsBuilderTest {
     }
 
     companion object {
-        val FILLER = TileBuilder.newBuilder().character('a').build()
+        val FILLER = TileBuilder.newBuilder().withCharacter('a').build()
         val SIZE = Size.create(5, 5)
     }
 }

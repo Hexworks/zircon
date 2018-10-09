@@ -36,9 +36,9 @@ object GlitchEffectMarkovChainExample {
         val background = TileColor.fromString("#212429")
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(tileset)
-                .defaultSize(Sizes.create(80, 40))
-                .debugMode(true)
+                .withDefaultTileset(tileset)
+                .withSize(Sizes.create(80, 40))
+                .withDebugMode(true)
                 .build())
 
         val defaultGlow = Glow()

@@ -12,4 +12,12 @@ import org.hexworks.zircon.api.resource.TilesetResource
 data class ComponentMetadata(val position: Position,
                              val size: Size,
                              val tileset: TilesetResource,
-                             val componentStyleSet: ComponentStyleSet)
+                             val componentStyleSet: ComponentStyleSet) {
+
+    init {
+        require(position.hasNegativeComponent().not()) {
+            "Can't have a Component with a position ($position) which has a " +
+                    "negative component (x or y)."
+        }
+    }
+}

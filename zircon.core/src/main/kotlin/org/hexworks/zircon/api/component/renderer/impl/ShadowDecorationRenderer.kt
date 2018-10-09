@@ -17,9 +17,9 @@ class ShadowDecorationRenderer(shadowChar: Char = DEFAULT_SHADOW_CHAR) : Compone
     override val occupiedSize = Size.create(1, 1)
 
     private val shadowTile = TileBuilder.newBuilder()
-            .backgroundColor(TileColor.transparent())
-            .foregroundColor(TileColor.create(100, 100, 100))
-            .character(shadowChar)
+            .withBackgroundColor(TileColor.transparent())
+            .withForegroundColor(TileColor.create(100, 100, 100))
+            .withCharacter(shadowChar)
             .build()
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {

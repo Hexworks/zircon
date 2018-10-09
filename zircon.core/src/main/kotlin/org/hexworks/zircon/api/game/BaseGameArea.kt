@@ -82,10 +82,10 @@ abstract class BaseGameArea : GameArea {
         return (offset.z until size.zLength + offset.z).flatMap { z ->
             val images = mutableListOf<TileGraphics>()
             (0 until layersPerBlock()).forEach { layerIdx ->
-                val builder = TileGraphicsBuilder.newBuilder().size(size.to2DSize())
+                val builder = TileGraphicsBuilder.newBuilder().withSize(size.to2DSize())
                 window.forEach { pos ->
                     fetchTileAt(Position3D.from2DPosition(pos + offset2D, z), layerIdx).map { char ->
-                        builder.tile(pos, char)
+                        builder.withTile(pos, char)
                     }
                 }
                 images.add(builder.build())

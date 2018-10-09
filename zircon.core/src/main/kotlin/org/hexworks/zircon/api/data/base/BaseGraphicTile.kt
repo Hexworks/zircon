@@ -22,7 +22,7 @@ abstract class BaseGraphicTile : BaseTile(), GraphicTile {
         get() = TileType.GRAPHIC_TILE
 
     override val styleSet: StyleSet
-        get() = StyleSet.defaultStyle()
+        get() = StyleSet.empty()
 
     override fun withName(name: String): GraphicTile {
         return Tile.createGraphicTile(

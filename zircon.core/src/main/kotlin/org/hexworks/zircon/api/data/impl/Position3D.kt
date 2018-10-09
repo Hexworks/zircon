@@ -27,18 +27,6 @@ data class Position3D private constructor(val x: Int,
                                           val y: Int,
                                           val z: Int) : Comparable<Position3D> {
 
-    init {
-        require(x >= 0) {
-            "A position must have an `x` which is greater than or equal to 0!"
-        }
-        require(y >= 0) {
-            "A position must have an `y` which is greater than or equal to 0!"
-        }
-        require(z >= 0) {
-            "A position must have a `z` which is greater than or equal to 0!"
-        }
-    }
-
     override fun compareTo(other: Position3D): Int {
         return when {
             other.z > z -> -1

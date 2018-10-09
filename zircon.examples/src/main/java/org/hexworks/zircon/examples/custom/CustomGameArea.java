@@ -20,7 +20,7 @@ public class CustomGameArea extends BaseGameArea {
     private int layersPerBlock;
     private TreeMap<Position3D, Block> blocks = new TreeMap<>();
     private BlockBuilder filler = Blocks.newBuilder()
-            .layer(Tiles.empty());
+            .addLayer(Tiles.empty());
 
     public CustomGameArea(Size3D size, int layersPerBlock) {
         this.size = size;
@@ -52,7 +52,7 @@ public class CustomGameArea extends BaseGameArea {
     @NotNull
     @Override
     public Block fetchBlockOrDefault(@NotNull Position3D position) {
-        return blocks.getOrDefault(position, filler.position(position).build());
+        return blocks.getOrDefault(position, filler.withPosition(position).build());
     }
 
     @NotNull

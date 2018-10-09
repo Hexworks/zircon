@@ -43,9 +43,9 @@ public class GameMockupExample {
         Size terminalSize = Sizes.create((int) columns, (int) rows);
 
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .defaultTileset(TILESET)
-                .defaultSize(terminalSize)
-                .debugMode(true)
+                .withDefaultTileset(TILESET)
+                .withSize(terminalSize)
+                .withDebugMode(true)
                 .fullScreen()
                 .build());
 
@@ -62,7 +62,7 @@ public class GameMockupExample {
                 (terminalSize.getWidth() - MAIN_MENU_PANEL_WIDTH) / 2,
                 (terminalSize.getHeight() - MAIN_MENU_PANEL_HEIGHT) / 2);
         Label mainMenuLabel = Components.label()
-                .text(MAIN_MENU_LABEL)
+                .withText(MAIN_MENU_LABEL)
                 .withPosition(menuPosition.withRelativeY(-3).withRelativeX(4))
                 .build();
         mainMenuScreen.addComponent(mainMenuLabel);
@@ -75,19 +75,19 @@ public class GameMockupExample {
                 .build();
 
         Button newGameButton = Components.button()
-                .text(NEW_GAME_BUTTON_LABEL)
+                .withText(NEW_GAME_BUTTON_LABEL)
                 .withPosition(Positions.create(3, 1))
                 .build();
         menuPanel.addComponent(newGameButton);
 
         Button optionsButton = Components.button()
-                .text(OPTIONS_BUTTON_LABEL)
+                .withText(OPTIONS_BUTTON_LABEL)
                 .withPosition(Positions.create(4, 3))
                 .build();
         menuPanel.addComponent(optionsButton);
 
         Button quitButton = Components.button()
-                .text(QUIT_BUTTON_LABEL)
+                .withText(QUIT_BUTTON_LABEL)
                 .withPosition(Positions.create(7, 5))
                 .build();
         menuPanel.addComponent(quitButton);
@@ -102,7 +102,7 @@ public class GameMockupExample {
         Screen optionsScreen = Screens.createScreenFor(tileGrid);
 
         Button backButton = Components.button()
-                .text(BACK_LABEL)
+                .withText(BACK_LABEL)
                 .withPosition(Positions.create(
                         PANEL_SPACING,
                         terminalSize.getHeight() - (PANEL_SPACING * 2)))
@@ -110,7 +110,7 @@ public class GameMockupExample {
         optionsScreen.addComponent(backButton);
 
         Button applyButton = Components.button()
-                .text(APPLY_LABEL)
+                .withText(APPLY_LABEL)
                 // TODO: FIX CAST
                 .withPosition((Positions.create(PANEL_SPACING, 0)).relativeToRightOf(backButton))
                 .build();

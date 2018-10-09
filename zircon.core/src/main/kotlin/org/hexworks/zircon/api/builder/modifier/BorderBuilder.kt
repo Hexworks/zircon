@@ -22,15 +22,15 @@ data class BorderBuilder(
 
     override fun createCopy() = copy(borderPositions = borderPositions.toSet())
 
-    fun borderType(borderType: BorderType) = also {
+    fun withBorderType(borderType: BorderType) = also {
         this.borderType = borderType
     }
 
-    fun borderPositions(vararg borderPositions: BorderPosition) = also {
-        borderPositions(borderPositions.toSet())
+    fun withBorderPositions(vararg borderPositions: BorderPosition) = also {
+        withBorderPositions(borderPositions.toSet())
     }
 
-    fun borderPositions(borderPositions: Set<BorderPosition>) = also {
+    fun withBorderPositions(borderPositions: Set<BorderPosition>) = also {
         this.borderPositions = borderPositions
     }
 

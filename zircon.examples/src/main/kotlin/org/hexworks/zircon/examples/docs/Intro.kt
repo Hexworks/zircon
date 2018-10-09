@@ -15,18 +15,18 @@ object Intro {
     @JvmStatic
     fun main(args: Array<String>) {
         val grid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(CP437TilesetResources.wanderlust16x16())
-                .defaultSize(screenSize)
+                .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
+                .withSize(screenSize)
                 .enableBetaFeatures()
-                .title("Zircon")
+                .withTitle("Zircon")
                 .build())
 
         val introScreen = Screens.createScreenFor(grid)
 
         val animBuilder = AnimationResource.loadAnimationFromStream(
                 AnimationExample::class.java.getResourceAsStream("/animations/skull.zap"),
-                tileset).loopCount(0)
-        for (i in 0 until animBuilder.getTotalFrameCount()) {
+                tileset).withLoopCount(0)
+        for (i in 0 until animBuilder.totalFrameCount) {
             animBuilder.addPosition(Positions.create(2, 5))
         }
         val zirconSplash = animBuilder.build()
@@ -46,31 +46,31 @@ object Intro {
 
         introPanel.addComponent(Components.header()
                 .withPosition(Positions.offset1x1())
-                .text("Do you plan to make a roguelike?")
+                .withText("Do you plan to make a roguelike?")
                 .build())
 
         val introBox = Components.textBox()
                 .withPosition(Positions.create(1, 3))
-                .contentWidth(45)
-                .paragraph("Look no further. Zircon is the right tool for the job.")
-                .paragraph("Zircon is a Text GUI library and a Tile Engine which is designed for simplicity and ease of use.")
-                .paragraph("It is usable out of the box for all JVM languages including Java, Kotlin, Clojure and Scala.")
-                .paragraph("Things Zircon knows:")
-                .listItem("Animations")
-                .listItem("A Component System with built-in components for games")
-                .listItem("Layering")
-                .listItem("Mouse and keyboard support")
-                .listItem("Shape and Box drawing")
-                .listItem("Tilesets, and Graphical tiles")
-                .listItem("REXPaint file loading")
-                .listItem("Color Themes and more!")
-                .newLine()
-                .paragraph("Interested in more details? Read on...")
+                .withContentWidth(45)
+                .addParagraph("Look no further. Zircon is the right tool for the job.")
+                .addParagraph("Zircon is a Text GUI library and a Tile Engine which is designed for simplicity and ease of use.")
+                .addParagraph("It is usable out of the box for all JVM languages including Java, Kotlin, Clojure and Scala.")
+                .addParagraph("Things Zircon knows:")
+                .addListItem("Animations")
+                .addListItem("A Component System with built-in components for games")
+                .addListItem("Layering")
+                .addListItem("Mouse and keyboard support")
+                .addListItem("Shape and Box drawing")
+                .addListItem("Tilesets, and Graphical tiles")
+                .addListItem("REXPaint file loading")
+                .addListItem("Color Themes and more!")
+                .addNewLine()
+                .addParagraph("Interested in more details? Read on...")
                 .build()
 
         val nextButton = Components.button()
                 .withPosition(Positions.bottomLeftOf(introBox))
-                .text("Next")
+                .withText("Next")
                 .build()
 
         introPanel.addComponent(introBox)

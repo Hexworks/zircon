@@ -7,17 +7,17 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.graphics.TextWrap
 
-class DefaultListItemRenderer(private val listItemChar: Char = '-') : ComponentRenderer<ListItem>() {
+class DefaultListItemRenderer(private val listItemChar: Char = '-') : ComponentRenderer<ListItem> {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<ListItem>) {
         val style = context.componentStyle.currentStyle()
         tileGraphics.applyStyle(style)
         CharacterTileStringBuilder.newBuilder()
-                .backgroundColor(style.backgroundColor)
-                .foregroundColor(style.foregroundColor)
-                .modifiers(*style.modifiers.toTypedArray())
-                .text("$listItemChar ${context.component.text}")
-                .textWrap(TextWrap.WORD_WRAP)
+                .withBackgroundColor(style.backgroundColor)
+                .withForegroundColor(style.foregroundColor)
+                .withModifiers(*style.modifiers.toTypedArray())
+                .withText("$listItemChar ${context.component.text}")
+                .withTextWrap(TextWrap.WORD_WRAP)
                 .build()
                 .drawOnto(tileGraphics)
     }

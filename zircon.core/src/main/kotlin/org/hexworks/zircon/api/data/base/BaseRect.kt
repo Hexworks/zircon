@@ -111,7 +111,7 @@ abstract class BaseRect : Rect {
 
     override fun withSize(size: Size) = Rect.create(position, size)
 
-    override fun withRelativePosition(position: Position) = Rect.create(position + position, size)
+    override fun withRelativePosition(position: Position) = Rect.create(this.position + position, size)
 
-    override fun withRelativeSize(size: Size) = Rect.create(position, size + size)
+    override fun withRelativeSize(size: Size) = Rect.create(position, this.size + size)
 }

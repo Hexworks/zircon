@@ -36,17 +36,12 @@ interface ComponentRenderingStrategy<T : Component> {
      * the content position is the sum of the offset positions for each
      * decoration.
      */
-    fun calculateContentPosition(): Position = decorationRenderers.asSequence().map {
-        it.offset
-    }.fold(Position.defaultPosition(), Position::plus)
+    fun calculateContentPosition(): Position
 
     /**
      * Calculates the [Size] of the content of the [Component] which is
      * rendered. In other words the content size is the total size of
      * the component minus the size of the decorations.
      */
-    fun calculateContentSize(componentSize: Size): Size = componentSize -
-            decorationRenderers.asSequence().map {
-                it.occupiedSize
-            }.fold(Size.zero(), Size::plus)
+    fun calculateContentSize(componentSize: Size): Size
 }

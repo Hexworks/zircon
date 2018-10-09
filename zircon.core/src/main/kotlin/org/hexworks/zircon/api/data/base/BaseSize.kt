@@ -116,6 +116,4 @@ abstract class BaseSize : Size {
     override fun toRect(): Rect = toRect(Position.defaultPosition())
 
     override fun toRect(position: Position): Rect = Rect.create(position, this)
-
-    override fun hasNegativeComponent(): Boolean = width < 0 || height < 0
 }

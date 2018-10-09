@@ -14,8 +14,8 @@ object CheckBoxesExample {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(tileset)
-                .defaultSize(Sizes.create(60, 30))
+                .withDefaultTileset(tileset)
+                .withSize(Sizes.create(60, 30))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
@@ -28,14 +28,14 @@ object CheckBoxesExample {
         screen.addComponent(panel)
 
         val simpleCheckBox = Components.checkBox()
-                .text("Check me")
+                .withText("Check me")
                 .withPosition(Positions.create(2, 2))
 
         screen.addComponent(simpleCheckBox)
         panel.addComponent(simpleCheckBox)
 
         val decoratedCheckBox = Components.checkBox()
-                .text("Check me")
+                .withText("Check me")
                 .withBoxType(BoxType.DOUBLE)
                 .wrapWithShadow(true)
                 .wrapWithBox(true)
@@ -45,7 +45,7 @@ object CheckBoxesExample {
         panel.addComponent(decoratedCheckBox)
 
         val shadowedCheckBox = Components.checkBox()
-                .text("Check me")
+                .withText("Check me")
                 .wrapWithShadow(true)
                 .withPosition(Positions.create(2, 9))
 
@@ -53,15 +53,15 @@ object CheckBoxesExample {
         panel.addComponent(shadowedCheckBox)
 
         val tooLongCheckBox = Components.checkBox()
-                .text("Too long text")
-                .width(12)
+                .withText("Too long text")
+                .withWidth(12)
                 .withPosition(Positions.create(2, 13))
 
         screen.addComponent(tooLongCheckBox)
         panel.addComponent(tooLongCheckBox)
 
         val overTheTopCheckBox = Components.checkBox()
-                .text("Over the top")
+                .withText("Over the top")
                 .withDecorationRenderers(
                         ShadowDecorationRenderer(),
                         BoxDecorationRenderer(BoxType.DOUBLE),

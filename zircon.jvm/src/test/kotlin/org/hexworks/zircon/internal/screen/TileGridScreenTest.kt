@@ -43,7 +43,7 @@ class TileGridScreenTest {
                 zipStream = this.javaClass.getResourceAsStream("/animations/skull.zap"),
                 tileset = tileset)
                 .setPositionForAll(Position.create(0, 0))
-                .loopCount(0)
+                .withLoopCount(0)
                 .build()
 
         val inputFired = AtomicBoolean(false)
@@ -66,8 +66,8 @@ class TileGridScreenTest {
     fun shouldBeAbleToPutCharacterWhenPutCharacterIsCalled() {
         val char = 'x'
         val expected = TileBuilder.newBuilder()
-                .styleSet(target.toStyleSet())
-                .character(char)
+                .withStyleSet(target.toStyleSet())
+                .withCharacter(char)
                 .build()
         val currCursorPos = target.cursorPosition()
 
@@ -122,7 +122,7 @@ class TileGridScreenTest {
         val SIZE = Size.create(10, 10)
         val FONT = BuiltInCP437TilesetResource.ROGUE_YUN_16X16
         val CHAR = TileBuilder.newBuilder()
-                .character('x')
+                .withCharacter('x')
                 .build()
     }
 }

@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 
-class DefaultButtonRenderer : ComponentRenderer<Button>() {
+class DefaultButtonRenderer : ComponentRenderer<Button> {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<Button>) {
         val style = context.componentStyle.currentStyle()

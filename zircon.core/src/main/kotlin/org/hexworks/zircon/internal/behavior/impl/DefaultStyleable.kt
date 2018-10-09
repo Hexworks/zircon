@@ -24,9 +24,9 @@ data class DefaultStyleable(private val initialStyle: StyleSet) : Styleable {
     }
 
     override fun toStyleSet() = StyleSetBuilder.newBuilder()
-            .foregroundColor(foregroundColor)
-            .backgroundColor(backgroundColor)
-            .modifiers(modifiers)
+            .withForegroundColor(foregroundColor)
+            .withBackgroundColor(backgroundColor)
+            .withModifiers(modifiers)
             .build()
 
     override fun setStyleFrom(source: StyleSet) {

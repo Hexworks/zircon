@@ -7,9 +7,13 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.event.EventBus
+import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.event.ZirconEvent
 import org.junit.Before
 import org.junit.Test
 
@@ -26,7 +30,7 @@ class DefaultTextAreaTest {
                 .withSize(SIZE)
                 .withTileset(tileset)
                 .withPosition(POSITION)
-                .text(TEXT)
+                .withText(TEXT)
                 .build() as DefaultTextArea
     }
 
@@ -39,6 +43,41 @@ class DefaultTextAreaTest {
     fun shouldUseProperFont() {
         assertThat(target.currentTileset().id)
                 .isEqualTo(tileset.id)
+    }
+
+    @Test
+    fun shouldAcceptFocus() {
+        assertThat(target.acceptsFocus()).isTrue()
+    }
+
+    @Test
+    fun shouldProperlyGiveFocus() {
+        target.applyColorTheme(THEME)
+        val pos = Position.create(2, 3)
+        val tile = Tile.createCharacterTile('x', StyleSet.defaultStyle())
+        target.setTileAt(pos, tile)
+        var cursorVisible = false
+        EventBus.subscribe<ZirconEvent.RequestCursorAt> {
+            cursorVisible = true
+        }
+
+        target.giveFocus()
+
+        assertThat(target.componentStyleSet.currentStyle()).isEqualTo(FOCUSED_STYLE)
+        assertThat(target.getTileAt(pos)).isNotEqualTo(tile)
+        assertThat(cursorVisible).isTrue()
+    }
+
+    @Test
+    fun shouldProperlyTakeFocus() {
+        var cursorHidden = false
+        EventBus.subscribe<ZirconEvent.HideCursor> {
+            cursorHidden = true
+        }
+        target.takeFocus()
+
+        assertThat(target.componentStyleSet.currentStyle()).isEqualTo(DEFAULT_STYLE)
+        assertThat(cursorHidden).isTrue()
     }
 
     @Test
@@ -73,19 +112,19 @@ class DefaultTextAreaTest {
         val SIZE = Size.create(10, 6)
         val POSITION = Position.create(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryBackgroundColor)
-                .backgroundColor(THEME.secondaryForegroundColor)
+                .withForegroundColor(THEME.secondaryBackgroundColor)
+                .withBackgroundColor(THEME.secondaryForegroundColor)
                 .build()
         val FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.primaryBackgroundColor)
-                .backgroundColor(THEME.primaryForegroundColor)
+                .withForegroundColor(THEME.primaryBackgroundColor)
+                .withBackgroundColor(THEME.primaryForegroundColor)
                 .build()
         val DISABLED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor)
-                .backgroundColor(THEME.secondaryBackgroundColor)
+                .withForegroundColor(THEME.secondaryForegroundColor)
+                .withBackgroundColor(THEME.secondaryBackgroundColor)
                 .build()
         val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(DEFAULT_STYLE)
+                .withDefaultStyle(DEFAULT_STYLE)
                 .build()
     }
 }

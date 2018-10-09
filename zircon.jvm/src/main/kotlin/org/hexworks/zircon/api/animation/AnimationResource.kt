@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.animation
 
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.REXPaintResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.animation.AnimationMetadata
@@ -44,8 +43,8 @@ class AnimationResource {
                 frameMap[frame.frame]!!.copy(repeatCount = frame.repeatCount)
             }
             return AnimationBuilder.newBuilder()
-                    .fps(animationData.frameRate)
-                    .loopCount(animationData.loopCount)
+                    .withFps(animationData.frameRate)
+                    .withLoopCount(animationData.loopCount)
                     .addFrames(frames)
         }
     }

@@ -11,21 +11,20 @@ import org.hexworks.zircon.api.builder.Builder
 interface ComponentContainer {
 
     /**
-     * Adds a child [Component] to this [Container]. It can either be
-     * a leaf component (like a label) or another container which can itself
+     * Adds a child [Component] to this [ComponentContainer]. It can either be
+     * a leaf component (like a label) or a [Container] which can itself
      * contain components within itself.
      */
     fun addComponent(component: Component)
 
     /**
-     * Adds a child [Component] to this [Container]. It can either be
-     * a leaf component (like a label) or another container which can itself
-     * contain components within itself.
+     * Builds a [Component] using the given component [Builder]
+     * and adds it to this [ComponentContainer].
      */
     fun addComponent(builder: Builder<Component>) = addComponent(builder.build())
 
     /**
-     * Removes the given [Component] from this [Container].
+     * Removes the given [Component] from this [ComponentContainer].
      * *Note that* this function is applied recursively until
      * it either traverses the whole component tree or finds
      * the component to remove.
@@ -36,6 +35,6 @@ interface ComponentContainer {
     /**
      * Applies the [ColorTheme] to this component and recursively to all its children (if any).
      */
-    fun applyColorTheme(colorTheme: ColorTheme)
+    fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
 }

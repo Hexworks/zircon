@@ -15,33 +15,33 @@ object LabelsExample {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(tileset)
-                .defaultSize(Sizes.create(60, 30))
+                .withDefaultTileset(tileset)
+                .withSize(Sizes.create(60, 30))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
 
         screen.addComponent(Components.label()
-                .text("Foobar")
+                .withText("Foobar")
                 .wrapWithShadow(true)
                 .withPosition(Positions.create(2, 2))
                 .build())
 
         screen.addComponent(Components.label()
-                .text("Barbaz wombat")
+                .withText("Barbaz wombat")
                 .withSize(Sizes.create(5, 2))
                 .withPosition(Positions.create(2, 6))
                 .build())
 
         screen.addComponent(Components.label()
-                .text("Qux")
+                .withText("Qux")
                 .wrapWithShadow(true)
                 .wrapWithBox(true)
                 .withPosition(Positions.create(2, 10))
                 .build())
 
         screen.addComponent(Components.label()
-                .text("Qux")
+                .withText("Qux")
                 .wrapWithShadow(true)
                 .withBoxType(DOUBLE)
                 .wrapWithBox(true)
@@ -49,7 +49,7 @@ object LabelsExample {
                 .build())
 
         screen.addComponent(Components.label()
-                .text("Wtf")
+                .withText("Wtf")
                 .withDecorationRenderers(
                         ShadowDecorationRenderer(),
                         BoxDecorationRenderer(DOUBLE),
@@ -58,7 +58,7 @@ object LabelsExample {
                 .build())
 
         screen.addComponent(Components.label()
-                .text("Wtf")
+                .withText("Wtf")
                 .withDecorationRenderers(
                         ShadowDecorationRenderer(),
                         HalfBlockDecorationRenderer())

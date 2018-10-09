@@ -79,8 +79,8 @@ class DefaultGameComponent(componentMetadata: ComponentMetadata,
                         size = Size3D.from2DSize(size, 1))
                 segment.forEach {
                     result.add(LayerBuilder.newBuilder()
-                            .tileGraphic(it)
-                            .offset(position)
+                            .withTileGraphic(it)
+                            .withOffset(position)
                             .build())
                 }
             }
@@ -89,7 +89,7 @@ class DefaultGameComponent(componentMetadata: ComponentMetadata,
             val customLayersPerBlock = gameArea.layersPerBlock()
             val totalLayerCount = fixedLayerCount + customLayersPerBlock
             val builders = (0 until totalLayerCount * height).map {
-                TileGraphicsBuilder.newBuilder().size(screenSize)
+                TileGraphicsBuilder.newBuilder().withSize(screenSize)
             }
             val (fromX, fromY) = visibleOffset().to2DPosition()
             val toX = fromX + size.width
@@ -110,23 +110,23 @@ class DefaultGameComponent(componentMetadata: ComponentMetadata,
                             val layers = block.layers
                             val front = block.front
 
-                            builders[bottomIdx].tile(screenPos, bot)
+                            builders[bottomIdx].withTile(screenPos, bot)
                             layers.forEachIndexed { idx, layer ->
-                                builders[bottomIdx + idx + 1].tile(screenPos, layer)
+                                builders[bottomIdx + idx + 1].withTile(screenPos, layer)
                             }
-                            builders[frondIdx].tile(screenPos, front)
+                            builders[frondIdx].withTile(screenPos, front)
                         }
                         maybeNext.ifPresent { block ->
                             val back = block.back
                             val top = block.top
-                            builders[backIdx].tile(screenPos, back)
-                            builders[topIdx].tile(screenPos, top)
+                            builders[backIdx].withTile(screenPos, back)
+                            builders[topIdx].withTile(screenPos, top)
                         }
                     }
                 }
             }
             builders.forEach {
-                result.add(LayerBuilder.newBuilder().tileGraphic(it.build()).build())
+                result.add(LayerBuilder.newBuilder().withTileGraphic(it.build()).build())
             }
         }
         return result

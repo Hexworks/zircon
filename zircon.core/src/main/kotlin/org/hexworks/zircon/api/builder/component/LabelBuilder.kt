@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.Label
+import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
@@ -17,7 +17,7 @@ data class LabelBuilder(
 
     override fun withTitle(title: String) = also { }
 
-    fun text(text: String) = also {
+    fun withText(text: String) = also {
         this.text = text
     }
 
@@ -27,7 +27,7 @@ data class LabelBuilder(
         }
         fillMissingValues()
         val finalSize = if (size.isUnknown()) {
-            decorationRenderers().asSequence()
+            decorationRenderers.asSequence()
                     .map { it.occupiedSize }
                     .fold(Size.create(text.length, 1), Size::plus)
         } else {
@@ -43,10 +43,10 @@ data class LabelBuilder(
                         size = finalSize,
                         position = position,
                         componentStyleSet = componentStyleSet,
-                        tileset = tileset()),
+                        tileset = tileset),
                 text = fixedText,
                 renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = decorationRenderers(),
+                        decorationRenderers = decorationRenderers,
                         componentRenderer = DefaultLabelRenderer()))
     }
 

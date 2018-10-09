@@ -55,7 +55,7 @@ interface InternalComponent : Component, Drawable, Focusable, InputListener, Key
      */
     fun render()
 
-    override fun removeFromParent() {
+    override fun detach() {
         fetchParent().map {
             it.removeComponent(this)
         }

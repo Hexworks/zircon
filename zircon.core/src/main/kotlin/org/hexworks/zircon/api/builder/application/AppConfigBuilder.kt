@@ -28,7 +28,7 @@ data class AppConfigBuilder(
         private var title: String = "Zircon Application",
         private var fullScreen: Boolean = false,
         private var debugMode: Boolean = false,
-        private var defaultSize: Size = Size.defaultTerminalSize(),
+        private var defaultSize: Size = Size.defaultGridSize(),
         private var betaEnabled: Boolean = false)
     : Builder<AppConfig> {
 
@@ -52,7 +52,7 @@ data class AppConfigBuilder(
     /**
      * Sets the length of a blink. All blinking characters will use this setting.
      */
-    fun blinkLengthInMilliSeconds(blinkLengthInMilliSeconds: Long) = also {
+    fun withBlinkLengthInMilliSeconds(blinkLengthInMilliSeconds: Long) = also {
         this.blinkLengthInMilliSeconds = blinkLengthInMilliSeconds
     }
 
@@ -60,7 +60,7 @@ data class AppConfigBuilder(
      * Sets the title to use on created [TileGrid]s created by this shape.
      * Default is "Zircon TileGrid"
      */
-    fun title(title: String) = also {
+    fun withTitle(title: String) = also {
         this.title = title
     }
 
@@ -71,21 +71,21 @@ data class AppConfigBuilder(
     /**
      * Sets the cursor style. See: [CursorStyle].
      */
-    fun cursorStyle(cursorStyle: CursorStyle) = also {
+    fun withCursorStyle(cursorStyle: CursorStyle) = also {
         this.cursorStyle = cursorStyle
     }
 
     /**
      * Sets the color of the cursor.
      */
-    fun cursorColor(cursorColor: TileColor) = also {
+    fun withCursorColor(cursorColor: TileColor) = also {
         this.cursorColor = cursorColor
     }
 
     /**
      * Sets whether the cursor blinks or not.
      */
-    fun cursorBlinking(cursorBlinking: Boolean) = also {
+    fun withCursorBlinking(cursorBlinking: Boolean) = also {
         this.cursorBlinking = cursorBlinking
     }
 
@@ -93,19 +93,19 @@ data class AppConfigBuilder(
      * Enables or disables clipboard. <code>Shift + Insert</code> will paste text
      * at the cursor location if clipboard is available.
      */
-    fun clipboardAvailable(clipboardAvailable: Boolean) = also {
+    fun withClipboardAvailable(clipboardAvailable: Boolean) = also {
         this.clipboardAvailable = clipboardAvailable
     }
 
-    fun debugMode(debugMode: Boolean) = also {
+    fun withDebugMode(debugMode: Boolean) = also {
         this.debugMode = debugMode
     }
 
-    fun defaultSize(size: Size) = also {
+    fun withSize(size: Size) = also {
         this.defaultSize = size
     }
 
-    fun defaultTileset(defaultTileset: TilesetResource) = also {
+    fun withDefaultTileset(defaultTileset: TilesetResource) = also {
         this.defaultTileset = defaultTileset
     }
 

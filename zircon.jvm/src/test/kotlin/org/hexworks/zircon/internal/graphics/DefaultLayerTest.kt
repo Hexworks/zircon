@@ -76,12 +76,12 @@ class DefaultLayerTest {
     companion object {
         val TILESET = BuiltInCP437TilesetResource.CLA_18X18
         val CHAR = TileBuilder.newBuilder()
-                .character('x')
+                .withCharacter('x')
                 .build()
         val SIZE = Size.create(10, 10)
         val TILE_IMAGE = TileGraphicsBuilder.newBuilder()
-                .size(SIZE)
-                .tileset(TILESET)
+                .withSize(SIZE)
+                .withTileset(TILESET)
                 .build()
         val OFFSET = Position.create(5, 5)
         val INTERSECTING_BOUNDABLE = DefaultBoundable(Size.create(6, 6))

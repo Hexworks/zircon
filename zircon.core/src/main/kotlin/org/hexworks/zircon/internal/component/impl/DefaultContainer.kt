@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.config.RuntimeConfig
@@ -23,7 +24,16 @@ abstract class DefaultContainer(componentMetadata: ComponentMetadata,
         componentMetadata = componentMetadata,
         renderer = renderer) {
 
+    override val children: List<Component>
+        get() = components.toList()
+
     private val components = ThreadSafeQueueFactory.create<InternalComponent>()
+
+    override fun acceptsFocus() = false
+
+    override fun giveFocus(input: Maybe<Input>) = false
+
+    override fun takeFocus(input: Maybe<Input>) {}
 
     override fun draw(drawable: Drawable, position: Position) {
         if (drawable is Component) {
@@ -38,35 +48,43 @@ abstract class DefaultContainer(componentMetadata: ComponentMetadata,
         }
     }
 
-    override val children: List<Component>
-        get() = components.toList()
-
     override fun addComponent(component: Component) {
         require(component !== this) {
             "You can't add a component to itself!"
         }
-        (component as? DefaultComponent)?.let { dc ->
+        (component as? InternalComponent)?.let { dc ->
+            // TODO: this is fishy, let's investigate whether
+            // TODO: we can do this without moving the component
+            val orignalRect = dc.rect
             dc.moveTo(dc.position + contentPosition)
             if (RuntimeConfig.config.betaEnabled.not()) {
+                val contentBounds = contentSize.toRect()
                 require(currentTileset().size == component.currentTileset().size) {
                     "Trying to add component with incompatible tileset size '${component.currentTileset().size}' to" +
                             "container with tileset size: '${currentTileset().size}'!"
                 }
-                val contentBounds = contentSize.toRect()
-                val originalDcBounds = dc.rect.withPosition(dc.position - contentPosition)
-                require(contentBounds.containsBoundable(originalDcBounds)) {
-                    "Trying to add a component ($component) with bounds($originalDcBounds)" +
-                            " to a container ($this) with content bounds ($contentBounds) which is out of bounds."
+                require(contentBounds.containsBoundable(orignalRect)) {
+                    "Adding out of bounds component (${component::class.simpleName}) " +
+                            "with bounds ($orignalRect) to the container (${this::class.simpleName}) " +
+                            "with content bounds ($contentBounds) is not allowed."
+                }
+                require(children.none { it.intersects(dc) }) {
+                    "You can't add a component to a container which intersects with other components."
+                }
+                require(children.none { it.containsBoundable(dc) }) {
+                    "You can't add a component to a container which intersects with other components."
                 }
                 components.firstOrNull { it.intersects(component) }?.let {
                     throw IllegalArgumentException(
-                            "You can't add a component ($component) to a container which intersects with another component ($it)!")
+                            "You can't add a component ($component) to a container which " +
+                                    "intersects with another component ($it)!")
                 }
             }
             components.add(dc)
             dc.attachTo(this)
             EventBus.broadcast(ZirconEvent.ComponentAddition)
-        } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
+        } ?: throw IllegalArgumentException(
+                "The supplied component does not implement InternalComponent.")
     }
 
     override fun removeComponent(component: Component): Boolean {
@@ -87,22 +105,21 @@ abstract class DefaultContainer(componentMetadata: ComponentMetadata,
         return removalHappened
     }
 
-    override fun removeAllComponents(): Boolean {
+    override fun detachAllComponents(): Boolean {
         val removalHappened = components.isNotEmpty()
-        children.forEach {
+        components.forEach {
             removeComponent(it)
         }
         if (removalHappened) {
             EventBus.broadcast(ZirconEvent.ComponentRemoval)
         }
-
         return removalHappened
     }
 
     override fun transformToLayers(): List<Layer> {
         return listOf(LayerBuilder.newBuilder()
-                .tileGraphic(tileGraphics)
-                .offset(position)
+                .withTileGraphic(tileGraphics)
+                .withOffset(position)
                 .build())
                 .flatMap { layer ->
                     listOf(layer).plus(

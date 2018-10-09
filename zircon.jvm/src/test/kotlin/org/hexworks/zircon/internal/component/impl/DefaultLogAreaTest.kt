@@ -24,7 +24,7 @@ class DefaultLogAreaTest {
                 .withComponentStyleSet(COMPONENT_STYLES)
                 .withPosition(POSITION)
                 .withSize(SIZE)
-                .logRowHistorySize(ROW_HISTORY_SIZE)
+                .withLogRowHistorySize(ROW_HISTORY_SIZE)
                 .withTileset(TILESET)
                 .build() as DefaultLogArea
     }
@@ -82,14 +82,14 @@ class DefaultLogAreaTest {
         val ALTERNATE_TEXT = "This is my other log row"
         val COMPONENT = Components.button()
                 .withDecorationRenderers()
-                .text("Button")
+                .withText("Button")
                 .build()
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor)
-                .backgroundColor(TileColor.transparent())
+                .withForegroundColor(THEME.secondaryForegroundColor)
+                .withBackgroundColor(TileColor.transparent())
                 .build()
         val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(DEFAULT_STYLE)
+                .withDefaultStyle(DEFAULT_STYLE)
                 .build()
     }
 }

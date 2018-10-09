@@ -23,8 +23,8 @@ class DefaultShape(private val positions: Set<Position> = setOf())
             maxRow = Math.max(maxRow, row)
         }
         val result = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(maxCol + 1, maxRow + 1))
-                .tileset(tileset)
+                .withSize(Size.create(maxCol + 1, maxRow + 1))
+                .withTileset(tileset)
                 .build()
         offsetPositions.forEach {
             result.setTileAt(it, tile)
