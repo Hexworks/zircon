@@ -1,9 +1,53 @@
 package org.hexworks.zircon.api.data
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.data.impl.Size3D
 import org.junit.Test
 
 class SizeTest {
+
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldNotAllowToCreateSizeWithNegativeWidth() {
+        Size.create(-1, 0)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldNotAllowToCreateSizeWithNegativeHeight() {
+        Size.create(0, -1)
+    }
+
+    @Test
+    fun shouldProperlyDestructureSize() {
+        val (width, height) = Size.create(2, 3)
+
+        assertThat(width).isEqualTo(2)
+        assertThat(height).isEqualTo(3)
+    }
+
+    @Test
+    fun shouldBeUnknownWhenUnknown() {
+        assertThat(Size.unknown().isUnknown()).isTrue()
+    }
+
+    @Test
+    fun shouldNotBeUnknownWhenNotUnknown() {
+        assertThat(Size.create(1, 2).isNotUnknown()).isTrue()
+    }
+
+    @Test
+    fun shouldProperlyCalculateGreaterThan() {
+        assertThat(Size.create(1, 2)).isGreaterThan(Size.create(1, 1))
+    }
+
+    @Test
+    fun shouldProperlyCalculateLessThan() {
+        assertThat(Size.create(1, 1)).isLessThan(Size.create(1, 2))
+    }
+
+    @Test
+    fun shouldProperlyCalculateEqualByComparingTo() {
+        assertThat(Size.create(1, 2)).isEqualByComparingTo(Size.create(2, 1))
+    }
 
     @Test
     fun shouldCreateNewSizeWithProperXLengthWhenWithXLengthIsCalled() {
@@ -62,35 +106,35 @@ class SizeTest {
 
     @Test
     fun shouldReturnItselfWhenWithXLengthIsCalledAndXLengthIsTheSame() {
-        val target = Size.defaultTerminalSize()
+        val target = Size.defaultGridSize()
         val result = target.withWidth(target.width)
         assertThat(target).isSameAs(result)
     }
 
     @Test
     fun shouldReturnItselfWhenWithYLengthIsCalledAndYLengthIsTheSame() {
-        val target = Size.defaultTerminalSize()
+        val target = Size.defaultGridSize()
         val result = target.withHeight(target.height)
         assertThat(target).isSameAs(result)
     }
 
     @Test
     fun shouldReturnItselfWhenWithRelativeXLengthIsCalledAndXLengthIsTheSame() {
-        val target = Size.defaultTerminalSize()
+        val target = Size.defaultGridSize()
         val result = target.withRelativeWidth(0)
         assertThat(target).isSameAs(result)
     }
 
     @Test
     fun shouldReturnItselfWhenWithRelativeYLengthIsCalledAndYLengthIsTheSame() {
-        val target = Size.defaultTerminalSize()
+        val target = Size.defaultGridSize()
         val result = target.withRelativeHeight(0)
         assertThat(target).isSameAs(result)
     }
 
     @Test
     fun shouldReturnItselfWhenWithIsCalledAndYLengthAndXLengthIsTheSame() {
-        val target = Size.defaultTerminalSize()
+        val target = Size.defaultGridSize()
         val result = target.with(target)
         assertThat(target).isSameAs(result)
     }

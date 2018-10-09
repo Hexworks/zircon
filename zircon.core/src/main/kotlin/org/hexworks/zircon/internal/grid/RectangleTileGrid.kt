@@ -58,10 +58,10 @@ class RectangleTileGrid(
     override fun putCharacter(c: Char) {
         if (TextUtils.isPrintableCharacter(c)) {
             putTile(TileBuilder.newBuilder()
-                    .character(c)
-                    .foregroundColor(foregroundColor)
-                    .backgroundColor(backgroundColor)
-                    .modifiers(modifiers)
+                    .withCharacter(c)
+                    .withForegroundColor(foregroundColor)
+                    .withBackgroundColor(backgroundColor)
+                    .withModifiers(modifiers)
                     .build())
         }
     }

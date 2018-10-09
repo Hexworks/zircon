@@ -24,8 +24,8 @@ class TileGraphicsTest {
     @Before
     fun setUp() {
         target = TileGraphicsBuilder.newBuilder()
-                .size(SIZE_OF_3X3)
-                .tileset(TILESET)
+                .withSize(SIZE_OF_3X3)
+                .withTileset(TILESET)
                 .build()
     }
 
@@ -151,7 +151,7 @@ class TileGraphicsTest {
     @Test
     fun shouldProperlyDrawOtherTileGraphics() {
         val other = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(2, 2))
+                .withSize(Size.create(2, 2))
                 .build()
                 .fill(FILLER)
         target.draw(other, Position.create(1, 1))
@@ -165,7 +165,7 @@ class TileGraphicsTest {
     @Test
     fun shouldProperlyDrawOverflowingTileGraphics() {
         val other = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(2, 2))
+                .withSize(Size.create(2, 2))
                 .build()
                 .fill(FILLER)
         target.draw(other, Position.create(2, 2))
@@ -179,7 +179,7 @@ class TileGraphicsTest {
     @Test
     fun shouldProperlyDrawOntoOther() {
         val other = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(2, 2))
+                .withSize(Size.create(2, 2))
                 .build()
                 .fill(FILLER)
         other.drawOnto(target, Position.create(2, 2))
@@ -374,7 +374,7 @@ class TileGraphicsTest {
         val FILLED_POS = Position.create(1, 2)
         val SIZE_OF_3X3 = Size.create(3, 3)
         val FILLER: CharacterTile = TileBuilder.newBuilder()
-                .character('a')
+                .withCharacter('a')
                 .buildCharacterTile()
 
     }

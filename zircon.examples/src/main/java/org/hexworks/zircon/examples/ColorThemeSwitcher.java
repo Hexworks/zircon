@@ -36,8 +36,8 @@ public class ColorThemeSwitcher {
     public static void main(String[] args) {
 
         TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(TILESET)
-                .defaultSize(SCREEN_SIZE)
+                .withDefaultTileset(TILESET)
+                .withSize(SCREEN_SIZE)
                 .build());
 
         Screen screen = Screens.createScreenFor(tileGrid);
@@ -57,22 +57,22 @@ public class ColorThemeSwitcher {
                 .build();
 
         final Button testButton = Components.button()
-                .text("Button")
+                .withText("Button")
                 .withPosition(Positions.create(0, 2))
                 .build();
 
         final CheckBox checkBox = Components.checkBox()
-                .text("Checkbox")
+                .withText("Checkbox")
                 .withPosition(Positions.create(0, 1).relativeToBottomOf(testButton))
                 .build();
 
         final Header header = Components.header()
-                .text("Header")
+                .withText("Header")
                 .withPosition(Positions.create(0, 1).relativeToBottomOf(checkBox))
                 .build();
 
         final Label label = Components.label()
-                .text("Label")
+                .withText("Label")
                 .withPosition(Positions.create(8, 0)
                         .relativeToRightOf(testButton))
                 .build();
@@ -98,7 +98,7 @@ public class ColorThemeSwitcher {
         TextArea textArea = Components.textArea()
                 .withPosition(Positions.create(1, 0).relativeToRightOf(panel))
                 .withSize(Sizes.create(20, 6))
-                .text("Text box")
+                .withText("Text box")
                 .build();
 
         infoPanel.addComponent(currentThemeLabel.get());
@@ -262,13 +262,13 @@ public class ColorThemeSwitcher {
 
     private static Header createHeaderForTheme(ColorThemeResource currentTheme) {
         return Components.header()
-                .text(currentTheme.name())
+                .withText(currentTheme.name())
                 .build();
     }
 
     private static void addScreenTitle(Screen screen, String title) {
         final Header header = Components.header()
-                .text(title)
+                .withText(title)
                 .withPosition(Positions.create(2, 1))
                 .build();
         screen.addComponent(header);

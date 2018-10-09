@@ -19,9 +19,9 @@ public class JavaPlayground {
     public static void main(String[] args) {
 
         TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(TILESET)
-                .defaultSize(SIZE)
-                .debugMode(true)
+                .withDefaultTileset(TILESET)
+                .withSize(SIZE)
+                .withDebugMode(true)
                 .build());
 
         tileGrid.onInput(System.out::println);

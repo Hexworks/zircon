@@ -60,7 +60,7 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
             withAddedModifiers(modifiers.toSet())
 
     override fun withAddedModifiers(modifiers: Set<Modifier>): CharacterTile {
-        return if (this.modifiers == modifiers) {
+        return if (this.modifiers.containsAll(modifiers)) {
             this
         } else {
             return Tile.createCharacterTile(character, styleSet.withAddedModifiers(modifiers))

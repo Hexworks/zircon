@@ -56,8 +56,8 @@ class BorderDecorationRenderer(private val border: Border) : ComponentDecoration
             tileGraphics.getTileAt(topLeftPos).map { char: Tile ->
                 tileGraphics.setTileAt(topLeftPos, char
                         .withModifiers(BorderBuilder.newBuilder()
-                                .borderType(border.borderType)
-                                .borderPositions(topLeftBorders)
+                                .withBorderType(border.borderType)
+                                .withBorderPositions(topLeftBorders)
                                 .build()))
             }
         }
@@ -65,8 +65,8 @@ class BorderDecorationRenderer(private val border: Border) : ComponentDecoration
             tileGraphics.getTileAt(topRightPos).map { char ->
                 tileGraphics.setTileAt(topRightPos, char
                         .withModifiers(BorderBuilder.newBuilder()
-                                .borderType(border.borderType)
-                                .borderPositions(topRightBorders)
+                                .withBorderType(border.borderType)
+                                .withBorderPositions(topRightBorders)
                                 .build()))
             }
         }
@@ -74,8 +74,8 @@ class BorderDecorationRenderer(private val border: Border) : ComponentDecoration
             tileGraphics.getTileAt(bottomLeftPos).map { char ->
                 tileGraphics.setTileAt(bottomLeftPos, char
                         .withModifiers(BorderBuilder.newBuilder()
-                                .borderType(border.borderType)
-                                .borderPositions(bottomLeftBorders)
+                                .withBorderType(border.borderType)
+                                .withBorderPositions(bottomLeftBorders)
                                 .build()))
             }
         }
@@ -83,8 +83,8 @@ class BorderDecorationRenderer(private val border: Border) : ComponentDecoration
             tileGraphics.getTileAt(bottomRightPos).map { char ->
                 tileGraphics.setTileAt(bottomRightPos, char
                         .withModifiers(BorderBuilder.newBuilder()
-                                .borderType(border.borderType)
-                                .borderPositions(bottomRightBorders)
+                                .withBorderType(border.borderType)
+                                .withBorderPositions(bottomRightBorders)
                                 .build()))
             }
         }
@@ -97,8 +97,8 @@ class BorderDecorationRenderer(private val border: Border) : ComponentDecoration
                         tileGraphics.getTileAt(topOffset).map { char ->
                             tileGraphics.setTileAt(topOffset, char
                                     .withModifiers(BorderBuilder.newBuilder()
-                                            .borderType(border.borderType)
-                                            .borderPositions(BorderPosition.TOP)
+                                            .withBorderType(border.borderType)
+                                            .withBorderPositions(BorderPosition.TOP)
                                             .build()))
                         }
                     }
@@ -108,8 +108,8 @@ class BorderDecorationRenderer(private val border: Border) : ComponentDecoration
                         tileGraphics.getTileAt(bottomOffset).map { char ->
                             tileGraphics.setTileAt(bottomOffset, char
                                     .withModifiers(BorderBuilder.newBuilder()
-                                            .borderType(border.borderType)
-                                            .borderPositions(BorderPosition.BOTTOM)
+                                            .withBorderType(border.borderType)
+                                            .withBorderPositions(BorderPosition.BOTTOM)
                                             .build()))
                         }
                     }
@@ -125,8 +125,8 @@ class BorderDecorationRenderer(private val border: Border) : ComponentDecoration
                         tileGraphics.getTileAt(leftOffset).map { char ->
                             tileGraphics.setTileAt(leftOffset, char
                                     .withModifiers(BorderBuilder.newBuilder()
-                                            .borderType(border.borderType)
-                                            .borderPositions(BorderPosition.LEFT)
+                                            .withBorderType(border.borderType)
+                                            .withBorderPositions(BorderPosition.LEFT)
                                             .build()))
                         }
                     }
@@ -136,8 +136,8 @@ class BorderDecorationRenderer(private val border: Border) : ComponentDecoration
                         tileGraphics.getTileAt(rightOffset).map { char ->
                             tileGraphics.setTileAt(rightOffset, char
                                     .withModifiers(BorderBuilder.newBuilder()
-                                            .borderType(border.borderType)
-                                            .borderPositions(BorderPosition.RIGHT)
+                                            .withBorderType(border.borderType)
+                                            .withBorderPositions(BorderPosition.RIGHT)
                                             .build()))
                         }
                     }

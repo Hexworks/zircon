@@ -72,9 +72,6 @@ class DefaultCursorHandler(private var cursorSpace: Size)
     override fun getCursorSpaceSize() = cursorSpace
 
     override fun resizeCursorSpace(size: Size) {
-        require(size.hasNegativeComponent().not()) {
-            "Can't resize cursor space to a negative size."
-        }
         this.cursorSpace = size
         putCursorAt(cursorPosition())
     }

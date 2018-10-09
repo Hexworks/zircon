@@ -15,7 +15,7 @@ object Sizes {
      * The default grid size is (80 * 24)
      */
     @JvmStatic
-    fun defaultTerminalSize() = Size.defaultTerminalSize()
+    fun defaultTerminalSize() = Size.defaultGridSize()
 
     /**
      * Size of (0 * 0).

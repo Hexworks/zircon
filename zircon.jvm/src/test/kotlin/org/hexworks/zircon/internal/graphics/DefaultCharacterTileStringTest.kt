@@ -19,7 +19,7 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldBuildStringWithDefaultProperly() {
         val result = CharacterTileStringBuilder.newBuilder()
-                .text(TEXT)
+                .withText(TEXT)
                 .build()
 
         val template = TileBuilder.newBuilder().buildCharacterTile()
@@ -34,17 +34,17 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldBuildStringWithCustomProperly() {
         val result = CharacterTileStringBuilder.newBuilder()
-                .backgroundColor(BACKGROUND)
-                .foregroundColor(FOREGROUND)
-                .modifiers(MODIFIER)
-                .text(TEXT)
-                .textWrap(NO_WRAPPING)
+                .withBackgroundColor(BACKGROUND)
+                .withForegroundColor(FOREGROUND)
+                .withModifiers(MODIFIER)
+                .withText(TEXT)
+                .withTextWrap(NO_WRAPPING)
                 .build() as DefaultCharacterTileString
 
         val template = TileBuilder.newBuilder()
-                .foregroundColor(FOREGROUND)
-                .backgroundColor(BACKGROUND)
-                .modifiers(MODIFIER)
+                .withForegroundColor(FOREGROUND)
+                .withBackgroundColor(BACKGROUND)
+                .withModifiers(MODIFIER)
                 .buildCharacterTile()
 
         assertThat(result.textCharacters()).containsExactly(
@@ -57,36 +57,36 @@ class DefaultCharacterTileStringTest {
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionWhenOffsetColIsTooBig() {
         val surface = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(2, 2))
+                .withSize(Size.create(2, 2))
                 .build()
 
         CharacterTileStringBuilder.newBuilder()
-                .text(TEXT)
-                .textWrap(NO_WRAPPING)
+                .withText(TEXT)
+                .withTextWrap(NO_WRAPPING)
                 .build().drawOnto(surface, Position.create(2, 1))
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionWhenOffsetRowIsTooBig() {
         val surface = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(2, 2))
+                .withSize(Size.create(2, 2))
                 .build()
 
         CharacterTileStringBuilder.newBuilder()
-                .text(TEXT)
-                .textWrap(NO_WRAPPING)
+                .withText(TEXT)
+                .withTextWrap(NO_WRAPPING)
                 .build().drawOnto(surface, Position.create(1, 2))
     }
 
     @Test
     fun shouldProperlyWriteNoWrapOverlappingStringToTileGraphic() {
         val surface = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(2, 2))
+                .withSize(Size.create(2, 2))
                 .build()
 
         CharacterTileStringBuilder.newBuilder()
-                .text(TEXT)
-                .textWrap(NO_WRAPPING)
+                .withText(TEXT)
+                .withTextWrap(NO_WRAPPING)
                 .build().drawOnto(surface)
 
         assertThat(surface.getTileAt(Position.create(0, 0))
@@ -115,12 +115,12 @@ class DefaultCharacterTileStringTest {
     @Test
     fun WordWrapShouldWorkCorrectlyFirstTest() {
         val surface = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(5, 1))
+                .withSize(Size.create(5, 1))
                 .build()
 
         val textCharacterString = CharacterTileStringBuilder.newBuilder()
-                .text("atest")
-                .textWrap(WORD_WRAP)
+                .withText("atest")
+                .withTextWrap(WORD_WRAP)
                 .build()
         textCharacterString.drawOnto(surface)
 
@@ -150,12 +150,12 @@ class DefaultCharacterTileStringTest {
     @Test
     fun WordWrapShouldWorkMultipleWords() {
         val surface = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(4, 2))
+                .withSize(Size.create(4, 2))
                 .build()
 
         val textCharacterString = CharacterTileStringBuilder.newBuilder()
-                .text("a test")
-                .textWrap(WORD_WRAP)
+                .withText("a test")
+                .withTextWrap(WORD_WRAP)
                 .build()
         textCharacterString.drawOnto(surface)
 
@@ -189,12 +189,12 @@ class DefaultCharacterTileStringTest {
     @Test
     fun wordWrapShouldWrapAsWordTooBigForSingleRow() {
         val surface = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(4, 2))
+                .withSize(Size.create(4, 2))
                 .build()
 
         val textCharacterString = CharacterTileStringBuilder.newBuilder()
-                .text("atest")
-                .textWrap(WORD_WRAP)
+                .withText("atest")
+                .withTextWrap(WORD_WRAP)
                 .build()
         textCharacterString.drawOnto(surface)
 
@@ -215,12 +215,12 @@ class DefaultCharacterTileStringTest {
     @Test
     fun wordWrapShouldWorkCorrectly() {
         val surface = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(5, 4))
+                .withSize(Size.create(5, 4))
                 .build()
 
         val textCharacterString = CharacterTileStringBuilder.newBuilder()
-                .text("a test thghty")
-                .textWrap(WORD_WRAP)
+                .withText("a test thghty")
+                .withTextWrap(WORD_WRAP)
                 .build()
         textCharacterString.drawOnto(surface)
 
@@ -255,12 +255,12 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldProperlyWriteNoWrapStringToTileGraphicWithOffset() {
         val surface = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(2, 2))
+                .withSize(Size.create(2, 2))
                 .build()
 
         CharacterTileStringBuilder.newBuilder()
-                .text(TEXT)
-                .textWrap(NO_WRAPPING)
+                .withText(TEXT)
+                .withTextWrap(NO_WRAPPING)
                 .build().drawOnto(surface, Position.offset1x1())
 
         assertThat(surface.getTileAt(Position.create(0, 0)).get()
@@ -290,11 +290,11 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldProperlyWriteWrapStringToTileGraphicWithoutOffset() {
         val surface = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(2, 2))
+                .withSize(Size.create(2, 2))
                 .build()
 
         CharacterTileStringBuilder.newBuilder()
-                .text(TEXT)
+                .withText(TEXT)
                 .build().drawOnto(surface)
 
         assertThat(surface.getTileAt(Position.create(0, 0)).get()
@@ -324,11 +324,11 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldProperlyWriteWrapStringToTileGraphicWithOffset() {
         val surface = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(2, 2))
+                .withSize(Size.create(2, 2))
                 .build()
 
         CharacterTileStringBuilder.newBuilder()
-                .text(TEXT)
+                .withText(TEXT)
                 .build().drawOnto(surface, Position.create(1, 0))
 
         assertThat(surface.getTileAt(Position.create(0, 0)).get()
@@ -358,11 +358,11 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldProperlyWriteStringToTileGraphicWhenLengthIs1() {
         val surface = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(2, 2))
+                .withSize(Size.create(2, 2))
                 .build()
 
         CharacterTileStringBuilder.newBuilder()
-                .text("T")
+                .withText("T")
                 .build().drawOnto(surface, Position.create(0, 0))
 
         assertThat(surface.getTileAt(Position.create(0, 0)).get()
@@ -392,11 +392,11 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldProperlyTruncateStringWhenDoesNotFitOnTileGraphic() {
         val surface = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(2, 2))
+                .withSize(Size.create(2, 2))
                 .build()
 
         CharacterTileStringBuilder.newBuilder()
-                .text("TEXTTEXT")
+                .withText("TEXTTEXT")
                 .build().drawOnto(surface, Position.create(0, 0))
 
         assertThat(surface.getTileAt(Position.create(0, 0)).get()
@@ -427,11 +427,11 @@ class DefaultCharacterTileStringTest {
     fun shouldAddTwoStringsTogetherProperly() {
 
         val string = CharacterTileStringBuilder.newBuilder()
-                .text("TE")
+                .withText("TE")
                 .build()
 
         val other = CharacterTileStringBuilder.newBuilder()
-                .text("XT")
+                .withText("XT")
                 .build()
 
         val template = TileBuilder.newBuilder().buildCharacterTile()

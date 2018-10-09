@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.kotlin.fold
 
-class DefaultTextAreaRenderer : ComponentRenderer<TextArea>() {
+class DefaultTextAreaRenderer : ComponentRenderer<TextArea> {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<TextArea>) {
         val style = context.componentStyle.currentStyle()

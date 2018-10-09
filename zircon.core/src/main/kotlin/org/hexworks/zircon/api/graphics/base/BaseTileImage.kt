@@ -86,8 +86,8 @@ abstract class BaseTileImage : TileImage {
         text.forEachIndexed { col, char ->
             tiles[position.withRelativeX(col)] = TileBuilder
                     .newBuilder()
-                    .styleSet(style)
-                    .character(char)
+                    .withStyleSet(style)
+                    .withCharacter(char)
                     .build()
         }
         return DefaultTileImage(
@@ -179,10 +179,10 @@ abstract class BaseTileImage : TileImage {
 
     override fun toTileGraphic(): TileGraphics {
         val result = TileGraphicsBuilder.newBuilder()
-                .size(size)
-                .tileset(currentTileset())
+                .withSize(size)
+                .withTileset(currentTileset())
         toTileMap().forEach { (pos, tile) ->
-            result.tile(pos, tile)
+            result.withTile(pos, tile)
         }
         return result.build()
     }

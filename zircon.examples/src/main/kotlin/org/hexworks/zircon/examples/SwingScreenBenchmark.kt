@@ -21,9 +21,9 @@ fun main(args: Array<String>) {
     val tileset = BuiltInCP437TilesetResource.WANDERLUST_16X16
 
     val screen = TileGridScreen(SwingApplications.startTileGrid(AppConfigBuilder.newBuilder()
-            .defaultSize(size)
-            .defaultTileset(tileset)
-            .debugMode(true)
+            .withSize(size)
+            .withDefaultTileset(tileset)
+            .withDebugMode(true)
             .build()))
 
     screen.display()
@@ -40,8 +40,8 @@ fun main(args: Array<String>) {
     val layers = (0..layerCount).map {
 
         val imageLayer = DrawSurfaces.tileGraphicsBuilder()
-                .size(layerSize)
-                .tileset(tileset)
+                .withSize(layerSize)
+                .withTileset(tileset)
                 .build()
         layerSize.fetchPositions().forEach {
             imageLayer.setTileAt(it, filler)

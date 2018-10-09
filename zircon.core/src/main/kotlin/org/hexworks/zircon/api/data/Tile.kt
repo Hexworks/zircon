@@ -123,11 +123,10 @@ interface Tile : Drawable, Cacheable, StyleSet {
         /**
          * Creates a new [ImageTile].
          */
-        fun createImageTile(name: String, tileset: TilesetResource, style: StyleSet): ImageTile {
+        fun createImageTile(name: String, tileset: TilesetResource): ImageTile {
             return DefaultImageTile(
                     tileset = tileset,
-                    name = name,
-                    style = style)
+                    name = name)
         }
 
         /**

@@ -14,9 +14,9 @@ object KotlinPlayground {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(TILESET)
-                .defaultSize(SIZE)
-                .debugMode(true)
+                .withDefaultTileset(TILESET)
+                .withSize(SIZE)
+                .withDebugMode(true)
                 .build())
 
         val screen = ScreenBuilder.createScreenFor(tileGrid)
@@ -27,25 +27,25 @@ object KotlinPlayground {
                 .build()
 
         panel.addComponent(Components.header()
-                .text("Plain button example"))
+                .withText("Plain button example"))
 
         panel.addComponent(Components.label()
                 .withPosition(Positions.create(0, 1))
-                .text("Some label with text"))
+                .withText("Some label with text"))
 
         val labelLeft = Components.label()
                 .withPosition(Positions.create(0, 2))
-                .text("Label left ")
+                .withText("Label left ")
                 .build()
         val btn = Components.button()
                 .withPosition(Positions.topRightOf(labelLeft))
                 .withDecorationRenderers()
-                .text("Button")
+                .withText("Button")
                 .build()
 
         val labelRight = Components.label()
                 .withPosition(Positions.topRightOf(btn))
-                .text(" Label right")
+                .withText(" Label right")
 
 
         panel.addComponent(labelLeft)
@@ -55,7 +55,7 @@ object KotlinPlayground {
 
         panel.addComponent(Components.label()
                 .withPosition(Positions.create(0, 3))
-                .text("Another label with text"))
+                .withText("Another label with text"))
 
         screen.addComponent(panel)
 

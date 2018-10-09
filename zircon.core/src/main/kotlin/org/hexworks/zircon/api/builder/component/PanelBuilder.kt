@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.Panel
+import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
@@ -23,10 +23,10 @@ data class PanelBuilder(
                         size = size,
                         position = position,
                         componentStyleSet = commonComponentProperties.componentStyleSet,
-                        tileset = tileset()),
-                title = title().orElse(""),
+                        tileset = tileset),
+                title = title,
                 renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = decorationRenderers(),
+                        decorationRenderers = decorationRenderers,
                         componentRenderer = DefaultPanelRenderer()))
     }
 

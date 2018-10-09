@@ -29,9 +29,9 @@ public class GraphicTilesetExample {
     public static void main(String[] args) {
 
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .defaultTileset(TILESET)
-                .defaultSize(SIZE)
-                .debugMode(true)
+                .withDefaultTileset(TILESET)
+                .withSize(SIZE)
+                .withDebugMode(true)
                 .build());
 
         TileGrid tileGrid = app.getTileGrid();
@@ -40,8 +40,8 @@ public class GraphicTilesetExample {
             for (int col = 0; col < TERMINAL_WIDTH; col++) {
                 final String name = NAMES[RANDOM.nextInt(NAMES.length)];
                 tileGrid.setTileAt(Positions.create(col, row), Tiles.newBuilder()
-                        .name(name)
-                        .tileset(TILESET)
+                        .withName(name)
+                        .withTileset(TILESET)
                         .buildGraphicTile());
             }
         }

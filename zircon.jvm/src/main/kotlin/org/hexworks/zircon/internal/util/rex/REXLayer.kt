@@ -5,7 +5,6 @@ import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.resource.TilesetResource
 import java.nio.ByteBuffer
@@ -28,8 +27,8 @@ data class REXLayer(private val width: Int,
      */
     fun toLayer(tileset: TilesetResource): Layer {
         val layer = LayerBuilder.newBuilder()
-                .tileset(tileset)
-                .size(Size.create(width, height))
+                .withTileset(tileset)
+                .withSize(Size.create(width, height))
                 .build()
 
         for (y in 0 until height) {
@@ -43,9 +42,9 @@ data class REXLayer(private val width: Int,
                 layer.setTileAt(
                         Position.create(x, y),
                         TileBuilder.newBuilder()
-                                .character(cell.getCharacter())
-                                .backgroundColor(cell.getBackgroundColor())
-                                .foregroundColor(cell.getForegroundColor())
+                                .withCharacter(cell.getCharacter())
+                                .withBackgroundColor(cell.getBackgroundColor())
+                                .withForegroundColor(cell.getForegroundColor())
                                 .build()
                 )
             }

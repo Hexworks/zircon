@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 
-class DefaultLabelRenderer : ComponentRenderer<Label>() {
+class DefaultLabelRenderer : ComponentRenderer<Label> {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<Label>) {
         val style = context.componentStyle.currentStyle()

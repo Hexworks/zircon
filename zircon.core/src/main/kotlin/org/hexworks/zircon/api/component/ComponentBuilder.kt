@@ -7,45 +7,26 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.api.util.Maybe
 
 interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<T> {
 
-    /**
-     * Returns the [Position] where the resulting [Component] will
-     * be placed.
-     */
     val position: Position
-
-    /**
-     * Returns the [Size] of the resulting [Component].
-     */
     val size: Size
-
-    /**
-     * The [ComponentStyleSet] the resulting [Component] will use
-     */
     val componentStyleSet: ComponentStyleSet
-
-
-    fun title(): Maybe<String>
-
-    fun withTitle(title: String): U
-
+    val title: String
+    val tileset: TilesetResource
+    val boxType: BoxType
     /**
-     * Sets the [ComponentStyleSet] the resulting [Component] will use
+     * Whether the resulting [Component] will be
+     * wrapped in a box.
      */
-    fun withComponentStyleSet(componentStyleSet: ComponentStyleSet): U
-
+    val wrappedWithBox: Boolean
     /**
-     * Returns the [TilesetResource] the resulting [Component] will use.
+     * Whether the resulting [Component] will be
+     * wrapped with a shadow.
      */
-    fun tileset(): TilesetResource
-
-    /**
-     * Sets the [Tileset] to use with the resulting [Component].
-     */
-    fun withTileset(tileset: TilesetResource): U
+    val wrappedWithShadow: Boolean
+    val decorationRenderers: List<ComponentDecorationRenderer>
 
     /**
      * Sets the [Position] where the resulting [Component] will
@@ -59,9 +40,19 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
     fun withSize(size: Size): U
 
     /**
-     * Returns the box type which can be used for wrapping.
+     * Sets the [ComponentStyleSet] the resulting [Component] will use
      */
-    fun boxType(): BoxType
+    fun withComponentStyleSet(componentStyleSet: ComponentStyleSet): U
+
+    /**
+     * Sets the title the resulting [Component] will use
+     */
+    fun withTitle(title: String): U
+
+    /**
+     * Sets the [Tileset] to use with the resulting [Component].
+     */
+    fun withTileset(tileset: TilesetResource): U
 
     /**
      * Sets the box type which can be used for wrapping.
@@ -69,10 +60,9 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
     fun withBoxType(boxType: BoxType): U
 
     /**
-     * Tells whether the resulting [Component] will be
-     * wrapped in a box.
+     * Sets the [ComponentDecorationRenderer]s for the resulting [Component].
      */
-    fun isWrappedWithBox(): Boolean
+    fun withDecorationRenderers(vararg renderers: ComponentDecorationRenderer): U
 
     /**
      * Sets whether the resulting [Component] will be
@@ -81,24 +71,8 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
     fun wrapWithBox(wrapWithBox: Boolean = true): U
 
     /**
-     * Tells whether the resulting [Component] will be
-     * wrapped with a shadow.
-     */
-    fun isWrappedWithShadow(): Boolean
-
-    /**
      * Sets whether the resulting [Component] will be
      * wrapped with a shadow.
      */
     fun wrapWithShadow(wrapWithShadow: Boolean = true): U
-
-    /**
-     * Returns the [ComponentDecorationRenderer]s (if any).
-     */
-    fun decorationRenderers(): List<ComponentDecorationRenderer>
-
-    /**
-     * Sets the [ComponentDecorationRenderer]s for the resulting [Component].
-     */
-    fun withDecorationRenderers(vararg renderers: ComponentDecorationRenderer): U
 }

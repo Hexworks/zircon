@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.color
 /**
  * Default ANSI colors.
  */
+@Suppress("RedundantModalityModifier")
 enum class ANSITileColor(final override val red: Int,
                          final override val green: Int,
                          final override val blue: Int,

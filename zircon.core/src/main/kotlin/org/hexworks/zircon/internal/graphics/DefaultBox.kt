@@ -17,16 +17,16 @@ class DefaultBox(
         boxType: BoxType,
         tileset: TilesetResource,
         private val backend: TileGraphics = TileGraphicsBuilder.newBuilder()
-                .tileset(tileset)
-                .size(size)
+                .withTileset(tileset)
+                .withSize(size)
                 .build())
     : Box, TileGraphics by backend {
 
     init {
         setStyleFrom(styleSet)
         val verticalChar = TileBuilder.newBuilder()
-                .styleSet(styleSet)
-                .character(boxType.vertical)
+                .withStyleSet(styleSet)
+                .withCharacter(boxType.vertical)
                 .buildCharacterTile()
         val horizontalChar = verticalChar
                 .withCharacter(boxType.horizontal)

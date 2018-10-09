@@ -102,8 +102,8 @@ data class DefaultCharacterTileString(private val textChars: List<CharacterTile>
 
     override fun toTileGraphic(tileset: TilesetResource) =
             TileGraphicsBuilder.newBuilder()
-                    .tileset(tileset)
-                    .size(size)
+                    .withTileset(tileset)
+                    .withSize(size)
                     .build().apply {
                         textChars.forEachIndexed { idx, tc ->
                             setTileAt(Position.create(idx, 0), tc)

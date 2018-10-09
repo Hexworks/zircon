@@ -31,7 +31,7 @@ class DefaultButtonTest {
                 .withComponentStyleSet(COMPONENT_STYLES)
                 .withPosition(POSITION)
                 .withTileset(tileset)
-                .text(TEXT)
+                .withText(TEXT)
                 .build() as DefaultButton
     }
 
@@ -42,8 +42,8 @@ class DefaultButtonTest {
         TEXT.forEachIndexed { i, char ->
             assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
                     .isEqualTo(TileBuilder.newBuilder()
-                            .character(char)
-                            .styleSet(DEFAULT_STYLE)
+                            .withCharacter(char)
+                            .withStyleSet(DEFAULT_STYLE)
                             .build())
         }
     }
@@ -123,32 +123,32 @@ class DefaultButtonTest {
         val POSITION = Position.create(4, 5)
         val FONT = BuiltInCP437TilesetResource.WANDERLUST_16X16
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .backgroundColor(ANSITileColor.RED)
-                .foregroundColor(ANSITileColor.GREEN)
-                .modifiers(Modifiers.crossedOut())
+                .withBackgroundColor(ANSITileColor.RED)
+                .withForegroundColor(ANSITileColor.GREEN)
+                .withModifiers(Modifiers.crossedOut())
                 .build()
         val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(DEFAULT_STYLE)
+                .withDefaultStyle(DEFAULT_STYLE)
                 .build()
 
         val EXPECTED_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.accentColor)
-                .backgroundColor(TileColor.transparent())
+                .withForegroundColor(THEME.accentColor)
+                .withBackgroundColor(TileColor.transparent())
                 .build()
 
         val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.primaryBackgroundColor)
-                .backgroundColor(THEME.accentColor)
+                .withForegroundColor(THEME.primaryBackgroundColor)
+                .withBackgroundColor(THEME.accentColor)
                 .build()
 
         val EXPECTED_FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryBackgroundColor)
-                .backgroundColor(THEME.accentColor)
+                .withForegroundColor(THEME.secondaryBackgroundColor)
+                .withBackgroundColor(THEME.accentColor)
                 .build()
 
         val EXPECTED_ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor)
-                .backgroundColor(THEME.accentColor)
+                .withForegroundColor(THEME.secondaryForegroundColor)
+                .withBackgroundColor(THEME.accentColor)
                 .build()
     }
 }

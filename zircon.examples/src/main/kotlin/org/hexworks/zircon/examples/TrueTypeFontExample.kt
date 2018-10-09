@@ -11,14 +11,14 @@ object TrueTypeFontExample {
         val theme = ColorThemes.amigaOs()
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultSize(Sizes.create(20, 10))
-                .defaultTileset(BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(60))
+                .withSize(Sizes.create(20, 10))
+                .withDefaultTileset(BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(60))
                 .build())
 
         tileGrid.draw(CharacterTileStrings.newBuilder()
-                .text("This is written with a true type font...")
-                .foregroundColor(theme.primaryForegroundColor)
-                .backgroundColor(theme.primaryBackgroundColor)
+                .withText("This is written with a true type font...")
+                .withForegroundColor(theme.primaryForegroundColor)
+                .withBackgroundColor(theme.primaryBackgroundColor)
                 .build())
 
 

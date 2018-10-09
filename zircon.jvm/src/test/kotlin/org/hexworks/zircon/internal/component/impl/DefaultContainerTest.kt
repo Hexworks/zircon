@@ -59,8 +59,8 @@ class DefaultContainerTest {
     @Test
     fun shouldProperlySetUpComponentsWhenNestedComponentsAreAdded() {
         val grid = TileGridBuilder.newBuilder()
-                .size(Size.create(40, 25))
-                .tileset(BuiltInCP437TilesetResource.REX_PAINT_16X16)
+                .withSize(Size.create(40, 25))
+                .withTileset(BuiltInCP437TilesetResource.REX_PAINT_16X16)
                 .build()
 
         val screen = ScreenBuilder.createScreenFor(grid)
@@ -73,12 +73,12 @@ class DefaultContainerTest {
                 .build()
         val panelHeader = HeaderBuilder.newBuilder()
                 .withPosition(Positions.create(1, 0))
-                .text("Header")
+                .withText("Header")
                 .build()
 
         val innerPanelHeader = HeaderBuilder.newBuilder()
                 .withPosition(Position.create(1, 0))
-                .text("Header2")
+                .withText("Header2")
                 .build()
         val innerPanel = PanelBuilder.newBuilder()
                 .wrapWithBox(true)
@@ -116,8 +116,8 @@ class DefaultContainerTest {
     @Test
     fun shouldProperlySetUpComponentsWhenAContainerIsAddedThenComponentsAreAddedToIt() {
         val grid = TileGridBuilder.newBuilder()
-                .size(Size.create(40, 25))
-                .tileset(BuiltInCP437TilesetResource.REX_PAINT_16X16)
+                .withSize(Size.create(40, 25))
+                .withTileset(BuiltInCP437TilesetResource.REX_PAINT_16X16)
                 .build()
         val screen = ScreenBuilder.createScreenFor(grid)
 
@@ -135,7 +135,7 @@ class DefaultContainerTest {
                 .build()
         val header0 = HeaderBuilder.newBuilder()
                 .withPosition(Position.create(1, 0))
-                .text("Header")
+                .withText("Header")
                 .build()
 
         screen.addComponent(panel0)
@@ -158,7 +158,7 @@ class DefaultContainerTest {
     fun shouldThrowExceptionIfComponentWithUnsupportedFontSizeIsAdded() {
         AppConfigs.newConfig().disableBetaFeatures().build()
         target.addComponent(LabelBuilder.newBuilder()
-                .text("foo")
+                .withText("foo")
                 .withTileset(badTileset)
                 .build())
     }
@@ -172,8 +172,8 @@ class DefaultContainerTest {
     fun shouldNotLetToAddAComponentWhichIntersectsWithAnother() {
         AppConfigs.newConfig().disableBetaFeatures().build()
         val pos = Position.create(1, 1)
-        val comp = LabelBuilder.newBuilder().withPosition(pos).text("text").build()
-        val otherComp = LabelBuilder.newBuilder().withPosition(pos.withRelativeX(1)).text("text").build()
+        val comp = LabelBuilder.newBuilder().withPosition(pos).withText("text").build()
+        val otherComp = LabelBuilder.newBuilder().withPosition(pos.withRelativeX(1)).withText("text").build()
         target.addComponent(comp)
         target.addComponent(otherComp)
     }
@@ -186,7 +186,7 @@ class DefaultContainerTest {
     @Test
     fun shouldProperlyRemoveComponentFromSelf() {
         val comp = LabelBuilder.newBuilder()
-                .text("x")
+                .withText("x")
                 .withPosition(Position.defaultPosition())
                 .build()
         target.addComponent(comp)
@@ -202,12 +202,12 @@ class DefaultContainerTest {
     @Test
     fun shouldProperlyRemoveAllComponentsFromSelf() {
         val comp1 = LabelBuilder.newBuilder()
-                .text("x")
+                .withText("x")
                 .withPosition(Position.defaultPosition())
                 .build()
         target.addComponent(comp1)
         val comp2 = LabelBuilder.newBuilder()
-                .text("x")
+                .withText("x")
                 .withPosition(Position.create(1,2))
                 .build()
         target.addComponent(comp2)
@@ -216,7 +216,7 @@ class DefaultContainerTest {
             removalHappened.set(true)
         }
 
-        assertThat(target.removeAllComponents()).isTrue()
+        assertThat(target.detachAllComponents()).isTrue()
         assertThat(removalHappened.get()).isTrue()
         assertThat(target.children).isEmpty()
     }
@@ -224,7 +224,7 @@ class DefaultContainerTest {
     @Test
     fun shouldProperlyRemoveComponentFromChild() {
         val comp = LabelBuilder.newBuilder()
-                .text("x")
+                .withText("x")
                 .withPosition(Position.defaultPosition())
                 .build()
         val panel = PanelBuilder.newBuilder()
@@ -248,31 +248,31 @@ class DefaultContainerTest {
         val POSITION = Position.create(2, 3)
         val NEW_POSITION = Position.create(6, 7)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .backgroundColor(ANSITileColor.BLUE)
-                .foregroundColor(ANSITileColor.RED)
+                .withBackgroundColor(ANSITileColor.BLUE)
+                .withForegroundColor(ANSITileColor.RED)
                 .build()
         val ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .backgroundColor(ANSITileColor.GREEN)
-                .foregroundColor(ANSITileColor.YELLOW)
+                .withBackgroundColor(ANSITileColor.GREEN)
+                .withForegroundColor(ANSITileColor.YELLOW)
                 .build()
         val DISABLED_STYLE = StyleSetBuilder.newBuilder()
-                .backgroundColor(ANSITileColor.MAGENTA)
-                .foregroundColor(ANSITileColor.BLUE)
+                .withBackgroundColor(ANSITileColor.MAGENTA)
+                .withForegroundColor(ANSITileColor.BLUE)
                 .build()
         val FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .backgroundColor(ANSITileColor.YELLOW)
-                .foregroundColor(ANSITileColor.CYAN)
+                .withBackgroundColor(ANSITileColor.YELLOW)
+                .withForegroundColor(ANSITileColor.CYAN)
                 .build()
         val MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .backgroundColor(ANSITileColor.RED)
-                .foregroundColor(ANSITileColor.CYAN)
+                .withBackgroundColor(ANSITileColor.RED)
+                .withForegroundColor(ANSITileColor.CYAN)
                 .build()
         val STYLES = ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(DEFAULT_STYLE)
-                .activeStyle(ACTIVE_STYLE)
-                .disabledStyle(DISABLED_STYLE)
-                .focusedStyle(FOCUSED_STYLE)
-                .mouseOverStyle(MOUSE_OVER_STYLE)
+                .withDefaultStyle(DEFAULT_STYLE)
+                .withActiveStyle(ACTIVE_STYLE)
+                .withDisabledStyle(DISABLED_STYLE)
+                .withFocusedStyle(FOCUSED_STYLE)
+                .withMouseOverStyle(MOUSE_OVER_STYLE)
                 .build()
     }
 }

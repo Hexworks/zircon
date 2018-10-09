@@ -35,15 +35,15 @@ interface Block {
 
         fun create(position: Position, tile: Tile = Tile.empty()): Block {
             return BlockBuilder.create()
-                    .position(position)
-                    .layer(tile)
+                    .withPosition(position)
+                    .addLayer(tile)
                     .build()
         }
 
         fun create(position: Position3D, tile: Tile = Tile.empty()): Block {
             return BlockBuilder.create()
-                    .position(position)
-                    .layer(tile)
+                    .withPosition(position)
+                    .addLayer(tile)
                     .build()
         }
     }

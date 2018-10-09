@@ -52,6 +52,11 @@ interface Component : Identifiable, Layer, InputEmitter {
     fun isAttached(): Boolean
 
     /**
+     * Detaches this [Component] from its parent (if any).
+     */
+    fun detach()
+
+    /**
      * Sets the style of this [Component] from the given `styleSet`
      * and also applies it to all currently present
      * [Tile]s.
@@ -63,10 +68,5 @@ interface Component : Identifiable, Layer, InputEmitter {
      * @return the [ComponentStyleSet] which the [ColorTheme] was converted to
      */
     fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet
-
-    /**
-     * Removes this [Component] from its parent (if any).
-     */
-    fun removeFromParent()
 
 }

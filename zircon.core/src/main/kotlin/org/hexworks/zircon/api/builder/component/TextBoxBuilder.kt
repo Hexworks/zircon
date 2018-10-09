@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.TextBox
+import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
@@ -24,7 +24,7 @@ data class TextBoxBuilder(
 
     private val inlineElements = ThreadSafeQueueFactory.create<Component>()
 
-    fun contentWidth(width: Int) = also {
+    fun withContentWidth(width: Int) = also {
         this.contentWidth = width
         currentSize = currentSize.withWidth(width)
     }
@@ -34,56 +34,56 @@ data class TextBoxBuilder(
     }
 
     @JvmOverloads
-    fun header(text: String, withNewLine: Boolean = true) = also {
+    fun addHeader(text: String, withNewLine: Boolean = true) = also {
         val size = Size.create(contentWidth, text.length.div(contentWidth) + 1)
         components.add(HeaderBuilder.newBuilder()
                 .withSize(size)
-                .text(text)
+                .withText(text)
                 .withPosition(nextPosition)
                 .build())
         updateSizeAndPosition(size.height)
         if (withNewLine) {
-            newLine()
+            addNewLine()
         }
     }
 
     @JvmOverloads
-    fun paragraph(paragraph: String, withNewLine: Boolean = true, withTypingEffect: Boolean = false) = also {
+    fun addParagraph(paragraph: String, withNewLine: Boolean = true, withTypingEffect: Boolean = false) = also {
         val size = Size.create(contentWidth, paragraph.length.div(contentWidth) + 1)
         components.add(ParagraphBuilder.newBuilder()
                 .withSize(size)
-                .text(paragraph)
+                .withText(paragraph)
                 .withTypingEffect(withTypingEffect)
                 .withPosition(nextPosition)
                 .build())
         updateSizeAndPosition(size.height)
         if (withNewLine) {
-            newLine()
+            addNewLine()
         }
     }
 
-    fun listItem(item: String) = also {
+    fun addListItem(item: String) = also {
         val size = Size.create(contentWidth, item.length.div(contentWidth) + 1)
         components.add(ListItemBuilder.newBuilder()
                 .withSize(size)
-                .text(item)
+                .withText(item)
                 .withPosition(nextPosition)
                 .build())
         updateSizeAndPosition(size.height)
     }
 
-    fun inlineText(text: String) = also {
+    fun addInlineText(text: String) = also {
         val currentInlineLength = currentInlineLength()
         require(currentInlineLength + text.length < contentWidth) {
             "The length of elements in the current line can't be bigger than '$contentWidth'."
         }
         inlineElements.add(LabelBuilder.newBuilder()
-                .text(text)
+                .withText(text)
                 .withPosition(Position.create(currentInlineLength, 0))
                 .build())
     }
 
-    fun inlineComponent(component: Component) = also {
+    fun addInlineComponent(component: Component) = also {
         val currentInlineLength = currentInlineLength()
         require(currentInlineLength + component.width < contentWidth) {
             "The length of elements in the current line can't be bigger than '$contentWidth'."
@@ -95,6 +95,11 @@ data class TextBoxBuilder(
         inlineElements.add(component)
     }
 
+    fun addNewLine() = also {
+        nextPosition = nextPosition.withRelativeY(1)
+        currentSize = currentSize.withRelativeHeight(1)
+    }
+
     fun commitInlineElements() = also {
         inlineElements.drainAll().forEach { component ->
             component.moveDownBy(nextPosition.y)
@@ -103,17 +108,12 @@ data class TextBoxBuilder(
         updateSizeAndPosition(1)
     }
 
-    fun newLine() = also {
-        nextPosition = nextPosition.withRelativeY(1)
-        currentSize = currentSize.withRelativeHeight(1)
-    }
-
     override fun build(): TextBox {
         require(currentSize != Size.unknown()) {
             "You must set a size for a TextBox!"
         }
         fillMissingValues()
-        val decorationSize = decorationRenderers().asSequence()
+        val decorationSize = decorationRenderers.asSequence()
                 .map { it.occupiedSize }
                 .fold(Size.zero(), Size::plus)
         return DefaultTextBox(
@@ -121,9 +121,9 @@ data class TextBoxBuilder(
                         size = currentSize + decorationSize,
                         position = position,
                         componentStyleSet = componentStyleSet,
-                        tileset = tileset()),
+                        tileset = tileset),
                 renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = decorationRenderers(),
+                        decorationRenderers = decorationRenderers,
                         componentRenderer = DefaultTextBoxRenderer())).also { textBox ->
             components.forEach {
                 textBox.addComponent(it)

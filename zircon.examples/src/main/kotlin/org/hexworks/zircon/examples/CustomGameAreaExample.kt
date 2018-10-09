@@ -16,7 +16,7 @@ object CustomGameAreaExample {
     class CustomGameArea(override val size: Size3D, private val layersPerBlock: Int) : BaseGameArea() {
         private val blocks = java.util.TreeMap<Position3D, Block>()
         private val filler = Blocks.newBuilder()
-                .layer(Tiles.empty())
+                .addLayer(Tiles.empty())
 
 
         override fun layersPerBlock(): Int {
@@ -32,7 +32,7 @@ object CustomGameAreaExample {
         }
 
         override fun fetchBlockOrDefault(position: Position3D): Block {
-            return blocks.getOrDefault(position, filler.position(position).build())
+            return blocks.getOrDefault(position, filler.withPosition(position).build())
         }
 
         override fun fetchBlocks(): Iterable<Block> {
@@ -59,15 +59,15 @@ object CustomGameAreaExample {
         makeCaves(gameArea)
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultSize(Sizes.create(60, 30))
+                .withSize(Sizes.create(60, 30))
                 .enableBetaFeatures()
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
 
         screen.addComponent(GameComponents.newGameComponentBuilder()
-                .visibleSize(Sizes.create3DSize(60, 30, 1))
-                .gameArea(gameArea)
+                .withVisibleSize(Sizes.create3DSize(60, 30, 1))
+                .withGameArea(gameArea)
                 .build())
 
         screen.display()
@@ -109,20 +109,20 @@ object CustomGameAreaExample {
         tiles.forEach { pos, tile ->
             val pos3D = Positions.from2DTo3D(pos)
             gameArea.setBlockAt(pos3D, Blocks.newBuilder()
-                    .layer(tile)
-                    .position(pos3D)
+                    .addLayer(tile)
+                    .withPosition(pos3D)
                     .build())
         }
     }
 
     val FLOOR = Tiles.newBuilder()
-            .character(Symbols.INTERPUNCT)
-            .foregroundColor(ANSITileColor.YELLOW)
+            .withCharacter(Symbols.INTERPUNCT)
+            .withForegroundColor(ANSITileColor.YELLOW)
             .buildCharacterTile()
 
     val WALL = Tiles.newBuilder()
-            .character('#')
-            .foregroundColor(TileColors.fromString("#999999"))
+            .withCharacter('#')
+            .withForegroundColor(TileColors.fromString("#999999"))
             .buildCharacterTile()
 
 }

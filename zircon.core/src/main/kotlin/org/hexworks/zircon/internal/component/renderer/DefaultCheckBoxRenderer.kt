@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
 
-class DefaultCheckBoxRenderer : ComponentRenderer<CheckBox>() {
+class DefaultCheckBoxRenderer : ComponentRenderer<CheckBox> {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<CheckBox>) {
         val style = context.componentStyle.currentStyle()

@@ -9,7 +9,6 @@ import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
-import org.hexworks.zircon.api.screen.Screen;
 import org.jetbrains.annotations.NotNull;
 
 public class LayersExample {
@@ -21,9 +20,9 @@ public class LayersExample {
     public static void main(String[] args) {
 
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .defaultTileset(BuiltInCP437TilesetResource.ROGUE_YUN_16X16)
-                .defaultSize(SIZE)
-                .debugMode(true)
+                .withDefaultTileset(BuiltInCP437TilesetResource.ROGUE_YUN_16X16)
+                .withSize(SIZE)
+                .withDebugMode(true)
                 .build());
 
         final TileGrid tileGrid = app.getTileGrid();
@@ -53,21 +52,21 @@ public class LayersExample {
 
     private static void addOverlayAt(TileGrid tileGrid, Position offset, Size size, TileColor color) {
         tileGrid.pushLayer(new LayerBuilder()
-                .offset(offset)
-                .size(size)
+                .withOffset(offset)
+                .withSize(size)
                 .build()
                 .fill(Tiles.newBuilder()
-                        .backgroundColor(color)
-                        .character(' ')
+                        .withBackgroundColor(color)
+                        .withCharacter(' ')
                         .build()));
     }
 
     @NotNull
     private static Tile buildWhiteOnBlack(char c) {
         return Tiles.newBuilder()
-                .character(c)
-                .backgroundColor(TileColors.create(0, 0, 0, 255))
-                .foregroundColor(TileColors.create(255, 255, 255, 255))
+                .withCharacter(c)
+                .withBackgroundColor(TileColors.create(0, 0, 0, 255))
+                .withForegroundColor(TileColors.create(255, 255, 255, 255))
                 .build();
     }
 

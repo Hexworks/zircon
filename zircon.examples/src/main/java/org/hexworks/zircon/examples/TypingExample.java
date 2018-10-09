@@ -28,11 +28,11 @@ public class TypingExample {
     public static void main(String[] args) {
 
         final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigBuilder.Companion.newBuilder()
-                .defaultTileset(BuiltInCP437TilesetResource.BISASAM_16X16)
-                .defaultSize(Sizes.create(TERMINAL_WIDTH, 10))
-                .cursorBlinking(true)
-                .cursorStyle(CursorStyle.FIXED_BACKGROUND)
-                .cursorColor(TileColors.fromString("#ff00ff"))
+                .withDefaultTileset(BuiltInCP437TilesetResource.BISASAM_16X16)
+                .withSize(Sizes.create(TERMINAL_WIDTH, 10))
+                .withCursorBlinking(true)
+                .withCursorStyle(CursorStyle.FIXED_BACKGROUND)
+                .withCursorColor(TileColors.fromString("#ff00ff"))
                 .build());
 
         startTypingSupport(tileGrid);

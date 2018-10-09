@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 
-class DefaultLogAreaRenderer : ComponentRenderer<LogArea>() {
+class DefaultLogAreaRenderer : ComponentRenderer<LogArea> {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<LogArea>) {
         val style = context.componentStyle.currentStyle()

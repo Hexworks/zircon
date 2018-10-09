@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TileType
+import org.hexworks.zircon.api.resource.TilesetResource
 
 abstract class BaseImageTile : BaseTile(), ImageTile {
 
@@ -22,12 +23,15 @@ abstract class BaseImageTile : BaseTile(), ImageTile {
         get() = TileType.IMAGE_TILE
 
     override val styleSet: StyleSet
-        get() = StyleSet.defaultStyle()
+        get() = StyleSet.empty()
 
     override fun withName(name: String) = Tile.createImageTile(
             name = name,
-            tileset = tileset,
-            style = styleSet)
+            tileset = tileset)
+
+    override fun withTileset(tileset: TilesetResource) = Tile.createImageTile(
+            name = name,
+            tileset = tileset)
 
     override fun withForegroundColor(foregroundColor: TileColor) = this
 

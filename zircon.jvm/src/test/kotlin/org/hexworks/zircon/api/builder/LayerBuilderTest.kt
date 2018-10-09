@@ -20,8 +20,8 @@ class LayerBuilderTest {
     @Test
     fun shouldProperlyBuildLayer() {
         val result = target
-                .size(SIZE)
-                .offset(OFFSET)
+                .withSize(SIZE)
+                .withOffset(OFFSET)
                 .build()
                 .fill(FILLER)
 

@@ -34,8 +34,8 @@ object ScrollingLogAreaExample {
     @JvmStatic
     fun main(args: Array<String>) {
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(tileset)
-                .defaultSize(Sizes.create(70, 30))
+                .withDefaultTileset(tileset)
+                .withSize(Sizes.create(70, 30))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)

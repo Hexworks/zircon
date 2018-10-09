@@ -108,28 +108,23 @@ interface Size : Comparable<Size> {
      * Tells whether this [Size] contains the given [Position].
      * Works in the same way as [Rect.containsPosition].
      */
-    fun containsPosition(position: Position) = width > position.x && height > position.y
+    fun containsPosition(position: Position): Boolean
 
     /**
      * Converts this [Size] to a [Position]:
      * [Size.width] to [Position.x] and [Size.height] to [Position.y]
      */
-    fun toPosition() = Position.create(width, height)
+    fun toPosition(): Position
 
     /**
      * Converts this [Size] to a [Rect] using [Position.zero].
      */
-    fun toRect(): Rect = toRect(Position.defaultPosition())
+    fun toRect(): Rect
 
     /**
      * Converts this [Size] to a [Rect] with the given [Position].
      */
     fun toRect(position: Position): Rect
-
-    /**
-     * Tells whether this [Size] has a negative component (width or height) or not.
-     */
-    fun hasNegativeComponent(): Boolean
 
     companion object {
 
@@ -141,7 +136,7 @@ interface Size : Comparable<Size> {
         /**
          * The default grid size is (80 * 24)
          */
-        fun defaultTerminalSize() = DEFAULT_TERMINAL_SIZE
+        fun defaultGridSize() = DEFAULT_TERMINAL_SIZE
 
         /**
          * Size of (0 * 0).

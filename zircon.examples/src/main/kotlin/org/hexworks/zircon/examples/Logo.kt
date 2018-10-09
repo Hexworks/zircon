@@ -17,14 +17,14 @@ object Logo {
         val rex = REXPaintResource.loadREXFile(RexLoaderExample::class.java.getResourceAsStream("/rex_files/zircon_logo.xp"))
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(BuiltInCP437TilesetResource.REX_PAINT_20X20)
+                .withDefaultTileset(BuiltInCP437TilesetResource.REX_PAINT_20X20)
                 .enableBetaFeatures()
-                .defaultSize(size)
+                .withSize(size)
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        val img = DrawSurfaces.tileGraphicsBuilder().size(size).build()
+        val img = DrawSurfaces.tileGraphicsBuilder().withSize(size).build()
 
         rex.toLayerList().forEach {
             img.draw(it)
@@ -38,7 +38,7 @@ object Logo {
                     DefaultAnimationFrame(
                             size = size,
                             layers = listOf(Layers.newBuilder()
-                                    .tileGraphic(img.toTileImage()
+                                    .withTileGraphic(img.toTileImage()
                                             .transform { tc ->
                                                 tc.withBackgroundColor(tc.backgroundColor
                                                         .darkenByPercent(idx.toDouble().div(20)))
@@ -55,7 +55,7 @@ object Logo {
                     DefaultAnimationFrame(
                             size = size,
                             layers = listOf(Layers.newBuilder()
-                                    .tileGraphic(img.toTileImage().transform { tc ->
+                                    .withTileGraphic(img.toTileImage().transform { tc ->
                                         tc.withBackgroundColor(tc.backgroundColor
                                                 .darkenByPercent(idx.toDouble().div(20)))
                                                 .withForegroundColor(tc.foregroundColor
@@ -66,7 +66,7 @@ object Logo {
         }
 
         val anim = builder
-                .loopCount(0)
+                .withLoopCount(0)
                 .setPositionForAll(Positions.zero())
                 .build()
 

@@ -22,9 +22,9 @@ fun main(args: Array<String>) {
     val tileset = BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(20)
 
     val tileGrid = SwingApplications.startTileGrid(AppConfigBuilder.newBuilder()
-            .defaultSize(size)
-            .defaultTileset(tileset)
-            .debugMode(true)
+            .withSize(size)
+            .withDefaultTileset(tileset)
+            .withDebugMode(true)
             .build())
 
     val random = Random()
@@ -39,8 +39,8 @@ fun main(args: Array<String>) {
     val layers = (0..layerCount).map {
 
         val imageLayer = DrawSurfaces.tileGraphicsBuilder()
-                .size(layerSize)
-                .tileset(tileset)
+                .withSize(layerSize)
+                .withTileset(tileset)
                 .build()
         layerSize.fetchPositions().forEach {
             imageLayer.setTileAt(it, filler)
@@ -57,11 +57,11 @@ fun main(args: Array<String>) {
     }
 
     val tiles = listOf(
-            Tiles.newBuilder().character('a').styleSet(StyleSet.create(
+            Tiles.newBuilder().withCharacter('a').withStyleSet(StyleSet.create(
                     foregroundColor = ANSITileColor.YELLOW,
                     backgroundColor = ANSITileColor.BLUE))
                     .buildCharacterTile(),
-            Tiles.newBuilder().character('b').styleSet(StyleSet.create(
+            Tiles.newBuilder().withCharacter('b').withStyleSet(StyleSet.create(
                     foregroundColor = ANSITileColor.GREEN,
                     backgroundColor = ANSITileColor.RED))
                     .buildCharacterTile())

@@ -54,11 +54,16 @@ class DefaultComponentContainerTest {
         assertThat(target.transformComponentsToLayers()).hasSize(1) // default container
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun shouldNotLetToAddAComponentWhichIsBiggerThanTheContainer() {
-        target.addComponent(PanelBuilder.newBuilder()
-                .withSize(Size.create(999, 999))
-                .build())
+        try {
+            target.addComponent(PanelBuilder.newBuilder()
+                    .withSize(Size.create(999, 999))
+                    .build())
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw e
+        }
     }
 
     @Test
@@ -177,7 +182,7 @@ class DefaultComponentContainerTest {
         val button = createButton()
         target.addComponent(button)
         val other = ButtonBuilder.newBuilder()
-                .text(BUTTON_TEXT)
+                .withText(BUTTON_TEXT)
                 .withPosition(Position.create(0, 1)
                         .relativeToBottomOf(button))
                 .build()
@@ -214,7 +219,7 @@ class DefaultComponentContainerTest {
 
     private fun createButton() = ButtonBuilder.newBuilder()
             .withPosition(BUTTON_POSITION)
-            .text(BUTTON_TEXT)
+            .withText(BUTTON_TEXT)
             .withComponentStyleSet(STYLES)
             .build()
 
@@ -224,31 +229,31 @@ class DefaultComponentContainerTest {
         val BUTTON_TEXT = "TEXT"
         val BUTTON_POSITION = Position.create(6, 7)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .backgroundColor(ANSITileColor.BLUE)
-                .foregroundColor(ANSITileColor.RED)
+                .withBackgroundColor(ANSITileColor.BLUE)
+                .withForegroundColor(ANSITileColor.RED)
                 .build()
         val ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .backgroundColor(ANSITileColor.GREEN)
-                .foregroundColor(ANSITileColor.YELLOW)
+                .withBackgroundColor(ANSITileColor.GREEN)
+                .withForegroundColor(ANSITileColor.YELLOW)
                 .build()
         val DISABLED_STYLE = StyleSetBuilder.newBuilder()
-                .backgroundColor(ANSITileColor.MAGENTA)
-                .foregroundColor(ANSITileColor.BLUE)
+                .withBackgroundColor(ANSITileColor.MAGENTA)
+                .withForegroundColor(ANSITileColor.BLUE)
                 .build()
         val FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .backgroundColor(ANSITileColor.YELLOW)
-                .foregroundColor(ANSITileColor.CYAN)
+                .withBackgroundColor(ANSITileColor.YELLOW)
+                .withForegroundColor(ANSITileColor.CYAN)
                 .build()
         val MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .backgroundColor(ANSITileColor.RED)
-                .foregroundColor(ANSITileColor.CYAN)
+                .withBackgroundColor(ANSITileColor.RED)
+                .withForegroundColor(ANSITileColor.CYAN)
                 .build()
         val STYLES = ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(DEFAULT_STYLE)
-                .activeStyle(ACTIVE_STYLE)
-                .disabledStyle(DISABLED_STYLE)
-                .focusedStyle(FOCUSED_STYLE)
-                .mouseOverStyle(MOUSE_OVER_STYLE)
+                .withDefaultStyle(DEFAULT_STYLE)
+                .withActiveStyle(ACTIVE_STYLE)
+                .withDisabledStyle(DISABLED_STYLE)
+                .withFocusedStyle(FOCUSED_STYLE)
+                .withMouseOverStyle(MOUSE_OVER_STYLE)
                 .build()
     }
 }

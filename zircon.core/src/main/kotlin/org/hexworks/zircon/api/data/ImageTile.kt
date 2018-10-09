@@ -8,10 +8,12 @@ import org.hexworks.zircon.api.resource.TilesetResource
 
 interface ImageTile : Tile, TilesetOverride {
 
-    val tileset: TilesetResource
     val name: String
+    val tileset: TilesetResource
 
     fun withName(name: String): ImageTile
+
+    fun withTileset(tileset: TilesetResource): ImageTile
 
     override fun withForegroundColor(foregroundColor: TileColor): ImageTile
 

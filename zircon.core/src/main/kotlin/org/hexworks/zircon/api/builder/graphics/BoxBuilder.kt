@@ -15,29 +15,30 @@ data class BoxBuilder(
         private var style: StyleSet = StyleSet.defaultStyle(),
         private var boxType: BoxType = BoxType.BASIC) : Builder<Box> {
 
+    // TODO: extract size, style, box type and tileset to a common builder
     /**
      * Sets the size for the new [org.hexworks.zircon.api.graphics.Box].
      * Default is 3x3.
      */
-    fun size(size: Size) = also {
+    fun withSize(size: Size) = also {
         this.size = size
     }
 
     /**
      * Sets the style for the resulting [org.hexworks.zircon.api.graphics.Box].
      */
-    fun style(style: StyleSet) = also {
+    fun withStyle(style: StyleSet) = also {
         this.style = style
     }
 
     /**
      * Sets the [BoxType] for the resulting [org.hexworks.zircon.api.graphics.Box].
      */
-    fun boxType(boxType: BoxType) = also {
+    fun withBoxType(boxType: BoxType) = also {
         this.boxType = boxType
     }
 
-    fun tileset(tileset: TilesetResource) = also {
+    fun withTileset(tileset: TilesetResource) = also {
         this.tileset = tileset
     }
 

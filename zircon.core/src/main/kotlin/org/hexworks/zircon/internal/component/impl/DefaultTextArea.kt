@@ -58,17 +58,17 @@ class DefaultTextArea constructor(
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryBackgroundColor)
-                        .backgroundColor(colorTheme.secondaryForegroundColor)
+                .withDefaultStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.secondaryBackgroundColor)
+                        .withBackgroundColor(colorTheme.secondaryForegroundColor)
                         .build())
-                .disabledStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor)
-                        .backgroundColor(colorTheme.secondaryBackgroundColor)
+                .withDisabledStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.secondaryForegroundColor)
+                        .withBackgroundColor(colorTheme.secondaryBackgroundColor)
                         .build())
-                .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.primaryBackgroundColor)
-                        .backgroundColor(colorTheme.primaryForegroundColor)
+                .withFocusedStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.primaryBackgroundColor)
+                        .withBackgroundColor(colorTheme.primaryForegroundColor)
                         .build())
                 .build().also {
                     componentStyleSet = it

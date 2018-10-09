@@ -62,16 +62,12 @@ data class Size3D private constructor(val xLength: Int,
     }
 
     /**
-     * Returns the number of [Position3D]s which are covered
-     * with this [Size3D].
-     */
-    fun fetchPositionCount(): Long = xLength.toLong() * yLength.toLong() * zLength.toLong()
-
-    /**
      * Transforms this [Size3D] to a [Size]. Note that
      * the `zLength` component is lost during the conversion!
      */
     fun to2DSize() = Size.create(xLength, yLength)
+
+    private fun fetchPositionCount(): Long = xLength.toLong() * yLength.toLong() * zLength.toLong()
 
     companion object {
 
@@ -80,10 +76,14 @@ data class Size3D private constructor(val xLength: Int,
         /**
          * Factory method for [Size3D].
          */
-        fun create(xLength: Int, yLength: Int, zLength: Int) = Size3D(
-                xLength = xLength,
-                yLength = yLength,
-                zLength = zLength)
+        fun create(xLength: Int, yLength: Int, zLength: Int): Size3D {
+            require(listOf(xLength, yLength, zLength).all { it >= 0 }) {
+                "Can't create a Size3D with a negative length."
+            }
+            return Size3D(xLength = xLength,
+                    yLength = yLength,
+                    zLength = zLength)
+        }
 
         /**
          * Creates a new [Size3D] from a [Size].

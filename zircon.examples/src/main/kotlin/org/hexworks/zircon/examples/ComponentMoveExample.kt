@@ -9,7 +9,7 @@ object ComponentMoveExample {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultSize(Sizes.create(60, 30))
+                .withSize(Sizes.create(60, 30))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
@@ -25,7 +25,7 @@ object ComponentMoveExample {
                 .build()
 
         innerPanel.addComponent(Components.button()
-                .text("Foo")
+                .withText("Foo")
                 .withPosition(Positions.offset1x1())
                 .build())
 

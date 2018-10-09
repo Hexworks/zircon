@@ -33,8 +33,8 @@ abstract class DefaultComponent(
         private val renderer: ComponentRenderingStrategy<out Component>,
         private val graphics: TileGraphics = TileGraphicsBuilder
                 .newBuilder()
-                .tileset(componentMetadata.tileset)
-                .size(componentMetadata.size)
+                .withTileset(componentMetadata.tileset)
+                .withSize(componentMetadata.size)
                 .build(),
         private val boundable: DefaultBoundable = DefaultBoundable(
                 size = componentMetadata.size,
@@ -134,9 +134,9 @@ abstract class DefaultComponent(
 
     open fun transformToLayers() =
             listOf(LayerBuilder.newBuilder()
-                    .tileGraphic(graphics)
-                    .offset(position)
-                    .tileset(currentTileset())
+                    .withTileGraphic(graphics)
+                    .withOffset(position)
+                    .withTileset(currentTileset())
                     .build())
 
     override fun toString(): String {

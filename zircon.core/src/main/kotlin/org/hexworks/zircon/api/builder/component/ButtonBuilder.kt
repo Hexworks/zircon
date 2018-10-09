@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.Button
+import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
@@ -25,7 +25,7 @@ data class ButtonBuilder(
         this.wrapSides = wrapSides
     }
 
-    fun text(text: String) = also {
+    fun withText(text: String) = also {
         this.text = text
     }
 
@@ -34,7 +34,7 @@ data class ButtonBuilder(
             "A Button can't be blank!"
         }
         fillMissingValues()
-        var renderers = decorationRenderers()
+        var renderers = decorationRenderers
         if (wrapSides) {
             renderers += ButtonSideDecorationRenderer()
         }
@@ -53,7 +53,7 @@ data class ButtonBuilder(
                         size = finalSize,
                         position = position,
                         componentStyleSet = componentStyleSet,
-                        tileset = tileset()),
+                        tileset = tileset),
                 text = text,
                 renderingStrategy = componentRenderer)
     }

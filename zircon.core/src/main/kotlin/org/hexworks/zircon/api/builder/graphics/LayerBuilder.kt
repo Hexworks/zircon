@@ -20,14 +20,14 @@ import org.hexworks.zircon.internal.graphics.DefaultLayer
  */
 data class LayerBuilder(
         private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
-        private var size: Size = Size.defaultTerminalSize(),
+        private var size: Size = Size.defaultGridSize(),
         private var offset: Position = Position.defaultPosition(),
         private var tileGraphic: Maybe<TileGraphics> = Maybe.empty()) : Builder<Layer> {
 
     /**
      * Sets the [Tileset] to use with the resulting [Layer].
      */
-    fun tileset(tileset: TilesetResource) = also {
+    fun withTileset(tileset: TilesetResource) = also {
         this.tileset = tileset
     }
 
@@ -35,7 +35,7 @@ data class LayerBuilder(
      * Sets the size for the new [org.hexworks.zircon.api.graphics.Layer].
      * Default is 1x1.
      */
-    fun size(size: Size) = also {
+    fun withSize(size: Size) = also {
         this.size = size
     }
 
@@ -43,14 +43,14 @@ data class LayerBuilder(
      * Sets the `offset` for the new [org.hexworks.zircon.api.graphics.Layer].
      * Default is 0x0.
      */
-    fun offset(offset: Position) = also {
+    fun withOffset(offset: Position) = also {
         this.offset = offset
     }
 
     /**
      * Uses the given [TileGraphics] and converts it to a [Layer].
      */
-    fun tileGraphic(tileGraphic: TileGraphics) = also {
+    fun withTileGraphic(tileGraphic: TileGraphics) = also {
         this.tileGraphic = Maybe.of(tileGraphic)
     }
 

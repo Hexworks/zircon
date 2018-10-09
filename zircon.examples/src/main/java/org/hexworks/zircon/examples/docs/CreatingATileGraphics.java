@@ -14,16 +14,16 @@ public class CreatingATileGraphics {
     public static void main(String[] args) {
 
         TileGraphics graphics = DrawSurfaces.tileGraphicsBuilder()
-                .size(Sizes.create(10, 10))
-                .style(StyleSets.newBuilder()
-                        .backgroundColor(ANSITileColor.RED)
-                        .foregroundColor(ANSITileColor.MAGENTA)
-                        .modifiers(Modifiers.glow())
+                .withSize(Sizes.create(10, 10))
+                .withStyle(StyleSets.newBuilder()
+                        .withBackgroundColor(ANSITileColor.RED)
+                        .withForegroundColor(ANSITileColor.MAGENTA)
+                        .withModifiers(Modifiers.glow())
                         .build())
-                .tileset(CP437TilesetResources.rexPaint16x16())
+                .withTileset(CP437TilesetResources.rexPaint16x16())
                 .build()
                 .fill(Tiles.newBuilder()
-                        .character('x')
+                        .withCharacter('x')
                         .build());
     }
 }

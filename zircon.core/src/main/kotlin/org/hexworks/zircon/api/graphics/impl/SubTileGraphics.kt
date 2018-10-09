@@ -61,8 +61,8 @@ class SubTileGraphics(
         text.forEachIndexed { col, char ->
             setTileAt(position.withRelativeX(col), TileBuilder
                     .newBuilder()
-                    .styleSet(toStyleSet())
-                    .character(char)
+                    .withStyleSet(toStyleSet())
+                    .withCharacter(char)
                     .build())
         }
     }

@@ -66,7 +66,7 @@ class DefaultPanelTest {
     @Test
     fun shouldProperlyApplyThemeToChildren() {
         val component = LabelBuilder.newBuilder()
-                .text("fo")
+                .withText("fo")
                 .build()
         target.addComponent(component)
         target.applyColorTheme(THEME)
@@ -76,15 +76,15 @@ class DefaultPanelTest {
     }
 
     companion object {
+        const val TITLE = "TITLE"
         val BOX_TYPE = BoxType.LEFT_RIGHT_DOUBLE
-        val TITLE = "TITLE"
         val FONT = BuiltInCP437TilesetResource.WANDERLUST_16X16
         val SIZE = Size.create(5, 6)
         val POSITION = Position.create(2, 3)
         val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         val EXPECTED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor)
-                .backgroundColor(THEME.primaryBackgroundColor)
+                .withForegroundColor(THEME.secondaryForegroundColor)
+                .withBackgroundColor(THEME.primaryBackgroundColor)
                 .build()
     }
 }
