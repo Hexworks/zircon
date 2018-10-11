@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component
 
-import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
@@ -18,13 +17,13 @@ import org.hexworks.zircon.internal.behavior.Focusable
  * a clean API for [Component]s but enables Zircon and the developers of custom [Component]s
  * to interact with them in a more meaningful manner.
  */
-interface InternalComponent : Component, Drawable, Focusable, InputListener, KeyStrokeListener, MouseListener {
+interface InternalComponent : Component, Focusable, InputListener, KeyStrokeListener, MouseListener {
 
     /**
      * The [org.hexworks.zircon.api.graphics.TileGraphics] which this
      * component uses for drawing.
      */
-    val tileGraphics: TileGraphics
+    val graphics: TileGraphics
 
     override fun isAttached(): Boolean = fetchParent().isPresent
 

@@ -1,12 +1,11 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.zircon.api.behavior.Subscription
-import org.hexworks.zircon.api.event.Event
 import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.internal.behavior.InternalSubscription
 import org.hexworks.zircon.internal.util.ThreadSafeQueue
 
-class DefaultSubscription<T : Event>(
+class DefaultSubscription<T : Any>(
         val listener: Consumer<T>,
         private val subscriptions: ThreadSafeQueue<out Subscription>) : InternalSubscription<T> {
 

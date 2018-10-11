@@ -7,7 +7,7 @@ import org.hexworks.zircon.internal.behavior.InternalSubscription
 import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
-class DefaultObservable<T : Event> : Observable<T> {
+class DefaultObservable<T : Any> : Observable<T> {
 
     override val subscriptions = ThreadSafeQueueFactory.create<InternalSubscription<T>>()
 

@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.util.Runnable
  * Extension function which adapts [RadioButtonGroup.onSelection] to
  * Kotlin idioms (eg: lambdas).
  */
-fun RadioButtonGroup.onSelection(fn: (Selection) -> Unit) {
+inline fun RadioButtonGroup.onSelection(crossinline fn: (Selection) -> Unit) {
     onSelection(object : Consumer<Selection> {
         override fun accept(value: Selection) {
             fn(value)
@@ -18,7 +18,7 @@ fun RadioButtonGroup.onSelection(fn: (Selection) -> Unit) {
     })
 }
 
-fun RadioButton.onSelected(fn: () -> Unit) {
+inline fun RadioButton.onSelected(crossinline fn: () -> Unit) {
     onSelected(object : Runnable {
         override fun run() {
             fn()

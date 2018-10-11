@@ -35,6 +35,6 @@ open class DefaultPanel(componentMetadata: ComponentMetadata,
     }
 
     final override fun render() {
-        renderingStrategy.render(this, tileGraphics)
+        renderingStrategy.render(this, graphics)
     }
 }

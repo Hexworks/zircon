@@ -251,7 +251,7 @@ object IsometricGameArea {
                     }
                     val (x, y, z) = gameComponent.visibleOffset()
                     screen.pushLayer(Layers.newBuilder()
-                            .withTileGraphic(CharacterTileStringBuilder.newBuilder()
+                            .withTileGraphics(CharacterTileStringBuilder.newBuilder()
                                     .withBackgroundColor(TileColors.transparent())
                                     .withForegroundColor(TileColors.fromString("#aaaadd"))
                                     .withText(String.format("Position: (x=%s, y=%s, z=%s)", x, y, z))

@@ -6,8 +6,8 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 
-class DefaultBoundable(size: Size,
-                       position: Position = Position.defaultPosition())
+class DefaultMovable(size: Size,
+                     position: Position = Position.defaultPosition())
     : Boundable, Movable {
 
     // note that we could delegate `Boundable` to rect but delegation of

@@ -79,7 +79,7 @@ class DefaultGameComponent(componentMetadata: ComponentMetadata,
                         size = Size3D.from2DSize(size, 1))
                 segment.forEach {
                     result.add(LayerBuilder.newBuilder()
-                            .withTileGraphic(it)
+                            .withTileGraphics(it)
                             .withOffset(position)
                             .build())
                 }
@@ -126,7 +126,7 @@ class DefaultGameComponent(componentMetadata: ComponentMetadata,
                 }
             }
             builders.forEach {
-                result.add(LayerBuilder.newBuilder().withTileGraphic(it.build()).build())
+                result.add(LayerBuilder.newBuilder().withTileGraphics(it.build()).build())
             }
         }
         return result

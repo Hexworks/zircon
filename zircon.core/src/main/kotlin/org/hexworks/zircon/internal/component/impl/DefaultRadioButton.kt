@@ -109,7 +109,7 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics)
+        renderingStrategy.render(this, graphics)
     }
 
     fun select() {

@@ -135,7 +135,7 @@ class DefaultTextArea constructor(
             keyStroke.inputType() == InputType.Tab || keyStroke.inputType() == InputType.ReverseTab
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics)
+        renderingStrategy.render(this, graphics)
     }
 
     private fun scrollToCursor() {

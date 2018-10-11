@@ -1,9 +1,10 @@
-package org.hexworks.zircon.api.behavior
+package org.hexworks.zircon.api.graphics
 
+import org.hexworks.zircon.api.behavior.Drawable
+import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.util.Maybe
 
 /**
  * Represents an object which can be drawn upon.
@@ -12,13 +13,7 @@ import org.hexworks.zircon.api.util.Maybe
  * [Tile]s and drawing [Drawable]s. Each [DrawSurface] can use its own
  * tileset, so it also implements [TilesetOverride].
  */
-interface DrawSurface : Boundable, TilesetOverride {
-
-    /**
-     * Returns the character stored at a particular position on this [DrawSurface].
-     * Returns an empty [Maybe] if no [Tile] is present at the given [Position].
-     */
-    fun getTileAt(position: Position): Maybe<Tile>
+interface DrawSurface : TileComposite, TilesetOverride {
 
     /**
      * Sets a [Tile] at a specific position in the [DrawSurface] to `tile`.

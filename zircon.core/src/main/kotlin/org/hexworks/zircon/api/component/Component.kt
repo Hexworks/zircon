@@ -18,7 +18,7 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  * like a label or a check box is a [Container] while a label which is only intended to
  * display information is a [Component].
  */
-interface Component : Identifiable, Layer, InputEmitter {
+interface Component : Identifiable, InputEmitter, Layer {
 
     /**
      * The [Position] where the content of this [Component] starts
@@ -55,13 +55,6 @@ interface Component : Identifiable, Layer, InputEmitter {
      * Detaches this [Component] from its parent (if any).
      */
     fun detach()
-
-    /**
-     * Sets the style of this [Component] from the given `styleSet`
-     * and also applies it to all currently present
-     * [Tile]s.
-     */
-    fun applyStyle(styleSet: StyleSet)
 
     /**
      * Applies a [ColorTheme] to this component and recursively to all its children (if any).

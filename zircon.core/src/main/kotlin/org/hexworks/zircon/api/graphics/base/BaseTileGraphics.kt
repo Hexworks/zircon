@@ -1,11 +1,10 @@
 package org.hexworks.zircon.api.graphics.base
 
-import org.hexworks.zircon.api.behavior.Boundable
-import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Styleable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
@@ -14,7 +13,6 @@ import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.kotlin.toMap
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.behavior.impl.DefaultStyleable
 import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride
 import org.hexworks.zircon.internal.data.DefaultCell
@@ -31,16 +29,16 @@ import org.hexworks.zircon.internal.graphics.DefaultTileImage
 abstract class BaseTileGraphics(
         styleSet: StyleSet,
         tileset: TilesetResource,
-        size: Size,
+        override val size: Size,
         private val tilesetOverride: TilesetOverride = DefaultTilesetOverride(
                 tileset = tileset),
         private val contents: MutableMap<Position, Tile>,
-        styleable: Styleable = DefaultStyleable(styleSet),
-        boundable: Boundable = DefaultBoundable(size = size))
+        styleable: Styleable = DefaultStyleable(styleSet))
     : TileGraphics,
         Styleable by styleable,
-        Boundable by boundable,
         TilesetOverride by tilesetOverride {
+
+    private val rect = Rect.create(size = size)
 
     override fun toString(): String {
         return (0 until height).joinToString("") { y ->
@@ -59,7 +57,7 @@ abstract class BaseTileGraphics(
     }
 
     override fun getTileAt(position: Position): Maybe<Tile> {
-        return if (containsPosition(position)) {
+        return if (rect.containsPosition(position)) {
             Maybe.of(contents[position] ?: Tile.empty())
         } else {
             Maybe.empty()

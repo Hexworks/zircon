@@ -18,7 +18,7 @@ public class UsingLayers {
         TileGrid tileGrid = SwingApplications.startTileGrid();
 
         Layer layer0 = Layers.newBuilder()
-                .withTileGraphic(DrawSurfaces.tileGraphicsBuilder()
+                .withTileGraphics(DrawSurfaces.tileGraphicsBuilder()
                         .withSize(Sizes.create(3, 3))
                         .build()
                         .fill(Tiles.newBuilder()
@@ -30,7 +30,7 @@ public class UsingLayers {
                 .build();
 
         Layer layer1 = Layers.newBuilder()
-                .withTileGraphic(DrawSurfaces.tileGraphicsBuilder()
+                .withTileGraphics(DrawSurfaces.tileGraphicsBuilder()
                         .withSize(Sizes.create(3, 3))
                         .build()
                         .fill(Tiles.newBuilder()

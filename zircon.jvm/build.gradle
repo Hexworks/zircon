@@ -13,6 +13,10 @@ publishing {
     }
 }
 
+jacoco {
+    toolVersion = '0.8.2'
+}
+
 jacocoTestReport {
     reports {
         xml.enabled false
@@ -23,7 +27,8 @@ jacocoTestReport {
 
 test {
     jacoco {
-        exclude("*equals", "*hashCode")
+        exclude("*equals", "*hashCode", "*toString", "*component1",
+                "*component2", "*component3", "*component4")
     }
 }
 

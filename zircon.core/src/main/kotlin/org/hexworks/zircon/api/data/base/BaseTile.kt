@@ -1,10 +1,8 @@
 package org.hexworks.zircon.api.data.base
 
-import org.hexworks.zircon.api.behavior.DrawSurface
+import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.data.*
-import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Border
-import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 import org.hexworks.zircon.api.util.Maybe
 

@@ -99,7 +99,7 @@ class DefaultTextAreaTest {
     @Test
     fun shouldRefreshDrawSurfaceIfSetText() {
         target.text = UPDATE_TEXT.toString()
-        val character = target.tileGraphics.getTileAt(Position.defaultPosition())
+        val character = target.graphics.getTileAt(Position.defaultPosition())
         assertThat(character.get().asCharacterTile().get().character)
                 .isEqualTo(UPDATE_TEXT)
     }

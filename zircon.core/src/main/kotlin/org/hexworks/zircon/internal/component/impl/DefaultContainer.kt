@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.zircon.api.behavior.DrawSurface
+import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.component.Component
@@ -118,7 +118,7 @@ abstract class DefaultContainer(componentMetadata: ComponentMetadata,
 
     override fun transformToLayers(): List<Layer> {
         return listOf(LayerBuilder.newBuilder()
-                .withTileGraphic(tileGraphics)
+                .withTileGraphics(graphics)
                 .withOffset(position)
                 .build())
                 .flatMap { layer ->
@@ -134,7 +134,7 @@ abstract class DefaultContainer(componentMetadata: ComponentMetadata,
     }
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
-        surface.draw(tileGraphics, position)
+        surface.draw(graphics, position)
         components.forEach {
             it.drawOnto(surface)
         }

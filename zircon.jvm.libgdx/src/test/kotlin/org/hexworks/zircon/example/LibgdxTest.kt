@@ -5,11 +5,13 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.RunTimeStats
@@ -35,7 +37,7 @@ class GdxExample : ApplicationAdapter() {
     private val layerHeight = 15
     private val layerSize = Size.create(layerWidth, layerHeight)
     private val filler = Tiles.defaultTile().withCharacter('x')
-    private var layers: List<DefaultLayer> = (0..layerCount).map {
+    private var layers: List<Layer> = (0..layerCount).map {
 
         val imageLayer = DrawSurfaces.tileGraphicsBuilder()
                 .withSize(layerSize)
@@ -45,11 +47,12 @@ class GdxExample : ApplicationAdapter() {
             imageLayer.setTileAt(it, filler)
         }
 
-        val layer = DefaultLayer(
-                currentPosition = Position.create(
+        val layer = LayerBuilder.newBuilder()
+                .withOffset(Position.create(
                         x = random.nextInt(terminalWidth - layerWidth),
-                        y = random.nextInt(terminalHeight - layerHeight)),
-                backend = imageLayer)
+                        y = random.nextInt(terminalHeight - layerHeight)))
+                .withTileGraphics(imageLayer)
+                .build()
 
         tileGrid.pushLayer(layer)
         layer
