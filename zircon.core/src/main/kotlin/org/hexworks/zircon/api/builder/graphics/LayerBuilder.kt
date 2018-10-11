@@ -50,17 +50,17 @@ data class LayerBuilder(
     /**
      * Uses the given [TileGraphics] and converts it to a [Layer].
      */
-    fun withTileGraphic(tileGraphic: TileGraphics) = also {
+    fun withTileGraphics(tileGraphic: TileGraphics) = also {
         this.tileGraphic = Maybe.of(tileGraphic)
     }
 
     override fun build(): Layer = if (tileGraphic.isPresent) {
         DefaultLayer(
-                currentPosition = offset,
+                position = offset,
                 backend = tileGraphic.get())
     } else {
         DefaultLayer(
-                currentPosition = offset,
+                position = offset,
                 backend = TileGraphicsBuilder(
                         tileset = tileset,
                         size = size).build())

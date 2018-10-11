@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
+import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -47,11 +48,12 @@ fun main(args: Array<String>) {
             imageLayer.setTileAt(it, filler)
         }
 
-        val layer = DefaultLayer(
-                currentPosition = Position.create(
+        val layer = LayerBuilder.newBuilder()
+                .withOffset(Position.create(
                         x = random.nextInt(terminalWidth - layerWidth),
-                        y = random.nextInt(terminalHeight - layerHeight)),
-                backend = imageLayer)
+                        y = random.nextInt(terminalHeight - layerHeight)))
+                .withTileGraphics(imageLayer)
+                .build()
 
         screen.pushLayer(layer)
         layer

@@ -36,7 +36,7 @@ class DefaultCheckBoxTest {
 
     @Test
     fun shouldProperlyAddCheckBoxText() {
-        val surface = target.tileGraphics
+        val surface = target.graphics
         val offset = 4
         TEXT.forEachIndexed { i, char ->
             Assertions.assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())

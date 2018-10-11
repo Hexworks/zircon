@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.graphics
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
@@ -13,7 +12,6 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.kotlin.toMap
 import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.junit.Before
 import org.junit.Test
 
@@ -30,43 +28,8 @@ class TileGraphicsTest {
     }
 
     @Test
-    fun shouldReportProperBounds() {
-        assertThat(target.rect).isEqualTo(Rect.create(size = SIZE_OF_3X3))
-    }
-
-    @Test
     fun shouldReportProperSize() {
         assertThat(target.size).isEqualTo(SIZE_OF_3X3)
-    }
-
-    @Test
-    fun shouldIntersectWithIntersectingBoundable() {
-        assertThat(target.intersects(DefaultBoundable(Size.create(5, 5))))
-    }
-
-    @Test
-    fun shouldNotIntersectWithNonIntersectingBoundable() {
-        assertThat(target.intersects(DefaultBoundable(Size.create(2, 2), Position.create(3, 3))))
-    }
-
-    @Test
-    fun shouldContainContainedPosition() {
-        assertThat(target.containsPosition(Position.create(2, 2))).isTrue()
-    }
-
-    @Test
-    fun shouldNotContainNotContainedPosition() {
-        assertThat(target.containsPosition(Position.create(3, 3))).isFalse()
-    }
-
-    @Test
-    fun shouldContainContainedBoundable() {
-        assertThat(target.containsBoundable(Boundable.create(Position.offset1x1(), Sizes.create(2, 2))))
-    }
-
-    @Test
-    fun shouldNotContainNotContainedBoundable() {
-        assertThat(target.containsBoundable(Boundable.create(Position.create(2, 2), Sizes.create(2, 2))))
     }
 
     @Test

@@ -15,6 +15,6 @@ class ButtonSideDecorationRenderer : ComponentDecorationRenderer {
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
         tileGraphics.applyStyle(context.component.componentStyleSet.currentStyle())
         tileGraphics.putText("[", Position.defaultPosition())
-        tileGraphics.putText("]", Position.create(tileGraphics.width - 1, 0))
+        tileGraphics.putText("]", Position.create(tileGraphics.size.width - 1, 0))
     }
 }

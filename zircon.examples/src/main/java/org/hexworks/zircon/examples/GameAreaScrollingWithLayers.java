@@ -149,7 +149,7 @@ public class GameAreaScrollingWithLayers {
 
     private static void enableMovement(final Screen screen, final DefaultGameComponent gameComponent) {
         final AtomicReference<Layer> coordinates = new AtomicReference<>(Layers.newBuilder()
-                .withTileGraphic(CharacterTileStrings.newBuilder()
+                .withTileGraphics(CharacterTileStrings.newBuilder()
                         .withBackgroundColor(TileColors.transparent())
                         .withForegroundColor(TileColors.fromString("#aaaadd"))
                         .withText(String.format("Position: (x=%s, y=%s, z=%s)", 0, 0, 0))
@@ -182,7 +182,7 @@ public class GameAreaScrollingWithLayers {
                 screen.removeLayer(coordinates.get());
                 Position3D visibleOffset = gameComponent.visibleOffset();
                 coordinates.set(Layers.newBuilder()
-                        .withTileGraphic(CharacterTileStrings.newBuilder()
+                        .withTileGraphics(CharacterTileStrings.newBuilder()
                                 .withBackgroundColor(TileColors.transparent())
                                 .withForegroundColor(TileColors.fromString("#aaaadd"))
                                 .withText(String.format("Position: (x=%s, y=%s, z=%s)",

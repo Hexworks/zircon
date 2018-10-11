@@ -1,15 +1,15 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.internal.graphics.DefaultLayer
 import java.util.*
 
 fun main(args: Array<String>) {
@@ -43,11 +43,12 @@ fun main(args: Array<String>) {
             imageLayer.setTileAt(it, filler)
         }
 
-        val layer = DefaultLayer(
-                currentPosition = Position.create(
+        val layer = LayerBuilder.newBuilder()
+                .withOffset(Position.create(
                         x = random.nextInt(terminalWidth - layerWidth),
-                        y = random.nextInt(terminalHeight - layerHeight)),
-                backend = imageLayer)
+                        y = random.nextInt(terminalHeight - layerHeight)))
+                .withTileGraphics(imageLayer)
+                .build()
 
         tileGrid.pushLayer(layer)
         layer

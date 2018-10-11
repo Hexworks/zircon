@@ -1,14 +1,19 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Movable
-import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.util.Maybe
 
 interface Layer : DrawSurface, Drawable, Movable {
+
+    override val size: Size
+
+    override val width: Int
+
+    override val height: Int
 
     /**
      * Fetches all the (absolute) [Position]s which this

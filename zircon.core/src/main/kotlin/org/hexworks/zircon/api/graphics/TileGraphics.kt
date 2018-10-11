@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.Clearable
-import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Styleable
 import org.hexworks.zircon.api.data.*
@@ -79,7 +78,7 @@ interface TileGraphics
      * target [Tile]s should be kept or not
      */
     fun applyStyle(styleSet: StyleSet,
-                   rect: Rect = this.rect,
+                   rect: Rect = Rect.create(size = this.size),
                    keepModifiers: Boolean = false,
                    applyToEmptyCells: Boolean = true) {
         val offset = rect.position
@@ -105,6 +104,9 @@ interface TileGraphics
         }
     }
 
+    /**
+     * Converts this [TileGraphics] to a new [TileImage].
+     */
     fun toTileImage(): TileImage
 
     /**

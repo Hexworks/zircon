@@ -9,7 +9,6 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.input.Input
-import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.util.Maybe
 
 class DefaultButton(componentMetadata: ComponentMetadata,
@@ -20,28 +19,6 @@ class DefaultButton(componentMetadata: ComponentMetadata,
         renderer = renderingStrategy) {
 
     init {
-        render()
-    }
-
-    // TODO: move these to DefaultComponent since this is applicable almost everywhere
-
-    override fun mouseEntered(action: MouseAction) {
-        componentStyleSet.applyMouseOverStyle()
-        render()
-    }
-
-    override fun mouseExited(action: MouseAction) {
-        componentStyleSet.reset()
-        render()
-    }
-
-    override fun mousePressed(action: MouseAction) {
-        componentStyleSet.applyActiveStyle()
-        render()
-    }
-
-    override fun mouseReleased(action: MouseAction) {
-        componentStyleSet.applyMouseOverStyle()
         render()
     }
 
@@ -85,6 +62,6 @@ class DefaultButton(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics)
+        renderingStrategy.render(this, graphics)
     }
 }

@@ -2,24 +2,29 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
+import org.hexworks.zircon.api.builder.component.LabelBuilder
+import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
 import org.hexworks.zircon.api.kotlin.onMousePressed
+import org.hexworks.zircon.api.modifier.SimpleModifiers
+import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
 import org.junit.Before
 import org.junit.Test
@@ -33,16 +38,17 @@ class DefaultComponentTest {
 
     @Before
     fun setUp() {
-        tileset = FONT
+        tileset = TILESET
         target = object : DefaultComponent(
                 componentMetadata = ComponentMetadata(
-                        size = SIZE,
-                        position = POSITION,
+                        size = SIZE_4x4,
+                        position = POSITION_2x3,
                         componentStyleSet = STYLES,
                         tileset = tileset),
                 renderer = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = DefaultRadioButtonGroupRenderer())) {
+
             override fun render() {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
@@ -66,9 +72,8 @@ class DefaultComponentTest {
     }
 
     @Test
-    fun shouldUseFontFromComponentWhenTransformingToLayer() {
-        val result = target.transformToLayers()
-        result.forEach {
+    fun shouldUseTilesetFromComponentWhenTransformingToLayer() {
+        target.transformToLayers().forEach {
             assertThat(it.currentTileset().id).isEqualTo(tileset.id)
         }
     }
@@ -81,50 +86,81 @@ class DefaultComponentTest {
 
     @Test
     fun shouldProperlySetNewPosition() {
-        target.moveTo(NEW_POSITION)
+        target.moveTo(NEW_POSITION_6x7)
 
-        assertThat(target.position).isEqualTo(NEW_POSITION)
+        assertThat(target.position).isEqualTo(NEW_POSITION_6x7)
     }
 
     @Test
     fun shouldContainBoundableWhichIsContained() {
-        assertThat(target.containsBoundable(DefaultBoundable(SIZE - Size.one(), POSITION))).isTrue()
+        assertThat(target.containsBoundable(Rect.create(POSITION_2x3, SIZE_4x4 - Size.one()))).isTrue()
     }
 
     @Test
     fun shouldNotContainBoundableWhichIsContained() {
-        assertThat(target.containsBoundable(DefaultBoundable(SIZE + Size.one(), POSITION))).isFalse()
+        assertThat(target.containsBoundable(Rect.create(POSITION_2x3, SIZE_4x4 + Size.one()))).isFalse()
     }
 
     @Test
     fun shouldContainPositionWhichIsContained() {
-        assertThat(target.containsPosition(POSITION)).isTrue()
+        assertThat(target.containsPosition(POSITION_2x3)).isTrue()
     }
 
     @Test
     fun shouldNotContainPositionWhichIsContained() {
-        assertThat(target.containsPosition(POSITION - Position.offset1x1())).isFalse()
+        assertThat(target.containsPosition(POSITION_2x3 - Position.offset1x1())).isFalse()
     }
 
     @Test
     fun shouldProperlyDrawOntoTileGraphic() {
         val image = TileGraphicsBuilder.newBuilder()
-                .withSize(SIZE + Size.create(POSITION.x, POSITION.y))
+                .withSize(SIZE_4x4 + Size.create(POSITION_2x3.x, POSITION_2x3.y))
                 .build()
-        target.drawOnto(image, POSITION)
+        val filler = Tile.defaultTile().withCharacter('f')
+        target.fill(filler)
+        target.drawOnto(image, POSITION_2x3)
 
-        assertThat(image.getTileAt(POSITION - Position.offset1x1()).get())
+        assertThat(image.getTileAt(POSITION_2x3 - Position.offset1x1()).get())
                 .isEqualTo(Tile.empty())
 
         target.size.fetchPositions().forEach {
-            assertThat(image.getTileAt(it + POSITION).get())
-                    .isEqualTo(target.tileGraphics.getTileAt(it).get())
+            assertThat(image.getTileAt(it + POSITION_2x3).get())
+                    .isEqualTo(filler)
         }
     }
 
     @Test
+    fun shouldProperlyCalculateAbsolutePositionWithDeeplyNestedComponents() {
+
+        val rootPos = Position.create(1, 1)
+        val parentPos = Position.create(2, 1)
+        val leafPos = Position.create(1, 2)
+
+        val root = PanelBuilder.newBuilder()
+                .withSize(Size.create(10, 10))
+                .withPosition(rootPos)
+                .build()
+
+        val parent = PanelBuilder.newBuilder()
+                .withSize(Size.create(7, 7))
+                .withPosition(parentPos)
+                .build()
+
+        root.addComponent(parent)
+
+        val leaf = LabelBuilder.newBuilder()
+                .withPosition(leafPos)
+                .withText("foo")
+                .build()
+
+        parent.addComponent(leaf)
+
+        assertThat(leaf.absolutePosition).isEqualTo(rootPos + parentPos + leafPos)
+    }
+
+    @Test
     fun shouldProperlyFetchByPositionWhenContainsPosition() {
-        assertThat(target.fetchComponentByPosition(POSITION).get()).isEqualTo(target)
+        assertThat(target.fetchComponentByPosition(POSITION_2x3).get()).isEqualTo(target)
     }
 
     @Test
@@ -139,7 +175,7 @@ class DefaultComponentTest {
             pressed.set(true)
         }
 
-        target.inputEmitted(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION))
+        target.inputEmitted(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION_2x3))
 
         assertThat(pressed.get()).isTrue()
     }
@@ -173,29 +209,29 @@ class DefaultComponentTest {
     }
 
     companion object {
-        val FONT = BuiltInCP437TilesetResource.ROGUE_YUN_16X16
-        val SIZE = Size.create(4, 4)
-        val POSITION = Position.create(2, 3)
-        val NEW_POSITION = Position.create(6, 7)
+        val TILESET = BuiltInCP437TilesetResource.ROGUE_YUN_16X16
+        val POSITION_2x3 = Position.create(2, 3)
+        val NEW_POSITION_6x7 = Position.create(6, 7)
+        val SIZE_4x4 = Size.create(4, 4)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(ANSITileColor.BLUE)
-                .withForegroundColor(ANSITileColor.RED)
+                .withBackgroundColor(BLUE)
+                .withForegroundColor(RED)
                 .build()
         val ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(ANSITileColor.GREEN)
-                .withForegroundColor(ANSITileColor.YELLOW)
+                .withBackgroundColor(GREEN)
+                .withForegroundColor(YELLOW)
                 .build()
         val DISABLED_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(ANSITileColor.MAGENTA)
-                .withForegroundColor(ANSITileColor.BLUE)
+                .withBackgroundColor(MAGENTA)
+                .withForegroundColor(BLUE)
                 .build()
         val FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(ANSITileColor.YELLOW)
-                .withForegroundColor(ANSITileColor.CYAN)
+                .withBackgroundColor(YELLOW)
+                .withForegroundColor(CYAN)
                 .build()
         val MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(ANSITileColor.RED)
-                .withForegroundColor(ANSITileColor.CYAN)
+                .withBackgroundColor(RED)
+                .withForegroundColor(CYAN)
                 .build()
         val STYLES = ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(DEFAULT_STYLE)

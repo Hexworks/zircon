@@ -1,35 +1,20 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.zircon.api.behavior.Boundable
-import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.TilesetOverride
-import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.Math
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.api.util.TileTransformer
-import org.hexworks.zircon.internal.data.DefaultCell
-import org.hexworks.zircon.internal.graphics.DefaultTileImage
 
 /**
  * An immutable image built from [Tile]s. It is completely in memory but it can be drawn onto
  * [DrawSurface]s like a [org.hexworks.zircon.api.grid.TileGrid] or a [TileGraphics].
  */
-interface TileImage
-    : Boundable, Drawable, TilesetOverride {
+interface TileImage : Drawable, TileComposite, TilesetOverride {
 
-    /**
-     * Returns the character stored at a particular position on this [DrawSurface].
-     * Returns an empty [Maybe] if no [Tile] is present at the given [Position].
-     */
-    fun getTileAt(position: Position): Maybe<Tile>
 
     /**
      * Returns a [List] of [Position]s which are not considered empty.

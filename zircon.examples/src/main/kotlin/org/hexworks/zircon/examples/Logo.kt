@@ -38,7 +38,7 @@ object Logo {
                     DefaultAnimationFrame(
                             size = size,
                             layers = listOf(Layers.newBuilder()
-                                    .withTileGraphic(img.toTileImage()
+                                    .withTileGraphics(img.toTileImage()
                                             .transform { tc ->
                                                 tc.withBackgroundColor(tc.backgroundColor
                                                         .darkenByPercent(idx.toDouble().div(20)))
@@ -55,7 +55,7 @@ object Logo {
                     DefaultAnimationFrame(
                             size = size,
                             layers = listOf(Layers.newBuilder()
-                                    .withTileGraphic(img.toTileImage().transform { tc ->
+                                    .withTileGraphics(img.toTileImage().transform { tc ->
                                         tc.withBackgroundColor(tc.backgroundColor
                                                 .darkenByPercent(idx.toDouble().div(20)))
                                                 .withForegroundColor(tc.foregroundColor

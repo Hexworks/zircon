@@ -18,8 +18,7 @@ class DefaultLayerableTest {
     @Before
     fun setUp() {
         tileset = FONT
-        target = DefaultLayerable(
-                size = SIZE)
+        target = DefaultLayerable()
     }
 
     @Test
@@ -128,7 +127,6 @@ class DefaultLayerableTest {
     }
 
     companion object {
-        val SIZE = Size.create(10, 10)
         val FONT = BuiltInCP437TilesetResource.WANDERLUST_16X16
     }
 }

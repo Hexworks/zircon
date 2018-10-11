@@ -1,39 +1,35 @@
 package org.hexworks.zircon.internal.graphics
 
-import org.hexworks.zircon.api.behavior.Boundable
-import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
+import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.util.Maybe
+import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 
-/**
- * this is a basic building block which can be re-used by complex image
- * classes like layers, boxes, components, and more
- * all classes which are implementing the DrawSurface or the Drawable operations can
- * use this class as a base class just like how the TileGrid uses it
- */
-
-data class DefaultLayer(private var currentPosition: Position,
-                        val backend: TileGraphics)
+class DefaultLayer(position: Position,
+                   val backend: TileGraphics,
+                   private val movable: DefaultMovable = DefaultMovable(
+                           position = position,
+                           size = backend.size))
     : Layer,
         DrawSurface by backend,
-        Drawable by backend {
+        Drawable by backend,
+        Movable by movable {
 
-    // note that we could delegate to rect but delegation of
-    // mutable vars is broken in Kotlin:
-    // http://the-cogitator.com/2018/09/29/by-the-way-exploring-delegation-in-kotlin.html#the-pitfall-of-interface-delegation
+    override val size: Size
+        get() = movable.size
 
-    override val rect: Rect
-        get() = currentRect
+    override val width: Int
+        get() = size.width
 
-    override val position: Position
-        get() = currentPosition
-
-    private var currentRect: Rect = regenerateRect()
+    override val height: Int
+        get() = size.height
 
     override fun createSnapshot(): Snapshot {
         return backend.createSnapshot().let { snapshot ->
@@ -43,44 +39,22 @@ data class DefaultLayer(private var currentPosition: Position,
         }
     }
 
-    override fun getAbsoluteTileAt(position: Position) = backend.getTileAt(position - this.position)
+    override fun getAbsoluteTileAt(position: Position): Maybe<Tile> {
+        return backend.getTileAt(position - this.position)
+    }
 
     override fun setAbsoluteTileAt(position: Position, tile: Tile) {
         backend.setTileAt(position - this.position, tile)
     }
 
-    override fun moveTo(position: Position) =
-            if (this.position == position) {
-                false
-            } else {
-                currentPosition = position
-                currentRect = regenerateRect()
-                true
-            }
-
-    override fun intersects(boundable: Boundable): Boolean {
-        return rect.intersects(boundable.rect)
-    }
-
-    override fun containsPosition(position: Position): Boolean {
-        return rect.containsPosition(position)
-    }
-
-    override fun containsBoundable(boundable: Boundable): Boolean {
-        return rect.containsBoundable(boundable.rect)
-    }
-
+    // TODO: make deep copy!
     override fun createCopy() = DefaultLayer(
-            currentPosition = position,
+            position = position,
             backend = backend)
 
     override fun fill(filler: Tile): Layer {
         backend.fill(filler)
         return this
-    }
-
-    private fun regenerateRect(): Rect {
-        return Rect.create(position, size)
     }
 
 }

@@ -38,7 +38,7 @@ class DefaultRadioButtonTest {
 
     @Test
     fun shouldProperlyAddRadioButtonText() {
-        val surface = target.tileGraphics
+        val surface = target.graphics
         val offset = 4
         TEXT.forEachIndexed { i, char ->
             assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
@@ -115,7 +115,7 @@ class DefaultRadioButtonTest {
         assertThat(target.componentStyleSet.currentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
-    private fun getButtonChar() = target.tileGraphics.getTileAt(Position.create(1, 0))
+    private fun getButtonChar() = target.graphics.getTileAt(Position.create(1, 0))
             .get().asCharacterTile().get().character
 
     companion object {

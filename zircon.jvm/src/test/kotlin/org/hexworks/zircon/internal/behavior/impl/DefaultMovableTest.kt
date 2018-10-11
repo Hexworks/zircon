@@ -7,13 +7,13 @@ import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.junit.Before
 import org.junit.Test
 
-class DefaultBoundableTest {
+class DefaultMovableTest {
 
-    lateinit var target: DefaultBoundable
+    lateinit var target: DefaultMovable
 
     @Before
     fun setUp() {
-        target = DefaultBoundable(
+        target = DefaultMovable(
                 size = TARGET_SIZE,
                 position = Position.defaultPosition())
     }
@@ -39,7 +39,7 @@ class DefaultBoundableTest {
 
     @Test
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundable() {
-        assertThat(target.intersects(DefaultBoundable(TARGET_SIZE)))
+        assertThat(target.intersects(DefaultMovable(TARGET_SIZE)))
                 .isTrue()
     }
 
@@ -62,13 +62,13 @@ class DefaultBoundableTest {
 
     @Test
     fun shouldContainBoundableWhenCalledWithContainedBoundable() {
-        assertThat(target.containsBoundable(DefaultBoundable(Size.one())))
+        assertThat(target.containsBoundable(DefaultMovable(Size.one())))
                 .isTrue()
     }
 
     @Test
     fun shouldNotContainBoundableWhenCalledWithNonContainedBoundable() {
-        assertThat(target.containsBoundable(DefaultBoundable(Size.create(100, 100))))
+        assertThat(target.containsBoundable(DefaultMovable(Size.create(100, 100))))
                 .isFalse()
     }
 

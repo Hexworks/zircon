@@ -33,7 +33,7 @@ class TileGridScreen(
                 tileset = tileGrid.currentTileset(),
                 size = tileGrid.size,
                 layerable = ComponentsLayerable(
-                        layerable = DefaultLayerable(tileGrid.size),
+                        layerable = DefaultLayerable(),
                         components = componentsContainer)),
         private val containerHandler: InternalComponentContainer =
                 DefaultComponentContainer(componentsContainer))
