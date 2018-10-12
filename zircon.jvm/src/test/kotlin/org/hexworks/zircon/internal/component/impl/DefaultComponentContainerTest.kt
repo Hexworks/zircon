@@ -47,12 +47,12 @@ class DefaultComponentContainerTest {
     fun shouldProperlyRemoveComponent() {
         val button = createButton()
         target.addComponent(button)
-        assertThat(target.transformComponentsToLayers()).hasSize(2)
+        assertThat(target.toFlattenedLayers()).hasSize(2)
 
         val result = target.removeComponent(button)
 
         assertThat(result).isTrue()
-        assertThat(target.transformComponentsToLayers()).hasSize(1) // default container
+        assertThat(target.toFlattenedLayers()).hasSize(1) // default container
     }
 
     // TODO: why tf this is working in idea and not in gradle?

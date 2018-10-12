@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 
 class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
-                                 private val renderingStrategy: ComponentRenderingStrategy<LogArea>)
+                                 private val renderingStrategy: ComponentRenderingStrategy<DefaultLogArea>)
     : LogArea, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
@@ -123,6 +123,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     private fun createTextBoxBuilder(): TextBoxBuilder {
         return TextBoxBuilder
                 .newBuilder()
+                .withTileset(currentTileset())
                 .withContentWidth(width)
     }
 

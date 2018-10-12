@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.input.Input
@@ -70,6 +71,14 @@ abstract class DefaultComponent(
         }
     }
 
+    final override fun createSnapshot(): Snapshot {
+        return graphics.createSnapshot().let { snapshot ->
+            Snapshot.create(
+                    cells = snapshot.cells.map { it.withPosition(it.position + absolutePosition) },
+                    tileset = snapshot.tileset)
+        }
+    }
+
     override fun mouseEntered(action: MouseAction) {
         componentStyleSet.applyMouseOverStyle()
         render()
@@ -107,13 +116,13 @@ abstract class DefaultComponent(
         }
     }
 
-    // TODO: should this be part of the public api?
-    open fun transformToLayers() =
-            listOf(LayerBuilder.newBuilder()
-                    .withTileGraphics(graphics)
-                    .withOffset(position)
-                    .withTileset(currentTileset())
-                    .build())
+    override fun toFlattenedLayers(): Iterable<Layer> {
+        return listOf(this)
+    }
+
+    override fun toFlattenedComponents(): Iterable<InternalComponent> {
+        return listOf(this)
+    }
 
     override fun toString(): String {
         return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}," +

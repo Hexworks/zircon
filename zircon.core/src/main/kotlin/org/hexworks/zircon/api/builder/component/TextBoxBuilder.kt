@@ -39,6 +39,8 @@ data class TextBoxBuilder(
         components.add(HeaderBuilder.newBuilder()
                 .withSize(size)
                 .withText(text)
+                // TODO: regression test tileset in all methods here
+                .withTileset(tileset)
                 .withPosition(nextPosition)
                 .build())
         updateSizeAndPosition(size.height)
@@ -54,6 +56,7 @@ data class TextBoxBuilder(
                 .withSize(size)
                 .withText(paragraph)
                 .withTypingEffect(withTypingEffect)
+                .withTileset(tileset)
                 .withPosition(nextPosition)
                 .build())
         updateSizeAndPosition(size.height)
@@ -68,6 +71,7 @@ data class TextBoxBuilder(
                 .withSize(size)
                 .withText(item)
                 .withPosition(nextPosition)
+                .withTileset(tileset)
                 .build())
         updateSizeAndPosition(size.height)
     }
@@ -80,6 +84,7 @@ data class TextBoxBuilder(
         inlineElements.add(LabelBuilder.newBuilder()
                 .withText(text)
                 .withPosition(Position.create(currentInlineLength, 0))
+                .withTileset(tileset)
                 .build())
     }
 
@@ -90,6 +95,10 @@ data class TextBoxBuilder(
         }
         require(component.height == 1) {
             "An inline Component can only have a height of 1."
+        }
+        require(tileset.size == component.currentTileset().size) {
+            "Trying to add component with incompatible tileset size '${component.currentTileset().size}' to" +
+                    "container with tileset size: '${tileset.size}'!"
         }
         component.moveRightBy(currentInlineLength)
         inlineElements.add(component)

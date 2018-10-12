@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.util.Maybe
 
 class DefaultListItem(componentMetadata: ComponentMetadata,
                       override val text: String,
-                      private val renderingStrategy: ComponentRenderingStrategy<ListItem>)
+                      private val renderingStrategy: ComponentRenderingStrategy<DefaultListItem>)
     : ListItem, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {

@@ -12,7 +12,6 @@ import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.kotlin.onInput
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.component.impl.DefaultLabelTest
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
 import org.junit.Before
@@ -29,7 +28,7 @@ class TileGridScreenTest {
     @Before
     fun setUp() {
         AppConfigs.newConfig().enableBetaFeatures().build()
-        tileset = DefaultLabelTest.FONT
+        tileset = FONT
         terminal = RectangleTileGrid(
                 tileset = tileset,
                 size = SIZE)

@@ -19,18 +19,18 @@ class RootContainer(componentMetadata: ComponentMetadata,
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        val css = ComponentStyleSetBuilder.newBuilder()
+        // we don't need to call render here because a component is automatically
+        // rendered when its style changes
+        componentStyleSet = ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
                         .withBackgroundColor(colorTheme.secondaryBackgroundColor)
                         .build())
                 .build()
-        componentStyleSet = css
-        render()
         children.forEach {
             it.applyColorTheme(colorTheme)
         }
-        return css
+        return componentStyleSet
     }
 
     override fun render() {

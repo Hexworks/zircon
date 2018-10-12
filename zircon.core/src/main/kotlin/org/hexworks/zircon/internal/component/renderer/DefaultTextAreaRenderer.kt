@@ -1,15 +1,15 @@
 package org.hexworks.zircon.internal.component.renderer
 
-import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.kotlin.fold
+import org.hexworks.zircon.internal.component.impl.DefaultTextArea
 
-class DefaultTextAreaRenderer : ComponentRenderer<TextArea> {
+class DefaultTextAreaRenderer : ComponentRenderer<DefaultTextArea> {
 
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<TextArea>) {
+    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<DefaultTextArea>) {
         val style = context.componentStyle.currentStyle()
         val component = context.component
         tileGraphics.applyStyle(style)

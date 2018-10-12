@@ -17,13 +17,12 @@ import org.hexworks.zircon.api.util.Runnable
 import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
-import org.hexworks.zircon.internal.event.EmptyEvent
 
 class DefaultRadioButton(componentMetadata: ComponentMetadata,
                          override val text: String,
                          private val renderingStrategy: ComponentRenderingStrategy<RadioButton>)
     : RadioButton,
-        Observable<EmptyEvent> by DefaultObservable(),
+        Observable<Unit> by DefaultObservable(),
         DefaultComponent(
                 componentMetadata = componentMetadata,
                 renderer = renderingStrategy) {
@@ -35,11 +34,6 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
     private var selected = false
 
     init {
-        render()
-    }
-
-    override fun mouseEntered(action: MouseAction) {
-        componentStyleSet.applyMouseOverStyle()
         render()
     }
 
@@ -62,8 +56,8 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
     override fun isSelected() = selected
 
     override fun onSelected(runnable: Runnable): Subscription {
-        return addObserver(object : Consumer<EmptyEvent> {
-            override fun accept(value: EmptyEvent) {
+        return addObserver(object : Consumer<Unit> {
+            override fun accept(value: Unit) {
                 runnable.run()
             }
         })
@@ -112,12 +106,12 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
         renderingStrategy.render(this, graphics)
     }
 
-    fun select() {
+    override fun select() {
         componentStyleSet.applyMouseOverStyle()
         currentState = SELECTED
         selected = true
         render()
-        notifyObservers(EmptyEvent)
+        notifyObservers(Unit)
     }
 
     fun removeSelection() {
