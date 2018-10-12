@@ -1,11 +1,10 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
@@ -13,9 +12,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
 import org.hexworks.zircon.api.kotlin.onSelection
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.resource.ColorThemeResource
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
 import org.junit.Before
@@ -23,23 +19,30 @@ import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
 
 @Suppress("MemberVisibilityCanBePrivate")
-class DefaultRadioButtonGroupTest {
+class DefaultRadioButtonGroupTest : ComponentImplementationTest<DefaultRadioButtonGroup>() {
 
-    lateinit var target: DefaultRadioButtonGroup
-    lateinit var tileset: TilesetResource
+    override lateinit var target: DefaultRadioButtonGroup
+
+    override val expectedComponentStyles: ComponentStyleSet
+        get() = ComponentStyleSetBuilder.newBuilder()
+                .withDefaultStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                        .withBackgroundColor(TileColor.transparent())
+                        .build())
+                .build()
 
     @Before
-    fun setUp() {
-        tileset = DefaultLabelTest.FONT
+    override fun setUp() {
+        rendererStub = ComponentRendererStub(DefaultRadioButtonGroupRenderer())
         target = DefaultRadioButtonGroup(
                 componentMetadata = ComponentMetadata(
                         size = SIZE,
                         position = POSITION,
                         componentStyleSet = COMPONENT_STYLES,
-                        tileset = tileset),
+                        tileset = TILESET_REX_PAINT_20X20),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
-                        componentRenderer = DefaultRadioButtonGroupRenderer()))
+                        componentRenderer = rendererStub))
     }
 
     @Test
@@ -48,14 +51,7 @@ class DefaultRadioButtonGroupTest {
     }
 
     @Test
-    fun shouldUseProperFont() {
-        assertThat(target.currentTileset().id)
-                .isEqualTo(tileset.id)
-    }
-
-    @Test
     fun shouldNotTakeGivenFocus() {
-
         assertThat(target.giveFocus(Maybe.empty())).isFalse()
     }
 
@@ -107,40 +103,33 @@ class DefaultRadioButtonGroupTest {
         assertThat(selected.get()).isTrue()
     }
 
+    @Test
+    fun shouldProperlySelectButtonWhenSelectIsCalledOnButton() {
+        val key = "foo"
+        val btn = target.addOption(key, "bar")
+        btn.select()
+
+        assertThat(btn.isSelected()).isTrue()
+        assertThat(target.fetchSelectedOption().get()).isEqualTo(key)
+    }
+
+    @Test
+    fun shouldProperlyClearSelectionWhenAnItemIsSelected() {
+        val key = "foo"
+        val btn = target.addOption(key, "bar")
+        btn.select()
+
+        target.clearSelection()
+
+        assertThat(btn.isSelected()).isFalse()
+        assertThat(target.fetchSelectedOption().isPresent).isFalse()
+    }
+
+
     companion object {
-        val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
         const val TEXT = "Button text"
-        val FONT = BuiltInCP437TilesetResource.WANDERLUST_16X16
         val POSITION = Position.create(4, 5)
         val SIZE = Size.create(10, 20)
         val MOUSE_RELEASED = MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)
-        val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(ANSITileColor.RED)
-                .withForegroundColor(ANSITileColor.GREEN)
-                .withModifiers(Modifiers.crossedOut())
-                .build()
-        val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(DEFAULT_STYLE)
-                .build()
-
-        val EXPECTED_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .withForegroundColor(THEME.accentColor)
-                .withBackgroundColor(TileColor.transparent())
-                .build()
-
-        val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .withForegroundColor(THEME.primaryBackgroundColor)
-                .withBackgroundColor(THEME.accentColor)
-                .build()
-
-        val EXPECTED_FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .withForegroundColor(THEME.secondaryBackgroundColor)
-                .withBackgroundColor(THEME.accentColor)
-                .build()
-
-        val EXPECTED_ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .withForegroundColor(THEME.secondaryForegroundColor)
-                .withBackgroundColor(THEME.accentColor)
-                .build()
     }
 }

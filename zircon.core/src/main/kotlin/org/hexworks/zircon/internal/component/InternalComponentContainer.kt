@@ -30,6 +30,6 @@ interface InternalComponentContainer : ComponentContainer {
      * this container is holding. The [Layer]s are ordered from
      * bottom to top to make it easy to render them.
      */
-    fun transformComponentsToLayers(): List<Layer>
+    fun toFlattenedLayers(): Iterable<Layer>
 
 }

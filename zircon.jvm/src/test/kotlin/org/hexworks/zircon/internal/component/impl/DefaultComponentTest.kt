@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.builder.component.LabelBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
-import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -20,8 +19,6 @@ import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
 import org.hexworks.zircon.api.kotlin.onMousePressed
-import org.hexworks.zircon.api.modifier.SimpleModifiers
-import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
@@ -73,7 +70,7 @@ class DefaultComponentTest {
 
     @Test
     fun shouldUseTilesetFromComponentWhenTransformingToLayer() {
-        target.transformToLayers().forEach {
+        target.toFlattenedLayers().forEach {
             assertThat(it.currentTileset().id).isEqualTo(tileset.id)
         }
     }
@@ -197,7 +194,7 @@ class DefaultComponentTest {
 
     @Test
     fun shouldProperlyTransformToLayers() {
-        val result = target.transformToLayers()
+        val result = target.toFlattenedLayers()
         assertThat(result).hasSize(1)
         assertThat(result.first().size).isEqualTo(target.size)
         assertThat(result.first().position).isEqualTo(target.position)

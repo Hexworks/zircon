@@ -1,26 +1,28 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.event.EventBus
+import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 @Suppress("UNCHECKED_CAST")
-abstract class DefaultContainer(componentMetadata: ComponentMetadata,
-                                renderer: ComponentRenderingStrategy<out Component>)
-    : Container, DefaultComponent(
+open class DefaultContainer(componentMetadata: ComponentMetadata,
+                            renderer: ComponentRenderingStrategy<out Component>)
+    : InternalContainer, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderer) {
 
@@ -55,7 +57,7 @@ abstract class DefaultContainer(componentMetadata: ComponentMetadata,
         (component as? InternalComponent)?.let { dc ->
             // TODO: this is fishy, let's investigate whether
             // TODO: we can do this without moving the component
-            val orignalRect = dc.rect
+            val originalRect = dc.rect
             dc.moveTo(dc.position + contentPosition)
             if (RuntimeConfig.config.betaEnabled.not()) {
                 val contentBounds = contentSize.toRect()
@@ -63,21 +65,17 @@ abstract class DefaultContainer(componentMetadata: ComponentMetadata,
                     "Trying to add component with incompatible tileset size '${component.currentTileset().size}' to" +
                             "container with tileset size: '${currentTileset().size}'!"
                 }
-                require(contentBounds.containsBoundable(orignalRect)) {
+                require(contentBounds.containsBoundable(originalRect)) {
                     "Adding out of bounds component (${component::class.simpleName}) " +
-                            "with bounds ($orignalRect) to the container (${this::class.simpleName}) " +
+                            "with bounds ($originalRect) to the container (${this::class.simpleName}) " +
                             "with content bounds ($contentBounds) is not allowed."
                 }
                 require(children.none { it.intersects(dc) }) {
                     "You can't add a component to a container which intersects with other components."
                 }
+                // TODO: do we need this? Isn't this covered by intersection?
                 require(children.none { it.containsBoundable(dc) }) {
                     "You can't add a component to a container which intersects with other components."
-                }
-                components.firstOrNull { it.intersects(component) }?.let {
-                    throw IllegalArgumentException(
-                            "You can't add a component ($component) to a container which " +
-                                    "intersects with another component ($it)!")
                 }
             }
             components.add(dc)
@@ -116,21 +114,12 @@ abstract class DefaultContainer(componentMetadata: ComponentMetadata,
         return removalHappened
     }
 
-    override fun transformToLayers(): List<Layer> {
-        return listOf(LayerBuilder.newBuilder()
-                .withTileGraphics(graphics)
-                .withOffset(position)
-                .build())
-                .flatMap { layer ->
-                    listOf(layer).plus(
-                            components.flatMap {
-                                (it as DefaultComponent).transformToLayers()
-                                        .map { childLayer ->
-                                            childLayer.moveTo(childLayer.position + position)
-                                            childLayer
-                                        }
-                            })
-                }
+    override fun toFlattenedLayers(): Iterable<Layer> {
+        return listOf(this).plus(components.flatMap { it.toFlattenedLayers() })
+    }
+
+    override fun toFlattenedComponents(): Iterable<InternalComponent> {
+        return listOf(this).plus(components.flatMap { it.toFlattenedComponents() })
     }
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
@@ -157,22 +146,17 @@ abstract class DefaultContainer(componentMetadata: ComponentMetadata,
                 }
             }
 
+    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        return ComponentStyleSet.empty()
+    }
+
+    override fun render() {
+    }
 
     override fun toString(): String {
         return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}," +
                 "position=$position," +
                 "size=$size," +
                 "components=[${components.joinToString()}])"
-    }
-
-    fun fetchFlattenedComponentTree(): List<InternalComponent> {
-        val result = mutableListOf<InternalComponent>()
-        components.forEach {
-            result.add(it)
-            if (it is DefaultContainer) {
-                result.addAll(it.fetchFlattenedComponentTree())
-            }
-        }
-        return result
     }
 }

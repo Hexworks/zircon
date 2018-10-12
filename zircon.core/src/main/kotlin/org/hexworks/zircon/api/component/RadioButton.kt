@@ -13,4 +13,6 @@ interface RadioButton : Component {
 
     fun onSelected(runnable: Runnable) : Subscription
 
+    fun select()
+
 }

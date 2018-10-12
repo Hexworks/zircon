@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.util.Maybe
 
 class DefaultLabel(componentMetadata: ComponentMetadata,
                    override val text: String,
-                   private val renderingStrategy: ComponentRenderingStrategy<Label>)
+                   private val renderingStrategy: ComponentRenderingStrategy<DefaultLabel>)
     : Label, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {

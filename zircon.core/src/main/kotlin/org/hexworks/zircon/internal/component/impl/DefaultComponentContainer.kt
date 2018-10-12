@@ -119,8 +119,8 @@ class DefaultComponentContainer(private var container: RootContainer) :
         state = DEACTIVATED
     }
 
-    override fun transformComponentsToLayers(): List<Layer> {
-        return container.transformToLayers()
+    override fun toFlattenedLayers(): Iterable<Layer> {
+        return container.toFlattenedLayers()
     }
 
     // TODO: test this!
@@ -148,7 +148,7 @@ class DefaultComponentContainer(private var container: RootContainer) :
         nextsLookup.clear()
         prevsLookup.clear()
 
-        val tree = container.fetchFlattenedComponentTree().filter { it.acceptsFocus() }
+        val tree = container.toFlattenedComponents().filter { it.acceptsFocus() }
         if (tree.isNotEmpty()) {
             val first = tree.first()
             nextsLookup[container.id] = first

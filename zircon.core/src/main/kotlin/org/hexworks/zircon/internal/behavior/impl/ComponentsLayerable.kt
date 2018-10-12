@@ -10,5 +10,5 @@ class ComponentsLayerable(
     : Layerable by layerable {
 
     override val layers: List<Layer>
-        get() = components.transformToLayers().plus(layerable.layers)
+        get() = components.toFlattenedLayers().plus(layerable.layers)
 }

@@ -8,56 +8,42 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.internal.component.renderer.DefaultPanelRenderer
 import org.junit.Before
 import org.junit.Test
 
-class DefaultPanelTest : ComponentImplementationTest<DefaultPanel>() {
+class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
-    override lateinit var target: DefaultPanel
+    override lateinit var target: RootContainer
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.primaryBackgroundColor)
+                        .withBackgroundColor(DEFAULT_THEME.secondaryBackgroundColor)
                         .build())
                 .build()
 
     @Before
     override fun setUp() {
+        rendererStub = ComponentRendererStub()
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
-        rendererStub = ComponentRendererStub(DefaultPanelRenderer())
-        target = DefaultPanel(
+        target = RootContainer(
                 componentMetadata = ComponentMetadata(
-                        size = SIZE,
-                        position = POSITION,
-                        componentStyleSet = COMPONENT_STYLES,
-                        tileset = TILESET_REX_PAINT_20X20),
+                        position = POSITION_2_3,
+                        size = SIZE_3_4,
+                        tileset = TILESET_REX_PAINT_20X20,
+                        componentStyleSet = COMPONENT_STYLES),
                 renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = rendererStub),
-                title = TITLE)
-    }
-
-    @Test
-    fun shouldHaveProperTitle() {
-        assertThat(target.title).isEqualTo(TITLE)
+                        componentRenderer = rendererStub))
     }
 
 
     @Test
     fun shouldProperlyApplyThemeToChildren() {
         target.addComponent(componentStub)
+
         target.applyColorTheme(DEFAULT_THEME)
 
-        assertThat(componentStub.colorTheme)
-                .isEqualTo(DEFAULT_THEME)
-    }
-
-    companion object {
-        const val TITLE = "TITLE"
-        val SIZE = Size.create(5, 6)
-        val POSITION = Position.create(2, 3)
+        assertThat(componentStub.colorTheme).isEqualTo(DEFAULT_THEME)
     }
 }

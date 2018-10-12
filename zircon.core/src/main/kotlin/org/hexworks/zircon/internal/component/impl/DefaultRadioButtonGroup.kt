@@ -27,7 +27,7 @@ import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
 
 class DefaultRadioButtonGroup constructor(
         componentMetadata: ComponentMetadata,
-        private val renderingStrategy: ComponentRenderingStrategy<RadioButtonGroup>)
+        private val renderingStrategy: ComponentRenderingStrategy<DefaultRadioButtonGroup>)
     : RadioButtonGroup,
         Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
         Observable<Selection> by DefaultObservable(),
@@ -43,7 +43,6 @@ class DefaultRadioButtonGroup constructor(
 
     init {
         refreshContent()
-        render()
     }
 
     override fun addOption(key: String, text: String): RadioButton {
@@ -84,7 +83,10 @@ class DefaultRadioButtonGroup constructor(
     override fun takeFocus(input: Maybe<Input>) {}
 
     override fun clearSelection() {
-        items[selectedItem.get()]?.removeSelection()
+        selectedItem.map {
+            selectedItem = Maybe.empty()
+            items[it]?.removeSelection()
+        }
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {

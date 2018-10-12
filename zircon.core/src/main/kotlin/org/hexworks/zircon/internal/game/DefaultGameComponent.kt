@@ -65,7 +65,7 @@ class DefaultGameComponent(componentMetadata: ComponentMetadata,
         return ComponentStyleSet.defaultStyleSet()
     }
 
-    override fun transformToLayers(): List<Layer> {
+    override fun toFlattenedLayers(): Iterable<Layer> {
         val height = scrollable.actualSize().zLength
         val fromZ = scrollable.visibleOffset().z
         val screenSize = visibleSize().to2DSize()

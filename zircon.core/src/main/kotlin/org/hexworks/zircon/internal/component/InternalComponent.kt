@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.component
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.listener.InputListener
@@ -28,6 +29,19 @@ interface InternalComponent : Component, Focusable, InputListener, KeyStrokeList
     override fun isAttached(): Boolean = fetchParent().isPresent
 
     /**
+     * Attaches this [Component] to the given parent [Container].
+     * Note that if this component is already attached to a [Container]
+     * it will be removed from that one.
+     */
+    fun attachTo(parent: Container)
+
+    override fun detach() {
+        fetchParent().map {
+            it.removeComponent(this)
+        }
+    }
+
+    /**
      * Returns the innermost [InternalComponent] for a given [Position].
      * This means that if you call this method on a [Container] and it
      * contains a [InternalComponent] which intersects with `position` the
@@ -43,21 +57,20 @@ interface InternalComponent : Component, Focusable, InputListener, KeyStrokeList
     fun fetchParent(): Maybe<Container>
 
     /**
-     * Attaches this [Component] to the given parent [Container].
-     * Note that if this component is already attached to a [Container]
-     * it will be removed from that one.
-     */
-    fun attachTo(parent: Container)
-
-    /**
      * Renders this component to the underlying [TileGraphics].
      */
     fun render()
 
-    override fun detach() {
-        fetchParent().map {
-            it.removeComponent(this)
-        }
-    }
+    /**
+     * Returns the this [Component] and its children (if any)
+     * flattened into an [Iterable] of [Layer]s.
+     */
+    fun toFlattenedLayers(): Iterable<Layer>
+
+    /**
+     * Returns the this [Component] and its children (if any)
+     * flattened into an [Iterable] of [InternalComponent]s.
+     */
+    fun toFlattenedComponents(): Iterable<InternalComponent>
 
 }

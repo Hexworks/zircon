@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.util.Maybe
 
 class DefaultHeader(componentMetadata: ComponentMetadata,
                     override val text: String,
-                    private val renderingStrategy: ComponentRenderingStrategy<Header>)
+                    private val renderingStrategy: ComponentRenderingStrategy<DefaultHeader>)
     : Header, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {

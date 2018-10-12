@@ -7,13 +7,13 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.internal.component.renderer.DefaultLabelRenderer
+import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 import org.junit.Before
 import org.junit.Test
 
-class DefaultLabelTest : ComponentImplementationTest<DefaultLabel>() {
+class DefaultParagraphTest : ComponentImplementationTest<DefaultParagraph>() {
 
-    override lateinit var target: DefaultLabel
+    override lateinit var target: DefaultParagraph
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
@@ -25,11 +25,11 @@ class DefaultLabelTest : ComponentImplementationTest<DefaultLabel>() {
 
     @Before
     override fun setUp() {
-        rendererStub = ComponentRendererStub(DefaultLabelRenderer())
-        target = DefaultLabel(
+        rendererStub = ComponentRendererStub(DefaultParagraphRenderer())
+        target = DefaultParagraph(
                 componentMetadata = ComponentMetadata(
-                        size = SIZE_3_4,
-                        position = POSITION_2_3,
+                        size = DefaultRadioButtonGroupTest.SIZE,
+                        position = DefaultRadioButtonGroupTest.POSITION,
                         componentStyleSet = COMPONENT_STYLES,
                         tileset = TILESET_REX_PAINT_20X20),
                 renderingStrategy = DefaultComponentRenderingStrategy(
@@ -39,21 +39,18 @@ class DefaultLabelTest : ComponentImplementationTest<DefaultLabel>() {
     }
 
     @Test
-    fun shouldProperlyReturnText() {
-        assertThat(target.text).isEqualTo(TEXT)
-    }
-
-    @Test
     fun shouldNotAcceptFocus() {
         assertThat(target.acceptsFocus()).isFalse()
     }
 
     @Test
-    fun shouldNotAcceptGivenFocus() {
+    fun shouldNotAcceptFocusWhenGiven() {
         assertThat(target.giveFocus()).isFalse()
     }
 
     companion object {
-        const val TEXT = "Button text"
+
+        const val TEXT = "TEXT"
     }
+
 }

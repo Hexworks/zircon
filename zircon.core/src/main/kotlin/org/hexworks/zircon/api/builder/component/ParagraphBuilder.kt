@@ -40,7 +40,7 @@ data class ParagraphBuilder(
             size
         }
         val postProcessors = if (typingEffect) {
-            listOf(TypingEffectPostProcessor<Paragraph>())
+            listOf(TypingEffectPostProcessor<DefaultParagraph>())
         } else {
             listOf()
         }
