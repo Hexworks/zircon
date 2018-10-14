@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultHeader
 import org.hexworks.zircon.internal.component.renderer.DefaultHeaderRenderer
+import kotlin.jvm.JvmStatic
 
 data class HeaderBuilder(
         private var text: String = "",
@@ -46,6 +47,7 @@ data class HeaderBuilder(
 
     companion object {
 
+        @JvmStatic
         fun newBuilder() = HeaderBuilder()
     }
 }

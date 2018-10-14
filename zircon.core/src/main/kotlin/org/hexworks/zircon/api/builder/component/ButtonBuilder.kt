@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultButton
 import org.hexworks.zircon.internal.component.renderer.DefaultButtonRenderer
+import kotlin.jvm.JvmStatic
 
 data class ButtonBuilder(
         private var text: String = "",
@@ -67,6 +68,7 @@ data class ButtonBuilder(
 
     companion object {
 
+        @JvmStatic
         fun newBuilder() = ButtonBuilder()
     }
 }

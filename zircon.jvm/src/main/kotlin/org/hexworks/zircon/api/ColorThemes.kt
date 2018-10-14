@@ -94,6 +94,13 @@ object ColorThemes {
     @JvmStatic
     fun oliveLeafTea() = ColorThemeResource.OLIVE_LEAF_TEA.getTheme()
 
+    /**
+     * Taken from
+     * https://www.colourlovers.com/palette/2420454/cyberpunk
+     */
+    @JvmStatic
+    fun cyberpunk() = ColorThemeResource.CYBERPUNK.getTheme()
+
     // These come from the Slack themes: https://slackthemes.net
     @JvmStatic
     fun afterglow() = ColorThemeResource.AFTERGLOW.getTheme()

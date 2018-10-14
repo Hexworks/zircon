@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultTextArea
 import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
+import kotlin.jvm.JvmStatic
 
 data class TextAreaBuilder(
         private var text: String = "",
@@ -39,6 +40,7 @@ data class TextAreaBuilder(
 
     companion object {
 
+        @JvmStatic
         fun newBuilder() = TextAreaBuilder()
     }
 }
