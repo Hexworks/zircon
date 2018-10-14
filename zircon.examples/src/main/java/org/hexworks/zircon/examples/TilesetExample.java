@@ -34,19 +34,19 @@ public class TilesetExample {
     private static final int TERMINAL_HEIGHT = 40;
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static final Tile GRASS_0 = Tiles.newBuilder()
-            .character(',')
-            .foregroundColor(TileColors.fromString("#33cc44"))
-            .backgroundColor(TileColors.fromString("#114911"))
+            .withCharacter(',')
+            .withForegroundColor(TileColors.fromString("#33cc44"))
+            .withBackgroundColor(TileColors.fromString("#114911"))
             .build();
     private static final Tile GRASS_1 = Tiles.newBuilder()
-            .character('`')
-            .foregroundColor(TileColors.fromString("#33bb44"))
-            .backgroundColor(TileColors.fromString("#114511"))
+            .withCharacter('`')
+            .withForegroundColor(TileColors.fromString("#33bb44"))
+            .withBackgroundColor(TileColors.fromString("#114511"))
             .build();
     private static final Tile GRASS_2 = Tiles.newBuilder()
-            .character('\'')
-            .foregroundColor(TileColors.fromString("#33aa44"))
-            .backgroundColor(TileColors.fromString("#114011"))
+            .withCharacter('\'')
+            .withForegroundColor(TileColors.fromString("#33aa44"))
+            .withBackgroundColor(TileColors.fromString("#114011"))
             .build();
     private static final Tile[] GRASSES = new Tile[]{GRASS_0, GRASS_1, GRASS_2};
     private static final TileColor TEXT_COLOR = TileColors.fromString("#dd6644");
@@ -55,9 +55,9 @@ public class TilesetExample {
     public static void main(String[] args) {
 
         Application app = SwingApplications.startApplication(AppConfigBuilder.Companion.newBuilder()
-                .defaultTileset(BuiltInCP437TilesetResource.WANDERLUST_16X16)
-                .defaultSize(SIZE)
-                .debugMode(true)
+                .withDefaultTileset(BuiltInCP437TilesetResource.WANDERLUST_16X16)
+                .withSize(SIZE)
+                .withDebugMode(true)
                 .build());
 
         final TileGrid tileGrid = app.getTileGrid();
@@ -72,9 +72,9 @@ public class TilesetExample {
         for (int i = 0; i < text.length(); i++) {
             tileGrid.setTileAt(Positions.create(i + 2, 1),
                     Tiles.newBuilder()
-                            .character(text.charAt(i))
-                            .foregroundColor(TEXT_COLOR)
-                            .backgroundColor(TEXT_BG_COLOR)
+                            .withCharacter(text.charAt(i))
+                            .withForegroundColor(TEXT_COLOR)
+                            .withBackgroundColor(TEXT_BG_COLOR)
                             .build());
         }
 
@@ -82,7 +82,7 @@ public class TilesetExample {
         final int ansiCount = ANSITileColor.values().length;
 
         final Layer overlay = new LayerBuilder()
-                .size(tileGrid.getSize())
+                .withSize(tileGrid.getSize())
                 .build()
                 .fill(Tiles.empty()
                         .withBackgroundColor(TileColors.create(0, 0, 0, 50)));
@@ -93,9 +93,9 @@ public class TilesetExample {
                             random.nextInt(TERMINAL_WIDTH),
                             random.nextInt(TERMINAL_HEIGHT - 2) + 2),
                     Tiles.newBuilder()
-                            .character(RANDOM_CHARS[random.nextInt(charCount)])
-                            .foregroundColor(ANSITileColor.values()[random.nextInt(ansiCount)])
-                            .backgroundColor(TileColors.transparent())
+                            .withCharacter(RANDOM_CHARS[random.nextInt(charCount)])
+                            .withForegroundColor(ANSITileColor.values()[random.nextInt(ansiCount)])
+                            .withBackgroundColor(TileColors.transparent())
                             .build());
         }
         tileGrid.pushLayer(overlay);

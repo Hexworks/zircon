@@ -16,24 +16,26 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.kotlin.map
-import org.hexworks.zircon.api.kotlin.onMouseReleased
+import org.hexworks.zircon.api.kotlin.onSelected
 import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Maybe
+import org.hexworks.zircon.internal.behavior.Observable
+import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
 import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
 
 class DefaultRadioButtonGroup constructor(
         componentMetadata: ComponentMetadata,
-        private val renderingStrategy: ComponentRenderingStrategy<RadioButtonGroup>)
+        private val renderingStrategy: ComponentRenderingStrategy<DefaultRadioButtonGroup>)
     : RadioButtonGroup,
         Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
+        Observable<Selection> by DefaultObservable(),
         DefaultContainer(
                 componentMetadata = componentMetadata,
                 renderer = renderingStrategy) {
 
     private val items = ThreadSafeMapFactory.create<String, DefaultRadioButton>()
-    private val selectionListeners = mutableListOf<Consumer<Selection>>()
     private var selectedItem: Maybe<String> = Maybe.empty()
     private val buttonRenderingStrategy = DefaultComponentRenderingStrategy(
             decorationRenderers = listOf(),
@@ -41,11 +43,10 @@ class DefaultRadioButtonGroup constructor(
 
     init {
         refreshContent()
-        render()
     }
 
     override fun addOption(key: String, text: String): RadioButton {
-        require(items.size < renderingStrategy.calculateContentSize(size).height()) {
+        require(items.size < renderingStrategy.calculateContentSize(size).height) {
             "This RadioButtonGroup does not have enough space for another option!"
         }
         return DefaultRadioButton(
@@ -53,11 +54,11 @@ class DefaultRadioButtonGroup constructor(
                 renderingStrategy = buttonRenderingStrategy,
                 componentMetadata = ComponentMetadata(
                         position = Position.create(0, items.size),
-                        size = Size.create(renderingStrategy.calculateContentSize(size).width(), 1),
+                        size = Size.create(renderingStrategy.calculateContentSize(size).width, 1),
                         tileset = currentTileset(),
                         componentStyleSet = componentStyleSet)).also { button ->
             items[key] = button
-            button.onMouseReleased { _ ->
+            button.onSelected {
                 selectedItem.map { lastSelected ->
                     if (lastSelected != key) {
                         println("Removing selection from $lastSelected")
@@ -66,9 +67,7 @@ class DefaultRadioButtonGroup constructor(
                 }
                 selectedItem = Maybe.of(key)
                 items[key]?.let { button ->
-                    selectionListeners.forEach {
-                        it.accept(DefaultSelection(key, button.text))
-                    }
+                    notifyObservers(DefaultSelection(key, button.text))
                 }
             }
             addComponent(button)
@@ -84,14 +83,17 @@ class DefaultRadioButtonGroup constructor(
     override fun takeFocus(input: Maybe<Input>) {}
 
     override fun clearSelection() {
-        items[selectedItem.get()]?.removeSelection()
+        selectedItem.map {
+            selectedItem = Maybe.empty()
+            items[it]?.removeSelection()
+        }
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor)
-                        .backgroundColor(TileColor.transparent())
+                .withDefaultStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.secondaryForegroundColor)
+                        .withBackgroundColor(TileColor.transparent())
                         .build())
                 .build().also { css ->
                     componentStyleSet = css
@@ -103,11 +105,11 @@ class DefaultRadioButtonGroup constructor(
     }
 
     override fun onSelection(callback: Consumer<Selection>) {
-        selectionListeners.add(callback)
+        addObserver(callback)
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics)
+        renderingStrategy.render(this, graphics)
     }
 
     private fun refreshContent() {

@@ -1,25 +1,20 @@
 package org.hexworks.zircon.internal.graphics
 
-import org.hexworks.zircon.api.behavior.Boundable
-import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.CharacterTileString
+import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 
 data class DefaultCharacterTileString(private val textChars: List<CharacterTile>,
-                                      private val textWrap: TextWrap,
-                                      private val boundable: Boundable = DefaultBoundable(
-                                              size = Size.create(textChars.size, 1)))
+                                      private val size: Size = Size.create(textChars.size, 1),
+                                      private val textWrap: TextWrap)
     : CharacterTileString,
-        Boundable by boundable,
         Iterable<CharacterTile> by textChars {
-
 
     override fun drawOnto(surface: DrawSurface, position: Position) {
         val (cols, rows) = surface.size
@@ -102,8 +97,8 @@ data class DefaultCharacterTileString(private val textChars: List<CharacterTile>
 
     override fun toTileGraphic(tileset: TilesetResource) =
             TileGraphicsBuilder.newBuilder()
-                    .tileset(tileset)
-                    .size(size)
+                    .withTileset(tileset)
+                    .withSize(size)
                     .build().apply {
                         textChars.forEachIndexed { idx, tc ->
                             setTileAt(Position.create(idx, 0), tc)

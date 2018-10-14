@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderConte
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.SubTileGraphics
+import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 
 class ButtonSideDecorationRenderer : ComponentDecorationRenderer {
 
@@ -15,6 +15,6 @@ class ButtonSideDecorationRenderer : ComponentDecorationRenderer {
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
         tileGraphics.applyStyle(context.component.componentStyleSet.currentStyle())
         tileGraphics.putText("[", Position.defaultPosition())
-        tileGraphics.putText("]", Position.create(tileGraphics.width - 1, 0))
+        tileGraphics.putText("]", Position.create(tileGraphics.size.width - 1, 0))
     }
 }

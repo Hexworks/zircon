@@ -1,12 +1,17 @@
-package org.hexworks.zircon.api.graphics
+package org.hexworks.zircon.api.graphics.impl
 
 import org.hexworks.zircon.api.behavior.*
+import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.graphics.DrawSurface
+import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.hexworks.zircon.internal.behavior.impl.DefaultStyleable
 import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride
+import org.hexworks.zircon.internal.data.DefaultCell
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
 
 /**
@@ -17,19 +22,54 @@ import org.hexworks.zircon.internal.graphics.DefaultTileImage
  */
 
 class SubTileGraphics(
-        rect: Rect,
+        private val rect: Rect,
         private val backend: TileGraphics,
-        private val boundable: Boundable = DefaultBoundable(
-                size = rect.size,
-                position = rect.position),
         private val styleable: Styleable = DefaultStyleable(
                 initialStyle = backend.toStyleSet()),
         private val tilesetOverride: TilesetOverride = DefaultTilesetOverride(
                 tileset = backend.currentTileset()))
-    : TileGraphics, Boundable by boundable, Styleable by styleable, TilesetOverride by tilesetOverride {
+    : TileGraphics,
+        Styleable by styleable,
+        TilesetOverride by tilesetOverride {
 
-    override val size: Size
-        get() = rect.size
+    override val size = rect.size
+
+    override fun fetchFilledTiles() = backend.fetchFilledTiles()
+
+    override fun fetchCells(): Iterable<Cell> {
+        return fetchCellsBy(Position.defaultPosition(), size)
+    }
+
+    override fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell> {
+        return size.fetchPositions()
+                .map { it + offset }
+                .map { DefaultCell(it, getTileAt(it).get()) }
+    }
+
+    override fun fill(filler: Tile): TileGraphics {
+        size.fetchPositions().filter { pos ->
+            getTileAt(pos).map { it == Tile.empty() }.orElse(false)
+        }.forEach { pos ->
+            setTileAt(pos, filler)
+        }
+        return this
+    }
+
+    override fun putText(text: String, position: Position) {
+        text.forEachIndexed { col, char ->
+            setTileAt(position.withRelativeX(col), TileBuilder
+                    .newBuilder()
+                    .withStyleSet(toStyleSet())
+                    .withCharacter(char)
+                    .build())
+        }
+    }
+
+    override fun toSubTileGraphics(rect: Rect): SubTileGraphics {
+        return SubTileGraphics(
+                rect = rect,
+                backend = this)
+    }
 
     private val offset = rect.position
 

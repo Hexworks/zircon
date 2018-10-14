@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.renderer
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import org.hexworks.zircon.api.data.PixelPosition
+import org.hexworks.zircon.api.data.impl.PixelPosition
 import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.kotlin.map

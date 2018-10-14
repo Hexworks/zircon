@@ -9,7 +9,6 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.input.Input
-import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.util.Maybe
 
 class DefaultButton(componentMetadata: ComponentMetadata,
@@ -20,28 +19,6 @@ class DefaultButton(componentMetadata: ComponentMetadata,
         renderer = renderingStrategy) {
 
     init {
-        render()
-    }
-
-    // TODO: move these to DefaultComponent since this is applicable almost everywhere
-
-    override fun mouseEntered(action: MouseAction) {
-        componentStyleSet.applyMouseOverStyle()
-        render()
-    }
-
-    override fun mouseExited(action: MouseAction) {
-        componentStyleSet.reset()
-        render()
-    }
-
-    override fun mousePressed(action: MouseAction) {
-        componentStyleSet.applyActiveStyle()
-        render()
-    }
-
-    override fun mouseReleased(action: MouseAction) {
-        componentStyleSet.applyMouseOverStyle()
         render()
     }
 
@@ -62,21 +39,21 @@ class DefaultButton(componentMetadata: ComponentMetadata,
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.accentColor)
-                        .backgroundColor(TileColor.transparent())
+                .withDefaultStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.accentColor)
+                        .withBackgroundColor(TileColor.transparent())
                         .build())
-                .mouseOverStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.primaryBackgroundColor)
-                        .backgroundColor(colorTheme.accentColor)
+                .withMouseOverStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.primaryBackgroundColor)
+                        .withBackgroundColor(colorTheme.accentColor)
                         .build())
-                .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryBackgroundColor)
-                        .backgroundColor(colorTheme.accentColor)
+                .withFocusedStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.secondaryBackgroundColor)
+                        .withBackgroundColor(colorTheme.accentColor)
                         .build())
-                .activeStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor)
-                        .backgroundColor(colorTheme.accentColor)
+                .withActiveStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.secondaryForegroundColor)
+                        .withBackgroundColor(colorTheme.accentColor)
                         .build())
                 .build().also {
                     componentStyleSet = it
@@ -85,6 +62,6 @@ class DefaultButton(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics)
+        renderingStrategy.render(this, graphics)
     }
 }

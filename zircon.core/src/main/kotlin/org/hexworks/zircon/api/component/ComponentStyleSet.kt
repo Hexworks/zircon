@@ -50,5 +50,9 @@ interface ComponentStyleSet {
     companion object {
 
         fun defaultStyleSet() = ComponentStyleSetBuilder.newBuilder().build()
+
+        fun empty() = ComponentStyleSetBuilder.newBuilder()
+                .withDefaultStyle(StyleSet.empty())
+                .build()
     }
 }

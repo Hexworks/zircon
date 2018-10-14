@@ -1,5 +1,8 @@
-package org.hexworks.zircon.api.component
+package org.hexworks.zircon.api.component.base
 
+import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.ComponentBuilder
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
@@ -8,7 +11,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.Maybe
 
 @Suppress("UNCHECKED_CAST")
 abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
@@ -23,10 +25,26 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
     override val componentStyleSet: ComponentStyleSet
         get() = props.componentStyleSet
 
-    override fun title() = props.title
+    override val title
+        get() = props.title
+
+    override val tileset
+        get() = props.tileset
+
+    override val boxType
+        get() = props.boxType
+
+    override val wrappedWithBox
+        get() = props.wrapWithBox
+
+    override val wrappedWithShadow
+        get() = props.wrapWithShadow
+
+    override val decorationRenderers: List<ComponentDecorationRenderer>
+        get() = props.decorationRenderers
 
     override fun withTitle(title: String): U {
-        props.title = Maybe.of(title)
+        props.title = title
         return this as U
     }
 
@@ -34,8 +52,6 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         props.componentStyleSet = componentStyleSet
         return this as U
     }
-
-    override fun tileset() = props.tileset
 
     override fun withTileset(tileset: TilesetResource): U {
         props.tileset = tileset
@@ -52,28 +68,20 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         return this as U
     }
 
-    override fun boxType() = props.boxType
-
     override fun withBoxType(boxType: BoxType): U {
         props.boxType = boxType
         return this as U
     }
-
-    override fun isWrappedWithBox() = props.wrapWithBox
 
     override fun wrapWithBox(wrapWithBox: Boolean): U {
         props.wrapWithBox = wrapWithBox
         return this as U
     }
 
-    override fun isWrappedWithShadow() = props.wrapWithShadow
-
     override fun wrapWithShadow(wrapWithShadow: Boolean): U {
         props.wrapWithShadow = wrapWithShadow
         return this as U
     }
-
-    override fun decorationRenderers() = props.decorationRenderers
 
     override fun withDecorationRenderers(vararg renderers: ComponentDecorationRenderer): U {
         props.decorationRenderers = renderers.toList()
@@ -90,8 +98,8 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
             }
             if (props.wrapWithBox) {
                 decorationRenderers.add(BoxDecorationRenderer(
-                        boxType = boxType(),
-                        title = title()))
+                        boxType = boxType,
+                        title = title))
             }
             props.decorationRenderers = decorationRenderers.toList()
         }

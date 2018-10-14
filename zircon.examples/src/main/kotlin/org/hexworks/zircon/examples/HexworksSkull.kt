@@ -13,8 +13,8 @@ object HexworksSkull {
 
         val screen = Screens.createScreenFor(SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .enableBetaFeatures()
-                .defaultTileset(tileset)
-                .defaultSize(size)
+                .withDefaultTileset(tileset)
+                .withSize(size)
                 .build()))
 
         screen.display()
@@ -22,8 +22,8 @@ object HexworksSkull {
         val first = AnimationResource.loadAnimationFromStream(
                 AnimationExample::class.java.getResourceAsStream("/animations/skull.zap"),
                 tileset)
-        first.loopCount(0)
-        for (i in 0 until first.getTotalFrameCount()) {
+        first.withLoopCount(0)
+        for (i in 0 until first.totalFrameCount) {
             first.addPosition(Positions.create(2, 2))
         }
         val leftAnim = first.build()

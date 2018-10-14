@@ -12,8 +12,8 @@ object TextAreasExample {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(tileset)
-                .defaultSize(Sizes.create(60, 30))
+                .withDefaultTileset(tileset)
+                .withSize(Sizes.create(60, 30))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
@@ -26,23 +26,23 @@ object TextAreasExample {
         screen.addComponent(panel)
 
         screen.addComponent(Components.textArea()
-                .text("Some text")
+                .withText("Some text")
                 .withSize(Sizes.create(13, 5))
                 .withPosition(Positions.create(2, 2)))
         panel.addComponent(Components.textArea()
-                .text("Some text")
+                .withText("Some text")
                 .withSize(Sizes.create(13, 5))
                 .withPosition(Positions.create(2, 2)))
 
         screen.addComponent(Components.textArea()
-                .text("Some other text")
+                .withText("Some other text")
                 .withBoxType(BoxType.DOUBLE)
                 .wrapWithShadow(true)
                 .wrapWithBox(true)
                 .withSize(Sizes.create(13, 7))
                 .withPosition(Positions.create(2, 8)))
         panel.addComponent(Components.textArea()
-                .text("Some other text")
+                .withText("Some other text")
                 .withBoxType(BoxType.DOUBLE)
                 .wrapWithShadow(true)
                 .wrapWithBox(true)

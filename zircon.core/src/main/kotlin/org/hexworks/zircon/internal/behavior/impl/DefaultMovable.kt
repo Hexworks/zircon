@@ -6,8 +6,8 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 
-class DefaultBoundable(size: Size,
-                       position: Position = Position.defaultPosition())
+class DefaultMovable(size: Size,
+                     position: Position = Position.defaultPosition())
     : Boundable, Movable {
 
     // note that we could delegate `Boundable` to rect but delegation of
@@ -22,6 +22,18 @@ class DefaultBoundable(size: Size,
 
     override val rect: Rect
         get() = currentRect
+
+    override val x: Int
+        get() = position.x
+
+    override val y: Int
+        get() = position.y
+
+    override val width: Int
+        get() = size.width
+
+    override val height: Int
+        get() = size.height
 
     private var currentRect: Rect = Rect.create(position, size)
 

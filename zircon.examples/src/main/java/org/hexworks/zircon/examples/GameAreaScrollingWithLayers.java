@@ -7,6 +7,8 @@ import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.Panel;
 import org.hexworks.zircon.api.data.*;
+import org.hexworks.zircon.api.data.impl.Position3D;
+import org.hexworks.zircon.api.data.impl.Size3D;
 import org.hexworks.zircon.api.game.GameArea;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.graphics.Layer;
@@ -41,9 +43,9 @@ public class GameAreaScrollingWithLayers {
     public static void main(String[] args) {
 
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .defaultTileset(TILESET)
-                .defaultSize(SIZE)
-                .debugMode(true)
+                .withDefaultTileset(TILESET)
+                .withSize(SIZE)
+                .withDebugMode(true)
                 .enableBetaFeatures()
                 .build());
 
@@ -56,17 +58,17 @@ public class GameAreaScrollingWithLayers {
         final Screen screen = Screens.createScreenFor(tileGrid);
 
         Panel actions = Components.panel()
-                .withSize(screen.getSize().withXLength(20))
+                .withSize(screen.getSize().withWidth(20))
                 .wrapWithBox(true)
                 .withTitle("Actions")
                 .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)
                 .build();
         Button wait = Components.button()
-                .text("Wait")
+                .withText("Wait")
                 .build();
         Button sleep = Components.button()
-                .text("Sleep")
-                .withPosition(Positions.defaultPosition().withRelativeY(1))
+                .withText("Sleep")
+                .withPosition(Positions.zero().withRelativeY(1))
                 .build();
         actions.addComponent(wait);
         actions.addComponent(sleep);
@@ -74,8 +76,8 @@ public class GameAreaScrollingWithLayers {
 
 
         final Panel gamePanel = Components.panel()
-                .withSize(screen.getSize().withXLength(40))
-                .withPosition((Positions.defaultPosition()).relativeToRightOf(actions))
+                .withSize(screen.getSize().withWidth(40))
+                .withPosition(Positions.topRightOf(actions))
                 .withTitle("Game area")
                 .wrapWithBox(true)
                 .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)
@@ -90,7 +92,7 @@ public class GameAreaScrollingWithLayers {
         final int totalLevels = 10;
         for (int i = 0; i < totalLevels; i++) {
             levels.put(i, Collections.singletonList(DrawSurfaces.tileGraphicsBuilder()
-                    .size(virtualGameAreaSize)
+                    .withSize(virtualGameAreaSize)
                     .build()));
         }
 
@@ -101,8 +103,8 @@ public class GameAreaScrollingWithLayers {
                         Tiles.empty());
 
         final DefaultGameComponent gameComponent = Components.gameComponent()
-                .gameArea(gameArea)
-                .visibleSize(visibleGameAreaSize)
+                .withGameArea(gameArea)
+                .withVisibleSize(visibleGameAreaSize)
                 .withTileset(BuiltInCP437TilesetResource.PHOEBUS_16X16)
                 .build();
 
@@ -121,7 +123,7 @@ public class GameAreaScrollingWithLayers {
     private static void generatePyramid(int height, Position3D startPos, GameArea gameArea) {
         double percent = 1.0 / (height + 1);
         Tile wall = Tiles.newBuilder()
-                .character(Symbols.BLOCK_SOLID)
+                .withCharacter(Symbols.BLOCK_SOLID)
                 .build();
         AtomicInteger currLevel = new AtomicInteger(startPos.getZ());
         for (int currSize = 0; currSize < height; currSize++) {
@@ -135,10 +137,10 @@ public class GameAreaScrollingWithLayers {
                 gameArea.setBlockAt(
                         pos,
                         BlockBuilder.Companion.create()
-                                .layer(wall
+                                .addLayer(wall
                                         .withBackgroundColor(wall.getBackgroundColor().darkenByPercent(currPercent))
                                         .withForegroundColor(wall.getForegroundColor().darkenByPercent(currPercent)))
-                                .position(pos)
+                                .withPosition(pos)
                                 .build());
             });
             currLevel.decrementAndGet();
@@ -147,13 +149,13 @@ public class GameAreaScrollingWithLayers {
 
     private static void enableMovement(final Screen screen, final DefaultGameComponent gameComponent) {
         final AtomicReference<Layer> coordinates = new AtomicReference<>(Layers.newBuilder()
-                .tileGraphic(CharacterTileStrings.newBuilder()
-                        .backgroundColor(TileColors.transparent())
-                        .foregroundColor(TileColors.fromString("#aaaadd"))
-                        .text(String.format("Position: (x=%s, y=%s, z=%s)", 0, 0, 0))
+                .withTileGraphics(CharacterTileStrings.newBuilder()
+                        .withBackgroundColor(TileColors.transparent())
+                        .withForegroundColor(TileColors.fromString("#aaaadd"))
+                        .withText(String.format("Position: (x=%s, y=%s, z=%s)", 0, 0, 0))
                         .build()
                         .toTileGraphic(TILESET))
-                .offset(Positions.create(21, 1))
+                .withOffset(Positions.create(21, 1))
                 .build());
         screen.onInput((input) -> {
             if (EXIT_CONDITIONS.contains(input.inputType()) && !headless) {
@@ -180,14 +182,14 @@ public class GameAreaScrollingWithLayers {
                 screen.removeLayer(coordinates.get());
                 Position3D visibleOffset = gameComponent.visibleOffset();
                 coordinates.set(Layers.newBuilder()
-                        .tileGraphic(CharacterTileStrings.newBuilder()
-                                .backgroundColor(TileColors.transparent())
-                                .foregroundColor(TileColors.fromString("#aaaadd"))
-                                .text(String.format("Position: (x=%s, y=%s, z=%s)",
+                        .withTileGraphics(CharacterTileStrings.newBuilder()
+                                .withBackgroundColor(TileColors.transparent())
+                                .withForegroundColor(TileColors.fromString("#aaaadd"))
+                                .withText(String.format("Position: (x=%s, y=%s, z=%s)",
                                         visibleOffset.getX(), visibleOffset.getY(), visibleOffset.getZ()))
                                 .build()
                                 .toTileGraphic(TILESET))
-                        .offset(Positions.create(21, 1))
+                        .withOffset(Positions.create(21, 1))
                         .build());
                 screen.pushLayer(coordinates.get());
             }

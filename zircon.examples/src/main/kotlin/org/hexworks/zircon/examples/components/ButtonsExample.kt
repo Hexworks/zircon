@@ -15,8 +15,8 @@ object ButtonsExample {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(tileset)
-                .defaultSize(Sizes.create(60, 30))
+                .withDefaultTileset(tileset)
+                .withSize(Sizes.create(60, 30))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
@@ -31,30 +31,30 @@ object ButtonsExample {
         screen.addComponent(panel)
 
         val simpleBtn = Components.button()
-                .text("Button")
+                .withText("Button")
                 .wrapSides(true)
                 .withPosition(Positions.create(1, 3))
         val boxedBtn = Components.button()
-                .text("Boxed Button")
+                .withText("Boxed Button")
                 .wrapWithBox(true)
                 .wrapSides(false)
                 .withPosition(Positions.create(1, 5))
         val tooLongBtn = Components.button()
-                .text("Too long name for button")
+                .withText("Too long name for button")
                 .wrapWithBox(true)
                 .wrapWithShadow(true)
                 .wrapSides(false)
                 .withPosition(Positions.create(1, 9))
                 .withSize(Sizes.create(10, 4))
         val overTheTopBtn = Components.button()
-                .text("Over the top button")
+                .withText("Over the top button")
                 .withDecorationRenderers(
                         ShadowDecorationRenderer(),
                         HalfBlockDecorationRenderer(),
                         BoxDecorationRenderer(BoxType.DOUBLE))
                 .withPosition(Positions.create(1, 14))
         val halfBlockBtn = Components.button()
-                .text("Half block button")
+                .withText("Half block button")
                 .withDecorationRenderers(
                         ShadowDecorationRenderer(),
                         HalfBlockDecorationRenderer())

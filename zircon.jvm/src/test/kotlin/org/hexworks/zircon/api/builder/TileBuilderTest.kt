@@ -13,20 +13,20 @@ class TileBuilderTest {
     @Test
     fun shouldBuildProperTextCharacter() {
         val result = TileBuilder.newBuilder()
-                .backgroundColor(BG_COLOR)
-                .foregroundColor(FG_COLOR)
-                .character(CHAR)
-                .tags(TAGS)
-                .modifiers(MODIFIER)
+                .withBackgroundColor(BG_COLOR)
+                .withForegroundColor(FG_COLOR)
+                .withCharacter(CHAR)
+                .withTags(TAGS)
+                .withModifiers(MODIFIER)
                 .build()
 
         assertThat(result).isEqualTo(
                 Tile.createCharacterTile(
                         character = CHAR,
                         style = StyleSetBuilder.newBuilder()
-                                .foregroundColor(FG_COLOR)
-                                .backgroundColor(BG_COLOR)
-                                .modifiers(MODIFIER)
+                                .withForegroundColor(FG_COLOR)
+                                .withBackgroundColor(BG_COLOR)
+                                .withModifiers(MODIFIER)
                                 .build()))
     }
 

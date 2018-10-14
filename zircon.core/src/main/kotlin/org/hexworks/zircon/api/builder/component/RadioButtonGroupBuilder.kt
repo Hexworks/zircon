@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.RadioButtonGroup
+import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
@@ -15,7 +15,7 @@ data class RadioButtonGroupBuilder(
 
     override fun build(): RadioButtonGroup {
         fillMissingValues()
-        val size = decorationRenderers().asSequence()
+        val size = decorationRenderers.asSequence()
                 .map { it.occupiedSize }
                 .fold(size, Size::plus)
         return DefaultRadioButtonGroup(
@@ -23,9 +23,9 @@ data class RadioButtonGroupBuilder(
                         size = size,
                         position = position,
                         componentStyleSet = componentStyleSet,
-                        tileset = tileset()),
+                        tileset = tileset),
                 renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = decorationRenderers(),
+                        decorationRenderers = decorationRenderers,
                         componentRenderer = DefaultRadioButtonGroupRenderer()))
     }
 

@@ -55,14 +55,14 @@ class DefaultCursorHandlerTest {
 
     @Test
     fun shouldReportEndOfLineWhenAtEndOfLine() {
-        target.putCursorAt(Position.create(SIZE.xLength, 0))
+        target.putCursorAt(Position.create(SIZE.width, 0))
 
         assertThat(target.isCursorAtTheEndOfTheLine()).isTrue()
     }
 
     @Test
     fun shouldNotReportEndOfLineWhenNotAtEndOfLine() {
-        target.putCursorAt(Position.create(SIZE.xLength - 2, 0))
+        target.putCursorAt(Position.create(SIZE.width - 2, 0))
 
         assertThat(target.isCursorAtTheEndOfTheLine()).isFalse()
     }
@@ -97,7 +97,7 @@ class DefaultCursorHandlerTest {
 
     @Test
     fun shouldReportAtLastRowWhenAtLastRow() {
-        target.putCursorAt(Position.create(0, SIZE.yLength))
+        target.putCursorAt(Position.create(0, SIZE.height))
 
         assertThat(target.isCursorAtTheLastRow()).isTrue()
     }
@@ -131,7 +131,7 @@ class DefaultCursorHandlerTest {
         target.moveCursorBackward()
 
         assertThat(target.cursorPosition())
-                .isEqualTo(Position.create(SIZE.xLength - 1, 0))
+                .isEqualTo(Position.create(SIZE.width - 1, 0))
     }
 
     @Test
@@ -142,6 +142,11 @@ class DefaultCursorHandlerTest {
 
         assertThat(target.cursorPosition())
                 .isEqualTo(pos)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldNotBeAbleToResizeCursorSpaceToNegativeSize() {
+        target.resizeCursorSpace(Size.create(-1, 1))
     }
 
     companion object {

@@ -1,5 +1,6 @@
-package org.hexworks.zircon.api.event
+package org.hexworks.zircon.internal.component
 
+import org.hexworks.zircon.api.behavior.Subscription
 import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.internal.util.ThreadSafeQueue
 

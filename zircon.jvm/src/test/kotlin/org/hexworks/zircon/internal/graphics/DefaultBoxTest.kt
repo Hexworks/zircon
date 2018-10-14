@@ -13,11 +13,11 @@ class DefaultBoxTest {
     @Test
     fun test() {
         assertThat(BoxBuilder.newBuilder()
-                .boxType(BoxType.DOUBLE)
-                .size(Size.create(5, 5))
-                .style(StyleSetBuilder.newBuilder().build())
+                .withBoxType(BoxType.DOUBLE)
+                .withSize(Size.create(5, 5))
+                .withStyle(StyleSetBuilder.newBuilder().build())
                 .build()
-                .fill(TileBuilder.newBuilder().character('x').build())
+                .fill(TileBuilder.newBuilder().withCharacter('x').build())
                 .toString())
                 .isEqualTo(EXPECTED_BOX)
     }

@@ -30,9 +30,9 @@ public class FontModifiersExample {
     public static void main(String[] args) {
 
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .defaultTileset(BuiltInCP437TilesetResource.WANDERLUST_16X16)
-                .defaultSize(SIZE)
-                .debugMode(true)
+                .withDefaultTileset(BuiltInCP437TilesetResource.WANDERLUST_16X16)
+                .withSize(SIZE)
+                .withDebugMode(true)
                 .build());
 
         TileGrid tileGrid = app.getTileGrid();

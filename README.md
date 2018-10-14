@@ -420,7 +420,7 @@ screenshots of them:
 
 ## Additional features
 
-There are a bunch of other stuff Zircon can do which are not detailed in this README but you can read about them
+There are a bunch of other things Zircon can do which are not detailed in this README but you can read about them
 in either the source code or the [Wiki](https://github.com/Hexworks/zircon/wiki):
 
 ### Layering
@@ -544,6 +544,7 @@ Zircon is powered by:
 [ColorTheme]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/component/ColorTheme.kt
 [Clearable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/behavior/Clearable.kt
 [Component]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/component/Component.kt
+[Container]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/component/Container.kt
 [CP437TilesetResources]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/CP437TilesetResources.kt
 [Drawable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/behavior/Drawable.kt
 [DrawSurface]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/behavior/DrawSurface.kt
@@ -555,10 +556,12 @@ Zircon is powered by:
 [Modifier]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/modifier/Modifier.kt
 [Modifiers]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/Modifiers.kt
 [Panel]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/component/Panel.kt
+[Position]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/data/Position.kt
 [Renderer]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/internal/renderer/Renderer.kt
 [Screen]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/screen/Screen.kt
 [Shape]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/shape/Shape.kt
 [ShapeFactory]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/shape/ShapeFactory.kt
+[Size]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/data/Size.kt
 [Styleable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/behavior/Styleable.kt
 [StyleSet]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/graphics/StyleSet.kt  
 [SwingApplications]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm.swing/src/main/kotlin/org/hexworks/zircon/api/SwingApplications.kt

@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.component
 
 import org.hexworks.zircon.api.behavior.Scrollable
+import org.hexworks.zircon.api.event.Event
 import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Maybe
 
@@ -28,7 +29,7 @@ interface RadioButtonGroup : Component, Scrollable {
      */
     fun clearSelection()
 
-    interface Selection {
+    interface Selection : Event {
         val key: String
         val value: String
     }

@@ -20,8 +20,8 @@ public class InputHandlingExampleJava {
     public static void main(String[] args) {
 
         TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(TILESET)
-                .defaultSize(SCREEN_SIZE)
+                .withDefaultTileset(TILESET)
+                .withSize(SCREEN_SIZE)
                 .build());
 
         // called for all inputs

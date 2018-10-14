@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.event.EventBusSubscription
@@ -23,7 +23,8 @@ import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAddition
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoval
 
 class DefaultComponentContainer(private var container: RootContainer) :
-        InternalComponentContainer {
+        InternalComponentContainer,
+        ComponentContainer by container {
 
     private var lastMousePosition = Position.defaultPosition()
     private var lastHoveredComponent: InternalComponent = container
@@ -41,33 +42,22 @@ class DefaultComponentContainer(private var container: RootContainer) :
             .toMap()
 
     override fun addComponent(component: Component) {
-        (component as? DefaultComponent)?.let { dc ->
-            require(container.containsBoundable(dc)) {
-                "You can't add a component to a container which is not within its bounds " +
-                        "(target size: ${container.size}, component size: ${dc.size}" +
-                        ", position: ${dc.position})!"
-            }
-            require(container.children.none { it.intersects(dc) }) {
-                "You can't add a component to a container which intersects with other components!"
-            }
-            require(container.children.none { it.containsBoundable(dc) }) {
-                "You can't add a component to a container which intersects with other components!"
-            }
+        (component as? InternalComponent)?.let { dc ->
             container.addComponent(dc)
-        } ?: throw IllegalArgumentException("Using a base class other than DefaultComponent is not supported!")
+        } ?: throw IllegalArgumentException(
+                "Add a component which does not implement InternalComponent " +
+                        "to a ComponentContainer is not allowed.")
         refreshFocusableLookup()
     }
 
-    override fun removeComponent(component: Component) =
-            container.removeComponent(component).also {
-                refreshFocusableLookup()
-            }
-
-    override fun applyColorTheme(colorTheme: ColorTheme) {
-        container.applyColorTheme(colorTheme)
+    override fun removeComponent(component: Component): Boolean {
+        return container.removeComponent(component).also {
+            refreshFocusableLookup()
+        }
     }
 
-    override fun isActive() = state == ContainerHandlerState.ACTIVE
+
+    override fun isActive(): Boolean = state == ContainerHandlerState.ACTIVE
 
     override fun activate() {
         if (debug) println("Activating container handler")
@@ -129,8 +119,8 @@ class DefaultComponentContainer(private var container: RootContainer) :
         state = DEACTIVATED
     }
 
-    override fun transformComponentsToLayers(): List<Layer> {
-        return container.transformToLayers()
+    override fun toFlattenedLayers(): Iterable<Layer> {
+        return container.toFlattenedLayers()
     }
 
     // TODO: test this!
@@ -138,6 +128,7 @@ class DefaultComponentContainer(private var container: RootContainer) :
         EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, lastFocusedComponent.absolutePosition)))
     }
 
+    // TODO: factor these out to FocusHandler
     private fun focusComponent(component: InternalComponent) {
         if (component.acceptsFocus() && isNotAlreadyFocused(component)) {
             lastFocusedComponent.takeFocus()
@@ -157,7 +148,7 @@ class DefaultComponentContainer(private var container: RootContainer) :
         nextsLookup.clear()
         prevsLookup.clear()
 
-        val tree = container.fetchFlattenedComponentTree().filter { it.acceptsFocus() }
+        val tree = container.toFlattenedComponents().filter { it.acceptsFocus() }
         if (tree.isNotEmpty()) {
             val first = tree.first()
             nextsLookup[container.id] = first

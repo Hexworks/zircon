@@ -14,8 +14,8 @@ public class UsingComponents {
 
         final TileGrid tileGrid = SwingApplications.startTileGrid(
                 AppConfigs.newConfig()
-                        .defaultSize(Sizes.create(34, 18))
-                        .defaultTileset(CP437TilesetResources.aduDhabi16x16())
+                        .withSize(Sizes.create(34, 18))
+                        .withDefaultTileset(CP437TilesetResources.aduDhabi16x16())
                         .build());
         final Screen screen = Screens.createScreenFor(tileGrid);
 
@@ -31,11 +31,11 @@ public class UsingComponents {
                 // this will be 1x1 left and down from the top left
                 // corner of the panel
                 .withPosition(Positions.offset1x1())
-                .text("Header")
+                .withText("Header")
                 .build();
 
         final CheckBox checkBox = Components.checkBox()
-                .text("Check me!")
+                .withText("Check me!")
                 .withPosition(Positions.create(0, 1)
                         // the position class has some convenience methods
                         // for you to specify your component's position as
@@ -46,13 +46,13 @@ public class UsingComponents {
         final Button left = Components.button()
                 .withPosition(Positions.create(0, 1) // this means 1 row below the check box
                         .relativeToBottomOf(checkBox))
-                .text("Left")
+                .withText("Left")
                 .build();
 
         final Button right = Components.button()
                 .withPosition(Positions.create(1, 0) // 1 column right relative to the left BUTTON
                         .relativeToRightOf(left))
-                .text("Right")
+                .withText("Right")
                 .build();
 
         panel.addComponent(header);

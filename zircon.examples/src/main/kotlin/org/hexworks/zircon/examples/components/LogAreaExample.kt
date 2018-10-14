@@ -10,8 +10,8 @@ object LogAreaExample {
     @JvmStatic
     fun main(args: Array<String>) {
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(tileset)
-                .defaultSize(Sizes.create(70, 30))
+                .withDefaultTileset(tileset)
+                .withSize(Sizes.create(70, 30))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
@@ -34,7 +34,7 @@ object LogAreaExample {
         logArea.addInlineText("This is a log row with a ")
         val btn = Components.button()
                 .withDecorationRenderers()
-                .text("Button")
+                .withText("Button")
                 .build()
         logArea.addInlineComponent(btn)
         logArea.commitInlineElements()

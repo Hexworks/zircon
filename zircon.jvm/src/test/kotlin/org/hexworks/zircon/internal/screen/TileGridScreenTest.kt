@@ -12,7 +12,6 @@ import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.kotlin.onInput
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.component.impl.DefaultLabelTest
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
 import org.junit.Before
@@ -29,7 +28,7 @@ class TileGridScreenTest {
     @Before
     fun setUp() {
         AppConfigs.newConfig().enableBetaFeatures().build()
-        tileset = DefaultLabelTest.FONT
+        tileset = FONT
         terminal = RectangleTileGrid(
                 tileset = tileset,
                 size = SIZE)
@@ -43,7 +42,7 @@ class TileGridScreenTest {
                 zipStream = this.javaClass.getResourceAsStream("/animations/skull.zap"),
                 tileset = tileset)
                 .setPositionForAll(Position.create(0, 0))
-                .loopCount(0)
+                .withLoopCount(0)
                 .build()
 
         val inputFired = AtomicBoolean(false)
@@ -66,8 +65,8 @@ class TileGridScreenTest {
     fun shouldBeAbleToPutCharacterWhenPutCharacterIsCalled() {
         val char = 'x'
         val expected = TileBuilder.newBuilder()
-                .styleSet(target.toStyleSet())
-                .character(char)
+                .withStyleSet(target.toStyleSet())
+                .withCharacter(char)
                 .build()
         val currCursorPos = target.cursorPosition()
 
@@ -122,7 +121,7 @@ class TileGridScreenTest {
         val SIZE = Size.create(10, 10)
         val FONT = BuiltInCP437TilesetResource.ROGUE_YUN_16X16
         val CHAR = TileBuilder.newBuilder()
-                .character('x')
+                .withCharacter('x')
                 .build()
     }
 }

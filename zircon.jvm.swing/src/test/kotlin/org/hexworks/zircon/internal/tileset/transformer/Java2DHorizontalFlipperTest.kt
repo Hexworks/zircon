@@ -28,7 +28,7 @@ class Java2DHorizontalFlipperTest {
         val WIDTH = 10
         val HEIGHT = 10
         val CHAR = Tiles.newBuilder()
-                .modifiers(Modifiers.horizontalFlip())
+                .withModifiers(Modifiers.horizontalFlip())
                 .build()
     }
 }

@@ -33,7 +33,7 @@ class DefaultComponentRenderingStrategyTest {
     fun `Should render button with all possible decorations`() {
         val size = Sizes.create(8, 4)
         val graphics = TileGraphicsBuilder.newBuilder()
-                .size(size)
+                .withSize(size)
                 .build()
                 .fill(Tile.defaultTile().withCharacter('_'))
 
@@ -67,7 +67,7 @@ class DefaultComponentRenderingStrategyTest {
     fun `Should properly render component without decorations`() {
         val size = Sizes.create(5, 5)
         val graphics = TileGraphicsBuilder.newBuilder()
-                .size(size)
+                .withSize(size)
                 .build()
                 .fill(Tile.defaultTile().withCharacter('_'))
 
@@ -96,7 +96,7 @@ class DefaultComponentRenderingStrategyTest {
 
         val size = Sizes.create(5, 5)
         val graphics = TileGraphicsBuilder.newBuilder()
-                .size(size)
+                .withSize(size)
                 .build()
                 .fill(Tile.defaultTile().withCharacter('_'))
 
@@ -126,7 +126,7 @@ class DefaultComponentRenderingStrategyTest {
 
         val size = Sizes.create(4, 4)
         val graphics = TileGraphicsBuilder.newBuilder()
-                .size(size)
+                .withSize(size)
                 .build()
 
         val button = DefaultButton(

@@ -16,21 +16,21 @@ public class TextCharacterStringExample {
 
     public static void main(String[] args) {
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .defaultTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
-                .defaultSize(SIZE)
-                .debugMode(true)
+                .withDefaultTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
+                .withSize(SIZE)
+                .withDebugMode(true)
                 .build());
 
         TileGrid tileGrid = app.getTileGrid();
 
         CharacterTileString tcs = CharacterTileStrings.newBuilder()
-                .foregroundColor(TileColors.fromString("#eeffee"))
-                .backgroundColor(TileColors.fromString("#223344"))
-                .modifiers(Modifiers.underline())
-                .text("This is some text which is too long to fit on one line...")
+                .withForegroundColor(TileColors.fromString("#eeffee"))
+                .withBackgroundColor(TileColors.fromString("#223344"))
+                .withModifiers(Modifiers.underline())
+                .withText("This is some text which is too long to fit on one line...")
                 .build();
 
-        tileGrid.draw(tcs, Positions.defaultPosition());
+        tileGrid.draw(tcs, Positions.zero());
 
     }
 

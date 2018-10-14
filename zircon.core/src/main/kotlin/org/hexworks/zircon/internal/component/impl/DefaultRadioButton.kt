@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.behavior.Subscription
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -10,15 +11,21 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
+import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Maybe
+import org.hexworks.zircon.api.util.Runnable
+import org.hexworks.zircon.internal.behavior.Observable
+import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 
 class DefaultRadioButton(componentMetadata: ComponentMetadata,
                          override val text: String,
                          private val renderingStrategy: ComponentRenderingStrategy<RadioButton>)
-    : RadioButton, DefaultComponent(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy) {
+    : RadioButton,
+        Observable<Unit> by DefaultObservable(),
+        DefaultComponent(
+                componentMetadata = componentMetadata,
+                renderer = renderingStrategy) {
 
     override val state: RadioButtonState
         get() = currentState
@@ -27,11 +34,6 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
     private var selected = false
 
     init {
-        render()
-    }
-
-    override fun mouseEntered(action: MouseAction) {
-        componentStyleSet.applyMouseOverStyle()
         render()
     }
 
@@ -53,6 +55,14 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
 
     override fun isSelected() = selected
 
+    override fun onSelected(runnable: Runnable): Subscription {
+        return addObserver(object : Consumer<Unit> {
+            override fun accept(value: Unit) {
+                runnable.run()
+            }
+        })
+    }
+
     override fun acceptsFocus(): Boolean {
         return true
     }
@@ -70,21 +80,21 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.accentColor)
-                        .backgroundColor(TileColor.transparent())
+                .withDefaultStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.accentColor)
+                        .withBackgroundColor(TileColor.transparent())
                         .build())
-                .mouseOverStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.primaryBackgroundColor)
-                        .backgroundColor(colorTheme.accentColor)
+                .withMouseOverStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.primaryBackgroundColor)
+                        .withBackgroundColor(colorTheme.accentColor)
                         .build())
-                .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryBackgroundColor)
-                        .backgroundColor(colorTheme.accentColor)
+                .withFocusedStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.secondaryBackgroundColor)
+                        .withBackgroundColor(colorTheme.accentColor)
                         .build())
-                .activeStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor)
-                        .backgroundColor(colorTheme.accentColor)
+                .withActiveStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.secondaryForegroundColor)
+                        .withBackgroundColor(colorTheme.accentColor)
                         .build())
                 .build().also {
                     componentStyleSet = it
@@ -93,14 +103,15 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics)
+        renderingStrategy.render(this, graphics)
     }
 
-    fun select() {
+    override fun select() {
         componentStyleSet.applyMouseOverStyle()
         currentState = SELECTED
         selected = true
         render()
+        notifyObservers(Unit)
     }
 
     fun removeSelection() {

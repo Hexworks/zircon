@@ -10,23 +10,23 @@ data class ColorThemeBuilder(private var primaryForegroundColor: TileColor = Til
                              private var accentColor: TileColor = TileColor.defaultForegroundColor()) {
 
 
-    fun primaryForegroundColor(primaryForegroundColor: TileColor) = also {
+    fun withPrimaryForegroundColor(primaryForegroundColor: TileColor) = also {
         this.primaryForegroundColor = primaryForegroundColor
     }
 
-    fun secondaryForegroundColor(secondaryForegroundColor: TileColor) = also {
+    fun withSecondaryForegroundColor(secondaryForegroundColor: TileColor) = also {
         this.secondaryForegroundColor = secondaryForegroundColor
     }
 
-    fun primaryBackgroundColor(primaryBackgroundColor: TileColor) = also {
+    fun withPrimaryBackgroundColor(primaryBackgroundColor: TileColor) = also {
         this.primaryBackgroundColor = primaryBackgroundColor
     }
 
-    fun secondaryBackgroundColor(secondaryBackgroundColor: TileColor) = also {
+    fun withSecondaryBackgroundColor(secondaryBackgroundColor: TileColor) = also {
         this.secondaryBackgroundColor = secondaryBackgroundColor
     }
 
-    fun accentColor(accentColor: TileColor) = also {
+    fun withAccentColor(accentColor: TileColor) = also {
         this.accentColor = accentColor
     }
 

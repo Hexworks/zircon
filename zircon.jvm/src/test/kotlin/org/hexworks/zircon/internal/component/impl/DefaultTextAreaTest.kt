@@ -2,32 +2,53 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.component.TextAreaBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.component.data.ComponentState
+import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
+import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
+import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.resource.ColorThemeResource
-import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.event.EventBus
+import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.input.InputType.*
+import org.hexworks.zircon.api.input.KeyStroke
+import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
+import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.platform.util.SystemUtils
 import org.junit.Before
 import org.junit.Test
 
-class DefaultTextAreaTest {
+class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
 
-    lateinit var target: DefaultTextArea
-    lateinit var tileset: TilesetResource
+    override lateinit var target: DefaultTextArea
+
+    override val expectedComponentStyles: ComponentStyleSet
+        get() = ComponentStyleSetBuilder.newBuilder()
+                .withDefaultStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(DEFAULT_THEME.secondaryBackgroundColor)
+                        .withBackgroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                        .build())
+                .withDisabledStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                        .withBackgroundColor(DEFAULT_THEME.secondaryBackgroundColor)
+                        .build())
+                .withFocusedStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
+                        .withBackgroundColor(DEFAULT_THEME.primaryForegroundColor)
+                        .build())
+                .build()
 
     @Before
-    fun setUp() {
-        tileset = DefaultLabelTest.FONT
-        target = TextAreaBuilder.newBuilder()
-                .withComponentStyleSet(COMPONENT_STYLES)
-                .withSize(SIZE)
-                .withTileset(tileset)
-                .withPosition(POSITION)
-                .text(TEXT)
-                .build() as DefaultTextArea
+    override fun setUp() {
+        rendererStub = ComponentRendererStub(DefaultTextAreaRenderer())
+        componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
+        target = DefaultTextArea(
+                componentMetadata = COMMON_COMPONENT_METADATA,
+                renderingStrategy = DefaultComponentRenderingStrategy(
+                        componentRenderer = rendererStub),
+                initialText = TEXT)
     }
 
     @Test
@@ -38,54 +59,144 @@ class DefaultTextAreaTest {
     @Test
     fun shouldUseProperFont() {
         assertThat(target.currentTileset().id)
-                .isEqualTo(tileset.id)
+                .isEqualTo(TILESET_REX_PAINT_20X20.id)
     }
 
     @Test
-    fun shouldProperlyApplyTheme() {
-        target.applyColorTheme(THEME)
-        val styles = target.componentStyleSet
-        assertThat(styles.fetchStyleFor(ComponentState.DEFAULT))
-                .isEqualTo(DEFAULT_STYLE)
-        assertThat(styles.fetchStyleFor(ComponentState.MOUSE_OVER))
-                .isEqualTo(DEFAULT_STYLE)
-        assertThat(styles.fetchStyleFor(ComponentState.FOCUSED))
-                .isEqualTo(FOCUSED_STYLE)
-        assertThat(styles.fetchStyleFor(ComponentState.ACTIVE))
-                .isEqualTo(DEFAULT_STYLE)
-        assertThat(styles.fetchStyleFor(ComponentState.DISABLED))
-                .isEqualTo(DISABLED_STYLE)
+    fun shouldAcceptFocus() {
+        assertThat(target.acceptsFocus()).isTrue()
+    }
+
+    @Test
+    fun shouldProperlyMoveCursorRightWhenArrowRightPressed() {
+        target = initializeMultiLineTextArea()
+
+        target.keyStroked(KeyStroke(type = ArrowRight))
+
+        assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(1, 0))
+    }
+
+    @Test
+    fun shouldProperlyMoveCursorLeftWhenArrowLeftPressed() {
+        target = initializeMultiLineTextArea()
+
+        target.keyStroked(KeyStroke(type = ArrowRight))
+        target.keyStroked(KeyStroke(type = ArrowRight))
+        target.keyStroked(KeyStroke(type = ArrowLeft))
+
+        assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(1, 0))
+    }
+
+    @Test
+    fun shouldProperlyMoveCursorDownWhenArrowDownPressed() {
+        target = initializeMultiLineTextArea()
+
+        target.keyStroked(KeyStroke(type = ArrowDown))
+
+        assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(0, 1))
+    }
+
+    @Test
+    fun shouldProperlyMoveCursorUpWhenArrowUpPressed() {
+        target = initializeMultiLineTextArea()
+
+        target.keyStroked(KeyStroke(type = ArrowDown))
+        target.keyStroked(KeyStroke(type = ArrowDown))
+        target.keyStroked(KeyStroke(type = ArrowUp))
+
+        assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(0, 1))
+    }
+
+    @Test
+    fun shouldProperlyDeleteWhenDeleteIsPressed() {
+        target.keyStroked(KeyStroke(type = Delete))
+
+        assertThat(target.text).isEqualTo("ext")
+    }
+
+    @Test
+    fun shouldProperlyDeleteWhenBackspaceIsPressed() {
+        target.keyStroked(KeyStroke(type = ArrowRight))
+        target.keyStroked(KeyStroke(type = ArrowRight))
+        target.keyStroked(KeyStroke(type = Backspace))
+
+        assertThat(target.text).isEqualTo("txt")
+    }
+
+    @Test
+    fun shouldProperlyAddLineBreakWhenEnterPressedAt0x0Position() {
+        target.keyStroked(KeyStroke(type = Enter))
+
+        assertThat(target.text).isEqualTo("${SEP}text")
+    }
+
+    @Test
+    fun shouldProperlyAddLineBreakWhenEnterPressedAt1x0Position() {
+        target.keyStroked(KeyStroke(type = ArrowRight))
+        target.keyStroked(KeyStroke(type = Enter))
+
+        assertThat(target.text).isEqualTo("t${SEP}ext")
+    }
+
+    @Test
+    fun shouldProperlyInsertCharacter() {
+        target.keyStroked(KeyStroke(character = 'x'))
+
+        assertThat(target.text).isEqualTo("xtext")
+    }
+
+    @Test
+    fun shouldProperlyGiveFocus() {
+        target.applyColorTheme(DEFAULT_THEME)
+        val pos = Position.create(2, 3)
+        val tile = Tile.createCharacterTile('x', StyleSet.defaultStyle())
+        target.setTileAt(pos, tile)
+        var cursorVisible = false
+        EventBus.subscribe<ZirconEvent.RequestCursorAt> {
+            cursorVisible = true
+        }
+
+        target.giveFocus()
+
+        assertThat(target.componentStyleSet.currentState())
+                .isEqualTo(FOCUSED)
+        assertThat(target.getTileAt(pos)).isNotEqualTo(tile)
+        assertThat(cursorVisible).isTrue()
+    }
+
+    @Test
+    fun shouldProperlyTakeFocus() {
+        var cursorHidden = false
+        EventBus.subscribe<ZirconEvent.HideCursor> {
+            cursorHidden = true
+        }
+        target.takeFocus()
+
+        assertThat(target.componentStyleSet.currentState())
+                .isEqualTo(DEFAULT)
+        assertThat(cursorHidden).isTrue()
     }
 
     @Test
     fun shouldRefreshDrawSurfaceIfSetText() {
         target.text = UPDATE_TEXT.toString()
-        val character = target.tileGraphics.getTileAt(Position.defaultPosition())
+        val character = target.graphics.getTileAt(Position.defaultPosition())
         assertThat(character.get().asCharacterTile().get().character)
                 .isEqualTo(UPDATE_TEXT)
     }
 
+    private fun initializeMultiLineTextArea(): DefaultTextArea {
+        return DefaultTextArea(
+                componentMetadata = COMMON_COMPONENT_METADATA,
+                renderingStrategy = DefaultComponentRenderingStrategy(
+                        componentRenderer = rendererStub),
+                initialText = MULTI_LINE_TEXT)
+    }
+
     companion object {
+        val SEP = SystemUtils.getLineSeparator()
         const val TEXT = "text"
         const val UPDATE_TEXT = 'U'
-        val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
-        val FONT = BuiltInCP437TilesetResource.WANDERLUST_16X16
-        val SIZE = Size.create(10, 6)
-        val POSITION = Position.create(4, 5)
-        val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryBackgroundColor)
-                .backgroundColor(THEME.secondaryForegroundColor)
-                .build()
-        val FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.primaryBackgroundColor)
-                .backgroundColor(THEME.primaryForegroundColor)
-                .build()
-        val DISABLED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor)
-                .backgroundColor(THEME.secondaryBackgroundColor)
-                .build()
-        val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(DEFAULT_STYLE)
-                .build()
+        val MULTI_LINE_TEXT = "text${SEP}text$SEP"
     }
 }

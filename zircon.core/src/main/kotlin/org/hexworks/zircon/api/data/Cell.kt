@@ -2,7 +2,12 @@ package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.internal.data.DefaultCell
 
+/**
+ * Represents a [Tile] which is at a given [Position]
+ * on a [org.hexworks.zircon.api.behavior.DrawSurface].
+ */
 interface Cell {
+
     val position: Position
     val tile: Tile
 
@@ -10,26 +15,20 @@ interface Cell {
 
     operator fun component2() = tile
 
-    fun withPosition(position: Position): Cell {
-        return if (position == this.position) {
-            this
-        } else {
-            create(position, tile)
-        }
-    }
+    /**
+     * Returns a copy of this [Cell] with the given `position`.
+     */
+    fun withPosition(position: Position): Cell
 
-    fun withTile(tile: Tile): Cell {
-        return if (tile == this.tile) {
-            this
-        } else {
-            create(position, tile)
-        }
-    }
+    /**
+     * Returns a copy of this [Cell] with the given `tile`.
+     */
+    fun withTile(tile: Tile): Cell
 
     companion object {
 
         /**
-         * Creates a new [Tile].
+         * Creates a new [Cell].
          */
         fun create(position: Position, tile: Tile): Cell {
             return DefaultCell(position, tile)

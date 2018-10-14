@@ -1,7 +1,5 @@
 package org.hexworks.zircon.api.component
 
-import kotlin.jvm.JvmOverloads
-
 /**
  * A [LogArea] provides the possibility to display messages.
  * The messages are composed of log elements, which can be

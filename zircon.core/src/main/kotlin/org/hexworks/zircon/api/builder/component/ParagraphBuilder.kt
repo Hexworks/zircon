@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.Paragraph
+import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
@@ -18,7 +18,7 @@ data class ParagraphBuilder(
 
     override fun withTitle(title: String) = also { }
 
-    fun text(text: String) = also {
+    fun withText(text: String) = also {
         this.text = text
     }
 
@@ -33,14 +33,14 @@ data class ParagraphBuilder(
         fillMissingValues()
         // TODO: calculate size based on text size
         val finalSize = if (size.isUnknown()) {
-            decorationRenderers().asSequence()
+            decorationRenderers.asSequence()
                     .map { it.occupiedSize }
                     .fold(Size.create(text.length, 1), Size::plus)
         } else {
             size
         }
         val postProcessors = if (typingEffect) {
-            listOf(TypingEffectPostProcessor<Paragraph>())
+            listOf(TypingEffectPostProcessor<DefaultParagraph>())
         } else {
             listOf()
         }
@@ -48,11 +48,11 @@ data class ParagraphBuilder(
                 componentMetadata = ComponentMetadata(
                         position = position,
                         size = finalSize,
-                        tileset = tileset(),
+                        tileset = tileset,
                         componentStyleSet = componentStyleSet),
                 text = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = decorationRenderers(),
+                        decorationRenderers = decorationRenderers,
                         componentRenderer = DefaultParagraphRenderer(),
                         componentPostProcessors = postProcessors))
     }

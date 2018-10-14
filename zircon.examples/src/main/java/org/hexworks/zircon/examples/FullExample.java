@@ -45,9 +45,9 @@ public class FullExample {
     public static void main(String[] args) {
 
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .defaultTileset(TILESET)
-                .defaultSize(SCREEN_SIZE)
-                .debugMode(true)
+                .withDefaultTileset(TILESET)
+                .withSize(SCREEN_SIZE)
+                .withDebugMode(true)
                 .enableBetaFeatures()
                 .build());
 
@@ -85,8 +85,8 @@ public class FullExample {
         // ==============
 
         REXPaintResource rex = REXPaintResources.loadREXFile(RexLoaderExample.class.getResourceAsStream("/rex_files/zircon_logo.xp"));
-        TileGraphics img = DrawSurfaces.tileGraphicsBuilder().size(SCREEN_SIZE).build();
-        rex.toLayerList(CP437TilesetResources.rogueYun16x16()).forEach(layer -> img.draw(layer, Positions.defaultPosition()));
+        TileGraphics img = DrawSurfaces.tileGraphicsBuilder().withSize(SCREEN_SIZE).build();
+        rex.toLayerList(CP437TilesetResources.rogueYun16x16()).forEach(layer -> img.draw(layer, Positions.zero()));
         AnimationBuilder splashAnimBuilder = Animations.newBuilder();
 
         for (int i = 20; i >= 0; i--) {
@@ -96,7 +96,7 @@ public class FullExample {
                     new DefaultAnimationFrame(
                             SCREEN_SIZE,
                             Collections.singletonList(Layers.newBuilder()
-                                    .tileGraphic(img.toTileImage().transform(tile -> tile.withBackgroundColor(tile.getBackgroundColor()
+                                    .withTileGraphics(img.toTileImage().transform(tile -> tile.withBackgroundColor(tile.getBackgroundColor()
                                             .darkenByPercent(idx / 20d))
                                             .withForegroundColor(tile.getForegroundColor()
                                                     .darkenByPercent(idx / 20d))).toTileGraphic())
@@ -111,7 +111,7 @@ public class FullExample {
                     new DefaultAnimationFrame(
                             SCREEN_SIZE,
                             Collections.singletonList(Layers.newBuilder()
-                                    .tileGraphic(img.toTileImage().transform(tile -> tile.withBackgroundColor(tile.getBackgroundColor()
+                                    .withTileGraphics(img.toTileImage().transform(tile -> tile.withBackgroundColor(tile.getBackgroundColor()
                                             .darkenByPercent(idx / 20d))
                                             .withForegroundColor(tile.getForegroundColor()
                                                     .darkenByPercent(idx / 20d))).toTileGraphic())
@@ -132,7 +132,7 @@ public class FullExample {
 
         AnimationBuilder skullAnimBuilder = AnimationResource.loadAnimationFromStream(
                 AnimationExample.class.getResourceAsStream("/animations/skull.zap"),
-                TILESET).loopCount(0);
+                TILESET).withLoopCount(0);
         for (int i = 0; i < skullAnimBuilder.getTotalFrameCount(); i++) {
             skullAnimBuilder.addPosition(Positions.create(2, 6));
         }
@@ -140,37 +140,37 @@ public class FullExample {
 
         Panel introPanel = Components.panel()
                 .withPosition(Positions.create(17, 3))
-                .withSize(SCREEN_SIZE.withRelativeXLength(-18).withRelativeYLength(-4))
+                .withSize(SCREEN_SIZE.withRelativeWidth(-18).withRelativeHeight(-4))
                 .withBoxType(BoxType.SINGLE)
                 .wrapWithBox(true)
                 .build();
 
         introPanel.addComponent(Components.header()
                 .withPosition(Positions.offset1x1())
-                .text("Do you plan to make a roguelike?")
+                .withText("Do you plan to make a roguelike?")
                 .build());
 
         TextBox introBox = Components.textBox()
                 .withPosition(Positions.create(1, 3))
                 .withSize(Sizes.create(44, 25))
-                .paragraph("Look no further. Zircon is the right tool for the job.")
-                .newLine()
-                .paragraph("Zircon is a Text GUI library and a Tile Engine which is designed for simplicity and ease of use.")
-                .newLine()
-                .paragraph("It is usable out of the box for all JVM languages including Java, Kotlin, Clojure and Scala.")
-                .newLine()
-                .paragraph("Things Zircon knows:")
-                .newLine()
-                .listItem("Animations")
-                .listItem("A Component System with built-in components for games")
-                .listItem("Layering")
-                .listItem("Mouse and keyboard support")
-                .listItem("Shape and Box drawing")
-                .listItem("Tilesets, and Graphical tiles")
-                .listItem("REXPaint file loading")
-                .listItem("Color Themes and more!")
-                .newLine()
-                .paragraph("Interested in more details? Read on...", false)
+                .addParagraph("Look no further. Zircon is the right tool for the job.")
+                .addNewLine()
+                .addParagraph("Zircon is a Text GUI library and a Tile Engine which is designed for simplicity and ease of use.")
+                .addNewLine()
+                .addParagraph("It is usable out of the box for all JVM languages including Java, Kotlin, Clojure and Scala.")
+                .addNewLine()
+                .addParagraph("Things Zircon knows:")
+                .addNewLine()
+                .addListItem("Animations")
+                .addListItem("A Component System with built-in components for games")
+                .addListItem("Layering")
+                .addListItem("Mouse and keyboard support")
+                .addListItem("Shape and Box drawing")
+                .addListItem("Tilesets, and Graphical tiles")
+                .addListItem("REXPaint file loading")
+                .addListItem("Color Themes and more!")
+                .addNewLine()
+                .addParagraph("Interested in more details? Read on...", false)
                 .build();
 
         introPanel.addComponent(introBox);
@@ -194,7 +194,7 @@ public class FullExample {
                 .build();
         simplePanel.addComponent(Components.label()
                 .withPosition(Positions.offset1x1())
-                .text("Simple panel")
+                .withText("Simple panel")
                 .build());
         panelsScreen.addComponent(simplePanel);
 
@@ -212,7 +212,7 @@ public class FullExample {
                 .wrapWithShadow(true)
                 .build();
         panelWithShadow.addComponent(Components.label()
-                .text("Panel with shadow")
+                .withText("Panel with shadow")
                 .withPosition(Positions.create(1, 1))
                 .build());
         panelsScreen.addComponent(panelWithShadow);
@@ -225,7 +225,7 @@ public class FullExample {
                 .wrapWithBox(true)
                 .build();
         panelWithShadowAndBox.addComponent(Components.label()
-                .text("and box")
+                .withText("and box")
                 .withPosition(Positions.create(0, 0))
                 .build());
         panelsScreen.addComponent(panelWithShadowAndBox);
@@ -236,7 +236,7 @@ public class FullExample {
                 .withPosition(Positions.create(0, 2).relativeToBottomOf(boxedPanel))
                 .build();
         borderedPanel.addComponent(Components.label()
-                .text("Bordered panel")
+                .withText("Bordered panel")
                 .withPosition(Positions.offset1x1())
                 .build());
         panelsScreen.addComponent(borderedPanel);
@@ -247,7 +247,7 @@ public class FullExample {
                 .wrapWithShadow(true)
                 .build();
         borderedPanelWithShadow.addComponent(Components.label()
-                .text("Border+shadow panel")
+                .withText("Border+shadow panel")
                 .withPosition(Positions.offset1x1())
                 .build());
         panelsScreen.addComponent(borderedPanelWithShadow);
@@ -267,13 +267,13 @@ public class FullExample {
         for (int i = 0; i < 2; i++) {
             checkBoxesPanel.addComponent(Components.checkBox()
                     .withPosition(Positions.create(0, i))
-                    .text("Check " + (i + 1))
+                    .withText("Check " + (i + 1))
                     .build());
         }
         checkBoxesPanel.addComponent(Components.checkBox()
                 .withPosition(Positions.create(0, 2))
-                .text("Too long text for this checkbox")
-                .width(19)
+                .withText("Too long text for this checkbox")
+                .withWidth(19)
                 .build());
         inputsScreen.addComponent(checkBoxesPanel);
 
@@ -284,7 +284,7 @@ public class FullExample {
                 .wrapWithShadow(true)
                 .build();
         textBoxesPanel.addComponent(Components.textArea()
-                .text("Panel" + System.lineSeparator() + "with editable text box" + System.lineSeparator() + "...")
+                .withText("Panel" + System.lineSeparator() + "with editable text box" + System.lineSeparator() + "...")
                 .withSize(Sizes.create(13, 3))
                 .build());
         inputsScreen.addComponent(textBoxesPanel);
@@ -298,7 +298,7 @@ public class FullExample {
         for (int i = 0; i < 3; i++) {
             buttonsPanel.addComponent(Components.button()
                     .withPosition(Positions.create(0, i))
-                    .text("Button " + i)
+                    .withText("Button " + i)
                     .build());
         }
         inputsScreen.addComponent(buttonsPanel);
@@ -329,11 +329,11 @@ public class FullExample {
                 .wrapWithShadow(true)
                 .build();
         final Button addButton = Components.button()
-                .text("Add new panel")
+                .withText("Add new panel")
                 .withPosition(Positions.offset1x1())
                 .build();
         final Button clearButton = Components.button()
-                .text("Remove all panels")
+                .withText("Remove all panels")
                 .withPosition(Positions.create(1, 3))
                 .build();
         addAndRemovePanel.addComponent(addButton);
@@ -358,7 +358,7 @@ public class FullExample {
                 final Panel panel = createSmallPanel(pos);
                 final Button closeButton = Components.button()
                         .withPosition(Positions.create(5, 0))
-                        .text("X")
+                        .withText("X")
                         .build();
                 closeButton.onMouseReleased((closeAction -> {
                     addAndRemoveScreen.removeComponent(panel);
@@ -451,8 +451,8 @@ public class FullExample {
 
         final RadioButtonGroup slOptions = Components.radioButtonGroup()
                 .withSize(themePickerSize
-                        .withYLength(solarizedLightOptions.size())
-                        .withRelativeXLength(-2))
+                        .withHeight(solarizedLightOptions.size())
+                        .withRelativeWidth(-2))
                 .build();
         solarizedLightOptions.forEach((option) -> slOptions.addOption(
                 option.name(),
@@ -461,8 +461,8 @@ public class FullExample {
 
         final RadioButtonGroup sdOptions = Components.radioButtonGroup()
                 .withSize(themePickerSize
-                        .withYLength(solarizedDarkOptions.size())
-                        .withRelativeXLength(-2))
+                        .withHeight(solarizedDarkOptions.size())
+                        .withRelativeWidth(-2))
                 .build();
         solarizedDarkOptions.forEach((option) -> sdOptions.addOption(
                 option.name(),
@@ -471,8 +471,8 @@ public class FullExample {
 
         final RadioButtonGroup othOptions = Components.radioButtonGroup()
                 .withSize(otherPanel.getSize()
-                        .withYLength(otherOptions.size())
-                        .withRelativeXLength(-2))
+                        .withHeight(otherOptions.size())
+                        .withRelativeWidth(-2))
                 .build();
         otherOptions.forEach((option) -> othOptions.addOption(
                 option.name(),
@@ -509,9 +509,9 @@ public class FullExample {
     }
 
     private static void refreshIcon(Layer icon, char c) {
-        icon.setAbsoluteTileAt(Positions.defaultPosition(), Tiles.newBuilder()
-                .character(c)
-                .backgroundColor(TileColors.transparent())
+        icon.setAbsoluteTileAt(Positions.zero(), Tiles.newBuilder()
+                .withCharacter(c)
+                .withBackgroundColor(TileColors.transparent())
                 .build());
     }
 
@@ -529,7 +529,7 @@ public class FullExample {
 
     private static Label createLabelForTheme(ColorThemeResource currentTheme) {
         return Components.label()
-                .text(currentTheme.name())
+                .withText(currentTheme.name())
                 .build();
     }
 
@@ -545,7 +545,7 @@ public class FullExample {
     private static void addNavigation(Screen screen, List<Screen> screens, int currIdx) {
         if (currIdx > 0) {
             final Button prev = Components.button()
-                    .text(Symbols.TRIANGLE_LEFT_POINTING_BLACK + " Prev")
+                    .withText(Symbols.TRIANGLE_LEFT_POINTING_BLACK + " Prev")
                     .withPosition(Positions.create(46, 1))
                     .build();
             prev.onMouseReleased((a) -> screens.get(currIdx - 1).display());
@@ -553,7 +553,7 @@ public class FullExample {
         }
         if (currIdx < screens.size() - 1) {
             final Button next = Components.button()
-                    .text("Next " + Symbols.TRIANGLE_RIGHT_POINTING_BLACK)
+                    .withText("Next " + Symbols.TRIANGLE_RIGHT_POINTING_BLACK)
                     .withPosition(Positions.create(56, 1))
                     .build();
             next.onMouseReleased((a) -> screens.get(currIdx + 1).display());
@@ -563,7 +563,7 @@ public class FullExample {
 
     private static void addScreenTitle(Screen screen, String title) {
         final Header header = Components.header()
-                .text(title)
+                .withText(title)
                 .withPosition(Positions.create(2, 1))
                 .build();
         screen.addComponent(header);

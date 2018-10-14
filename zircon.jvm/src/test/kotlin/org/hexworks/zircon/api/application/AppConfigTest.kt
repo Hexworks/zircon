@@ -10,11 +10,11 @@ class AppConfigTest {
     @Test
     fun shouldProperlySetValues() {
         val target = AppConfigBuilder.newBuilder()
-                .blinkLengthInMilliSeconds(BLINK_TIME)
-                .clipboardAvailable(HAS_CLIPBOARD)
-                .cursorBlinking(IS_BLINKING)
-                .cursorColor(CURSOR_COLOR)
-                .cursorStyle(CURSOR_STYLE)
+                .withBlinkLengthInMilliSeconds(BLINK_TIME)
+                .withClipboardAvailable(HAS_CLIPBOARD)
+                .withCursorBlinking(IS_BLINKING)
+                .withCursorColor(CURSOR_COLOR)
+                .withCursorStyle(CURSOR_STYLE)
                 .build()
 
         assertThat(target.blinkLengthInMilliSeconds)

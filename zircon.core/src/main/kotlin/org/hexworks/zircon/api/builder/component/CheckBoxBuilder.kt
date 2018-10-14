@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.component.BaseComponentBuilder
 import org.hexworks.zircon.api.component.CheckBox
+import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
@@ -15,11 +15,11 @@ data class CheckBoxBuilder(
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
     : BaseComponentBuilder<CheckBox, CheckBoxBuilder>(commonComponentProperties) {
 
-    fun text(text: String) = also {
+    fun withText(text: String) = also {
         this.text = text
     }
 
-    fun width(width: Int) = also {
+    fun withWidth(width: Int) = also {
         this.width = width
     }
 
@@ -28,7 +28,8 @@ data class CheckBoxBuilder(
             "A Label can't be blank!"
         }
         fillMissingValues()
-        val size = decorationRenderers().map { it.occupiedSize }
+        val size = decorationRenderers.asSequence()
+                .map { it.occupiedSize }
                 .fold(Size.zero(), Size::plus)
                 .plus(Size.create(if (width == -1) text.length + 4 else width, 1))
         return DefaultCheckBox(
@@ -36,10 +37,10 @@ data class CheckBoxBuilder(
                         size = size,
                         position = position,
                         componentStyleSet = componentStyleSet,
-                        tileset = tileset()),
+                        tileset = tileset),
                 text = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = decorationRenderers(),
+                        decorationRenderers = decorationRenderers,
                         componentRenderer = DefaultCheckBoxRenderer()))
     }
 

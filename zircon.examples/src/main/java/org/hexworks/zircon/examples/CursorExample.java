@@ -19,12 +19,12 @@ public class CursorExample {
     public static void main(String[] args) {
 
         AppConfig config = AppConfigs.newConfig()
-                .cursorColor(TileColors.fromString("#ff8844"))
-                .blinkLengthInMilliSeconds(500)
-                .cursorStyle(CursorStyle.FIXED_BACKGROUND)
-                .cursorBlinking(true)
-                .defaultSize(SIZE)
-                .defaultTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
+                .withCursorColor(TileColors.fromString("#ff8844"))
+                .withBlinkLengthInMilliSeconds(500)
+                .withCursorStyle(CursorStyle.FIXED_BACKGROUND)
+                .withCursorBlinking(true)
+                .withSize(SIZE)
+                .withDefaultTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
                 .build();
 
         Application app = SwingApplications.startApplication(config);

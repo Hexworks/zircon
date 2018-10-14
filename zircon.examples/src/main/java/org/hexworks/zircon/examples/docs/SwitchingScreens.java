@@ -13,14 +13,14 @@ public class SwitchingScreens {
 
         final Screen screen0 = Screens.createScreenFor(tileGrid);
         final Button next = Components.button()
-                .text("Next")
+                .withText("Next")
                 .withPosition(Positions.offset1x1())
                 .build();
         screen0.addComponent(next);
 
         final Screen screen1 = Screens.createScreenFor(tileGrid);
         final Button prev = Components.button()
-                .text("Prev")
+                .withText("Prev")
                 .withPosition(Positions.offset1x1())
                 .build();
         screen1.addComponent(prev);

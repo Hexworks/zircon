@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.builder.data
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.data.BlockSide.*
+import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.data.DefaultBlock
@@ -15,7 +16,7 @@ import org.hexworks.zircon.internal.data.DefaultBlock
  * also
  * @see [org.hexworks.zircon.api.color.TileColor] to check default colors.
  */
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 data class BlockBuilder(
         private var position: Position3D = Position3D.unknown(),
         private var top: Maybe<Tile> = Maybe.empty(),
@@ -29,50 +30,50 @@ data class BlockBuilder(
 
     private var currLayerIdx = 0
 
-    fun position(position: Position) = also {
+    fun withPosition(position: Position) = also {
         this.position = Position3D.from2DPosition(position)
     }
 
-    fun position(position: Position3D) = also {
+    fun withPosition(position: Position3D) = also {
         this.position = position
     }
 
-    fun side(blockSide: BlockSide, tile: Tile) = also {
+    fun withSide(blockSide: BlockSide, tile: Tile) = also {
         when (blockSide) {
-            TOP -> top(tile)
-            BOTTOM -> bottom(tile)
-            LEFT -> left(tile)
-            RIGHT -> right(tile)
-            FRONT -> front(tile)
-            BACK -> back(tile)
+            TOP -> withTop(tile)
+            BOTTOM -> withBottom(tile)
+            LEFT -> withLeft(tile)
+            RIGHT -> withRight(tile)
+            FRONT -> withFront(tile)
+            BACK -> withBack(tile)
         }
     }
 
-    fun top(top: Tile) = also {
+    fun withTop(top: Tile) = also {
         this.top = Maybe.of(top)
     }
 
-    fun bottom(bottom: Tile) = also {
+    fun withBottom(bottom: Tile) = also {
         this.bottom = Maybe.of(bottom)
     }
 
-    fun front(front: Tile) = also {
+    fun withFront(front: Tile) = also {
         this.front = Maybe.of(front)
     }
 
-    fun back(back: Tile) = also {
+    fun withBack(back: Tile) = also {
         this.back = Maybe.of(back)
     }
 
-    fun left(left: Tile) = also {
+    fun withLeft(left: Tile) = also {
         this.left = Maybe.of(left)
     }
 
-    fun right(right: Tile) = also {
+    fun withRight(right: Tile) = also {
         this.right = Maybe.of(right)
     }
 
-    fun layer(layer: Tile) = also {
+    fun addLayer(layer: Tile) = also {
         require(currLayerIdx < layerCount) {
             "Can't add more layers to this Block, it has already reached maximum."
         }
@@ -80,18 +81,18 @@ data class BlockBuilder(
         currLayerIdx++
     }
 
-    fun layers(layers: List<Tile>) = also {
+    fun withLayers(layers: List<Tile>) = also {
         layerCount = layers.size
         currLayerIdx = layerCount - 1
         this.layers.clear()
         this.layers.addAll(layers)
     }
 
-    fun layers(vararg layers: Tile) = also {
-        layers(layers.toList())
+    fun withLayers(vararg layers: Tile) = also {
+        withLayers(layers.toList())
     }
 
-    fun layerCount(layerCount: Int) = also {
+    fun withLayerCount(layerCount: Int) = also {
         this.layerCount = layerCount
     }
 

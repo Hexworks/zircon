@@ -7,13 +7,13 @@ import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.junit.Before
 import org.junit.Test
 
-class DefaultBoundableTest {
+class DefaultMovableTest {
 
-    lateinit var target: DefaultBoundable
+    lateinit var target: DefaultMovable
 
     @Before
     fun setUp() {
-        target = DefaultBoundable(
+        target = DefaultMovable(
                 size = TARGET_SIZE,
                 position = Position.defaultPosition())
     }
@@ -27,7 +27,7 @@ class DefaultBoundableTest {
     @Test
     fun shouldNotContainPositionWhenPositionIsOutOfBounds() {
         assertThat(target.containsPosition(target.position
-                        .withRelative(Position.create(TARGET_SIZE.yLength, TARGET_SIZE.xLength))))
+                        .withRelative(Position.create(TARGET_SIZE.height, TARGET_SIZE.width))))
                 .isFalse()
     }
 
@@ -39,14 +39,14 @@ class DefaultBoundableTest {
 
     @Test
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundable() {
-        assertThat(target.intersects(DefaultBoundable(TARGET_SIZE)))
+        assertThat(target.intersects(DefaultMovable(TARGET_SIZE)))
                 .isTrue()
     }
 
     @Test
     fun shouldNotIntersectWhenIntersectIsCalledWithNonIntersectingBoundable() {
         assertThat(target.intersects(LayerBuilder.newBuilder()
-                .offset(NON_INTERSECTING_OFFSET)
+                .withOffset(NON_INTERSECTING_OFFSET)
                 .build()))
                 .isFalse()
     }
@@ -54,21 +54,21 @@ class DefaultBoundableTest {
     @Test
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundableWithOffset() {
         assertThat(target.intersects(LayerBuilder.newBuilder()
-                .offset(INTERSECTION_OFFSET)
-                .size(Size.one())
+                .withOffset(INTERSECTION_OFFSET)
+                .withSize(Size.one())
                 .build()))
                 .isTrue()
     }
 
     @Test
     fun shouldContainBoundableWhenCalledWithContainedBoundable() {
-        assertThat(target.containsBoundable(DefaultBoundable(Size.one())))
+        assertThat(target.containsBoundable(DefaultMovable(Size.one())))
                 .isTrue()
     }
 
     @Test
     fun shouldNotContainBoundableWhenCalledWithNonContainedBoundable() {
-        assertThat(target.containsBoundable(DefaultBoundable(Size.create(100, 100))))
+        assertThat(target.containsBoundable(DefaultMovable(Size.create(100, 100))))
                 .isFalse()
     }
 

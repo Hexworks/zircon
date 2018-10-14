@@ -73,9 +73,9 @@ object LavaMarkovChainExample {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(tileset)
-                .defaultSize(Sizes.create(80, 40))
-                .debugMode(true)
+                .withDefaultTileset(tileset)
+                .withSize(Sizes.create(80, 40))
+                .withDebugMode(true)
                 .build())
 
         val initialNode = MarkovChainNode.create(defaultLava)

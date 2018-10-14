@@ -20,8 +20,8 @@ object InputHandlingExampleKotlin {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(TILESET)
-                .defaultSize(SCREEN_SIZE)
+                .withDefaultTileset(TILESET)
+                .withSize(SCREEN_SIZE)
                 .build())
 
         // called for all inputs

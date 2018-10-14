@@ -23,11 +23,11 @@ data class TileImageBuilder(
         private var size: Size = Size.one(),
         private val tiles: MutableMap<Position, Tile> = mutableMapOf()) : Builder<TileImage> {
 
-    fun tileset(tileset: TilesetResource) = also {
+    fun withTileset(tileset: TilesetResource) = also {
         this.tileset = tileset
     }
 
-    fun filler(filler: Tile) = also {
+    fun withFiller(filler: Tile) = also {
         this.filler = filler
     }
 
@@ -35,14 +35,14 @@ data class TileImageBuilder(
      * Sets the size for the new [TileGraphics].
      * Default is 1x1.
      */
-    fun size(size: Size) = also {
+    fun withSize(size: Size) = also {
         this.size = size
     }
 
     /**
      * Adds a [Tile] at the given [Position].
      */
-    fun tile(position: Position, tile: Tile) = also {
+    fun withTile(position: Position, tile: Tile) = also {
         require(size.containsPosition(position)) {
             "The given character's position ($position) is out create bounds for text image size: $size."
         }

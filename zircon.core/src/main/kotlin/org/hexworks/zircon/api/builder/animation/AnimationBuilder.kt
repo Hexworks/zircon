@@ -14,20 +14,22 @@ data class AnimationBuilder private constructor(
         private val frames: MutableList<InternalAnimationFrame> = mutableListOf(),
         private val positions: MutableList<Position> = mutableListOf(),
         private var tick: Long = 1000L / DEFAULT_FPS,
-        private var loopCount: Int = 1,
-        private var uniqueFrameCount: Int = -1,
-        private var totalFrameCount: Int = -1) : Builder<Animation> {
+        private var uniqueFrameCount: Int = -1) : Builder<Animation> {
 
-    fun getTotalFrameCount() = totalFrameCount
+    var totalFrameCount: Int = -1
+        private set
 
-    fun loopCount(loopCount: Int) = also {
+    var loopCount: Int = 1
+        private set
+
+    fun withLoopCount(loopCount: Int) = also {
         require(loopCount >= 0) {
             "Loop count must be greater than or equal to 0!"
         }
         this.loopCount = loopCount
     }
 
-    fun fps(fps: Int) = also {
+    fun withFps(fps: Int) = also {
         require(fps > 0) {
             "Fps must be greater than 0!"
         }

@@ -12,7 +12,7 @@ import org.junit.Test
 class SubTileGraphicsTest {
 
     private val backend = TileGraphicsBuilder.newBuilder()
-            .size(BACKEND_SIZE)
+            .withSize(BACKEND_SIZE)
             .build()
     lateinit var target: TileGraphics
 
@@ -36,12 +36,12 @@ class SubTileGraphicsTest {
 
     @Test(expected = UnsupportedOperationException::class)
     fun shouldRestrictResize() {
-        target.resize(Size.defaultTerminalSize())
+        target.resize(Size.defaultGridSize())
     }
 
     @Test(expected = UnsupportedOperationException::class)
     fun shouldRestrictResizeWithFiller() {
-        target.resize(Size.defaultTerminalSize(), Tile.empty())
+        target.resize(Size.defaultGridSize(), Tile.empty())
     }
 
     @Test

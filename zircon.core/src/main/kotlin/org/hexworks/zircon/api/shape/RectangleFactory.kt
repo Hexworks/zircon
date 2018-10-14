@@ -6,9 +6,9 @@ import org.hexworks.zircon.api.data.Size
 object RectangleFactory : ShapeFactory<RectangleParameters> {
 
     override fun createShape(shapeParameters: RectangleParameters) = shapeParameters.let { (topLeft, size) ->
-        val topRight = topLeft.withRelativeX(size.xLength - 1)
-        val bottomRight = topRight.withRelativeY(size.yLength - 1)
-        val bottomLeft = topLeft.withRelativeY(size.yLength - 1)
+        val topRight = topLeft.withRelativeX(size.width - 1)
+        val bottomRight = topRight.withRelativeY(size.height - 1)
+        val bottomLeft = topLeft.withRelativeY(size.height - 1)
         LineFactory.buildLine(topLeft, topRight)
                 .plus(LineFactory.buildLine(topRight, bottomRight))
                 .plus(LineFactory.buildLine(bottomRight, bottomLeft))

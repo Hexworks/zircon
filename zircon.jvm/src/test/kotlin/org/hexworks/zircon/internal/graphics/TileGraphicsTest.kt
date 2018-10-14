@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.graphics
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
@@ -13,7 +12,6 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.kotlin.toMap
 import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 import org.junit.Before
 import org.junit.Test
 
@@ -24,49 +22,14 @@ class TileGraphicsTest {
     @Before
     fun setUp() {
         target = TileGraphicsBuilder.newBuilder()
-                .size(SIZE_OF_3X3)
-                .tileset(TILESET)
+                .withSize(SIZE_OF_3X3)
+                .withTileset(TILESET)
                 .build()
-    }
-
-    @Test
-    fun shouldReportProperBounds() {
-        assertThat(target.rect).isEqualTo(Rect.create(size = SIZE_OF_3X3))
     }
 
     @Test
     fun shouldReportProperSize() {
         assertThat(target.size).isEqualTo(SIZE_OF_3X3)
-    }
-
-    @Test
-    fun shouldIntersectWithIntersectingBoundable() {
-        assertThat(target.intersects(DefaultBoundable(Size.create(5, 5))))
-    }
-
-    @Test
-    fun shouldNotIntersectWithNonIntersectingBoundable() {
-        assertThat(target.intersects(DefaultBoundable(Size.create(2, 2), Position.create(3, 3))))
-    }
-
-    @Test
-    fun shouldContainContainedPosition() {
-        assertThat(target.containsPosition(Position.create(2, 2))).isTrue()
-    }
-
-    @Test
-    fun shouldNotContainNotContainedPosition() {
-        assertThat(target.containsPosition(Position.create(3, 3))).isFalse()
-    }
-
-    @Test
-    fun shouldContainContainedBoundable() {
-        assertThat(target.containsBoundable(Boundable.create(Position.offset1x1(), Sizes.create(2, 2))))
-    }
-
-    @Test
-    fun shouldNotContainNotContainedBoundable() {
-        assertThat(target.containsBoundable(Boundable.create(Position.create(2, 2), Sizes.create(2, 2))))
     }
 
     @Test
@@ -151,7 +114,7 @@ class TileGraphicsTest {
     @Test
     fun shouldProperlyDrawOtherTileGraphics() {
         val other = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(2, 2))
+                .withSize(Size.create(2, 2))
                 .build()
                 .fill(FILLER)
         target.draw(other, Position.create(1, 1))
@@ -165,7 +128,7 @@ class TileGraphicsTest {
     @Test
     fun shouldProperlyDrawOverflowingTileGraphics() {
         val other = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(2, 2))
+                .withSize(Size.create(2, 2))
                 .build()
                 .fill(FILLER)
         target.draw(other, Position.create(2, 2))
@@ -179,7 +142,7 @@ class TileGraphicsTest {
     @Test
     fun shouldProperlyDrawOntoOther() {
         val other = TileGraphicsBuilder.newBuilder()
-                .size(Size.create(2, 2))
+                .withSize(Size.create(2, 2))
                 .build()
                 .fill(FILLER)
         other.drawOnto(target, Position.create(2, 2))
@@ -363,8 +326,8 @@ class TileGraphicsTest {
     }
 
     private fun fetchOutOfBoundsPositions(): List<Position> {
-        return listOf(Position.create(SIZE_OF_3X3.xLength - 1, Int.MAX_VALUE),
-                Position.create(Int.MAX_VALUE, SIZE_OF_3X3.xLength - 1),
+        return listOf(Position.create(SIZE_OF_3X3.width - 1, Int.MAX_VALUE),
+                Position.create(Int.MAX_VALUE, SIZE_OF_3X3.width - 1),
                 Position.create(Int.MAX_VALUE, Int.MAX_VALUE))
     }
 
@@ -374,7 +337,7 @@ class TileGraphicsTest {
         val FILLED_POS = Position.create(1, 2)
         val SIZE_OF_3X3 = Size.create(3, 3)
         val FILLER: CharacterTile = TileBuilder.newBuilder()
-                .character('a')
+                .withCharacter('a')
                 .buildCharacterTile()
 
     }
