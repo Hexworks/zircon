@@ -3,14 +3,13 @@ package org.hexworks.zircon.internal.component.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.HeaderBuilder
 import org.hexworks.zircon.api.builder.component.LabelBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
+import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.builder.grid.TileGridBuilder
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
-import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
@@ -35,17 +34,57 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Before
     override fun setUp() {
-        componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
+        componentStub = ComponentStub(COMPONENT_STUB_POSITION_1x1, Size.create(2, 2))
         rendererStub = ComponentRendererStub()
         target = DefaultContainer(
                 componentMetadata = ComponentMetadata(
-                        size = DefaultPanelTest.SIZE,
-                        position = DefaultPanelTest.POSITION,
+                        size = SIZE_4x4,
+                        position = POSITION_2_3,
                         componentStyleSet = COMPONENT_STYLES,
                         tileset = TILESET_REX_PAINT_20X20),
                 renderer = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub))
+    }
+
+    @Test
+    fun shouldProperlyDrawOntoDrawSurface() {
+
+        val componentTile = TileBuilder.newBuilder()
+                .withCharacter('x')
+                .build()
+        val surfaceTile = TileBuilder.newBuilder()
+                .withCharacter('y')
+                .build()
+
+        val surface = TileGraphicsBuilder.newBuilder()
+                .withSize(SIZE_3_4 + Size.one())
+                .withTileset(TILESET_REX_PAINT_20X20)
+                .build()
+                .fill(surfaceTile)
+        target.fill(componentTile)
+
+        target.drawOnto(surface, Position.offset1x1())
+
+        assertThat(surface.getTileAt(Position.offset1x1()).get()).isEqualTo(componentTile)
+        assertThat(surface.getTileAt(Position.zero()).get()).isEqualTo(surfaceTile)
+    }
+
+    @Test
+    fun shouldProperlyFetchComponentByPositionWhenChildIsFetched() {
+        target.addComponent(componentStub)
+
+        assertThat(target
+                .fetchComponentByPosition(COMPONENT_STUB_POSITION_1x1 + POSITION_2_3).get().id)
+                .isEqualTo(componentStub.id)
+    }
+
+    @Test
+    fun shouldProperlyFetchComponentByPositionWhenSelfShouldBeReturned() {
+        target.addComponent(componentStub)
+
+        assertThat(target.fetchComponentByPosition(Position.zero() + POSITION_2_3).get().id)
+                .isEqualTo(target.id)
     }
 
     @Test
@@ -273,6 +312,16 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     }
 
     @Test
+    fun shouldReturnEmptyStylesWhenThemeApplied() {
+        assertThat(target.applyColorTheme(DEFAULT_THEME)).isEqualTo(ComponentStyleSet.empty())
+    }
+
+    @Test
+    fun shouldProperlyReturnToString() {
+        assertThat(target.toString()).isEqualTo("DefaultContainer(id=${target.id.toString().substring(0, 4)},position=GridPosition(x=2, y=3),size=DefaultSize(width=4, height=4),components=[])")
+    }
+
+    @Test
     fun shouldProperlyRemoveComponentFromChild() {
         val comp = LabelBuilder.newBuilder()
                 .withText("x")
@@ -280,7 +329,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 .withPosition(Position.defaultPosition())
                 .build()
         val panel = PanelBuilder.newBuilder()
-                .withSize(SIZE - Size.one())
+                .withSize(SIZE_4x4 - Size.one())
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withPosition(Position.defaultPosition()).build()
         panel.addComponent(comp)
@@ -295,8 +344,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     }
 
     companion object {
-        val SIZE = Size.create(4, 4)
-        val POSITION = Position.create(2, 3)
-        val NEW_POSITION = Position.create(6, 7)
+        val SIZE_4x4 = Size.create(4, 4)
+        val COMPONENT_STUB_POSITION_1x1 = Position.create(1, 1)
     }
 }

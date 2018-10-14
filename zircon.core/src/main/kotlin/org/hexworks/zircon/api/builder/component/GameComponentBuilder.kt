@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.game.DefaultGameComponent
+import kotlin.jvm.JvmStatic
 
 /**
  * Note that this class is in **BETA**!
@@ -55,6 +56,7 @@ data class GameComponentBuilder(
 
         val DEFAULT_PROJECTION_MODE = ProjectionMode.TOP_DOWN
 
+        @JvmStatic
         fun newBuilder(): GameComponentBuilder {
             require(RuntimeConfig.config.betaEnabled) {
                 "GameComponent is a beta feature. Please enable them when setting up Zircon using an AppConfig."

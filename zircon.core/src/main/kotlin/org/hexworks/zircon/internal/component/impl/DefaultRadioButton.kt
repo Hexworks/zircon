@@ -20,7 +20,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButto
 
 class DefaultRadioButton(componentMetadata: ComponentMetadata,
                          override val text: String,
-                         private val renderingStrategy: ComponentRenderingStrategy<RadioButton>)
+                         private val renderingStrategy: ComponentRenderingStrategy<DefaultRadioButton>)
     : RadioButton,
         Observable<Unit> by DefaultObservable(),
         DefaultComponent(

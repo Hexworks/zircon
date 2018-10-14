@@ -1,0 +1,940 @@
+<div>
+    <h1>Zircon - A user-friendly Text GUI &amp; Tile Engine <a
+            href="https://twitter.com/intent/tweet?text=Do%20you%20plan%20to%20make%20a%20roguelike%3F%20Look%20no%20further.%20Zircon%20is%20the%20right%20tool%20for%20the%20job.&amp;url=https://github.com/Hexworks/zircon&amp;hashtags=games,roguelikes"
+            rel="nofollow"><img
+            src="https://camo.githubusercontent.com/83d4084f7b71558e33b08844da5c773a8657e271/68747470733a2f2f696d672e736869656c64732e696f2f747769747465722f75726c2f687474702f736869656c64732e696f2e7376673f7374796c653d736f6369616c"
+            alt="Tweet"
+            data-canonical-src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social"
+            style="max-width:100%;"></a></h1>
+    <p><a target="_blank" rel="noopener noreferrer"
+          href="https://camo.githubusercontent.com/31564d6b382ec94480dfb50fed542c112c86239f/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3230353234353033363038343938353835372f3438313231333030303534303232353535302f66756c6c5f6578616d706c652e676966"><img
+            src="https://camo.githubusercontent.com/31564d6b382ec94480dfb50fed542c112c86239f/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3230353234353033363038343938353835372f3438313231333030303534303232353535302f66756c6c5f6578616d706c652e676966"
+            data-canonical-src="https://cdn.discordapp.com/attachments/205245036084985857/481213000540225550/full_example.gif"
+            style="max-width:100%;"></a></p>
+    <p><em>Note that</em> this library was inspired by <a
+            href="https://github.com/mabe02/lanterna">Lanterna</a>.
+        Check it out if you are looking for a <em>terminal emulator</em> instead.</p>
+    <hr>
+    <p>Need info? Check the <a href="https://github.com/Hexworks/zircon/wiki">Wiki</a>
+        | or <a href="https://github.com/Hexworks/zircon/issues/new">Create an issue</a>
+        | Check <a href="https://github.com/Hexworks/zircon/projects/2">our project
+            Board</a>
+        | <a href="https://discord.gg/hbzytQJ" rel="nofollow">Ask us on Discord</a> |
+        Support us on <a href="https://www.patreon.com/hexworks" rel="nofollow">Patreon</a>
+    </p>
+    <p><a href="https://circleci.com/gh/Hexworks/zircon" rel="nofollow"><img
+            src="https://camo.githubusercontent.com/379b1e8a8e5cee1db443e5bb6cc2a25fbc761388/68747470733a2f2f636972636c6563692e636f6d2f67682f486578776f726b732f7a6972636f6e2f747265652f6d61737465722e7376673f7374796c653d736869656c64"
+            alt=""
+            data-canonical-src="https://circleci.com/gh/Hexworks/zircon/tree/master.svg?style=shield"
+            style="max-width:100%;"></a>
+        <a href="https://mvnrepository.com/artifact/org.hexworks.zircon/zircon/2017.4.0"
+           rel="nofollow"><img
+                src="https://camo.githubusercontent.com/3328276fb64554ce9e5f1d6273b4949f5d02b8df/68747470733a2f2f6d6176656e2d6261646765732e6865726f6b756170702e636f6d2f6d6176656e2d63656e7472616c2f6f72672e686578776f726b732e7a6972636f6e2f7a6972636f6e2f62616467652e737667"
+                alt=""
+                data-canonical-src="https://maven-badges.herokuapp.com/maven-central/org.hexworks.zircon/zircon/badge.svg"
+                style="max-width:100%;"></a>
+        <a href="https://jitpack.io/#Hexworks/Zircon" rel="nofollow"><img
+                src="https://camo.githubusercontent.com/2aa4405cdb116464e70666b89b608ed299110c8e/68747470733a2f2f6a69747061636b2e696f2f762f486578776f726b732f5a6972636f6e2e737667"
+                alt="" data-canonical-src="https://jitpack.io/v/Hexworks/Zircon.svg"
+                style="max-width:100%;"></a>
+        <a href="https://codecov.io/github/Hexworks/zircon?branch=master"
+           rel="nofollow"><img
+                src="https://camo.githubusercontent.com/e13753971a4b1a27eab4a5ec5cfb8c400aa8c78e/68747470733a2f2f636f6465636f762e696f2f6769746875622f486578776f726b732f7a6972636f6e2f636f7665726167652e7376673f6272616e63683d6d6173746572"
+                alt=""
+                data-canonical-src="https://codecov.io/github/Hexworks/zircon/coverage.svg?branch=master"
+                style="max-width:100%;"></a>
+        <a href="https://github.com/Hexworks/zircon/blob/master/LICENSE"><img
+                src="https://camo.githubusercontent.com/76f0e887c183ccc31c1cb63c33d2dbf48cb2df51/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4c6963656e73652d4d49542d677265656e2e737667"
+                alt=""
+                data-canonical-src="https://img.shields.io/badge/License-MIT-green.svg"
+                style="max-width:100%;"></a>
+        <a href="https://github.com/sindresorhus/awesome"><img
+                src="https://camo.githubusercontent.com/13c4e50d88df7178ae1882a203ed57b641674f94/68747470733a2f2f63646e2e7261776769742e636f6d2f73696e647265736f726875732f617765736f6d652f643733303566333864323966656437386661383536353265336136336531353464643865383832392f6d656469612f62616467652e737667"
+                alt="Awesome"
+                data-canonical-src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg"
+                style="max-width:100%;"></a></p>
+    <hr>
+    <h2>>Table of Contents</h2>
+    <ul>
+        <li><a href="https://github.com/Hexworks/zircon#getting-started">Getting Started</a>
+            <ul>
+                <li><a href="https://github.com/Hexworks/zircon#some-rules-of-thumb">Some
+                    rules of thumb</a></li>
+                <li><a href="https://github.com/Hexworks/zircon#creating-an-application">Creating
+                    an Application</a></li>
+                <li><a href="https://github.com/Hexworks/zircon#working-with-screens">Working
+                    with Screens</a></li>
+                <li><a href="https://github.com/Hexworks/zircon#components">Components</a>
+                </li>
+                <li><a href="https://github.com/Hexworks/zircon#additional-features">Additional
+                    features</a>
+                    <ul>
+                        <li>
+                            <a href="https://github.com/Hexworks/zircon#layering">Layering</a>
+                        </li>
+                        <li><a href="https://github.com/Hexworks/zircon#input-handling">Input
+                            handling</a></li>
+                        <li>
+                            <a href="https://github.com/Hexworks/zircon#shape-and-box-drawing">Shape
+                                and box drawing</a></li>
+                        <li><a href="https://github.com/Hexworks/zircon#fonts-and-tilesets">Fonts
+                            and tilesets</a></li>
+                        <li>
+                            <a href="https://github.com/Hexworks/zircon#rexpaint-file-loading">REXPaint
+                                file loading</a></li>
+                        <li><a href="https://github.com/Hexworks/zircon#color-themes">Color
+                            themes</a></li>
+                        <li><a href="https://github.com/Hexworks/zircon#animations-beta">Animations
+                            (BETA)</a></li>
+                        <li><a href="https://github.com/Hexworks/zircon#the-api">The API</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><a href="https://github.com/Hexworks/zircon#road-map">Road map</a></li>
+        <li><a href="https://github.com/Hexworks/zircon#license">License</a></li>
+        <li><a href="https://github.com/Hexworks/zircon#credits">Credits</a></li>
+    </ul>
+    <h2><a id="user-content-getting-started" class="anchor" aria-hidden="true"
+           href="#getting-started">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Getting Started
+    </h2>
+    <p>If you want to work with Zircon you can add it to your project as a dependency.</p>
+    <p>from Maven:</p>
+    <div class="highlight highlight-text-xml"><pre>&lt;<span
+            class="pl-ent">dependency</span>&gt;
+    &lt;<span class="pl-ent">groupId</span>&gt;com.github.hexworks.zircon&lt;/<span class="pl-ent">groupId</span>&gt;
+    &lt;<span class="pl-ent">artifactId</span>&gt;zircon.jvm.swing&lt;/<span class="pl-ent">artifactId</span>&gt;
+    &lt;<span class="pl-ent">version</span>&gt;2018.3.27-PREVIEW&lt;/<span class="pl-ent">version</span>&gt;
+&lt;/<span class="pl-ent">dependency</span>&gt;</pre>
+    </div>
+    <p>or you can also use Gradle:</p>
+    <div class="highlight highlight-source-groovy">
+                                    <pre>compile(<span class="pl-s"><span class="pl-pds">"</span>com.github.hexworks.zircon:zircon.jvm.swing:2018.3.27-PREVIEW<span
+                                            class="pl-pds">"</span></span>)</pre>
+    </div>
+    <p>Note that you need to use <a href="https://jitpack.io/#Hexworks/Zircon"
+                                    rel="nofollow">Jitpack</a> for the above dependencies to
+        work.</p>
+    <p>Want to use a <code>PREVIEW</code>?
+        Check <a
+                href="https://github.com/Hexworks/zircon/wiki/Release-process-and-versioning-scheme#snapshot-releases">this
+            Wiki page</a></p>
+    <h3><a id="user-content-some-rules-of-thumb" class="anchor" aria-hidden="true"
+           href="#some-rules-of-thumb">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Some rules of thumb
+    </h3>
+    <p>Before we start there are some guidelines which can help you if you are stuck:</p>
+    <ul>
+        <li>If you want to build something (a <code>TileGraphics</code>, a
+            <code>Component</code> or anything which is part of the public API) it is almost
+            sure that there is a <code>Builder</code> or a <code>Factory</code> for it. The
+            convention is that if you want to create an <code>TileGraphics</code> for
+            example,
+            then you can use the <code>DrawSurfaces</code> class to do so. (so it is the
+            plural form of the thing which you want to build). Your IDE
+            will help you with this. These classes reside in the <code>org.hexworks.zircon.api</code>
+            package.
+        </li>
+        <li>If you want to work with external files like tilesets or REXPaint files check
+            the same package (<code>org.hexworks.zircon.api</code>), and look for
+            classes which end with <code>*Resources</code>. There are a bunch of built-in
+            tilesets for example which you can choose from but you can also
+            load your own. The rule of thumb is that if you need something external there is
+            probably a <code>*Resources</code> class
+            for it (like the <a
+                    href="https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/CP437TilesetResources.kt">CP437TilesetResources</a>).
+        </li>
+        <li>You can use <em>anything</em> you can find in the <a
+                href="https://github.com/Hexworks/zircon/tree/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api">API</a>
+            package, they are part of the public API, and safe to use. The
+            <a href="https://github.com/Hexworks/zircon/tree/master/zircon.core/src/main/kotlin/org/hexworks/zircon/internal">internal</a>
+            package however is considered private to Zircon so don't depend on anything in
+            it.
+        </li>
+        <li>Some topics are explained in depth on the <a
+                href="https://github.com/Hexworks/zircon/wiki">Wiki</a></li>
+        <li>If you want to see some example code look <a
+                href="https://github.com/Hexworks/zircon/tree/master/zircon.examples/src/main">here</a>.
+        </li>
+        <li>If all else fails read the javadoc. API classes are well documented.</li>
+        <li>If you have any problems which are not answered here feel free to ask us at the
+            <a href="https://discord.gg/hbzytQJ" rel="nofollow">Hexworks Discord server</a>.
+        </li>
+    </ul>
+    <h3><a id="user-content-creating-an-application" class="anchor" aria-hidden="true"
+           href="#creating-an-application">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Creating an Application
+    </h3>
+    <p>In Zircon almost every object you might want to use has a helper class for building
+        it.
+        This is the same for <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/application/Application.kt">Application</a>s
+        as well so let's create one using the <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.jvm.swing/src/main/kotlin/org/hexworks/zircon/api/SwingApplications.kt">SwingApplications</a>
+        class:</p>
+    <blockquote>
+        <p>Note that these examples reside in the
+            <code>org.hexworks.zircon.examples.docs</code> package in the <code>zircon.examples</code>
+            project,
+            you can try them all out.</p>
+    </blockquote>
+    <div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span
+            class="pl-smi">org.hexworks.zircon.api.SwingApplications</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.application.Application</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">CreatingAnApplication</span> {
+
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span
+                class="pl-en">main</span>(<span class="pl-k">String</span>[] <span
+                class="pl-v">args</span>) {
+
+        <span class="pl-smi">Application</span> application <span class="pl-k">=</span> <span class="pl-smi">SwingApplications</span><span
+                class="pl-k">.</span>startApplication();
+    }
+}</pre>
+    </div>
+    <p>Running this snippet will result in this screen:</p>
+    <p><a target="_blank" rel="noopener noreferrer"
+          href="https://camo.githubusercontent.com/843014f75d95fdcbbdc0efa954bfaec73a82e329/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3336333737313633313732373830343431362f3437373436363230323938323035353933392f4372656174696e67416e4170706c69636174696f6e2e706e67"><img
+            src="https://camo.githubusercontent.com/843014f75d95fdcbbdc0efa954bfaec73a82e329/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3336333737313633313732373830343431362f3437373436363230323938323035353933392f4372656174696e67416e4170706c69636174696f6e2e706e67"
+            alt=""
+            data-canonical-src="https://cdn.discordapp.com/attachments/363771631727804416/477466202982055939/CreatingAnApplication.png"
+            style="max-width:100%;"></a></p>
+    <p>Not very useful, is it? So what happens here? An <a
+            href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/application/Application.kt">Application</a>
+        is just an object which has a <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/internal/renderer/Renderer.kt">Renderer</a>
+        for rendering <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/data/Tile.kt">Tile</a>s
+        on
+        your screen), and a <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/grid/TileGrid.kt">TileGrid</a>,
+        which is the main interface which you will use to interact with Zircon.
+        An
+        <a href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/application/Application.kt">Application</a>
+        is responsible for <em>continuously rendering</em> the contents of the grid on the
+        screen. Here we use the <em>Swing</em> variant,
+        but there are other types in the making (one for LibGDX, and one which works in the
+        browser).</p>
+    <p>Since most of the time you don't care about the <a
+            href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/application/Application.kt">Application</a>
+        itself, there is a function for creating a <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/grid/TileGrid.kt">TileGrid</a>
+        directly:</p>
+    <div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span
+            class="pl-smi">org.hexworks.zircon.api.SwingApplications</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.grid.TileGrid</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">CreatingATileGrid</span> {
+
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span
+                class="pl-en">main</span>(<span class="pl-k">String</span>[] <span
+                class="pl-v">args</span>) {
+
+        <span class="pl-smi">TileGrid</span> tileGrid <span class="pl-k">=</span> <span
+                class="pl-smi">SwingApplications</span><span class="pl-k">.</span>startTileGrid();
+    }
+}</pre>
+    </div>
+    <p>Now let's see how we can specify how a <a
+            href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/grid/TileGrid.kt">TileGrid</a>
+        is created. We'll use the <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.jvm/src/main/kotlin/org/hexworks/zircon/api/AppConfigs.kt">AppConfigs</a>
+        helper for this:</p>
+    <div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span
+            class="pl-smi">org.hexworks.zircon.api.AppConfigs</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.CP437TilesetResources</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.Sizes</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.SwingApplications</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.grid.TileGrid</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">CreatingATileGrid</span> {
+
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span
+                class="pl-en">main</span>(<span class="pl-k">String</span>[] <span
+                class="pl-v">args</span>) {
+
+        <span class="pl-smi">TileGrid</span> tileGrid <span class="pl-k">=</span> <span
+                class="pl-smi">SwingApplications</span><span class="pl-k">.</span>startTileGrid(
+                <span class="pl-smi">AppConfigs</span><span class="pl-k">.</span>newConfig()
+                        .defaultSize(<span class="pl-smi">Sizes</span><span class="pl-k">.</span>create(<span
+                class="pl-c1">10</span>, <span class="pl-c1">10</span>))
+                        .defaultTileset(<span class="pl-smi">CP437TilesetResources</span><span class="pl-k">.</span>rexPaint16x16())
+                        .build());
+    }
+}</pre>
+    </div>
+    <p>Adding and formatting <a
+            href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/data/Tile.kt">Tile</a>s
+        is very simple:</p>
+    <div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span
+            class="pl-smi">org.hexworks.zircon.api.AppConfigs</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.CP437TilesetResources</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.Positions</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.Sizes</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.SwingApplications</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.Tiles</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.color.ANSITileColor</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.grid.TileGrid</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">CreatingATileGrid</span> {
+
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span
+                class="pl-en">main</span>(<span class="pl-k">String</span>[] <span
+                class="pl-v">args</span>) {
+
+        <span class="pl-smi">TileGrid</span> tileGrid <span class="pl-k">=</span> <span
+                class="pl-smi">SwingApplications</span><span class="pl-k">.</span>startTileGrid(
+                <span class="pl-smi">AppConfigs</span><span class="pl-k">.</span>newConfig()
+                        .defaultSize(<span class="pl-smi">Sizes</span><span class="pl-k">.</span>create(<span
+                class="pl-c1">10</span>, <span class="pl-c1">10</span>))
+                        .defaultTileset(<span class="pl-smi">CP437TilesetResources</span><span class="pl-k">.</span>rexPaint16x16())
+                        .build());
+
+        tileGrid<span class="pl-k">.</span>setTileAt(
+                <span class="pl-smi">Positions</span><span class="pl-k">.</span>create(<span
+                class="pl-c1">2</span>, <span class="pl-c1">3</span>),
+                <span class="pl-smi">Tiles</span><span class="pl-k">.</span>newBuilder()
+                        .backgroundColor(<span class="pl-smi">ANSITileColor</span><span class="pl-c1"><span
+                class="pl-k">.</span>CYAN</span>)
+                        .foregroundColor(<span class="pl-smi">ANSITileColor</span><span class="pl-c1"><span
+                class="pl-k">.</span>WHITE</span>)
+                        .character(<span class="pl-s"><span class="pl-pds">'</span>x<span class="pl-pds">'</span></span>)
+                        .build());
+
+        tileGrid<span class="pl-k">.</span>setTileAt(
+                <span class="pl-smi">Positions</span><span class="pl-k">.</span>create(<span
+                class="pl-c1">3</span>, <span class="pl-c1">4</span>),
+                <span class="pl-smi">Tiles</span><span class="pl-k">.</span>newBuilder()
+                        .backgroundColor(<span class="pl-smi">ANSITileColor</span><span class="pl-c1"><span
+                class="pl-k">.</span>RED</span>)
+                        .foregroundColor(<span class="pl-smi">ANSITileColor</span><span class="pl-c1"><span
+                class="pl-k">.</span>GREEN</span>)
+                        .character(<span class="pl-s"><span class="pl-pds">'</span>y<span class="pl-pds">'</span></span>)
+                        .build());
+
+        tileGrid<span class="pl-k">.</span>setTileAt(
+                <span class="pl-smi">Positions</span><span class="pl-k">.</span>create(<span
+                class="pl-c1">4</span>, <span class="pl-c1">5</span>),
+                <span class="pl-smi">Tiles</span><span class="pl-k">.</span>newBuilder()
+                        .backgroundColor(<span class="pl-smi">ANSITileColor</span><span class="pl-c1"><span
+                class="pl-k">.</span>BLUE</span>)
+                        .foregroundColor(<span class="pl-smi">ANSITileColor</span><span class="pl-c1"><span
+                class="pl-k">.</span>MAGENTA</span>)
+                        .character(<span class="pl-s"><span class="pl-pds">'</span>z<span class="pl-pds">'</span></span>)
+                        .build());
+    }
+}</pre>
+    </div>
+    <p>Running the above code will result in something like this:</p>
+    <p><a target="_blank" rel="noopener noreferrer"
+          href="https://camo.githubusercontent.com/3f4051d1ddff11eab2a984643b1e25690c1ee9fb/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3336333737313633313732373830343431362f3437373436393634303230353932363430312f4372656174696e674154696c65477269642e706e67"><img
+            src="https://camo.githubusercontent.com/3f4051d1ddff11eab2a984643b1e25690c1ee9fb/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3336333737313633313732373830343431362f3437373436393634303230353932363430312f4372656174696e674154696c65477269642e706e67"
+            alt=""
+            data-canonical-src="https://cdn.discordapp.com/attachments/363771631727804416/477469640205926401/CreatingATileGrid.png"
+            style="max-width:100%;"></a></p>
+    <p>As you can see there is a helper for every class which you might want to use. Here we
+        used <code>Positions.create</code>
+        to create a <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/data/Position.kt">Position</a>,
+        <code>Sizes.create</code> for creating <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/data/Size.kt">Size</a>s
+        and the <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/builder/data/TileBuilder.kt">TileBuilder</a>
+        to create tiles.</p>
+    <p>A <code>Position</code> denotes a coordinate on a <code>TileGrid</code>, so for
+        example a <code>Position</code> of (<code>3</code>, <code>4</code>) points to the
+        3rd column
+        and the 4th row (x, y) on the grid.</p>
+    <p>Conversely a <code>Size</code> denotes an area with a width and a height. These two
+        classes are used throughout Zircon.</p>
+    <p>A
+        <a href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/data/Tile.kt">Tile</a>
+        is the most basic graphical unit Zircon supports. In most cases it is a simple
+        character with a foreground
+        and a background color (like in the example above).</p>
+    <p>In addition to colors and characters you can also use <a
+            href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/modifier/Modifier.kt">Modifier</a>s
+        in your <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/data/Tile.kt">Tile</a>s.
+    </p>
+    <blockquote>
+        <p>A lot of fancy stuff can be done with <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/modifier/Modifier.kt">Modifier</a>s,
+            like this:</p>
+        <p><a target="_blank" rel="noopener noreferrer"
+              href="https://camo.githubusercontent.com/adcb972ba57d23f7b92443f4723a61e91b04c6b5/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3336333737313633313732373830343431362f3437373437303638333531333838303537362f6d6f646966696572732e676966"><img
+                src="https://camo.githubusercontent.com/adcb972ba57d23f7b92443f4723a61e91b04c6b5/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3336333737313633313732373830343431362f3437373437303638333531333838303537362f6d6f646966696572732e676966"
+                alt=""
+                data-canonical-src="https://cdn.discordapp.com/attachments/363771631727804416/477470683513880576/modifiers.gif"
+                style="max-width:100%;"></a></p>
+        <p>If interested check out the code examples <a
+                href="https://github.com/Hexworks/zircon/tree/master/zircon.examples/src/main">here</a>.
+        </p>
+    </blockquote>
+    <blockquote>
+        <p>Tileset (and by extension resource) handling in Zircon is very simple and if you
+            are interested in how to load your
+            custom fonts and other resources take a look at the <a
+                    href="https://github.com/Hexworks/zircon/wiki/Resource-Handling">Resource
+                handling wiki page</a>.</p>
+    </blockquote>
+    <h3><a id="user-content-working-with-screens" class="anchor" aria-hidden="true"
+           href="#working-with-screens">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Working with Screens
+    </h3>
+    <p>
+        <a href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/grid/TileGrid.kt">TileGrid</a>s
+        alone won't suffice if you want to get any serious work done since they are rather
+        rudimentary.</p>
+    <p>A
+        <a href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/screen/Screen.kt">Screen</a>
+        has its own buffer and it can be <code>display</code>ed on
+        a
+        <a href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/grid/TileGrid.kt">TileGrid</a>
+        any time. This means that you can have multiple <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/screen/Screen.kt">Screen</a>s
+        at the same time representing your actual
+        game screens. <em>Note that</em> only <em>one</em> <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/screen/Screen.kt">Screen</a>
+        can be displayed at a given moment. <code>display</code>ing one deactivates
+        the previous <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/screen/Screen.kt">Screen</a>.
+    </p>
+    <p>Let's create a <a
+            href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/screen/Screen.kt">Screen</a>
+        and fill it up with some stuff:</p>
+    <div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span
+            class="pl-smi">org.hexworks.zircon.api.AppConfigs</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.CP437TilesetResources</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.ColorThemes</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.Positions</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.Screens</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.Sizes</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.SwingApplications</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.DrawSurfaces</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.Tiles</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.component.ColorTheme</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.graphics.TileGraphics</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.grid.TileGrid</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.screen.Screen</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">CreatingAScreen</span> {
+
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span
+                class="pl-en">main</span>(<span class="pl-k">String</span>[] <span
+                class="pl-v">args</span>) {
+
+        <span class="pl-smi">TileGrid</span> tileGrid <span class="pl-k">=</span> <span
+                class="pl-smi">SwingApplications</span><span class="pl-k">.</span>startTileGrid(
+                <span class="pl-smi">AppConfigs</span><span class="pl-k">.</span>newBuilder()
+                        .defaultSize(<span class="pl-smi">Sizes</span><span class="pl-k">.</span>create(<span
+                class="pl-c1">20</span>, <span class="pl-c1">8</span>))
+                        .defaultTileset(<span class="pl-smi">CP437TilesetResources</span><span class="pl-k">.</span>wanderlust16x16())
+                        .build());
+
+        <span class="pl-k">final</span> <span class="pl-smi">Screen</span> screen <span class="pl-k">=</span> <span
+                class="pl-smi">Screens</span><span class="pl-k">.</span>createScreenFor(tileGrid);
+
+        <span class="pl-k">final</span> <span class="pl-smi">ColorTheme</span> theme <span class="pl-k">=</span> <span
+                class="pl-smi">ColorThemes</span><span class="pl-k">.</span>adriftInDreams();
+
+        <span class="pl-k">final</span> <span class="pl-smi">TileGraphics</span> image <span class="pl-k">=</span> <span
+                class="pl-smi">DrawSurfaces</span><span class="pl-k">.</span>tileGraphicsBuilder()
+                .size(tileGrid<span class="pl-k">.</span>size)
+                .build()
+                .fill(<span class="pl-smi">Tiles</span><span class="pl-k">.</span>newBuilder()
+                        .foregroundColor(theme<span class="pl-k">.</span>getBrightForegroundColor())
+                        .backgroundColor(theme<span class="pl-k">.</span>getBrightBackgroundColor())
+                        .character(<span class="pl-s"><span class="pl-pds">'</span>~<span class="pl-pds">'</span></span>)
+                        .build());
+
+        screen<span class="pl-k">.</span>draw(image, <span class="pl-smi">Positions</span><span class="pl-k">.</span>defaultPosition());
+
+        screen<span class="pl-k">.</span>display();
+    }
+}</pre>
+    </div>
+    <p>and we've got a nice ocean:</p>
+    <p><a target="_blank" rel="noopener noreferrer"
+          href="https://camo.githubusercontent.com/0f51884051ef222d272da2899a75ac7a8ec9b6bc/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3336333737313633313732373830343431362f3437373437353638303539343935323232332f4372656174696e674153637265656e2e706e67"><img
+            src="https://camo.githubusercontent.com/0f51884051ef222d272da2899a75ac7a8ec9b6bc/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3336333737313633313732373830343431362f3437373437353638303539343935323232332f4372656174696e674153637265656e2e706e67"
+            alt=""
+            data-canonical-src="https://cdn.discordapp.com/attachments/363771631727804416/477475680594952223/CreatingAScreen.png"
+            style="max-width:100%;"></a></p>
+    <p>What happens here is that we:</p>
+    <ul>
+        <li>Create a <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/screen/Screen.kt">Screen</a>
+        </li>
+        <li>Fetch a nice <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/component/ColorTheme.kt">ColorTheme</a>
+            which has colors we need
+        </li>
+        <li>Create a <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/graphics/TileGraphics.kt">TileGraphics</a>
+            with the colors added and fill it with <code>~</code>s
+        </li>
+        <li>Draw the graphic onto the <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/screen/Screen.kt">Screen</a>
+        </li>
+    </ul>
+    <p>For more explanation about these jump to the <a
+            href="https://github.com/Hexworks/zircon#how-zircon-works">How Zircon works</a>
+        section.</p>
+    <blockquote>
+        <p>You can do so much more with <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/screen/Screen.kt">Screen</a>s.
+            If interested then check out <a
+                    href="https://github.com/Hexworks/zircon/wiki/A-primer-on-Screens">A
+                primer on Screens</a> on the Wiki!</p>
+    </blockquote>
+    <h3><a id="user-content-components" class="anchor" aria-hidden="true"
+           href="#components">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Components
+    </h3>
+    <p>Zircon supports a bunch of <a
+            href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/component/Component.kt">Component</a>s
+        out of the box:</p>
+    <ul>
+        <li><code>Button</code>: A simple clickable component with corresponding event
+            listeners
+        </li>
+        <li><code>CheckBox</code>: Like a BUTTON but with checked / unchecked state</li>
+        <li><code>Label</code>: Simple component with text</li>
+        <li><code>Header</code>: Like a label but this one has emphasis (useful when using
+            <a href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/component/ColorTheme.kt">ColorTheme</a>s)
+        </li>
+        <li><code>Panel</code>: A <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/component/Container.kt">Container</a>
+            which can hold multiple <a
+                    href="https://github.com/Hexworks/zircon/wiki/The-component-system">Components</a>
+        </li>
+        <li><code>RadioButtonGroup</code> and <code>RadioButton</code>: Like a <code>CheckBox</code>
+            but only one can be selected at a time
+        </li>
+        <li><code>TextBox</code>: Similar to a text area in HTML this <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/component/Component.kt">Component</a>
+            can be written into
+        </li>
+    </ul>
+    <p>These components are rather simple and you can expect them to work in a way you might
+        be familiar with:</p>
+    <ul>
+        <li>You can click on them (press and release are different events)</li>
+        <li>You can attach event listeners on them</li>
+        <li>Zircon implements focus handling so you can navigate between the components
+            using the <code>[Tab]</code> key (forwards) or the <code>[Shift]+[Tab]</code>
+            key stroke (backwards).
+        </li>
+        <li>Components can be hovered and they can change their styling when you do so</li>
+    </ul>
+    <p>Let's look at an example (notes about how it works are in the comments):</p>
+    <div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span
+            class="pl-smi">org.hexworks.zircon.api.*</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.component.Button</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.component.CheckBox</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.component.Header</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.component.Panel</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.grid.TileGrid</span>;
+<span class="pl-k">import</span> <span class="pl-smi">org.hexworks.zircon.api.screen.Screen</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">UsingComponents</span> {
+
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span
+                class="pl-en">main</span>(<span class="pl-k">String</span>[] <span
+                class="pl-v">args</span>) {
+
+        <span class="pl-k">final</span> <span class="pl-smi">TileGrid</span> tileGrid <span class="pl-k">=</span> <span
+                class="pl-smi">SwingApplications</span><span class="pl-k">.</span>startTileGrid(
+                <span class="pl-smi">AppConfigs</span><span class="pl-k">.</span>newConfig()
+                        .defaultSize(<span class="pl-smi">Sizes</span><span class="pl-k">.</span>create(<span
+                class="pl-c1">34</span>, <span class="pl-c1">18</span>))
+                        .defaultTileset(<span class="pl-smi">CP437TilesetResources</span><span class="pl-k">.</span>wanderlust16x16())
+                        .build());
+        <span class="pl-k">final</span> <span class="pl-smi">Screen</span> screen <span class="pl-k">=</span> <span
+                class="pl-smi">Screens</span><span class="pl-k">.</span>createScreenFor(tileGrid);
+
+        <span class="pl-smi">Panel</span> panel <span class="pl-k">=</span> <span class="pl-smi">Components</span><span
+                class="pl-k">.</span>panel()
+                .wrapWithBox() <span class="pl-c"><span class="pl-c">//</span> panels can be wrapped in a box</span>
+                .title(<span class="pl-s"><span class="pl-pds">"</span>Panel<span class="pl-pds">"</span></span>) <span
+                class="pl-c"><span class="pl-c">//</span> if a panel is wrapped in a box a title can be displayed</span>
+                .wrapWithShadow() <span class="pl-c"><span class="pl-c">//</span> shadow can be added</span>
+                .size(<span class="pl-smi">Sizes</span><span class="pl-k">.</span>create(<span class="pl-c1">32</span>, <span
+                class="pl-c1">16</span>)) <span class="pl-c"><span class="pl-c">//</span> the size must be smaller than the parent's size</span>
+                .position(<span class="pl-smi">Positions</span><span class="pl-k">.</span>offset1x1())
+                .build(); <span class="pl-c"><span
+                class="pl-c">//</span> position is always relative to the parent</span>
+
+        <span class="pl-k">final</span> <span class="pl-smi">Header</span> header <span class="pl-k">=</span> <span
+                class="pl-smi">Components</span><span class="pl-k">.</span>header()
+                <span class="pl-c"><span class="pl-c">//</span> this will be 1x1 left and down from the top left</span>
+                <span class="pl-c"><span class="pl-c">//</span> corner of the panel</span>
+                .position(<span class="pl-smi">Positions</span><span class="pl-k">.</span>offset1x1())
+                .text(<span class="pl-s"><span class="pl-pds">"</span>Header<span class="pl-pds">"</span></span>)
+                .build();
+
+        <span class="pl-k">final</span> <span class="pl-smi">CheckBox</span> checkBox <span class="pl-k">=</span> <span
+                class="pl-smi">Components</span><span class="pl-k">.</span>checkBox()
+                .text(<span class="pl-s"><span class="pl-pds">"</span>Check me!<span class="pl-pds">"</span></span>)
+                .position(<span class="pl-smi">Positions</span><span class="pl-k">.</span>create(<span
+                class="pl-c1">0</span>, <span class="pl-c1">1</span>)
+                        <span class="pl-c"><span class="pl-c">//</span> the position class has some convenience methods</span>
+                        <span class="pl-c"><span class="pl-c">//</span> for you to specify your component's position as</span>
+                        <span class="pl-c"><span class="pl-c">//</span> relative to another one</span>
+                        .relativeToBottomOf(header))
+                .build();
+
+        <span class="pl-k">final</span> <span class="pl-smi">Button</span> left <span class="pl-k">=</span> <span
+                class="pl-smi">Components</span><span class="pl-k">.</span>button()
+                .position(<span class="pl-smi">Positions</span><span class="pl-k">.</span>create(<span
+                class="pl-c1">0</span>, <span class="pl-c1">1</span>) <span
+                class="pl-c"><span class="pl-c">//</span> this means 1 row below the check box</span>
+                        .relativeToBottomOf(checkBox))
+                .text(<span class="pl-s"><span class="pl-pds">"</span>Left<span class="pl-pds">"</span></span>)
+                .build();
+
+        <span class="pl-k">final</span> <span class="pl-smi">Button</span> right <span class="pl-k">=</span> <span
+                class="pl-smi">Components</span><span class="pl-k">.</span>button()
+                .position(<span class="pl-smi">Positions</span><span class="pl-k">.</span>create(<span
+                class="pl-c1">1</span>, <span class="pl-c1">0</span>) <span
+                class="pl-c"><span class="pl-c">//</span> 1 column right relative to the left BUTTON</span>
+                        .relativeToRightOf(left))
+                .text(<span class="pl-s"><span class="pl-pds">"</span>Right<span class="pl-pds">"</span></span>)
+                .build();
+
+        panel<span class="pl-k">.</span>addComponent(header);
+        panel<span class="pl-k">.</span>addComponent(checkBox);
+        panel<span class="pl-k">.</span>addComponent(left);
+        panel<span class="pl-k">.</span>addComponent(right);
+
+        screen<span class="pl-k">.</span>addComponent(panel);
+
+        <span class="pl-c"><span class="pl-c">//</span> we can apply color themes to a screen</span>
+        screen<span class="pl-k">.</span>applyColorTheme(<span class="pl-smi">ColorThemes</span><span
+                class="pl-k">.</span>techLight());
+
+        <span class="pl-c"><span class="pl-c">//</span> this is how you can define interactions with a component</span>
+        left<span class="pl-k">.</span>onMouseReleased((mouseAction <span class="pl-k">-</span><span
+                class="pl-k">&gt;</span> {
+            screen<span class="pl-k">.</span>applyColorTheme(<span class="pl-smi">ColorThemes</span><span
+                class="pl-k">.</span>adriftInDreams());
+        }));
+
+        right<span class="pl-k">.</span>onMouseReleased((mouseAction <span class="pl-k">-</span><span
+                class="pl-k">&gt;</span> {
+            screen<span class="pl-k">.</span>applyColorTheme(<span class="pl-smi">ColorThemes</span><span
+                class="pl-k">.</span>solarizedDarkOrange());
+        }));
+
+        <span class="pl-c"><span
+                class="pl-c">//</span> in order to see the changes you need to display your screen.</span>
+        screen<span class="pl-k">.</span>display();
+    }
+}</pre>
+    </div>
+    <p>And the result will look like this:</p>
+    <p><a target="_blank" rel="noopener noreferrer"
+          href="https://camo.githubusercontent.com/7d3ed12516747e659f4cf893cf14221943fa5a65/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3336333737313633313732373830343431362f3336333831333139333438383932343637332f696d6167652e706e67"><img
+            src="https://camo.githubusercontent.com/7d3ed12516747e659f4cf893cf14221943fa5a65/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3336333737313633313732373830343431362f3336333831333139333438383932343637332f696d6167652e706e67"
+            alt=""
+            data-canonical-src="https://cdn.discordapp.com/attachments/363771631727804416/363813193488924673/image.png"
+            style="max-width:100%;"></a></p>
+    <p>You can check out more examples <a
+            href="https://github.com/Hexworks/zircon/tree/master/zircon.examples/src/main">here</a>.
+        Here are some
+        screenshots of them:</p>
+    <h4><a id="user-content-tileset-example" class="anchor" aria-hidden="true"
+           href="#tileset-example">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Tileset example:
+    </h4>
+    <p><a target="_blank" rel="noopener noreferrer"
+          href="https://camo.githubusercontent.com/4a8a9c0626d3930d74a8b26a7cd7468eba6c60a3/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3237373733393339343634313639303632352f3334383430303238353837393839343031382f696d6167652e706e67"><img
+            src="https://camo.githubusercontent.com/4a8a9c0626d3930d74a8b26a7cd7468eba6c60a3/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3237373733393339343634313639303632352f3334383430303238353837393839343031382f696d6167652e706e67"
+            alt=""
+            data-canonical-src="https://cdn.discordapp.com/attachments/277739394641690625/348400285879894018/image.png"
+            style="max-width:100%;"></a></p>
+    <h4><a id="user-content-animations" class="anchor" aria-hidden="true"
+           href="#animations">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Animations:
+    </h4>
+    <p><a target="_blank" rel="noopener noreferrer"
+          href="https://camo.githubusercontent.com/170fca3cee81a6a9ebd204ab82c9d602d87ce50f/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3237373733393339343634313639303632352f3336303038363630373338303038363830372f4749462e676966"><img
+            src="https://camo.githubusercontent.com/170fca3cee81a6a9ebd204ab82c9d602d87ce50f/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3237373733393339343634313639303632352f3336303038363630373338303038363830372f4749462e676966"
+            alt=""
+            data-canonical-src="https://cdn.discordapp.com/attachments/277739394641690625/360086607380086807/GIF.gif"
+            style="max-width:100%;"></a></p>
+    <h4><a id="user-content-components-1" class="anchor" aria-hidden="true"
+           href="#components-1">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Components:
+    </h4>
+    <p><a target="_blank" rel="noopener noreferrer"
+          href="https://camo.githubusercontent.com/f6bc9e80cd8c70d5bda589335a0e5d5dd9cb70c9/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3333353434343738383136373936363732302f3336313239373139303836333234313231382f4749462e676966"><img
+            src="https://camo.githubusercontent.com/f6bc9e80cd8c70d5bda589335a0e5d5dd9cb70c9/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3333353434343738383136373936363732302f3336313239373139303836333234313231382f4749462e676966"
+            alt=""
+            data-canonical-src="https://cdn.discordapp.com/attachments/335444788167966720/361297190863241218/GIF.gif"
+            style="max-width:100%;"></a></p>
+    <h2><a id="user-content-additional-features" class="anchor" aria-hidden="true"
+           href="#additional-features">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Additional features
+    </h2>
+    <p>There are a bunch of other things Zircon can do which are not detailed in this README
+        but you can read about them
+        in either the source code or the <a href="https://github.com/Hexworks/zircon/wiki">Wiki</a>:
+    </p>
+    <h3><a id="user-content-layering" class="anchor" aria-hidden="true" href="#layering">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Layering
+    </h3>
+    <p>Both the <a
+            href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/grid/TileGrid.kt">TileGrid</a>
+        and the <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/screen/Screen.kt">Screen</a>
+        interfaces implement <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/behavior/Layerable.kt">Layerable</a>
+        which means that you can add <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/graphics/Layer.kt">Layer</a>s
+        on top of
+        them. Every <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/behavior/Layerable.kt">Layerable</a>
+        can have an arbitrary amount of <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/graphics/Layer.kt">Layer</a>s.
+        <a href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/graphics/Layer.kt">Layer</a>s
+        are like <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/graphics/TileGraphics.kt">TileGraphics</a>s
+        and you can also have
+        transparency in them which can be used to create fancy effects.
+        For more details check the <a
+                href="https://github.com/Hexworks/zircon/wiki/How-Layers-work">layers</a>
+        Wiki page.</p>
+    <blockquote>
+        <p>Note that when creating <code>Layer</code>s you can set their <code>offset</code>
+            from the builder but after attaching it to a
+            <code>TileGrid</code> or <code>Screen</code> you can change its position by
+            calling <code>moveTo</code> with a new <code>Position</code>.</p>
+    </blockquote>
+    <h3><a id="user-content-input-handling" class="anchor" aria-hidden="true"
+           href="#input-handling">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Input handling
+    </h3>
+    <p>Both the <a
+            href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/grid/TileGrid.kt">TileGrid</a>
+        and the <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/screen/Screen.kt">Screen</a>
+        interfaces implement <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/behavior/InputEmitter.kt">InputEmitter</a>
+        which means that they re-emit all inputs from
+        your users (key strokes and mouse actions) and you can listen on them. There is a <a
+                href="https://github.com/Hexworks/zircon/wiki/Input-handling">Wiki page</a>
+        with more info.</p>
+    <h3><a id="user-content-shape-and-box-drawing" class="anchor" aria-hidden="true"
+           href="#shape-and-box-drawing">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Shape and box drawing
+    </h3>
+    <p>You can draw <a
+            href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/shape/Shape.kt">Shape</a>s
+        like rectangles and triangles by using one of the <a
+                href="https://github.com/Hexworks/zircon/blob/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api/shape/ShapeFactory.kt">ShapeFactory</a>
+        implementations.
+        Check the corresponding <a href="https://github.com/Hexworks/zircon/wiki/Shapes">Wiki
+            page</a> for more info.</p>
+    <h3><a id="user-content-fonts-and-tilesets" class="anchor" aria-hidden="true"
+           href="#fonts-and-tilesets">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Fonts and tilesets
+    </h3>
+    <p>Zircon comes with a bunch of built-in tilesets. These come in 2 flavors:</p>
+    <ul>
+        <li>CP437 tilesets <em>(More on using them <a
+                href="https://github.com/Hexworks/zircon/wiki/Resource-Handling#cp437-tilesets">here</a>)</em>
+        </li>
+        <li>and Graphic tilesets <em>(Usage info <a
+                href="https://github.com/Hexworks/zircon/wiki/Resource-Handling#graphic-tilesets">here</a>)</em>
+        </li>
+    </ul>
+    <p>Read more about them in the <a
+            href="https://github.com/Hexworks/zircon/wiki/Resource-Handling">resource
+        handling Wiki page</a> if you want to know more
+        or if you want to use your own tilesets and fonts.</p>
+    <p>Zircon also comes with <strong>its own tileset format (<code>ztf</code>: Zircon
+        Tileset Format)</strong> which is <strong>very easy to use</strong>.
+        Its usage is detailed <a
+                href="https://github.com/Hexworks/zircon/wiki/Resource-Handling#graphic-tilesets">here</a>.
+    </p>
+    <h3><a id="user-content-rexpaint-file-loading" class="anchor" aria-hidden="true"
+           href="#rexpaint-file-loading">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>REXPaint file loading
+    </h3>
+    <p>REXPaint files (<code>.xp</code>) can be loaded into Zircon <code>Layer</code>s. Read
+        about this feature
+        <a href="https://github.com/Hexworks/zircon/wiki/Resource-Handling#rexpaint-files">here</a>.
+    </p>
+    <h3><a id="user-content-color-themes" class="anchor" aria-hidden="true"
+           href="#color-themes">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Color themes
+    </h3>
+    <p>Zircon comes with a bunch of built-in color themes which you can apply to your
+        components.
+        If interested you can read more about how this works <a
+                href="https://github.com/Hexworks/zircon/wiki/Working-with-ColorThemes">here</a>.
+    </p>
+    <h3><a id="user-content-animations-beta" class="anchor" aria-hidden="true"
+           href="#animations-beta">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Animations (BETA)
+    </h3>
+    <p>Animations are a beta feature. More info <a
+            href="https://github.com/Hexworks/zircon/wiki/Animation-support">here</a>.</p>
+    <h3><a id="user-content-the-api" class="anchor" aria-hidden="true" href="#the-api">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>The API
+    </h3>
+    <p>If you just want to peruse the Zircon API just navigate <a
+            href="https://github.com/Hexworks/zircon/tree/master/zircon.core/src/main/kotlin/org/hexworks/zircon/api">here</a>.
+        Everything which is intended to be the public API is there.</p>
+    <h2><a id="user-content-road-map" class="anchor" aria-hidden="true" href="#road-map">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Road map
+    </h2>
+    <p>If you want to see a new feature feel free to <a
+            href="https://github.com/Hexworks/zircon/issues/new">create a new Issue</a>
+        or discuss it with us on <a href="https://discord.gg/hbzytQJ"
+                                    rel="nofollow">discord</a>.
+        Here are some features which are either under way or planned:</p>
+    <ul>
+        <li>libGDX support</li>
+        <li>Layouts for Components with resizing support</li>
+        <li>Components for games like MapDisplay</li>
+        <li>Multi-Font support</li>
+        <li>Next to <code>ColorTheme</code>s we'll introduce <code>ComponentTheme</code>s as
+            well (custom look and feel for your components)
+        </li>
+    </ul>
+    <h2><a id="user-content-license" class="anchor" aria-hidden="true" href="#license">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>License
+    </h2>
+    <p>Zircon is made available under the <a
+            href="http://www.opensource.org/licenses/mit-license.php" rel="nofollow">MIT
+        License</a>.</p>
+    <h2><a id="user-content-credits" class="anchor" aria-hidden="true" href="#credits">
+        <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16"
+             height="16" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+        </svg>
+    </a>Credits
+    </h2>
+    <p>Zircon is created and maintained by Adam Arold, Milan Boleradszki and Gergely
+        Lukacsy</p>
+    <p><em>We're open to suggestions, feel free to message us on <a
+            href="https://discord.gg/hbzytQJ" rel="nofollow">Discord</a> or open an
+        issue.</em>
+        <em>Pull requests are also welcome!</em></p>
+    <p>Zircon is powered by:</p>
+    <a href="https://www.jetbrains.com/idea/" rel="nofollow">
+        <img src="https://github.com/Hexworks/zircon/raw/master/images/idea_logo.png"
+             width="40" height="40" style="max-width:100%;">
+    </a>
+    <a href="https://kotlinlang.org/" rel="nofollow">
+        <img src="https://github.com/Hexworks/zircon/raw/master/images/kotlin_logo.png"
+             width="40" height="40" style="max-width:100%;">
+    </a>
+    <a href="https://www.yourkit.com/java/profiler/" rel="nofollow">
+        <img src="https://github.com/Hexworks/zircon/raw/master/images/yklogo.png"
+             width="168" height="40" style="max-width:100%;">
+    </a>
+</div>
+
