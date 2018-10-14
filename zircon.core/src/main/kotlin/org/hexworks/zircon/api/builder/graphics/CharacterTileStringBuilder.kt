@@ -24,6 +24,27 @@ data class CharacterTileStringBuilder(
         private var backgroundColor: TileColor = TileColor.defaultBackgroundColor())
     : Builder<CharacterTileString> {
 
+    override fun createCopy() = copy()
+
+    fun withText(text: String) = also {
+        this.text = text
+    }
+
+    fun withTextWrap(textWrap: TextWrap) = also {
+        this.textWrap = textWrap
+    }
+
+    fun withModifiers(vararg modifier: Modifier) = also {
+        this.modifiers.addAll(modifier.toSet())
+    }
+
+    fun withForegroundColor(foregroundColor: TileColor) = also {
+        this.foregroundColor = foregroundColor
+    }
+
+    fun withBackgroundColor(backgroundColor: TileColor) = also {
+        this.backgroundColor = backgroundColor
+    }
 
     override fun build(): CharacterTileString {
         require(text != NO_VALUE) {
@@ -35,35 +56,13 @@ data class CharacterTileStringBuilder(
         return DefaultCharacterTileString(
                 textChars = text.map {
                     TileBuilder.newBuilder()
-                            .foregroundColor(foregroundColor)
-                            .backgroundColor(backgroundColor)
-                            .character(it)
-                            .modifiers(modifiers)
+                            .withForegroundColor(foregroundColor)
+                            .withBackgroundColor(backgroundColor)
+                            .withCharacter(it)
+                            .withModifiers(modifiers)
                             .buildCharacterTile()
                 },
                 textWrap = textWrap)
-    }
-
-    override fun createCopy() = copy()
-
-    fun text(text: String) = also {
-        this.text = text
-    }
-
-    fun textWrap(textWrap: TextWrap) = also {
-        this.textWrap = textWrap
-    }
-
-    fun modifiers(vararg modifier: Modifier) = also {
-        this.modifiers.addAll(modifier.toSet())
-    }
-
-    fun foregroundColor(foregroundColor: TileColor) = also {
-        this.foregroundColor = foregroundColor
-    }
-
-    fun backgroundColor(backgroundColor: TileColor) = also {
-        this.backgroundColor = backgroundColor
     }
 
     companion object {

@@ -2,7 +2,7 @@ package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.impl.Position3D
 
 object Positions {
 
@@ -19,13 +19,13 @@ object Positions {
     fun offset1x1() = Position.offset1x1()
 
     /**
-     * Constant for the 0x0 position
+     * Constant for the (0, 0) position
      */
     @JvmStatic
-    fun zero() = Position.defaultPosition()
+    fun zero() = Position.zero()
 
     /**
-     * This position can be considered as the default
+     * This position can be considered as the default (0, 0)
      */
     @JvmStatic
     fun defaultPosition() = Position.defaultPosition()
@@ -37,36 +37,28 @@ object Positions {
     fun unknown() = Position.unknown()
 
     /**
-     * Creates a [Position] which is relative to the top of the given [Component].
-     * The x coordinate is used to shift right
-     * The y coordinate is used to shift up
+     * Returns the top left position of the given [Component].
      */
     @JvmStatic
-    fun relativeToTopOf(component: Component) = Position.relativeToTopOf(component)
+    fun topLeftOf(component: Component) = Position.topLeftOf(component)
 
     /**
-     * Creates a [Position] which is relative to the right of the given [Component].
-     * The x coordinate is used to shift right
-     * The y coordinate is used to shift down
+     * Returns the top right position of the given [Component].
      */
     @JvmStatic
-    fun relativeToRightOf(component: Component) = Position.relativeToRightOf(component)
+    fun topRightOf(component: Component) = Position.topRightOf(component)
 
     /**
-     * Creates a [Position] which is relative to the bottom of the given [Component].
-     * The x coordinate is used to shift right
-     * The y coordinate is used to shift down
+     * Returns the bottom left position of the given [Component].
      */
     @JvmStatic
-    fun relativeToBottomOf(component: Component) = Position.relativeToBottomOf(component)
+    fun bottomLeftOf(component: Component) = Position.bottomLeftOf(component)
 
     /**
-     * Creates a [Position] which is relative to the left of the given [Component].
-     * The x coordinate is used to shift left
-     * The y coordinate is used to shift down
+     * Returns the bottom right position of the given [Component].
      */
     @JvmStatic
-    fun relativeToLeftOf(component: Component) = Position.relativeToLeftOf(component)
+    fun bottomRightOf(component: Component) = Position.bottomRightOf(component)
 
     /**
      * Factory method for creating a [Position].

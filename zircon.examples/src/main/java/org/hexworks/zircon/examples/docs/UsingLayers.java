@@ -18,27 +18,27 @@ public class UsingLayers {
         TileGrid tileGrid = SwingApplications.startTileGrid();
 
         Layer layer0 = Layers.newBuilder()
-                .tileGraphic(DrawSurfaces.tileGraphicsBuilder()
-                        .size(Sizes.create(3, 3))
+                .withTileGraphics(DrawSurfaces.tileGraphicsBuilder()
+                        .withSize(Sizes.create(3, 3))
                         .build()
                         .fill(Tiles.newBuilder()
-                                .foregroundColor(ANSITileColor.GREEN)
-                                .backgroundColor(TileColors.transparent())
-                                .character('X')
+                                .withForegroundColor(ANSITileColor.GREEN)
+                                .withBackgroundColor(TileColors.transparent())
+                                .withCharacter('X')
                                 .build()))
-                .offset(Positions.offset1x1())
+                .withOffset(Positions.offset1x1())
                 .build();
 
         Layer layer1 = Layers.newBuilder()
-                .tileGraphic(DrawSurfaces.tileGraphicsBuilder()
-                        .size(Sizes.create(3, 3))
+                .withTileGraphics(DrawSurfaces.tileGraphicsBuilder()
+                        .withSize(Sizes.create(3, 3))
                         .build()
                         .fill(Tiles.newBuilder()
-                                .foregroundColor(ANSITileColor.RED)
-                                .backgroundColor(TileColors.transparent())
-                                .character('+')
+                                .withForegroundColor(ANSITileColor.RED)
+                                .withBackgroundColor(TileColors.transparent())
+                                .withCharacter('+')
                                 .build()))
-                .offset(Positions.create(3, 3))
+                .withOffset(Positions.create(3, 3))
                 .build();
 
         tileGrid.pushLayer(layer0);

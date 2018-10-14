@@ -1,13 +1,13 @@
 package org.hexworks.zircon.internal.component.renderer
 
-import org.hexworks.zircon.api.component.LogArea
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.api.graphics.SubTileGraphics
+import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
+import org.hexworks.zircon.internal.component.impl.DefaultLogArea
 
-class DefaultLogAreaRenderer : ComponentRenderer<LogArea>() {
+class DefaultLogAreaRenderer : ComponentRenderer<DefaultLogArea> {
 
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<LogArea>) {
+    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<DefaultLogArea>) {
         val style = context.componentStyle.currentStyle()
         tileGraphics.applyStyle(style)
     }

@@ -38,13 +38,13 @@ class DefaultRadioButtonTest {
 
     @Test
     fun shouldProperlyAddRadioButtonText() {
-        val surface = target.tileGraphics
+        val surface = target.graphics
         val offset = 4
         TEXT.forEachIndexed { i, char ->
             assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
                     .isEqualTo(TileBuilder.newBuilder()
-                            .character(char)
-                            .styleSet(DEFAULT_STYLE)
+                            .withCharacter(char)
+                            .withStyleSet(DEFAULT_STYLE)
                             .build())
         }
     }
@@ -105,18 +105,6 @@ class DefaultRadioButtonTest {
     }
 
     @Test
-    fun shouldSelectOnlyWhenNotAlreadySelected() {
-//        target.select()
-//        val componentChanged = AtomicBoolean(false)
-//        EventBus.subscribe<Event.ComponentChange> {
-//            componentChanged.set(true)
-//        }
-//        target.select()
-//
-//        assertThat(componentChanged.get()).isFalse()
-    }
-
-    @Test
     fun shouldProperlyRemoveSelection() {
         target.applyColorTheme(THEME)
         target.select()
@@ -127,7 +115,7 @@ class DefaultRadioButtonTest {
         assertThat(target.componentStyleSet.currentStyle()).isEqualTo(EXPECTED_DEFAULT_STYLE)
     }
 
-    private fun getButtonChar() = target.tileGraphics.getTileAt(Position.create(1, 0))
+    private fun getButtonChar() = target.graphics.getTileAt(Position.create(1, 0))
             .get().asCharacterTile().get().character
 
     companion object {
@@ -137,32 +125,32 @@ class DefaultRadioButtonTest {
         val WIDTH = 20
         val POSITION = Position.create(4, 5)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .backgroundColor(ANSITileColor.RED)
-                .foregroundColor(ANSITileColor.GREEN)
-                .modifiers(Modifiers.crossedOut())
+                .withBackgroundColor(ANSITileColor.RED)
+                .withForegroundColor(ANSITileColor.GREEN)
+                .withModifiers(Modifiers.crossedOut())
                 .build()
         val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(DEFAULT_STYLE)
+                .withDefaultStyle(DEFAULT_STYLE)
                 .build()
 
         val EXPECTED_DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.accentColor)
-                .backgroundColor(TileColor.transparent())
+                .withForegroundColor(THEME.accentColor)
+                .withBackgroundColor(TileColor.transparent())
                 .build()
 
         val EXPECTED_MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.primaryBackgroundColor)
-                .backgroundColor(THEME.accentColor)
+                .withForegroundColor(THEME.primaryBackgroundColor)
+                .withBackgroundColor(THEME.accentColor)
                 .build()
 
         val EXPECTED_FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryBackgroundColor)
-                .backgroundColor(THEME.accentColor)
+                .withForegroundColor(THEME.secondaryBackgroundColor)
+                .withBackgroundColor(THEME.accentColor)
                 .build()
 
         val EXPECTED_ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor)
-                .backgroundColor(THEME.accentColor)
+                .withForegroundColor(THEME.secondaryForegroundColor)
+                .withBackgroundColor(THEME.accentColor)
                 .build()
     }
 }

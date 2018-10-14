@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
+import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import org.junit.Before
 import org.junit.Test
 
@@ -17,7 +17,7 @@ class DefaultLayerTest {
     @Before
     fun setUp() {
         target = DefaultLayer(
-                currentPosition = OFFSET,
+                position = OFFSET,
                 backend = TILE_IMAGE)
 
     }
@@ -76,17 +76,17 @@ class DefaultLayerTest {
     companion object {
         val TILESET = BuiltInCP437TilesetResource.CLA_18X18
         val CHAR = TileBuilder.newBuilder()
-                .character('x')
+                .withCharacter('x')
                 .build()
         val SIZE = Size.create(10, 10)
         val TILE_IMAGE = TileGraphicsBuilder.newBuilder()
-                .size(SIZE)
-                .tileset(TILESET)
+                .withSize(SIZE)
+                .withTileset(TILESET)
                 .build()
         val OFFSET = Position.create(5, 5)
-        val INTERSECTING_BOUNDABLE = DefaultBoundable(Size.create(6, 6))
-        val NON_INTERSECTING_BOUNDABLE = DefaultBoundable(Size.create(5, 5))
-        val NON_CONTAINED_BOUNDABLE = DefaultBoundable(SIZE.withRelative(Size.one()))
+        val INTERSECTING_BOUNDABLE = DefaultMovable(Size.create(6, 6))
+        val NON_INTERSECTING_BOUNDABLE = DefaultMovable(Size.create(5, 5))
+        val NON_CONTAINED_BOUNDABLE = DefaultMovable(SIZE.withRelative(Size.one()))
         val CONTAINED_POSITION = OFFSET
         val NON_CONTAINED_POSITION = CONTAINED_POSITION
                 .withRelativeX(-1)

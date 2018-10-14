@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 
 class DefaultTextBox(componentMetadata: ComponentMetadata,
-                     private val renderingStrategy: ComponentRenderingStrategy<TextBox>)
+                     private val renderingStrategy: ComponentRenderingStrategy<DefaultTextBox>)
     : TextBox, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
@@ -21,9 +21,9 @@ class DefaultTextBox(componentMetadata: ComponentMetadata,
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor)
-                        .backgroundColor(TileColor.transparent())
+                .withDefaultStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.secondaryForegroundColor)
+                        .withBackgroundColor(TileColor.transparent())
                         .build())
                 .build().also { css ->
                     componentStyleSet = css
@@ -35,6 +35,6 @@ class DefaultTextBox(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics)
+        renderingStrategy.render(this, graphics)
     }
 }

@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 
 class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
-                                 private val renderingStrategy: ComponentRenderingStrategy<LogArea>)
+                                 private val renderingStrategy: ComponentRenderingStrategy<DefaultLogArea>)
     : LogArea, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
@@ -24,28 +24,28 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
 
     override fun addHeader(text: String, withNewLine: Boolean) {
         addLogElement(createTextBoxBuilder()
-                .header(text, withNewLine)
+                .addHeader(text, withNewLine)
                 .build())
     }
 
     override fun addParagraph(paragraph: String, withNewLine: Boolean, withTypingEffect: Boolean) {
         addLogElement(createTextBoxBuilder()
-                .paragraph(paragraph, withNewLine, withTypingEffect)
+                .addParagraph(paragraph, withNewLine, withTypingEffect)
                 .build())
     }
 
     override fun addListItem(item: String) {
         addLogElement(createTextBoxBuilder()
-                .listItem(item)
+                .addListItem(item)
                 .build())
     }
 
     override fun addInlineText(text: String) {
-        currentInlineBuilder.inlineText(text)
+        currentInlineBuilder.addInlineText(text)
     }
 
     override fun addInlineComponent(component: Component) {
-        currentInlineBuilder.inlineComponent(component)
+        currentInlineBuilder.addInlineComponent(component)
     }
 
     override fun commitInlineElements() {
@@ -58,7 +58,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     override fun addNewRows(numberOfRows: Int) {
         (0 until numberOfRows).forEach { _ ->
             addLogElement(createTextBoxBuilder()
-                    .newLine()
+                    .addNewLine()
                     .build())
         }
     }
@@ -70,17 +70,17 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         currentTheme = colorTheme
         return ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor)
-                        .backgroundColor(colorTheme.primaryBackgroundColor)
+                .withDefaultStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.secondaryForegroundColor)
+                        .withBackgroundColor(colorTheme.primaryBackgroundColor)
                         .build())
-                .disabledStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor)
-                        .backgroundColor(colorTheme.secondaryBackgroundColor)
+                .withDisabledStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.secondaryForegroundColor)
+                        .withBackgroundColor(colorTheme.secondaryBackgroundColor)
                         .build())
-                .focusedStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.primaryBackgroundColor)
-                        .backgroundColor(colorTheme.primaryForegroundColor)
+                .withFocusedStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.primaryBackgroundColor)
+                        .withBackgroundColor(colorTheme.primaryForegroundColor)
                         .build())
                 .build().also { css ->
                     componentStyleSet = css
@@ -104,7 +104,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
             var currentFreedSpace = 0
             while (currentFreedSpace < linesToFree) {
                 children.firstOrNull()?.let { topChild ->
-                    topChild.removeFromParent()
+                    topChild.detach()
                     currentFreedSpace += topChild.height
                 }
             }
@@ -123,11 +123,12 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     private fun createTextBoxBuilder(): TextBoxBuilder {
         return TextBoxBuilder
                 .newBuilder()
-                .contentWidth(width)
+                .withTileset(currentTileset())
+                .withContentWidth(width)
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics)
+        renderingStrategy.render(this, graphics)
     }
 
 }

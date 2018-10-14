@@ -1,7 +1,6 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 
 object ImageTileExample {
 
@@ -13,13 +12,13 @@ object ImageTileExample {
         val tileGrid = SwingApplications.startTileGrid()
 
         tileGrid.draw(CharacterTileStrings.newBuilder()
-                .text("You can see an image tile below...")
+                .withText("You can see an image tile below...")
                 .build())
 
 
         val imageTile = Tiles.newBuilder()
-                .tileset(imageDictionary)
-                .name("hexworks_logo.png")
+                .withTileset(imageDictionary)
+                .withName("hexworks_logo.png")
                 .buildImageTile()
 
         // TODO: fix positioning

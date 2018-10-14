@@ -35,23 +35,23 @@ data class ComponentStyleSetBuilder(
             styles = styles.map { Pair(it.key, it.value) }
                     .toMap().toMutableMap())
 
-    fun defaultStyle(styleSet: StyleSet) = also {
+    fun withDefaultStyle(styleSet: StyleSet) = also {
         styles[ComponentState.DEFAULT] = styleSet
     }
 
-    fun mouseOverStyle(styleSet: StyleSet) = also {
+    fun withMouseOverStyle(styleSet: StyleSet) = also {
         styles[ComponentState.MOUSE_OVER] = styleSet
     }
 
-    fun activeStyle(styleSet: StyleSet) = also {
+    fun withActiveStyle(styleSet: StyleSet) = also {
         styles[ComponentState.ACTIVE] = styleSet
     }
 
-    fun disabledStyle(styleSet: StyleSet) = also {
+    fun withDisabledStyle(styleSet: StyleSet) = also {
         styles[ComponentState.DISABLED] = styleSet
     }
 
-    fun focusedStyle(styleSet: StyleSet) = also {
+    fun withFocusedStyle(styleSet: StyleSet) = also {
         styles[ComponentState.FOCUSED] = styleSet
     }
 

@@ -31,15 +31,15 @@ data class TileBuilder(
         private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset)
     : Builder<Tile> {
 
-    fun character(character: Char) = also {
+    fun withCharacter(character: Char) = also {
         this.character = character
     }
 
-    fun name(name: String) = also {
+    fun withName(name: String) = also {
         this.name = name
     }
 
-    fun tags(tags: Set<String>) = also {
+    fun withTags(tags: Set<String>) = also {
         this.tags = tags
     }
 
@@ -47,28 +47,28 @@ data class TileBuilder(
      * Sets the styles (colors and modifiers) from the given
      * `styleSet`.
      */
-    fun styleSet(styleSet: StyleSet) = also {
+    fun withStyleSet(styleSet: StyleSet) = also {
         this.styleSet = styleSet
     }
 
-    fun foregroundColor(foregroundColor: TileColor) = also {
+    fun withForegroundColor(foregroundColor: TileColor) = also {
         this.styleSet = styleSet.withForegroundColor(foregroundColor)
     }
 
-    fun backgroundColor(backgroundColor: TileColor) = also {
+    fun withBackgroundColor(backgroundColor: TileColor) = also {
         this.styleSet = styleSet.withBackgroundColor(backgroundColor)
     }
 
-    fun modifiers(modifiers: Set<Modifier>) = also {
+    fun withModifiers(modifiers: Set<Modifier>) = also {
         this.styleSet = styleSet.withModifiers(modifiers)
     }
 
-    fun tileset(tileset: TilesetResource) = also {
+    fun withTileset(tileset: TilesetResource) = also {
         this.tileset = tileset
     }
 
-    fun modifiers(vararg modifiers: Modifier) = also {
-        modifiers(modifiers.toSet())
+    fun withModifiers(vararg modifiers: Modifier) = also {
+        withModifiers(modifiers.toSet())
     }
 
     override fun build(): Tile {

@@ -14,8 +14,8 @@ object InCP437WeTrust {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultSize(Sizes.create(23, 24))
-                .defaultTileset(CP437TilesetResources.wanderlust16x16())
+                .withSize(Sizes.create(23, 24))
+                .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
@@ -33,7 +33,7 @@ object InCP437WeTrust {
         screen.addComponent(cp437panel)
 
         val btn = Components.checkBox()
-                .text("In CP437 we trust!")
+                .withText("In CP437 we trust!")
                 .withPosition(Positions.create(1, 22))
 
         screen.addComponent(btn.build())

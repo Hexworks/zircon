@@ -1,7 +1,5 @@
 package org.hexworks.zircon.api.data
 
-import org.hexworks.zircon.api.shape.RectangleFactory
-import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.internal.data.DefaultSize
 
 /**
@@ -10,59 +8,33 @@ import org.hexworks.zircon.internal.data.DefaultSize
  */
 interface Size : Comparable<Size> {
 
-    val xLength: Int
+    val width: Int
 
-    val yLength: Int
+    val height: Int
+
+    operator fun plus(other: Size): Size
+
+    operator fun minus(other: Size): Size
+
+    operator fun component1() = width
+
+    operator fun component2() = height
 
     /**
-     * Shorthand for `xLength`
+     * Tells whether this [Size] **is** the same as [Size.unknown].
      */
-    fun width() = xLength
+    fun isUnknown(): Boolean
 
     /**
-     * Shorthand for `yLength`
+     * Tells whether this [Size] **is not** the same as [Size.unknown].
      */
-    fun height() = yLength
-
-    operator fun plus(other: Size) = create(xLength + other.xLength, yLength + other.yLength)
-
-    operator fun minus(other: Size) = create(xLength - other.xLength, yLength - other.yLength)
-
-    override fun compareTo(other: Size) = (this.xLength * this.yLength).compareTo(other.xLength * other.yLength)
-
-    operator fun component1() = xLength
-
-    operator fun component2() = yLength
-
-    fun isUnknown() = this === UNKNOWN
+    fun isNotUnknown(): Boolean
 
     /**
      * Creates a list of [Position]s in the order in which they should
      * be iterated when drawing (first rows, then columns in those rows).
      */
-    fun fetchPositions(): Iterable<Position> = Iterable {
-        var currY = 0
-        var currX = 0
-        val endX = xLength
-        val endY = yLength
-
-        object : Iterator<Position> {
-
-            override fun hasNext() = currY < endY && currX < endX
-
-            override fun next(): Position {
-                return Position.create(currX, currY).also {
-                    currX++
-                    if (currX == endX) {
-                        currY++
-                        if (currY < endY) {
-                            currX = 0
-                        }
-                    }
-                }
-            }
-        }
-    }
+    fun fetchPositions(): Iterable<Position>
 
     /**
      * Creates a list of [Position]s which represent the
@@ -70,99 +42,59 @@ interface Size : Comparable<Size> {
      * will have a bounding box of
      * `[(0, 0), (1, 0), (2, 0), (0, 1), (2, 1), (0, 2), (1, 2), (2, 2)]`
      */
-    fun fetchBoundingBoxPositions(): Set<Position> {
-        return RectangleFactory
-                .buildRectangle(Position.defaultPosition(), this)
-                .positions()
-    }
+    fun fetchBoundingBoxPositions(): Set<Position>
 
-    fun fetchTopLeftPosition() = Position.topLeftCorner()
+    fun fetchTopLeftPosition(): Position
 
-    fun fetchTopRightPosition() = Position.create(xLength - 1, 0)
+    fun fetchTopRightPosition(): Position
 
-    fun fetchBottomLeftPosition() = Position.create(0, yLength - 1)
+    fun fetchBottomLeftPosition(): Position
 
-    fun fetchBottomRightPosition() = Position.create(xLength - 1, yLength - 1)
-
-    fun withWidth(width: Int): Size = withXLength(width)
-
-    fun withRelativeWidth(delta: Int): Size = withRelativeXLength(delta)
-
-    fun withHeight(height: Int): Size = withYLength(height)
-
-    fun withRelativeHeight(delta: Int): Size = withRelativeYLength(delta)
+    fun fetchBottomRightPosition(): Position
 
     /**
-     * Creates a new size based on this size, but with a different xLength.
+     * Creates a new size based on this size, but with a different width.
      */
-    fun withXLength(xLength: Int): Size {
-        if (this.xLength == xLength) {
-            return this
-        }
-        return create(xLength, this.yLength)
-    }
+    fun withWidth(width: Int): Size
 
     /**
-     * Creates a new size based on this size, but with a different yLength.
+     * Creates a new size based on this size, but with a different height.
      */
-    fun withYLength(yLength: Int): Size {
-        if (this.yLength == yLength) {
-            return this
-        }
-        return create(this.xLength, yLength)
-    }
+    fun withHeight(height: Int): Size
 
     /**
-     * Creates a new [Size] object representing a size with the same number of yLength, but with
-     * a xLength size offset by a supplied value. Calling this method with delta 0 will returnThis this,
+     * Creates a new [Size] object representing a size with the same number of height, but with
+     * a width size offset by a supplied value. Calling this method with delta 0 will returnThis this,
      * calling it with a positive delta will returnThis
-     * a grid size <code>delta</code> number of xLength wider and for negative numbers shorter.
+     * a grid size <code>delta</code> number of width wider and for negative numbers shorter.
      */
-    fun withRelativeXLength(delta: Int): Size {
-        if (delta == 0) {
-            return this
-        }
-        return withXLength(xLength + delta)
-    }
+    fun withRelativeWidth(delta: Int): Size
 
     /**
-     * Creates a new [Size] object representing a size with the same number of xLength, but with a yLength
+     * Creates a new [Size] object representing a size with the same number of width, but with a height
      * size offset by a supplied value. Calling this method with delta 0 will returnThis this, calling
      * it with a positive delta will returnThis
-     * a grid size <code>delta</code> number of yLength longer and for negative numbers shorter.
+     * a grid size <code>delta</code> number of height longer and for negative numbers shorter.
      */
-    fun withRelativeYLength(delta: Int): Size {
-        if (delta == 0) {
-            return this
-        }
-        return withYLength(yLength + delta)
-    }
+    fun withRelativeHeight(delta: Int): Size
 
     /**
      * Creates a new [Size] object representing a size based on this object's size but with a delta applied.
      * This is the same as calling `withRelativeXLength(delta.getXLength()).withRelativeYLength(delta.getYLength())`
      */
-    fun withRelative(delta: Size): Size {
-        return withRelativeYLength(delta.yLength).withRelativeXLength(delta.xLength)
-    }
+    fun withRelative(delta: Size): Size
 
     /**
      * Takes a different [Size] and returns a new [Size] that has the largest dimensions of the two,
      * measured separately. So calling 3x5 on a 5x3 will returnThis 5x5.
      */
-    fun max(other: Size): Size {
-        return withXLength(Math.max(xLength, other.xLength))
-                .withYLength(Math.max(yLength, other.yLength))
-    }
+    fun max(other: Size): Size
 
     /**
      * Takes a different [Size] and returns a new [Size] that has the smallest dimensions of the two,
      * measured separately. So calling 3x5 on a 5x3 will returnThis 3x3.
      */
-    fun min(other: Size): Size {
-        return withXLength(Math.min(xLength, other.xLength))
-                .withYLength(Math.min(yLength, other.yLength))
-    }
+    fun min(other: Size): Size
 
     /**
      * Returns itself if it is equal to the supplied size, otherwise the supplied size.
@@ -170,20 +102,29 @@ interface Size : Comparable<Size> {
      * to the same size; it will keep the same object
      * in memory instead of swapping it out every cycle.
      */
-    fun with(size: Size): Size {
-        if (equals(size)) {
-            return this
-        }
-        return size
-    }
+    fun with(size: Size): Size
 
-    fun containsPosition(position: Position) = xLength > position.x && yLength > position.y
+    /**
+     * Tells whether this [Size] contains the given [Position].
+     * Works in the same way as [Rect.containsPosition].
+     */
+    fun containsPosition(position: Position): Boolean
 
-    fun toPosition() = Position.create(xLength, yLength)
+    /**
+     * Converts this [Size] to a [Position]:
+     * [Size.width] to [Position.x] and [Size.height] to [Position.y]
+     */
+    fun toPosition(): Position
 
-    fun toBounds(): Rect = toBounds(Position.defaultPosition())
+    /**
+     * Converts this [Size] to a [Rect] using [Position.zero].
+     */
+    fun toRect(): Rect
 
-    fun toBounds(position: Position): Rect = Rect.create(position, this)
+    /**
+     * Converts this [Size] to a [Rect] with the given [Position].
+     */
+    fun toRect(position: Position): Rect
 
     companion object {
 
@@ -195,7 +136,7 @@ interface Size : Comparable<Size> {
         /**
          * The default grid size is (80 * 24)
          */
-        fun defaultTerminalSize() = DEFAULT_TERMINAL_SIZE
+        fun defaultGridSize() = DEFAULT_TERMINAL_SIZE
 
         /**
          * Size of (0 * 0).
@@ -208,9 +149,9 @@ interface Size : Comparable<Size> {
         fun one() = ONE
 
         /**
-         * Creates a new [Size] using the given `xLength` (width) and `yLength` (height).
+         * Creates a new [Size] using the given `width` (width) and `height` (height).
          */
-        fun create(xLength: Int, yLength: Int): Size = DefaultSize(xLength, yLength)
+        fun create(width: Int, height: Int): Size = DefaultSize(width, height)
 
         private val UNKNOWN = create(Int.MAX_VALUE, Int.MAX_VALUE)
         private val DEFAULT_TERMINAL_SIZE = create(60, 30)

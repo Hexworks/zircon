@@ -8,18 +8,68 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
+import org.hexworks.zircon.api.resource.TileType
 import org.junit.Test
 
 @Suppress("UsePropertyAccessSyntax")
 class DefaultTileTest {
 
     @Test
+    fun shouldProperlyReportTileType() {
+        assertThat(Tile.defaultTile().tileType).isEqualTo(TileType.CHARACTER_TILE)
+    }
+
+    @Test
+    fun shouldProperlyAddNewModifiersAndKeepOldOnesWhenWithAddedModifiersIsCalled() {
+        val target = Tile.createCharacterTile('x', StyleSetBuilder.newBuilder()
+                .withModifiers(Underline)
+                .build())
+        assertThat(target.withAddedModifiers(Blink).modifiers)
+                .containsExactlyInAnyOrder(Underline, Blink)
+    }
+
+    @Test
+    fun shouldProperlyRemoveAllModifiersWhenWithoutModifiersIsCalled() {
+        val target = Tile.createCharacterTile('x', StyleSetBuilder.newBuilder()
+                .withModifiers(Blink)
+                .build())
+        assertThat(target.withNoModifiers().modifiers).isEmpty()
+    }
+
+    @Test
+    fun shouldReturnSameTileWhenWithNoModifiersIsCalledAndItHasNoModifiers() {
+        val target = Tile.createCharacterTile('x', StyleSetBuilder.newBuilder().build())
+
+        assertThat(target.withNoModifiers()).isSameAs(target)
+    }
+
+    @Test
+    fun shouldReturnSameTileWhenWithAddedModifiersIsCalledAndItAlreadyHasTheModifiers() {
+        val target = Tile.createCharacterTile('x', StyleSetBuilder.newBuilder()
+                .withModifiers(Blink, VerticalFlip)
+                .build())
+
+        assertThat(target.withAddedModifiers(Blink, VerticalFlip)).isSameAs(target)
+    }
+
+    @Test
+    fun shouldProperlyCreateCopy() {
+        val tile = Tile.createCharacterTile('x', StyleSetBuilder.newBuilder()
+                .withBackgroundColor(ANSITileColor.YELLOW)
+                .build())
+
+        assertThat(tile.createCopy())
+                .isEqualTo(tile)
+                .isNotSameAs(tile)
+    }
+
+    @Test
     fun shouldGenerateProperCacheKey() {
         val result = TileBuilder.newBuilder()
-                .character('x')
-                .backgroundColor(ANSITileColor.GREEN)
-                .foregroundColor(TileColor.fromString("#aabbcc"))
-                .modifiers(VerticalFlip)
+                .withCharacter('x')
+                .withBackgroundColor(ANSITileColor.GREEN)
+                .withForegroundColor(TileColor.fromString("#aabbcc"))
+                .withModifiers(VerticalFlip)
                 .build()
                 .generateCacheKey()
 
@@ -37,7 +87,7 @@ class DefaultTileTest {
     @Test
     fun shouldProperlyReportHavingABorderWhenThereIsBorder() {
         assertThat(TileBuilder.newBuilder()
-                .modifiers(Modifiers.border())
+                .withModifiers(Modifiers.border())
                 .build().hasBorder()).isTrue()
     }
 
@@ -60,7 +110,7 @@ class DefaultTileTest {
     @Test
     fun shouldProperlyRemoveModifiersWhenWithoutModifiersIsCalled() {
         assertThat(TileBuilder.newBuilder()
-                .modifiers(Modifiers.crossedOut())
+                .withModifiers(Modifiers.crossedOut())
                 .build()
                 .withRemovedModifiers(setOf(Modifiers.crossedOut()))
                 .modifiers)
@@ -70,9 +120,9 @@ class DefaultTileTest {
     @Test
     fun shouldProperlyCreateCopyWithStyleWhenWithStyleIsCalled() {
         val style = StyleSetBuilder.newBuilder()
-                .foregroundColor(ANSITileColor.BLUE)
-                .backgroundColor(ANSITileColor.CYAN)
-                .modifiers(Modifiers.crossedOut())
+                .withForegroundColor(ANSITileColor.BLUE)
+                .withBackgroundColor(ANSITileColor.CYAN)
+                .withModifiers(Modifiers.crossedOut())
                 .build()
 
         val copy = TileBuilder.newBuilder()
@@ -86,27 +136,27 @@ class DefaultTileTest {
 
     @Test
     fun boldModifierShouldBeBold() {
-        assertThat(TileBuilder.newBuilder().modifiers(Modifiers.crossedOut()).build().isCrossedOut()).isTrue()
+        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.crossedOut()).build().isCrossedOut()).isTrue()
     }
 
     @Test
     fun underlinedModifierShouldBeUnderlined() {
-        assertThat(TileBuilder.newBuilder().modifiers(Modifiers.underline()).build().isUnderlined()).isTrue()
+        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.underline()).build().isUnderlined()).isTrue()
     }
 
     @Test
     fun crossedOutModifierShouldBeCrossedOut() {
-        assertThat(TileBuilder.newBuilder().modifiers(Modifiers.crossedOut()).build().isCrossedOut()).isTrue()
+        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.crossedOut()).build().isCrossedOut()).isTrue()
     }
 
     @Test
     fun italicModifierShouldBeItalic() {
-        assertThat(TileBuilder.newBuilder().modifiers(Modifiers.verticalFlip()).build().isVerticalFlipped()).isTrue()
+        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.verticalFlip()).build().isVerticalFlipped()).isTrue()
     }
 
     @Test
     fun blinkingModifierShouldBeBlinking() {
-        assertThat(TileBuilder.newBuilder().modifiers(Modifiers.blink()).build().isBlinking()).isTrue()
+        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.blink()).build().isBlinking()).isTrue()
     }
 
     @Test
@@ -114,12 +164,12 @@ class DefaultTileTest {
         assertThat(Tile.createCharacterTile(
                 character = 'a',
                 style = StyleSetBuilder.newBuilder()
-                        .foregroundColor(EXPECTED_FG_COLOR)
-                        .backgroundColor(EXPECTED_BG_COLOR)
-                        .modifiers(EXPECTED_MODIFIERS)
+                        .withForegroundColor(EXPECTED_FG_COLOR)
+                        .withBackgroundColor(EXPECTED_BG_COLOR)
+                        .withModifiers(EXPECTED_MODIFIERS)
                         .build())
                 .withCharacter(EXPECTED_CHAR))
-                .isEqualTo(EXPECTED_TEXT_CHARACTER)
+                .isEqualTo(EXPECTED_CHARACTER_TILE)
     }
 
     @Test
@@ -127,12 +177,12 @@ class DefaultTileTest {
         assertThat(Tile.createCharacterTile(
                 character = EXPECTED_CHAR,
                 style = StyleSetBuilder.newBuilder()
-                        .foregroundColor(GREEN)
-                        .backgroundColor(EXPECTED_BG_COLOR)
-                        .modifiers(EXPECTED_MODIFIERS)
+                        .withForegroundColor(GREEN)
+                        .withBackgroundColor(EXPECTED_BG_COLOR)
+                        .withModifiers(EXPECTED_MODIFIERS)
                         .build())
                 .withForegroundColor(EXPECTED_FG_COLOR))
-                .isEqualTo(EXPECTED_TEXT_CHARACTER)
+                .isEqualTo(EXPECTED_CHARACTER_TILE)
     }
 
     @Test
@@ -140,12 +190,12 @@ class DefaultTileTest {
         assertThat(Tile.createCharacterTile(
                 character = EXPECTED_CHAR,
                 style = StyleSetBuilder.newBuilder()
-                        .foregroundColor(EXPECTED_FG_COLOR)
-                        .backgroundColor(RED)
-                        .modifiers(EXPECTED_MODIFIERS)
+                        .withForegroundColor(EXPECTED_FG_COLOR)
+                        .withBackgroundColor(RED)
+                        .withModifiers(EXPECTED_MODIFIERS)
                         .build())
                 .withBackgroundColor(EXPECTED_BG_COLOR))
-                .isEqualTo(EXPECTED_TEXT_CHARACTER)
+                .isEqualTo(EXPECTED_CHARACTER_TILE)
     }
 
     @Test
@@ -153,11 +203,11 @@ class DefaultTileTest {
         assertThat(Tile.createCharacterTile(
                 character = EXPECTED_CHAR,
                 style = StyleSetBuilder.newBuilder()
-                        .foregroundColor(EXPECTED_FG_COLOR)
-                        .backgroundColor(EXPECTED_BG_COLOR)
-                        .modifiers(setOf(Blink))
+                        .withForegroundColor(EXPECTED_FG_COLOR)
+                        .withBackgroundColor(EXPECTED_BG_COLOR)
+                        .withModifiers(setOf(Blink))
                         .build())
-                .withModifiers(EXPECTED_MODIFIERS)).isEqualTo(EXPECTED_TEXT_CHARACTER)
+                .withModifiers(EXPECTED_MODIFIERS)).isEqualTo(EXPECTED_CHARACTER_TILE)
     }
 
     @Test
@@ -165,81 +215,81 @@ class DefaultTileTest {
         assertThat(Tile.createCharacterTile(
                 character = EXPECTED_CHAR,
                 style = StyleSetBuilder.newBuilder()
-                        .foregroundColor(EXPECTED_FG_COLOR)
-                        .backgroundColor(EXPECTED_BG_COLOR)
-                        .modifiers(setOf(CrossedOut))
+                        .withForegroundColor(EXPECTED_FG_COLOR)
+                        .withBackgroundColor(EXPECTED_BG_COLOR)
+                        .withModifiers(setOf(CrossedOut))
                         .build())
                 .withModifiers(Modifiers.verticalFlip())).isEqualTo(
                 Tile.createCharacterTile(
                         character = EXPECTED_CHAR,
                         style = StyleSetBuilder.newBuilder()
-                                .foregroundColor(EXPECTED_FG_COLOR)
-                                .backgroundColor(EXPECTED_BG_COLOR)
-                                .modifiers(setOf(VerticalFlip))
+                                .withForegroundColor(EXPECTED_FG_COLOR)
+                                .withBackgroundColor(EXPECTED_BG_COLOR)
+                                .withModifiers(setOf(VerticalFlip))
                                 .build()))
     }
 
     @Test
-    fun shouldBeSameButWithModifierRemovedWhenWithoutModifierIsCalled() {
+    fun shouldBeSameButWithModifierRemovedWhenWithRemovedModifierIsCalled() {
         assertThat(Tile.createCharacterTile(
                 character = EXPECTED_CHAR,
                 style = StyleSetBuilder.newBuilder()
-                        .foregroundColor(EXPECTED_FG_COLOR)
-                        .backgroundColor(EXPECTED_BG_COLOR)
-                        .modifiers(setOf(Modifiers.crossedOut(), Modifiers.verticalFlip(), Modifiers.blink()))
+                        .withForegroundColor(EXPECTED_FG_COLOR)
+                        .withBackgroundColor(EXPECTED_BG_COLOR)
+                        .withModifiers(setOf(Modifiers.crossedOut(), Modifiers.verticalFlip(), Modifiers.blink()))
                         .build())
                 .withRemovedModifiers(Modifiers.blink()))
-                .isEqualTo(EXPECTED_TEXT_CHARACTER)
+                .isEqualTo(EXPECTED_CHARACTER_TILE)
     }
 
     @Test
     fun shouldReturnSameTextCharacterWhenWithCharIsCalledWithSameChar() {
-        assertThat(EXPECTED_TEXT_CHARACTER.withCharacter(EXPECTED_CHAR))
-                .isSameAs(EXPECTED_TEXT_CHARACTER)
+        assertThat(EXPECTED_CHARACTER_TILE.withCharacter(EXPECTED_CHAR))
+                .isSameAs(EXPECTED_CHARACTER_TILE)
     }
 
     @Test
     fun shouldReturnSameTextCharacterWhenWithFGColorIsCalledWithSameFGColor() {
-        assertThat(EXPECTED_TEXT_CHARACTER.withForegroundColor(EXPECTED_FG_COLOR))
-                .isSameAs(EXPECTED_TEXT_CHARACTER)
+        assertThat(EXPECTED_CHARACTER_TILE.withForegroundColor(EXPECTED_FG_COLOR))
+                .isSameAs(EXPECTED_CHARACTER_TILE)
     }
 
     @Test
     fun shouldReturnSameTextCharacterWhenWithBGColorIsCalledWithSameBGColor() {
-        assertThat(EXPECTED_TEXT_CHARACTER.withBackgroundColor(EXPECTED_BG_COLOR))
-                .isSameAs(EXPECTED_TEXT_CHARACTER)
+        assertThat(EXPECTED_CHARACTER_TILE.withBackgroundColor(EXPECTED_BG_COLOR))
+                .isSameAs(EXPECTED_CHARACTER_TILE)
     }
 
     @Test
-    fun shouldReturnSameTextCharacterWhenWithModifierIsCalledWithSameModifier() {
-        assertThat(EXPECTED_TEXT_CHARACTER.withModifiers(Modifiers.crossedOut(), Modifiers.verticalFlip()))
-                .isSameAs(EXPECTED_TEXT_CHARACTER)
+    fun shouldReturnSameTextCharacterWhenWithModifiersIsCalledWithSameModifier() {
+        assertThat(EXPECTED_CHARACTER_TILE.withModifiers(Modifiers.crossedOut(), Modifiers.verticalFlip()))
+                .isSameAs(EXPECTED_CHARACTER_TILE)
     }
 
     @Test
-    fun shouldReturnSameTextCharacterWhenWithModifierSIsCalledWithSameModifierS() {
-        assertThat(EXPECTED_TEXT_CHARACTER.withModifiers(EXPECTED_MODIFIERS))
-                .isSameAs(EXPECTED_TEXT_CHARACTER)
+    fun shouldReturnSameTextCharacterWhenWithModifiersSIsCalledWithSameModifierS() {
+        assertThat(EXPECTED_CHARACTER_TILE.withModifiers(EXPECTED_MODIFIERS))
+                .isSameAs(EXPECTED_CHARACTER_TILE)
     }
 
     @Test
-    fun shouldReturnSameTextCharacterWhenWithoutModifierIsCalledWithNonPresentModifier() {
-        assertThat(EXPECTED_TEXT_CHARACTER.withRemovedModifiers(Modifiers.blink()))
-                .isSameAs(EXPECTED_TEXT_CHARACTER)
+    fun shouldReturnSameTextCharacterWhenWithRemovedModifiersIsCalledWithNonPresentModifier() {
+        assertThat(EXPECTED_CHARACTER_TILE.withRemovedModifiers(Modifiers.blink()))
+                .isSameAs(EXPECTED_CHARACTER_TILE)
     }
 
     companion object {
-        val EXPECTED_CHAR = 'x'
+        const val EXPECTED_CHAR = 'x'
         val EXPECTED_FG_COLOR = TileColor.fromString("#aabbcc")
         val EXPECTED_BG_COLOR = TileColor.fromString("#223344")
         val EXPECTED_MODIFIERS = setOf(Modifiers.crossedOut(), Modifiers.verticalFlip())
 
-        val EXPECTED_TEXT_CHARACTER = Tile.createCharacterTile(
+        val EXPECTED_CHARACTER_TILE = Tile.createCharacterTile(
                 character = EXPECTED_CHAR,
                 style = StyleSetBuilder.newBuilder()
-                        .foregroundColor(EXPECTED_FG_COLOR)
-                        .backgroundColor(EXPECTED_BG_COLOR)
-                        .modifiers(EXPECTED_MODIFIERS)
+                        .withForegroundColor(EXPECTED_FG_COLOR)
+                        .withBackgroundColor(EXPECTED_BG_COLOR)
+                        .withModifiers(EXPECTED_MODIFIERS)
                         .build())
     }
 

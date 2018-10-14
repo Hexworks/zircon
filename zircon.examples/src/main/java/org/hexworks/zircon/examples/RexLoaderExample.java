@@ -24,9 +24,9 @@ public class RexLoaderExample {
         REXPaintResource rex = REXPaintResource.loadREXFile(RESOURCE);
 
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .defaultTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
-                .defaultSize(SIZE)
-                .debugMode(true)
+                .withDefaultTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
+                .withSize(SIZE)
+                .withDebugMode(true)
                 .build());
 
         final TileGrid tileGrid = app.getTileGrid();

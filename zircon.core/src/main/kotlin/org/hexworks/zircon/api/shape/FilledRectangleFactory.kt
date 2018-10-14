@@ -7,8 +7,8 @@ import org.hexworks.zircon.internal.shape.DefaultShape
 object FilledRectangleFactory : ShapeFactory<RectangleParameters> {
 
     override fun createShape(shapeParameters: RectangleParameters) = shapeParameters.let { (topLeft, size) ->
-        DefaultShape((0 until size.yLength).flatMap { y ->
-            (0 until size.xLength).map { x ->
+        DefaultShape((0 until size.height).flatMap { y ->
+            (0 until size.width).map { x ->
                 Position.create(topLeft.x + x, topLeft.y + y)
             }
         }.toSet())

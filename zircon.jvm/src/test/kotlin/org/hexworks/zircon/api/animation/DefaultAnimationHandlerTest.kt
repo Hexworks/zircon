@@ -51,8 +51,8 @@ class DefaultAnimationHandlerTest {
         val infiniteAnimation = AnimationBuilder.newBuilder()
                 .addFrame(DefaultAnimationFrame(Size.one(), listOf(), 1))
                 .addPosition(Position.offset1x1())
-                .loopCount(0)
-                .fps(1)
+                .withLoopCount(0)
+                .withFps(1)
                 .build()
 
         val result = target.startAnimation(infiniteAnimation)
@@ -98,8 +98,8 @@ class DefaultAnimationHandlerTest {
         Mockito.`when`(animationMock.hasNextFrame()).thenReturn(false)
 
         val tileGrid = TileGridBuilder.newBuilder()
-                .size(Size.create(50, 50))
-                .tileset(BuiltInCP437TilesetResource.ADU_DHABI_16X16)
+                .withSize(Size.create(50, 50))
+                .withTileset(BuiltInCP437TilesetResource.ADU_DHABI_16X16)
                 .build()
 
         val result = target.startAnimation(animationMock)

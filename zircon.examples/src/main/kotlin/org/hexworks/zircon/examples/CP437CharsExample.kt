@@ -12,8 +12,8 @@ object CP437CharsExample {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultSize(Sizes.create(21, 21))
-                .defaultTileset(CP437TilesetResources.wanderlust16x16())
+                .withSize(Sizes.create(21, 21))
+                .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)

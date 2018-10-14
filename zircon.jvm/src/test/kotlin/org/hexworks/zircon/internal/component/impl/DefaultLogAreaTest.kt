@@ -1,32 +1,53 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.component.LogAreaBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Paragraph
+import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.resource.ColorThemeResource
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.internal.component.renderer.DefaultLogAreaRenderer
 import org.junit.Before
 import org.junit.Test
 
-class DefaultLogAreaTest {
+class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
 
-    lateinit var target: DefaultLogArea
+    override lateinit var target: DefaultLogArea
+
+    override val expectedComponentStyles: ComponentStyleSet
+        get() = ComponentStyleSetBuilder.newBuilder()
+                .withDefaultStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                        .withBackgroundColor(DEFAULT_THEME.primaryBackgroundColor)
+                        .build())
+                .withDisabledStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                        .withBackgroundColor(DEFAULT_THEME.secondaryBackgroundColor)
+                        .build())
+                .withFocusedStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
+                        .withBackgroundColor(DEFAULT_THEME.primaryForegroundColor)
+                        .build())
+                .build()
 
     @Before
-    fun setUp() {
-        target = LogAreaBuilder.newBuilder()
-                .withComponentStyleSet(COMPONENT_STYLES)
-                .withPosition(POSITION)
-                .withSize(SIZE)
-                .logRowHistorySize(ROW_HISTORY_SIZE)
-                .withTileset(TILESET)
-                .build() as DefaultLogArea
+    override fun setUp() {
+        componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 1))
+        rendererStub = ComponentRendererStub(DefaultLogAreaRenderer())
+        target = DefaultLogArea(
+                componentMetadata = ComponentMetadata(
+                        size = SIZE,
+                        position = POSITION,
+                        componentStyleSet = COMPONENT_STYLES,
+                        tileset = TILESET_REX_PAINT_20X20),
+                renderingStrategy = DefaultComponentRenderingStrategy(
+                        decorationRenderers = listOf(),
+                        componentRenderer = rendererStub))
     }
 
     @Test
@@ -71,25 +92,32 @@ class DefaultLogAreaTest {
         assertThat(child.children).isEmpty() // this means it has no paragraph as a child
     }
 
+    @Test
+    fun shouldProperlyClearLogArea() {
+        target.clear()
+
+        assertThat(target.children).isEmpty()
+    }
+
+    @Test
+    fun shouldProperlyApplyThemeToChildren() {
+        target.addComponent(componentStub)
+        target.applyColorTheme(DEFAULT_THEME)
+
+        assertThat(componentStub.colorTheme)
+                .isEqualTo(DEFAULT_THEME)
+    }
 
     companion object {
-        val THEME = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
-        val TILESET = CP437TilesetResources.wanderlust16x16()
         val POSITION = Position.create(4, 5)
         val SIZE = Size.create(40, 10)
-        val ROW_HISTORY_SIZE = 15
-        val TEXT = "This is my log row"
-        val ALTERNATE_TEXT = "This is my other log row"
+        const val ROW_HISTORY_SIZE = 15
+        const val TEXT = "This is my log row"
+        const val ALTERNATE_TEXT = "This is my other log row"
         val COMPONENT = Components.button()
                 .withDecorationRenderers()
-                .text("Button")
-                .build()
-        val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .foregroundColor(THEME.secondaryForegroundColor)
-                .backgroundColor(TileColor.transparent())
-                .build()
-        val COMPONENT_STYLES = ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(DEFAULT_STYLE)
+                .withTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
+                .withText("Button")
                 .build()
     }
 }

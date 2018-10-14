@@ -5,8 +5,8 @@ import org.hexworks.zircon.api.Maybes;
 import org.hexworks.zircon.api.Tiles;
 import org.hexworks.zircon.api.builder.data.BlockBuilder;
 import org.hexworks.zircon.api.data.Block;
-import org.hexworks.zircon.api.data.Position3D;
-import org.hexworks.zircon.api.data.Size3D;
+import org.hexworks.zircon.api.data.impl.Position3D;
+import org.hexworks.zircon.api.data.impl.Size3D;
 import org.hexworks.zircon.api.game.BaseGameArea;
 import org.hexworks.zircon.api.util.Maybe;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +20,7 @@ public class CustomGameArea extends BaseGameArea {
     private int layersPerBlock;
     private TreeMap<Position3D, Block> blocks = new TreeMap<>();
     private BlockBuilder filler = Blocks.newBuilder()
-            .layer(Tiles.empty());
+            .addLayer(Tiles.empty());
 
     public CustomGameArea(Size3D size, int layersPerBlock) {
         this.size = size;
@@ -52,7 +52,7 @@ public class CustomGameArea extends BaseGameArea {
     @NotNull
     @Override
     public Block fetchBlockOrDefault(@NotNull Position3D position) {
-        return blocks.getOrDefault(position, filler.position(position).build());
+        return blocks.getOrDefault(position, filler.withPosition(position).build());
     }
 
     @NotNull

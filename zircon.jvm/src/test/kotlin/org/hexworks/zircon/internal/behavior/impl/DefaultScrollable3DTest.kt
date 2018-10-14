@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.data.Position3D
-import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.data.impl.Position3D
+import org.hexworks.zircon.api.data.impl.Size3D
 import org.junit.Before
 import org.junit.Test
 

@@ -1,130 +1,95 @@
 package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.behavior.Cacheable
-import org.hexworks.zircon.api.behavior.DrawSurface
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.Modifier
-import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 import org.hexworks.zircon.api.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.data.DefaultCharacterTile
+import org.hexworks.zircon.internal.data.DefaultGraphicTile
 import org.hexworks.zircon.internal.data.DefaultImageTile
 
+/**
+ * A [Tile] is the basic building block which can be drawn
+ * on a screen. It is a rectangular graphic, or character
+ * which can be composed to more complex objects.
+ */
 interface Tile : Drawable, Cacheable, StyleSet {
 
-    /**
-     * The tile type of this [Tile].
-     */
     val tileType: TileType
-
-    /**
-     * The style of this [Tile].
-     */
     val styleSet: StyleSet
+
+    override fun createCopy(): Tile
+
+    override fun withForegroundColor(foregroundColor: TileColor): Tile
+
+    override fun withBackgroundColor(backgroundColor: TileColor): Tile
+
+    override fun withModifiers(modifiers: Set<Modifier>): Tile
+
+    override fun withModifiers(vararg modifiers: Modifier): Tile
+
+    override fun withAddedModifiers(modifiers: Set<Modifier>): Tile
+
+    override fun withAddedModifiers(vararg modifiers: Modifier): Tile
+
+    override fun withRemovedModifiers(modifiers: Set<Modifier>): Tile
+
+    override fun withRemovedModifiers(vararg modifiers: Modifier): Tile
+
+    override fun withNoModifiers(): Tile
 
     /**
      * Returns a copy of this [Tile] with the specified style.
      */
     fun withStyle(style: StyleSet): Tile
 
-    override fun drawOnto(surface: DrawSurface, position: Position) {
-        surface.setTileAt(position, this)
-    }
-
-    /**
-     * Returns a copy of the style information stored in this [StyleSet].
-     */
-    override fun createCopy(): Tile
-
-    /**
-     * Creates a copy of this [StyleSet] with the given foreground color.
-     */
-    override fun withForegroundColor(foregroundColor: TileColor): Tile
-
-    /**
-     * Creates a copy of this [StyleSet] with the given background color.
-     */
-    override fun withBackgroundColor(backgroundColor: TileColor): Tile
-
-    /**
-     * Creates a copy of this [StyleSet] with the given modifiers.
-     */
-    override fun withModifiers(modifiers: Set<Modifier>): Tile
-
-    /**
-     * Creates a copy of this [StyleSet] with the given modifiers.
-     */
-    override fun withModifiers(vararg modifiers: Modifier): Tile =
-            withModifiers(modifiers.toSet())
-
-    /**
-     * Creates a copy of this [StyleSet] with the given modifiers added.
-     */
-    override fun withAddedModifiers(modifiers: Set<Modifier>): Tile
-
-    /**
-     * Creates a copy of this [StyleSet] with the given modifiers added.
-     */
-    override fun withAddedModifiers(vararg modifiers: Modifier): Tile =
-            withAddedModifiers(modifiers.toSet())
-
-    /**
-     * Creates a copy of this [StyleSet] with the given modifiers removed.
-     */
-    override fun withRemovedModifiers(modifiers: Set<Modifier>): Tile
-
-    /**
-     * Creates a copy of this [StyleSet] with the given modifiers removed.
-     */
-    override fun withRemovedModifiers(vararg modifiers: Modifier): Tile =
-            withRemovedModifiers(modifiers.toSet())
-
-    /**
-     * Creates a copy of this [StyleSet] with no modifiers.
-     */
-    override fun withNoModifiers(): Tile
-
     /**
      * Returns this [Tile] as a [CharacterTile] if possible.
      */
-    fun asCharacterTile() = Maybe.ofNullable(this as? CharacterTile)
+    fun asCharacterTile(): Maybe<CharacterTile>
 
     /**
      * Returns this [Tile] as an [ImageTile] if possible.
      */
-    fun asImageTile() = Maybe.ofNullable(this as? ImageTile)
+    fun asImageTile(): Maybe<ImageTile>
 
     /**
      * Returns this [Tile] as a [GraphicTile] if possible.
      */
-    fun asGraphicTile() = Maybe.ofNullable(this as? GraphicTile)
+    fun asGraphicTile(): Maybe<GraphicTile>
 
-    fun isOpaque(): Boolean = foregroundColor.isOpaque().and(
-            backgroundColor.isOpaque())
+    fun isOpaque(): Boolean
 
-    fun isUnderlined(): Boolean = modifiers.contains(Underline)
+    fun isUnderlined(): Boolean
 
-    fun isCrossedOut(): Boolean = modifiers.contains(CrossedOut)
+    fun isCrossedOut(): Boolean
 
-    fun isBlinking(): Boolean = modifiers.contains(Blink)
+    fun isBlinking(): Boolean
 
-    fun isVerticalFlipped(): Boolean = modifiers.contains(VerticalFlip)
+    fun isVerticalFlipped(): Boolean
 
-    fun isHorizontalFlipped(): Boolean = modifiers.contains(HorizontalFlip)
+    fun isHorizontalFlipped(): Boolean
 
-    fun hasBorder(): Boolean = modifiers.any { it is Border }
+    fun hasBorder(): Boolean
 
-    fun fetchBorderData(): Set<Border> = modifiers
-            .asSequence()
-            .filter { it is Border }
-            .map { it as Border }
-            .toSet()
+    fun fetchBorderData(): Set<Border>
 
-    fun isNotEmpty(): Boolean = this !== empty()
+    /**
+     * Tells whether this [Tile] **is** an empty [Tile]
+     * (it is the [Tile.empty] instance).
+     */
+    fun isEmpty(): Boolean
+
+    /**
+     * Tells whether this [Tile] **is not** an empty [Tile]
+     * (it is not the [Tile.empty] instance).
+     */
+    fun isNotEmpty(): Boolean
 
     companion object {
 
@@ -147,7 +112,7 @@ interface Tile : Drawable, Cacheable, StyleSet {
         fun empty(): CharacterTile = EMPTY_CHARACTER_TILE
 
         /**
-         * Creates a new [Tile].
+         * Creates a new [CharacterTile].
          */
         fun createCharacterTile(character: Char, style: StyleSet): CharacterTile {
             return DefaultCharacterTile(
@@ -155,11 +120,22 @@ interface Tile : Drawable, Cacheable, StyleSet {
                     styleSet = style)
         }
 
-        fun createImageTile(name: String, tileset: TilesetResource, style: StyleSet): ImageTile {
+        /**
+         * Creates a new [ImageTile].
+         */
+        fun createImageTile(name: String, tileset: TilesetResource): ImageTile {
             return DefaultImageTile(
                     tileset = tileset,
+                    name = name)
+        }
+
+        /**
+         * Creates a new [GraphicTile].
+         */
+        fun createGraphicTile(name: String, tags: Set<String>): GraphicTile {
+            return DefaultGraphicTile(
                     name = name,
-                    style = style)
+                    tags = tags)
         }
 
         private val DEFAULT_CHARACTER_TILE: CharacterTile = DefaultCharacterTile(

@@ -1,15 +1,15 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.GridPosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.internal.graphics.DefaultLayer
 import java.util.*
 
 fun main(args: Array<String>) {
@@ -19,14 +19,14 @@ fun main(args: Array<String>) {
     val tileset = BuiltInCP437TilesetResource.WANDERLUST_16X16
 
     val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
-            .defaultSize(size)
-            .defaultTileset(tileset)
-            .debugMode(true)
+            .withSize(size)
+            .withDefaultTileset(tileset)
+            .withDebugMode(true)
             .build())
 
     val random = Random()
-    val terminalWidth = size.xLength
-    val terminalHeight = size.yLength
+    val terminalWidth = size.width
+    val terminalHeight = size.height
     val layerCount = 20
     val layerWidth = 20
     val layerHeight = 10
@@ -36,29 +36,30 @@ fun main(args: Array<String>) {
     val layers = (0..layerCount).map {
 
         val imageLayer = DrawSurfaces.tileGraphicsBuilder()
-                .size(layerSize)
-                .tileset(tileset)
+                .withSize(layerSize)
+                .withTileset(tileset)
                 .build()
         layerSize.fetchPositions().forEach {
             imageLayer.setTileAt(it, filler)
         }
 
-        val layer = DefaultLayer(
-                currentPosition = Position.create(
+        val layer = LayerBuilder.newBuilder()
+                .withOffset(Position.create(
                         x = random.nextInt(terminalWidth - layerWidth),
-                        y = random.nextInt(terminalHeight - layerHeight)),
-                backend = imageLayer)
+                        y = random.nextInt(terminalHeight - layerHeight)))
+                .withTileGraphics(imageLayer)
+                .build()
 
         tileGrid.pushLayer(layer)
         layer
     }
 
     val tiles = listOf(
-            Tiles.newBuilder().character('a').styleSet(StyleSet.create(
+            Tiles.newBuilder().withCharacter('a').withStyleSet(StyleSet.create(
                     foregroundColor = ANSITileColor.YELLOW,
                     backgroundColor = ANSITileColor.BLUE))
                     .buildCharacterTile(),
-            Tiles.newBuilder().character('b').styleSet(StyleSet.create(
+            Tiles.newBuilder().withCharacter('b').withStyleSet(StyleSet.create(
                     foregroundColor = ANSITileColor.GREEN,
                     backgroundColor = ANSITileColor.RED))
                     .buildCharacterTile())
@@ -78,8 +79,8 @@ fun main(args: Array<String>) {
 
 
 private fun fillGrid(tileGrid: TileGrid, tile: Tile) {
-    (0..tileGrid.size.yLength).forEach { y ->
-        (0..tileGrid.size.xLength).forEach { x ->
+    (0..tileGrid.size.height).forEach { y ->
+        (0..tileGrid.size.width).forEach { x ->
             tileGrid.setTileAt(GridPosition(x, y), tile)
         }
     }

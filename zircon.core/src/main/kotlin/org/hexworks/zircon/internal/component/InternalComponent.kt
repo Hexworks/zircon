@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.component
 
-import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.listener.InputListener
@@ -18,15 +18,28 @@ import org.hexworks.zircon.internal.behavior.Focusable
  * a clean API for [Component]s but enables Zircon and the developers of custom [Component]s
  * to interact with them in a more meaningful manner.
  */
-interface InternalComponent : Component, Drawable, Focusable, InputListener, KeyStrokeListener, MouseListener {
+interface InternalComponent : Component, Focusable, InputListener, KeyStrokeListener, MouseListener {
 
     /**
      * The [org.hexworks.zircon.api.graphics.TileGraphics] which this
      * component uses for drawing.
      */
-    val tileGraphics: TileGraphics
+    val graphics: TileGraphics
 
     override fun isAttached(): Boolean = fetchParent().isPresent
+
+    /**
+     * Attaches this [Component] to the given parent [Container].
+     * Note that if this component is already attached to a [Container]
+     * it will be removed from that one.
+     */
+    fun attachTo(parent: Container)
+
+    override fun detach() {
+        fetchParent().map {
+            it.removeComponent(this)
+        }
+    }
 
     /**
      * Returns the innermost [InternalComponent] for a given [Position].
@@ -44,21 +57,20 @@ interface InternalComponent : Component, Drawable, Focusable, InputListener, Key
     fun fetchParent(): Maybe<Container>
 
     /**
-     * Attaches this [Component] to the given parent [Container].
-     * Note that if this component is already attached to a [Container]
-     * it will be removed from that one.
-     */
-    fun attachTo(parent: Container)
-
-    /**
      * Renders this component to the underlying [TileGraphics].
      */
     fun render()
 
-    override fun removeFromParent() {
-        fetchParent().map {
-            it.removeComponent(this)
-        }
-    }
+    /**
+     * Returns the this [Component] and its children (if any)
+     * flattened into an [Iterable] of [Layer]s.
+     */
+    fun toFlattenedLayers(): Iterable<Layer>
+
+    /**
+     * Returns the this [Component] and its children (if any)
+     * flattened into an [Iterable] of [InternalComponent]s.
+     */
+    fun toFlattenedComponents(): Iterable<InternalComponent>
 
 }

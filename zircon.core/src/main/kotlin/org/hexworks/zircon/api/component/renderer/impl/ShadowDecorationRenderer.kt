@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderConte
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.SubTileGraphics
+import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.shape.LineFactory
 
@@ -17,23 +17,23 @@ class ShadowDecorationRenderer(shadowChar: Char = DEFAULT_SHADOW_CHAR) : Compone
     override val occupiedSize = Size.create(1, 1)
 
     private val shadowTile = TileBuilder.newBuilder()
-            .backgroundColor(TileColor.transparent())
-            .foregroundColor(TileColor.create(100, 100, 100))
-            .character(shadowChar)
+            .withBackgroundColor(TileColor.transparent())
+            .withForegroundColor(TileColor.create(100, 100, 100))
+            .withCharacter(shadowChar)
             .build()
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
         val graphicsSize = tileGraphics.size
         LineFactory.buildLine(
                 fromPoint = Position.create(1, 0),
-                toPoint = Position.create(graphicsSize.xLength - 1, 0))
+                toPoint = Position.create(graphicsSize.width - 1, 0))
                 .toTileGraphics(shadowTile, tileGraphics.currentTileset())
-                .drawOnto(tileGraphics, Position.create(1, graphicsSize.yLength - 1))
+                .drawOnto(tileGraphics, Position.create(1, graphicsSize.height - 1))
         LineFactory.buildLine(
                 fromPoint = Position.create(0, 1),
-                toPoint = Position.create(0, graphicsSize.yLength - 1))
+                toPoint = Position.create(0, graphicsSize.height - 1))
                 .toTileGraphics(shadowTile, tileGraphics.currentTileset())
-                .drawOnto(tileGraphics, Position.create(graphicsSize.xLength - 1, 1))
+                .drawOnto(tileGraphics, Position.create(graphicsSize.width - 1, 1))
     }
 
     companion object {

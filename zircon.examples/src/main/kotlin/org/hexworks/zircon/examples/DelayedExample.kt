@@ -13,9 +13,9 @@ object DelayedExample {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(tileset)
-                .defaultSize(Sizes.create(50, 10))
-                .debugMode(true)
+                .withDefaultTileset(tileset)
+                .withSize(Sizes.create(50, 10))
+                .withDebugMode(true)
                 .build())
 
         val text = "This text is typed like on a typewriter"

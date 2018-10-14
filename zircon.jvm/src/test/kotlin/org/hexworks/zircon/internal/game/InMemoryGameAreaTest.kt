@@ -5,6 +5,8 @@ import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.impl.Position3D
+import org.hexworks.zircon.api.data.impl.Size3D
 import org.junit.Before
 import org.junit.Test
 
@@ -16,7 +18,7 @@ class InMemoryGameAreaTest {
     fun setUp() {
         target = InMemoryGameArea(HUGE_SIZE, 3)
         POSITIONS_IN_ORDER.shuffled().forEach {
-            target.setBlockAt(it, BLOCK.position(it).build())
+            target.setBlockAt(it, BLOCK.withPosition(it).build())
         }
     }
 
@@ -53,17 +55,17 @@ class InMemoryGameAreaTest {
     @Test
     fun shouldProperlyFetchBlockAtPosition() {
         assertThat(target.fetchBlockAt(LEVEL_7_POS_0).get())
-                .isEqualTo(BlockBuilder.create().position(LEVEL_7_POS_0).layers(BLOCK_LAYERS    ).build())
+                .isEqualTo(BlockBuilder.create().withPosition(LEVEL_7_POS_0).withLayers(BLOCK_LAYERS    ).build())
 
     }
 
     @Test
     fun shouldProperlySetBlockAtPosition() {
-        target.setBlockAt(EMPTY_POSITION, OTHER_BLOCK.position(EMPTY_POSITION).build())
+        target.setBlockAt(EMPTY_POSITION, OTHER_BLOCK.withPosition(EMPTY_POSITION).build())
         assertThat(target.fetchBlockAt(EMPTY_POSITION).get())
                 .isEqualTo(BlockBuilder.create()
-                        .position(EMPTY_POSITION)
-                        .layers(OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER)
+                        .withPosition(EMPTY_POSITION)
+                        .withLayers(OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER)
                         .build())
 
     }
@@ -76,7 +78,7 @@ class InMemoryGameAreaTest {
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotBeAbleToSetBlockAtPositionWhichIsNotWithinSize() {
         val badPos = Position3D.create(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
-        target.setBlockAt(badPos, BLOCK.position(badPos).build())
+        target.setBlockAt(badPos, BLOCK.withPosition(badPos).build())
     }
 
     @Test
@@ -110,11 +112,11 @@ class InMemoryGameAreaTest {
 
         val BLOCK_LAYERS = listOf(BOTTOM_CHAR, MID_CHAR, TOP_CHAR)
         val BLOCK = BlockBuilder.create()
-                .layers(BLOCK_LAYERS)
+                .withLayers(BLOCK_LAYERS)
 
-        val OTHER_BLOCK_LAYER = TileBuilder.newBuilder().backgroundColor(ANSITileColor.RED).build()
+        val OTHER_BLOCK_LAYER = TileBuilder.newBuilder().withBackgroundColor(ANSITileColor.RED).build()
         val OTHER_BLOCK = BlockBuilder.create()
-                .layers(OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER)
+                .withLayers(OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER)
 
         val EMPTY_POSITION = Position3D.create(323, 123, 654)
 

@@ -1,25 +1,24 @@
-package org.hexworks.zircon.api.data
+package org.hexworks.zircon.api.data.base
 
-import org.hexworks.zircon.api.behavior.DrawSurface
+import org.hexworks.zircon.api.graphics.DrawSurface
+import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 import org.hexworks.zircon.api.util.Maybe
 
+/**
+ * Base class for all [Tile] implementations.
+ */
 abstract class BaseTile : Tile {
 
-    /**
-     * Returns this [BaseTile] as a [CharacterTile] if possible.
-     */
+    override fun drawOnto(surface: DrawSurface, position: Position) {
+        surface.setTileAt(position, this)
+    }
+
     override fun asCharacterTile() = Maybe.ofNullable(this as? CharacterTile)
 
-    /**
-     * Returns this [BaseTile] as an [ImageTile] if possible.
-     */
     override fun asImageTile() = Maybe.ofNullable(this as? ImageTile)
 
-    /**
-     * Returns this [BaseTile] as a [GraphicTile] if possible.
-     */
     override fun asGraphicTile() = Maybe.ofNullable(this as? GraphicTile)
 
     override fun isOpaque(): Boolean = foregroundColor.isOpaque().and(
@@ -43,10 +42,9 @@ abstract class BaseTile : Tile {
             .map { it as Border }
             .toSet()
 
+    override fun isEmpty(): Boolean = this === Tile.empty()
+
     override fun isNotEmpty(): Boolean = this !== Tile.empty()
 
-    override fun drawOnto(surface: DrawSurface, position: Position) {
-        surface.setTileAt(position, this)
-    }
 
 }

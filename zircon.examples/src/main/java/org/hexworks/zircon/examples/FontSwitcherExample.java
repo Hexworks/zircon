@@ -26,9 +26,9 @@ public class FontSwitcherExample {
     public static void main(String[] args) {
 
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .defaultTileset(BuiltInCP437TilesetResource.ADU_DHABI_16X16)
-                .defaultSize(SIZE)
-                .debugMode(true)
+                .withDefaultTileset(BuiltInCP437TilesetResource.ADU_DHABI_16X16)
+                .withSize(SIZE)
+                .withDebugMode(true)
                 .build());
 
         final TileGrid tileGrid = app.getTileGrid();
@@ -46,14 +46,14 @@ public class FontSwitcherExample {
 
         final Random random = new Random();
 
-        refreshText(tileGrid, switchFont, Positions.defaultPosition());
+        refreshText(tileGrid, switchFont, Positions.zero());
         refreshLayer(tileGrid, switchLayer, random);
 
         tileGrid.onKeyStroke(keyStroke -> {
             if (keyStroke.inputTypeIs(InputType.ArrowRight)) {
                 tileGrid.useTileset(TILESETS.get(random.nextInt(TILESETS.size())));
                 // this is needed because grid can't be forced to redraw
-                refreshText(tileGrid, switchFont, Positions.defaultPosition());
+                refreshText(tileGrid, switchFont, Positions.zero());
             }
             if (keyStroke.inputTypeIs(InputType.ArrowLeft)) {
                 refreshLayer(tileGrid, switchLayer, random);
@@ -71,9 +71,9 @@ public class FontSwitcherExample {
     private static void refreshLayer(TileGrid tileGrid, String text, Random random) {
         tileGrid.getLayers().forEach(tileGrid::removeLayer);
         Layer layer = Layers.newBuilder()
-                .tileset(TILESETS.get(random.nextInt(TILESETS.size())))
-                .offset(Positions.create(0, 1))
-                .size(Sizes.create(text.length(), 1))
+                .withTileset(TILESETS.get(random.nextInt(TILESETS.size())))
+                .withOffset(Positions.create(0, 1))
+                .withSize(Sizes.create(text.length(), 1))
                 .build();
 //        layer.putText(text, Positions.defaultPosition());
         tileGrid.pushLayer(layer);

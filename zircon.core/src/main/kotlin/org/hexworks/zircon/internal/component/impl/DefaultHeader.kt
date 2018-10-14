@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.util.Maybe
 
 class DefaultHeader(componentMetadata: ComponentMetadata,
                     override val text: String,
-                    private val renderingStrategy: ComponentRenderingStrategy<Header>)
+                    private val renderingStrategy: ComponentRenderingStrategy<DefaultHeader>)
     : Header, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
@@ -31,9 +31,9 @@ class DefaultHeader(componentMetadata: ComponentMetadata,
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.primaryForegroundColor)
-                        .backgroundColor(TileColor.transparent())
+                .withDefaultStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.primaryForegroundColor)
+                        .withBackgroundColor(TileColor.transparent())
                         .build())
                 .build().also {
                     componentStyleSet = it
@@ -42,6 +42,6 @@ class DefaultHeader(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics)
+        renderingStrategy.render(this, graphics)
     }
 }

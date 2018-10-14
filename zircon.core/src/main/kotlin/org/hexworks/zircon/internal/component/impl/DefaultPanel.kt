@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 
 open class DefaultPanel(componentMetadata: ComponentMetadata,
                         override val title: String,
-                        private val renderingStrategy: ComponentRenderingStrategy<Panel>)
+                        private val renderingStrategy: ComponentRenderingStrategy<DefaultPanel>)
     : Panel, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
@@ -21,9 +21,9 @@ open class DefaultPanel(componentMetadata: ComponentMetadata,
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor)
-                        .backgroundColor(colorTheme.primaryBackgroundColor)
+                .withDefaultStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.secondaryForegroundColor)
+                        .withBackgroundColor(colorTheme.primaryBackgroundColor)
                         .build())
                 .build().also { css ->
                     componentStyleSet = css
@@ -35,6 +35,6 @@ open class DefaultPanel(componentMetadata: ComponentMetadata,
     }
 
     final override fun render() {
-        renderingStrategy.render(this, tileGraphics)
+        renderingStrategy.render(this, graphics)
     }
 }

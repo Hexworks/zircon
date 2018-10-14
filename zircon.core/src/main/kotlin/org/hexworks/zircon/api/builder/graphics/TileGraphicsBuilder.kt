@@ -23,11 +23,11 @@ data class TileGraphicsBuilder(
         private var style: StyleSet = StyleSet.defaultStyle(),
         private val tiles: MutableMap<Position, Tile> = mutableMapOf()) : Builder<TileGraphics> {
 
-    fun tileset(tileset: TilesetResource) = also {
+    fun withTileset(tileset: TilesetResource) = also {
         this.tileset = tileset
     }
 
-    fun style(style: StyleSet) = also {
+    fun withStyle(style: StyleSet) = also {
         this.style = style
     }
 
@@ -35,14 +35,14 @@ data class TileGraphicsBuilder(
      * Sets the size for the new [TileGraphics].
      * Default is 1x1.
      */
-    fun size(size: Size) = also {
+    fun withSize(size: Size) = also {
         this.size = size
     }
 
     /**
      * Adds a [Tile] at the given [Position].
      */
-    fun tile(position: Position, tile: Tile) = also {
+    fun withTile(position: Position, tile: Tile) = also {
         require(size.containsPosition(position)) {
             "The given character's position ($position) is out create bounds for text image size: $size."
         }

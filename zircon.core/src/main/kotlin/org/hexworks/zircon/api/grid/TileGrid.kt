@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.grid
 
 import org.hexworks.zircon.api.animation.AnimationHandler
 import org.hexworks.zircon.api.behavior.*
+import org.hexworks.zircon.api.graphics.DrawSurface
 
 /**
  * This is the main grid interface, at the lowest level supported. You can write your own

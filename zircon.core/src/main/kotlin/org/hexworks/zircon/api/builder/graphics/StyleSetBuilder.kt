@@ -23,19 +23,19 @@ data class StyleSetBuilder(
             modifiers = modifiers.toSet())
 
 
-    fun foregroundColor(foregroundColor: TileColor) = also {
+    fun withForegroundColor(foregroundColor: TileColor) = also {
         this.foregroundColor = foregroundColor
     }
 
-    fun backgroundColor(backgroundColor: TileColor) = also {
+    fun withBackgroundColor(backgroundColor: TileColor) = also {
         this.backgroundColor = backgroundColor
     }
 
-    fun modifiers(modifiers: Set<Modifier>) = also {
+    fun withModifiers(modifiers: Set<Modifier>) = also {
         this.modifiers = modifiers.toSet()
     }
 
-    fun modifiers(vararg modifiers: Modifier) = also {
+    fun withModifiers(vararg modifiers: Modifier) = also {
         this.modifiers = modifiers.toSet()
     }
 

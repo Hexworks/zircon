@@ -25,19 +25,19 @@ data class RayShadeBuilder(var opacity: Float = 1.0f,
 
     override fun createCopy() = copy()
 
-    fun opacity(opacity: Float) = also {
+    fun withOpacity(opacity: Float) = also {
         this.opacity = opacity
     }
 
-    fun threshold(threshold: Float) = also {
+    fun withThreshold(threshold: Float) = also {
         this.threshold = threshold
     }
 
-    fun strength(strength: Float) = also {
+    fun withStrength(strength: Float) = also {
         this.strength = strength
     }
 
-    fun raysOnly(raysOnly: Boolean) = also {
+    fun withRaysOnly(raysOnly: Boolean) = also {
         this.raysOnly = raysOnly
     }
 

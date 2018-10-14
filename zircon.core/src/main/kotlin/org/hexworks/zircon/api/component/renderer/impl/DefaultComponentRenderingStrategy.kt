@@ -4,11 +4,12 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.renderer.*
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
 
 class DefaultComponentRenderingStrategy<T : Component>(
-        override val decorationRenderers: List<ComponentDecorationRenderer>,
         override val componentRenderer: ComponentRenderer<T>,
+        override val decorationRenderers: List<ComponentDecorationRenderer> = listOf(),
         override val componentPostProcessors: List<ComponentPostProcessor<T>> = listOf()) : ComponentRenderingStrategy<T> {
 
     override fun render(component: T, graphics: TileGraphics) {
@@ -32,4 +33,13 @@ class DefaultComponentRenderingStrategy<T : Component>(
         }
 
     }
+
+    override fun calculateContentPosition(): Position = decorationRenderers.asSequence().map {
+        it.offset
+    }.fold(Position.defaultPosition(), Position::plus)
+
+    override fun calculateContentSize(componentSize: Size): Size = componentSize -
+            decorationRenderers.asSequence().map {
+                it.occupiedSize
+            }.fold(Size.zero(), Size::plus)
 }

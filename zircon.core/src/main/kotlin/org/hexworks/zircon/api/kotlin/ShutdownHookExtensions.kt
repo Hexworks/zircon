@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.util.Runnable
  * Extension function which adapts [ShutdownHook.onShutdown] to
  * Kotlin idioms (eg: lambdas).
  */
-fun ShutdownHook.onShutdown(listener: () -> Unit) = onShutdown(object : Runnable {
+inline fun ShutdownHook.onShutdown(crossinline listener: () -> Unit) = onShutdown(object : Runnable {
     override fun run() {
         listener.invoke()
     }

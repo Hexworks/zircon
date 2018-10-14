@@ -15,32 +15,32 @@ public class CreatingATileGrid {
 
         TileGrid tileGrid = SwingApplications.startTileGrid(
                 AppConfigs.newConfig()
-                        .defaultSize(Sizes.create(10, 10))
-                        .defaultTileset(CP437TilesetResources.rexPaint16x16())
+                        .withSize(Sizes.create(10, 10))
+                        .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
                         .build());
 
         tileGrid.setTileAt(
                 Positions.create(2, 3),
                 Tiles.newBuilder()
-                        .backgroundColor(ANSITileColor.CYAN)
-                        .foregroundColor(ANSITileColor.WHITE)
-                        .character('x')
+                        .withBackgroundColor(ANSITileColor.CYAN)
+                        .withForegroundColor(ANSITileColor.WHITE)
+                        .withCharacter('x')
                         .build());
 
         tileGrid.setTileAt(
                 Positions.create(3, 4),
                 Tiles.newBuilder()
-                        .backgroundColor(ANSITileColor.RED)
-                        .foregroundColor(ANSITileColor.GREEN)
-                        .character('y')
+                        .withBackgroundColor(ANSITileColor.RED)
+                        .withForegroundColor(ANSITileColor.GREEN)
+                        .withCharacter('y')
                         .build());
 
         tileGrid.setTileAt(
                 Positions.create(4, 5),
                 Tiles.newBuilder()
-                        .backgroundColor(ANSITileColor.BLUE)
-                        .foregroundColor(ANSITileColor.MAGENTA)
-                        .character('z')
+                        .withBackgroundColor(ANSITileColor.BLUE)
+                        .withForegroundColor(ANSITileColor.MAGENTA)
+                        .withCharacter('z')
                         .build());
     }
 }

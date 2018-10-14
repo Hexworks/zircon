@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.component.data
 
 /**
- * Represents the states a [Component] can be in.
+ * Represents the states a [org.hexworks.zircon.api.component.Component] can be in.
  */
 enum class ComponentState {
 

@@ -2,11 +2,9 @@ package org.hexworks.zircon.api.builder.grid
 
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
@@ -19,7 +17,7 @@ import org.hexworks.zircon.internal.screen.TileGridScreen
  * - default `tileset` is `WANDERLUST` (cp437)
  */
 open class TileGridBuilder(
-        private var size: Size = Size.defaultTerminalSize(),
+        private var size: Size = Size.defaultGridSize(),
         private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
 ) : Builder<TileGrid> {
 
@@ -37,14 +35,14 @@ open class TileGridBuilder(
      * Sets the initial grid [Size].
      * Default is 80x24.
      */
-    fun size(size: Size) = also {
+    fun withSize(size: Size) = also {
         this.size = size
     }
 
     /**
      * Sets a tileset for this [TileGrid].
      */
-    fun tileset(tileset: TilesetResource) = also {
+    fun withTileset(tileset: TilesetResource) = also {
         this.tileset = tileset
     }
 

@@ -14,8 +14,8 @@ object HeadersExample {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(tileset)
-                .defaultSize(Sizes.create(60, 30))
+                .withDefaultTileset(tileset)
+                .withSize(Sizes.create(60, 30))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
@@ -28,14 +28,14 @@ object HeadersExample {
         screen.addComponent(panel)
 
         val simpleHeader = Components.header()
-                .text("Some header")
+                .withText("Some header")
                 .withPosition(Positions.create(2, 2))
 
         screen.addComponent(simpleHeader)
         panel.addComponent(simpleHeader)
 
         val decoratedLabel = Components.label()
-                .text("Some label")
+                .withText("Some label")
                 .withBoxType(BoxType.DOUBLE)
                 .wrapWithShadow(true)
                 .wrapWithBox(true)
@@ -45,7 +45,7 @@ object HeadersExample {
         panel.addComponent(decoratedLabel)
 
         val shadowedHeader = Components.header()
-                .text("Some header")
+                .withText("Some header")
                 .wrapWithShadow(true)
                 .withPosition(Positions.create(2, 9))
 
@@ -53,7 +53,7 @@ object HeadersExample {
         panel.addComponent(shadowedHeader)
 
         val tooLongHeader = Components.header()
-                .text("Too long header")
+                .withText("Too long header")
                 .withSize(Sizes.create(10, 1))
                 .withPosition(Positions.create(2, 13))
 
@@ -61,7 +61,7 @@ object HeadersExample {
         panel.addComponent(tooLongHeader)
 
         val overTheTopHeader = Components.header()
-                .text("WTF header")
+                .withText("WTF header")
                 .withDecorationRenderers(
                         ShadowDecorationRenderer(),
                         BoxDecorationRenderer(BoxType.DOUBLE),

@@ -14,8 +14,8 @@ object PanelsExample {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(tileset)
-                .defaultSize(Sizes.create(60, 30))
+                .withDefaultTileset(tileset)
+                .withSize(Sizes.create(60, 30))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)

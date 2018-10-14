@@ -18,15 +18,14 @@ class DefaultLayerableTest {
     @Before
     fun setUp() {
         tileset = FONT
-        target = DefaultLayerable(
-                size = SIZE)
+        target = DefaultLayerable()
     }
 
     @Test
     fun shouldContainLayerWhenLayerIsAdded() {
         val layer = LayerBuilder.newBuilder()
-                .size(Size.one())
-                .offset(Position.topLeftCorner())
+                .withSize(Size.one())
+                .withOffset(Position.zero())
                 .build()
 
         target.pushLayer(layer)
@@ -39,8 +38,8 @@ class DefaultLayerableTest {
     @Test
     fun shouldNotContainLayerWhenLayerIsAddedThenRemoved() {
         val layer = LayerBuilder.newBuilder()
-                .size(Size.one())
-                .offset(Position.topLeftCorner())
+                .withSize(Size.one())
+                .withOffset(Position.zero())
                 .build()
 
         target.pushLayer(layer)
@@ -54,8 +53,8 @@ class DefaultLayerableTest {
     @Test
     fun shouldNotContainLayerWhenLayerIsAddedThenPopped() {
         val layer = LayerBuilder.newBuilder()
-                .size(Size.one())
-                .offset(Position.topLeftCorner())
+                .withSize(Size.one())
+                .withOffset(Position.zero())
                 .build()
 
         target.pushLayer(layer)
@@ -70,20 +69,20 @@ class DefaultLayerableTest {
     @Test
     fun shouldContainBottomLayerOnlyWhenTwoLayersAreAddedAndTopDoesNotIntersectCoordinate() {
         val expectedChar = TileBuilder.newBuilder()
-                .character('1')
+                .withCharacter('1')
                 .build()
 
         val offset1x1layer = LayerBuilder.newBuilder()
-                .size(Size.one())
-                .offset(Position.offset1x1())
+                .withSize(Size.one())
+                .withOffset(Position.offset1x1())
                 .build()
                 .fill(expectedChar)
         val offset2x2layer = LayerBuilder.newBuilder()
-                .size(Size.one())
-                .offset(Position.create(2, 2))
+                .withSize(Size.one())
+                .withOffset(Position.create(2, 2))
                 .build()
                 .fill(TileBuilder.newBuilder()
-                        .character('2')
+                        .withCharacter('2')
                         .build())
 
 
@@ -101,18 +100,18 @@ class DefaultLayerableTest {
     @Test
     fun shouldContainAllLayersWhenTwoLayersAreAddedAndTheyIntersect() {
         val expectedChar = TileBuilder.newBuilder()
-                .character('1')
+                .withCharacter('1')
                 .build()
 
         val offset1x1layer = LayerBuilder.newBuilder()
-                .size(Size.one())
-                .offset(Position.offset1x1())
+                .withSize(Size.one())
+                .withOffset(Position.offset1x1())
                 .build()
                 .fill(expectedChar)
 
         val offset2x2layer = LayerBuilder.newBuilder()
-                .size(Size.one())
-                .offset(Position.offset1x1())
+                .withSize(Size.one())
+                .withOffset(Position.offset1x1())
                 .build()
                 .fill(expectedChar)
 
@@ -128,7 +127,6 @@ class DefaultLayerableTest {
     }
 
     companion object {
-        val SIZE = Size.create(10, 10)
         val FONT = BuiltInCP437TilesetResource.WANDERLUST_16X16
     }
 }

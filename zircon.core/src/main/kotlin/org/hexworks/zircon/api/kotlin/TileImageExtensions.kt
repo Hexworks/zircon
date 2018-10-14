@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.util.TileTransformer
  * Extension function which adapts [TileImage.transform] to
  * Kotlin idioms (eg: lambdas).
  */
-fun TileImage.transform(fn: (Tile) -> Tile): TileImage {
+inline fun TileImage.transform(crossinline fn: (Tile) -> Tile): TileImage {
     return transform(object : TileTransformer {
         override fun transform(tc: Tile): Tile {
             return fn(tc)

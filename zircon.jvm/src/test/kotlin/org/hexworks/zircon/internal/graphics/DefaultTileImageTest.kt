@@ -23,14 +23,14 @@ class DefaultTileImageTest {
     fun shouldProperlyGetExistingTile() {
 
         val other = TileImageBuilder.newBuilder()
-                .filler(Tile.defaultTile())
-                .size(Sizes.create(3, 3))
+                .withFiller(Tile.defaultTile())
+                .withSize(Sizes.create(3, 3))
                 .build()
 
         TileImageBuilder.newBuilder()
-                .filler(Tiles.defaultTile())
-                .size(Sizes.create(5, 5))
-                .tileset(CP437TilesetResources.aduDhabi16x16())
+                .withFiller(Tiles.defaultTile())
+                .withSize(Sizes.create(5, 5))
+                .withTileset(CP437TilesetResources.aduDhabi16x16())
                 .build()
                 .withTileAt(Positions.create(1, 1), Tiles.defaultTile().withCharacter('x'))
                 .combineWith(other, Positions.offset1x1())

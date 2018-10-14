@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.builder.game
 
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.config.RuntimeConfig
@@ -11,15 +11,16 @@ import org.hexworks.zircon.internal.game.InMemoryGameArea
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 data class GameAreaBuilder(private var size: Size3D = Size3D.one(),
                            private var layersPerBlock: Int = -1,
                            private var levels: MutableMap<Int, MutableList<TileGraphics>> = mutableMapOf()) : Builder<GameArea> {
 
-    fun layersPerBlock(layersPerBlock: Int) = also {
+    fun withLayersPerBlock(layersPerBlock: Int) = also {
         this.layersPerBlock = layersPerBlock
     }
 
-    fun size(size: Size3D) = also {
+    fun withSize(size: Size3D) = also {
         this.size = size
         levels = mutableMapOf()
         (0 until size.zLength).forEach { z ->
@@ -27,9 +28,9 @@ data class GameAreaBuilder(private var size: Size3D = Size3D.one(),
         }
     }
 
-    fun setLevel(level: Int, vararg images: TileGraphics) = setLevel(level, images.toList())
+    fun withLevel(level: Int, vararg images: TileGraphics) = withLevel(level, images.toList())
 
-    fun setLevel(level: Int, images: List<TileGraphics>) = also {
+    fun withLevel(level: Int, images: List<TileGraphics>) = also {
         require(level in 0.rangeTo(size.zLength)) {
             "Level '$level' is out create bounds (0 - ${size.zLength})!"
         }

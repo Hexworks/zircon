@@ -11,9 +11,9 @@ class BorderTest {
 
     @Test
     fun addingTwoBordersShouldCombineTheirBorderPositions() {
-        val border = BorderBuilder.newBuilder().borderPositions(BOTTOM).build()
-        val result: Border = border + BorderBuilder.newBuilder().borderType(BorderType.DASHED).borderPositions(RIGHT).build()
-        val expected: Border = BorderBuilder.newBuilder().borderPositions(BOTTOM, RIGHT).build()
+        val border = BorderBuilder.newBuilder().withBorderPositions(BOTTOM).build()
+        val result: Border = border + BorderBuilder.newBuilder().withBorderType(BorderType.DASHED).withBorderPositions(RIGHT).build()
+        val expected: Border = BorderBuilder.newBuilder().withBorderPositions(BOTTOM, RIGHT).build()
 
         Assertions.assertThat(result).isEqualTo(expected)
     }
@@ -21,8 +21,8 @@ class BorderTest {
     @Test
     fun shouldReturnProperCacheKeyForBorder() {
         val result = BorderBuilder.newBuilder()
-                .borderPositions(BOTTOM, TOP)
-                .borderType(DASHED)
+                .withBorderPositions(BOTTOM, TOP)
+                .withBorderType(DASHED)
                 .build().generateCacheKey()
         assertThat(result).isEqualTo("Modifier.Border(t=DASHED,bp=[BOTTOM,TOP])")
     }

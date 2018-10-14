@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.util.Maybe
 
 class DefaultLabel(componentMetadata: ComponentMetadata,
                    override val text: String,
-                   private val renderingStrategy: ComponentRenderingStrategy<Label>)
+                   private val renderingStrategy: ComponentRenderingStrategy<DefaultLabel>)
     : Label, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
@@ -31,9 +31,9 @@ class DefaultLabel(componentMetadata: ComponentMetadata,
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
-                .defaultStyle(StyleSetBuilder.newBuilder()
-                        .foregroundColor(colorTheme.secondaryForegroundColor)
-                        .backgroundColor(TileColor.transparent())
+                .withDefaultStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.secondaryForegroundColor)
+                        .withBackgroundColor(TileColor.transparent())
                         .build())
                 .build().also {
                     componentStyleSet = it
@@ -42,6 +42,6 @@ class DefaultLabel(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        renderingStrategy.render(this, tileGraphics)
+        renderingStrategy.render(this, graphics)
     }
 }

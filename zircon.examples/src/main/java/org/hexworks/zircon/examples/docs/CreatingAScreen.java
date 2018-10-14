@@ -12,8 +12,8 @@ public class CreatingAScreen {
 
         TileGrid tileGrid = SwingApplications.startTileGrid(
                 AppConfigs.newConfig()
-                        .defaultSize(Sizes.create(20, 8))
-                        .defaultTileset(CP437TilesetResources.wanderlust16x16())
+                        .withSize(Sizes.create(20, 8))
+                        .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
                         .build());
 
         final Screen screen = Screens.createScreenFor(tileGrid);
@@ -21,15 +21,15 @@ public class CreatingAScreen {
         final ColorTheme theme = ColorThemes.adriftInDreams();
 
         final TileGraphics image = DrawSurfaces.tileGraphicsBuilder()
-                .size(tileGrid.getSize())
+                .withSize(tileGrid.getSize())
                 .build()
                 .fill(Tiles.newBuilder()
-                        .foregroundColor(theme.getPrimaryForegroundColor())
-                        .backgroundColor(theme.getPrimaryBackgroundColor())
-                        .character('~')
+                        .withForegroundColor(theme.getPrimaryForegroundColor())
+                        .withBackgroundColor(theme.getPrimaryBackgroundColor())
+                        .withCharacter('~')
                         .build());
 
-        screen.draw(image, Positions.defaultPosition());
+        screen.draw(image, Positions.zero());
 
         screen.display();
     }

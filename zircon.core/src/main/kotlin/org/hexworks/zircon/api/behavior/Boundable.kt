@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.behavior
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
+import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 
 /**
  * Represents an object which has bounds and a position in 2D space.
@@ -13,16 +13,12 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultBoundable
 interface Boundable {
 
     val position: Position
-
     val size: Size
-
     val rect: Rect
-
+    val x: Int
+    val y: Int
     val width: Int
-        get() = size.xLength
-
     val height: Int
-        get() = size.yLength
 
     /**
      * Tells whether this [Boundable] intersects the other `boundable` or not.
@@ -45,7 +41,7 @@ interface Boundable {
     companion object {
 
         fun create(position: Position = Position.defaultPosition(), size: Size): Boundable {
-            return DefaultBoundable(size, position)
+            return DefaultMovable(size, position)
         }
     }
 }

@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.behavior.*
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.event.EventBus
-import org.hexworks.zircon.api.event.Subscription
+import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
@@ -31,7 +31,7 @@ class RectangleTileGrid(
                 size = size,
                 tileset = tileset,
                 styleSet = StyleSet.defaultStyle()),
-        override var layerable: Layerable = DefaultLayerable(size),
+        override var layerable: Layerable = DefaultLayerable(),
         override var animationHandler: InternalAnimationHandler = DefaultAnimationHandler(),
         private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                 cursorSpace = size),
@@ -58,10 +58,10 @@ class RectangleTileGrid(
     override fun putCharacter(c: Char) {
         if (TextUtils.isPrintableCharacter(c)) {
             putTile(TileBuilder.newBuilder()
-                    .character(c)
-                    .foregroundColor(foregroundColor)
-                    .backgroundColor(backgroundColor)
-                    .modifiers(modifiers)
+                    .withCharacter(c)
+                    .withForegroundColor(foregroundColor)
+                    .withBackgroundColor(backgroundColor)
+                    .withModifiers(modifiers)
                     .build())
         }
     }
@@ -93,7 +93,7 @@ class RectangleTileGrid(
 
     override fun clear() {
         backend.clear()
-        layerable = DefaultLayerable(backend.size)
+        layerable = DefaultLayerable()
     }
 
     // note that we need all of the below functions here and can't delegate to the corresponding
@@ -126,18 +126,6 @@ class RectangleTileGrid(
 
     override fun draw(drawable: Drawable, position: Position) {
         backend.draw(drawable, position)
-    }
-
-    override fun intersects(boundable: Boundable): Boolean {
-        return backend.intersects(boundable)
-    }
-
-    override fun containsPosition(position: Position): Boolean {
-        return backend.containsPosition(position)
-    }
-
-    override fun containsBoundable(boundable: Boundable): Boolean {
-        return backend.containsBoundable(boundable)
     }
 
     override fun currentTileset(): TilesetResource {

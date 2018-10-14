@@ -9,69 +9,42 @@ import org.hexworks.zircon.internal.data.DefaultRect
 interface Rect : Boundable {
 
     /**
-     * Tells whether this [Rect] intersects with `boundable` or not.
-     */
-    override fun intersects(boundable: Boundable): Boolean
-
-    /**
-     * Tells whether `position` is within the bounds.
-     */
-    override fun containsPosition(position: Position): Boolean
-
-    /**
-     * Tells whether this bounds contains the `otherBounds`.
-     * A [Rect] contains another if the other boundable's bounds
-     * are within this one's. (If their bounds are the same it is considered
-     * a containment).
-     */
-    override fun containsBoundable(boundable: Boundable): Boolean
-
-    fun x() = position.x
-
-    fun y() = position.y
-
-    fun width() = size.width()
-
-    fun height() = size.height()
-
-    /**
      * The first component (for destructuring) is `x` position.
      */
-    operator fun component1() = x()
+    operator fun component1() = x
 
     /**
      * The second component (for destructuring) is `y` position.
      */
-    operator fun component2() = y()
+    operator fun component2() = y
 
     /**
      * The third component (for destructuring) is `width`.
      */
-    operator fun component3() = width()
+    operator fun component3() = width
 
     /**
      * The fourth component (for destructuring) is `height`.
      */
-    operator fun component4() = height()
+    operator fun component4() = height
 
-    operator fun plus(rect: Rect) = Rect.create(
-            position = position + rect.position,
-            size = size + rect.size)
+    operator fun plus(rect: Rect): Rect
 
-    operator fun minus(rect: Rect) = Rect.create(
-            position = position - rect.position,
-            size = size - rect.size)
+    operator fun minus(rect: Rect): Rect
 
-    fun withPosition(position: Position) = create(position, size)
+    fun withPosition(position: Position): Rect
 
-    fun withSize(size: Size) = create(position, size)
+    fun withSize(size: Size): Rect
 
-    fun withRelativePosition(position: Position) = create(position + position, size)
+    fun withRelativePosition(position: Position): Rect
 
-    fun withRelativeSize(size: Size) = create(position, size + size)
+    fun withRelativeSize(size: Size): Rect
 
     companion object {
 
+        /**
+         * Creates a new [Rect] from the given [Position] and [Size].
+         */
         fun create(position: Position = Position.defaultPosition(), size: Size): Rect {
             return DefaultRect(position, size)
         }

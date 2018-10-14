@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.behavior
 
-import org.hexworks.zircon.api.event.Subscription
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType.*

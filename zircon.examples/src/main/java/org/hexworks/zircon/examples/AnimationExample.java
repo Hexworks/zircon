@@ -21,9 +21,9 @@ public class AnimationExample {
     public static void main(String[] args) {
 
         Screen screen = Screens.createScreenFor(SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .defaultTileset(TILESET)
-                .defaultSize(TERMINAL_SIZE)
-                .debugMode(true)
+                .withDefaultTileset(TILESET)
+                .withSize(TERMINAL_SIZE)
+                .withDebugMode(true)
                 .enableBetaFeatures()
                 .build()));
 
@@ -34,11 +34,11 @@ public class AnimationExample {
                 .build();
 
         panel.addComponent(Components.label()
-                .text("Looped:")
+                .withText("Looped:")
                 .withPosition(LEFT_POS.withRelativeY(-3).withRelativeX(-1))
                 .build());
         panel.addComponent(Components.label()
-                .text("Non-looped:")
+                .withText("Non-looped:")
                 .withPosition(RIGHT_POS.withRelativeY(-3).withRelativeX(-1))
                 .build());
         screen.addComponent(panel);
@@ -49,8 +49,8 @@ public class AnimationExample {
                 AnimationExample.class.getResourceAsStream("/animations/skull.zap"),
                 TILESET);
         AnimationBuilder second = first.createCopy();
-        first.loopCount(0);
-        second.loopCount(1);
+        first.withLoopCount(0);
+        second.withLoopCount(1);
         for (int i = 0; i < first.getTotalFrameCount(); i++) {
             first.addPosition(LEFT_POS);
             second.addPosition(RIGHT_POS);
