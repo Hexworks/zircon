@@ -144,6 +144,19 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
             .withSecondaryBackgroundColor(TileColor.fromString("#485C2B"))
             .build()),
 
+    /**
+     * Taken from
+     * https://www.colourlovers.com/palette/2420454/cyberpunk
+     */
+    CYBERPUNK(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#61D6C4"))
+            .withPrimaryForegroundColor(TileColor.fromString("#71918C"))
+            .withSecondaryForegroundColor(TileColor.fromString("#3D615F"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#25343B"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#212429"))
+            .build()),
+
+    // these are slack themes
 
     AFTERGLOW(ColorThemeBuilder.newBuilder()
             .withAccentColor(TileColor.fromString("#ADBA4E"))
@@ -231,14 +244,6 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
             .withSecondaryForegroundColor(TileColor.fromString("#0492D0"))
             .withPrimaryBackgroundColor(TileColor.fromString("#393218"))
             .withSecondaryBackgroundColor(TileColor.fromString("#000E0F"))
-            .build()),
-
-    CYBERPUNK(ColorThemeBuilder.newBuilder()
-            .withAccentColor(TileColor.fromString("#61D6C4"))
-            .withPrimaryForegroundColor(TileColor.fromString("#71918C"))
-            .withSecondaryForegroundColor(TileColor.fromString("#3D615F"))
-            .withPrimaryBackgroundColor(TileColor.fromString("#25343B"))
-            .withSecondaryBackgroundColor(TileColor.fromString("#212429"))
             .build()),
 
     ZENBURN_VANILLA(ColorThemeBuilder.newBuilder()

@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButtonGroup
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
+import kotlin.jvm.JvmStatic
 
 data class RadioButtonGroupBuilder(
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
@@ -33,6 +34,7 @@ data class RadioButtonGroupBuilder(
 
     companion object {
 
+        @JvmStatic
         fun newBuilder() = RadioButtonGroupBuilder()
     }
 }

@@ -126,7 +126,9 @@ class ComponentStub(
     }
 
     override fun fetchComponentByPosition(position: Position): Maybe<out InternalComponent> {
-        TODO("This operation is unsupported for a Stub")
+        return Maybe.ofNullable(if (rect.containsPosition(position)) {
+            this
+        } else null)
     }
 
     override fun fetchParent(): Maybe<Container> {
@@ -160,5 +162,11 @@ class ComponentStub(
 
     override fun toFlattenedComponents(): Iterable<InternalComponent> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    companion object {
+
+        @JvmStatic
+        fun create(position: Position, size: Size) = ComponentStub(position, size)
     }
 }

@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultPanel
 import org.hexworks.zircon.internal.component.renderer.DefaultPanelRenderer
+import kotlin.jvm.JvmStatic
 
 data class PanelBuilder(
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
@@ -34,6 +35,7 @@ data class PanelBuilder(
 
     companion object {
 
+        @JvmStatic
         fun newBuilder() = PanelBuilder()
     }
 }

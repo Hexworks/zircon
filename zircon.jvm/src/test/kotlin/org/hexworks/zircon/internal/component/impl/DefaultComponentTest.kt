@@ -1,23 +1,29 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.not
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.LabelBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
+import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
+import org.hexworks.zircon.api.input.MouseActionType.*
+import org.hexworks.zircon.api.kotlin.onInput
 import org.hexworks.zircon.api.kotlin.onMousePressed
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -33,6 +39,10 @@ class DefaultComponentTest {
     lateinit var target: DefaultComponent
     lateinit var tileset: TilesetResource
 
+    var rendered = false
+    lateinit var appliedColorTheme: ColorTheme
+
+
     @Before
     fun setUp() {
         tileset = TILESET
@@ -47,11 +57,12 @@ class DefaultComponentTest {
                         componentRenderer = DefaultRadioButtonGroupRenderer())) {
 
             override fun render() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                rendered = true
             }
 
             override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-                TODO("not implemented")
+                appliedColorTheme = colorTheme
+                return ComponentStyleSet.empty()
             }
 
             override fun acceptsFocus(): Boolean {
@@ -127,6 +138,45 @@ class DefaultComponentTest {
     }
 
     @Test
+    fun shouldRenderWhenComponentStyleSetIsSet() {
+        target.componentStyleSet = ComponentStyleSet.defaultStyleSet()
+
+        assertThat(rendered).isTrue()
+    }
+
+    @Test
+    fun shouldNotifyObserversWhenInputIsEmitted() {
+        var notified = false
+
+        target.onInput {
+            notified = true
+        }
+
+        target.inputEmitted(KeyStroke())
+
+        assertThat(notified).isTrue()
+    }
+
+    @Test
+    fun shouldProperlyCreateSnapshot() {
+        target.fill(TileBuilder.newBuilder().withCharacter('x').build())
+        val result = target.createSnapshot()
+        val cells = result.cells.toList()
+
+        assertThat(result.tileset).isEqualTo(target.currentTileset())
+        assertThat(cells.size).isEqualTo(16)
+        assertThat(cells.first().position).isEqualTo(POSITION_2x3)
+    }
+
+    @Test
+    fun shouldProperlyHandleMouseEntered() {
+        target.mouseEntered(MouseAction(MOUSE_ENTERED, 1, Position.zero()))
+
+        assertThat(target.componentStyleSet.currentState()).isEqualTo(ComponentState.MOUSE_OVER)
+        assertThat(rendered).isTrue()
+    }
+
+    @Test
     fun shouldProperlyCalculateAbsolutePositionWithDeeplyNestedComponents() {
 
         val rootPos = Position.create(1, 1)
@@ -172,7 +222,7 @@ class DefaultComponentTest {
             pressed.set(true)
         }
 
-        target.inputEmitted(MouseAction(MouseActionType.MOUSE_PRESSED, 1, POSITION_2x3))
+        target.inputEmitted(MouseAction(MOUSE_PRESSED, 1, POSITION_2x3))
 
         assertThat(pressed.get()).isTrue()
     }
