@@ -7,14 +7,13 @@ import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.modifier.Delay
 
-class TypingEffectPostProcessor<T : Component> : ComponentPostProcessor<T> {
+class TypingEffectPostProcessor<T : Component>(private val baseDelayInMs: Long) : ComponentPostProcessor<T> {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentPostProcessorContext<T>) {
         val width = tileGraphics.size.width
-        val baseDelay = 200L
         tileGraphics.size.fetchPositions().forEach { position ->
             val (x, y) = position
-            val delay = Delay(baseDelay * width * y + baseDelay * x)
+            val delay = Delay(baseDelayInMs * width * y + baseDelayInMs * x)
             tileGraphics.getTileAt(position).map {
                 tileGraphics.setTileAt(position, it.withAddedModifiers(delay))
             }

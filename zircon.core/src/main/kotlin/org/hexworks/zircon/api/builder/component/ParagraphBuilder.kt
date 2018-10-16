@@ -12,7 +12,7 @@ import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 
 data class ParagraphBuilder(
         private var text: String = "",
-        private var typingEffect: Boolean = false,
+        private var typingEffectSpeedInMs: Long = 0,
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
     : BaseComponentBuilder<Paragraph, ParagraphBuilder>(commonComponentProperties) {
 
@@ -22,8 +22,8 @@ data class ParagraphBuilder(
         this.text = text
     }
 
-    fun withTypingEffect(typingEffect: Boolean) = also {
-        this.typingEffect = typingEffect
+    fun withTypingEffect(typingEffectSpeedInMs: Long) = also {
+        this.typingEffectSpeedInMs = typingEffectSpeedInMs
     }
 
     override fun build(): Paragraph {
@@ -39,8 +39,8 @@ data class ParagraphBuilder(
         } else {
             size
         }
-        val postProcessors = if (typingEffect) {
-            listOf(TypingEffectPostProcessor<DefaultParagraph>())
+        val postProcessors = if (typingEffectSpeedInMs > 0) {
+            listOf(TypingEffectPostProcessor<DefaultParagraph>(typingEffectSpeedInMs))
         } else {
             listOf()
         }

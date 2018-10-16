@@ -28,9 +28,9 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
                 .build())
     }
 
-    override fun addParagraph(paragraph: String, withNewLine: Boolean, withTypingEffect: Boolean) {
+    override fun addParagraph(paragraph: String, withNewLine: Boolean, withTypingEffectSpeedInMs: Long) {
         addLogElement(createTextBoxBuilder()
-                .addParagraph(paragraph, withNewLine, withTypingEffect)
+                .addParagraph(paragraph, withNewLine, withTypingEffectSpeedInMs)
                 .build())
     }
 
