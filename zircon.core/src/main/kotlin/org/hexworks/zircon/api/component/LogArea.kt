@@ -16,7 +16,7 @@ interface LogArea : Component {
 
     fun addHeader(text: String, withNewLine: Boolean = true)
 
-    fun addParagraph(paragraph: String, withNewLine: Boolean = true, withTypingEffect: Boolean = false)
+    fun addParagraph(paragraph: String, withNewLine: Boolean = true, withTypingEffectSpeedInMs: Long = 0)
 
     fun addListItem(item: String)
 

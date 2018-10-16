@@ -59,7 +59,7 @@ object ScrollingLogAreaExample {
 
         (0..40).forEach { _ ->
             Thread.sleep(random.nextInt(500).toLong())
-            logArea.addParagraph(texts[random.nextInt(texts.size)], withNewLine = false, withTypingEffect = false)
+            logArea.addParagraph(texts[random.nextInt(texts.size)], withNewLine = false, withTypingEffectSpeedInMs = 100)
         }
     }
 

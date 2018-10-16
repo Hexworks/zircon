@@ -37,7 +37,7 @@ object DelayedTileStringExample {
         panel.addComponent(Components.textBox()
                 .withContentWidth(panel.contentSize.width)
                 .addParagraph(paragraph = myText,
-                        withTypingEffect = true))
+                        withTypingEffectSpeedInMs = 200))
 
         screen.applyColorTheme(THEME)
         screen.display()
