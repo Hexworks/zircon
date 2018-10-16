@@ -28,7 +28,7 @@ object LogAreaExample {
                 .build()
 
         logArea.addParagraph("This is a simple log row")
-        logArea.addParagraph("This is a further log row with a modifier", withTypingEffect = true)
+        logArea.addParagraph("This is a further log row with a modifier", withTypingEffectSpeedInMs = 100)
         logArea.addNewRows(2)
 
         logArea.addInlineText("This is a log row with a ")

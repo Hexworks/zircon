@@ -41,7 +41,7 @@ object TextBoxesExample {
                 .addInlineText(" text")
                 .commitInlineElements()
                 .addNewLine()
-                .addParagraph("And a multi-line paragraph with typewriter effect...", withTypingEffect = true))
+                .addParagraph("And a multi-line paragraph with typewriter effect...", withTypingEffectSpeedInMs = 200))
         panel.addComponent(Components.textBox()
                 .withPosition(Positions.zero())
                 .withContentWidth(26)
@@ -59,7 +59,7 @@ object TextBoxesExample {
                 .addInlineText(" text")
                 .commitInlineElements()
                 .addNewLine()
-                .addParagraph("And a multi-line paragraph with typewriter effect...", withTypingEffect = true))
+                .addParagraph("And a multi-line paragraph with typewriter effect...", withTypingEffectSpeedInMs = 200))
 
         screen.addComponent(Components.textBox()
                 .withPosition(Positions.create(1, 17))
