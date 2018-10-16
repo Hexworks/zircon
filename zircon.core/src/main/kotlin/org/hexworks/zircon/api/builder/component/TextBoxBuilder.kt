@@ -51,12 +51,12 @@ data class TextBoxBuilder(
     }
 
     @JvmOverloads
-    fun addParagraph(paragraph: String, withNewLine: Boolean = true, withTypingEffect: Boolean = false) = also {
+    fun addParagraph(paragraph: String, withNewLine: Boolean = true, withTypingEffectSpeedInMs: Long = 0) = also {
         val size = Size.create(contentWidth, paragraph.length.div(contentWidth) + 1)
         components.add(ParagraphBuilder.newBuilder()
                 .withSize(size)
                 .withText(paragraph)
-                .withTypingEffect(withTypingEffect)
+                .withTypingEffect(withTypingEffectSpeedInMs)
                 .withTileset(tileset)
                 .withPosition(nextPosition)
                 .build())
