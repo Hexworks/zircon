@@ -1,14 +1,14 @@
 package org.hexworks.zircon.internal.component.renderer
 
-import org.hexworks.zircon.api.component.CheckBox
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
+import org.hexworks.zircon.internal.component.impl.DefaultCheckBox
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
 
-class DefaultCheckBoxRenderer : ComponentRenderer<CheckBox> {
+class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
 
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<CheckBox>) {
+    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<DefaultCheckBox>) {
         val style = context.componentStyle.currentStyle()
         tileGraphics.applyStyle(style)
         val checkBoxState = context.component.state

@@ -15,7 +15,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState
 
 class DefaultCheckBox(componentMetadata: ComponentMetadata,
                       override val text: String,
-                      private val renderingStrategy: ComponentRenderingStrategy<CheckBox>)
+                      private val renderingStrategy: ComponentRenderingStrategy<DefaultCheckBox>)
     : CheckBox, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {

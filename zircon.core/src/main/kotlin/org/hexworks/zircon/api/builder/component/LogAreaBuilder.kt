@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultLogArea
 import org.hexworks.zircon.internal.component.renderer.DefaultLogAreaRenderer
+import kotlin.jvm.JvmStatic
 
 data class LogAreaBuilder(
         private var logRowHistorySize: Int = 100,
@@ -39,6 +40,7 @@ data class LogAreaBuilder(
 
     companion object {
 
+        @JvmStatic
         fun newBuilder() = LogAreaBuilder()
     }
 }

@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultLabel
 import org.hexworks.zircon.internal.component.renderer.DefaultLabelRenderer
 import org.hexworks.zircon.platform.util.SystemUtils
+import kotlin.jvm.JvmStatic
 
 data class LabelBuilder(
         private var text: String = "",
@@ -54,6 +55,7 @@ data class LabelBuilder(
 
     companion object {
 
+        @JvmStatic
         fun newBuilder() = LabelBuilder()
     }
 }

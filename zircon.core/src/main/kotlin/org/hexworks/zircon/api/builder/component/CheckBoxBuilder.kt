@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox
 import org.hexworks.zircon.internal.component.renderer.DefaultCheckBoxRenderer
+import kotlin.jvm.JvmStatic
 
 data class CheckBoxBuilder(
         private var text: String = "",
@@ -48,6 +49,7 @@ data class CheckBoxBuilder(
 
     companion object {
 
+        @JvmStatic
         fun newBuilder() = CheckBoxBuilder()
     }
 }

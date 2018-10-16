@@ -1,5 +1,7 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.zircon.api.builder.component.LogAreaBuilder
+
 /**
  * A [LogArea] provides the possibility to display messages.
  * The messages are composed of log elements, which can be
@@ -33,7 +35,6 @@ interface LogArea : Component {
      * Clears the complete log
      */
     fun clear()
-
 }
 
 

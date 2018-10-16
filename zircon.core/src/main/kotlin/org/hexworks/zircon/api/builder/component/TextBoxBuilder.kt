@@ -12,6 +12,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultTextBox
 import org.hexworks.zircon.internal.component.renderer.DefaultTextBoxRenderer
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 data class TextBoxBuilder(
         private var text: String = "",
@@ -155,6 +156,7 @@ data class TextBoxBuilder(
 
     companion object {
 
+        @JvmStatic
         fun newBuilder() = TextBoxBuilder()
     }
 }
