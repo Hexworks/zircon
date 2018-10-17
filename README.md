@@ -510,7 +510,7 @@ Zircon is powered by:
 [license]:https://github.com/Hexworks/zircon/blob/master/LICENSE
 [license img]:https://img.shields.io/badge/License-MIT-green.svg
 
-[maven]:https://mvnrepository.com/artifact/org.hexworks.zircon/zircon/2018.5.0
+[maven]:https://search.maven.org/search?q=g:org.hexworks.zircon
 [maven img]:https://maven-badges.herokuapp.com/maven-central/org.hexworks.zircon/zircon/badge.svg
 
 [screen-primer]:https://github.com/Hexworks/zircon/wiki/A-primer-on-Screens
