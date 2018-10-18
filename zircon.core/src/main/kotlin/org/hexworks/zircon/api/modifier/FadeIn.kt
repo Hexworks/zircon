@@ -4,7 +4,8 @@ import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.platform.util.SystemUtils
 
 data class FadeIn(private val steps: Int = 20,
-                  private val timeMs: Long = 2000) : TileTransformModifier<CharacterTile> {
+                  private val timeMs: Long = 2000,
+                  private val glowOnFinalStep: Boolean = true) : TileTransformModifier<CharacterTile> {
 
     private var currentStep = 1
     private var delay: Long = timeMs / steps
@@ -21,7 +22,10 @@ data class FadeIn(private val steps: Int = 20,
             currentTile = generateTile(tile)
         }
         return if (currentStep == steps) {
-            tile.withModifiers(Glow()).asCharacterTile().get()
+            if (glowOnFinalStep)
+                tile.withModifiers(Glow()).asCharacterTile().get()
+            else
+                tile
         } else {
             val now = SystemUtils.getCurrentTimeMs()
             if (now - lastRender > delay) {
