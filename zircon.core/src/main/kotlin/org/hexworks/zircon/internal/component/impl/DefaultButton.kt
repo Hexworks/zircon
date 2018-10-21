@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.util.Maybe
 
 class DefaultButton(componentMetadata: ComponentMetadata,
                     override val text: String,
-                    private val renderingStrategy: ComponentRenderingStrategy<Button>)
+                    private val renderingStrategy: ComponentRenderingStrategy<DefaultButton>)
     : Button, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {

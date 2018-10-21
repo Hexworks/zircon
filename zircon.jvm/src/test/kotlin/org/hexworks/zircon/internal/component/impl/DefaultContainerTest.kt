@@ -71,6 +71,11 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     }
 
     @Test
+    fun shouldReturnEmptyMaybeWhenTryingToFetchComponentWithOutOfBoundsPosition() {
+        assertThat(target.fetchComponentByPosition(Position.create(Int.MAX_VALUE, Int.MAX_VALUE)).isPresent).isFalse()
+    }
+
+    @Test
     fun shouldProperlyFetchComponentByPositionWhenChildIsFetched() {
         target.addComponent(componentStub)
 
