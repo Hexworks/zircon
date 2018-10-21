@@ -63,8 +63,7 @@ interface CursorHandler {
     fun isCursorAtTheLastRow(): Boolean
 
     /**
-     * Sets the visibility of the cursor. `true` is visible, `false` is not.
-     * @return `true` if change happened, `false` if not.
+     * Sets the visibility of the cursor.
      */
-    fun setCursorVisibility(cursorVisible: Boolean): Boolean
+    fun setCursorVisibility(cursorVisible: Boolean)
 }

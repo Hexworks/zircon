@@ -60,13 +60,8 @@ class DefaultCursorHandler(private var cursorSpace: Size)
 
     override fun isCursorAtTheLastRow() = cursorPosition.y == cursorSpace.height - 1
 
-    override fun setCursorVisibility(cursorVisible: Boolean): Boolean {
-        return if (this.cursorVisible == cursorVisible) {
-            false
-        } else {
-            this.cursorVisible = cursorVisible
-            true
-        }
+    override fun setCursorVisibility(cursorVisible: Boolean) {
+        this.cursorVisible = cursorVisible
     }
 
     override fun getCursorSpaceSize() = cursorSpace

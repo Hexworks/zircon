@@ -1,14 +1,10 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.not
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.LabelBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
-import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -21,41 +17,39 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.input.MouseActionType
-import org.hexworks.zircon.api.input.MouseActionType.*
+import org.hexworks.zircon.api.input.MouseActionType.MOUSE_ENTERED
+import org.hexworks.zircon.api.input.MouseActionType.MOUSE_PRESSED
 import org.hexworks.zircon.api.kotlin.onInput
 import org.hexworks.zircon.api.kotlin.onMousePressed
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
 
 @Suppress("MemberVisibilityCanBePrivate")
-class DefaultComponentTest {
+class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
-    lateinit var target: DefaultComponent
-    lateinit var tileset: TilesetResource
+    override lateinit var target: DefaultComponent
+
+    override val expectedComponentStyles: ComponentStyleSet
+        get() = ComponentStyleSet.empty()
 
     var rendered = false
     lateinit var appliedColorTheme: ColorTheme
 
-
     @Before
-    fun setUp() {
-        tileset = TILESET
+    override fun setUp() {
+        componentStub = ComponentStub(DefaultContainerTest.COMPONENT_STUB_POSITION_1x1, Size.create(2, 2))
+        rendererStub = ComponentRendererStub()
         target = object : DefaultComponent(
                 componentMetadata = ComponentMetadata(
-                        size = SIZE_4x4,
-                        position = POSITION_2x3,
-                        componentStyleSet = STYLES,
-                        tileset = tileset),
+                        size = DefaultContainerTest.SIZE_4x4,
+                        position = POSITION_2_3,
+                        componentStyleSet = COMPONENT_STYLES,
+                        tileset = TILESET_REX_PAINT_20X20),
                 renderer = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
-                        componentRenderer = DefaultRadioButtonGroupRenderer())) {
-
+                        componentRenderer = rendererStub)) {
             override fun render() {
                 rendered = true
             }
@@ -66,30 +60,32 @@ class DefaultComponentTest {
             }
 
             override fun acceptsFocus(): Boolean {
-                TODO("not implemented")
+                return false
             }
 
             override fun giveFocus(input: Maybe<Input>): Boolean {
-                TODO("not implemented")
+                return false
             }
 
             override fun takeFocus(input: Maybe<Input>) {
-                TODO("not implemented")
+
             }
+
         }
     }
 
     @Test
     fun shouldUseTilesetFromComponentWhenTransformingToLayer() {
         target.toFlattenedLayers().forEach {
-            assertThat(it.currentTileset().id).isEqualTo(tileset.id)
+            assertThat(it.currentTileset().id).isEqualTo(TILESET_REX_PAINT_20X20.id)
         }
     }
 
+
     @Test
     fun shouldProperlyApplyStylesOnInit() {
-        assertThat(target.componentStyleSet.currentStyle())
-                .isEqualTo(STYLES.currentStyle())
+        assertThat(target.componentStyleSet.currentState())
+                .isEqualTo(ComponentState.DEFAULT)
     }
 
     @Test
@@ -256,36 +252,8 @@ class DefaultComponentTest {
     }
 
     companion object {
-        val TILESET = BuiltInCP437TilesetResource.ROGUE_YUN_16X16
         val POSITION_2x3 = Position.create(2, 3)
         val NEW_POSITION_6x7 = Position.create(6, 7)
         val SIZE_4x4 = Size.create(4, 4)
-        val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(BLUE)
-                .withForegroundColor(RED)
-                .build()
-        val ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(GREEN)
-                .withForegroundColor(YELLOW)
-                .build()
-        val DISABLED_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(MAGENTA)
-                .withForegroundColor(BLUE)
-                .build()
-        val FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(YELLOW)
-                .withForegroundColor(CYAN)
-                .build()
-        val MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(RED)
-                .withForegroundColor(CYAN)
-                .build()
-        val STYLES = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(DEFAULT_STYLE)
-                .withActiveStyle(ACTIVE_STYLE)
-                .withDisabledStyle(DISABLED_STYLE)
-                .withFocusedStyle(FOCUSED_STYLE)
-                .withMouseOverStyle(MOUSE_OVER_STYLE)
-                .build()
     }
 }

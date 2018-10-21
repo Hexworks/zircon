@@ -18,7 +18,7 @@ import org.junit.Test
 
 class DefaultComponentRenderingStrategyTest {
 
-    lateinit var target: DefaultComponentRenderingStrategy<Button>
+    lateinit var target: DefaultComponentRenderingStrategy<DefaultButton>
 
     @Before
     fun setUp() {

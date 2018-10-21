@@ -73,10 +73,6 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
                 require(children.none { it.intersects(dc) }) {
                     "You can't add a component to a container which intersects with other components."
                 }
-                // TODO: do we need this? Isn't this covered by intersection?
-                require(children.none { it.containsBoundable(dc) }) {
-                    "You can't add a component to a container which intersects with other components."
-                }
             }
             components.add(dc)
             dc.attachTo(this)
