@@ -8,6 +8,13 @@ import org.hexworks.zircon.api.resource.ColorThemeResource.SolarizedBase.SOLARIZ
 
 enum class ColorThemeResource(private val colorTheme: ColorTheme) {
 
+    EMPTY(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.transparent())
+            .withPrimaryForegroundColor(TileColor.transparent())
+            .withSecondaryForegroundColor(TileColor.transparent())
+            .withPrimaryBackgroundColor(TileColor.transparent())
+            .withSecondaryBackgroundColor(TileColor.transparent())
+            .build()),
 
     /**
      * Taken from
