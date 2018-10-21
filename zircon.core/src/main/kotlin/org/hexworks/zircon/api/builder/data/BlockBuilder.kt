@@ -1,8 +1,11 @@
 package org.hexworks.zircon.api.builder.data
 
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.Block
+import org.hexworks.zircon.api.data.BlockSide
 import org.hexworks.zircon.api.data.BlockSide.*
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.util.Maybe
@@ -17,18 +20,23 @@ import org.hexworks.zircon.internal.data.DefaultBlock
  * @see [org.hexworks.zircon.api.color.TileColor] to check default colors.
  */
 @Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
-data class BlockBuilder(
+data class BlockBuilder<T : Tile>(
         private var position: Position3D = Position3D.unknown(),
-        private var top: Maybe<Tile> = Maybe.empty(),
-        private var bottom: Maybe<Tile> = Maybe.empty(),
-        private var front: Maybe<Tile> = Maybe.empty(),
-        private var back: Maybe<Tile> = Maybe.empty(),
-        private var left: Maybe<Tile> = Maybe.empty(),
-        private var right: Maybe<Tile> = Maybe.empty(),
-        private var layers: MutableList<Tile> = mutableListOf(),
-        private var layerCount: Int = 1) : Builder<Block> {
+        private var emptyTile: Maybe<T> = Maybe.empty(),
+        private var top: Maybe<T> = Maybe.empty(),
+        private var bottom: Maybe<T> = Maybe.empty(),
+        private var front: Maybe<T> = Maybe.empty(),
+        private var back: Maybe<T> = Maybe.empty(),
+        private var left: Maybe<T> = Maybe.empty(),
+        private var right: Maybe<T> = Maybe.empty(),
+        private var layers: MutableList<T> = mutableListOf(),
+        private var layerCount: Int = 1) : Builder<Block<T>> {
 
     private var currLayerIdx = 0
+
+    fun withEmptyTile(tile: T) = also {
+        this.emptyTile = Maybe.of(tile)
+    }
 
     fun withPosition(position: Position) = also {
         this.position = Position3D.from2DPosition(position)
@@ -38,7 +46,7 @@ data class BlockBuilder(
         this.position = position
     }
 
-    fun withSide(blockSide: BlockSide, tile: Tile) = also {
+    fun withSide(blockSide: BlockSide, tile: T) = also {
         when (blockSide) {
             TOP -> withTop(tile)
             BOTTOM -> withBottom(tile)
@@ -49,31 +57,31 @@ data class BlockBuilder(
         }
     }
 
-    fun withTop(top: Tile) = also {
+    fun withTop(top: T) = also {
         this.top = Maybe.of(top)
     }
 
-    fun withBottom(bottom: Tile) = also {
+    fun withBottom(bottom: T) = also {
         this.bottom = Maybe.of(bottom)
     }
 
-    fun withFront(front: Tile) = also {
+    fun withFront(front: T) = also {
         this.front = Maybe.of(front)
     }
 
-    fun withBack(back: Tile) = also {
+    fun withBack(back: T) = also {
         this.back = Maybe.of(back)
     }
 
-    fun withLeft(left: Tile) = also {
+    fun withLeft(left: T) = also {
         this.left = Maybe.of(left)
     }
 
-    fun withRight(right: Tile) = also {
+    fun withRight(right: T) = also {
         this.right = Maybe.of(right)
     }
 
-    fun addLayer(layer: Tile) = also {
+    fun addLayer(layer: T) = also {
         require(currLayerIdx < layerCount) {
             "Can't add more layers to this Block, it has already reached maximum."
         }
@@ -81,14 +89,14 @@ data class BlockBuilder(
         currLayerIdx++
     }
 
-    fun withLayers(layers: List<Tile>) = also {
+    fun withLayers(layers: List<T>) = also {
         layerCount = layers.size
         currLayerIdx = layerCount - 1
         this.layers.clear()
         this.layers.addAll(layers)
     }
 
-    fun withLayers(vararg layers: Tile) = also {
+    fun withLayers(vararg layers: T) = also {
         withLayers(layers.toList())
     }
 
@@ -96,14 +104,17 @@ data class BlockBuilder(
         this.layerCount = layerCount
     }
 
-    override fun build(): Block {
+    override fun build(): Block<T> {
         require(position !== Position3D.unknown()) {
             "Can't build a Block with a missing Position3D."
         }
         require(layers.size <= layerCount) {
             "Can't have more layers in a Block than the expected layer count."
         }
-        val sides = mutableMapOf<BlockSide, Tile>()
+        require(emptyTile.isPresent) {
+            "No empty tile supplied"
+        }
+        val sides = mutableMapOf<BlockSide, T>()
         listOf(TOP to top, BOTTOM to bottom, LEFT to left, RIGHT to right, FRONT to front, BACK to back).forEach { pair ->
             pair.second.map {
                 sides[pair.first] = it
@@ -112,7 +123,8 @@ data class BlockBuilder(
         return DefaultBlock(
                 position = position,
                 layers = layers.toMutableList(),
-                sides = sides.toMap())
+                sides = sides.toMap(),
+                emptyTile = emptyTile.get())
     }
 
     override fun createCopy() = copy()
@@ -122,7 +134,7 @@ data class BlockBuilder(
         /**
          * Creates a new [BlockBuilder] for creating [Tile]s.
          */
-        fun create() = BlockBuilder()
+        fun <T : Tile> newBuilder() = BlockBuilder<T>()
 
     }
 }

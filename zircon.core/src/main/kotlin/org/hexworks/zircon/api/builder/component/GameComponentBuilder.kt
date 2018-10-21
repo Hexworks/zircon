@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameComponent
@@ -16,16 +17,16 @@ import kotlin.jvm.JvmStatic
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
-data class GameComponentBuilder(
-        private var gameArea: Maybe<GameArea> = Maybe.empty(),
+data class GameComponentBuilder<T : Tile>(
+        private var gameArea: Maybe<GameArea<T>> = Maybe.empty(),
         private var projectionMode: ProjectionMode = DEFAULT_PROJECTION_MODE,
         private var visibleSize: Size3D = Size3D.one(),
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
-    : BaseComponentBuilder<GameComponent, GameComponentBuilder>(commonComponentProperties) {
+    : BaseComponentBuilder<GameComponent<T>, GameComponentBuilder<T>>(commonComponentProperties) {
 
     override fun createCopy() = copy()
 
-    fun withGameArea(gameArea: GameArea) = also {
+    fun withGameArea(gameArea: GameArea<T>) = also {
         this.gameArea = Maybe.of(gameArea)
     }
 
@@ -37,7 +38,7 @@ data class GameComponentBuilder(
         this.visibleSize = visibleSize
     }
 
-    override fun build(): DefaultGameComponent {
+    override fun build(): DefaultGameComponent<T> {
         require(gameArea.isPresent) {
             "A GameComponent will only work with a GameArea as backend. Please set one!"
         }
@@ -57,7 +58,7 @@ data class GameComponentBuilder(
         val DEFAULT_PROJECTION_MODE = ProjectionMode.TOP_DOWN
 
         @JvmStatic
-        fun newBuilder(): GameComponentBuilder {
+        fun <T : Tile> newBuilder(): GameComponentBuilder<T> {
             require(RuntimeConfig.config.betaEnabled) {
                 "GameComponent is a beta feature. Please enable them when setting up Zircon using an AppConfig."
             }

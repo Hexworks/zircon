@@ -1,9 +1,12 @@
 package org.hexworks.zircon.api.builder.game
 
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.data.Block
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.game.InMemoryGameArea
 
@@ -12,9 +15,15 @@ import org.hexworks.zircon.internal.game.InMemoryGameArea
  * It's API is subject to change!
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-data class GameAreaBuilder(private var size: Size3D = Size3D.one(),
-                           private var layersPerBlock: Int = -1,
-                           private var levels: MutableMap<Int, MutableList<TileGraphics>> = mutableMapOf()) : Builder<GameArea> {
+data class GameAreaBuilder<T : Tile>(
+        private var defaultBlock: Maybe<Block<T>> = Maybe.empty(),
+        private var size: Size3D = Size3D.one(),
+        private var layersPerBlock: Int = -1,
+        private var levels: MutableMap<Int, MutableList<TileGraphics>> = mutableMapOf()) : Builder<GameArea<T>> {
+
+    fun withDefaultBlock(block: Block<T>) = also {
+        this.defaultBlock = Maybe.of(block)
+    }
 
     fun withLayersPerBlock(layersPerBlock: Int) = also {
         this.layersPerBlock = layersPerBlock
@@ -40,13 +49,17 @@ data class GameAreaBuilder(private var size: Size3D = Size3D.one(),
         this.levels[level] = images.toMutableList()
     }
 
-    override fun build(): GameArea {
+    override fun build(): GameArea<T> {
         require(layersPerBlock > 0) {
             "There must be at least 1 layer per block."
         }
+        require(defaultBlock.isPresent) {
+            "No default block supplied."
+        }
         return InMemoryGameArea(
                 layersPerBlock = layersPerBlock,
-                size = size)
+                size = size,
+                defaultBlock = defaultBlock.get())
     }
 
     override fun createCopy() = copy(
@@ -54,7 +67,7 @@ data class GameAreaBuilder(private var size: Size3D = Size3D.one(),
 
     companion object {
 
-        fun newBuilder(): GameAreaBuilder {
+        fun <T : Tile> newBuilder(): GameAreaBuilder<T> {
             require(RuntimeConfig.config.betaEnabled) {
                 "GameArea is a beta feature. Please enable them when setting up Zircon using an AppConfig."
             }

@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.GameArea
@@ -27,15 +28,15 @@ import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
-class DefaultGameComponent(componentMetadata: ComponentMetadata,
-                           size: Size3D,
-                           private val gameArea: GameArea,
-                           private val projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
-                           private val scrollable: Scrollable3D = DefaultScrollable3D(
-                                   visibleSize = size,
-                                   actualSize = gameArea.size))
+class DefaultGameComponent<T : Tile>(componentMetadata: ComponentMetadata,
+                                     size: Size3D,
+                                     private val gameArea: GameArea<T>,
+                                     private val projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
+                                     private val scrollable: Scrollable3D = DefaultScrollable3D(
+                                             visibleSize = size,
+                                             actualSize = gameArea.size))
 
-    : GameComponent,
+    : GameComponent<T>,
         Scrollable3D by scrollable,
         DefaultComponent(
                 componentMetadata = componentMetadata,
@@ -80,7 +81,8 @@ class DefaultGameComponent(componentMetadata: ComponentMetadata,
                 segment.forEach {
                     result.add(LayerBuilder.newBuilder()
                             .withTileGraphics(it)
-                            .withOffset(position)
+                            // TODO: regression test this: position vs absolutePosition
+                            .withOffset(absolutePosition)
                             .build())
                 }
             }
@@ -98,7 +100,7 @@ class DefaultGameComponent(componentMetadata: ComponentMetadata,
                 (fromY until toY).forEach { screenY ->
                     (fromX until toX).forEach { x ->
                         val y = screenY + z // we need to add `z` to `y` because of isometric
-                        val maybeBlock: Maybe<out Block> = gameArea.fetchBlockAt(Position3D.create(x, y, z))
+                        val maybeBlock: Maybe<out Block<T>> = gameArea.fetchBlockAt(Position3D.create(x, y, z))
                         val maybeNext = gameArea.fetchBlockAt(Position3D.create(x, y + 1, z))
                         val screenPos = Position.create(x, screenY)
                         val bottomIdx = z * totalLayerCount

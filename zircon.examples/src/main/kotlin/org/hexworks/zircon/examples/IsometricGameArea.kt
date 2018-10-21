@@ -1,12 +1,14 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.BlockSide.*
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.GameModifiers.*
 import org.hexworks.zircon.api.game.ProjectionMode
@@ -130,11 +132,15 @@ object IsometricGameArea {
         val virtualSize = Sizes.create3DSize(200, 200, 30)
 
         val gameArea = InMemoryGameArea(
-                virtualSize,
-                1,
-                Tiles.empty())
+                size = virtualSize,
+                layersPerBlock = 1,
+                defaultBlock = BlockBuilder.newBuilder<Tile>()
+                        .withEmptyTile(Tiles.empty())
+                        .withPosition(Positions.default3DPosition())
+                        .addLayer(Tiles.empty())
+                        .build())
 
-        val gameComponent = Components.gameComponent()
+        val gameComponent = Components.gameComponent<Tile>()
                 .withGameArea(gameArea)
                 .withProjectionMode(ProjectionMode.TOP_DOWN_OBLIQUE)
                 .withVisibleSize(visibleGameAreaSize)
@@ -163,7 +169,7 @@ object IsometricGameArea {
         gamePanel.applyColorTheme(ColorThemes.gamebookers())
     }
 
-    private tailrec fun generateBuilding(size: Size3D, offset: Position3D, gameArea: InMemoryGameArea, repeat: Int) {
+    private tailrec fun generateBuilding(size: Size3D, offset: Position3D, gameArea: InMemoryGameArea<Tile>, repeat: Int) {
         (0 until size.zLength).forEach { z ->
             (0 until size.yLength).forEach { y ->
                 (0 until size.xLength).forEach { x ->
@@ -201,15 +207,17 @@ object IsometricGameArea {
                             blockTiles.add(ROOF)
                         }
                     }
-                    val bb = Blocks.newBuilder()
                     blockTiles.forEach { tile ->
+                        val bb = Blocks.newBuilder<Tile>()
+                                .withEmptyTile(Tiles.empty())
                         if (tile.modifiers.isNotEmpty()) {
                             bb.withSide(MODIFIER_LOOKUP[tile.modifiers.first()]!!, tile)
+                            bb.withLayers(Tiles.empty())
                         } else {
                             bb.addLayer(tile)
                         }
+                        gameArea.setBlockAt(pos, bb.withPosition(pos).build())
                     }
-                    gameArea.setBlockAt(pos, bb.withPosition(pos).build())
                 }
             }
         }
@@ -222,7 +230,7 @@ object IsometricGameArea {
         }
     }
 
-    private fun enableMovement(screen: Screen, gameComponent: DefaultGameComponent) {
+    private fun enableMovement(screen: Screen, gameComponent: DefaultGameComponent<Tile>) {
         screen.onInput(object : InputListener {
             override fun inputEmitted(input: Input) {
                 if (EXIT_CONDITIONS.contains(input.inputType())) {

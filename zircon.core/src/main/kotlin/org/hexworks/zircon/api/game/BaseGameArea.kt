@@ -11,9 +11,9 @@ import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.extensions.getIfPresent
 
-abstract class BaseGameArea : GameArea {
+abstract class BaseGameArea<T: Tile> : GameArea<T> {
 
-    override fun fetchBlocks(fetchMode: GameArea.BlockFetchMode): Iterable<Block> {
+    override fun fetchBlocks(fetchMode: GameArea.BlockFetchMode): Iterable<Block<T>> {
         return if (fetchMode == GameArea.BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocks()
         } else {
@@ -23,7 +23,7 @@ abstract class BaseGameArea : GameArea {
         }
     }
 
-    override fun fetchBlocksAt(offset: Position3D, size: Size3D): Iterable<Block> {
+    override fun fetchBlocksAt(offset: Position3D, size: Size3D): Iterable<Block<T>> {
         return fetchPositionsWithOffset(offset, size)
                 .asSequence()
                 .filter { hasBlockAt(it) }
@@ -31,7 +31,7 @@ abstract class BaseGameArea : GameArea {
                 .toList()
     }
 
-    override fun fetchBlocksAt(offset: Position3D, size: Size3D, fetchMode: GameArea.BlockFetchMode): Iterable<Block> {
+    override fun fetchBlocksAt(offset: Position3D, size: Size3D, fetchMode: GameArea.BlockFetchMode): Iterable<Block<T>> {
         return if (fetchMode == GameArea.BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocksAt(offset, size)
         } else {
@@ -44,7 +44,7 @@ abstract class BaseGameArea : GameArea {
      * Returns the [Block]s at the given `z` level.
      * Empty positions are **ignored**.
      */
-    override fun fetchBlocksAtLevel(z: Int): Iterable<Block> {
+    override fun fetchBlocksAtLevel(z: Int): Iterable<Block<T>> {
         return fetchBlocks()
                 .filter { it.position.z == z }
                 .map { fetchBlockOrDefault(it.position) }
@@ -54,7 +54,7 @@ abstract class BaseGameArea : GameArea {
      * Returns the [Block]s at the given `z` level.
      * Empty positions are either ignored, or a default filler value is returned.
      */
-    override fun fetchBlocksAtLevel(z: Int, blockFetchMode: GameArea.BlockFetchMode): Iterable<Block> {
+    override fun fetchBlocksAtLevel(z: Int, blockFetchMode: GameArea.BlockFetchMode): Iterable<Block<T>> {
         return if (blockFetchMode == GameArea.BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocksAtLevel(z)
         } else {

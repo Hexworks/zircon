@@ -2,7 +2,9 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.Block
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.BaseGameArea
@@ -13,11 +15,13 @@ import java.util.*
 
 object CustomGameAreaExample {
 
-    class CustomGameArea(override val size: Size3D, private val layersPerBlock: Int) : BaseGameArea() {
-        private val blocks = java.util.TreeMap<Position3D, Block>()
-        private val filler = Blocks.newBuilder()
-                .addLayer(Tiles.empty())
+    class CustomGameArea(override val size: Size3D,
+                         private val layersPerBlock: Int,
+                         override val defaultBlock: Block<Tile> = Blocks.newBuilder<Tile>()
+                                 .addLayer(Tiles.empty())
+                                 .build()) : BaseGameArea<Tile>() {
 
+        private val blocks = java.util.TreeMap<Position3D, Block<Tile>>()
 
         override fun layersPerBlock(): Int {
             return layersPerBlock
@@ -27,19 +31,19 @@ object CustomGameAreaExample {
             return blocks.containsKey(position)
         }
 
-        override fun fetchBlockAt(position: Position3D): Maybe<Block> {
+        override fun fetchBlockAt(position: Position3D): Maybe<Block<Tile>> {
             return Maybes.ofNullable(blocks[position])
         }
 
-        override fun fetchBlockOrDefault(position: Position3D): Block {
-            return blocks.getOrDefault(position, filler.withPosition(position).build())
+        override fun fetchBlockOrDefault(position: Position3D): Block<Tile> {
+            return blocks.getOrDefault(position, defaultBlock.withPosition(position))
         }
 
-        override fun fetchBlocks(): Iterable<Block> {
+        override fun fetchBlocks(): Iterable<Block<Tile>> {
             return ArrayList(blocks.values)
         }
 
-        override fun setBlockAt(position: Position3D, block: Block) {
+        override fun setBlockAt(position: Position3D, block: Block<Tile>) {
             if (!size.containsPosition(position)) {
                 throw IllegalArgumentException("The supplied position (\$position) is not within the size (\$size) of this game area.")
             }
@@ -65,7 +69,7 @@ object CustomGameAreaExample {
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        screen.addComponent(GameComponents.newGameComponentBuilder()
+        screen.addComponent(GameComponents.newGameComponentBuilder<Tile>()
                 .withVisibleSize(Sizes.create3DSize(60, 30, 1))
                 .withGameArea(gameArea)
                 .build())
@@ -74,7 +78,7 @@ object CustomGameAreaExample {
 
     }
 
-    fun makeCaves(gameArea: GameArea, smoothTimes: Int = 8) {
+    fun makeCaves(gameArea: GameArea<Tile>, smoothTimes: Int = 8) {
         val width = gameArea.size.xLength
         val height = gameArea.size.yLength
         var tiles: MutableMap<Position, Tile> = mutableMapOf()
@@ -108,7 +112,7 @@ object CustomGameAreaExample {
         }
         tiles.forEach { pos, tile ->
             val pos3D = Positions.from2DTo3D(pos)
-            gameArea.setBlockAt(pos3D, Blocks.newBuilder()
+            gameArea.setBlockAt(pos3D, Blocks.newBuilder<Tile>()
                     .addLayer(tile)
                     .withPosition(pos3D)
                     .build())

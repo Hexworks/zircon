@@ -2,9 +2,9 @@ package org.hexworks.zircon.api.game
 
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Block
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.util.Maybe
@@ -16,8 +16,12 @@ import org.hexworks.zircon.internal.extensions.getIfPresent
  * cubes (like in Minecraft) which have 6 sides (all optional), and
  * layers within the cube itself (optional as well).
  */
-interface GameArea {
+interface GameArea<T : Tile> {
 
+    /**
+     * The default block which is used in this [GameArea]
+     */
+    val defaultBlock: Block<T>
     /**
      * Returns the size of the 3D space this [GameArea] represents.
      */
@@ -40,26 +44,26 @@ interface GameArea {
     /**
      * Returns the [Block] at the given `position` (if any).
      */
-    fun fetchBlockAt(position: Position3D): Maybe<out Block>
+    fun fetchBlockAt(position: Position3D): Maybe<out Block<T>>
 
     /**
      * Returns the [Block] at the given `position` if present,
      * otherwise returns the default block (an empty block by default).
      */
-    fun fetchBlockOrDefault(position: Position3D): Block
+    fun fetchBlockOrDefault(position: Position3D): Block<T>
 
     /**
      * Returns **all** the [Block]s in this [GameArea].
      * Empty positions are **ignored**.
      */
-    fun fetchBlocks(): Iterable<Block>
+    fun fetchBlocks(): Iterable<Block<T>>
 
     /**
      * Returns **all** the [Block]s in this [GameArea].
      * Empty positions are either ignored or filled with a filler character,
      * depending on the `fetchMode` supplied.
      */
-    fun fetchBlocks(fetchMode: BlockFetchMode): Iterable<Block> {
+    fun fetchBlocks(fetchMode: BlockFetchMode): Iterable<Block<T>> {
         return if (fetchMode == BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocks()
         } else {
@@ -90,7 +94,7 @@ interface GameArea {
      *  L (2,7,8) (y)
      *</pre>
      */
-    fun fetchBlocksAt(offset: Position3D, size: Size3D): Iterable<Block> {
+    fun fetchBlocksAt(offset: Position3D, size: Size3D): Iterable<Block<T>> {
         return fetchPositionsWithOffset(offset, size)
                 .asSequence()
                 .filter { hasBlockAt(it) }
@@ -105,7 +109,7 @@ interface GameArea {
      * @param size the size of the area which you need the blocks from.
      * @param fetchMode the [BlockFetchMode] to use.
      */
-    fun fetchBlocksAt(offset: Position3D, size: Size3D, fetchMode: BlockFetchMode): Iterable<Block> {
+    fun fetchBlocksAt(offset: Position3D, size: Size3D, fetchMode: BlockFetchMode): Iterable<Block<T>> {
         return if (fetchMode == BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocksAt(offset, size)
         } else {
@@ -118,7 +122,7 @@ interface GameArea {
      * Returns the [Block]s at the given `z` level.
      * Empty positions are **ignored**.
      */
-    fun fetchBlocksAtLevel(z: Int): Iterable<Block> {
+    fun fetchBlocksAtLevel(z: Int): Iterable<Block<T>> {
         return fetchBlocks()
                 .filter { it.position.z == z }
                 .map { fetchBlockOrDefault(it.position) }
@@ -128,7 +132,7 @@ interface GameArea {
      * Returns the [Block]s at the given `z` level.
      * Empty positions are either ignored, or a default filler value is returned.
      */
-    fun fetchBlocksAtLevel(z: Int, blockFetchMode: BlockFetchMode): Iterable<Block> {
+    fun fetchBlocksAtLevel(z: Int, blockFetchMode: BlockFetchMode): Iterable<Block<T>> {
         return if (blockFetchMode == BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocksAtLevel(z)
         } else {
@@ -172,7 +176,7 @@ interface GameArea {
      * Sets the [Tile]s at the given position. Text characters are ordered
      * as layers from bottom to top.
      */
-    fun setBlockAt(position: Position3D, block: Block)
+    fun setBlockAt(position: Position3D, block: Block<T>)
 
     /**
      * The fetch mode for [Block]s.
