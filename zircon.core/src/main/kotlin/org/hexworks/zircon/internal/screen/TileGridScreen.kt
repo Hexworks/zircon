@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.behavior.impl.ComponentsLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
@@ -45,6 +46,7 @@ class TileGridScreen(
     var activeScreenId = Identifier.randomIdentifier()
 
     init {
+        applyColorTheme(ColorThemeResource.EMPTY.getTheme())
         val debug = RuntimeConfig.config.debugMode
         require(tileGrid is InternalTileGrid) {
             "The supplied TileGrid is not an instance of InternalTileGrid."

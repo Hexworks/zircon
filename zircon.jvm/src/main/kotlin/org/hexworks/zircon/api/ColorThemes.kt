@@ -11,6 +11,11 @@ object ColorThemes {
     fun newBuilder() = ColorThemeBuilder()
 
     /**
+     * The empty theme has transparent colors for all colors.
+     */
+    fun empty() = ColorThemeResource.EMPTY.getTheme()
+
+    /**
      * Taken from
      * http://www.colourlovers.com/palette/580974/Adrift_in_Dreams
      */
