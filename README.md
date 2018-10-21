@@ -514,7 +514,7 @@ Zircon is powered by:
 [license img]:https://img.shields.io/badge/License-MIT-green.svg
 
 [maven]:https://search.maven.org/search?q=g:org.hexworks.zircon
-[maven img]:https://maven-badges.herokuapp.com/maven-central/org.hexworks.zircon/zircon/badge.svg
+[maven img]:https://maven-badges.herokuapp.com/maven-central/org.hexworks.zircon/zircon.jvm.swing/badge.svg
 
 [screen-primer]:https://github.com/Hexworks/zircon/wiki/A-primer-on-Screens
 [text-images]:https://github.com/Hexworks/zircon/wiki/How-to-work-with-TileGraphics
