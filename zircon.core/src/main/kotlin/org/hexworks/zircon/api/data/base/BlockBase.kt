@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.data.base
 
 import org.hexworks.zircon.api.data.Block
-import org.hexworks.zircon.api.data.BlockSide
 import org.hexworks.zircon.api.data.BlockSide.*
 import org.hexworks.zircon.api.data.Tile
 
@@ -9,24 +8,24 @@ import org.hexworks.zircon.api.data.Tile
  * Base class which implements common functionality from
  * [Block].
  */
-abstract class BlockBase : Block {
+abstract class BlockBase<T : Tile> : Block<T> {
 
-    override val top: Tile
+    override val top: T
         get() = fetchSide(TOP)
 
-    override val bottom: Tile
+    override val bottom: T
         get() = fetchSide(BOTTOM)
 
-    override val front: Tile
+    override val front: T
         get() = fetchSide(FRONT)
 
-    override val back: Tile
+    override val back: T
         get() = fetchSide(BACK)
 
-    override val left: Tile
+    override val left: T
         get() = fetchSide(LEFT)
 
-    override val right: Tile
+    override val right: T
         get() = fetchSide(RIGHT)
 
     override fun isEmpty(): Boolean {

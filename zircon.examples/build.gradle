@@ -3,6 +3,5 @@ apply plugin: 'kotlin'
 archivesBaseName = 'zircon.examples'
 
 dependencies {
-    compile project(':zircon.jvm.libgdx')
     compile project(':zircon.jvm.swing')
 }

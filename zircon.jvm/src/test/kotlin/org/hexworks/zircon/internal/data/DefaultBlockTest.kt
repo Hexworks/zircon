@@ -14,7 +14,8 @@ class DefaultBlockTest {
     fun shouldProperlyFetchSide() {
         val top = Tile.createCharacterTile('x', StyleSetBuilder.newBuilder().build())
 
-        val target = BlockBuilder.create()
+        val target = BlockBuilder.newBuilder<Tile>()
+                .withEmptyTile(Tile.empty())
                 .withPosition(Position.defaultPosition())
                 .withTop(top)
                 .build()
@@ -27,7 +28,8 @@ class DefaultBlockTest {
     fun nonEmptyBlockShouldNotBeEmpty() {
         val top = Tile.createCharacterTile('x', StyleSetBuilder.newBuilder().build())
 
-        val target = BlockBuilder.create()
+        val target = BlockBuilder.newBuilder<Tile>()
+                .withEmptyTile(Tile.empty())
                 .withPosition(Position.defaultPosition())
                 .withTop(top)
                 .build()
@@ -37,7 +39,8 @@ class DefaultBlockTest {
 
     @Test
     fun emptyBlockShouldNotBeEmpty() {
-        val target = BlockBuilder.create()
+        val target = BlockBuilder.newBuilder<Tile>()
+                .withEmptyTile(Tile.empty())
                 .withPosition(Position.defaultPosition())
                 .build()
 

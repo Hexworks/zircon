@@ -2,11 +2,14 @@ package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.Application;
-import org.hexworks.zircon.api.builder.data.BlockBuilder;
+import org.hexworks.zircon.api.builder.component.GameComponentBuilder;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.ColorTheme;
+import org.hexworks.zircon.api.component.ComponentBuilder;
 import org.hexworks.zircon.api.component.Panel;
-import org.hexworks.zircon.api.data.*;
+import org.hexworks.zircon.api.data.Position;
+import org.hexworks.zircon.api.data.Size;
+import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.data.impl.Position3D;
 import org.hexworks.zircon.api.data.impl.Size3D;
 import org.hexworks.zircon.api.game.GameArea;
@@ -25,6 +28,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+@SuppressWarnings("ALL")
 public class GameAreaScrollingWithLayers {
 
     private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
@@ -97,15 +101,23 @@ public class GameAreaScrollingWithLayers {
         }
 
         final GameArea gameArea =
-                new InMemoryGameArea(
+                new InMemoryGameArea<Tile>(
+                        Blocks.newBuilder()
+                                .withPosition(Positions.default3DPosition())
+                                .withEmptyTile(Tiles.empty())
+                                .addLayer(Tiles.empty())
+                                .build(),
                         Sizes.from2DTo3D(virtualGameAreaSize, totalLevels),
-                        5,
-                        Tiles.empty());
+                        1);
 
-        final DefaultGameComponent gameComponent = Components.gameComponent()
+        ComponentBuilder builder = Components.gameComponent()
+                .withGameArea(gameArea)
+                .withTileset(BuiltInCP437TilesetResource.PHOEBUS_16X16);
+
+        final DefaultGameComponent gameComponent = ((GameComponentBuilder<Tile>) Components.gameComponent()
                 .withGameArea(gameArea)
                 .withVisibleSize(visibleGameAreaSize)
-                .withTileset(BuiltInCP437TilesetResource.PHOEBUS_16X16)
+                .withTileset(BuiltInCP437TilesetResource.PHOEBUS_16X16))
                 .build();
 
         screen.addComponent(gamePanel);
@@ -136,11 +148,12 @@ public class GameAreaScrollingWithLayers {
                 Position3D pos = Positions.from2DTo3D((position.plus(levelOffset)), currLevel.get());
                 gameArea.setBlockAt(
                         pos,
-                        BlockBuilder.Companion.create()
+                        Blocks.newBuilder()
                                 .addLayer(wall
                                         .withBackgroundColor(wall.getBackgroundColor().darkenByPercent(currPercent))
                                         .withForegroundColor(wall.getForegroundColor().darkenByPercent(currPercent)))
                                 .withPosition(pos)
+                                .withEmptyTile(Tiles.empty())
                                 .build());
             });
             currLevel.decrementAndGet();

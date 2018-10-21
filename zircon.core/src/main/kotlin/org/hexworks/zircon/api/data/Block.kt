@@ -8,21 +8,21 @@ import org.hexworks.zircon.api.data.impl.Position3D
  * consists of layers of [Tile]s.
  * The layers are ordered from bottom to top.
  */
-interface Block {
+interface Block<T : Tile> {
 
     val position: Position3D
-    val layers: MutableList<Tile>
-    val top: Tile
-    val bottom: Tile
-    val front: Tile
-    val back: Tile
-    val left: Tile
-    val right: Tile
+    val layers: MutableList<T>
+    val top: T
+    val bottom: T
+    val front: T
+    val back: T
+    val left: T
+    val right: T
 
     /**
      * Returns one of the [BlockSide]s of this [Block].
      */
-    fun fetchSide(side: BlockSide): Tile
+    fun fetchSide(side: BlockSide): T
 
     /**
      * Tells whether this [Block] is empty (all of its sides are [Tile.empty],
@@ -30,20 +30,22 @@ interface Block {
      */
     fun isEmpty(): Boolean
 
+    fun withPosition(position: Position3D): Block<T>
+
     companion object {
 
 
-        fun create(position: Position, tile: Tile = Tile.empty()): Block {
-            return BlockBuilder.create()
+        fun <T : Tile> create(position: Position, emptyTile: T): Block<T> {
+            return BlockBuilder.newBuilder<T>()
                     .withPosition(position)
-                    .addLayer(tile)
+                    .addLayer(emptyTile)
                     .build()
         }
 
-        fun create(position: Position3D, tile: Tile = Tile.empty()): Block {
-            return BlockBuilder.create()
+        fun <T : Tile> create(position: Position3D, emptyTile: T): Block<T> {
+            return BlockBuilder.newBuilder<T>()
                     .withPosition(position)
-                    .addLayer(tile)
+                    .addLayer(emptyTile)
                     .build()
         }
     }

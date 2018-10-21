@@ -4,7 +4,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.Cell
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.junit.Before
@@ -12,11 +15,18 @@ import org.junit.Test
 
 class InMemoryGameAreaTest {
 
-    lateinit var target: InMemoryGameArea
+    lateinit var target: InMemoryGameArea<Tile>
 
     @Before
     fun setUp() {
-        target = InMemoryGameArea(HUGE_SIZE, 3)
+        target = InMemoryGameArea(
+                size = HUGE_SIZE,
+                layersPerBlock = 3,
+                defaultBlock = BlockBuilder.newBuilder<Tile>()
+                        .withPosition(Position3D.defaultPosition())
+                        .withEmptyTile(Tile.empty())
+                        .withLayers(Tile.empty(), Tile.empty(), Tile.empty())
+                        .build())
         POSITIONS_IN_ORDER.shuffled().forEach {
             target.setBlockAt(it, BLOCK.withPosition(it).build())
         }
@@ -55,7 +65,10 @@ class InMemoryGameAreaTest {
     @Test
     fun shouldProperlyFetchBlockAtPosition() {
         assertThat(target.fetchBlockAt(LEVEL_7_POS_0).get())
-                .isEqualTo(BlockBuilder.create().withPosition(LEVEL_7_POS_0).withLayers(BLOCK_LAYERS    ).build())
+                .isEqualTo(BlockBuilder.newBuilder<Tile>()
+                        .withEmptyTile(Tile.empty())
+                        .withPosition(LEVEL_7_POS_0)
+                        .withLayers(BLOCK_LAYERS).build())
 
     }
 
@@ -63,7 +76,8 @@ class InMemoryGameAreaTest {
     fun shouldProperlySetBlockAtPosition() {
         target.setBlockAt(EMPTY_POSITION, OTHER_BLOCK.withPosition(EMPTY_POSITION).build())
         assertThat(target.fetchBlockAt(EMPTY_POSITION).get())
-                .isEqualTo(BlockBuilder.create()
+                .isEqualTo(BlockBuilder.newBuilder<Tile>()
+                        .withEmptyTile(Tile.empty())
                         .withPosition(EMPTY_POSITION)
                         .withLayers(OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER)
                         .build())
@@ -111,11 +125,13 @@ class InMemoryGameAreaTest {
 
 
         val BLOCK_LAYERS = listOf(BOTTOM_CHAR, MID_CHAR, TOP_CHAR)
-        val BLOCK = BlockBuilder.create()
+        val BLOCK = BlockBuilder.newBuilder<Tile>()
+                .withEmptyTile(Tile.empty())
                 .withLayers(BLOCK_LAYERS)
 
         val OTHER_BLOCK_LAYER = TileBuilder.newBuilder().withBackgroundColor(ANSITileColor.RED).build()
-        val OTHER_BLOCK = BlockBuilder.create()
+        val OTHER_BLOCK = BlockBuilder.newBuilder<Tile>()
+                .withEmptyTile(Tile.empty())
                 .withLayers(OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER)
 
         val EMPTY_POSITION = Position3D.create(323, 123, 654)
