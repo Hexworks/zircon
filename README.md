@@ -298,8 +298,7 @@ What happens here is that we:
 - Create a [TileGraphics] with the colors added and fill it with `~`s
 - Draw the graphic onto the [Screen]
 
-For more explanation about these jump to the [How Zircon works](https://github.com/Hexworks/zircon#how-zircon-works)
-section.
+For more explanation about these jump to the [Zircon Crash Course](https://github.com/Hexworks/zircon/wiki/A-Zircon-Crash-Course).
 
 > You can do so much more with [Screen]s. If interested then check out [A primer on Screens][screen-primer]
 on the Wiki! 
