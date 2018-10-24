@@ -428,7 +428,7 @@ in either the source code or the [Wiki](https://github.com/Hexworks/zircon/wiki)
 
 ### Layering
 Both the [TileGrid] and the [Screen] interfaces implement [Layerable] which means that you can add [Layer]s
-on top of them. Every [Layerable] can have an arbitrary amount of [Layer]s. [Layer]s are like [TileGraphics]s
+on top of them. Every [Layerable] can have an arbitrary amount of [Layer]s. [Layer]s are like [TileGraphics]
 and you can also have transparency in them which can be used to create fancy effects. [Component]s are also
 [Layer]s themselves. For more details check the [layers][layers] Wiki page.
 
