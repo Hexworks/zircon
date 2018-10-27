@@ -1,6 +1,10 @@
 package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.builder.component.ParagraphBuilder
+import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.graphics.StyleSet
 
 object LogAreaExample {
 
@@ -28,7 +32,8 @@ object LogAreaExample {
                 .build()
 
         logArea.addParagraph("This is a simple log row")
-        logArea.addParagraph("This is a further log row with a modifier", withTypingEffectSpeedInMs = 100)
+
+        logArea.addParagraph("This is a log row with a typing effect", withTypingEffectSpeedInMs = 200)
         logArea.addNewRows(2)
 
         logArea.addInlineText("This is a log row with a ")
@@ -43,9 +48,18 @@ object LogAreaExample {
         logArea.addParagraph("This is a long log row, which gets wrapped, since it is long")
 
         panel.addComponent(logArea)
+        screen.applyColorTheme(theme)
+
+        logArea.addNewRows(1)
+        val paragraphStyleSet = ComponentStyleSets.newBuilder()
+                .withDefaultStyle(StyleSet.create(ANSITileColor.YELLOW, TileColor.defaultBackgroundColor()))
+                .build()
+        logArea.addParagraph(ParagraphBuilder.newBuilder()
+                .withText("This is a log row with a different style")
+                .withComponentStyleSet(paragraphStyleSet)
+                .build())
 
         screen.display()
-        screen.applyColorTheme(theme)
 
 
     }
