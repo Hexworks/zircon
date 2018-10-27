@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.zircon.api.builder.component.LogAreaBuilder
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 
 /**
@@ -15,18 +14,40 @@ import org.hexworks.zircon.api.builder.component.ParagraphBuilder
  */
 interface LogArea : Component {
 
+    /**
+     * Adds a header
+     */
     fun addHeader(text: String, withNewLine: Boolean = true)
 
+    /**
+     * Adds a paragraph
+     */
     fun addParagraph(paragraph: String, withNewLine: Boolean = true, withTypingEffectSpeedInMs: Long = 0)
 
+    /**
+     * Adds a paragraph by providing a builder
+     * Hint: Use this function if you want to style a paragraph within a log area
+     */
     fun addParagraph(paragraphBuilder: ParagraphBuilder,  withNewLine: Boolean = true)
 
+    /**
+     * Adds an list item
+     */
     fun addListItem(item: String)
 
+    /**
+     * Adds an inline component, for instance a Button
+     */
     fun addInlineText(text: String)
 
+    /**
+     * Adds an inline component, for instance a Button
+     */
     fun addInlineComponent(component: Component)
 
+    /**
+     * Commits all inline elements, added with addInline...
+     */
     fun commitInlineElements()
 
     /**
@@ -39,9 +60,3 @@ interface LogArea : Component {
      */
     fun clear()
 }
-
-
-
-
-
-
