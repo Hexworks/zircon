@@ -19,7 +19,7 @@ interface LogArea : Component {
 
     fun addParagraph(paragraph: String, withNewLine: Boolean = true, withTypingEffectSpeedInMs: Long = 0)
 
-    fun addParagraph(paragraph: Paragraph, withNewLine: Boolean = true)
+    fun addParagraph(paragraphBuilder: ParagraphBuilder,  withNewLine: Boolean = true)
 
     fun addListItem(item: String)
 
