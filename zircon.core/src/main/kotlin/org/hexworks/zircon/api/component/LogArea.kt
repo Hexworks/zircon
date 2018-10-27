@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.component
 
 import org.hexworks.zircon.api.builder.component.LogAreaBuilder
+import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 
 /**
  * A [LogArea] provides the possibility to display messages.
@@ -17,6 +18,8 @@ interface LogArea : Component {
     fun addHeader(text: String, withNewLine: Boolean = true)
 
     fun addParagraph(paragraph: String, withNewLine: Boolean = true, withTypingEffectSpeedInMs: Long = 0)
+
+    fun addParagraph(paragraph: Paragraph, withNewLine: Boolean = true)
 
     fun addListItem(item: String)
 
