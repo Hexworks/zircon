@@ -34,6 +34,13 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
                 .build())
     }
 
+    override fun addParagraph(paragraph: Paragraph, withNewLine: Boolean) {
+        addLogElement(createTextBoxBuilder()
+                .addParagraph(paragraph, withNewLine)
+                .build())
+    }
+
+
     override fun addListItem(item: String) {
         addLogElement(createTextBoxBuilder()
                 .addListItem(item)
@@ -116,7 +123,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
             element.moveTo(Position.zero().relativeToBottomOf(lastChild))
         }
         addComponent(element)
-        element.applyColorTheme(currentTheme)
+        //element.applyColorTheme(currentTheme)
         render()
     }
 
