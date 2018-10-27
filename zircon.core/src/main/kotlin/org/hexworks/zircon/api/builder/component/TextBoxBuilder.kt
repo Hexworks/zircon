@@ -66,6 +66,17 @@ data class TextBoxBuilder(
         }
     }
 
+    @JvmOverloads
+    fun addParagraph(paragraphBuilder: ParagraphBuilder, withNewLine: Boolean = true) = also {
+        val paragraph = paragraphBuilder.build()
+        val size = Size.create(contentWidth, paragraph.text.length.div(contentWidth) + 1)
+        components.add(paragraph)
+        updateSizeAndPosition(size.height)
+        if (withNewLine) {
+            addNewLine()
+        }
+    }
+
     fun addListItem(item: String) = also {
         val size = Size.create(contentWidth, item.length.div(contentWidth) + 1)
         components.add(ListItemBuilder.newBuilder()
