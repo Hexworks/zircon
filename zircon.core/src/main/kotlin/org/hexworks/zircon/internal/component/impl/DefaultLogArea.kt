@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
+import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 import org.hexworks.zircon.api.builder.component.TextBoxBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.*
@@ -33,6 +34,13 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
                 .addParagraph(paragraph, withNewLine, withTypingEffectSpeedInMs)
                 .build())
     }
+
+    override fun addParagraph(paragraphBuilder: ParagraphBuilder, withNewLine: Boolean) {
+        addLogElement(createTextBoxBuilder()
+                .addParagraph(paragraphBuilder, withNewLine)
+                .build())
+    }
+
 
     override fun addListItem(item: String) {
         addLogElement(createTextBoxBuilder()
@@ -116,7 +124,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
             element.moveTo(Position.zero().relativeToBottomOf(lastChild))
         }
         addComponent(element)
-        element.applyColorTheme(currentTheme)
+        //element.applyColorTheme(currentTheme)
         render()
     }
 
