@@ -57,7 +57,7 @@ object LogAreaExample {
         logArea.addParagraph(ParagraphBuilder.newBuilder()
                 .withText("This is a log row with a different style")
                 .withComponentStyleSet(paragraphStyleSet)
-                .build())
+        )
 
         screen.display()
 

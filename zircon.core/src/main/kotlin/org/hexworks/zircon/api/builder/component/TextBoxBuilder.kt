@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.TextBox
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
@@ -68,7 +67,8 @@ data class TextBoxBuilder(
     }
 
     @JvmOverloads
-    fun addParagraph(paragraph: Paragraph, withNewLine: Boolean = true) = also {
+    fun addParagraph(paragraphBuilder: ParagraphBuilder, withNewLine: Boolean = true) = also {
+        val paragraph = paragraphBuilder.build()
         val size = Size.create(contentWidth, paragraph.text.length.div(contentWidth) + 1)
         components.add(paragraph)
         updateSizeAndPosition(size.height)
