@@ -55,7 +55,7 @@ object LogAreaExample {
                 .withDefaultStyle(StyleSet.create(ANSITileColor.YELLOW, TileColor.defaultBackgroundColor()))
                 .build()
         logArea.addParagraph(ParagraphBuilder.newBuilder()
-                .withText("This is a log row with a different style")
+                .withText("This is a long log row, which gets wrapped, since it is long with a different style")
                 .withComponentStyleSet(paragraphStyleSet)
         )
 
