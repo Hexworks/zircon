@@ -11,7 +11,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultParagraph
 import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 
 data class ParagraphBuilder(
-        private var text: String = "",
+        internal var text: String = "",
         private var typingEffectSpeedInMs: Long = 0,
         private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
     : BaseComponentBuilder<Paragraph, ParagraphBuilder>(commonComponentProperties) {
