@@ -68,8 +68,11 @@ data class TextBoxBuilder(
 
     @JvmOverloads
     fun addParagraph(paragraphBuilder: ParagraphBuilder, withNewLine: Boolean = true) = also {
-        val paragraph = paragraphBuilder.build()
-        val size = Size.create(contentWidth, paragraph.text.length.div(contentWidth) + 1)
+        val size = Size.create(contentWidth, paragraphBuilder.text.length.div(contentWidth) + 1)
+        val paragraph = paragraphBuilder
+                .withPosition(nextPosition)
+                .withSize(size)
+                .build()
         components.add(paragraph)
         updateSizeAndPosition(size.height)
         if (withNewLine) {
