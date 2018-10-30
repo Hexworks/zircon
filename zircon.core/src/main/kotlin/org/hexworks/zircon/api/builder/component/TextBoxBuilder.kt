@@ -20,7 +20,7 @@ data class TextBoxBuilder(
         private var nextPosition: Position = Position.defaultPosition(),
         private var currentSize: Size = Size.zero(),
         private val components: MutableList<Component> = mutableListOf(),
-        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<TextBox> = CommonComponentProperties())
     : BaseComponentBuilder<TextBox, TextBoxBuilder>(commonComponentProperties) {
 
     private val inlineElements = ThreadSafeQueueFactory.create<Component>()

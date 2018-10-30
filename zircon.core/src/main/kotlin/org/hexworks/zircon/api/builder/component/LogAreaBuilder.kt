@@ -12,7 +12,7 @@ import kotlin.jvm.JvmStatic
 
 data class LogAreaBuilder(
         private var logRowHistorySize: Int = 100,
-        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<LogArea> = CommonComponentProperties())
     : BaseComponentBuilder<LogArea, LogAreaBuilder>(commonComponentProperties) {
 
 

@@ -12,7 +12,7 @@ import kotlin.jvm.JvmStatic
 
 data class HeaderBuilder(
         private var text: String = "",
-        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<Header> = CommonComponentProperties())
     : BaseComponentBuilder<Header, HeaderBuilder>(commonComponentProperties) {
 
     fun withText(text: String) = also {

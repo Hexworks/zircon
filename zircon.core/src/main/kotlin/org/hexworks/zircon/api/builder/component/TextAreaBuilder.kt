@@ -12,7 +12,7 @@ import kotlin.jvm.JvmStatic
 
 data class TextAreaBuilder(
         private var text: String = "",
-        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<TextArea> = CommonComponentProperties())
     : BaseComponentBuilder<TextArea, TextAreaBuilder>(commonComponentProperties) {
 
     fun withText(text: String) = also {

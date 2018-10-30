@@ -12,7 +12,7 @@ import org.hexworks.zircon.platform.util.SystemUtils
 
 data class ListItemBuilder(
         private var text: String = "",
-        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<ListItem> = CommonComponentProperties())
     : BaseComponentBuilder<ListItem, ListItemBuilder>(commonComponentProperties) {
 
     override fun withTitle(title: String) = also { }

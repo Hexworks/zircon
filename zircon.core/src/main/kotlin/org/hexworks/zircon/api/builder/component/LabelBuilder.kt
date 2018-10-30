@@ -13,7 +13,7 @@ import kotlin.jvm.JvmStatic
 
 data class LabelBuilder(
         private var text: String = "",
-        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<Label> = CommonComponentProperties())
     : BaseComponentBuilder<Label, LabelBuilder>(commonComponentProperties) {
 
     override fun withTitle(title: String) = also { }

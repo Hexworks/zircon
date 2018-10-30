@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.component
 
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
@@ -26,7 +27,16 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
      * wrapped with a shadow.
      */
     val wrappedWithShadow: Boolean
+
+    /**
+     * The renderers for the component decorations (if any).
+     */
     val decorationRenderers: List<ComponentDecorationRenderer>
+
+    /**
+     * The renderer of the [Component].
+     */
+    val componentRenderer: ComponentRenderer<T>
 
     /**
      * Sets the [Position] where the resulting [Component] will
@@ -63,6 +73,11 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
      * Sets the [ComponentDecorationRenderer]s for the resulting [Component].
      */
     fun withDecorationRenderers(vararg renderers: ComponentDecorationRenderer): U
+
+    /**
+     * Sets the [ComponentRenderer] for the resulting [Component].
+     */
+    fun withComponentRenderer(componentRenderer: ComponentRenderer<T>): U
 
     /**
      * Sets whether the resulting [Component] will be

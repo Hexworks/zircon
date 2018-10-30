@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.component.data
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
@@ -14,7 +15,7 @@ class CommonComponentPropertiesTest {
 
     @Test
     fun shouldHaveProperDefaults() {
-        val result = CommonComponentProperties()
+        val result = CommonComponentProperties<Component>()
 
         val componentStyleSet: ComponentStyleSet = ComponentStyleSet.defaultStyleSet()
         val tileset: TilesetResource = RuntimeConfig.config.defaultTileset
@@ -40,17 +41,17 @@ class CommonComponentPropertiesTest {
 
     @Test
     fun shouldProperlyReportIfHasTitleWhenItIsEmpty() {
-        assertThat(CommonComponentProperties().hasTitle()).isFalse()
+        assertThat(CommonComponentProperties<Component>().hasTitle()).isFalse()
     }
 
     @Test
     fun shouldProperlyReportIfHasTitleWhenItIsBlank() {
-        assertThat(CommonComponentProperties(title = " ").hasTitle()).isFalse()
+        assertThat(CommonComponentProperties<Component>(title = " ").hasTitle()).isFalse()
     }
 
     @Test
     fun shouldProperlyReportIfHasTitleWhenItIsNotBlank() {
-        assertThat(CommonComponentProperties(title = "foo").hasTitle()).isTrue()
+        assertThat(CommonComponentProperties<Component>(title = "foo").hasTitle()).isTrue()
     }
 
 }
