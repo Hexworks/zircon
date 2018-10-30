@@ -27,7 +27,7 @@ import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
 
 class DefaultRadioButtonGroup constructor(
         componentMetadata: ComponentMetadata,
-        private val renderingStrategy: ComponentRenderingStrategy<DefaultRadioButtonGroup>)
+        private val renderingStrategy: ComponentRenderingStrategy<RadioButtonGroup>)
     : RadioButtonGroup,
         Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
         Observable<Selection> by DefaultObservable(),

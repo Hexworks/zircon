@@ -6,7 +6,9 @@ import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.component.impl.DefaultButton
@@ -16,9 +18,10 @@ import org.hexworks.zircon.internal.component.renderer.DefaultLabelRenderer
 import org.junit.Before
 import org.junit.Test
 
+@Suppress("UNCHECKED_CAST")
 class DefaultComponentRenderingStrategyTest {
 
-    lateinit var target: DefaultComponentRenderingStrategy<DefaultButton>
+    lateinit var target: DefaultComponentRenderingStrategy<Button>
 
     @Before
     fun setUp() {
@@ -26,7 +29,7 @@ class DefaultComponentRenderingStrategyTest {
                 decorationRenderers = listOf(
                         ShadowDecorationRenderer(),
                         BoxDecorationRenderer()),
-                componentRenderer = DefaultButtonRenderer())
+                componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>)
     }
 
     @Test
@@ -37,12 +40,12 @@ class DefaultComponentRenderingStrategyTest {
                 .build()
                 .fill(Tile.defaultTile().withCharacter('_'))
 
-        val target = DefaultComponentRenderingStrategy(
+        val target: DefaultComponentRenderingStrategy<Button> = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(
                         ShadowDecorationRenderer(),
                         BoxDecorationRenderer(),
                         ButtonSideDecorationRenderer()),
-                componentRenderer = DefaultButtonRenderer())
+                componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>)
 
         val btn = DefaultButton(
                 componentMetadata = ComponentMetadata(
@@ -80,7 +83,7 @@ class DefaultComponentRenderingStrategyTest {
                 text = "Long text",
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
-                        componentRenderer = DefaultLabelRenderer()))
+                        componentRenderer = DefaultLabelRenderer() as ComponentRenderer<Label>))
 
         val target = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),

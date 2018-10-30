@@ -174,7 +174,8 @@ public class ColorThemeSwitcher {
         final List<ColorThemeResource> otherOptions = Arrays.stream(ColorThemeResource.values())
                 .filter((option) -> !option.name().startsWith("SOLARIZED") &&
                         !option.name().startsWith("MONOKAI") &&
-                        !option.name().startsWith("ZENBURN"))
+                        !option.name().startsWith("ZENBURN") &&
+                        !option.name().startsWith("EMPTY"))
                 .collect(Collectors.toList());
 
         final RadioButtonGroup slOptions = Components.radioButtonGroup()

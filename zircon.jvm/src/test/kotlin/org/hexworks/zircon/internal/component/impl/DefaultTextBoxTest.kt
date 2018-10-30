@@ -4,11 +4,14 @@ import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.TextBox
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.junit.Before
 
+@Suppress("UNCHECKED_CAST")
 class DefaultTextBoxTest : ComponentImplementationTest<DefaultTextBox>() {
 
     override lateinit var target: DefaultTextBox
@@ -28,7 +31,7 @@ class DefaultTextBoxTest : ComponentImplementationTest<DefaultTextBox>() {
         target = DefaultTextBox(
                 componentMetadata = COMMON_COMPONENT_METADATA,
                 renderingStrategy = DefaultComponentRenderingStrategy(
-                        componentRenderer = rendererStub))
+                        componentRenderer = rendererStub as ComponentRenderer<TextBox>))
     }
 
 }

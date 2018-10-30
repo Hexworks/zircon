@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
 import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
 object PanelsExample {
 
@@ -23,6 +24,7 @@ object PanelsExample {
         screen.addComponent(Components.panel()
                 .wrapWithBox(true)
                 .withSize(Sizes.create(18, 5))
+                .withComponentRenderer(NoOpComponentRenderer())
                 .withPosition(Positions.create(1, 1)))
 
         screen.addComponent(Components.panel()

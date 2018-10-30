@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
 
 class DefaultComponentRenderingStrategy<T : Component>(
-        override val componentRenderer: ComponentRenderer<T>,
+        override val componentRenderer: ComponentRenderer<in T>,
         override val decorationRenderers: List<ComponentDecorationRenderer> = listOf(),
         override val componentPostProcessors: List<ComponentPostProcessor<T>> = listOf()) : ComponentRenderingStrategy<T> {
 

@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 
 open class DefaultPanel(componentMetadata: ComponentMetadata,
                         override val title: String,
-                        private val renderingStrategy: ComponentRenderingStrategy<DefaultPanel>)
+                        private val renderingStrategy: ComponentRenderingStrategy<Panel>)
     : Panel, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {

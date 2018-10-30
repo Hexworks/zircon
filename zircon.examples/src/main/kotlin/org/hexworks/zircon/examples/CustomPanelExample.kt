@@ -11,14 +11,14 @@ import org.hexworks.zircon.internal.component.renderer.DefaultPanelRenderer
 
 object CustomPanelExample {
 
-    class CustomPanel(title: String,
-                      componentMetadata: ComponentMetadata) : DefaultPanel(
-            componentMetadata = componentMetadata,
-            title = title,
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                    decorationRenderers = listOf(BoxDecorationRenderer(
-                            title = title)),
-                    componentRenderer = DefaultPanelRenderer()))
+//    class CustomPanel(title: String,
+//                      componentMetadata: ComponentMetadata) : DefaultPanel(
+//            componentMetadata = componentMetadata,
+//            title = title,
+//            renderingStrategy = DefaultComponentRenderingStrategy(
+//                    decorationRenderers = listOf(BoxDecorationRenderer(
+//                            title = title)),
+//                    componentRenderer = DefaultPanelRenderer()))
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -30,13 +30,13 @@ object CustomPanelExample {
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        screen.addComponent(CustomPanel(
-                title = "Whatever",
-                componentMetadata = ComponentMetadata(
-                        position = Positions.zero(),
-                        size = Sizes.create(20, 10),
-                        tileset = CP437TilesetResources.acorn8X16(),
-                        componentStyleSet = ComponentStyleSet.defaultStyleSet())))
+//        screen.addComponent(CustomPanel(
+//                title = "Whatever",
+//                componentMetadata = ComponentMetadata(
+//                        position = Positions.zero(),
+//                        size = Sizes.create(20, 10),
+//                        tileset = CP437TilesetResources.acorn8X16(),
+//                        componentStyleSet = ComponentStyleSet.defaultStyleSet())))
 
         screen.display()
         screen.applyColorTheme(ColorThemeResource.CYBERPUNK.getTheme())

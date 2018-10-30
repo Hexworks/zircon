@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.component.TextBox
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -14,13 +15,15 @@ import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
+@Suppress("UNCHECKED_CAST")
 data class TextBoxBuilder(
         private var text: String = "",
         private var contentWidth: Int = 0,
         private var nextPosition: Position = Position.defaultPosition(),
         private var currentSize: Size = Size.zero(),
         private val components: MutableList<Component> = mutableListOf(),
-        private val commonComponentProperties: CommonComponentProperties<TextBox> = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<TextBox> = CommonComponentProperties(
+                componentRenderer = DefaultTextBoxRenderer()))
     : BaseComponentBuilder<TextBox, TextBoxBuilder>(commonComponentProperties) {
 
     private val inlineElements = ThreadSafeQueueFactory.create<Component>()
@@ -148,7 +151,7 @@ data class TextBoxBuilder(
                         tileset = tileset),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = DefaultTextBoxRenderer())).also { textBox ->
+                        componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<TextBox>)).also { textBox ->
             components.forEach {
                 textBox.addComponent(it)
             }

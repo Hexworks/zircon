@@ -4,15 +4,18 @@ import org.hexworks.zircon.api.component.ListItem
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultListItem
 import org.hexworks.zircon.internal.component.renderer.DefaultListItemRenderer
 import org.hexworks.zircon.platform.util.SystemUtils
 
+@Suppress("UNCHECKED_CAST")
 data class ListItemBuilder(
         private var text: String = "",
-        private val commonComponentProperties: CommonComponentProperties<ListItem> = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<ListItem> = CommonComponentProperties(
+                componentRenderer = DefaultListItemRenderer()))
     : BaseComponentBuilder<ListItem, ListItemBuilder>(commonComponentProperties) {
 
     override fun withTitle(title: String) = also { }
@@ -47,7 +50,7 @@ data class ListItemBuilder(
                 text = fixedText,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = DefaultListItemRenderer()))
+                        componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<ListItem>))
     }
 
     override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())
