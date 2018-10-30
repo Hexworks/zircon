@@ -13,7 +13,7 @@ import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 data class ParagraphBuilder(
         internal var text: String = "",
         private var typingEffectSpeedInMs: Long = 0,
-        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<Paragraph> = CommonComponentProperties())
     : BaseComponentBuilder<Paragraph, ParagraphBuilder>(commonComponentProperties) {
 
     override fun withTitle(title: String) = also { }

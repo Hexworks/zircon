@@ -13,7 +13,7 @@ import kotlin.jvm.JvmStatic
 data class CheckBoxBuilder(
         private var text: String = "",
         private var width: Int = -1,
-        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<CheckBox> = CommonComponentProperties())
     : BaseComponentBuilder<CheckBox, CheckBoxBuilder>(commonComponentProperties) {
 
     fun withText(text: String) = also {

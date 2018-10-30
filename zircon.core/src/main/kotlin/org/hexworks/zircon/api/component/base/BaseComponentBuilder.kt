@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.component.ComponentBuilder
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
 import org.hexworks.zircon.api.data.Position
@@ -14,7 +15,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 
 @Suppress("UNCHECKED_CAST")
 abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
-        private val props: CommonComponentProperties) : ComponentBuilder<T, U> {
+        private val props: CommonComponentProperties<T>) : ComponentBuilder<T, U> {
 
     override val position: Position
         get() = props.position
@@ -42,6 +43,9 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
 
     override val decorationRenderers: List<ComponentDecorationRenderer>
         get() = props.decorationRenderers
+
+    override val componentRenderer: ComponentRenderer<T>
+        get() = props.componentRenderer
 
     override fun withTitle(title: String): U {
         props.title = title
@@ -85,6 +89,11 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
 
     override fun withDecorationRenderers(vararg renderers: ComponentDecorationRenderer): U {
         props.decorationRenderers = renderers.toList()
+        return this as U
+    }
+
+    override fun withComponentRenderer(componentRenderer: ComponentRenderer<T>): U {
+        props.componentRenderer = componentRenderer
         return this as U
     }
 

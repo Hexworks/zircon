@@ -11,7 +11,7 @@ import org.hexworks.zircon.internal.component.renderer.DefaultPanelRenderer
 import kotlin.jvm.JvmStatic
 
 data class PanelBuilder(
-        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<Panel> = CommonComponentProperties())
     : BaseComponentBuilder<Panel, PanelBuilder>(commonComponentProperties) {
 
     override fun build(): Panel {

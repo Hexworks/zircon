@@ -21,7 +21,7 @@ data class GameComponentBuilder<T : Tile>(
         private var gameArea: Maybe<GameArea<T>> = Maybe.empty(),
         private var projectionMode: ProjectionMode = DEFAULT_PROJECTION_MODE,
         private var visibleSize: Size3D = Size3D.one(),
-        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<GameComponent<T>> = CommonComponentProperties())
     : BaseComponentBuilder<GameComponent<T>, GameComponentBuilder<T>>(commonComponentProperties) {
 
     override fun createCopy() = copy()

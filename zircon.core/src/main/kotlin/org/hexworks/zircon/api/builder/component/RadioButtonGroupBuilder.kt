@@ -11,7 +11,7 @@ import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRe
 import kotlin.jvm.JvmStatic
 
 data class RadioButtonGroupBuilder(
-        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<RadioButtonGroup> = CommonComponentProperties())
     : BaseComponentBuilder<RadioButtonGroup, RadioButtonGroupBuilder>(commonComponentProperties) {
 
     override fun build(): RadioButtonGroup {

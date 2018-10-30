@@ -15,7 +15,7 @@ import kotlin.jvm.JvmStatic
 data class ButtonBuilder(
         private var text: String = "",
         private var wrapSides: Boolean = true,
-        private val commonComponentProperties: CommonComponentProperties = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<Button> = CommonComponentProperties())
     : BaseComponentBuilder<Button, ButtonBuilder>(commonComponentProperties) {
 
     override fun withTitle(title: String): ButtonBuilder {
