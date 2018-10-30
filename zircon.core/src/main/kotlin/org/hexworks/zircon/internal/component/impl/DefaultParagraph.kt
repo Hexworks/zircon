@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.util.Maybe
 
 class DefaultParagraph(componentMetadata: ComponentMetadata,
                        override val text: String,
-                       private val renderingStrategy: ComponentRenderingStrategy<DefaultParagraph>)
+                       private val renderingStrategy: ComponentRenderingStrategy<Paragraph>)
     : Paragraph, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {

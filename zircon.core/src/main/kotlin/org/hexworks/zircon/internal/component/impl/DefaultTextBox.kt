@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 
 class DefaultTextBox(componentMetadata: ComponentMetadata,
-                     private val renderingStrategy: ComponentRenderingStrategy<DefaultTextBox>)
+                     private val renderingStrategy: ComponentRenderingStrategy<TextBox>)
     : TextBox, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {

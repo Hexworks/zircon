@@ -4,8 +4,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
 import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -20,6 +22,7 @@ import org.hexworks.zircon.platform.util.SystemUtils
 import org.junit.Before
 import org.junit.Test
 
+@Suppress("UNCHECKED_CAST")
 class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
 
     override lateinit var target: DefaultTextArea
@@ -47,7 +50,7 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
         target = DefaultTextArea(
                 componentMetadata = COMMON_COMPONENT_METADATA,
                 renderingStrategy = DefaultComponentRenderingStrategy(
-                        componentRenderer = rendererStub),
+                        componentRenderer = rendererStub as ComponentRenderer<TextArea>),
                 initialText = TEXT)
     }
 
@@ -189,7 +192,7 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
         return DefaultTextArea(
                 componentMetadata = COMMON_COMPONENT_METADATA,
                 renderingStrategy = DefaultComponentRenderingStrategy(
-                        componentRenderer = rendererStub),
+                        componentRenderer = rendererStub as ComponentRenderer<TextArea>),
                 initialText = MULTI_LINE_TEXT)
     }
 

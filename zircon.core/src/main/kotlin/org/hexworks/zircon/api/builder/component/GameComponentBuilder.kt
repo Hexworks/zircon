@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.GameArea
@@ -36,6 +37,10 @@ data class GameComponentBuilder<T : Tile>(
 
     fun withVisibleSize(visibleSize: Size3D) = also {
         this.visibleSize = visibleSize
+    }
+
+    override fun withComponentRenderer(componentRenderer: ComponentRenderer<GameComponent<T>>): GameComponentBuilder<T> {
+        throw UnsupportedOperationException("Can't set a custom component renderer for a game component.")
     }
 
     override fun build(): DefaultGameComponent<T> {

@@ -21,7 +21,7 @@ data class CommonComponentProperties<T : Component>(
         var wrapWithShadow: Boolean = false,
         var title: String = "",
         var decorationRenderers: List<ComponentDecorationRenderer> = listOf(),
-        var componentRenderer: ComponentRenderer<T> = NoOpComponentRenderer()) {
+        var componentRenderer: ComponentRenderer<out T> = NoOpComponentRenderer()) {
 
     fun hasTitle() = title.isNotBlank()
 }

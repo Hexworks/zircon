@@ -4,15 +4,18 @@ import org.hexworks.zircon.api.component.Header
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultHeader
 import org.hexworks.zircon.internal.component.renderer.DefaultHeaderRenderer
 import kotlin.jvm.JvmStatic
 
+@Suppress("UNCHECKED_CAST")
 data class HeaderBuilder(
         private var text: String = "",
-        private val commonComponentProperties: CommonComponentProperties<Header> = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<Header> = CommonComponentProperties(
+                componentRenderer = DefaultHeaderRenderer()))
     : BaseComponentBuilder<Header, HeaderBuilder>(commonComponentProperties) {
 
     fun withText(text: String) = also {
@@ -40,7 +43,7 @@ data class HeaderBuilder(
                 text = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = DefaultHeaderRenderer()))
+                        componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<Header>))
     }
 
     override fun createCopy() = copy()

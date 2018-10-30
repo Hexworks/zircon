@@ -45,7 +45,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         get() = props.decorationRenderers
 
     override val componentRenderer: ComponentRenderer<T>
-        get() = props.componentRenderer
+        get() = props.componentRenderer as ComponentRenderer<T>
 
     override fun withTitle(title: String): U {
         props.title = title

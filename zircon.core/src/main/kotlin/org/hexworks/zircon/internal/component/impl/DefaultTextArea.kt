@@ -30,7 +30,7 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 class DefaultTextArea constructor(
         initialText: String,
         componentMetadata: ComponentMetadata,
-        private val renderingStrategy: ComponentRenderingStrategy<DefaultTextArea>)
+        private val renderingStrategy: ComponentRenderingStrategy<TextArea>)
     : TextArea,
         Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
         DefaultComponent(

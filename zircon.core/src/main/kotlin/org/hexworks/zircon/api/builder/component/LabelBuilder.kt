@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultLabel
@@ -11,9 +12,11 @@ import org.hexworks.zircon.internal.component.renderer.DefaultLabelRenderer
 import org.hexworks.zircon.platform.util.SystemUtils
 import kotlin.jvm.JvmStatic
 
+@Suppress("UNCHECKED_CAST")
 data class LabelBuilder(
         private var text: String = "",
-        private val commonComponentProperties: CommonComponentProperties<Label> = CommonComponentProperties())
+        private val commonComponentProperties: CommonComponentProperties<Label> = CommonComponentProperties(
+                componentRenderer = DefaultLabelRenderer()))
     : BaseComponentBuilder<Label, LabelBuilder>(commonComponentProperties) {
 
     override fun withTitle(title: String) = also { }
@@ -48,7 +51,7 @@ data class LabelBuilder(
                 text = fixedText,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = DefaultLabelRenderer()))
+                        componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<Label>))
     }
 
     override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())

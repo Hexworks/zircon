@@ -19,7 +19,7 @@ interface ComponentRenderingStrategy<T : Component> {
      * The [ComponentRenderer] which will be used to render
      * the *content* of this [Component].
      */
-    val componentRenderer: ComponentRenderer<T>
+    val componentRenderer: ComponentRenderer<in T>
     /**
      * The [ComponentPostProcessor]s this [Component] has.
      */
