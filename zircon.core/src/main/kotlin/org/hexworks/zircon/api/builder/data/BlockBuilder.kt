@@ -4,9 +4,7 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockSide
 import org.hexworks.zircon.api.data.BlockSide.*
-import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.data.DefaultBlock
@@ -21,7 +19,6 @@ import org.hexworks.zircon.internal.data.DefaultBlock
  */
 @Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 data class BlockBuilder<T : Tile>(
-        private var position: Position3D = Position3D.unknown(),
         private var emptyTile: Maybe<T> = Maybe.empty(),
         private var top: Maybe<T> = Maybe.empty(),
         private var bottom: Maybe<T> = Maybe.empty(),
@@ -36,14 +33,6 @@ data class BlockBuilder<T : Tile>(
 
     fun withEmptyTile(tile: T) = also {
         this.emptyTile = Maybe.of(tile)
-    }
-
-    fun withPosition(position: Position) = also {
-        this.position = Position3D.from2DPosition(position)
-    }
-
-    fun withPosition(position: Position3D) = also {
-        this.position = position
     }
 
     fun withSide(blockSide: BlockSide, tile: T) = also {
@@ -105,9 +94,6 @@ data class BlockBuilder<T : Tile>(
     }
 
     override fun build(): Block<T> {
-        require(position !== Position3D.unknown()) {
-            "Can't build a Block with a missing Position3D."
-        }
         require(layers.size <= layerCount) {
             "Can't have more layers in a Block than the expected layer count."
         }
@@ -121,7 +107,6 @@ data class BlockBuilder<T : Tile>(
             }
         }
         return DefaultBlock(
-                position = position,
                 layers = layers.toMutableList(),
                 sides = sides.toMap(),
                 emptyTile = emptyTile.get())

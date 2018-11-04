@@ -7,8 +7,9 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
-import org.hexworks.zircon.api.game.BaseGameArea
+import org.hexworks.zircon.api.game.Cell3D
 import org.hexworks.zircon.api.game.GameArea
+import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.util.Maybe
 import java.util.*
@@ -36,11 +37,11 @@ object CustomGameAreaExample {
         }
 
         override fun fetchBlockOrDefault(position: Position3D): Block<Tile> {
-            return blocks.getOrDefault(position, defaultBlock.withPosition(position))
+            return blocks.getOrDefault(position, defaultBlock)
         }
 
-        override fun fetchBlocks(): Iterable<Block<Tile>> {
-            return ArrayList(blocks.values)
+        override fun fetchBlocks(): Iterable<Cell3D<Tile, Block<Tile>>> {
+            return ArrayList(blocks.map { Cell3D.create(it.key, it.value) })
         }
 
         override fun setBlockAt(position: Position3D, block: Block<Tile>) {
@@ -114,7 +115,6 @@ object CustomGameAreaExample {
             val pos3D = Positions.from2DTo3D(pos)
             gameArea.setBlockAt(pos3D, Blocks.newBuilder<Tile>()
                     .addLayer(tile)
-                    .withPosition(pos3D)
                     .build())
         }
     }

@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.data.impl.Position3D
  */
 interface Block<T : Tile> {
 
-    val position: Position3D
     val layers: MutableList<T>
     val top: T
     val bottom: T
@@ -30,21 +29,11 @@ interface Block<T : Tile> {
      */
     fun isEmpty(): Boolean
 
-    fun withPosition(position: Position3D): Block<T>
-
     companion object {
 
 
-        fun <T : Tile> create(position: Position, emptyTile: T): Block<T> {
+        fun <T : Tile> create(emptyTile: T): Block<T> {
             return BlockBuilder.newBuilder<T>()
-                    .withPosition(position)
-                    .addLayer(emptyTile)
-                    .build()
-        }
-
-        fun <T : Tile> create(position: Position3D, emptyTile: T): Block<T> {
-            return BlockBuilder.newBuilder<T>()
-                    .withPosition(position)
                     .addLayer(emptyTile)
                     .build()
         }

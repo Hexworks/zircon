@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.data.BlockSide
-import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.junit.Test
 
@@ -16,7 +15,6 @@ class DefaultBlockTest {
 
         val target = BlockBuilder.newBuilder<Tile>()
                 .withEmptyTile(Tile.empty())
-                .withPosition(Position.defaultPosition())
                 .withTop(top)
                 .build()
 
@@ -30,7 +28,6 @@ class DefaultBlockTest {
 
         val target = BlockBuilder.newBuilder<Tile>()
                 .withEmptyTile(Tile.empty())
-                .withPosition(Position.defaultPosition())
                 .withTop(top)
                 .build()
 
@@ -41,7 +38,6 @@ class DefaultBlockTest {
     fun emptyBlockShouldNotBeEmpty() {
         val target = BlockBuilder.newBuilder<Tile>()
                 .withEmptyTile(Tile.empty())
-                .withPosition(Position.defaultPosition())
                 .build()
 
         assertThat(target.isEmpty()).isTrue()

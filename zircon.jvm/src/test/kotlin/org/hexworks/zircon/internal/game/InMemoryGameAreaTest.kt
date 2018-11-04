@@ -20,12 +20,11 @@ class InMemoryGameAreaTest {
                 size = HUGE_SIZE,
                 layersPerBlock = 3,
                 defaultBlock = BlockBuilder.newBuilder<Tile>()
-                        .withPosition(Position3D.defaultPosition())
                         .withEmptyTile(Tile.empty())
                         .withLayers(Tile.empty(), Tile.empty(), Tile.empty())
                         .build())
         POSITIONS_IN_ORDER.shuffled().forEach {
-            target.setBlockAt(it, BLOCK.withPosition(it).build())
+            target.setBlockAt(it, BLOCK.build())
         }
     }
 
@@ -64,18 +63,16 @@ class InMemoryGameAreaTest {
         assertThat(target.fetchBlockAt(LEVEL_7_POS_0).get())
                 .isEqualTo(BlockBuilder.newBuilder<Tile>()
                         .withEmptyTile(Tile.empty())
-                        .withPosition(LEVEL_7_POS_0)
                         .withLayers(BLOCK_LAYERS).build())
 
     }
 
     @Test
     fun shouldProperlySetBlockAtPosition() {
-        target.setBlockAt(EMPTY_POSITION, OTHER_BLOCK.withPosition(EMPTY_POSITION).build())
+        target.setBlockAt(EMPTY_POSITION, OTHER_BLOCK.build())
         assertThat(target.fetchBlockAt(EMPTY_POSITION).get())
                 .isEqualTo(BlockBuilder.newBuilder<Tile>()
                         .withEmptyTile(Tile.empty())
-                        .withPosition(EMPTY_POSITION)
                         .withLayers(OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER, OTHER_BLOCK_LAYER)
                         .build())
 
@@ -89,7 +86,7 @@ class InMemoryGameAreaTest {
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotBeAbleToSetBlockAtPositionWhichIsNotWithinSize() {
         val badPos = Position3D.create(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
-        target.setBlockAt(badPos, BLOCK.withPosition(badPos).build())
+        target.setBlockAt(badPos, BLOCK.build())
     }
 
     @Test
