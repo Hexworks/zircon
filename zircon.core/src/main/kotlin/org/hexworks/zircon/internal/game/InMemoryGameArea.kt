@@ -9,12 +9,12 @@ import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.util.TreeMap
 import org.hexworks.zircon.platform.factory.TreeMapFactory
 
-class InMemoryGameArea<T : Tile>(
-        override val defaultBlock: Block<T>,
+class InMemoryGameArea<T: Tile, B : Block<T>>(
+        override val defaultBlock: B,
         override val size: Size3D,
-        private val layersPerBlock: Int) : GameArea<T> {
+        private val layersPerBlock: Int) : GameArea<T, B> {
 
-    private val blocks: TreeMap<Position3D, Block<T>> = TreeMapFactory.create()
+    private val blocks: TreeMap<Position3D, B> = TreeMapFactory.create()
 
     override fun layersPerBlock() = layersPerBlock
 
@@ -22,18 +22,19 @@ class InMemoryGameArea<T : Tile>(
         return blocks.containsKey(position)
     }
 
-    override fun fetchBlockAt(position: Position3D): Maybe<Block<T>> {
+    override fun fetchBlockAt(position: Position3D): Maybe<B> {
         return Maybe.ofNullable(blocks[position])
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun fetchBlockOrDefault(position: Position3D) =
-            blocks.getOrDefault(position, defaultBlock.withPosition(position))
+            blocks.getOrDefault(position, defaultBlock.withPosition(position) as B)
 
-    override fun fetchBlocks(): Iterable<Block<T>> {
+    override fun fetchBlocks(): Iterable<B> {
         return blocks.values.toList()
     }
 
-    override fun setBlockAt(position: Position3D, block: Block<T>) {
+    override fun setBlockAt(position: Position3D, block: B) {
         require(size.containsPosition(position)) {
             "The supplied position ($position) is not within the size ($size) of this game area."
         }

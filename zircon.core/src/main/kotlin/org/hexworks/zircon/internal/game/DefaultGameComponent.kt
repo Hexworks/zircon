@@ -28,15 +28,15 @@ import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
-class DefaultGameComponent<T : Tile>(componentMetadata: ComponentMetadata,
+class DefaultGameComponent<T: Tile, B : Block<T>>(componentMetadata: ComponentMetadata,
                                      size: Size3D,
-                                     private val gameArea: GameArea<T>,
+                                     private val gameArea: GameArea<T, B>,
                                      private val projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
                                      private val scrollable: Scrollable3D = DefaultScrollable3D(
                                              visibleSize = size,
                                              actualSize = gameArea.size))
 
-    : GameComponent<T>,
+    : GameComponent<T, B>,
         Scrollable3D by scrollable,
         DefaultComponent(
                 componentMetadata = componentMetadata,

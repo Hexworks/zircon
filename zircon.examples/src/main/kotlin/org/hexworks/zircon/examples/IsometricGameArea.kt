@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockSide.*
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -140,7 +141,7 @@ object IsometricGameArea {
                         .addLayer(Tiles.empty())
                         .build())
 
-        val gameComponent = Components.gameComponent<Tile>()
+        val gameComponent = Components.gameComponent<Tile, Block<Tile>>()
                 .withGameArea(gameArea)
                 .withProjectionMode(ProjectionMode.TOP_DOWN_OBLIQUE)
                 .withVisibleSize(visibleGameAreaSize)
@@ -169,7 +170,7 @@ object IsometricGameArea {
         gamePanel.applyColorTheme(ColorThemes.gamebookers())
     }
 
-    private tailrec fun generateBuilding(size: Size3D, offset: Position3D, gameArea: InMemoryGameArea<Tile>, repeat: Int) {
+    private tailrec fun generateBuilding(size: Size3D, offset: Position3D, gameArea: InMemoryGameArea<Tile, Block<Tile>>, repeat: Int) {
         (0 until size.zLength).forEach { z ->
             (0 until size.yLength).forEach { y ->
                 (0 until size.xLength).forEach { x ->
@@ -230,7 +231,7 @@ object IsometricGameArea {
         }
     }
 
-    private fun enableMovement(screen: Screen, gameComponent: DefaultGameComponent<Tile>) {
+    private fun enableMovement(screen: Screen, gameComponent: DefaultGameComponent<Tile, Block<Tile>>) {
         screen.onInput(object : InputListener {
             override fun inputEmitted(input: Input) {
                 if (EXIT_CONDITIONS.contains(input.inputType())) {

@@ -4,10 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.Cell
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.junit.Before
@@ -15,7 +12,7 @@ import org.junit.Test
 
 class InMemoryGameAreaTest {
 
-    lateinit var target: InMemoryGameArea<Tile>
+    lateinit var target: InMemoryGameArea<Tile, Block<Tile>>
 
     @Before
     fun setUp() {

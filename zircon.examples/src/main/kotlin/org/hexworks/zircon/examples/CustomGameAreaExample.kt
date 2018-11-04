@@ -19,7 +19,7 @@ object CustomGameAreaExample {
                          private val layersPerBlock: Int,
                          override val defaultBlock: Block<Tile> = Blocks.newBuilder<Tile>()
                                  .addLayer(Tiles.empty())
-                                 .build()) : BaseGameArea<Tile>() {
+                                 .build()) : BaseGameArea<Tile, Block<Tile>>() {
 
         private val blocks = java.util.TreeMap<Position3D, Block<Tile>>()
 
@@ -69,7 +69,7 @@ object CustomGameAreaExample {
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        screen.addComponent(GameComponents.newGameComponentBuilder<Tile>()
+        screen.addComponent(GameComponents.newGameComponentBuilder<Tile, Block<Tile>>()
                 .withVisibleSize(Sizes.create3DSize(60, 30, 1))
                 .withGameArea(gameArea)
                 .build())
@@ -78,7 +78,7 @@ object CustomGameAreaExample {
 
     }
 
-    fun makeCaves(gameArea: GameArea<Tile>, smoothTimes: Int = 8) {
+    fun makeCaves(gameArea: GameArea<Tile, Block<Tile>>, smoothTimes: Int = 8) {
         val width = gameArea.size.xLength
         val height = gameArea.size.yLength
         var tiles: MutableMap<Position, Tile> = mutableMapOf()

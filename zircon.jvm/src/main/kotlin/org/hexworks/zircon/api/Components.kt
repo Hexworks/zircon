@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.component.*
+import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 
 object Components {
@@ -30,7 +31,7 @@ object Components {
     fun checkBox() = CheckBoxBuilder.newBuilder()
 
     @JvmStatic
-    fun <T : Tile> gameComponent() = GameComponentBuilder.newBuilder<T>()
+    fun <T: Tile, B : Block<T>> gameComponent() = GameComponentBuilder.newBuilder<T, B>()
 
     @JvmStatic
     fun header() = HeaderBuilder.newBuilder()
