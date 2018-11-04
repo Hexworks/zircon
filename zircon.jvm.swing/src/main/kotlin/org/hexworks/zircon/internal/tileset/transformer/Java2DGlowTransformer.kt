@@ -15,7 +15,7 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
     val cloner = Java2DTextureCloner()
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
-        return texture.also { t ->
+        texture.also { t ->
             t.texture.let { txt ->
                 txt.graphics.apply {
 

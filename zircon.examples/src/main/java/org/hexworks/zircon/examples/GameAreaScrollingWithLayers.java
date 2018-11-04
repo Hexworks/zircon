@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.ComponentBuilder;
 import org.hexworks.zircon.api.component.Panel;
+import org.hexworks.zircon.api.data.Block;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.data.Tile;
@@ -101,7 +102,7 @@ public class GameAreaScrollingWithLayers {
         }
 
         final GameArea gameArea =
-                new InMemoryGameArea<Tile>(
+                new InMemoryGameArea<Tile, Block<Tile>>(
                         Blocks.newBuilder()
                                 .withPosition(Positions.default3DPosition())
                                 .withEmptyTile(Tiles.empty())
@@ -114,7 +115,7 @@ public class GameAreaScrollingWithLayers {
                 .withGameArea(gameArea)
                 .withTileset(BuiltInCP437TilesetResource.PHOEBUS_16X16);
 
-        final DefaultGameComponent gameComponent = ((GameComponentBuilder<Tile>) Components.gameComponent()
+        final DefaultGameComponent gameComponent = ((GameComponentBuilder<Tile, Block<Tile>>) Components.gameComponent()
                 .withGameArea(gameArea)
                 .withVisibleSize(visibleGameAreaSize)
                 .withTileset(BuiltInCP437TilesetResource.PHOEBUS_16X16))

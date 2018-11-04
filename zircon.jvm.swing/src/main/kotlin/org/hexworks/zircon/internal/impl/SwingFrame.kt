@@ -16,6 +16,6 @@ class SwingFrame(val tileGrid: TileGrid,
         require(tileGrid is InternalTileGrid) {
             "The supplied TileGrid is not an instance of InternalTileGrid, can't use it."
         }
-        renderer = SwingCanvasRenderer(canvas, this, tileGrid as InternalTileGrid)
+        renderer = SwingCanvasRenderer(canvas, this, tileGrid)
     }
 }

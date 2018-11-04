@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.GameArea
@@ -18,16 +19,16 @@ import kotlin.jvm.JvmStatic
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
-data class GameComponentBuilder<T : Tile>(
-        private var gameArea: Maybe<GameArea<T>> = Maybe.empty(),
+data class GameComponentBuilder<T : Tile, B : Block<T>>(
+        private var gameArea: Maybe<GameArea<T, B>> = Maybe.empty(),
         private var projectionMode: ProjectionMode = DEFAULT_PROJECTION_MODE,
         private var visibleSize: Size3D = Size3D.one(),
-        private val commonComponentProperties: CommonComponentProperties<GameComponent<T>> = CommonComponentProperties())
-    : BaseComponentBuilder<GameComponent<T>, GameComponentBuilder<T>>(commonComponentProperties) {
+        private val commonComponentProperties: CommonComponentProperties<GameComponent<T, B>> = CommonComponentProperties())
+    : BaseComponentBuilder<GameComponent<T, B>, GameComponentBuilder<T, B>>(commonComponentProperties) {
 
     override fun createCopy() = copy()
 
-    fun withGameArea(gameArea: GameArea<T>) = also {
+    fun withGameArea(gameArea: GameArea<T, B>) = also {
         this.gameArea = Maybe.of(gameArea)
     }
 
@@ -39,11 +40,11 @@ data class GameComponentBuilder<T : Tile>(
         this.visibleSize = visibleSize
     }
 
-    override fun withComponentRenderer(componentRenderer: ComponentRenderer<GameComponent<T>>): GameComponentBuilder<T> {
+    override fun withComponentRenderer(componentRenderer: ComponentRenderer<GameComponent<T, B>>): GameComponentBuilder<T, B> {
         throw UnsupportedOperationException("Can't set a custom component renderer for a game component.")
     }
 
-    override fun build(): DefaultGameComponent<T> {
+    override fun build(): DefaultGameComponent<T, B> {
         require(gameArea.isPresent) {
             "A GameComponent will only work with a GameArea as backend. Please set one!"
         }
@@ -63,7 +64,7 @@ data class GameComponentBuilder<T : Tile>(
         val DEFAULT_PROJECTION_MODE = ProjectionMode.TOP_DOWN
 
         @JvmStatic
-        fun <T : Tile> newBuilder(): GameComponentBuilder<T> {
+        fun <T : Tile, B : Block<T>> newBuilder(): GameComponentBuilder<T, B> {
             require(RuntimeConfig.config.betaEnabled) {
                 "GameComponent is a beta feature. Please enable them when setting up Zircon using an AppConfig."
             }

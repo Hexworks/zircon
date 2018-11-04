@@ -15,13 +15,13 @@ import org.hexworks.zircon.internal.game.InMemoryGameArea
  * It's API is subject to change!
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-data class GameAreaBuilder<T : Tile>(
-        private var defaultBlock: Maybe<Block<T>> = Maybe.empty(),
+data class GameAreaBuilder<T: Tile, B : Block<T>>(
+        private var defaultBlock: Maybe<B> = Maybe.empty(),
         private var size: Size3D = Size3D.one(),
         private var layersPerBlock: Int = -1,
-        private var levels: MutableMap<Int, MutableList<TileGraphics>> = mutableMapOf()) : Builder<GameArea<T>> {
+        private var levels: MutableMap<Int, MutableList<TileGraphics>> = mutableMapOf()) : Builder<GameArea<T, B>> {
 
-    fun withDefaultBlock(block: Block<T>) = also {
+    fun withDefaultBlock(block: B) = also {
         this.defaultBlock = Maybe.of(block)
     }
 
@@ -49,7 +49,7 @@ data class GameAreaBuilder<T : Tile>(
         this.levels[level] = images.toMutableList()
     }
 
-    override fun build(): GameArea<T> {
+    override fun build(): GameArea<T, B> {
         require(layersPerBlock > 0) {
             "There must be at least 1 layer per block."
         }
@@ -67,7 +67,7 @@ data class GameAreaBuilder<T : Tile>(
 
     companion object {
 
-        fun <T : Tile> newBuilder(): GameAreaBuilder<T> {
+        fun <T: Tile, B : Block<T>> newBuilder(): GameAreaBuilder<T, B> {
             require(RuntimeConfig.config.betaEnabled) {
                 "GameArea is a beta feature. Please enable them when setting up Zircon using an AppConfig."
             }

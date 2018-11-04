@@ -4,23 +4,6 @@ apply plugin: 'maven-publish'
 
 archivesBaseName = 'zircon.jvm.swing'
 
-//configurations {
-//    compile.extendsFrom shadow
-//}
-//
-//shadowJar {
-//    configurations = [project.configurations.shadow]
-//
-//    relocate "kotlin", "de.randombyte.holograms.shaded.kotlin"
-//    relocate "org.bstats", "de.randombyte.holograms.shaded.bstats"
-//    relocate "de.randombyte.kosp", "de.randombyte.holograms.shaded.kosp"
-//
-//    classifier = null
-//}
-
-//build.dependsOn shadowJar
-//install.dependsOn shadowJar
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
