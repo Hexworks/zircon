@@ -16,7 +16,7 @@ import org.hexworks.zircon.internal.extensions.getIfPresent
  * cubes (like in Minecraft) which have 6 sides (all optional), and
  * layers within the cube itself (optional as well).
  */
-interface GameArea<T: Tile, B : Block<T>> {
+interface GameArea<T : Tile, B : Block<T>> {
 
     /**
      * The default block which is used in this [GameArea]
@@ -56,20 +56,18 @@ interface GameArea<T: Tile, B : Block<T>> {
      * Returns **all** the [Block]s in this [GameArea].
      * Empty positions are **ignored**.
      */
-    fun fetchBlocks(): Iterable<B>
+    fun fetchBlocks(): Iterable<Cell3D<T, B>>
 
     /**
      * Returns **all** the [Block]s in this [GameArea].
      * Empty positions are either ignored or filled with a filler character,
      * depending on the `fetchMode` supplied.
      */
-    fun fetchBlocks(fetchMode: BlockFetchMode): Iterable<B> {
+    fun fetchBlocks(fetchMode: BlockFetchMode): Iterable<Cell3D<T, B>> {
         return if (fetchMode == BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocks()
         } else {
-            size.fetchPositions().map {
-                fetchBlockOrDefault(it)
-            }
+            size.fetchPositions().map { createCell(it) }
         }
     }
 
@@ -94,11 +92,11 @@ interface GameArea<T: Tile, B : Block<T>> {
      *  L (2,7,8) (y)
      *</pre>
      */
-    fun fetchBlocksAt(offset: Position3D, size: Size3D): Iterable<B> {
+    fun fetchBlocksAt(offset: Position3D, size: Size3D): Iterable<Cell3D<T, B>> {
         return fetchPositionsWithOffset(offset, size)
                 .asSequence()
                 .filter { hasBlockAt(it) }
-                .map { fetchBlockOrDefault(it) }
+                .map { createCell(it) }
                 .toList()
     }
 
@@ -109,12 +107,12 @@ interface GameArea<T: Tile, B : Block<T>> {
      * @param size the size of the area which you need the blocks from.
      * @param fetchMode the [BlockFetchMode] to use.
      */
-    fun fetchBlocksAt(offset: Position3D, size: Size3D, fetchMode: BlockFetchMode): Iterable<B> {
+    fun fetchBlocksAt(offset: Position3D, size: Size3D, fetchMode: BlockFetchMode): Iterable<Cell3D<T, B>> {
         return if (fetchMode == BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocksAt(offset, size)
         } else {
             fetchPositionsWithOffset(offset, size)
-                    .map { fetchBlockOrDefault(it) }
+                    .map { createCell(it) }
         }
     }
 
@@ -122,24 +120,24 @@ interface GameArea<T: Tile, B : Block<T>> {
      * Returns the [Block]s at the given `z` level.
      * Empty positions are **ignored**.
      */
-    fun fetchBlocksAtLevel(z: Int): Iterable<B> {
+    fun fetchBlocksAtLevel(z: Int): Iterable<Cell3D<T, B>> {
         return fetchBlocks()
                 .filter { it.position.z == z }
-                .map { fetchBlockOrDefault(it.position) }
+                .map { createCell(it.position) }
     }
 
     /**
      * Returns the [Block]s at the given `z` level.
      * Empty positions are either ignored, or a default filler value is returned.
      */
-    fun fetchBlocksAtLevel(z: Int, blockFetchMode: BlockFetchMode): Iterable<B> {
+    fun fetchBlocksAtLevel(z: Int, blockFetchMode: BlockFetchMode): Iterable<Cell3D<T, B>> {
         return if (blockFetchMode == BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocksAtLevel(z)
         } else {
             fetchPositionsWithOffset(
                     offset = Position3D.defaultPosition(),
                     size = Size3D.create(size.xLength, size.yLength, z))
-                    .map { fetchBlockOrDefault(it) }
+                    .map { createCell(it) }
         }
     }
 
@@ -170,6 +168,13 @@ interface GameArea<T: Tile, B : Block<T>> {
             }
             images
         }
+    }
+
+    /**
+     * Creates a [Cell3D] representing the [Block] at the given `position`.
+     */
+    fun createCell(position: Position3D): Cell3D<T, B> {
+        return Cell3D.create(position, fetchBlockOrDefault(position))
     }
 
     /**

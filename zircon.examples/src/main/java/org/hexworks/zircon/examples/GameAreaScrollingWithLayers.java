@@ -104,7 +104,6 @@ public class GameAreaScrollingWithLayers {
         final GameArea gameArea =
                 new InMemoryGameArea<Tile, Block<Tile>>(
                         Blocks.newBuilder()
-                                .withPosition(Positions.default3DPosition())
                                 .withEmptyTile(Tiles.empty())
                                 .addLayer(Tiles.empty())
                                 .build(),
@@ -153,7 +152,6 @@ public class GameAreaScrollingWithLayers {
                                 .addLayer(wall
                                         .withBackgroundColor(wall.getBackgroundColor().darkenByPercent(currPercent))
                                         .withForegroundColor(wall.getForegroundColor().darkenByPercent(currPercent)))
-                                .withPosition(pos)
                                 .withEmptyTile(Tiles.empty())
                                 .build());
             });

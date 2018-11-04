@@ -137,7 +137,6 @@ object IsometricGameArea {
                 layersPerBlock = 1,
                 defaultBlock = BlockBuilder.newBuilder<Tile>()
                         .withEmptyTile(Tiles.empty())
-                        .withPosition(Positions.default3DPosition())
                         .addLayer(Tiles.empty())
                         .build())
 
@@ -217,7 +216,7 @@ object IsometricGameArea {
                         } else {
                             bb.addLayer(tile)
                         }
-                        gameArea.setBlockAt(pos, bb.withPosition(pos).build())
+                        gameArea.setBlockAt(pos, bb.build())
                     }
                 }
             }

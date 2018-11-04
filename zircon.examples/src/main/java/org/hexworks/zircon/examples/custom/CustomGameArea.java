@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.Tiles;
 import org.hexworks.zircon.api.data.Block;
 import org.hexworks.zircon.api.data.impl.Position3D;
 import org.hexworks.zircon.api.data.impl.Size3D;
-import org.hexworks.zircon.api.game.BaseGameArea;
+import org.hexworks.zircon.api.game.base.BaseGameArea;
 import org.hexworks.zircon.api.util.Maybe;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,7 +58,7 @@ public class CustomGameArea extends BaseGameArea {
     @NotNull
     @Override
     public Block fetchBlockOrDefault(@NotNull Position3D position) {
-        return blocks.getOrDefault(position, defaultBlock.withPosition(position));
+        return blocks.getOrDefault(position, defaultBlock);
     }
 
     @NotNull
