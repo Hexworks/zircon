@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
+import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameModifiers.*
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
@@ -20,7 +21,6 @@ import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.resource.BuiltInTrueTypeFontResource
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.internal.game.DefaultGameComponent
 import org.hexworks.zircon.internal.game.InMemoryGameArea
 import java.util.*
 
@@ -130,10 +130,11 @@ object IsometricGameArea {
         val visibleGameAreaSize = Sizes.from2DTo3D(gamePanel.size
                 .minus(Sizes.create(2, 2)), 8)
 
-        val virtualSize = Sizes.create3DSize(200, 200, 30)
+        val actualSize = Sizes.create3DSize(200, 200, 30)
 
         val gameArea = InMemoryGameArea(
-                size = virtualSize,
+                actualSize = actualSize,
+                visibleSize = actualSize,
                 layersPerBlock = 1,
                 defaultBlock = BlockBuilder.newBuilder<Tile>()
                         .withEmptyTile(Tiles.empty())
@@ -149,7 +150,7 @@ object IsometricGameArea {
         screen.addComponent(gamePanel)
         gamePanel.addComponent(gameComponent)
 
-        enableMovement(screen, gameComponent)
+        enableMovement(screen, gameArea)
 
         val buildingCount = random.nextInt(5) + 3
 
@@ -230,34 +231,34 @@ object IsometricGameArea {
         }
     }
 
-    private fun enableMovement(screen: Screen, gameComponent: DefaultGameComponent<Tile, Block<Tile>>) {
+    private fun enableMovement(screen: Screen, gameArea: GameArea<Tile, Block<Tile>>) {
         screen.onInput(object : InputListener {
             override fun inputEmitted(input: Input) {
                 if (EXIT_CONDITIONS.contains(input.inputType())) {
                     System.exit(0)
                 } else {
                     if (InputType.ArrowUp === input.inputType()) {
-                        gameComponent.scrollOneBackward()
+                        gameArea.scrollOneBackward()
                     }
                     if (InputType.ArrowDown === input.inputType()) {
-                        gameComponent.scrollOneForward()
+                        gameArea.scrollOneForward()
                     }
                     if (InputType.ArrowLeft === input.inputType()) {
-                        gameComponent.scrollOneLeft()
+                        gameArea.scrollOneLeft()
                     }
                     if (InputType.ArrowRight === input.inputType()) {
-                        gameComponent.scrollOneRight()
+                        gameArea.scrollOneRight()
                     }
                     if (InputType.PageUp === input.inputType()) {
-                        gameComponent.scrollOneUp()
+                        gameArea.scrollOneUp()
                     }
                     if (InputType.PageDown === input.inputType()) {
-                        gameComponent.scrollOneDown()
+                        gameArea.scrollOneDown()
                     }
                     screen.layers.forEach {
                         screen.removeLayer(it)
                     }
-                    val (x, y, z) = gameComponent.visibleOffset()
+                    val (x, y, z) = gameArea.visibleOffset()
                     screen.pushLayer(Layers.newBuilder()
                             .withTileGraphics(CharacterTileStringBuilder.newBuilder()
                                     .withBackgroundColor(TileColors.transparent())

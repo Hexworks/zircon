@@ -11,15 +11,21 @@ import org.hexworks.zircon.api.game.GameArea.Companion.fetchPositionsWithOffset
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.util.Maybe
+import org.hexworks.zircon.internal.behavior.Scrollable3D
+import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.hexworks.zircon.internal.extensions.getIfPresent
 
-abstract class BaseGameArea<T : Tile, B : Block<T>> : GameArea<T, B> {
+abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
+                                                    actualSize: Size3D)
+    : GameArea<T, B>, Scrollable3D by DefaultScrollable3D(
+        visibleSize = visibleSize,
+        actualSize = actualSize) {
 
     override fun fetchBlocks(fetchMode: GameArea.BlockFetchMode): Iterable<Cell3D<T, B>> {
         return if (fetchMode == GameArea.BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocks()
         } else {
-            size.fetchPositions().map { createCell(it) }
+            actualSize().fetchPositions().map { createCell(it) }
         }
     }
 
@@ -60,7 +66,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>> : GameArea<T, B> {
         } else {
             GameArea.fetchPositionsWithOffset(
                     offset = Position3D.defaultPosition(),
-                    size = Size3D.create(size.xLength, size.yLength, z))
+                    size = Size3D.create(actualSize().xLength, actualSize().yLength, z))
                     .map { createCell(it) }
         }
     }

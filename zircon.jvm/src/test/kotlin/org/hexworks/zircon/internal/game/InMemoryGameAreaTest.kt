@@ -17,7 +17,8 @@ class InMemoryGameAreaTest {
     @Before
     fun setUp() {
         target = InMemoryGameArea(
-                size = HUGE_SIZE,
+                actualSize = HUGE_SIZE,
+                visibleSize = HUGE_SIZE,
                 layersPerBlock = 3,
                 defaultBlock = BlockBuilder.newBuilder<Tile>()
                         .withEmptyTile(Tile.empty())

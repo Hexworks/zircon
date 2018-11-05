@@ -18,12 +18,11 @@ public class CustomGameArea extends BaseGameArea {
     private Block defaultBlock = Blocks.newBuilder()
             .addLayer(Tiles.empty())
             .build();
-    private Size3D size;
     private int layersPerBlock;
     private TreeMap<Position3D, Block> blocks = new TreeMap<>();
 
-    public CustomGameArea(Size3D size, int layersPerBlock) {
-        this.size = size;
+    public CustomGameArea(Size3D visibleSize, Size3D actualSize, int layersPerBlock) {
+        super(visibleSize, actualSize);
         this.layersPerBlock = layersPerBlock;
     }
 
@@ -31,12 +30,6 @@ public class CustomGameArea extends BaseGameArea {
     @Override
     public Block getDefaultBlock() {
         return defaultBlock;
-    }
-
-    @NotNull
-    @Override
-    public Size3D getSize() {
-        return size;
     }
 
     @Override
@@ -69,7 +62,7 @@ public class CustomGameArea extends BaseGameArea {
 
     @Override
     public void setBlockAt(@NotNull Position3D position, @NotNull Block block) {
-        if (!size.containsPosition(position)) {
+        if (!actualSize().containsPosition(position)) {
             throw new IllegalArgumentException("The supplied position ($position) is not within the size ($size) of this game area.");
         }
         int layerCount = block.getLayers().size();

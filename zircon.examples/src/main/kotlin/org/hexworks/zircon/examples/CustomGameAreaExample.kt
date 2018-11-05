@@ -16,11 +16,15 @@ import java.util.*
 
 object CustomGameAreaExample {
 
-    class CustomGameArea(override val size: Size3D,
+    class CustomGameArea(visibleSize: Size3D,
+                         actualSize: Size3D,
                          private val layersPerBlock: Int,
                          override val defaultBlock: Block<Tile> = Blocks.newBuilder<Tile>()
                                  .addLayer(Tiles.empty())
-                                 .build()) : BaseGameArea<Tile, Block<Tile>>() {
+                                 .withEmptyTile(Tiles.empty())
+                                 .build()) : BaseGameArea<Tile, Block<Tile>>(
+            visibleSize = visibleSize,
+            actualSize = actualSize) {
 
         private val blocks = java.util.TreeMap<Position3D, Block<Tile>>()
 
@@ -45,12 +49,12 @@ object CustomGameAreaExample {
         }
 
         override fun setBlockAt(position: Position3D, block: Block<Tile>) {
-            if (!size.containsPosition(position)) {
-                throw IllegalArgumentException("The supplied position (\$position) is not within the size (\$size) of this game area.")
+            if (!actualSize().containsPosition(position)) {
+                throw IllegalArgumentException("The supplied position ($position) is not within the size (${actualSize()}) of this game area.")
             }
             val layerCount = block.layers.size
             if (layerCount != layersPerBlock()) {
-                throw IllegalArgumentException("The number of layers per block for this game area is \${getLayersPerBlock()}." + " The supplied layers have a size of \$layerCount.")
+                throw IllegalArgumentException("The number of layers per block for this game area is $layersPerBlock. The supplied layers have a size of $layerCount.")
             }
             blocks[position] = block
         }
@@ -59,7 +63,7 @@ object CustomGameAreaExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val gameArea = CustomGameArea(Sizes.create3DSize(100, 100, 100), 1)
+        val gameArea = CustomGameArea(VISIBLE_SIZE, ACTUAL_SIZE, 1)
 
         makeCaves(gameArea)
 
@@ -79,11 +83,11 @@ object CustomGameAreaExample {
 
     }
 
-    fun makeCaves(gameArea: GameArea<Tile, Block<Tile>>, smoothTimes: Int = 8) {
-        val width = gameArea.size.xLength
-        val height = gameArea.size.yLength
+    private fun makeCaves(gameArea: GameArea<Tile, Block<Tile>>, smoothTimes: Int = 8) {
+        val width = gameArea.actualSize().xLength
+        val height = gameArea.actualSize().yLength
         var tiles: MutableMap<Position, Tile> = mutableMapOf()
-        gameArea.size.to2DSize().fetchPositions().forEach { pos ->
+        gameArea.actualSize().to2DSize().fetchPositions().forEach { pos ->
             tiles[pos] = if (Math.random() < 0.5) FLOOR else WALL
         }
         val newTiles: MutableMap<Position, Tile> = mutableMapOf()
@@ -115,18 +119,23 @@ object CustomGameAreaExample {
             val pos3D = Positions.from2DTo3D(pos)
             gameArea.setBlockAt(pos3D, Blocks.newBuilder<Tile>()
                     .addLayer(tile)
+                    .withEmptyTile(Tiles.empty())
                     .build())
         }
     }
 
-    val FLOOR = Tiles.newBuilder()
+    private val FLOOR = Tiles.newBuilder()
             .withCharacter(Symbols.INTERPUNCT)
             .withForegroundColor(ANSITileColor.YELLOW)
             .buildCharacterTile()
 
-    val WALL = Tiles.newBuilder()
+    private val WALL = Tiles.newBuilder()
             .withCharacter('#')
             .withForegroundColor(TileColors.fromString("#999999"))
             .buildCharacterTile()
+
+    private val VISIBLE_SIZE = Sizes.create3DSize(100, 100, 100)
+    private val ACTUAL_SIZE = Sizes.create3DSize(200, 200, 200)
+
 
 }

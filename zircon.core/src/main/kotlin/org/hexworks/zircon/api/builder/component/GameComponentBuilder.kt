@@ -51,7 +51,6 @@ data class GameComponentBuilder<T : Tile, B : Block<T>>(
         return DefaultGameComponent(
                 gameArea = gameArea.get(),
                 projectionMode = projectionMode,
-                size = visibleSize,
                 componentMetadata = ComponentMetadata(
                         position = position,
                         size = visibleSize.to2DSize(),

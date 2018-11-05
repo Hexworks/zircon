@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.data.impl.Size3D
  */
 interface Scrollable3D {
 
+    // TODO: refactor to vals
     /**
      * Returns the [Size3D] of the virtual space this [Scrollable3D] can scroll through.
      */
