@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.util.Maybe
+import org.hexworks.zircon.internal.behavior.Scrollable3D
 import org.hexworks.zircon.internal.extensions.getIfPresent
 
 /**
@@ -16,16 +17,12 @@ import org.hexworks.zircon.internal.extensions.getIfPresent
  * cubes (like in Minecraft) which have 6 sides (all optional), and
  * layers within the cube itself (optional as well).
  */
-interface GameArea<T : Tile, B : Block<T>> {
+interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
 
     /**
      * The default block which is used in this [GameArea]
      */
     val defaultBlock: B
-    /**
-     * Returns the size of the 3D space this [GameArea] represents.
-     */
-    val size: Size3D
 
     /**
      * Tells how many layers are in each [Block].
@@ -67,7 +64,7 @@ interface GameArea<T : Tile, B : Block<T>> {
         return if (fetchMode == BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocks()
         } else {
-            size.fetchPositions().map { createCell(it) }
+            actualSize().fetchPositions().map { createCell(it) }
         }
     }
 
@@ -136,7 +133,7 @@ interface GameArea<T : Tile, B : Block<T>> {
         } else {
             fetchPositionsWithOffset(
                     offset = Position3D.defaultPosition(),
-                    size = Size3D.create(size.xLength, size.yLength, z))
+                    size = Size3D.create(actualSize().xLength, actualSize().yLength, z))
                     .map { createCell(it) }
         }
     }

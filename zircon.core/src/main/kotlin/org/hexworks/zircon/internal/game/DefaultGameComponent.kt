@@ -20,7 +20,6 @@ import org.hexworks.zircon.api.kotlin.ifPresent
 import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.Scrollable3D
-import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.hexworks.zircon.internal.component.impl.DefaultComponent
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
@@ -28,34 +27,23 @@ import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
-class DefaultGameComponent<T: Tile, B : Block<T>>(componentMetadata: ComponentMetadata,
-                                     size: Size3D,
-                                     private val gameArea: GameArea<T, B>,
-                                     private val projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
-                                     private val scrollable: Scrollable3D = DefaultScrollable3D(
-                                             visibleSize = size,
-                                             actualSize = gameArea.size))
+class DefaultGameComponent<T : Tile, B : Block<T>>(
+        componentMetadata: ComponentMetadata,
+        private val gameArea: GameArea<T, B>,
+        private val projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN)
+    : GameComponent<T, B>, DefaultComponent(
+        componentMetadata = componentMetadata,
+        renderer = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = NoOpComponentRenderer())) {
 
-    : GameComponent<T, B>,
-        Scrollable3D by scrollable,
-        DefaultComponent(
-                componentMetadata = componentMetadata,
-                renderer = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = NoOpComponentRenderer())) {
-
-    private val visibleLevelCount = size.zLength
-
-    init {
-        refreshVirtualSpaceSize()
-    }
+    private val visibleLevelCount = gameArea.visibleSize().zLength
 
     override fun acceptsFocus(): Boolean {
         return true
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        refreshVirtualSpaceSize()
         return true
     }
 
@@ -67,16 +55,16 @@ class DefaultGameComponent<T: Tile, B : Block<T>>(componentMetadata: ComponentMe
     }
 
     override fun toFlattenedLayers(): Iterable<Layer> {
-        val height = scrollable.actualSize().zLength
-        val fromZ = scrollable.visibleOffset().z
-        val screenSize = visibleSize().to2DSize()
+        val height = gameArea.actualSize().zLength
+        val fromZ = gameArea.visibleOffset().z
+        val screenSize = gameArea.visibleSize().to2DSize()
 
         val result = mutableListOf<Layer>()
 
         if (projectionMode == ProjectionMode.TOP_DOWN) {
             (fromZ until Math.min(fromZ + visibleLevelCount, height)).forEach { levelIdx ->
                 val segment = gameArea.fetchLayersAt(
-                        offset = Position3D.from2DPosition(visibleOffset().to2DPosition(), levelIdx),
+                        offset = Position3D.from2DPosition(gameArea.visibleOffset().to2DPosition(), levelIdx),
                         size = Size3D.from2DSize(size, 1))
                 segment.forEach {
                     result.add(LayerBuilder.newBuilder()
@@ -93,7 +81,7 @@ class DefaultGameComponent<T: Tile, B : Block<T>>(componentMetadata: ComponentMe
             val builders = (0 until totalLayerCount * height).map {
                 TileGraphicsBuilder.newBuilder().withSize(screenSize)
             }
-            val (fromX, fromY) = visibleOffset().to2DPosition()
+            val (fromX, fromY) = gameArea.visibleOffset().to2DPosition()
             val toX = fromX + size.width
             val toY = fromY + size.height
             (fromZ until Math.min(fromZ + visibleLevelCount, height)).forEach { z ->
@@ -132,10 +120,6 @@ class DefaultGameComponent<T: Tile, B : Block<T>>(componentMetadata: ComponentMe
             }
         }
         return result
-    }
-
-    private fun refreshVirtualSpaceSize() {
-        setActualSize(gameArea.size)
     }
 
     override fun render() {

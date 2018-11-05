@@ -90,24 +90,25 @@ public class GameAreaScrollingWithLayers {
 
         final Size3D visibleGameAreaSize = Sizes.from2DTo3D(gamePanel.getSize()
                 .minus(Sizes.create(2, 2)), 5);
-        final Size virtualGameAreaSize = Sizes.create(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        final Size actualGameAreaSize = Sizes.create(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
 
         final Map<Integer, List<TileGraphics>> levels = new HashMap<>();
         final int totalLevels = 10;
         for (int i = 0; i < totalLevels; i++) {
             levels.put(i, Collections.singletonList(DrawSurfaces.tileGraphicsBuilder()
-                    .withSize(virtualGameAreaSize)
+                    .withSize(actualGameAreaSize)
                     .build()));
         }
 
         final GameArea gameArea =
                 new InMemoryGameArea<Tile, Block<Tile>>(
+                        visibleGameAreaSize,
+                        Sizes.from2DTo3D(actualGameAreaSize, totalLevels),
                         Blocks.newBuilder()
                                 .withEmptyTile(Tiles.empty())
                                 .addLayer(Tiles.empty())
                                 .build(),
-                        Sizes.from2DTo3D(virtualGameAreaSize, totalLevels),
                         1);
 
         ComponentBuilder builder = Components.gameComponent()
@@ -123,7 +124,7 @@ public class GameAreaScrollingWithLayers {
         screen.addComponent(gamePanel);
         gamePanel.addComponent(gameComponent);
 
-        enableMovement(screen, gameComponent);
+        enableMovement(screen, gameArea);
         generatePyramid(3, Positions.create3DPosition(5, 5, 2), gameArea);
         generatePyramid(6, Positions.create3DPosition(15, 9, 5), gameArea);
         generatePyramid(5, Positions.create3DPosition(9, 21, 4), gameArea);
@@ -159,7 +160,7 @@ public class GameAreaScrollingWithLayers {
         }
     }
 
-    private static void enableMovement(final Screen screen, final DefaultGameComponent gameComponent) {
+    private static void enableMovement(final Screen screen, final GameArea<Tile, Block<Tile>> gameArea) {
         final AtomicReference<Layer> coordinates = new AtomicReference<>(Layers.newBuilder()
                 .withTileGraphics(CharacterTileStrings.newBuilder()
                         .withBackgroundColor(TileColors.transparent())
@@ -174,25 +175,25 @@ public class GameAreaScrollingWithLayers {
                 System.exit(0);
             } else {
                 if (InputType.ArrowUp == input.inputType()) {
-                    gameComponent.scrollOneBackward();
+                    gameArea.scrollOneBackward();
                 }
                 if (InputType.ArrowDown == input.inputType()) {
-                    gameComponent.scrollOneForward();
+                    gameArea.scrollOneForward();
                 }
                 if (InputType.ArrowLeft == input.inputType()) {
-                    gameComponent.scrollOneLeft();
+                    gameArea.scrollOneLeft();
                 }
                 if (InputType.ArrowRight == input.inputType()) {
-                    gameComponent.scrollOneRight();
+                    gameArea.scrollOneRight();
                 }
                 if (InputType.PageUp == input.inputType()) {
-                    gameComponent.scrollOneUp();
+                    gameArea.scrollOneUp();
                 }
                 if (InputType.PageDown == input.inputType()) {
-                    gameComponent.scrollOneDown();
+                    gameArea.scrollOneDown();
                 }
                 screen.removeLayer(coordinates.get());
-                Position3D visibleOffset = gameComponent.visibleOffset();
+                Position3D visibleOffset = gameArea.visibleOffset();
                 coordinates.set(Layers.newBuilder()
                         .withTileGraphics(CharacterTileStrings.newBuilder()
                                 .withBackgroundColor(TileColors.transparent())

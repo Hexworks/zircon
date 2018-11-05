@@ -5,15 +5,18 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.Cell3D
-import org.hexworks.zircon.api.game.GameArea
+import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.util.TreeMap
 import org.hexworks.zircon.platform.factory.TreeMapFactory
 
 class InMemoryGameArea<T : Tile, B : Block<T>>(
+        visibleSize: Size3D,
+        actualSize: Size3D,
         override val defaultBlock: B,
-        override val size: Size3D,
-        private val layersPerBlock: Int) : GameArea<T, B> {
+        private val layersPerBlock: Int) : BaseGameArea<T, B>(
+        visibleSize = visibleSize,
+        actualSize = actualSize) {
 
     private val blocks: TreeMap<Position3D, B> = TreeMapFactory.create()
 
@@ -36,8 +39,8 @@ class InMemoryGameArea<T : Tile, B : Block<T>>(
     }
 
     override fun setBlockAt(position: Position3D, block: B) {
-        require(size.containsPosition(position)) {
-            "The supplied position ($position) is not within the size ($size) of this game area."
+        require(actualSize().containsPosition(position)) {
+            "The supplied position ($position) is not within the size (${actualSize()}) of this game area."
         }
         val layerCount = block.layers.size
         require(layerCount == layersPerBlock) {
