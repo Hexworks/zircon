@@ -10,7 +10,12 @@ import org.hexworks.zircon.internal.util.TextBuffer
 interface TextArea : Component, Scrollable {
 
     var text: String
+    val isEnabled: Boolean
 
     fun textBuffer(): EditableTextBuffer
+
+    fun enable()
+
+    fun disable()
 
 }
