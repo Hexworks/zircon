@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
+import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
@@ -35,7 +36,7 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
                         .build())
                 .withDisabledStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.secondaryBackgroundColor)
+                        .withBackgroundColor(TileColor.transparent())
                         .build())
                 .withFocusedStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)

@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
+import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.TextArea
@@ -13,6 +14,7 @@ import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.KeyStroke
+import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.api.util.TextUtils
@@ -45,6 +47,8 @@ class DefaultTextArea constructor(
         }
 
     private var textBuffer = EditableTextBuffer.create(initialText)
+    override var isEnabled = true
+        private set
 
     init {
         this.text = initialText
@@ -53,7 +57,7 @@ class DefaultTextArea constructor(
 
     override fun textBuffer() = textBuffer
 
-    override fun acceptsFocus() = true
+    override fun acceptsFocus() = isEnabled
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
@@ -63,7 +67,7 @@ class DefaultTextArea constructor(
                         .build())
                 .withDisabledStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
-                        .withBackgroundColor(colorTheme.secondaryBackgroundColor)
+                        .withBackgroundColor(TileColor.transparent())
                         .build())
                 .withFocusedStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.primaryBackgroundColor)
@@ -75,11 +79,25 @@ class DefaultTextArea constructor(
                 }
     }
 
-    override fun giveFocus(input: Maybe<Input>): Boolean {
-        componentStyleSet.applyFocusedStyle()
+    override fun enable() {
+        isEnabled = true
+        componentStyleSet.reset()
         render()
-        refreshCursor()
-        return true
+    }
+
+    override fun disable() {
+        isEnabled = false
+        componentStyleSet.applyDisabledStyle()
+        render()
+    }
+
+    override fun giveFocus(input: Maybe<Input>): Boolean {
+        return if (isEnabled) {
+            componentStyleSet.applyFocusedStyle()
+            render()
+            refreshCursor()
+            true
+        } else false
     }
 
     override fun takeFocus(input: Maybe<Input>) {
@@ -88,46 +106,76 @@ class DefaultTextArea constructor(
         EventBus.broadcast(ZirconEvent.HideCursor)
     }
 
+    override fun mouseEntered(action: MouseAction) {
+        if (isEnabled) {
+            componentStyleSet.applyMouseOverStyle()
+            render()
+        }
+    }
+
+    override fun mouseExited(action: MouseAction) {
+        if (isEnabled) {
+            componentStyleSet.reset()
+            render()
+        }
+    }
+
+    override fun mousePressed(action: MouseAction) {
+        if (isEnabled) {
+            componentStyleSet.applyActiveStyle()
+            render()
+        }
+    }
+
+    override fun mouseReleased(action: MouseAction) {
+        if (isEnabled) {
+            componentStyleSet.applyMouseOverStyle()
+            render()
+        }
+    }
+
     override fun keyStroked(keyStroke: KeyStroke) {
-        if (isNavigationKey(keyStroke)) {
-            return
+        if (isEnabled) {
+            if (isNavigationKey(keyStroke)) {
+                return
+            }
+            when {
+                keyStroke.inputTypeIs(InputType.ArrowRight) -> {
+                    textBuffer.applyTransformation(MoveCursor(RIGHT))
+                }
+                keyStroke.inputTypeIs(InputType.ArrowLeft) -> {
+                    textBuffer.applyTransformation(MoveCursor(LEFT))
+                }
+                keyStroke.inputTypeIs(InputType.ArrowDown) -> {
+                    textBuffer.applyTransformation(MoveCursor(DOWN))
+                }
+                keyStroke.inputTypeIs(InputType.ArrowUp) -> {
+                    textBuffer.applyTransformation(MoveCursor(UP))
+                }
+                keyStroke.inputTypeIs(InputType.Delete) -> {
+                    textBuffer.applyTransformation(DeleteCharacter(DEL))
+                }
+                keyStroke.inputTypeIs(InputType.Backspace) -> {
+                    textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
+                }
+                keyStroke.inputTypeIs(InputType.Enter) -> {
+                    textBuffer.applyTransformation(AddRowBreak())
+                }
+                keyStroke.inputTypeIs(InputType.Home) -> {
+                    // TODO:
+                }
+                keyStroke.inputTypeIs(InputType.End) -> {
+                    // TODO:
+                }
+                TextUtils.isPrintableCharacter(keyStroke.getCharacter()) -> {
+                    textBuffer.applyTransformation(InsertCharacter(keyStroke.getCharacter()))
+                }
+            }
+            refreshVirtualSpaceSize()
+            scrollToCursor()
+            refreshCursor()
+            render()
         }
-        when {
-            keyStroke.inputTypeIs(InputType.ArrowRight) -> {
-                textBuffer.applyTransformation(MoveCursor(RIGHT))
-            }
-            keyStroke.inputTypeIs(InputType.ArrowLeft) -> {
-                textBuffer.applyTransformation(MoveCursor(LEFT))
-            }
-            keyStroke.inputTypeIs(InputType.ArrowDown) -> {
-                textBuffer.applyTransformation(MoveCursor(DOWN))
-            }
-            keyStroke.inputTypeIs(InputType.ArrowUp) -> {
-                textBuffer.applyTransformation(MoveCursor(UP))
-            }
-            keyStroke.inputTypeIs(InputType.Delete) -> {
-                textBuffer.applyTransformation(DeleteCharacter(DEL))
-            }
-            keyStroke.inputTypeIs(InputType.Backspace) -> {
-                textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
-            }
-            keyStroke.inputTypeIs(InputType.Enter) -> {
-                textBuffer.applyTransformation(AddRowBreak())
-            }
-            keyStroke.inputTypeIs(InputType.Home) -> {
-                // TODO:
-            }
-            keyStroke.inputTypeIs(InputType.End) -> {
-                // TODO:
-            }
-            TextUtils.isPrintableCharacter(keyStroke.getCharacter()) -> {
-                textBuffer.applyTransformation(InsertCharacter(keyStroke.getCharacter()))
-            }
-        }
-        refreshVirtualSpaceSize()
-        scrollToCursor()
-        refreshCursor()
-        render()
     }
 
     private fun isNavigationKey(keyStroke: KeyStroke) =
