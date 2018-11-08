@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.shape.Shape
-import org.hexworks.zircon.api.util.Math
+import kotlin.math.max
 
 class DefaultShape(private val positions: Set<Position> = setOf())
     : Shape, Collection<Position> by positions {
@@ -19,8 +19,8 @@ class DefaultShape(private val positions: Set<Position> = setOf())
         var maxCol = Int.MIN_VALUE
         var maxRow = Int.MIN_VALUE
         offsetPositions.forEach { (col, row) ->
-            maxCol = Math.max(maxCol, col)
-            maxRow = Math.max(maxRow, row)
+            maxCol = max(maxCol, col)
+            maxRow = max(maxRow, row)
         }
         val result = TileGraphicsBuilder.newBuilder()
                 .withSize(Size.create(maxCol + 1, maxRow + 1))

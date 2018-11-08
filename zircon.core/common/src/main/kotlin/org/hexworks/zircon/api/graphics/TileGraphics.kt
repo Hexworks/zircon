@@ -1,11 +1,11 @@
 package org.hexworks.zircon.api.graphics
 
+import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Styleable
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
-import org.hexworks.zircon.api.kotlin.map
 
 /**
  * An image built from [Tile]s with color and style information.

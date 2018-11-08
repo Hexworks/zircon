@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -15,8 +16,6 @@ import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.util.Math
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
@@ -28,6 +27,7 @@ import org.hexworks.zircon.internal.component.impl.textedit.transformation.Delet
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.InsertCharacter
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.MoveCursor
 import org.hexworks.zircon.internal.event.ZirconEvent
+import kotlin.math.min
 
 class DefaultTextArea constructor(
         initialText: String,
@@ -222,8 +222,8 @@ class DefaultTextArea constructor(
     private fun refreshCursor() {
         var pos = textBuffer.cursor.position
                 .minus(visibleOffset)
-        pos = pos.withX(Math.min(pos.x, contentSize.width))
-        pos = pos.withY(Math.min(pos.y, contentSize.height))
+        pos = pos.withX(min(pos.x, contentSize.width))
+        pos = pos.withY(min(pos.y, contentSize.height))
         EventBus.broadcast(ZirconEvent.RequestCursorAt(pos
                 .withRelative(absolutePosition + contentPosition)))
     }

@@ -3,7 +3,8 @@ package org.hexworks.zircon.internal.behavior.impl
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.util.Math
+import kotlin.math.max
+import kotlin.math.min
 
 class DefaultScrollable(override val visibleSize: Size,
                         initialActualSize: Size) : Scrollable {
@@ -58,7 +59,7 @@ class DefaultScrollable(override val visibleSize: Size,
         }
         val columnToScrollTo = offset.x + columns
         val lastScrollableColumn = actualSize.width - visibleSize.width
-        offset = offset.withX(Math.min(columnToScrollTo, lastScrollableColumn))
+        offset = offset.withX(min(columnToScrollTo, lastScrollableColumn))
         return offset
     }
 
@@ -67,7 +68,7 @@ class DefaultScrollable(override val visibleSize: Size,
             "You can only scroll left by a positive amount!"
         }
         val columnToScrollTo = offset.x - columns
-        offset = offset.withX(Math.max(0, columnToScrollTo))
+        offset = offset.withX(max(0, columnToScrollTo))
         return offset
     }
 
@@ -76,7 +77,7 @@ class DefaultScrollable(override val visibleSize: Size,
             "You can only scroll up by a positive amount!"
         }
         val rowToScrollTo = offset.y - rows
-        offset = offset.withY(Math.max(0, rowToScrollTo))
+        offset = offset.withY(max(0, rowToScrollTo))
         return offset
     }
 
@@ -86,7 +87,7 @@ class DefaultScrollable(override val visibleSize: Size,
         }
         val rowToScrollTo = offset.y + rows
         val lastScrollableRow = actualSize.height - visibleSize.height
-        offset = offset.withY(Math.min(rowToScrollTo, lastScrollableRow))
+        offset = offset.withY(min(rowToScrollTo, lastScrollableRow))
         return offset
     }
 

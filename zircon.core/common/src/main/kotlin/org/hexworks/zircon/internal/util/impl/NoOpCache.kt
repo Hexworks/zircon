@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.util.impl
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.util.Cache
-import org.hexworks.zircon.api.util.Maybe
 
 /**
  * This is a no-op cache implementation.

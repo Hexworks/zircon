@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api.input
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.input.InputType.*
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.platform.util.SystemUtils
 
 

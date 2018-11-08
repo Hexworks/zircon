@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.graphics
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.data.Position
@@ -9,7 +10,6 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 
 class DefaultLayer(position: Position,

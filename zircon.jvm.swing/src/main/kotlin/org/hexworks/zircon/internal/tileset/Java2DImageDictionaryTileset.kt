@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.tileset
 
 import com.github.benmanes.caffeine.cache.Caffeine
+import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -8,7 +9,6 @@ import org.hexworks.zircon.api.resource.TileType.IMAGE_TILE
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
@@ -19,7 +19,7 @@ import javax.imageio.ImageIO
 class Java2DImageDictionaryTileset(resource: TilesetResource)
     : Tileset<Graphics2D> {
 
-    override val id = Identifier.randomIdentifier()
+    override val id = IdentifierFactory.randomIdentifier()
     override val targetType = Graphics2D::class
     override val width = 1
     override val height = 1

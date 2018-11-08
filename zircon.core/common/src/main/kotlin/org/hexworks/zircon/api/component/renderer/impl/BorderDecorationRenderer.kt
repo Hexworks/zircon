@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.component.renderer.impl
 
+import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
@@ -7,7 +8,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
-import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.BorderPosition
 import org.hexworks.zircon.api.shape.LineFactory

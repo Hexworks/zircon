@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -12,7 +13,6 @@ import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.Input
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig

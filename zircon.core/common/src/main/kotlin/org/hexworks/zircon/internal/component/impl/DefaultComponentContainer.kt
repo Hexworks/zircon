@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.data.Position
@@ -10,8 +12,6 @@ import org.hexworks.zircon.api.input.InputType.*
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType.*
-import org.hexworks.zircon.api.kotlin.map
-import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.component.ContainerHandlerState
 import org.hexworks.zircon.internal.component.ContainerHandlerState.DEACTIVATED
 import org.hexworks.zircon.internal.component.ContainerHandlerState.UNKNOWN

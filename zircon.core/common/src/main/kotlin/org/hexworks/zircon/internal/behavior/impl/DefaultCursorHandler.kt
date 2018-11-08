@@ -2,8 +2,8 @@ package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
+import kotlin.math.min
 
 class DefaultCursorHandler(private var cursorSpace: Size)
     : InternalCursorHandler {
@@ -18,8 +18,8 @@ class DefaultCursorHandler(private var cursorSpace: Size)
             "Can't put the cursor at a negative position: $cursorPosition"
         }
         val newCursorPos = cursorPosition
-                .withX(Math.min(cursorPosition.x, cursorSpace.width - 1))
-                .withY(Math.min(cursorPosition.y, cursorSpace.height - 1))
+                .withX(min(cursorPosition.x, cursorSpace.width - 1))
+                .withY(min(cursorPosition.y, cursorSpace.height - 1))
         return if (this.cursorPosition == newCursorPos) {
             false
         } else {

@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.component.impl.textedit
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.Cursor
 import org.hexworks.zircon.platform.util.SystemUtils
 

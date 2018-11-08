@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.kotlin
 
+import org.hexworks.cobalt.datatypes.sam.Consumer
 import org.hexworks.zircon.api.animation.AnimationInfo
-import org.hexworks.zircon.api.util.Consumer
 
 /**
  * Extension function which adapts [AnimationInfo.onFinished] to

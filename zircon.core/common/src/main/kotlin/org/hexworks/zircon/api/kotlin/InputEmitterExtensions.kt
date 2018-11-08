@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.kotlin
 
+import org.hexworks.cobalt.datatypes.sam.Consumer
 import org.hexworks.zircon.api.behavior.InputEmitter
 import org.hexworks.zircon.api.behavior.Subscription
 import org.hexworks.zircon.api.input.Input
@@ -7,7 +8,6 @@ import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.listener.KeyStrokeListener
-import org.hexworks.zircon.api.util.Consumer
 
 /**
  * Extension function which adapts [InputEmitter.onInput] to

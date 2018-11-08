@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.graphics.base
 
+import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Cell
@@ -9,12 +10,11 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
-import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.api.util.TileTransformer
 import org.hexworks.zircon.internal.data.DefaultCell
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
+import kotlin.math.max
 
 abstract class BaseTileImage : TileImage {
 
@@ -128,8 +128,8 @@ abstract class BaseTileImage : TileImage {
     }
 
     override fun combineWith(tileImage: TileImage, offset: Position): TileImage {
-        val columns = Math.max(width, offset.x + tileImage.width)
-        val rows = Math.max(height, offset.y + tileImage.height)
+        val columns = max(width, offset.x + tileImage.width)
+        val rows = max(height, offset.y + tileImage.height)
         val newSize = Size.create(columns, rows)
 
         val tiles = toTileMap()

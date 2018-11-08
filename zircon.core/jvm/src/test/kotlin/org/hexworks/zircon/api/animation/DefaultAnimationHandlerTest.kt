@@ -1,14 +1,15 @@
 package org.hexworks.zircon.api.animation
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.api.builder.grid.TileGridBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.util.Identifier
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.animation.DefaultAnimation
 import org.hexworks.zircon.internal.animation.DefaultAnimationFrame
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
@@ -63,7 +64,7 @@ class DefaultAnimationHandlerTest {
     @Test
     fun shouldReturnInProgressWhenAnimationIsInProgress() {
 
-        val uuid = Identifier.randomIdentifier()
+        val uuid = IdentifierFactory.randomIdentifier()
         val lock = ReentrantLock()
         val cond = lock.newCondition()
 
@@ -85,7 +86,7 @@ class DefaultAnimationHandlerTest {
     @Test
     fun shouldReturnFinishedWhenAnimationIsFinished() {
 
-        val uuid = Identifier.randomIdentifier()
+        val uuid = IdentifierFactory.randomIdentifier()
         val currFrame = DefaultAnimationFrame(Size.one(), listOf(), 1)
 
         Mockito.`when`(animationMock.id).thenReturn(uuid)

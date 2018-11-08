@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api
 
-import org.hexworks.zircon.api.util.Maybe
+import org.hexworks.cobalt.datatypes.Maybe
 
 object Maybes {
 

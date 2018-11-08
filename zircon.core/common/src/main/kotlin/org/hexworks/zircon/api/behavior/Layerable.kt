@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.behavior
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.util.Maybe
 
 /**
  * Represents an object which can contain multiple [org.hexworks.zircon.api.graphics.Layer]s

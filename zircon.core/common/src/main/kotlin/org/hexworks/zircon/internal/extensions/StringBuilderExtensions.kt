@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.extensions
 
-import org.hexworks.zircon.api.util.Maybe
+import org.hexworks.cobalt.datatypes.Maybe
 
 /**
  * Returns an element of this [StringBuilder] wrapped in an Maybe

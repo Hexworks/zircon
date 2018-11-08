@@ -1,10 +1,10 @@
 package org.hexworks.zircon.internal.util
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.util.Math
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.platform.util.SystemUtils
+import kotlin.math.min
 
 class TextBuffer(text: String) {
 
@@ -36,7 +36,7 @@ class TextBuffer(text: String) {
 
     fun getTextSection(position: Position, size: Size): List<String> {
         val fromRow = position.y
-        val toRow = Math.min(currentText.size - 1, fromRow + size.height - 1)
+        val toRow = min(currentText.size - 1, fromRow + size.height - 1)
         val fromCol = position.x
         return if (requestedRowsHaveNoIntersectionWithBuffer(fromRow, toRow)) {
             listOf()
@@ -45,7 +45,7 @@ class TextBuffer(text: String) {
             val list = mutableListOf<String>()
             do {
                 val row = currentText[rowIdx]
-                val toCol = Math.min(fromCol + size.width, row.length)
+                val toCol = min(fromCol + size.width, row.length)
                 list.add(if (requestedColsHaveNoIntersectionWithBuffer(fromCol, toCol, row)) {
                     ""
                 } else {

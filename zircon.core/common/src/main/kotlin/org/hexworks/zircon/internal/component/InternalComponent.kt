@@ -1,15 +1,15 @@
 package org.hexworks.zircon.internal.component
 
+import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.listener.KeyStrokeListener
 import org.hexworks.zircon.api.listener.MouseListener
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.Focusable
 
 /**

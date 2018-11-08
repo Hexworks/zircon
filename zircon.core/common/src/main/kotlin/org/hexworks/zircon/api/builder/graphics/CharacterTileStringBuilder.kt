@@ -1,14 +1,14 @@
 package org.hexworks.zircon.api.builder.graphics
 
-import org.hexworks.zircon.api.modifier.Modifier
+import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.api.graphics.TextWrap.WRAP
+import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.graphics.DefaultCharacterTileString
-import org.hexworks.zircon.platform.factory.IdentifierFactory
 
 /**
  * Creates [org.hexworks.zircon.api.graphics.CharacterTileString]s.

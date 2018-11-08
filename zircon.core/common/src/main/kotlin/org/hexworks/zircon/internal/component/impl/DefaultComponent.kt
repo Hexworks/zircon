@@ -1,5 +1,8 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.datatypes.extensions.map
+import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.zircon.api.behavior.Subscription
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
@@ -15,10 +18,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.kotlin.addObserver
-import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.listener.InputListener
-import org.hexworks.zircon.api.util.Identifier
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -40,7 +40,7 @@ abstract class DefaultComponent(
         Layer by layer {
 
     // identifiable
-    final override val id = Identifier.randomIdentifier()
+    final override val id = IdentifierFactory.randomIdentifier()
 
     // component
     final override val contentPosition: Position

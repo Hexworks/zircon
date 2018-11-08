@@ -1,9 +1,10 @@
 package org.hexworks.zircon.internal.color
 
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.util.Math
+import kotlin.math.max
+import kotlin.math.min
 
-data class DefaultTextColor(override val red: Int,
+data class DefaultTileColor(override val red: Int,
                             override val green: Int,
                             override val blue: Int,
                             override val alpha: Int = TileColor.defaultAlpha()) : TileColor {
@@ -23,15 +24,15 @@ data class DefaultTextColor(override val red: Int,
 
         val i = (1.0 / (1.0 - factor)).toInt()
         if (r == 0 && g == 0 && b == 0) {
-            return DefaultTextColor(i, i, i, alpha)
+            return DefaultTileColor(i, i, i, alpha)
         }
         if (r in 1..(i - 1)) r = i
         if (g in 1..(i - 1)) g = i
         if (b in 1..(i - 1)) b = i
 
-        return DefaultTextColor(Math.min((r / factor).toInt(), 255),
-                Math.min((g / factor).toInt(), 255),
-                Math.min((b / factor).toInt(), 255),
+        return DefaultTileColor(min((r / factor).toInt(), 255),
+                min((g / factor).toInt(), 255),
+                min((b / factor).toInt(), 255),
                 alpha)
     }
 
@@ -39,14 +40,14 @@ data class DefaultTextColor(override val red: Int,
         require(factor in 0.0..1.0) {
             "The given percentage ($factor) is not between the required range (0 - 1)."
         }
-        return TileColor.create(Math.max((red * factor).toInt(), 0),
-                Math.max((green * factor).toInt(), 0),
-                Math.max((blue * factor).toInt(), 0),
+        return TileColor.create(max((red * factor).toInt(), 0),
+                max((green * factor).toInt(), 0),
+                max((blue * factor).toInt(), 0),
                 alpha)
     }
 
     override fun invert(): TileColor {
-        return DefaultTextColor(255 - red, 255 - green, 255 - blue, alpha)
+        return DefaultTileColor(255 - red, 255 - green, 255 - blue, alpha)
     }
 
     override fun darkenByPercent(percentage: Double): TileColor {

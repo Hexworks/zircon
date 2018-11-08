@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.animation
 
-import org.hexworks.zircon.api.util.Consumer
+import org.hexworks.cobalt.datatypes.sam.Consumer
 
 /**
  * Stores information about an [Animation] which is currently running.

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.graphics
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -7,7 +8,6 @@ import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.graphics.DefaultLayer
 

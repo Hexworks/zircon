@@ -1,12 +1,12 @@
 package org.hexworks.zircon.internal.game
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.Cell3D
 import org.hexworks.zircon.api.game.base.BaseGameArea
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.util.TreeMap
 import org.hexworks.zircon.platform.factory.TreeMapFactory
 

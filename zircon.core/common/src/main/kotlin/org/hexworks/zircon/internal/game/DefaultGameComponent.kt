@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.game
 
+import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.datatypes.extensions.ifPresent
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
@@ -16,12 +18,9 @@ import org.hexworks.zircon.api.game.GameComponent
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.Input
-import org.hexworks.zircon.api.kotlin.ifPresent
-import org.hexworks.zircon.api.util.Math
-import org.hexworks.zircon.api.util.Maybe
-import org.hexworks.zircon.internal.behavior.Scrollable3D
 import org.hexworks.zircon.internal.component.impl.DefaultComponent
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
+import kotlin.math.min
 
 /**
  * Note that this class is in **BETA**!
@@ -62,7 +61,7 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
         val result = mutableListOf<Layer>()
 
         if (projectionMode == ProjectionMode.TOP_DOWN) {
-            (fromZ until Math.min(fromZ + visibleLevelCount, height)).forEach { levelIdx ->
+            (fromZ until min(fromZ + visibleLevelCount, height)).forEach { levelIdx ->
                 val segment = gameArea.fetchLayersAt(
                         offset = Position3D.from2DPosition(gameArea.visibleOffset().to2DPosition(), levelIdx),
                         size = Size3D.from2DSize(size, 1))
@@ -84,7 +83,7 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
             val (fromX, fromY) = gameArea.visibleOffset().to2DPosition()
             val toX = fromX + size.width
             val toY = fromY + size.height
-            (fromZ until Math.min(fromZ + visibleLevelCount, height)).forEach { z ->
+            (fromZ until min(fromZ + visibleLevelCount, height)).forEach { z ->
                 (fromY until toY).forEach { screenY ->
                     (fromX until toX).forEach { x ->
                         val y = screenY + z // we need to add `z` to `y` because of isometric

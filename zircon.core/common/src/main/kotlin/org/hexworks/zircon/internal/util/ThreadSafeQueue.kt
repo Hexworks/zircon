@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.util
 
-import org.hexworks.zircon.api.util.Maybe
+import org.hexworks.cobalt.datatypes.Maybe
 
 interface ThreadSafeQueue<E> : MutableCollection<E> {
 

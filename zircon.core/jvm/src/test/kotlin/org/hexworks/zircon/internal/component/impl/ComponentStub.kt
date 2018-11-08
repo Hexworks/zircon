@@ -1,5 +1,8 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Subscription
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
@@ -14,8 +17,6 @@ import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.Identifier
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.InternalComponent
 
 class ComponentStub(
@@ -26,7 +27,7 @@ class ComponentStub(
         override val absolutePosition: Position = position,
         override val contentPosition: Position = position,
         override val contentSize: Size = size,
-        override val id: Identifier = Identifier.randomIdentifier(),
+        override val id: Identifier = IdentifierFactory.randomIdentifier(),
         override val graphics: TileGraphics = TileGraphicsBuilder.newBuilder()
                 .withSize(size)
                 .withTileset(tileset)

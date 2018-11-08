@@ -1,9 +1,9 @@
 package org.hexworks.zircon.api.kotlin
 
+import org.hexworks.cobalt.datatypes.sam.Consumer
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.RadioButtonGroup
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection
-import org.hexworks.zircon.api.util.Consumer
 import org.hexworks.zircon.api.util.Runnable
 
 /**

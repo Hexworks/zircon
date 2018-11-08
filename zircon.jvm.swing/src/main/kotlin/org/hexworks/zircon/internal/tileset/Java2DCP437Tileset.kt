@@ -1,6 +1,8 @@
 package org.hexworks.zircon.internal.tileset
 
 import com.github.benmanes.caffeine.cache.Caffeine
+import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -12,7 +14,6 @@ import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.TileTransformer
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
-import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.hexworks.zircon.internal.tileset.transformer.*
 import java.awt.Graphics2D
@@ -25,7 +26,7 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
                          private val source: BufferedImage)
     : Tileset<Graphics2D> {
 
-    override val id: Identifier = Identifier.randomIdentifier()
+    override val id: Identifier = IdentifierFactory.randomIdentifier()
     override val width: Int
         get() = resource.width
     override val height: Int

@@ -9,7 +9,7 @@ enum class MovementDirection(private val moveFn: (Cursor, EditableTextBuffer) ->
             val prevRowIdx = cursor.rowIdx - 1
             cursor.copy(
                     rowIdx = prevRowIdx,
-                    colIdx = org.hexworks.zircon.api.util.Math.min(
+                    colIdx = kotlin.math.min(
                             document.getColumnCount(prevRowIdx),
                             cursor.colIdx))
         } else {
@@ -21,7 +21,7 @@ enum class MovementDirection(private val moveFn: (Cursor, EditableTextBuffer) ->
             val nextRowIdx = cursor.rowIdx + 1
             cursor.copy(
                     rowIdx = nextRowIdx,
-                    colIdx = org.hexworks.zircon.api.util.Math.min(
+                    colIdx = kotlin.math.min(
                             document.getColumnCount(nextRowIdx),
                             cursor.colIdx))
         } else {

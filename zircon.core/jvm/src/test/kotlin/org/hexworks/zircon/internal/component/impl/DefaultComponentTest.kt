@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.builder.component.LabelBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
@@ -21,7 +22,6 @@ import org.hexworks.zircon.api.input.MouseActionType.MOUSE_ENTERED
 import org.hexworks.zircon.api.input.MouseActionType.MOUSE_PRESSED
 import org.hexworks.zircon.api.kotlin.onInput
 import org.hexworks.zircon.api.kotlin.onMousePressed
-import org.hexworks.zircon.api.util.Maybe
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean

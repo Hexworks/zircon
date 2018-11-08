@@ -1,9 +1,9 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.datatypes.sam.Consumer
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.event.Event
-import org.hexworks.zircon.api.util.Consumer
-import org.hexworks.zircon.api.util.Maybe
 
 interface RadioButtonGroup : Component, Scrollable {
 

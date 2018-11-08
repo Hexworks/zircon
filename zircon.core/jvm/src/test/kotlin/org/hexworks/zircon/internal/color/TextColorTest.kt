@@ -48,6 +48,6 @@ class TextColorTest {
     }
 
     companion object {
-        val EXPECTED_RESULT_COLOR = DefaultTextColor(170, 68, 85)
+        val EXPECTED_RESULT_COLOR = DefaultTileColor(170, 68, 85)
     }
 }

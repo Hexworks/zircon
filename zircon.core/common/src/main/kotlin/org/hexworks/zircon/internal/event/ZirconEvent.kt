@@ -1,10 +1,8 @@
 package org.hexworks.zircon.internal.event
 
+import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.event.Event
-import org.hexworks.zircon.api.input.KeyStroke
-import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.util.Identifier
 
 sealed class ZirconEvent : Event {
     /**

@@ -1,9 +1,10 @@
 package org.hexworks.zircon.internal.animation
 
+import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationFrame
-import org.hexworks.zircon.api.util.Identifier
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 internal class DefaultAnimation(override val tick: Long,
@@ -12,7 +13,7 @@ internal class DefaultAnimation(override val tick: Long,
                                 override val uniqueFrameCount: Int,
                                 private val frames: List<InternalAnimationFrame>) : Animation {
 
-    override val id: Identifier = Identifier.randomIdentifier()
+    override val id: Identifier = IdentifierFactory.randomIdentifier()
 
     private val infiniteLoop = loopCount == 0
     private var currentLoopCount = loopCount

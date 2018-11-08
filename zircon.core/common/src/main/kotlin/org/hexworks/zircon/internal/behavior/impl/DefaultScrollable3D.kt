@@ -3,8 +3,9 @@ package org.hexworks.zircon.internal.behavior.impl
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
-import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.internal.behavior.Scrollable3D
+import kotlin.math.max
+import kotlin.math.min
 
 class DefaultScrollable3D(private var visibleSize: Size3D,
                           private var actualSize: Size3D)
@@ -99,7 +100,7 @@ class DefaultScrollable3D(private var visibleSize: Size3D,
         }
         val levelToScrollTo = offset.z + z
         val lastScrollableLevel = actualSize.zLength - visibleSize.zLength
-        offset = offset.copy(z = Math.min(levelToScrollTo, lastScrollableLevel))
+        offset = offset.copy(z = min(levelToScrollTo, lastScrollableLevel))
         return offset
     }
 
@@ -108,7 +109,7 @@ class DefaultScrollable3D(private var visibleSize: Size3D,
             "You can only scroll down by a positive amount!"
         }
         val levelToScrollTo = offset.z - z
-        offset = offset.copy(z = Math.max(0, levelToScrollTo))
+        offset = offset.copy(z = max(0, levelToScrollTo))
         return offset
     }
 

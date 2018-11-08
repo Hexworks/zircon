@@ -1,7 +1,8 @@
 package org.hexworks.zircon.api.util.markovchain
 
-import org.hexworks.zircon.api.util.Identifier
-import org.hexworks.zircon.api.util.Maybe
+import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.zircon.api.util.Random
 
 @Suppress("DataClassPrivateConstructor")
@@ -11,7 +12,7 @@ class DefaultMarkovChainNode<T : Any>(data: T? = null,
     private val nextNodes: MutableList<Pair<Double, MarkovChainNode<T>>> = mutableListOf()
     private var data: Maybe<T> = Maybe.ofNullable(data)
 
-    override val id: Identifier = Identifier.randomIdentifier()
+    override val id: Identifier = IdentifierFactory.randomIdentifier()
 
     override fun next(): MarkovChainNode<T> {
         val rnd: Int = random.nextInt(accuracy)
