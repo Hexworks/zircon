@@ -9,14 +9,15 @@ import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 @Suppress("UNCHECKED_CAST")
@@ -76,7 +77,9 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
             }
             components.add(dc)
             dc.attachTo(this)
-            EventBus.broadcast(ZirconEvent.ComponentAddition)
+            Zircon.eventBus.broadcast(
+                    event = ZirconEvent.ComponentAddition,
+                    eventScope = ZirconScope)
         } ?: throw IllegalArgumentException(
                 "The supplied component does not implement InternalComponent.")
     }
@@ -94,7 +97,9 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
             }
         }
         if (removalHappened) {
-            EventBus.broadcast(ZirconEvent.ComponentRemoval)
+            Zircon.eventBus.broadcast(
+                    event = ZirconEvent.ComponentRemoval,
+                    eventScope = ZirconScope)
         }
         return removalHappened
     }
@@ -105,7 +110,9 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
             removeComponent(it)
         }
         if (removalHappened) {
-            EventBus.broadcast(ZirconEvent.ComponentRemoval)
+            Zircon.eventBus.broadcast(
+                    event = ZirconEvent.ComponentRemoval,
+                    eventScope = ZirconScope)
         }
         return removalHappened
     }

@@ -2,12 +2,13 @@ package org.hexworks.zircon.internal.grid
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
 import org.hexworks.zircon.api.input.MouseActionType.*
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.junit.Before
 import org.junit.Test
 import java.awt.Component
@@ -31,7 +32,7 @@ class TileGridMouseListenerTest {
                 Pair(target::mouseExited, MOUSE_EXITED),
                 Pair(target::mousePressed, MOUSE_PRESSED),
                 Pair(target::mouseReleased, MOUSE_RELEASED))
-        EventBus.subscribe<ZirconEvent.Input> {
+        Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) {
             inputs.add(it.input)
         }
     }

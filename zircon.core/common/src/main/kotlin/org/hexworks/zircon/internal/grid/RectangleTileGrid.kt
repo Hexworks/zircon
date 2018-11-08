@@ -1,12 +1,15 @@
 package org.hexworks.zircon.internal.grid
 
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationInfo
-import org.hexworks.zircon.api.behavior.*
+import org.hexworks.zircon.api.behavior.Drawable
+import org.hexworks.zircon.api.behavior.Layerable
+import org.hexworks.zircon.api.behavior.ShutdownHook
+import org.hexworks.zircon.api.behavior.Styleable
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.*
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -15,6 +18,7 @@ import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.TextUtils
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
 import org.hexworks.zircon.internal.animation.InternalAnimationHandler
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
@@ -22,6 +26,7 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphics
 
 class RectangleTileGrid(
@@ -50,7 +55,7 @@ class RectangleTileGrid(
     private var originalAnimationHandler = animationHandler
 
     override fun onInput(listener: InputListener): Subscription {
-        return EventBus.subscribe<ZirconEvent.Input> { (input) ->
+        return Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
             listener.inputEmitted(input)
         }
     }

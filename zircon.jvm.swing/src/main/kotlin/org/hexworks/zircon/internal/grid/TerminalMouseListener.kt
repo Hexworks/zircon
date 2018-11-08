@@ -1,14 +1,15 @@
 package org.hexworks.zircon.internal.grid
 
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
 import org.hexworks.zircon.api.input.MouseActionType.*
 import org.hexworks.zircon.api.util.TextUtils
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconScope
 import java.awt.GraphicsEnvironment
 import java.awt.MouseInfo
 import java.awt.Toolkit
@@ -80,7 +81,9 @@ open class TerminalMouseListener(private val fontWidth: Int,
                 if (mouseMovedToNewPosition(actionType, position)
                                 .or(isNotMoveEvent(actionType))) {
                     lastMouseLocation = position
-                    EventBus.broadcast(ZirconEvent.Input(it))
+                    Zircon.eventBus.broadcast(
+                            event = ZirconEvent.Input(it),
+                            eventScope = ZirconScope)
                 }
             }
         } catch (e: Exception) {
@@ -104,7 +107,9 @@ open class TerminalMouseListener(private val fontWidth: Int,
         string.filter {
             TextUtils.isPrintableCharacter(it)
         }.forEach {
-            EventBus.broadcast(ZirconEvent.Input(KeyStroke(character = it)))
+            Zircon.eventBus.broadcast(
+                    event = ZirconEvent.Input(KeyStroke(character = it)),
+                    eventScope = ZirconScope)
         }
     }
 

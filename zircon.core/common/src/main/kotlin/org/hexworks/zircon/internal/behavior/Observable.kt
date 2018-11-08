@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.behavior
 
 import org.hexworks.cobalt.datatypes.sam.Consumer
-import org.hexworks.zircon.api.behavior.Subscription
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.internal.util.ThreadSafeQueue
 
 interface Observable<T : Any> {

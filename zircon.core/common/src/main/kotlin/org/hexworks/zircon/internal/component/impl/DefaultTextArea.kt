@@ -11,12 +11,12 @@ import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.util.TextUtils
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.*
@@ -27,6 +27,7 @@ import org.hexworks.zircon.internal.component.impl.textedit.transformation.Delet
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.InsertCharacter
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.MoveCursor
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.math.min
 
 class DefaultTextArea constructor(
@@ -103,7 +104,9 @@ class DefaultTextArea constructor(
     override fun takeFocus(input: Maybe<Input>) {
         componentStyleSet.reset()
         render()
-        EventBus.broadcast(ZirconEvent.HideCursor)
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.HideCursor,
+                eventScope = ZirconScope)
     }
 
     override fun mouseEntered(action: MouseAction) {
@@ -224,8 +227,10 @@ class DefaultTextArea constructor(
                 .minus(visibleOffset)
         pos = pos.withX(min(pos.x, contentSize.width))
         pos = pos.withY(min(pos.y, contentSize.height))
-        EventBus.broadcast(ZirconEvent.RequestCursorAt(pos
-                .withRelative(absolutePosition + contentPosition)))
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.RequestCursorAt(pos
+                .withRelative(absolutePosition + contentPosition)),
+                eventScope = ZirconScope)
     }
 
     private fun refreshVirtualSpaceSize() {

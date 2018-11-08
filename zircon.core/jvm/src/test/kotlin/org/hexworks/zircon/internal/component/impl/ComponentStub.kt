@@ -3,8 +3,8 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.Boundable
-import org.hexworks.zircon.api.behavior.Subscription
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet

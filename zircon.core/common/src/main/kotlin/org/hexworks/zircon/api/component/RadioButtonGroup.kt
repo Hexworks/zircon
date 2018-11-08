@@ -2,8 +2,8 @@ package org.hexworks.zircon.api.component
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.sam.Consumer
+import org.hexworks.cobalt.events.api.Event
 import org.hexworks.zircon.api.behavior.Scrollable
-import org.hexworks.zircon.api.event.Event
 
 interface RadioButtonGroup : Component, Scrollable {
 
@@ -30,7 +30,7 @@ interface RadioButtonGroup : Component, Scrollable {
     fun clearSelection()
 
     interface Selection : Event {
-        val key: String
+        override val key: String
         val value: String
     }
 }

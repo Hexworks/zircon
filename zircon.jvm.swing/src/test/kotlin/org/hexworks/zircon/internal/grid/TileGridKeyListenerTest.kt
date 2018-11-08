@@ -2,12 +2,13 @@ package org.hexworks.zircon.internal.grid
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.InputType.Character
 import org.hexworks.zircon.api.input.KeyStroke
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.junit.Before
 import org.junit.Test
 import java.awt.Component
@@ -24,7 +25,7 @@ class TileGridKeyListenerTest {
     @Before
     fun setUp() {
         target = TerminalKeyListener()
-        EventBus.subscribe<ZirconEvent.Input> {
+        Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) {
             inputs.add(it.input)
         }
     }
