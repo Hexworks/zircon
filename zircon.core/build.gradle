@@ -26,8 +26,8 @@ kotlin {
             kotlin.srcDirs = ["common/src/test/kotlin"]
             resources.srcDirs = ["common/src/test/resources"]
             dependencies {
-                implementation 'org.jetbrains.kotlin:kotlin-test-common'
-                implementation 'org.jetbrains.kotlin:kotlin-test-annotations-common'
+                api 'org.jetbrains.kotlin:kotlin-test-common'
+                api 'org.jetbrains.kotlin:kotlin-test-annotations-common'
                 dependsOn commonMain
             }
         }
@@ -37,12 +37,12 @@ kotlin {
             resources.srcDirs = ["jvm/src/main/resources"]
             dependencies {
                 api 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-                implementation libraries.kotlin_reflect
-                implementation libraries.caffeine
-                implementation libraries.snakeyaml
-                implementation libraries.slf4j_api
-                implementation libraries.slf4j_simple
-                implementation libraries.trie_map
+                api libraries.kotlin_reflect
+                api libraries.caffeine
+                api libraries.snakeyaml
+                api libraries.slf4j_api
+                api libraries.slf4j_simple
+                api libraries.trie_map
             }
         }
 
