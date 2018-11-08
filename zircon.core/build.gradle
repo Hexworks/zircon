@@ -1,28 +1,60 @@
-apply plugin: 'kotlin-platform-common'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
+apply plugin: "kotlin-multiplatform"
 
-archivesBaseName = 'zircon.core'
+kotlin {
+    targets {
+        fromPreset(presets.jvm, 'jvm')
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
+        configure([jvm]) {
+            tasks.getByName(compilations.main.compileKotlinTaskName).kotlinOptions {
+                jvmTarget = '1.8'
+            }
+            tasks.getByName(compilations.test.compileKotlinTaskName).kotlinOptions {
+                jvmTarget = '1.8'
+            }
         }
     }
-}
 
-dependencies {
-    compile libraries.kotlin_stdlib_common
-    testCompile libraries.kotlin_test_common
-    testCompile libraries.kotlin_test_annotations_common
-}
+    sourceSets {
+        commonMain {
+            kotlin.srcDirs = ["common/src/main/kotlin"]
+            resources.srcDirs = ["common/src/main/resources"]
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-stdlib'
+            }
+        }
+        commonTest {
+            kotlin.srcDirs = ["common/src/test/kotlin"]
+            resources.srcDirs = ["common/src/test/resources"]
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-test-common'
+                implementation 'org.jetbrains.kotlin:kotlin-test-annotations-common'
+                dependsOn commonMain
+            }
+        }
 
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.kotlin
-}
+        jvmMain {
+            kotlin.srcDirs = ["jvm/src/main/kotlin"]
+            resources.srcDirs = ["jvm/src/main/resources"]
+            dependencies {
+                api 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+                implementation libraries.kotlin_reflect
+                implementation libraries.caffeine
+                implementation libraries.snakeyaml
+                implementation libraries.slf4j_api
+                implementation libraries.slf4j_simple
+                implementation libraries.trie_map
+            }
+        }
 
-artifacts {
-    archives sourcesJar
+        jvmTest {
+            kotlin.srcDirs = ["jvm/src/test/kotlin"]
+            resources.srcDirs = ["jvm/src/test/resources"]
+            dependencies {
+                implementation libraries.junit
+                implementation libraries.mockito
+                implementation libraries.assertj
+                dependsOn jvmMain
+            }
+        }
+    }
 }
