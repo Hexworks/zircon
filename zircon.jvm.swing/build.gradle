@@ -1,10 +1,10 @@
 apply plugin: 'kotlin'
+apply plugin: 'maven-publish'
 
 archivesBaseName = 'zircon.jvm.swing'
 
 dependencies {
-    compile project(":zircon.core")
-
+    compile project(":zircon.jvm")
     compile libraries.kotlin_stdlib
     compile libraries.filters
 
@@ -13,8 +13,19 @@ dependencies {
     testCompile libraries.assertj
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        jvmTarget = "1.8"
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
     }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.kotlin
+}
+
+artifacts {
+    archives sourcesJar
 }
