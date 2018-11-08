@@ -4,7 +4,8 @@ apply plugin: 'maven-publish'
 archivesBaseName = 'zircon.jvm.swing'
 
 dependencies {
-    compile project(":zircon.jvm")
+    compile project(":zircon.core")
+
     compile libraries.kotlin_stdlib
     compile libraries.filters
 
@@ -28,4 +29,10 @@ task sourcesJar(type: Jar) {
 
 artifacts {
     archives sourcesJar
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
