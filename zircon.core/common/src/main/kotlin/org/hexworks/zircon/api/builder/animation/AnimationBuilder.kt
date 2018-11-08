@@ -67,6 +67,7 @@ data class AnimationBuilder private constructor(
     }
 
     override fun build(): Animation {
+        recalculateFrameCountAndLength()
         if (positions.size == 0) {
             setPositionForAll(Position.defaultPosition())
         } else {
