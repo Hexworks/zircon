@@ -9,6 +9,7 @@ import javax.imageio.ImageIO
 
 object ImageLoader {
 
+    // TODO: regression test this
     fun readImage(resource: TilesetResource): BufferedImage {
         return if (isInternalResource(resource)) {
             // this loads it from the zircon jar
