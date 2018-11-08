@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.input.Input
 /**
  * Represents a GUI element which can receive focus.
  */
-interface Focusable {
+interface Focusable : Identifiable {
 
     /**
      * Tells whether this GUI element accepts focus right now.

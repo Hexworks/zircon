@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.component.Component
@@ -12,6 +11,8 @@ import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType.*
 import org.hexworks.zircon.internal.Zircon
+import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
+import org.hexworks.zircon.internal.behavior.impl.DefaultComponentFocusHandler
 import org.hexworks.zircon.internal.component.ContainerHandlerState
 import org.hexworks.zircon.internal.component.ContainerHandlerState.DEACTIVATED
 import org.hexworks.zircon.internal.component.ContainerHandlerState.UNKNOWN
@@ -25,16 +26,14 @@ import org.hexworks.zircon.internal.event.ZirconScope
 
 class DefaultComponentContainer(private var container: RootContainer) :
         InternalComponentContainer,
-        ComponentContainer by container {
+        ComponentContainer by container,
+        ComponentFocusHandler by DefaultComponentFocusHandler(container) {
 
     private var lastMousePosition = Position.defaultPosition()
-    private var lastHoveredComponent: InternalComponent = container
-    private var lastFocusedComponent: InternalComponent = container
     private var state = UNKNOWN
     private val subscriptions = mutableListOf<Subscription>()
-    private val nextsLookup = mutableMapOf<Identifier, InternalComponent>(Pair(container.id, container))
-    private val prevsLookup = nextsLookup.toMutableMap()
     private val debug = RuntimeConfig.config.debugMode
+    private var lastHoveredComponent: InternalComponent = container
 
     private val keyStrokeHandlers = mapOf(
             Pair(NEXT_FOCUS_STROKE, this::focusNext),
@@ -48,12 +47,12 @@ class DefaultComponentContainer(private var container: RootContainer) :
         } ?: throw IllegalArgumentException(
                 "Add a component which does not implement InternalComponent " +
                         "to a ComponentContainer is not allowed.")
-        refreshFocusableLookup()
+        refreshFocusables()
     }
 
     override fun removeComponent(component: Component): Boolean {
         return container.removeComponent(component).also {
-            refreshFocusableLookup()
+            refreshFocusables()
         }
     }
 
@@ -63,15 +62,15 @@ class DefaultComponentContainer(private var container: RootContainer) :
     override fun activate() {
         if (debug) println("Activating container handler")
         state = ContainerHandlerState.ACTIVE
-        refreshFocusableLookup()
+        refreshFocusables()
         subscriptions.add(Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
 
             keyStrokeHandlers[input]?.invoke()
 
             when (input) {
                 is KeyStroke -> {
-                    lastFocusedComponent.inputEmitted(input)
-                    lastFocusedComponent.keyStroked(input)
+                    focusedComponent.inputEmitted(input)
+                    focusedComponent.keyStroked(input)
                 }
                 is MouseAction -> {
                     val component = container.fetchComponentByPosition(input.position)
@@ -82,11 +81,11 @@ class DefaultComponentContainer(private var container: RootContainer) :
                     when (input.actionType) {
                         MOUSE_CLICKED -> component.map { it.mouseClicked(input) }
                         MOUSE_PRESSED -> component.map {
-                            focusComponent(it)
+                            focus(it)
                             it.mousePressed(input)
                         }
                         MOUSE_RELEASED -> component.map {
-                            focusComponent(it)
+                            focus(it)
                             it.mouseReleased(input)
                         }
                         MOUSE_ENTERED -> component.map { it.mouseEntered(input) }
@@ -94,7 +93,7 @@ class DefaultComponentContainer(private var container: RootContainer) :
                         MOUSE_WHEEL_ROTATED_UP -> component.map { it.mouseWheelRotatedUp(input) }
                         MOUSE_WHEEL_ROTATED_DOWN -> component.map { it.mouseWheelRotatedDown(input) }
                         MOUSE_DRAGGED -> component.map {
-                            focusComponent(it)
+                            focus(it)
                             it.mouseDragged(input)
                         }
                         MOUSE_MOVED -> handleMouseMoved(input)
@@ -103,10 +102,10 @@ class DefaultComponentContainer(private var container: RootContainer) :
             }
         })
         subscriptions.add(Zircon.eventBus.subscribe<ComponentAddition>(ZirconScope) {
-            refreshFocusableLookup()
+            refreshFocusables()
         })
         subscriptions.add(Zircon.eventBus.subscribe<ComponentRemoval>(ZirconScope) {
-            refreshFocusableLookup()
+            refreshFocusables()
         })
     }
 
@@ -115,8 +114,8 @@ class DefaultComponentContainer(private var container: RootContainer) :
             it.cancel()
         }
         subscriptions.clear()
-        lastFocusedComponent.takeFocus()
-        lastFocusedComponent = container
+        focusedComponent.takeFocus()
+        focus(container)
         state = DEACTIVATED
     }
 
@@ -127,50 +126,8 @@ class DefaultComponentContainer(private var container: RootContainer) :
     // TODO: test this!
     private fun clickFocused() {
         Zircon.eventBus.broadcast(
-                event = ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, lastFocusedComponent.absolutePosition)),
+                event = ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, focusedComponent.absolutePosition)),
                 eventScope = ZirconScope)
-    }
-
-    // TODO: factor these out to FocusHandler
-    private fun focusComponent(component: InternalComponent) {
-        if (component.acceptsFocus() && isNotAlreadyFocused(component)) {
-            lastFocusedComponent.takeFocus()
-            lastFocusedComponent = component
-            component.giveFocus()
-        }
-    }
-
-    private fun focusNext() = nextsLookup[lastFocusedComponent.id]?.let { focusComponent(it) }
-
-    private fun focusPrevious() = prevsLookup[lastFocusedComponent.id]?.let { focusComponent(it) }
-
-    private fun isNotAlreadyFocused(component: InternalComponent) =
-            lastFocusedComponent.id != component.id
-
-    private fun refreshFocusableLookup() {
-        nextsLookup.clear()
-        prevsLookup.clear()
-
-        val tree = container.toFlattenedComponents().filter { it.acceptsFocus() }
-        if (tree.isNotEmpty()) {
-            val first = tree.first()
-            nextsLookup[container.id] = first
-            prevsLookup[first.id] = container
-            var prev = first
-
-            tree.iterator().let { treeIter ->
-                treeIter.next() // first already handled
-                while (treeIter.hasNext()) {
-                    val next = treeIter.next()
-                    nextsLookup[prev.id] = next
-                    prevsLookup[next.id] = prev
-                    prev = next
-                }
-            }
-            nextsLookup[prev.id] = container
-            prevsLookup[container.id] = prev
-            lastFocusedComponent = container
-        }
     }
 
     private fun handleMouseMoved(mouseAction: MouseAction) {

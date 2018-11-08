@@ -19,9 +19,12 @@ import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.kotlin.addObserver
 import org.hexworks.zircon.api.listener.InputListener
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconScope
 
 @Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
@@ -77,6 +80,18 @@ abstract class DefaultComponent(
                     cells = snapshot.cells.map { it.withPosition(it.position + absolutePosition) },
                     tileset = snapshot.tileset)
         }
+    }
+
+    final override fun requestFocus() {
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.RequestFocusFor(this),
+                eventScope = ZirconScope)
+    }
+
+    override fun clearFocus() {
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.ClearFocus(this),
+                eventScope = ZirconScope)
     }
 
     override fun mouseEntered(action: MouseAction) {

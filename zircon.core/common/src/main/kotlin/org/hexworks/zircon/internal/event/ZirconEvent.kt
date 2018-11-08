@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.event
 
 import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.cobalt.events.api.Event
+import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
 
 sealed class ZirconEvent : Event {
@@ -14,6 +15,18 @@ sealed class ZirconEvent : Event {
      * Cursor is requested at the given `position`.
      */
     data class RequestCursorAt(val position: Position) : ZirconEvent()
+
+    /**
+     * Requests focus for the given [Component].
+     * @see [org.hexworks.zircon.internal.behavior.ComponentFocusHandler]
+     */
+    data class RequestFocusFor(val component: Component) : ZirconEvent()
+
+    /**
+     * Requests to clear focus for the given [Component].
+     * @see [org.hexworks.zircon.internal.behavior.ComponentFocusHandler]
+     */
+    data class ClearFocus(val component: Component) : ZirconEvent()
 
     /**
      * Hides the cursor
