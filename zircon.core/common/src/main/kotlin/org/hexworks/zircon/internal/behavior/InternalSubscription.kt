@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.behavior
 
-import org.hexworks.zircon.api.behavior.Subscription
+import org.hexworks.cobalt.events.api.Subscription
 
 interface InternalSubscription<T : Any> : Subscription {
 

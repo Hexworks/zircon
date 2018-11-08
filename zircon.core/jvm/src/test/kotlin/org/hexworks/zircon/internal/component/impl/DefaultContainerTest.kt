@@ -16,9 +16,10 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -284,7 +285,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 .build()
         target.addComponent(comp)
         val removalHappened = AtomicBoolean(false)
-        EventBus.subscribe<ZirconEvent.ComponentRemoval> {
+        Zircon.eventBus.subscribe<ZirconEvent.ComponentRemoval>(ZirconScope) {
             removalHappened.set(true)
         }
 
@@ -307,7 +308,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 .build()
         target.addComponent(comp2)
         val removalHappened = AtomicBoolean(false)
-        EventBus.subscribe<ZirconEvent.ComponentRemoval> {
+        Zircon.eventBus.subscribe<ZirconEvent.ComponentRemoval>(ZirconScope) {
             removalHappened.set(true)
         }
 
@@ -340,7 +341,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         panel.addComponent(comp)
         target.addComponent(panel)
         val removalHappened = AtomicBoolean(false)
-        EventBus.subscribe<ZirconEvent.ComponentRemoval> {
+        Zircon.eventBus.subscribe<ZirconEvent.ComponentRemoval>(ZirconScope) {
             removalHappened.set(true)
         }
 

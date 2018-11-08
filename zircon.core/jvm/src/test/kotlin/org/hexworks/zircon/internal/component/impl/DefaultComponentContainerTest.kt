@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
@@ -19,8 +18,10 @@ import org.hexworks.zircon.api.kotlin.onMouseEntered
 import org.hexworks.zircon.api.kotlin.onMousePressed
 import org.hexworks.zircon.api.kotlin.onMouseReleased
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -76,7 +77,9 @@ class DefaultComponentContainerTest {
             componentHovered.set(true)
         }
 
-        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)),
+                eventScope = ZirconScope)
 
         assertThat(componentHovered.get()).isTrue()
     }
@@ -88,14 +91,18 @@ class DefaultComponentContainerTest {
         val button = createButton()
         target.addComponent(button)
 
-        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)),
+                eventScope = ZirconScope)
 
         val componentHovered = AtomicBoolean(false)
         button.onMouseEntered {
             componentHovered.set(true)
         }
 
-        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION.withRelativeX(1))))
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION.withRelativeX(1))),
+                eventScope = ZirconScope)
 
         assertThat(componentHovered.get()).isFalse()
     }
@@ -111,7 +118,9 @@ class DefaultComponentContainerTest {
         button.onMousePressed {
             pressed.set(true)
         }
-        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)))
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)),
+                eventScope = ZirconScope)
 
         assertThat(pressed.get()).isTrue()
     }
@@ -128,7 +137,9 @@ class DefaultComponentContainerTest {
             released.set(true)
         }
 
-        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)))
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)),
+                eventScope = ZirconScope)
 
         assertThat(released.get()).isTrue()
     }
@@ -151,9 +162,15 @@ class DefaultComponentContainerTest {
             events.add(true)
         }
 
-        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)))
-        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)))
-        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)))
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)),
+                eventScope = ZirconScope)
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)),
+                eventScope = ZirconScope)
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)),
+                eventScope = ZirconScope)
 
 
         assertThat(events).isEmpty()
@@ -168,7 +185,9 @@ class DefaultComponentContainerTest {
 
         assertThat(button.componentStyleSet.currentStyle()).isNotEqualTo(FOCUSED_STYLE)
 
-        EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(KeyStroke(type = InputType.Tab)),
+                eventScope = ZirconScope)
 
         assertThat(button.componentStyleSet.currentStyle()).isEqualTo(FOCUSED_STYLE)
     }
@@ -186,12 +205,18 @@ class DefaultComponentContainerTest {
                 .build()
         target.addComponent(other)
 
-        EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
-        EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(KeyStroke(type = InputType.Tab)),
+                eventScope = ZirconScope)
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(KeyStroke(type = InputType.Tab)),
+                eventScope = ZirconScope)
 
         assertThat(button.componentStyleSet.currentStyle()).isEqualTo(DEFAULT_STYLE)
 
-        EventBus.broadcast(ZirconEvent.Input(KeyStroke(shiftDown = true, type = InputType.ReverseTab)))
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(KeyStroke(shiftDown = true, type = InputType.ReverseTab)),
+                eventScope = ZirconScope)
 
 
         assertThat(button.componentStyleSet.currentStyle()).isEqualTo(FOCUSED_STYLE)
@@ -209,8 +234,12 @@ class DefaultComponentContainerTest {
             released.set(true)
         }
 
-        EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab)))
-        EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Character, character = ' ')))
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(KeyStroke(type = InputType.Tab)),
+                eventScope = ZirconScope)
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(KeyStroke(type = InputType.Character, character = ' ')),
+                eventScope = ZirconScope)
 
         assertThat(released.get()).isTrue()
     }

@@ -6,13 +6,14 @@ import org.hexworks.zircon.api.animation.AnimationResource
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.kotlin.onInput
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
 import org.junit.Before
 import org.junit.Test
@@ -49,14 +50,18 @@ class TileGridScreenTest {
         target.onInput { inputFired.set(true) }
 
         //first of all lets make sure the default behaviour works. if a key is pressed I should get an input fired
-        EventBus.broadcast(ZirconEvent.Input(KeyStroke('a')))
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(KeyStroke('a')),
+                eventScope = ZirconScope)
         assertThat(inputFired.get()).isTrue()
 
         //now lets add the animation and make sure we can still get input
         target.startAnimation(animation)
 
         inputFired.set(false)
-        EventBus.broadcast(ZirconEvent.Input(KeyStroke('a')))
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(KeyStroke('a')),
+                eventScope = ZirconScope)
         assertThat(inputFired.get()).isTrue()
 
     }

@@ -1,11 +1,12 @@
 package org.hexworks.zircon.internal.grid
 
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.util.TextUtils
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconScope
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
 import java.awt.event.InputEvent
@@ -34,11 +35,13 @@ class TerminalKeyListener() : KeyAdapter() {
             if (!altDown && ctrlDown && shiftDown && character == 'V' && RuntimeConfig.config.isClipboardAvailable) {
                 pasteClipboardContent()
             } else {
-                EventBus.broadcast(ZirconEvent.Input(KeyStroke(
-                        character = character,
-                        ctrlDown = ctrlDown,
-                        altDown = altDown,
-                        shiftDown = shiftDown)))
+                Zircon.eventBus.broadcast(
+                        event = ZirconEvent.Input(KeyStroke(
+                                character = character,
+                                ctrlDown = ctrlDown,
+                                altDown = altDown,
+                                shiftDown = shiftDown)),
+                        eventScope = ZirconScope)
             }
         }
     }
@@ -53,28 +56,36 @@ class TerminalKeyListener() : KeyAdapter() {
             if (!altDown && !ctrlDown && shiftDown && RuntimeConfig.config.isClipboardAvailable) {
                 pasteClipboardContent()
             } else {
-                EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Insert,
-                        ctrlDown = ctrlDown,
-                        altDown = altDown,
-                        shiftDown = shiftDown)))
+                Zircon.eventBus.broadcast(
+                        event = ZirconEvent.Input(KeyStroke(type = InputType.Insert,
+                                ctrlDown = ctrlDown,
+                                altDown = altDown,
+                                shiftDown = shiftDown)),
+                        eventScope = ZirconScope)
             }
         } else if (e.keyCode == KeyEvent.VK_TAB) {
             if (e.isShiftDown) {
-                EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.ReverseTab,
-                        ctrlDown = ctrlDown,
-                        altDown = altDown,
-                        shiftDown = shiftDown)))
+                Zircon.eventBus.broadcast(
+                        event = ZirconEvent.Input(KeyStroke(type = InputType.ReverseTab,
+                                ctrlDown = ctrlDown,
+                                altDown = altDown,
+                                shiftDown = shiftDown)),
+                        eventScope = ZirconScope)
             } else {
-                EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = InputType.Tab,
-                        ctrlDown = ctrlDown,
-                        altDown = altDown,
-                        shiftDown = shiftDown)))
+                Zircon.eventBus.broadcast(
+                        event = ZirconEvent.Input(KeyStroke(type = InputType.Tab,
+                                ctrlDown = ctrlDown,
+                                altDown = altDown,
+                                shiftDown = shiftDown)),
+                        eventScope = ZirconScope)
             }
         } else if (KEY_EVENT_TO_KEY_TYPE_LOOKUP.containsKey(e.keyCode)) {
-            EventBus.broadcast(ZirconEvent.Input(KeyStroke(type = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
-                    ctrlDown = ctrlDown,
-                    altDown = altDown,
-                    shiftDown = shiftDown)))
+            Zircon.eventBus.broadcast(
+                    event = ZirconEvent.Input(KeyStroke(type = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
+                            ctrlDown = ctrlDown,
+                            altDown = altDown,
+                            shiftDown = shiftDown)),
+                    eventScope = ZirconScope)
         } else {
             //keyTyped doesn't catch this scenario (for whatever reason...) so we have to do it here
             if (altDown && ctrlDown && e.keyCode >= 'A'.toByte() && e.keyCode <= 'Z'.toByte()) {
@@ -82,11 +93,13 @@ class TerminalKeyListener() : KeyAdapter() {
                 if (!shiftDown) {
                     character = Character.toLowerCase(character)
                 }
-                EventBus.broadcast(ZirconEvent.Input(KeyStroke(
-                        character = character,
-                        ctrlDown = ctrlDown,
-                        altDown = altDown,
-                        shiftDown = shiftDown)))
+                Zircon.eventBus.broadcast(
+                        event = ZirconEvent.Input(KeyStroke(
+                                character = character,
+                                ctrlDown = ctrlDown,
+                                altDown = altDown,
+                                shiftDown = shiftDown)),
+                        eventScope = ZirconScope)
             }
         }
     }
@@ -101,7 +114,9 @@ class TerminalKeyListener() : KeyAdapter() {
         string.filter {
             TextUtils.isPrintableCharacter(it)
         }.forEach {
-            EventBus.broadcast(ZirconEvent.Input(KeyStroke(character = it)))
+            Zircon.eventBus.broadcast(
+                    event = ZirconEvent.Input(KeyStroke(character = it)),
+                    eventScope = ZirconScope)
         }
     }
 

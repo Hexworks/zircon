@@ -5,9 +5,9 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.ColorThemeResource
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.ComponentsLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
@@ -16,6 +16,7 @@ import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
 
@@ -51,7 +52,7 @@ class TileGridScreen(
         require(tileGrid is InternalTileGrid) {
             "The supplied TileGrid is not an instance of InternalTileGrid."
         }
-        EventBus.subscribe<ZirconEvent.ScreenSwitch> { (screenId) ->
+        Zircon.eventBus.subscribe<ZirconEvent.ScreenSwitch>(ZirconScope) { (screenId) ->
             if (debug) println("Screen switch event received. screenId: '$screenId'.")
             activeScreenId = screenId
             if (id != screenId) {
@@ -59,13 +60,13 @@ class TileGridScreen(
                 deactivate()
             }
         }
-        EventBus.subscribe<ZirconEvent.RequestCursorAt> { (position) ->
+        Zircon.eventBus.subscribe<ZirconEvent.RequestCursorAt>(ZirconScope) { (position) ->
             if (isActive()) {
                 tileGrid.setCursorVisibility(true)
                 tileGrid.putCursorAt(position)
             }
         }
-        EventBus.subscribe<ZirconEvent.HideCursor> {
+        Zircon.eventBus.subscribe<ZirconEvent.HideCursor>(ZirconScope) {
             if (isActive()) {
                 tileGrid.setCursorVisibility(false)
             }
@@ -74,7 +75,9 @@ class TileGridScreen(
 
     override fun display() {
         if (activeScreenId != id) {
-            EventBus.broadcast(ZirconEvent.ScreenSwitch(id))
+            Zircon.eventBus.broadcast(
+                    event = ZirconEvent.ScreenSwitch(id),
+                    eventScope = ZirconScope)
             setCursorVisibility(false)
             putCursorAt(Position.defaultPosition())
             activate()

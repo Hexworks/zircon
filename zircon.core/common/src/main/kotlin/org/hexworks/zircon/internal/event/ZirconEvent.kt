@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.event
 
 import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.events.api.Event
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.event.Event
 
 sealed class ZirconEvent : Event {
     /**

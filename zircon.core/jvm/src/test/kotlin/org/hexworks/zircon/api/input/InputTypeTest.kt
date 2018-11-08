@@ -1,8 +1,9 @@
 package org.hexworks.zircon.api.input
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.event.EventBus
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicReference
 
@@ -12,12 +13,14 @@ class InputTypeTest {
     fun test() {
         InputType.values().forEach { inputType ->
             val result = AtomicReference<Input>()
-            val subscription = EventBus.subscribe<ZirconEvent.Input> { (input) ->
+            val subscription = Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
                 result.set(input)
             }
-            EventBus.broadcast(ZirconEvent.Input(KeyStroke(
-                    character = ' ',
-                    type = inputType)))
+            Zircon.eventBus.broadcast(
+                    event = ZirconEvent.Input(KeyStroke(
+                            character = ' ',
+                            type = inputType)),
+                    eventScope = ZirconScope)
             assertThat(result.get().asKeyStroke().get().inputType())
                     .isEqualTo(inputType)
             subscription.cancel()

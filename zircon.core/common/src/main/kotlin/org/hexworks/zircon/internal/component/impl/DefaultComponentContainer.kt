@@ -2,16 +2,16 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.cobalt.datatypes.extensions.map
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.event.EventBus
-import org.hexworks.zircon.api.event.EventBusSubscription
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.InputType.*
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType.*
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.ContainerHandlerState
 import org.hexworks.zircon.internal.component.ContainerHandlerState.DEACTIVATED
 import org.hexworks.zircon.internal.component.ContainerHandlerState.UNKNOWN
@@ -21,6 +21,7 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAddition
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoval
+import org.hexworks.zircon.internal.event.ZirconScope
 
 class DefaultComponentContainer(private var container: RootContainer) :
         InternalComponentContainer,
@@ -30,7 +31,7 @@ class DefaultComponentContainer(private var container: RootContainer) :
     private var lastHoveredComponent: InternalComponent = container
     private var lastFocusedComponent: InternalComponent = container
     private var state = UNKNOWN
-    private val subscriptions = mutableListOf<EventBusSubscription<*>>()
+    private val subscriptions = mutableListOf<Subscription>()
     private val nextsLookup = mutableMapOf<Identifier, InternalComponent>(Pair(container.id, container))
     private val prevsLookup = nextsLookup.toMutableMap()
     private val debug = RuntimeConfig.config.debugMode
@@ -63,7 +64,7 @@ class DefaultComponentContainer(private var container: RootContainer) :
         if (debug) println("Activating container handler")
         state = ContainerHandlerState.ACTIVE
         refreshFocusableLookup()
-        subscriptions.add(EventBus.subscribe<ZirconEvent.Input> { (input) ->
+        subscriptions.add(Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
 
             keyStrokeHandlers[input]?.invoke()
 
@@ -101,17 +102,17 @@ class DefaultComponentContainer(private var container: RootContainer) :
                 }
             }
         })
-        subscriptions.add(EventBus.subscribe<ComponentAddition> {
+        subscriptions.add(Zircon.eventBus.subscribe<ComponentAddition>(ZirconScope) {
             refreshFocusableLookup()
         })
-        subscriptions.add(EventBus.subscribe<ComponentRemoval> {
+        subscriptions.add(Zircon.eventBus.subscribe<ComponentRemoval>(ZirconScope) {
             refreshFocusableLookup()
         })
     }
 
     override fun deactivate() {
         subscriptions.forEach {
-            EventBus.unsubscribe(it)
+            it.cancel()
         }
         subscriptions.clear()
         lastFocusedComponent.takeFocus()
@@ -125,7 +126,9 @@ class DefaultComponentContainer(private var container: RootContainer) :
 
     // TODO: test this!
     private fun clickFocused() {
-        EventBus.broadcast(ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, lastFocusedComponent.absolutePosition)))
+        Zircon.eventBus.broadcast(
+                event = ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, lastFocusedComponent.absolutePosition)),
+                eventScope = ZirconScope)
     }
 
     // TODO: factor these out to FocusHandler

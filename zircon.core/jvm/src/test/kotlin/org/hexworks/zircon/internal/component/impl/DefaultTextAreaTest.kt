@@ -13,12 +13,13 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.input.InputType.*
 import org.hexworks.zircon.api.input.KeyStroke
+import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.platform.util.SystemUtils
 import org.junit.Before
 import org.junit.Test
@@ -156,7 +157,7 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
         val tile = Tile.createCharacterTile('x', StyleSet.defaultStyle())
         target.setTileAt(pos, tile)
         var cursorVisible = false
-        EventBus.subscribe<ZirconEvent.RequestCursorAt> {
+        Zircon.eventBus.subscribe<ZirconEvent.RequestCursorAt>(ZirconScope) {
             cursorVisible = true
         }
 
@@ -171,7 +172,7 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
     @Test
     fun shouldProperlyTakeFocus() {
         var cursorHidden = false
-        EventBus.subscribe<ZirconEvent.HideCursor> {
+        Zircon.eventBus.subscribe<ZirconEvent.HideCursor>(ZirconScope) {
             cursorHidden = true
         }
         target.takeFocus()
