@@ -62,4 +62,15 @@ interface Component : Identifiable, InputEmitter, Layer {
      */
     fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
+    /**
+     * Requests that this [Component] be focused.
+     */
+    fun requestFocus()
+
+    /**
+     * Clears focus from this [Component]. Has no effect
+     * if this [Component] is not focused.
+     */
+    fun clearFocus()
+
 }
