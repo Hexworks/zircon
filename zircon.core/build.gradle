@@ -37,6 +37,9 @@ kotlin {
             resources.srcDirs = ["jvm/src/main/resources"]
             dependencies {
                 api 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+
+                api libraries.cobalt_events
+
                 api libraries.kotlin_reflect
                 api libraries.caffeine
                 api libraries.snakeyaml

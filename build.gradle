@@ -30,6 +30,7 @@ subprojects {
 }
 
 ext {
+    cobaltVersion = "2018.0.3-BETA"
     gdxVersion = "1.9.6"
     junitVersion = "4.12"
     mockitoVersion = "1.10.19"
@@ -46,6 +47,7 @@ ext {
             kotlin_reflect                : "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
             kotlin_test_annotations_common: "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlinVersion",
             kotlin_test_common            : "org.jetbrains.kotlin:kotlin-test-common:$kotlinVersion",
+            cobalt_events                 : "org.hexworks.cobalt:cobalt.events:$cobaltVersion",
             slf4j_api                     : "org.slf4j:slf4j-api:$slf4jVersion",
             slf4j_simple                  : "org.slf4j:slf4j-simple:$slf4jVersion",
             caffeine                      : "com.github.ben-manes.caffeine:caffeine:$caffeineVersion",
