@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.tileset
 
+import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.zircon.api.data.GraphicTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -8,7 +9,6 @@ import org.hexworks.zircon.api.resource.TileType.GRAPHIC_TILE
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.hexworks.zircon.internal.tileset.impl.GraphicTextureMetadata
 import org.hexworks.zircon.internal.util.rex.unZipIt

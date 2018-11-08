@@ -1,13 +1,13 @@
 package org.hexworks.zircon.api.behavior
 
+import org.hexworks.cobalt.datatypes.extensions.map
+import org.hexworks.cobalt.datatypes.sam.Consumer
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType.*
-import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.listener.KeyStrokeListener
 import org.hexworks.zircon.api.listener.MouseListener
-import org.hexworks.zircon.api.util.Consumer
 
 /**
  * Represents an object which (re) emits the [Input]s

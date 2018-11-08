@@ -1,11 +1,11 @@
 package org.hexworks.zircon.internal.renderer
 
+import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.grid.InternalTileGrid

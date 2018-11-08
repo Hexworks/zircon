@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api.shape
 
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.util.Math
 import org.hexworks.zircon.internal.shape.DefaultShape
+import kotlin.math.abs
 
 object LineFactory : ShapeFactory<LineParameters> {
 
@@ -26,7 +26,7 @@ object LineFactory : ShapeFactory<LineParameters> {
                 DefaultShape(createLine1(p1, deltaX, deltaY, true))
             }
         } else {
-            deltaX = Math.abs(deltaX)
+            deltaX = abs(deltaX)
             if (deltaX > deltaY) {
                 DefaultShape(createLine0(p1, deltaX, deltaY, false))
             } else {

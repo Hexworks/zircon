@@ -1,12 +1,12 @@
 package org.hexworks.zircon.internal.tileset
 
+import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.resource.TileType.*
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.resource.TilesetType.*
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
-import org.hexworks.zircon.api.util.Identifier
 import java.awt.Graphics2D
 
 @Suppress("UNCHECKED_CAST")

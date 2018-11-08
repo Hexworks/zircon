@@ -2,7 +2,7 @@ package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.internal.color.DefaultTextColor
+import org.hexworks.zircon.internal.color.DefaultTileColor
 import java.awt.Color
 
 object TileColors {
@@ -31,7 +31,7 @@ object TileColors {
     /**
      * Parses a string into a color. Formats:
      *  * *blue* - Constant value from the [ANSITileColor] enum
-     *  * *#1a1a1a* - Hash character followed by three hex-decimal tuples; creates a [DefaultTextColor] color entry by
+     *  * *#1a1a1a* - Hash character followed by three hex-decimal tuples; creates a [DefaultTileColor] color entry by
      *  parsing the tuples as Red, Green and Blue.
      */
     @JvmStatic

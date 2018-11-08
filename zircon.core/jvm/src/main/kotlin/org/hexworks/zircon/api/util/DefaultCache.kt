@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.util
 
 import com.github.benmanes.caffeine.cache.Caffeine
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Cacheable
 import java.util.concurrent.TimeUnit
 

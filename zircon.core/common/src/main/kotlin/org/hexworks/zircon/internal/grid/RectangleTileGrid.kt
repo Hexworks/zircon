@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.grid
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationInfo
 import org.hexworks.zircon.api.behavior.*
@@ -13,7 +14,6 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
 import org.hexworks.zircon.internal.animation.InternalAnimationHandler

@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.color
 
 import org.hexworks.zircon.api.behavior.Cacheable
-import org.hexworks.zircon.internal.color.DefaultTextColor
+import org.hexworks.zircon.internal.color.DefaultTileColor
 
 interface TileColor : Cacheable {
 
@@ -70,7 +70,7 @@ interface TileColor : Cacheable {
         /**
          * Parses a string into a color. Formats:
          *  * *blue* - Constant value from the [ANSITileColor] enum
-         *  * *#1a1a1a* - Hash character followed by three hex-decimal tuples; creates a [DefaultTextColor] color entry by
+         *  * *#1a1a1a* - Hash character followed by three hex-decimal tuples; creates a [DefaultTileColor] color entry by
          *  parsing the tuples as Red, Green and Blue.
          */
         fun fromString(value: String): TileColor {
@@ -94,7 +94,7 @@ interface TileColor : Cacheable {
          * Creates a new [TileColor].
          */
         fun create(red: Int, green: Int, blue: Int, alpha: Int = 255): TileColor {
-            return DefaultTextColor(red, green, blue, alpha)
+            return DefaultTileColor(red, green, blue, alpha)
         }
 
         private val TRANSPARENT = TileColor.create(0, 0, 0, 0)

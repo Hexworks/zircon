@@ -1,12 +1,12 @@
 package org.hexworks.zircon.api.builder.game
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.game.InMemoryGameArea
 

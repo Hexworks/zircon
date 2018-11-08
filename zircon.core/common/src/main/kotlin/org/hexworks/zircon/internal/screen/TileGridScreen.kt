@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.screen
 
+import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
@@ -7,7 +8,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.event.EventBus
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.ColorThemeResource
-import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.behavior.impl.ComponentsLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
@@ -42,8 +42,8 @@ class TileGridScreen(
         TileGrid by buffer,
         InternalComponentContainer by containerHandler {
 
-    override val id = Identifier.randomIdentifier()
-    var activeScreenId = Identifier.randomIdentifier()
+    override val id = IdentifierFactory.randomIdentifier()
+    var activeScreenId = IdentifierFactory.randomIdentifier()
 
     init {
         applyColorTheme(ColorThemeResource.EMPTY.getTheme())

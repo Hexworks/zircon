@@ -19,6 +19,7 @@ kotlin {
             kotlin.srcDirs = ["common/src/main/kotlin"]
             resources.srcDirs = ["common/src/main/resources"]
             dependencies {
+                api libraries.cobalt_events
                 implementation 'org.jetbrains.kotlin:kotlin-stdlib'
             }
         }

@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api.event
 
+import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Subscription
-import org.hexworks.zircon.api.util.Identifier
-import org.hexworks.zircon.api.util.Maybe
 
 data class EventBusSubscription<in T : Event>(
         val callback: (T) -> Unit,

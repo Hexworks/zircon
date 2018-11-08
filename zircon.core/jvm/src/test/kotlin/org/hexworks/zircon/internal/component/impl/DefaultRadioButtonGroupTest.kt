@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -14,7 +15,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
 import org.hexworks.zircon.api.kotlin.onSelection
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
 import org.junit.Before
 import org.junit.Test

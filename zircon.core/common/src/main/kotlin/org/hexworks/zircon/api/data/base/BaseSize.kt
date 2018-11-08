@@ -4,7 +4,8 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.shape.RectangleFactory
-import org.hexworks.zircon.api.util.Math
+import kotlin.math.max
+import kotlin.math.min
 
 abstract class BaseSize : Size {
 
@@ -93,13 +94,13 @@ abstract class BaseSize : Size {
     }
 
     override fun max(other: Size): Size {
-        return withWidth(Math.max(width, other.width))
-                .withHeight(Math.max(height, other.height))
+        return withWidth(max(width, other.width))
+                .withHeight(max(height, other.height))
     }
 
     override fun min(other: Size): Size {
-        return withWidth(Math.min(width, other.width))
-                .withHeight(Math.min(height, other.height))
+        return withWidth(min(width, other.width))
+                .withHeight(min(height, other.height))
     }
 
     override fun with(size: Size): Size {

@@ -1,18 +1,18 @@
 package org.hexworks.zircon.internal.tileset.impl
 
+import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.api.util.Identifier
 
 class VirtualTileset : Tileset<Char> {
 
     override val width = 16
     override val height = 16
     override val targetType = Char::class
-    override val id = Identifier.randomIdentifier()
+    override val id = IdentifierFactory.randomIdentifier()
 
     override fun drawTile(tile: Tile, surface: Char, position: Position) {
         fetchTextureForTile(tile)

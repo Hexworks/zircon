@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.util.markovchain
 
-import org.hexworks.zircon.api.util.Maybe
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.internal.behavior.Identifiable
 
 /**

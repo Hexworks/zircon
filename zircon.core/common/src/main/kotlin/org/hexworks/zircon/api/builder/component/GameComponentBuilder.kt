@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -10,7 +11,6 @@ import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameComponent
 import org.hexworks.zircon.api.game.ProjectionMode
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.game.DefaultGameComponent
 import kotlin.jvm.JvmStatic

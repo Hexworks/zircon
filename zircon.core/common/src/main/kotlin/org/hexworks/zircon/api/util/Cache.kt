@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.util
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Cacheable
 import org.hexworks.zircon.platform.factory.CacheFactory
 

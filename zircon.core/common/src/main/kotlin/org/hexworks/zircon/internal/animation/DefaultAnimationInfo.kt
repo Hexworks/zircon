@@ -1,12 +1,12 @@
 package org.hexworks.zircon.internal.animation
 
+import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.datatypes.extensions.map
+import org.hexworks.cobalt.datatypes.sam.Consumer
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandler
 import org.hexworks.zircon.api.animation.AnimationInfo
 import org.hexworks.zircon.api.animation.AnimationState
-import org.hexworks.zircon.api.kotlin.map
-import org.hexworks.zircon.api.util.Consumer
-import org.hexworks.zircon.api.util.Maybe
 
 /**
  * Default implementation of the [AnimationInfo] interface.

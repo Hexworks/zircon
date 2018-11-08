@@ -1,10 +1,10 @@
 package org.hexworks.zircon.api.component.renderer.impl
 
+import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.renderer.ComponentPostProcessor
 import org.hexworks.zircon.api.component.renderer.ComponentPostProcessorContext
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
-import org.hexworks.zircon.api.kotlin.map
 import org.hexworks.zircon.api.modifier.Delay
 
 class TypingEffectPostProcessor<T : Component>(private val baseDelayInMs: Long) : ComponentPostProcessor<T> {

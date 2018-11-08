@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.internal.color.DefaultTextColor
+import org.hexworks.zircon.internal.color.DefaultTileColor
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -29,13 +29,13 @@ class REXLayerTest {
 
         assertChar(
                 'A',
-                DefaultTextColor(85, 85, 85, 255),
-                DefaultTextColor(170, 170, 170, 255),
+                DefaultTileColor(85, 85, 85, 255),
+                DefaultTileColor(170, 170, 170, 255),
                 layer.getTileAt(Position.create(0, 0)).get())
         assertChar(
                 'B',
-                DefaultTextColor(35, 35, 35, 255),
-                DefaultTextColor(133, 133, 133, 255),
+                DefaultTileColor(35, 35, 35, 255),
+                DefaultTileColor(133, 133, 133, 255),
                 layer.getTileAt(Position.create(1, 0)).get())
     }
 
@@ -84,7 +84,7 @@ class REXLayerTest {
         return buffer
     }
 
-    private fun assertChar(expChar: Char, expBgColor: DefaultTextColor, expFgColor: DefaultTextColor, textChar: Tile) {
+    private fun assertChar(expChar: Char, expBgColor: DefaultTileColor, expFgColor: DefaultTileColor, textChar: Tile) {
         assertThat(textChar.asCharacterTile().get().character).isEqualTo(expChar)
         assertThat(textChar.backgroundColor).isEqualTo(expBgColor)
         assertThat(textChar.foregroundColor).isEqualTo(expFgColor)

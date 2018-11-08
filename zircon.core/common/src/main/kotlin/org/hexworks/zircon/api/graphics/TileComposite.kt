@@ -1,9 +1,9 @@
 package org.hexworks.zircon.api.graphics
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.util.Maybe
 
 /**
  * Represents an object which is composed of [Tile]s and has a [Size].

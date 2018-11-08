@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.resource
 
-import org.hexworks.zircon.api.util.Identifier
+import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 
 /**
  * This enum contains the metadata for the built-in CP437 tilesets.
@@ -9,7 +10,7 @@ enum class BuiltInCP437TilesetResource(val tilesetName: String,
                                        override val width: Int,
                                        override val height: Int,
                                        val fileName: String = "${tilesetName}_${width}x$height.png",
-                                       override val id: Identifier = Identifier.randomIdentifier(),
+                                       override val id: Identifier = IdentifierFactory.randomIdentifier(),
                                        override val tileType: TileType = TileType.CHARACTER_TILE,
                                        override val tilesetType: TilesetType = TilesetType.CP437_TILESET,
                                        override val path: String = "/cp_437_tilesets/$fileName")

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.data
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Cacheable
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.color.TileColor
@@ -8,7 +9,6 @@ import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.Maybe
 import org.hexworks.zircon.internal.data.DefaultCharacterTile
 import org.hexworks.zircon.internal.data.DefaultGraphicTile
 import org.hexworks.zircon.internal.data.DefaultImageTile

@@ -1,12 +1,12 @@
 package org.hexworks.zircon.internal.graphics
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.base.BaseTileImage
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.Maybe
 
 class DefaultTileImage(
         override val size: Size,
