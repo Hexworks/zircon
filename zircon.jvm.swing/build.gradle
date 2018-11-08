@@ -5,6 +5,8 @@ archivesBaseName = 'zircon.jvm.swing'
 
 dependencies {
     compile project(":zircon.core")
+    compile libraries.cobalt_events_jvm
+    compile libraries.cobalt_datatypes_jvm
 
     compile libraries.kotlin_stdlib
     compile libraries.filters

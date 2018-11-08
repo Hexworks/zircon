@@ -14,7 +14,7 @@ buildscript {
 
 allprojects {
     group "org.hexworks.zircon"
-    version "2018.5.13-PREVIEW"
+    version "2018.5.18-PREVIEW"
 
     repositories {
         mavenLocal()
@@ -48,6 +48,8 @@ ext {
             kotlin_test_annotations_common: "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlinVersion",
             kotlin_test_common            : "org.jetbrains.kotlin:kotlin-test-common:$kotlinVersion",
             cobalt_events                 : "org.hexworks.cobalt:cobalt.events:$cobaltVersion",
+            cobalt_events_jvm             : "org.hexworks.cobalt:cobalt.events-jvm:$cobaltVersion",
+            cobalt_datatypes_jvm          : "org.hexworks.cobalt:cobalt.datatypes-jvm:$cobaltVersion",
             slf4j_api                     : "org.slf4j:slf4j-api:$slf4jVersion",
             slf4j_simple                  : "org.slf4j:slf4j-simple:$slf4jVersion",
             caffeine                      : "com.github.ben-manes.caffeine:caffeine:$caffeineVersion",
