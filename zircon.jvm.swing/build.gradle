@@ -4,7 +4,7 @@ apply plugin: 'maven-publish'
 archivesBaseName = 'zircon.jvm.swing'
 
 dependencies {
-    compile project(":zircon.core-jvm")
+    compile project(":zircon.core")
 
     compile libraries.kotlin_stdlib
     compile libraries.filters
