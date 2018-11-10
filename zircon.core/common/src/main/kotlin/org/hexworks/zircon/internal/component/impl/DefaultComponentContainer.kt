@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.component.Component
@@ -23,6 +24,7 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAddition
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoval
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.extensions.cancelAll
 
 class DefaultComponentContainer(private var container: RootContainer) :
         InternalComponentContainer,
@@ -67,36 +69,48 @@ class DefaultComponentContainer(private var container: RootContainer) :
 
             keyStrokeHandlers[input]?.invoke()
 
-            when (input) {
-                is KeyStroke -> {
-                    focusedComponent.inputEmitted(input)
-                    focusedComponent.keyStroked(input)
-                }
-                is MouseAction -> {
-                    val component = container.fetchComponentByPosition(input.position)
-                    component.map {
-                        // this is necessary because listeners are notified this way
-                        it.inputEmitted(input)
+            val targetComponent = when (input) {
+                is KeyStroke -> Maybe.of(focusedComponent)
+                is MouseAction -> container.fetchComponentByPosition(input.position)
+            }
+
+            targetComponent.map { component ->
+                when (input) {
+                    is KeyStroke -> {
+                        component.inputEmitted(input)
+                        component.keyStroked(input)
                     }
-                    when (input.actionType) {
-                        MOUSE_CLICKED -> component.map { it.mouseClicked(input) }
-                        MOUSE_PRESSED -> component.map {
-                            focus(it)
-                            it.mousePressed(input)
+                    is MouseAction -> {
+                        // this is necessary because listeners are notified this way
+                        component.inputEmitted(input)
+                        when (input.actionType) {
+                            MOUSE_CLICKED -> component.mouseClicked(input)
+                            MOUSE_PRESSED -> {
+                                focus(component)
+                                component.mousePressed(input)
+                            }
+                            MOUSE_RELEASED -> {
+                                focus(component)
+                                component.mouseReleased(input)
+                            }
+                            MOUSE_ENTERED -> {
+                                component.mouseEntered(input)
+                            }
+                            MOUSE_EXITED -> {
+                                component.mouseExited(input)
+                            }
+                            MOUSE_WHEEL_ROTATED_UP -> {
+                                component.mouseWheelRotatedUp(input)
+                            }
+                            MOUSE_WHEEL_ROTATED_DOWN -> {
+                                component.mouseWheelRotatedDown(input)
+                            }
+                            MOUSE_DRAGGED -> {
+                                focus(component)
+                                component.mouseDragged(input)
+                            }
+                            MOUSE_MOVED -> handleMouseMoved(input)
                         }
-                        MOUSE_RELEASED -> component.map {
-                            focus(it)
-                            it.mouseReleased(input)
-                        }
-                        MOUSE_ENTERED -> component.map { it.mouseEntered(input) }
-                        MOUSE_EXITED -> component.map { it.mouseExited(input) }
-                        MOUSE_WHEEL_ROTATED_UP -> component.map { it.mouseWheelRotatedUp(input) }
-                        MOUSE_WHEEL_ROTATED_DOWN -> component.map { it.mouseWheelRotatedDown(input) }
-                        MOUSE_DRAGGED -> component.map {
-                            focus(it)
-                            it.mouseDragged(input)
-                        }
-                        MOUSE_MOVED -> handleMouseMoved(input)
                     }
                 }
             }
@@ -110,10 +124,7 @@ class DefaultComponentContainer(private var container: RootContainer) :
     }
 
     override fun deactivate() {
-        subscriptions.forEach {
-            it.cancel()
-        }
-        subscriptions.clear()
+        subscriptions.cancelAll()
         focusedComponent.takeFocus()
         focus(container)
         state = DEACTIVATED
