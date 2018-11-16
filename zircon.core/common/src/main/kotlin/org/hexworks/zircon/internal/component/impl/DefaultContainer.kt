@@ -77,7 +77,7 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
             }
             components.add(dc)
             dc.attachTo(this)
-            Zircon.eventBus.broadcast(
+            Zircon.eventBus.publish(
                     event = ZirconEvent.ComponentAddition,
                     eventScope = ZirconScope)
         } ?: throw IllegalArgumentException(
@@ -97,7 +97,7 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
             }
         }
         if (removalHappened) {
-            Zircon.eventBus.broadcast(
+            Zircon.eventBus.publish(
                     event = ZirconEvent.ComponentRemoval,
                     eventScope = ZirconScope)
         }
@@ -110,7 +110,7 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
             removeComponent(it)
         }
         if (removalHappened) {
-            Zircon.eventBus.broadcast(
+            Zircon.eventBus.publish(
                     event = ZirconEvent.ComponentRemoval,
                     eventScope = ZirconScope)
         }

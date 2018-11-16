@@ -81,7 +81,7 @@ open class TerminalMouseListener(private val fontWidth: Int,
                 if (mouseMovedToNewPosition(actionType, position)
                                 .or(isNotMoveEvent(actionType))) {
                     lastMouseLocation = position
-                    Zircon.eventBus.broadcast(
+                    Zircon.eventBus.publish(
                             event = ZirconEvent.Input(it),
                             eventScope = ZirconScope)
                 }
@@ -107,7 +107,7 @@ open class TerminalMouseListener(private val fontWidth: Int,
         string.filter {
             TextUtils.isPrintableCharacter(it)
         }.forEach {
-            Zircon.eventBus.broadcast(
+            Zircon.eventBus.publish(
                     event = ZirconEvent.Input(KeyStroke(character = it)),
                     eventScope = ZirconScope)
         }

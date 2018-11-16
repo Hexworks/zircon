@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.events.api.subscribe
 import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.builder.component.HeaderBuilder

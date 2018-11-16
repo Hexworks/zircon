@@ -4,5 +4,5 @@ import org.hexworks.cobalt.events.api.EventBus
 
 object Zircon {
 
-    val eventBus = EventBus()
+    val eventBus = EventBus.create()
 }

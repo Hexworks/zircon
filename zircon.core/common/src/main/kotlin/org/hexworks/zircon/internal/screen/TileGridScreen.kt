@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.screen
 
 import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
+import org.hexworks.cobalt.events.api.subscribe
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
@@ -75,7 +76,7 @@ class TileGridScreen(
 
     override fun display() {
         if (activeScreenId != id) {
-            Zircon.eventBus.broadcast(
+            Zircon.eventBus.publish(
                     event = ZirconEvent.ScreenSwitch(id),
                     eventScope = ZirconScope)
             setCursorVisibility(false)

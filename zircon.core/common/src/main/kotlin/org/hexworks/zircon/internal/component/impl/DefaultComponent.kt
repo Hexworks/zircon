@@ -83,13 +83,13 @@ abstract class DefaultComponent(
     }
 
     final override fun requestFocus() {
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.RequestFocusFor(this),
                 eventScope = ZirconScope)
     }
 
     override fun clearFocus() {
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.ClearFocus(this),
                 eventScope = ZirconScope)
     }

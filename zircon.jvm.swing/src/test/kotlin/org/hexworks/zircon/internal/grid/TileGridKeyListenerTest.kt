@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.grid
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.events.api.subscribe
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
@@ -89,12 +90,12 @@ class TileGridKeyListenerTest {
     }
 
     companion object {
-        val CHAR = 'x'
-        val FONT_SIZE = 16
-        val POSITION = Position.create(2, 3)
+        const val CHAR = 'x'
+        const val FONT_SIZE = 16
+        const val BUTTON = 2
+        private val POSITION = Position.create(2, 3)
         val X = POSITION.x * FONT_SIZE
         val Y = POSITION.y * FONT_SIZE
-        val BUTTON = 2
         val DUMMY_COMPONENT = object : Component() {}
     }
 }

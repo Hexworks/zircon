@@ -104,7 +104,7 @@ class DefaultTextArea constructor(
     override fun takeFocus(input: Maybe<Input>) {
         componentStyleSet.reset()
         render()
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.HideCursor,
                 eventScope = ZirconScope)
     }
@@ -227,7 +227,7 @@ class DefaultTextArea constructor(
                 .minus(visibleOffset)
         pos = pos.withX(min(pos.x, contentSize.width))
         pos = pos.withY(min(pos.y, contentSize.height))
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.RequestCursorAt(pos
                 .withRelative(absolutePosition + contentPosition)),
                 eventScope = ZirconScope)

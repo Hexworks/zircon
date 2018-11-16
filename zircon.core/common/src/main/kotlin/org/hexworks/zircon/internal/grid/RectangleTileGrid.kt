@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.grid
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.cobalt.events.api.subscribe
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationInfo
 import org.hexworks.zircon.api.behavior.Drawable

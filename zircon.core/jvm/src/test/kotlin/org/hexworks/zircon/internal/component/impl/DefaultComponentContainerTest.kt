@@ -77,7 +77,7 @@ class DefaultComponentContainerTest {
             componentHovered.set(true)
         }
 
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)),
                 eventScope = ZirconScope)
 
@@ -91,7 +91,7 @@ class DefaultComponentContainerTest {
         val button = createButton()
         target.addComponent(button)
 
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)),
                 eventScope = ZirconScope)
 
@@ -100,7 +100,7 @@ class DefaultComponentContainerTest {
             componentHovered.set(true)
         }
 
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION.withRelativeX(1))),
                 eventScope = ZirconScope)
 
@@ -118,7 +118,7 @@ class DefaultComponentContainerTest {
         button.onMousePressed {
             pressed.set(true)
         }
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)),
                 eventScope = ZirconScope)
 
@@ -137,7 +137,7 @@ class DefaultComponentContainerTest {
             released.set(true)
         }
 
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)),
                 eventScope = ZirconScope)
 
@@ -162,13 +162,13 @@ class DefaultComponentContainerTest {
             events.add(true)
         }
 
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)),
                 eventScope = ZirconScope)
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)),
                 eventScope = ZirconScope)
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)),
                 eventScope = ZirconScope)
 
@@ -185,7 +185,7 @@ class DefaultComponentContainerTest {
 
         assertThat(button.componentStyleSet.currentStyle()).isNotEqualTo(FOCUSED_STYLE)
 
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(KeyStroke(type = InputType.Tab)),
                 eventScope = ZirconScope)
 
@@ -205,16 +205,16 @@ class DefaultComponentContainerTest {
                 .build()
         target.addComponent(other)
 
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(KeyStroke(type = InputType.Tab)),
                 eventScope = ZirconScope)
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(KeyStroke(type = InputType.Tab)),
                 eventScope = ZirconScope)
 
         assertThat(button.componentStyleSet.currentStyle()).isEqualTo(DEFAULT_STYLE)
 
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(KeyStroke(shiftDown = true, type = InputType.ReverseTab)),
                 eventScope = ZirconScope)
 
@@ -234,10 +234,10 @@ class DefaultComponentContainerTest {
             released.set(true)
         }
 
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(KeyStroke(type = InputType.Tab)),
                 eventScope = ZirconScope)
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(KeyStroke(type = InputType.Character, character = ' ')),
                 eventScope = ZirconScope)
 
