@@ -50,7 +50,7 @@ class TileGridScreenTest {
         target.onInput { inputFired.set(true) }
 
         //first of all lets make sure the default behaviour works. if a key is pressed I should get an input fired
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(KeyStroke('a')),
                 eventScope = ZirconScope)
         assertThat(inputFired.get()).isTrue()
@@ -59,7 +59,7 @@ class TileGridScreenTest {
         target.startAnimation(animation)
 
         inputFired.set(false)
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(KeyStroke('a')),
                 eventScope = ZirconScope)
         assertThat(inputFired.get()).isTrue()

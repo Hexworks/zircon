@@ -11,6 +11,8 @@ dependencies {
     compile libraries.kotlin_stdlib
     compile libraries.filters
 
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    
     testCompile libraries.junit
     testCompile libraries.mockito
     testCompile libraries.assertj

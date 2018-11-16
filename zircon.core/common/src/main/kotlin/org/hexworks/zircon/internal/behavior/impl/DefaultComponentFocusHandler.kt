@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.behavior.impl
 
+import org.hexworks.cobalt.events.api.subscribe
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
 import org.hexworks.zircon.internal.behavior.Focusable

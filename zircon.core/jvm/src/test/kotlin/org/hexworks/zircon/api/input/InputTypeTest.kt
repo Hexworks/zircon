@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.input
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.events.api.subscribe
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
@@ -16,7 +17,7 @@ class InputTypeTest {
             val subscription = Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
                 result.set(input)
             }
-            Zircon.eventBus.broadcast(
+            Zircon.eventBus.publish(
                     event = ZirconEvent.Input(KeyStroke(
                             character = ' ',
                             type = inputType)),

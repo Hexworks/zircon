@@ -35,7 +35,7 @@ class TerminalKeyListener() : KeyAdapter() {
             if (!altDown && ctrlDown && shiftDown && character == 'V' && RuntimeConfig.config.isClipboardAvailable) {
                 pasteClipboardContent()
             } else {
-                Zircon.eventBus.broadcast(
+                Zircon.eventBus.publish(
                         event = ZirconEvent.Input(KeyStroke(
                                 character = character,
                                 ctrlDown = ctrlDown,
@@ -56,7 +56,7 @@ class TerminalKeyListener() : KeyAdapter() {
             if (!altDown && !ctrlDown && shiftDown && RuntimeConfig.config.isClipboardAvailable) {
                 pasteClipboardContent()
             } else {
-                Zircon.eventBus.broadcast(
+                Zircon.eventBus.publish(
                         event = ZirconEvent.Input(KeyStroke(type = InputType.Insert,
                                 ctrlDown = ctrlDown,
                                 altDown = altDown,
@@ -65,14 +65,14 @@ class TerminalKeyListener() : KeyAdapter() {
             }
         } else if (e.keyCode == KeyEvent.VK_TAB) {
             if (e.isShiftDown) {
-                Zircon.eventBus.broadcast(
+                Zircon.eventBus.publish(
                         event = ZirconEvent.Input(KeyStroke(type = InputType.ReverseTab,
                                 ctrlDown = ctrlDown,
                                 altDown = altDown,
                                 shiftDown = shiftDown)),
                         eventScope = ZirconScope)
             } else {
-                Zircon.eventBus.broadcast(
+                Zircon.eventBus.publish(
                         event = ZirconEvent.Input(KeyStroke(type = InputType.Tab,
                                 ctrlDown = ctrlDown,
                                 altDown = altDown,
@@ -80,7 +80,7 @@ class TerminalKeyListener() : KeyAdapter() {
                         eventScope = ZirconScope)
             }
         } else if (KEY_EVENT_TO_KEY_TYPE_LOOKUP.containsKey(e.keyCode)) {
-            Zircon.eventBus.broadcast(
+            Zircon.eventBus.publish(
                     event = ZirconEvent.Input(KeyStroke(type = KEY_EVENT_TO_KEY_TYPE_LOOKUP[e.keyCode]!!,
                             ctrlDown = ctrlDown,
                             altDown = altDown,
@@ -93,7 +93,7 @@ class TerminalKeyListener() : KeyAdapter() {
                 if (!shiftDown) {
                     character = Character.toLowerCase(character)
                 }
-                Zircon.eventBus.broadcast(
+                Zircon.eventBus.publish(
                         event = ZirconEvent.Input(KeyStroke(
                                 character = character,
                                 ctrlDown = ctrlDown,
@@ -114,7 +114,7 @@ class TerminalKeyListener() : KeyAdapter() {
         string.filter {
             TextUtils.isPrintableCharacter(it)
         }.forEach {
-            Zircon.eventBus.broadcast(
+            Zircon.eventBus.publish(
                     event = ZirconEvent.Input(KeyStroke(character = it)),
                     eventScope = ZirconScope)
         }

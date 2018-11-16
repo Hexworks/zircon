@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.cobalt.events.api.subscribe
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.data.Position
@@ -136,7 +137,7 @@ class DefaultComponentContainer(private var container: RootContainer) :
 
     // TODO: test this!
     private fun clickFocused() {
-        Zircon.eventBus.broadcast(
+        Zircon.eventBus.publish(
                 event = ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, focusedComponent.absolutePosition)),
                 eventScope = ZirconScope)
     }

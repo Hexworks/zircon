@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.grid
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.events.api.subscribe
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
