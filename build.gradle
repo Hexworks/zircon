@@ -14,7 +14,7 @@ buildscript {
 
 allprojects {
     group "org.hexworks.zircon"
-    version "2018.5.24-PREVIEW"
+    version "2018.5.27-PREVIEW"
 
     repositories {
         mavenLocal()
@@ -30,7 +30,7 @@ subprojects {
 }
 
 ext {
-    cobaltVersion = "2018.0.9-BETA"
+    cobaltVersion = "2018.0.11-BETA"
     gdxVersion = "1.9.6"
     junitVersion = "4.12"
     mockitoVersion = "1.10.19"
@@ -48,6 +48,8 @@ ext {
             kotlin_test_annotations_common: "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlinVersion",
             kotlin_test_common            : "org.jetbrains.kotlin:kotlin-test-common:$kotlinVersion",
             cobalt_events                 : "org.hexworks.cobalt:cobalt.events:$cobaltVersion",
+            cobalt_datatypes              : "org.hexworks.cobalt:cobalt.datatypes:$cobaltVersion",
+            cobalt_logging                : "org.hexworks.cobalt:cobalt.logging:$cobaltVersion",
             cobalt_events_jvm             : "org.hexworks.cobalt:cobalt.events-jvm:$cobaltVersion",
             cobalt_datatypes_jvm          : "org.hexworks.cobalt:cobalt.datatypes-jvm:$cobaltVersion",
             cobalt_logging_jvm            : "org.hexworks.cobalt:cobalt.logging-jvm:$cobaltVersion",
