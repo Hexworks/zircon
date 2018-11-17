@@ -40,6 +40,8 @@ kotlin {
                 api 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 
                 api libraries.cobalt_events
+                api libraries.cobalt_datatypes
+                api libraries.cobalt_logging
 
                 api libraries.kotlin_reflect
                 api libraries.caffeine
