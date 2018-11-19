@@ -26,55 +26,25 @@ object ToggleButtonsExample {
                 .wrapWithShadow(true)
                 .withSize(Sizes.create(30, 28))
                 .withPosition(Positions.create(29, 1))
-                .withTitle("Buttons on panel")
+                .withTitle("Toolbar buttons on panel")
                 .build()
         screen.addComponent(panel)
 
-        val simpleBtn = Components.toggleButton()
-                .withText("Toggle")
+        val unselectedToggleButton = Components.toggleButton()
+                .withText("Toggle me")
                 .wrapSides(true)
                 .withPosition(Positions.create(1, 3))
-        val boxedBtn = Components.button()
-                .withText("Boxed Button")
+        val selectedToggleButton = Components.toggleButton()
+                .withText("Boxed Toggle Button")
+                .withIsSelected(true)
                 .wrapWithBox(true)
                 .wrapSides(false)
                 .withPosition(Positions.create(1, 5))
-        val tooLongBtn = Components.button()
-                .withText("Too long name for button")
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
-                .wrapSides(false)
-                .withPosition(Positions.create(1, 9))
-                .withSize(Sizes.create(10, 4))
-        val overTheTopBtn = Components.button()
-                .withText("Over the top button")
-                .withDecorationRenderers(
-                        ShadowDecorationRenderer(),
-                        HalfBlockDecorationRenderer(),
-                        BoxDecorationRenderer(BoxType.DOUBLE))
-                .withPosition(Positions.create(1, 14))
-        val halfBlockBtn = Components.button()
-                .withText("Half block button")
-                .withDecorationRenderers(
-                        ShadowDecorationRenderer(),
-                        HalfBlockDecorationRenderer())
-                .withPosition(Positions.create(1, 23))
 
 
-        screen.addComponent(simpleBtn)
-        panel.addComponent(simpleBtn.withPosition(Positions.create(1, 1)).build())
+        panel.addComponent(unselectedToggleButton)
+        panel.addComponent(selectedToggleButton)
 
-        screen.addComponent(boxedBtn)
-        panel.addComponent(boxedBtn.withPosition(Positions.create(1, 3)).build())
-
-        screen.addComponent(tooLongBtn)
-        panel.addComponent(tooLongBtn.withPosition(Positions.create(1, 7)).build())
-
-        screen.addComponent(overTheTopBtn)
-        panel.addComponent(overTheTopBtn.withPosition(Positions.create(1, 12)).build())
-
-        screen.addComponent(halfBlockBtn)
-        panel.addComponent(halfBlockBtn.withPosition(Positions.create(1, 21)).build())
 
         screen.display()
         screen.applyColorTheme(theme)
