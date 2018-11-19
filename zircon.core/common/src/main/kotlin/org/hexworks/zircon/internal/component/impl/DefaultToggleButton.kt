@@ -1,12 +1,9 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.sam.Consumer
-import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ToggleButton
@@ -21,9 +18,6 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
     : ToggleButton, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
-
-
-    var wasUnselectedOnCurrentMouseHover = false
 
     init {
         render()
@@ -43,8 +37,6 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
     override fun mousePressed(action: MouseAction) {
         isSelected = !isSelected
 
-        if (!isSelected)
-            wasUnselectedOnCurrentMouseHover = true
     }
 
     override fun mouseExited(action: MouseAction) {
@@ -52,11 +44,6 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
             super.mouseExited(action)
     }
 
-    override fun mouseEntered(action: MouseAction) {
-        if (!(!isSelected && wasUnselectedOnCurrentMouseHover))
-            super.mouseEntered(action)
-        wasUnselectedOnCurrentMouseHover = false
-    }
 
     override fun acceptsFocus(): Boolean {
         return true
