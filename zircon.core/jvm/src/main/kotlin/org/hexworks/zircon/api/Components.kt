@@ -28,10 +28,13 @@ object Components {
     fun button() = ButtonBuilder.newBuilder()
 
     @JvmStatic
+    fun toggleButton() = ToggleButtonBuilder.newBuilder()
+
+    @JvmStatic
     fun checkBox() = CheckBoxBuilder.newBuilder()
 
     @JvmStatic
-    fun <T: Tile, B : Block<T>> gameComponent() = GameComponentBuilder.newBuilder<T, B>()
+    fun <T : Tile, B : Block<T>> gameComponent() = GameComponentBuilder.newBuilder<T, B>()
 
     @JvmStatic
     fun header() = HeaderBuilder.newBuilder()
