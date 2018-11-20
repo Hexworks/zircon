@@ -4,8 +4,10 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.subscribe
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentContainer
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.input.InputType.*
@@ -27,16 +29,17 @@ import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoval
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.extensions.cancelAll
 
-class DefaultComponentContainer(private var container: RootContainer) :
+class DefaultComponentContainer(private var root: RootContainer) :
         InternalComponentContainer,
-        ComponentContainer by container,
-        ComponentFocusHandler by DefaultComponentFocusHandler(container) {
+        ComponentContainer by root,
+        ComponentFocusHandler by DefaultComponentFocusHandler(root) {
+
+    private val subscriptions = mutableListOf<Subscription>()
+    private val debug = RuntimeConfig.config.debugMode
 
     private var lastMousePosition = Position.defaultPosition()
     private var state = UNKNOWN
-    private val subscriptions = mutableListOf<Subscription>()
-    private val debug = RuntimeConfig.config.debugMode
-    private var lastHoveredComponent: InternalComponent = container
+    private var lastHoveredComponent: InternalComponent = root
 
     private val keyStrokeHandlers = mapOf(
             Pair(NEXT_FOCUS_STROKE, this::focusNext),
@@ -46,7 +49,7 @@ class DefaultComponentContainer(private var container: RootContainer) :
 
     override fun addComponent(component: Component) {
         (component as? InternalComponent)?.let { dc ->
-            container.addComponent(dc)
+            root.addComponent(dc)
         } ?: throw IllegalArgumentException(
                 "Add a component which does not implement InternalComponent " +
                         "to a ComponentContainer is not allowed.")
@@ -54,7 +57,7 @@ class DefaultComponentContainer(private var container: RootContainer) :
     }
 
     override fun removeComponent(component: Component): Boolean {
-        return container.removeComponent(component).also {
+        return root.removeComponent(component).also {
             refreshFocusables()
         }
     }
@@ -72,7 +75,7 @@ class DefaultComponentContainer(private var container: RootContainer) :
 
             val targetComponent = when (input) {
                 is KeyStroke -> Maybe.of(focusedComponent)
-                is MouseAction -> container.fetchComponentByPosition(input.position)
+                is MouseAction -> root.fetchComponentByPosition(input.position)
             }
 
             targetComponent.map { component ->
@@ -127,12 +130,12 @@ class DefaultComponentContainer(private var container: RootContainer) :
     override fun deactivate() {
         subscriptions.cancelAll()
         focusedComponent.takeFocus()
-        focus(container)
+        focus(root)
         state = DEACTIVATED
     }
 
     override fun toFlattenedLayers(): Iterable<Layer> {
-        return container.toFlattenedLayers()
+        return root.toFlattenedLayers()
     }
 
     // TODO: test this!
@@ -145,7 +148,7 @@ class DefaultComponentContainer(private var container: RootContainer) :
     private fun handleMouseMoved(mouseAction: MouseAction) {
         if (mouseAction.position != lastMousePosition) {
             lastMousePosition = mouseAction.position
-            container.fetchComponentByPosition(lastMousePosition).map { currentComponent ->
+            root.fetchComponentByPosition(lastMousePosition).map { currentComponent ->
 
                 val lastHoveredComponentId = lastHoveredComponent.id
                 if (lastHoveredComponentId == currentComponent.id) {
@@ -161,6 +164,10 @@ class DefaultComponentContainer(private var container: RootContainer) :
                 }
             }
         }
+    }
+
+    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        return root.applyColorTheme(colorTheme)
     }
 
     companion object {

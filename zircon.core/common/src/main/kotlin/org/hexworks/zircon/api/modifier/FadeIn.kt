@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.modifier
 
 import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.platform.util.SystemUtils
 
 data class FadeIn(private val steps: Int = 20,
@@ -15,6 +16,8 @@ data class FadeIn(private val steps: Int = 20,
     override fun generateCacheKey(): String {
         return "Modifier.FadeIn.$currentStep"
     }
+
+    override fun canTransform(tile: Tile) = tile is CharacterTile
 
     override fun transform(tile: CharacterTile): CharacterTile {
         if (isFirstRender()) {

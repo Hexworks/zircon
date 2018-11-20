@@ -10,8 +10,10 @@ class ScreenBuilder {
     companion object {
 
         fun createScreenFor(tileGrid: TileGrid): Screen {
-            return TileGridScreen(
-                    tileGrid = tileGrid as InternalTileGrid)
+            require(tileGrid is InternalTileGrid) {
+                "The supplied TileGrid is not an instance of InternalTileGrid."
+            }
+            return TileGridScreen(tileGrid)
         }
     }
 }

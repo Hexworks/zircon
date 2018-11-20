@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.animation.AnimationResource
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.kotlin.onInput
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
@@ -24,17 +23,17 @@ class TileGridScreenTest {
 
     lateinit var target: TileGridScreen
     lateinit var tileset: TilesetResource
-    lateinit var terminal: TileGrid
+    lateinit var grid: RectangleTileGrid
 
     @Before
     fun setUp() {
         AppConfigs.newConfig().enableBetaFeatures().build()
         tileset = FONT
-        terminal = RectangleTileGrid(
+        grid = RectangleTileGrid(
                 tileset = tileset,
                 size = SIZE)
         MockitoAnnotations.initMocks(this)
-        target = TileGridScreen(terminal)
+        target = TileGridScreen(grid)
     }
 
     @Test
@@ -85,7 +84,7 @@ class TileGridScreenTest {
     @Test
     fun shouldUseTerminalsFontWhenCreating() {
         assertThat(target.currentTileset().id)
-                .isEqualTo(terminal.currentTileset().id)
+                .isEqualTo(grid.currentTileset().id)
     }
 
     @Test
@@ -94,7 +93,7 @@ class TileGridScreenTest {
         target.useTileset(expectedFont)
         target.display()
         assertThat(target.currentTileset().id).isEqualTo(expectedFont.id)
-        assertThat(terminal.currentTileset().id).isEqualTo(expectedFont.id)
+        assertThat(grid.currentTileset().id).isEqualTo(expectedFont.id)
     }
 
     @Test(expected = IllegalArgumentException::class)
