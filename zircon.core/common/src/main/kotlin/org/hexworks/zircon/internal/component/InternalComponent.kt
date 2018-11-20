@@ -52,16 +52,6 @@ interface InternalComponent : Component, Focusable, InputListener, KeyStrokeList
     fun fetchComponentByPosition(position: Position): Maybe<out InternalComponent>
 
     /**
-     * Returns the parent of this [Component] (if any).
-     */
-    fun fetchParent(): Maybe<Container>
-
-    /**
-     * Renders this component to the underlying [TileGraphics].
-     */
-    fun render()
-
-    /**
      * Returns the this [Component] and its children (if any)
      * flattened into an [Iterable] of [Layer]s.
      */
@@ -72,5 +62,15 @@ interface InternalComponent : Component, Focusable, InputListener, KeyStrokeList
      * flattened into an [Iterable] of [InternalComponent]s.
      */
     fun toFlattenedComponents(): Iterable<InternalComponent>
+
+    /**
+     * Returns the parent of this [Component] (if any).
+     */
+    fun fetchParent(): Maybe<Container>
+
+    /**
+     * Renders this component to the underlying [TileGraphics].
+     */
+    fun render()
 
 }

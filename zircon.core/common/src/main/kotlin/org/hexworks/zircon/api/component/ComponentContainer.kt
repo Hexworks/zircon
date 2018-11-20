@@ -4,8 +4,6 @@ import org.hexworks.zircon.api.builder.Builder
 
 /**
  * Represents an object which can hold gui [Component]s.
- * **Note that** a [ComponentContainer] **will always** hold a "root" [Container]
- * which will have the [org.hexworks.zircon.api.data.Size] of its parent.
  * @see Component for more info
  */
 interface ComponentContainer {
@@ -31,10 +29,5 @@ interface ComponentContainer {
      * @return `true` if change happened, `false` if not
      */
     fun removeComponent(component: Component): Boolean
-
-    /**
-     * Applies the [ColorTheme] to this component and recursively to all its children (if any).
-     */
-    fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
 }
