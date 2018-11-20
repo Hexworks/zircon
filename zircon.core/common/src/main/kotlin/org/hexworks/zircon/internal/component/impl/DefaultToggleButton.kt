@@ -27,7 +27,7 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
         set(value) {
             field = value
             if (value)
-                componentStyleSet.applyMouseOverStyle()
+                applyIsSelectedStyle()
             else
                 componentStyleSet.reset()
 
@@ -56,7 +56,10 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
     }
 
     override fun takeFocus(input: Maybe<Input>) {
-        componentStyleSet.reset()
+        if (isSelected)
+            applyIsSelectedStyle()
+        else
+            componentStyleSet.reset()
         render()
     }
 
@@ -86,5 +89,9 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
 
     override fun render() {
         renderingStrategy.render(this, graphics)
+    }
+
+    private fun applyIsSelectedStyle() {
+        componentStyleSet.applyMouseOverStyle()
     }
 }
