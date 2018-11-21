@@ -3,6 +3,7 @@
 package org.hexworks.zircon.internal.integration
 
 import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.builder.component.ModalBuilder
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
@@ -31,25 +32,18 @@ object ModalTest {
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        val renderer: ComponentRenderer<Modal<out ModalResult>> = DefaultModalRenderer() as  ComponentRenderer<Modal<out ModalResult>>
-        val modal = DefaultModal<ModalResult>(
-                componentMetadata = ComponentMetadata(
-                        position = Position.defaultPosition(),
-                        size = tileGrid.size,
-                        tileset = tileset,
-                        componentStyleSet = ComponentStyleSet.empty()),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        componentRenderer = renderer))
-
         val modalPanel = Components.panel()
                 .withSize(Sizes.create(20, 20))
-                .withPosition(Positions.create(20, 5))
                 .wrapWithBox()
                 .wrapWithShadow()
                 .withTitle("Confirm")
                 .build()
 
-        modal.addComponent(modalPanel)
+        val modal = ModalBuilder.newBuilder<EmptyModalResult>()
+                .withDialogComponent(modalPanel)
+                .withTileGridSize(tileGrid.size)
+                .build()
+
 
         modalPanel.addComponent(Components.textBox()
                 .withContentWidth(16)
