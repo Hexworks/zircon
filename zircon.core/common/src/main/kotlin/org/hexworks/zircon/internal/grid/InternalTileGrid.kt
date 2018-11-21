@@ -13,7 +13,7 @@ interface InternalTileGrid
     var layerable: Layerable
     var animationHandler: InternalAnimationHandler
 
-    fun useContentsOf(tileGrid: InternalTileGrid)
+    fun delegateActionsTo(tileGrid: InternalTileGrid)
 
     fun reset()
 

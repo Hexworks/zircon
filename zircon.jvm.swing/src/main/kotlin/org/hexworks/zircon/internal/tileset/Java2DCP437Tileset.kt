@@ -11,7 +11,6 @@ import org.hexworks.zircon.api.resource.TileType.CHARACTER_TILE
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.api.tileset.TileTexture
-import org.hexworks.zircon.api.tileset.TileTransformer
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
@@ -61,11 +60,8 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
     private fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {
         var fixedTile = tile as? CharacterTile ?: throw IllegalArgumentException("Wrong tile type")
         fixedTile.modifiers.filterIsInstance<TileTransformModifier<CharacterTile>>().forEach { modifier ->
-            TILE_TRANSFORMER_LOOKUP[modifier::class]?.let {
-                if (it.canTransform(fixedTile)) {
-                    val transformer = it as TileTransformer<TileTransformModifier<CharacterTile>, CharacterTile>
-                    fixedTile = transformer.transform(fixedTile, modifier)
-                }
+            if(modifier.canTransform(fixedTile)) {
+                fixedTile = modifier.transform(fixedTile)
             }
         }
         val key = fixedTile.generateCacheKey()
@@ -94,12 +90,6 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
         private val TILE_INITIALIZERS = listOf(
                 Java2DTextureCloner(),
                 Java2DTextureColorizer())
-
-        val TILE_TRANSFORMER_LOOKUP:
-                Map<KClass<out TileTransformModifier<out Tile>>, TileTransformer<out TileTransformModifier<out Tile>, out Tile>> = mapOf(
-                Markov::class to Java2DMarkovTransformer(),
-                FadeIn::class to Java2DFadeInTransformer(),
-                Delay::class to Java2DDelayedTransformer())
 
         val TEXTURE_TRANSFORMER_LOOKUP: Map<KClass<out TextureTransformModifier>, TextureTransformer<BufferedImage>> = mapOf(
                 Pair(SimpleModifiers.Underline::class, Java2DUnderlineTransformer()),

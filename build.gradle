@@ -14,7 +14,7 @@ buildscript {
 
 allprojects {
     group "org.hexworks.zircon"
-    version "2018.5.28-PREVIEW"
+    version "2018.5.29-PREVIEW"
 
     repositories {
         mavenLocal()
@@ -30,14 +30,13 @@ subprojects {
 }
 
 ext {
-    cobaltVersion = "2018.0.11-BETA"
+    cobaltVersion = "2018.0.12-BETA"
     gdxVersion = "1.9.6"
     junitVersion = "4.12"
     mockitoVersion = "1.10.19"
     assertjVersion = "3.6.2"
     caffeineVersion = "2.5.4"
     snakeyamlVersion = "1.18"
-    trieMapVersion = "0.2.23"
     filtersVersion = "2.0.235-1"
     slf4jVersion = "1.7.25"
 
@@ -57,7 +56,6 @@ ext {
             slf4j_simple                  : "org.slf4j:slf4j-simple:$slf4jVersion",
             caffeine                      : "com.github.ben-manes.caffeine:caffeine:$caffeineVersion",
             snakeyaml                     : "org.yaml:snakeyaml:$snakeyamlVersion",
-            trie_map                      : "com.github.romix:java-concurrent-hash-trie-map:$trieMapVersion",
             filters                       : "com.jhlabs:filters:$filtersVersion",
             junit                         : "junit:junit:$junitVersion",
             mockito                       : "org.mockito:mockito-all:$mockitoVersion",

@@ -14,4 +14,10 @@ interface TileTransformModifier<T: Tile> : Modifier {
      * the result.
      */
     fun transform(tile: T): T
+
+    /**
+     * Tells whether the given `tile` can be transformed by
+     * this modifier or not.
+     */
+    fun canTransform(tile: Tile): Boolean = false
 }
