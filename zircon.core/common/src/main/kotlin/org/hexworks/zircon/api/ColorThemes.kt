@@ -4,6 +4,7 @@ package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
 import org.hexworks.zircon.api.resource.ColorThemeResource
+import kotlin.jvm.JvmStatic
 
 object ColorThemes {
 

@@ -2,6 +2,7 @@ package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.data.Tile
+import kotlin.jvm.JvmStatic
 
 object Blocks {
 

@@ -48,7 +48,6 @@ kotlin {
                 api libraries.snakeyaml
                 api libraries.slf4j_api
                 api libraries.slf4j_simple
-                api libraries.trie_map
             }
         }
 

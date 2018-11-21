@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.cobalt.datatypes.Maybe
+import kotlin.jvm.JvmStatic
 
 object Maybes {
 

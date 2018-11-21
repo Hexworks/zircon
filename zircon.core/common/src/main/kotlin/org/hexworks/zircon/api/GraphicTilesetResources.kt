@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.resource.BuiltInGraphicTilesetResource
+import kotlin.jvm.JvmStatic
 
 object GraphicTilesetResources {
 

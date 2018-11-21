@@ -3,6 +3,8 @@ package org.hexworks.zircon.api
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.impl.Position3D
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 object Positions {
 

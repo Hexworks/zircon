@@ -2,6 +2,7 @@ package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import kotlin.jvm.JvmStatic
 
 object ComponentStyleSets {
 

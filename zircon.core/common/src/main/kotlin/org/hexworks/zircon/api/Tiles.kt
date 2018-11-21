@@ -3,6 +3,7 @@ package org.hexworks.zircon.api
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Tile
+import kotlin.jvm.JvmStatic
 
 object Tiles {
 

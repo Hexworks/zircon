@@ -2,6 +2,7 @@ package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.resource.ImageDictionaryTilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
+import kotlin.jvm.JvmStatic
 
 object ImageDictionaryTilesetResources {
 

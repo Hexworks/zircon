@@ -3,6 +3,7 @@ package org.hexworks.zircon.api
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.shape.*
+import kotlin.jvm.JvmStatic
 
 object Shapes {
 
@@ -13,7 +14,7 @@ object Shapes {
      * value being the terminals top-left (0x0) corner will create a shape which when drawn
      * will fill the whole grid.
      * **Note that** all resulting shapes will be offset to the top left (0x0) position!
-     * @see [org.hexworks.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
+     * @see [Shape.offsetToDefaultPosition] for more info!
      */
     @JvmStatic
     fun buildFilledRectangle(topLeft: Position, size: Size) = FilledRectangleFactory.createShape(RectangleParameters(topLeft, size))
@@ -23,7 +24,7 @@ object Shapes {
      * `p1` to `p2` to `p3` and back to `p1` from there.
      *
      * *Note that** all resulting shapes will be offset to the top left (0x0) position!
-     * @see [org.hexworks.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
+     * @see [Shape.offsetToDefaultPosition] for more info!
      */
     @JvmStatic
     fun buildTriangle(p1: Position,
@@ -37,7 +38,7 @@ object Shapes {
      * value being the terminals top-left (0x0) corner will create a shape which when drawn
      * will outline the borders of the grid.
      * **Note that** all resulting shapes will be offset to the top left (0x0) position!
-     * @see [org.hexworks.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
+     * @see [Shape.offsetToDefaultPosition] for more info!
      */
     @JvmStatic
     fun buildRectangle(topLeft: Position, size: Size) = RectangleFactory.createShape(RectangleParameters(topLeft, size))
@@ -50,7 +51,7 @@ object Shapes {
      * positions `p1` to `p2` to `p3` and back to `p1` from there.
      *
      * *Note that** all resulting shapes will be offset to the top left (0x0) position!
-     * @see [org.hexworks.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
+     * @see [Shape.offsetToDefaultPosition] for more info!
      */
     @JvmStatic
     fun buildFilledTriangle(p1: Position,

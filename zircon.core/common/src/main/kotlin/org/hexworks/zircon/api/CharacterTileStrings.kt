@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
+import kotlin.jvm.JvmStatic
 
 object CharacterTileStrings {
 

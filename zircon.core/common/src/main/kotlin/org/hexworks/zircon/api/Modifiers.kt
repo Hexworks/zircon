@@ -5,6 +5,8 @@ import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.Glow
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 /**
  * Represents the built-in modifiers supported by zircon.

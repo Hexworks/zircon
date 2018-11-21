@@ -2,6 +2,8 @@ package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.impl.Size3D
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 object Sizes {
 

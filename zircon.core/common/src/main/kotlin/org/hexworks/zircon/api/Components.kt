@@ -3,6 +3,7 @@ package org.hexworks.zircon.api
 import org.hexworks.zircon.api.builder.component.*
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
+import kotlin.jvm.JvmStatic
 
 object Components {
 
