@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource.*
+import kotlin.jvm.JvmStatic
 
 object CP437TilesetResources {
 

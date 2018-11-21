@@ -9,17 +9,12 @@ import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.kotlin.onClosed
-import org.hexworks.zircon.api.kotlin.onMouseClicked
 import org.hexworks.zircon.api.kotlin.onMouseReleased
 import org.hexworks.zircon.internal.component.modal.DefaultModal
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
 import org.hexworks.zircon.internal.component.renderer.DefaultModalRenderer
-import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
 object ModalTest {
 
@@ -75,7 +70,7 @@ object ModalTest {
         modalPanel.addComponent(confirmButton)
 
         openModalButton.onMouseReleased {
-            screen.addModal(modal)
+            screen.openModal(modal)
         }
 
         confirmButton.onMouseReleased {

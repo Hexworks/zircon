@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.resource.BuiltInTrueTypeFontResource
+import kotlin.jvm.JvmStatic
 
 object TrueTypeFontResources {
 

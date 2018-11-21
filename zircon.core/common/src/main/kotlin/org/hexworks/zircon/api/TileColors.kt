@@ -3,7 +3,8 @@ package org.hexworks.zircon.api
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.internal.color.DefaultTileColor
-import java.awt.Color
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 object TileColors {
 
@@ -46,8 +47,3 @@ object TileColors {
             TileColor.create(red, green, blue, alpha)
 
 }
-
-/**
- * Extension for easy conversion between [TileColor] and awt [Color].
- */
-fun TileColor.toAWTColor(): java.awt.Color = Color(red, green, blue, alpha)

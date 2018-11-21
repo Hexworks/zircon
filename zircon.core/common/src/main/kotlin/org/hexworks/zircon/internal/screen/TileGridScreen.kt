@@ -77,7 +77,7 @@ class TileGridScreen(
         }
     }
 
-    override fun <T : ModalResult> addModal(modal: Modal<T>) {
+    override fun <T : ModalResult> openModal(modal: Modal<T>) {
         componentContainer.addModal(modal)
     }
 

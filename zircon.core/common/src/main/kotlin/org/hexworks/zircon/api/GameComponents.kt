@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.builder.component.GameComponentBuilder
 import org.hexworks.zircon.api.builder.game.GameAreaBuilder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
+import kotlin.jvm.JvmStatic
 
 object GameComponents {
 

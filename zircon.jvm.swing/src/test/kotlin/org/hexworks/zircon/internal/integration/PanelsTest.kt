@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
-object PanelsTest {
+object  PanelsTest {
 
     private val theme = ColorThemes.techLight()
     private val tileset = CP437TilesetResources.rexPaint20x20()

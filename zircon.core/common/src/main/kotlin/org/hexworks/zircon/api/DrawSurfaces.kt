@@ -2,6 +2,7 @@ package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.builder.graphics.TileImageBuilder
+import kotlin.jvm.JvmStatic
 
 object DrawSurfaces {
 

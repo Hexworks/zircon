@@ -9,15 +9,22 @@ enum class ANSITileColor(final override val red: Int,
                          final override val blue: Int,
                          final override val alpha: Int) : TileColor {
 
-    BLACK(0, 0, 0, TileColor.defaultAlpha()),
-    RED(170, 0, 0, TileColor.defaultAlpha()),
-    GREEN(0, 170, 0, TileColor.defaultAlpha()),
-    YELLOW(170, 85, 0, TileColor.defaultAlpha()),
-    BLUE(0, 0, 170, TileColor.defaultAlpha()),
-    MAGENTA(170, 0, 170, TileColor.defaultAlpha()),
-    CYAN(0, 170, 170, TileColor.defaultAlpha()),
-    WHITE(170, 170, 170, TileColor.defaultAlpha()),
-    DEFAULT(0, 0, 0, TileColor.defaultAlpha());
+    RED(128, 0, 0, TileColor.defaultAlpha()),
+    GREEN(0, 128, 0, TileColor.defaultAlpha()),
+    YELLOW(128, 128, 0, TileColor.defaultAlpha()),
+    BLUE(0, 0, 128, TileColor.defaultAlpha()),
+    MAGENTA(128, 0, 128, TileColor.defaultAlpha()),
+    CYAN(0, 128, 128, TileColor.defaultAlpha()),
+    WHITE(192, 192, 192, TileColor.defaultAlpha()),
+    BLACK(128, 128, 128, TileColor.defaultAlpha()),
+    BRIGHT_BLACK(0, 0, 0, TileColor.defaultAlpha()),
+    BRIGHT_RED(255, 0, 0, TileColor.defaultAlpha()),
+    BRIGHT_GREEN(0, 255, 0, TileColor.defaultAlpha()),
+    BRIGHT_YELLOW(255, 255, 0, TileColor.defaultAlpha()),
+    BRIGHT_BLUE(0, 0, 255, TileColor.defaultAlpha()),
+    BRIGHT_MAGENTA(255, 0, 255, TileColor.defaultAlpha()),
+    BRIGHT_CYAN(0, 255, 255, TileColor.defaultAlpha()),
+    BRIGHT_WHITE(255, 255, 255, TileColor.defaultAlpha());
 
     private val cacheKey = "TextColor(r=$red,g=$green,b=$blue,a=$alpha)"
 

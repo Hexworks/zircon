@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.color
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.toAWTColor
+import org.hexworks.zircon.api.extensions.toAWTColor
 import org.junit.Test
 import java.awt.Color
 
@@ -39,8 +39,8 @@ class ANSITileColorTest {
     }
 
     companion object {
-        const val RED = 170
-        const val GREEN = 85
+        const val RED = 128
+        const val GREEN = 128
         const val BLUE = 0
         const val ALPHA = 255
         val YELLOW = Color(RED, GREEN, BLUE, ALPHA)

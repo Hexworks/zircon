@@ -2,6 +2,7 @@ package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.graphics.StyleSet
+import kotlin.jvm.JvmStatic
 
 object StyleSets {
 

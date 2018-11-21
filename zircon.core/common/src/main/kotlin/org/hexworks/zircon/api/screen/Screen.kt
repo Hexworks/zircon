@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.behavior.Identifiable
-import org.hexworks.zircon.internal.component.modal.DefaultModal
+import org.hexworks.zircon.api.component.Component
 
 /**
  * A [Screen] is an in-memory representation of a [TileGrid] which can be displayed using an
@@ -18,13 +18,13 @@ import org.hexworks.zircon.internal.component.modal.DefaultModal
  * Use [Screen]s to have multiple views for your app, which can be displayed when within your app.
  *
  * [Screen]s also implement the [ComponentContainer] interface which means that if you want to use
- * [org.hexworks.zircon.api.component.Component]s you'll have to use [Screen]s.
+ * [Component]s you'll have to use [Screen]s.
  */
 interface Screen
     : TileGrid, ComponentContainer, Identifiable {
 
     /**
-     * Moves the contents of this [Screen] to the underlying [org.hexworks.zircon.api.grid.TileGrid],
+     * Moves the contents of this [Screen] to the underlying [TileGrid],
      * effectively displaying them on the user's screen.
      */
     fun display()
@@ -36,6 +36,13 @@ interface Screen
     // TODO: move this to a Themeable interface
     fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
-    fun <T: ModalResult> addModal(modal: Modal<T>)
+    /**
+     * Opens a new [Modal] window on top of the [Screen]. A modal
+     * window blocks access to all [Component]s on this [Screen] and
+     * also stops component events until the modal window is closed.
+     * A [Modal] returns a [ModalResult] which represents the result
+     * of opening the [Modal] itself.
+     */
+    fun <T : ModalResult> openModal(modal: Modal<T>)
 
 }

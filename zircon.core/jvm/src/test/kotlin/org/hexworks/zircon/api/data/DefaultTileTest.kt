@@ -73,7 +73,7 @@ class DefaultTileTest {
                 .build()
                 .generateCacheKey()
 
-        assertThat(result).isEqualTo("CharacterTile(c=x,s=StyleSet(fg=TextColor(r=170,g=187,b=204,a=255),bg=TextColor(r=0,g=170,b=0,a=255),m=[Modifier.VerticalFlip]))")
+        assertThat(result).isEqualTo("CharacterTile(c=x,s=StyleSet(fg=TextColor(r=170,g=187,b=204,a=255),bg=TextColor(r=0,g=128,b=0,a=255),m=[Modifier.VerticalFlip]))")
     }
 
     @Test

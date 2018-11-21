@@ -3,6 +3,7 @@ package org.hexworks.zircon.api
 import org.hexworks.zircon.api.resource.REXPaintResource
 import java.io.File
 import java.io.InputStream
+import kotlin.jvm.JvmStatic
 
 object REXPaintResources {
 
