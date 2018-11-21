@@ -5,7 +5,6 @@ import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ToggleButton
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -17,7 +16,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType
 import org.hexworks.zircon.api.input.MouseActionType.MOUSE_PRESSED
-import org.hexworks.zircon.internal.component.renderer.DefaultButtonRenderer
 import org.hexworks.zircon.internal.component.renderer.DefaultToggleButtonRenderer
 import org.junit.Before
 import org.junit.Test
@@ -25,15 +23,6 @@ import org.junit.Test
 @Suppress("UNCHECKED_CAST")
 class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>() {
 
-    val expectedUnselectedStyleSet = StyleSetBuilder.newBuilder()
-            .withForegroundColor(DEFAULT_THEME.accentColor)
-            .withBackgroundColor(TileColor.transparent())
-            .build()
-
-    val expectedSelectedStyleSet = StyleSetBuilder.newBuilder()
-            .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
-            .withBackgroundColor(DEFAULT_THEME.accentColor)
-            .build()
 
     override lateinit var target: DefaultToggleButton
 
@@ -76,14 +65,14 @@ class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>
     fun shouldProperlyAssignStyleSetForSelectState() {
         target.isSelected = true
         assertThat(target.componentStyleSet.currentState())
-                .isEqualTo(MOUSE_OVER)
+                .isEqualTo(SELECTED_ACTION)
     }
 
     @Test
     fun shouldProperlyAssignStyleSetForUnselectedState() {
         target.isSelected = false
         assertThat(target.componentStyleSet.currentState())
-                .isEqualTo(DEFAULT)
+                .isEqualTo(UNSELECTED_ACTION)
     }
 
     @Test
@@ -128,7 +117,16 @@ class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>
     fun shouldProperlyHandleMousePress() {
         target.mousePressed(MouseAction(MOUSE_PRESSED, 1, Position.defaultPosition()))
 
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(ACTIVE)
+        assertThat(target.componentStyleSet.currentState()).isEqualTo(SELECTED_ACTION)
+    }
+
+    override fun shouldProperlyHandleMousePressed() {
+        rendererStub.clear()
+
+        target.mousePressed(MouseAction(MOUSE_PRESSED, 1, Position.zero()))
+
+        assertThat(target.componentStyleSet.currentState()).isEqualTo(SELECTED_ACTION)
+        assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 
     @Test
@@ -141,5 +139,7 @@ class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>
     companion object {
         val SIZE_15X1 = Size.create(15, 1)
         const val TEXT = "Button text"
+        private val SELECTED_ACTION = MOUSE_OVER
+        private val UNSELECTED_ACTION = DEFAULT
     }
 }
