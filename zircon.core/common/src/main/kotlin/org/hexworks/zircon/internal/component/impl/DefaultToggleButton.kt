@@ -36,7 +36,6 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
 
     override fun mousePressed(action: MouseAction) {
         isSelected = !isSelected
-
     }
 
     override fun mouseExited(action: MouseAction) {
