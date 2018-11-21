@@ -17,8 +17,6 @@ object Playground {
     private val SIZE = Sizes.create(50, 30)
     private val TILESET = BuiltInCP437TilesetResource.TAFFER_20X20
 
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     @JvmStatic
     fun main(args: Array<String>) {
 

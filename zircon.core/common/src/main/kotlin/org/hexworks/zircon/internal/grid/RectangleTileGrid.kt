@@ -85,7 +85,7 @@ class RectangleTileGrid(
         animationHandler.close()
     }
 
-    override fun useContentsOf(tileGrid: InternalTileGrid) {
+    override fun delegateActionsTo(tileGrid: InternalTileGrid) {
         backend = tileGrid.backend
         layerable = tileGrid.layerable
         animationHandler = tileGrid.animationHandler

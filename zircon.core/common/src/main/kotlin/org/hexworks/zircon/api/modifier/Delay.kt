@@ -16,6 +16,8 @@ data class Delay(private val timeMs: Long = 2000) : TileTransformModifier<Charac
         return "Modifier.Delay.$currentStep"
     }
 
+    override fun canTransform(tile: Tile) = tile is CharacterTile
+
     override fun transform(tile: CharacterTile): CharacterTile {
         if (isFirstRender()) {
             lastRender = SystemUtils.getCurrentTimeMs()
@@ -35,12 +37,10 @@ data class Delay(private val timeMs: Long = 2000) : TileTransformModifier<Charac
     }
 
     private fun generateTile(tile: CharacterTile): CharacterTile {
-        val transformedTile =
-                if (currentStep == 1)
-                    Tile.empty()
-                else
-                    tile
-        return transformedTile
+        return if (currentStep == 1)
+            Tile.empty()
+        else
+            tile
     }
 
     private fun isFirstRender() = lastRender == Long.MIN_VALUE

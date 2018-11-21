@@ -75,8 +75,10 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
                     "You can't add a component to a container which intersects with other components."
                 }
             }
-            components.add(dc)
+            // TODO: regression test this! order was changed! it was buggy when the component was re-added to the
+            // TODO: same container!
             dc.attachTo(this)
+            components.add(dc)
             Zircon.eventBus.publish(
                     event = ZirconEvent.ComponentAddition,
                     eventScope = ZirconScope)
@@ -97,6 +99,8 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
             }
         }
         if (removalHappened) {
+            // TODO: regression test this!
+            component.detach()
             Zircon.eventBus.publish(
                     event = ZirconEvent.ComponentRemoval,
                     eventScope = ZirconScope)
