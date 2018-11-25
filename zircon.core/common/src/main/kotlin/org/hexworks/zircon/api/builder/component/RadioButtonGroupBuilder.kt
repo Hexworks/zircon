@@ -19,13 +19,13 @@ data class RadioButtonGroupBuilder(
 
     override fun build(): RadioButtonGroup {
         fillMissingValues()
-        val size = decorationRenderers.asSequence()
+        val finalSize = decorationRenderers.asSequence()
                 .map { it.occupiedSize }
                 .fold(size, Size::plus)
         return DefaultRadioButtonGroup(
                 componentMetadata = ComponentMetadata(
-                        size = size,
-                        position = position,
+                        size = finalSize,
+                        position = fixPosition(finalSize),
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 renderingStrategy = DefaultComponentRenderingStrategy(

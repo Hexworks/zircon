@@ -55,7 +55,7 @@ data class ButtonBuilder(
         return DefaultButton(
                 componentMetadata = ComponentMetadata(
                         size = finalSize,
-                        position = position,
+                        position = fixPosition(finalSize),
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 text = text,

@@ -49,7 +49,7 @@ data class ParagraphBuilder(
         }
         return DefaultParagraph(
                 componentMetadata = ComponentMetadata(
-                        position = position,
+                        position = fixPosition(finalSize),
                         size = finalSize,
                         tileset = tileset,
                         componentStyleSet = componentStyleSet),

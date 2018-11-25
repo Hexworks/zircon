@@ -32,14 +32,14 @@ data class CheckBoxBuilder(
             "A Label can't be blank!"
         }
         fillMissingValues()
-        val size = decorationRenderers.asSequence()
+        val finalSize = decorationRenderers.asSequence()
                 .map { it.occupiedSize }
                 .fold(Size.zero(), Size::plus)
                 .plus(Size.create(if (width == -1) text.length + 4 else width, 1))
         return DefaultCheckBox(
                 componentMetadata = ComponentMetadata(
-                        size = size,
-                        position = position,
+                        size = finalSize,
+                        position = fixPosition(finalSize),
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 text = text,
