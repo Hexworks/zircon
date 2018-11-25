@@ -64,7 +64,7 @@ data class ModalBuilder<T : ModalResult>(
         val modal = DefaultModal<T>(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        position = fixPosition(size),
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 renderingStrategy = componentRenderer)

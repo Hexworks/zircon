@@ -22,6 +22,33 @@ abstract class BaseRect : Rect {
     override val height
         get() = size.height
 
+    override val topLeft: Position
+        get() = position
+
+    override val topCenter: Position
+        get() = position.withRelativeX(width / 2)
+
+    override val topRight: Position
+        get() = position.withRelativeX(width)
+
+    override val rightCenter: Position
+        get() = position.withRelativeX(width).withRelativeY(height / 2)
+
+    override val bottomRight: Position
+        get() = position + size.toPosition()
+
+    override val bottomCenter: Position
+        get() = position.withRelativeY(height).withRelativeX(width / 2)
+
+    override val bottomLeft: Position
+        get() = position.withRelativeY(height)
+
+    override val leftCenter: Position
+        get() = position.withRelativeY(height / 2)
+
+    override val center: Position
+        get() = position.withRelativeX(width / 2).withRelativeY(height / 2)
+
     override operator fun component1() = x
 
     override operator fun component2() = y

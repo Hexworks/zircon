@@ -25,7 +25,7 @@ data class PanelBuilder(
         return DefaultPanel(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        position = fixPosition(size),
                         componentStyleSet = commonComponentProperties.componentStyleSet,
                         tileset = tileset),
                 title = title,
