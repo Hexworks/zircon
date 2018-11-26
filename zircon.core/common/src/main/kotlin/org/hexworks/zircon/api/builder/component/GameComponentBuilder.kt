@@ -48,12 +48,13 @@ data class GameComponentBuilder<T : Tile, B : Block<T>>(
         require(gameArea.isPresent) {
             "A GameComponent will only work with a GameArea as backend. Please set one!"
         }
+        val finalSize = visibleSize.to2DSize()
         return DefaultGameComponent(
                 gameArea = gameArea.get(),
                 projectionMode = projectionMode,
                 componentMetadata = ComponentMetadata(
-                        position = position,
-                        size = visibleSize.to2DSize(),
+                        position = fixPosition(finalSize),
+                        size = finalSize,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset))
     }

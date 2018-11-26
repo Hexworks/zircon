@@ -8,9 +8,9 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.internal.component.modal.DefaultModal
 
-class DefaultModalRenderer : ComponentRenderer<DefaultModal<out ModalResult>> {
+class DefaultModalRenderer<T: ModalResult> : ComponentRenderer<DefaultModal<T>> {
 
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<DefaultModal<out ModalResult>>) {
+    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<DefaultModal<T>>) {
         tileGraphics.applyStyle(StyleSetBuilder.newBuilder()
                 .withBackgroundColor(TileColor.create(0, 0, 0, 125))
                 .build())

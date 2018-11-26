@@ -20,7 +20,6 @@ data class TextBoxBuilder(
         private var text: String = "",
         private var contentWidth: Int = 0,
         private var nextPosition: Position = Position.defaultPosition(),
-        private var currentSize: Size = Size.zero(),
         private val components: MutableList<Component> = mutableListOf(),
         private val commonComponentProperties: CommonComponentProperties<TextBox> = CommonComponentProperties(
                 componentRenderer = DefaultTextBoxRenderer()))
@@ -30,7 +29,7 @@ data class TextBoxBuilder(
 
     fun withContentWidth(width: Int) = also {
         this.contentWidth = width
-        currentSize = currentSize.withWidth(width)
+        super.withSize(size.withWidth(width))
     }
 
     override fun withSize(size: Size): TextBoxBuilder {
@@ -124,7 +123,7 @@ data class TextBoxBuilder(
 
     fun addNewLine() = also {
         nextPosition = nextPosition.withRelativeY(1)
-        currentSize = currentSize.withRelativeHeight(1)
+        fixHeight(1)
     }
 
     fun commitInlineElements() = also {
@@ -136,17 +135,17 @@ data class TextBoxBuilder(
     }
 
     override fun build(): TextBox {
-        require(currentSize != Size.unknown()) {
+        require(size != Size.unknown()) {
             "You must set a size for a TextBox!"
         }
         fillMissingValues()
-        val decorationSize = decorationRenderers.asSequence()
+        val finalSize = size + decorationRenderers.asSequence()
                 .map { it.occupiedSize }
                 .fold(Size.zero(), Size::plus)
         return DefaultTextBox(
                 componentMetadata = ComponentMetadata(
-                        size = currentSize + decorationSize,
-                        position = position,
+                        size = finalSize,
+                        position = fixPosition(finalSize),
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 renderingStrategy = DefaultComponentRenderingStrategy(
@@ -159,8 +158,16 @@ data class TextBoxBuilder(
     }
 
     private fun updateSizeAndPosition(lastComponentHeight: Int) {
-        currentSize = currentSize.withRelativeHeight(lastComponentHeight)
+        fixHeight(lastComponentHeight)
         nextPosition = nextPosition.withRelativeY(lastComponentHeight)
+    }
+
+    private fun fixHeight(height: Int) {
+        super.withSize(if(size.height == Size.unknown().height) {
+            size.withHeight(height)
+        } else {
+            size.withRelativeHeight(height)
+        })
     }
 
     private fun currentInlineLength(): Int {

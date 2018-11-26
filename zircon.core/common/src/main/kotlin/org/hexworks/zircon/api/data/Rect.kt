@@ -8,6 +8,16 @@ import org.hexworks.zircon.internal.data.DefaultRect
  */
 interface Rect : Boundable {
 
+    val topLeft: Position
+    val topCenter: Position
+    val topRight: Position
+    val rightCenter: Position
+    val bottomRight: Position
+    val bottomCenter: Position
+    val bottomLeft: Position
+    val leftCenter: Position
+    val center: Position
+
     /**
      * The first component (for destructuring) is `x` position.
      */

@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 
@@ -37,6 +38,30 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
      * The renderer of the [Component].
      */
     val componentRenderer: ComponentRenderer<T>
+
+    /**
+     * Sets the [Position] of the resulting [Component] within
+     * the given [TileGrid] using the given [ComponentAlignment].
+     * E.g. `TOP_LEFT` will align this [Component] to the top left
+     * corner of the [TileGrid].
+     */
+    fun withAlignmentWithin(tileGrid: TileGrid, componentAlignment: ComponentAlignment): U
+
+    /**
+     * Sets the [Position] of the resulting [Component] within
+     * the given [Container] using the given [ComponentAlignment].
+     * E.g. `TOP_LEFT` will align this [Component] to the top left
+     * corner of the [Container].
+     */
+    fun withAlignmentWithin(container: Container, componentAlignment: ComponentAlignment): U
+
+    /**
+     * Sets the [Position] of the resulting [Component] relative to
+     * the given [Component] using the given [ComponentAlignment].
+     * E.g. `TOP_LEFT` will align this [Component] to the top left
+     * corner of the [Component].
+     */
+    fun withAlignmentAround(component: Component, componentAlignment: ComponentAlignment): U
 
     /**
      * Sets the [Position] where the resulting [Component] will
