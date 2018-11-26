@@ -15,7 +15,6 @@ Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki)
 [![][circleci img]][circleci]
 [![][maven img]][maven]
 [![](https://jitpack.io/v/Hexworks/Zircon.svg)](https://jitpack.io/#Hexworks/Zircon)
-[![][codecov img]][codecov]
 [![][license img]][license]
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
