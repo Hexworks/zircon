@@ -45,7 +45,7 @@ data class LabelBuilder(
         return DefaultLabel(
                 componentMetadata = ComponentMetadata(
                         size = finalSize,
-                        position = position,
+                        position = fixPosition(finalSize),
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 text = fixedText,

@@ -37,7 +37,7 @@ data class HeaderBuilder(
         return DefaultHeader(
                 componentMetadata = ComponentMetadata(
                         size = finalSize,
-                        position = position,
+                        position = fixPosition(finalSize),
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 text = text,

@@ -2,9 +2,12 @@ package org.hexworks.zircon.internal
 
 import ch.qos.logback.classic.Level
 import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
+import org.hexworks.zircon.api.component.ComponentAlignment
+import org.hexworks.zircon.api.component.ComponentAlignment.*
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.kotlin.onInput
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
@@ -28,18 +31,11 @@ object Playground {
                 .withSize(SIZE)
                 .build())
 
-        val screen0 = ScreenBuilder.createScreenFor(tileGrid)
-        val screen1 = ScreenBuilder.createScreenFor(tileGrid)
+        val screen = ScreenBuilder.createScreenFor(tileGrid)
 
-        tileGrid.onInput {
-            println(it)
-            if(it.inputTypeIs(InputType.Enter)) {
-                screen0.display()
-            }
-            if(it.inputTypeIs(InputType.ArrowRight)) {
-                screen1.display()
-            }
-        }
+        Components.textBox()
+                .addParagraph("Click the button below to start!")
+                .withAlignmentWithin(screen, TOP_LEFT)
 
 
     }

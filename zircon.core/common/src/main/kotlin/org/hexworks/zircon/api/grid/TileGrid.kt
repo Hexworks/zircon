@@ -1,7 +1,10 @@
 package org.hexworks.zircon.api.grid
 
+import org.hexworks.zircon.api.CharacterTileStrings
 import org.hexworks.zircon.api.animation.AnimationHandler
 import org.hexworks.zircon.api.behavior.*
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.DrawSurface
 
 /**
@@ -24,5 +27,16 @@ interface TileGrid
 
     val heightInPixels: Int
         get() = currentTileset().height * height
+
+    /**
+     * Writes the given `text` at the given `position`.
+     */
+    fun write(text: String, position: Position) = {
+        CharacterTileStrings.newBuilder()
+                .withText(text)
+                .build()
+                .toTileGraphic(currentTileset())
+                .drawOnto(this, position)
+    }
 
 }

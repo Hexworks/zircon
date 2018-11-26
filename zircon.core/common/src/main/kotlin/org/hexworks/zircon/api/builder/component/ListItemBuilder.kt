@@ -44,7 +44,7 @@ data class ListItemBuilder(
         return DefaultListItem(
                 componentMetadata = ComponentMetadata(
                         size = finalSize,
-                        position = position,
+                        position = fixPosition(finalSize),
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 text = fixedText,

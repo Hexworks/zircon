@@ -1,16 +1,16 @@
 package org.hexworks.zircon.api.component.base
 
-import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentBuilder
-import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 
 @Suppress("UNCHECKED_CAST")
@@ -18,7 +18,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         private val props: CommonComponentProperties<T>) : ComponentBuilder<T, U> {
 
     override val position: Position
-        get() = props.position
+        get() = positionFn(Rect.create(size = size))
 
     override val size: Size
         get() = props.size
@@ -47,6 +47,10 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
     override val componentRenderer: ComponentRenderer<T>
         get() = props.componentRenderer as ComponentRenderer<T>
 
+    private var positionFn: (currentRect: Rect) -> Position = {
+        props.position
+    }
+
     override fun withTitle(title: String): U {
         props.title = title
         return this as U
@@ -63,7 +67,9 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
     }
 
     override fun withPosition(position: Position): U {
-        props.position = position
+        positionFn = {
+            position
+        }
         return this as U
     }
 
@@ -97,7 +103,38 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         return this as U
     }
 
+    override fun withAlignmentWithin(container: Container, componentAlignment: ComponentAlignment): U {
+        positionFn = { currentRect ->
+            componentAlignment.alignWithin(
+                    target = Rect.create(size = container.contentSize),
+                    subject = currentRect)
+        }
+        return this as U
+    }
+
+    override fun withAlignmentAround(component: Component, componentAlignment: ComponentAlignment): U {
+        positionFn = { currentRect ->
+            componentAlignment.alignAround(
+                    target = component.rect,
+                    subject = currentRect)
+        }
+        return this as U
+    }
+
+    override fun withAlignmentWithin(tileGrid: TileGrid, componentAlignment: ComponentAlignment): U {
+        positionFn = { currentRect ->
+            componentAlignment.alignWithin(
+                    target = Rect.create(size = tileGrid.size),
+                    subject = currentRect)
+        }
+        return this as U
+    }
+
     protected fun copyProps() = props.copy()
+
+    protected fun fixPosition(size: Size): Position {
+        return positionFn(Rect.create(size = size))
+    }
 
     protected fun fillMissingValues() {
         if (props.decorationRenderers.isEmpty()) {
