@@ -14,7 +14,7 @@ buildscript {
 
 allprojects {
     group "org.hexworks.zircon"
-    version "2018.5.36-PREVIEW"
+    version "2018.5.30-PREVIEW"
 
     repositories {
         mavenLocal()
@@ -30,7 +30,7 @@ subprojects {
 }
 
 ext {
-    cobaltVersion = "2018.0.12-BETA"
+    cobaltVersion = "2018.0.14-BETA"
     gdxVersion = "1.9.6"
     junitVersion = "4.12"
     mockitoVersion = "1.10.19"

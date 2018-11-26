@@ -1,9 +1,14 @@
 package org.hexworks.zircon.api.kotlin
 
 import org.hexworks.cobalt.datatypes.sam.Consumer
+import org.hexworks.cobalt.datatypes.sam.Runnable
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.InputEmitter
+import org.hexworks.zircon.api.behavior.buttonstate.AltState
+import org.hexworks.zircon.api.behavior.buttonstate.CtrlState
+import org.hexworks.zircon.api.behavior.buttonstate.ShiftState
 import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.listener.InputListener
@@ -29,6 +34,23 @@ inline fun InputEmitter.onKeyStroke(crossinline fn: (KeyStroke) -> Unit): Subscr
     return this.onKeyStroke(object : KeyStrokeListener {
         override fun keyStroked(keyStroke: KeyStroke) {
             fn(keyStroke)
+        }
+    })
+}
+
+inline fun InputEmitter.onKeyCombination(char: Char = ' ',
+                                         inputType: InputType = InputType.Character,
+                                         shiftState: ShiftState = ShiftState.SHIFT_UP,
+                                         ctrlState: CtrlState = CtrlState.CTRL_UP,
+                                         altState: AltState = AltState.ALT_UP,
+                                         crossinline fn: () -> Unit): Subscription {
+    return this.onKeyCombination(char = char,
+            inputType = inputType,
+            shiftState = shiftState,
+            ctrlState = ctrlState,
+            altState = altState, listener = object : Runnable {
+        override fun run() {
+            fn()
         }
     })
 }
