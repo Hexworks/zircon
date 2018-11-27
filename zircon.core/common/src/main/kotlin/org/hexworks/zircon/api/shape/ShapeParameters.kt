@@ -14,3 +14,6 @@ data class TriangleParameters(val p1: Position,
 
 data class RectangleParameters(val topLeft: Position,
                                val size: Size): ShapeParameters()
+
+data class EllipseParameters(val center: Position,
+                             val size: Size): ShapeParameters()
