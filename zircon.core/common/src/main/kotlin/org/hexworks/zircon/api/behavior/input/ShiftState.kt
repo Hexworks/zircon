@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.behavior.buttonstate
+package org.hexworks.zircon.api.behavior.input
 
 import org.hexworks.zircon.api.input.KeyStroke
 

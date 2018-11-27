@@ -15,6 +15,9 @@ enum class InputType {
      * Tab, backspace and some others works this way too.
      */
     Character,
+    Pause,
+    CapsLock,
+    Space,
     Escape,
     Backspace,
     ArrowLeft,
@@ -49,6 +52,16 @@ enum class InputType {
     F17,
     F18,
     F19,
+    Numpad0,
+    Numpad1,
+    Numpad2,
+    Numpad3,
+    Numpad4,
+    Numpad5,
+    Numpad6,
+    Numpad7,
+    Numpad8,
+    Numpad9,
     Unknown,
     /**
      * This value is only internally to understand where the cursor currently is, it's not expected to

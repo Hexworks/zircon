@@ -1,12 +1,9 @@
 package org.hexworks.zircon.api.kotlin
 
 import org.hexworks.cobalt.datatypes.sam.Consumer
-import org.hexworks.cobalt.datatypes.sam.Runnable
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.InputEmitter
-import org.hexworks.zircon.api.behavior.buttonstate.AltState
-import org.hexworks.zircon.api.behavior.buttonstate.CtrlState
-import org.hexworks.zircon.api.behavior.buttonstate.ShiftState
+import org.hexworks.zircon.api.behavior.input.KeyCombination
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
 import org.hexworks.zircon.api.input.KeyStroke
@@ -38,19 +35,29 @@ inline fun InputEmitter.onKeyStroke(crossinline fn: (KeyStroke) -> Unit): Subscr
     })
 }
 
-inline fun InputEmitter.onKeyCombination(char: Char = ' ',
-                                         inputType: InputType = InputType.Character,
-                                         shiftState: ShiftState = ShiftState.SHIFT_UP,
-                                         ctrlState: CtrlState = CtrlState.CTRL_UP,
-                                         altState: AltState = AltState.ALT_UP,
-                                         crossinline fn: () -> Unit): Subscription {
-    return this.onKeyCombination(char = char,
-            inputType = inputType,
-            shiftState = shiftState,
-            ctrlState = ctrlState,
-            altState = altState, listener = object : Runnable {
-        override fun run() {
-            fn()
+inline fun InputEmitter.onKeyCombination(keyCombination: KeyCombination,
+                                         crossinline fn: (KeyStroke) -> Unit): Subscription {
+    return this.onKeyCombination(keyCombination, object : Consumer<KeyStroke> {
+        override fun accept(value: KeyStroke) {
+            fn(value)
+        }
+    })
+}
+
+inline fun InputEmitter.onKeyPressed(key: Char,
+                                     crossinline fn: (KeyStroke) -> Unit): Subscription {
+    return this.onKeyPressed(key, object : Consumer<KeyStroke> {
+        override fun accept(value: KeyStroke) {
+            fn(value)
+        }
+    })
+}
+
+inline fun InputEmitter.onInputOfType(inputType: InputType,
+                                      crossinline fn: (Input) -> Unit): Subscription {
+    return this.onInputOfType(inputType, object : Consumer<Input> {
+        override fun accept(value: Input) {
+            fn(value)
         }
     })
 }
