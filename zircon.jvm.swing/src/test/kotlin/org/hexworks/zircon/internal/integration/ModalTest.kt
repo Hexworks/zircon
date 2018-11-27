@@ -4,18 +4,9 @@ package org.hexworks.zircon.internal.integration
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.component.ModalBuilder
-import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.modal.Modal
-import org.hexworks.zircon.api.component.modal.ModalResult
-import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.kotlin.onClosed
 import org.hexworks.zircon.api.kotlin.onMouseReleased
-import org.hexworks.zircon.internal.component.modal.DefaultModal
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
-import org.hexworks.zircon.internal.component.renderer.DefaultModalRenderer
 
 object ModalTest {
 
@@ -71,7 +62,7 @@ object ModalTest {
             modal.close(EmptyModalResult)
         }
 
-        modal.onClosed { result ->
+        modal.onClosed {
 
         }
 

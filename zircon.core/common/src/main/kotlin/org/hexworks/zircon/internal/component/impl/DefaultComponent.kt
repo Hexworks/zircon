@@ -131,6 +131,12 @@ abstract class DefaultComponent(
         }
     }
 
+    override fun clear() {
+        // no-op, by default clear does nothing on a Component, since components by default
+        // have no notion of "clear". This might be different for specific components like
+        // a TextArea.
+    }
+
     override fun toFlattenedLayers(): Iterable<Layer> {
         return listOf(this)
     }

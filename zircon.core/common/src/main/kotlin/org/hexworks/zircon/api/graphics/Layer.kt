@@ -1,13 +1,14 @@
 package org.hexworks.zircon.api.graphics
 
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 
-interface Layer : DrawSurface, Drawable, Movable {
+interface Layer : DrawSurface, Drawable, Movable, Clearable {
 
     override val size: Size
 

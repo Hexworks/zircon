@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.data.Rect
 
 enum class ComponentAlignment(private val withinFn: (target: Rect, subject: Rect) -> Position,
                               private val aroundFn: (target: Rect, subject: Rect) -> Position) {
-    TOP_LEFT(withinFn = { target, _ ->
+    TOP_LEFT(withinFn = { _, _ ->
         Positions.zero()
     }, aroundFn = { target, subject ->
         target.position.withRelativeX(-subject.width)
