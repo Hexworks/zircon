@@ -125,6 +125,13 @@ class TerminalKeyListener() : KeyAdapter() {
         private val TYPED_KEYS_TO_IGNORE = HashSet(Arrays.asList('\n', '\t', '\r', '\b', '\u001b', 127.toChar()))
 
         private val KEY_EVENT_TO_KEY_TYPE_LOOKUP = mapOf(
+                Pair(KeyEvent.VK_NUMPAD0, InputType.Numpad0), Pair(KeyEvent.VK_NUMPAD1, InputType.Numpad1),
+                Pair(KeyEvent.VK_NUMPAD2, InputType.Numpad2), Pair(KeyEvent.VK_NUMPAD3, InputType.Numpad3),
+                Pair(KeyEvent.VK_NUMPAD4, InputType.Numpad4), Pair(KeyEvent.VK_NUMPAD5, InputType.Numpad5),
+                Pair(KeyEvent.VK_NUMPAD6, InputType.Numpad6), Pair(KeyEvent.VK_NUMPAD7, InputType.Numpad7),
+                Pair(KeyEvent.VK_NUMPAD8, InputType.Numpad8), Pair(KeyEvent.VK_NUMPAD9, InputType.Numpad9),
+                Pair(KeyEvent.VK_PAUSE, InputType.Pause), Pair(KeyEvent.VK_CAPS_LOCK, InputType.CapsLock),
+                Pair(KeyEvent.VK_SPACE, InputType.Space),
                 Pair(KeyEvent.VK_ENTER, InputType.Enter), Pair(KeyEvent.VK_ESCAPE, InputType.Escape),
                 Pair(KeyEvent.VK_BACK_SPACE, InputType.Backspace), Pair(KeyEvent.VK_LEFT, InputType.ArrowLeft),
                 Pair(KeyEvent.VK_RIGHT, InputType.ArrowRight), Pair(KeyEvent.VK_UP, InputType.ArrowUp),

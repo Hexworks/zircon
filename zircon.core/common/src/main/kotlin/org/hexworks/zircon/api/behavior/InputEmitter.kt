@@ -2,13 +2,11 @@ package org.hexworks.zircon.api.behavior
 
 import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.cobalt.datatypes.sam.Consumer
-import org.hexworks.cobalt.datatypes.sam.Runnable
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.api.behavior.buttonstate.AltState
-import org.hexworks.zircon.api.behavior.buttonstate.CtrlState
-import org.hexworks.zircon.api.behavior.buttonstate.ShiftState
+import org.hexworks.zircon.api.behavior.input.KeyCombination
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.InputType
+import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType.*
 import org.hexworks.zircon.api.listener.InputListener
@@ -47,12 +45,9 @@ interface InputEmitter {
      * [org.hexworks.zircon.api.input.KeyStroke] is received by this object and matches the
      * given key combination.
      */
-    fun onKeyCombination(char: Char = ' ',
-                         inputType: InputType = InputType.Character,
-                         shiftState: ShiftState = ShiftState.SHIFT_UP,
-                         ctrlState: CtrlState = CtrlState.CTRL_UP,
-                         altState: AltState = AltState.ALT_UP,
-                         listener: Runnable): Subscription {
+    fun onKeyCombination(keyCombination: KeyCombination,
+                         listener: Consumer<KeyStroke>): Subscription {
+        val (char, inputType, shiftState, ctrlState, altState) = keyCombination
         return onInput(object : InputListener {
             override fun inputEmitted(input: Input) {
                 input.asKeyStroke().map { ks ->
@@ -61,8 +56,32 @@ interface InputEmitter {
                             && altState.matches(ks)
                             && char == ks.getCharacter()
                             && inputType == ks.inputType()) {
-                        listener.run()
+                        listener.accept(ks)
                     }
+                }
+            }
+        })
+    }
+
+    fun onKeyPressed(key: Char,
+                     listener: Consumer<KeyStroke>): Subscription {
+        return onInput(object : InputListener {
+            override fun inputEmitted(input: Input) {
+                input.asKeyStroke().map { ks ->
+                    if (ks.getCharacter() == key) {
+                        listener.accept(ks)
+                    }
+                }
+            }
+        })
+    }
+
+    fun onInputOfType(inputType: InputType,
+                      listener: Consumer<Input>): Subscription {
+        return onInput(object : InputListener {
+            override fun inputEmitted(input: Input) {
+                if (input.inputType() == inputType) {
+                    listener.accept(input)
                 }
             }
         })

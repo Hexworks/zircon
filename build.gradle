@@ -14,7 +14,7 @@ buildscript {
 
 allprojects {
     group "org.hexworks.zircon"
-    version "2018.5.30-PREVIEW"
+    version "2018.5.32-PREVIEW"
 
     repositories {
         mavenLocal()

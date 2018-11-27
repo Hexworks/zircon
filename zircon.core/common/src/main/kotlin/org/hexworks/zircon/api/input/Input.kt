@@ -1,6 +1,8 @@
 package org.hexworks.zircon.api.input
 
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.datatypes.sam.Consumer
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.input.InputType.*
 import org.hexworks.zircon.platform.util.SystemUtils
@@ -40,6 +42,19 @@ sealed class Input(private val inputType: InputType,
 
     fun asMouseAction() = Maybe.ofNullable(this as? MouseAction)
 
+    fun whenInputTypeIs(inputType: InputType, fn: Consumer<Input>) {
+        if(this.inputType == inputType) {
+            fn.accept(this)
+        }
+    }
+
+    fun whenKeyStroke(fn: Consumer<KeyStroke>) {
+        (this as? KeyStroke)?.let { fn.accept(this) }
+    }
+
+    fun whenMouseAction(fn: Consumer<MouseAction>) {
+        (this as? MouseAction)?.let { fn.accept(this) }
+    }
 }
 
 data class KeyStroke(
