@@ -56,7 +56,7 @@ interface LogArea : Component {
     fun addNewRows(numberOfRows: Int = 1)
 
     /**
-     * Clears the complete log
+     * Clears the complete log.
      */
-    fun clear()
+    override fun clear()
 }

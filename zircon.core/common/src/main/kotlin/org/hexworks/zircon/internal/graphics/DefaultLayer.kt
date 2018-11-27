@@ -57,4 +57,8 @@ class DefaultLayer(position: Position,
         return this
     }
 
+    override fun clear() {
+        backend.clear()
+    }
+
 }
