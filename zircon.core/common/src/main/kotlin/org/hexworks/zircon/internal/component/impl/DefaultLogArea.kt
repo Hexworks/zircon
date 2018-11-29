@@ -19,6 +19,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     private var currentInlineBuilder = createTextBoxBuilder()
     private var currentTheme: ColorTheme = ColorThemeBuilder.newBuilder().build()
 
+    // TODO: fix decoration problem
     init {
         render()
     }
@@ -38,7 +39,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     override fun addParagraph(paragraphBuilder: ParagraphBuilder, withNewLine: Boolean) {
         addLogElement(createTextBoxBuilder()
                 .addParagraph(paragraphBuilder, withNewLine)
-                .build())
+                .build(), false)
     }
 
 
@@ -99,7 +100,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
                 }
     }
 
-    private fun addLogElement(element: TextBox) {
+    private fun addLogElement(element: TextBox, applyTheme: Boolean = true) {
         val currentHeight = children.asSequence().map { it.height }.fold(1, Int::plus)
         val maxHeight = height
         val elementHeight = element.height
@@ -124,7 +125,9 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
             element.moveTo(Position.zero().relativeToBottomOf(lastChild))
         }
         addComponent(element)
-        //element.applyColorTheme(currentTheme)
+        if (applyTheme) {
+            element.applyColorTheme(currentTheme)
+        }
         render()
     }
 
