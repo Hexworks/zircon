@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.grid
+package org.hexworks.zircon.internal.input
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription

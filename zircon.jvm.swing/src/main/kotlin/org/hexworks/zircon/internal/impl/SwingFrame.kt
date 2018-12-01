@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.impl
 
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.renderer.SwingCanvasRenderer
-import org.hexworks.zircon.internal.grid.InternalTileGrid
+import org.hexworks.zircon.internal.input.InternalTileGrid
 import java.awt.Canvas
 import javax.swing.JFrame
 

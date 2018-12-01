@@ -62,6 +62,10 @@ enum class InputType {
     Numpad7,
     Numpad8,
     Numpad9,
+    NumpadAdd,
+    NumpadSubtract,
+    NumpadMultiply,
+    NumpadDivide,
     Unknown,
     /**
      * This value is only internally to understand where the cursor currently is, it's not expected to
