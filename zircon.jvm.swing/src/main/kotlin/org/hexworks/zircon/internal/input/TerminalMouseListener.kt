@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.grid
+package org.hexworks.zircon.internal.input
 
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.input.KeyStroke

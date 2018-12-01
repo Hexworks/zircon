@@ -3,8 +3,8 @@ package org.hexworks.zircon.internal.application
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.internal.RunTimeStats
-import org.hexworks.zircon.internal.grid.InternalTileGrid
-import org.hexworks.zircon.internal.grid.RectangleTileGrid
+import org.hexworks.zircon.internal.input.InternalTileGrid
+import org.hexworks.zircon.internal.input.RectangleTileGrid
 import org.hexworks.zircon.internal.renderer.VirtualRenderer
 import java.util.concurrent.Executors
 import java.util.concurrent.Future

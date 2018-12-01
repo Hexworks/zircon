@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.grid
+package org.hexworks.zircon.internal.input
 
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.behavior.Layerable

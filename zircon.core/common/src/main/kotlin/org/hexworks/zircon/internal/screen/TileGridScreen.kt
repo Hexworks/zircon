@@ -21,8 +21,8 @@ import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
-import org.hexworks.zircon.internal.grid.InternalTileGrid
-import org.hexworks.zircon.internal.grid.RectangleTileGrid
+import org.hexworks.zircon.internal.input.InternalTileGrid
+import org.hexworks.zircon.internal.input.RectangleTileGrid
 
 class TileGridScreen(
         private val tileGrid: InternalTileGrid,

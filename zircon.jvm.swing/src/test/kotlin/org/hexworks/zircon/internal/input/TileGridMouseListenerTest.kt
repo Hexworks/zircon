@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.grid
+package org.hexworks.zircon.internal.input
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.events.api.subscribe
