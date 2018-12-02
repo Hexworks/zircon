@@ -10,16 +10,23 @@ import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.Cell3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameArea.Companion.fetchPositionsWithOffset
+import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.behavior.Scrollable3D
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.hexworks.zircon.internal.extensions.getIfPresent
+import org.hexworks.zircon.internal.util.ThreadSafeMap
+import org.hexworks.zircon.internal.util.ThreadSafeQueue
+import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
+import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
                                                     actualSize: Size3D)
     : GameArea<T, B>, Scrollable3D by DefaultScrollable3D(
         visibleSize = visibleSize,
         actualSize = actualSize) {
+
+    private val overlays: ThreadSafeMap<Int, ThreadSafeQueue<Layer>> = ThreadSafeMapFactory.create()
 
     override fun fetchBlocks(fetchMode: GameArea.BlockFetchMode): Iterable<Cell3D<T, B>> {
         return if (fetchMode == GameArea.BlockFetchMode.IGNORE_EMPTY) {
@@ -96,8 +103,34 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
                 }
                 images.add(builder.build())
             }
+            // TODO: test overlay stuff
+            getOverlaysAt(z).forEach { overlay ->
+                val builder = TileGraphicsBuilder.newBuilder().withSize(size.to2DSize())
+                window.forEach { pos ->
+                    overlay.getTileAt(pos + offset2D).map { char ->
+                        builder.withTile(pos, char)
+                    }
+                }
+                images.add(builder.build())
+            }
             images
         }
+    }
+
+    override fun getOverlaysAt(level: Int): Iterable<Layer> {
+        return overlays[level]?.toList() ?: listOf()
+    }
+
+    override fun pushOverlayAt(layer: Layer, level: Int) {
+        overlays.getOrPut(level) { ThreadSafeQueueFactory.create() }.offer(layer)
+    }
+
+    override fun popOverlayAt(level: Int): Maybe<Layer> {
+        return overlays[level]?.poll() ?: Maybe.empty()
+    }
+
+    override fun removeOverlay(layer: Layer, level: Int) {
+        overlays[level]?.remove(layer)
     }
 
 }

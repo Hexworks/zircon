@@ -5,6 +5,7 @@ import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.behavior.Styleable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -157,5 +158,15 @@ abstract class BaseTileGraphics(
         return SubTileGraphics(
                 rect = rect,
                 backend = this)
+    }
+
+    override fun createCopy(): TileGraphics {
+        return TileGraphicsBuilder.newBuilder()
+                .withSize(size)
+                .withTileset(currentTileset())
+                .withStyle(toStyleSet())
+                .build().also {
+                    it.draw(this)
+                }
     }
 }

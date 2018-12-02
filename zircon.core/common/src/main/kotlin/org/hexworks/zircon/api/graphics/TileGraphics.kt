@@ -117,4 +117,9 @@ interface TileGraphics
      * by Position(1, 1).
      */
     fun toSubTileGraphics(rect: Rect): SubTileGraphics
+
+    /**
+     * Creates a copy of this [TileGraphics].
+     */
+    fun createCopy(): TileGraphics
 }
