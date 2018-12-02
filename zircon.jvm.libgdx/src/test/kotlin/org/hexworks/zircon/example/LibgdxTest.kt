@@ -3,8 +3,9 @@ package org.hexworks.zircon.example
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
-import org.hexworks.zircon.api.DrawSurfaces
-import org.hexworks.zircon.api.Tiles
+import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.utils.viewport.ExtendViewport
+import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.impl.GridPosition
@@ -13,18 +14,23 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.RunTimeStats
-import org.hexworks.zircon.internal.graphics.DefaultLayer
 import org.hexworks.zircon.internal.graphics.DefaultStyleSet
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
 import org.hexworks.zircon.internal.renderer.LibgdxRenderer
 import java.util.*
 
 private val size = Size.create(80, 40)
-val tileset = BuiltInCP437TilesetResource.WANDERLUST_16X16
+private val tileset = CP437TilesetResources.wanderlust16x16()
+private val theme = ColorThemes.solarizedLightOrange()
 
 class GdxExample : ApplicationAdapter() {
+
+    private val SCREEN_WIDTH = 1920f
+    private val SCREEN_HEIGHT = 1080f
+
+    private val camera = OrthographicCamera()
+    private val viewport = ExtendViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera)
 
     private val tileGrid: TileGrid = RectangleTileGrid(tileset, size)
     private val renderer = LibgdxRenderer(grid = tileGrid)
@@ -70,6 +76,14 @@ class GdxExample : ApplicationAdapter() {
     var loopCount = 0
 
     override fun create() {
+        camera.setToOrtho(false, viewport.screenWidth.toFloat(), viewport.screenHeight.toFloat())
+        viewport.update(SCREEN_WIDTH.toInt(), SCREEN_HEIGHT.toInt())
+        viewport.apply()
+        println(camera.viewportHeight)
+        LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+                .withDefaultTileset(tileset)
+                .withSize(Sizes.create(terminalWidth, terminalHeight))
+                .build())
         renderer.create()
     }
 
@@ -87,8 +101,15 @@ class GdxExample : ApplicationAdapter() {
             }
             currIdx = if (currIdx == 0) 1 else 0
             loopCount++
+
             renderer.render()
+            camera.update()
         }
+    }
+
+    override fun resize(width: Int, height: Int) {
+        viewport.update(width, height)
+        camera.update()
     }
 
     override fun dispose() {

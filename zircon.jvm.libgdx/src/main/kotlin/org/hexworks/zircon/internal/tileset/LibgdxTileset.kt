@@ -1,15 +1,22 @@
 package org.hexworks.zircon.internal.tileset
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.graphics.g3d.particles.ParticleChannels.Color
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.badlogic.gdx.utils.viewport.Viewport
+import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.api.util.Identifier
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import java.io.File
 
@@ -25,7 +32,7 @@ class LibgdxTileset(override val width: Int,
     override val targetType = SpriteBatch::class
 
     private val texture: Texture by lazy {
-        val bytes = File(path).readBytes()
+        val bytes = Gdx.files.internal(path).readBytes()
         val tex = Texture(Pixmap(bytes, 0, bytes.size))
         if (!tex.textureData.isPrepared) {
             tex.textureData.prepare()
@@ -34,40 +41,25 @@ class LibgdxTileset(override val width: Int,
     }
 
     override fun drawTile(tile: Tile, surface: SpriteBatch, position: Position) {
-//        val aPos = position.toAbsolutePosition(tileset) + offset
-//        val x = aPos.x.toFloat()
-//        val y = height - aPos.y.toFloat()
-//        val actualTileset = tilesetLoader.loadTilesetFrom(tileset)
+        val x = position.x.toFloat()
+        val y = position.y.toFloat()
 
-//        val tileWidth = actualTileset.width().toFloat()
-//        val tileHeight = actualTileset.height().toFloat()
-//        val drawable = TextureRegionDrawable(fetchTextureForTile(tile).getTexture())
-//        val fr = tile.getForegroundColor().getRed().toFloat().div(255)
-//        val fg = tile.getForegroundColor().getGreen().toFloat().div(255)
-//        val fb = tile.getForegroundColor().getBlue().toFloat().div(255)
-//        val fa = tile.getForegroundColor().getAlpha().toFloat().div(255)
+        //println("x: $x, y: $y")
 
-//            val br = tile.backgroundColor.getRed().toFloat().div(255)
-//            val bg = tile.backgroundColor.getGreen().toFloat().div(255)
-//            val bb = tile.backgroundColor.getBlue().toFloat().div(255)
-//            val ba = tile.backgroundColor.getAlpha().toFloat().div(255)
-
-//        val tinted = drawable.tint(Color(fr, fg, fb, fa)) as SpriteDrawable
-//        tinted.draw(surface,
-//                x,
-//                y + tileHeight,
-//                tileWidth,
-//                tileHeight)
+        val tileSprite = Sprite(fetchTextureForTile(tile).texture)
+        tileSprite.setPosition(x, y)
+        tileSprite.draw(surface)
     }
 
     private fun fetchTextureForTile(tile: Tile): TileTexture<TextureRegion> {
-        tile as? CharacterTile ?: throw IllegalArgumentException("Wrong tile type")
-        val meta = CP437_METADATA[tile.character]!!
+        val fixedTile = tile as? CharacterTile ?: throw IllegalArgumentException("Wrong tile type")
+        val meta = CP437_METADATA[fixedTile.character]!!
         val tr = TextureRegion(texture, meta.x * width, meta.y * height, width, height)
         return DefaultTileTexture(
                 width = width,
                 height = height,
-                texture = tr)
+                texture = tr
+        )
     }
 
     companion object {
@@ -81,7 +73,7 @@ class LibgdxTileset(override val width: Int,
                     y = y))
         }.toMap()
 
-        fun rexPaint16x16() = LibgdxTileset(
+        /*fun rexPaint16x16() = LibgdxTileset(
                 width = 16,
                 height = 16,
                 path = "src/main/resources/cp_437_tilesets/rex_paint_16x16.png")
@@ -100,7 +92,7 @@ class LibgdxTileset(override val width: Int,
         fun rexPaint8x8() = LibgdxTileset(
                 width = 8,
                 height = 8,
-                path = "src/main/resources/cp_437_tilesets/rex_paint_8x8.png")
+                path = "src/main/resources/cp_437_tilesets/rex_paint_8x8.png")*/
 
     }
 
