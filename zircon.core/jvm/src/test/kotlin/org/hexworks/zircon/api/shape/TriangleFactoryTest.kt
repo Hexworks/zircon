@@ -2,10 +2,12 @@ package org.hexworks.zircon.api.shape
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.data.Position
+import org.junit.Ignore
 import org.junit.Test
 
 class TriangleFactoryTest {
 
+    @Ignore
     @Test
     fun shouldProperlyDrawTriangle() {
         assertThat(TriangleFactory.buildTriangle(

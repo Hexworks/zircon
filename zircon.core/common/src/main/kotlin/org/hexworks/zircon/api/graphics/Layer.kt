@@ -43,6 +43,10 @@ interface Layer : DrawSurface, Drawable, Movable, Clearable {
      */
     fun createCopy(): Layer
 
+    fun toTileImage(): TileImage
+
+    fun toTileGraphics(): TileGraphics
+
     /**
      * Fills the empty positions of this [Layer] with the
      * given `filler` [Tile].

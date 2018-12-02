@@ -13,6 +13,7 @@ import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
@@ -174,6 +175,14 @@ class ComponentStub(
     }
 
     override fun clear() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun toTileImage(): TileImage {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun toTileGraphics(): TileGraphics {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

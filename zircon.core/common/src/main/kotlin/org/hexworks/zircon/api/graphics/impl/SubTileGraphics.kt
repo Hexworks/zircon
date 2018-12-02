@@ -2,7 +2,9 @@ package org.hexworks.zircon.api.graphics.impl
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.extensions.map
-import org.hexworks.zircon.api.behavior.*
+import org.hexworks.zircon.api.behavior.Drawable
+import org.hexworks.zircon.api.behavior.Styleable
+import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.DrawSurface
@@ -69,6 +71,10 @@ class SubTileGraphics(
         return SubTileGraphics(
                 rect = rect,
                 backend = this)
+    }
+
+    override fun createCopy(): TileGraphics {
+        return toSubTileGraphics(size.toRect())
     }
 
     private val offset = rect.position

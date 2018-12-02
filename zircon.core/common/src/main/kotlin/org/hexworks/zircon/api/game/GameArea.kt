@@ -2,11 +2,13 @@ package org.hexworks.zircon.api.game
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.extensions.map
+import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
+import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.behavior.Scrollable3D
 import org.hexworks.zircon.internal.extensions.getIfPresent
@@ -147,7 +149,7 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
 
     /**
      * Returns all the layers from bottom to top as a collection of [org.hexworks.zircon.api.graphics.TileGraphics]s.
-     * A layer is a collection of [Tile]s at a given `z` level and `layerIndex`.
+     * A layer is a collection of [Tile]s at a given `z` level.
      */
     fun fetchLayersAt(offset: Position3D, size: Size3D): Iterable<TileGraphics> {
         val offset2D = offset.to2DPosition()
@@ -179,6 +181,27 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
      * as layers from bottom to top.
      */
     fun setBlockAt(position: Position3D, block: B)
+
+    /**
+     * Returns the currently present overlays at the given `level`.
+     */
+    fun getOverlaysAt(level: Int): Iterable<Layer>
+
+    /**
+     * Adds an overlay on top of a z `level`.
+     */
+    fun pushOverlayAt(layer: Layer, level: Int)
+
+    /**
+     * Removes and returns the overlay which is at the top of the currently present overlays
+     * at the given `level`.(if any).
+     */
+    fun popOverlayAt(level: Int): Maybe<Layer>
+
+    /**
+     * Removes an overlay from the current overlays at the given `level`.
+     */
+    fun removeOverlay(layer: Layer, level: Int)
 
     /**
      * The fetch mode for [Block]s.
