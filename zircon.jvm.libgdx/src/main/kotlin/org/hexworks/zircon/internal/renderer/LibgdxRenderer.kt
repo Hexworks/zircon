@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g3d.Shader
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.utils.GdxRuntimeException
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.Maybes
@@ -84,7 +87,8 @@ class LibgdxRenderer(private val grid: TileGrid,
                             tile.withBackgroundColor(tile.foregroundColor)
                                     .withForegroundColor(tile.backgroundColor)
                         } else {
-                            tile
+                            tile.withBackgroundColor(tile.backgroundColor)
+                                    .withForegroundColor(tile.foregroundColor)
                         }
                 val actualTileset: Tileset<SpriteBatch> =
                         if(actualTile is TilesetOverride) {
@@ -146,3 +150,37 @@ class LibgdxRenderer(private val grid: TileGrid,
         )
     }
 }
+
+val vertexShader =
+        "attribute vec4 a_position; \n" +
+"attribute vec4 a_color;\n" +
+                "attribute vec2 a_texCoord0;\n" +
+
+                "uniform mat4 u_projTrans;\n" +
+
+                "varying vec4 v_color;\n" +
+                "varying vec2 v_texCoords;\n" +
+
+                "void main() { \n" +
+                "    v_color = a_color;\n" +
+                "    v_texCoords = a_texCoord0;\n" +
+                "    gl_Position = u_projTrans * a_position;\n" +
+                "}"
+var fragmentShader =
+        "#ifdef GL_ES\n" +
+"precision mediump float;\n" +
+"#endif\n" +
+
+"varying vec4 v_color;\n" +
+"varying vec2 v_texCoords;\n" +
+"uniform sampler2D u_texture;\n" +
+"uniform mat4 u_projTrans;\n" +
+                "uniform vec3 u_tintColor;\n" +
+
+"void main() {\n" +
+"    vec3 color = texture2D(u_texture, v_texCoords).rgb;\n" +
+
+"   vec3 grayscale = vec3(color.r * u_tintColor.r, color.g * u_tintColor.g, color.b * u_tintColor.b);\n" +
+
+"   gl_FragColor = vec4(grayscale, 1.0);\n" +
+"}"
