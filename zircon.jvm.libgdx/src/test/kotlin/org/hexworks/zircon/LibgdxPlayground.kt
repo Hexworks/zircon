@@ -96,7 +96,7 @@ object LibgdxPlayground: Game() {
         batch.dispose()
     }
 
-    private val TILESET = BuiltInCP437TilesetResource.BISASAM_16X16
+    private val TILESET = BuiltInCP437TilesetResource.WANDERLUST_16X16
     private val theme = ColorThemes.solarizedLightOrange()
 
     @JvmStatic
