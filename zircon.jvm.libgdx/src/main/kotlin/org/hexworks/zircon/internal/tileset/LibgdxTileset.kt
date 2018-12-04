@@ -19,6 +19,11 @@ import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.hexworks.zircon.internal.tileset.transformer.LibgdxTextureCloner
 import java.util.concurrent.TimeUnit
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
+import com.badlogic.gdx.utils.GdxRuntimeException
+import org.hexworks.zircon.api.modifier.TextureTransformModifier
+import org.hexworks.zircon.internal.tileset.transformer.LibgdxTextureColorizer
+
 
 /**
  * Represents a tileset which is backed by a sprite sheet.
@@ -58,11 +63,17 @@ class LibgdxTileset(override val width: Int,
         val y = position.y.toFloat()
         val tileSprite = Sprite(fetchTextureForTile(tile).texture)
         tileSprite.setPosition(x, y)
+        val backgroundColor = Color(0.3f, 0.5f, 0.8f, 1.0f/*
+                tile.backgroundColor.red.toFloat() / 255,
+                tile.backgroundColor.green.toFloat() / 255,
+                tile.backgroundColor.blue.toFloat() / 255,
+                tile.backgroundColor.alpha.toFloat() / 255*/
+        )
         tileSprite.color = Color(
-                tile.foregroundColor.red.toFloat(),
-                tile.foregroundColor.green / 255f,
-                tile.foregroundColor.blue / 255f,
-                tile.foregroundColor.alpha / 255f
+                tile.foregroundColor.red.toFloat() / 255,
+                tile.foregroundColor.green.toFloat() / 255,
+                tile.foregroundColor.blue.toFloat() / 255,
+                tile.foregroundColor.alpha.toFloat() / 255
         )
         tileSprite.draw(surface)
     }
@@ -109,12 +120,11 @@ class LibgdxTileset(override val width: Int,
         }.toMap()
 
         private val TILE_INITIALIZERS = listOf(
-                LibgdxTextureCloner()
+                LibgdxTextureCloner(),
+                LibgdxTextureColorizer()
         )
     }
 
     class TileTextureMetadata(val x: Int,
                               val y: Int)
 }
-
-
