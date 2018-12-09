@@ -33,10 +33,6 @@ class LibgdxApplication(appConfig: AppConfig):  Disposable, Application {
         }
     }
 
-    fun resize() {
-
-    }
-
     override fun dispose() {
         stop()
     }

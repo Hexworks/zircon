@@ -3,6 +3,9 @@ package org.hexworks.zircon.internal.renderer
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Pixmap
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g3d.Shader
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
@@ -35,6 +38,22 @@ class LibgdxRenderer(private val grid: TileGrid,
     private val tilesetLoader = LibgdxTilesetLoader()
     private var blinkOn = true
     private var timeSinceLastBlink: Float = 0f
+
+    private val backgroundTexture: Texture
+    private val backgroundWidth: Int
+    private val backgroundHeight: Int
+
+    init {
+        val whitePixmap = Pixmap(grid.widthInPixels, grid.heightInPixels, Pixmap.Format.RGBA8888)
+        whitePixmap.setColor(Color.WHITE)
+        whitePixmap.fill()
+        backgroundTexture = Texture(whitePixmap)
+
+        backgroundWidth = whitePixmap.width / grid.width
+        backgroundHeight = whitePixmap.height / grid.height
+
+        whitePixmap.dispose()
+    }
 
     override fun create() {
         maybeBatch = Maybes.of(SpriteBatch())
@@ -80,6 +99,39 @@ class LibgdxRenderer(private val grid: TileGrid,
                             snapshot: Snapshot,
                             tileset: Tileset<SpriteBatch>,
                             offset: PixelPosition) {
+        /*
+         * I can already see you reaching for that ctrl-x ctrl-v to move that single
+         * drawBack() method call into the next loop. Why would two identical loops
+         * be required for two methods? Just but both into one loop, right? Wrong.
+         * This runs a beautiful 60fps in the test. Now try moving both into the same
+         * loop. I dare you. Have fun with the 14 fps, freak. I can't explain it, I
+         * can only hope to save those that think they can optimize this. Leave it,
+         * for your own sanity
+         */
+        snapshot.cells.forEach { (pos, tile) ->
+            if(tile !== Tile.empty()) {
+                val actualTile =
+                        if (tile.isBlinking() /*&& blinkOn*/) {
+                            tile.withBackgroundColor(tile.foregroundColor)
+                                    .withForegroundColor(tile.backgroundColor)
+                        } else {
+                            tile
+                        }
+                val actualTileset: Tileset<SpriteBatch> =
+                        if(actualTile is TilesetOverride) {
+                            tilesetLoader.loadTilesetFrom(actualTile.currentTileset())
+                        } else {
+                            tileset
+                        }
+
+                val actualPos = Position.create((pos.x * actualTileset.width), (grid.height - pos.y) * actualTileset.height)
+                drawBack(
+                        tile = actualTile,
+                        surface = batch,
+                        position = actualPos
+                )
+            }
+        }
         snapshot.cells.forEach { (pos, tile) ->
             if(tile !== Tile.empty()) {
                 val actualTile =
@@ -104,6 +156,21 @@ class LibgdxRenderer(private val grid: TileGrid,
                 )
             }
         }
+    }
+
+    private fun drawBack(tile: Tile, surface: SpriteBatch, position: Position) {
+        val x = position.x.toFloat()
+        val y = position.y.toFloat()
+        val backSprite = Sprite(backgroundTexture)
+        backSprite.setPosition(x, y)
+        backSprite.setSize(backgroundWidth.toFloat(), backgroundHeight.toFloat())
+        backSprite.color = Color(
+                tile.backgroundColor.red.toFloat() / 255,
+                tile.backgroundColor.green.toFloat() / 255,
+                tile.backgroundColor.blue.toFloat() / 255,
+                tile.backgroundColor.alpha.toFloat() / 255
+        )
+        backSprite.draw(surface)
     }
 
     private fun handleBlink(delta: Float) {
