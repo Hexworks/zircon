@@ -1,15 +1,17 @@
 package org.hexworks.zircon.internal.application
 
-import com.badlogic.gdx.ApplicationAdapter
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Camera
+import com.badlogic.gdx.utils.Disposable
+import com.badlogic.gdx.utils.viewport.ExtendViewport
+import com.badlogic.gdx.utils.viewport.Viewport
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
 import org.hexworks.zircon.internal.renderer.LibgdxRenderer
 
-class LibgdxApplication(appConfig: AppConfig) : ApplicationAdapter(), Application {
+class LibgdxApplication(appConfig: AppConfig):  Disposable, Application {
 
     override val tileGrid: InternalTileGrid = RectangleTileGrid(
             tileset = appConfig.defaultTileset,
@@ -20,17 +22,12 @@ class LibgdxApplication(appConfig: AppConfig) : ApplicationAdapter(), Applicatio
     private var started = false
     private var paused = false
 
-    // libgdx overrides
-    override fun create() {
-        println("createCharacterTile")
-        if (started.not()) {
-            println("start")
-            started = true
-            renderer.create()
-        }
+    private fun create() {
+        Gdx.app.log("Initialization", "Starting LibgdxRenderer")
+        renderer.create()
     }
 
-    override fun render() {
+    fun render() {
         if (paused.not() && started) {
             renderer.render()
         }
@@ -43,11 +40,13 @@ class LibgdxApplication(appConfig: AppConfig) : ApplicationAdapter(), Applicatio
     // zircon overrides
 
     override fun start() {
-        val cfg = LwjglApplicationConfiguration()
-        cfg.title = "LibGDX Test"
-        cfg.height = tileGrid.heightInPixels
-        cfg.width = tileGrid.widthInPixels
-        LwjglApplication(this, cfg)
+        if (started.not()) {
+            Gdx.app.log("Initialization", "Starting Zircon Application")
+            started = true
+            create()
+        } else {
+            Gdx.app.error("Warning", "Zircon Application already started")
+        }
     }
 
     override fun pause() {
@@ -64,9 +63,7 @@ class LibgdxApplication(appConfig: AppConfig) : ApplicationAdapter(), Applicatio
     }
 
     companion object {
-
-        fun create(
-                appConfig: AppConfig = AppConfig.defaultConfiguration()): Application {
+        fun create(appConfig: AppConfig = AppConfig.defaultConfiguration()): Application {
             return LibgdxApplication(appConfig)
         }
     }

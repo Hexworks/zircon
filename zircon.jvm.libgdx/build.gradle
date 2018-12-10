@@ -3,7 +3,7 @@ apply plugin: 'kotlin'
 archivesBaseName = 'zircon.jvm.libgdx'
 
 dependencies {
-    compile project(':zircon.jvm')
+    compile project(':zircon.core')
     compile libraries.kotlin_stdlib
 
     compile "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -12,7 +12,15 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
 
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+
     testCompile libraries.junit
     testCompile libraries.mockito
     testCompile libraries.assertj
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
