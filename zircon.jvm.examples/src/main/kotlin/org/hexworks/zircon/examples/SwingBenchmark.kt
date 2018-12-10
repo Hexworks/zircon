@@ -1,9 +1,6 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.DrawSurfaces
-import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
@@ -20,7 +17,7 @@ fun main(args: Array<String>) {
 
     val size = Sizes.create(80, 40)
 
-    val tileset = BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(20)
+    val tileset = CP437TilesetResources.zaratustra16x16()
 
     val tileGrid = SwingApplications.startTileGrid(AppConfigBuilder.newBuilder()
             .withSize(size)

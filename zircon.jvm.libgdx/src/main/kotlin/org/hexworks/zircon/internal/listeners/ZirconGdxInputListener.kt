@@ -18,7 +18,7 @@ import java.awt.event.MouseEvent.NOBUTTON
 import java.util.*
 
 class ZirconInputListener(private val fontWidth: Int,
-                    private val fontHeight: Int) : InputProcessor {
+                          private val fontHeight: Int) : InputProcessor {
 
     private var clicking = false
     private var lastMouseLocation = Position.unknown()
@@ -54,13 +54,11 @@ class ZirconInputListener(private val fontWidth: Int,
     }
 
     override fun keyDown(keycode: Int): Boolean {
-        if(keycode == ALT_LEFT || keycode == ALT_RIGHT) {
+        if (keycode == ALT_LEFT || keycode == ALT_RIGHT) {
             altPressed = true
-        }
-        else if(keycode == CONTROL_LEFT || keycode == CONTROL_RIGHT) {
+        } else if (keycode == CONTROL_LEFT || keycode == CONTROL_RIGHT) {
             ctrlPressed = true
-        }
-        else if(keycode == SHIFT_LEFT || keycode == SHIFT_RIGHT) {
+        } else if (keycode == SHIFT_LEFT || keycode == SHIFT_RIGHT) {
             shiftPressed = true
         }
 
@@ -119,13 +117,11 @@ class ZirconInputListener(private val fontWidth: Int,
     }
 
     override fun keyUp(keycode: Int): Boolean {
-        if(keycode == ALT_LEFT || keycode == ALT_RIGHT) {
+        if (keycode == ALT_LEFT || keycode == ALT_RIGHT) {
             altPressed = false
-        }
-        else if(keycode == CONTROL_LEFT || keycode == CONTROL_RIGHT) {
+        } else if (keycode == CONTROL_LEFT || keycode == CONTROL_RIGHT) {
             ctrlPressed = false
-        }
-        else if(keycode == SHIFT_LEFT || keycode == SHIFT_RIGHT) {
+        } else if (keycode == SHIFT_LEFT || keycode == SHIFT_RIGHT) {
             shiftPressed = false
         }
         return true
@@ -139,14 +135,14 @@ class ZirconInputListener(private val fontWidth: Int,
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         addActionToKeyQueue(MouseActionType.MOUSE_RELEASED, screenX, screenY, button)
-        if(clicking) {
+        if (clicking) {
             addActionToKeyQueue(MouseActionType.MOUSE_CLICKED, screenX, screenY, button)
         }
         return true
     }
 
     override fun scrolled(amount: Int): Boolean {
-        val actionType = if(amount > 0) {
+        val actionType = if (amount > 0) {
             MouseActionType.MOUSE_WHEEL_ROTATED_DOWN
         } else {
             MouseActionType.MOUSE_WHEEL_ROTATED_UP
@@ -175,7 +171,7 @@ class ZirconInputListener(private val fontWidth: Int,
     }
 
     private fun addActionToKeyQueue(actionType: MouseActionType, x: Int, y: Int, button: Int) {
-            try {
+        try {
             val position = Position.create(
                     x = Math.max(0, x.div(fontWidth)),
                     y = Math.max(0, y.div(fontHeight)))

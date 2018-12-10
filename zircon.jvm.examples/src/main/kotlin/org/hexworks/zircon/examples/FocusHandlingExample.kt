@@ -10,7 +10,7 @@ object FocusHandlingExample {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .withDefaultTileset(TrueTypeFontResources.kaypro(20))
+                .withDefaultTileset(CP437TilesetResources.rexPaint20x20())
                 .withSize(Sizes.create(60, 30))
                 .build())
 
