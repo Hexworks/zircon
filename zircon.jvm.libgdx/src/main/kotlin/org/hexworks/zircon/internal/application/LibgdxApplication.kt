@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.application
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Disposable
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.internal.grid.InternalTileGrid
@@ -10,19 +10,16 @@ import org.hexworks.zircon.internal.renderer.LibgdxRenderer
 
 class LibgdxApplication(appConfig: AppConfig) : Disposable, Application {
 
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     override val tileGrid: InternalTileGrid = RectangleTileGrid(
             tileset = appConfig.defaultTileset,
-            size = appConfig.size)
+            size = appConfig.size.withRelativeHeight(-1))
 
     private val renderer = LibgdxRenderer(tileGrid, appConfig.debugMode)
 
     private var started = false
     private var paused = false
-
-    private fun create() {
-        Gdx.app.log("Initialization", "Starting LibgdxRenderer")
-        renderer.create()
-    }
 
     fun render() {
         if (paused.not() && started) {
@@ -38,11 +35,11 @@ class LibgdxApplication(appConfig: AppConfig) : Disposable, Application {
 
     override fun start() {
         if (started.not()) {
-            Gdx.app.log("Initialization", "Starting Zircon Application")
+            logger.info("Starting LibgdxApplication")
             started = true
-            create()
+            renderer.create()
         } else {
-            Gdx.app.error("Warning", "Zircon Application already started")
+            logger.error("LibgdxApplication already started")
         }
     }
 

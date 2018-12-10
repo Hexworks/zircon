@@ -1,16 +1,12 @@
 package org.hexworks.zircon.internal.renderer
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.g3d.Shader
-import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.badlogic.gdx.utils.GdxRuntimeException
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.Maybes
@@ -18,9 +14,9 @@ import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.impl.PixelPosition
 import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.impl.PixelPosition
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.RunTimeStats
@@ -39,11 +35,13 @@ class LibgdxRenderer(private val grid: TileGrid,
     private var blinkOn = true
     private var timeSinceLastBlink: Float = 0f
 
-    private val backgroundTexture: Texture
-    private val backgroundWidth: Int
-    private val backgroundHeight: Int
+    private lateinit var backgroundTexture: Texture
+    private var backgroundWidth: Int = 0
+    private var backgroundHeight: Int = 0
 
-    init {
+    override fun create() {
+        maybeBatch = Maybes.of(SpriteBatch())
+        cursorRenderer = ShapeRenderer()
         val whitePixmap = Pixmap(grid.widthInPixels, grid.heightInPixels, Pixmap.Format.RGBA8888)
         whitePixmap.setColor(Color.WHITE)
         whitePixmap.fill()
@@ -53,11 +51,6 @@ class LibgdxRenderer(private val grid: TileGrid,
         backgroundHeight = whitePixmap.height / grid.height
 
         whitePixmap.dispose()
-    }
-
-    override fun create() {
-        maybeBatch = Maybes.of(SpriteBatch())
-        cursorRenderer = ShapeRenderer()
     }
 
     override fun render() {
@@ -87,7 +80,7 @@ class LibgdxRenderer(private val grid: TileGrid,
             }
             batch.end()
             cursorRenderer.projectionMatrix = batch.projectionMatrix
-            if(shouldDrawCursor()) {
+            if (shouldDrawCursor()) {
                 grid.getTileAt(grid.cursorPosition()).map {
                     drawCursor(cursorRenderer, it, grid.cursorPosition())
                 }
@@ -109,7 +102,7 @@ class LibgdxRenderer(private val grid: TileGrid,
          * for your own sanity
          */
         snapshot.cells.forEach { (pos, tile) ->
-            if(tile !== Tile.empty()) {
+            if (tile !== Tile.empty()) {
                 val actualTile =
                         if (tile.isBlinking() /*&& blinkOn*/) {
                             tile.withBackgroundColor(tile.foregroundColor)
@@ -118,7 +111,7 @@ class LibgdxRenderer(private val grid: TileGrid,
                             tile
                         }
                 val actualTileset: Tileset<SpriteBatch> =
-                        if(actualTile is TilesetOverride) {
+                        if (actualTile is TilesetOverride) {
                             tilesetLoader.loadTilesetFrom(actualTile.currentTileset())
                         } else {
                             tileset
@@ -133,7 +126,7 @@ class LibgdxRenderer(private val grid: TileGrid,
             }
         }
         snapshot.cells.forEach { (pos, tile) ->
-            if(tile !== Tile.empty()) {
+            if (tile !== Tile.empty()) {
                 val actualTile =
                         if (tile.isBlinking() /*&& blinkOn*/) {
                             tile.withBackgroundColor(tile.foregroundColor)
@@ -142,7 +135,7 @@ class LibgdxRenderer(private val grid: TileGrid,
                             tile
                         }
                 val actualTileset: Tileset<SpriteBatch> =
-                        if(actualTile is TilesetOverride) {
+                        if (actualTile is TilesetOverride) {
                             tilesetLoader.loadTilesetFrom(actualTile.currentTileset())
                         } else {
                             tileset
@@ -175,7 +168,7 @@ class LibgdxRenderer(private val grid: TileGrid,
 
     private fun handleBlink(delta: Float) {
         timeSinceLastBlink += delta
-        if(timeSinceLastBlink > config.blinkLengthInMilliSeconds) {
+        if (timeSinceLastBlink > config.blinkLengthInMilliSeconds) {
             blinkOn = !blinkOn
         }
     }
@@ -190,7 +183,7 @@ class LibgdxRenderer(private val grid: TileGrid,
         shapeRenderer.color = cursorColor
         when (config.cursorStyle) {
             CursorStyle.USE_CHARACTER_FOREGROUND -> {
-                if(blinkOn) {
+                if (blinkOn) {
                     shapeRenderer.color = colorToGDXColor(character.foregroundColor)
                     shapeRenderer.rect(x, y, tileWidth.toFloat(), tileHeight.toFloat())
                 }

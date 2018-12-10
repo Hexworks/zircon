@@ -33,7 +33,7 @@ object ScrollingLogAreaExample {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
                 .withSize(Sizes.create(70, 30))
                 .build())

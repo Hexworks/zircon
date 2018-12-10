@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
 
     val tileset = CP437TilesetResources.zaratustra16x16()
 
-    val tileGrid = SwingApplications.startTileGrid(AppConfigBuilder.newBuilder()
+    val tileGrid = LibgdxApplications.startTileGrid(AppConfigBuilder.newBuilder()
             .withSize(size)
             .withDefaultTileset(tileset)
             .withDebugMode(true)

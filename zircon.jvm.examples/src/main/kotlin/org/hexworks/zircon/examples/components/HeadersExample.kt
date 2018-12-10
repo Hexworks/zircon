@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.graphics.BoxType
 object HeadersExample {
 
     private val theme = ColorThemes.headache()
-    private val tileset = TrueTypeFontResources.vtech(16)
+    private val tileset = CP437TilesetResources.runeset24x24()
 
     @JvmStatic
     fun main(args: Array<String>) {
