@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
-import org.hexworks.zircon.internal.input.RectangleTileGrid
+import org.hexworks.zircon.internal.grid.RectangleTileGrid
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations

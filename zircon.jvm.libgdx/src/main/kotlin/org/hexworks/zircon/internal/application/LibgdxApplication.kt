@@ -1,17 +1,14 @@
 package org.hexworks.zircon.internal.application
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.utils.Disposable
-import com.badlogic.gdx.utils.viewport.ExtendViewport
-import com.badlogic.gdx.utils.viewport.Viewport
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
 import org.hexworks.zircon.internal.renderer.LibgdxRenderer
 
-class LibgdxApplication(appConfig: AppConfig):  Disposable, Application {
+class LibgdxApplication(appConfig: AppConfig) : Disposable, Application {
 
     override val tileGrid: InternalTileGrid = RectangleTileGrid(
             tileset = appConfig.defaultTileset,

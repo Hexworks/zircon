@@ -8,9 +8,9 @@ import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.input.InternalTileGrid
-import org.hexworks.zircon.internal.input.TerminalKeyListener
-import org.hexworks.zircon.internal.input.TerminalMouseListener
+import org.hexworks.zircon.internal.grid.InternalTileGrid
+import org.hexworks.zircon.internal.grid.TerminalKeyListener
+import org.hexworks.zircon.internal.grid.TerminalMouseListener
 import org.hexworks.zircon.internal.tileset.SwingTilesetLoader
 import org.hexworks.zircon.internal.tileset.transformer.toAWTColor
 import org.hexworks.zircon.platform.util.SystemUtils

@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.renderer
 import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.input.InternalTileGrid
+import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.tileset.impl.VirtualTileset
 import org.hexworks.zircon.platform.util.SystemUtils
 
