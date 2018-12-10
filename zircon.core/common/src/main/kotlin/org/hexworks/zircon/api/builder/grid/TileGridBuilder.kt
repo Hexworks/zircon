@@ -6,8 +6,8 @@ import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.input.InternalTileGrid
-import org.hexworks.zircon.internal.input.RectangleTileGrid
+import org.hexworks.zircon.internal.grid.InternalTileGrid
+import org.hexworks.zircon.internal.grid.RectangleTileGrid
 import org.hexworks.zircon.internal.screen.TileGridScreen
 
 /**

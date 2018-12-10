@@ -3,29 +3,31 @@ package org.hexworks.zircon
 import ch.qos.logback.classic.Level
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
+import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.application.LibgdxApplication
 import org.hexworks.zircon.internal.listeners.ZirconInputListener
 import org.hexworks.zircon.internal.util.fromBottom
 import org.hexworks.zircon.internal.util.fromRight
 import org.hexworks.zircon.internal.util.gridFillByScreenSize
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 
-object LibgdxPlayground: Game() {
+object LibgdxPlayground : Game() {
     private lateinit var batch: SpriteBatch
     private lateinit var zirconApplication: LibgdxApplication
 
     private const val screenWidth = 1000
     private const val screenHeight = 600
+
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun create() {
         batch = SpriteBatch()

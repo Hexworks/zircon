@@ -1,0 +1,21 @@
+apply plugin: 'kotlin'
+
+archivesBaseName = 'zircon.jvm.examples'
+
+dependencies {
+    compile project(":zircon.core")
+    compile project(":zircon.jvm.swing")
+    compile project(":zircon.jvm.libgdx")
+
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
