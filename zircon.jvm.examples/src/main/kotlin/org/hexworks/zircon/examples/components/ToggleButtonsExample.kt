@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal
+package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
