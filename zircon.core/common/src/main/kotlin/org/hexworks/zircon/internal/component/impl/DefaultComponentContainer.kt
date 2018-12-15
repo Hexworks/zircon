@@ -14,6 +14,7 @@ import org.hexworks.zircon.api.input.InputType.*
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType.*
+import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultComponentFocusHandler
@@ -59,6 +60,14 @@ class DefaultComponentContainer(private var root: RootContainer) :
     override fun removeComponent(component: Component): Boolean {
         return root.removeComponent(component).also {
             refreshFocusables()
+        }
+    }
+
+    override fun onInput(listener: InputListener): Subscription {
+        return Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
+            if(isActive()) {
+                listener.inputEmitted(input)
+            }
         }
     }
 
