@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.screen
 
 import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.subscribe
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -9,6 +10,7 @@ import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.ComponentsLayerable
@@ -61,6 +63,14 @@ class TileGridScreen(
         Zircon.eventBus.subscribe<ZirconEvent.HideCursor>(ZirconScope) {
             if (isActive()) {
                 tileGrid.setCursorVisibility(false)
+            }
+        }
+    }
+
+    override fun onInput(listener: InputListener): Subscription {
+        return Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
+            if (isActive()) {
+                listener.inputEmitted(input)
             }
         }
     }

@@ -1,7 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -11,11 +9,12 @@ import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.kotlin.onClosed
 import org.hexworks.zircon.internal.component.InternalComponentContainer
+import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 class CompositeComponentContainer(private val componentContainer: InternalComponentContainer,
                                   private val modalContainer: InternalComponentContainer) : InternalComponentContainer {
 
-    private var currentModal = Maybe.empty<Modal<out ModalResult>>()
+    private var modalStack = ThreadSafeQueueFactory.create<Modal<out ModalResult>>()
     private val logger = LoggerFactory.getLogger(this::class)
 
     override fun isActive(): Boolean {
@@ -35,7 +34,6 @@ class CompositeComponentContainer(private val componentContainer: InternalCompon
         return componentContainer.toFlattenedLayers().plus(modalContainer.toFlattenedLayers())
     }
 
-
     override fun addComponent(component: Component) {
         componentContainer.addComponent(component)
     }
@@ -49,12 +47,12 @@ class CompositeComponentContainer(private val componentContainer: InternalCompon
     }
 
     fun addModal(modal: Modal<out ModalResult>): Boolean {
-        return if (currentModal.isPresent) {
+        return if (modalStack.isNotEmpty()) {
             false
         } else {
             componentContainer.deactivate()
             modalContainer.activate()
-            currentModal = Maybe.of(modal)
+            modalStack.add(modal)
             modalContainer.addComponent(modal)
             modal.onClosed {
                 clearModal()
@@ -65,8 +63,7 @@ class CompositeComponentContainer(private val componentContainer: InternalCompon
     }
 
     private fun clearModal() {
-        currentModal.map {
-            currentModal = Maybe.empty()
+        modalStack.drainAll().forEach {
             modalContainer.removeComponent(it)
             modalContainer.deactivate()
         }
