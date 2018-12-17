@@ -29,7 +29,7 @@ data class ModalBuilder<T : ModalResult>(
     }
 
     @JvmOverloads
-    fun withCenteredDialog(centeredDialog: Boolean = true) {
+    fun withCenteredDialog(centeredDialog: Boolean = true) = also {
         this.centeredDialog = centeredDialog
     }
 

@@ -70,7 +70,7 @@ object ModalTest {
         modalPanel.addComponent(confirmButton)
 
         screen.onKeyStroke {
-            logger.info("Key stroked: $it")
+            logger.info("Key stroked.")
         }
 
         openModalButton.onMouseReleased {
