@@ -19,12 +19,11 @@ class CompositeComponentContainer(private val mainContainer: InternalComponentCo
                                   private val modalContainer: InternalComponentContainer) : InternalComponentContainer {
 
     private var modalStack = ThreadSafeQueueFactory.create<Modal<out ModalResult>>()
-    private val logger = LoggerFactory.getLogger(this::class)
 
     fun isMainContainerActive() = mainContainer.isActive()
 
     override fun isActive(): Boolean {
-        return mainContainer.isActive().or(modalContainer.isActive())
+        return mainContainer.isActive()
     }
 
     override fun activate() {

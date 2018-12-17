@@ -62,7 +62,9 @@ class DefaultComponentContainer(private var root: RootContainer) :
         }
     }
 
-    override fun isActive(): Boolean = state == ContainerHandlerState.ACTIVE
+    override fun isActive(): Boolean {
+        return state == ContainerHandlerState.ACTIVE
+    }
 
     override fun activate() {
         logger.debug("Activating container handler")
