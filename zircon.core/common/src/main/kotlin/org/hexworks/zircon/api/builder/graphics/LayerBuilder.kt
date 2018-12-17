@@ -22,7 +22,7 @@ data class LayerBuilder(
         private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
         private var size: Size = Size.defaultGridSize(),
         private var offset: Position = Position.defaultPosition(),
-        private var tileGraphic: Maybe<TileGraphics> = Maybe.empty()) : Builder<Layer> {
+        private var tileGraphics: Maybe<TileGraphics> = Maybe.empty()) : Builder<Layer> {
 
     /**
      * Sets the [Tileset] to use with the resulting [Layer].
@@ -50,14 +50,14 @@ data class LayerBuilder(
     /**
      * Uses the given [TileGraphics] and converts it to a [Layer].
      */
-    fun withTileGraphics(tileGraphic: TileGraphics) = also {
-        this.tileGraphic = Maybe.of(tileGraphic)
+    fun withTileGraphics(tileGraphics: TileGraphics) = also {
+        this.tileGraphics = Maybe.of(tileGraphics)
     }
 
-    override fun build(): Layer = if (tileGraphic.isPresent) {
+    override fun build(): Layer = if (tileGraphics.isPresent) {
         DefaultLayer(
                 position = offset,
-                backend = tileGraphic.get())
+                backend = tileGraphics.get())
     } else {
         DefaultLayer(
                 position = offset,

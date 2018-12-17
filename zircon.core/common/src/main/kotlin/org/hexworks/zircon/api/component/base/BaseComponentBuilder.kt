@@ -1,5 +1,7 @@
 package org.hexworks.zircon.api.component.base
 
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
@@ -66,11 +68,19 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         return this as U
     }
 
+    override fun withPosition(x: Int, y: Int): U {
+        return withPosition(Positions.create(x, y))
+    }
+
     override fun withPosition(position: Position): U {
         positionFn = {
             position
         }
         return this as U
+    }
+
+    override fun withSize(width: Int, height: Int): U {
+        return withSize(Sizes.create(width, height))
     }
 
     override fun withSize(size: Size): U {

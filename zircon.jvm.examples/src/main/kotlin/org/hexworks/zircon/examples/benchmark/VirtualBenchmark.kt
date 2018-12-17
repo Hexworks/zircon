@@ -1,6 +1,9 @@
-package org.hexworks.zircon.examples
+package org.hexworks.zircon.examples.benchmark
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.DrawSurfaces
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.VirtualApplications
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
@@ -10,16 +13,15 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.BuiltInTrueTypeFontResource
-import org.hexworks.zircon.internal.graphics.DefaultLayer
 import java.util.*
 
 fun main(args: Array<String>) {
 
     val size = Sizes.create(80, 40)
 
-    val tileset = CP437TilesetResources.zaratustra16x16()
+    val tileset = BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(20)
 
-    val tileGrid = LibgdxApplications.startTileGrid(AppConfigBuilder.newBuilder()
+    val tileGrid = VirtualApplications.startTileGrid(AppConfigBuilder.newBuilder()
             .withSize(size)
             .withDefaultTileset(tileset)
             .withDebugMode(true)

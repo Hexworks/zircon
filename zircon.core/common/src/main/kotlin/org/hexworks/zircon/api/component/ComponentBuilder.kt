@@ -67,7 +67,18 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
      * Sets the [Position] where the resulting [Component] will
      * be placed.
      */
+    fun withPosition(x: Int, y: Int): U
+
+    /**
+     * Sets the [Position] where the resulting [Component] will
+     * be placed.
+     */
     fun withPosition(position: Position): U
+
+    /**
+     * Sets the [Size] of the resulting [Component].
+     */
+    fun withSize(width: Int, height: Int): U
 
     /**
      * Sets the [Size] of the resulting [Component].

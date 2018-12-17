@@ -3,39 +3,49 @@
 package org.hexworks.zircon.examples.playground
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.application.CursorStyle
-import org.hexworks.zircon.api.builder.screen.ScreenBuilder
-import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.input.InputType
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.kotlin.onInput
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.resource.ColorThemeResource
+import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.cobalt.logging.api.debug
 
 object KotlinPlayground {
 
-    private val SIZE = Sizes.create(50, 30)
-    private val TILESET = BuiltInCP437TilesetResource.TAFFER_20X20
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @JvmStatic
     fun main(args: Array<String>) {
+        logger.info("foo")
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.defaultConfiguration())
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .withDefaultTileset(TILESET)
-                .withSize(SIZE)
-                .build())
+        val screen0 = Screens.createScreenFor(tileGrid)
+        val toggleButton0 = Components.button()
+                .withText("Toggle screen1")
+                .wrapSides(true)
+                .wrapWithBox(true)
+                .build()
 
-        val screen0 = ScreenBuilder.createScreenFor(tileGrid)
-        val screen1 = ScreenBuilder.createScreenFor(tileGrid)
+        var panel0 = Components.panel()
+                .withSize(Sizes.defaultTerminalSize())
+                .withPosition(Positions.defaultPosition())
+                .build()
 
-        tileGrid.onInput {
-            println(it)
-            if(it.inputTypeIs(InputType.Enter)) {
-                screen0.display()
-            }
-            if(it.inputTypeIs(InputType.ArrowRight)) {
-                screen1.display()
-            }
+        panel0.addComponent(toggleButton0)
+
+        logger.debug {
+            "debug"
         }
+
+
+        panel0.requestFocus()
+        panel0.onInput {
+            System.out.println("panel0 input " + it.toString())
+        }
+
+
+        screen0.addComponent(panel0)
+
+        screen0.display()
 
 
     }
