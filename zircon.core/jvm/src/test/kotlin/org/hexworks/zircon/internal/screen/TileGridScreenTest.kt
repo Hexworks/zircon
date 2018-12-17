@@ -17,6 +17,7 @@ import org.hexworks.zircon.internal.grid.RectangleTileGrid
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
+import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 
 class TileGridScreenTest {
@@ -38,8 +39,9 @@ class TileGridScreenTest {
 
     @Test
     fun givenScreenWithAnimationWhenGivenInputThenFireOnInput() {
+        target.display()
         val animation = AnimationResource.loadAnimationFromStream(
-                zipStream = this.javaClass.getResourceAsStream("/animations/skull.zap"),
+                zipStream = File("jvm/src/test/resources/animations/skull.zap").inputStream(),
                 tileset = tileset)
                 .setPositionForAll(Position.create(0, 0))
                 .withLoopCount(0)
