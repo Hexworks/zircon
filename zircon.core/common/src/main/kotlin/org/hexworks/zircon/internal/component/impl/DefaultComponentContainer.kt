@@ -4,6 +4,7 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.subscribe
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentContainer
@@ -14,7 +15,6 @@ import org.hexworks.zircon.api.input.InputType.*
 import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.input.MouseActionType.*
-import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultComponentFocusHandler
@@ -23,7 +23,6 @@ import org.hexworks.zircon.internal.component.ContainerHandlerState.DEACTIVATED
 import org.hexworks.zircon.internal.component.ContainerHandlerState.UNKNOWN
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
-import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAddition
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoval
@@ -36,7 +35,7 @@ class DefaultComponentContainer(private var root: RootContainer) :
         ComponentFocusHandler by DefaultComponentFocusHandler(root) {
 
     private val subscriptions = mutableListOf<Subscription>()
-    private val debug = RuntimeConfig.config.debugMode
+    private val logger = LoggerFactory.getLogger(this::class)
 
     private var lastMousePosition = Position.defaultPosition()
     private var state = UNKNOWN
@@ -63,19 +62,10 @@ class DefaultComponentContainer(private var root: RootContainer) :
         }
     }
 
-    override fun onInput(listener: InputListener): Subscription {
-        return Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
-            if(isActive()) {
-                listener.inputEmitted(input)
-            }
-        }
-    }
-
-
     override fun isActive(): Boolean = state == ContainerHandlerState.ACTIVE
 
     override fun activate() {
-        if (debug) println("Activating container handler")
+        logger.debug("Activating container handler")
         state = ContainerHandlerState.ACTIVE
         refreshFocusables()
         subscriptions.add(Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->

@@ -34,8 +34,8 @@ object ModalTest {
                 .build()
 
         val modal = ModalBuilder.newBuilder<EmptyModalResult>()
-                .withDialogComponent(modalPanel)
-                .withTileGridSize(tileGrid.size)
+                .withComponent(modalPanel)
+                .withParentSize(tileGrid.size)
                 .build()
 
 

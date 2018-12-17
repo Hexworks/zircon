@@ -69,7 +69,7 @@ class TileGridScreen(
 
     override fun onInput(listener: InputListener): Subscription {
         return Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
-            if (isActive()) {
+            if (componentContainer.isMainContainerActive()) {
                 listener.inputEmitted(input)
             }
         }
@@ -111,7 +111,7 @@ class TileGridScreen(
                             renderingStrategy = renderingStrategy))
             modalContainer.applyColorTheme(ColorThemeResource.EMPTY.getTheme())
             return CompositeComponentContainer(
-                    componentContainer = componentContainer,
+                    mainContainer = componentContainer,
                     modalContainer = modalContainer)
         }
     }

@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component
 
-import org.hexworks.zircon.api.behavior.InputEmitter
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.component.ComponentStyleSet

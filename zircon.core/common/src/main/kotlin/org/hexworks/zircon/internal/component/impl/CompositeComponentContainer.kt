@@ -11,58 +11,64 @@ import org.hexworks.zircon.api.kotlin.onClosed
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
-class CompositeComponentContainer(private val componentContainer: InternalComponentContainer,
+/**
+ * This [InternalComponentContainer] holds a "main" container which holds components
+ * and a stack of modal containers which hold modals.
+ */
+class CompositeComponentContainer(private val mainContainer: InternalComponentContainer,
                                   private val modalContainer: InternalComponentContainer) : InternalComponentContainer {
 
     private var modalStack = ThreadSafeQueueFactory.create<Modal<out ModalResult>>()
     private val logger = LoggerFactory.getLogger(this::class)
 
+    fun isMainContainerActive() = mainContainer.isActive()
+
     override fun isActive(): Boolean {
-        return componentContainer.isActive().or(modalContainer.isActive())
+        return mainContainer.isActive().or(modalContainer.isActive())
     }
 
     override fun activate() {
-        componentContainer.activate()
+        mainContainer.activate()
     }
 
     override fun deactivate() {
-        componentContainer.deactivate()
-        clearModal()
+        mainContainer.deactivate()
+        clearModals()
     }
 
     override fun toFlattenedLayers(): Iterable<Layer> {
-        return componentContainer.toFlattenedLayers().plus(modalContainer.toFlattenedLayers())
+        return mainContainer.toFlattenedLayers().plus(modalContainer.toFlattenedLayers())
     }
 
     override fun addComponent(component: Component) {
-        componentContainer.addComponent(component)
+        mainContainer.addComponent(component)
     }
 
     override fun removeComponent(component: Component): Boolean {
-        return componentContainer.removeComponent(component)
+        return mainContainer.removeComponent(component)
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        return componentContainer.applyColorTheme(colorTheme)
+        return mainContainer.applyColorTheme(colorTheme)
     }
 
     fun addModal(modal: Modal<out ModalResult>): Boolean {
         return if (modalStack.isNotEmpty()) {
             false
         } else {
-            componentContainer.deactivate()
+            mainContainer.deactivate()
             modalContainer.activate()
             modalStack.add(modal)
             modalContainer.addComponent(modal)
             modal.onClosed {
-                clearModal()
-                componentContainer.activate()
+                clearModals()
+                mainContainer.activate()
             }
             true
         }
     }
 
-    private fun clearModal() {
+    private fun clearModals() {
         modalStack.drainAll().forEach {
             modalContainer.removeComponent(it)
             modalContainer.deactivate()
