@@ -1,32 +1,32 @@
-package org.hexworks.zircon.examples
+package org.hexworks.zircon.examples.benchmark
 
 import org.hexworks.zircon.api.DrawSurfaces
-import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.Tiles
-import org.hexworks.zircon.api.VirtualApplications
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
-import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.resource.BuiltInTrueTypeFontResource
-import org.hexworks.zircon.internal.graphics.DefaultLayer
+import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import java.util.*
 
 fun main(args: Array<String>) {
 
-    val size = Sizes.create(80, 40)
+    val size = Size.create(80, 40)
 
-    val tileset = BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(20)
+    val tileset = BuiltInCP437TilesetResource.WANDERLUST_16X16
 
-    val tileGrid = VirtualApplications.startTileGrid(AppConfigBuilder.newBuilder()
+    val screen = Screens.createScreenFor(SwingApplications.startTileGrid(AppConfigBuilder.newBuilder()
             .withSize(size)
             .withDefaultTileset(tileset)
             .withDebugMode(true)
-            .build())
+            .build()))
+
+    screen.display()
 
     val random = Random()
     val terminalWidth = size.width
@@ -34,7 +34,7 @@ fun main(args: Array<String>) {
     val layerCount = 20
     val layerWidth = 20
     val layerHeight = 10
-    val layerSize = Sizes.create(layerWidth, layerHeight)
+    val layerSize = Size.create(layerWidth, layerHeight)
     val filler = Tiles.defaultTile().withCharacter('x')
 
     val layers = (0..layerCount).map {
@@ -54,25 +54,18 @@ fun main(args: Array<String>) {
                 .withTileGraphics(imageLayer)
                 .build()
 
-        tileGrid.pushLayer(layer)
+        screen.pushLayer(layer)
         layer
     }
 
-    val tiles = listOf(
-            Tiles.newBuilder().withCharacter('a').withStyleSet(StyleSet.create(
-                    foregroundColor = ANSITileColor.YELLOW,
-                    backgroundColor = ANSITileColor.BLUE))
-                    .buildCharacterTile(),
-            Tiles.newBuilder().withCharacter('b').withStyleSet(StyleSet.create(
-                    foregroundColor = ANSITileColor.GREEN,
-                    backgroundColor = ANSITileColor.RED))
-                    .buildCharacterTile())
-
+    val chars = listOf('a', 'b')
 
     var currIdx = 0
 
+
     while (true) {
-        fillGrid(tileGrid, tiles[currIdx])
+        val tile = Tiles.defaultTile().withCharacter(chars[currIdx])
+        fillGrid(screen, tile)
         layers.forEach {
             it.moveTo(Position.create(
                     x = random.nextInt(terminalWidth - layerWidth),
