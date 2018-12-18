@@ -5,10 +5,8 @@ import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.subscribe
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationInfo
-import org.hexworks.zircon.api.behavior.Drawable
-import org.hexworks.zircon.api.behavior.Layerable
-import org.hexworks.zircon.api.behavior.ShutdownHook
-import org.hexworks.zircon.api.behavior.Styleable
+import org.hexworks.zircon.api.behavior.*
+import org.hexworks.zircon.api.behavior.base.BaseInputEmitter
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.DrawSurface
@@ -41,10 +39,17 @@ class RectangleTileGrid(
         override var animationHandler: InternalAnimationHandler = DefaultAnimationHandler(),
         private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                 cursorSpace = size),
-        private val shutdownHook: ShutdownHook = DefaultShutdownHook())
+        private val inputEmitter: InputEmitter = object : BaseInputEmitter() {
+            override fun onInput(listener: InputListener): Subscription {
+                return Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
+                    listener.inputEmitted(input)
+                }
+            }
+        })
     : InternalTileGrid,
         InternalCursorHandler by cursorHandler,
-        ShutdownHook by shutdownHook,
+        ShutdownHook by DefaultShutdownHook(),
+        InputEmitter by inputEmitter,
         DrawSurface by backend,
         Styleable by backend {
 
@@ -54,12 +59,6 @@ class RectangleTileGrid(
     private var originalBackend = backend
     private var originalLayerable = layerable
     private var originalAnimationHandler = animationHandler
-
-    override fun onInput(listener: InputListener): Subscription {
-        return Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
-            listener.inputEmitted(input)
-        }
-    }
 
     override fun putCharacter(c: Char) {
         if (TextUtils.isPrintableCharacter(c)) {

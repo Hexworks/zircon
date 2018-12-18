@@ -1,7 +1,11 @@
 package org.hexworks.zircon.internal.screen
 
 import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.subscribe
+import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.behavior.InputEmitter
+import org.hexworks.zircon.api.behavior.base.BaseInputEmitter
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
@@ -9,6 +13,7 @@ import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.ComponentsLayerable
@@ -28,18 +33,30 @@ class TileGridScreen(
         private val tileGrid: InternalTileGrid,
         private val componentContainer: CompositeComponentContainer =
                 buildCompositeContainer(tileGrid),
+        private val inputEmitter: InputEmitter = object : BaseInputEmitter() {
+            override fun onInput(listener: InputListener): Subscription {
+                return Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
+                    if (componentContainer.isMainContainerActive()) {
+                        listener.inputEmitted(input)
+                    }
+                }
+            }
+        },
         private val bufferGrid: InternalTileGrid = RectangleTileGrid(
                 tileset = tileGrid.currentTileset(),
                 size = tileGrid.size,
                 layerable = ComponentsLayerable(
                         layerable = DefaultLayerable(),
-                        components = componentContainer)))
+                        components = componentContainer),
+                inputEmitter = inputEmitter))
     : InternalScreen,
         TileGrid by bufferGrid,
         InternalComponentContainer by componentContainer {
 
     override val id = IdentifierFactory.randomIdentifier()
     var activeScreenId = IdentifierFactory.randomIdentifier()
+
+    private val logger = LoggerFactory.getLogger(this::class)
 
     init {
         applyColorTheme(ColorThemeResource.EMPTY.getTheme())
@@ -61,6 +78,16 @@ class TileGridScreen(
         Zircon.eventBus.subscribe<ZirconEvent.HideCursor>(ZirconScope) {
             if (isActive()) {
                 tileGrid.setCursorVisibility(false)
+            }
+        }
+    }
+
+    override fun onInput(listener: InputListener): Subscription {
+        return Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
+            logger.info("Input arrived.")
+            if (componentContainer.isMainContainerActive()) {
+                logger.info("Main container is active.")
+                listener.inputEmitted(input)
             }
         }
     }
@@ -101,9 +128,10 @@ class TileGridScreen(
                             renderingStrategy = renderingStrategy))
             modalContainer.applyColorTheme(ColorThemeResource.EMPTY.getTheme())
             return CompositeComponentContainer(
-                    componentContainer = componentContainer,
+                    mainContainer = componentContainer,
                     modalContainer = modalContainer)
         }
     }
 
 }
+

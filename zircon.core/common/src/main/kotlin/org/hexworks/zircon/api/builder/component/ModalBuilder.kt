@@ -19,22 +19,22 @@ import kotlin.jvm.JvmStatic
 @Suppress("UNCHECKED_CAST")
 data class ModalBuilder<T : ModalResult>(
         private var centeredDialog: Boolean = true,
-        private var dialogComponent: Maybe<Component> = Maybe.empty(),
+        private var contentComponent: Maybe<Component> = Maybe.empty(),
         private val commonComponentProperties: CommonComponentProperties<Modal<T>> = CommonComponentProperties(
                 componentRenderer = DefaultModalRenderer()))
     : BaseComponentBuilder<Modal<T>, ModalBuilder<T>>(commonComponentProperties) {
 
-    fun withTileGridSize(size: Size) = also {
+    fun withParentSize(size: Size) = also {
         super.withSize(size)
     }
 
     @JvmOverloads
-    fun withCenteredDialog(centeredDialog: Boolean = true) {
+    fun withCenteredDialog(centeredDialog: Boolean = true) = also {
         this.centeredDialog = centeredDialog
     }
 
-    fun withDialogComponent(dialogComponent: Component) = also {
-        this.dialogComponent = Maybe.of(dialogComponent)
+    fun withComponent(dialogComponent: Component) = also {
+        this.contentComponent = Maybe.of(dialogComponent)
     }
 
     override fun withSize(size: Size): ModalBuilder<T> {
@@ -43,14 +43,14 @@ data class ModalBuilder<T : ModalResult>(
 
     override fun build(): Modal<T> {
         require(size.isUnknown().not()) {
-            "Can't build a modal without knowing the size of the parent TileGrid."
+            "Can't build a modal without knowing the size of the parent."
         }
-        require(dialogComponent.isPresent) {
-            "Can't build a modal without a dialog component."
+        require(contentComponent.isPresent) {
+            "Can't build a modal without a content component."
         }
-        val component = dialogComponent.get()
+        val component = contentComponent.get()
         require(component.size < size) {
-            "Can't build a modal which has a dialog which is bigger than the modal."
+            "Can't build a modal which has a component which is bigger than the modal."
         }
         if (centeredDialog) {
             component.moveTo(Position.create(
