@@ -50,6 +50,10 @@ interface Rect : Boundable {
 
     fun withRelativeSize(size: Size): Rect
 
+    fun splitHorizontal(splitAtX: Int): Array<Rect>
+
+    fun splitVertical(splitAtY: Int): Array<Rect>
+
     companion object {
 
         /**
