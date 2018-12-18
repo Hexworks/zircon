@@ -1,5 +1,7 @@
 package org.hexworks.zircon.api.component.renderer.impl
 
+import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.BoxBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
@@ -10,7 +12,7 @@ import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 
 class BoxDecorationRenderer(private val boxType: BoxType = BoxType.SINGLE,
-                            private val title: String = "") : ComponentDecorationRenderer {
+                            private val titleProperty: Property<String> = createPropertyFrom("")) : ComponentDecorationRenderer {
 
     override val offset = Position.offset1x1()
 
@@ -27,11 +29,11 @@ class BoxDecorationRenderer(private val boxType: BoxType = BoxType.SINGLE,
                 .build()
         box.drawOnto(tileGraphics)
         if (size.width > 4) {
-            if (title.isNotBlank()) {
-                val cleanText = if (title.length > size.width - 4) {
-                    title.substring(0, size.width - 4)
+            if (titleProperty.value.isNotBlank()) {
+                val cleanText = if (titleProperty.value.length > size.width - 4) {
+                    titleProperty.value.substring(0, size.width - 4)
                 } else {
-                    title
+                    titleProperty.value
                 }
                 tileGraphics.setTileAt(Position.create(1, 0), TileBuilder.newBuilder()
                         .withStyleSet(style)

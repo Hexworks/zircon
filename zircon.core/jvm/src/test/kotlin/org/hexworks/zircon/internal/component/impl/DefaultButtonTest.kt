@@ -57,7 +57,7 @@ class DefaultButtonTest : ComponentImplementationTest<DefaultButton>() {
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub as ComponentRenderer<Button>),
-                text = TEXT)
+                initialText = TEXT)
     }
 
     @Test

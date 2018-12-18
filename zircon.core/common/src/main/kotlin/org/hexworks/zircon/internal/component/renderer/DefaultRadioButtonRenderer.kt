@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.component.renderer
 
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
@@ -20,7 +22,11 @@ class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> {
         } else {
             text
         }
-        tileGraphics.putText("${STATES[checkBoxState]!!} $clearedText")
+        val finalText = "${STATES[checkBoxState]!!} $clearedText"
+        tileGraphics.putText(finalText)
+        (finalText.length until tileGraphics.width).forEach { idx ->
+            tileGraphics.setTileAt(Positions.create(idx, 0), Tiles.empty())
+        }
     }
 
     companion object {

@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extensions.onChange
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -12,12 +14,20 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.input.Input
 
 class DefaultListItem(componentMetadata: ComponentMetadata,
-                      override val text: String,
+                      initialText: String,
                       private val renderingStrategy: ComponentRenderingStrategy<ListItem>)
     : ListItem, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
+    override val textProperty = createPropertyFrom(initialText).also {
+        it.onChange {
+            render()
+        }
+    }
+
+    override val text: String
+        get() = textProperty.value
 
     init {
         render()

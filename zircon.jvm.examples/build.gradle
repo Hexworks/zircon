@@ -7,11 +7,11 @@ dependencies {
     compile project(":zircon.jvm.swing")
     compile project(":zircon.jvm.libgdx")
 
-    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-    compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-    compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+    compile "com.badlogicgames.gdx:gdx:$gdx_version"
+    compile "com.badlogicgames.gdx:gdx-box2d:$gdx_version"
+    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdx_version"
+    compile "com.badlogicgames.gdx:gdx-platform:$gdx_version:natives-desktop"
+    compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdx_version:natives-desktop"
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {

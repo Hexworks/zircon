@@ -38,7 +38,7 @@ class DefaultParagraphTest : ComponentImplementationTest<DefaultParagraph>() {
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub as ComponentRenderer<Paragraph>),
-                text = TEXT)
+                initialText = TEXT)
     }
 
     @Test
