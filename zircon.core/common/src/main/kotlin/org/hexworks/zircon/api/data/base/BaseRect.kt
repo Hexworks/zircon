@@ -1,5 +1,7 @@
 package org.hexworks.zircon.api.data.base
 
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
@@ -132,6 +134,18 @@ abstract class BaseRect : Rect {
             if (h in y..(otherHeight - 1)) return false
         }
         return true
+    }
+
+    override fun splitHorizontal(splitAtX: Int): Array<Rect> {
+        var left = Rect.create(Position.create(x, y), Sizes.create(splitAtX, height))
+        var right = Rect.create(Position.create(x + splitAtX + 1, y), Sizes.create(width - splitAtX - 1, height))
+        return arrayOf(left, right)
+    }
+
+    override fun splitVertical(splitAtY: Int): Array<Rect> {
+        var left = Rect.create(Position.create(x, y), Sizes.create(width, splitAtY))
+        var right = Rect.create(Position.create(x , y + splitAtY + 1), Sizes.create(width, height - splitAtY - 1))
+        return arrayOf(left, right)
     }
 
     override fun withPosition(position: Position) = Rect.create(position, size)
