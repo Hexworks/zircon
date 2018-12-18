@@ -19,7 +19,7 @@ class DefaultComponentFocusHandler(private val rootComponent: InternalComponent)
     init {
         Zircon.eventBus.subscribe<ZirconEvent.RequestFocusFor>(ZirconScope) { (component) ->
             require(component is InternalComponent) {
-                "Only InternalComponents cna be focused."
+                "Only InternalComponents can be focused."
             }
             focus(component)
         }
@@ -60,8 +60,8 @@ class DefaultComponentFocusHandler(private val rootComponent: InternalComponent)
             }
             nextsLookup[prev.id] = rootComponent
             prevsLookup[rootComponent.id] = prev
-            focusedComponent = rootComponent
         }
+        focusedComponent = rootComponent
     }
 
     override fun focus(component: InternalComponent): Boolean {

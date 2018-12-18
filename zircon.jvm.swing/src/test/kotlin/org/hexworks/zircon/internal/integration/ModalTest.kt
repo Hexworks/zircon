@@ -2,14 +2,17 @@
 
 package org.hexworks.zircon.internal.integration
 
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.component.ModalBuilder
 import org.hexworks.zircon.api.kotlin.onClosed
+import org.hexworks.zircon.api.kotlin.onKeyStroke
 import org.hexworks.zircon.api.kotlin.onMouseReleased
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
 
 object ModalTest {
 
+    private val logger = LoggerFactory.getLogger(javaClass)
     private val theme = ColorThemes.arc()
     private val tileset = CP437TilesetResources.rexPaint20x20()
 
@@ -31,8 +34,8 @@ object ModalTest {
                 .build()
 
         val modal = ModalBuilder.newBuilder<EmptyModalResult>()
-                .withDialogComponent(modalPanel)
-                .withTileGridSize(tileGrid.size)
+                .withComponent(modalPanel)
+                .withParentSize(tileGrid.size)
                 .build()
 
 
@@ -41,6 +44,14 @@ object ModalTest {
                 .withPosition(Positions.create(1, 1))
                 .addParagraph("By clicking OK you confirm to close this modal window.")
                 .build())
+
+        modalPanel.addComponent(Components.button()
+                .withText("a")
+                .withPosition(Positions.create(0, 15)))
+
+        modalPanel.addComponent(Components.button()
+                .withText("b")
+                .withPosition(Positions.create(3, 15)))
 
         val confirmButton = Components.button()
                 .withText("OK")
@@ -52,18 +63,27 @@ object ModalTest {
                 .withPosition(Positions.create(20, 20))
                 .build()
 
+        val testButton = Components.button()
+                .withText("Fux")
+                .withPosition(Positions.create(30, 10))
+
         modalPanel.addComponent(confirmButton)
+
+        screen.onKeyStroke {
+            logger.info("Key stroked.")
+        }
 
         openModalButton.onMouseReleased {
             screen.openModal(modal)
         }
 
         confirmButton.onMouseReleased {
+            logger.info("Modal confirmed.")
             modal.close(EmptyModalResult)
         }
 
         modal.onClosed {
-
+            logger.info("Modal closed.")
         }
 
 
@@ -83,6 +103,7 @@ object ModalTest {
                 .build())
 
         screen.addComponent(openModalButton)
+        screen.addComponent(testButton)
 
         screen.display()
         screen.applyColorTheme(theme)

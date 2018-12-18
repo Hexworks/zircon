@@ -14,10 +14,10 @@ object ButtonsExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
-                .withDefaultTileset(tileset)
-                .withSize(Sizes.create(60, 30))
-                .build())
+val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+        .withDefaultTileset(tileset)
+        .withSize(Sizes.create(60, 30))
+        .build())
 
         val screen = Screens.createScreenFor(tileGrid)
 

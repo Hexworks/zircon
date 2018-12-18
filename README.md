@@ -520,11 +520,10 @@ Zircon is powered by:
 [text-images]:https://github.com/Hexworks/zircon/wiki/How-to-work-with-TileGraphics
 
 [discord]:https://discordapp.com/invite/PE3qFmF
-[examples]:https://github.com/Hexworks/zircon/tree/master/zircon.examples/src/main
+[examples]:https://github.com/Hexworks/zircon/tree/master/zircon.jvm.examples
 [api]:https://github.com/Hexworks/zircon/tree/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api
 [internal]:https://github.com/Hexworks/zircon/tree/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/internal
 
-[examples]:https://github.com/Hexworks/zircon.examples/tree/master/zircon.jvm.examples/src/main
 [resource-handling]:https://github.com/Hexworks/zircon/wiki/Resource-Handling
 [design-philosophy]:https://github.com/Hexworks/zircon/wiki/The-design-philosophy-behind-Zircon
 [color-themes]:https://github.com/Hexworks/zircon/wiki/Working-with-ColorThemes
