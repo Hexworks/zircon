@@ -35,12 +35,6 @@ interface InternalComponent : Component, Focusable, InputListener, KeyStrokeList
      */
     fun attachTo(parent: Container)
 
-    override fun detach() {
-        fetchParent().map {
-            it.removeComponent(this)
-        }
-    }
-
     /**
      * Returns the innermost [InternalComponent] for a given [Position].
      * This means that if you call this method on a [Container] and it

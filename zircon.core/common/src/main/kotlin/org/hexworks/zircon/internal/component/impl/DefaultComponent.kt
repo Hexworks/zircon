@@ -123,6 +123,13 @@ abstract class DefaultComponent(
         this.parent = Maybe.of(parent)
     }
 
+    final override fun detach() {
+        fetchParent().map {
+            it.removeComponent(this)
+            this.parent = Maybe.empty()
+        }
+    }
+
     override fun fetchComponentByPosition(position: Position): Maybe<out InternalComponent> {
         return if (containsPosition(position)) {
             Maybe.of(this)
