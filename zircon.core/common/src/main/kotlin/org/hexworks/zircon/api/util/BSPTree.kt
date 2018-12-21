@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.util
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
@@ -19,7 +20,7 @@ class BSPTree(var parent: BSPTree?, rec: Rect) {
                 if(BSPTree != null) {
 
                     var char = nbr.toChar()
-                    var rec = BSPTree.room
+                    var rec = BSPTree.room.get()
                     println(char + " " +BSPTree.boundingBox)
                     if(rec != null) {
 
@@ -46,7 +47,7 @@ class BSPTree(var parent: BSPTree?, rec: Rect) {
     }
 
     var boundingBox = rec
-    var room: Rect? = null
+    var room = Maybe.empty<Rect>()
     var leftBSPTree: BSPTree? = null
     var rightBSPTree: BSPTree? = null
 
@@ -70,12 +71,12 @@ class BSPTree(var parent: BSPTree?, rec: Rect) {
 
             if (dir == true) {
                 var boundingBoxes = boundingBox.splitVertical(splitPos);
-                leftBSPTree = BSPTree(this, boundingBoxes[0])
-                rightBSPTree = BSPTree(this, boundingBoxes[1])
+                leftBSPTree = BSPTree(this, boundingBoxes.first)
+                rightBSPTree = BSPTree(this, boundingBoxes.second)
             } else {
                 var boundingBoxes = rec.splitHorizontal(splitPos);
-                leftBSPTree = BSPTree(this, boundingBoxes[0])
-                rightBSPTree = BSPTree(this, boundingBoxes[1])
+                leftBSPTree = BSPTree(this, boundingBoxes.first)
+                rightBSPTree = BSPTree(this, boundingBoxes.second)
             }
         }
     }
@@ -88,7 +89,7 @@ class BSPTree(var parent: BSPTree?, rec: Rect) {
 
         if(leaf_.leftBSPTree == null) {
             val bb = leaf_.boundingBox
-            leaf_.room = Rect.create(Position.create(bb.position.x + 1, bb.position.y + 1), Size.create(bb.width - 1, bb.height - 1))
+            leaf_.room = Maybe.of(Rect.create(Position.create(bb.position.x + 1, bb.position.y + 1), Size.create(bb.width - 1, bb.height - 1)))
         } else {
             createRooms(leaf_.rightBSPTree)
             createRooms(leaf_.leftBSPTree)
