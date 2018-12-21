@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extensions.onChange
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.sam.Consumer
 import org.hexworks.cobalt.events.api.Subscription
@@ -19,7 +21,7 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 
 class DefaultRadioButton(componentMetadata: ComponentMetadata,
-                         override val text: String,
+                         initialText: String,
                          private val renderingStrategy: ComponentRenderingStrategy<DefaultRadioButton>)
     : RadioButton,
         Observable<Unit> by DefaultObservable(),
@@ -27,18 +29,32 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
                 componentMetadata = componentMetadata,
                 renderer = renderingStrategy) {
 
+    override val textProperty = createPropertyFrom(initialText).also {
+        it.onChange {
+            render()
+        }
+    }
+
+    override val text: String
+        get() = textProperty.value
+
     override val state: RadioButtonState
         get() = currentState
 
+    override val selectedValue = createPropertyFrom(false).also { prop ->
+        prop.onChange {
+            render()
+        }
+    }
+
     private var currentState = NOT_SELECTED
-    private var selected = false
 
     init {
         render()
     }
 
     override fun mouseExited(action: MouseAction) {
-        currentState = if (selected) SELECTED else NOT_SELECTED
+        currentState = if (selectedValue.value) SELECTED else NOT_SELECTED
         componentStyleSet.reset()
         render()
     }
@@ -53,7 +69,7 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
         select()
     }
 
-    override fun isSelected() = selected
+    override fun isSelected() = selectedValue.value
 
     override fun onSelected(runnable: Runnable): Subscription {
         return addObserver(object : Consumer<Unit> {
@@ -109,16 +125,14 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
     override fun select() {
         componentStyleSet.applyMouseOverStyle()
         currentState = SELECTED
-        selected = true
-        render()
+        selectedValue.value = true
         notifyObservers(Unit)
     }
 
     fun removeSelection() {
         componentStyleSet.reset()
         currentState = NOT_SELECTED
-        selected = false
-        render()
+        selectedValue.value = false
     }
 
     enum class RadioButtonState {

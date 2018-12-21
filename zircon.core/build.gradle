@@ -20,6 +20,9 @@ kotlin {
             resources.srcDirs = ["common/src/main/resources"]
             dependencies {
                 api libraries.cobalt_events
+                api libraries.cobalt_databinding
+                api libraries.cobalt_logging
+                api libraries.cobalt_datatypes
                 implementation 'org.jetbrains.kotlin:kotlin-stdlib'
             }
         }
@@ -38,11 +41,6 @@ kotlin {
             resources.srcDirs = ["jvm/src/main/resources"]
             dependencies {
                 api 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-
-                api libraries.cobalt_events
-                api libraries.cobalt_datatypes
-                api libraries.cobalt_logging
-
                 api libraries.kotlin_reflect
                 api libraries.caffeine
                 api libraries.snakeyaml

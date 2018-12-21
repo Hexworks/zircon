@@ -38,7 +38,7 @@ class DefaultListItemTest : ComponentImplementationTest<DefaultListItem>() {
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub as ComponentRenderer<ListItem>),
-                text = TEXT)
+                initialText = TEXT)
     }
 
     @Test

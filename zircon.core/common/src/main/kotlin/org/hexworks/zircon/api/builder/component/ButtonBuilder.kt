@@ -58,7 +58,7 @@ data class ButtonBuilder(
                         position = fixPosition(finalSize),
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
-                text = text,
+                initialText = text,
                 renderingStrategy = componentRenderer)
     }
 
