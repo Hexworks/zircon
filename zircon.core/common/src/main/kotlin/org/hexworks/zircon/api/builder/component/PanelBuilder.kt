@@ -28,7 +28,7 @@ data class PanelBuilder(
                         position = fixPosition(size),
                         componentStyleSet = commonComponentProperties.componentStyleSet,
                         tileset = tileset),
-                title = title,
+                initialTitle = title,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<Panel>))

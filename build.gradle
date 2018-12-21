@@ -6,7 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -26,24 +26,26 @@ subprojects {
 
 ext {
     libraries = [
-            kotlin_stdlib                 : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
-            kotlin_stdlib_common          : "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion",
-            kotlin_reflect                : "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
-            kotlin_test_annotations_common: "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlinVersion",
-            kotlin_test_common            : "org.jetbrains.kotlin:kotlin-test-common:$kotlinVersion",
-            cobalt_events                 : "org.hexworks.cobalt:cobalt.events:$cobaltVersion",
-            cobalt_datatypes              : "org.hexworks.cobalt:cobalt.datatypes:$cobaltVersion",
-            cobalt_logging                : "org.hexworks.cobalt:cobalt.logging:$cobaltVersion",
-            cobalt_events_jvm             : "org.hexworks.cobalt:cobalt.events-jvm:$cobaltVersion",
-            cobalt_datatypes_jvm          : "org.hexworks.cobalt:cobalt.datatypes-jvm:$cobaltVersion",
-            cobalt_logging_jvm            : "org.hexworks.cobalt:cobalt.logging-jvm:$cobaltVersion",
-            slf4j_api                     : "org.slf4j:slf4j-api:$slf4jVersion",
-            slf4j_simple                  : "org.slf4j:slf4j-simple:$slf4jVersion",
-            caffeine                      : "com.github.ben-manes.caffeine:caffeine:$caffeineVersion",
-            snakeyaml                     : "org.yaml:snakeyaml:$snakeyamlVersion",
-            filters                       : "com.jhlabs:filters:$filtersVersion",
-            junit                         : "junit:junit:$junitVersion",
-            mockito                       : "org.mockito:mockito-all:$mockitoVersion",
-            assertj                       : "org.assertj:assertj-core:$assertjVersion",
+            kotlin_stdlib                 : "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            kotlin_stdlib_common          : "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version",
+            kotlin_reflect                : "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version",
+            kotlin_test_annotations_common: "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version",
+            kotlin_test_common            : "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version",
+            cobalt_events                 : "org.hexworks.cobalt:cobalt.events:$cobalt_version",
+            cobalt_datatypes              : "org.hexworks.cobalt:cobalt.datatypes:$cobalt_version",
+            cobalt_databinding            : "org.hexworks.cobalt:cobalt.databinding:$cobalt_version",
+            cobalt_logging                : "org.hexworks.cobalt:cobalt.logging:$cobalt_version",
+            cobalt_events_jvm             : "org.hexworks.cobalt:cobalt.events-jvm:$cobalt_version",
+            cobalt_datatypes_jvm          : "org.hexworks.cobalt:cobalt.datatypes-jvm:$cobalt_version",
+            cobalt_databinding_jvm        : "org.hexworks.cobalt:cobalt.databinding-jvm:$cobalt_version",
+            cobalt_logging_jvm            : "org.hexworks.cobalt:cobalt.logging-jvm:$cobalt_version",
+            slf4j_api                     : "org.slf4j:slf4j-api:$slf4j_version",
+            slf4j_simple                  : "org.slf4j:slf4j-simple:$slf4j_version",
+            caffeine                      : "com.github.ben-manes.caffeine:caffeine:$caffeine_version",
+            snakeyaml                     : "org.yaml:snakeyaml:$snakeyaml_version",
+            filters                       : "com.jhlabs:filters:$filters_version",
+            junit                         : "junit:junit:$junit_version",
+            mockito                       : "org.mockito:mockito-all:$mockito_version",
+            assertj                       : "org.assertj:assertj-core:$assertj_version",
     ]
 }

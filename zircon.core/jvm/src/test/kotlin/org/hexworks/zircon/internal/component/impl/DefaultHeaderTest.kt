@@ -38,7 +38,7 @@ class DefaultHeaderTest : ComponentImplementationTest<DefaultHeader>() {
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub as ComponentRenderer<Header>),
-                text = TEXT)
+                initialText = TEXT)
     }
 
     @Test

@@ -58,19 +58,19 @@ class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub as ComponentRenderer<ToggleButton>),
-                text = TEXT)
+                initialText = TEXT)
     }
 
     @Test
     fun shouldProperlyAssignStyleSetForSelectState() {
-        target.isSelected = true
+        target.selectedProperty.value = true
         assertThat(target.componentStyleSet.currentState())
                 .isEqualTo(SELECTED_ACTION)
     }
 
     @Test
     fun shouldProperlyAssignStyleSetForUnselectedState() {
-        target.isSelected = false
+        target.selectedProperty.value = false
         assertThat(target.componentStyleSet.currentState())
                 .isEqualTo(UNSELECTED_ACTION)
     }

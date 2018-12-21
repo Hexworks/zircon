@@ -56,7 +56,7 @@ class DefaultCheckBoxTest : ComponentImplementationTest<DefaultCheckBox>() {
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub as ComponentRenderer<CheckBox>),
-                text = TEXT)
+                initialText = TEXT)
     }
 
     @Test
