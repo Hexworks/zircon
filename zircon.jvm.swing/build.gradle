@@ -8,7 +8,8 @@ dependencies {
     compile libraries.cobalt_events_jvm
     compile libraries.cobalt_datatypes_jvm
     compile libraries.cobalt_logging_jvm
-    
+    compile libraries.cobalt_databinding_jvm
+
     compile libraries.kotlin_stdlib
     compile libraries.filters
 
