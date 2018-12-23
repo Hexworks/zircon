@@ -40,7 +40,7 @@ class DefaultPanelTest : ComponentImplementationTest<DefaultPanel>() {
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub as ComponentRenderer<Panel>),
-                title = TITLE)
+                initialTitle = TITLE)
     }
 
     @Test

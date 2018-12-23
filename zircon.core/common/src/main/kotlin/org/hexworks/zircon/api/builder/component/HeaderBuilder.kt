@@ -40,7 +40,7 @@ data class HeaderBuilder(
                         position = fixPosition(finalSize),
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
-                text = text,
+                initialText = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<Header>))

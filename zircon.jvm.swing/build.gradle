@@ -8,11 +8,12 @@ dependencies {
     compile libraries.cobalt_events_jvm
     compile libraries.cobalt_datatypes_jvm
     compile libraries.cobalt_logging_jvm
-    
+    compile libraries.cobalt_databinding_jvm
+
     compile libraries.kotlin_stdlib
     compile libraries.filters
 
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    compile "ch.qos.logback:logback-classic:$logback_version"
     
     testCompile libraries.junit
     testCompile libraries.mockito

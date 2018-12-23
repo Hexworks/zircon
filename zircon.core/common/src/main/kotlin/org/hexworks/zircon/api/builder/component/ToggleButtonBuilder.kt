@@ -65,7 +65,7 @@ data class ToggleButtonBuilder(
                         position = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
-                text = text,
+                initialText = text,
                 renderingStrategy = componentRenderer)
     }
 

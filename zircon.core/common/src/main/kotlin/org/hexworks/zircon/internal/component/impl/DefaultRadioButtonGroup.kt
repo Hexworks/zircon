@@ -50,7 +50,7 @@ class DefaultRadioButtonGroup constructor(
             "This RadioButtonGroup does not have enough space for another option!"
         }
         return DefaultRadioButton(
-                text = text,
+                initialText = text,
                 renderingStrategy = buttonRenderingStrategy,
                 componentMetadata = ComponentMetadata(
                         position = Position.create(0, items.size),

@@ -52,7 +52,7 @@ class DefaultRadioButtonTest : ComponentImplementationTest<DefaultRadioButton>()
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub),
-                text = DefaultCheckBoxTest.TEXT)
+                initialText = DefaultCheckBoxTest.TEXT)
     }
 
     @Test
