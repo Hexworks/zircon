@@ -57,6 +57,12 @@ object DataBindingTest {
                 .build()
         val option = rbg.addOption("btn0", "Radio button")
 
+        val paragraph = Components.paragraph()
+                .withPosition(1, 6)
+                .withText("This is a very long text on this paragraph, so it will be multi line.")
+                .withSize(20, 4)
+                .build()
+
         screen.addComponent(panel)
 
         val master = Components.label()
@@ -85,6 +91,7 @@ object DataBindingTest {
                         btn.textProperty.bind(master.textProperty)
                         checkBox.textProperty.bind(master.textProperty)
                         option.textProperty.bind(master.textProperty)
+                        paragraph.textProperty.bind(master.textProperty)
                     }
                 }
 
@@ -100,6 +107,7 @@ object DataBindingTest {
         panel.addComponent(btn)
         panel.addComponent(checkBox)
         panel.addComponent(rbg)
+        panel.addComponent(paragraph)
 
         panel.addComponent(master)
         panel.addComponent(tamper)
