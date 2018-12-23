@@ -138,13 +138,13 @@ abstract class BaseRect : Rect {
 
     override fun splitHorizontal(splitAtX: Int): Pair<Rect, Rect> {
         var left = Rect.create(Position.create(x, y), Sizes.create(splitAtX, height))
-        var right = Rect.create(Position.create(x + splitAtX + 1, y), Sizes.create(width - splitAtX - 1, height))
+        var right = Rect.create(Position.create(x + splitAtX, y), Sizes.create(width - splitAtX, height))
         return left to right
     }
 
     override fun splitVertical(splitAtY: Int): Pair<Rect, Rect> {
         var left = Rect.create(Position.create(x, y), Sizes.create(width, splitAtY))
-        var right = Rect.create(Position.create(x , y + splitAtY + 1), Sizes.create(width, height - splitAtY - 1))
+        var right = Rect.create(Position.create(x , y + splitAtY), Sizes.create(width, height - splitAtY))
         return left to right
     }
 
