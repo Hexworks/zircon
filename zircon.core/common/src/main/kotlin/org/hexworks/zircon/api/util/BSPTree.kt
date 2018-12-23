@@ -77,8 +77,8 @@ class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
             for (BSPTree: BSPTree in BSPTrees) {
                 val char = nbr.toChar()
                 BSPTree.whenHasRoom { rec ->
-                    for (y in rec.position.y..rec.position.y + rec.height) {
-                        for (x in rec.position.x..rec.position.x + rec.width) {
+                    for (y in rec.position.y..rec.position.y + rec.height-1) {
+                        for (x in rec.position.x..rec.position.x + rec.width-1) {
                             array[y][x] = char
                         }
                     }
@@ -88,7 +88,7 @@ class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
         }
 
         fun collectRooms(BSPTree: BSPTree, list: MutableList<BSPTree> = mutableListOf()) {
-            if (BSPTree.leftBSPTree.isPresent) {
+            if (!BSPTree.leftBSPTree.isPresent) {
                 list.add(BSPTree)
             } else {
                 BSPTree.leftBSPTree.map {

@@ -59,4 +59,5 @@ class DefaultRectTest {
         assertThat(target.withRelativeSize(size))
                 .isEqualTo(Rect.create(Position.offset1x1(), Size.one() + size))
     }
+
 }
