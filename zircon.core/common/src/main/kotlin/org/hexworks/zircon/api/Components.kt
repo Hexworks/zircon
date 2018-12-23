@@ -40,4 +40,13 @@ object Components {
     @JvmStatic
     fun header() = HeaderBuilder.newBuilder()
 
+    @JvmStatic
+    fun paragraph() = ParagraphBuilder.newBuilder()
+
+    @JvmStatic
+    fun listItem() = ListItemBuilder.newBuilder()
+
+    @JvmStatic
+    fun icon() = IconBuilder.newBuilder()
+
 }

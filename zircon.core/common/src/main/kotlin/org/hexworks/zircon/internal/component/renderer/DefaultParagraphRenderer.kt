@@ -11,6 +11,7 @@ class DefaultParagraphRenderer : ComponentRenderer<DefaultParagraph> {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<DefaultParagraph>) {
         val style = context.componentStyle.currentStyle()
+        tileGraphics.clear()
         tileGraphics.applyStyle(style)
         CharacterTileStringBuilder.newBuilder()
                 .withBackgroundColor(style.backgroundColor)

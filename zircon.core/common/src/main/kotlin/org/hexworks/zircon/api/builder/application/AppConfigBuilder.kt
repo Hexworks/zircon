@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.api.resource.BuiltInGraphicTilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
@@ -24,6 +25,7 @@ data class AppConfigBuilder(
         private var cursorBlinking: Boolean = false,
         private var clipboardAvailable: Boolean = true,
         private var defaultTileset: TilesetResource = BuiltInCP437TilesetResource.ROGUE_YUN_16X16,
+        private var defaultGraphicTileset: TilesetResource = BuiltInGraphicTilesetResource.NETHACK_16X16,
         private var defaultColorTheme: ColorTheme = ColorThemeResource.TECH_LIGHT.getTheme(),
         private var title: String = "Zircon Application",
         private var fullScreen: Boolean = false,
@@ -39,6 +41,7 @@ data class AppConfigBuilder(
             isCursorBlinking = cursorBlinking,
             isClipboardAvailable = clipboardAvailable,
             defaultTileset = defaultTileset,
+            defaultGraphicTileset = defaultGraphicTileset,
             defaultColorTheme = defaultColorTheme,
             debugMode = debugMode,
             size = defaultSize,
@@ -107,6 +110,10 @@ data class AppConfigBuilder(
 
     fun withDefaultTileset(defaultTileset: TilesetResource) = also {
         this.defaultTileset = defaultTileset
+    }
+
+    fun withDefaultGraphicTileset(defaultGraphicTileset: TilesetResource) = also {
+        this.defaultGraphicTileset = defaultGraphicTileset
     }
 
     fun enableBetaFeatures() = also {

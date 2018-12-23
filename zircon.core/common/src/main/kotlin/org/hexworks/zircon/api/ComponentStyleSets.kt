@@ -18,4 +18,11 @@ object ComponentStyleSets {
      */
     @JvmStatic
     fun defaultStyleSet() = ComponentStyleSet.defaultStyleSet()
+
+    /**
+     * Returns the empty [ComponentStyleSet] which uses the
+     * empty [org.hexworks.zircon.api.graphics.StyleSet].
+     */
+    @JvmStatic
+    fun empty() = ComponentStyleSet.empty()
 }
