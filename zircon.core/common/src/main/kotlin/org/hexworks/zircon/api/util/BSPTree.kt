@@ -32,12 +32,12 @@ class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
             val splitPos = Random.nextInt(minSize, lenght - minSize)
             if (dir) {
                 val boundingBoxes = boundingBox.splitVertical(splitPos)
-                leftBSPTree = Maybe.of(BSPTree(boundingBoxes[0], Maybe.of(this)))
-                rightBSPTree = Maybe.of(BSPTree(boundingBoxes[1], Maybe.of(this)))
+                leftBSPTree = Maybe.of(BSPTree(boundingBoxes.first, Maybe.of(this)))
+                rightBSPTree = Maybe.of(BSPTree(boundingBoxes.second, Maybe.of(this)))
             } else {
                 val boundingBoxes = rec.splitHorizontal(splitPos)
-                leftBSPTree = Maybe.of(BSPTree(boundingBoxes[0], Maybe.of(this)))
-                rightBSPTree = Maybe.of(BSPTree(boundingBoxes[1], Maybe.of(this)))
+                leftBSPTree = Maybe.of(BSPTree(boundingBoxes.first, Maybe.of(this)))
+                rightBSPTree = Maybe.of(BSPTree(boundingBoxes.second, Maybe.of(this)))
             }
         }
     }
@@ -70,15 +70,17 @@ class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
 
     companion object {
         @JvmStatic
-        var minSize = 12
+
+        var minSize = 6
 
         fun toMatrix(array: Array<CharArray>, BSPTrees: MutableList<BSPTree>) {
             var nbr = 48
             for (BSPTree: BSPTree in BSPTrees) {
                 val char = nbr.toChar()
                 BSPTree.whenHasRoom { rec ->
-                    for (y in rec.position.y..rec.position.y + rec.height) {
-                        for (x in rec.position.x..rec.position.x + rec.width) {
+
+                    for (y in rec.position.y..rec.position.y + rec.height-1) {
+                        for (x in rec.position.x..rec.position.x + rec.width-1) {
                             array[y][x] = char
                         }
                     }
@@ -88,7 +90,7 @@ class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
         }
 
         fun collectRooms(BSPTree: BSPTree, list: MutableList<BSPTree> = mutableListOf()) {
-            if (BSPTree.leftBSPTree.isPresent) {
+            if (!BSPTree.leftBSPTree.isPresent) {
                 list.add(BSPTree)
             } else {
                 BSPTree.leftBSPTree.map {
