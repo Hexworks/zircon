@@ -70,7 +70,7 @@ class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
 
     companion object {
         @JvmStatic
-        var minSize = 12
+        var minSize = 6
 
         fun toMatrix(array: Array<CharArray>, BSPTrees: MutableList<BSPTree>) {
             var nbr = 48
