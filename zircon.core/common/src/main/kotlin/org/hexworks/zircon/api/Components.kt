@@ -46,6 +46,7 @@ object Components {
     @JvmStatic
     fun listItem() = ListItemBuilder.newBuilder()
 
-
+    @JvmStatic
+    fun icon() = IconBuilder.newBuilder()
 
 }

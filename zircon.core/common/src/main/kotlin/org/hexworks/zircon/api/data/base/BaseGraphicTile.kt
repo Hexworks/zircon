@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TileType
+import org.hexworks.zircon.api.resource.TilesetResource
 
 abstract class BaseGraphicTile : BaseTile(), GraphicTile {
 
@@ -27,13 +28,15 @@ abstract class BaseGraphicTile : BaseTile(), GraphicTile {
     override fun withName(name: String): GraphicTile {
         return Tile.createGraphicTile(
                 name = name,
-                tags = tags)
+                tags = tags,
+                tileset = tileset)
     }
 
     override fun withTags(tags: Set<String>): GraphicTile {
         return Tile.createGraphicTile(
                 name = name,
-                tags = tags)
+                tags = tags,
+                tileset = tileset)
     }
 
     override fun withForegroundColor(foregroundColor: TileColor) = this
@@ -55,4 +58,8 @@ abstract class BaseGraphicTile : BaseTile(), GraphicTile {
     override fun withRemovedModifiers(vararg modifiers: Modifier) = this
 
     override fun withNoModifiers() = this
+
+    override fun useTileset(tileset: TilesetResource) {
+        throw UnsupportedOperationException("Can't use a custom tileset for a GraphicTile")
+    }
 }

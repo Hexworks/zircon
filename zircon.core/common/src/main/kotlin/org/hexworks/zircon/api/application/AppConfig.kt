@@ -18,6 +18,7 @@ data class AppConfig(
         val isCursorBlinking: Boolean,
         val isClipboardAvailable: Boolean,
         val defaultTileset: TilesetResource,
+        val defaultGraphicTileset: TilesetResource,
         val defaultColorTheme: ColorTheme,
         val debugMode: Boolean,
         val size: Size,

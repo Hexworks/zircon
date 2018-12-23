@@ -51,6 +51,10 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
         }
     }
 
+    override fun clear() {
+        detachAllComponents()
+    }
+
     override fun addComponent(component: Component) {
         require(component !== this) {
             "You can't add a component to itself!"
