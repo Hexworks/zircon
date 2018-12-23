@@ -47,7 +47,7 @@ data class ListItemBuilder(
                         position = fixPosition(finalSize),
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
-                text = fixedText,
+                initialText = fixedText,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<ListItem>))

@@ -38,7 +38,7 @@ class DefaultLabelTest : ComponentImplementationTest<DefaultLabel>() {
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub as ComponentRenderer<Label>),
-                text = TEXT)
+                initialText = TEXT)
     }
 
     @Test

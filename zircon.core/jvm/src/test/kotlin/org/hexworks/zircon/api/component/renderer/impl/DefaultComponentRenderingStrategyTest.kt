@@ -53,7 +53,7 @@ class DefaultComponentRenderingStrategyTest {
                         size = size,
                         position = Position.defaultPosition(),
                         componentStyleSet = ComponentStyleSet.defaultStyleSet()),
-                text = "qux",
+                initialText = "qux",
                 renderingStrategy = target)
 
         target.render(btn, graphics)
@@ -80,7 +80,7 @@ class DefaultComponentRenderingStrategyTest {
                         size = size,
                         position = Position.defaultPosition(),
                         componentStyleSet = ComponentStyleSet.defaultStyleSet()),
-                text = "Long text",
+                initialText = "Long text",
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = DefaultLabelRenderer() as ComponentRenderer<Label>))
@@ -109,7 +109,7 @@ class DefaultComponentRenderingStrategyTest {
                         size = size,
                         position = Position.defaultPosition(),
                         componentStyleSet = ComponentStyleSet.defaultStyleSet()),
-                text = "foo",
+                initialText = "foo",
                 renderingStrategy = target)
 
         target.render(button, graphics)
@@ -138,7 +138,7 @@ class DefaultComponentRenderingStrategyTest {
                         size = size,
                         position = Position.defaultPosition(),
                         componentStyleSet = ComponentStyleSet.defaultStyleSet()),
-                text = "bar",
+                initialText = "bar",
                 renderingStrategy = target)
 
         target.render(button, graphics)

@@ -53,7 +53,7 @@ data class ParagraphBuilder(
                         size = finalSize,
                         tileset = tileset,
                         componentStyleSet = componentStyleSet),
-                text = text,
+                initialText = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<Paragraph>,

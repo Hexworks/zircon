@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.cobalt.events.api.subscribe
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
 import org.hexworks.zircon.internal.behavior.Focusable
@@ -12,6 +13,8 @@ class DefaultComponentFocusHandler(private val rootComponent: InternalComponent)
 
     override var focusedComponent: InternalComponent = rootComponent
         private set
+
+    private val logger = LoggerFactory.getLogger(this::class)
 
     private val nextsLookup = mutableMapOf(Pair(rootComponent.id, rootComponent))
     private val prevsLookup = nextsLookup.toMutableMap()
@@ -65,7 +68,7 @@ class DefaultComponentFocusHandler(private val rootComponent: InternalComponent)
     }
 
     override fun focus(component: InternalComponent): Boolean {
-        return if (component.acceptsFocus() && isNotAlreadyFocused(component)) {
+        return if (canFocus(component)) {
             focusedComponent.takeFocus()
             focusedComponent = component
             component.giveFocus()
@@ -74,6 +77,9 @@ class DefaultComponentFocusHandler(private val rootComponent: InternalComponent)
             false
         }
     }
+
+    private fun canFocus(component: InternalComponent) =
+            component.acceptsFocus() && isNotAlreadyFocused(component) && component.isAttached()
 
     private fun isNotAlreadyFocused(focusable: Focusable) =
             focusedComponent.id != focusable.id

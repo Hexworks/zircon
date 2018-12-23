@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.component.base
 
+import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.component.*
@@ -155,7 +156,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
             if (props.wrapWithBox) {
                 decorationRenderers.add(BoxDecorationRenderer(
                         boxType = boxType,
-                        title = title))
+                        titleProperty = createPropertyFrom(title)))
             }
             props.decorationRenderers = decorationRenderers.toList()
         }

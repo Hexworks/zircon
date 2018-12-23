@@ -42,7 +42,7 @@ data class CheckBoxBuilder(
                         position = fixPosition(finalSize),
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
-                text = text,
+                initialText = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<CheckBox>))
