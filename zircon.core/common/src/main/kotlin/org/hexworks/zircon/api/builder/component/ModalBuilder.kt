@@ -18,6 +18,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 data class ModalBuilder<T : ModalResult>(
+        private var darkenPercent: Double = .5,
         private var centeredDialog: Boolean = true,
         private var contentComponent: Maybe<Component> = Maybe.empty(),
         private val commonComponentProperties: CommonComponentProperties<Modal<T>> = CommonComponentProperties(
@@ -35,6 +36,10 @@ data class ModalBuilder<T : ModalResult>(
 
     fun withComponent(dialogComponent: Component) = also {
         this.contentComponent = Maybe.of(dialogComponent)
+    }
+
+    fun withDarkenPercent(percentage: Double) = also {
+        this.darkenPercent = percentage
     }
 
     override fun withSize(size: Size): ModalBuilder<T> {
@@ -62,6 +67,7 @@ data class ModalBuilder<T : ModalResult>(
                 decorationRenderers = decorationRenderers,
                 componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<Modal<out ModalResult>>)
         val modal = DefaultModal<T>(
+                darkenPercent = darkenPercent,
                 componentMetadata = ComponentMetadata(
                         size = size,
                         position = fixPosition(size),

@@ -11,6 +11,7 @@ class DefaultHeaderRenderer : ComponentRenderer<DefaultHeader> {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<DefaultHeader>) {
         val style = context.componentStyle.currentStyle()
+        tileGraphics.clear()
         tileGraphics.applyStyle(style)
         CharacterTileStringBuilder.newBuilder()
                 .withBackgroundColor(style.backgroundColor)

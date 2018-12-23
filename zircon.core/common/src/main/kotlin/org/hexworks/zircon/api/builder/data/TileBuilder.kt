@@ -92,7 +92,8 @@ data class TileBuilder(
     fun buildGraphicTile(): GraphicTile {
         return DefaultGraphicTile(
                 name = name,
-                tags = tags)
+                tags = tags,
+                tileset = tileset)
     }
 
     override fun createCopy() = copy()

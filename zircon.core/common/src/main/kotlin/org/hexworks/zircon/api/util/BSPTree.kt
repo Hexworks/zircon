@@ -70,6 +70,7 @@ class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
 
     companion object {
         @JvmStatic
+
         var minSize = 6
 
         fun toMatrix(array: Array<CharArray>, BSPTrees: MutableList<BSPTree>) {
@@ -77,6 +78,7 @@ class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
             for (BSPTree: BSPTree in BSPTrees) {
                 val char = nbr.toChar()
                 BSPTree.whenHasRoom { rec ->
+
                     for (y in rec.position.y..rec.position.y + rec.height-1) {
                         for (x in rec.position.x..rec.position.x + rec.width-1) {
                             array[y][x] = char

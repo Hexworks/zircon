@@ -1,13 +1,14 @@
 package org.hexworks.zircon.api.screen
 
 import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.modal.Modal
+import org.hexworks.zircon.api.component.modal.ModalFragment
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.behavior.Identifiable
-import org.hexworks.zircon.api.component.Component
 
 /**
  * A [Screen] is an in-memory representation of a [TileGrid] which can be displayed using an
@@ -44,5 +45,12 @@ interface Screen
      * of opening the [Modal] itself.
      */
     fun <T : ModalResult> openModal(modal: Modal<T>)
+
+    /**
+     * Opens a new [Modal] window on top of the [Screen] using the given
+     * [ModalFragment].
+     * @see [Screen.openModal]
+     */
+    fun <T : ModalResult> openModal(modalFragment: ModalFragment<T>) = openModal(modalFragment.root)
 
 }

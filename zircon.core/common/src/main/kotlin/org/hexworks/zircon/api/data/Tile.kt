@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.data.DefaultCharacterTile
 import org.hexworks.zircon.internal.data.DefaultGraphicTile
 import org.hexworks.zircon.internal.data.DefaultImageTile
@@ -132,10 +133,13 @@ interface Tile : Drawable, Cacheable, StyleSet {
         /**
          * Creates a new [GraphicTile].
          */
-        fun createGraphicTile(name: String, tags: Set<String>): GraphicTile {
+        fun createGraphicTile(name: String,
+                              tags: Set<String>,
+                              tileset: TilesetResource = RuntimeConfig.config.defaultGraphicTileset): GraphicTile {
             return DefaultGraphicTile(
                     name = name,
-                    tags = tags)
+                    tags = tags,
+                    tileset = tileset)
         }
 
         private val DEFAULT_CHARACTER_TILE: CharacterTile = DefaultCharacterTile(

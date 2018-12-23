@@ -26,9 +26,6 @@ data class LabelBuilder(
     }
 
     override fun build(): Label {
-        require(text.isNotBlank()) {
-            "A Label can't be blank!"
-        }
         fillMissingValues()
         val finalSize = if (size.isUnknown()) {
             decorationRenderers.asSequence()

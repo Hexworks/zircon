@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples.utilities
 
+
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.color.ANSITileColor
@@ -152,8 +153,5 @@ object BSPExample {
     }
 
 }
-
-
-
 
 
