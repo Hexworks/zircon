@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet

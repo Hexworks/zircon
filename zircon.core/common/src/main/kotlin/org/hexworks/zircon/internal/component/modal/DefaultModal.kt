@@ -14,6 +14,7 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.component.impl.DefaultContainer
 
 open class DefaultModal<T : ModalResult>(componentMetadata: ComponentMetadata,
+                                         override val darkenPercent: Double,
                                          private val renderingStrategy: ComponentRenderingStrategy<Modal<out ModalResult>>)
     : Modal<T>, DefaultContainer(
         componentMetadata = componentMetadata,
