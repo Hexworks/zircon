@@ -19,6 +19,7 @@ import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.hexworks.zircon.internal.tileset.transformer.LibgdxTextureCloner
 import java.util.concurrent.TimeUnit
 import org.hexworks.zircon.internal.tileset.transformer.LibgdxTextureColorizer
+import org.hexworks.zircon.internal.util.Assets
 
 
 /**
@@ -43,12 +44,15 @@ class LibgdxTileset(override val width: Int,
             .build<String, TileTexture<TextureRegion>>()
 
     private val texture: Texture by lazy {
-        val bytes = Gdx.files.internal(path).readBytes()
-        val tex = Texture(Pixmap(bytes, 0, bytes.size))
-        if (!tex.textureData.isPrepared) {
-            tex.textureData.prepare()
+        if(!Assets.MANAGER.isLoaded(path)) {
+            Assets.MANAGER.load(Assets.getCP437TextureDescriptor(path))
         }
-        tex
+
+        while(!Assets.MANAGER.update()) {
+            //Loading...
+        }
+
+        Assets.MANAGER.get(Assets.getCP437TextureDescriptor(path))
     }
 
     override fun drawTile(tile: Tile, surface: SpriteBatch, position: Position) {

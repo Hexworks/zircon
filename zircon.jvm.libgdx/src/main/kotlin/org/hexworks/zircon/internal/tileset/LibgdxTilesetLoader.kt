@@ -34,7 +34,7 @@ class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
         private val LOADERS: Map<String, (TilesetResource) -> Tileset<SpriteBatch>> = mapOf(
                 "$CP437_TILESET-$CHARACTER_TILE" to { resource: TilesetResource ->
                     LibgdxTileset(
-                            path = "$fileHandlePrefix${resource.path}",
+                            path = resource.path,
                             width = resource.width,
                             height = resource.height
                     )
