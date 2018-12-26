@@ -23,14 +23,16 @@ object LibgdxPlayground : Game() {
 
     private lateinit var zirconApplication: LibgdxApplication
 
-    private const val screenWidth = 1000
-    private const val screenHeight = 600
+    private const val screenWidth = 800
+    private const val screenHeight = 608
 
     override fun create() {
         logger.info("Creating LibgdxPlayground...")
         zirconApplication = LibgdxApplications.buildApplication(AppConfigs.newConfig()
                 .withDefaultTileset(TILESET)
-                .withSize(gridFillByScreenSize(screenWidth = screenWidth, screenHeight = screenHeight, tileWidth = TILESET.width, tileHeight = TILESET.height))
+                .withSize(Sizes.create(
+                        screenWidth / TILESET.width,
+                        screenHeight / TILESET.height))
                 .build())
         zirconApplication.start()
 
@@ -92,8 +94,8 @@ object LibgdxPlayground : Game() {
     fun main(args: Array<String>) {
         val config = LwjglApplicationConfiguration()
         config.title = "Zircon Playground"
-        config.width = 1000
-        config.height = 600
+        config.width = screenWidth
+        config.height = screenHeight
         config.foregroundFPS = 60
         config.useGL30 = true
         LwjglApplication(LibgdxPlayground, config)
