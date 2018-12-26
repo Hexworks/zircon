@@ -43,21 +43,45 @@ Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki)
 ## Getting Started
 
 If you want to work with Zircon you can add it to your project as a dependency.
+For this you need to add the Jitpack repository and the dependency itself
 
 from Maven:
 
 ```xml
-<dependency>
-  <groupId>org.hexworks.zircon</groupId>
-  <artifactId>zircon.jvm.swing</artifactId>
-  <version>2018.5.0-RELEASE</version>
-</dependency>
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+<dependencies>
+    <dependency>
+        <groupId>org.hexworks.zircon</groupId>
+        <artifactId>zircon.core-jvm</artifactId>
+        <version>2018.12.25-XMAS</version>
+    </dependency>
+    <dependency>
+        <groupId>org.hexworks.zircon</groupId>
+        <artifactId>zircon.jvm.swing</artifactId>
+        <version>2018.12.25-XMAS</version>
+    </dependency>
+</dependencies>
+
 ```
 
 or you can also use Gradle:
 
 ```groovy
-compile 'org.hexworks.zircon:zircon.jvm.swing:2018.5.0-RELEASE'
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+dependencies {
+    implementation 'org.hexworks.zircon:zircon.core-jvm:2018.12.25-XMAS'
+    implementation 'org.hexworks.zircon:zircon.jvm.swing:2018.12.25-XMAS'
+}
 ```
 
 Want to use a `PREVIEW` version instead?
