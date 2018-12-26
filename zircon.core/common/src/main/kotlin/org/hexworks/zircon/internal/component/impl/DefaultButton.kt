@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.api.input.MouseAction
 
 class DefaultButton(componentMetadata: ComponentMetadata,
                     initialText: String,
@@ -20,32 +21,79 @@ class DefaultButton(componentMetadata: ComponentMetadata,
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
-    override val textProperty = createPropertyFrom(initialText).also {
-        it.onChange {
-            render()
-        }
-    }
-
     override val text: String
         get() = textProperty.value
+
+    override val textProperty = createPropertyFrom(initialText).apply {
+        onChange { render() }
+    }
+
+    override val isEnabled: Boolean
+        get() = enabledValue.value
+
+    override val enabledValue = createPropertyFrom(true).apply {
+        onChange { render() }
+    }
 
     init {
         render()
     }
 
+    override fun enable() {
+        enabledValue.value = true
+        componentStyleSet.reset()
+        render()
+    }
+
+    override fun disable() {
+        enabledValue.value = false
+        componentStyleSet.applyDisabledStyle()
+        render()
+    }
+
     override fun acceptsFocus(): Boolean {
-        return true
+        return isEnabled
     }
 
     override fun giveFocus(input: Maybe<Input>): Boolean {
-        componentStyleSet.applyFocusedStyle()
-        render()
-        return true
+        return if (isEnabled) {
+            componentStyleSet.applyFocusedStyle()
+            render()
+            true
+        } else false
     }
 
     override fun takeFocus(input: Maybe<Input>) {
         componentStyleSet.reset()
         render()
+    }
+
+    override fun mouseEntered(action: MouseAction) {
+        if (isEnabled) {
+            componentStyleSet.applyMouseOverStyle()
+            render()
+        }
+    }
+
+    override fun mouseExited(action: MouseAction) {
+        if (isEnabled) {
+            componentStyleSet.reset()
+            render()
+        }
+    }
+
+    override fun mousePressed(action: MouseAction) {
+        if (isEnabled) {
+            componentStyleSet.applyActiveStyle()
+            render()
+        }
+    }
+
+    override fun mouseReleased(action: MouseAction) {
+        if (isEnabled) {
+            componentStyleSet.applyMouseOverStyle()
+            render()
+        }
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
