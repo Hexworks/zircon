@@ -155,8 +155,9 @@ class LibgdxRenderer(private val grid: TileGrid,
         val x = position.x.toFloat()
         val y = position.y.toFloat()
         val backSprite = Sprite(backgroundTexture)
-        backSprite.setPosition(x, y)
         backSprite.setSize(backgroundWidth.toFloat(), backgroundHeight.toFloat())
+        backSprite.setOrigin(0f, 0f)
+        backSprite.setOriginBasedPosition(x, y)
         backSprite.color = Color(
                 tile.backgroundColor.red.toFloat() / 255,
                 tile.backgroundColor.green.toFloat() / 255,

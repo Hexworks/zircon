@@ -3,7 +3,7 @@ import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 
-private const val VERTICAL_HEIGHT_OFFSET = 1
+private const val VERTICAL_HEIGHT_OFFSET = 0
 
 fun gridFillByScreenSize(screenWidth: Int, screenHeight: Int, tileWidth: Int, tileHeight: Int) = Size.create(screenWidth / tileWidth, screenHeight / tileHeight - VERTICAL_HEIGHT_OFFSET)
 
