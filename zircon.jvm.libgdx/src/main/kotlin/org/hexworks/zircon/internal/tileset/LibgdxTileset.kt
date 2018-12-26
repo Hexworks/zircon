@@ -59,7 +59,8 @@ class LibgdxTileset(override val width: Int,
         val x = position.x.toFloat()
         val y = position.y.toFloat()
         val tileSprite = Sprite(fetchTextureForTile(tile).texture)
-        tileSprite.setPosition(x, y)
+        tileSprite.setOrigin(0f, 0f)
+        tileSprite.setOriginBasedPosition(x, y)
         tileSprite.color = Color(
                 tile.foregroundColor.red.toFloat() / 255,
                 tile.foregroundColor.green.toFloat() / 255,
