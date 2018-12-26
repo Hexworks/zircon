@@ -4,10 +4,10 @@ import org.hexworks.cobalt.databinding.api.property.Property
 
 interface ToggleButton : Component {
 
-    val text: String
+    var text: String
     val textProperty: Property<String>
 
-    val isSelected: Boolean
+    var isSelected: Boolean
     val selectedProperty: Property<Boolean>
 
 }

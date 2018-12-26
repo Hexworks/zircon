@@ -21,14 +21,23 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
+    override var text: String
+        get() = textProperty.value
+        set(value) {
+            textProperty.value = value
+        }
+
+    override var isSelected: Boolean
+        get() = selectedProperty.value
+        set(value) {
+            selectedProperty.value = value
+        }
+
     override val textProperty = createPropertyFrom(initialText).also {
         it.onChange {
             render()
         }
     }
-
-    override val text: String
-        get() = textProperty.value
 
     override val selectedProperty = createPropertyFrom(false).also { prop ->
         prop.onChange {
@@ -44,9 +53,6 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
     init {
         render()
     }
-
-    override val isSelected: Boolean
-        get() = selectedProperty.value
 
     override fun mousePressed(action: MouseAction) {
         selectedProperty.value = !isSelected
