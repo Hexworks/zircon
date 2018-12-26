@@ -14,6 +14,12 @@ interface RadioButtonGroup : Component, Scrollable {
     fun addOption(key: String, text: String): RadioButton
 
     /**
+     * Removes the given [key] from this [RadioButtonGroup].
+     * Has no effect if the given [key] is not present.
+     */
+    fun removeOption(key: String)
+
+    /**
      * Returns the currently selected item's key (if any).
      */
     fun fetchSelectedOption(): Maybe<String>
