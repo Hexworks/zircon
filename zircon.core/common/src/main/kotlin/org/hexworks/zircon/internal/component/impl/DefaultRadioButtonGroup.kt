@@ -74,9 +74,16 @@ class DefaultRadioButtonGroup constructor(
         }
     }
 
+    override fun removeOption(key: String) {
+        items.remove(key)?.let {
+            removeComponent(it)
+            it.removeSelection()
+        }
+    }
+
     override fun fetchSelectedOption() = selectedItem
 
-    override fun acceptsFocus() = false
+    override fun acceptsFocus() = true
 
     override fun giveFocus(input: Maybe<Input>) = false
 
