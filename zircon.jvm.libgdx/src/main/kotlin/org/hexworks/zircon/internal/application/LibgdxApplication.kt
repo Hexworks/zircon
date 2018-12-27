@@ -14,7 +14,7 @@ class LibgdxApplication(appConfig: AppConfig) : Disposable, Application {
 
     override val tileGrid: InternalTileGrid = RectangleTileGrid(
             tileset = appConfig.defaultTileset,
-            size = appConfig.size.withRelativeHeight(-1))
+            size = appConfig.size)
 
     private val renderer = LibgdxRenderer(tileGrid, appConfig.debugMode)
 
