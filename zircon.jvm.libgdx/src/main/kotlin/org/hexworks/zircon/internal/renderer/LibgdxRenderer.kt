@@ -117,7 +117,7 @@ class LibgdxRenderer(private val grid: TileGrid,
                             tileset
                         }
 
-                val actualPos = Position.create((pos.x * actualTileset.width), (grid.height - pos.y) * actualTileset.height)
+                val actualPos = Position.create((pos.x * actualTileset.width), (grid.height - pos.y - 1) * actualTileset.height)
                 drawBack(
                         tile = actualTile,
                         surface = batch,
@@ -141,7 +141,7 @@ class LibgdxRenderer(private val grid: TileGrid,
                             tileset
                         }
 
-                val actualPos = Position.create((pos.x * actualTileset.width), (grid.height - pos.y) * actualTileset.height)
+                val actualPos = Position.create((pos.x * actualTileset.width), (grid.height - pos.y - 1) * actualTileset.height)
                 actualTileset.drawTile(
                         tile = actualTile,
                         surface = batch,
