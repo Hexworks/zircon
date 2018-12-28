@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.renderer
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
@@ -40,7 +41,11 @@ class LibgdxRenderer(private val grid: TileGrid,
     private var backgroundHeight: Int = 0
 
     override fun create() {
-        maybeBatch = Maybes.of(SpriteBatch())
+        maybeBatch = Maybes.of(SpriteBatch().apply {
+            val camera = OrthographicCamera()
+            camera.setToOrtho(true)
+            projectionMatrix = camera.combined
+        })
         cursorRenderer = ShapeRenderer()
         val whitePixmap = Pixmap(grid.widthInPixels, grid.heightInPixels, Pixmap.Format.RGBA8888)
         whitePixmap.setColor(Color.WHITE)
@@ -117,7 +122,7 @@ class LibgdxRenderer(private val grid: TileGrid,
                             tileset
                         }
 
-                val actualPos = Position.create((pos.x * actualTileset.width), (grid.height - pos.y - 1) * actualTileset.height)
+                val actualPos = Position.create(pos.x * actualTileset.width, pos.y * actualTileset.height)
                 drawBack(
                         tile = actualTile,
                         surface = batch,
@@ -141,7 +146,7 @@ class LibgdxRenderer(private val grid: TileGrid,
                             tileset
                         }
 
-                val actualPos = Position.create((pos.x * actualTileset.width), (grid.height - pos.y - 1) * actualTileset.height)
+                val actualPos = Position.create(pos.x * actualTileset.width, pos.y * actualTileset.height)
                 actualTileset.drawTile(
                         tile = actualTile,
                         surface = batch,
@@ -158,6 +163,7 @@ class LibgdxRenderer(private val grid: TileGrid,
         backSprite.setSize(backgroundWidth.toFloat(), backgroundHeight.toFloat())
         backSprite.setOrigin(0f, 0f)
         backSprite.setOriginBasedPosition(x, y)
+        backSprite.flip(false, true)
         backSprite.color = Color(
                 tile.backgroundColor.red.toFloat() / 255,
                 tile.backgroundColor.green.toFloat() / 255,
