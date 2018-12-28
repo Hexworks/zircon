@@ -4,6 +4,9 @@ jobs:
     docker:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/repo
+
+    environment:
+      _JAVA_OPTIONS: -Xmx2048m
     steps:
       - checkout
       - restore_cache:
