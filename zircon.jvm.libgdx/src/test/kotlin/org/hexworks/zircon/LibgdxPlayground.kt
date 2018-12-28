@@ -24,7 +24,7 @@ object LibgdxPlayground : Game() {
     private lateinit var zirconApplication: LibgdxApplication
 
     private const val screenWidth = 800
-    private const val screenHeight = 608
+    private const val screenHeight = 600
 
     override fun create() {
         logger.info("Creating LibgdxPlayground...")
@@ -98,6 +98,7 @@ object LibgdxPlayground : Game() {
         config.height = screenHeight
         config.foregroundFPS = 60
         config.useGL30 = true
+        config.fullscreen = false
         LwjglApplication(LibgdxPlayground, config)
     }
 }
