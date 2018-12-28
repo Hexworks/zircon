@@ -83,7 +83,7 @@ class DefaultRadioButtonGroup constructor(
 
     override fun fetchSelectedOption() = selectedItem
 
-    override fun acceptsFocus() = true
+    override fun acceptsFocus() = false
 
     override fun giveFocus(input: Maybe<Input>) = false
 
