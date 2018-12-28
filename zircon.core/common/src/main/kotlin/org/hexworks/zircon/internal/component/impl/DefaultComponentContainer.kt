@@ -74,10 +74,10 @@ class DefaultComponentContainer(private var root: RootContainer) :
 
             keyStrokeHandlers[input]?.invoke()
 
-            val targetComponent = when (input) {
-                is KeyStroke -> Maybe.of(focusedComponent)
-                is MouseAction -> root.fetchComponentByPosition(input.position)
-            }
+val targetComponent = when (input) {
+    is KeyStroke -> Maybe.of(focusedComponent)
+    is MouseAction -> root.fetchComponentByPosition(input.position)
+}
 
             targetComponent.map { component ->
                 when (input) {

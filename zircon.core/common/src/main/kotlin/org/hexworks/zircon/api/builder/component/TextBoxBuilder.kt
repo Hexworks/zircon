@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.TextBox
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
@@ -63,6 +64,19 @@ data class TextBoxBuilder(
                 .withPosition(nextPosition)
                 .build())
         updateSizeAndPosition(size.height)
+        if (withNewLine) {
+            addNewLine()
+        }
+    }
+
+    @JvmOverloads
+    fun addParagraph(paragraph: Paragraph, withNewLine: Boolean = true) = also {
+        require(paragraph.width == contentWidth) {
+            "Can't add a Paragraph with wrong content widt."
+        }
+        paragraph.moveTo(nextPosition)
+        components.add(paragraph)
+        updateSizeAndPosition(paragraph.height)
         if (withNewLine) {
             addNewLine()
         }

@@ -133,6 +133,8 @@ data class Position3D private constructor(val x: Int,
      */
     fun to2DPosition() = Position.create(x, y)
 
+    fun isUnknown() = this == UNKNOWN
+
     companion object {
 
         /**
