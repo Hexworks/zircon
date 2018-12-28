@@ -12,9 +12,9 @@ jobs:
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "build.gradle" }}
-      - run: ./gradlew dependencies
+      - run: ./gradlew dependencies --no-parallel
       - save_cache:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
-      - run: ./gradlew build
+      - run: ./gradlew build --no-parallel
