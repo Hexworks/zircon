@@ -4,14 +4,11 @@ jobs:
     docker:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/repo
-
-    environment:
-      JVM_OPTS: -Xmx2048m
     steps:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "build.gradle" }}
+            - v1-dependencies-{{ checksum "build.gradle" }}
       - run: ./gradlew dependencies --no-parallel
       - save_cache:
           paths:
