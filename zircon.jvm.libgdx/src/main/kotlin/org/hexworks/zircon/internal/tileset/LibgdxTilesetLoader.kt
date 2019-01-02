@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.tileset
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.zircon.api.behavior.Closeable

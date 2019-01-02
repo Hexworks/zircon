@@ -2,18 +2,19 @@ package org.hexworks.zircon.internal.application
 
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
+import org.hexworks.zircon.api.mvc.ViewContainer
 import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
+import org.hexworks.zircon.internal.mvc.DefaultViewContainer
 import org.hexworks.zircon.internal.renderer.VirtualRenderer
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
-class VirtualApplication(private val appConfig: AppConfig) : Application {
-
-    override val tileGrid: InternalTileGrid = RectangleTileGrid(
-            tileset = appConfig.defaultTileset,
-            size = appConfig.size)
+class VirtualApplication(private val appConfig: AppConfig,
+                         override val tileGrid: InternalTileGrid = RectangleTileGrid(
+                                 tileset = appConfig.defaultTileset,
+                                 size = appConfig.size)) : Application, ViewContainer by DefaultViewContainer(tileGrid) {
 
     private var running = false
     private var paused = false

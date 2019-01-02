@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.screen
 import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.subscribe
-import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.InputEmitter
 import org.hexworks.zircon.api.behavior.base.BaseInputEmitter
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -26,6 +25,7 @@ import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.extensions.cancelAll
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
 
@@ -33,13 +33,14 @@ class TileGridScreen(
         private val tileGrid: InternalTileGrid,
         private val componentContainer: CompositeComponentContainer =
                 buildCompositeContainer(tileGrid),
+        private val subscriptions: MutableList<Subscription> = mutableListOf(),
         private val inputEmitter: InputEmitter = object : BaseInputEmitter() {
             override fun onInput(listener: InputListener): Subscription {
                 return Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
                     if (componentContainer.isMainContainerActive()) {
                         listener.inputEmitted(input)
                     }
-                }
+                }.also { subscriptions.add(it) }
             }
         },
         private val bufferGrid: InternalTileGrid = RectangleTileGrid(
@@ -56,8 +57,6 @@ class TileGridScreen(
     override val id = IdentifierFactory.randomIdentifier()
     var activeScreenId = IdentifierFactory.randomIdentifier()
 
-    private val logger = LoggerFactory.getLogger(this::class)
-
     init {
         applyColorTheme(ColorThemeResource.EMPTY.getTheme())
         val debug = RuntimeConfig.config.debugMode
@@ -68,28 +67,22 @@ class TileGridScreen(
                 if (debug) println("Deactivating screen")
                 deactivate()
             }
-        }
+        }.also { subscriptions.add(it) }
         Zircon.eventBus.subscribe<ZirconEvent.RequestCursorAt>(ZirconScope) { (position) ->
             if (isActive()) {
                 tileGrid.setCursorVisibility(true)
                 tileGrid.putCursorAt(position)
             }
-        }
+        }.also { subscriptions.add(it) }
         Zircon.eventBus.subscribe<ZirconEvent.HideCursor>(ZirconScope) {
             if (isActive()) {
                 tileGrid.setCursorVisibility(false)
             }
-        }
+        }.also { subscriptions.add(it) }
     }
 
     override fun onInput(listener: InputListener): Subscription {
-        return Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
-            logger.info("Input arrived.")
-            if (componentContainer.isMainContainerActive()) {
-                logger.info("Main container is active.")
-                listener.inputEmitted(input)
-            }
-        }
+        return inputEmitter.onInput(listener)
     }
 
     override fun display() {
@@ -102,6 +95,11 @@ class TileGridScreen(
             activate()
             tileGrid.delegateActionsTo(bufferGrid)
         }
+    }
+
+    override fun close() {
+        deactivate()
+        subscriptions.cancelAll()
     }
 
     override fun <T : ModalResult> openModal(modal: Modal<T>) {

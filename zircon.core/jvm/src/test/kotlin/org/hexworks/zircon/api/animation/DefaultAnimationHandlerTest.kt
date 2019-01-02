@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.animation
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.zircon.api.AppConfigs

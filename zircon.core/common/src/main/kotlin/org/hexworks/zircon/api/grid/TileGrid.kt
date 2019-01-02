@@ -4,7 +4,6 @@ import org.hexworks.zircon.api.CharacterTileStrings
 import org.hexworks.zircon.api.animation.AnimationHandler
 import org.hexworks.zircon.api.behavior.*
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.DrawSurface
 
 /**
@@ -20,7 +19,7 @@ import org.hexworks.zircon.api.graphics.DrawSurface
  * this is the interface you should be programming against.
  */
 interface TileGrid
-    : AnimationHandler, Clearable, DrawSurface, InputEmitter, Layerable, ShutdownHook, Styleable, TypingSupport {
+    : AnimationHandler, Clearable, Closeable, DrawSurface, InputEmitter, Layerable, ShutdownHook, Styleable, TypingSupport {
 
     val widthInPixels: Int
         get() = currentTileset().width * width

@@ -26,6 +26,7 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.extensions.cancelAll
 import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphics
 
 class RectangleTileGrid(
@@ -39,11 +40,12 @@ class RectangleTileGrid(
         override var animationHandler: InternalAnimationHandler = DefaultAnimationHandler(),
         private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                 cursorSpace = size),
+        private val subscriptions: MutableList<Subscription> = mutableListOf(),
         private val inputEmitter: InputEmitter = object : BaseInputEmitter() {
             override fun onInput(listener: InputListener): Subscription {
                 return Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
                     listener.inputEmitted(input)
-                }
+                }.also { subscriptions.add(it) }
             }
         })
     : InternalTileGrid,
@@ -82,6 +84,7 @@ class RectangleTileGrid(
 
     override fun close() {
         animationHandler.close()
+        subscriptions.cancelAll()
     }
 
     override fun delegateActionsTo(tileGrid: InternalTileGrid) {
