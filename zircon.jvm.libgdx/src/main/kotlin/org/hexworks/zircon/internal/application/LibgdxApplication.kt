@@ -4,17 +4,19 @@ import com.badlogic.gdx.utils.Disposable
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
+import org.hexworks.zircon.api.mvc.ViewContainer
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
+import org.hexworks.zircon.internal.mvc.DefaultViewContainer
 import org.hexworks.zircon.internal.renderer.LibgdxRenderer
 
-class LibgdxApplication(appConfig: AppConfig) : Disposable, Application {
+class LibgdxApplication(appConfig: AppConfig,
+                        override val tileGrid: InternalTileGrid = RectangleTileGrid(
+                                tileset = appConfig.defaultTileset,
+                                size = appConfig.size))
+    : Disposable, Application, ViewContainer by DefaultViewContainer(tileGrid) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
-
-    override val tileGrid: InternalTileGrid = RectangleTileGrid(
-            tileset = appConfig.defaultTileset,
-            size = appConfig.size)
 
     private val renderer = LibgdxRenderer(tileGrid, appConfig.debugMode)
 

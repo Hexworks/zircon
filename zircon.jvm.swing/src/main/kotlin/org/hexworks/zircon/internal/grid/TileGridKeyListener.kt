@@ -14,7 +14,7 @@ import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.util.*
 
-class TerminalKeyListener : KeyAdapter() {
+class TileGridKeyListener : KeyAdapter() {
 
     override fun keyTyped(e: KeyEvent) {
         var character = e.keyChar

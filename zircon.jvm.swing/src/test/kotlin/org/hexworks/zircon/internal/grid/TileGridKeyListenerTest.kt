@@ -19,13 +19,13 @@ import java.util.*
 
 class TileGridKeyListenerTest {
 
-    lateinit var target: TerminalKeyListener
+    lateinit var target: TileGridKeyListener
 
     val inputs = LinkedList<Input>()
 
     @Before
     fun setUp() {
-        target = TerminalKeyListener()
+        target = TileGridKeyListener()
         Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) {
             inputs.add(it.input)
         }

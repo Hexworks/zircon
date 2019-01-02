@@ -9,8 +9,8 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.grid.InternalTileGrid
-import org.hexworks.zircon.internal.grid.TerminalKeyListener
-import org.hexworks.zircon.internal.grid.TerminalMouseListener
+import org.hexworks.zircon.internal.grid.TileGridKeyListener
+import org.hexworks.zircon.internal.grid.TileGridMouseListener
 import org.hexworks.zircon.internal.tileset.SwingTilesetLoader
 import org.hexworks.zircon.internal.tileset.transformer.toAWTColor
 import org.hexworks.zircon.platform.util.SystemUtils
@@ -56,8 +56,8 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         canvas.requestFocusInWindow()
         canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
-        canvas.addKeyListener(TerminalKeyListener())
-        val listener = object : TerminalMouseListener(
+        canvas.addKeyListener(TileGridKeyListener())
+        val listener = object : TileGridMouseListener(
                 fontWidth = tileGrid.currentTileset().width,
                 fontHeight = tileGrid.currentTileset().height) {
             override fun mouseClicked(e: MouseEvent) {

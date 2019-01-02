@@ -18,14 +18,14 @@ import java.util.*
 
 class TileGridMouseListenerTest {
 
-    lateinit var target: TerminalMouseListener
+    lateinit var target: TileGridMouseListener
     lateinit var operations: Map<(MouseEvent) -> Unit, MouseActionType>
 
     val inputs = LinkedList<Input>()
 
     @Before
     fun setUp() {
-        target = TerminalMouseListener(FONT_SIZE, FONT_SIZE)
+        target = TileGridMouseListener(FONT_SIZE, FONT_SIZE)
         operations = mapOf(
                 Pair(target::mouseClicked, MOUSE_CLICKED),
                 Pair(target::mouseDragged, MOUSE_DRAGGED),

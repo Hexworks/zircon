@@ -18,7 +18,7 @@ import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
 
-open class TerminalMouseListener(private val fontWidth: Int,
+open class TileGridMouseListener(private val fontWidth: Int,
                                  private val fontHeight: Int) : MouseAdapter() {
 
     private var lastMouseLocation = Position.unknown()

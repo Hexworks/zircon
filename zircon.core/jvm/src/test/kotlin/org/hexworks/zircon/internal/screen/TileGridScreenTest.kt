@@ -50,7 +50,7 @@ class TileGridScreenTest {
         val inputFired = AtomicBoolean(false)
         target.onInput { inputFired.set(true) }
 
-        //first of all lets make sure the default behaviour works. if a key is pressed I should get an input fired
+        //first of all lets make sure the default behavior works. if a key is pressed I should get an input fired
         Zircon.eventBus.publish(
                 event = ZirconEvent.Input(KeyStroke('a')),
                 eventScope = ZirconScope)
