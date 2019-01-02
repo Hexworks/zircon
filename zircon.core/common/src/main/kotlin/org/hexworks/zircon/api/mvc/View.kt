@@ -9,6 +9,8 @@ interface View : Closeable {
     val screen: Screen
     val theme: ColorTheme
 
+    fun replaceWith(view: View)
+
     fun onDock() {}
 
     fun onUndock() {}

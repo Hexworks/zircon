@@ -15,7 +15,7 @@ class DefaultViewContainer(override val tileGrid: TileGrid) : ViewContainer {
         require(view is BaseView) {
             "You need to use BaseView when creating custom Views."
         }
-        view.tileGridProvider = { tileGrid }
+        view.viewContainerProvider = { this }
         currentView.map {
             it.onUndock()
         }
