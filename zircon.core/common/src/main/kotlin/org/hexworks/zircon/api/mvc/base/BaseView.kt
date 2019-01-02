@@ -14,4 +14,10 @@ abstract class BaseView : View {
     internal var tileGridProvider: () -> TileGrid = {
         throw IllegalStateException("This View is not ready. Try docking it to an Application first.")
     }
+
+    override fun onDock() {}
+
+    override fun onUndock() {}
+
+    override fun close() {}
 }
