@@ -46,6 +46,12 @@ interface TileColor : Cacheable {
      */
     fun darkenByPercent(percentage: Double): TileColor
 
+    /**
+     * Returns a new [TileColor] which is lightened by the given `percentage`.
+     * The number must be between `0` and `1`.
+     */
+    fun lightenByPercent(percentage: Double): TileColor
+
     companion object {
 
         /**

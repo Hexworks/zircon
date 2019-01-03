@@ -45,4 +45,8 @@ enum class ANSITileColor(final override val red: Int,
     override fun darkenByPercent(percentage: Double): TileColor {
         return TileColor.create(red, green, blue, alpha).darkenByPercent(percentage)
     }
+
+    override fun lightenByPercent(percentage: Double): TileColor {
+        return TileColor.create(red, green, blue, alpha).lightenByPercent(percentage)
+    }
 }
