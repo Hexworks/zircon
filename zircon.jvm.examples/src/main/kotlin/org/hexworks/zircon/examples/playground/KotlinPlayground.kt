@@ -2,50 +2,31 @@
 
 package org.hexworks.zircon.examples.playground
 
-import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.kotlin.onInput
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.cobalt.logging.api.debug
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.SwingApplications
 
 object KotlinPlayground {
 
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     @JvmStatic
     fun main(args: Array<String>) {
-        logger.info("foo")
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.defaultConfiguration())
+        val screen = Screens.createScreenFor(SwingApplications.startTileGrid())
 
-        val screen0 = Screens.createScreenFor(tileGrid)
-        val toggleButton0 = Components.button()
-                .withText("Toggle screen1")
-                .wrapSides(true)
-                .wrapWithBox(true)
+        val panel = Components.panel()
+                .withSize(10, 10)
                 .build()
 
-        var panel0 = Components.panel()
-                .withSize(Sizes.defaultTerminalSize())
-                .withPosition(Positions.defaultPosition())
-                .build()
+        panel.addComponent(Components.header().withText("header"))
+        panel.addComponent(Components.label().withPosition(0, 1).withText("Label"))
 
-        panel0.addComponent(toggleButton0)
-
-        logger.debug {
-            "debug"
-        }
+        screen.addComponent(panel)
+        screen.addComponent(Components.textArea().withText("Text area").withPosition(11, 0).withSize(10, 10))
+        screen.addComponent(Components.textBox().withContentWidth(10).addHeader("Text box").withPosition(0, 11))
 
 
-        panel0.requestFocus()
-        panel0.onInput {
-            System.out.println("panel0 input " + it.toString())
-        }
-
-
-        screen0.addComponent(panel0)
-
-        screen0.display()
+        screen.applyColorTheme(ColorThemes.zenburnVanilla())
+        screen.display()
 
 
     }
