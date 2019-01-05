@@ -19,7 +19,7 @@ import kotlin.jvm.JvmStatic
 @Suppress("UNCHECKED_CAST")
 data class TextBoxBuilder(
         private var text: String = "",
-        private var contentWidth: Int = 0,
+        private var contentWidth: Int = 1,
         private var nextPosition: Position = Position.defaultPosition(),
         private val components: MutableList<Component> = mutableListOf(),
         private val commonComponentProperties: CommonComponentProperties<TextBox> = CommonComponentProperties(
