@@ -1,11 +1,14 @@
 package org.hexworks.zircon.api.mvc.base
 
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.mvc.View
 import org.hexworks.zircon.api.mvc.ViewContainer
 import org.hexworks.zircon.api.screen.Screen
 
 abstract class BaseView : View {
+
+    override val theme = ColorThemes.cyberpunk()
 
     final override val screen: Screen by lazy {
         Screens.createScreenFor(viewContainerProvider.invoke().tileGrid)
