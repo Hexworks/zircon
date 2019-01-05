@@ -23,6 +23,9 @@ data class TextAreaBuilder(
     }
 
     override fun build(): TextArea {
+        require(size.isNotUnknown()) {
+            "You must set a size for a TextArea"
+        }
         fillMissingValues()
         val finalSize = decorationRenderers.asSequence()
                 .map { it.occupiedSize }
