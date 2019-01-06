@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.extensions.onChange
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -13,6 +14,7 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
+import org.hexworks.zircon.internal.behavior.DefaultTextHolder
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
 
 class DefaultCheckBox(componentMetadata: ComponentMetadata,
@@ -20,16 +22,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
                       private val renderingStrategy: ComponentRenderingStrategy<CheckBox>)
     : CheckBox, DefaultComponent(
         componentMetadata = componentMetadata,
-        renderer = renderingStrategy) {
-
-    override val textProperty = createPropertyFrom(initialText).also {
-        it.onChange {
-            render()
-        }
-    }
-
-    override val text: String
-        get() = textProperty.value
+        renderer = renderingStrategy), TextHolder by DefaultTextHolder(initialText) {
 
     override val state: CheckBoxState
         get() = checkBoxState
@@ -41,6 +34,9 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
 
     init {
         render()
+        textProperty.onChange {
+            render()
+        }
     }
 
     // TODO: test this rudimentary state machine

@@ -1,10 +1,5 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.zircon.api.behavior.TextHolder
 
-interface ListItem : Component {
-
-    val text: String
-
-    val textProperty: Property<String>
-}
+interface ListItem : Component, TextHolder

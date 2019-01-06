@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.extensions.onChange
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -13,31 +14,20 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
+import org.hexworks.zircon.internal.behavior.DefaultTextHolder
 
 class DefaultToggleButton(componentMetadata: ComponentMetadata,
                           initialText: String,
                           private val renderingStrategy: ComponentRenderingStrategy<ToggleButton>)
     : ToggleButton, DefaultComponent(
         componentMetadata = componentMetadata,
-        renderer = renderingStrategy) {
-
-    override var text: String
-        get() = textProperty.value
-        set(value) {
-            textProperty.value = value
-        }
+        renderer = renderingStrategy), TextHolder by DefaultTextHolder(initialText) {
 
     override var isSelected: Boolean
         get() = selectedProperty.value
         set(value) {
             selectedProperty.value = value
         }
-
-    override val textProperty = createPropertyFrom(initialText).also {
-        it.onChange {
-            render()
-        }
-    }
 
     override val selectedProperty = createPropertyFrom(false).also { prop ->
         prop.onChange {
@@ -52,6 +42,9 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
 
     init {
         render()
+        textProperty.onChange {
+            render()
+        }
     }
 
     override fun mousePressed(action: MouseAction) {

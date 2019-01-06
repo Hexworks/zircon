@@ -5,6 +5,7 @@ import org.hexworks.cobalt.databinding.api.extensions.onChange
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.sam.Consumer
 import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -16,6 +17,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
 import org.hexworks.zircon.api.util.Runnable
+import org.hexworks.zircon.internal.behavior.DefaultTextHolder
 import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
@@ -25,18 +27,10 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
                          private val renderingStrategy: ComponentRenderingStrategy<DefaultRadioButton>)
     : RadioButton,
         Observable<Unit> by DefaultObservable(),
+        TextHolder by DefaultTextHolder(initialText),
         DefaultComponent(
                 componentMetadata = componentMetadata,
                 renderer = renderingStrategy) {
-
-    override val textProperty = createPropertyFrom(initialText).also {
-        it.onChange {
-            render()
-        }
-    }
-
-    override val text: String
-        get() = textProperty.value
 
     override val state: RadioButtonState
         get() = currentState
@@ -51,6 +45,9 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
 
     init {
         render()
+        textProperty.onChange {
+            render()
+        }
     }
 
     override fun mouseExited(action: MouseAction) {

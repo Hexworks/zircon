@@ -1,12 +1,9 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
+import org.hexworks.zircon.api.behavior.TextHolder
 
-interface Button : Component {
-
-    val text: String
-    val textProperty: Property<String>
+interface Button : Component, TextHolder {
 
     val isEnabled: Boolean
     val enabledValue: ObservableValue<Boolean>
