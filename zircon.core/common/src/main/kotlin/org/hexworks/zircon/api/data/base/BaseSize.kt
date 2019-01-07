@@ -110,7 +110,7 @@ abstract class BaseSize : Size {
         return size
     }
 
-    override fun containsPosition(position: Position) = width > position.x && height > position.y
+    override fun containsPosition(position: Position) = toRect().containsPosition(position)
 
     override fun toPosition() = Position.create(width, height)
 

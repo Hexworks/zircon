@@ -136,7 +136,7 @@ interface Size : Comparable<Size> {
         /**
          * The default grid size is (80 * 24)
          */
-        fun defaultGridSize() = DEFAULT_TERMINAL_SIZE
+        fun defaultGridSize() = DEFAULT_GRID_SIZE
 
         /**
          * Size of (0 * 0).
@@ -154,7 +154,7 @@ interface Size : Comparable<Size> {
         fun create(width: Int, height: Int): Size = DefaultSize(width, height)
 
         private val UNKNOWN = create(Int.MAX_VALUE, Int.MAX_VALUE)
-        private val DEFAULT_TERMINAL_SIZE = create(60, 30)
+        private val DEFAULT_GRID_SIZE = create(60, 30)
         private val ZERO = create(0, 0)
         private val ONE = create(1, 1)
     }
