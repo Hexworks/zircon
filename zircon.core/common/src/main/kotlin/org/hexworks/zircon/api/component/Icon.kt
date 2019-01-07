@@ -5,7 +5,6 @@ import org.hexworks.zircon.api.data.GraphicTile
 
 interface Icon : Component {
 
-    val icon: GraphicTile
-
+    var icon: GraphicTile
     val iconProperty: Property<GraphicTile>
 }

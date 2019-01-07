@@ -1,10 +1,8 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.extensions.onChange
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.sam.Consumer
-import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -16,30 +14,20 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.util.Runnable
-import org.hexworks.zircon.internal.behavior.DefaultTextHolder
-import org.hexworks.zircon.internal.behavior.Observable
-import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 
 class DefaultRadioButton(componentMetadata: ComponentMetadata,
                          initialText: String,
                          private val renderingStrategy: ComponentRenderingStrategy<DefaultRadioButton>)
     : RadioButton,
-        Observable<Unit> by DefaultObservable(),
-        TextHolder by DefaultTextHolder(initialText),
+        TextHolder by TextHolder.create(initialText),
+        Selectable by Selectable.create(),
         DefaultComponent(
                 componentMetadata = componentMetadata,
                 renderer = renderingStrategy) {
 
     override val state: RadioButtonState
         get() = currentState
-
-    override val selectedValue = createPropertyFrom(false).also { prop ->
-        prop.onChange {
-            render()
-        }
-    }
 
     private var currentState = NOT_SELECTED
 
@@ -48,10 +36,20 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
         textProperty.onChange {
             render()
         }
+        selectedProperty.onChange { (_, _, newValue) ->
+            currentState = if (newValue) {
+                componentStyleSet.applyMouseOverStyle()
+                SELECTED
+            } else {
+                componentStyleSet.reset()
+                NOT_SELECTED
+            }
+            render()
+        }
     }
 
     override fun mouseExited(action: MouseAction) {
-        currentState = if (selectedValue.value) SELECTED else NOT_SELECTED
+        currentState = if (selectedProperty.value) SELECTED else NOT_SELECTED
         componentStyleSet.reset()
         render()
     }
@@ -63,17 +61,7 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
     }
 
     override fun mouseReleased(action: MouseAction) {
-        select()
-    }
-
-    override fun isSelected() = selectedValue.value
-
-    override fun onSelected(runnable: Runnable): Subscription {
-        return addObserver(object : Consumer<Unit> {
-            override fun accept(value: Unit) {
-                runnable.run()
-            }
-        })
+        isSelected = true
     }
 
     override fun acceptsFocus(): Boolean {
@@ -117,19 +105,6 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
 
     override fun render() {
         renderingStrategy.render(this, graphics)
-    }
-
-    override fun select() {
-        componentStyleSet.applyMouseOverStyle()
-        currentState = SELECTED
-        selectedValue.value = true
-        notifyObservers(Unit)
-    }
-
-    fun removeSelection() {
-        componentStyleSet.reset()
-        currentState = NOT_SELECTED
-        selectedValue.value = false
     }
 
     enum class RadioButtonState {

@@ -49,7 +49,7 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
         target.mouseReleased(MouseAction(MOUSE_RELEASED, 1, Position.zero()))
 
         assertThat(target.componentStyleSet.currentState()).isEqualTo(MOUSE_OVER)
-        assertThat(rendererStub.renderings.size).isEqualTo(1)
+        assertThat(rendererStub.renderings.size).isGreaterThanOrEqualTo(1)
     }
 
     @Test

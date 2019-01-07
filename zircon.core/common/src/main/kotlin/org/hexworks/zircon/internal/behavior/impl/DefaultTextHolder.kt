@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.behavior
+package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.zircon.api.behavior.TextHolder

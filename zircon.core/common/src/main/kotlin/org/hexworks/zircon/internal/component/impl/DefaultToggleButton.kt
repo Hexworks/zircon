@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.extensions.onChange
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -14,23 +14,22 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.input.Input
 import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.internal.behavior.DefaultTextHolder
 
 class DefaultToggleButton(componentMetadata: ComponentMetadata,
                           initialText: String,
                           private val renderingStrategy: ComponentRenderingStrategy<ToggleButton>)
     : ToggleButton, DefaultComponent(
         componentMetadata = componentMetadata,
-        renderer = renderingStrategy), TextHolder by DefaultTextHolder(initialText) {
+        renderer = renderingStrategy),
+        TextHolder by TextHolder.create(initialText),
+        Selectable by Selectable.create() {
 
-    override var isSelected: Boolean
-        get() = selectedProperty.value
-        set(value) {
-            selectedProperty.value = value
+    init {
+        render()
+        textProperty.onChange {
+            render()
         }
-
-    override val selectedProperty = createPropertyFrom(false).also { prop ->
-        prop.onChange {
+        selectedProperty.onChange {
             if (it.newValue) {
                 applyIsSelectedStyle()
             } else {
@@ -40,20 +39,14 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
         }
     }
 
-    init {
-        render()
-        textProperty.onChange {
-            render()
-        }
-    }
-
     override fun mousePressed(action: MouseAction) {
         selectedProperty.value = !isSelected
     }
 
     override fun mouseExited(action: MouseAction) {
-        if (!isSelected)
+        if (isSelected.not()) {
             super.mouseExited(action)
+        }
     }
 
 
@@ -68,10 +61,11 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
     }
 
     override fun takeFocus(input: Maybe<Input>) {
-        if (isSelected)
+        if (isSelected) {
             applyIsSelectedStyle()
-        else
+        } else {
             componentStyleSet.reset()
+        }
         render()
     }
 
