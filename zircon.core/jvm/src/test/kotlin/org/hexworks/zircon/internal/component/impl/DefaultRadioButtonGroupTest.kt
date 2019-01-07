@@ -64,7 +64,7 @@ class DefaultRadioButtonGroupTest : ComponentImplementationTest<DefaultRadioButt
 
         button.mouseReleased(MOUSE_RELEASED)
 
-        assertThat(button.isSelected()).isTrue()
+        assertThat(button.isSelected).isTrue()
         assertThat(target.fetchSelectedOption().get()).isEqualTo("foo")
     }
 
@@ -73,9 +73,9 @@ class DefaultRadioButtonGroupTest : ComponentImplementationTest<DefaultRadioButt
         target.addOption("qux", "baz") as DefaultRadioButton
         val button = target.addOption("foo", "bar") as DefaultRadioButton
 
-        button.select()
+        button.isSelected = true
 
-        assertThat(button.isSelected()).isTrue()
+        assertThat(button.isSelected).isTrue()
         assertThat(target.fetchSelectedOption().get()).isEqualTo("foo")
     }
 
@@ -87,8 +87,8 @@ class DefaultRadioButtonGroupTest : ComponentImplementationTest<DefaultRadioButt
         // this is necessary because ComponentContainer handles this but it is not present in this test
         newButton.mouseReleased(MOUSE_RELEASED)
 
-        assertThat(oldButton.isSelected()).isFalse()
-        assertThat(newButton.isSelected()).isTrue()
+        assertThat(oldButton.isSelected).isFalse()
+        assertThat(newButton.isSelected).isTrue()
     }
 
     @Test
@@ -109,9 +109,9 @@ class DefaultRadioButtonGroupTest : ComponentImplementationTest<DefaultRadioButt
     fun shouldProperlySelectButtonWhenSelectIsCalledOnButton() {
         val key = "foo"
         val btn = target.addOption(key, "bar")
-        btn.select()
+        btn.isSelected = true
 
-        assertThat(btn.isSelected()).isTrue()
+        assertThat(btn.isSelected).isTrue()
         assertThat(target.fetchSelectedOption().get()).isEqualTo(key)
     }
 
@@ -119,11 +119,11 @@ class DefaultRadioButtonGroupTest : ComponentImplementationTest<DefaultRadioButt
     fun shouldProperlyClearSelectionWhenAnItemIsSelected() {
         val key = "foo"
         val btn = target.addOption(key, "bar")
-        btn.select()
+        btn.isSelected = true
 
         target.clearSelection()
 
-        assertThat(btn.isSelected()).isFalse()
+        assertThat(btn.isSelected).isFalse()
         assertThat(target.fetchSelectedOption().isPresent).isFalse()
     }
 

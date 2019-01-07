@@ -18,7 +18,7 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.input.Input
-import org.hexworks.zircon.api.kotlin.onSelected
+import org.hexworks.zircon.api.kotlin.onSelectionChanged
 import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
@@ -58,16 +58,23 @@ class DefaultRadioButtonGroup constructor(
                         tileset = currentTileset(),
                         componentStyleSet = componentStyleSet)).also { button ->
             items[key] = button
-            button.onSelected {
-                selectedItem.map { lastSelected ->
-                    if (lastSelected != key) {
-                        println("Removing selection from $lastSelected")
-                        items[lastSelected]?.removeSelection()
+            button.onSelectionChanged { (_, _, selected) ->
+                if (selected) {
+                    selectedItem.map {
+                        if (it != key) {
+                            items[it]?.isSelected = false
+                        }
                     }
-                }
-                selectedItem = Maybe.of(key)
-                items[key]?.let { button ->
-                    notifyObservers(DefaultSelection(key, button.text))
+                    selectedItem = Maybe.of(key)
+                    items[key]?.let { button ->
+                        notifyObservers(DefaultSelection(key, button.text))
+                    }
+                } else {
+                    selectedItem.map {
+                        if (it == key) {
+                            selectedItem = Maybe.empty()
+                        }
+                    }
                 }
             }
             addComponent(button)
@@ -77,7 +84,7 @@ class DefaultRadioButtonGroup constructor(
     override fun removeOption(key: String) {
         items.remove(key)?.let {
             removeComponent(it)
-            it.removeSelection()
+            it.isSelected = false
         }
     }
 
@@ -91,8 +98,7 @@ class DefaultRadioButtonGroup constructor(
 
     override fun clearSelection() {
         selectedItem.map {
-            selectedItem = Maybe.empty()
-            items[it]?.removeSelection()
+            items[it]?.isSelected = false
         }
     }
 

@@ -95,20 +95,20 @@ class DefaultRadioButtonTest : ComponentImplementationTest<DefaultRadioButton>()
 
     @Test
     fun shouldProperlySelect() {
-        target.select()
+        target.isSelected = true
 
         assertThat(getButtonChar()).isEqualTo('O')
-        assertThat(target.isSelected()).isTrue()
+        assertThat(target.isSelected).isTrue()
         assertThat(target.componentStyleSet.currentState()).isEqualTo(MOUSE_OVER)
     }
 
     @Test
     fun shouldProperlyRemoveSelection() {
-        target.select()
-        target.removeSelection()
+        target.isSelected = true
+        target.isSelected = false
 
+        assertThat(target.isSelected).isFalse()
         assertThat(getButtonChar()).isEqualTo(' ')
-        assertThat(target.isSelected()).isFalse()
         assertThat(target.componentStyleSet.currentState()).isEqualTo(DEFAULT)
     }
 

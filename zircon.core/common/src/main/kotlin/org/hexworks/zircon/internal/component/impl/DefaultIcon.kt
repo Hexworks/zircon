@@ -19,17 +19,14 @@ class DefaultIcon(componentMetadata: ComponentMetadata,
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
-    override val iconProperty = createPropertyFrom(initialIcon).apply {
-        onChange {
-            render()
-        }
-    }
-
-    override val icon: GraphicTile
-        get() = iconProperty.value
+    override val iconProperty = createPropertyFrom(initialIcon)
+    override var icon: GraphicTile by iconProperty.asDelegate()
 
     init {
         render()
+        iconProperty.onChange {
+            render()
+        }
     }
 
     override fun acceptsFocus() = false
