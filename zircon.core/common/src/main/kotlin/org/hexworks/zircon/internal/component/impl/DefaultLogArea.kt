@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Position
 
 class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
                                  private val renderingStrategy: ComponentRenderingStrategy<LogArea>)
@@ -101,7 +100,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     }
 
     private fun addLogElement(element: TextBox, applyTheme: Boolean = true) {
-        val currentHeight = children.asSequence().map { it.height }.fold(1, Int::plus)
+        val currentHeight = children.asSequence().map { it.height }.fold(0, Int::plus)
         val maxHeight = height
         val elementHeight = element.height
         val remainingHeight = maxHeight - currentHeight
@@ -122,7 +121,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
             }
         }
         children.lastOrNull()?.let { lastChild ->
-            element.moveTo(Position.zero().relativeToBottomOf(lastChild))
+            element.moveTo(lastChild.position.minus(contentPosition).withRelativeY(lastChild.height))
         }
         addComponent(element)
         if (applyTheme) {

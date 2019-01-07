@@ -8,8 +8,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultLogArea
 class DefaultLogAreaRenderer : ComponentRenderer<DefaultLogArea> {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<DefaultLogArea>) {
-        val style = context.componentStyle.currentStyle()
-        tileGraphics.applyStyle(style)
+        tileGraphics.applyStyle(context.componentStyle.currentStyle())
     }
 
 }

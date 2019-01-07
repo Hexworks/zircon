@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.graphics.StyleSet
 
 object LogAreaExample {
@@ -15,20 +16,16 @@ object LogAreaExample {
     fun main(args: Array<String>) {
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
+                .enableBetaFeatures()
                 .withSize(Sizes.create(70, 30))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        val panel = Components.panel()
-                .wrapWithBox(true)
-                .withSize((Sizes.create(60, 25)))
-                .withTitle("Log")
-                .build()
-
-        screen.addComponent(panel)
         val logArea = Components.logArea()
-                .withSize(Sizes.create(58, 23))
+                .wrapWithBox()
+                .withSize(70, 30)
+                .withTitle("Log")
                 .build()
 
         logArea.addParagraph("This is a simple log row")
@@ -47,8 +44,6 @@ object LogAreaExample {
         logArea.addNewRows(2)
         logArea.addParagraph("This is a long log row, which gets wrapped, since it is long")
 
-        panel.addComponent(logArea)
-        screen.applyColorTheme(theme)
 
         logArea.addNewRows(1)
         val paragraphStyleSet = ComponentStyleSets.newBuilder()
@@ -58,6 +53,8 @@ object LogAreaExample {
                 .withText("This is a long log row, which gets wrapped, since it is long with a different style")
                 .withComponentStyleSet(paragraphStyleSet))
 
+        screen.addComponent(logArea)
+        screen.applyColorTheme(theme)
         screen.display()
 
 

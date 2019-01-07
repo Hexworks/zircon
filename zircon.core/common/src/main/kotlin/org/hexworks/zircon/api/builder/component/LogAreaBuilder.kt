@@ -18,16 +18,15 @@ data class LogAreaBuilder(
                 componentRenderer = DefaultLogAreaRenderer()))
     : BaseComponentBuilder<LogArea, LogAreaBuilder>(commonComponentProperties) {
 
-
     override fun build(): LogArea {
+        require(size != Size.unknown()) {
+            "You must set a size for a Log Area!"
+        }
         fillMissingValues()
-        val finalSize = decorationRenderers.asSequence()
-                .map { it.occupiedSize }
-                .fold(size, Size::plus)
         return DefaultLogArea(
                 componentMetadata = ComponentMetadata(
-                        position = fixPosition(finalSize),
-                        size = finalSize,
+                        position = fixPosition(size),
+                        size = size,
                         tileset = tileset,
                         componentStyleSet = componentStyleSet),
                 renderingStrategy = DefaultComponentRenderingStrategy(
