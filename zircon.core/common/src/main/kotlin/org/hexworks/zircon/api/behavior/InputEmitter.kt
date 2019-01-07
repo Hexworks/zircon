@@ -87,6 +87,16 @@ interface InputEmitter {
         })
     }
 
+    fun onMouseAction(consumer: Consumer<MouseAction>): Subscription {
+        return onInput(object : InputListener {
+            override fun inputEmitted(input: Input) {
+                input.asMouseAction().map {
+                    consumer.accept(it)
+                }
+            }
+        })
+    }
+
     /**
      * Adds a [MouseListener] listener to this [InputEmitter]. It will be notified when a
      * [org.hexworks.zircon.api.input.MouseAction] is received by this object.

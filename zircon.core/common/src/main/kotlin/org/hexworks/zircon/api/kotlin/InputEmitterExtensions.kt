@@ -62,6 +62,14 @@ inline fun InputEmitter.onInputOfType(inputType: InputType,
     })
 }
 
+inline fun InputEmitter.onMouseAction(crossinline fn: (MouseAction) -> Unit): Subscription {
+    return this.onMouseAction(object : Consumer<MouseAction> {
+        override fun accept(value: MouseAction) {
+            fn(value)
+        }
+    })
+}
+
 inline fun InputEmitter.onMouseClicked(crossinline fn: (MouseAction) -> Unit): Subscription {
     return onMouseClicked(object : Consumer<MouseAction> {
         override fun accept(value: MouseAction) {
