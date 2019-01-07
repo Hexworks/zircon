@@ -7,8 +7,8 @@ import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.api.data.GraphicTile
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.component.impl.DefaultIcon
 import org.hexworks.zircon.internal.component.renderer.DefaultIconRenderer
 import org.hexworks.zircon.internal.config.RuntimeConfig
@@ -21,9 +21,9 @@ data class IconBuilder(
                 tileset = RuntimeConfig.config.defaultGraphicTileset))
     : BaseComponentBuilder<Icon, IconBuilder>(commonComponentProperties) {
 
-    private var icon = Maybe.empty<GraphicTile>()
+    private var icon = Maybe.empty<Tile>()
 
-    fun withIcon(icon: GraphicTile) = also {
+    fun withIcon(icon: Tile) = also {
         this.icon = Maybe.of(icon)
     }
 
