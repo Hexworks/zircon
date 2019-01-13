@@ -115,7 +115,10 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
                 }
             }
             builders.forEach {
-                result.add(LayerBuilder.newBuilder().withTileGraphics(it.build()).build())
+                result.add(LayerBuilder.newBuilder()
+                        .withTileGraphics(it.build())
+                        .withOffset(absolutePosition)
+                        .build())
             }
         }
         return result

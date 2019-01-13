@@ -498,7 +498,7 @@ public class FullExample {
         // ==============
 
 
-        IsometricGameArea.INSTANCE.addGamePanel(gameScreen, Positions.create(2, 4), Sizes.create(62, 28), Positions.create(5, 5));
+        TopDownObliqueGameArea.INSTANCE.addGamePanel(gameScreen, Positions.create(2, 4), Sizes.create(62, 28), Positions.create(5, 5));
 
         gameScreen.applyColorTheme(GAME_THEME);
 

@@ -24,9 +24,9 @@ import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.internal.game.InMemoryGameArea
 import java.util.*
 
-object IsometricGameArea {
+object TopDownObliqueGameArea {
 
-    private val TILESET = BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(20)
+    private val TILESET = CP437TilesetResources.rexPaint16x16()
 
     private val MODIFIER_LOOKUP = mapOf(
             BLOCK_BACK to BACK,
@@ -103,7 +103,7 @@ object IsometricGameArea {
 
         val config = AppConfigs.newConfig()
                 .withDefaultTileset(TILESET)
-                .withSize(Sizes.create(80, 50))
+                .withSize(Sizes.create(60, 30))
                 .withDebugMode(true)
                 .enableBetaFeatures()
                 .build()
