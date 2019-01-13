@@ -38,8 +38,8 @@ class LibgdxApplication(appConfig: AppConfig,
     override fun start() {
         if (started.not()) {
             logger.info("Starting LibgdxApplication")
-            started = true
             renderer.create()
+            started = true
         } else {
             logger.error("LibgdxApplication already started")
         }
