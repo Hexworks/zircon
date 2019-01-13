@@ -11,8 +11,6 @@ import org.hexworks.zircon.internal.application.LibgdxGame
 
 object LibgdxApplications {
 
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     /**
      * Builds a new [Application] using the given `appConfig`.
      */
@@ -60,7 +58,7 @@ object LibgdxApplications {
         config.width = appConfig.size.width * appConfig.defaultTileset.width
         config.height = appConfig.size.height * appConfig.defaultTileset.height
         config.foregroundFPS = 60
-        config.useGL30 = true
+        config.useGL30 = false
         val game = LibgdxGame(appConfig)
         LwjglApplication(game, config)
         return game
