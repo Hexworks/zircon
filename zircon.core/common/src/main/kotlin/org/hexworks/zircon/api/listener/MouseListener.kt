@@ -1,10 +1,9 @@
 package org.hexworks.zircon.api.listener
 
-import org.hexworks.zircon.api.input.KeyStroke
 import org.hexworks.zircon.api.input.MouseAction
 
 /**
- * Listener interface for [KeyStroke]s.
+ * Listener interface for [MouseAction]s.
  */
 interface MouseListener {
 
