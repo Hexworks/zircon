@@ -1,10 +1,9 @@
 buildscript {
     repositories {
-        mavenLocal()
         mavenCentral()
+        mavenLocal()
         jcenter()
     }
-
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -22,30 +21,4 @@ allprojects {
 
 subprojects {
     apply plugin: "maven-publish"
-}
-
-ext {
-    libraries = [
-            kotlin_stdlib                 : "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
-            kotlin_stdlib_common          : "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version",
-            kotlin_reflect                : "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version",
-            kotlin_test_annotations_common: "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version",
-            kotlin_test_common            : "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version",
-            cobalt_events                 : "org.hexworks.cobalt:cobalt.events:$cobalt_version",
-            cobalt_datatypes              : "org.hexworks.cobalt:cobalt.datatypes:$cobalt_version",
-            cobalt_databinding            : "org.hexworks.cobalt:cobalt.databinding:$cobalt_version",
-            cobalt_logging                : "org.hexworks.cobalt:cobalt.logging:$cobalt_version",
-            cobalt_events_jvm             : "org.hexworks.cobalt:cobalt.events-jvm:$cobalt_version",
-            cobalt_datatypes_jvm          : "org.hexworks.cobalt:cobalt.datatypes-jvm:$cobalt_version",
-            cobalt_databinding_jvm        : "org.hexworks.cobalt:cobalt.databinding-jvm:$cobalt_version",
-            cobalt_logging_jvm            : "org.hexworks.cobalt:cobalt.logging-jvm:$cobalt_version",
-            slf4j_api                     : "org.slf4j:slf4j-api:$slf4j_version",
-            slf4j_simple                  : "org.slf4j:slf4j-simple:$slf4j_version",
-            caffeine                      : "com.github.ben-manes.caffeine:caffeine:$caffeine_version",
-            snakeyaml                     : "org.yaml:snakeyaml:$snakeyaml_version",
-            filters                       : "com.jhlabs:filters:$filters_version",
-            junit                         : "junit:junit:$junit_version",
-            mockito                       : "org.mockito:mockito-all:$mockito_version",
-            assertj                       : "org.assertj:assertj-core:$assertj_version",
-    ]
 }

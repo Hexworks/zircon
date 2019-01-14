@@ -1,23 +1,22 @@
-apply plugin: 'kotlin'
-apply plugin: 'maven-publish'
+apply plugin: "kotlin"
 
 archivesBaseName = 'zircon.jvm.swing'
 
 dependencies {
     compile project(":zircon.core")
-    compile libraries.cobalt_events_jvm
-    compile libraries.cobalt_datatypes_jvm
-    compile libraries.cobalt_logging_jvm
-    compile libraries.cobalt_databinding_jvm
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
-    compile libraries.kotlin_stdlib
-    compile libraries.filters
+    compile "org.hexworks.cobalt:cobalt.events-jvm:$cobalt_version"
+    compile "org.hexworks.cobalt:cobalt.datatypes-jvm:$cobalt_version"
+    compile "org.hexworks.cobalt:cobalt.databinding-jvm:$cobalt_version"
+    compile "org.hexworks.cobalt:cobalt.logging-jvm:$cobalt_version"
 
+    compile "com.jhlabs:filters:$filters_version"
     compile "ch.qos.logback:logback-classic:$logback_version"
-    
-    testCompile libraries.junit
-    testCompile libraries.mockito
-    testCompile libraries.assertj
+
+    testCompile "junit:junit:$junit_version"
+    testCompile "org.mockito:mockito-all:$mockito_version"
+    testCompile "org.assertj:assertj-core:$assertj_version"
 }
 
 publishing {

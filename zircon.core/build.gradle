@@ -2,14 +2,14 @@ apply plugin: "kotlin-multiplatform"
 
 kotlin {
     targets {
-        fromPreset(presets.jvm, 'jvm')
+        fromPreset(presets.jvm, "jvm")
 
         configure([jvm]) {
             tasks.getByName(compilations.main.compileKotlinTaskName).kotlinOptions {
-                jvmTarget = '1.8'
+                jvmTarget = "1.8"
             }
             tasks.getByName(compilations.test.compileKotlinTaskName).kotlinOptions {
-                jvmTarget = '1.8'
+                jvmTarget = "1.8"
             }
         }
     }
@@ -19,33 +19,31 @@ kotlin {
             kotlin.srcDirs = ["common/src/main/kotlin"]
             resources.srcDirs = ["common/src/main/resources"]
             dependencies {
-                api libraries.cobalt_events
-                api libraries.cobalt_databinding
-                api libraries.cobalt_logging
-                api libraries.cobalt_datatypes
-                implementation 'org.jetbrains.kotlin:kotlin-stdlib'
+                api "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
+                api "org.hexworks.cobalt:cobalt.events:$cobalt_version"
+                api "org.hexworks.cobalt:cobalt.databinding:$cobalt_version"
+                api "org.hexworks.cobalt:cobalt.logging:$cobalt_version"
+                api "org.hexworks.cobalt:cobalt.datatypes:$cobalt_version"
             }
         }
         commonTest {
             kotlin.srcDirs = ["common/src/test/kotlin"]
             resources.srcDirs = ["common/src/test/resources"]
             dependencies {
-                api 'org.jetbrains.kotlin:kotlin-test-common'
-                api 'org.jetbrains.kotlin:kotlin-test-annotations-common'
+                implementation "org.jetbrains.kotlin:kotlin-test-common"
+                implementation "org.jetbrains.kotlin:kotlin-test-annotations-common"
                 dependsOn commonMain
             }
         }
-
         jvmMain {
             kotlin.srcDirs = ["jvm/src/main/kotlin"]
             resources.srcDirs = ["jvm/src/main/resources"]
             dependencies {
-                api 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-                api libraries.kotlin_reflect
-                api libraries.caffeine
-                api libraries.snakeyaml
-                api libraries.slf4j_api
-                api libraries.slf4j_simple
+                api "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+                api "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+                api "com.github.ben-manes.caffeine:caffeine:$caffeine_version"
+                api "org.yaml:snakeyaml:$snakeyaml_version"
+                api "org.slf4j:slf4j-api:$slf4j_version"
             }
         }
 
@@ -53,9 +51,9 @@ kotlin {
             kotlin.srcDirs = ["jvm/src/test/kotlin"]
             resources.srcDirs = ["jvm/src/test/resources"]
             dependencies {
-                implementation libraries.junit
-                implementation libraries.mockito
-                implementation libraries.assertj
+                implementation "junit:junit:$junit_version"
+                implementation "org.mockito:mockito-all:$mockito_version"
+                implementation "org.assertj:assertj-core:$assertj_version"
                 dependsOn jvmMain
             }
         }

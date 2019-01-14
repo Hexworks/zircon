@@ -43,7 +43,7 @@ object TopDownObliqueWorldExample {
             .withForegroundColor(CREAM)
 
     private val WALL_FRONT = Tiles.defaultTile()
-            .withCharacter('#')
+            .withCharacter(Symbols.BLOCK_SOLID)
             .withBackgroundColor(DARK_GREY)
             .withForegroundColor(GRAY)
     private val WALL_TOP = Tiles.defaultTile()
@@ -91,18 +91,25 @@ object TopDownObliqueWorldExample {
             .withEmptyTile(EMPTY)
             .build()
 
-    private val GLASS_BLOCK = Blocks.newBuilder<Tile>()
+    private val GLASS_BLOCK_FRONT = Blocks.newBuilder<Tile>()
             .withLayers(EMPTY)
             .withFront(GLASS)
+            .withEmptyTile(EMPTY)
+            .build()
+
+    private val GLASS_BLOCK_BACK = Blocks.newBuilder<Tile>()
+            .withLayers(EMPTY)
+            .withBack(GLASS)
             .withEmptyTile(EMPTY)
             .build()
 
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val screen = Screens.createScreenFor(SwingApplications.startTileGrid(
+        val screen = Screens.createScreenFor(LibgdxApplications.startTileGrid(
                 AppConfigs.newConfig()
                         .enableBetaFeatures()
+                        .withDebugMode(true)
                         .build()))
 
         val panel = Components.panel()
@@ -145,20 +152,20 @@ object TopDownObliqueWorldExample {
         }
 
         // bottom left windows
-        ga.setBlockAt(Positions.create3DPosition(6, 13, 1), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(7, 13, 1), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(8, 13, 1), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(6, 13, 2), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(7, 13, 2), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(8, 13, 2), GLASS_BLOCK)
+        ga.setBlockAt(Positions.create3DPosition(6, 13, 1), GLASS_BLOCK_FRONT)
+        ga.setBlockAt(Positions.create3DPosition(7, 13, 1), GLASS_BLOCK_FRONT)
+        ga.setBlockAt(Positions.create3DPosition(8, 13, 1), GLASS_BLOCK_FRONT)
+        ga.setBlockAt(Positions.create3DPosition(6, 13, 2), GLASS_BLOCK_FRONT)
+        ga.setBlockAt(Positions.create3DPosition(7, 13, 2), GLASS_BLOCK_FRONT)
+        ga.setBlockAt(Positions.create3DPosition(8, 13, 2), GLASS_BLOCK_FRONT)
 
         // top left windows
-        ga.setBlockAt(Positions.create3DPosition(6, 5, 1), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(7, 5, 1), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(8, 5, 1), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(6, 5, 2), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(7, 5, 2), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(8, 5, 2), GLASS_BLOCK)
+        ga.setBlockAt(Positions.create3DPosition(6, 5, 1), GLASS_BLOCK_BACK)
+        ga.setBlockAt(Positions.create3DPosition(7, 5, 1), GLASS_BLOCK_BACK)
+        ga.setBlockAt(Positions.create3DPosition(8, 5, 1), GLASS_BLOCK_BACK)
+        ga.setBlockAt(Positions.create3DPosition(6, 5, 2), GLASS_BLOCK_BACK)
+        ga.setBlockAt(Positions.create3DPosition(7, 5, 2), GLASS_BLOCK_BACK)
+        ga.setBlockAt(Positions.create3DPosition(8, 5, 2), GLASS_BLOCK_BACK)
 
         // door
         ga.setBlockAt(Positions.create3DPosition(10, 13, 0), FLOOR_BLOCK)
@@ -169,20 +176,20 @@ object TopDownObliqueWorldExample {
         ga.setBlockAt(Positions.create3DPosition(11, 13, 2), EMPTY_BLOCK)
 
         // bottom right windows
-        ga.setBlockAt(Positions.create3DPosition(13, 13, 1), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(14, 13, 1), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(15, 13, 1), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(13, 13, 2), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(14, 13, 2), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(15, 13, 2), GLASS_BLOCK)
+        ga.setBlockAt(Positions.create3DPosition(13, 13, 1), GLASS_BLOCK_FRONT)
+        ga.setBlockAt(Positions.create3DPosition(14, 13, 1), GLASS_BLOCK_FRONT)
+        ga.setBlockAt(Positions.create3DPosition(15, 13, 1), GLASS_BLOCK_FRONT)
+        ga.setBlockAt(Positions.create3DPosition(13, 13, 2), GLASS_BLOCK_FRONT)
+        ga.setBlockAt(Positions.create3DPosition(14, 13, 2), GLASS_BLOCK_FRONT)
+        ga.setBlockAt(Positions.create3DPosition(15, 13, 2), GLASS_BLOCK_FRONT)
 
         // top right windows
-        ga.setBlockAt(Positions.create3DPosition(13, 5, 1), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(14, 5, 1), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(15, 5, 1), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(13, 5, 2), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(14, 5, 2), GLASS_BLOCK)
-        ga.setBlockAt(Positions.create3DPosition(15, 5, 2), GLASS_BLOCK)
+        ga.setBlockAt(Positions.create3DPosition(13, 5, 1), GLASS_BLOCK_BACK)
+        ga.setBlockAt(Positions.create3DPosition(14, 5, 1), GLASS_BLOCK_BACK)
+        ga.setBlockAt(Positions.create3DPosition(15, 5, 1), GLASS_BLOCK_BACK)
+        ga.setBlockAt(Positions.create3DPosition(13, 5, 2), GLASS_BLOCK_BACK)
+        ga.setBlockAt(Positions.create3DPosition(14, 5, 2), GLASS_BLOCK_BACK)
+        ga.setBlockAt(Positions.create3DPosition(15, 5, 2), GLASS_BLOCK_BACK)
 
     }
 
