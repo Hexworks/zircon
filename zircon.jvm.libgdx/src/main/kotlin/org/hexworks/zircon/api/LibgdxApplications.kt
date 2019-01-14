@@ -15,7 +15,7 @@ object LibgdxApplications {
      * Builds a new [Application] using the given `appConfig`.
      */
     @JvmStatic
-    fun buildApplication(appConfig: AppConfig): LibgdxApplication {
+    fun buildApplication(appConfig: AppConfig = AppConfigs.defaultConfiguration()): LibgdxApplication {
         return LibgdxApplication(appConfig)
     }
 
@@ -23,7 +23,7 @@ object LibgdxApplications {
      * Builds and starts a new [Application] from the given `appConfig`.
      */
     @JvmStatic
-    fun startApplication(appConfig: AppConfig): LibgdxApplication {
+    fun startApplication(appConfig: AppConfig = AppConfigs.defaultConfiguration()): LibgdxApplication {
         return startLibgdxGame(appConfig).libgdxApplication
     }
 
@@ -31,7 +31,7 @@ object LibgdxApplications {
      * Builds and starts a new [Application] and returns its [TileGrid].
      */
     @JvmStatic
-    fun startTileGrid(appConfig: AppConfig): TileGrid {
+    fun startTileGrid(appConfig: AppConfig = AppConfigs.defaultConfiguration()): TileGrid {
         val maxTries = 10
         var currentTryCount = 0
         val game = startLibgdxGame(appConfig)
@@ -52,7 +52,7 @@ object LibgdxApplications {
         return game.libgdxApplication.tileGrid
     }
 
-    private fun startLibgdxGame(appConfig: AppConfig): LibgdxGame {
+    private fun startLibgdxGame(appConfig: AppConfig = AppConfigs.defaultConfiguration()): LibgdxGame {
         val config = LwjglApplicationConfiguration()
         config.title = "Zircon Application"
         config.width = appConfig.size.width * appConfig.defaultTileset.width
