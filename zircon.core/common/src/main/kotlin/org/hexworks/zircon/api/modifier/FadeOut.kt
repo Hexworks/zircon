@@ -2,10 +2,11 @@ package org.hexworks.zircon.api.modifier
 
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.modifier.impl.Fade
 import org.hexworks.zircon.platform.util.SystemUtils
 
 data class FadeOut(private val steps: Int = 20,
-                   private val timeMs: Long = 2000) : TileTransformModifier<CharacterTile> {
+                   private val timeMs: Long = 2000) : TileTransformModifier<CharacterTile>, Fade {
 
     private var currentStep = 1
     private var delay: Long = timeMs / steps
@@ -14,6 +15,11 @@ data class FadeOut(private val steps: Int = 20,
     override fun generateCacheKey(): String {
         return "Modifier.FadeOut.$currentStep"
     }
+
+    override fun isFadingFinished(): Boolean {
+        return currentStep == steps
+    }
+
 
     override fun canTransform(tile: Tile) = tile is CharacterTile
 

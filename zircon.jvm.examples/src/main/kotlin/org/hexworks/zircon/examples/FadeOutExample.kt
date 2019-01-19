@@ -27,7 +27,7 @@ object FadeOutExample {
                     .withBackgroundColor(TileColor.transparent())
                     .withForegroundColor(ColorThemeResource.NORD.getTheme().accentColor)
                     .withCharacter(c)
-                    .withModifiers(FadeOut(10, 2000)))
+                    .withModifiers(Modifiers.fadeOut(10, 2000)))
         }
 
     }
