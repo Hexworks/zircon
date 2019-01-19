@@ -26,7 +26,7 @@ object FadeInExample {
                     .withBackgroundColor(TileColor.transparent())
                     .withForegroundColor(ColorThemeResource.NORD.getTheme().accentColor)
                     .withCharacter(c)
-                    .withModifiers(FadeIn(10, 2000)))
+                    .withModifiers(Modifiers.fadeIn(10, 2000)))
         }
 
         val textWithoutGlow = "This text fades in without a glow"
