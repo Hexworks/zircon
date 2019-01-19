@@ -1,9 +1,7 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.modifier.BorderBuilder
-import org.hexworks.zircon.api.modifier.Border
-import org.hexworks.zircon.api.modifier.Glow
-import org.hexworks.zircon.api.modifier.Modifier
+import org.hexworks.zircon.api.modifier.*
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
@@ -34,6 +32,18 @@ object Modifiers {
     @JvmStatic
     @JvmOverloads
     fun glow(radius: Float = 5.0f): Modifier = Glow(radius)
+
+    @JvmStatic
+    @JvmOverloads
+    fun fadeIn(steps: Int = 20,
+               timeMs: Long = 2000,
+               glowOnFinalStep: Boolean = true): Modifier = FadeIn(steps, timeMs, glowOnFinalStep)
+
+    @JvmStatic
+    @JvmOverloads
+    fun fadeOut(steps: Int = 20,
+               timeMs: Long = 2000): Modifier = FadeOut(steps, timeMs)
+
 
     /**
      * Shorthand for the default border which is:
