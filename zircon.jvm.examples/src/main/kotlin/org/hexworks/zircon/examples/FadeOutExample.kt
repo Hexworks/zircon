@@ -3,9 +3,10 @@ package org.hexworks.zircon.examples
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.modifier.FadeIn
+import org.hexworks.zircon.api.modifier.FadeOut
 import org.hexworks.zircon.api.resource.ColorThemeResource
 
-object FadeInExample {
+object FadeOutExample {
 
     private val tileset = CP437TilesetResources.taffer20x20()
 
@@ -18,7 +19,7 @@ object FadeInExample {
                 .withDebugMode(true)
                 .build())
 
-        val text = "This text fades in with a glow"
+        val text = "This text fades out"
 
         tileGrid.putCursorAt(Positions.create(1, 1))
         text.forEach { c ->
@@ -26,18 +27,7 @@ object FadeInExample {
                     .withBackgroundColor(TileColor.transparent())
                     .withForegroundColor(ColorThemeResource.NORD.getTheme().accentColor)
                     .withCharacter(c)
-                    .withModifiers(Modifiers.fadeIn(10, 2000)))
-        }
-
-        val textWithoutGlow = "This text fades in without a glow"
-
-        tileGrid.putCursorAt(Positions.create(1, 3))
-        textWithoutGlow.forEach { c ->
-            tileGrid.putTile(Tiles.defaultTile()
-                    .withBackgroundColor(TileColor.transparent())
-                    .withForegroundColor(ColorThemeResource.NORD.getTheme().accentColor)
-                    .withCharacter(c)
-                    .withModifiers(FadeIn(10, 2000, false)))
+                    .withModifiers(Modifiers.fadeOut(10, 2000)))
         }
 
     }

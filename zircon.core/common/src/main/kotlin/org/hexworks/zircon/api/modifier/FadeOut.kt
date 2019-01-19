@@ -5,21 +5,21 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.impl.Fade
 import org.hexworks.zircon.platform.util.SystemUtils
 
-data class FadeIn(private val steps: Int = 20,
-                  private val timeMs: Long = 2000,
-                  private val glowOnFinalStep: Boolean = true) : TileTransformModifier<CharacterTile>, Fade {
+data class FadeOut(private val steps: Int = 20,
+                   private val timeMs: Long = 2000) : TileTransformModifier<CharacterTile>, Fade {
 
     private var currentStep = 1
     private var delay: Long = timeMs / steps
     private var lastRender: Long = Long.MIN_VALUE
 
+    override fun generateCacheKey(): String {
+        return "Modifier.FadeOut.$currentStep"
+    }
+
     override fun isFadingFinished(): Boolean {
         return currentStep == steps
     }
 
-    override fun generateCacheKey(): String {
-        return "Modifier.FadeIn.$currentStep"
-    }
 
     override fun canTransform(tile: Tile) = tile is CharacterTile
 
@@ -29,10 +29,7 @@ data class FadeIn(private val steps: Int = 20,
             generateTile(tile)
         }
         return if (currentStep == steps) {
-            if (glowOnFinalStep)
-                tile.withModifiers(Glow()).asCharacterTile().get()
-            else
-                tile
+            Tile.empty()
         } else {
             val now = SystemUtils.getCurrentTimeMs()
             if (now - lastRender > delay) {
@@ -45,9 +42,9 @@ data class FadeIn(private val steps: Int = 20,
 
     private fun generateTile(tile: CharacterTile): CharacterTile {
         return tile.withBackgroundColor(tile.backgroundColor
-                .darkenByPercent(1.0.minus(currentStep.toDouble().div(steps))))
+                .darkenByPercent(1.0.minus((steps - currentStep.toDouble()).div(steps))))
                 .withForegroundColor(tile.foregroundColor
-                        .darkenByPercent(1.0.minus(currentStep.toDouble().div(steps))))
+                        .darkenByPercent(1.0.minus((steps - currentStep.toDouble()).div(steps))))
     }
 
     private fun isFirstRender() = lastRender == Long.MIN_VALUE
