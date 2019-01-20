@@ -108,7 +108,7 @@ data class BlockBuilder<T : Tile>(
         }
         return DefaultBlock(
                 layers = layers.toMutableList(),
-                sides = sides.toMap(),
+                sides = sides.toMutableMap(),
                 emptyTile = emptyTile.get())
     }
 

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples.custom;
 
+import org.hexworks.zircon.api.data.Block;
 import org.hexworks.zircon.api.data.BlockSide;
 import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.data.base.BlockBase;
@@ -28,5 +29,16 @@ public class CustomBlock extends BlockBase {
     @Override
     public Tile fetchSide(@NotNull BlockSide side) {
         return sides.get(side);
+    }
+
+    @Override
+    public void setSide(@NotNull BlockSide side, @NotNull Tile tile) {
+        sides.put(side, tile);
+    }
+
+    @NotNull
+    @Override
+    public Block createCopy() {
+        return null; // TODO:
     }
 }

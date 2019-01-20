@@ -11,12 +11,14 @@ import org.hexworks.zircon.api.data.impl.Position3D
 interface Block<T : Tile> {
 
     val layers: MutableList<T>
-    val top: T
-    val bottom: T
-    val front: T
-    val back: T
-    val left: T
-    val right: T
+    var top: T
+    var bottom: T
+    var front: T
+    var back: T
+    var left: T
+    var right: T
+
+    fun createCopy(): Block<T>
 
     /**
      * Returns one of the [BlockSide]s of this [Block].
@@ -24,10 +26,39 @@ interface Block<T : Tile> {
     fun fetchSide(side: BlockSide): T
 
     /**
+     * Sets one of the [BlockSide]s of this [Block].
+     */
+    fun setSide(side: BlockSide, tile: T)
+
+    /**
      * Tells whether this [Block] is empty (all of its sides are [Tile.empty],
      * and it has no `layers`).
      */
     fun isEmpty(): Boolean
+
+    fun withFlippedAroundX(): Block<T> {
+        return createCopy().apply {
+            val temp = right
+            this.right = left
+            left = temp
+        }
+    }
+
+    fun withFlippedAroundY(): Block<T> {
+        return createCopy().apply {
+            val temp = front
+            this.front = back
+            back = temp
+        }
+    }
+
+    fun withFlippedAroundZ(): Block<T> {
+        return createCopy().apply {
+            val temp = top
+            this.top = bottom
+            bottom = temp
+        }
+    }
 
     companion object {
 
