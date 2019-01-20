@@ -5,6 +5,7 @@ package org.hexworks.zircon.api.data
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.data.impl.PixelPosition
+import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
@@ -79,6 +80,8 @@ interface Position : Comparable<Position> {
      * Size(x=2, y=3).
      */
     fun toSize(): Size
+
+    fun toPosition3D(z: Int): Position3D
 
     /**
      * Creates a [Position] which is relative to the top of the given [Component].

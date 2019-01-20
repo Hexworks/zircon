@@ -1,10 +1,12 @@
 package org.hexworks.zircon.api.data.base
 
+import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.data.impl.PixelPosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
@@ -116,6 +118,8 @@ abstract class BasePosition : Position {
      * Size(x=2, y=3).
      */
     override fun toSize(): Size = Size.create(x, y)
+
+    override fun toPosition3D(z: Int): Position3D = Positions.from2DTo3D(this, z)
 
     /**
      * Creates a [Position] which is relative to the top of the given [Component].

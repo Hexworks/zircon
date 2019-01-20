@@ -43,10 +43,9 @@ data class TileGraphicsBuilder(
      * Adds a [Tile] at the given [Position].
      */
     fun withTile(position: Position, tile: Tile) = also {
-        require(size.containsPosition(position)) {
-            "The given character's position ($position) is out create bounds for text image size: $size."
+        if (size.containsPosition(position)) {
+            tiles[position] = tile
         }
-        tiles[position] = tile
     }
 
     override fun build(): TileGraphics = ConcurrentTileGraphics(
