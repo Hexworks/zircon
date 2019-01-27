@@ -58,7 +58,8 @@ class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub as ComponentRenderer<ToggleButton>),
-                initialText = TEXT)
+                initialText = TEXT,
+                initialSelected = false)
     }
 
     @Test

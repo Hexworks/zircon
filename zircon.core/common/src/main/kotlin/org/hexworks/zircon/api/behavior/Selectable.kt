@@ -16,6 +16,6 @@ interface Selectable {
 
     companion object {
 
-        fun create(): Selectable = DefaultSelectable()
+        fun create(initialSelected: Boolean = false): Selectable = DefaultSelectable(initialSelected)
     }
 }

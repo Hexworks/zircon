@@ -17,14 +17,20 @@ import org.hexworks.zircon.api.input.MouseAction
 
 class DefaultToggleButton(componentMetadata: ComponentMetadata,
                           initialText: String,
+                          initialSelected: Boolean,
                           private val renderingStrategy: ComponentRenderingStrategy<ToggleButton>)
     : ToggleButton, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
         TextHolder by TextHolder.create(initialText),
-        Selectable by Selectable.create() {
+        Selectable by Selectable.create(initialSelected) {
 
     init {
+        // TODO: when the toggle button is selected by default (on create) it should be rendered as selected
+        // TODO: this if branch is supposed to do the trick, but it doesn't for some reason.
+        if (isSelected) {
+            applyIsSelectedStyle()
+        }
         render()
         textProperty.onChange {
             render()
