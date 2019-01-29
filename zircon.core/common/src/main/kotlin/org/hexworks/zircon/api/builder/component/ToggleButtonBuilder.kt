@@ -66,6 +66,7 @@ data class ToggleButtonBuilder(
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialText = text,
+                initialSelected = isSelected,
                 renderingStrategy = componentRenderer)
     }
 
