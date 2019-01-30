@@ -41,7 +41,9 @@ class DeleteCharacter(private val deleteKind: DeleteKind) : TextBufferTransforma
                 when (deleteKind) {
                     DEL -> {
                         val deleteIdx = cursor.colIdx
-                        cursorRow.removeAt(deleteIdx)
+                        if (buffer.getLastColumnIdxForRow(cursor.rowIdx) >= deleteIdx) {
+                            cursorRow.removeAt(deleteIdx)
+                        }
                     }
                     BACKSPACE -> {
                         val deleteIdx = cursor.colIdx - 1
