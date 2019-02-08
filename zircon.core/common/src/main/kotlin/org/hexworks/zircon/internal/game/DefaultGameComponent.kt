@@ -17,7 +17,7 @@ import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameComponent
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.component.impl.DefaultComponent
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import kotlin.math.min
@@ -38,16 +38,11 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
 
     private val visibleLevelCount = gameArea.visibleSize().zLength
 
-    override fun acceptsFocus(): Boolean {
-        return true
-    }
+    override fun acceptsFocus() = true
 
-    override fun giveFocus(input: Maybe<Input>): Boolean {
-        return true
-    }
+    override fun focusGiven() = Processed
 
-    override fun takeFocus(input: Maybe<Input>) {
-    }
+    override fun focusTaken() = Processed
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSet.defaultStyleSet()

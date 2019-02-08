@@ -1,6 +1,20 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.Blocks;
+import org.hexworks.zircon.api.CharacterTileStrings;
+import org.hexworks.zircon.api.ColorThemes;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.DrawSurfaces;
+import org.hexworks.zircon.api.Layers;
+import org.hexworks.zircon.api.LibgdxApplications;
+import org.hexworks.zircon.api.Positions;
+import org.hexworks.zircon.api.Screens;
+import org.hexworks.zircon.api.Sizes;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.TileColors;
+import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.UIEventResponses;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.builder.component.GameComponentBuilder;
 import org.hexworks.zircon.api.component.Button;
@@ -19,20 +33,24 @@ import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.graphics.TileGraphics;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.input.InputType;
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
+import org.hexworks.zircon.api.uievent.KeyCode;
+import org.hexworks.zircon.api.uievent.KeyboardEventType;
+import org.hexworks.zircon.internal.application.LibgdxApplication;
 import org.hexworks.zircon.internal.game.DefaultGameComponent;
 import org.hexworks.zircon.internal.game.InMemoryGameArea;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 @SuppressWarnings("ALL")
 public class GameAreaScrollingWithLayers {
 
-    private static final List<InputType> EXIT_CONDITIONS = new ArrayList<>();
     private static final ColorTheme THEME = ColorThemes.amigaOs();
     private static final int TERMINAL_WIDTH = 60;
     private static final int TERMINAL_HEIGHT = 30;
@@ -40,21 +58,14 @@ public class GameAreaScrollingWithLayers {
     private static boolean headless = false;
     private static final BuiltInCP437TilesetResource TILESET = BuiltInCP437TilesetResource.ROGUE_YUN_16X16;
 
-    static {
-        EXIT_CONDITIONS.add(InputType.Escape);
-        EXIT_CONDITIONS.add(InputType.EOF);
-    }
-
     public static void main(String[] args) {
 
-        Application app = SwingApplications.startApplication(AppConfigs.newConfig()
+        TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(TILESET)
                 .withSize(SIZE)
                 .withDebugMode(true)
                 .enableBetaFeatures()
                 .build());
-
-        TileGrid tileGrid = app.getTileGrid();
 
 
         if (args.length > 0) {
@@ -170,26 +181,26 @@ public class GameAreaScrollingWithLayers {
                         .toTileGraphic(TILESET))
                 .withOffset(Positions.create(21, 1))
                 .build());
-        screen.onInput((input) -> {
-            if (EXIT_CONDITIONS.contains(input.inputType()) && !headless) {
+        screen.onKeyboardEvent(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
+            if (event.getCode().equals(KeyCode.ESCAPE) && !headless) {
                 System.exit(0);
             } else {
-                if (InputType.ArrowUp == input.inputType()) {
+                if (event.getCode().equals(KeyCode.UP)) {
                     gameArea.scrollOneBackward();
                 }
-                if (InputType.ArrowDown == input.inputType()) {
+                if (event.getCode().equals(KeyCode.DOWN)) {
                     gameArea.scrollOneForward();
                 }
-                if (InputType.ArrowLeft == input.inputType()) {
+                if (event.getCode().equals(KeyCode.LEFT)) {
                     gameArea.scrollOneLeft();
                 }
-                if (InputType.ArrowRight == input.inputType()) {
+                if (event.getCode().equals(KeyCode.RIGHT)) {
                     gameArea.scrollOneRight();
                 }
-                if (InputType.PageUp == input.inputType()) {
+                if (event.getCode().equals(KeyCode.PAGE_UP)) {
                     gameArea.scrollOneUp();
                 }
-                if (InputType.PageDown == input.inputType()) {
+                if (event.getCode().equals(KeyCode.PAGE_DOWN)) {
                     gameArea.scrollOneDown();
                 }
                 screen.removeLayer(coordinates.get());
@@ -206,7 +217,7 @@ public class GameAreaScrollingWithLayers {
                         .build());
                 screen.pushLayer(coordinates.get());
             }
+            return UIEventResponses.processed();
         });
     }
-
 }

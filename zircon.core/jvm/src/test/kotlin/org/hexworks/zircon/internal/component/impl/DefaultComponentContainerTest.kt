@@ -10,18 +10,12 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.input.InputType
-import org.hexworks.zircon.api.input.KeyStroke
-import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.input.MouseActionType.*
-import org.hexworks.zircon.api.kotlin.onMouseEntered
-import org.hexworks.zircon.api.kotlin.onMousePressed
-import org.hexworks.zircon.api.kotlin.onMouseReleased
+import org.hexworks.zircon.api.extensions.onComponentEvent
+import org.hexworks.zircon.api.extensions.onMouseEvent
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.internal.Zircon
+import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.MouseEventType.*
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
-import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.event.ZirconScope
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -38,7 +32,7 @@ class DefaultComponentContainerTest {
                         position = Position.defaultPosition(),
                         size = SIZE,
                         tileset = TILESET,
-                        componentStyleSet = STYLES),
+                        componentStyleSet = buildStyles()),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = RootContainerRenderer())))
@@ -56,7 +50,7 @@ class DefaultComponentContainerTest {
         assertThat(target.toFlattenedLayers()).hasSize(1) // default container
     }
 
-    // TODO: why tf this is working in idea and not in gradle?
+    // TODO: wtf is the problem with this?
     @Ignore
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotLetToAddAComponentWhichIsBiggerThanTheContainer() {
@@ -73,13 +67,12 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val componentHovered = AtomicBoolean(false)
-        button.onMouseEntered {
+        button.onMouseEvent(MOUSE_ENTERED) { _, _ ->
             componentHovered.set(true)
+            Pass
         }
 
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)),
-                eventScope = ZirconScope)
+        target.dispatch(MouseEvent(MOUSE_MOVED, 1, BUTTON_POSITION))
 
         assertThat(componentHovered.get()).isTrue()
     }
@@ -91,18 +84,15 @@ class DefaultComponentContainerTest {
         val button = createButton()
         target.addComponent(button)
 
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)),
-                eventScope = ZirconScope)
+        target.dispatch(MouseEvent(MOUSE_MOVED, 1, BUTTON_POSITION))
 
         val componentHovered = AtomicBoolean(false)
-        button.onMouseEntered {
+        button.onMouseEvent(MOUSE_ENTERED) { _, _ ->
             componentHovered.set(true)
+            Pass
         }
 
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION.withRelativeX(1))),
-                eventScope = ZirconScope)
+        target.dispatch(MouseEvent(MOUSE_MOVED, 1, BUTTON_POSITION.withRelativeX(1)))
 
         assertThat(componentHovered.get()).isFalse()
     }
@@ -115,12 +105,12 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val pressed = AtomicBoolean(false)
-        button.onMousePressed {
+        button.onMouseEvent(MOUSE_PRESSED) { _, _ ->
             pressed.set(true)
+            Pass
         }
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)),
-                eventScope = ZirconScope)
+
+        target.dispatch(MouseEvent(MOUSE_PRESSED, 1, BUTTON_POSITION))
 
         assertThat(pressed.get()).isTrue()
     }
@@ -133,13 +123,12 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val released = AtomicBoolean(false)
-        button.onMouseReleased {
+        button.onMouseEvent(MOUSE_RELEASED) { _, _ ->
             released.set(true)
+            Pass
         }
 
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)),
-                eventScope = ZirconScope)
+        target.dispatch(MouseEvent(MOUSE_RELEASED, 1, BUTTON_POSITION))
 
         assertThat(released.get()).isTrue()
     }
@@ -152,26 +141,22 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val events = mutableListOf<Boolean>()
-        button.onMouseEntered {
+        button.onMouseEvent(MOUSE_ENTERED) { _, _ ->
             events.add(true)
+            Pass
         }
-        button.onMousePressed {
+        button.onMouseEvent(MOUSE_PRESSED) { _, _ ->
             events.add(true)
+            Pass
         }
-        button.onMouseReleased {
+        button.onMouseEvent(MOUSE_RELEASED) { _, _ ->
             events.add(true)
+            Pass
         }
 
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(MouseAction(MOUSE_MOVED, 1, BUTTON_POSITION)),
-                eventScope = ZirconScope)
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(MouseAction(MOUSE_PRESSED, 1, BUTTON_POSITION)),
-                eventScope = ZirconScope)
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(MouseAction(MOUSE_RELEASED, 1, BUTTON_POSITION)),
-                eventScope = ZirconScope)
-
+        target.dispatch(MouseEvent(MOUSE_MOVED, 1, BUTTON_POSITION))
+        target.dispatch(MouseEvent(MOUSE_PRESSED, 1, BUTTON_POSITION))
+        target.dispatch(MouseEvent(MOUSE_RELEASED, 1, BUTTON_POSITION))
 
         assertThat(events).isEmpty()
     }
@@ -185,9 +170,7 @@ class DefaultComponentContainerTest {
 
         assertThat(button.componentStyleSet.currentStyle()).isNotEqualTo(FOCUSED_STYLE)
 
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(KeyStroke(type = InputType.Tab)),
-                eventScope = ZirconScope)
+        target.dispatch(TAB)
 
         assertThat(button.componentStyleSet.currentStyle()).isEqualTo(FOCUSED_STYLE)
     }
@@ -205,19 +188,12 @@ class DefaultComponentContainerTest {
                 .build()
         target.addComponent(other)
 
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(KeyStroke(type = InputType.Tab)),
-                eventScope = ZirconScope)
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(KeyStroke(type = InputType.Tab)),
-                eventScope = ZirconScope)
+        target.dispatch(TAB)
+        target.dispatch(TAB)
 
         assertThat(button.componentStyleSet.currentStyle()).isEqualTo(DEFAULT_STYLE)
 
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(KeyStroke(shiftDown = true, type = InputType.ReverseTab)),
-                eventScope = ZirconScope)
-
+        target.dispatch(REVERSE_TAB)
 
         assertThat(button.componentStyleSet.currentStyle()).isEqualTo(FOCUSED_STYLE)
     }
@@ -229,41 +205,38 @@ class DefaultComponentContainerTest {
         val button = createButton()
         target.addComponent(button)
 
-        val released = AtomicBoolean(false)
-        button.onMouseReleased {
-            released.set(true)
+        val activated = AtomicBoolean(false)
+        button.onComponentEvent(ComponentEventType.ACTIVATED) {
+            activated.set(true)
+            Pass
         }
 
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(KeyStroke(type = InputType.Tab)),
-                eventScope = ZirconScope)
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(KeyStroke(type = InputType.Character, character = ' ')),
-                eventScope = ZirconScope)
+        target.dispatch(TAB)
+        target.dispatch(SPACE)
 
-        assertThat(released.get()).isTrue()
+        assertThat(activated.get()).isTrue()
     }
 
     private fun createButton() = ButtonBuilder.newBuilder()
             .withPosition(BUTTON_POSITION)
             .withText(BUTTON_TEXT)
-            .withComponentStyleSet(STYLES)
+            .withComponentStyleSet(buildStyles())
             .build()
 
     companion object {
+        const val BUTTON_TEXT = "TEXT"
         val TILESET = BuiltInCP437TilesetResource.REX_PAINT_16X16
         val SIZE = Size.create(30, 20)
-        val BUTTON_TEXT = "TEXT"
         val BUTTON_POSITION = Position.create(6, 7)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
                 .withBackgroundColor(ANSITileColor.BLUE)
                 .withForegroundColor(ANSITileColor.RED)
                 .build()
-        val ACTIVE_STYLE = StyleSetBuilder.newBuilder()
+        private val ACTIVE_STYLE = StyleSetBuilder.newBuilder()
                 .withBackgroundColor(ANSITileColor.GREEN)
                 .withForegroundColor(ANSITileColor.YELLOW)
                 .build()
-        val DISABLED_STYLE = StyleSetBuilder.newBuilder()
+        private val DISABLED_STYLE = StyleSetBuilder.newBuilder()
                 .withBackgroundColor(ANSITileColor.MAGENTA)
                 .withForegroundColor(ANSITileColor.BLUE)
                 .build()
@@ -271,16 +244,33 @@ class DefaultComponentContainerTest {
                 .withBackgroundColor(ANSITileColor.YELLOW)
                 .withForegroundColor(ANSITileColor.CYAN)
                 .build()
-        val MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
+        private val MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
                 .withBackgroundColor(ANSITileColor.RED)
                 .withForegroundColor(ANSITileColor.CYAN)
                 .build()
-        val STYLES = ComponentStyleSetBuilder.newBuilder()
+
+        fun buildStyles() = ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(DEFAULT_STYLE)
                 .withActiveStyle(ACTIVE_STYLE)
                 .withDisabledStyle(DISABLED_STYLE)
                 .withFocusedStyle(FOCUSED_STYLE)
                 .withMouseOverStyle(MOUSE_OVER_STYLE)
                 .build()
+
+        val SPACE = KeyboardEvent(
+                type = KeyboardEventType.KEY_PRESSED,
+                code = KeyCode.SPACE,
+                key = " ")
+
+        val TAB = KeyboardEvent(
+                type = KeyboardEventType.KEY_PRESSED,
+                key = "\t",
+                code = KeyCode.TAB)
+
+        val REVERSE_TAB = KeyboardEvent(
+                type = KeyboardEventType.KEY_PRESSED,
+                key = "\t",
+                code = KeyCode.TAB,
+                shiftDown = true)
     }
 }

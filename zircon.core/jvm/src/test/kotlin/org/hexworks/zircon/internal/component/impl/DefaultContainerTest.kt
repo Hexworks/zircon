@@ -18,6 +18,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
@@ -233,7 +234,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldNotAcceptGivenFocus() {
-        assertThat(target.giveFocus()).isFalse()
+        assertThat(target.focusGiven()).isEqualTo(Pass)
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -325,7 +326,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldProperlyReturnToString() {
-        assertThat(target.toString()).isEqualTo("DefaultContainer(id=${target.id.toString().substring(0, 4)},position=GridPosition(x=2, y=3),size=DefaultSize(width=4, height=4),components=[])")
+        assertThat(target.toString()).isEqualTo("DefaultContainer(id=${target.id.toString().substring(0, 4)},position=GridPosition(x=2, y=3),size=DefaultSize(width=4, height=4))")
     }
 
     @Test

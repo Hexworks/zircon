@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
@@ -8,6 +9,7 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
+import org.hexworks.zircon.api.extensions.abbreviate
 
 class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
                                  private val renderingStrategy: ComponentRenderingStrategy<LogArea>)
@@ -24,18 +26,21 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     }
 
     override fun addHeader(text: String, withNewLine: Boolean) {
+        LOGGER.debug("Adding header text ($text) to LogArea (id=${id.abbreviate()}).")
         addLogElement(createTextBoxBuilder()
                 .addHeader(text, withNewLine)
                 .build())
     }
 
     override fun addParagraph(paragraph: String, withNewLine: Boolean, withTypingEffectSpeedInMs: Long) {
+        LOGGER.debug("Adding paragraph text ($paragraph) to LogArea (id=${id.abbreviate()}).")
         addLogElement(createTextBoxBuilder()
                 .addParagraph(paragraph, withNewLine, withTypingEffectSpeedInMs)
                 .build())
     }
 
     override fun addParagraph(paragraphBuilder: ParagraphBuilder, withNewLine: Boolean) {
+        LOGGER.debug("Adding paragraph from builder to LogArea (id=${id.abbreviate()}).")
         addLogElement(createTextBoxBuilder()
                 .addParagraph(paragraphBuilder, withNewLine)
                 .build(), false)
@@ -43,20 +48,24 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
 
 
     override fun addListItem(item: String) {
+        LOGGER.debug("Adding list item ($item) to LogArea (id=${id.abbreviate()}).")
         addLogElement(createTextBoxBuilder()
                 .addListItem(item)
                 .build())
     }
 
     override fun addInlineText(text: String) {
+        LOGGER.debug("Adding inline text ($text) to LogArea (id=${id.abbreviate()}).")
         currentInlineBuilder.addInlineText(text)
     }
 
     override fun addInlineComponent(component: Component) {
+        LOGGER.debug("Adding inline component ($component) to LogArea (id=${id.abbreviate()}).")
         currentInlineBuilder.addInlineComponent(component)
     }
 
     override fun commitInlineElements() {
+        LOGGER.debug("Committing inline elements of LogArea (id=${id.abbreviate()}).")
         val builder = currentInlineBuilder
         currentInlineBuilder = createTextBoxBuilder()
         addLogElement(builder.commitInlineElements()
@@ -64,6 +73,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     }
 
     override fun addNewRows(numberOfRows: Int) {
+        LOGGER.debug("Adding new rows ($numberOfRows) to LogArea (id=${id.abbreviate()}).")
         (0 until numberOfRows).forEach { _ ->
             addLogElement(createTextBoxBuilder()
                     .addNewLine()
@@ -72,10 +82,12 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     }
 
     override fun clear() {
+        LOGGER.debug("Clearing to LogArea (id=${id.abbreviate()}).")
         children.forEach { removeComponent(it) }
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        LOGGER.debug("Applying color theme ($colorTheme) to LogArea (id=${id.abbreviate()}).")
         currentTheme = colorTheme
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
@@ -138,7 +150,11 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
+        LOGGER.debug("LogArea (id=${id.abbreviate()}) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 
+    companion object {
+        val LOGGER = LoggerFactory.getLogger(LogArea::class)
+    }
 }

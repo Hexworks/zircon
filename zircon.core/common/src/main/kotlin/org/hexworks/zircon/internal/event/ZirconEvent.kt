@@ -6,10 +6,6 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
 
 sealed class ZirconEvent : Event {
-    /**
-     * A new input arrived into the system.
-     */
-    data class Input(val input: org.hexworks.zircon.api.input.Input) : ZirconEvent()
 
     /**
      * Cursor is requested at the given `position`.
@@ -51,7 +47,7 @@ sealed class ZirconEvent : Event {
 
     /**
      * A Hyperlink was triggered
-     * *eg. used in [org.hexworks.zircon.api.component.LogArea]
-     * */
+     * eg. used in [org.hexworks.zircon.api.component.LogArea]
+     */
     data class TriggeredHyperLink(val linkId: String) : ZirconEvent()
 }

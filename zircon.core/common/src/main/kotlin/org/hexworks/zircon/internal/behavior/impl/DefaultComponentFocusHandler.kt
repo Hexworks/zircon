@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.behavior.impl
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.subscribe
-import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
 import org.hexworks.zircon.internal.behavior.Focusable
@@ -14,31 +14,17 @@ class DefaultComponentFocusHandler(private val rootComponent: InternalComponent)
     override var focusedComponent: InternalComponent = rootComponent
         private set
 
-    private val logger = LoggerFactory.getLogger(this::class)
-
     private val nextsLookup = mutableMapOf(Pair(rootComponent.id, rootComponent))
     private val prevsLookup = nextsLookup.toMutableMap()
 
-    init {
-        Zircon.eventBus.subscribe<ZirconEvent.RequestFocusFor>(ZirconScope) { (component) ->
-            require(component is InternalComponent) {
-                "Only InternalComponents can be focused."
-            }
-            focus(component)
-        }
-        Zircon.eventBus.subscribe<ZirconEvent.ClearFocus>(ZirconScope) { (component) ->
-            if (focusedComponent.id == component.id) {
-                focus(rootComponent)
-            }
-        }
-    }
+    override fun findNext() = Maybe.ofNullable(nextsLookup[focusedComponent.id])
 
-    override fun focusNext() {
-        nextsLookup[focusedComponent.id]?.let { focus(it) }
-    }
+    override fun findPrevious() = Maybe.ofNullable(prevsLookup[focusedComponent.id])
 
-    override fun focusPrevious() {
-        prevsLookup[focusedComponent.id]?.let { focus(it) }
+    override fun focus(component: InternalComponent) {
+        if (canFocus(component)) {
+            focusedComponent = component
+        }
     }
 
     override fun refreshFocusables() {
@@ -67,18 +53,7 @@ class DefaultComponentFocusHandler(private val rootComponent: InternalComponent)
         focusedComponent = rootComponent
     }
 
-    override fun focus(component: InternalComponent): Boolean {
-        return if (canFocus(component)) {
-            focusedComponent.takeFocus()
-            focusedComponent = component
-            component.giveFocus()
-            true
-        } else {
-            false
-        }
-    }
-
-    private fun canFocus(component: InternalComponent) =
+    override fun canFocus(component: InternalComponent) =
             component.acceptsFocus() && isNotAlreadyFocused(component) && component.isAttached()
 
     private fun isNotAlreadyFocused(focusable: Focusable) =

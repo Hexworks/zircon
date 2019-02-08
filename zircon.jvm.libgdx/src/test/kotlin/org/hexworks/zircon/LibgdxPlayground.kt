@@ -72,7 +72,10 @@ object LibgdxPlayground : Game() {
         screen.applyColorTheme(theme)
         screen.display()
 
-        Gdx.input.inputProcessor = ZirconInputListener(TILESET.width, TILESET.height)
+        Gdx.input.inputProcessor = ZirconInputListener(
+                fontWidth = TILESET.width,
+                fontHeight = TILESET.height,
+                tileGrid = zirconApplication.tileGrid)
     }
 
     override fun render() {

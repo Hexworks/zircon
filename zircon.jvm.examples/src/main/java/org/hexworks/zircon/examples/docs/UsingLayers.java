@@ -1,6 +1,8 @@
 package org.hexworks.zircon.examples.docs;
 
+import org.hexworks.zircon.api.AppConfigs;
 import org.hexworks.zircon.api.Layers;
+import org.hexworks.zircon.api.LibgdxApplications;
 import org.hexworks.zircon.api.Positions;
 import org.hexworks.zircon.api.Sizes;
 import org.hexworks.zircon.api.SwingApplications;
@@ -15,7 +17,9 @@ public class UsingLayers {
 
     public static void main(String[] args) {
 
-        TileGrid tileGrid = SwingApplications.startTileGrid();
+        TileGrid tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+                .withSize(20, 10)
+                .build());
 
         Layer layer0 = Layers.newBuilder()
                 .withTileGraphics(DrawSurfaces.tileGraphicsBuilder()

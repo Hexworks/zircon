@@ -13,9 +13,11 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.input.MouseActionType
-import org.hexworks.zircon.api.input.MouseActionType.MOUSE_PRESSED
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.component.renderer.DefaultButtonRenderer
 import org.junit.Before
 import org.junit.Test
@@ -85,29 +87,33 @@ class DefaultButtonTest : ComponentImplementationTest<DefaultButton>() {
 
     @Test
     fun shouldProperlyGiveFocus() {
-        val result = target.giveFocus()
+        val result = target.focusGiven()
 
-        assertThat(result).isTrue()
+        assertThat(result).isEqualTo(Processed)
         assertThat(target.componentStyleSet.currentState()).isEqualTo(FOCUSED)
     }
 
     @Test
     fun shouldProperlyTakeFocus() {
-        target.takeFocus()
+        target.focusTaken()
 
         assertThat(target.componentStyleSet.currentState()).isEqualTo(DEFAULT)
     }
 
     @Test
     fun shouldProperlyHandleMousePress() {
-        target.mousePressed(MouseAction(MOUSE_PRESSED, 1, Position.defaultPosition()))
+        target.mousePressed(
+                event = MouseEvent(MOUSE_PRESSED, 1, Position.defaultPosition()),
+                phase = UIEventPhase.TARGET)
 
         assertThat(target.componentStyleSet.currentState()).isEqualTo(ACTIVE)
     }
 
     @Test
     fun shouldProperlyHandleMouseRelease() {
-        target.mouseReleased(MouseAction(MouseActionType.MOUSE_RELEASED, 1, Position.defaultPosition()))
+        target.mouseReleased(
+                event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.defaultPosition()),
+                phase = UIEventPhase.TARGET)
 
         assertThat(target.componentStyleSet.currentState()).isEqualTo(MOUSE_OVER)
     }

@@ -2,23 +2,15 @@ package org.hexworks.zircon.internal.screen
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.AppConfigs
-import org.hexworks.zircon.api.animation.AnimationResource
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.input.KeyStroke
-import org.hexworks.zircon.api.kotlin.onInput
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.Zircon
-import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
-import java.io.File
-import java.util.concurrent.atomic.AtomicBoolean
 
 class TileGridScreenTest {
 
@@ -35,36 +27,6 @@ class TileGridScreenTest {
                 size = SIZE)
         MockitoAnnotations.initMocks(this)
         target = TileGridScreen(grid)
-    }
-
-    @Test
-    fun givenScreenWithAnimationWhenGivenInputThenFireOnInput() {
-        target.display()
-        val animation = AnimationResource.loadAnimationFromStream(
-                zipStream = File("jvm/src/test/resources/animations/skull.zap").inputStream(),
-                tileset = tileset)
-                .setPositionForAll(Position.create(0, 0))
-                .withLoopCount(0)
-                .build()
-
-        val inputFired = AtomicBoolean(false)
-        target.onInput { inputFired.set(true) }
-
-        //first of all lets make sure the default behavior works. if a key is pressed I should get an input fired
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(KeyStroke('a')),
-                eventScope = ZirconScope)
-        assertThat(inputFired.get()).isTrue()
-
-        //now lets add the animation and make sure we can still get input
-        target.startAnimation(animation)
-
-        inputFired.set(false)
-        Zircon.eventBus.publish(
-                event = ZirconEvent.Input(KeyStroke('a')),
-                eventScope = ZirconScope)
-        assertThat(inputFired.get()).isTrue()
-
     }
 
     @Test

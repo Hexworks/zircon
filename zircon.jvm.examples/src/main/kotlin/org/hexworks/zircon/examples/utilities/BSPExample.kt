@@ -52,15 +52,13 @@ object BSPExample {
         val list = mutableListOf<BSPTree>()
         BSPTree.collectRooms(root, list)
 
-        val matrix = Array(height + 1) { CharArray(width + 1) { ' ' } }
-
         var nbr = 48
         for (BSPTree: BSPTree in list) {
             val char = nbr.toChar()
             BSPTree.whenHasRoom { rec ->
-                for (y in rec.position.y..rec.position.y + rec.height-1) {
-                    for (x in rec.position.x..rec.position.x + rec.width-1) {
-                        var tile = Tiles.newBuilder()
+                for (y in rec.position.y until rec.position.y + rec.height) {
+                    for (x in rec.position.x until rec.position.x + rec.width) {
+                        val tile = Tiles.newBuilder()
                                 .withCharacter(char)
                                 .withForegroundColor(TileColors.fromString("#999999"))
                                 .buildCharacterTile()
@@ -74,38 +72,6 @@ object BSPExample {
             nbr++
         }
 
-    }
-
-    private val FLOOR = Tiles.newBuilder()
-            .withCharacter(Symbols.INTERPUNCT)
-            .withForegroundColor(ANSITileColor.YELLOW)
-            .buildCharacterTile()
-    private val WALL = Tiles.newBuilder()
-            .withCharacter('#')
-            .withForegroundColor(TileColors.fromString("#999999"))
-            .buildCharacterTile()
-
-    fun getMap(width: Int, height: Int) {
-        println("Start generating the BSP map")
-
-        val r = Rect.create(Positions.create(0, 0), Sizes.create(width, height))
-
-        val root = BSPTree(r)
-        root.createRooms()
-
-        val list = mutableListOf<BSPTree>()
-        BSPTree.collectRooms(root, list)
-
-        val matrix = Array(height + 1) { CharArray(width + 1) { ' ' } }
-
-        BSPTree.toMatrix(matrix, list)
-
-        for (row in matrix) {
-            for (j in row) {
-                print(j)
-            }
-            println("")
-        }
     }
 
     class CustomGameArea(visibleSize: Size3D,

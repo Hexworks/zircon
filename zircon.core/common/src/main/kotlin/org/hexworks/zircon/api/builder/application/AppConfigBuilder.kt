@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.application
 
+import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.builder.Builder
@@ -46,7 +47,8 @@ data class AppConfigBuilder(
             debugMode = debugMode,
             size = defaultSize,
             fullScreen = fullScreen,
-            betaEnabled = betaEnabled).also {
+            betaEnabled = betaEnabled,
+            title = title).also {
         RuntimeConfig.config = it
     }
 
@@ -107,6 +109,8 @@ data class AppConfigBuilder(
     fun withSize(size: Size) = also {
         this.defaultSize = size
     }
+
+    fun withSize(width: Int, height: Int) = withSize(Sizes.create(width, height))
 
     fun withDefaultTileset(defaultTileset: TilesetResource) = also {
         this.defaultTileset = defaultTileset

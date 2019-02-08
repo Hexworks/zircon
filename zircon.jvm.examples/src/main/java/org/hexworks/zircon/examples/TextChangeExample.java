@@ -15,10 +15,8 @@ public class TextChangeExample {
         final Label label = Components.label().withText("label").build();
 
         label.setText("foo");
-        label.onInput(input -> {
-
-        });
         screen.addComponent(label);
+        screen.display();
     }
 
 }

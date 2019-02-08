@@ -1,16 +1,30 @@
 package org.hexworks.zircon.internal.behavior
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.internal.component.InternalComponent
 
 interface ComponentFocusHandler {
 
     val focusedComponent: InternalComponent
 
-    fun focusNext()
+    fun isFocused(component: InternalComponent) = component == focusedComponent
 
-    fun focusPrevious()
+    /**
+     * Returns the next component to focus (if any).
+     */
+    fun findNext(): Maybe<InternalComponent>
 
-    fun focus(component: InternalComponent): Boolean
+    /**
+     * Returns the previous component to focus (if any).
+     */
+    fun findPrevious(): Maybe<InternalComponent>
+
+    /**
+     * Focuses the given component (if it is possible).
+     */
+    fun focus(component: InternalComponent)
 
     fun refreshFocusables()
+
+    fun canFocus(component: InternalComponent): Boolean
 }

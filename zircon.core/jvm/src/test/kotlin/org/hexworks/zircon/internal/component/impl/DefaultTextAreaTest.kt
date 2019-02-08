@@ -15,8 +15,10 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.input.InputType.*
-import org.hexworks.zircon.api.input.KeyStroke
+import org.hexworks.zircon.api.uievent.KeyCode
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
@@ -77,7 +79,12 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
     fun shouldProperlyMoveCursorRightWhenArrowRightPressed() {
         target = initializeMultiLineTextArea()
 
-        target.keyStroked(KeyStroke(type = ArrowRight))
+        target.keyPressed(
+                event = KeyboardEvent(
+                        type = KeyboardEventType.KEY_PRESSED,
+                        key = "${KeyCode.RIGHT.toChar()}",
+                        code = KeyCode.RIGHT),
+                phase = TARGET)
 
         assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(1, 0))
     }
@@ -86,9 +93,24 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
     fun shouldProperlyMoveCursorLeftWhenArrowLeftPressed() {
         target = initializeMultiLineTextArea()
 
-        target.keyStroked(KeyStroke(type = ArrowRight))
-        target.keyStroked(KeyStroke(type = ArrowRight))
-        target.keyStroked(KeyStroke(type = ArrowLeft))
+        target.keyPressed(
+                event = KeyboardEvent(
+                        type = KeyboardEventType.KEY_PRESSED,
+                        key = "${KeyCode.RIGHT.toChar()}",
+                        code = KeyCode.RIGHT),
+                phase = TARGET)
+        target.keyPressed(
+                event = KeyboardEvent(
+                        type = KeyboardEventType.KEY_PRESSED,
+                        key = "${KeyCode.RIGHT.toChar()}",
+                        code = KeyCode.RIGHT),
+                phase = TARGET)
+        target.keyPressed(
+                event = KeyboardEvent(
+                        type = KeyboardEventType.KEY_PRESSED,
+                        key = "${KeyCode.LEFT.toChar()}",
+                        code = KeyCode.LEFT),
+                phase = TARGET)
 
         assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(1, 0))
     }
@@ -97,7 +119,12 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
     fun shouldProperlyMoveCursorDownWhenArrowDownPressed() {
         target = initializeMultiLineTextArea()
 
-        target.keyStroked(KeyStroke(type = ArrowDown))
+        target.keyPressed(
+                event = KeyboardEvent(
+                        type = KeyboardEventType.KEY_PRESSED,
+                        key = "${KeyCode.DOWN.toChar()}",
+                        code = KeyCode.DOWN),
+                phase = TARGET)
 
         assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(0, 1))
     }
@@ -106,47 +133,47 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
     fun shouldProperlyMoveCursorUpWhenArrowUpPressed() {
         target = initializeMultiLineTextArea()
 
-        target.keyStroked(KeyStroke(type = ArrowDown))
-        target.keyStroked(KeyStroke(type = ArrowDown))
-        target.keyStroked(KeyStroke(type = ArrowUp))
+        target.keyPressed(DOWN, TARGET)
+        target.keyPressed(DOWN, TARGET)
+        target.keyPressed(UP, TARGET)
 
         assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(0, 1))
     }
 
     @Test
     fun shouldProperlyDeleteWhenDeleteIsPressed() {
-        target.keyStroked(KeyStroke(type = Delete))
+        target.keyPressed(DELETE, TARGET)
 
         assertThat(target.text).isEqualTo("ext")
     }
 
     @Test
     fun shouldProperlyDeleteWhenBackspaceIsPressed() {
-        target.keyStroked(KeyStroke(type = ArrowRight))
-        target.keyStroked(KeyStroke(type = ArrowRight))
-        target.keyStroked(KeyStroke(type = Backspace))
+        target.keyPressed(RIGHT, TARGET)
+        target.keyPressed(RIGHT, TARGET)
+        target.keyPressed(BACKSPACE, TARGET)
 
         assertThat(target.text).isEqualTo("txt")
     }
 
     @Test
     fun shouldProperlyAddLineBreakWhenEnterPressedAt0x0Position() {
-        target.keyStroked(KeyStroke(type = Enter))
+        target.keyPressed(ENTER, TARGET)
 
         assertThat(target.text).isEqualTo("${SEP}text")
     }
 
     @Test
     fun shouldProperlyAddLineBreakWhenEnterPressedAt1x0Position() {
-        target.keyStroked(KeyStroke(type = ArrowRight))
-        target.keyStroked(KeyStroke(type = Enter))
+        target.keyPressed(RIGHT, TARGET)
+        target.keyPressed(ENTER, TARGET)
 
         assertThat(target.text).isEqualTo("t${SEP}ext")
     }
 
     @Test
     fun shouldProperlyInsertCharacter() {
-        target.keyStroked(KeyStroke(character = 'x'))
+        target.keyPressed(X, TARGET)
 
         assertThat(target.text).isEqualTo("xtext")
     }
@@ -162,7 +189,7 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
             cursorVisible = true
         }
 
-        target.giveFocus()
+        target.focusGiven()
 
         assertThat(target.componentStyleSet.currentState())
                 .isEqualTo(FOCUSED)
@@ -176,7 +203,7 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
         Zircon.eventBus.subscribe<ZirconEvent.HideCursor>(ZirconScope) {
             cursorHidden = true
         }
-        target.takeFocus()
+        target.focusTaken()
 
         assertThat(target.componentStyleSet.currentState())
                 .isEqualTo(DEFAULT)
@@ -204,5 +231,18 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
         const val TEXT = "text"
         const val UPDATE_TEXT = 'U'
         val MULTI_LINE_TEXT = "text${SEP}text$SEP"
+
+        val DOWN = KeyboardEvent(
+                type = KeyboardEventType.KEY_PRESSED,
+                key = "${KeyCode.DOWN.toChar()}",
+                code = KeyCode.DOWN)
+
+        val UP = DOWN.copy(key = " ", code = KeyCode.UP)
+        val LEFT = DOWN.copy(key = " ", code = KeyCode.LEFT)
+        val RIGHT = DOWN.copy(key = " ", code = KeyCode.RIGHT)
+        val ENTER = DOWN.copy(key = " ", code = KeyCode.ENTER)
+        val BACKSPACE = DOWN.copy(key = " ", code = KeyCode.BACKSPACE)
+        val DELETE = DOWN.copy(key = " ", code = KeyCode.DELETE)
+        val X = DOWN.copy(key = "x", code = KeyCode.KEY_X)
     }
 }

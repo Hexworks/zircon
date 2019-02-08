@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.component.Header
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.component.renderer.DefaultHeaderRenderer
 import org.junit.Before
 import org.junit.Test
@@ -53,7 +54,7 @@ class DefaultHeaderTest : ComponentImplementationTest<DefaultHeader>() {
 
     @Test
     fun shouldNotAcceptGivenFocus() {
-        assertThat(target.giveFocus()).isFalse()
+        assertThat(target.focusGiven()).isEqualTo(Pass)
     }
 
     companion object {

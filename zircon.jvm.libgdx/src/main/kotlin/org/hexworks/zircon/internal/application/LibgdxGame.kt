@@ -27,8 +27,12 @@ class LibgdxGame(private val appConfig: AppConfig) : Game() {
 
         libgdxApplication = LibgdxApplications.buildApplication(appConfig)
         libgdxApplication.start()
+        val tileGrid = libgdxApplication.tileGrid
 
-        Gdx.input.inputProcessor = ZirconInputListener(tileset.width, tileset.height)
+        Gdx.input.inputProcessor = ZirconInputListener(
+                fontWidth = tileset.width,
+                fontHeight = tileset.height,
+                tileGrid = tileGrid)
     }
 
     override fun render() {

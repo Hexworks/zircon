@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.*
 
 object ImageTileExample {
 
-    private val imageDictionary = ImageDictionaryTilesetResources.loadFromDirectory("zircon.examples/src/main/resources/image_dictionary")
+    private val imageDictionary = ImageDictionaryTilesetResources.loadFromDirectory("zircon.jvm.examples/src/main/resources/image_dictionary")
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -23,7 +23,7 @@ object ImageTileExample {
 
         // TODO: fix positioning
 
-        tileGrid.setTileAt(Positions.create(5, 5), imageTile)
+        tileGrid.setTileAt(Positions.create(30, 20), imageTile)
 
     }
 

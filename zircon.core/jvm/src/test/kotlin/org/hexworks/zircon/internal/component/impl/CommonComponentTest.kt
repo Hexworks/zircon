@@ -2,17 +2,17 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.input.Input
-import org.hexworks.zircon.api.input.KeyStroke
-import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.input.MouseActionType.*
-import org.hexworks.zircon.api.kotlin.*
+import org.hexworks.zircon.api.uievent.MouseEventType.*
+import org.hexworks.zircon.api.extensions.*
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.ColorThemeResource
+import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.UIEventPhase.*
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.junit.Test
 
@@ -61,14 +61,19 @@ abstract class CommonComponentTest<T : InternalComponent> {
     open fun shouldProperlyHandleKeyStroked() {
         rendererStub.clear()
 
-        target.keyStroked(KeyStroke('x'))
+        target.keyPressed(KeyboardEvent(
+                type = KeyboardEventType.KEY_PRESSED,
+                key = "x",
+                code = KeyCode.KEY_X), TARGET)
+
+        //TODO: assert?
     }
 
     @Test
     open fun shouldProperlyHandleMouseClicked() {
         rendererStub.clear()
 
-        target.mouseClicked(MouseAction(MOUSE_CLICKED, 1, Position.zero()))
+        target.mouseClicked(MouseEvent(MOUSE_CLICKED, 1, Position.zero()), TARGET)
     }
 
 
@@ -76,182 +81,73 @@ abstract class CommonComponentTest<T : InternalComponent> {
     open fun shouldProperlyHandleMouseWheelRotatedUp() {
         rendererStub.clear()
 
-        target.mouseWheelRotatedUp(MouseAction(MOUSE_WHEEL_ROTATED_UP, 1, Position.zero()))
+        target.mouseWheelRotatedUp(
+                event = MouseEvent(MOUSE_WHEEL_ROTATED_UP, 1, Position.zero()),
+                phase = TARGET)
     }
 
     @Test
     open fun shouldProperlyHandleMouseWheelRotatedDown() {
         rendererStub.clear()
 
-        target.mouseWheelRotatedDown(MouseAction(MOUSE_WHEEL_ROTATED_DOWN, 1, Position.zero()))
+        target.mouseWheelRotatedDown(
+                event = MouseEvent(MOUSE_WHEEL_ROTATED_DOWN, 1, Position.zero()),
+                phase = TARGET)
     }
 
     @Test
     open fun shouldProperlyHandleMouseDragged() {
         rendererStub.clear()
 
-        target.mouseDragged(MouseAction(MOUSE_DRAGGED, 1, Position.zero()))
+        target.mouseDragged(
+                event = MouseEvent(MOUSE_DRAGGED, 1, Position.zero()),
+                phase = TARGET)
     }
 
     @Test
     open fun shouldProperlyHandleMouseMoved() {
         rendererStub.clear()
 
-        target.mouseMoved(MouseAction(MOUSE_MOVED, 1, Position.zero()))
+        target.mouseMoved(
+                event = MouseEvent(MOUSE_MOVED, 1, Position.zero()),
+                phase = TARGET)
     }
 
-    @Test
-    open fun shouldProperlyHandleOnInput() {
-        var maybeInput = Maybe.empty<Input>()
-        target.onInput {
-            maybeInput = Maybe.of(it)
-        }
-
-        val input = KeyStroke()
-
-        target.inputEmitted(input)
-
-        assertThat(maybeInput.get()).isEqualTo(input)
-    }
 
     @Test
     open fun shouldProperlyHandleOnKeyStroke() {
-        var maybeKeyStroke = Maybe.empty<KeyStroke>()
-        target.onKeyStroke {
-            maybeKeyStroke = Maybe.of(it)
+        var maybeEvent = Maybe.empty<KeyboardEvent>()
+        target.onKeyboardEvent(KeyboardEventType.KEY_PRESSED) { event, _ ->
+            maybeEvent = Maybe.of(event)
+            Processed
         }
 
-        val input = KeyStroke()
+        val keyboardEvent = KeyboardEvent(
+                type = KeyboardEventType.KEY_PRESSED,
+                key = "x",
+                code = KeyCode.KEY_X)
 
-        target.inputEmitted(input)
+        target.process(keyboardEvent, TARGET)
 
-        assertThat(maybeKeyStroke.get()).isEqualTo(input)
+        assertThat(maybeEvent.get()).isEqualTo(keyboardEvent)
     }
 
     @Test
-    open fun shouldProperlyHandleOnMouseClicked() {
-        var maybeInput = Maybe.empty<MouseAction>()
-        target.onMouseClicked {
-            maybeInput = Maybe.of(it)
+    open fun shouldProperlyHandleOnMouseEvent() {
+        var maybeEvent = Maybe.empty<MouseEvent>()
+        target.onMouseEvent(MOUSE_PRESSED) { event, _ ->
+            maybeEvent = Maybe.of(event)
+            Processed
         }
 
-        val mouseAction = MouseAction(MOUSE_CLICKED, 1, Position.zero())
+        val event = MouseEvent(
+                type = MOUSE_PRESSED,
+                button = 1,
+                position = Positions.defaultPosition())
 
-        target.inputEmitted(mouseAction)
+        target.process(event, TARGET)
 
-        assertThat(maybeInput.get()).isEqualTo(mouseAction)
-    }
-
-    @Test
-    open fun shouldProperlyHandleOnMousePressed() {
-        var maybeInput = Maybe.empty<MouseAction>()
-        target.onMousePressed {
-            maybeInput = Maybe.of(it)
-        }
-
-        val mouseAction = MouseAction(MOUSE_PRESSED, 1, Position.zero())
-
-        target.inputEmitted(mouseAction)
-
-        assertThat(maybeInput.get()).isEqualTo(mouseAction)
-    }
-
-    @Test
-    open fun shouldProperlyHandleOnMouseReleased() {
-        var maybeInput = Maybe.empty<MouseAction>()
-        target.onMouseReleased {
-            maybeInput = Maybe.of(it)
-        }
-
-        val mouseAction = MouseAction(MOUSE_RELEASED, 1, Position.zero())
-
-        target.inputEmitted(mouseAction)
-
-        assertThat(maybeInput.get()).isEqualTo(mouseAction)
-    }
-
-    @Test
-    open fun shouldProperlyHandleOnMouseEntered() {
-        var maybeInput = Maybe.empty<MouseAction>()
-        target.onMouseEntered {
-            maybeInput = Maybe.of(it)
-        }
-
-        val mouseAction = MouseAction(MOUSE_ENTERED, 1, Position.zero())
-
-        target.inputEmitted(mouseAction)
-
-        assertThat(maybeInput.get()).isEqualTo(mouseAction)
-    }
-
-    @Test
-    open fun shouldProperlyHandleOnMouseExited() {
-        var maybeInput = Maybe.empty<MouseAction>()
-        target.onMouseExited {
-            maybeInput = Maybe.of(it)
-        }
-
-        val mouseAction = MouseAction(MOUSE_EXITED, 1, Position.zero())
-
-        target.inputEmitted(mouseAction)
-
-        assertThat(maybeInput.get()).isEqualTo(mouseAction)
-    }
-
-    @Test
-    open fun shouldProperlyHandleOnMouseWheelRotatedUp() {
-        var maybeInput = Maybe.empty<MouseAction>()
-        target.onMouseWheelRotatedUp {
-            maybeInput = Maybe.of(it)
-        }
-
-        val mouseAction = MouseAction(MOUSE_WHEEL_ROTATED_UP, 1, Position.zero())
-
-        target.inputEmitted(mouseAction)
-
-        assertThat(maybeInput.get()).isEqualTo(mouseAction)
-    }
-
-    @Test
-    open fun shouldProperlyHandleOnMouseWheelRotatedDown() {
-        var maybeInput = Maybe.empty<MouseAction>()
-        target.onMouseWheelRotatedDown {
-            maybeInput = Maybe.of(it)
-        }
-
-        val mouseAction = MouseAction(MOUSE_WHEEL_ROTATED_DOWN, 1, Position.zero())
-
-        target.inputEmitted(mouseAction)
-
-        assertThat(maybeInput.get()).isEqualTo(mouseAction)
-    }
-
-    @Test
-    open fun shouldProperlyHandleOnMouseDragged() {
-        var maybeInput = Maybe.empty<MouseAction>()
-        target.onMouseDragged {
-            maybeInput = Maybe.of(it)
-        }
-
-        val mouseAction = MouseAction(MOUSE_DRAGGED, 1, Position.zero())
-
-        target.inputEmitted(mouseAction)
-
-        assertThat(maybeInput.get()).isEqualTo(mouseAction)
-    }
-
-    @Test
-    open fun shouldProperlyHandleOnMouseMoved() {
-        var maybeInput = Maybe.empty<MouseAction>()
-        target.onMouseMoved {
-            maybeInput = Maybe.of(it)
-        }
-
-        val mouseAction = MouseAction(MOUSE_MOVED, 1, Position.zero())
-
-        target.inputEmitted(mouseAction)
-
-        assertThat(maybeInput.get()).isEqualTo(mouseAction)
+        assertThat(maybeEvent.get()).isEqualTo(event)
     }
 
 

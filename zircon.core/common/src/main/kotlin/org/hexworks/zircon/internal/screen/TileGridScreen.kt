@@ -3,17 +3,17 @@ package org.hexworks.zircon.internal.screen
 import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.subscribe
-import org.hexworks.zircon.api.behavior.InputEmitter
-import org.hexworks.zircon.api.behavior.base.BaseInputEmitter
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.extensions.onKeyboardEvent
+import org.hexworks.zircon.api.extensions.onMouseEvent
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.resource.ColorThemeResource
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.ComponentsLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
@@ -28,38 +28,45 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.extensions.cancelAll
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
+import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
 class TileGridScreen(
         private val tileGrid: InternalTileGrid,
         private val componentContainer: CompositeComponentContainer =
                 buildCompositeContainer(tileGrid),
         private val subscriptions: MutableList<Subscription> = mutableListOf(),
-        private val inputEmitter: InputEmitter = object : BaseInputEmitter() {
-            override fun onInput(listener: InputListener): Subscription {
-                return Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
-                    if (componentContainer.isMainContainerActive()) {
-                        listener.inputEmitted(input)
-                    }
-                }.also { subscriptions.add(it) }
-            }
-        },
         private val bufferGrid: InternalTileGrid = RectangleTileGrid(
                 tileset = tileGrid.currentTileset(),
                 size = tileGrid.size,
                 layerable = ComponentsLayerable(
                         layerable = DefaultLayerable(),
-                        components = componentContainer),
-                inputEmitter = inputEmitter))
+                        components = componentContainer)),
+        private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault())
     : InternalScreen,
         TileGrid by bufferGrid,
         InternalComponentContainer by componentContainer {
 
     override val id = IdentifierFactory.randomIdentifier()
-    var activeScreenId = IdentifierFactory.randomIdentifier()
+
+    private var activeScreenId = IdentifierFactory.randomIdentifier()
 
     init {
         applyColorTheme(ColorThemeResource.EMPTY.getTheme())
         val debug = RuntimeConfig.config.debugMode
+        MouseEventType.values().forEach { eventType ->
+            tileGrid.onMouseEvent(eventType) { event, phase ->
+                if (isActive()) {
+                    process(event, phase)
+                } else Pass
+            }.also { subscriptions.add(it) }
+        }
+        KeyboardEventType.values().forEach { eventType ->
+            tileGrid.onKeyboardEvent(eventType) { event, phase ->
+                if (isActive()) {
+                    process(event, phase)
+                } else Pass
+            }.also { subscriptions.add(it) }
+        }
         Zircon.eventBus.subscribe<ZirconEvent.ScreenSwitch>(ZirconScope) { (screenId) ->
             if (debug) println("Screen switch event received. screenId: '$screenId'.")
             activeScreenId = screenId
@@ -81,8 +88,27 @@ class TileGridScreen(
         }.also { subscriptions.add(it) }
     }
 
-    override fun onInput(listener: InputListener): Subscription {
-        return inputEmitter.onInput(listener)
+    override fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse {
+        return if (isActive()) {
+            eventProcessor.process(event, phase)
+                    .pickByPrecedence(componentContainer.dispatch(event))
+        } else Pass
+    }
+
+    override fun onMouseEvent(eventType: MouseEventType, handler: MouseEventHandler): Subscription {
+        return eventProcessor.onMouseEvent(eventType) { event, phase ->
+            if (componentContainer.isMainContainerActive()) {
+                handler.handle(event, phase)
+            } else Pass
+        }
+    }
+
+    override fun onKeyboardEvent(eventType: KeyboardEventType, handler: KeyboardEventHandler): Subscription {
+        return eventProcessor.onKeyboardEvent(eventType) { event, phase ->
+            if (componentContainer.isMainContainerActive()) {
+                handler.handle(event, phase)
+            } else Pass
+        }
     }
 
     override fun display() {

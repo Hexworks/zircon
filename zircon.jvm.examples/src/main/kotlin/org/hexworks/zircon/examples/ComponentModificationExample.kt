@@ -1,10 +1,16 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.component.ComponentAlignment
-import org.hexworks.zircon.api.kotlin.onMouseReleased
+import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Processed
 
-object ComponentModificationExample {
+object
+ComponentModificationExample {
 
 
     @JvmStatic
@@ -20,8 +26,9 @@ object ComponentModificationExample {
                 .withText("Modify")
                 .withAlignmentAround(button, ComponentAlignment.TOP_RIGHT)
                 .build().apply {
-                    onMouseReleased {
+                    onMouseEvent(MouseEventType.MOUSE_RELEASED) { _, _ ->
                         button.text += "x"
+                        Processed
                     }
                 }
 

@@ -1,20 +1,18 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.input.Input
-import org.hexworks.zircon.api.input.InputType
-import org.hexworks.zircon.api.input.KeyStroke
-import org.hexworks.zircon.api.input.MouseAction
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
@@ -92,97 +90,93 @@ class DefaultTextArea constructor(
         render()
     }
 
-    override fun giveFocus(input: Maybe<Input>): Boolean {
+    override fun focusGiven(): UIEventResponse {
         return if (isEnabled) {
             componentStyleSet.applyFocusedStyle()
             render()
             refreshCursor()
-            true
-        } else false
+            Processed
+        } else Pass
     }
 
-    override fun takeFocus(input: Maybe<Input>) {
+    override fun focusTaken(): UIEventResponse {
         componentStyleSet.reset()
         render()
         Zircon.eventBus.publish(
                 event = ZirconEvent.HideCursor,
                 eventScope = ZirconScope)
+        return Processed
     }
 
-    override fun mouseEntered(action: MouseAction) {
-        if (isEnabled) {
+    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        return if (isEnabled && phase == UIEventPhase.TARGET) {
             componentStyleSet.applyMouseOverStyle()
             render()
-        }
+            Processed
+        } else Pass
     }
 
-    override fun mouseExited(action: MouseAction) {
-        if (isEnabled) {
+    override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        return if (isEnabled && phase == UIEventPhase.TARGET) {
             componentStyleSet.reset()
             render()
-        }
+            Processed
+        } else Pass
     }
 
-    override fun mousePressed(action: MouseAction) {
-        if (isEnabled) {
+    override fun mousePressed(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        return if (isEnabled && phase == UIEventPhase.TARGET) {
             componentStyleSet.applyActiveStyle()
             render()
-        }
+            Processed
+        } else Pass
     }
 
-    override fun mouseReleased(action: MouseAction) {
-        if (isEnabled) {
+    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        return if (isEnabled && phase == UIEventPhase.TARGET) {
             componentStyleSet.applyMouseOverStyle()
             render()
-        }
+            Processed
+        } else Pass
     }
 
-    override fun keyStroked(keyStroke: KeyStroke) {
-        if (isEnabled) {
-            if (isNavigationKey(keyStroke)) {
-                return
+    override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse {
+        return if (isEnabled && phase == UIEventPhase.TARGET) {
+            if (isNavigationKey(event)) {
+                return Pass
             }
-            when {
-                keyStroke.inputTypeIs(InputType.ArrowRight) -> {
-                    textBuffer.applyTransformation(MoveCursor(RIGHT))
+            when (event.code) {
+                KeyCode.RIGHT -> textBuffer.applyTransformation(MoveCursor(RIGHT))
+                KeyCode.LEFT -> textBuffer.applyTransformation(MoveCursor(LEFT))
+                KeyCode.DOWN -> textBuffer.applyTransformation(MoveCursor(DOWN))
+                KeyCode.UP -> textBuffer.applyTransformation(MoveCursor(UP))
+                KeyCode.DELETE -> textBuffer.applyTransformation(DeleteCharacter(DEL))
+                KeyCode.BACKSPACE -> textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
+                KeyCode.ENTER -> textBuffer.applyTransformation(AddRowBreak())
+                KeyCode.HOME -> {
+                    // TODO
                 }
-                keyStroke.inputTypeIs(InputType.ArrowLeft) -> {
-                    textBuffer.applyTransformation(MoveCursor(LEFT))
+                KeyCode.END -> {
+                    // TODO
                 }
-                keyStroke.inputTypeIs(InputType.ArrowDown) -> {
-                    textBuffer.applyTransformation(MoveCursor(DOWN))
-                }
-                keyStroke.inputTypeIs(InputType.ArrowUp) -> {
-                    textBuffer.applyTransformation(MoveCursor(UP))
-                }
-                keyStroke.inputTypeIs(InputType.Delete) -> {
-                    textBuffer.applyTransformation(DeleteCharacter(DEL))
-                }
-                keyStroke.inputTypeIs(InputType.Backspace) -> {
-                    textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
-                }
-                keyStroke.inputTypeIs(InputType.Enter) -> {
-                    textBuffer.applyTransformation(AddRowBreak())
-                }
-                keyStroke.inputTypeIs(InputType.Home) -> {
-                    // TODO:
-                }
-                keyStroke.inputTypeIs(InputType.End) -> {
-                    // TODO:
-                }
-                TextUtils.isPrintableCharacter(keyStroke.getCharacter()) -> {
-                    textBuffer.applyTransformation(InsertCharacter(keyStroke.getCharacter()))
+                else -> {
+                    event.key.forEach { char ->
+                        if (TextUtils.isPrintableCharacter(char)) {
+                            textBuffer.applyTransformation(InsertCharacter(char))
+                        }
+                    }
                 }
             }
             refreshVirtualSpaceSize()
             scrollToCursor()
             refreshCursor()
             render()
-        }
+            Processed
+        } else Pass
     }
 
-    private fun isNavigationKey(keyStroke: KeyStroke) =
-            keyStroke.inputType() == InputType.Tab || keyStroke.inputType() == InputType.ReverseTab
+    private fun isNavigationKey(event: KeyboardEvent) =
+            event == TAB || event == REVERSE_TAB
 
     override fun render() {
         renderingStrategy.render(this, graphics)
@@ -244,4 +238,18 @@ class DefaultTextArea constructor(
         }
     }
 
+    companion object {
+        val TAB = KeyboardEvent(
+                type = KeyboardEventType.KEY_RELEASED,
+                key = "\t",
+                code = KeyCode.TAB)
+
+        val REVERSE_TAB = KeyboardEvent(
+                type = KeyboardEventType.KEY_RELEASED,
+                key = "\t",
+                code = KeyCode.TAB,
+                shiftDown = true)
+
+        val LOGGER = LoggerFactory.getLogger(TextArea::class)
+    }
 }
