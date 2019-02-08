@@ -10,6 +10,7 @@ object NonSquareTilesetExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
+        // TODO: fix multi-size tilesets
         val tileGrid = SwingApplications.startTileGrid(
                 AppConfigs.newConfig()
                         .enableBetaFeatures()

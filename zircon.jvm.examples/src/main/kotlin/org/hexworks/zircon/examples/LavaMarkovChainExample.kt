@@ -69,6 +69,7 @@ object LavaMarkovChainExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
+        // TODO: fix markov chains with libgdx
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
                 .withSize(Sizes.create(80, 40))

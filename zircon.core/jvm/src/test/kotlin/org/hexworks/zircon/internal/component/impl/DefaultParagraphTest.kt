@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 import org.junit.Before
 import org.junit.Test
@@ -48,7 +49,7 @@ class DefaultParagraphTest : ComponentImplementationTest<DefaultParagraph>() {
 
     @Test
     fun shouldNotAcceptFocusWhenGiven() {
-        assertThat(target.giveFocus()).isFalse()
+        assertThat(target.focusGiven()).isEqualTo(Pass)
     }
 
     companion object {

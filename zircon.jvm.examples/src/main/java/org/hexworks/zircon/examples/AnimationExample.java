@@ -20,6 +20,7 @@ public class AnimationExample {
 
     public static void main(String[] args) {
 
+        // TODO: Libgdx doesn't have animations yet
         Screen screen = Screens.createScreenFor(SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(TILESET)
                 .withSize(TERMINAL_SIZE)

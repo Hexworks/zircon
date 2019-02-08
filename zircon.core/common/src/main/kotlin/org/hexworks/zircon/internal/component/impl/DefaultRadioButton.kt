@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.extensions.onChange
-import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -9,11 +9,11 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.input.Input
-import org.hexworks.zircon.api.input.MouseAction
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 
 class DefaultRadioButton(componentMetadata: ComponentMetadata,
@@ -48,35 +48,41 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
         }
     }
 
-    override fun mouseExited(action: MouseAction) {
-        currentState = if (selectedProperty.value) SELECTED else NOT_SELECTED
-        componentStyleSet.reset()
-        render()
+    override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        return if (phase == UIEventPhase.TARGET) {
+            currentState = if (selectedProperty.value) SELECTED else NOT_SELECTED
+            componentStyleSet.reset()
+            render()
+            Processed
+        } else Pass
     }
 
-    override fun mousePressed(action: MouseAction) {
-        currentState = PRESSED
-        componentStyleSet.applyActiveStyle()
-        render()
+    override fun mousePressed(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        return if (phase == UIEventPhase.TARGET) {
+            currentState = PRESSED
+            componentStyleSet.applyActiveStyle()
+            render()
+            Processed
+        } else Pass
     }
 
-    override fun mouseReleased(action: MouseAction) {
+    override fun activated(): UIEventResponse {
         isSelected = true
+        return Processed
     }
 
-    override fun acceptsFocus(): Boolean {
-        return true
-    }
+    override fun acceptsFocus() = true
 
-    override fun giveFocus(input: Maybe<Input>): Boolean {
+    override fun focusGiven(): UIEventResponse {
         componentStyleSet.applyFocusedStyle()
         render()
-        return true
+        return Processed
     }
 
-    override fun takeFocus(input: Maybe<Input>) {
+    override fun focusTaken(): UIEventResponse {
         componentStyleSet.reset()
         render()
+        return Processed
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
@@ -111,5 +117,9 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
         PRESSED,
         SELECTED,
         NOT_SELECTED
+    }
+
+    companion object {
+        val LOGGER = LoggerFactory.getLogger(RadioButton::class)
     }
 }

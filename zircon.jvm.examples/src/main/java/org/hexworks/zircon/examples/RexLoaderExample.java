@@ -23,15 +23,11 @@ public class RexLoaderExample {
     public static void main(String[] args) {
         REXPaintResource rex = REXPaintResource.loadREXFile(RESOURCE);
 
-        Application app = SwingApplications.startApplication(AppConfigs.newConfig()
+        TileGrid tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
                 .withSize(SIZE)
                 .withDebugMode(true)
                 .build());
-
-        final TileGrid tileGrid = app.getTileGrid();
-
-        app.start();
 
         final Screen screen = Screens.createScreenFor(tileGrid);
         screen.setCursorVisibility(false);

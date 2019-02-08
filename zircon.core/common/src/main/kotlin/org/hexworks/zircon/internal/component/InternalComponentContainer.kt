@@ -4,11 +4,12 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 
 /**
  * Internal API for a [ComponentContainer].
  */
-interface InternalComponentContainer : ComponentContainer {
+interface InternalComponentContainer : ComponentContainer, UIEventDispatcher {
 
     /**
      * Tells whether this [InternalComponentContainer] is active or not.

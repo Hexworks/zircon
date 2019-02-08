@@ -74,6 +74,7 @@ class LibgdxGraphicTileset(private val resource: TilesetResource)
         }.toMap()
     }
 
+    @Suppress("UNUSED_VARIABLE")
     override fun drawTile(tile: Tile, surface: SpriteBatch, position: Position) {
         val texture = fetchTextureForTile(tile)
         val x = position.x * width

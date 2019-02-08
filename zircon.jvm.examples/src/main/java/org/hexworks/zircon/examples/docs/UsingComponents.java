@@ -1,12 +1,23 @@
 package org.hexworks.zircon.examples.docs;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.ColorThemes;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.LibgdxApplications;
+import org.hexworks.zircon.api.Positions;
+import org.hexworks.zircon.api.Screens;
+import org.hexworks.zircon.api.Sizes;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.UIEventResponses;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.CheckBox;
 import org.hexworks.zircon.api.component.Header;
 import org.hexworks.zircon.api.component.Panel;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.screen.Screen;
+
+import static org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED;
 
 public class UsingComponents {
 
@@ -66,9 +77,15 @@ public class UsingComponents {
         screen.applyColorTheme(ColorThemes.monokaiBlue());
 
         // this is how you can define interactions with a component
-        left.onMouseReleased((mouseAction -> screen.applyColorTheme(ColorThemes.monokaiGreen())));
+        left.onComponentEvent(ACTIVATED, (event) -> {
+            screen.applyColorTheme(ColorThemes.monokaiGreen());
+            return UIEventResponses.processed();
+        });
 
-        right.onMouseReleased((mouseAction -> screen.applyColorTheme(ColorThemes.monokaiViolet())));
+        right.onComponentEvent(ACTIVATED, (event) -> {
+            screen.applyColorTheme(ColorThemes.monokaiViolet());
+            return UIEventResponses.processed();
+        });
 
         // in order to see the changes you need to display your screen.
         screen.display();

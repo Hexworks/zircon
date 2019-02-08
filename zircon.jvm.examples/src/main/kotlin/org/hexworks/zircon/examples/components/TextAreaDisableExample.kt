@@ -1,7 +1,9 @@
 package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.kotlin.onMouseReleased
+import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Processed
 
 object TextAreaDisableExample {
 
@@ -29,14 +31,15 @@ object TextAreaDisableExample {
                 .withPosition(Positions.create(14, 2))
                 .build()
 
-        toggleButton.onMouseReleased {
-            if(textArea.isEnabled) {
+        toggleButton.onMouseEvent(MouseEventType.MOUSE_RELEASED) { _, _ ->
+            if (textArea.isEnabled) {
                 textArea.disable()
                 textArea.text = "Disabled"
             } else {
                 textArea.enable()
                 textArea.text = "Enabled"
             }
+            Processed
         }
 
         screen.addComponent(textArea)

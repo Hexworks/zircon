@@ -3,8 +3,9 @@ package org.hexworks.zircon.internal.component.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.component.data.ComponentState.*
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.input.MouseActionType.*
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType.*
+import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.junit.Test
 
@@ -36,7 +37,9 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
     open fun shouldProperlyHandleMousePressed() {
         rendererStub.clear()
 
-        target.mousePressed(MouseAction(MOUSE_PRESSED, 1, Position.zero()))
+        target.mousePressed(
+                event = MouseEvent(MOUSE_PRESSED, 1, Position.zero()),
+                phase = UIEventPhase.TARGET)
 
         assertThat(target.componentStyleSet.currentState()).isEqualTo(ACTIVE)
         assertThat(rendererStub.renderings.size).isEqualTo(1)
@@ -46,7 +49,9 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
     open fun shouldProperlyHandleMouseReleased() {
         rendererStub.clear()
 
-        target.mouseReleased(MouseAction(MOUSE_RELEASED, 1, Position.zero()))
+        target.mouseReleased(
+                event = MouseEvent(MOUSE_RELEASED, 1, Position.zero()),
+                phase = UIEventPhase.TARGET)
 
         assertThat(target.componentStyleSet.currentState()).isEqualTo(MOUSE_OVER)
         assertThat(rendererStub.renderings.size).isGreaterThanOrEqualTo(1)
@@ -56,7 +61,9 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
     open fun shouldProperlyHandleMouseEntered() {
         rendererStub.clear()
 
-        target.mouseEntered(MouseAction(MOUSE_ENTERED, 1, Position.zero()))
+        target.mouseEntered(
+                event = MouseEvent(MOUSE_ENTERED, 1, Position.zero()),
+                phase = UIEventPhase.TARGET)
 
         assertThat(target.componentStyleSet.currentState()).isEqualTo(MOUSE_OVER)
         assertThat(rendererStub.renderings.size).isEqualTo(1)
@@ -66,7 +73,9 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
     open fun shouldProperlyHandleMouseExited() {
         rendererStub.clear()
 
-        target.mouseExited(MouseAction(MOUSE_EXITED, 1, Position.zero()))
+        target.mouseExited(
+                event = MouseEvent(MOUSE_EXITED, 1, Position.zero()),
+                phase = UIEventPhase.TARGET)
 
         assertThat(target.componentStyleSet.currentState()).isEqualTo(DEFAULT)
         assertThat(rendererStub.renderings.size).isEqualTo(1)

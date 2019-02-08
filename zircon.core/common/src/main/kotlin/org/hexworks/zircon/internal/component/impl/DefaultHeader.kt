@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.extensions.onChange
-import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Header
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.api.extensions.abbreviate
 
 class DefaultHeader(componentMetadata: ComponentMetadata,
                     initialText: String,
@@ -30,11 +30,8 @@ class DefaultHeader(componentMetadata: ComponentMetadata,
 
     override fun acceptsFocus() = false
 
-    override fun giveFocus(input: Maybe<Input>) = false
-
-    override fun takeFocus(input: Maybe<Input>) {}
-
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        LOGGER.debug("Applying color theme ($colorTheme) to Header (id=${id.abbreviate()}).")
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.primaryForegroundColor)
@@ -47,6 +44,11 @@ class DefaultHeader(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
+        LOGGER.debug("Header (id=${id.abbreviate()}) was rendered.")
         renderingStrategy.render(this, graphics)
+    }
+
+    companion object {
+        val LOGGER = LoggerFactory.getLogger(Header::class)
     }
 }

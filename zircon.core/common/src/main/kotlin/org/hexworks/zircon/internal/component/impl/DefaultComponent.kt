@@ -3,11 +3,10 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
-import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
@@ -15,16 +14,14 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.input.Input
-import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.kotlin.addObserver
-import org.hexworks.zircon.api.listener.InputListener
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.Zircon
-import org.hexworks.zircon.internal.behavior.Observable
-import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.uievent.UIEventProcessor
+import org.hexworks.zircon.internal.uievent.impl.DefaultUIEventProcessor
 
 @Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
@@ -38,9 +35,12 @@ abstract class DefaultComponent(
         private val layer: Layer = LayerBuilder.newBuilder()
                 .withOffset(componentMetadata.position)
                 .withTileGraphics(graphics)
-                .build())
+                .build(),
+        private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault())
     : InternalComponent,
-        Layer by layer {
+        Layer by layer,
+        UIEventProcessor by uiEventProcessor,
+        ComponentEventSource by uiEventProcessor {
 
     // identifiable
     final override val id = IdentifierFactory.randomIdentifier()
@@ -61,18 +61,7 @@ abstract class DefaultComponent(
             render()
         }
 
-    private val observable: Observable<Input> = DefaultObservable()
-    private var parent = Maybe.empty<Container>()
-
-    final override fun inputEmitted(input: Input) {
-        observable.notifyObservers(input)
-    }
-
-    final override fun onInput(listener: InputListener): Subscription {
-        return observable.addObserver { input ->
-            listener.inputEmitted(input)
-        }
-    }
+    private var parent = Maybe.empty<InternalContainer>()
 
     final override fun createSnapshot(): Snapshot {
         return graphics.createSnapshot().let { snapshot ->
@@ -81,6 +70,10 @@ abstract class DefaultComponent(
                     tileset = snapshot.tileset)
         }
     }
+
+    override fun focusGiven(): UIEventResponse = Pass
+
+    override fun focusTaken(): UIEventResponse = Pass
 
     final override fun requestFocus() {
         Zircon.eventBus.publish(
@@ -94,29 +87,46 @@ abstract class DefaultComponent(
                 eventScope = ZirconScope)
     }
 
-    override fun mouseEntered(action: MouseAction) {
-        componentStyleSet.applyMouseOverStyle()
-        render()
+    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        return if (phase == UIEventPhase.TARGET) {
+            componentStyleSet.applyMouseOverStyle()
+            render()
+            Processed
+        } else Pass
     }
 
-    override fun mouseExited(action: MouseAction) {
-        componentStyleSet.reset()
-        render()
+    override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        return if (phase == UIEventPhase.TARGET) {
+            componentStyleSet.reset()
+            render()
+            Processed
+        } else Pass
     }
 
-    override fun mousePressed(action: MouseAction) {
-        componentStyleSet.applyActiveStyle()
-        render()
+    override fun mousePressed(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        return if (phase == UIEventPhase.TARGET) {
+            componentStyleSet.applyActiveStyle()
+            render()
+            Processed
+        } else Pass
     }
 
-    override fun mouseReleased(action: MouseAction) {
-        componentStyleSet.applyMouseOverStyle()
-        render()
+    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        return if (phase == UIEventPhase.TARGET) {
+            componentStyleSet.applyMouseOverStyle()
+            render()
+            Processed
+        } else Pass
     }
 
     final override fun fetchParent() = parent
 
-    final override fun attachTo(parent: Container) {
+    override fun calculatePathFromRoot(): Iterable<InternalComponent> {
+        return parent.map { it.calculatePathFromRoot() }.orElse(listOf()).plus(this)
+    }
+
+    final override fun attachTo(parent: InternalContainer) {
+        LOGGER.debug("Attaching Component ($this) to parent ($parent).")
         this.parent.map {
             it.removeComponent(this)
         }
@@ -124,6 +134,7 @@ abstract class DefaultComponent(
     }
 
     final override fun detach() {
+        LOGGER.debug("Attaching Component ($this) from parent (${fetchParent()}).")
         fetchParent().map {
             it.removeComponent(this)
             this.parent = Maybe.empty()
@@ -168,5 +179,9 @@ abstract class DefaultComponent(
 
     override fun hashCode(): Int {
         return id.hashCode()
+    }
+
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(Component::class)
     }
 }

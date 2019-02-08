@@ -4,11 +4,9 @@ package org.hexworks.zircon.internal.integration
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.builder.component.ModalBuilder
-import org.hexworks.zircon.api.kotlin.onClosed
-import org.hexworks.zircon.api.kotlin.onKeyStroke
-import org.hexworks.zircon.api.kotlin.onMouseReleased
-import org.hexworks.zircon.internal.component.modal.EmptyModalResult
+import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Processed
 
 object DeletedComponentFocusTest {
 
@@ -29,7 +27,10 @@ object DeletedComponentFocusTest {
         val button = Components.button()
                 .withText("Delete me")
                 .build().apply {
-                    onMouseReleased { screen.removeComponent(this) }
+                    onMouseEvent(MouseEventType.MOUSE_RELEASED) { _, _ ->
+                        screen.removeComponent(this)
+                        Processed
+                    }
                 }
 
         val other = Components.button()

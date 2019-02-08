@@ -1,13 +1,32 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.Animations;
+import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.DrawSurfaces;
+import org.hexworks.zircon.api.Layers;
+import org.hexworks.zircon.api.Positions;
+import org.hexworks.zircon.api.REXPaintResources;
+import org.hexworks.zircon.api.Screens;
+import org.hexworks.zircon.api.Sizes;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.TileColors;
+import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.UIEventResponses;
 import org.hexworks.zircon.api.animation.Animation;
 import org.hexworks.zircon.api.animation.AnimationResource;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder;
 import org.hexworks.zircon.api.builder.component.PanelBuilder;
-import org.hexworks.zircon.api.component.*;
+import org.hexworks.zircon.api.component.Button;
+import org.hexworks.zircon.api.component.ColorTheme;
+import org.hexworks.zircon.api.component.Header;
+import org.hexworks.zircon.api.component.Label;
+import org.hexworks.zircon.api.component.Panel;
+import org.hexworks.zircon.api.component.RadioButtonGroup;
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection;
+import org.hexworks.zircon.api.component.TextBox;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.BoxType;
@@ -20,13 +39,37 @@ import org.hexworks.zircon.api.resource.ColorThemeResource;
 import org.hexworks.zircon.api.resource.REXPaintResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
+import org.hexworks.zircon.api.uievent.MouseEventType;
 import org.hexworks.zircon.internal.animation.DefaultAnimationFrame;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import static org.hexworks.zircon.api.resource.ColorThemeResource.*;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.AFTERGLOW;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.AFTER_THE_HEIST;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.AMIGA_OS;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.ENTRAPPED_IN_A_PALETTE;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.FOREST;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.GAMEBOOKERS;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.GHOST_OF_A_CHANCE;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.LET_THEM_EAT_CAKE;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.MONOKAI_BLUE;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.MONOKAI_YELLOW;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.OLIVE_LEAF_TEA;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.PABLO_NERUDA;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.SOLARIZED_LIGHT_CYAN;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.TRON;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.ZENBURN_VANILLA;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.valueOf;
+import static org.hexworks.zircon.api.resource.ColorThemeResource.values;
 
 public class FullExample {
 
@@ -347,7 +390,7 @@ public class FullExample {
             }
         }
 
-        addButton.onMouseReleased((mouseAction) -> {
+        addButton.onMouseEvent(MouseEventType.MOUSE_RELEASED, (event, phase) -> {
             if (!remainingPositions.isEmpty()) {
                 Position pos = remainingPositions.pop();
                 usedPositions.push(pos);
@@ -356,19 +399,21 @@ public class FullExample {
                         .withPosition(Positions.create(5, 0))
                         .withText("X")
                         .build();
-                closeButton.onMouseReleased((closeAction -> {
+                closeButton.onMouseEvent(MouseEventType.MOUSE_RELEASED, (e, p) -> {
                     addAndRemoveScreen.removeComponent(panel);
                     usedPositions.remove(pos);
                     remainingPositions.push(pos);
-                }));
+                    return UIEventResponses.processed();
+                });
                 panel.addComponent(closeButton);
                 panel.applyColorTheme(ADD_REMOVE_THEME);
                 panels.add(panel);
                 addAndRemoveScreen.addComponent(panel);
             }
+            return UIEventResponses.processed();
         });
 
-        clearButton.onMouseReleased((mouseAction -> {
+        clearButton.onMouseEvent(MouseEventType.MOUSE_RELEASED, (event, phase) -> {
             panels.forEach((addAndRemoveScreen::removeComponent));
             panels.clear();
             Iterator<Position> posIter = usedPositions.iterator();
@@ -377,7 +422,8 @@ public class FullExample {
                 posIter.remove();
                 remainingPositions.push(next);
             }
-        }));
+            return UIEventResponses.processed();
+        });
 
         // ==============
         // add/remove screen
@@ -497,9 +543,6 @@ public class FullExample {
         // multi tileset screen
         // ==============
 
-
-        TopDownObliqueGameArea.INSTANCE.addGamePanel(gameScreen, Positions.create(2, 4), Sizes.create(62, 28), Positions.create(5, 5));
-
         gameScreen.applyColorTheme(GAME_THEME);
 
     }
@@ -544,7 +587,10 @@ public class FullExample {
                     .withText(Symbols.TRIANGLE_LEFT_POINTING_BLACK + " Prev")
                     .withPosition(Positions.create(46, 1))
                     .build();
-            prev.onMouseReleased((a) -> screens.get(currIdx - 1).display());
+            prev.onMouseEvent(MouseEventType.MOUSE_RELEASED, (event, phase) -> {
+                screens.get(currIdx - 1).display();
+                return UIEventResponses.processed();
+            });
             screen.addComponent(prev);
         }
         if (currIdx < screens.size() - 1) {
@@ -552,7 +598,10 @@ public class FullExample {
                     .withText("Next " + Symbols.TRIANGLE_RIGHT_POINTING_BLACK)
                     .withPosition(Positions.create(56, 1))
                     .build();
-            next.onMouseReleased((a) -> screens.get(currIdx + 1).display());
+            next.onMouseEvent(MouseEventType.MOUSE_RELEASED, (event, phase) -> {
+                screens.get(currIdx + 1).display();
+                return UIEventResponses.processed();
+            });
             screen.addComponent(next);
         }
     }

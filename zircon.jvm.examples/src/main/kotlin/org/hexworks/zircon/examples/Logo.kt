@@ -2,7 +2,7 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.kotlin.transform
+import org.hexworks.zircon.api.extensions.transform
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.REXPaintResource
 import org.hexworks.zircon.internal.animation.DefaultAnimationFrame
