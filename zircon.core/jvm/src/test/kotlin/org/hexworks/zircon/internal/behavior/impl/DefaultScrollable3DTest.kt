@@ -179,6 +179,15 @@ class DefaultScrollable3DTest {
                 .isEqualTo(Position3D.create(0, 0, 5))
     }
 
+    @Test
+    fun shouldProperlyScrollToProvided3dPosition(){
+        val newPosition = Position3D.create(5, 5, 0)
+        target.scrollTo3DPosition(newPosition)
+
+        assertThat(target.visibleOffset())
+                .isEqualTo(newPosition)
+    }
+
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionWhenTryingToScrollRightByNegativeAmount() {
         target.scrollRightBy(-1)
@@ -197,6 +206,11 @@ class DefaultScrollable3DTest {
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionWhenTryingToScrollDownByNegativeAmount() {
         target.scrollDownBy(-1)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun shouldThrowExceptionWhenTryingToScrollOutsideOfTheActualSize(){
+        target.scrollTo3DPosition(Position3D.create(15, 0, 0))
     }
 
     companion object {
