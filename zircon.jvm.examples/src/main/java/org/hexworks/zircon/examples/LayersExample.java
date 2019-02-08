@@ -19,15 +19,12 @@ public class LayersExample {
 
     public static void main(String[] args) {
 
-        Application app = SwingApplications.startApplication(AppConfigs.newConfig()
+        // TODO: this doesn't show the text with libgdx!
+        final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(BuiltInCP437TilesetResource.ROGUE_YUN_16X16)
                 .withSize(SIZE)
                 .withDebugMode(true)
                 .build());
-
-        final TileGrid tileGrid = app.getTileGrid();
-
-        app.start();
 
         final String firstRow = "This is white title on black";
         for (int x = 0; x < firstRow.length(); x++) {

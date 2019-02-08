@@ -1,11 +1,20 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.ColorThemes;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.LibgdxApplications;
+import org.hexworks.zircon.api.Positions;
+import org.hexworks.zircon.api.Screens;
+import org.hexworks.zircon.api.Sizes;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.UIEventResponses;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.component.Button;
-import org.hexworks.zircon.api.component.*;
+import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.Label;
 import org.hexworks.zircon.api.component.Panel;
+import org.hexworks.zircon.api.component.RadioButtonGroup;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.BoxType;
@@ -15,8 +24,11 @@ import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.Arrays;
+
+import static org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED;
 
 public class GameMockupExample {
 
@@ -42,16 +54,12 @@ public class GameMockupExample {
         double rows = screenSize.getHeight() / TILESET.getHeight();
         Size terminalSize = Sizes.create((int) columns, (int) rows);
 
-        Application app = SwingApplications.startApplication(AppConfigs.newConfig()
+        final TileGrid tileGrid =  LibgdxApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(TILESET)
                 .withSize(terminalSize)
                 .withDebugMode(true)
                 .fullScreen()
                 .build());
-
-        final TileGrid tileGrid = app.getTileGrid();
-
-        app.start();
 
         // ==========
         // MAIN MENU
@@ -140,13 +148,20 @@ public class GameMockupExample {
 
         // INTERACTIONS
 
-        quitButton.onMouseReleased((mouseAction -> {
+        quitButton.onComponentEvent(ACTIVATED, (event) -> {
             System.exit(0);
-        }));
+            return UIEventResponses.processed();
+        });
 
-        optionsButton.onMouseReleased((mouseAction -> optionsScreen.display()));
+        optionsButton.onComponentEvent(ACTIVATED, (event) -> {
+            optionsScreen.display();
+            return UIEventResponses.processed();
+        });
 
-        backButton.onMouseReleased((mouseAction -> mainMenuScreen.display()));
+        backButton.onComponentEvent(ACTIVATED, (event) -> {
+            mainMenuScreen.display();
+            return UIEventResponses.processed();
+        });
 
         // START IT UP
         mainMenuScreen.display();

@@ -1,7 +1,9 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.kotlin.onMouseMoved
+import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Processed
 
 object MouseMovedExample {
 
@@ -17,8 +19,9 @@ object MouseMovedExample {
 
         screen.addComponent(panel)
 
-        panel.onMouseMoved {
-            println(it)
+        panel.onMouseEvent(MouseEventType.MOUSE_MOVED) { event, _ ->
+            println(event)
+            Processed
         }
 
         screen.display()

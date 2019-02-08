@@ -23,7 +23,8 @@ data class AppConfig(
         val debugMode: Boolean,
         val size: Size,
         val fullScreen: Boolean,
-        val betaEnabled: Boolean) {
+        val betaEnabled: Boolean,
+        val title: String) {
 
     companion object {
 

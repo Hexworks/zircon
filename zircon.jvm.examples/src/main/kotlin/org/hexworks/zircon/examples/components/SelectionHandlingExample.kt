@@ -1,7 +1,7 @@
 package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.kotlin.onSelectionChanged
+import org.hexworks.zircon.api.extensions.onSelectionChanged
 
 object SelectionHandlingExample {
 
@@ -11,7 +11,7 @@ object SelectionHandlingExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
                 .withSize(Sizes.create(60, 30))
                 .build())

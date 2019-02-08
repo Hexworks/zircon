@@ -1,7 +1,9 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.kotlin.onMouseClicked
+import org.hexworks.zircon.api.extensions.onComponentEvent
+import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
+import org.hexworks.zircon.api.uievent.Processed
 
 object FocusHandlingExample {
 
@@ -36,12 +38,14 @@ object FocusHandlingExample {
         screen.addComponent(giveFocusBtn)
         screen.addComponent(takeFocusBtn)
 
-        giveFocusBtn.onMouseClicked {
+        giveFocusBtn.onComponentEvent(ACTIVATED) {
             textArea.requestFocus()
+            Processed
         }
 
-        takeFocusBtn.onMouseClicked {
+        takeFocusBtn.onComponentEvent(ACTIVATED) {
             textArea.clearFocus()
+            Processed
         }
 
         screen.display()

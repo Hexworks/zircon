@@ -3,7 +3,9 @@
 package org.hexworks.zircon.internal.integration
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.kotlin.onMouseReleased
+import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Processed
 
 object DataBindingTest {
 
@@ -75,8 +77,9 @@ object DataBindingTest {
                 .withText("Tamper")
                 .withPosition(25, 2)
                 .build().apply {
-                    onMouseReleased {
+                    onMouseEvent(MouseEventType.MOUSE_RELEASED) { _, _ ->
                         master.textProperty.value = master.text + "x"
+                        Processed
                     }
                 }
 
@@ -84,7 +87,7 @@ object DataBindingTest {
                 .withText("Bind")
                 .withPosition(25, 3)
                 .build().apply {
-                    onMouseReleased {
+                    onMouseEvent(MouseEventType.MOUSE_RELEASED) { _, _ ->
                         panel.titleProperty.bind(master.textProperty)
                         label.textProperty.bind(master.textProperty)
                         header.textProperty.bind(master.textProperty)
@@ -92,6 +95,7 @@ object DataBindingTest {
                         checkBox.textProperty.bind(master.textProperty)
                         option.textProperty.bind(master.textProperty)
                         paragraph.textProperty.bind(master.textProperty)
+                        Processed
                     }
                 }
 

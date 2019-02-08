@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.data.base
 
 import org.hexworks.zircon.api.data.Block
+import org.hexworks.zircon.api.data.BlockSide
 import org.hexworks.zircon.api.data.BlockSide.*
 import org.hexworks.zircon.api.data.Tile
 
@@ -73,6 +74,16 @@ abstract class BlockBase<T : Tile> : Block<T> {
             this.top = bottom
             bottom = temp
         }
+    }
+
+    override fun setSide(side: BlockSide, tile: T) {
+        throw UnsupportedOperationException(
+                "This implementation of Block doesn't support setting a side. Consider extending BlockBase and implementing it.")
+    }
+
+    override fun createCopy(): Block<T> {
+        throw UnsupportedOperationException(
+                "This implementation of Block doesn't support creating a copy. Consider extending BlockBase and implementing it.")
     }
 
 }

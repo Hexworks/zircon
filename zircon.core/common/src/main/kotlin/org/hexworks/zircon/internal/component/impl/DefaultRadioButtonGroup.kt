@@ -3,22 +3,19 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.cobalt.datatypes.sam.Consumer
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.RadioButton
-import org.hexworks.zircon.api.component.RadioButtonGroup
+import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.input.Input
-import org.hexworks.zircon.api.kotlin.onSelectionChanged
+import org.hexworks.zircon.api.extensions.onSelectionChanged
 import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
@@ -92,10 +89,6 @@ class DefaultRadioButtonGroup constructor(
 
     override fun acceptsFocus() = false
 
-    override fun giveFocus(input: Maybe<Input>) = false
-
-    override fun takeFocus(input: Maybe<Input>) {}
-
     override fun clearSelection() {
         selectedItem.map {
             items[it]?.isSelected = false
@@ -138,4 +131,8 @@ class DefaultRadioButtonGroup constructor(
 
     data class DefaultSelection(override val key: String,
                                 override val value: String) : Selection
+
+    companion object {
+        val LOGGER = LoggerFactory.getLogger(RadioButtonGroup::class)
+    }
 }

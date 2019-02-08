@@ -4,8 +4,11 @@ package org.hexworks.zircon.internal.integration
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.component.ModalBuilder
-import org.hexworks.zircon.api.kotlin.onInput
-import org.hexworks.zircon.api.kotlin.onKeyPressed
+import org.hexworks.zircon.api.extensions.onKeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyCode
+import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
 
 object ModalTest {
@@ -35,16 +38,15 @@ object ModalTest {
         val button = Components.button()
                 .withText("Close")
                 .build().apply {
-                    onKeyPressed('c') {
-                        modal.close(EmptyModalResult)
+                    onKeyboardEvent(KeyboardEventType.KEY_PRESSED) { event, _ ->
+                        if (event.code == KeyCode.KEY_C) {
+                            modal.close(EmptyModalResult)
+                            Processed
+                        } else Pass
                     }
                 }
 
         modalPanel.addComponent(button)
-
-        modal.onInput {
-            println("Input is: $it")
-        }
 
         screen.display()
         screen.applyColorTheme(theme)

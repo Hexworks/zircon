@@ -9,4 +9,4 @@ import org.hexworks.zircon.api.component.Container
  * a clean API for [Container]s but enables Zircon and the developers of custom [Container]s
  * to interact with them in a more meaningful manner.
  */
-interface InternalContainer : Container
+interface InternalContainer : Container, InternalComponent

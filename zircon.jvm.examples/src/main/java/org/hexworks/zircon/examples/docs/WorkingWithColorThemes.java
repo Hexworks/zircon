@@ -11,7 +11,7 @@ public class WorkingWithColorThemes {
 
     public static void main(String[] args) {
 
-        final TileGrid tileGrid = SwingApplications.startTileGrid(
+        final TileGrid tileGrid = LibgdxApplications.startTileGrid(
                 AppConfigs.newConfig()
                         .withSize(Sizes.create(12, 10))
                         .withDefaultTileset(CP437TilesetResources.rogueYun16x16())

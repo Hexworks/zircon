@@ -2,7 +2,6 @@ package org.hexworks.zircon.api
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
-import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.grid.TileGrid
@@ -26,6 +25,12 @@ object LibgdxApplications {
     fun startApplication(appConfig: AppConfig = AppConfigs.defaultConfiguration()): LibgdxApplication {
         return startLibgdxGame(appConfig).libgdxApplication
     }
+
+    /**
+     * Builds and starts a new [Application] and returns its [TileGrid].
+     */
+    @JvmStatic
+    fun startTileGrid(): TileGrid = startTileGrid(AppConfigs.defaultConfiguration())
 
     /**
      * Builds and starts a new [Application] and returns its [TileGrid].

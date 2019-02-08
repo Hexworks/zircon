@@ -1,7 +1,7 @@
 package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.kotlin.onTextChanged
+import org.hexworks.zircon.api.extensions.onTextChanged
 
 object TextHandlingExample {
 

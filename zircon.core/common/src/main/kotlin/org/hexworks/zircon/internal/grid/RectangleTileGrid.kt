@@ -2,32 +2,30 @@ package org.hexworks.zircon.internal.grid
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.cobalt.events.api.subscribe
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationInfo
-import org.hexworks.zircon.api.behavior.*
-import org.hexworks.zircon.api.behavior.base.BaseInputEmitter
+import org.hexworks.zircon.api.behavior.Drawable
+import org.hexworks.zircon.api.behavior.Layerable
+import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.*
-import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.listener.InputListener
+import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.TextUtils
-import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
 import org.hexworks.zircon.internal.animation.InternalAnimationHandler
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
-import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.extensions.cancelAll
 import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphics
+import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
 class RectangleTileGrid(
         tileset: TilesetResource,
@@ -41,19 +39,11 @@ class RectangleTileGrid(
         private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                 cursorSpace = size),
         private val subscriptions: MutableList<Subscription> = mutableListOf(),
-        private val inputEmitter: InputEmitter = object : BaseInputEmitter() {
-            override fun onInput(listener: InputListener): Subscription {
-                return Zircon.eventBus.subscribe<ZirconEvent.Input>(ZirconScope) { (input) ->
-                    listener.inputEmitted(input)
-                }.also { subscriptions.add(it) }
-            }
-        })
+        private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault())
     : InternalTileGrid,
         InternalCursorHandler by cursorHandler,
         ShutdownHook by DefaultShutdownHook(),
-        InputEmitter by inputEmitter,
-        DrawSurface by backend,
-        Styleable by backend {
+        UIEventProcessor by eventProcessor {
 
     override val layers: List<Layer>
         get() = layerable.layers
@@ -107,6 +97,35 @@ class RectangleTileGrid(
     // note that we need all of the below functions here and can't delegate to the corresponding
     // objects because delegating to mutable vars is broken in Kotlin:
     // http://the-cogitator.com/2018/09/29/by-the-way-exploring-delegation-in-kotlin.html#the-pitfall-of-interface-delegation
+
+    override val size: Size
+        get() = backend.size
+
+    override var foregroundColor: TileColor
+        get() = backend.foregroundColor
+        set(value) {
+            backend.foregroundColor = value
+        }
+    override var backgroundColor: TileColor
+        get() = backend.backgroundColor
+        set(value) {
+            backend.backgroundColor = value
+        }
+    override var modifiers: Set<Modifier>
+        get() = backend.modifiers
+        set(value) {
+            backend.modifiers = value
+        }
+
+    override fun toStyleSet() = backend.toStyleSet()
+
+    override fun setStyleFrom(source: StyleSet) = backend.setStyleFrom(source)
+
+    override fun enableModifiers(modifiers: Set<Modifier>) = backend.enableModifiers(modifiers)
+
+    override fun disableModifiers(modifiers: Set<Modifier>) = backend.disableModifiers(modifiers)
+
+    override fun clearModifiers() = backend.clearModifiers()
 
     override fun startAnimation(animation: org.hexworks.zircon.api.animation.Animation): AnimationInfo {
         return animationHandler.startAnimation(animation)

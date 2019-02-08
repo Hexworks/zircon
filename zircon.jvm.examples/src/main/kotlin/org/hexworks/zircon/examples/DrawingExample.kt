@@ -9,16 +9,16 @@ import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Size3D
+import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.extensions.onSelection
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.Symbols
-import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.input.MouseActionType
-import org.hexworks.zircon.api.kotlin.onMouseAction
-import org.hexworks.zircon.api.kotlin.onSelection
 import org.hexworks.zircon.api.mvc.base.BaseView
 import org.hexworks.zircon.api.shape.LineFactory
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Processed
 
 object DrawingExample {
 
@@ -63,13 +63,13 @@ object DrawingExample {
 
     interface DrawCommand {
 
-        fun execute(context: Context, gameArea: GameArea<Tile, Block<Tile>>, mouseAction: MouseAction)
+        fun execute(context: Context, gameArea: GameArea<Tile, Block<Tile>>, mouseAction: MouseEvent)
     }
 
     class FreeDrawCommand : DrawCommand {
-        override fun execute(context: Context, gameArea: GameArea<Tile, Block<Tile>>, mouseAction: MouseAction) {
+        override fun execute(context: Context, gameArea: GameArea<Tile, Block<Tile>>, mouseAction: MouseEvent) {
             val (layer, offset) = context
-            if (mouseAction.actionType == MouseActionType.MOUSE_RELEASED) {
+            if (mouseAction.type == MouseEventType.MOUSE_RELEASED) {
                 layer.setTileAt(mouseAction.position - offset, TEST_TILE)
             }
         }
@@ -81,10 +81,10 @@ object DrawingExample {
         private var maybePressed = Maybe.empty<Position>()
         private var maybeTemp = Maybe.empty<Layer>()
 
-        override fun execute(context: Context, gameArea: GameArea<Tile, Block<Tile>>, mouseAction: MouseAction) {
+        override fun execute(context: Context, gameArea: GameArea<Tile, Block<Tile>>, mouseAction: MouseEvent) {
             val (layer, offset, level) = context
-            when(mouseAction.actionType) {
-                MouseActionType.MOUSE_PRESSED -> {
+            when (mouseAction.type) {
+                MouseEventType.MOUSE_PRESSED -> {
                     val temp = Layers.newBuilder()
                             .withSize(layer.size)
                             .build()
@@ -92,11 +92,11 @@ object DrawingExample {
                     maybeTemp = Maybe.of(temp)
                     gameArea.pushOverlayAt(temp, level)
                 }
-                MouseActionType.MOUSE_RELEASED -> {
+                MouseEventType.MOUSE_RELEASED -> {
                     maybePressed.map { pressedAt ->
                         val tempLayer = maybeTemp.get()
                         val pos = mouseAction.position - offset
-                        if(pos != pressedAt) {
+                        if (pos != pressedAt) {
                             tempLayer.clear()
                             LineFactory.buildLine(pressedAt, pos).positions().forEach {
                                 tempLayer.setTileAt(it, TEST_TILE)
@@ -106,11 +106,11 @@ object DrawingExample {
                         gameArea.removeOverlay(tempLayer, level)
                     }
                 }
-                MouseActionType.MOUSE_DRAGGED -> {
+                MouseEventType.MOUSE_DRAGGED -> {
                     maybePressed.map { pressedAt ->
                         val tempLayer = maybeTemp.get()
                         val pos = mouseAction.position - offset
-                        if(pos != pressedAt) {
+                        if (pos != pressedAt) {
                             tempLayer.clear()
                             LineFactory.buildLine(pressedAt, pos).positions().forEach {
                                 tempLayer.setTileAt(it, TEST_TILE)
@@ -118,7 +118,8 @@ object DrawingExample {
                         }
                     }
                 }
-                else -> {}
+                else -> {
+                }
             }
         }
 
@@ -141,7 +142,7 @@ object DrawingExample {
             it to Layers.newBuilder().withSize(drawAreaSize.to2DSize()).build()
         }.toMap()
         private var chosenCommand = DrawOption.FREE.drawCommand
-        private var chosenLayer = 0 to overlays[0]!!
+        private var chosenLayer = 0 to overlays.getValue(0)
 
         init {
             gameArea.actualSize().to2DSize().fetchPositions().forEach {
@@ -152,11 +153,11 @@ object DrawingExample {
 
         fun chooseLayer(idx: Int) {
             gameArea.popOverlayAt(chosenLayer.first)
-            chosenLayer = idx to overlays[idx]!!
+            chosenLayer = idx to overlays.getValue(idx)
             gameArea.pushOverlayAt(chosenLayer.second, chosenLayer.first)
         }
 
-        fun useChosenTool(mouseAction: MouseAction) {
+        fun useChosenTool(mouseAction: MouseEvent) {
             chosenCommand.execute(
                     context = Context(
                             chosenLayer = chosenLayer.second,
@@ -231,8 +232,9 @@ object DrawingExample {
                                 .withVisibleSize(Sizes.from2DTo3D(contentSize))
                                 .withGameArea(controller.gameArea)
                                 .build().apply {
-                                    onMouseAction { mouseAction ->
-                                        controller.useChosenTool(mouseAction)
+                                    onMouseEvent(MouseEventType.MOUSE_RELEASED) { event, _ ->
+                                        controller.useChosenTool(event)
+                                        Processed
                                     }
                                 }
                         addComponent(gc)

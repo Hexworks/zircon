@@ -4,12 +4,9 @@ import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.component.ToggleButton;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.input.MouseAction;
-import org.hexworks.zircon.api.listener.MouseAdapter;
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
-import org.jetbrains.annotations.NotNull;
 
 public class JavaPlayground {
 

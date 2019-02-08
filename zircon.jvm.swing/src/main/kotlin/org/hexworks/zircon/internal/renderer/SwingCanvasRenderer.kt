@@ -9,10 +9,10 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.grid.InternalTileGrid
-import org.hexworks.zircon.internal.grid.TileGridKeyListener
-import org.hexworks.zircon.internal.grid.TileGridMouseListener
 import org.hexworks.zircon.internal.tileset.SwingTilesetLoader
 import org.hexworks.zircon.internal.tileset.transformer.toAWTColor
+import org.hexworks.zircon.internal.uievent.KeyboardEventListener
+import org.hexworks.zircon.internal.uievent.MouseEventListener
 import org.hexworks.zircon.platform.util.SystemUtils
 import java.awt.*
 import java.awt.event.HierarchyEvent
@@ -56,18 +56,19 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         canvas.requestFocusInWindow()
         canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
-        canvas.addKeyListener(TileGridKeyListener())
-        val listener = object : TileGridMouseListener(
+        canvas.addKeyListener(KeyboardEventListener(tileGrid))
+        val newListener = object : MouseEventListener(
                 fontWidth = tileGrid.currentTileset().width,
-                fontHeight = tileGrid.currentTileset().height) {
+                fontHeight = tileGrid.currentTileset().height,
+                tileGrid = tileGrid) {
             override fun mouseClicked(e: MouseEvent) {
                 super.mouseClicked(e)
                 canvas.requestFocusInWindow()
             }
         }
-        canvas.addMouseListener(listener)
-        canvas.addMouseMotionListener(listener)
-        canvas.addMouseWheelListener(listener)
+        canvas.addMouseListener(newListener)
+        canvas.addMouseMotionListener(newListener)
+        canvas.addMouseWheelListener(newListener)
         canvas.addHierarchyListener { e ->
             if (e.changeFlags == HierarchyEvent.DISPLAYABILITY_CHANGED.toLong()) {
                 if (e.changed.isDisplayable) {

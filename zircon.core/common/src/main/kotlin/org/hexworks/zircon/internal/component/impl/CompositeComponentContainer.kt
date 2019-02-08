@@ -6,7 +6,9 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.kotlin.onClosed
+import org.hexworks.zircon.api.extensions.onClosed
+import org.hexworks.zircon.api.uievent.UIEvent
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
@@ -20,6 +22,10 @@ class CompositeComponentContainer(private val mainContainer: InternalComponentCo
     private var modalStack = ThreadSafeQueueFactory.create<Modal<out ModalResult>>()
 
     fun isMainContainerActive() = mainContainer.isActive()
+
+    override fun dispatch(event: UIEvent): UIEventResponse {
+        return mainContainer.dispatch(event).pickByPrecedence(modalContainer.dispatch(event))
+    }
 
     override fun isActive(): Boolean {
         return mainContainer.isActive()

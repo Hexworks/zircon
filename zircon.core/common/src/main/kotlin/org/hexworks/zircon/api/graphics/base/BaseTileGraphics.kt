@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
-import org.hexworks.zircon.api.kotlin.toMap
+import org.hexworks.zircon.api.extensions.toMap
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.behavior.impl.DefaultStyleable
 import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride

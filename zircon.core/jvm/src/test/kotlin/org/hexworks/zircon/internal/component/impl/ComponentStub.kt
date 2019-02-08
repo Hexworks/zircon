@@ -14,11 +14,11 @@ import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
-import org.hexworks.zircon.api.input.Input
-import org.hexworks.zircon.api.listener.InputListener
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.component.InternalContainer
 
 class ComponentStub(
         override val position: Position,
@@ -48,10 +48,30 @@ class ComponentStub(
     lateinit var colorTheme: ColorTheme
         private set
 
-    val movedToPositions = mutableListOf<Position>()
-    val attachedToContainers = mutableListOf<Container>()
+    private val movedToPositions = mutableListOf<Position>()
+    private val attachedToContainers = mutableListOf<Container>()
 
-    private lateinit var parent: Container
+    private lateinit var parent: InternalContainer
+
+    override fun close() {
+        TODO("not implemented")
+    }
+
+    override fun onMouseEvent(eventType: MouseEventType, handler: MouseEventHandler): Subscription {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onKeyboardEvent(eventType: KeyboardEventType, handler: KeyboardEventHandler): Subscription {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onComponentEvent(eventType: ComponentEventType, handler: ComponentEventHandler): Subscription {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override fun isAttached(): Boolean {
         TODO("This operation is unsupported for a Stub")
@@ -64,10 +84,6 @@ class ComponentStub(
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         this.colorTheme = colorTheme
         return componentStyleSet
-    }
-
-    override fun onInput(listener: InputListener): Subscription {
-        TODO("This operation is unsupported for a Stub")
     }
 
     override fun getAbsoluteTileAt(position: Position): Maybe<Tile> {
@@ -133,11 +149,15 @@ class ComponentStub(
         } else null)
     }
 
-    override fun fetchParent(): Maybe<Container> {
+    override fun fetchParent(): Maybe<InternalContainer> {
         return Maybe.of(parent)
     }
 
-    override fun attachTo(parent: Container) {
+    override fun calculatePathFromRoot(): Iterable<InternalComponent> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun attachTo(parent: InternalContainer) {
         attachedToContainers.add(parent)
         this.parent = parent
     }
@@ -150,11 +170,11 @@ class ComponentStub(
         TODO("This operation is unsupported for a Stub")
     }
 
-    override fun giveFocus(input: Maybe<Input>): Boolean {
+    override fun focusGiven(): UIEventResponse {
         TODO("This operation is unsupported for a Stub")
     }
 
-    override fun takeFocus(input: Maybe<Input>) {
+    override fun focusTaken(): UIEventResponse {
         TODO("This operation is unsupported for a Stub")
     }
 

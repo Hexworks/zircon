@@ -2,9 +2,13 @@
 
 package org.hexworks.zircon.internal.integration
 
-import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.kotlin.onInput
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.extensions.onKeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.Pass
 
 object KeyEventTest {
 
@@ -19,10 +23,10 @@ object KeyEventTest {
                 .withSize(Sizes.create(60, 30))
                 .build())
 
-        tileGrid.onInput {
-            println(it)
+        tileGrid.onKeyboardEvent(KeyboardEventType.KEY_PRESSED) { event, phase ->
+            println("Event: $event, phase: $phase")
+            Pass
         }
-
 
     }
 

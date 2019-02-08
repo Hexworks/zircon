@@ -1,11 +1,10 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.zircon.api.behavior.InputEmitter
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.uievent.ComponentEventSource
+import org.hexworks.zircon.api.uievent.UIEventSource
 import org.hexworks.zircon.internal.behavior.Identifiable
 
 /**
@@ -18,7 +17,7 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  * like a label or a check box is a [Container] while a label which is only intended to
  * display information is a [Component].
  */
-interface Component : Identifiable, InputEmitter, Layer {
+interface Component : Identifiable, Layer, UIEventSource, ComponentEventSource {
 
     /**
      * The [Position] where the content of this [Component] starts
