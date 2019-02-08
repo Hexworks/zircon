@@ -118,4 +118,10 @@ interface Scrollable3D {
      * @return the new visible offset
      */
     fun scrollBackwardBy(y: Int): Position3D
+
+
+    /**
+     * Scrolls this [Scrollable3D] to the provided position
+     */
+    fun scrollTo3DPosition(position3D: Position3D)
 }
