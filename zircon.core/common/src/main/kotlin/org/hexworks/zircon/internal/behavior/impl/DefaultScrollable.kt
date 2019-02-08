@@ -9,7 +9,6 @@ import kotlin.math.min
 class DefaultScrollable(override val visibleSize: Size,
                         initialActualSize: Size) : Scrollable {
 
-
     override var actualSize: Size = initialActualSize
         set(value) {
             checkSizes()
@@ -89,6 +88,14 @@ class DefaultScrollable(override val visibleSize: Size,
         val lastScrollableRow = actualSize.height - visibleSize.height
         offset = offset.withY(min(rowToScrollTo, lastScrollableRow))
         return offset
+    }
+
+    override fun scrollToPosition(position: Position) {
+        require(actualSize.containsPosition(position))
+        {
+            "new position $position has to be within the actual size $actualSize"
+        }
+        offset = position
     }
 
     private fun checkSizes() {
