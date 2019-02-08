@@ -48,12 +48,15 @@ kotlin {
         }
 
         jvmTest {
-            kotlin.srcDirs = ["jvm/src/test/kotlin"]
+            kotlin.srcDirs = ["jvm/src/test/kotlin", "jvm/src/test/java"]
             resources.srcDirs = ["jvm/src/test/resources"]
             dependencies {
                 implementation "junit:junit:$junit_version"
                 implementation "org.mockito:mockito-all:$mockito_version"
                 implementation "org.assertj:assertj-core:$assertj_version"
+
+                implementation 'ch.qos.logback:logback-classic:1.2.3'
+                implementation 'ch.qos.logback:logback-core:1.2.3'
                 dependsOn jvmMain
             }
         }

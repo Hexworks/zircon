@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -12,9 +11,11 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.input.MouseActionType
-import org.hexworks.zircon.api.kotlin.onSelection
+import org.hexworks.zircon.api.extensions.onSelection
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
 import org.junit.Before
 import org.junit.Test
@@ -54,7 +55,7 @@ class DefaultRadioButtonGroupTest : ComponentImplementationTest<DefaultRadioButt
 
     @Test
     fun shouldNotTakeGivenFocus() {
-        assertThat(target.giveFocus(Maybe.empty())).isFalse()
+        assertThat(target.focusGiven()).isEqualTo(Pass)
     }
 
     @Test
@@ -62,7 +63,7 @@ class DefaultRadioButtonGroupTest : ComponentImplementationTest<DefaultRadioButt
         target.addOption("qux", "baz") as DefaultRadioButton
         val button = target.addOption("foo", "bar") as DefaultRadioButton
 
-        button.mouseReleased(MOUSE_RELEASED)
+        button.activated()
 
         assertThat(button.isSelected).isTrue()
         assertThat(target.fetchSelectedOption().get()).isEqualTo("foo")
@@ -84,15 +85,14 @@ class DefaultRadioButtonGroupTest : ComponentImplementationTest<DefaultRadioButt
         val oldButton = target.addOption("foo", "bar") as DefaultRadioButton
         val newButton = target.addOption("baz", "qux") as DefaultRadioButton
 
-        // this is necessary because ComponentContainer handles this but it is not present in this test
-        newButton.mouseReleased(MOUSE_RELEASED)
+        newButton.activated()
 
         assertThat(oldButton.isSelected).isFalse()
         assertThat(newButton.isSelected).isTrue()
     }
 
     @Test
-    fun shouldProperlyNotifyListenersWhenAButtonIsClicked() {
+    fun shouldProperlyNotifyListenersWhenAButtonIsActivated() {
         val button = target.addOption("foo", "bar") as DefaultRadioButton
 
         val selected = AtomicBoolean(false)
@@ -100,7 +100,7 @@ class DefaultRadioButtonGroupTest : ComponentImplementationTest<DefaultRadioButt
             selected.set(true)
         }
 
-        button.mouseReleased(MOUSE_RELEASED)
+        button.activated()
 
         assertThat(selected.get()).isTrue()
     }
@@ -132,6 +132,6 @@ class DefaultRadioButtonGroupTest : ComponentImplementationTest<DefaultRadioButt
         const val TEXT = "Button text"
         val POSITION = Position.create(4, 5)
         val SIZE = Size.create(10, 20)
-        val MOUSE_RELEASED = MouseAction(MouseActionType.MOUSE_RELEASED, 1, POSITION)
+        val MOUSE_RELEASED = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, POSITION)
     }
 }

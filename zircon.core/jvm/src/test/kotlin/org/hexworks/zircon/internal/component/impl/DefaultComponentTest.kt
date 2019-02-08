@@ -1,7 +1,9 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.builder.component.LabelBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
@@ -15,13 +17,13 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.input.Input
-import org.hexworks.zircon.api.input.KeyStroke
-import org.hexworks.zircon.api.input.MouseAction
-import org.hexworks.zircon.api.input.MouseActionType.MOUSE_ENTERED
-import org.hexworks.zircon.api.input.MouseActionType.MOUSE_PRESSED
-import org.hexworks.zircon.api.kotlin.onInput
-import org.hexworks.zircon.api.kotlin.onMousePressed
+import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType.*
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.UIEventPhase.BUBBLE
+import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
+import org.hexworks.zircon.internal.component.InternalContainer
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -61,14 +63,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
             override fun acceptsFocus(): Boolean {
                 return false
-            }
-
-            override fun giveFocus(input: Maybe<Input>): Boolean {
-                return false
-            }
-
-            override fun takeFocus(input: Maybe<Input>) {
-
             }
 
         }
@@ -144,11 +138,14 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     fun shouldNotifyObserversWhenInputIsEmitted() {
         var notified = false
 
-        target.onInput {
+        target.onMouseEvent(MOUSE_CLICKED) { _, _ ->
             notified = true
+            Processed
         }
 
-        target.inputEmitted(KeyStroke())
+        target.process(
+                event = MouseEvent(MOUSE_CLICKED, 1, Position.defaultPosition()),
+                phase = BUBBLE)
 
         assertThat(notified).isTrue()
     }
@@ -166,7 +163,9 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     @Test
     fun shouldProperlyHandleMouseEntered() {
-        target.mouseEntered(MouseAction(MOUSE_ENTERED, 1, Position.zero()))
+        target.mouseEntered(
+                event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
+                phase = TARGET)
 
         assertThat(target.componentStyleSet.currentState()).isEqualTo(ComponentState.MOUSE_OVER)
         assertThat(rendered).isTrue()
@@ -214,11 +213,14 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     @Test
     fun shouldProperlyListenToMousePress() {
         val pressed = AtomicBoolean(false)
-        target.onMousePressed {
+        target.onMouseEvent(MOUSE_PRESSED) { _, _ ->
             pressed.set(true)
+            Processed
         }
 
-        target.inputEmitted(MouseAction(MOUSE_PRESSED, 1, POSITION_2x3))
+        target.process(
+                event = MouseEvent(MOUSE_PRESSED, 1, POSITION_2x3),
+                phase = BUBBLE)
 
         assertThat(pressed.get()).isTrue()
     }
@@ -249,6 +251,27 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     @Test
     fun shouldBeEqualToItself() {
         assertThat(target).isEqualTo(target)
+    }
+
+    @Test
+    fun shouldProperlyCalculatePathFromRoot() {
+        val root = RootContainer(
+                componentMetadata = ComponentMetadata(
+                        position = Positions.defaultPosition(),
+                        size = Sizes.create(100, 100),
+                        tileset = TILESET_REX_PAINT_20X20,
+                        componentStyleSet = ComponentStyleSet.empty()),
+                renderingStrategy = DefaultComponentRenderingStrategy(NoOpGenericRenderer()))
+
+        val parent = Components.panel()
+                .withSize(50, 50)
+                .withTileset(TILESET_REX_PAINT_20X20)
+                .build() as InternalContainer
+
+        root.addComponent(parent)
+        parent.addComponent(target)
+
+        assertThat(target.calculatePathFromRoot()).containsExactly(root, parent, target)
     }
 
     companion object {

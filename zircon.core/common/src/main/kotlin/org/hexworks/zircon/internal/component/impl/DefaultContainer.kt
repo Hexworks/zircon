@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.input.Input
+import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
@@ -33,10 +33,6 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
     private val components = ThreadSafeQueueFactory.create<InternalComponent>()
 
     override fun acceptsFocus() = false
-
-    override fun giveFocus(input: Maybe<Input>) = false
-
-    override fun takeFocus(input: Maybe<Input>) {}
 
     override fun draw(drawable: Drawable, position: Position) {
         if (drawable is Component) {
@@ -162,12 +158,5 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-    }
-
-    override fun toString(): String {
-        return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}," +
-                "position=$position," +
-                "size=$size," +
-                "components=[${components.joinToString()}])"
     }
 }

@@ -1,47 +1,53 @@
 package org.hexworks.zircon.examples.docs;
 
-import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.input.KeyStroke;
-import org.hexworks.zircon.api.input.MouseAction;
-import org.hexworks.zircon.api.listener.MouseAdapter;
-import org.jetbrains.annotations.NotNull;
+import org.hexworks.zircon.api.screen.Screen;
+import org.hexworks.zircon.api.uievent.KeyboardEventType;
+import org.hexworks.zircon.api.uievent.MouseEventType;
+
+import static org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED;
 
 public class InputHandling {
 
     public static void main(String[] args) {
 
         TileGrid tileGrid = SwingApplications.startTileGrid();
+        Screen screen = Screens.createScreenFor(tileGrid);
 
-        // listens to all inputs
-        tileGrid.onInput((input -> {
-            if (input.isKeyStroke()) {
-                KeyStroke keyStroke = input.asKeyStroke().get();
-                System.out.println(keyStroke);
-            } else if (input.isMouseAction()) {
-                MouseAction mouseAction = input.asMouseAction().get();
-                System.out.println(mouseAction);
-            }
+        Button button = Components.button()
+                .withText("Test me")
+                .withPosition(5, 5)
+                .wrapWithShadow(true)
+                .build();
+
+        screen.addComponent(button);
+
+        // it doesn't matter where you add the listener, you can do it before or after
+        // adding the component to the screen
+        button.onComponentEvent(ACTIVATED, (event) -> {
+            System.out.println(event.toString());
+            return UIEventResponses.processed();
+        });
+
+        // listens to mouse events
+        tileGrid.onMouseEvent(MouseEventType.MOUSE_RELEASED, ((event, phase) -> {
+            // we log the event we received
+            System.out.println(event.toString());
+
+            // we return a response indicating that we processed the event
+            return UIEventResponses.processed();
         }));
 
-        // listens to specific mouse events (override the methods which you need)
-        tileGrid.onMouseAction(new MouseAdapter() {
+        // listens to keyboard events
+        tileGrid.onKeyboardEvent(KeyboardEventType.KEY_PRESSED, ((event, phase) -> {
+            System.out.println(event.toString());
+            return UIEventResponses.processed();
+        }));
 
-            @Override
-            public void mousePressed(@NotNull MouseAction action) {
-                // ...
-            }
-
-            @Override
-            public void mouseDragged(@NotNull MouseAction action) {
-                // ...
-            }
-        });
-
-        // you can use lambdas as well
-        tileGrid.onMouseDragged(action -> {
-            // ...
-        });
-
+        // we make the contents of the screen visible.
+        screen.display();
+        screen.applyColorTheme(ColorThemes.entrappedInAPalette());
     }
 }

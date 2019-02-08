@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.kotlin.transform
+import org.hexworks.zircon.api.extensions.transform
 import org.junit.Test
 
 class DefaultTileImageTest {

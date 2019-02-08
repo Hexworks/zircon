@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.extensions.onChange
-import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -12,8 +12,7 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ToggleButton
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.input.Input
-import org.hexworks.zircon.api.input.MouseAction
+import org.hexworks.zircon.api.uievent.*
 
 class DefaultToggleButton(componentMetadata: ComponentMetadata,
                           initialText: String,
@@ -45,34 +44,35 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
         }
     }
 
-    override fun mousePressed(action: MouseAction) {
+    override fun activated(): UIEventResponse {
         selectedProperty.value = !isSelected
+        return Processed
     }
 
-    override fun mouseExited(action: MouseAction) {
-        if (isSelected.not()) {
-            super.mouseExited(action)
-        }
+    override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        return if (isSelected.not() && phase == UIEventPhase.TARGET) {
+            super.mouseExited(event, phase)
+            Processed
+        } else Pass
     }
 
 
-    override fun acceptsFocus(): Boolean {
-        return true
-    }
+    override fun acceptsFocus() = true
 
-    override fun giveFocus(input: Maybe<Input>): Boolean {
+    override fun focusGiven(): UIEventResponse {
         componentStyleSet.applyFocusedStyle()
         render()
-        return true
+        return Processed
     }
 
-    override fun takeFocus(input: Maybe<Input>) {
+    override fun focusTaken(): UIEventResponse {
         if (isSelected) {
             applyIsSelectedStyle()
         } else {
             componentStyleSet.reset()
         }
         render()
+        return Processed
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
@@ -105,5 +105,9 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
 
     private fun applyIsSelectedStyle() {
         componentStyleSet.applyMouseOverStyle()
+    }
+
+    companion object {
+        val LOGGER = LoggerFactory.getLogger(ToggleButton::class)
     }
 }

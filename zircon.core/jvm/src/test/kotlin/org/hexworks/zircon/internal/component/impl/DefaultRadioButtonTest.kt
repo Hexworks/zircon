@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.component.data.ComponentState.*
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
 import org.junit.Before
 import org.junit.Test
@@ -80,15 +81,15 @@ class DefaultRadioButtonTest : ComponentImplementationTest<DefaultRadioButton>()
 
     @Test
     fun shouldProperlyGiveFocus() {
-        val result = target.giveFocus()
+        val result = target.focusGiven()
 
-        assertThat(result).isTrue()
+        assertThat(result).isEqualTo(Processed)
         assertThat(target.componentStyleSet.currentState()).isEqualTo(FOCUSED)
     }
 
     @Test
     fun shouldProperlyTakeFocus() {
-        target.takeFocus()
+        target.focusTaken()
 
         assertThat(target.componentStyleSet.currentState()).isEqualTo(DEFAULT)
     }

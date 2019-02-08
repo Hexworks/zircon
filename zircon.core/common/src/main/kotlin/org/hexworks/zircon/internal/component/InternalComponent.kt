@@ -1,16 +1,16 @@
 package org.hexworks.zircon.internal.component
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.listener.InputListener
-import org.hexworks.zircon.api.listener.KeyStrokeListener
-import org.hexworks.zircon.api.listener.MouseListener
 import org.hexworks.zircon.internal.behavior.Focusable
+import org.hexworks.zircon.internal.uievent.ComponentEventAdapter
+import org.hexworks.zircon.internal.uievent.KeyboardEventAdapter
+import org.hexworks.zircon.internal.uievent.MouseEventAdapter
+import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
 /**
  * A [InternalComponent] is a specialization of the [Component] interface which adds
@@ -18,7 +18,7 @@ import org.hexworks.zircon.internal.behavior.Focusable
  * a clean API for [Component]s but enables Zircon and the developers of custom [Component]s
  * to interact with them in a more meaningful manner.
  */
-interface InternalComponent : Component, Focusable, InputListener, KeyStrokeListener, MouseListener {
+interface InternalComponent : Component, ComponentEventAdapter, Focusable, KeyboardEventAdapter, MouseEventAdapter, UIEventProcessor {
 
     /**
      * The [org.hexworks.zircon.api.graphics.TileGraphics] which this
@@ -26,6 +26,7 @@ interface InternalComponent : Component, Focusable, InputListener, KeyStrokeList
      */
     val graphics: TileGraphics
 
+    // TODO: make val
     override fun isAttached(): Boolean = fetchParent().isPresent
 
     /**
@@ -33,7 +34,7 @@ interface InternalComponent : Component, Focusable, InputListener, KeyStrokeList
      * Note that if this component is already attached to a [Container]
      * it will be removed from that one.
      */
-    fun attachTo(parent: Container)
+    fun attachTo(parent: InternalContainer)
 
     /**
      * Returns the innermost [InternalComponent] for a given [Position].
@@ -60,7 +61,13 @@ interface InternalComponent : Component, Focusable, InputListener, KeyStrokeList
     /**
      * Returns the parent of this [Component] (if any).
      */
-    fun fetchParent(): Maybe<Container>
+    fun fetchParent(): Maybe<InternalContainer>
+
+    /**
+     * Recursively traverses the parents of this [InternalComponent]
+     * until the root is reached and returns them.
+     */
+    fun calculatePathFromRoot(): Iterable<InternalComponent>
 
     /**
      * Renders this component to the underlying [TileGraphics].

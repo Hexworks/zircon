@@ -28,6 +28,7 @@ public class GraphicTilesetExample {
 
     public static void main(String[] args) {
 
+        // TODO: graphic tilesets are not supported by libgdx yet
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
                 .withDefaultTileset(TILESET)
                 .withSize(SIZE)

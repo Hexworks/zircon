@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.kotlin.toMap
+import org.hexworks.zircon.api.extensions.toMap
 import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.junit.Before

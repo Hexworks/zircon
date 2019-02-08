@@ -6,10 +6,7 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
-import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.component.ComponentAlignment.*
-import org.hexworks.zircon.api.input.InputType
-import org.hexworks.zircon.api.kotlin.onInput
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
