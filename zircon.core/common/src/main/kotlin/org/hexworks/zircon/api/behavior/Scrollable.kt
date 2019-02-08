@@ -84,4 +84,10 @@ interface Scrollable {
      */
     fun scrollDownBy(rows: Int): Position
 
+    /**
+     * Scrolls this [Scrollable] to the provided position
+     */
+    fun scrollToPosition(position: Position)
+
+
 }

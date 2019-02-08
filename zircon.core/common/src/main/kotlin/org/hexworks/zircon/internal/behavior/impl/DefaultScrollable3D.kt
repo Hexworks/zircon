@@ -113,6 +113,14 @@ class DefaultScrollable3D(private var visibleSize: Size3D,
         return offset
     }
 
+    override fun scrollTo3DPosition(position3D: Position3D) {
+        require(actualSize.containsPosition(position3D))
+        {
+            "new position $position3D has to be within the actual size $actualSize"
+        }
+        offset = position3D
+    }
+
     private fun checkSizes() {
         require(actualSize.xLength >= visibleSize.xLength) {
             "Can't have a virtual space (${actualSize.xLength}, ${actualSize.zLength})" +
