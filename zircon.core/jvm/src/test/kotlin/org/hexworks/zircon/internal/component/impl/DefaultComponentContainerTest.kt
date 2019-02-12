@@ -20,7 +20,9 @@ import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.contracts.ExperimentalContracts
 
+@ExperimentalContracts
 class DefaultComponentContainerTest {
 
     lateinit var target: DefaultComponentContainer

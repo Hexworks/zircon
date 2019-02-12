@@ -9,7 +9,7 @@ class DefaultThreadSafeQueue<E>(private val backend: BlockingDeque<E> = LinkedBl
 
     override fun offer(e: E): Boolean = backend.offer(e)
 
-    override fun drainTo(c: MutableCollection<E>): Int = backend.drainTo(c)
+    override fun drainTo(collection: MutableCollection<E>): Int = backend.drainTo(collection)
 
     override fun drainAll(): Collection<E> {
         return mutableListOf<E>().also {
@@ -20,6 +20,8 @@ class DefaultThreadSafeQueue<E>(private val backend: BlockingDeque<E> = LinkedBl
     override fun remove(element: E): Boolean = backend.remove(element)
 
     override fun peek(): Maybe<E> = Maybe.ofNullable(backend.peek())
+
+    override fun peekLast(): Maybe<E> = Maybe.ofNullable(backend.peekLast())
 
     override fun poll(): Maybe<E> = Maybe.ofNullable(backend.poll())
 

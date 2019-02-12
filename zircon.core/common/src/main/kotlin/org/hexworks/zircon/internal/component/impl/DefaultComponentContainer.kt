@@ -14,9 +14,7 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultComponentFocusHandler
-import org.hexworks.zircon.internal.component.ContainerHandlerState
-import org.hexworks.zircon.internal.component.ContainerHandlerState.DEACTIVATED
-import org.hexworks.zircon.internal.component.ContainerHandlerState.UNKNOWN
+import org.hexworks.zircon.internal.component.ComponentContainerState.*
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAddition
@@ -25,11 +23,12 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.extensions.cancelAll
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import org.hexworks.zircon.internal.uievent.impl.UIEventToComponentDispatcher
+import kotlin.contracts.ExperimentalContracts
 
 class DefaultComponentContainer(
         private val root: RootContainer,
         private val focusHandler: ComponentFocusHandler = DefaultComponentFocusHandler(root),
-        private val dispatcher: UIEventDispatcher = UIEventToComponentDispatcher(
+        private val dispatcher: UIEventToComponentDispatcher = UIEventToComponentDispatcher(
                 root = root,
                 focusHandler = focusHandler)) :
         InternalComponentContainer,
@@ -40,8 +39,9 @@ class DefaultComponentContainer(
     private val subscriptions = mutableListOf<Subscription>()
     private val logger = LoggerFactory.getLogger(this::class)
 
-    private var state = UNKNOWN
+    private var state = INITIALIZING
 
+    @ExperimentalContracts
     override fun dispatch(event: UIEvent): UIEventResponse {
         return if (isActive()) {
             dispatcher.dispatch(event)
@@ -64,12 +64,11 @@ class DefaultComponentContainer(
     }
 
     override fun isActive(): Boolean {
-        return state == ContainerHandlerState.ACTIVE
+        return state == ACTIVE
     }
 
     override fun activate() {
-        logger.debug("Activating container handler.")
-        state = ContainerHandlerState.ACTIVE
+        logger.debug("Activating component container.")
         refreshFocusables()
         subscriptions.add(Zircon.eventBus.subscribe<ComponentAddition>(ZirconScope) {
             refreshFocusables()
@@ -77,13 +76,13 @@ class DefaultComponentContainer(
         subscriptions.add(Zircon.eventBus.subscribe<ComponentRemoval>(ZirconScope) {
             refreshFocusables()
         })
+        state = ACTIVE
     }
 
     override fun deactivate() {
         subscriptions.cancelAll()
-        focusedComponent.focusTaken()
-        focus(root)
-        state = DEACTIVATED
+        dispatcher.focusComponent(root)
+        state = INACTIVE
     }
 
     override fun toFlattenedLayers(): Iterable<Layer> {

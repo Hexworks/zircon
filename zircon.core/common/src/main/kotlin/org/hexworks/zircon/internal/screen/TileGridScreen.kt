@@ -3,26 +3,23 @@ package org.hexworks.zircon.internal.screen
 import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.subscribe
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
-import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.extensions.onKeyboardEvent
 import org.hexworks.zircon.api.extensions.onMouseEvent
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.ComponentsLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.impl.CompositeComponentContainer
-import org.hexworks.zircon.internal.component.impl.DefaultComponentContainer
-import org.hexworks.zircon.internal.component.impl.RootContainer
-import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.internal.component.modal.DefaultModal
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.extensions.cancelAll
@@ -51,8 +48,6 @@ class TileGridScreen(
     private var activeScreenId = IdentifierFactory.randomIdentifier()
 
     init {
-        applyColorTheme(ColorThemeResource.EMPTY.getTheme())
-        val debug = RuntimeConfig.config.debugMode
         MouseEventType.values().forEach { eventType ->
             tileGrid.onMouseEvent(eventType) { event, phase ->
                 if (isActive()) {
@@ -68,10 +63,10 @@ class TileGridScreen(
             }.also { subscriptions.add(it) }
         }
         Zircon.eventBus.subscribe<ZirconEvent.ScreenSwitch>(ZirconScope) { (screenId) ->
-            if (debug) println("Screen switch event received. screenId: '$screenId'.")
+            LOGGER.debug("Screen switch event received (id=${screenId.abbreviate()}) in screen object (id=${id.abbreviate()}).")
             activeScreenId = screenId
             if (id != screenId) {
-                if (debug) println("Deactivating screen")
+                LOGGER.debug("Deactivating screen (id=${id.abbreviate()}).")
                 deactivate()
             }
         }.also { subscriptions.add(it) }
@@ -88,10 +83,17 @@ class TileGridScreen(
         }.also { subscriptions.add(it) }
     }
 
+
+    // note that events / event listeners on the screen itself are only handled
+    // if the main container is active (otherwise a modal is open and they would
+    // have no visible effect)
     override fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse {
         return if (isActive()) {
-            eventProcessor.process(event, phase)
-                    .pickByPrecedence(componentContainer.dispatch(event))
+            // note that first we process listeners on the Screen itself
+            // then component ones. They don't affect each other
+            (if (componentContainer.isMainContainerActive()) {
+                eventProcessor.process(event, phase)
+            } else Pass).pickByPrecedence(componentContainer.dispatch(event))
         } else Pass
     }
 
@@ -129,33 +131,24 @@ class TileGridScreen(
     }
 
     override fun <T : ModalResult> openModal(modal: Modal<T>) {
+        require(modal is DefaultModal) {
+            "This Screen does not accept custom Modals yet."
+        }
         componentContainer.addModal(modal)
     }
 
     companion object {
+
+        private val LOGGER = LoggerFactory.getLogger(TileGrid::class)
+
         private fun buildCompositeContainer(tileGrid: InternalTileGrid): CompositeComponentContainer {
             val metadata = ComponentMetadata(
                     size = tileGrid.size,
                     position = Position.defaultPosition(),
                     tileset = tileGrid.currentTileset(),
                     componentStyleSet = ComponentStyleSet.defaultStyleSet())
-            val renderingStrategy = DefaultComponentRenderingStrategy(
-                    decorationRenderers = listOf(),
-                    componentRenderer = RootContainerRenderer())
-            val componentContainer = DefaultComponentContainer(
-                    root = RootContainer(
-                            componentMetadata = metadata,
-                            renderingStrategy = renderingStrategy))
-            val modalContainer = DefaultComponentContainer(
-                    root = RootContainer(
-                            componentMetadata = metadata,
-                            renderingStrategy = renderingStrategy))
-            modalContainer.applyColorTheme(ColorThemeResource.EMPTY.getTheme())
-            return CompositeComponentContainer(
-                    mainContainer = componentContainer,
-                    modalContainer = modalContainer)
+            return CompositeComponentContainer(metadata = metadata)
         }
     }
-
 }
 
