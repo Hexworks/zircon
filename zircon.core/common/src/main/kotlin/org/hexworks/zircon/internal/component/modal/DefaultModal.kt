@@ -18,7 +18,8 @@ open class DefaultModal<T : ModalResult>(componentMetadata: ComponentMetadata,
                                          private val renderingStrategy: ComponentRenderingStrategy<Modal<out ModalResult>>)
     : Modal<T>, DefaultContainer(
         componentMetadata = componentMetadata,
-        renderer = renderingStrategy), Observable<T> by DefaultObservable() {
+        renderer = renderingStrategy),
+        Observable<T> by DefaultObservable() {
 
     override fun close(result: T) {
         notifyObservers(result)
@@ -31,6 +32,8 @@ open class DefaultModal<T : ModalResult>(componentMetadata: ComponentMetadata,
     init {
         render()
     }
+
+    override fun acceptsFocus() = true
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()

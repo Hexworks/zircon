@@ -20,4 +20,5 @@ interface UIEventDispatcher {
      * Otherwise [dispatch] will return the [UIEventResponse] with the highest precedence.
      */
     fun dispatch(event: UIEvent): UIEventResponse
+
 }
