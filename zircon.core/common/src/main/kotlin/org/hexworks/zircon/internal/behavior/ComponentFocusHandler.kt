@@ -26,5 +26,9 @@ interface ComponentFocusHandler {
 
     fun refreshFocusables()
 
+    /**
+     * Tells whether the given [InternalComponent] is capable of
+     * being focused.
+     */
     fun canFocus(component: InternalComponent): Boolean
 }

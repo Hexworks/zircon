@@ -214,15 +214,23 @@ class UIEventToComponentDispatcher(private val root: InternalContainer,
      * Performs focus change for the given [componentToFocus] [Component] if it
      * can be focused (eg: it is focusable, and it is not already focused).
      */
-    private fun focusComponent(componentToFocus: InternalComponent): UIEventResponse {
+    fun focusComponent(componentToFocus: InternalComponent): UIEventResponse {
+        LOGGER.debug("Trying to focus component $componentToFocus.")
         return if (focusHandler.canFocus(componentToFocus)) {
+
+            LOGGER.debug("Component $componentToFocus can be focused, proceeding.")
             val currentlyFocusedComponent = focusHandler.focusedComponent
+
+            LOGGER.debug("Taking focus from currently focused component $currentlyFocusedComponent.")
             val focusTaken = ComponentEvent(FOCUS_TAKEN)
             var takenResult = currentlyFocusedComponent.process(focusTaken, TARGET)
             if (takenResult.allowsDefaults()) {
+
+                LOGGER.debug("Default focus taken event was not prevented for component $currentlyFocusedComponent, proceeding.")
                 takenResult = takenResult.pickByPrecedence(currentlyFocusedComponent.focusTaken())
             }
 
+            LOGGER.debug("Focusing new component $componentToFocus.")
             focusHandler.focus(componentToFocus)
 
             val focusGiven = ComponentEvent(FOCUS_GIVEN)
@@ -246,6 +254,8 @@ class UIEventToComponentDispatcher(private val root: InternalContainer,
     }
 
     companion object {
+        private val LOGGER = LoggerFactory.getLogger(UIEventDispatcher::class)
+
         val FOCUS_TRIGGER_EVENT_TYPES = listOf(MOUSE_PRESSED, MOUSE_RELEASED, MOUSE_DRAGGED)
         val ACTIVATE_FOCUSED_KEY = KeyboardEvent(
                 type = KeyboardEventType.KEY_PRESSED,

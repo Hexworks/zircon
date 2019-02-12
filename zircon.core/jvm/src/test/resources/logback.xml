@@ -5,10 +5,10 @@
         </encoder>
     </appender>
 
-    <root level="debug">
+    <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
 
-    <logger name="org.hexworks.zircon" level="DEBUG" />
+    <logger name="org.hexworks.zircon" level="info" />
 
 </configuration>

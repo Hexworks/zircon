@@ -2,53 +2,57 @@
 
 package org.hexworks.zircon.examples.playground
 
-import java.awt.AWTKeyStroke
-import java.awt.Canvas
-import java.awt.Dimension
-import java.awt.KeyboardFocusManager
-import java.awt.event.KeyEvent
-import java.awt.event.KeyListener
-import javax.swing.JFrame
+import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.extensions.onKeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyCode
+import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.Processed
 
 object KotlinPlayground {
+
+    private val theme = ColorThemes.solarizedLightOrange()
+    private val tileset = CP437TilesetResources.rogueYun16x16()
+    val viewPanel = Components.panel()
+            .wrapWithBox(true)
+            .withSize(24, 20)
+            .withPosition(0, 6)
+            .build()
+
+    private val UnitXPos: Int = 15
+    val ValueTabXPos = 10
 
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val frame = JFrame().apply {
-            setSize(800, 600)
-            val canvas = Canvas()
-            add(canvas)
+        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+                .withDefaultTileset(tileset)
+                .withSize(60, 30)
+                .build())
 
-            isVisible = true
-            isResizable = false
+        val screen = Screens.createScreenFor(tileGrid)
+        screen.addComponent(viewPanel)
 
-            canvas.preferredSize = Dimension(
-                    800,
-                    600)
-            canvas.isFocusable = true
-            canvas.requestFocusInWindow()
-            canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
-            canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
-            canvas.addKeyListener(object : KeyListener {
+        val unitHeadingTextArea = Components.textArea()
+                .withText("012")
+                .withPosition(Position.create(ValueTabXPos, 0))
+                .withSize(3, 1)
+                .build()
 
-                override fun keyPressed(e: KeyEvent) {
-                    println("press: key code: '${e.keyCode}', key char: '${e.keyChar}'")
-                }
-
-                override fun keyReleased(e: KeyEvent) {
-                    println("release: key code: '${e.keyCode}', key char: '${e.keyChar}'")
-                }
-
-                override fun keyTyped(e: KeyEvent) {
-                    println("type: key code: '${e.keyCode}', key char: '${e.keyChar}'")
-                }
-            })
-
-            defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-            pack()
-            setLocationRelativeTo(null)
+        unitHeadingTextArea.onKeyboardEvent(KeyboardEventType.KEY_PRESSED) { event, phase ->
+            //press Enter
+            if (event.code == KeyCode.ENTER) {
+                unitHeadingTextArea.disable()
+                unitHeadingTextArea.clearFocus()
+            }
+            Processed
         }
-    }
+        //unitHeadingTextArea.onInput(F10InputRemoverInputListener(viewContext, this, unitHeadingTextArea) { ownSubComponent.currentHeading.displayName() })
+        viewPanel.addComponent(unitHeadingTextArea)
 
+
+        screen.display()
+        unitHeadingTextArea.enable()
+        unitHeadingTextArea.requestFocus()
+    }
 }
