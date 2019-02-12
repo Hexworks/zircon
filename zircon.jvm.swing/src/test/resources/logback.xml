@@ -13,10 +13,12 @@
     </root>
 
     <!-- You can either set logging level for whole packages -->
-    <logger name="org.hexworks.zircon" level="warn"/>
+    <logger name="org.hexworks.zircon" level="info"/>
     <logger name="org.hexworks.cobalt" level="warn"/>
 
     <!-- Or individual classes -->
+    <logger name="org.hexworks.zircon.api.component.Button" level="debug"/>
     <logger name="org.hexworks.zircon.internal.uievent.UIEventDispatcher" level="debug"/>
+
 
 </configuration>

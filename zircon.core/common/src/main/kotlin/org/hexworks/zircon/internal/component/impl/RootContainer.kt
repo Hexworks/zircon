@@ -20,6 +20,9 @@ class RootContainer(componentMetadata: ComponentMetadata,
         render()
     }
 
+    // a RootContainer is always attached
+    override fun isAttached() = true
+
     override fun acceptsFocus() = true
 
     override fun focusGiven() = Processed

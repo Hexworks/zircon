@@ -3,11 +3,11 @@ package org.hexworks.zircon.internal.component
 /**
  * Represents the possible states a [InternalComponentContainer] can be in.
  */
-enum class ContainerHandlerState {
+enum class ComponentContainerState {
     /**
      * The [InternalComponentContainer] is was just created.
      */
-    UNKNOWN,
+    INITIALIZING,
     /**
      * The [InternalComponentContainer] is active.
      */
@@ -15,5 +15,5 @@ enum class ContainerHandlerState {
     /**
      * The [InternalComponentContainer] is intactive.
      */
-    DEACTIVATED
+    INACTIVE
 }
