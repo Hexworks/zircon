@@ -21,8 +21,14 @@ open class DefaultModal<T : ModalResult>(componentMetadata: ComponentMetadata,
         renderer = renderingStrategy),
         Observable<T> by DefaultObservable() {
 
+    private var closed = false
+
+    // TODO: test this double closing thing
     override fun close(result: T) {
-        notifyObservers(result)
+        if (closed.not()) {
+            closed = true
+            notifyObservers(result)
+        }
     }
 
     override fun onClosed(consumer: Consumer<T>) {
