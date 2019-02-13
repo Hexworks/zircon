@@ -57,8 +57,8 @@ object ModalTest {
                 .withComponent(modalPanel)
                 .withParentSize(screen.size)
                 .build().apply {
-                    onKeyboardEvent(KEY_PRESSED) { event, phase ->
-                        if (event.code == KeyCode.KEY_C && listOf(TARGET, BUBBLE).contains(phase)) {
+                    onKeyboardEvent(KEY_PRESSED) { event, _ ->
+                        if (event.code == KeyCode.KEY_C) {
                             logger.info("Closed by pressing C")
                             close(EmptyModalResult)
                             Processed
