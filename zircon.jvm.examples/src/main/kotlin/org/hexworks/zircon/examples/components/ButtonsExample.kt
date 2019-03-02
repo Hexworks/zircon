@@ -1,10 +1,14 @@
 package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.component.Visibility
 import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
+import org.hexworks.zircon.api.extensions.onMouseEvent
 import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Processed
 
 object ButtonsExample {
 
@@ -16,7 +20,7 @@ object ButtonsExample {
 
         val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(60, 30))
+                .withSize(Sizes.create(60, 40))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
@@ -24,7 +28,7 @@ object ButtonsExample {
         val panel = Components.panel()
                 .wrapWithBox(true)
                 .wrapWithShadow(true)
-                .withSize(Sizes.create(30, 28))
+                .withSize(Sizes.create(30, 30))
                 .withPosition(Positions.create(29, 1))
                 .withTitle("Buttons on panel")
                 .build()
@@ -59,6 +63,11 @@ object ButtonsExample {
                         ShadowDecorationRenderer(),
                         HalfBlockDecorationRenderer())
                 .withPosition(Positions.create(1, 23))
+        val invisibleBtn = Components.button()
+                .withText("Make me invisible")
+                .wrapSides(true)
+                .withPosition(Positions.create(1, 30))
+                .build()
 
 
         screen.addComponent(simpleBtn)
@@ -76,8 +85,16 @@ object ButtonsExample {
         screen.addComponent(halfBlockBtn)
         panel.addComponent(halfBlockBtn.withPosition(Positions.create(1, 21)).build())
 
+        screen.addComponent(invisibleBtn)
+
         screen.display()
         screen.applyColorTheme(theme)
+
+        invisibleBtn.onMouseEvent(MouseEventType.MOUSE_CLICKED
+        ) { _, _ ->
+            invisibleBtn.visibility = Visibility.Hidden
+            Processed
+        }
     }
 
 }

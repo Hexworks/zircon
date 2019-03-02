@@ -127,7 +127,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) was rendered.")
+        LOGGER.debug("CheckBox (id=${id.abbreviate()}, visibility=$visibility, selected=$isSelected) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 

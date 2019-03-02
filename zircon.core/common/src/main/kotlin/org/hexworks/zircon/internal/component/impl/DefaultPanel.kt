@@ -50,7 +50,7 @@ open class DefaultPanel(componentMetadata: ComponentMetadata,
     }
 
     final override fun render() {
-        LOGGER.debug("Panel (id=${id.abbreviate()}) was rendered.")
+        LOGGER.debug("Panel (id=${id.abbreviate()},visibility=$visibility) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 

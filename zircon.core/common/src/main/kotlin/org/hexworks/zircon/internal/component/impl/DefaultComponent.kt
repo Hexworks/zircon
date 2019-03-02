@@ -1,5 +1,8 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extensions.onChange
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
@@ -7,6 +10,7 @@ import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.Visibility
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
@@ -63,6 +67,18 @@ abstract class DefaultComponent(
 
     private var parent = Maybe.empty<InternalContainer>()
 
+    final override val visibilityProperty: Property<Visibility> = createPropertyFrom(Visibility.Visible)
+
+    final override var visibility: Visibility by visibilityProperty.asDelegate()
+
+
+    init {
+        visibilityProperty.onChange()
+        {
+            render()
+        }
+    }
+
     final override fun createSnapshot(): Snapshot {
         return graphics.createSnapshot().let { snapshot ->
             Snapshot.create(
@@ -80,6 +96,7 @@ abstract class DefaultComponent(
                 event = ZirconEvent.RequestFocusFor(this),
                 eventScope = ZirconScope)
     }
+
 
     override fun clearFocus() {
         Zircon.eventBus.publish(
