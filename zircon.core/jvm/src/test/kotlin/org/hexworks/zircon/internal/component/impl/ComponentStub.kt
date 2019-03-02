@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
@@ -9,6 +11,7 @@ import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.component.Visibility
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
@@ -33,6 +36,9 @@ class ComponentStub(
                 .withSize(size)
                 .withTileset(tileset)
                 .build()) : InternalComponent {
+
+    override var visibility: Visibility = Visibility.Visible
+    override val visibilityProperty: Property<Visibility> = createPropertyFrom(visibility)
 
     override val width: Int
         get() = size.width

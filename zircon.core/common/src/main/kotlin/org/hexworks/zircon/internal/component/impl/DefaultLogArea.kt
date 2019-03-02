@@ -150,7 +150,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        LOGGER.debug("LogArea (id=${id.abbreviate()}) was rendered.")
+        LOGGER.debug("LogArea (id=${id.abbreviate()},visibility=$visibility) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 

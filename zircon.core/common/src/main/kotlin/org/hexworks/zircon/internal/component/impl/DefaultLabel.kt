@@ -44,7 +44,7 @@ class DefaultLabel(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        LOGGER.debug("Label (id=${id.abbreviate()}) was rendered.")
+        LOGGER.debug("Label (id=${id.abbreviate()}, visibility=$visibility) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 
