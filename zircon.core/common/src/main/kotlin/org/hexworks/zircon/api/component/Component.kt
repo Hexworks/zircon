@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
@@ -44,6 +45,11 @@ interface Component : Identifiable, Layer, UIEventSource, ComponentEventSource {
      * The styles this [Component] uses.
      */
     var componentStyleSet: ComponentStyleSet
+
+
+    var visibility: Visibility
+    val visibilityProperty: Property<Visibility>
+
 
     /**
      * Tells whether this [Component] is attached to a parent or not.

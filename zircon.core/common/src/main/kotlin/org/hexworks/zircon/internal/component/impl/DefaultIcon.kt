@@ -37,7 +37,7 @@ class DefaultIcon(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        LOGGER.debug("Icon (id=${id.abbreviate()}) was rendered.")
+        LOGGER.debug("Icon (id=${id.abbreviate()}, visibility=$visibility) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 
