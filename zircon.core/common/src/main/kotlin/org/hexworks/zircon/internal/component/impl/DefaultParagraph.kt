@@ -46,7 +46,7 @@ class DefaultParagraph(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        LOGGER.debug("Paragraph (id=${id.abbreviate()}) was rendered.")
+        LOGGER.debug("Paragraph (id=${id.abbreviate()},visibility=$visibility) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 

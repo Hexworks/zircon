@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Label
+import org.hexworks.zircon.api.component.Visibility
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
@@ -67,6 +68,38 @@ class DefaultComponentRenderingStrategyTest {
     }
 
     @Test
+    fun `Should not render button if button is set to invisible`() {
+        val size = Sizes.create(8, 4)
+        val graphics = TileGraphicsBuilder.newBuilder()
+                .withSize(size)
+                .build()
+                .fill(Tile.defaultTile().withCharacter('_'))
+
+        val target: DefaultComponentRenderingStrategy<Button> = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(
+                        ShadowDecorationRenderer(),
+                        BoxDecorationRenderer(),
+                        ButtonSideDecorationRenderer()),
+                componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>)
+
+        val btn = DefaultButton(
+                componentMetadata = ComponentMetadata(
+                        tileset = CP437TilesetResources.aduDhabi16x16(),
+                        size = size,
+                        position = Position.defaultPosition(),
+                        componentStyleSet = ComponentStyleSet.defaultStyleSet()),
+                initialText = "qux",
+                renderingStrategy = target)
+
+        btn.visibility = Visibility.Hidden
+
+        target.render(btn, graphics)
+
+        assertThat(graphics.fetchCells().map { it.tile }.map { it.asCharacterTile().get().character })
+                .containsExactlyElementsOf(MutableList(32) { ' ' } )
+    }
+
+        @Test
     fun `Should properly render component without decorations`() {
         val size = Sizes.create(5, 5)
         val graphics = TileGraphicsBuilder.newBuilder()

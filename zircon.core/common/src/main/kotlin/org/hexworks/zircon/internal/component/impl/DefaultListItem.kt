@@ -48,7 +48,7 @@ class DefaultListItem(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        LOGGER.debug("ListItem (id=${id.abbreviate()}) was rendered.")
+        LOGGER.debug("ListItem (id=${id.abbreviate()}, visibility=$visibility) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 
