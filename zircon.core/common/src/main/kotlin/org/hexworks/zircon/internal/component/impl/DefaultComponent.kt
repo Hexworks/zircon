@@ -10,7 +10,6 @@ import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Visibility
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -60,10 +59,11 @@ abstract class DefaultComponent(
     final override val contentSize: Size
         get() = renderer.calculateContentSize(size)
 
-    final override val componentStyleSetProperty: Property<ComponentStyleSet> = createPropertyFrom(ComponentStyleSet.defaultStyleSet())
-
-    final override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
-
+    final override var componentStyleSet = componentMetadata.componentStyleSet
+        set(value) {
+            field = value
+            render()
+        }
 
     private var parent = Maybe.empty<InternalContainer>()
 
@@ -74,11 +74,6 @@ abstract class DefaultComponent(
 
     init {
         visibilityProperty.onChange()
-        {
-            render()
-        }
-
-        componentStyleSetProperty.onChange()
         {
             render()
         }

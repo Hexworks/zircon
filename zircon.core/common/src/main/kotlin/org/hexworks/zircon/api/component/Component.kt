@@ -46,20 +46,8 @@ interface Component : Identifiable, Layer, UIEventSource, ComponentEventSource {
      */
     var componentStyleSet: ComponentStyleSet
 
-    /**
-     * The styles property this [Component] uses.
-     */
-    val componentStyleSetProperty: Property<ComponentStyleSet>
 
-
-    /**
-     * The visibility of this [Component]
-     */
     var visibility: Visibility
-
-    /**
-     * The visibility property of this [Component]
-     */
     val visibilityProperty: Property<Visibility>
 
 

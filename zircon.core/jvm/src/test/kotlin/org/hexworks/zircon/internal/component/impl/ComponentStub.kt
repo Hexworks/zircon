@@ -27,6 +27,7 @@ class ComponentStub(
         override val position: Position,
         override val size: Size,
         val tileset: TilesetResource = BuiltInCP437TilesetResource.REX_PAINT_20X20,
+        override var componentStyleSet: ComponentStyleSet = ComponentStyleSet.defaultStyleSet(),
         override val absolutePosition: Position = position,
         override val contentPosition: Position = position,
         override val contentSize: Size = size,
@@ -35,10 +36,6 @@ class ComponentStub(
                 .withSize(size)
                 .withTileset(tileset)
                 .build()) : InternalComponent {
-
-    override val componentStyleSetProperty: Property<ComponentStyleSet> = createPropertyFrom(ComponentStyleSet.defaultStyleSet())
-    override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
-
 
     override var visibility: Visibility = Visibility.Visible
     override val visibilityProperty: Property<Visibility> = createPropertyFrom(visibility)
