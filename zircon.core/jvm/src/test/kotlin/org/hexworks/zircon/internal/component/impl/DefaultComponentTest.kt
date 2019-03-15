@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.Visibility
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
@@ -129,7 +130,14 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     @Test
     fun shouldRenderWhenComponentStyleSetIsSet() {
-        target.componentStyleSet = ComponentStyleSet.defaultStyleSet()
+        target.componentStyleSet = ComponentStyleSet.empty()
+
+        assertThat(rendered).isTrue()
+    }
+
+    @Test
+    fun shouldRenderWhenVisibilityIsSet() {
+        target.visibility = Visibility.Hidden
 
         assertThat(rendered).isTrue()
     }
