@@ -60,7 +60,7 @@ abstract class DefaultComponent(
     final override val contentSize: Size
         get() = renderer.calculateContentSize(size)
 
-    final override val componentStyleSetProperty: Property<ComponentStyleSet> = createPropertyFrom(ComponentStyleSet.defaultStyleSet())
+    final override val componentStyleSetProperty: Property<ComponentStyleSet> = createPropertyFrom(componentMetadata.componentStyleSet)
 
     final override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
 
