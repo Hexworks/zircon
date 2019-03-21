@@ -4,12 +4,6 @@
 
 ---
 
-## Note for 7DRL participants
-
-We have a [Discord Channel](https://discord.gg/7tXhT58) where you can ask for help during 7DRL if you face issues with Zircon!
-
----
-
 *Note that* this library was inspired by [Lanterna](https://github.com/mabe02/lanterna). 
 Check it out if you are looking for a *terminal emulator* instead. 
 
