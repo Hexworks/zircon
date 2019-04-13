@@ -35,6 +35,9 @@ object Components {
     fun checkBox() = CheckBoxBuilder.newBuilder()
 
     @JvmStatic
+    fun progressBar() = ProgressBarBuilder.newBuilder()
+
+    @JvmStatic
     fun <T : Tile, B : Block<T>> gameComponent() = GameComponentBuilder.newBuilder<T, B>()
 
     @JvmStatic
