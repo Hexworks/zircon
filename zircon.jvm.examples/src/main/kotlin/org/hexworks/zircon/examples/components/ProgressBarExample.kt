@@ -27,7 +27,6 @@ object ProgressBarExample {
         screen.addComponent(panel)
 
         val progressBar = Components.progressBar()
-                .withNumberOfSteps(20)
                 .withRange(100)
                 .withNumberOfSteps(10)
                 .withPosition(Positions.create(0, 5))
@@ -47,7 +46,7 @@ object ProgressBarExample {
         panel.addComponent(progressBar)
         panel.addComponent(progressBarWithPercentValue)
 
-        progressBar.progress = 0.0
+        progressBar.progress = 60.0
         progressBarWithPercentValue.progress = 90.0
 
         screen.display()
