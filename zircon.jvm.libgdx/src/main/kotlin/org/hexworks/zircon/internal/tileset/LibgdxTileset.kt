@@ -1,15 +1,11 @@
 package org.hexworks.zircon.internal.tileset
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.*
-import com.badlogic.gdx.graphics.glutils.PixmapTextureData
-import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.github.benmanes.caffeine.cache.Caffeine
 import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.tileset.TileTexture
@@ -20,7 +16,6 @@ import org.hexworks.zircon.internal.tileset.transformer.LibgdxTextureCloner
 import java.util.concurrent.TimeUnit
 import org.hexworks.zircon.internal.tileset.transformer.LibgdxTextureColorizer
 import org.hexworks.zircon.internal.util.Assets
-
 
 /**
  * Represents a tileset which is backed by a sprite sheet.
