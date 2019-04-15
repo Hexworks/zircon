@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.tileset
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.zircon.api.behavior.Closeable
-import org.hexworks.zircon.api.resource.GraphicalTilesetResource
 import org.hexworks.zircon.api.resource.TileType.*
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.resource.TilesetType.*
@@ -32,7 +31,7 @@ class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
 
         private val LOADERS: Map<String, (TilesetResource) -> Tileset<SpriteBatch>> = mapOf(
                 "$CHARACTER_TILE-$CP437_TILESET" to { resource: TilesetResource ->
-                    LibgdxTileset(
+                    LibgdxCP437Tileset(
                             path = resource.path,
                             width = resource.width,
                             height = resource.height
