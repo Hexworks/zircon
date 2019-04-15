@@ -5,6 +5,6 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.TextureTransformer
 
-class NoOpTransformer : TextureTransformer<TextureRegion> {
+class LibgdxNoOpTransformer : TextureTransformer<TextureRegion> {
     override fun transform(texture: TileTexture<TextureRegion>, tile: Tile) = texture
 }

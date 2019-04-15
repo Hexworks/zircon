@@ -217,3 +217,7 @@ class LibgdxRenderer(private val grid: TileGrid,
         )
     }
 }
+
+fun TileColor.toGDXColor(): Color {
+    return Color(this.red / 255f, this.green / 255f, this.blue / 255f, this.alpha / 255f)
+}
