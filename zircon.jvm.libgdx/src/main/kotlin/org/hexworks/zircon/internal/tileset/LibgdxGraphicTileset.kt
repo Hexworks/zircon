@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.tileset
 
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -19,10 +18,8 @@ import org.hexworks.zircon.internal.tileset.impl.GraphicTextureMetadata
 import org.hexworks.zircon.internal.util.rex.unZipIt
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
-import java.awt.image.BufferedImage
 import java.io.File
 import java.io.InputStream
-import javax.imageio.ImageIO
 
 class LibgdxGraphicTileset(private val resource: TilesetResource)
     : Tileset<SpriteBatch> {
