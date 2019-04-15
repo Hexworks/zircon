@@ -8,8 +8,11 @@ import com.badlogic.gdx.graphics.GL20
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
+import org.hexworks.zircon.api.data.GraphicTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.api.resource.BuiltInGraphicTilesetResource
+import org.hexworks.zircon.api.resource.GraphicalTilesetResource
 import org.hexworks.zircon.internal.application.LibgdxApplication
 import org.hexworks.zircon.internal.listeners.ZirconInputListener
 import org.hexworks.zircon.internal.util.fromBottom
@@ -38,7 +41,7 @@ object LibgdxPlayground : Game() {
 
         val screen = ScreenBuilder.createScreenFor(zirconApplication.tileGrid)
 
-        val panel = Components.panel()
+        /*val panel = Components.panel()
                 .wrapWithBox(true)
                 .wrapWithShadow(true)
                 .withSize(Sizes.create(30, 28))
@@ -67,7 +70,19 @@ object LibgdxPlayground : Game() {
         panel.addComponent(unselectedToggleButton)
         panel.addComponent(selectedToggleButton)
         panel.addComponent(label)
-        panel.addComponent(button)
+        panel.addComponent(button)*/
+
+        screen.addComponent(Components.icon()
+                .withPosition(2, 2)
+                .withIcon(Tiles.newBuilder()
+                        .withName("Plate mail")
+                        .withTileset(BuiltInGraphicTilesetResource.NETHACK_16X16)
+                        .buildGraphicTile())
+                )
+        screen.addComponent(Components.label()
+                .withText("Label with icon")
+                .withPosition(2, 1))
+
 
         screen.applyColorTheme(theme)
         screen.display()
@@ -90,8 +105,8 @@ object LibgdxPlayground : Game() {
         zirconApplication.dispose()
     }
 
-    private val TILESET = BuiltInCP437TilesetResource.WANDERLUST_16X16
-    private val theme = ColorThemes.solarizedLightOrange()
+    private val TILESET = CP437TilesetResources.rexPaint16x16()
+    private val theme = ColorThemes.arc()
 
     @JvmStatic
     fun main(args: Array<String>) {
