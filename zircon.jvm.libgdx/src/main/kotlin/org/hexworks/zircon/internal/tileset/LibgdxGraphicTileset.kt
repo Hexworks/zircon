@@ -1,6 +1,10 @@
 package org.hexworks.zircon.internal.tileset
 
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.zircon.api.data.GraphicTile
 import org.hexworks.zircon.api.data.Position
@@ -31,7 +35,7 @@ class LibgdxGraphicTileset(private val resource: TilesetResource)
         get() = resource.height
 
     private val metadata: Map<String, GraphicTextureMetadata>
-    private val source: BufferedImage
+    private val source: TextureRegion
 
     init {
         require(resource.tileType == TileType.GRAPHIC_TILE) {
@@ -53,7 +57,7 @@ class LibgdxGraphicTileset(private val resource: TilesetResource)
         val tileInfo: TileInfo = yaml.load(tileInfoSource) as TileInfo
         // TODO: multi-file support
         val imageData = tileInfo.files.first()
-        source = ImageIO.read(files.first { it.name == imageData.name })
+        source = TextureRegion(Texture(files.first { it.name == imageData.name }.absolutePath.toString()))
         metadata = imageData.tiles.mapIndexed { i, tileData: TileData ->
             val (name, _, char) = tileData
             val cleanName = name.toLowerCase().trim()
@@ -76,20 +80,23 @@ class LibgdxGraphicTileset(private val resource: TilesetResource)
 
     @Suppress("UNUSED_VARIABLE")
     override fun drawTile(tile: Tile, surface: SpriteBatch, position: Position) {
-        val texture = fetchTextureForTile(tile)
-        val x = position.x * width
-        val y = position.y * height
-        //surface.draw(texture.texture, x, y)
+        val x = position.x.toFloat()
+        val y = position.y.toFloat()
+        val tileSprite = Sprite(fetchTextureForTile(tile).texture)
+        tileSprite.setOrigin(0f, 0f)
+        tileSprite.setOriginBasedPosition(x, y)
+        tileSprite.flip(false, true)
+        tileSprite.draw(surface)
     }
 
 
-    private fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {
-        tile as? GraphicTile ?: throw IllegalArgumentException("Wrong tile type")
+    private fun fetchTextureForTile(tile: Tile): TileTexture<TextureRegion> {
+        tile as? GraphicTile ?: throw IllegalArgumentException("Wrong tile type, ${tile.tileType.name}")
         return metadata[tile.name]?.let { meta ->
             DefaultTileTexture(
                     width = width,
                     height = height,
-                    texture = source.getSubimage(meta.x * width, meta.y * height, width, height))
+                    texture = source.apply { setRegion(meta.x * width, meta.y * height, width, height) })
         } ?: throw NoSuchElementException("No texture with name '${tile.name}'.")
     }
 
