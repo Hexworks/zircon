@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.GL20
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
-import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.GraphicTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
@@ -40,7 +39,7 @@ object LibgdxPlayground : Game() {
                 .build())
         zirconApplication.start()
 
-        //val screen = ScreenBuilder.createScreenFor(zirconApplication.tileGrid)
+        val screen = ScreenBuilder.createScreenFor(zirconApplication.tileGrid)
 
         /*val panel = Components.panel()
                 .wrapWithBox(true)
@@ -73,7 +72,7 @@ object LibgdxPlayground : Game() {
         panel.addComponent(label)
         panel.addComponent(button)*/
 
-        /*screen.addComponent(Components.icon()
+        screen.addComponent(Components.icon()
                 .withPosition(2, 2)
                 .withIcon(Tiles.newBuilder()
                         .withName("Plate mail")
@@ -82,19 +81,11 @@ object LibgdxPlayground : Game() {
                 )
         screen.addComponent(Components.label()
                 .withText("Label with icon")
-                .withPosition(2, 1))*/
-        zirconApplication.tileGrid.setTileAt(
-                Positions.create(3, 3),
-                Tiles.newBuilder()
-                        .withBackgroundColor(ANSITileColor.RED)
-                        .withForegroundColor(ANSITileColor.GREEN)
-                        .withCharacter('y')
-                        .build().also { println(it.tileType) }
-        )
+                .withPosition(2, 1))
 
 
-        //screen.applyColorTheme(theme)
-        //screen.display()
+        screen.applyColorTheme(theme)
+        screen.display()
 
         Gdx.input.inputProcessor = ZirconInputListener(
                 fontWidth = TILESET.width,
