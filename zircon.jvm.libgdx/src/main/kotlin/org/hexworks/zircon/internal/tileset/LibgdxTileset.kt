@@ -7,23 +7,22 @@ import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.modifier.*
-import org.hexworks.zircon.api.tileset.TextureTransformer
+import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
-import org.hexworks.zircon.internal.tileset.transformer.*
+import org.hexworks.zircon.internal.tileset.transformer.LibgdxTextureCloner
 import java.util.concurrent.TimeUnit
+import org.hexworks.zircon.internal.tileset.transformer.LibgdxTextureColorizer
 import org.hexworks.zircon.internal.util.Assets
-import kotlin.reflect.KClass
 
 /**
  * Represents a tileset which is backed by a sprite sheet.
  */
-class LibgdxCP437Tileset(override val width: Int,
-                         override val height: Int,
-                         private val path: String)
+class LibgdxTileset(override val width: Int,
+                    override val height: Int,
+                    private val path: String)
     : Tileset<SpriteBatch> {
 
     override val id: Identifier = Identifier.randomIdentifier()
@@ -88,9 +87,9 @@ class LibgdxCP437Tileset(override val width: Int,
             TILE_INITIALIZERS.forEach {
                 image = it.transform(image, fixedTile)
             }
-            fixedTile.modifiers.filterIsInstance<TextureTransformModifier>().forEach {
+            /*fixedTile.modifiers.filterIsInstance<TextureTransformModifier>().forEach {
                 image = TEXTURE_TRANSFORMER_LOOKUP[it::class]?.transform(image, fixedTile) ?: image
-            }
+            }*/
             cache.put(key, image)
             image
         }
@@ -109,14 +108,9 @@ class LibgdxCP437Tileset(override val width: Int,
         }.toMap()
 
         private val TILE_INITIALIZERS = listOf(
-                LibgdxTextureCloner()
+                LibgdxTextureCloner(),
+                LibgdxTextureColorizer()
         )
-
-        val TEXTURE_TRANSFORMER_LOOKUP: Map<KClass<out TextureTransformModifier>, TextureTransformer<TextureRegion>> = mapOf(
-                Pair(SimpleModifiers.Blink::class, LibgdxNoOpTransformer()),
-                Pair(SimpleModifiers.CrossedOut::class, LibgdxCrossedOutTransformer()),
-                Pair(Crop::class, LibgdxCropTransformer())
-        ).toMap()
     }
 
     class TileTextureMetadata(val x: Int,
