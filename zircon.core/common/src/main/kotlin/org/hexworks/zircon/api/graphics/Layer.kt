@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.graphics
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Drawable
@@ -7,6 +8,7 @@ import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.util.TileTransformer
 
 interface Layer : DrawSurface, Drawable, Movable, Clearable {
 
@@ -15,6 +17,17 @@ interface Layer : DrawSurface, Drawable, Movable, Clearable {
     override val width: Int
 
     override val height: Int
+
+    val hiddenProperty: Property<Boolean>
+    var isHidden: Boolean
+
+    fun hide() {
+        isHidden = true
+    }
+
+    fun show() {
+        isHidden = false
+    }
 
     /**
      * Fetches all the (absolute) [Position]s which this
@@ -43,9 +56,22 @@ interface Layer : DrawSurface, Drawable, Movable, Clearable {
      */
     fun createCopy(): Layer
 
+    /**
+     * Copies this [Layer] to a new immutable [TileImage].
+     */
     fun toTileImage(): TileImage
 
+    /**
+     * Copies this [Layer] to a new [TileGraphics].
+     */
     fun toTileGraphics(): TileGraphics
+
+    /**
+     * Transforms all of the [Tile]s in this [Layer] with the given
+     * [transformer] and overwrites them with the results of calling
+     * [TileTransformer.invoke].
+     */
+    fun transform(transformer: TileTransformer)
 
     /**
      * Fills the empty positions of this [Layer] with the

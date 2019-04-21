@@ -91,7 +91,7 @@ class DefaultComponentRenderingStrategyTest {
                 initialText = "qux",
                 renderingStrategy = target)
 
-        btn.visibility = Visibility.Hidden
+        btn.isVisible = Visibility.Hidden
 
         target.render(btn, graphics)
 

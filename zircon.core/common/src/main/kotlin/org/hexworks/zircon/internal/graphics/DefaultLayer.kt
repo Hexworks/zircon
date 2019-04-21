@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.graphics
 
+import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Movable
@@ -11,6 +12,7 @@ import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
+import org.hexworks.zircon.api.util.TileTransformer
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 
 class DefaultLayer(position: Position,
@@ -32,12 +34,25 @@ class DefaultLayer(position: Position,
     override val height: Int
         get() = size.height
 
+    override val hiddenProperty = createPropertyFrom(false)
+
+    override var isHidden: Boolean by hiddenProperty.asDelegate()
+
+
     override fun createSnapshot(): Snapshot {
-        return backend.createSnapshot().let { snapshot ->
-            Snapshot.create(
-                    cells = snapshot.cells.map { it.withPosition(it.position + position) },
-                    tileset = snapshot.tileset)
+        return if (isHidden) {
+            Snapshot.create(listOf(), currentTileset())
+        } else {
+            backend.createSnapshot().let { snapshot ->
+                Snapshot.create(
+                        cells = snapshot.cells.map { it.withPosition(it.position + position) },
+                        tileset = snapshot.tileset)
+            }
         }
+    }
+
+    override fun transform(transformer: TileTransformer) {
+        backend.transform(transformer)
     }
 
     override fun toTileImage(): TileImage {
@@ -56,10 +71,9 @@ class DefaultLayer(position: Position,
         backend.setTileAt(position - this.position, tile)
     }
 
-    // TODO: make deep copy!
     override fun createCopy() = DefaultLayer(
             position = position,
-            backend = backend)
+            backend = backend.createCopy())
 
     override fun fill(filler: Tile): Layer {
         backend.fill(filler)

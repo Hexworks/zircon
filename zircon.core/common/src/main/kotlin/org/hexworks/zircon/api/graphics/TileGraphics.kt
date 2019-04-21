@@ -4,8 +4,13 @@ import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Styleable
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.Cell
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
+import org.hexworks.zircon.api.util.TileTransformer
 
 /**
  * An image built from [Tile]s with color and style information.
@@ -66,6 +71,13 @@ interface TileGraphics
      * Writes the given `text` at the given `position`.
      */
     fun putText(text: String, position: Position = Position.zero())
+
+    /**
+     * Transforms all of the [Tile]s in this [TileGraphics] with the given
+     * [transformer] and overwrites them with the results of calling
+     * [TileTransformer.invoke].
+     */
+    fun transform(transformer: TileTransformer)
 
     /**
      * Sets the style of this [TileGraphics] from the given `styleSet`

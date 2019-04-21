@@ -143,7 +143,7 @@ abstract class BaseTileImage : TileImage {
     override fun transform(transformer: TileTransformer): TileImage {
         val tiles = mutableMapOf<Position, Tile>()
         fetchCells().forEach { (pos, tile) ->
-            tiles[pos] = transformer.transform(tile)
+            tiles[pos] = transformer.invoke(tile)
         }
         return DefaultTileImage(
                 size = size,
