@@ -19,7 +19,12 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.ComponentEventSource
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
@@ -67,19 +72,25 @@ abstract class DefaultComponent(
 
     private var parent = Maybe.empty<InternalContainer>()
 
+    final override val hiddenProperty: Property<Boolean> = layer.hiddenProperty
+
     final override val visibilityProperty: Property<Visibility> = createPropertyFrom(Visibility.Visible)
 
-    final override var visibility: Visibility by visibilityProperty.asDelegate()
-
+    final override var isVisible: Visibility by visibilityProperty.asDelegate()
 
     init {
-        visibilityProperty.onChange()
-        {
+        hiddenProperty.onChange {
+            isVisible = if (it.newValue) {
+                Visibility.Hidden
+            } else {
+                Visibility.Visible
+            }
+        }
+        visibilityProperty.onChange {
             render()
         }
 
-        componentStyleSetProperty.onChange()
-        {
+        componentStyleSetProperty.onChange {
             render()
         }
     }

@@ -55,7 +55,7 @@ interface Component : Identifiable, Layer, UIEventSource, ComponentEventSource {
     /**
      * The visibility of this [Component]
      */
-    var visibility: Visibility
+    var isVisible: Visibility
 
     /**
      * The visibility property of this [Component]

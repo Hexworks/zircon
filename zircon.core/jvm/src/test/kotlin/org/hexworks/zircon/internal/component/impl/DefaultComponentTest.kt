@@ -137,7 +137,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     @Test
     fun shouldRenderWhenVisibilityIsSet() {
-        target.visibility = Visibility.Hidden
+        target.isVisible = Visibility.Hidden
 
         assertThat(rendered).isTrue()
     }

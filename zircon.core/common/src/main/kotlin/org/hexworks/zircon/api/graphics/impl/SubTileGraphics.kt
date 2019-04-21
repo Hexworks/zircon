@@ -6,11 +6,17 @@ import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Styleable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.Cell
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Snapshot
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
+import org.hexworks.zircon.api.util.TileTransformer
 import org.hexworks.zircon.internal.behavior.impl.DefaultStyleable
 import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride
 import org.hexworks.zircon.internal.data.DefaultCell
@@ -73,6 +79,7 @@ class SubTileGraphics(
                 backend = this)
     }
 
+    // TODO: fix this as this doesn't create a proper copy
     override fun createCopy(): TileGraphics {
         return toSubTileGraphics(size.toRect())
     }
@@ -132,8 +139,15 @@ class SubTileGraphics(
         }
     }
 
+    override fun transform(transformer: TileTransformer) {
+        fetchCells().forEach { (pos, tile) ->
+            setTileAt(pos, transformer(tile))
+        }
+    }
+
     override fun createSnapshot(): Snapshot {
-        throw UnsupportedOperationException("Sub tile images don't support snapshots.")
+        // TODO: this wont work if we create a SubTileGraphics out of another one!
+        restrictOperation()
     }
 
     override fun draw(drawable: Drawable, position: Position) {

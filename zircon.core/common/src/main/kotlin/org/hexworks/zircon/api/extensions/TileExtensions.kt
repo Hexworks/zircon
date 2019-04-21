@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.util.TileTransformer
 
 fun List<Tile>.transform(tileTransformer: TileTransformer): List<Tile> {
-    return this.map(tileTransformer::transform)
+    return this.map(tileTransformer::invoke)
 }
 
 fun List<Tile>.transformIndexed(transformer: (Int, Tile) -> Tile): List<Tile> {

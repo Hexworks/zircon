@@ -10,8 +10,8 @@ import org.hexworks.zircon.api.util.TileTransformer
  */
 inline fun TileImage.transform(crossinline fn: (Tile) -> Tile): TileImage {
     return transform(object : TileTransformer {
-        override fun transform(tc: Tile): Tile {
-            return fn(tc)
+        override fun invoke(tile: Tile): Tile {
+            return fn(tile)
         }
     })
 }

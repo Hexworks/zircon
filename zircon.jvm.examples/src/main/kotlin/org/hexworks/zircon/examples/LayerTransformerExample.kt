@@ -1,14 +1,12 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.color.ANSITileColor.GREEN
-import org.hexworks.zircon.api.color.ANSITileColor.RED
+import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.onSelectionChanged
+import org.hexworks.zircon.api.extensions.transform
 import org.hexworks.zircon.api.modifier.TileTransformModifier
-import org.hexworks.zircon.api.resource.BuiltInTrueTypeFontResource
 
 object LayerTransformerExample {
 
@@ -23,9 +21,9 @@ object LayerTransformerExample {
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        val layer = Layers.newBuilder()
+        val transformingLayer = Layers.newBuilder()
                 .withSize(Sizes.create(20, 20))
-                .withOffset(Positions.create(5, 5))
+                .withOffset(Positions.create(1, 5))
                 .build()
                 .fill(Tiles.newBuilder()
                         .withBackgroundColor(RED)
@@ -33,24 +31,43 @@ object LayerTransformerExample {
                         .withCharacter('x')
                         .buildCharacterTile())
 
-        screen.addComponent(Components.toggleButton()
-                .withText("Hide")
+        val hideableLayer = Layers.newBuilder()
+                .withSize(Sizes.create(20, 20))
+                .withOffset(Positions.create(39, 5))
+                .build()
+                .fill(Tiles.newBuilder()
+                        .withBackgroundColor(BLUE)
+                        .withForegroundColor(YELLOW)
+                        .withCharacter('+')
+                        .buildCharacterTile())
+
+        val transformToggle = Components.toggleButton()
+                .withText("Transform")
                 .build().apply {
                     onSelectionChanged {
                         if (it.newValue) {
-                            layer.fetchPositions().forEach { pos ->
-                                layer.getAbsoluteTileAt(pos).map { tile ->
-                                    layer.setAbsoluteTileAt(pos, tile
-                                            .withAddedModifiers(HideModifier))
-                                }
+                            transformingLayer.transform { tile ->
+                                tile.withAddedModifiers(HideModifier)
                             }
                         } else {
-                            layer.fetchPositions().forEach { pos ->
-                                layer.getAbsoluteTileAt(pos).map { tile ->
-                                    layer.setAbsoluteTileAt(pos, tile
-                                            .withRemovedModifiers(HideModifier))
-                                }
+                            transformingLayer.transform { tile ->
+                                tile.withRemovedModifiers(HideModifier)
                             }
+                        }
+                    }
+                }
+
+        screen.addComponent(transformToggle)
+
+        screen.addComponent(Components.toggleButton()
+                .withText("Hide")
+                .withPosition(Positions.topRightOf(transformToggle) + Positions.create(1, 0))
+                .build().apply {
+                    onSelectionChanged {
+                        if (it.newValue) {
+                            hideableLayer.hide()
+                        } else {
+                            hideableLayer.show()
                         }
                     }
                 })
@@ -58,8 +75,8 @@ object LayerTransformerExample {
         screen.applyColorTheme(theme)
         screen.display()
 
-        screen.pushLayer(layer)
-
+        screen.pushLayer(transformingLayer)
+        screen.pushLayer(hideableLayer)
     }
 
 }

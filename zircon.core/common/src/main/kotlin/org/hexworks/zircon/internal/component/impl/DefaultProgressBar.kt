@@ -13,7 +13,6 @@ import org.hexworks.zircon.api.component.ProgressBar
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
-import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
@@ -62,7 +61,7 @@ class DefaultProgressBar(componentMetadata: ComponentMetadata,
 
 
     override fun render() {
-        LOGGER.debug("Label (id=${id.abbreviate()}, visibility=$visibility) was rendered.")
+        LOGGER.debug("Label (id=${id.abbreviate()}, visibility=$isVisible) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 

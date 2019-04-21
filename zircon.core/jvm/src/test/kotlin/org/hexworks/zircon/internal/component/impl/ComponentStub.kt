@@ -20,6 +20,7 @@ import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.util.TileTransformer
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 
@@ -36,12 +37,23 @@ class ComponentStub(
                 .withTileset(tileset)
                 .build()) : InternalComponent {
 
+    override val hiddenProperty: Property<Boolean>
+        get() = TODO("not implemented")
+
+    override var isHidden: Boolean
+        get() = TODO("not implemented")
+        set(value) {}
+
+    override fun transform(transformer: TileTransformer) {
+        TODO("not implemented")
+    }
+
     override val componentStyleSetProperty: Property<ComponentStyleSet> = createPropertyFrom(ComponentStyleSet.defaultStyleSet())
     override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
 
 
-    override var visibility: Visibility = Visibility.Visible
-    override val visibilityProperty: Property<Visibility> = createPropertyFrom(visibility)
+    override var isVisible: Visibility = Visibility.Visible
+    override val visibilityProperty: Property<Visibility> = createPropertyFrom(isVisible)
 
     override val width: Int
         get() = size.width

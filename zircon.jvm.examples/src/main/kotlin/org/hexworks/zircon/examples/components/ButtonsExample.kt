@@ -92,7 +92,7 @@ object ButtonsExample {
 
         invisibleBtn.onMouseEvent(MouseEventType.MOUSE_CLICKED
         ) { _, _ ->
-            invisibleBtn.visibility = Visibility.Hidden
+            invisibleBtn.isVisible = Visibility.Hidden
             Processed
         }
     }

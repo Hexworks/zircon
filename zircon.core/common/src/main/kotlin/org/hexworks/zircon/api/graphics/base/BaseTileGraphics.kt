@@ -6,14 +6,20 @@ import org.hexworks.zircon.api.behavior.Styleable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.Cell
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Snapshot
+import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.extensions.toMap
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
-import org.hexworks.zircon.api.extensions.toMap
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.util.TileTransformer
 import org.hexworks.zircon.internal.behavior.impl.DefaultStyleable
 import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride
 import org.hexworks.zircon.internal.data.DefaultCell
@@ -140,6 +146,13 @@ abstract class BaseTileGraphics(
         }
     }
 
+    // TODO: test this
+    override fun transform(transformer: TileTransformer) {
+        fetchCells().forEach { (pos, tile) ->
+            setTileAt(pos, transformer(tile))
+        }
+    }
+
     override fun toTileImage(): TileImage {
         return DefaultTileImage(
                 size = size,
@@ -147,13 +160,6 @@ abstract class BaseTileGraphics(
                 tiles = createSnapshot().cells.toMap())
     }
 
-    /**
-     * Creates a new [TileGraphics] which will use this one as the underlying subsystem.
-     * Writing is restricted to the area denoted by `bounds` so if `bounds` consists
-     * of Position(1, 1) and Size(2, 2), the resulting [TileGraphics] will have a size
-     * of (2, 2) and writing to it will write to the original graphics' surface, offset
-     * by Position(1, 1).
-     */
     override fun toSubTileGraphics(rect: Rect): SubTileGraphics {
         return SubTileGraphics(
                 rect = rect,
