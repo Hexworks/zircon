@@ -24,10 +24,10 @@ class DefaultButton(componentMetadata: ComponentMetadata,
         TextHolder by TextHolder.create(initialText) {
 
     override val isEnabled: Boolean
-        get() = enabledValue.value
+        get() = enabledProperty.value
 
     // TODO: regression test this (does the same as enable/disable)
-    override val enabledValue = createPropertyFrom(true).apply {
+    override val enabledProperty = createPropertyFrom(true).apply {
         onChange { (_, _, newValue) ->
             if (newValue) enable() else disable()
         }
@@ -44,14 +44,14 @@ class DefaultButton(componentMetadata: ComponentMetadata,
 
     override fun enable() {
         LOGGER.debug("Enabling Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text).")
-        enabledValue.value = true
+        enabledProperty.value = true
         componentStyleSet.reset()
         render()
     }
 
     override fun disable() {
         LOGGER.debug("Disabling Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text).")
-        enabledValue.value = false
+        enabledProperty.value = false
         componentStyleSet.applyDisabledStyle()
         render()
     }
