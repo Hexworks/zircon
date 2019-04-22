@@ -1,9 +1,14 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
 
 object ComponentMoveExample {
-
 
     @JvmStatic
     fun main(args: Array<String>) {
