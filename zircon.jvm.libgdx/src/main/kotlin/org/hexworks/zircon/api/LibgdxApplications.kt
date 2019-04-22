@@ -59,10 +59,10 @@ object LibgdxApplications {
 
     private fun startLibgdxGame(appConfig: AppConfig = AppConfigs.defaultConfiguration()): LibgdxGame {
         val config = LwjglApplicationConfiguration()
-        config.title = "Zircon Application"
+        config.title = appConfig.title
         config.width = appConfig.size.width * appConfig.defaultTileset.width
         config.height = appConfig.size.height * appConfig.defaultTileset.height
-        config.foregroundFPS = 60
+        config.foregroundFPS = appConfig.fpsLimit
         config.useGL30 = false
         val game = LibgdxGame(appConfig)
         LwjglApplication(game, config)

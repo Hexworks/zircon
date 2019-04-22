@@ -32,7 +32,8 @@ data class AppConfigBuilder(
         private var fullScreen: Boolean = false,
         private var debugMode: Boolean = false,
         private var defaultSize: Size = Size.defaultGridSize(),
-        private var betaEnabled: Boolean = false)
+        private var betaEnabled: Boolean = false,
+        private var fpsLimit: Int = 60)
     : Builder<AppConfig> {
 
     override fun build() = AppConfig(
@@ -48,7 +49,8 @@ data class AppConfigBuilder(
             size = defaultSize,
             fullScreen = fullScreen,
             betaEnabled = betaEnabled,
-            title = title).also {
+            title = title,
+            fpsLimit = fpsLimit).also {
         RuntimeConfig.config = it
     }
 
@@ -108,6 +110,17 @@ data class AppConfigBuilder(
 
     fun withSize(size: Size) = also {
         this.defaultSize = size
+    }
+
+    /**
+     * Sets the fps limit for continuous rendering.
+     * **Note that** this is not supported for Swing Applications yet.
+     */
+    fun withFpsLimit(fpsLimit: Int) = also {
+        require(fpsLimit > 0) {
+            "Can't set an fps limit which is less than zero"
+        }
+        this.fpsLimit = fpsLimit
     }
 
     fun withSize(width: Int, height: Int) = withSize(Sizes.create(width, height))
