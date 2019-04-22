@@ -41,9 +41,6 @@ data class ToggleButtonBuilder(
     }
 
     override fun build(): ToggleButton {
-        require(text.isNotBlank()) {
-            "A Button can't be blank!"
-        }
         fillMissingValues()
         var renderers = decorationRenderers
         if (wrapSides) {

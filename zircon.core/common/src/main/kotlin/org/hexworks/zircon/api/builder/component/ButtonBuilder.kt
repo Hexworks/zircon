@@ -34,9 +34,6 @@ data class ButtonBuilder(
     }
 
     override fun build(): Button {
-        require(text.isNotBlank()) {
-            "A Button can't be blank!"
-        }
         fillMissingValues()
         var renderers = decorationRenderers
         if (wrapSides) {
