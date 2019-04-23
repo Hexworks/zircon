@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.uievent.impl
 import org.hexworks.cobalt.events.api.CancelState
 import org.hexworks.cobalt.events.api.NotCancelled
 import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.util.ThreadSafeQueue
@@ -11,6 +12,7 @@ import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventSource {
 
+    private val logger = LoggerFactory.getLogger(this::class)
     private val listeners = ThreadSafeMapFactory.create<UIEventType, ThreadSafeQueue<InputEventSubscription>>()
     private var closed = false
 
@@ -36,6 +38,9 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
                     StopPropagation -> {
                         finalResult = result
                         return@forEach
+                    }
+                    Pass -> {
+                        logger.debug("Result of invoking listener was 'Pass'. Result is ignored.")
                     }
                 }
             }
