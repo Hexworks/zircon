@@ -105,6 +105,18 @@ class DefaultButton(componentMetadata: ComponentMetadata,
         }
     }
 
+    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        return if (isEnabled && phase == UIEventPhase.TARGET) {
+            LOGGER.debug("Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text) was mouse released.")
+            componentStyleSet.applyMouseOverStyle()
+            render()
+            Processed
+        } else {
+            LOGGER.debug("Mouse released disabled Button (id=${id.abbreviate()}, text=$text). Event ignored.")
+            Pass
+        }
+    }
+
     override fun activated(): UIEventResponse {
         return if (isEnabled) {
             LOGGER.debug("Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text) was activated.")
@@ -135,6 +147,10 @@ class DefaultButton(componentMetadata: ComponentMetadata,
                 .withActiveStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
                         .withBackgroundColor(colorTheme.accentColor)
+                        .build())
+                .withDisabledStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(colorTheme.secondaryForegroundColor)
+                        .withBackgroundColor(TileColor.transparent())
                         .build())
                 .build().also {
                     componentStyleSet = it

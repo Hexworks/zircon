@@ -28,9 +28,6 @@ data class CheckBoxBuilder(
     }
 
     override fun build(): CheckBox {
-        require(text.isNotBlank()) {
-            "A Label can't be blank!"
-        }
         fillMissingValues()
         val finalSize = decorationRenderers.asSequence()
                 .map { it.occupiedSize }

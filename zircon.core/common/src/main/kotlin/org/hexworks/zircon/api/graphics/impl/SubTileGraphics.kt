@@ -139,9 +139,9 @@ class SubTileGraphics(
         }
     }
 
-    override fun transformTileAt(position: Position, fn: (Tile) -> Tile) {
+    override fun transformTileAt(position: Position, tileTransformer: TileTransformer) {
         if (size.containsPosition(position)) {
-            backend.transformTileAt(position + offset, fn)
+            backend.transformTileAt(position + offset, tileTransformer)
         }
     }
 

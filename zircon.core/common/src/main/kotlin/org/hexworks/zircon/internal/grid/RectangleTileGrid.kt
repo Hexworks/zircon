@@ -21,6 +21,7 @@ import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.TextUtils
+import org.hexworks.zircon.api.util.TileTransformer
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
 import org.hexworks.zircon.internal.animation.InternalAnimationHandler
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
@@ -151,8 +152,8 @@ class RectangleTileGrid(
         backend.setTileAt(position, tile)
     }
 
-    override fun transformTileAt(position: Position, fn: (Tile) -> Tile) {
-        backend.transformTileAt(position, fn)
+    override fun transformTileAt(position: Position, tileTransformer: TileTransformer) {
+        backend.transformTileAt(position, tileTransformer)
     }
 
     override fun createSnapshot(): Snapshot {

@@ -37,7 +37,7 @@ class ComponentStub(
                 .withTileset(tileset)
                 .build()) : InternalComponent {
 
-   override val hiddenProperty: Property<Boolean>
+    override val hiddenProperty: Property<Boolean>
         get() = TODO("not implemented")
 
     override var isHidden: Boolean
@@ -94,7 +94,7 @@ class ComponentStub(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun transformTileAt(position: Position, fn: (Tile) -> Tile) {
+    override fun transformTileAt(position: Position, tileTransformer: TileTransformer) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
