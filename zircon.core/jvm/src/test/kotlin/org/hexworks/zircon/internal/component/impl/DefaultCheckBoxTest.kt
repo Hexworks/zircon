@@ -44,6 +44,10 @@ class DefaultCheckBoxTest : ComponentImplementationTest<DefaultCheckBox>() {
                         .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
                         .withBackgroundColor(DEFAULT_THEME.accentColor)
                         .build())
+                .withDisabledStyle(StyleSetBuilder.newBuilder()
+                        .withForegroundColor(DEFAULT_THEME  .secondaryForegroundColor)
+                        .withBackgroundColor(TileColor.transparent())
+                        .build())
                 .build()
 
     @Before

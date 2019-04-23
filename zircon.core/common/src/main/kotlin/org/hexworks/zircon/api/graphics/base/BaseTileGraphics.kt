@@ -85,9 +85,9 @@ abstract class BaseTileGraphics(
         }
     }
 
-    override fun transformTileAt(position: Position, fn: (Tile) -> Tile) {
+    override fun transformTileAt(position: Position, tileTransformer: TileTransformer) {
         getTileAt(position).map { tile ->
-            setTileAt(position, fn(tile))
+            setTileAt(position, tileTransformer(tile))
         }
     }
 
