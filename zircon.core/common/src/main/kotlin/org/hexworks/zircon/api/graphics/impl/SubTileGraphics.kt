@@ -139,6 +139,12 @@ class SubTileGraphics(
         }
     }
 
+    override fun transformTileAt(position: Position, fn: (Tile) -> Tile) {
+        if (size.containsPosition(position)) {
+            backend.transformTileAt(position + offset, fn)
+        }
+    }
+
     override fun transform(transformer: TileTransformer) {
         fetchCells().forEach { (pos, tile) ->
             setTileAt(pos, transformer(tile))

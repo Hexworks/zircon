@@ -24,6 +24,12 @@ interface DrawSurface : TileComposite, TilesetOverride {
     fun setTileAt(position: Position, tile: Tile)
 
     /**
+     * Transforms the [Tile] at the given [position]. Has no effect
+     * if there is no [Tile] at the given [position].
+     */
+    fun transformTileAt(position: Position, fn: (Tile) -> Tile)
+
+    /**
      * Creates a snapshot of the current state of this [DrawSurface].
      * A snapshot is useful to see a consistent state of a [DrawSurface]
      * regardless of potential changes by other threads.

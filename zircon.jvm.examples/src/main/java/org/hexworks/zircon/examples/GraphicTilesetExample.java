@@ -1,10 +1,12 @@
 package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.BuiltInGraphicTilesetResource;
+import org.hexworks.zircon.internal.application.LibgdxApplication;
 
 import java.util.Random;
 
@@ -28,14 +30,7 @@ public class GraphicTilesetExample {
 
     public static void main(String[] args) {
 
-        // TODO: graphic tilesets are not supported by libgdx yet
-        Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .withDefaultTileset(TILESET)
-                .withSize(SIZE)
-                .withDebugMode(true)
-                .build());
-
-        TileGrid tileGrid = app.getTileGrid();
+        TileGrid tileGrid = LibgdxApplications.startTileGrid();
 
         for (int row = 0; row < TERMINAL_HEIGHT; row++) {
             for (int col = 0; col < TERMINAL_WIDTH; col++) {

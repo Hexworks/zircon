@@ -9,7 +9,11 @@ import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Snapshot
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
@@ -145,6 +149,10 @@ class RectangleTileGrid(
 
     override fun setTileAt(position: Position, tile: Tile) {
         backend.setTileAt(position, tile)
+    }
+
+    override fun transformTileAt(position: Position, fn: (Tile) -> Tile) {
+        backend.transformTileAt(position, fn)
     }
 
     override fun createSnapshot(): Snapshot {

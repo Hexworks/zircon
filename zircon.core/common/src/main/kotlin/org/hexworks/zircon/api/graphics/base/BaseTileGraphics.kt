@@ -36,7 +36,7 @@ import org.hexworks.zircon.internal.graphics.DefaultTileImage
 abstract class BaseTileGraphics(
         styleSet: StyleSet,
         tileset: TilesetResource,
-        override val size: Size,
+        initialSize: Size,
         private val tilesetOverride: TilesetOverride = DefaultTilesetOverride(
                 tileset = tileset),
         private val contents: MutableMap<Position, Tile>,
@@ -45,7 +45,9 @@ abstract class BaseTileGraphics(
         Styleable by styleable,
         TilesetOverride by tilesetOverride {
 
-    private val rect = Rect.create(size = size)
+    override val size = initialSize
+
+    private val rect = Rect.create(size = initialSize)
 
     override fun toString(): String {
         return (0 until height).joinToString("") { y ->
@@ -72,8 +74,20 @@ abstract class BaseTileGraphics(
     }
 
     override fun setTileAt(position: Position, tile: Tile) {
-        if (position.x < width && position.y < height) {
-            contents[position] = tile
+        if (size.containsPosition(position)) {
+            contents[position]?.let { previous ->
+                if (previous != tile) {
+                    contents[position] = tile
+                }
+            } ?: run {
+                contents[position] = tile
+            }
+        }
+    }
+
+    override fun transformTileAt(position: Position, fn: (Tile) -> Tile) {
+        getTileAt(position).map { tile ->
+            setTileAt(position, fn(tile))
         }
     }
 
