@@ -15,7 +15,6 @@ import org.hexworks.zircon.api.uievent.Processed
 
 object PlayerMoveExample {
 
-    val SIZE = Sizes.create(78, 46)
     val PLAYER_TILE = Tiles.newBuilder()
             .withBackgroundColor(ANSITileColor.BLACK)
             .withForegroundColor(ANSITileColor.WHITE)
@@ -25,10 +24,7 @@ object PlayerMoveExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(
-                AppConfigs.newConfig()
-                        .withSize(SIZE)
-                        .build())
+        val tileGrid = SwingApplications.startTileGrid()
 
         val player = Layers.newBuilder()
                 .withSize(Sizes.one())
