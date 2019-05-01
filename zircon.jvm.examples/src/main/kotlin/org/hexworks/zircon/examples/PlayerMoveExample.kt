@@ -1,13 +1,11 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.Layers
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.onKeyboardEvent
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
@@ -15,7 +13,7 @@ import org.hexworks.zircon.api.uievent.Processed
 
 object PlayerMoveExample {
 
-    val PLAYER_TILE = Tiles.newBuilder()
+    private val PLAYER_TILE = Tiles.newBuilder()
             .withBackgroundColor(ANSITileColor.BLACK)
             .withForegroundColor(ANSITileColor.WHITE)
             .withCharacter('@')
@@ -28,7 +26,7 @@ object PlayerMoveExample {
 
         val player = Layers.newBuilder()
                 .withSize(Sizes.one())
-                .withOffset(Positions.create(SIZE.width / 2, SIZE.height / 2))
+                .withOffset(Positions.create(tileGrid.width / 2, tileGrid.height / 2))
                 .build()
                 .fill(PLAYER_TILE)
 
