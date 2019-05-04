@@ -3,6 +3,7 @@ package org.hexworks.zircon.examples;
 import kotlin.collections.SetsKt;
 import org.hexworks.zircon.api.AppConfigs;
 import org.hexworks.zircon.api.Borders;
+import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.Modifiers;
 import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.application.Application;
@@ -12,7 +13,6 @@ import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.modifier.Crop;
 import org.hexworks.zircon.api.modifier.RayShade;
 import org.hexworks.zircon.api.modifier.SimpleModifiers;
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,7 +29,7 @@ public class FontModifiersExample {
     public static void main(String[] args) {
 
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .withDefaultTileset(BuiltInCP437TilesetResource.WANDERLUST_16X16)
+                .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
                 .withSize(SIZE)
                 .withDebugMode(true)
                 .build());

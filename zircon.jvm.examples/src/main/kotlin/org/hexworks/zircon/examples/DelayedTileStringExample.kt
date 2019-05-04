@@ -1,3 +1,5 @@
+package org.hexworks.zircon.examples
+
 import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes

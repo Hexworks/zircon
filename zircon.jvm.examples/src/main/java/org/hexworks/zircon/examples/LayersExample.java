@@ -1,13 +1,18 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.Positions;
+import org.hexworks.zircon.api.Sizes;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.TileColors;
+import org.hexworks.zircon.api.Tiles;
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder;
 import org.hexworks.zircon.api.color.TileColor;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 import org.jetbrains.annotations.NotNull;
 
 public class LayersExample {
@@ -20,7 +25,7 @@ public class LayersExample {
 
         // TODO: this doesn't show the text with libgdx!
         final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .withDefaultTileset(BuiltInCP437TilesetResource.ROGUE_YUN_16X16)
+                .withDefaultTileset(CP437TilesetResources.rogueYun16x16())
                 .withSize(SIZE)
                 .withDebugMode(true)
                 .build());

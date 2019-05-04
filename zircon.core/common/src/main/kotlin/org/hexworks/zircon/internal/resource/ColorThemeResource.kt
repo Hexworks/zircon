@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.internal.resource.ColorThemeResource.SolarizedBase.SOLARIZED_DARK_BASE
 import org.hexworks.zircon.internal.resource.ColorThemeResource.SolarizedBase.SOLARIZED_LIGHT_BASE
 
-internal enum class ColorThemeResource(private val colorTheme: ColorTheme) {
+enum class ColorThemeResource(private val colorTheme: ColorTheme) {
 
     EMPTY(ColorThemeBuilder.newBuilder()
             .withAccentColor(TileColor.transparent())

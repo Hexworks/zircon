@@ -1,6 +1,12 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.extensions.onTextChanged
 
 object TextHandlingExample {
@@ -11,7 +17,7 @@ object TextHandlingExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
                 .withSize(Sizes.create(60, 30))
                 .build())
