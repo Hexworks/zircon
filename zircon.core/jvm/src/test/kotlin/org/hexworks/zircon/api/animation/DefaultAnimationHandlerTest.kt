@@ -8,10 +8,10 @@ import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.api.builder.grid.TileGridBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.animation.DefaultAnimation
 import org.hexworks.zircon.internal.animation.DefaultAnimationFrame
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -22,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock
 
 class DefaultAnimationHandlerTest {
 
-    lateinit var target: DefaultAnimationHandler
+    private lateinit var target: DefaultAnimationHandler
 
     @Mock
     lateinit var animationMock: Animation

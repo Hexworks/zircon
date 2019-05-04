@@ -2,12 +2,13 @@ package org.hexworks.zircon.internal.screen
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.grid.RectangleTileGrid
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
@@ -87,7 +88,7 @@ class TileGridScreenTest {
 
     companion object {
         val SIZE = Size.create(10, 10)
-        val FONT = BuiltInCP437TilesetResource.ROGUE_YUN_16X16
+        val FONT = CP437TilesetResources.rogueYun16x16()
         val CHAR = TileBuilder.newBuilder()
                 .withCharacter('x')
                 .build()

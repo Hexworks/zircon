@@ -1,7 +1,8 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
 
@@ -36,6 +37,6 @@ class DefaultTilesetOverrideTest {
     }
 
     companion object {
-        val INITIAL_FONT = BuiltInCP437TilesetResource.WANDERLUST_16X16
+        val INITIAL_FONT = CP437TilesetResources.wanderlust16x16()
     }
 }

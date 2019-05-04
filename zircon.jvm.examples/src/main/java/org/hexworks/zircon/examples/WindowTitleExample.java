@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.AppConfigs;
 import org.hexworks.zircon.api.Sizes;
 import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.data.Size;
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 
 public class WindowTitleExample {

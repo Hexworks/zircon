@@ -1,21 +1,25 @@
-package org.hexworks.zircon.api.resource
+package org.hexworks.zircon.internal.resource
 
 import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
+import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
  * This enum contains the metadata for the built-in CP437 tilesets.
  */
-enum class BuiltInCP437TilesetResource(val tilesetName: String,
-                                       override val width: Int,
-                                       override val height: Int,
-                                       val fileName: String = "${tilesetName}_${width}x$height.png",
-                                       override val id: Identifier = IdentifierFactory.randomIdentifier(),
-                                       override val tileType: TileType = TileType.CHARACTER_TILE,
-                                       override val tilesetType: TilesetType = TilesetType.CP437_TILESET,
-                                       override val path: String = "/cp_437_tilesets/$fileName")
+internal enum class BuiltInCP437TilesetResource(
+        val tilesetName: String,
+        override val width: Int,
+        override val height: Int,
+        val fileName: String = "${tilesetName}_${width}x$height.png",
+        override val id: Identifier = IdentifierFactory.randomIdentifier(),
+        override val tileType: TileType = TileType.CHARACTER_TILE,
+        override val tilesetType: TilesetType = TilesetType.CP437_TILESET,
+        override val path: String = "/cp_437_tilesets/$fileName",
+        override val tilesetSourceType: TilesetSourceType = TilesetSourceType.JAR)
     : TilesetResource {
 
+    // These fonts come from the Dwarf Fortress Tileset Repository
     ACORN_8X16("acorn", 8, 16),
     ADU_DHABI_16X16("adu_dhabi", 16, 16),
     AESOMATICA_16X16("aesomatica", 16, 16),
@@ -50,13 +54,6 @@ enum class BuiltInCP437TilesetResource(val tilesetName: String,
     ORESLAM_20X20("oreslam", 20, 20),
     PHOEBUS_16X16("phoebus", 16, 16),
     RAVING_16X16("raving", 16, 16),
-    REX_PAINT_8X8("rex_paint", 8, 8),
-    REX_PAINT_10X10("rex_paint", 10, 10),
-    REX_PAINT_12X12("rex_paint", 12, 12),
-    REX_PAINT_14X14("rex_paint", 14, 14),
-    REX_PAINT_16X16("rex_paint", 16, 16),
-    REX_PAINT_18X18("rex_paint", 18, 18),
-    REX_PAINT_20X20("rex_paint", 20, 20),
     ROGUE_YUN_16X16("rogue_yun", 16, 16),
     RUNESET_16X16("runeset", 16, 16),
     RUNESET_24X24("runeset", 24, 24),
@@ -74,6 +71,15 @@ enum class BuiltInCP437TilesetResource(val tilesetName: String,
     YAYO_16X16("yayo", 16, 16),
     YOBBO_20X20("yobbo", 20, 20),
     ZARATUSTRA_16X16("zaratustra", 16, 16),
-    ZILK_16X16("zilk", 16, 16);
+    ZILK_16X16("zilk", 16, 16),
+
+    // These tilesets come from REXPaint
+    REX_PAINT_8X8("rex_paint", 8, 8),
+    REX_PAINT_10X10("rex_paint", 10, 10),
+    REX_PAINT_12X12("rex_paint", 12, 12),
+    REX_PAINT_14X14("rex_paint", 14, 14),
+    REX_PAINT_16X16("rex_paint", 16, 16),
+    REX_PAINT_18X18("rex_paint", 18, 18),
+    REX_PAINT_20X20("rex_paint", 20, 20);
 
 }

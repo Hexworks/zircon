@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.behavior
+package org.hexworks.zircon.api.behavior
 
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D

@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.resource
 import org.junit.Test
 
 
-class GraphicTilesetResourceTest {
+class GraphicalTilesetResourceTest {
 
     @Test
     fun test() {

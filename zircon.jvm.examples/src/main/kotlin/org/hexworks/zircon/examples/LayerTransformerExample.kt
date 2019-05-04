@@ -2,7 +2,7 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.color.ANSITileColor.*
-import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.onSelectionChanged
 import org.hexworks.zircon.api.extensions.transform

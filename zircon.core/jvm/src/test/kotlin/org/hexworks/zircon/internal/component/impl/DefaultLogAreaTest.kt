@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.component.renderer.DefaultLogAreaRenderer
 import org.junit.Before
 import org.junit.Test

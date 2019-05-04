@@ -3,10 +3,9 @@ package org.hexworks.zircon.internal.tileset
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.zircon.api.behavior.Closeable
-import org.hexworks.zircon.api.resource.GraphicalTilesetResource
-import org.hexworks.zircon.api.resource.TileType.*
+import org.hexworks.zircon.internal.resource.TileType.*
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.resource.TilesetType.*
+import org.hexworks.zircon.internal.resource.TilesetType.*
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
 

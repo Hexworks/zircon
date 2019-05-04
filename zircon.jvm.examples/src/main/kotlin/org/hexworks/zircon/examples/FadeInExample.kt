@@ -3,7 +3,6 @@ package org.hexworks.zircon.examples
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.modifier.FadeIn
-import org.hexworks.zircon.api.resource.ColorThemeResource
 
 object FadeInExample {
 
@@ -24,7 +23,7 @@ object FadeInExample {
         text.forEach { c ->
             tileGrid.putTile(Tiles.defaultTile()
                     .withBackgroundColor(TileColor.transparent())
-                    .withForegroundColor(ColorThemeResource.NORD.getTheme().accentColor)
+                    .withForegroundColor(ColorThemes.nord().accentColor)
                     .withCharacter(c)
                     .withModifiers(Modifiers.fadeIn(10, 2000)))
         }
@@ -35,7 +34,7 @@ object FadeInExample {
         textWithoutGlow.forEach { c ->
             tileGrid.putTile(Tiles.defaultTile()
                     .withBackgroundColor(TileColor.transparent())
-                    .withForegroundColor(ColorThemeResource.NORD.getTheme().accentColor)
+                    .withForegroundColor(ColorThemes.nord().accentColor)
                     .withCharacter(c)
                     .withModifiers(FadeIn(10, 2000, false)))
         }

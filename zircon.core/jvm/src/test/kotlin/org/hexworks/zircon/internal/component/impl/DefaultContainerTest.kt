@@ -17,7 +17,7 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.event.ZirconEvent

@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameArea.Companion.fetchPositionsWithOffset
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.internal.behavior.Scrollable3D
+import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.hexworks.zircon.internal.extensions.getIfPresent
 import org.hexworks.zircon.internal.util.ThreadSafeMap

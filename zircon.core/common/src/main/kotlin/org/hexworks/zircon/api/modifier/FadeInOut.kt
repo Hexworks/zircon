@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.modifier
 
-import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.impl.Fade
 import org.hexworks.zircon.platform.util.SystemUtils

@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
-import org.hexworks.zircon.api.resource.TileType
+import org.hexworks.zircon.internal.resource.TileType
 import org.junit.Test
 
 @Suppress("UsePropertyAccessSyntax")

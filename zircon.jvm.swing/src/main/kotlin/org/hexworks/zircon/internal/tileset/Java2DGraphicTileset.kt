@@ -1,11 +1,10 @@
 package org.hexworks.zircon.internal.tileset
 
 import org.hexworks.cobalt.datatypes.Identifier
-import org.hexworks.zircon.api.data.GraphicTile
+import org.hexworks.zircon.api.data.tile.GraphicalTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.resource.BuiltInGraphicTilesetResource
-import org.hexworks.zircon.api.resource.TileType.GRAPHIC_TILE
+import org.hexworks.zircon.internal.resource.TileType.GRAPHIC_TILE
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
@@ -40,11 +39,7 @@ class Java2DGraphicTileset(private val resource: TilesetResource)
                     " a GraphicTile-based tileset."
         }
 
-        val resourceStream: InputStream = if (resource is BuiltInGraphicTilesetResource) {
-            this::class.java.getResourceAsStream(resource.path)
-        } else {
-            File(resource.path).inputStream()
-        }
+        val resourceStream: InputStream = ImageLoader.readImageStream(resource)
 
         val files: List<File> = unZipIt(resourceStream, createTempDir())
         val tileInfoSource = files.first { it.name == "tileinfo.yml" }.bufferedReader().use {
@@ -84,7 +79,7 @@ class Java2DGraphicTileset(private val resource: TilesetResource)
 
 
     private fun fetchTextureForTile(tile: Tile): TileTexture<BufferedImage> {
-        tile as? GraphicTile ?: throw IllegalArgumentException("Wrong tile type")
+        tile as? GraphicalTile ?: throw IllegalArgumentException("Wrong tile type")
         return metadata[tile.name]?.let { meta ->
             DefaultTileTexture(
                     width = width,

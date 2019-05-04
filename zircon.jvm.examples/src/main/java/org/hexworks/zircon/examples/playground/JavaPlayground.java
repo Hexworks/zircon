@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.component.ToggleButton;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 

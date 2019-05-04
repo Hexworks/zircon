@@ -511,7 +511,7 @@ Here are some features which are either under way or planned:
 Zircon is made available under the [MIT License](http://www.opensource.org/licenses/mit-license.php).
 
 ## Credits
-Zircon is created and maintained by Adam Arold, Milan Boleradszki and Gergely Lukacsy
+Zircon is created and maintained by Adam Arold, Milan Boleradszki, Gergely Lukacsy and Coldwarrl
 
 *We're open to suggestions, feel free to message us on [Discord][discord] or open an issue.*
 *Pull requests are also welcome!*
@@ -528,6 +528,21 @@ Zircon is powered by:
     <img src="https://github.com/Hexworks/zircon/blob/master/images/yklogo.png" width="168" height="40" />
 </a>
 
+### Thanks
+
+Thanks to the folks over at [Dwarf Fortress Tileset Repository](http://dwarffortresswiki.org/Tileset_repository)
+for letting us bundle their tilesets.
+
+Thanks to Kyzrati who let us bundle the [REXPaint Tilesets](https://www.gridsagegames.com/rexpaint/)
+into Zircon!
+
+Zircon comes bundled with the [Nethack Tileset](https://nethackwiki.com/wiki/Tileset).
+
+Some True Type fonts are used from [Google Fonts](https://fonts.google.com/).
+
+Thanks to *VileR* for the [Oldschool Font Pack](https://int10h.org/oldschool-pc-fonts/) which
+we bundled into Zircon.
+
 [circleci]:https://circleci.com/gh/Hexworks/zircon
 [circleci img]:https://circleci.com/gh/Hexworks/zircon/tree/master.svg?style=shield
 
@@ -539,8 +554,6 @@ Zircon is powered by:
 
 [maven]:https://search.maven.org/search?q=g:org.hexworks.zircon
 [maven img]:https://maven-badges.herokuapp.com/maven-central/org.hexworks.zircon/zircon.jvm.swing/badge.svg
-
-
 
 [screen-primer]:https://github.com/Hexworks/zircon/wiki/A-primer-on-Screens
 [text-images]:https://github.com/Hexworks/zircon/wiki/How-to-work-with-TileGraphics

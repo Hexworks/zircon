@@ -2,18 +2,24 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.extensions.onKeyboardEvent
+import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.uievent.KeyCode
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType.*
-import org.hexworks.zircon.api.extensions.*
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.resource.ColorThemeResource
-import org.hexworks.zircon.api.uievent.*
-import org.hexworks.zircon.api.uievent.UIEventPhase.*
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.internal.resource.ColorThemeResource
 import org.junit.Test
 
 @Suppress("PropertyName")
@@ -28,7 +34,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
     val DEFAULT_THEME = ColorThemeResource.CYBERPUNK.getTheme()
     val POSITION_2_3 = Position.create(2, 3)
     val SIZE_3_4 = Size.create(3, 4)
-    val TILESET_REX_PAINT_20X20 = BuiltInCP437TilesetResource.REX_PAINT_20X20
+    val TILESET_REX_PAINT_20X20 = CP437TilesetResources.rexPaint20x20()
     val COMPONENT_STYLES = ComponentStyleSet.defaultStyleSet()
     val COMMON_COMPONENT_METADATA = ComponentMetadata(
             position = POSITION_2_3,

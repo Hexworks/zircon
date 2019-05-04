@@ -1,11 +1,10 @@
 package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.*;
-import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.resource.REXPaintResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;

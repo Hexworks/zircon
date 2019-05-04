@@ -1,29 +1,27 @@
 package org.hexworks.zircon.internal.data
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.GraphicTile
+import org.hexworks.zircon.api.data.tile.GraphicalTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
-import org.hexworks.zircon.api.resource.TileType
+import org.hexworks.zircon.internal.resource.TileType
 import org.junit.Test
 
-class DefaultGraphicTileTest {
+class DefaultGraphicalTileTest {
 
     @Test
     fun shouldGenerateProperCacheKey() {
-        val target: GraphicTile = Tile.createGraphicTile(NAME, TAGS)
+        val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
 
         assertThat(target.generateCacheKey()).isEqualTo("GraphicTile(n=NAME,t=[BAR, FOO])")
     }
 
     @Test
     fun shouldProperlyCreateCopy() {
-        val target: GraphicTile = Tile.createGraphicTile(NAME, TAGS)
+        val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
 
         assertThat(target.createCopy())
                 .isEqualTo(target)
@@ -32,35 +30,35 @@ class DefaultGraphicTileTest {
 
     @Test
     fun shouldProperlyReportTileType() {
-        val target: GraphicTile = Tile.createGraphicTile(NAME, TAGS)
+        val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
 
         assertThat(target.tileType).isEqualTo(TileType.GRAPHIC_TILE)
     }
 
     @Test
     fun shouldHaveTransparentFGColor() {
-        val target: GraphicTile = Tile.createGraphicTile(NAME, TAGS)
+        val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
 
         assertThat(target.foregroundColor).isEqualTo(TileColor.transparent())
     }
 
     @Test
     fun shouldHaveTransparentBGColor() {
-        val target: GraphicTile = Tile.createGraphicTile(NAME, TAGS)
+        val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
 
         assertThat(target.backgroundColor).isEqualTo(TileColor.transparent())
     }
 
     @Test
     fun shouldHaveNoModifiers() {
-        val target: GraphicTile = Tile.createGraphicTile(NAME, TAGS)
+        val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
 
         assertThat(target.modifiers).isEmpty()
     }
 
     @Test
     fun shouldHaveTheEmptyStyleSet() {
-        val target: GraphicTile = Tile.createGraphicTile(NAME, TAGS)
+        val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
 
         assertThat(target.styleSet).isSameAs(StyleSet.empty())
     }

@@ -1,11 +1,11 @@
 package org.hexworks.zircon.api.data.base
 
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.ImageTile
+import org.hexworks.zircon.api.data.tile.ImageTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
-import org.hexworks.zircon.api.resource.TileType
+import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
 
 abstract class BaseImageTile : BaseTile(), ImageTile {

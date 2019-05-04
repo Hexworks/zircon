@@ -11,8 +11,7 @@ import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
-import org.hexworks.zircon.internal.application.LibgdxApplication;
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 
 import java.util.Random;
 

@@ -1,14 +1,15 @@
 package org.hexworks.zircon.internal.data
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.tile.ImageTile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.SimpleModifiers
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.resource.TileType
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.internal.resource.TileType
 import org.junit.Test
 
 class DefaultImageTileTest {
@@ -101,6 +102,6 @@ class DefaultImageTileTest {
     companion object {
 
         const val NAME = "NAME"
-        val TILESET = BuiltInCP437TilesetResource.WANDERLUST_16X16
+        val TILESET = CP437TilesetResources.wanderlust16x16()
     }
 }

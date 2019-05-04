@@ -3,11 +3,11 @@ package org.hexworks.zircon.internal.tileset
 import com.github.benmanes.caffeine.cache.Caffeine
 import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
-import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.*
-import org.hexworks.zircon.api.resource.TileType.CHARACTER_TILE
+import org.hexworks.zircon.internal.resource.TileType.CHARACTER_TILE
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.api.tileset.TileTexture

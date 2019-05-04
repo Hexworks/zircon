@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
-import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.CharacterTileString

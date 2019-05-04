@@ -6,12 +6,16 @@ import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.Cell
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.extensions.toMap
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.extensions.toMap
 import org.hexworks.zircon.api.modifier.SimpleModifiers
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
 
@@ -332,7 +336,7 @@ class TileGraphicsTest {
     }
 
     companion object {
-        val TILESET = BuiltInCP437TilesetResource.JOLLY_12X12
+        val TILESET = CP437TilesetResources.jolly12x12()
         val EMPTY_TILE = Tile.empty()
         val FILLED_POS = Position.create(1, 2)
         val SIZE_OF_3X3 = Size.create(3, 3)

@@ -1,14 +1,14 @@
 package org.hexworks.zircon.api.data.base
 
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.GraphicTile
+import org.hexworks.zircon.api.data.tile.GraphicalTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
-import org.hexworks.zircon.api.resource.TileType
+import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
 
-abstract class BaseGraphicTile : BaseTile(), GraphicTile {
+abstract class BaseGraphicalTile : BaseTile(), GraphicalTile {
 
     override val foregroundColor: TileColor
         get() = TileColor.transparent()
@@ -25,14 +25,14 @@ abstract class BaseGraphicTile : BaseTile(), GraphicTile {
     override val styleSet: StyleSet
         get() = StyleSet.empty()
 
-    override fun withName(name: String): GraphicTile {
+    override fun withName(name: String): GraphicalTile {
         return Tile.createGraphicTile(
                 name = name,
                 tags = tags,
                 tileset = tileset)
     }
 
-    override fun withTags(tags: Set<String>): GraphicTile {
+    override fun withTags(tags: Set<String>): GraphicalTile {
         return Tile.createGraphicTile(
                 name = name,
                 tags = tags,

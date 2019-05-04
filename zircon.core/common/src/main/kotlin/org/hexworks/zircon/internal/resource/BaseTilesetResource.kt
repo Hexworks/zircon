@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 /**
  * Contains metadata about a tileset for a given [Tile] type.
  */
-abstract class BaseTilesetResource : TilesetResource {
+internal abstract class BaseTilesetResource : TilesetResource {
 
     override val id: Identifier = IdentifierFactory.randomIdentifier()
 

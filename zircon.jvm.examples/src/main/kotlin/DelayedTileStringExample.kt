@@ -1,16 +1,16 @@
 import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.resource.ColorThemeResource
 
 object DelayedTileStringExample {
 
     private val SIZE = Sizes.create(50, 30)
-    private val TILESET = BuiltInCP437TilesetResource.TAFFER_20X20
-    private val THEME = ColorThemeResource.CYBERPUNK.getTheme()
+    private val TILESET = CP437TilesetResources.taffer20x20()
+    private val THEME = ColorThemes.cyberpunk()
 
     @JvmStatic
     fun main(args: Array<String>) {

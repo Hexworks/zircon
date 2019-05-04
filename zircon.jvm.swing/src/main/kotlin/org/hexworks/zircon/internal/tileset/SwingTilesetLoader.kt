@@ -2,9 +2,9 @@ package org.hexworks.zircon.internal.tileset
 
 import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.zircon.api.behavior.Closeable
-import org.hexworks.zircon.api.resource.TileType.*
+import org.hexworks.zircon.internal.resource.TileType.*
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.resource.TilesetType.*
+import org.hexworks.zircon.internal.resource.TilesetType.*
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import java.awt.Graphics2D
@@ -36,16 +36,16 @@ class SwingTilesetLoader : TilesetLoader<Graphics2D>, Closeable {
                             resource = resource,
                             source = source)
                 },
-                "$IMAGE_TILE-$GRAPHIC_TILESET" to { resource: TilesetResource ->
-                    Java2DImageDictionaryTileset(
-                            resource = resource)
-                },
                 "$GRAPHIC_TILE-$GRAPHIC_TILESET" to { resource: TilesetResource ->
                     Java2DGraphicTileset(
                             resource = resource)
                 },
                 "$CHARACTER_TILE-$TRUE_TYPE_FONT" to { resource: TilesetResource ->
                     MonospaceAwtFontTileset(
+                            resource = resource)
+                },
+                "$IMAGE_TILE-$GRAPHIC_TILESET" to { resource: TilesetResource ->
+                    Java2DImageDictionaryTileset(
                             resource = resource)
                 })
     }

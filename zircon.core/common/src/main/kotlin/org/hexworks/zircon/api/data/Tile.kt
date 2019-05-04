@@ -4,14 +4,17 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Cacheable
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.tile.GraphicalTile
+import org.hexworks.zircon.api.data.tile.ImageTile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.Modifier
-import org.hexworks.zircon.api.resource.TileType
+import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.data.DefaultCharacterTile
-import org.hexworks.zircon.internal.data.DefaultGraphicTile
+import org.hexworks.zircon.internal.data.DefaultGraphicalTile
 import org.hexworks.zircon.internal.data.DefaultImageTile
 
 /**
@@ -60,9 +63,9 @@ interface Tile : Drawable, Cacheable, StyleSet {
     fun asImageTile(): Maybe<ImageTile>
 
     /**
-     * Returns this [Tile] as a [GraphicTile] if possible.
+     * Returns this [Tile] as a [GraphicalTile] if possible.
      */
-    fun asGraphicTile(): Maybe<GraphicTile>
+    fun asGraphicTile(): Maybe<GraphicalTile>
 
     fun isOpaque(): Boolean
 
@@ -131,12 +134,12 @@ interface Tile : Drawable, Cacheable, StyleSet {
         }
 
         /**
-         * Creates a new [GraphicTile].
+         * Creates a new [GraphicalTile].
          */
         fun createGraphicTile(name: String,
                               tags: Set<String>,
-                              tileset: TilesetResource = RuntimeConfig.config.defaultGraphicTileset): GraphicTile {
-            return DefaultGraphicTile(
+                              tileset: TilesetResource = RuntimeConfig.config.defaultGraphicTileset): GraphicalTile {
+            return DefaultGraphicalTile(
                     name = name,
                     tags = tags,
                     tileset = tileset)

@@ -5,14 +5,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import org.hexworks.cobalt.datatypes.Identifier
-import org.hexworks.zircon.api.data.GraphicTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.resource.BuiltInGraphicTilesetResource
-import org.hexworks.zircon.api.resource.TileType
+import org.hexworks.zircon.api.data.tile.GraphicalTile
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
+import org.hexworks.zircon.internal.resource.TileType
+import org.hexworks.zircon.internal.resource.TilesetSourceType.JAR
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.hexworks.zircon.internal.tileset.impl.GraphicTextureMetadata
 import org.hexworks.zircon.internal.util.rex.unZipIt
@@ -40,7 +40,7 @@ class LibgdxGraphicTileset(private val resource: TilesetResource)
                     " a GraphicTile-based tileset."
         }
 
-        val resourceStream: InputStream = if (resource is BuiltInGraphicTilesetResource) {
+        val resourceStream: InputStream = if (resource.tilesetSourceType == JAR) {
             this::class.java.getResourceAsStream(resource.path)
         } else {
             File(resource.path).inputStream()
@@ -88,7 +88,7 @@ class LibgdxGraphicTileset(private val resource: TilesetResource)
 
 
     private fun fetchTextureForTile(tile: Tile): TileTexture<TextureRegion> {
-        tile as? GraphicTile ?: throw IllegalArgumentException("Wrong tile type, ${tile.tileType.name}")
+        tile as? GraphicalTile ?: throw IllegalArgumentException("Wrong tile type, ${tile.tileType.name}")
         return metadata[tile.name]?.let { meta ->
             DefaultTileTexture(
                     width = width,

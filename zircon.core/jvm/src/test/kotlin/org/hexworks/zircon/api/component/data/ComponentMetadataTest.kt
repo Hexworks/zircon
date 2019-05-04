@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.component.data
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Test
 
 class ComponentMetadataTest {

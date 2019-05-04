@@ -1,13 +1,10 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.api.resource.ColorThemeResource
-import org.hexworks.zircon.internal.component.impl.DefaultPanel
-import org.hexworks.zircon.internal.component.renderer.DefaultPanelRenderer
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
 
 object CustomPanelExample {
 
@@ -39,7 +36,7 @@ object CustomPanelExample {
 //                        componentStyleSet = ComponentStyleSet.defaultStyleSet())))
 
         screen.display()
-        screen.applyColorTheme(ColorThemeResource.CYBERPUNK.getTheme())
+        screen.applyColorTheme(ColorThemes.cyberpunk())
 
     }
 

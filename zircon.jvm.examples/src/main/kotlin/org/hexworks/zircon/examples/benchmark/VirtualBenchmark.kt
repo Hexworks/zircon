@@ -3,23 +3,23 @@ package org.hexworks.zircon.examples.benchmark
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.TrueTypeFontResources
 import org.hexworks.zircon.api.VirtualApplications
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.resource.BuiltInTrueTypeFontResource
 import java.util.*
 
 fun main(args: Array<String>) {
 
     val size = Sizes.create(80, 40)
 
-    val tileset = BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(20)
+    val tileset = TrueTypeFontResources.ibmBios(20)
 
     val tileGrid = VirtualApplications.startTileGrid(AppConfigBuilder.newBuilder()
             .withSize(size)
