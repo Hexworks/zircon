@@ -1,5 +1,6 @@
 package org.hexworks.zircon.integration
 
+import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.VirtualApplications
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
@@ -7,10 +8,9 @@ import org.hexworks.zircon.api.builder.screen.ScreenBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
+import org.hexworks.zircon.internal.resource.ColorThemeResource
 import org.junit.Test
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -37,7 +37,7 @@ abstract class ComponentIntegrationTestBase(
     abstract fun buildScreenContent(screen: Screen)
 
     companion object {
-        val DEFAULT_TILESET_WANDERLUST = BuiltInCP437TilesetResource.WANDERLUST_16X16
+        val DEFAULT_TILESET_WANDERLUST = CP437TilesetResources.wanderlust16x16()
         val DEFAULT_THEME_CYBERPUNK = ColorThemeResource.CYBERPUNK.getTheme()
         val DEFAULT_SIZE_60X30 = Sizes.create(60, 30)
     }

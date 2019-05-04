@@ -1,14 +1,13 @@
 package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.*;
-import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder;
 import org.hexworks.zircon.api.color.TileColor;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 import org.jetbrains.annotations.NotNull;
 
 public class LayersExample {

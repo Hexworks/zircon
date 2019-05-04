@@ -12,7 +12,7 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.platform.extension.getOrDefault
 import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
 
-class DefaultAnimationHandler : InternalAnimationHandler, Closeable {
+internal class DefaultAnimationHandler : InternalAnimationHandler, Closeable {
 
     private val animations = ThreadSafeMapFactory.create<Identifier, Animation>()
     private val results = ThreadSafeMapFactory.create<Identifier, DefaultAnimationInfo>()

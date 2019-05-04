@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.Drawable
-import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.resource.TilesetResource
 
 /**

@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.builder.application.AppConfigBuilder;
 import org.hexworks.zircon.api.color.ANSITileColor;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.uievent.KeyCode;
 import org.hexworks.zircon.api.uievent.KeyboardEventType;
 

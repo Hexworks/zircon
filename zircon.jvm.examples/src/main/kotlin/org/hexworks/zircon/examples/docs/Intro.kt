@@ -3,7 +3,6 @@ package org.hexworks.zircon.examples.docs
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.animation.AnimationResource
 import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.hexworks.zircon.examples.AnimationExample
 
 object Intro {
@@ -79,7 +78,7 @@ object Intro {
         introScreen.addComponent(splashPanel)
         introScreen.addComponent(introPanel)
 
-        introPanel.applyColorTheme(ColorThemeResource.TRON.getTheme())
+        introPanel.applyColorTheme(ColorThemes.tron())
 
         introScreen.startAnimation(zirconSplash)
 

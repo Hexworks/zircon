@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.component.ButtonBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
@@ -12,9 +13,13 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.onComponentEvent
 import org.hexworks.zircon.api.extensions.onMouseEvent
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.api.uievent.KeyCode
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType.*
+import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.junit.Before
 import org.junit.Ignore
@@ -227,7 +232,7 @@ class DefaultComponentContainerTest {
 
     companion object {
         const val BUTTON_TEXT = "TEXT"
-        val TILESET = BuiltInCP437TilesetResource.REX_PAINT_16X16
+        val TILESET = CP437TilesetResources.rexPaint16x16()
         val SIZE = Size.create(30, 20)
         val BUTTON_POSITION = Position.create(6, 7)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()

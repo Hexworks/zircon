@@ -1,11 +1,11 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.junit.Before
 import org.junit.Test
@@ -127,6 +127,6 @@ class DefaultLayerableTest {
     }
 
     companion object {
-        val FONT = BuiltInCP437TilesetResource.WANDERLUST_16X16
+        val FONT = CP437TilesetResources.wanderlust16x16()
     }
 }

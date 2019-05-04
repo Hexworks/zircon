@@ -1,8 +1,8 @@
-package org.hexworks.zircon.api
+package org.hexworks.zircon.internal.resource
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.resource.ColorThemeResource
 import org.junit.Test
 
 class ColorThemesTest {
@@ -23,6 +23,6 @@ class ColorThemesTest {
     }
 
     companion object {
-        val ENUM_THEMES = ColorThemeResource.values().toList()
+        private val ENUM_THEMES = ColorThemeResource.values().toList()
     }
 }

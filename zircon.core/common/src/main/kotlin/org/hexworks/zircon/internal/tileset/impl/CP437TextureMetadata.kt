@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.tileset.impl
 
-import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.tileset.TextureMetadata
 
 data class CP437TextureMetadata(

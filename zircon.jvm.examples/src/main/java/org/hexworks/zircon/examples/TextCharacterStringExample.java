@@ -2,7 +2,6 @@ package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.AppConfigs;
 import org.hexworks.zircon.api.CharacterTileStrings;
-import org.hexworks.zircon.api.LibgdxApplications;
 import org.hexworks.zircon.api.Modifiers;
 import org.hexworks.zircon.api.Positions;
 import org.hexworks.zircon.api.Sizes;
@@ -12,7 +11,7 @@ import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.CharacterTileString;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 
 public class TextCharacterStringExample {
 

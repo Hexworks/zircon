@@ -17,7 +17,7 @@ import org.hexworks.zircon.api.component.RadioButtonGroup.Selection;
 import org.hexworks.zircon.api.component.TextArea;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.ColorThemeResource;
+import org.hexworks.zircon.internal.resource.ColorThemeResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 

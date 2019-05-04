@@ -1,9 +1,6 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.resource.BuiltInTrueTypeFontResource
-import org.hexworks.zircon.api.resource.ColorThemeResource
 
 object NonSquareTilesetExample {
 
@@ -15,7 +12,7 @@ object NonSquareTilesetExample {
                 AppConfigs.newConfig()
                         .enableBetaFeatures()
                         .withSize(Sizes.create(50, 40))
-                        .withDefaultTileset(BuiltInCP437TilesetResource.REX_PAINT_16X16)
+                        .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
                         .build())
 
         val screen = Screens.createScreenFor(tileGrid)
@@ -26,7 +23,7 @@ object NonSquareTilesetExample {
                 .addParagraph("This text is more readable because it does not use a square tileset.")
                 .addParagraph("This is a 8x16 tileset in fact...")
                 .addParagraph("It works fine with a Panel which uses a 16x16 tileset!")
-                .withTileset(BuiltInTrueTypeFontResource.UBUNTU_MONO.toTilesetResource(16))
+                .withTileset(TrueTypeFontResources.ubuntuMono(16))
                 .build()
 
         val panel = Components.panel()
@@ -40,7 +37,7 @@ object NonSquareTilesetExample {
         panel.addComponent(textBox)
 
         screen.addComponent(panel)
-        screen.applyColorTheme(ColorThemeResource.AMIGA_OS.getTheme())
+        screen.applyColorTheme(ColorThemes.amigaOs())
         screen.display()
 
 

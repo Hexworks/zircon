@@ -3,6 +3,9 @@ package org.hexworks.zircon.api.data.base
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.tile.GraphicalTile
+import org.hexworks.zircon.api.data.tile.ImageTile
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 
@@ -19,7 +22,7 @@ abstract class BaseTile : Tile {
 
     override fun asImageTile() = Maybe.ofNullable(this as? ImageTile)
 
-    override fun asGraphicTile() = Maybe.ofNullable(this as? GraphicTile)
+    override fun asGraphicTile() = Maybe.ofNullable(this as? GraphicalTile)
 
     override fun isOpaque(): Boolean = foregroundColor.isOpaque().and(
             backgroundColor.isOpaque())

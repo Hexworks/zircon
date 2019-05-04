@@ -19,7 +19,6 @@ import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.PixelPosition
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.resource.CP437TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.config.RuntimeConfig

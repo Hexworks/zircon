@@ -1,12 +1,12 @@
-package org.hexworks.zircon.api.resource
+package org.hexworks.zircon.internal.resource
 
 import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.resource.ColorThemeResource.SolarizedBase.SOLARIZED_DARK_BASE
-import org.hexworks.zircon.api.resource.ColorThemeResource.SolarizedBase.SOLARIZED_LIGHT_BASE
+import org.hexworks.zircon.internal.resource.ColorThemeResource.SolarizedBase.SOLARIZED_DARK_BASE
+import org.hexworks.zircon.internal.resource.ColorThemeResource.SolarizedBase.SOLARIZED_LIGHT_BASE
 
-enum class ColorThemeResource(private val colorTheme: ColorTheme) {
+internal enum class ColorThemeResource(private val colorTheme: ColorTheme) {
 
     EMPTY(ColorThemeBuilder.newBuilder()
             .withAccentColor(TileColor.transparent())

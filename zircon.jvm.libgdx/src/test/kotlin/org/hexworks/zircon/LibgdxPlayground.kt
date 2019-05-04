@@ -8,16 +8,8 @@ import com.badlogic.gdx.graphics.GL20
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
-import org.hexworks.zircon.api.data.GraphicTile
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.api.resource.BuiltInGraphicTilesetResource
-import org.hexworks.zircon.api.resource.GraphicalTilesetResource
 import org.hexworks.zircon.internal.application.LibgdxApplication
 import org.hexworks.zircon.internal.listeners.ZirconInputListener
-import org.hexworks.zircon.internal.util.fromBottom
-import org.hexworks.zircon.internal.util.fromRight
-import org.hexworks.zircon.internal.util.gridFillByScreenSize
 
 
 object LibgdxPlayground : Game() {
@@ -76,9 +68,9 @@ object LibgdxPlayground : Game() {
                 .withPosition(2, 2)
                 .withIcon(Tiles.newBuilder()
                         .withName("Plate mail")
-                        .withTileset(BuiltInGraphicTilesetResource.NETHACK_16X16)
+                        .withTileset(GraphicalTilesetResources.nethack16x16())
                         .buildGraphicTile())
-                )
+        )
         screen.addComponent(Components.label()
                 .withText("Label with icon")
                 .withPosition(2, 1))

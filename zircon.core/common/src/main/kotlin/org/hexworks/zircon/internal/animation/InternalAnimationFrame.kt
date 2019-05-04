@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.animation
 import org.hexworks.zircon.api.animation.AnimationFrame
 import org.hexworks.zircon.api.grid.TileGrid
 
-interface InternalAnimationFrame : AnimationFrame {
+internal interface InternalAnimationFrame : AnimationFrame {
 
     /**
      * Displays this [AnimationFrame] on the given [TileGrid].

@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.resource
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.graphics.Symbols
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.util.CP437Utils
 import org.junit.Before
 import org.junit.Test

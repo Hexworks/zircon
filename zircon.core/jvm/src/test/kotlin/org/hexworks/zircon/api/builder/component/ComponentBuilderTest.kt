@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.color.ANSITileColor.GREEN
@@ -12,7 +13,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.modifier.SimpleModifiers.VerticalFlip
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.junit.Test
 
 abstract class ComponentBuilderTest<T : Component, U : ComponentBuilder<T, U>> {
@@ -95,7 +95,7 @@ abstract class ComponentBuilderTest<T : Component, U : ComponentBuilder<T, U>> {
                         .build())
                 .build()
         const val TITLE_FOO = "FOO"
-        val TILESET_ROGUE_YUN = BuiltInCP437TilesetResource.ROGUE_YUN_16X16
+        val TILESET_ROGUE_YUN = CP437TilesetResources.rogueYun16x16()
         val BOX_TYPE_DOUBLE = BoxType.DOUBLE
         const val WRAPPED_WITH_BOX = true
         const val WRAPPED_WITH_SHADOW = true

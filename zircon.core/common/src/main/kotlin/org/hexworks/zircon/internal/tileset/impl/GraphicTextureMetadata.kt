@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.tileset.impl
 
-import org.hexworks.zircon.api.data.ImageTile
+import org.hexworks.zircon.api.data.tile.ImageTile
 import org.hexworks.zircon.api.tileset.TextureMetadata
 
 data class GraphicTextureMetadata(override val x: Int,

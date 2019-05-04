@@ -7,9 +7,7 @@ import org.hexworks.zircon.api.LibgdxApplications;
 import org.hexworks.zircon.api.Positions;
 import org.hexworks.zircon.api.Screens;
 import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.UIEventResponses;
-import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.Label;
@@ -20,7 +18,7 @@ import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 

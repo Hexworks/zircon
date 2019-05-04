@@ -4,13 +4,15 @@ import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.resource.TileType.CHARACTER_TILE
+import org.hexworks.zircon.internal.resource.TileType.CHARACTER_TILE
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.resource.TilesetSourceType.JAR
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.tileset.transformer.toAWTColor
 import java.awt.Font
 import java.awt.Graphics2D
 import java.awt.GraphicsEnvironment
+import java.io.File
 
 
 class MonospaceAwtFontTileset(private val resource: TilesetResource)
@@ -32,8 +34,11 @@ class MonospaceAwtFontTileset(private val resource: TilesetResource)
         }
         font = Font.createFont(
                 Font.TRUETYPE_FONT,
-                this::class.java.getResourceAsStream(resource.path))
-                .deriveFont(resource.height.toFloat())
+                if (resource.tilesetSourceType == JAR) {
+                    this::class.java.getResourceAsStream(resource.path)
+                } else {
+                    File(resource.path).inputStream()
+                }).deriveFont(resource.height.toFloat())
         val ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
         ge.registerFont(font)
     }

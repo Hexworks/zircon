@@ -1,9 +1,9 @@
-package org.hexworks.zircon.api.resource
+package org.hexworks.zircon.internal.resource
 
 /**
  * This enum contains the metadata for the built-in True Type fonts.
  */
-enum class BuiltInTrueTypeFontResource(private val fileName: String,
+internal enum class BuiltInTrueTypeFontResource(private val fileName: String,
                                        private val widthFn: (Int) -> Int) {
 
     /**
@@ -32,10 +32,11 @@ enum class BuiltInTrueTypeFontResource(private val fileName: String,
     ATT_NARROW("att_2x", { it.div(2) });
 
 
-    fun toTilesetResource(height: Int) = TrueTypeFontResource(
+    fun toTilesetResource(height: Int) = TrueTypeTilesetResource(
             path = "$FONTS_DIR/$fileName.$FONTS_EXT",
             width = widthFn.invoke(height),
-            height = height)
+            height = height,
+            tilesetSourceType = TilesetSourceType.JAR)
 
 
     companion object {

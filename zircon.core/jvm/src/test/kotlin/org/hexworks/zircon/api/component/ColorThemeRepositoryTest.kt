@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.zircon.api.resource.ColorThemeResource
+import org.hexworks.zircon.internal.resource.ColorThemeResource
 import org.junit.Test
 
 class ColorThemeRepositoryTest {

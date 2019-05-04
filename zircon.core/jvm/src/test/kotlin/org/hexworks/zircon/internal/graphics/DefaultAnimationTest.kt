@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.animation.AnimationResource
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
 

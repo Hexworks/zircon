@@ -2,12 +2,12 @@ package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.AppConfigs;
 import org.hexworks.zircon.api.Blocks;
+import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.CharacterTileStrings;
 import org.hexworks.zircon.api.ColorThemes;
 import org.hexworks.zircon.api.Components;
 import org.hexworks.zircon.api.DrawSurfaces;
 import org.hexworks.zircon.api.Layers;
-import org.hexworks.zircon.api.LibgdxApplications;
 import org.hexworks.zircon.api.Positions;
 import org.hexworks.zircon.api.Screens;
 import org.hexworks.zircon.api.Sizes;
@@ -15,7 +15,6 @@ import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.TileColors;
 import org.hexworks.zircon.api.Tiles;
 import org.hexworks.zircon.api.UIEventResponses;
-import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.builder.component.GameComponentBuilder;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.ColorTheme;
@@ -33,11 +32,10 @@ import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.graphics.TileGraphics;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
+import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.api.uievent.KeyCode;
 import org.hexworks.zircon.api.uievent.KeyboardEventType;
-import org.hexworks.zircon.internal.application.LibgdxApplication;
 import org.hexworks.zircon.internal.game.DefaultGameComponent;
 import org.hexworks.zircon.internal.game.InMemoryGameArea;
 
@@ -56,7 +54,7 @@ public class GameAreaScrollingWithLayers {
     private static final int TERMINAL_HEIGHT = 30;
     private static final Size SIZE = Sizes.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
     private static boolean headless = false;
-    private static final BuiltInCP437TilesetResource TILESET = BuiltInCP437TilesetResource.ROGUE_YUN_16X16;
+    private static final TilesetResource TILESET = CP437TilesetResources.rogueYun16x16();
 
     public static void main(String[] args) {
 
@@ -124,12 +122,12 @@ public class GameAreaScrollingWithLayers {
 
         ComponentBuilder builder = Components.gameComponent()
                 .withGameArea(gameArea)
-                .withTileset(BuiltInCP437TilesetResource.PHOEBUS_16X16);
+                .withTileset(CP437TilesetResources.phoebus16x16());
 
         final DefaultGameComponent gameComponent = ((GameComponentBuilder<Tile, Block<Tile>>) Components.gameComponent()
                 .withGameArea(gameArea)
                 .withVisibleSize(visibleGameAreaSize)
-                .withTileset(BuiltInCP437TilesetResource.PHOEBUS_16X16))
+                .withTileset(CP437TilesetResources.phoebus16x16()))
                 .build();
 
         screen.addComponent(gamePanel);

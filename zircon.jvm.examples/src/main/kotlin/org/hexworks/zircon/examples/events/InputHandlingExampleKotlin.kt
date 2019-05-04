@@ -1,11 +1,11 @@
 package org.hexworks.zircon.examples.events
 
 import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.extensions.onKeyboardEvent
 import org.hexworks.zircon.api.extensions.onMouseEvent
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Pass
@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.uievent.Processed
 object InputHandlingExampleKotlin {
 
     private val SCREEN_SIZE = Sizes.create(80, 40)
-    private val TILESET = BuiltInCP437TilesetResource.ROGUE_YUN_16X16
+    private val TILESET = CP437TilesetResources.rogueYun16x16()
 
     @JvmStatic
     fun main(args: Array<String>) {

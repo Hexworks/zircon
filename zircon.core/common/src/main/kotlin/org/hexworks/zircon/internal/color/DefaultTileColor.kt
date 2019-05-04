@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.color.TileColor
 import kotlin.math.max
 import kotlin.math.min
 
-data class DefaultTileColor(override val red: Int,
+internal data class DefaultTileColor(override val red: Int,
                             override val green: Int,
                             override val blue: Int,
                             override val alpha: Int = TileColor.defaultAlpha()) : TileColor {

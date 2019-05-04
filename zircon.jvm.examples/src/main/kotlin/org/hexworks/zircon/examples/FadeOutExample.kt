@@ -2,9 +2,6 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.modifier.FadeIn
-import org.hexworks.zircon.api.modifier.FadeOut
-import org.hexworks.zircon.api.resource.ColorThemeResource
 
 object FadeOutExample {
 
@@ -25,7 +22,7 @@ object FadeOutExample {
         text.forEach { c ->
             tileGrid.putTile(Tiles.defaultTile()
                     .withBackgroundColor(TileColor.transparent())
-                    .withForegroundColor(ColorThemeResource.NORD.getTheme().accentColor)
+                    .withForegroundColor(ColorThemes.nord().accentColor)
                     .withCharacter(c)
                     .withModifiers(Modifiers.fadeOut(20, 2000)))
         }

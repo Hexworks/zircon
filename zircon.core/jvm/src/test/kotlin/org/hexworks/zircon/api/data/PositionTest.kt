@@ -6,8 +6,7 @@ import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.data.impl.PixelPosition
-import org.hexworks.zircon.api.data.impl.Size3D
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
 

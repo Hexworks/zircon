@@ -9,18 +9,16 @@ import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.color.ANSITileColor;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.modifier.Border;
 import org.hexworks.zircon.api.modifier.Crop;
 import org.hexworks.zircon.api.modifier.RayShade;
 import org.hexworks.zircon.api.modifier.SimpleModifiers;
-import org.hexworks.zircon.api.resource.BuiltInCP437TilesetResource;
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.hexworks.zircon.api.modifier.BorderPosition.RIGHT;
 import static org.hexworks.zircon.api.modifier.BorderPosition.TOP;
-import static org.hexworks.zircon.api.modifier.BorderType.SOLID;
 
 public class FontModifiersExample {
 

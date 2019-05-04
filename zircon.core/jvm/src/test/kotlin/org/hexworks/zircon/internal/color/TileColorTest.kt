@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.junit.Test
 
-class TextColorTest {
+class TileColorTest {
 
     @Test
     fun shouldProperlyParseColorFromEnumNameWhenFromStringIsCalled() {
@@ -48,6 +48,6 @@ class TextColorTest {
     }
 
     companion object {
-        val EXPECTED_RESULT_COLOR = DefaultTileColor(170, 68, 85)
+        private val EXPECTED_RESULT_COLOR = DefaultTileColor(170, 68, 85)
     }
 }

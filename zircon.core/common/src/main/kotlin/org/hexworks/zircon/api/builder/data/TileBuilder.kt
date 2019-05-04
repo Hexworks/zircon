@@ -2,16 +2,16 @@ package org.hexworks.zircon.api.builder.data
 
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.api.data.GraphicTile
-import org.hexworks.zircon.api.data.ImageTile
+import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.tile.GraphicalTile
+import org.hexworks.zircon.api.data.tile.ImageTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.data.DefaultCharacterTile
-import org.hexworks.zircon.internal.data.DefaultGraphicTile
+import org.hexworks.zircon.internal.data.DefaultGraphicalTile
 import org.hexworks.zircon.internal.data.DefaultImageTile
 
 /**
@@ -89,8 +89,8 @@ data class TileBuilder(
                 name = name)
     }
 
-    fun buildGraphicTile(): GraphicTile {
-        return DefaultGraphicTile(
+    fun buildGraphicTile(): GraphicalTile {
+        return DefaultGraphicalTile(
                 name = name,
                 tags = tags,
                 tileset = tileset)
