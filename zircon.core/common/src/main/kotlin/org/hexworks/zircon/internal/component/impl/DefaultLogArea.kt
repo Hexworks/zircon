@@ -113,10 +113,10 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
 
     private fun addLogElement(element: TextBox, applyTheme: Boolean = true) {
         val currentHeight = children.asSequence().map { it.height }.fold(0, Int::plus)
-        val maxHeight = height
+        val maxHeight = contentSize.height
         val elementHeight = element.height
         val remainingHeight = maxHeight - currentHeight
-        require(elementHeight <= height) {
+        require(elementHeight <= contentSize.height) {
             "Can't add an element which has a bigger height than this LogArea."
         }
         if (currentHeight + elementHeight > maxHeight) {
@@ -146,7 +146,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
         return TextBoxBuilder
                 .newBuilder()
                 .withTileset(currentTileset())
-                .withContentWidth(width)
+                .withContentWidth(contentSize.width)
     }
 
     override fun render() {

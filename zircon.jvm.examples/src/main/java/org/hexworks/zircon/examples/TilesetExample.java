@@ -1,6 +1,11 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.Positions;
+import org.hexworks.zircon.api.Sizes;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.TileColors;
+import org.hexworks.zircon.api.Tiles;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder;
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder;
@@ -11,7 +16,6 @@ import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 
 import java.util.Random;
 
@@ -56,7 +60,7 @@ public class TilesetExample {
 
         // Libgdx doesn't support graphic tilesets yet
         Application app = SwingApplications.startApplication(AppConfigBuilder.Companion.newBuilder()
-                .withDefaultTileset(BuiltInCP437TilesetResource.WANDERLUST_16X16)
+                .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
                 .withSize(SIZE)
                 .withDebugMode(true)
                 .build());

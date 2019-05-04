@@ -1,6 +1,12 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
 import java.util.*
 
 object ScrollingLogAreaExample {
@@ -33,24 +39,19 @@ object ScrollingLogAreaExample {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
                 .withSize(Sizes.create(70, 30))
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        val panel = Components.panel()
-                .wrapWithBox(true)
-                .withSize(Sizes.create(60, 25))
-                .withTitle("Log")
-                .build()
-
-        screen.addComponent(panel)
         val logArea = Components.logArea()
-                .withSize(Sizes.create(58, 23))
+                .wrapWithBox()
+                .withTitle("Log")
+                .withSize(Sizes.create(60, 25))
                 .build()
-        panel.addComponent(logArea)
+        screen.addComponent(logArea)
 
         screen.display()
         screen.applyColorTheme(theme)

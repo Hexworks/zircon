@@ -1,6 +1,7 @@
 package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.CharacterTileStrings;
 import org.hexworks.zircon.api.Modifiers;
 import org.hexworks.zircon.api.Positions;
@@ -11,7 +12,6 @@ import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.CharacterTileString;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 
 public class TextCharacterStringExample {
 
@@ -23,7 +23,7 @@ public class TextCharacterStringExample {
 
         // TODO: modifiers don't work in libgdx yet
         Application app = SwingApplications.startApplication(AppConfigs.newConfig()
-                .withDefaultTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
+                .withDefaultTileset(CP437TilesetResources.taffer20x20())
                 .withSize(SIZE)
                 .withDebugMode(true)
                 .build());

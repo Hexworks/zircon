@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples;
 
+import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.Sizes;
 import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.TileColors;
@@ -9,7 +10,6 @@ import org.hexworks.zircon.api.builder.application.AppConfigBuilder;
 import org.hexworks.zircon.api.color.ANSITileColor;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.uievent.KeyCode;
 import org.hexworks.zircon.api.uievent.KeyboardEventType;
 
@@ -21,7 +21,7 @@ public class TypingExample {
 
         // TODO: doesn't seem to work with libgdx
         final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigBuilder.Companion.newBuilder()
-                .withDefaultTileset(BuiltInCP437TilesetResource.BISASAM_16X16)
+                .withDefaultTileset(CP437TilesetResources.bisasam16x16())
                 .withSize(Sizes.create(TERMINAL_WIDTH, 10))
                 .withCursorBlinking(true)
                 .withCursorStyle(CursorStyle.FIXED_BACKGROUND)

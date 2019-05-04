@@ -34,13 +34,11 @@ class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
                     LibgdxTileset(
                             path = resource.path,
                             width = resource.width,
-                            height = resource.height
-                    )
+                            height = resource.height)
                 },
                 "$GRAPHIC_TILE-$GRAPHIC_TILESET" to { resource: TilesetResource ->
                     LibgdxGraphicTileset(
-                            resource = resource
-                    )
+                            resource = resource)
                 }
                 //TODO Support for other types of tilesets
         )

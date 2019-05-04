@@ -1,6 +1,7 @@
 package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.ColorThemes;
 import org.hexworks.zircon.api.Components;
 import org.hexworks.zircon.api.LibgdxApplications;
@@ -18,7 +19,6 @@ import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 
@@ -40,7 +40,7 @@ public class GameMockupExample {
 
     private static final String[] DIFFICULTIES = new String[]{"TINGLE", "ANXIETY", "HORROR"};
 
-    private static final TilesetResource TILESET = BuiltInCP437TilesetResource.REX_PAINT_20X20;
+    private static final TilesetResource TILESET = CP437TilesetResources.rexPaint20x20();
     private static final int MAIN_MENU_PANEL_WIDTH = 25;
     private static final int MAIN_MENU_PANEL_HEIGHT = 10;
     private static final int PANEL_SPACING = 2;
@@ -52,7 +52,7 @@ public class GameMockupExample {
         double rows = screenSize.getHeight() / TILESET.getHeight();
         Size terminalSize = Sizes.create((int) columns, (int) rows);
 
-        final TileGrid tileGrid =  LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+        final TileGrid tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(TILESET)
                 .withSize(terminalSize)
                 .withDebugMode(true)

@@ -9,8 +9,7 @@ import org.hexworks.zircon.api.extensions.onMouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
 
-object
-ComponentModificationExample {
+object ComponentModificationExample {
 
 
     @JvmStatic

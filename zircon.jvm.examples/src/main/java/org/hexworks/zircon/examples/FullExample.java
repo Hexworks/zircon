@@ -75,7 +75,7 @@ public class FullExample {
 
     private static final Size PANEL_SIZE = Sizes.create(29, 8);
     private static final Size SCREEN_SIZE = Sizes.create(65, 33);
-    private static final TilesetResource TILESET = BuiltInCP437TilesetResource.ROGUE_YUN_16X16;
+    private static final TilesetResource TILESET = CP437TilesetResources.rogueYun16x16();
     private static final ColorTheme INTRO_THEME = TRON.getTheme();
     private static final ColorTheme PANELS_THEME = AMIGA_OS.getTheme();
     private static final ColorTheme INPUTS_THEME = GAMEBOOKERS.getTheme();

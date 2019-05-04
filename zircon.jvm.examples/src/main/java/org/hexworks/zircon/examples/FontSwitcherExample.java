@@ -1,6 +1,7 @@
 package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.Layers;
 import org.hexworks.zircon.api.Positions;
 import org.hexworks.zircon.api.Sizes;
@@ -10,7 +11,6 @@ import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.uievent.KeyCode;
 import org.hexworks.zircon.api.uievent.KeyboardEventType;
@@ -18,12 +18,6 @@ import org.hexworks.zircon.api.uievent.KeyboardEventType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import static org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource.ADU_DHABI_16X16;
-import static org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource.BISASAM_16X16;
-import static org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource.REX_PAINT_16X16;
-import static org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource.ROGUE_YUN_16X16;
-import static org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource.WANDERLUST_16X16;
 
 public class FontSwitcherExample {
 
@@ -35,16 +29,16 @@ public class FontSwitcherExample {
     public static void main(String[] args) {
 
         final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .withDefaultTileset(BuiltInCP437TilesetResource.ADU_DHABI_16X16)
+                .withDefaultTileset(CP437TilesetResources.aduDhabi16x16())
                 .withSize(SIZE)
                 .withDebugMode(true)
                 .build());
 
-        TILESETS.add(ADU_DHABI_16X16);
-        TILESETS.add(ROGUE_YUN_16X16);
-        TILESETS.add(REX_PAINT_16X16);
-        TILESETS.add(WANDERLUST_16X16);
-        TILESETS.add(BISASAM_16X16);
+        TILESETS.add(CP437TilesetResources.aduDhabi16x16());
+        TILESETS.add(CP437TilesetResources.rogueYun16x16());
+        TILESETS.add(CP437TilesetResources.rexPaint16x16());
+        TILESETS.add(CP437TilesetResources.wanderlust16x16());
+        TILESETS.add(CP437TilesetResources.bisasam16x16());
 
         final String switchFont = "Press '->' to switch Tileset!";
         final String switchLayer = "Press '<-' to switch Layer!";
