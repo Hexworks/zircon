@@ -2,8 +2,17 @@
 
 package org.hexworks.zircon.internal.integration
 
-import org.hexworks.zircon.api.*
+import org.hexworks.cobalt.databinding.api.binding.Binding
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.extensions.onComponentEvent
 import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
 
@@ -11,6 +20,7 @@ object DataBindingTest {
 
     private val theme = ColorThemes.arc()
     private val tileset = CP437TilesetResources.rexPaint20x20()
+    private val bindings = mutableListOf<Binding<Any>>()
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -88,13 +98,13 @@ object DataBindingTest {
                 .withPosition(25, 3)
                 .build().apply {
                     onMouseEvent(MouseEventType.MOUSE_RELEASED) { _, _ ->
-                        panel.titleProperty.bind(master.textProperty)
-                        label.textProperty.bind(master.textProperty)
-                        header.textProperty.bind(master.textProperty)
-                        btn.textProperty.bind(master.textProperty)
-                        checkBox.textProperty.bind(master.textProperty)
-                        option.textProperty.bind(master.textProperty)
-                        paragraph.textProperty.bind(master.textProperty)
+                        bindings.add(panel.titleProperty.bind(master.textProperty))
+                        bindings.add(label.textProperty.bind(master.textProperty))
+                        bindings.add(header.textProperty.bind(master.textProperty))
+                        bindings.add(btn.textProperty.bind(master.textProperty))
+                        bindings.add(checkBox.textProperty.bind(master.textProperty))
+                        bindings.add(option.textProperty.bind(master.textProperty))
+                        bindings.add(paragraph.textProperty.bind(master.textProperty))
                         Processed
                     }
                 }
@@ -103,7 +113,13 @@ object DataBindingTest {
                 .withText("Unbind")
                 .withPosition(25, 4)
                 .build().apply {
-                    master.textProperty.unbind()
+                    onComponentEvent(ACTIVATED) {
+                        bindings.forEach {
+                            it.dispose()
+                        }
+                        bindings.clear()
+                        Processed
+                    }
                 }
 
         panel.addComponent(label)

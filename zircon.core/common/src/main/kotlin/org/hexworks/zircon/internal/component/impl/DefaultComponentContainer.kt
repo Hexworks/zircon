@@ -14,7 +14,9 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultComponentFocusHandler
-import org.hexworks.zircon.internal.component.ComponentContainerState.*
+import org.hexworks.zircon.internal.component.ComponentContainerState.ACTIVE
+import org.hexworks.zircon.internal.component.ComponentContainerState.INACTIVE
+import org.hexworks.zircon.internal.component.ComponentContainerState.INITIALIZING
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAddition
