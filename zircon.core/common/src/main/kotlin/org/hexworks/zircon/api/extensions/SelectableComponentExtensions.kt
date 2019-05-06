@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api.extensions
 
 import org.hexworks.cobalt.databinding.api.event.ChangeEvent
-import org.hexworks.cobalt.databinding.api.event.ChangeListener
 import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.zircon.api.behavior.ChangeListener
 import org.hexworks.zircon.api.behavior.Selectable
 
 /**
@@ -11,8 +11,8 @@ import org.hexworks.zircon.api.behavior.Selectable
  */
 inline fun Selectable.onSelectionChanged(crossinline fn: (ChangeEvent<Boolean>) -> Unit): Subscription {
     return onSelectionChanged(object : ChangeListener<Boolean> {
-        override fun onChange(changeEvent: ChangeEvent<Boolean>) {
-            fn(changeEvent)
+        override fun onChange(event: ChangeEvent<Boolean>) {
+            fn(event)
         }
     })
 }

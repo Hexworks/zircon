@@ -6,7 +6,11 @@ import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 import org.hexworks.zircon.api.builder.component.TextBoxBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.component.*
+import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.LogArea
+import org.hexworks.zircon.api.component.TextBox
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate

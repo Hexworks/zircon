@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
-import org.hexworks.cobalt.databinding.api.extensions.onChange
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -13,7 +12,11 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.UIEventResponse
 
 class DefaultButton(componentMetadata: ComponentMetadata,
                     initialText: String,

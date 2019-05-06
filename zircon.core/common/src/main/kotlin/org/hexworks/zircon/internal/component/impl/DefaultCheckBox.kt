@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
-import org.hexworks.cobalt.databinding.api.extensions.onChange
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextHolder

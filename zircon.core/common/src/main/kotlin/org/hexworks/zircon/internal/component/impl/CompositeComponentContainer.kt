@@ -10,12 +10,12 @@ import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.onClosed
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.internal.resource.ColorThemeResource
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
+import org.hexworks.zircon.internal.resource.ColorThemeResource
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 /**
