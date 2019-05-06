@@ -1,15 +1,13 @@
 package org.hexworks.zircon.examples.components
 
 import org.hexworks.cobalt.databinding.api.expression.not
-import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
-import org.hexworks.zircon.api.extensions.onComponentEvent
-import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.api.uievent.ComponentEventType
-import org.hexworks.zircon.api.uievent.ComponentEventType.*
-import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
 
 object ComponentsDisableExample {
 
@@ -35,13 +33,13 @@ object ComponentsDisableExample {
                 .withSize(17, 1)
                 .withPosition(20, 5)
                 .withText("Toggle")
+                .wrapSides(false)
                 .build().apply {
-                    checkBox.enabledProperty.bind(selectedProperty)
+                    checkBox.enabledProperty.updateFrom(!selectedProperty)
                 }
 
         screen.addComponent(checkBox)
         screen.addComponent(disableButton)
-
 
         screen.display()
         screen.applyColorTheme(theme)
