@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.resource
 
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 
 /**
  * CP437 Tileset resource class which can be used with [CharacterTile]s.

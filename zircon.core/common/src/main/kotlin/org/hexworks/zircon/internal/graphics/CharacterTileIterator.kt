@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.graphics
 
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 
 /**
  * Responsible for iterating over a [<] and returning a list

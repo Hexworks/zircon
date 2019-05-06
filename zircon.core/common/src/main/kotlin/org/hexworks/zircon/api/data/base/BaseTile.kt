@@ -3,9 +3,9 @@ package org.hexworks.zircon.api.data.base
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.data.*
-import org.hexworks.zircon.api.data.tile.CharacterTile
-import org.hexworks.zircon.api.data.tile.GraphicalTile
-import org.hexworks.zircon.api.data.tile.ImageTile
+import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.GraphicalTile
+import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 
