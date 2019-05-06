@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.data.base
 
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier

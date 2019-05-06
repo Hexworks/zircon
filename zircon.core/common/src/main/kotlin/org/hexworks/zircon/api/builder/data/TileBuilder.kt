@@ -2,9 +2,9 @@ package org.hexworks.zircon.api.builder.data
 
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.tile.CharacterTile
-import org.hexworks.zircon.api.data.tile.GraphicalTile
-import org.hexworks.zircon.api.data.tile.ImageTile
+import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.GraphicalTile
+import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier

@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.tileset
 
 import org.hexworks.cobalt.datatypes.Identifier
-import org.hexworks.zircon.api.data.tile.GraphicalTile
+import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.resource.TileType.GRAPHIC_TILE

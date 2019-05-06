@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import org.hexworks.cobalt.datatypes.Identifier
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.tile.GraphicalTile
+import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset

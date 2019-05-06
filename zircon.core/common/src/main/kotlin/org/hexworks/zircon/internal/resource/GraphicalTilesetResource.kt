@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.resource
 
-import org.hexworks.zircon.api.data.tile.GraphicalTile
+import org.hexworks.zircon.api.data.GraphicalTile
 
 /**
  * Tileset resource class which can be used with [GraphicalTile]s.

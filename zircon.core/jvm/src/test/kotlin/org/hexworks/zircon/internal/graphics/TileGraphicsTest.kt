@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.extensions.toMap
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics

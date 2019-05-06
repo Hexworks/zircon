@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.tile.ImageTile
+import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource

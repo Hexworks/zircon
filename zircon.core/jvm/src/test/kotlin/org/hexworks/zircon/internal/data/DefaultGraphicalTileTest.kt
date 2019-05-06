@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.data
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.tile.GraphicalTile
+import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
