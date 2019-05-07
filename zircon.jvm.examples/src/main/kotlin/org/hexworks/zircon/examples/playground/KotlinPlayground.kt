@@ -2,7 +2,12 @@
 
 package org.hexworks.zircon.examples.playground
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.onKeyboardEvent
 import org.hexworks.zircon.api.uievent.KeyCode
@@ -42,7 +47,7 @@ object KotlinPlayground {
         unitHeadingTextArea.onKeyboardEvent(KeyboardEventType.KEY_PRESSED) { event, phase ->
             //press Enter
             if (event.code == KeyCode.ENTER) {
-                unitHeadingTextArea.disable()
+                unitHeadingTextArea.isDisabled = true
                 unitHeadingTextArea.clearFocus()
             }
             Processed
@@ -52,7 +57,7 @@ object KotlinPlayground {
 
 
         screen.display()
-        unitHeadingTextArea.enable()
+        unitHeadingTextArea.isEnabled = true
         unitHeadingTextArea.requestFocus()
     }
 }

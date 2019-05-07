@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -13,6 +13,8 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
+import org.hexworks.zircon.api.extensions.whenEnabled
+import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.Processed
@@ -30,22 +32,14 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
         TextHolder by TextHolder.create(initialText),
-        Selectable by Selectable.create() {
+        Selectable by Selectable.create(),
+        Disablable by Disablable.create() {
 
     override val state: CheckBoxState
         get() = checkBoxState
 
     private var checkBoxState = UNCHECKED
     private var pressing = false
-
-    override val isEnabled: Boolean
-        get() = enabledProperty.value
-
-    override val enabledProperty = createPropertyFrom(true).apply {
-        onChange { (_, _, newValue) ->
-            if (newValue) enable() else disable()
-        }
-    }
 
     init {
         render()
@@ -58,25 +52,21 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
             checkBoxState = if (it.newValue) CHECKED else UNCHECKED
             render()
         }
-    }
-
-    override fun enable() {
-        LOGGER.debug("Enabling CheckBox (id=${id.abbreviate()}, enabled=$isEnabled, text=$text).")
-        enabledProperty.value = true
-        componentStyleSet.reset()
-        render()
-    }
-
-    override fun disable() {
-        LOGGER.debug("Disabling CheckBox (id=${id.abbreviate()}, enabled=$isEnabled, text=$text).")
-        enabledProperty.value = false
-        componentStyleSet.applyDisabledStyle()
-        render()
+        disabledProperty.onChange {
+            if (it.newValue) {
+                LOGGER.debug("Disabling CheckBox (id=${id.abbreviate()}, disabled=$isDisabled, text=$text).")
+                componentStyleSet.applyDisabledStyle()
+            } else {
+                LOGGER.debug("Enabling CheckBox (id=${id.abbreviate()}, disabled=$isDisabled, text=$text).")
+                componentStyleSet.reset()
+            }
+            render()
+        }
     }
 
     // TODO: test this rudimentary state machine
-    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
-        return if (isEnabled && phase == UIEventPhase.TARGET) {
+    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET) {
             LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) was mouse entered.")
             componentStyleSet.applyMouseOverStyle()
             render()
@@ -84,8 +74,8 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
         } else Pass
     }
 
-    override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
-        return if (isEnabled && phase == UIEventPhase.TARGET) {
+    override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET) {
             LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) was mouse exited.")
             pressing = false
             checkBoxState = if (isSelected) CHECKED else UNCHECKED
@@ -95,8 +85,8 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
         } else Pass
     }
 
-    override fun mousePressed(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
-        return if (isEnabled && phase == UIEventPhase.TARGET) {
+    override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET) {
             LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) was mouse pressed.")
             pressing = true
             checkBoxState = if (isSelected) UNCHECKING else CHECKING
@@ -106,8 +96,8 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
         } else Pass
     }
 
-    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
-        return if (isEnabled && phase == UIEventPhase.TARGET) {
+    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET) {
             componentStyleSet.applyMouseOverStyle()
             render()
             Processed
@@ -115,7 +105,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
     }
 
     override fun activated(): UIEventResponse {
-        return if (isEnabled) {
+        return if (isDisabled.not()) {
             LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) was activated.")
             componentStyleSet.applyMouseOverStyle()
             pressing = false
@@ -126,24 +116,18 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
         } else Pass
     }
 
-    override fun acceptsFocus() = isEnabled
+    override fun acceptsFocus() = isDisabled.not()
 
-    override fun focusGiven(): UIEventResponse {
-        return if (isEnabled) {
-            LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) was given focus.")
-            componentStyleSet.applyFocusedStyle()
-            render()
-            Processed
-        } else Pass
+    override fun focusGiven() = whenEnabled {
+        LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) was given focus.")
+        componentStyleSet.applyFocusedStyle()
+        render()
     }
 
-    override fun focusTaken(): UIEventResponse {
-        return if (isEnabled) {
-            LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) lost focus.")
-            componentStyleSet.reset()
-            render()
-            Processed
-        } else Pass
+    override fun focusTaken() = whenEnabled {
+        LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) lost focus.")
+        componentStyleSet.reset()
+        render()
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {

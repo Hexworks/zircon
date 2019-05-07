@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.behavior.TitleHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
@@ -16,16 +16,7 @@ open class DefaultPanel(componentMetadata: ComponentMetadata,
                         private val renderingStrategy: ComponentRenderingStrategy<Panel>)
     : Panel, DefaultContainer(
         componentMetadata = componentMetadata,
-        renderer = renderingStrategy) {
-
-    override val titleProperty = createPropertyFrom(initialTitle).also {
-        it.onChange {
-            render()
-        }
-    }
-
-    override val title: String
-        get() = titleProperty.value
+        renderer = renderingStrategy), TitleHolder by TitleHolder.create(initialTitle) {
 
     init {
         render()

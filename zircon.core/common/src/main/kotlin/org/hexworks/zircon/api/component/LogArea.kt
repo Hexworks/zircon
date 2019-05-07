@@ -28,7 +28,7 @@ interface LogArea : Component {
      * Adds a paragraph by providing a builder
      * Hint: Use this function if you want to style a paragraph within a log area
      */
-    fun addParagraph(paragraphBuilder: ParagraphBuilder,  withNewLine: Boolean = true)
+    fun addParagraph(paragraphBuilder: ParagraphBuilder, withNewLine: Boolean = true)
 
     /**
      * Adds an list item

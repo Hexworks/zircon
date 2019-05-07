@@ -1,6 +1,13 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.LibgdxApplications
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.extensions.onMouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
@@ -33,10 +40,10 @@ object TextAreaDisableExample {
 
         toggleButton.onMouseEvent(MouseEventType.MOUSE_RELEASED) { _, _ ->
             if (textArea.isEnabled) {
-                textArea.disable()
+                textArea.isDisabled = true
                 textArea.text = "Disabled"
             } else {
-                textArea.enable()
+                textArea.isEnabled = true
                 textArea.text = "Enabled"
             }
             Processed
