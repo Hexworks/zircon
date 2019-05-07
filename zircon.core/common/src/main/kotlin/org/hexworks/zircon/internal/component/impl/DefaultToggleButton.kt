@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -11,11 +12,9 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ToggleButton
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
+import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
 
 class DefaultToggleButton(componentMetadata: ComponentMetadata,
                           initialText: String,
@@ -25,7 +24,8 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
         TextHolder by TextHolder.create(initialText),
-        Selectable by Selectable.create(initialSelected) {
+        Selectable by Selectable.create(initialSelected),
+        Disablable by Disablable.create() {
 
     init {
         // TODO: when the toggle button is selected by default (on create) it should be rendered as selected
@@ -45,37 +45,40 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
             }
             render()
         }
+        disabledProperty.onChange {
+            if (it.newValue) {
+                componentStyleSet.applyDisabledStyle()
+            } else {
+                componentStyleSet.reset()
+            }
+            render()
+        }
     }
 
-    override fun activated(): UIEventResponse {
+    override fun activated() = whenEnabled {
         selectedProperty.value = !isSelected
-        return Processed
     }
 
-    override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
-        return if (isSelected.not() && phase == UIEventPhase.TARGET) {
+    override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabled {
+        if (isSelected.not() && phase == UIEventPhase.TARGET) {
             super.mouseExited(event, phase)
-            Processed
-        } else Pass
+        }
     }
 
+    override fun acceptsFocus() = isDisabled.not()
 
-    override fun acceptsFocus() = true
-
-    override fun focusGiven(): UIEventResponse {
+    override fun focusGiven() = whenEnabled {
         componentStyleSet.applyFocusedStyle()
         render()
-        return Processed
     }
 
-    override fun focusTaken(): UIEventResponse {
+    override fun focusTaken() = whenEnabled {
         if (isSelected) {
             applyIsSelectedStyle()
         } else {
             componentStyleSet.reset()
         }
         render()
-        return Processed
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {

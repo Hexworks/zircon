@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -12,11 +12,12 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
+import org.hexworks.zircon.api.extensions.whenEnabled
+import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
 
 class DefaultButton(componentMetadata: ComponentMetadata,
                     initialText: String,
@@ -24,116 +25,93 @@ class DefaultButton(componentMetadata: ComponentMetadata,
     : Button, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
-        TextHolder by TextHolder.create(initialText) {
+        TextHolder by TextHolder.create(initialText),
+        Disablable by Disablable.create() {
 
-    override val isEnabled: Boolean
-        get() = enabledProperty.value
-
-    // TODO: regression test this (does the same as enable/disable)
-    override val enabledProperty = createPropertyFrom(true).apply {
-        onChange { (_, _, newValue) ->
-            if (newValue) enable() else disable()
-        }
-    }
 
     init {
         render()
         textProperty.onChange {
-            LOGGER.debug("Text property of Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text)" +
+            LOGGER.debug("Text property of Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text)" +
                     " changed from '${it.oldValue}' to '${it.newValue}'.")
+            render()
+        }
+        disabledProperty.onChange {
+            if (it.newValue) {
+                DefaultCheckBox.LOGGER.debug("Disabling Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text).")
+                componentStyleSet.applyDisabledStyle()
+            } else {
+                DefaultCheckBox.LOGGER.debug("Enabling Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text).")
+                componentStyleSet.reset()
+            }
             render()
         }
     }
 
-    override fun enable() {
-        LOGGER.debug("Enabling Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text).")
-        enabledProperty.value = true
-        componentStyleSet.reset()
-        render()
-    }
+    override fun acceptsFocus() = isDisabled.not()
 
-    override fun disable() {
-        LOGGER.debug("Disabling Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text).")
-        enabledProperty.value = false
-        componentStyleSet.applyDisabledStyle()
-        render()
-    }
-
-    override fun acceptsFocus() = isEnabled
-
-    override fun focusGiven(): UIEventResponse {
-        LOGGER.debug("Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text) was given focus.")
+    override fun focusGiven() = whenEnabled {
+        LOGGER.debug("Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text) was given focus.")
         componentStyleSet.applyFocusedStyle()
         render()
-        return Processed
     }
 
-    override fun focusTaken(): UIEventResponse {
-        LOGGER.debug("Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text) lost focus.")
+    override fun focusTaken() = whenEnabled {
+        LOGGER.debug("Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text) lost focus.")
         componentStyleSet.reset()
         render()
-        return Processed
     }
 
-    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
-        return if (isEnabled && phase == UIEventPhase.TARGET) {
-            LOGGER.debug("Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text) was mouse entered.")
+    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET) {
+            LOGGER.debug("Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text) was mouse entered.")
             componentStyleSet.applyMouseOverStyle()
             render()
             Processed
         } else Pass
     }
 
-    override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
-        return if (isEnabled && phase == UIEventPhase.TARGET) {
-            LOGGER.debug("Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text) was mouse exited.")
+    override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET) {
+            LOGGER.debug("Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text) was mouse exited.")
             componentStyleSet.reset()
             render()
             Processed
-        } else {
-            LOGGER.debug("Mouse exited disabled Button (id=${id.abbreviate()}, text=$text). Event ignored.")
-            Pass
-        }
+        } else Pass
     }
 
-    override fun mousePressed(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
-        return if (isEnabled && phase == UIEventPhase.TARGET) {
-            LOGGER.debug("Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text) was mouse pressed.")
+    override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET) {
+            LOGGER.debug("Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text) was mouse pressed.")
             componentStyleSet.applyActiveStyle()
             render()
             Processed
-        } else {
-            LOGGER.debug("Mouse pressed disabled Button (id=${id.abbreviate()}, text=$text). Event ignored.")
-            Pass
-        }
+        } else Pass
     }
 
-    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
-        return if (isEnabled && phase == UIEventPhase.TARGET) {
-            LOGGER.debug("Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text) was mouse released.")
+    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET) {
+            LOGGER.debug("Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text) was mouse released.")
             componentStyleSet.applyMouseOverStyle()
             render()
             Processed
-        } else {
-            LOGGER.debug("Mouse released disabled Button (id=${id.abbreviate()}, text=$text). Event ignored.")
-            Pass
-        }
+        } else Pass
     }
 
-    override fun activated(): UIEventResponse {
-        return if (isEnabled) {
-            LOGGER.debug("Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text) was activated.")
-            componentStyleSet.applyMouseOverStyle()
-            render()
-            Processed
-        } else {
+    override fun activated() = whenEnabledRespondWith {
+        if (isDisabled) {
             LOGGER.warn("Trying to activate disabled Button (id=${id.abbreviate()}, text=$text). Request dropped.")
             Pass
+        } else {
+            LOGGER.debug("Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text) was activated.")
+            componentStyleSet.applyMouseOverStyle()
+            render()
+            Processed
         }
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        LOGGER.debug("Applying color theme: $colorTheme to Button (id=${id.abbreviate()}, enabled=$isEnabled, text=$text).")
+        LOGGER.debug("Applying color theme: $colorTheme to Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text).")
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.accentColor)
@@ -162,7 +140,7 @@ class DefaultButton(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        LOGGER.debug("Button (id=${id.abbreviate()}, enabled=$isEnabled, visibility=$isVisible, text=$text) was rendered.")
+        LOGGER.debug("Button (id=${id.abbreviate()}, disabled=$isDisabled, visibility=$isVisible, text=$text) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 

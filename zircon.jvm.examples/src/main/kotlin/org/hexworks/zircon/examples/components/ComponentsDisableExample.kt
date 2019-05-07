@@ -1,6 +1,5 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.cobalt.databinding.api.expression.not
 import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
@@ -35,7 +34,7 @@ object ComponentsDisableExample {
                 .withText("Toggle")
                 .wrapSides(false)
                 .build().apply {
-                    checkBox.enabledProperty.updateFrom(!selectedProperty)
+                    checkBox.disabledProperty.updateFrom(selectedProperty)
                 }
 
         screen.addComponent(checkBox)

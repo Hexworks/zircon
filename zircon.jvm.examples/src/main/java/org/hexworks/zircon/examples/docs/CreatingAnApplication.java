@@ -1,11 +1,6 @@
 package org.hexworks.zircon.examples.docs;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.color.ANSITileColor;
 import org.hexworks.zircon.api.grid.TileGrid;
 

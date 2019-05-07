@@ -167,7 +167,7 @@ abstract class DefaultComponent(
 
     final override fun detach() {
         LOGGER.debug("Attaching Component ($this) from parent (${fetchParent()}).")
-        fetchParent().map {
+        parent.map {
             it.removeComponent(this)
             this.parent = Maybe.empty()
         }

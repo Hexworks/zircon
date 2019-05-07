@@ -1,9 +1,5 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.zircon.api.behavior.TitleHolder
 
-interface Panel : Container {
-
-    val title: String
-    val titleProperty: Property<String>
-}
+interface Panel : Container, TitleHolder
