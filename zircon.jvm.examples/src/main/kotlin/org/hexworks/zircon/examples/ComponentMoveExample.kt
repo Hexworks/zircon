@@ -47,7 +47,7 @@ object ComponentMoveExample {
 
         Thread.sleep(2000)
 
-        panel.moveTo(Positions.create(2, 2))
+        innerPanel.moveTo(Positions.create(2, 2))
     }
 
 }

@@ -42,6 +42,22 @@ interface Rect : Boundable {
 
     operator fun minus(rect: Rect): Rect
 
+    fun withX(x: Int): Rect
+
+    fun withRelativeX(delta: Int): Rect
+
+    fun withY(y: Int): Rect
+
+    fun withRelativeY(delta: Int): Rect
+
+    fun withWidth(width: Int): Rect
+
+    fun withRelativeWidth(delta: Int): Rect
+
+    fun withHeight(height: Int): Rect
+
+    fun withRelativeHeight(delta: Int): Rect
+
     fun withPosition(position: Position): Rect
 
     fun withSize(size: Size): Rect

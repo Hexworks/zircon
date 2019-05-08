@@ -55,9 +55,11 @@ abstract class DefaultComponent(
     final override val id = IdentifierFactory.randomIdentifier()
 
     // component
+
     final override val contentPosition: Position
         get() = renderer.calculateContentPosition()
 
+    // TODO: position comes from layer now and it is absolute. wtf?
     final override val absolutePosition: Position
         get() = position + parent.map { it.absolutePosition }.orElse(Position.zero())
 

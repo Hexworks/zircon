@@ -130,21 +130,21 @@ abstract class BaseRect : Rect {
         if (otherHeight <= otherY) {
             if (h >= y || otherHeight > h) return false
         } else {
-            if (h in y..(otherHeight - 1)) return false
+            if (h in y until otherHeight) return false
         }
         return true
     }
 
 
     override fun splitHorizontal(splitAtX: Int): Pair<Rect, Rect> {
-        var left = Rect.create(Position.create(x, y), Sizes.create(splitAtX, height))
-        var right = Rect.create(Position.create(x + splitAtX, y), Sizes.create(width - splitAtX, height))
+        val left = Rect.create(Position.create(x, y), Sizes.create(splitAtX, height))
+        val right = Rect.create(Position.create(x + splitAtX, y), Sizes.create(width - splitAtX, height))
         return left to right
     }
 
     override fun splitVertical(splitAtY: Int): Pair<Rect, Rect> {
-        var left = Rect.create(Position.create(x, y), Sizes.create(width, splitAtY))
-        var right = Rect.create(Position.create(x, y + splitAtY), Sizes.create(width, height - splitAtY))
+        val left = Rect.create(Position.create(x, y), Sizes.create(width, splitAtY))
+        val right = Rect.create(Position.create(x, y + splitAtY), Sizes.create(width, height - splitAtY))
         return left to right
     }
 
@@ -152,6 +152,22 @@ abstract class BaseRect : Rect {
         return size.fetchPositions()
                 .map { it + position }
     }
+
+    override fun withX(x: Int) = Rect.create(position.withX(x), size)
+
+    override fun withRelativeX(delta: Int) = Rect.create(position.withX(x + delta), size)
+
+    override fun withY(y: Int) = Rect.create(position.withY(y), size)
+
+    override fun withRelativeY(delta: Int) = Rect.create(position.withY(y + delta), size)
+
+    override fun withWidth(width: Int) = Rect.create(position, size.withWidth(width))
+
+    override fun withRelativeWidth(delta: Int) = Rect.create(position, size.withWidth(width + delta))
+
+    override fun withHeight(height: Int) = Rect.create(position, size.withHeight(height))
+
+    override fun withRelativeHeight(delta: Int) = Rect.create(position, size.withHeight(height + delta))
 
     override fun withPosition(position: Position) = Rect.create(position, size)
 
