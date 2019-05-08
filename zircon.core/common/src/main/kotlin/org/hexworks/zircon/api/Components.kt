@@ -52,4 +52,9 @@ object Components {
     @JvmStatic
     fun icon() = IconBuilder.newBuilder()
 
+    @JvmStatic
+    fun hbox() = HBoxBuilder.newBuilder()
+
+    @JvmStatic
+    fun vbox() = VBoxBuilder.newBuilder()
 }

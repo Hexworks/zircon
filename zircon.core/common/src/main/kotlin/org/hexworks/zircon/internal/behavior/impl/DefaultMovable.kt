@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.behavior.impl
 
+import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.data.Position
