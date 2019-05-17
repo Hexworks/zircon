@@ -9,12 +9,12 @@ import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_LEFT
-import org.hexworks.zircon.api.component.HBox
+import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.extensions.onComponentEvent
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 import org.hexworks.zircon.api.uievent.Processed
 
-object HBoxExample {
+object VBoxExample {
 
     private val theme = ColorThemes.techLight()
     private val tileset = CP437TilesetResources.rexPaint20x20()
@@ -31,16 +31,16 @@ object HBoxExample {
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        val hbox = Components.hbox()
+        val vbox = Components.vbox()
                 .withSpacing(0)
-                .withSize(50, 15)
-                .withTitle("HBox")
+                .withSize(20, 25)
+                .withTitle("VBox")
                 .wrapWithBox()
                 .withAlignmentWithin(screen, CENTER)
                 .build()
 
-        0.until(3).forEach {
-            addButton(hbox)
+        0.until(5).forEach {
+            addButton(vbox)
         }
 
         val addNew = Components.button()
@@ -48,26 +48,25 @@ object HBoxExample {
                 .withAlignmentWithin(screen, TOP_LEFT)
                 .build().apply {
                     onComponentEvent(ACTIVATED) {
-                        addButton(hbox)
+                        addButton(vbox)
                         Processed
                     }
                 }
 
-        screen.addComponent(hbox)
+        screen.addComponent(vbox)
         screen.addComponent(addNew)
 
         screen.display()
         screen.applyColorTheme(theme)
     }
 
-    private fun addButton(hbox: HBox) {
-        hbox.addComponent(Components.button()
+    private fun addButton(vbox: VBox) {
+        vbox.addComponent(Components.button()
                 .withText("Remove: $count")
-                .withSize(12, 1)
                 .build().apply {
                     applyColorTheme(theme)
                     onComponentEvent(ACTIVATED) {
-                        hbox.removeComponent(this)
+                        vbox.removeComponent(this)
                         Processed
                     }
                 })

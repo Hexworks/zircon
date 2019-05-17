@@ -47,7 +47,7 @@ class Java2DBorderTransformer : TextureTransformer<BufferedImage> {
                     BORDER_TYPE_LOOKUP[type]?.invoke(graphics, width, 0, region.height, region.width, region.height)
                 }),
                 Pair(LEFT, { region: BufferedImage, graphics: Graphics2D, type: BorderType, width: Int  ->
-                    BORDER_TYPE_LOOKUP[type]?.invoke(graphics, width, 1, 0, 0, region.height)
+                    BORDER_TYPE_LOOKUP[type]?.invoke(graphics, width, 0, 0, 0, region.height)
                 }),
                 Pair(RIGHT, { region: BufferedImage, graphics: Graphics2D, type: BorderType, width: Int  ->
                     BORDER_TYPE_LOOKUP[type]?.invoke(graphics, width, region.width, 0, region.width, region.height)

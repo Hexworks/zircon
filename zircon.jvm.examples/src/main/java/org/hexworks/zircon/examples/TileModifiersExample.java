@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 import static org.hexworks.zircon.api.modifier.BorderPosition.RIGHT;
 import static org.hexworks.zircon.api.modifier.BorderPosition.TOP;
 
-public class FontModifiersExample {
+public class TileModifiersExample {
 
     private static final int TERMINAL_WIDTH = 16;
     private static final int TERMINAL_HEIGHT = 3;
