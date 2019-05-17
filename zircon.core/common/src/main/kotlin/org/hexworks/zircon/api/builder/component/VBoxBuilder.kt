@@ -14,9 +14,17 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 data class VBoxBuilder(
+        private var spacing: Int = 0,
         private val commonComponentProperties: CommonComponentProperties<VBox> = CommonComponentProperties(
                 componentRenderer = DefaultVBoxRenderer()))
     : BaseComponentBuilder<VBox, VBoxBuilder>(commonComponentProperties) {
+
+    fun withSpacing(spacing: Int) = also {
+        require(spacing >= 0) {
+            "Can't use a negative spacing"
+        }
+        this.spacing = spacing
+    }
 
     override fun build(): VBox {
         require(size != Size.unknown()) {
@@ -32,7 +40,8 @@ data class VBoxBuilder(
                 initialTitle = title,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<VBox>))
+                        componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<VBox>),
+                spacing = spacing)
     }
 
     override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())

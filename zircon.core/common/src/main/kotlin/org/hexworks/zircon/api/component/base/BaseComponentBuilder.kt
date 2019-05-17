@@ -3,7 +3,11 @@ package org.hexworks.zircon.api.component.base
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.component.*
+import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.ComponentAlignment
+import org.hexworks.zircon.api.component.ComponentBuilder
+import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer

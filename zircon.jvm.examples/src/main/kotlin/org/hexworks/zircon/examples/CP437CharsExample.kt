@@ -11,10 +11,10 @@ object CP437CharsExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
-        .withSize(Sizes.create(21, 21))
-        .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
-        .build())
+        val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+                .withSize(Sizes.create(21, 21))
+                .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
+                .build())
 
         val screen = Screens.createScreenFor(tileGrid)
 

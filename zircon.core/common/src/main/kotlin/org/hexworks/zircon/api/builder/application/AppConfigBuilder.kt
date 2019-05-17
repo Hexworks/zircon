@@ -3,16 +3,17 @@ package org.hexworks.zircon.api.builder.application
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.CursorStyle
+import org.hexworks.zircon.api.application.DebugConfig
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInGraphicalTilesetResource
 import org.hexworks.zircon.internal.resource.ColorThemeResource
-import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.config.RuntimeConfig
 
 /**
  * Builder for [AppConfig]s.
@@ -33,7 +34,8 @@ data class AppConfigBuilder(
         private var debugMode: Boolean = false,
         private var defaultSize: Size = Size.defaultGridSize(),
         private var betaEnabled: Boolean = false,
-        private var fpsLimit: Int = 60)
+        private var fpsLimit: Int = 60,
+        private var debugConfig: DebugConfig = DebugConfigBuilder.newBuilder().build())
     : Builder<AppConfig> {
 
     override fun build() = AppConfig(
@@ -50,11 +52,19 @@ data class AppConfigBuilder(
             fullScreen = fullScreen,
             betaEnabled = betaEnabled,
             title = title,
-            fpsLimit = fpsLimit).also {
+            fpsLimit = fpsLimit,
+            debugConfig = debugConfig).also {
         RuntimeConfig.config = it
     }
 
     override fun createCopy() = copy()
+
+    /**
+     * Sets the [debugConfig] to use.
+     */
+    fun withDebugConfig(debugConfig: DebugConfig) = also {
+        this.debugConfig = debugConfig
+    }
 
     /**
      * Sets the length of a blink. All blinking characters will use this setting.

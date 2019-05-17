@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.component.ComponentAlignment.BOTTOM_LEFT
 import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_LEFT
 import org.hexworks.zircon.api.component.HBox
@@ -33,7 +32,7 @@ object HBoxExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         val hbox = Components.hbox()
-                .withSpacing(2)
+                .withSpacing(0)
                 .withSize(50, 15)
                 .withTitle("HBox")
                 .wrapWithBox()
@@ -63,7 +62,8 @@ object HBoxExample {
 
     private fun addButton(hbox: HBox) {
         hbox.addComponent(Components.button()
-                .withText("Remove me: $count")
+                .withText("Remove: $count")
+                .withSize(12, 1)
                 .build().apply {
                     applyColorTheme(theme)
                     onComponentEvent(ACTIVATED) {

@@ -25,7 +25,8 @@ data class AppConfig(
         val fullScreen: Boolean,
         val betaEnabled: Boolean,
         val title: String,
-        val fpsLimit: Int) {
+        val fpsLimit: Int,
+        val debugConfig: DebugConfig) {
 
     companion object {
 
