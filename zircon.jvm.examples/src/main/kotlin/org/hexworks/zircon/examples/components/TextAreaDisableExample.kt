@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.LibgdxApplications
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
 
@@ -38,7 +38,7 @@ object TextAreaDisableExample {
                 .withPosition(Positions.create(14, 2))
                 .build()
 
-        toggleButton.onMouseEvent(MouseEventType.MOUSE_RELEASED) { _, _ ->
+        toggleButton.handleMouseEvents(MouseEventType.MOUSE_RELEASED) { _, _ ->
             if (textArea.isEnabled) {
                 textArea.isDisabled = true
                 textArea.text = "Disabled"

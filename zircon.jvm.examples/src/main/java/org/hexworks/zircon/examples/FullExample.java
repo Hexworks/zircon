@@ -34,7 +34,6 @@ import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.graphics.TileGraphics;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.internal.resource.ColorThemeResource;
 import org.hexworks.zircon.api.resource.REXPaintResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
@@ -390,7 +389,7 @@ public class FullExample {
             }
         }
 
-        addButton.onMouseEvent(MouseEventType.MOUSE_RELEASED, (event, phase) -> {
+        addButton.handleMouseEvents(MouseEventType.MOUSE_RELEASED, (event, phase) -> {
             if (!remainingPositions.isEmpty()) {
                 Position pos = remainingPositions.pop();
                 usedPositions.push(pos);
@@ -399,7 +398,7 @@ public class FullExample {
                         .withPosition(Positions.create(5, 0))
                         .withText("X")
                         .build();
-                closeButton.onMouseEvent(MouseEventType.MOUSE_RELEASED, (e, p) -> {
+                closeButton.handleMouseEvents(MouseEventType.MOUSE_RELEASED, (e, p) -> {
                     addAndRemoveScreen.removeComponent(panel);
                     usedPositions.remove(pos);
                     remainingPositions.push(pos);
@@ -413,7 +412,7 @@ public class FullExample {
             return UIEventResponses.processed();
         });
 
-        clearButton.onMouseEvent(MouseEventType.MOUSE_RELEASED, (event, phase) -> {
+        clearButton.handleMouseEvents(MouseEventType.MOUSE_RELEASED, (event, phase) -> {
             panels.forEach((addAndRemoveScreen::removeComponent));
             panels.clear();
             Iterator<Position> posIter = usedPositions.iterator();
@@ -587,7 +586,7 @@ public class FullExample {
                     .withText(Symbols.TRIANGLE_LEFT_POINTING_BLACK + " Prev")
                     .withPosition(Positions.create(46, 1))
                     .build();
-            prev.onMouseEvent(MouseEventType.MOUSE_RELEASED, (event, phase) -> {
+            prev.handleMouseEvents(MouseEventType.MOUSE_RELEASED, (event, phase) -> {
                 screens.get(currIdx - 1).display();
                 return UIEventResponses.processed();
             });
@@ -598,7 +597,7 @@ public class FullExample {
                     .withText("Next " + Symbols.TRIANGLE_RIGHT_POINTING_BLACK)
                     .withPosition(Positions.create(56, 1))
                     .build();
-            next.onMouseEvent(MouseEventType.MOUSE_RELEASED, (event, phase) -> {
+            next.handleMouseEvents(MouseEventType.MOUSE_RELEASED, (event, phase) -> {
                 screens.get(currIdx + 1).display();
                 return UIEventResponses.processed();
             });

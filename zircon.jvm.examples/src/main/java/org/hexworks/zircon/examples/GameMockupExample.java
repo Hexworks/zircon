@@ -146,17 +146,17 @@ public class GameMockupExample {
 
         // INTERACTIONS
 
-        quitButton.onComponentEvent(ACTIVATED, (event) -> {
+        quitButton.handleComponentEvents(ACTIVATED, (event) -> {
             System.exit(0);
             return UIEventResponses.processed();
         });
 
-        optionsButton.onComponentEvent(ACTIVATED, (event) -> {
+        optionsButton.handleComponentEvents(ACTIVATED, (event) -> {
             optionsScreen.display();
             return UIEventResponses.processed();
         });
 
-        backButton.onComponentEvent(ACTIVATED, (event) -> {
+        backButton.handleComponentEvents(ACTIVATED, (event) -> {
             mainMenuScreen.display();
             return UIEventResponses.processed();
         });

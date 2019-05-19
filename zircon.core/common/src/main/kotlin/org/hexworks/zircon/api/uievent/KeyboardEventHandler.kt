@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.uievent
 /**
  * Handler for [KeyboardEvent]s.
  */
-interface KeyboardEventHandler : UIEventHandler<KeyboardEvent> {
+interface KeyboardEventHandler {
 
-    override fun handle(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse
+    fun handle(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse
 }

@@ -8,16 +8,14 @@ import org.hexworks.zircon.api.builder.component.ModalBuilder
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ComponentAlignment.BOTTOM_RIGHT
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.extensions.onComponentEvent
-import org.hexworks.zircon.api.extensions.onKeyboardEvent
+import org.hexworks.zircon.api.extensions.handleComponentEvents
+import org.hexworks.zircon.api.extensions.handleKeyboardEvents
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.api.uievent.UIEventPhase.BUBBLE
-import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
 
 object ModalTest {
@@ -57,7 +55,7 @@ object ModalTest {
                 .withComponent(modalPanel)
                 .withParentSize(screen.size)
                 .build().apply {
-                    onKeyboardEvent(KEY_PRESSED) { event, _ ->
+                    handleKeyboardEvents(KEY_PRESSED) { event, _ ->
                         if (event.code == KeyCode.KEY_C) {
                             logger.info("Closed by pressing C")
                             close(EmptyModalResult)
@@ -70,7 +68,7 @@ object ModalTest {
                 .withText("Close")
                 .withAlignmentWithin(modalPanel, BOTTOM_RIGHT)
                 .build().apply {
-                    onComponentEvent(ACTIVATED) {
+                    handleComponentEvents(ACTIVATED) {
                         logger.info("Closed by activating the button")
                         modal.close(EmptyModalResult)
                         Processed
@@ -93,7 +91,7 @@ object ModalTest {
                 .withText("Open another")
                 .withPosition(position)
                 .build().apply {
-                    onComponentEvent(ACTIVATED) {
+                    handleComponentEvents(ACTIVATED) {
                         logger.info("Opening another modal")
                         openModal(screen, level)
                         Processed

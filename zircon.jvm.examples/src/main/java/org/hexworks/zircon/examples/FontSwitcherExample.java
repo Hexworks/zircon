@@ -48,7 +48,7 @@ public class FontSwitcherExample {
         refreshText(tileGrid, Positions.zero());
         refreshLayer(tileGrid, random);
 
-        tileGrid.onKeyboardEvent(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
+        tileGrid.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
             if (event.getCode().equals(KeyCode.RIGHT)) {
                 tileGrid.useTileset(TILESETS.get(random.nextInt(TILESETS.size())));
                 // this is needed because grid can't be forced to redraw

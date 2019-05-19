@@ -1,7 +1,7 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
 
@@ -19,7 +19,7 @@ object MouseMovedExample {
 
         screen.addComponent(panel)
 
-        panel.onMouseEvent(MouseEventType.MOUSE_MOVED) { event, _ ->
+        panel.handleMouseEvents(MouseEventType.MOUSE_MOVED) { event, _ ->
             println(event)
             Processed
         }

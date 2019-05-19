@@ -32,12 +32,12 @@ public class SwitchingScreens {
                 .build();
         screen1.addComponent(prev);
 
-        next.onComponentEvent(ComponentEventType.ACTIVATED, (event) -> {
+        next.handleComponentEvents(ComponentEventType.ACTIVATED, (event) -> {
             LOGGER.info("Switching to Screen 1");
             screen1.display();
             return UIEventResponses.preventDefault();
         });
-        prev.onComponentEvent(ComponentEventType.ACTIVATED, (event) -> {
+        prev.handleComponentEvents(ComponentEventType.ACTIVATED, (event) -> {
             LOGGER.info("Switching to Screen 0");
             screen0.display();
             return UIEventResponses.processed();

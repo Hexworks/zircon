@@ -35,7 +35,7 @@ public class TypingExample {
     private static void startTypingSupport(TileGrid tileGrid) {
         tileGrid.setBackgroundColor(ANSITileColor.BLACK);
         tileGrid.setForegroundColor(ANSITileColor.RED);
-        tileGrid.onKeyboardEvent(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
+        tileGrid.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
             final Position pos = tileGrid.cursorPosition();
             if (event.getCode().equals(KeyCode.ESCAPE)) {
                 System.exit(0);

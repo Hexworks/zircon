@@ -11,8 +11,8 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.onComponentEvent
-import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.extensions.handleComponentEvents
+import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
@@ -74,7 +74,7 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val componentHovered = AtomicBoolean(false)
-        button.onMouseEvent(MOUSE_ENTERED) { _, _ ->
+        button.handleMouseEvents(MOUSE_ENTERED) { _, _ ->
             componentHovered.set(true)
             Pass
         }
@@ -94,7 +94,7 @@ class DefaultComponentContainerTest {
         target.dispatch(MouseEvent(MOUSE_MOVED, 1, BUTTON_POSITION))
 
         val componentHovered = AtomicBoolean(false)
-        button.onMouseEvent(MOUSE_ENTERED) { _, _ ->
+        button.handleMouseEvents(MOUSE_ENTERED) { _, _ ->
             componentHovered.set(true)
             Pass
         }
@@ -112,7 +112,7 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val pressed = AtomicBoolean(false)
-        button.onMouseEvent(MOUSE_PRESSED) { _, _ ->
+        button.handleMouseEvents(MOUSE_PRESSED) { _, _ ->
             pressed.set(true)
             Pass
         }
@@ -130,7 +130,7 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val released = AtomicBoolean(false)
-        button.onMouseEvent(MOUSE_RELEASED) { _, _ ->
+        button.handleMouseEvents(MOUSE_RELEASED) { _, _ ->
             released.set(true)
             Pass
         }
@@ -148,15 +148,15 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val events = mutableListOf<Boolean>()
-        button.onMouseEvent(MOUSE_ENTERED) { _, _ ->
+        button.handleMouseEvents(MOUSE_ENTERED) { _, _ ->
             events.add(true)
             Pass
         }
-        button.onMouseEvent(MOUSE_PRESSED) { _, _ ->
+        button.handleMouseEvents(MOUSE_PRESSED) { _, _ ->
             events.add(true)
             Pass
         }
-        button.onMouseEvent(MOUSE_RELEASED) { _, _ ->
+        button.handleMouseEvents(MOUSE_RELEASED) { _, _ ->
             events.add(true)
             Pass
         }
@@ -213,7 +213,7 @@ class DefaultComponentContainerTest {
         target.addComponent(button)
 
         val activated = AtomicBoolean(false)
-        button.onComponentEvent(ComponentEventType.ACTIVATED) {
+        button.handleComponentEvents(ComponentEventType.ACTIVATED) {
             activated.set(true)
             Pass
         }

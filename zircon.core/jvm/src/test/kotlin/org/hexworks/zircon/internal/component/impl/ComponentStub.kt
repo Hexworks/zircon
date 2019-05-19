@@ -78,15 +78,27 @@ class ComponentStub(
         TODO("not implemented")
     }
 
-    override fun onMouseEvent(eventType: MouseEventType, handler: MouseEventHandler): Subscription {
+    override fun processMouseEvents(eventType: MouseEventType, handler: MouseEventProcessor): Subscription {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onKeyboardEvent(eventType: KeyboardEventType, handler: KeyboardEventHandler): Subscription {
+    override fun processKeyboardEvents(eventType: KeyboardEventType, handler: KeyboardEventProcessor): Subscription {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onComponentEvent(eventType: ComponentEventType, handler: ComponentEventHandler): Subscription {
+    override fun processComponentEvents(eventType: ComponentEventType, handler: ComponentEventProcessor): Subscription {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun handleMouseEvents(eventType: MouseEventType, handler: MouseEventHandler): Subscription {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun handleKeyboardEvents(eventType: KeyboardEventType, handler: KeyboardEventHandler): Subscription {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun handleComponentEvents(eventType: ComponentEventType, handler: ComponentEventHandler): Subscription {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

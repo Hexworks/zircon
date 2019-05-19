@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.extensions.onKeyboardEvent
+import org.hexworks.zircon.api.extensions.handleKeyboardEvents
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
@@ -182,7 +182,7 @@ object TopDownObliqueWorldExample {
         screen.addComponent(panel)
         screen.display()
         screen.applyColorTheme(ColorThemes.forest())
-        screen.onKeyboardEvent(KeyboardEventType.KEY_PRESSED) { event, _ ->
+        screen.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED) { event, _ ->
             if (event.code == LEFT) {
                 ga.scrollOneLeft()
             }

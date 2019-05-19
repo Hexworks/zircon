@@ -8,8 +8,8 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.onKeyboardEvent
-import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.extensions.handleKeyboardEvents
+import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
 import org.hexworks.zircon.api.uievent.KeyboardEventType
@@ -123,7 +123,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
     @Test
     open fun shouldProperlyHandleOnKeyStroke() {
         var maybeEvent = Maybe.empty<KeyboardEvent>()
-        target.onKeyboardEvent(KeyboardEventType.KEY_PRESSED) { event, _ ->
+        target.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED) { event, _ ->
             maybeEvent = Maybe.of(event)
             Processed
         }
@@ -141,7 +141,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
     @Test
     open fun shouldProperlyHandleOnMouseEvent() {
         var maybeEvent = Maybe.empty<MouseEvent>()
-        target.onMouseEvent(MOUSE_PRESSED) { event, _ ->
+        target.handleMouseEvents(MOUSE_PRESSED) { event, _ ->
             maybeEvent = Maybe.of(event)
             Processed
         }
