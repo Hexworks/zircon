@@ -4,7 +4,6 @@ import org.hexworks.zircon.api.AppConfigs;
 import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.ColorThemes;
 import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.LibgdxApplications;
 import org.hexworks.zircon.api.Positions;
 import org.hexworks.zircon.api.Screens;
 import org.hexworks.zircon.api.Sizes;
@@ -77,12 +76,12 @@ public class UsingComponents {
         screen.applyColorTheme(ColorThemes.monokaiBlue());
 
         // this is how you can define interactions with a component
-        left.onComponentEvent(ACTIVATED, (event) -> {
+        left.handleComponentEvents(ACTIVATED, (event) -> {
             screen.applyColorTheme(ColorThemes.monokaiGreen());
             return UIEventResponses.processed();
         });
 
-        right.onComponentEvent(ACTIVATED, (event) -> {
+        right.handleComponentEvents(ACTIVATED, (event) -> {
             screen.applyColorTheme(ColorThemes.monokaiViolet());
             return UIEventResponses.processed();
         });

@@ -179,7 +179,7 @@ public class GameAreaScrollingWithLayers {
                         .toTileGraphic(TILESET))
                 .withOffset(Positions.create(21, 1))
                 .build());
-        screen.onKeyboardEvent(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
+        screen.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
             if (event.getCode().equals(KeyCode.ESCAPE) && !headless) {
                 System.exit(0);
             } else {

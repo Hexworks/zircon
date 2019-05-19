@@ -18,7 +18,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType.*
 import org.hexworks.zircon.api.uievent.Processed
@@ -146,7 +146,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     fun shouldNotifyObserversWhenInputIsEmitted() {
         var notified = false
 
-        target.onMouseEvent(MOUSE_CLICKED) { _, _ ->
+        target.handleMouseEvents(MOUSE_CLICKED) { _, _ ->
             notified = true
             Processed
         }
@@ -221,7 +221,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     @Test
     fun shouldProperlyListenToMousePress() {
         val pressed = AtomicBoolean(false)
-        target.onMouseEvent(MOUSE_PRESSED) { _, _ ->
+        target.handleMouseEvents(MOUSE_PRESSED) { _, _ ->
             pressed.set(true)
             Processed
         }

@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.uievent
 /**
  * Handler for [MouseEvent]s.
  */
-interface MouseEventHandler : UIEventHandler<MouseEvent> {
+interface MouseEventHandler {
 
-    override fun handle(event: MouseEvent, phase: UIEventPhase): UIEventResponse
+    fun handle(event: MouseEvent, phase: UIEventPhase): UIEventResponse
 }

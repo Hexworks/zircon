@@ -6,12 +6,13 @@ import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.extensions.onKeyboardEvent
+import org.hexworks.zircon.api.extensions.handleKeyboardEvents
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
+import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.Processed
 
-object PlayerMoveExample {
+object PlayerMoveExampleKotlin {
 
     private val PLAYER_TILE = Tiles.newBuilder()
             .withBackgroundColor(ANSITileColor.BLACK)
@@ -30,12 +31,13 @@ object PlayerMoveExample {
                 .build()
                 .fill(PLAYER_TILE)
 
-        tileGrid.onKeyboardEvent(KEY_PRESSED) { event, _ ->
+        tileGrid.handleKeyboardEvents(KEY_PRESSED) { event, _ ->
             when (event.code) {
                 KeyCode.UP -> player.moveUpBy(1)
                 KeyCode.DOWN -> player.moveDownBy(1)
                 KeyCode.LEFT -> player.moveLeftBy(1)
                 KeyCode.RIGHT -> player.moveRightBy(1)
+                else -> Pass
             }
             Processed
         }

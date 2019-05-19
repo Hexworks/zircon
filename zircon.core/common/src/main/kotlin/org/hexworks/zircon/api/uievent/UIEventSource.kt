@@ -9,12 +9,24 @@ import org.hexworks.cobalt.events.api.Subscription
 interface UIEventSource {
 
     /**
-     * Adds a handler for [MouseEvent]s.
+     * Adds a [MouseEventHandler] for mouse events. Use this if you selectively
+     * consume events.
      */
-    fun onMouseEvent(eventType: MouseEventType, handler: MouseEventHandler): Subscription
+    fun handleMouseEvents(eventType: MouseEventType, handler: MouseEventHandler): Subscription
 
     /**
-     * Adds a handler for [KeyboardEvent]s.
+     * Adds a [MouseEventProcessor] for mouse events. Use this if you handle all events.
      */
-    fun onKeyboardEvent(eventType: KeyboardEventType, handler: KeyboardEventHandler): Subscription
+    fun processMouseEvents(eventType: MouseEventType, handler: MouseEventProcessor): Subscription
+
+    /**
+     * Adds a [KeyboardEventHandler] for mouse events. Use this if you selectively
+     * consume events.
+     */
+    fun handleKeyboardEvents(eventType: KeyboardEventType, handler: KeyboardEventHandler): Subscription
+
+    /**
+     * Adds a [KeyboardEventProcessor] for mouse events. Use this if you handle all events.
+     */
+    fun processKeyboardEvents(eventType: KeyboardEventType, handler: KeyboardEventProcessor): Subscription
 }

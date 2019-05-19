@@ -17,6 +17,6 @@
     <logger name="org.hexworks.cobalt" level="warn"/>
 
     <!-- Or individual classes -->
-    <logger name="org.hexworks.zircon.internal.uievent.UIEventDispatcher" level="debug"/>
+    <logger name="org.hexworks.zircon.internal.uievent.UIEventDispatcher" level="ERROR"/>
 
 </configuration>

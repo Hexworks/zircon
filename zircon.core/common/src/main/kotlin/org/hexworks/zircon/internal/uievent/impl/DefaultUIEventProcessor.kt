@@ -4,7 +4,28 @@ import org.hexworks.cobalt.events.api.CancelState
 import org.hexworks.cobalt.events.api.NotCancelled
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.ComponentEvent
+import org.hexworks.zircon.api.uievent.ComponentEventHandler
+import org.hexworks.zircon.api.uievent.ComponentEventProcessor
+import org.hexworks.zircon.api.uievent.ComponentEventSource
+import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyboardEventHandler
+import org.hexworks.zircon.api.uievent.KeyboardEventProcessor
+import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventHandler
+import org.hexworks.zircon.api.uievent.MouseEventProcessor
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.PreventDefault
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.StopPropagation
+import org.hexworks.zircon.api.uievent.UIEvent
+import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.api.uievent.UIEventSource
+import org.hexworks.zircon.api.uievent.UIEventType
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.util.ThreadSafeQueue
 import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
@@ -48,28 +69,52 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
         } ?: Pass
     }
 
-    // TODO: we can add an `onEvent` later?
-
-    override fun onMouseEvent(eventType: MouseEventType, handler: MouseEventHandler): Subscription {
+    override fun handleMouseEvents(eventType: MouseEventType, handler: MouseEventHandler): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
             handler.handle(event as MouseEvent, phase)
         }
     }
 
-    override fun onKeyboardEvent(eventType: KeyboardEventType, handler: KeyboardEventHandler): Subscription {
+    override fun processMouseEvents(eventType: MouseEventType, handler: MouseEventProcessor): Subscription {
+        checkClosed()
+        return buildSubscription(eventType) { event, phase ->
+            handler.process(event as MouseEvent, phase)
+            Processed
+        }
+    }
+
+    override fun handleKeyboardEvents(eventType: KeyboardEventType, handler: KeyboardEventHandler): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
             handler.handle(event as KeyboardEvent, phase)
         }
     }
 
-    override fun onComponentEvent(eventType: ComponentEventType, handler: ComponentEventHandler): Subscription {
+    override fun processKeyboardEvents(eventType: KeyboardEventType, handler: KeyboardEventProcessor): Subscription {
+        checkClosed()
+        return buildSubscription(eventType) { event, phase ->
+            handler.process(event as KeyboardEvent, phase)
+            Processed
+        }
+    }
+
+    override fun handleComponentEvents(eventType: ComponentEventType, handler: ComponentEventHandler): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
             if (phase == UIEventPhase.TARGET) {
                 handler.handle(event as ComponentEvent)
             } else Pass
+        }
+    }
+
+    override fun processComponentEvents(eventType: ComponentEventType, handler: ComponentEventProcessor): Subscription {
+        checkClosed()
+        return buildSubscription(eventType) { event, phase ->
+            if (phase == UIEventPhase.TARGET) {
+                handler.process(event as ComponentEvent)
+            }
+            Processed
         }
     }
 

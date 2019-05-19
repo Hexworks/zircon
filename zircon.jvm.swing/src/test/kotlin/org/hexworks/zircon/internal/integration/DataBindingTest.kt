@@ -10,8 +10,8 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.extensions.onComponentEvent
-import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.extensions.handleComponentEvents
+import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
@@ -87,7 +87,7 @@ object DataBindingTest {
                 .withText("Tamper")
                 .withPosition(25, 2)
                 .build().apply {
-                    onMouseEvent(MouseEventType.MOUSE_RELEASED) { _, _ ->
+                    handleMouseEvents(MouseEventType.MOUSE_RELEASED) { _, _ ->
                         master.textProperty.value = master.text + "x"
                         Processed
                     }
@@ -97,7 +97,7 @@ object DataBindingTest {
                 .withText("Bind")
                 .withPosition(25, 3)
                 .build().apply {
-                    onMouseEvent(MouseEventType.MOUSE_RELEASED) { _, _ ->
+                    handleMouseEvents(MouseEventType.MOUSE_RELEASED) { _, _ ->
                         bindings.add(panel.titleProperty.bind(master.textProperty))
                         bindings.add(label.textProperty.bind(master.textProperty))
                         bindings.add(header.textProperty.bind(master.textProperty))
@@ -113,7 +113,7 @@ object DataBindingTest {
                 .withText("Unbind")
                 .withPosition(25, 4)
                 .build().apply {
-                    onComponentEvent(ACTIVATED) {
+                    handleComponentEvents(ACTIVATED) {
                         bindings.forEach {
                             it.dispose()
                         }

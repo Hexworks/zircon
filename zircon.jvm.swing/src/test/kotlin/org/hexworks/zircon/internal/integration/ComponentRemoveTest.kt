@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.integration
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_RELEASED
 import org.hexworks.zircon.api.uievent.Processed
 
@@ -29,7 +29,7 @@ object ComponentRemoveTest {
 
         repeat(10) {
             panel.addComponent(Components.button().withPosition(5, it + 5).withText("Remove $it").build().apply {
-                onMouseEvent(MOUSE_RELEASED) { _, _ ->
+                handleMouseEvents(MOUSE_RELEASED) { _, _ ->
                     panel.removeComponent(this)
                     Processed
                 }

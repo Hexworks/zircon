@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Size3D
-import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.extensions.onSelection
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.graphics.Layer
@@ -232,7 +232,7 @@ object DrawingExample {
                                 .withVisibleSize(Sizes.from2DTo3D(contentSize))
                                 .withGameArea(controller.gameArea)
                                 .build().apply {
-                                    onMouseEvent(MouseEventType.MOUSE_RELEASED) { event, _ ->
+                                    handleMouseEvents(MouseEventType.MOUSE_RELEASED) { event, _ ->
                                         controller.useChosenTool(event)
                                         Processed
                                     }

@@ -4,7 +4,7 @@ package org.hexworks.zircon.internal.integration
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
 
@@ -27,7 +27,7 @@ object DeletedComponentFocusTest {
         val button = Components.button()
                 .withText("Delete me")
                 .build().apply {
-                    onMouseEvent(MouseEventType.MOUSE_RELEASED) { _, _ ->
+                    handleMouseEvents(MouseEventType.MOUSE_RELEASED) { _, _ ->
                         screen.removeComponent(this)
                         Processed
                     }

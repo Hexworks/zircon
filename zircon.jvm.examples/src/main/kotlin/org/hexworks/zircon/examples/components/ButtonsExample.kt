@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.component.Visibility
 import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
-import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
@@ -90,7 +90,7 @@ object ButtonsExample {
         screen.display()
         screen.applyColorTheme(theme)
 
-        invisibleBtn.onMouseEvent(MouseEventType.MOUSE_CLICKED
+        invisibleBtn.handleMouseEvents(MouseEventType.MOUSE_CLICKED
         ) { _, _ ->
             invisibleBtn.isVisible = Visibility.Hidden
             Processed

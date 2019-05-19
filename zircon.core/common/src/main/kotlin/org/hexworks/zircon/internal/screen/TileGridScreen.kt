@@ -10,8 +10,8 @@ import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.abbreviate
-import org.hexworks.zircon.api.extensions.onKeyboardEvent
-import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.extensions.handleKeyboardEvents
+import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.Zircon
@@ -49,14 +49,14 @@ class TileGridScreen(
 
     init {
         MouseEventType.values().forEach { eventType ->
-            tileGrid.onMouseEvent(eventType) { event, phase ->
+            tileGrid.handleMouseEvents(eventType) { event, phase ->
                 if (isActive()) {
                     process(event, phase)
                 } else Pass
             }.also { subscriptions.add(it) }
         }
         KeyboardEventType.values().forEach { eventType ->
-            tileGrid.onKeyboardEvent(eventType) { event, phase ->
+            tileGrid.handleKeyboardEvents(eventType) { event, phase ->
                 if (isActive()) {
                     process(event, phase)
                 } else Pass
@@ -97,16 +97,16 @@ class TileGridScreen(
         } else Pass
     }
 
-    override fun onMouseEvent(eventType: MouseEventType, handler: MouseEventHandler): Subscription {
-        return eventProcessor.onMouseEvent(eventType) { event, phase ->
+    override fun handleMouseEvents(eventType: MouseEventType, handler: MouseEventHandler): Subscription {
+        return eventProcessor.handleMouseEvents(eventType) { event, phase ->
             if (componentContainer.isMainContainerActive()) {
                 handler.handle(event, phase)
             } else Pass
         }
     }
 
-    override fun onKeyboardEvent(eventType: KeyboardEventType, handler: KeyboardEventHandler): Subscription {
-        return eventProcessor.onKeyboardEvent(eventType) { event, phase ->
+    override fun handleKeyboardEvents(eventType: KeyboardEventType, handler: KeyboardEventHandler): Subscription {
+        return eventProcessor.handleKeyboardEvents(eventType) { event, phase ->
             if (componentContainer.isMainContainerActive()) {
                 handler.handle(event, phase)
             } else Pass

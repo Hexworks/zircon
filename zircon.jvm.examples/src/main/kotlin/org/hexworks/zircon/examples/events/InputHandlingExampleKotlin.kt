@@ -4,8 +4,8 @@ import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.extensions.onKeyboardEvent
-import org.hexworks.zircon.api.extensions.onMouseEvent
+import org.hexworks.zircon.api.extensions.handleKeyboardEvents
+import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Pass
@@ -25,13 +25,13 @@ object InputHandlingExampleKotlin {
                 .build())
 
         // called for all keyboard events
-        tileGrid.onKeyboardEvent(KeyboardEventType.KEY_PRESSED) { event, _ ->
+        tileGrid.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED) { event, _ ->
             println("Keyboard event is: $event")
             Pass
         }
 
 
-        tileGrid.onMouseEvent(MouseEventType.MOUSE_PRESSED) { event, _ ->
+        tileGrid.handleMouseEvents(MouseEventType.MOUSE_PRESSED) { event, _ ->
             println(event)
             Processed
         }
