@@ -31,13 +31,17 @@ class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
 
         private val LOADERS: Map<String, (TilesetResource) -> Tileset<SpriteBatch>> = mapOf(
                 "$CHARACTER_TILE-$CP437_TILESET" to { resource: TilesetResource ->
-                    LibgdxTileset(
+                    LibgdxCP437Tileset(
                             path = resource.path,
                             width = resource.width,
                             height = resource.height)
                 },
                 "$GRAPHIC_TILE-$GRAPHIC_TILESET" to { resource: TilesetResource ->
                     LibgdxGraphicTileset(
+                            resource = resource)
+                },
+                "$CHARACTER_TILE-$TRUE_TYPE_FONT" to { resource: TilesetResource ->
+                    LibgdxMonospaceFontTileset(
                             resource = resource)
                 }
                 //TODO Support for other types of tilesets
