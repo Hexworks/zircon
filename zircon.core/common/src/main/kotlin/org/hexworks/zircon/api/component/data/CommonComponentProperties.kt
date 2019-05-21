@@ -15,7 +15,7 @@ data class CommonComponentProperties<T : Component>(
         var componentStyleSet: ComponentStyleSet = ComponentStyleSet.defaultStyleSet(),
         var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
         var position: Position = Position.zero(),
-        var size: Size = Size.unknown(),
+        var size: Size = Size.one(),
         var boxType: BoxType = BoxType.SINGLE,
         var wrapWithBox: Boolean = false,
         var wrapWithShadow: Boolean = false,
