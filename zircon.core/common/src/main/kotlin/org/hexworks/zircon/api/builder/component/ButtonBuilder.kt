@@ -35,7 +35,7 @@ data class ButtonBuilder(
 
     override fun build(): Button {
         fillMissingValues()
-        var renderers = decorationRenderers
+        val renderers = decorationRenderers.toMutableList()
         if (wrapSides) {
             renderers += ButtonSideDecorationRenderer()
         }

@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.component.base
 
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.component.Component
@@ -24,35 +25,37 @@ import org.hexworks.zircon.api.resource.TilesetResource
 abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         private val props: CommonComponentProperties<T>) : ComponentBuilder<T, U> {
 
-    override val position: Position
+    val position: Position
         get() = positionFn(Rect.create(size = size))
 
-    override val size: Size
+    val size: Size
         get() = props.size
 
-    override val componentStyleSet: ComponentStyleSet
+    val componentStyleSet: ComponentStyleSet
         get() = props.componentStyleSet
 
-    override val title
+    val title
         get() = props.title
 
-    override val tileset
+    val tileset
         get() = props.tileset
 
-    override val boxType
+    val boxType
         get() = props.boxType
 
-    override val wrappedWithBox
+    val isWrappedWithBox
         get() = props.wrapWithBox
 
-    override val wrappedWithShadow
+    val isWrappedWithShadow
         get() = props.wrapWithShadow
 
-    override val decorationRenderers: List<ComponentDecorationRenderer>
+    val decorationRenderers: List<ComponentDecorationRenderer>
         get() = props.decorationRenderers
 
-    override val componentRenderer: ComponentRenderer<T>
+    val componentRenderer: ComponentRenderer<T>
         get() = props.componentRenderer as ComponentRenderer<T>
+
+    private val logger = LoggerFactory.getLogger(this::class)
 
     private var positionFn: (currentRect: Rect) -> Position = {
         props.position
@@ -60,6 +63,9 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
 
     override fun withTitle(title: String): U {
         props.title = title
+        if (isWrappedWithBox.not()) {
+            logger.warn("Trying to set the title without wrapping the component in a box. The title won't be displayed.")
+        }
         return this as U
     }
 
