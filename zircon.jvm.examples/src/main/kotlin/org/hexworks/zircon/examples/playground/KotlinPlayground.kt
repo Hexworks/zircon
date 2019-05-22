@@ -2,10 +2,20 @@
 
 package org.hexworks.zircon.examples.playground
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.application.DebugConfigBuilder
+import org.hexworks.zircon.api.component.Button
+import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.ComponentAlignment
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
+import org.hexworks.zircon.api.grid.TileGrid
 
 object KotlinPlayground {
 
@@ -28,29 +38,6 @@ object KotlinPlayground {
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        val cp437panel = Components.panel()
-                .withSize(Sizes.create(19, 19))
-                .withPosition(Positions.create(1, 1))
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
-                .withBoxType(BoxType.SINGLE)
-                .build()
-
-        val loader = CP437TileMetadataLoader(16, 16)
-
-        screen.addComponent(cp437panel)
-        screen.applyColorTheme(theme)
-
-        loader.fetchMetadata().forEach { char, meta ->
-            cp437panel.draw(drawable = Tiles.defaultTile()
-                    .withCharacter(char)
-                    .withBackgroundColor(theme.primaryBackgroundColor)
-                    .withForegroundColor(theme.primaryForegroundColor),
-                    position = Positions.create(meta.x, meta.y)
-                            .plus(Positions.offset1x1()))
-        }
-
-        screen.display()
 
     }
 }

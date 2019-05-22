@@ -12,33 +12,6 @@ import org.hexworks.zircon.api.tileset.Tileset
 
 interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<T> {
 
-    val position: Position
-    val size: Size
-    val componentStyleSet: ComponentStyleSet
-    val title: String
-    val tileset: TilesetResource
-    val boxType: BoxType
-    /**
-     * Whether the resulting [Component] will be
-     * wrapped in a box.
-     */
-    val wrappedWithBox: Boolean
-    /**
-     * Whether the resulting [Component] will be
-     * wrapped with a shadow.
-     */
-    val wrappedWithShadow: Boolean
-
-    /**
-     * The renderers for the component decorations (if any).
-     */
-    val decorationRenderers: List<ComponentDecorationRenderer>
-
-    /**
-     * The renderer of the [Component].
-     */
-    val componentRenderer: ComponentRenderer<T>
-
     /**
      * Sets the [Position] of the resulting [Component] within
      * the given [TileGrid] using the given [ComponentAlignment].

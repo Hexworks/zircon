@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.color.ANSITileColor.GREEN
 import org.hexworks.zircon.api.color.ANSITileColor.RED
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentBuilder
+import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.renderer.impl.BorderDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -15,9 +16,9 @@ import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.modifier.SimpleModifiers.VerticalFlip
 import org.junit.Test
 
-abstract class ComponentBuilderTest<T : Component, U : ComponentBuilder<T, U>> {
+abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T, U>> {
 
-    abstract val target: ComponentBuilder<T, U>
+    abstract val target: BaseComponentBuilder<T, U>
 
     abstract fun setUp()
 
@@ -67,14 +68,14 @@ abstract class ComponentBuilderTest<T : Component, U : ComponentBuilder<T, U>> {
     open fun shouldProperlyApplyWrappedWithBox() {
         target.wrapWithBox(WRAPPED_WITH_BOX)
 
-        assertThat(target.wrappedWithBox).isTrue()
+        assertThat(target.isWrappedWithBox).isTrue()
     }
 
     @Test
     open fun shouldProperlyApplyWrappedWithShadow() {
         target.wrapWithShadow(WRAPPED_WITH_SHADOW)
 
-        assertThat(target.wrappedWithShadow).isTrue()
+        assertThat(target.isWrappedWithShadow).isTrue()
     }
 
     @Test
