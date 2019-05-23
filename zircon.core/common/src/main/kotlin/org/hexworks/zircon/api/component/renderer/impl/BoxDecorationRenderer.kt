@@ -11,12 +11,15 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 
-class BoxDecorationRenderer(private val boxType: BoxType = BoxType.SINGLE,
-                            private val titleProperty: Property<String> = createPropertyFrom("")) : ComponentDecorationRenderer {
+data class BoxDecorationRenderer(
+        val boxType: BoxType = BoxType.SINGLE,
+        private val titleProperty: Property<String> = createPropertyFrom("")) : ComponentDecorationRenderer {
 
     override val offset = Position.offset1x1()
 
     override val occupiedSize = Size.create(2, 2)
+
+    val title: String by titleProperty.asDelegate()
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
         val size = tileGraphics.size

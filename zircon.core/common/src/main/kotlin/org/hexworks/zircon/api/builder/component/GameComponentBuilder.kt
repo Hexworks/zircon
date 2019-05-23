@@ -23,10 +23,10 @@ data class GameComponentBuilder<T : Tile, B : Block<T>>(
         private var gameArea: Maybe<GameArea<T, B>> = Maybe.empty(),
         private var projectionMode: ProjectionMode = DEFAULT_PROJECTION_MODE,
         private var visibleSize: Size3D = Size3D.one(),
-        private val commonComponentProperties: CommonComponentProperties<GameComponent<T, B>> = CommonComponentProperties())
-    : BaseComponentBuilder<GameComponent<T, B>, GameComponentBuilder<T, B>>(commonComponentProperties) {
+        override val props: CommonComponentProperties<GameComponent<T, B>> = CommonComponentProperties())
+    : BaseComponentBuilder<GameComponent<T, B>, GameComponentBuilder<T, B>>() {
 
-    override fun createCopy() = copy()
+    override fun createCopy() = copy(props = props.copy())
 
     fun withGameArea(gameArea: GameArea<T, B>) = also {
         this.gameArea = Maybe.of(gameArea)
@@ -40,6 +40,7 @@ data class GameComponentBuilder<T : Tile, B : Block<T>>(
         this.visibleSize = visibleSize
     }
 
+    // TODO: fishy
     override fun withComponentRenderer(componentRenderer: ComponentRenderer<GameComponent<T, B>>): GameComponentBuilder<T, B> {
         throw UnsupportedOperationException("Can't set a custom component renderer for a game component.")
     }
@@ -48,13 +49,13 @@ data class GameComponentBuilder<T : Tile, B : Block<T>>(
         require(gameArea.isPresent) {
             "A GameComponent will only work with a GameArea as backend. Please set one!"
         }
-        val finalSize = visibleSize.to2DSize()
+        withSize(visibleSize.to2DSize())
         return DefaultGameComponent(
                 gameArea = gameArea.get(),
                 projectionMode = projectionMode,
                 componentMetadata = ComponentMetadata(
-                        position = fixPosition(finalSize),
-                        size = finalSize,
+                        position = position,
+                        size = size,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset))
     }

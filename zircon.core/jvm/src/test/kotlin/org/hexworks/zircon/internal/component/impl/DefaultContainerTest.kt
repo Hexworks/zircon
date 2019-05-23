@@ -17,11 +17,13 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -98,36 +100,34 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     @Test
     fun shouldProperlySetUpComponentsWhenNestedComponentsAreAdded() {
         val grid = TileGridBuilder.newBuilder()
-                .withSize(Size.create(40, 25))
+                .withSize(40, 25)
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .build()
 
         val screen = ScreenBuilder.createScreenFor(grid)
 
         val panel = PanelBuilder.newBuilder()
-                .wrapWithBox(true)
-                .withTitle("Panel")
+                .withDecorations(box(title = "Panel"))
                 .withTileset(TILESET_REX_PAINT_20X20)
-                .withSize(Size.create(32, 16))
-                .withPosition(Position.create(1, 1))
+                .withSize(32, 16)
+                .withAlignment(positionalAlignment(1, 1))
                 .build()
         val panelHeader = HeaderBuilder.newBuilder()
-                .withPosition(Positions.create(1, 0))
+                .withAlignment(positionalAlignment(Positions.create(1, 0)))
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withText("Header")
                 .build()
 
         val innerPanelHeader = HeaderBuilder.newBuilder()
-                .withPosition(Position.create(1, 0))
+                .withAlignment(positionalAlignment(1, 0))
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withText("Header2")
                 .build()
         val innerPanel = PanelBuilder.newBuilder()
-                .wrapWithBox(true)
-                .withTitle("Panel2")
-                .withSize(Size.create(16, 10))
+                .withDecorations(box(title = "Panel2"))
+                .withSize(16, 10)
                 .withTileset(TILESET_REX_PAINT_20X20)
-                .withPosition(Positions.create(1, 2))
+                .withAlignment(positionalAlignment(1, 2))
                 .build()
 
         assertThat(panel.isAttached()).isFalse()
@@ -159,27 +159,25 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     @Test
     fun shouldProperlySetUpComponentsWhenAContainerIsAddedThenComponentsAreAddedToIt() {
         val grid = TileGridBuilder.newBuilder()
-                .withSize(Size.create(40, 25))
+                .withSize(40, 25)
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .build()
         val screen = ScreenBuilder.createScreenFor(grid)
 
         val panel0 = PanelBuilder.newBuilder()
-                .wrapWithBox(true)
-                .withTitle("Panel")
+                .withDecorations(box(title = "Panel"))
                 .withTileset(TILESET_REX_PAINT_20X20)
-                .withSize(Size.create(32, 16))
-                .withPosition(Position.offset1x1())
+                .withSize(32, 16)
+                .withAlignment(positionalAlignment(Position.offset1x1()))
                 .build()
         val panel1 = PanelBuilder.newBuilder()
-                .wrapWithBox(true)
-                .withTitle("Panel2")
+                .withDecorations(box(title = "Panel2"))
                 .withTileset(TILESET_REX_PAINT_20X20)
-                .withSize(Size.create(16, 10))
-                .withPosition(Positions.create(1, 1))
+                .withSize(16, 10)
+                .withAlignment(positionalAlignment(1, 1))
                 .build()
         val header0 = HeaderBuilder.newBuilder()
-                .withPosition(Position.create(1, 0))
+                .withAlignment(positionalAlignment(1, 0))
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withText("Header")
                 .build()
@@ -219,12 +217,12 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         AppConfigs.newConfig().disableBetaFeatures().build()
         val pos = Position.create(1, 1)
         val comp = LabelBuilder.newBuilder()
-                .withPosition(pos)
+                .withAlignment(positionalAlignment(pos))
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withText("text")
                 .build()
         val otherComp = LabelBuilder.newBuilder()
-                .withPosition(pos.withRelativeX(1))
+                .withAlignment(positionalAlignment(pos.withRelativeX(1)))
                 .withText("text")
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .build()
@@ -266,13 +264,13 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotBeAbleToAddAComponentWhichIntersectsWithOtherComponents() {
         target.addComponent(LabelBuilder.newBuilder()
-                .withPosition(Position.zero())
+                .withAlignment(positionalAlignment(Position.zero()))
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withText("foo")
                 .build())
 
         target.addComponent(LabelBuilder.newBuilder()
-                .withPosition(Position.create(1, 0))
+                .withAlignment(positionalAlignment(Position.create(1, 0)))
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withText("foo")
                 .build())
@@ -283,7 +281,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         val comp = LabelBuilder.newBuilder()
                 .withText("x")
                 .withTileset(TILESET_REX_PAINT_20X20)
-                .withPosition(Position.defaultPosition())
+                .withAlignment(positionalAlignment(Position.defaultPosition()))
                 .build()
         target.addComponent(comp)
         val removalHappened = AtomicBoolean(false)
@@ -300,13 +298,13 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         val comp1 = LabelBuilder.newBuilder()
                 .withText("x")
                 .withTileset(TILESET_REX_PAINT_20X20)
-                .withPosition(Position.defaultPosition())
+                .withAlignment(positionalAlignment(Position.defaultPosition()))
                 .build()
         target.addComponent(comp1)
         val comp2 = LabelBuilder.newBuilder()
                 .withText("x")
                 .withTileset(TILESET_REX_PAINT_20X20)
-                .withPosition(Position.create(1, 2))
+                .withAlignment(positionalAlignment(Position.create(1, 2)))
                 .build()
         target.addComponent(comp2)
         val removalHappened = AtomicBoolean(false)
@@ -334,12 +332,12 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         val comp = LabelBuilder.newBuilder()
                 .withText("x")
                 .withTileset(TILESET_REX_PAINT_20X20)
-                .withPosition(Position.defaultPosition())
+                .withAlignment(positionalAlignment(Position.defaultPosition()))
                 .build()
         val panel = PanelBuilder.newBuilder()
                 .withSize(SIZE_4x4 - Size.one())
                 .withTileset(TILESET_REX_PAINT_20X20)
-                .withPosition(Position.defaultPosition()).build()
+                .withAlignment(positionalAlignment(Position.defaultPosition())).build()
         panel.addComponent(comp)
         target.addComponent(panel)
         val removalHappened = AtomicBoolean(false)

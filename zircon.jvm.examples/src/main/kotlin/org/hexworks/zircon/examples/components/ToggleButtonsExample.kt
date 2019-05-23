@@ -1,10 +1,17 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
-import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.extensions.shadow
+import org.hexworks.zircon.api.extensions.side
 
 object ToggleButtonsExample {
 
@@ -22,24 +29,21 @@ object ToggleButtonsExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         val panel = Components.panel()
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
                 .withSize(Sizes.create(30, 28))
-                .withPosition(Positions.create(29, 1))
-                .withTitle("Toolbar buttons on panel")
+                .withAlignment(positionalAlignment(Positions.create(29, 1)))
+                .withDecorations(box(title = "Toolbar buttons on panel"), shadow())
                 .build()
         screen.addComponent(panel)
 
         val unselectedToggleButton = Components.toggleButton()
                 .withText("Toggle me")
-                .wrapSides(true)
-                .withPosition(Positions.create(1, 3))
+                .withDecorations(side())
+                .withAlignment(positionalAlignment(Positions.create(1, 3)))
         val selectedToggleButton = Components.toggleButton()
                 .withText("Boxed Toggle Button")
                 .withIsSelected(true)
-                .wrapWithBox(true)
-                .wrapSides(false)
-                .withPosition(Positions.create(1, 5))
+                .withDecorations(box())
+                .withAlignment(positionalAlignment(Positions.create(1, 5)))
 
 
         panel.addComponent(unselectedToggleButton)

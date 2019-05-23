@@ -1,6 +1,15 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.extensions.shadow
 
 object ProgressBarExample {
 
@@ -18,28 +27,25 @@ object ProgressBarExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         val panel = Components.panel()
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
+                .withDecorations(box(title = "Progress Bars on panel"), shadow())
                 .withSize(Sizes.create(30, 28))
-                .withPosition(Positions.create(29, 1))
-                .withTitle("Progress Bars on panel")
+                .withAlignment(positionalAlignment(29, 1))
                 .build()
         screen.addComponent(panel)
 
         val progressBar = Components.progressBar()
                 .withRange(100)
                 .withNumberOfSteps(10)
-                .withPosition(Positions.create(0, 5))
-                .wrapWithBox(true)
+                .withAlignment(positionalAlignment(0, 5))
+                .withDecorations(box())
                 .build()
 
         val progressBarWithPercentValue = Components.progressBar()
                 .withNumberOfSteps(20)
-                .withPosition(Positions.create(0, 10))
+                .withAlignment(positionalAlignment(0, 10))
                 .withRange(100)
                 .withNumberOfSteps(10)
-                .wrapWithBox(true)
-                .withDisplayPercentValueOfProgress(true)
+                .withDecorations(box())
                 .build()
 
 

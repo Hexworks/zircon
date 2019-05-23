@@ -43,7 +43,7 @@ class LabelsIntegrationTest : ComponentIntegrationTestBase() {
 
         screen.addComponent(Components.label()
                 .withText("Wtf")
-                .withDecorationRenderers(
+                .withDecorations(
                         ShadowDecorationRenderer(),
                         BoxDecorationRenderer(DOUBLE),
                         BoxDecorationRenderer(SINGLE))
@@ -52,7 +52,7 @@ class LabelsIntegrationTest : ComponentIntegrationTestBase() {
 
         screen.addComponent(Components.label()
                 .withText("Wtf")
-                .withDecorationRenderers(
+                .withDecorations(
                         ShadowDecorationRenderer(),
                         HalfBlockDecorationRenderer())
                 .withPosition(Positions.create(15, 14))

@@ -21,9 +21,9 @@ data class ModalBuilder<T : ModalResult>(
         private var darkenPercent: Double = .5,
         private var centeredDialog: Boolean = true,
         private var contentComponent: Maybe<Component> = Maybe.empty(),
-        private val commonComponentProperties: CommonComponentProperties<Modal<T>> = CommonComponentProperties(
+        override val props: CommonComponentProperties<Modal<T>> = CommonComponentProperties(
                 componentRenderer = DefaultModalRenderer()))
-    : BaseComponentBuilder<Modal<T>, ModalBuilder<T>>(commonComponentProperties) {
+    : BaseComponentBuilder<Modal<T>, ModalBuilder<T>>() {
 
     fun withParentSize(size: Size) = also {
         super.withSize(size)
@@ -42,8 +42,9 @@ data class ModalBuilder<T : ModalResult>(
         this.darkenPercent = percentage
     }
 
+    // TODO: this is smelly
     override fun withSize(size: Size): ModalBuilder<T> {
-        throw UnsupportedOperationException("Can't set the Size of a Modal by hand.")
+        throw UnsupportedOperationException("Can't set the Size of a Modal by hand, use withParentSize instead.")
     }
 
     override fun build(): Modal<T> {
@@ -62,15 +63,14 @@ data class ModalBuilder<T : ModalResult>(
                     x = (size.width - component.size.width) / 2,
                     y = (size.height - component.size.height) / 2))
         }
-        fillMissingValues()
         val componentRenderer = DefaultComponentRenderingStrategy(
                 decorationRenderers = decorationRenderers,
-                componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<Modal<out ModalResult>>)
+                componentRenderer = componentRenderer as ComponentRenderer<Modal<out ModalResult>>)
         val modal = DefaultModal<T>(
                 darkenPercent = darkenPercent,
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = fixPosition(size),
+                        position = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 renderingStrategy = componentRenderer)
@@ -78,7 +78,7 @@ data class ModalBuilder<T : ModalResult>(
         return modal
     }
 
-    override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())
+    override fun createCopy() = copy(props = props.copy())
 
     companion object {
 
