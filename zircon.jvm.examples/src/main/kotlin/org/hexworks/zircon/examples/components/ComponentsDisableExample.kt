@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.extensions.positionalAlignment
 
 object ComponentsDisableExample {
 
@@ -30,9 +31,8 @@ object ComponentsDisableExample {
                 .build()
         val disableButton = Components.toggleButton()
                 .withSize(17, 1)
-                .withPosition(20, 5)
+                .withAlignment(positionalAlignment(20, 5))
                 .withText("Toggle")
-                .wrapSides(false)
                 .build().apply {
                     checkBox.disabledProperty.updateFrom(selectedProperty)
                 }

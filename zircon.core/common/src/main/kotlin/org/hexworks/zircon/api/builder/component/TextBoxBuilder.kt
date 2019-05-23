@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.TextBox
@@ -22,9 +23,9 @@ data class TextBoxBuilder(
         private var contentWidth: Int = 1,
         private var nextPosition: Position = Position.defaultPosition(),
         private val components: MutableList<Component> = mutableListOf(),
-        private val commonComponentProperties: CommonComponentProperties<TextBox> = CommonComponentProperties(
+        override val props: CommonComponentProperties<TextBox> = CommonComponentProperties(
                 componentRenderer = DefaultTextBoxRenderer()))
-    : BaseComponentBuilder<TextBox, TextBoxBuilder>(commonComponentProperties) {
+    : BaseComponentBuilder<TextBox, TextBoxBuilder>() {
 
     private val inlineElements = ThreadSafeQueueFactory.create<Component>()
 
@@ -33,6 +34,7 @@ data class TextBoxBuilder(
         super.withSize(size.withWidth(width))
     }
 
+    // TODO: fishy
     override fun withSize(size: Size): TextBoxBuilder {
         throw UnsupportedOperationException("You can't set a size for a TextBox by hand. Try setting width instead.")
     }
@@ -45,7 +47,7 @@ data class TextBoxBuilder(
                 .withText(text)
                 // TODO: regression test tileset in all methods here
                 .withTileset(tileset)
-                .withPosition(nextPosition)
+                .withAlignment(positionalAlignment(nextPosition))
                 .build())
         updateSizeAndPosition(size.height)
         if (withNewLine) {
@@ -61,7 +63,7 @@ data class TextBoxBuilder(
                 .withText(paragraph)
                 .withTypingEffect(withTypingEffectSpeedInMs)
                 .withTileset(tileset)
-                .withPosition(nextPosition)
+                .withAlignment(positionalAlignment(nextPosition))
                 .build())
         updateSizeAndPosition(size.height)
         if (withNewLine) {
@@ -86,7 +88,7 @@ data class TextBoxBuilder(
     fun addParagraph(paragraphBuilder: ParagraphBuilder, withNewLine: Boolean = true) = also {
         val size = Size.create(contentWidth, paragraphBuilder.text.length.div(contentWidth) + 1)
         val paragraph = paragraphBuilder
-                .withPosition(nextPosition)
+                .withAlignment(positionalAlignment(nextPosition))
                 .withSize(size)
                 .build()
         components.add(paragraph)
@@ -101,7 +103,7 @@ data class TextBoxBuilder(
         components.add(ListItemBuilder.newBuilder()
                 .withSize(size)
                 .withText(item)
-                .withPosition(nextPosition)
+                .withAlignment(positionalAlignment(nextPosition))
                 .withTileset(tileset)
                 .build())
         updateSizeAndPosition(size.height)
@@ -114,7 +116,7 @@ data class TextBoxBuilder(
         }
         inlineElements.add(LabelBuilder.newBuilder()
                 .withText(text)
-                .withPosition(Position.create(currentInlineLength, 0))
+                .withAlignment(positionalAlignment(Position.create(currentInlineLength, 0)))
                 .withTileset(tileset)
                 .build())
     }
@@ -149,22 +151,15 @@ data class TextBoxBuilder(
     }
 
     override fun build(): TextBox {
-        require(size != Size.unknown()) {
-            "You must set a size for a TextBox!"
-        }
-        fillMissingValues()
-        val finalSize = size + decorationRenderers.asSequence()
-                .map { it.occupiedSize }
-                .fold(Size.zero(), Size::plus)
         return DefaultTextBox(
                 componentMetadata = ComponentMetadata(
-                        size = finalSize,
-                        position = fixPosition(finalSize),
+                        size = size,
+                        position = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<TextBox>)).also { textBox ->
+                        componentRenderer = props.componentRenderer as ComponentRenderer<TextBox>)).also { textBox ->
             components.forEach {
                 textBox.addComponent(it)
             }
@@ -177,7 +172,7 @@ data class TextBoxBuilder(
     }
 
     private fun fixHeight(height: Int) {
-        super.withSize(if(size.height == Size.unknown().height) {
+        super.withSize(if (size.height == Size.unknown().height) {
             size.withHeight(height)
         } else {
             size.withRelativeHeight(height)

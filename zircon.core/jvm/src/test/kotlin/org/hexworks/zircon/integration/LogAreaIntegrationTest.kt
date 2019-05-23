@@ -25,7 +25,7 @@ class LogAreaIntegrationTest : ComponentIntegrationTestBase(size = Size.create(7
 
         logArea.addInlineText("This is a log row with a ")
         val btn = Components.button()
-                .withDecorationRenderers()
+                .withDecorations()
                 .withText("Button")
                 .build()
         logArea.addInlineComponent(btn)

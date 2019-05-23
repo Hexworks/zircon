@@ -1,7 +1,21 @@
 package org.hexworks.zircon.internal.integration
 
-import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.component.ComponentAlignment.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.component.ComponentAlignment.BOTTOM_CENTER
+import org.hexworks.zircon.api.component.ComponentAlignment.BOTTOM_LEFT
+import org.hexworks.zircon.api.component.ComponentAlignment.BOTTOM_RIGHT
+import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
+import org.hexworks.zircon.api.component.ComponentAlignment.LEFT_CENTER
+import org.hexworks.zircon.api.component.ComponentAlignment.RIGHT_CENTER
+import org.hexworks.zircon.api.component.ComponentAlignment.TOP_CENTER
+import org.hexworks.zircon.api.component.ComponentAlignment.TOP_LEFT
+import org.hexworks.zircon.api.component.ComponentAlignment.TOP_RIGHT
 
 object ComponentAlignmentTest {
 

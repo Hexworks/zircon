@@ -39,14 +39,12 @@ object  PanelsTest {
                 .withPosition(Positions.create(1, 15)))
 
         screen.addComponent(Components.panel()
-                .wrapWithBox(true)
-                .withBoxType(BoxType.DOUBLE)
+                .withDecorations(ComponentDecorations.box(BoxType.DOUBLE))
                 .withSize(Sizes.create(18, 5))
                 .withPosition(Positions.create(1, 22)))
 
         screen.addComponent(Components.panel()
-                .wrapWithBox(true)
-                .withBoxType(BoxType.BASIC)
+                .withDecorations(ComponentDecorations.box(BoxType.BASIC))
                 .withSize(Sizes.create(18, 5))
                 .withPosition(Positions.create(21, 1)))
 
@@ -57,7 +55,7 @@ object  PanelsTest {
                 .withPosition(Positions.create(21, 8)))
 
         screen.addComponent(Components.panel()
-                .withDecorationRenderers(
+                .withDecorations(
                         ShadowDecorationRenderer(),
                         HalfBlockDecorationRenderer())
                 .withSize(Sizes.create(18, 5))
@@ -66,14 +64,12 @@ object  PanelsTest {
         screen.addComponent(Components.panel()
                 .withSize(Sizes.create(18, 5))
                 .withTitle("Wombat")
-                .wrapWithBox(true)
-                .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)
+                .withDecorations(ComponentDecorations.box(BoxType.TOP_BOTTOM_DOUBLE))
                 .withPosition(Positions.create(21, 22)))
 
         screen.addComponent(Components.panel()
                 .withSize(Sizes.create(18, 5))
-                .wrapWithBox(true)
-                .withBoxType(BoxType.LEFT_RIGHT_DOUBLE)
+                .withDecorations(ComponentDecorations.box(BoxType.LEFT_RIGHT_DOUBLE))
                 .withPosition(Positions.create(41, 1)))
 
         val panel = Components.panel()
@@ -88,17 +84,17 @@ object  PanelsTest {
         val nested0 = Components.panel()
                 .withSize(Sizes.create(14, 15))
                 .withPosition(Positions.create(1, 1))
-                .wrapWithBox(true)
-                .withTitle("Nested 0")
-                .withBoxType(BoxType.DOUBLE)
+                .withDecorations(ComponentDecorations.box(
+                        boxType = BoxType.DOUBLE,
+                        title = "Nested 0"))
                 .build()
 
         val nested1 = Components.panel()
                 .withSize(Sizes.create(10, 11))
                 .withPosition(Positions.create(1, 1))
-                .wrapWithBox(true)
-                .withTitle("Nested 1")
-                .withBoxType(BoxType.DOUBLE)
+                .withDecorations(ComponentDecorations.box(
+                        boxType = BoxType.DOUBLE,
+                        title = "Nested 1"))
                 .build()
 
         panel.addComponent(nested0)

@@ -31,7 +31,7 @@ class TextBoxBuilderTest : ComponentBuilderTest<TextBox, TextBoxBuilder>() {
                 .build()
 
         assertThat(textBox.size)
-                .isEqualTo(Size.create(20, 3))
+                .isEqualTo(Size.create(20, 4))
 
 
     }

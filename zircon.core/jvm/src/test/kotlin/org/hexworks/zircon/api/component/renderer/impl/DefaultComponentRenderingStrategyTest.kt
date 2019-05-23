@@ -45,7 +45,7 @@ class DefaultComponentRenderingStrategyTest {
                 decorationRenderers = listOf(
                         ShadowDecorationRenderer(),
                         BoxDecorationRenderer(),
-                        ButtonSideDecorationRenderer()),
+                        SideDecorationRenderer()),
                 componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>)
 
         val btn = DefaultButton(
@@ -79,7 +79,7 @@ class DefaultComponentRenderingStrategyTest {
                 decorationRenderers = listOf(
                         ShadowDecorationRenderer(),
                         BoxDecorationRenderer(),
-                        ButtonSideDecorationRenderer()),
+                        SideDecorationRenderer()),
                 componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>)
 
         val btn = DefaultButton(

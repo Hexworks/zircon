@@ -23,4 +23,5 @@ interface ComponentDecorationRenderer : DecorationRenderer<ComponentDecorationRe
      * and 2 rows (top, down).
      */
     val occupiedSize: Size
+
 }

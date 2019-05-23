@@ -1,6 +1,16 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.extensions.shadow
 
 object TextBoxesExample {
 
@@ -18,14 +28,14 @@ object TextBoxesExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         val panel = Components.panel()
-                .wrapWithBox(true)
+                .withDecorations(box())
                 .withSize(Sizes.create(28, 28))
-                .withPosition(Positions.create(30, 1))
+                .withAlignment(positionalAlignment(Positions.create(30, 1)))
                 .build()
         screen.addComponent(panel)
 
         screen.addComponent(Components.textBox()
-                .withPosition(Positions.create(2, 2))
+                .withAlignment(positionalAlignment(Positions.create(2, 2)))
                 .withContentWidth(26)
                 .addHeader("Header!")
                 .addParagraph("This is a plain text box.")
@@ -35,7 +45,6 @@ object TextBoxesExample {
                 .addNewLine()
                 .addInlineText("Inline text ")
                 .addInlineComponent(Components.button()
-                        .wrapSides(false)
                         .withText("Button")
                         .build())
                 .addInlineText(" text")
@@ -43,7 +52,7 @@ object TextBoxesExample {
                 .addNewLine()
                 .addParagraph("And a multi-line paragraph with typewriter effect...", withTypingEffectSpeedInMs = 200))
         panel.addComponent(Components.textBox()
-                .withPosition(Positions.zero())
+                .withAlignment(positionalAlignment(Positions.zero()))
                 .withContentWidth(26)
                 .addHeader("Header!")
                 .addParagraph("This is a plain text box.")
@@ -53,7 +62,6 @@ object TextBoxesExample {
                 .addNewLine()
                 .addInlineText("Inline text ")
                 .addInlineComponent(Components.button()
-                        .wrapSides(false)
                         .withText("Button")
                         .build())
                 .addInlineText(" text")
@@ -62,17 +70,15 @@ object TextBoxesExample {
                 .addParagraph("And a multi-line paragraph with typewriter effect...", withTypingEffectSpeedInMs = 200))
 
         screen.addComponent(Components.textBox()
-                .withPosition(Positions.create(1, 17))
+                .withAlignment(positionalAlignment(Positions.create(1, 17)))
                 .withContentWidth(22)
                 .addHeader("Decorated!")
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
+                .withDecorations(box(), shadow())
                 .addParagraph("This is a paragraph which won't fit on one line."))
         panel.addComponent(Components.textBox()
-                .withPosition(Positions.create(0, 15))
+                .withAlignment(positionalAlignment(Positions.create(0, 15)))
                 .withContentWidth(22)
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
+                .withDecorations(box(), shadow())
                 .addHeader("Decorated!")
                 .addParagraph("This is a paragraph which won't fit on one line."))
 

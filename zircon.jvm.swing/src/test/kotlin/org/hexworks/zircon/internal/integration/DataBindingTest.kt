@@ -54,7 +54,6 @@ object DataBindingTest {
                 .withText("Button")
                 .withPosition(1, 3)
                 .withSize(20, 1)
-                .wrapSides(false)
                 .build()
 
         val checkBox = Components.checkBox()

@@ -1,17 +1,36 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.Blocks
+import org.hexworks.zircon.api.Borders
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.GameComponents
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Shapes
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.TileColors
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.handleKeyboardEvents
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
-import org.hexworks.zircon.api.uievent.KeyCode.*
+import org.hexworks.zircon.api.uievent.KeyCode.DOWN
+import org.hexworks.zircon.api.uievent.KeyCode.LEFT
+import org.hexworks.zircon.api.uievent.KeyCode.PAGE_DOWN
+import org.hexworks.zircon.api.uievent.KeyCode.PAGE_UP
+import org.hexworks.zircon.api.uievent.KeyCode.RIGHT
+import org.hexworks.zircon.api.uievent.KeyCode.UP
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.Processed
 import kotlin.random.Random
@@ -160,9 +179,7 @@ object TopDownObliqueWorldExample {
 
         val panel = Components.panel()
                 .withSize(screen.size)
-                .withBoxType(BoxType.DOUBLE)
-                .wrapWithBox()
-                .withTitle("World")
+                .withDecorations(box(boxType = BoxType.DOUBLE, title = "World"))
                 .build()
 
         val ga = GameComponents.newGameAreaBuilder<Tile, Block<Tile>>()

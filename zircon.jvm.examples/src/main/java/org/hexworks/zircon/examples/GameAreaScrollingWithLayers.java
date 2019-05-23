@@ -18,7 +18,7 @@ import org.hexworks.zircon.api.UIEventResponses;
 import org.hexworks.zircon.api.builder.component.GameComponentBuilder;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.ColorTheme;
-import org.hexworks.zircon.api.component.ComponentBuilder;
+import org.hexworks.zircon.api.component.builder.ComponentBuilder;
 import org.hexworks.zircon.api.component.Panel;
 import org.hexworks.zircon.api.data.Block;
 import org.hexworks.zircon.api.data.Position;

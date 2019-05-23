@@ -46,7 +46,7 @@ class PanelsIntegrationTest : ComponentIntegrationTestBase() {
                 .withPosition(Positions.create(21, 8)))
 
         screen.addComponent(Components.panel()
-                .withDecorationRenderers(
+                .withDecorations(
                         ShadowDecorationRenderer(),
                         HalfBlockDecorationRenderer())
                 .withSize(Sizes.create(18, 5))

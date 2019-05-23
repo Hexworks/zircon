@@ -3,13 +3,23 @@
 package org.hexworks.zircon.internal.integration
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.builder.component.ModalBuilder
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ComponentAlignment.BOTTOM_RIGHT
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.extensions.alignmentWithin
+import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.handleComponentEvents
 import org.hexworks.zircon.api.extensions.handleKeyboardEvents
+import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 import org.hexworks.zircon.api.uievent.KeyCode
@@ -46,9 +56,7 @@ object ModalTest {
 
         val modalPanel = Components.panel()
                 .withSize(Sizes.create(30, 20))
-                .wrapWithBox()
-                .wrapWithShadow()
-                .withTitle("Modal level: $level")
+                .withDecorations(box(title = "Modal level: $level"), shadow())
                 .build()
 
         val modal = ModalBuilder.newBuilder<EmptyModalResult>()
@@ -66,7 +74,7 @@ object ModalTest {
 
         val closeButton = Components.button()
                 .withText("Close")
-                .withAlignmentWithin(modalPanel, BOTTOM_RIGHT)
+                .withAlignment(alignmentWithin(modalPanel, BOTTOM_RIGHT))
                 .build().apply {
                     handleComponentEvents(ACTIVATED) {
                         logger.info("Closed by activating the button")

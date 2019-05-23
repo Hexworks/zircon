@@ -6,47 +6,37 @@ import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultHeader
 import org.hexworks.zircon.internal.component.renderer.DefaultHeaderRenderer
 import kotlin.jvm.JvmStatic
+import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
 data class HeaderBuilder(
         private var text: String = "",
-        private val commonComponentProperties: CommonComponentProperties<Header> = CommonComponentProperties(
+        override val props: CommonComponentProperties<Header> = CommonComponentProperties(
                 componentRenderer = DefaultHeaderRenderer()))
-    : BaseComponentBuilder<Header, HeaderBuilder>(commonComponentProperties) {
+    : BaseComponentBuilder<Header, HeaderBuilder>() {
 
     fun withText(text: String) = also {
         this.text = text
+        withWidth(max(preferredSize.width, text.length))
     }
 
     override fun build(): Header {
-        require(text.isNotBlank()) {
-            "A Header can't be blank!"
-        }
-        fillMissingValues()
-        val finalSize = if (size.isUnknown()) {
-            decorationRenderers.asSequence()
-                    .map { it.occupiedSize }
-                    .fold(Size.create(text.length, 1), Size::plus)
-        } else {
-            size
-        }
         return DefaultHeader(
                 componentMetadata = ComponentMetadata(
-                        size = finalSize,
-                        position = fixPosition(finalSize),
+                        size = size,
+                        position = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialText = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<Header>))
+                        componentRenderer = componentRenderer as ComponentRenderer<Header>))
     }
 
-    override fun createCopy() = copy()
+    override fun createCopy() = copy(props = props.copy())
 
     companion object {
 

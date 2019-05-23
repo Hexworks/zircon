@@ -6,8 +6,16 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 import com.badlogic.gdx.graphics.GL20
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.GraphicalTilesetResources
+import org.hexworks.zircon.api.LibgdxApplications
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
+import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.internal.application.LibgdxApplication
 import org.hexworks.zircon.internal.listeners.ZirconInputListener
 
@@ -65,7 +73,7 @@ object LibgdxPlayground : Game() {
         panel.addComponent(button)*/
 
         screen.addComponent(Components.icon()
-                .withPosition(2, 2)
+                .withAlignment(positionalAlignment(2, 2))
                 .withIcon(Tiles.newBuilder()
                         .withName("Plate mail")
                         .withTileset(GraphicalTilesetResources.nethack16x16())
@@ -73,7 +81,7 @@ object LibgdxPlayground : Game() {
         )
         screen.addComponent(Components.label()
                 .withText("Label with icon")
-                .withPosition(2, 1))
+                .withAlignment(positionalAlignment(2, 1)))
 
 
         screen.applyColorTheme(theme)

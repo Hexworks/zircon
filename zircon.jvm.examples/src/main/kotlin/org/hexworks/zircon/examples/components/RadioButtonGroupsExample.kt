@@ -1,6 +1,15 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType
 
 object RadioButtonGroupsExample {
@@ -19,18 +28,18 @@ object RadioButtonGroupsExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         val panel = Components.panel()
-                .wrapWithBox(true)
+                .withDecorations(box())
                 .withSize(Sizes.create(28, 28))
-                .withPosition(Positions.create(31, 1))
+                .withAlignment(positionalAlignment(1, 1))
                 .build()
         screen.addComponent(panel)
 
         val simpleRadioButtonGroup0 = Components.radioButtonGroup()
-                .withPosition(Positions.create(2, 2))
+                .withAlignment(positionalAlignment(2, 2))
                 .withSize(Sizes.create(14, 3))
                 .build()
         val simpleRadioButtonGroup1 = Components.radioButtonGroup()
-                .withPosition(Positions.create(0, 0))
+                .withAlignment(positionalAlignment(0, 0))
                 .withSize(Sizes.create(14, 3))
                 .build()
 
@@ -44,18 +53,14 @@ object RadioButtonGroupsExample {
         panel.addComponent(simpleRadioButtonGroup1)
 
         val decoratedRadioButtonGroup0 = Components.radioButtonGroup()
-                .withBoxType(BoxType.DOUBLE)
-                .wrapWithShadow(true)
-                .wrapWithBox(true)
+                .withDecorations(box(boxType = BoxType.DOUBLE), shadow())
                 .withSize(Sizes.create(14, 3))
-                .withPosition(Positions.create(2, 8))
+                .withAlignment(positionalAlignment(2, 8))
                 .build()
         val decoratedRadioButtonGroup1 = Components.radioButtonGroup()
-                .withBoxType(BoxType.DOUBLE)
-                .wrapWithShadow(true)
-                .wrapWithBox(true)
+                .withDecorations(box(boxType = BoxType.DOUBLE), shadow())
                 .withSize(Sizes.create(14, 3))
-                .withPosition(Positions.create(0, 6))
+                .withAlignment(positionalAlignment(0, 6))
                 .build()
 
         screen.addComponent(decoratedRadioButtonGroup0)

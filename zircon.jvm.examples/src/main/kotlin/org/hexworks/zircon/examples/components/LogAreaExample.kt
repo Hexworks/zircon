@@ -4,7 +4,6 @@ import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.graphics.StyleSet
 
 object LogAreaExample {
@@ -35,7 +34,7 @@ object LogAreaExample {
 
         logArea.addInlineText("This is a log row with a ")
         val btn = Components.button()
-                .withDecorationRenderers()
+                .withDecorations()
                 .withText("Button")
                 .build()
         logArea.addInlineComponent(btn)

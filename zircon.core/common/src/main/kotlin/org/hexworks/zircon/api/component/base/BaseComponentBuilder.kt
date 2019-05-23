@@ -1,73 +1,67 @@
 package org.hexworks.zircon.api.component.base
 
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.ComponentAlignments
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentAlignment
-import org.hexworks.zircon.api.component.ComponentBuilder
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.component.alignment.AlignmentStrategy
+import org.hexworks.zircon.api.component.builder.ComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.component.alignment.PositionalAlignmentStrategy
+import kotlin.math.max
 
-@Suppress("UNCHECKED_CAST")
-abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
-        private val props: CommonComponentProperties<T>) : ComponentBuilder<T, U> {
-
-    val position: Position
-        get() = positionFn(Rect.create(size = size))
-
-    val size: Size
-        get() = props.size
+@Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
+abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>()
+    : ComponentBuilder<T, U>, Builder<T> {
 
     val componentStyleSet: ComponentStyleSet
         get() = props.componentStyleSet
 
-    val title
-        get() = props.title
-
-    val tileset
+    val tileset: TilesetResource
         get() = props.tileset
 
-    val boxType
-        get() = props.boxType
-
-    val isWrappedWithBox
-        get() = props.wrapWithBox
-
-    val isWrappedWithShadow
-        get() = props.wrapWithShadow
+    val position: Position
+        get() = props.alignmentStrategy.calculateAlignment()
 
     val decorationRenderers: List<ComponentDecorationRenderer>
         get() = props.decorationRenderers
 
-    val componentRenderer: ComponentRenderer<T>
-        get() = props.componentRenderer as ComponentRenderer<T>
+    val componentRenderer: ComponentRenderer<out T>
+        get() = props.componentRenderer
+
+    val size: Size
+        get() {
+            val calculatedSize = decorationRenderers
+                    .map { it.occupiedSize }
+                    .fold(DEFAULT_SIZE, Size::plus)
+            return Sizes.create(
+                    xLength = max(calculatedSize.width, preferredSize.width),
+                    yLength = max(calculatedSize.height, preferredSize.height))
+        }
+
+    val title: String
+        get() = decorationRenderers
+                .filterIsInstance<BoxDecorationRenderer>()
+                .firstOrNull()?.title ?: ""
 
     private val logger = LoggerFactory.getLogger(this::class)
 
-    private var positionFn: (currentRect: Rect) -> Position = {
-        props.position
-    }
-
-    override fun withTitle(title: String): U {
-        props.title = title
-        if (isWrappedWithBox.not()) {
-            logger.warn("Trying to set the title without wrapping the component in a box. The title won't be displayed.")
-        }
-        return this as U
-    }
+    protected abstract val props: CommonComponentProperties<T>
+    protected var preferredSize: Size = DEFAULT_SIZE
 
     override fun withComponentStyleSet(componentStyleSet: ComponentStyleSet): U {
         props.componentStyleSet = componentStyleSet
@@ -79,42 +73,12 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         return this as U
     }
 
-    override fun withPosition(x: Int, y: Int): U {
-        return withPosition(Positions.create(x, y))
-    }
-
-    override fun withPosition(position: Position): U {
-        positionFn = {
-            position
-        }
+    override fun withAlignment(alignmentStrategy: AlignmentStrategy): U {
+        props.alignmentStrategy = alignmentStrategy
         return this as U
     }
 
-    override fun withSize(width: Int, height: Int): U {
-        return withSize(Sizes.create(width, height))
-    }
-
-    override fun withSize(size: Size): U {
-        props.size = size
-        return this as U
-    }
-
-    override fun withBoxType(boxType: BoxType): U {
-        props.boxType = boxType
-        return this as U
-    }
-
-    override fun wrapWithBox(wrapWithBox: Boolean): U {
-        props.wrapWithBox = wrapWithBox
-        return this as U
-    }
-
-    override fun wrapWithShadow(wrapWithShadow: Boolean): U {
-        props.wrapWithShadow = wrapWithShadow
-        return this as U
-    }
-
-    override fun withDecorationRenderers(vararg renderers: ComponentDecorationRenderer): U {
+    override fun withDecorations(vararg renderers: ComponentDecorationRenderer): U {
         props.decorationRenderers = renderers.toList()
         return this as U
     }
@@ -124,52 +88,99 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         return this as U
     }
 
-    override fun withAlignmentWithin(container: Container, componentAlignment: ComponentAlignment): U {
-        positionFn = { currentRect ->
-            componentAlignment.alignWithin(
-                    target = Rect.create(size = container.contentSize),
-                    subject = currentRect)
-        }
-        return this as U
-    }
+    override fun withSize(width: Int, height: Int) = withSize(Sizes.create(width, height))
 
-    override fun withAlignmentAround(component: Component, componentAlignment: ComponentAlignment): U {
-        positionFn = { currentRect ->
-            componentAlignment.alignAround(
-                    target = component.rect,
-                    subject = currentRect)
-        }
-        return this as U
-    }
+    override fun withWidth(width: Int) = withSize(preferredSize.withWidth(width))
 
-    override fun withAlignmentWithin(tileGrid: TileGrid, componentAlignment: ComponentAlignment): U {
-        positionFn = { currentRect ->
-            componentAlignment.alignWithin(
-                    target = Rect.create(size = tileGrid.size),
-                    subject = currentRect)
-        }
+    override fun withHeight(height: Int) = withSize(preferredSize.withHeight(height))
+
+    override fun withSize(size: Size): U {
+        preferredSize = size
         return this as U
     }
 
     protected fun copyProps() = props.copy()
 
-    protected fun fixPosition(size: Size): Position {
-        return positionFn(Rect.create(size = size))
+    @Deprecated(
+            "use ComponentBuilder.withAlignment",
+            replaceWith = ReplaceWith(
+                    "withAlignment(positionalAlignment(position))",
+                    "org.hexworks.zircon.api.extensions.positionalAlignment"))
+    fun withPosition(position: Position) = withAlignment(PositionalAlignmentStrategy(position))
+
+    @Deprecated(
+            "use ComponentBuilder.withAlignment",
+            replaceWith = ReplaceWith(
+                    "withAlignment(positionalAlignment(x, y))",
+                    "org.hexworks.zircon.api.extensions.positionalAlignment"))
+    fun withPosition(x: Int, y: Int) = withAlignment(positionalAlignment(Positions.create(x, y)))
+
+    @Deprecated(
+            "use ComponentBuilder.withDecorations",
+            replaceWith = ReplaceWith(
+                    "withDecorations(box())",
+                    "org.hexworks.zircon.api.extensions.box"))
+    fun wrapWithBox(wrapWithBox: Boolean = true) = if (wrapWithBox) {
+        throw UnsupportedOperationException("use withDecorations() instead")
+    } else this as U
+
+    @Deprecated(
+            "use ComponentBuilder.withDecorations",
+            replaceWith = ReplaceWith(
+                    "withDecorations(box(boxType=boxType))",
+                    "org.hexworks.zircon.api.extensions.box"))
+    fun withBoxType(boxType: BoxType): U {
+        throw UnsupportedOperationException("use withDecorations() instead")
     }
 
-    protected fun fillMissingValues() {
-        if (props.decorationRenderers.isEmpty()) {
-            val decorationRenderers = mutableListOf<ComponentDecorationRenderer>()
-            if (props.wrapWithShadow) {
-                decorationRenderers.add(ShadowDecorationRenderer())
-            }
-            if (props.wrapWithBox) {
-                decorationRenderers.add(BoxDecorationRenderer(
-                        boxType = boxType,
-                        titleProperty = createPropertyFrom(title)))
-            }
-            props.decorationRenderers = decorationRenderers.toList()
-        }
+    @Deprecated(
+            "use ComponentBuilder.withDecorations",
+            replaceWith = ReplaceWith(
+                    "withDecorations(shadow())",
+                    "org.hexworks.zircon.api.extensions.shadow"))
+    fun wrapWithShadow(wrapWithShadow: Boolean = true) = if (wrapWithShadow) {
+        throw UnsupportedOperationException("use withDecorations() instead")
+    } else this as U
+
+    @Deprecated(
+            "use ComponentBuilder.withDecorations",
+            replaceWith = ReplaceWith(
+                    "withDecorations(box(title=title))",
+                    "org.hexworks.zircon.api.extensions.box"))
+    fun withTitle(@Suppress("UNUSED_PARAMETER") title: String): U {
+        throw UnsupportedOperationException("use withDecorations() instead")
+    }
+
+    @Deprecated(
+            "use ComponentBuilder.withAlignment",
+            replaceWith = ReplaceWith(
+                    "withAlignment(alignmentWithin(tileGrid, alignmentType))",
+                    "org.hexworks.zircon.api.extensions.alignmentWithin"))
+    fun withAlignmentWithin(tileGrid: TileGrid, alignmentType: ComponentAlignment): U {
+        return withAlignment(ComponentAlignments.alignmentWithin(tileGrid, alignmentType))
+    }
+
+    @Deprecated(
+            "use ComponentBuilder.withAlignment",
+            replaceWith = ReplaceWith(
+                    "withAlignment(alignmentWithin(container, alignmentType))",
+                    "org.hexworks.zircon.api.extensions.alignmentWithin"))
+    fun withAlignmentWithin(container: Container, alignmentType: ComponentAlignment): U {
+        return withAlignment(ComponentAlignments.alignmentWithin(container, alignmentType))
+    }
+
+    @Deprecated(
+            "use ComponentBuilder.withAlignment",
+            replaceWith = ReplaceWith(
+                    "withAlignment(alignmentAround(component, alignmentType))",
+                    "org.hexworks.zircon.api.extensions.alignmentAround"))
+    fun withAlignmentAround(component: Component, alignmentType: ComponentAlignment): U {
+        return withAlignment(ComponentAlignments.alignmentAround(component, alignmentType))
+    }
+
+    companion object {
+
+        private val DEFAULT_SIZE = Sizes.one()
     }
 
 }
