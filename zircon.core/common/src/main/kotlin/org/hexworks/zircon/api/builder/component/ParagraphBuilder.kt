@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.api.component.renderer.impl.TypingEffectPostProcessor
 import org.hexworks.zircon.internal.component.impl.DefaultParagraph
 import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
+import org.hexworks.zircon.internal.component.withNewLinesStripped
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
@@ -20,8 +21,9 @@ data class ParagraphBuilder(
     : BaseComponentBuilder<Paragraph, ParagraphBuilder>() {
 
     fun withText(text: String) = also {
-        this.text = text
-        withWidth(max(preferredSize.width, text.length))
+        this.text = text.withNewLinesStripped()
+        contentSize = contentSize
+                .withWidth(max(this.text.length, contentSize.width))
     }
 
     fun withTypingEffect(typingEffectSpeedInMs: Long) = also {
@@ -43,7 +45,7 @@ data class ParagraphBuilder(
                 initialText = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<Paragraph>,
+                        componentRenderer = componentRenderer as ComponentRenderer<Paragraph>,
                         componentPostProcessors = postProcessors))
     }
 

@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
+import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.TextBox
@@ -19,8 +20,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 data class TextBoxBuilder(
-        private var text: String = "",
-        private var contentWidth: Int = 1,
+        private val initialContentWidth: Int,
         private var nextPosition: Position = Position.defaultPosition(),
         private val components: MutableList<Component> = mutableListOf(),
         override val props: CommonComponentProperties<TextBox> = CommonComponentProperties(
@@ -28,10 +28,11 @@ data class TextBoxBuilder(
     : BaseComponentBuilder<TextBox, TextBoxBuilder>() {
 
     private val inlineElements = ThreadSafeQueueFactory.create<Component>()
+    private val contentWidth: Int
+        get() = contentSize.width
 
-    fun withContentWidth(width: Int) = also {
-        this.contentWidth = width
-        super.withSize(size.withWidth(width))
+    init {
+        contentSize = Sizes.unknown().withWidth(initialContentWidth)
     }
 
     // TODO: fishy
@@ -172,11 +173,11 @@ data class TextBoxBuilder(
     }
 
     private fun fixHeight(height: Int) {
-        super.withSize(if (size.height == Size.unknown().height) {
-            size.withHeight(height)
+        contentSize = if (contentSize.height == Size.unknown().height) {
+            contentSize.withHeight(height)
         } else {
-            size.withRelativeHeight(height)
-        })
+            contentSize.withRelativeHeight(height)
+        }
     }
 
     private fun currentInlineLength(): Int {
@@ -190,6 +191,6 @@ data class TextBoxBuilder(
     companion object {
 
         @JvmStatic
-        fun newBuilder() = TextBoxBuilder()
+        fun newBuilder(contentWidth: Int) = TextBoxBuilder(contentWidth)
     }
 }

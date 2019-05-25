@@ -1,10 +1,10 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.behavior.Boundable
+import org.hexworks.zircon.api.component.AlignmentStrategy
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.component.Container
-import org.hexworks.zircon.api.component.alignment.AlignmentStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.component.alignment.AroundAlignmentStrategy
@@ -23,7 +23,7 @@ object ComponentAlignments {
     fun alignmentWithin(tileGrid: TileGrid,
                         alignmentType: ComponentAlignment): AlignmentStrategy {
         return WithinAlignmentStrategy(
-                targetSupplier = { Boundable.create(size = tileGrid.size) },
+                other = Boundable.create(size = tileGrid.size),
                 alignmentType = alignmentType)
     }
 
@@ -37,7 +37,7 @@ object ComponentAlignments {
     fun alignmentWithin(container: Container,
                         alignmentType: ComponentAlignment): AlignmentStrategy {
         return WithinAlignmentStrategy(
-                targetSupplier = { container },
+                other = container.rect,
                 alignmentType = alignmentType)
     }
 
@@ -51,7 +51,7 @@ object ComponentAlignments {
     fun alignmentAround(component: Component,
                         alignmentType: ComponentAlignment): AlignmentStrategy {
         return AroundAlignmentStrategy(
-                targetSupplier = { component },
+                other = component,
                 alignmentType = alignmentType)
     }
 

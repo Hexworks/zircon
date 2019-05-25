@@ -13,8 +13,11 @@ import org.hexworks.zircon.api.builder.animation.AnimationBuilder;
 import org.hexworks.zircon.api.component.Panel;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
+import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
+
+import static org.hexworks.zircon.api.ComponentDecorations.box;
 
 public class AnimationExample {
 
@@ -34,8 +37,7 @@ public class AnimationExample {
                 .build()));
 
         final Panel panel = Components.panel()
-                .wrapWithBox(true)
-                .withTitle("Animation example")
+                .withDecorations(box(BoxType.SINGLE, "Animation example"))
                 .withSize(TERMINAL_SIZE)
                 .build();
 

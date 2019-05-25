@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
+import org.hexworks.zircon.api.extensions.box
 
 object HBoxVBoxExample {
 
@@ -29,8 +30,7 @@ object HBoxVBoxExample {
         val table = Components.vbox()
                 .withSize(contentWidth + 2, 20)
                 .withAlignmentWithin(screen, CENTER)
-                .wrapWithBox(true)
-                .withTitle("Crew")
+                .withDecorations(box(title = "Crew"))
                 .build()
 
         val headerRow = Components.hbox()

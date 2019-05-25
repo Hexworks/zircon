@@ -20,7 +20,8 @@ data class CheckBoxBuilder(
 
     fun withText(text: String) = also {
         this.text = text
-        withWidth(max(preferredSize.width, text.length + 4))
+        contentSize = contentSize
+                .withWidth(max(text.length + DefaultCheckBoxRenderer.DECORATION_WIDTH, contentSize.width))
     }
 
     override fun build(): CheckBox {

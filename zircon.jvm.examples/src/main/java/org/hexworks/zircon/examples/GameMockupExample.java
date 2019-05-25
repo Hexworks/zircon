@@ -26,6 +26,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.Arrays;
 
+import static org.hexworks.zircon.api.ComponentDecorations.box;
 import static org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED;
 
 public class GameMockupExample {
@@ -74,8 +75,7 @@ public class GameMockupExample {
         mainMenuScreen.addComponent(mainMenuLabel);
 
         Panel menuPanel = Components.panel()
-                .withBoxType(BoxType.LEFT_RIGHT_DOUBLE)
-                .wrapWithBox(true)
+                .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE))
                 .withPosition(menuPosition)
                 .withSize(Sizes.create(MAIN_MENU_PANEL_WIDTH, MAIN_MENU_PANEL_HEIGHT))
                 .build();
@@ -125,9 +125,7 @@ public class GameMockupExample {
         Panel difficultyPanel = Components.panel()
                 .withSize(Sizes.create((terminalSize.getWidth() - PANEL_SPACING) / 3, 9))
                 .withPosition(Positions.create(PANEL_SPACING, PANEL_SPACING))
-                .wrapWithBox(true)
-                .withBoxType(BoxType.LEFT_RIGHT_DOUBLE)
-                .withTitle(DIFFICULTY_LABEL)
+                .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, DIFFICULTY_LABEL))
                 .build();
 
         RadioButtonGroup difficultyRadio = Components.radioButtonGroup()

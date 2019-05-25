@@ -1,8 +1,13 @@
 package org.hexworks.zircon.examples.docs;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.ColorThemes;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.Screens;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.UIEventResponses;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.Panel;
+import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.api.uievent.KeyCode;
@@ -10,6 +15,8 @@ import org.hexworks.zircon.api.uievent.KeyboardEventType;
 import org.hexworks.zircon.api.uievent.MouseEventType;
 import org.hexworks.zircon.api.uievent.UIEventPhase;
 
+import static org.hexworks.zircon.api.ComponentDecorations.box;
+import static org.hexworks.zircon.api.ComponentDecorations.shadow;
 import static org.hexworks.zircon.api.component.ComponentAlignment.CENTER;
 import static org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED;
 
@@ -21,9 +28,7 @@ public class InputHandling {
         Screen screen = Screens.createScreenFor(tileGrid);
 
         Panel panel = Components.panel()
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
-                .withTitle("New Game")
+                .withDecorations(box(BoxType.SINGLE, "New Game"), shadow())
                 .withSize(20, 10)
                 .withAlignmentWithin(tileGrid, CENTER)
                 .build();
@@ -43,7 +48,7 @@ public class InputHandling {
         // the panel is focused (or something else in the panel)
 
         panel.processKeyboardEvents(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
-            if(phase == UIEventPhase.BUBBLE && event.getCode() == KeyCode.KEY_A) {
+            if (phase == UIEventPhase.BUBBLE && event.getCode() == KeyCode.KEY_A) {
                 System.out.println("A pressed in bubble phase.");
             }
         });

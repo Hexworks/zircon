@@ -192,9 +192,8 @@ public class FullExample {
                 .withText("Do you plan to make a roguelike?")
                 .build());
 
-        TextBox introBox = Components.textBox()
+        TextBox introBox = Components.textBox(44)
                 .withPosition(Positions.create(1, 3))
-                .withContentWidth(44)
                 .addParagraph("Look no further. Zircon is the right tool for the job.")
                 .addParagraph("Zircon is a Text GUI library and a Tile Engine which is designed for simplicity and ease of use.")
                 .addParagraph("It is usable out of the box for all JVM languages including Java, Kotlin, Clojure and Scala.")
@@ -311,7 +310,7 @@ public class FullExample {
         checkBoxesPanel.addComponent(Components.checkBox()
                 .withPosition(Positions.create(0, 2))
                 .withText("Too long text for this checkbox")
-                .withWidth(19)
+                .withSize(19, 1)
                 .build());
         inputsScreen.addComponent(checkBoxesPanel);
 

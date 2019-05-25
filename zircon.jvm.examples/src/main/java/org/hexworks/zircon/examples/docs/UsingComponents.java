@@ -13,9 +13,12 @@ import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.CheckBox;
 import org.hexworks.zircon.api.component.Header;
 import org.hexworks.zircon.api.component.Panel;
+import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.screen.Screen;
 
+import static org.hexworks.zircon.api.ComponentDecorations.box;
+import static org.hexworks.zircon.api.ComponentDecorations.shadow;
 import static org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED;
 
 public class UsingComponents {
@@ -30,10 +33,11 @@ public class UsingComponents {
         final Screen screen = Screens.createScreenFor(tileGrid);
 
         Panel panel = Components.panel()
-                .wrapWithBox(true) // panels can be wrapped in a box
-                .withTitle("Panel") // if a panel is wrapped in a box a title can be displayed
-                .wrapWithShadow(true) // shadow can be added
-                .withSize(Sizes.create(32, 16)) // the size must be smaller than the parent's size
+                .withDecorations(
+                        // panels can be wrapped in a box
+                        box(BoxType.SINGLE, "Panel"),
+                        shadow()) // shadow can be added
+                .withSize(32, 16) // the size must be smaller than the parent's size
                 .withPosition(Positions.offset1x1())
                 .build(); // position is always relative to the parent
 

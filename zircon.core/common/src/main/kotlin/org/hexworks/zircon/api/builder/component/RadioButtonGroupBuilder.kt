@@ -25,7 +25,7 @@ data class RadioButtonGroupBuilder(
                         tileset = tileset),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<RadioButtonGroup>))
+                        componentRenderer = componentRenderer as ComponentRenderer<RadioButtonGroup>))
     }
 
     override fun createCopy() = copy(props = props.copy())

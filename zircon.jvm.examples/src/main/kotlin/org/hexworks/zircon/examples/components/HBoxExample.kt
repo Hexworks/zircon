@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_LEFT
 import org.hexworks.zircon.api.component.HBox
+import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.handleComponentEvents
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 import org.hexworks.zircon.api.uievent.Processed
@@ -34,8 +35,7 @@ object HBoxExample {
         val hbox = Components.hbox()
                 .withSpacing(0)
                 .withSize(50, 15)
-                .withTitle("HBox")
-                .wrapWithBox()
+                .withDecorations(box(title = "HBox"))
                 .withAlignmentWithin(screen, CENTER)
                 .build()
 

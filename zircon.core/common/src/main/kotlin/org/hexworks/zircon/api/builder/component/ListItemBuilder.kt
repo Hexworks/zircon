@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultListItem
 import org.hexworks.zircon.internal.component.renderer.DefaultListItemRenderer
-import org.hexworks.zircon.platform.util.SystemUtils
+import org.hexworks.zircon.internal.component.withNewLinesStripped
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
@@ -18,18 +18,14 @@ data class ListItemBuilder(
                 componentRenderer = DefaultListItemRenderer()))
     : BaseComponentBuilder<ListItem, ListItemBuilder>() {
 
-    // TODO: extract withText to mixin?
     fun withText(text: String) = also {
-        this.text = text
-        withWidth(max(preferredSize.width, text.length))
+        this.text = text.withNewLinesStripped()
+        contentSize = contentSize
+                .withWidth(max(this.text.length, contentSize.width))
     }
 
     override fun build(): ListItem {
-        val fixedText = text
-                .split(SystemUtils.getLineSeparator())
-                .first()
-                .split("\n")
-                .first()
+        val fixedText = text.withNewLinesStripped()
         return DefaultListItem(
                 componentMetadata = ComponentMetadata(
                         size = size,

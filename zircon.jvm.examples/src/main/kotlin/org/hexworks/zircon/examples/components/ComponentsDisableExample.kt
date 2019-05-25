@@ -25,7 +25,6 @@ object ComponentsDisableExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         val checkBox = Components.checkBox()
-                .withSize(10, 1)
                 .withPosition(5, 5)
                 .withText("Check me")
                 .build()

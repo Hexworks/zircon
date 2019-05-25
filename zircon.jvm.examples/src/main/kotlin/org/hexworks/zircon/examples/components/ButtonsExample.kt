@@ -35,7 +35,7 @@ object ButtonsExample {
 
         val panel = Components.panel()
                 .withDecorations(box(title = "Buttons on panel"), shadow())
-                .withSize(Sizes.create(30, 30))
+                .withSize(30, 32)
                 .withAlignment(positionalAlignment(29, 1))
                 .build()
         screen.addComponent(panel)

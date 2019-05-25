@@ -4,12 +4,14 @@ import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.LibgdxApplications
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_LEFT
 import org.hexworks.zircon.api.component.VBox
+import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.handleComponentEvents
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 import org.hexworks.zircon.api.uievent.Processed
@@ -24,7 +26,7 @@ object VBoxExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
                 .withSize(Sizes.create(60, 30))
                 .build())
@@ -34,8 +36,7 @@ object VBoxExample {
         val vbox = Components.vbox()
                 .withSpacing(0)
                 .withSize(20, 25)
-                .withTitle("VBox")
-                .wrapWithBox()
+                .withDecorations(box(title = "VBox"))
                 .withAlignmentWithin(screen, CENTER)
                 .build()
 

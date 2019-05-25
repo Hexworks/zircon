@@ -53,9 +53,8 @@ object Intro {
                 .withText("Do you plan to make a roguelike?")
                 .build())
 
-        val introBox = Components.textBox()
+        val introBox = Components.textBox(45)
                 .withAlignment(positionalAlignment(1, 3))
-                .withContentWidth(45)
                 .addParagraph("Look no further. Zircon is the right tool for the job.")
                 .addParagraph("Zircon is a Text GUI library and a Tile Engine which is designed for simplicity and ease of use.")
                 .addParagraph("It is usable out of the box for all JVM languages including Java, Kotlin, Clojure and Scala.")

@@ -21,7 +21,7 @@ class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
         } else {
             text
         }
-        val finalText = "${STATES[checkBoxState]!!} $clearedText"
+        val finalText = "${STATES.getValue(checkBoxState)} $clearedText"
         tileGraphics.putText(finalText)
         (finalText.length until tileGraphics.width).forEach { idx ->
             tileGraphics.setTileAt(Positions.create(idx, 0), Tiles.empty())
@@ -35,6 +35,8 @@ class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
         private const val CHECKED_BUTTON = "[*]"
         private const val UNCHECKED_BUTTON = "[ ]"
         private const val BUTTON_WIDTH = CHECKING_BUTTON.length
+
+        const val DECORATION_WIDTH = BUTTON_WIDTH + 1
 
         private val STATES = mapOf(
                 Pair(UNCHECKED, UNCHECKED_BUTTON),
