@@ -3,15 +3,15 @@ package org.hexworks.zircon.integration
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.screen.Screen
 
 class LogAreaIntegrationTest : ComponentIntegrationTestBase(size = Size.create(70, 30))  {
 
     override fun buildScreenContent(screen: Screen) {
         val panel = Components.panel()
-                .wrapWithBox(true)
-                .withSize((Sizes.create(60, 25)))
-                .withTitle("Log")
+                .withDecorations(box(title = "Log"))
+                .withSize(60, 25)
                 .build()
 
         screen.addComponent(panel)

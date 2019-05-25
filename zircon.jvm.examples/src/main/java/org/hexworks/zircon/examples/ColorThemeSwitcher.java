@@ -16,15 +16,19 @@ import org.hexworks.zircon.api.component.RadioButtonGroup;
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection;
 import org.hexworks.zircon.api.component.TextArea;
 import org.hexworks.zircon.api.data.Size;
+import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.internal.resource.ColorThemeResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
+import org.hexworks.zircon.internal.resource.ColorThemeResource;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+
+import static org.hexworks.zircon.api.ComponentDecorations.box;
+import static org.hexworks.zircon.api.ComponentDecorations.shadow;
 
 @SuppressWarnings("ALL")
 public class ColorThemeSwitcher {
@@ -50,8 +54,7 @@ public class ColorThemeSwitcher {
         final Size infoPanelSize = SCREEN_SIZE.withHeight(10).withRelativeWidth(-4);
 
         final Panel infoPanel = Components.panel()
-                .wrapWithBox(true)
-                .withTitle("Components example:")
+                .withDecorations(box(BoxType.SINGLE, "Components example:"))
                 .withSize(infoPanelSize)
                 .withPosition(Positions.create(2, 2).relativeToBottomOf(currentThemeLabel.get()))
                 .build();
@@ -88,9 +91,7 @@ public class ColorThemeSwitcher {
 
         final Panel panel = Components.panel()
                 .withSize(Sizes.create(20, 6))
-                .withTitle("Panel")
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
+                .withDecorations(box(BoxType.SINGLE, "Panel"), shadow())
                 .withPosition(Positions.create(10, 0)
                         .relativeToRightOf(label))
                 .build();
@@ -122,33 +123,28 @@ public class ColorThemeSwitcher {
                 .withHeight(themePickerSize.getHeight() / 2 - 1);
 
         final Panel solarizedLightPanel = Components.panel()
-                .withTitle("Solarized Light")
+                .withDecorations(box(BoxType.SINGLE, "Solarized Light"))
                 .withPosition(Positions.create(0, 1).relativeToBottomOf(infoPanel))
-                .wrapWithBox(true)
                 .withSize(smallPanelSize)
                 .build();
         final Panel solarizedDarkPanel = Components.panel()
-                .withTitle("Solarized Dark")
+                .withDecorations(box(BoxType.SINGLE, "Solarized Dark"))
                 .withPosition(Positions.create(0, 1).relativeToBottomOf(solarizedLightPanel))
-                .wrapWithBox(true)
                 .withSize(smallPanelSize)
                 .build();
         final Panel zenburnPanel = Components.panel()
-                .withTitle("Zenburn")
+                .withDecorations(box(BoxType.SINGLE, "Zenburn"))
                 .withPosition(Positions.create(1, 0).relativeToRightOf(solarizedLightPanel))
-                .wrapWithBox(true)
                 .withSize(smallPanelSize)
                 .build();
         final Panel monokaiPanel = Components.panel()
-                .withTitle("Monokai")
+                .withDecorations(box(BoxType.SINGLE, "MonokaiLight"))
                 .withPosition(Positions.create(1, 0).relativeToRightOf(solarizedDarkPanel))
-                .wrapWithBox(true)
                 .withSize(smallPanelSize)
                 .build();
         final Panel otherPanel = Components.panel()
-                .withTitle("Other")
+                .withDecorations(box(BoxType.SINGLE, "Other"))
                 .withPosition(Positions.create(1, 0).relativeToRightOf(zenburnPanel))
-                .wrapWithBox(true)
                 .withSize(themePickerSize.withRelativeWidth(3).withRelativeHeight(-1))
                 .build();
 

@@ -1,9 +1,17 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.ComponentStyleSets
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.graphics.StyleSet
 
 object LogAreaExample {
@@ -22,9 +30,8 @@ object LogAreaExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         val logArea = Components.logArea()
-                .wrapWithBox()
+                .withDecorations(box(title = "Log"))
                 .withSize(70, 30)
-                .withTitle("Log")
                 .build()
 
         logArea.addParagraph("This is a simple log row")
@@ -34,7 +41,6 @@ object LogAreaExample {
 
         logArea.addInlineText("This is a log row with a ")
         val btn = Components.button()
-                .withDecorations()
                 .withText("Button")
                 .build()
         logArea.addInlineComponent(btn)

@@ -3,76 +3,77 @@ package org.hexworks.zircon.api.component
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.data.Size
 
 enum class ComponentAlignment(
-        private val withinFn: (target: Rect, subject: Rect) -> Position,
-        private val aroundFn: (target: Rect, subject: Rect) -> Position) {
+        private val withinFn: (other: Rect, target: Size) -> Position,
+        private val aroundFn: (other: Rect, target: Size) -> Position) {
     TOP_LEFT(withinFn = { _, _ ->
         Positions.zero()
-    }, aroundFn = { target, subject ->
-        target.position.withRelativeX(-subject.width)
+    }, aroundFn = { other, target ->
+        other.position.withRelativeX(-target.width)
     }),
-    TOP_CENTER(withinFn = { target, subject ->
-        target.topCenter.withRelativeX(-subject.width / 2)
-    }, aroundFn = { target, subject ->
-        target.topCenter.withRelativeY(-subject.height)
-                .withRelativeX(-subject.width / 2)
+    TOP_CENTER(withinFn = { other, target ->
+        other.topCenter.withRelativeX(-target.width / 2)
+    }, aroundFn = { other, target ->
+        other.topCenter.withRelativeY(-target.height)
+                .withRelativeX(-target.width / 2)
     }),
-    TOP_RIGHT(withinFn = { target, subject ->
-        target.topRight.withRelativeX(-subject.width)
-    }, aroundFn = { target, _ ->
-        target.topRight
+    TOP_RIGHT(withinFn = { other, target ->
+        other.topRight.withRelativeX(-target.width)
+    }, aroundFn = { other, _ ->
+        other.topRight
     }),
-    RIGHT_CENTER(withinFn = { target, subject ->
-        target.rightCenter.withRelativeX(-subject.width)
-                .withRelativeY(-subject.height / 2)
-    }, aroundFn = { target, subject ->
-        target.rightCenter.withRelativeY(-subject.height / 2)
+    RIGHT_CENTER(withinFn = { other, target ->
+        other.rightCenter.withRelativeX(-target.width)
+                .withRelativeY(-target.height / 2)
+    }, aroundFn = { other, target ->
+        other.rightCenter.withRelativeY(-target.height / 2)
     }),
-    BOTTOM_RIGHT(withinFn = { target, subject ->
-        target.bottomRight.withRelativeX(-subject.width)
-                .withRelativeY(-subject.height)
-    }, aroundFn = { target, _ ->
-        target.bottomRight
+    BOTTOM_RIGHT(withinFn = { other, target ->
+        other.bottomRight.withRelativeX(-target.width)
+                .withRelativeY(-target.height)
+    }, aroundFn = { other, _ ->
+        other.bottomRight
     }),
-    BOTTOM_CENTER(withinFn = { target, subject ->
-        target.bottomCenter.withRelativeY(-subject.height)
-                .withRelativeX(-subject.width / 2)
-    }, aroundFn = { target, subject ->
-        target.bottomCenter
-                .withRelativeX(-subject.width / 2)
+    BOTTOM_CENTER(withinFn = { other, target ->
+        other.bottomCenter.withRelativeY(-target.height)
+                .withRelativeX(-target.width / 2)
+    }, aroundFn = { other, target ->
+        other.bottomCenter
+                .withRelativeX(-target.width / 2)
     }),
-    BOTTOM_LEFT(withinFn = { target, subject ->
-        target.bottomLeft.withRelativeY(-subject.height)
-    }, aroundFn = { target, subject ->
-        target.bottomLeft.withRelativeX(-subject.width)
+    BOTTOM_LEFT(withinFn = { other, target ->
+        other.bottomLeft.withRelativeY(-target.height)
+    }, aroundFn = { other, target ->
+        other.bottomLeft.withRelativeX(-target.width)
     }),
-    LEFT_CENTER(withinFn = { target, subject ->
-        target.leftCenter.withRelativeY(-subject.height / 2)
-    }, aroundFn = { target, subject ->
-        target.leftCenter.withRelativeX(-subject.width)
-                .withRelativeY(-subject.height / 2)
+    LEFT_CENTER(withinFn = { other, target ->
+        other.leftCenter.withRelativeY(-target.height / 2)
+    }, aroundFn = { other, target ->
+        other.leftCenter.withRelativeX(-target.width)
+                .withRelativeY(-target.height / 2)
     }),
-    CENTER(withinFn = { target, subject ->
-        target.center.withRelativeY(-subject.height / 2)
-                .withRelativeX(-subject.width / 2)
+    CENTER(withinFn = { other, target ->
+        other.center.withRelativeY(-target.height / 2)
+                .withRelativeX(-target.width / 2)
     }, aroundFn = { _, _ ->
         throw UnsupportedOperationException("Can't use CENTER alignment around a container.")
     });
 
     /**
-     * Returns the [Position] which can be used to properly align
-     * `subject` **within** `target`.
+     * Returns the [Position] which can be used to properly align a boundable
+     * with [target] size **within** [other].
      */
-    fun alignWithin(target: Rect, subject: Rect): Position {
-        return withinFn(target, subject)
+    fun alignWithin(other: Rect, target: Size): Position {
+        return withinFn(other, target)
     }
 
     /**
-     * Returns the [Position] which can be used to properly align
-     * `subject` **around** `target`.
+     * Returns the [Position] which can be used to properly align a boundable
+     * with [target] size **around** [other].
      */
-    fun alignAround(target: Rect, subject: Rect): Position {
-        return aroundFn(target, subject)
+    fun alignAround(other: Rect, target: Size): Position {
+        return aroundFn(other, target)
     }
 }

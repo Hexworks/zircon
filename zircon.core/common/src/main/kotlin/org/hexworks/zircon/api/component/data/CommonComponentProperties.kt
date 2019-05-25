@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.component.data
 import org.hexworks.zircon.api.ComponentAlignments
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.alignment.AlignmentStrategy
+import org.hexworks.zircon.api.component.AlignmentStrategy
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.resource.TilesetResource

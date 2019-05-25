@@ -43,7 +43,7 @@ class CheckBoxesIntegrationTest : ComponentIntegrationTestBase() {
 
         val tooLongCheckBox = Components.checkBox()
                 .withText("Too long text")
-                .withWidth(12)
+                .withSize(12, 1)
                 .withAlignment(positionalAlignment(2, 13))
 
         screen.addComponent(tooLongCheckBox)

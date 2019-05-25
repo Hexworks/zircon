@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultTextArea
 import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
+import org.hexworks.zircon.internal.component.withNewLinesStripped
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
@@ -19,8 +20,9 @@ data class TextAreaBuilder(
     : BaseComponentBuilder<TextArea, TextAreaBuilder>() {
 
     fun withText(text: String) = also {
-        this.text = text
-        withWidth(max(preferredSize.width, text.length))
+        this.text = text.withNewLinesStripped()
+        contentSize = contentSize
+                .withWidth(max(this.text.length, contentSize.width))
     }
 
     override fun build(): TextArea {

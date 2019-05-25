@@ -11,7 +11,9 @@ abstract class BaseSize : Size {
 
     override operator fun plus(other: Size) = Size.create(width + other.width, height + other.height)
 
-    override operator fun minus(other: Size) = Size.create(width - other.width, height - other.height)
+    override operator fun minus(other: Size) = Size.create(
+            width = max(0, width - other.width),
+            height = max(0, height - other.height))
 
     override operator fun component1() = width
 

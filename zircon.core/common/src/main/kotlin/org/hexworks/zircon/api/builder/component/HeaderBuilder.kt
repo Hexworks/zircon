@@ -20,7 +20,8 @@ data class HeaderBuilder(
 
     fun withText(text: String) = also {
         this.text = text
-        withWidth(max(preferredSize.width, text.length))
+        contentSize = contentSize
+                .withWidth(max(text.length, contentSize.width))
     }
 
     override fun build(): Header {

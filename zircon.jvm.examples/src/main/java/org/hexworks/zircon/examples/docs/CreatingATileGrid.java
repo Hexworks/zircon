@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.grid.TileGrid;
 
 public class CreatingATileGrid {
 
+    @SuppressWarnings("Duplicates")
     public static void main(String[] args) {
 
         TileGrid tileGrid = SwingApplications.startTileGrid(

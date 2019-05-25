@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultToggleButton
 import org.hexworks.zircon.internal.component.renderer.DefaultToggleButtonRenderer
+import org.hexworks.zircon.internal.component.withNewLinesStripped
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
@@ -21,8 +22,9 @@ data class ToggleButtonBuilder(
     : BaseComponentBuilder<ToggleButton, ToggleButtonBuilder>() {
 
     fun withText(text: String) = also {
-        this.text = text
-        withWidth(max(preferredSize.width, text.length))
+        this.text = text.withNewLinesStripped()
+        contentSize = contentSize
+                .withWidth(max(this.text.length, contentSize.width))
     }
 
     fun withIsSelected(isSelected: Boolean) = also {

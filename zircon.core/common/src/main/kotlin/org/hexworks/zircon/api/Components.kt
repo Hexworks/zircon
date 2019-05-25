@@ -1,6 +1,22 @@
 package org.hexworks.zircon.api
 
-import org.hexworks.zircon.api.builder.component.*
+import org.hexworks.zircon.api.builder.component.ButtonBuilder
+import org.hexworks.zircon.api.builder.component.CheckBoxBuilder
+import org.hexworks.zircon.api.builder.component.GameComponentBuilder
+import org.hexworks.zircon.api.builder.component.HBoxBuilder
+import org.hexworks.zircon.api.builder.component.HeaderBuilder
+import org.hexworks.zircon.api.builder.component.IconBuilder
+import org.hexworks.zircon.api.builder.component.LabelBuilder
+import org.hexworks.zircon.api.builder.component.ListItemBuilder
+import org.hexworks.zircon.api.builder.component.LogAreaBuilder
+import org.hexworks.zircon.api.builder.component.PanelBuilder
+import org.hexworks.zircon.api.builder.component.ParagraphBuilder
+import org.hexworks.zircon.api.builder.component.ProgressBarBuilder
+import org.hexworks.zircon.api.builder.component.RadioButtonGroupBuilder
+import org.hexworks.zircon.api.builder.component.TextAreaBuilder
+import org.hexworks.zircon.api.builder.component.TextBoxBuilder
+import org.hexworks.zircon.api.builder.component.ToggleButtonBuilder
+import org.hexworks.zircon.api.builder.component.VBoxBuilder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 import kotlin.jvm.JvmStatic
@@ -14,7 +30,7 @@ object Components {
     fun logArea() = LogAreaBuilder.newBuilder()
 
     @JvmStatic
-    fun textBox() = TextBoxBuilder.newBuilder()
+    fun textBox(contentWidth: Int) = TextBoxBuilder.newBuilder(contentWidth)
 
     @JvmStatic
     fun radioButtonGroup() = RadioButtonGroupBuilder.newBuilder()

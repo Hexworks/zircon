@@ -19,13 +19,15 @@ data class LabelBuilder(
                 componentRenderer = DefaultLabelRenderer()))
     : BaseComponentBuilder<Label, LabelBuilder>() {
 
+
     fun withText(text: String) = also {
         this.text = text
                 .split(SystemUtils.getLineSeparator())
                 .first()
                 .split("\n")
                 .first()
-        withWidth(max(preferredSize.width, this.text.length))
+        contentSize = contentSize
+                .withWidth(max(this.text.length, contentSize.width))
     }
 
     override fun build(): Label {
@@ -38,7 +40,7 @@ data class LabelBuilder(
                 initialText = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<Label>))
+                        componentRenderer = componentRenderer as ComponentRenderer<Label>))
     }
 
     override fun createCopy() = copy(props = props.copy())

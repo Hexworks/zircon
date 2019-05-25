@@ -18,8 +18,8 @@ import org.hexworks.zircon.api.UIEventResponses;
 import org.hexworks.zircon.api.builder.component.GameComponentBuilder;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.ColorTheme;
-import org.hexworks.zircon.api.component.builder.ComponentBuilder;
 import org.hexworks.zircon.api.component.Panel;
+import org.hexworks.zircon.api.component.builder.ComponentBuilder;
 import org.hexworks.zircon.api.data.Block;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
@@ -45,6 +45,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static org.hexworks.zircon.api.ComponentDecorations.box;
 
 @SuppressWarnings("ALL")
 public class GameAreaScrollingWithLayers {
@@ -73,9 +75,7 @@ public class GameAreaScrollingWithLayers {
 
         Panel actions = Components.panel()
                 .withSize(screen.getSize().withWidth(20))
-                .wrapWithBox(true)
-                .withTitle("Actions")
-                .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)
+                .withDecorations(box(BoxType.TOP_BOTTOM_DOUBLE, "Actions"))
                 .build();
         Button wait = Components.button()
                 .withText("Wait")
@@ -92,9 +92,7 @@ public class GameAreaScrollingWithLayers {
         final Panel gamePanel = Components.panel()
                 .withSize(screen.getSize().withWidth(40))
                 .withPosition(Positions.topRightOf(actions))
-                .withTitle("Game area")
-                .wrapWithBox(true)
-                .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)
+                .withDecorations(box(BoxType.TOP_BOTTOM_DOUBLE, "Game area"))
                 .build();
 
         final Size3D visibleGameAreaSize = Sizes.from2DTo3D(gamePanel.getSize()

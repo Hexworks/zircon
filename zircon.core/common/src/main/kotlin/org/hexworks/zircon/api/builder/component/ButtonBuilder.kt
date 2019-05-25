@@ -24,7 +24,8 @@ data class ButtonBuilder(
 
     fun withText(text: String) = also {
         this.text = text
-        withWidth(max(preferredSize.width, text.length))
+        contentSize = contentSize
+                .withWidth(max(text.length, contentSize.width))
     }
 
     override fun build(): Button {

@@ -29,12 +29,12 @@ data class VBoxBuilder(
                 componentMetadata = ComponentMetadata(
                         size = size,
                         position = position,
-                        componentStyleSet = props.componentStyleSet,
+                        componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialTitle = title,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<VBox>),
+                        componentRenderer = componentRenderer as ComponentRenderer<VBox>),
                 spacing = spacing)
     }
 
