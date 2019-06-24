@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.integration
 
 import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.ComponentDecorations.side
 import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
@@ -32,30 +33,28 @@ object ButtonsTest {
 
         val simpleBtn = Components.button()
                 .withText("Button")
-                .wrapSides(true)
+                .withDecorations(side())
                 .withPosition(Positions.create(1, 3))
         val boxedBtn = Components.button()
                 .withText("Boxed Button")
                 .wrapWithBox(true)
-                .wrapSides(false)
                 .withPosition(Positions.create(1, 5))
         val tooLongBtn = Components.button()
                 .withText("Too long name for button")
                 .wrapWithBox(true)
                 .wrapWithShadow(true)
-                .wrapSides(false)
                 .withPosition(Positions.create(1, 9))
                 .withSize(Sizes.create(10, 4))
         val overTheTopBtn = Components.button()
                 .withText("Over the top button")
-                .withDecorationRenderers(
+                .withDecorations(
                         ShadowDecorationRenderer(),
                         HalfBlockDecorationRenderer(),
                         BoxDecorationRenderer(BoxType.DOUBLE))
                 .withPosition(Positions.create(1, 14))
         val halfBlockBtn = Components.button()
                 .withText("Half block button")
-                .withDecorationRenderers(
+                .withDecorations(
                         ShadowDecorationRenderer(),
                         HalfBlockDecorationRenderer())
                 .withPosition(Positions.create(1, 23))

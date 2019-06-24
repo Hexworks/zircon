@@ -148,9 +148,8 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
 
     private fun createTextBoxBuilder(): TextBoxBuilder {
         return TextBoxBuilder
-                .newBuilder()
+                .newBuilder(contentSize.width)
                 .withTileset(currentTileset())
-                .withContentWidth(contentSize.width)
     }
 
     override fun render() {

@@ -1,8 +1,8 @@
 package org.hexworks.zircon.integration
 
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.screen.Screen
 
@@ -10,19 +10,19 @@ class RadioButtonGroupIntegrationTest : ComponentIntegrationTestBase() {
 
     override fun buildScreenContent(screen: Screen) {
         val panel = Components.panel()
-                .wrapWithBox(true)
-                .withSize(Sizes.create(28, 28))
-                .withPosition(Positions.create(31, 1))
+                .withDecorations(box())
+                .withSize(28, 28)
+                .withPosition(31, 1)
                 .build()
         screen.addComponent(panel)
 
         val simpleRadioButtonGroup0 = Components.radioButtonGroup()
-                .withPosition(Positions.create(2, 2))
-                .withSize(Sizes.create(14, 3))
+                .withPosition(2, 2)
+                .withSize(14, 3)
                 .build()
         val simpleRadioButtonGroup1 = Components.radioButtonGroup()
-                .withPosition(Positions.create(0, 0))
-                .withSize(Sizes.create(14, 3))
+                .withPosition(0, 0)
+                .withSize(14, 3)
                 .build()
 
         listOf(simpleRadioButtonGroup0, simpleRadioButtonGroup1).forEach {
@@ -35,18 +35,14 @@ class RadioButtonGroupIntegrationTest : ComponentIntegrationTestBase() {
         panel.addComponent(simpleRadioButtonGroup1)
 
         val decoratedRadioButtonGroup0 = Components.radioButtonGroup()
-                .withBoxType(BoxType.DOUBLE)
-                .wrapWithShadow(true)
-                .wrapWithBox(true)
-                .withSize(Sizes.create(14, 3))
-                .withPosition(Positions.create(2, 8))
+                .withDecorations(box(BoxType.DOUBLE), shadow())
+                .withSize(17, 6)
+                .withPosition(2, 8)
                 .build()
         val decoratedRadioButtonGroup1 = Components.radioButtonGroup()
-                .withBoxType(BoxType.DOUBLE)
-                .wrapWithShadow(true)
-                .wrapWithBox(true)
-                .withSize(Sizes.create(14, 3))
-                .withPosition(Positions.create(0, 6))
+                .withDecorations(box(BoxType.DOUBLE), shadow())
+                .withSize(17, 6)
+                .withPosition(0, 6)
                 .build()
 
         screen.addComponent(decoratedRadioButtonGroup0)

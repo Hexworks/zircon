@@ -2,22 +2,23 @@ package org.hexworks.zircon.integration
 
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.screen.Screen
 
 class TextBoxIntegrationTest : ComponentIntegrationTestBase() {
 
     override fun buildScreenContent(screen: Screen) {
         val panel = Components.panel()
-                .wrapWithBox(true)
-                .withSize(Sizes.create(28, 28))
-                .withPosition(Positions.create(30, 1))
+                .withDecorations(box())
+                .withSize(28, 28)
+                .withAlignment(positionalAlignment(30, 1))
                 .build()
         screen.addComponent(panel)
 
-        screen.addComponent(Components.textBox()
-                .withPosition(Positions.create(2, 2))
-                .withContentWidth(26)
+        screen.addComponent(Components.textBox(26)
+                .withAlignment(positionalAlignment(2, 2))
                 .addHeader("Header!")
                 .addParagraph("This is a plain text box.")
                 .addNewLine()
@@ -26,16 +27,14 @@ class TextBoxIntegrationTest : ComponentIntegrationTestBase() {
                 .addNewLine()
                 .addInlineText("Inline text ")
                 .addInlineComponent(Components.button()
-                        .wrapSides(false)
                         .withText("Button")
                         .build())
                 .addInlineText(" text")
                 .commitInlineElements()
                 .addNewLine()
                 .addParagraph("And a multi-line paragraph with typewriter effect...", withTypingEffectSpeedInMs = 200))
-        panel.addComponent(Components.textBox()
-                .withPosition(Positions.zero())
-                .withContentWidth(26)
+        panel.addComponent(Components.textBox(26)
+                .withAlignment(positionalAlignment(Positions.zero()))
                 .addHeader("Header!")
                 .addParagraph("This is a plain text box.")
                 .addNewLine()
@@ -44,7 +43,6 @@ class TextBoxIntegrationTest : ComponentIntegrationTestBase() {
                 .addNewLine()
                 .addInlineText("Inline text ")
                 .addInlineComponent(Components.button()
-                        .wrapSides(false)
                         .withText("Button")
                         .build())
                 .addInlineText(" text")
@@ -52,18 +50,14 @@ class TextBoxIntegrationTest : ComponentIntegrationTestBase() {
                 .addNewLine()
                 .addParagraph("And a multi-line paragraph with typewriter effect..."))
 
-        screen.addComponent(Components.textBox()
-                .withPosition(Positions.create(1, 17))
-                .withContentWidth(22)
+        screen.addComponent(Components.textBox(22)
+                .withAlignment(positionalAlignment(1, 17))
                 .addHeader("Decorated!")
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
+                .withDecorations(box(), shadow())
                 .addParagraph("This is a paragraph which won't fit on one line."))
-        panel.addComponent(Components.textBox()
-                .withPosition(Positions.create(0, 15))
-                .withContentWidth(22)
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
+        panel.addComponent(Components.textBox(22)
+                .withAlignment(positionalAlignment(0, 15))
+                .withDecorations(box(), shadow())
                 .addHeader("Decorated!")
                 .addParagraph("This is a paragraph which won't fit on one line."))
     }

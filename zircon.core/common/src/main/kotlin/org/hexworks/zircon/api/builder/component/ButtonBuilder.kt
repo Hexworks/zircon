@@ -4,67 +4,45 @@ import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.api.component.renderer.impl.ButtonSideDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.component.renderer.impl.SideDecorationRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultButton
 import org.hexworks.zircon.internal.component.renderer.DefaultButtonRenderer
 import kotlin.jvm.JvmStatic
+import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
 data class ButtonBuilder(
         private var text: String = "",
         private var wrapSides: Boolean = true,
-        private val commonComponentProperties: CommonComponentProperties<Button> = CommonComponentProperties(
+        override val props: CommonComponentProperties<Button> = CommonComponentProperties(
+                decorationRenderers = listOf(SideDecorationRenderer()),
                 componentRenderer = DefaultButtonRenderer()))
-    : BaseComponentBuilder<Button, ButtonBuilder>(commonComponentProperties) {
+    : BaseComponentBuilder<Button, ButtonBuilder>() {
 
-    override fun withTitle(title: String): ButtonBuilder {
-        throw UnsupportedOperationException("You can't set a title for a button")
-    }
-
-    fun wrapSides(wrapSides: Boolean) = also {
-        this.wrapSides = wrapSides
-    }
 
     fun withText(text: String) = also {
         this.text = text
+        contentSize = contentSize
+                .withWidth(max(text.length, contentSize.width))
     }
 
     override fun build(): Button {
-        fillMissingValues()
-        val renderers = decorationRenderers.toMutableList()
-        if (wrapSides) {
-            renderers += ButtonSideDecorationRenderer()
-        }
         val componentRenderer = DefaultComponentRenderingStrategy(
-                decorationRenderers = renderers,
-                componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<Button>)
-        val finalSize = if (size.isUnknown()) {
-            renderers.asSequence()
-                    .map { it.occupiedSize }
-                    .fold(Size.create(text.length, 1), Size::plus)
-        } else {
-            size
-        }
+                decorationRenderers = decorationRenderers,
+                componentRenderer = componentRenderer as ComponentRenderer<Button>)
         return DefaultButton(
                 componentMetadata = ComponentMetadata(
-                        size = finalSize,
-                        position = fixPosition(finalSize),
+                        size = size,
+                        position = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialText = text,
                 renderingStrategy = componentRenderer)
     }
 
-    override fun withDecorationRenderers(vararg renderers: ComponentDecorationRenderer): ButtonBuilder {
-        wrapSides(false)
-        return super.withDecorationRenderers(*renderers)
-    }
-
-    override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())
+    override fun createCopy() = copy(props = props.copy())
 
     companion object {
 

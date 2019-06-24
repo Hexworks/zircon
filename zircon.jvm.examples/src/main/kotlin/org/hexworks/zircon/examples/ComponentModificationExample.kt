@@ -4,9 +4,9 @@ import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.component.ComponentAlignment
+import org.hexworks.zircon.api.component.ComponentAlignment.TOP_RIGHT
 import org.hexworks.zircon.api.extensions.handleMouseEvents
-import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_RELEASED
 import org.hexworks.zircon.api.uievent.Processed
 
 object ComponentModificationExample {
@@ -23,9 +23,9 @@ object ComponentModificationExample {
                 .build()
         val modifyButton = Components.button()
                 .withText("Modify")
-                .withAlignmentAround(button, ComponentAlignment.TOP_RIGHT)
+                .withAlignmentAround(button, TOP_RIGHT)
                 .build().apply {
-                    handleMouseEvents(MouseEventType.MOUSE_RELEASED) { _, _ ->
+                    handleMouseEvents(MOUSE_RELEASED) { _, _ ->
                         button.text += "x"
                         Processed
                     }

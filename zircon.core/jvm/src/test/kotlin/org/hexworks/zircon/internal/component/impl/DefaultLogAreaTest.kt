@@ -118,7 +118,7 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
         const val TEXT = "This is my log row"
         const val ALTERNATE_TEXT = "This is my other log row"
         val COMPONENT = Components.button()
-                .withDecorationRenderers()
+                .withDecorations()
                 .withTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
                 .withText("Button")
                 .build()

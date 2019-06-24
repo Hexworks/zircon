@@ -7,22 +7,23 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.component.renderer.impl.TypingEffectPostProcessor
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultParagraph
 import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
+import org.hexworks.zircon.internal.component.withNewLinesStripped
+import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
 data class ParagraphBuilder(
         internal var text: String = "",
         private var typingEffectSpeedInMs: Long = 0,
-        private val commonComponentProperties: CommonComponentProperties<Paragraph> = CommonComponentProperties(
+        override val props: CommonComponentProperties<Paragraph> = CommonComponentProperties(
                 componentRenderer = DefaultParagraphRenderer()))
-    : BaseComponentBuilder<Paragraph, ParagraphBuilder>(commonComponentProperties) {
-
-    override fun withTitle(title: String) = also { }
+    : BaseComponentBuilder<Paragraph, ParagraphBuilder>() {
 
     fun withText(text: String) = also {
-        this.text = text
+        this.text = text.withNewLinesStripped()
+        contentSize = contentSize
+                .withWidth(max(this.text.length, contentSize.width))
     }
 
     fun withTypingEffect(typingEffectSpeedInMs: Long) = also {
@@ -30,18 +31,6 @@ data class ParagraphBuilder(
     }
 
     override fun build(): Paragraph {
-        require(text.isNotBlank()) {
-            "A Label can't be blank!"
-        }
-        fillMissingValues()
-        // TODO: calculate size based on text size
-        val finalSize = if (size.isUnknown()) {
-            decorationRenderers.asSequence()
-                    .map { it.occupiedSize }
-                    .fold(Size.create(text.length, 1), Size::plus)
-        } else {
-            size
-        }
         val postProcessors = if (typingEffectSpeedInMs > 0) {
             listOf(TypingEffectPostProcessor<Paragraph>(typingEffectSpeedInMs))
         } else {
@@ -49,18 +38,18 @@ data class ParagraphBuilder(
         }
         return DefaultParagraph(
                 componentMetadata = ComponentMetadata(
-                        position = fixPosition(finalSize),
-                        size = finalSize,
+                        position = position,
+                        size = size,
                         tileset = tileset,
                         componentStyleSet = componentStyleSet),
                 initialText = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<Paragraph>,
+                        componentRenderer = componentRenderer as ComponentRenderer<Paragraph>,
                         componentPostProcessors = postProcessors))
     }
 
-    override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())
+    override fun createCopy() = copy(props = props.copy())
 
     companion object {
 

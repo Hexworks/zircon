@@ -6,34 +6,29 @@ import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButtonGroup
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
 import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 data class RadioButtonGroupBuilder(
-        private val commonComponentProperties: CommonComponentProperties<RadioButtonGroup> = CommonComponentProperties(
+        override val props: CommonComponentProperties<RadioButtonGroup> = CommonComponentProperties(
                 componentRenderer = DefaultRadioButtonGroupRenderer()))
-    : BaseComponentBuilder<RadioButtonGroup, RadioButtonGroupBuilder>(commonComponentProperties) {
+    : BaseComponentBuilder<RadioButtonGroup, RadioButtonGroupBuilder>() {
 
     override fun build(): RadioButtonGroup {
-        fillMissingValues()
-        val finalSize = decorationRenderers.asSequence()
-                .map { it.occupiedSize }
-                .fold(size, Size::plus)
         return DefaultRadioButtonGroup(
                 componentMetadata = ComponentMetadata(
-                        size = finalSize,
-                        position = fixPosition(finalSize),
+                        size = size,
+                        position = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = commonComponentProperties.componentRenderer as ComponentRenderer<RadioButtonGroup>))
+                        componentRenderer = componentRenderer as ComponentRenderer<RadioButtonGroup>))
     }
 
-    override fun createCopy() = copy(commonComponentProperties = commonComponentProperties.copy())
+    override fun createCopy() = copy(props = props.copy())
 
     companion object {
 

@@ -1,8 +1,17 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
@@ -22,83 +31,71 @@ object PanelsExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         screen.addComponent(Components.panel()
-                .wrapWithBox(true)
-                .withSize(Sizes.create(18, 5))
+                .withDecorations(box())
+                .withSize(18, 5)
                 .withComponentRenderer(NoOpComponentRenderer())
-                .withPosition(Positions.create(1, 1)))
+                .withAlignment(positionalAlignment(1, 1)))
 
         screen.addComponent(Components.panel()
-                .wrapWithShadow(true)
-                .withSize(Sizes.create(18, 5))
-                .withPosition(Positions.create(1, 8)))
+                .withDecorations(shadow())
+                .withSize(18, 5)
+                .withAlignment(positionalAlignment(1, 8)))
 
         screen.addComponent(Components.panel()
-                .wrapWithShadow(true)
-                .wrapWithBox(true)
-                .withSize(Sizes.create(18, 5))
-                .withPosition(Positions.create(1, 15)))
+                .withDecorations(box(), shadow())
+                .withSize(18, 5)
+                .withAlignment(positionalAlignment(1, 15)))
 
         screen.addComponent(Components.panel()
-                .wrapWithBox(true)
-                .withBoxType(BoxType.DOUBLE)
-                .withSize(Sizes.create(18, 5))
-                .withPosition(Positions.create(1, 22)))
+                .withDecorations(box(boxType = BoxType.DOUBLE))
+                .withSize(18, 5)
+                .withAlignment(positionalAlignment(1, 22)))
 
         screen.addComponent(Components.panel()
-                .wrapWithBox(true)
-                .withBoxType(BoxType.BASIC)
-                .withSize(Sizes.create(18, 5))
-                .withPosition(Positions.create(21, 1)))
+                .withDecorations(box(boxType = BoxType.BASIC))
+                .withSize(18, 5)
+                .withAlignment(positionalAlignment(21, 1)))
 
         screen.addComponent(Components.panel()
-                .wrapWithBox(true)
-                .withTitle("Qux")
-                .withSize(Sizes.create(18, 5))
-                .withPosition(Positions.create(21, 8)))
+                .withDecorations(box(title = "Qux"))
+                .withSize(18, 5)
+                .withAlignment(positionalAlignment(21, 8)))
 
         screen.addComponent(Components.panel()
-                .withDecorationRenderers(
+                .withDecorations(
                         ShadowDecorationRenderer(),
                         HalfBlockDecorationRenderer())
-                .withSize(Sizes.create(18, 5))
-                .withPosition(Positions.create(21, 15)))
+                .withSize(18, 5)
+                .withAlignment(positionalAlignment(21, 15)))
 
         screen.addComponent(Components.panel()
-                .withSize(Sizes.create(18, 5))
-                .withTitle("Wombat")
-                .wrapWithBox(true)
-                .withBoxType(BoxType.TOP_BOTTOM_DOUBLE)
-                .withPosition(Positions.create(21, 22)))
+                .withSize(18, 5)
+                .withDecorations(box(title = "Wombat", boxType = BoxType.TOP_BOTTOM_DOUBLE))
+                .withAlignment(positionalAlignment(21, 22)))
 
         screen.addComponent(Components.panel()
-                .withSize(Sizes.create(18, 5))
-                .wrapWithBox(true)
-                .withBoxType(BoxType.LEFT_RIGHT_DOUBLE)
-                .withPosition(Positions.create(41, 1)))
+                .withSize(18, 5)
+                .withDecorations(box(boxType = BoxType.LEFT_RIGHT_DOUBLE))
+                .withAlignment(positionalAlignment(41, 1)))
 
         val panel = Components.panel()
                 .withSize(Sizes.create(18, 19))
-                .wrapWithBox(true)
-                .withTitle("Parent")
-                .withPosition(Positions.create(41, 8))
+                .withDecorations(box(title = "Parent"))
+                .withAlignment(positionalAlignment(41, 8))
                 .build()
 
         screen.addComponent(panel)
 
         val nested0 = Components.panel()
-                .withSize(Sizes.create(14, 15))
-                .withPosition(Positions.create(1, 1))
-                .wrapWithBox(true)
-                .withTitle("Nested 0")
-                .withBoxType(BoxType.DOUBLE)
+                .withSize(14, 15)
+                .withAlignment(positionalAlignment(1, 1))
+                .withDecorations(box(title = "Nested 0", boxType = BoxType.DOUBLE))
                 .build()
 
         val nested1 = Components.panel()
-                .withSize(Sizes.create(10, 11))
-                .withPosition(Positions.create(1, 1))
-                .wrapWithBox(true)
-                .withTitle("Nested 1")
-                .withBoxType(BoxType.DOUBLE)
+                .withSize(10, 11)
+                .withAlignment(positionalAlignment(1, 1))
+                .withDecorations(box(title = "Nested 1", boxType = BoxType.DOUBLE))
                 .build()
 
         panel.addComponent(nested0)

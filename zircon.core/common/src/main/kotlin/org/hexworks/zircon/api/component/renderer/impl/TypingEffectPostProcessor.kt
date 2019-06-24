@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentPostProcessorContext
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.modifier.Delay
 
-class TypingEffectPostProcessor<T : Component>(private val baseDelayInMs: Long) : ComponentPostProcessor<T> {
+data class TypingEffectPostProcessor<T : Component>(private val baseDelayInMs: Long) : ComponentPostProcessor<T> {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentPostProcessorContext<T>) {
         val width = tileGraphics.size.width

@@ -1,6 +1,8 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
 
@@ -21,9 +23,7 @@ object CP437CharsExample {
         val cp437panel = Components.panel()
                 .withSize(Sizes.create(19, 19))
                 .withPosition(Positions.create(1, 1))
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
-                .withBoxType(BoxType.SINGLE)
+                .withDecorations(box(BoxType.SINGLE), shadow())
                 .build()
 
         val loader = CP437TileMetadataLoader(16, 16)

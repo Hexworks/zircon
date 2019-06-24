@@ -20,7 +20,8 @@ import org.hexworks.zircon.api.uievent.UIEventSource
  * this is the interface you should be programming against.
  */
 interface TileGrid
-    : AnimationHandler, Clearable, Closeable, DrawSurface, Layerable, ShutdownHook, Styleable, TypingSupport, UIEventSource {
+    : AnimationHandler, Clearable, Closeable, DrawSurface, Layerable,
+        ShutdownHook, Styleable, TypingSupport, UIEventSource {
 
     val widthInPixels: Int
         get() = currentTileset().width * width

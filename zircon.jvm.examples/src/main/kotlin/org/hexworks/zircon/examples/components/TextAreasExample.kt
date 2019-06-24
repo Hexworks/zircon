@@ -1,6 +1,16 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType
 
 object TextAreasExample {
@@ -19,35 +29,31 @@ object TextAreasExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         val panel = Components.panel()
-                .wrapWithBox(true)
+                .withDecorations(box())
                 .withSize(Sizes.create(28, 28))
-                .withPosition(Positions.create(31, 1))
+                .withAlignment(positionalAlignment(31, 1))
                 .build()
         screen.addComponent(panel)
 
         screen.addComponent(Components.textArea()
                 .withText("Some text")
                 .withSize(Sizes.create(13, 5))
-                .withPosition(Positions.create(2, 2)))
+                .withAlignment(positionalAlignment(2, 2)))
         panel.addComponent(Components.textArea()
                 .withText("Some text")
                 .withSize(Sizes.create(13, 5))
-                .withPosition(Positions.create(2, 2)))
+                .withAlignment(positionalAlignment(2, 2)))
 
         screen.addComponent(Components.textArea()
                 .withText("Some other text")
-                .withBoxType(BoxType.DOUBLE)
-                .wrapWithShadow(true)
-                .wrapWithBox(true)
+                .withDecorations(box(boxType = BoxType.DOUBLE), shadow())
                 .withSize(Sizes.create(13, 7))
-                .withPosition(Positions.create(2, 8)))
+                .withAlignment(positionalAlignment(Positions.create(2, 8))))
         panel.addComponent(Components.textArea()
                 .withText("Some other text")
-                .withBoxType(BoxType.DOUBLE)
-                .wrapWithShadow(true)
-                .wrapWithBox(true)
+                .withDecorations(box(boxType = BoxType.DOUBLE), shadow())
                 .withSize(Sizes.create(13, 7))
-                .withPosition(Positions.create(2, 8)))
+                .withAlignment(positionalAlignment(Positions.create(2, 8))))
 
         screen.display()
         screen.applyColorTheme(theme)

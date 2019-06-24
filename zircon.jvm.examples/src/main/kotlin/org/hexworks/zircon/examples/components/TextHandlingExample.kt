@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.extensions.onTextChanged
+import org.hexworks.zircon.api.extensions.shadow
 
 object TextHandlingExample {
 
@@ -26,12 +27,12 @@ object TextHandlingExample {
 
         val label = Components.label()
                 .withText("Foobar")
-                .wrapWithShadow(true)
+                .withDecorations(shadow())
                 .build()
 
         val otherLabel = Components.label()
                 .withText("Barbaz")
-                .wrapWithShadow(true)
+                .withDecorations(shadow())
                 .withPosition(0, 3)
                 .build()
 

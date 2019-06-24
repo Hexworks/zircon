@@ -1,12 +1,20 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.LibgdxApplications
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.component.Visibility
-import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.halfBlock
 import org.hexworks.zircon.api.extensions.handleMouseEvents
-import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.extensions.shadow
+import org.hexworks.zircon.api.extensions.side
+import org.hexworks.zircon.api.graphics.BoxType.DOUBLE
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
 
@@ -26,64 +34,55 @@ object ButtonsExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         val panel = Components.panel()
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
-                .withSize(Sizes.create(30, 30))
-                .withPosition(Positions.create(29, 1))
-                .withTitle("Buttons on panel")
+                .withDecorations(box(title = "Buttons on panel"), shadow())
+                .withSize(30, 32)
+                .withAlignment(positionalAlignment(29, 1))
                 .build()
         screen.addComponent(panel)
 
         val simpleBtn = Components.button()
                 .withText("Button")
-                .wrapSides(true)
-                .withPosition(Positions.create(1, 3))
+                .withDecorations(side())
+                .withAlignment(positionalAlignment(1, 3))
         val boxedBtn = Components.button()
                 .withText("Boxed Button")
-                .wrapWithBox(true)
-                .wrapSides(false)
-                .withPosition(Positions.create(1, 5))
+                .withDecorations(box())
+                .withAlignment(positionalAlignment(1, 5))
         val tooLongBtn = Components.button()
                 .withText("Too long name for button")
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
-                .wrapSides(false)
-                .withPosition(Positions.create(1, 9))
+                .withDecorations(box(), shadow())
+                .withAlignment(positionalAlignment(1, 9))
                 .withSize(Sizes.create(10, 4))
         val overTheTopBtn = Components.button()
                 .withText("Over the top button")
-                .withDecorationRenderers(
-                        ShadowDecorationRenderer(),
-                        HalfBlockDecorationRenderer(),
-                        BoxDecorationRenderer(BoxType.DOUBLE))
-                .withPosition(Positions.create(1, 14))
+                .withDecorations(box(boxType = DOUBLE), halfBlock(), shadow())
+                .withAlignment(positionalAlignment(1, 14))
         val halfBlockBtn = Components.button()
                 .withText("Half block button")
-                .withDecorationRenderers(
-                        ShadowDecorationRenderer(),
-                        HalfBlockDecorationRenderer())
-                .withPosition(Positions.create(1, 23))
+                .withDecorations(
+                        shadow(), halfBlock())
+                .withAlignment(positionalAlignment(1, 23))
         val invisibleBtn = Components.button()
                 .withText("Make me invisible")
-                .wrapSides(true)
-                .withPosition(Positions.create(1, 30))
+                .withDecorations(side())
+                .withAlignment(positionalAlignment(1, 30))
                 .build()
 
 
         screen.addComponent(simpleBtn)
-        panel.addComponent(simpleBtn.withPosition(Positions.create(1, 1)).build())
+        panel.addComponent(simpleBtn.withAlignment(positionalAlignment(1, 1)).build())
 
         screen.addComponent(boxedBtn)
-        panel.addComponent(boxedBtn.withPosition(Positions.create(1, 3)).build())
+        panel.addComponent(boxedBtn.withAlignment(positionalAlignment(1, 3)).build())
 
         screen.addComponent(tooLongBtn)
-        panel.addComponent(tooLongBtn.withPosition(Positions.create(1, 7)).build())
+        panel.addComponent(tooLongBtn.withAlignment(positionalAlignment(1, 7)).build())
 
         screen.addComponent(overTheTopBtn)
-        panel.addComponent(overTheTopBtn.withPosition(Positions.create(1, 12)).build())
+        panel.addComponent(overTheTopBtn.withAlignment(positionalAlignment(1, 12)).build())
 
         screen.addComponent(halfBlockBtn)
-        panel.addComponent(halfBlockBtn.withPosition(Positions.create(1, 21)).build())
+        panel.addComponent(halfBlockBtn.withAlignment(positionalAlignment(1, 21)).build())
 
         screen.addComponent(invisibleBtn)
 

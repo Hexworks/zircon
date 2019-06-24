@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.extensions.box
 import java.util.*
 
 object ScrollingLogAreaExample {
@@ -47,8 +48,7 @@ object ScrollingLogAreaExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         val logArea = Components.logArea()
-                .wrapWithBox()
-                .withTitle("Log")
+                .withDecorations(box(title = "Log"))
                 .withSize(Sizes.create(60, 25))
                 .build()
         screen.addComponent(logArea)

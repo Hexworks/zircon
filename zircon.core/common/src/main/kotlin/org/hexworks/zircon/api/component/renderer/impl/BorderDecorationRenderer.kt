@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.BorderPosition
 import org.hexworks.zircon.api.shape.LineFactory
 
-class BorderDecorationRenderer(private val border: Border) : ComponentDecorationRenderer {
+data class BorderDecorationRenderer(val border: Border) : ComponentDecorationRenderer {
 
     override val offset = Position.defaultPosition()
 
