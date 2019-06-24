@@ -17,6 +17,7 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.base.BasePosition
 import org.hexworks.zircon.api.data.impl.PixelPosition
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.tileset.Tileset
@@ -75,6 +76,10 @@ class LibgdxRenderer(private val grid: TileGrid,
 
         maybeBatch.map { batch ->
             batch.begin()
+            renderTiles(
+                    batch = batch,
+                    snapshot = grid.createSnapshot(),
+                    tileset = tilesetLoader.loadTilesetFrom(grid.currentTileset()))
             grid.layers.forEach { layer ->
                 renderTiles(
                         batch = batch,
@@ -96,7 +101,7 @@ class LibgdxRenderer(private val grid: TileGrid,
     private fun renderTiles(batch: SpriteBatch,
                             snapshot: Snapshot,
                             tileset: Tileset<SpriteBatch>,
-                            offset: PixelPosition) {
+                            offset: PixelPosition = PixelPosition(0, 0)) {
         /*
          * I can already see you reaching for that ctrl-x ctrl-v to move that single
          * drawBack() method call into the next loop. Why would two identical loops
@@ -213,6 +218,15 @@ class LibgdxRenderer(private val grid: TileGrid,
                 color.green / 255.0f,
                 color.blue / 255.0f,
                 color.alpha / 255.0f
+        )
+    }
+
+    fun TileColor.toGdxColor(): Color {
+        return Color(
+                this.red / 255.0f,
+                this.green / 255.0f,
+                this.blue / 255.0f,
+                this.alpha / 255.0f
         )
     }
 }
