@@ -14,7 +14,7 @@ class TextBoxBuilderTest : ComponentBuilderTest<TextBox, TextBoxBuilder>() {
 
     @Before
     override fun setUp() {
-        target = TextBoxBuilder.newBuilder()
+        target = TextBoxBuilder.newBuilder(20)
     }
 
     @Test(expected = UnsupportedOperationException::class)
@@ -24,7 +24,7 @@ class TextBoxBuilderTest : ComponentBuilderTest<TextBox, TextBoxBuilder>() {
 
     @Test
     fun shouldProperlySizeProvidedParagraphBuilder() {
-        val textBox = target.withContentWidth(20)
+        val textBox = target
                 .addParagraph(ParagraphBuilder.newBuilder()
                         .withText("This is a test paragraph"),
                         true)

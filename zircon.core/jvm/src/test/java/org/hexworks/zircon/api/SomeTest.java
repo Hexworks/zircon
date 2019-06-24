@@ -1,7 +1,8 @@
 package org.hexworks.zircon.api;
 
-import org.hexworks.zircon.api.uievent.KeyboardEventType;
 import org.junit.Test;
+
+import static org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED;
 
 public class SomeTest {
 
@@ -9,7 +10,7 @@ public class SomeTest {
     public void test() {
         Components.button()
                 .build()
-                .onKeyboardEvent(KeyboardEventType.KEY_PRESSED, (event, phase) -> UIEventResponses.pass());
+                .handleKeyboardEvents(KEY_PRESSED, (event, phase) -> UIEventResponses.pass());
     }
 
 }

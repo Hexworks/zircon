@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.grid
 
+import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.grid.TileGrid
@@ -38,6 +39,12 @@ open class TileGridBuilder(
     fun withSize(size: Size) = also {
         this.size = size
     }
+
+    /**
+     * Sets the initial grid [Size].
+     * Default is 80x24.
+     */
+    fun withSize(width: Int, height: Int) = withSize(Sizes.create(width, height))
 
     /**
      * Sets a tileset for this [TileGrid].

@@ -1,15 +1,23 @@
 package org.hexworks.zircon.examples.docs
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.animation.AnimationResource
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.examples.AnimationExample
 
 object Intro {
 
     val tileset = CP437TilesetResources.wanderlust16x16()
-    val screenSize = Sizes.create(65, 33)
-    val sep = System.lineSeparator()
+    private val screenSize = Sizes.create(65, 33)
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -32,25 +40,21 @@ object Intro {
 
         val splashPanel = Components.panel()
                 .withSize(screenSize.withWidth(17))
-                .withBoxType(BoxType.SINGLE)
-                .wrapWithBox(true)
+                .withDecorations(box(boxType = BoxType.SINGLE))
                 .build()
         val introPanel = Components.panel()
                 .withSize(screenSize.withRelativeWidth(-17))
-                .withPosition(Positions.create(17, 0))
-                .withTitle("Zircon: fiendishly simple text GUI")
-                .withBoxType(BoxType.SINGLE)
-                .wrapWithBox(true)
+                .withAlignment(positionalAlignment(17, 0))
+                .withDecorations(box(boxType = BoxType.SINGLE, title = "Zircon: fiendishly simple text GUI"))
                 .build()
 
         introPanel.addComponent(Components.header()
-                .withPosition(Positions.offset1x1())
+                .withAlignment(positionalAlignment(Positions.offset1x1()))
                 .withText("Do you plan to make a roguelike?")
                 .build())
 
-        val introBox = Components.textBox()
-                .withPosition(Positions.create(1, 3))
-                .withContentWidth(45)
+        val introBox = Components.textBox(45)
+                .withAlignment(positionalAlignment(1, 3))
                 .addParagraph("Look no further. Zircon is the right tool for the job.")
                 .addParagraph("Zircon is a Text GUI library and a Tile Engine which is designed for simplicity and ease of use.")
                 .addParagraph("It is usable out of the box for all JVM languages including Java, Kotlin, Clojure and Scala.")
@@ -68,7 +72,7 @@ object Intro {
                 .build()
 
         val nextButton = Components.button()
-                .withPosition(Positions.bottomLeftOf(introBox))
+                .withAlignment(positionalAlignment(Positions.bottomLeftOf(introBox)))
                 .withText("Next")
                 .build()
 

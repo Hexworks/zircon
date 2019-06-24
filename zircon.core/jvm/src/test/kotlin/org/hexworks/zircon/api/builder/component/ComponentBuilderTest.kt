@@ -3,15 +3,18 @@ package org.hexworks.zircon.api.builder.component
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.color.ANSITileColor.GREEN
 import org.hexworks.zircon.api.color.ANSITileColor.RED
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentBuilder
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.renderer.impl.BorderDecorationRenderer
+import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
+import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.extensions.border
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.modifier.SimpleModifiers.VerticalFlip
 import org.junit.Test
@@ -24,16 +27,16 @@ abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T, U
 
     @Test
     open fun shouldProperlySetPosition() {
-        target.withPosition(POSITION_4X5)
+        target.withAlignment(positionalAlignment(POSITION_4X5))
 
         assertThat(target.position).isEqualTo(POSITION_4X5)
     }
 
     @Test
     open fun shouldProperlySetSize() {
-        target.withSize(SIZE_2X3)
+        target.withSize(SIZE_5X6)
 
-        assertThat(target.size).isEqualTo(SIZE_2X3)
+        assertThat(target.size).isEqualTo(SIZE_5X6)
     }
 
     @Test
@@ -45,7 +48,7 @@ abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T, U
 
     @Test
     open fun shouldProperlyApplyTitle() {
-        target.withTitle(TITLE_FOO)
+        target.withDecorations(box(title = TITLE_FOO))
 
         assertThat(target.title).isEqualTo(TITLE_FOO)
     }
@@ -59,35 +62,38 @@ abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T, U
 
     @Test
     open fun shouldProperlyApplyBoxType() {
-        target.withBoxType(BOX_TYPE_DOUBLE)
+        target.withDecorations(box(boxType = BOX_TYPE_DOUBLE))
 
-        assertThat(target.boxType).isEqualTo(BOX_TYPE_DOUBLE)
+        assertThat(target.decorationRenderers
+                .filterIsInstance<BoxDecorationRenderer>().first().boxType).isEqualTo(BOX_TYPE_DOUBLE)
     }
 
     @Test
     open fun shouldProperlyApplyWrappedWithBox() {
-        target.wrapWithBox(WRAPPED_WITH_BOX)
+        target.withDecorations(box())
 
-        assertThat(target.isWrappedWithBox).isTrue()
+        assertThat(target.decorationRenderers
+                .filterIsInstance<BoxDecorationRenderer>()).hasSize(1)
     }
 
     @Test
     open fun shouldProperlyApplyWrappedWithShadow() {
-        target.wrapWithShadow(WRAPPED_WITH_SHADOW)
+        target.withDecorations(shadow())
 
-        assertThat(target.isWrappedWithShadow).isTrue()
+        assertThat(target.decorationRenderers
+                .filterIsInstance<ShadowDecorationRenderer>()).hasSize(1)
     }
 
     @Test
     open fun shouldProperlyApplyDecorationRenderers() {
-        target.withDecorationRenderers(*DECORATION_RENDERERS)
+        target.withDecorations(*DECORATION_RENDERERS)
 
         assertThat(target.decorationRenderers).containsExactlyElementsOf(DECORATION_RENDERERS.toMutableList())
     }
 
     companion object {
         val POSITION_4X5 = Position.create(4, 5)
-        val SIZE_2X3 = Size.create(2, 3)
+        val SIZE_5X6 = Size.create(5, 6)
         val COMPONENT_STYLE_SET = ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withBackgroundColor(GREEN)
@@ -98,10 +104,7 @@ abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T, U
         const val TITLE_FOO = "FOO"
         val TILESET_ROGUE_YUN = CP437TilesetResources.rogueYun16x16()
         val BOX_TYPE_DOUBLE = BoxType.DOUBLE
-        const val WRAPPED_WITH_BOX = true
-        const val WRAPPED_WITH_SHADOW = true
-        val DECORATION_RENDERERS = listOf(BorderDecorationRenderer(BorderBuilder.newBuilder().build()))
-                .toTypedArray()
+        val DECORATION_RENDERERS = listOf(border()).toTypedArray()
 
     }
 }

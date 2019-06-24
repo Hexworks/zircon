@@ -1,6 +1,14 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.TrueTypeFontResources
 
 object NonSquareTilesetExample {
 
@@ -17,9 +25,8 @@ object NonSquareTilesetExample {
 
         val screen = Screens.createScreenFor(tileGrid)
 
-        val textBox = Components.textBox()
+        val textBox = Components.textBox(20)
                 .withPosition(Positions.create(2, 0))
-                .withContentWidth(20)
                 .addParagraph("This text is more readable because it does not use a square tileset.")
                 .addParagraph("This is a 8x16 tileset in fact...")
                 .addParagraph("It works fine with a Panel which uses a 16x16 tileset!")

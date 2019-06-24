@@ -4,9 +4,12 @@ import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.component.ComponentAlignment;
 import org.hexworks.zircon.api.component.HBox;
 import org.hexworks.zircon.api.component.VBox;
+import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.screen.Screen;
 
+import static org.hexworks.zircon.api.ComponentDecorations.box;
+import static org.hexworks.zircon.api.ComponentDecorations.shadow;
 import static org.hexworks.zircon.api.GraphicalTilesetResources.nethack16x16;
 
 public class StatsPanelExample {
@@ -20,9 +23,7 @@ public class StatsPanelExample {
         final Screen screen = Screens.createScreenFor(tileGrid);
 
         final VBox panel = Components.vbox()
-                .withTitle("Sel Darkstrom")
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
+                .withDecorations(box(BoxType.SINGLE, "Sel Darkstrom"), shadow())
                 .withSize(20, 20)
                 .withAlignmentWithin(screen, ComponentAlignment.CENTER)
                 .build();
@@ -54,8 +55,7 @@ public class StatsPanelExample {
 
         panel.addComponent(Components.label().withSize(1, 1));
         panel.addComponent(Components.header().withText("Info"));
-        panel.addComponent(Components.textBox()
-                .withContentWidth(panel.getContentSize().getWidth())
+        panel.addComponent(Components.textBox(panel.getContentSize().getWidth())
                 .addParagraph("A short, sturdy creature fond of drink and industry.")
                 .addParagraph("Abilities:")
                 .addListItem("Drink")

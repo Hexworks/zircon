@@ -1,7 +1,17 @@
 package org.hexworks.zircon.examples.docs;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.AppConfigs;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.ColorThemes;
+import org.hexworks.zircon.api.ComponentDecorations;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.LibgdxApplications;
+import org.hexworks.zircon.api.Positions;
+import org.hexworks.zircon.api.Screens;
+import org.hexworks.zircon.api.Sizes;
+import org.hexworks.zircon.api.TileColors;
 import org.hexworks.zircon.api.component.ColorTheme;
+import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.screen.Screen;
 
@@ -25,8 +35,7 @@ public class WorkingWithColorThemes {
                 .build());
 
         screen.addComponent(Components.panel()
-                .withTitle("Panel")
-                .wrapWithBox(true)
+                .withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Panel"))
                 .withPosition(Positions.create(1, 3))
                 .withSize(Sizes.create(10, 5))
                 .build());
