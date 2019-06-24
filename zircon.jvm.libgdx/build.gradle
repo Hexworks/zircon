@@ -7,6 +7,8 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
     compile "com.badlogicgames.gdx:gdx:$gdx_version"
+    compile "com.badlogicgames.gdx:gdx-freetype:$gdx_version"
+    compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdx_version:natives-desktop"
     compile "com.badlogicgames.gdx:gdx-box2d:$gdx_version"
     compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdx_version"
     compile "com.badlogicgames.gdx:gdx-platform:$gdx_version:natives-desktop"
