@@ -18,8 +18,8 @@ enum class ComponentAlignment(
                 .topCenter
                 .withRelativeX(-(target.width / 2 + 1))
     }, aroundFn = { other, target ->
-        other.topCenter.withRelativeY(-(target.height + 1))
-                .withRelativeX(-(target.width / 2 + 1))
+        other.topCenter.withRelativeY(-target.height)
+                .withRelativeX(-target.width / 2)
     }),
     TOP_RIGHT(withinFn = { other, target ->
         Rect.create(Position.defaultPosition(), other.size.minus(Size.create(1,1)))
