@@ -55,7 +55,7 @@ data class ModalBuilder<T : ModalResult>(
             "Can't build a modal without a content component."
         }
         val component = contentComponent.get()
-        require(component.size < size) {
+        require(component.size <= size) {
             "Can't build a modal which has a component which is bigger than the modal."
         }
         if (centeredDialog) {

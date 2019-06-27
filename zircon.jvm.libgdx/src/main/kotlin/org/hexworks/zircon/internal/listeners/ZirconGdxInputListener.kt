@@ -6,6 +6,8 @@ import com.badlogic.gdx.InputProcessor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_RELEASED
+import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
+import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_TYPED
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.uievent.injectStringAsKeyboardEvents
@@ -35,7 +37,7 @@ class ZirconInputListener(private val fontWidth: Int,
         } else {
             val event = createKeyboardEvent(
                     keyCode = keyCode,
-                    type = KEY_RELEASED)
+                    type = KEY_TYPED)
             if (RuntimeConfig.config.isClipboardAvailable && event.isPasteEvent()) {
                 pasteClipboardContent()
             } else {
@@ -55,7 +57,7 @@ class ZirconInputListener(private val fontWidth: Int,
         KEY_EVENT_TO_KEY_TYPE_LOOKUP[keycode]?.let { keyCode ->
             val event = createKeyboardEvent(
                     keyCode = keyCode,
-                    type = KEY_RELEASED)
+                    type = KEY_PRESSED)
             return if (RuntimeConfig.config.isClipboardAvailable && event.isPasteEvent()) {
                 pasteClipboardContent()
             } else {
