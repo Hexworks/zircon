@@ -14,49 +14,64 @@ enum class ComponentAlignment(
         other.position.withRelativeX(-target.width)
     }),
     TOP_CENTER(withinFn = { other, target ->
-        other.topCenter.withRelativeX(-target.width / 2)
+        Rect.create(Position.defaultPosition(), other.size.minus(Size.create(1,1)))
+                .topCenter
+                .withRelativeX(-(target.width / 2 + 1))
     }, aroundFn = { other, target ->
-        other.topCenter.withRelativeY(-target.height)
-                .withRelativeX(-target.width / 2)
+        other.topCenter.withRelativeY(-(target.height + 1))
+                .withRelativeX(-(target.width / 2 + 1))
     }),
     TOP_RIGHT(withinFn = { other, target ->
-        other.topRight.withRelativeX(-target.width)
+        Rect.create(Position.defaultPosition(), other.size.minus(Size.create(1,1)))
+                .topRight
+                .withRelativeX(-(target.width + 1))
     }, aroundFn = { other, _ ->
         other.topRight
     }),
     RIGHT_CENTER(withinFn = { other, target ->
-        other.rightCenter.withRelativeX(-target.width)
-                .withRelativeY(-target.height / 2)
+        Rect.create(Position.defaultPosition(), other.size.minus(Size.create(1,1)))
+                .rightCenter
+                .withRelativeX(-(target.width + 1)).withRelativeY(-(target.height / 2 + 1))
     }, aroundFn = { other, target ->
         other.rightCenter.withRelativeY(-target.height / 2)
     }),
     BOTTOM_RIGHT(withinFn = { other, target ->
-        other.bottomRight.withRelativeX(-target.width)
-                .withRelativeY(-target.height)
+        Rect.create(Position.defaultPosition(), other.size.minus(Size.create(1,1)))
+                .bottomRight
+                .withRelativeX(-(target.width + 1))
+                .withRelativeY(-(target.height + 1))
     }, aroundFn = { other, _ ->
         other.bottomRight
     }),
     BOTTOM_CENTER(withinFn = { other, target ->
-        other.bottomCenter.withRelativeY(-target.height)
-                .withRelativeX(-target.width / 2)
+        Rect.create(Position.defaultPosition(), other.size.minus(Size.create(1,1)))
+                .bottomCenter
+                .withRelativeY(-(target.height + 1))
+                .withRelativeX(-(target.width / 2 + 1))
     }, aroundFn = { other, target ->
         other.bottomCenter
                 .withRelativeX(-target.width / 2)
     }),
     BOTTOM_LEFT(withinFn = { other, target ->
-        other.bottomLeft.withRelativeY(-target.height)
+        Rect.create(Position.defaultPosition(), other.size.minus(Size.create(1,1)))
+                .bottomLeft
+                .withRelativeY(-(target.height + 1))
     }, aroundFn = { other, target ->
         other.bottomLeft.withRelativeX(-target.width)
     }),
     LEFT_CENTER(withinFn = { other, target ->
-        other.leftCenter.withRelativeY(-target.height / 2)
+        Rect.create(Position.defaultPosition(), other.size.minus(Size.create(1,1)))
+                .leftCenter
+                .withRelativeY(-(target.height / 2 + 1))
     }, aroundFn = { other, target ->
         other.leftCenter.withRelativeX(-target.width)
                 .withRelativeY(-target.height / 2)
     }),
     CENTER(withinFn = { other, target ->
-        other.center.withRelativeY(-target.height / 2)
-                .withRelativeX(-target.width / 2)
+        Rect.create(Position.defaultPosition(), other.size.minus(Size.create(1,1)))
+                .center
+                .withRelativeY(-(target.height / 2 + 1))
+                .withRelativeX(-(target.width / 2 + 1))
     }, aroundFn = { _, _ ->
         throw UnsupportedOperationException("Can't use CENTER alignment around a container.")
     });
