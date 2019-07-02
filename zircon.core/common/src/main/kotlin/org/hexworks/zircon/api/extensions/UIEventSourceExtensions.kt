@@ -65,3 +65,31 @@ inline fun ComponentEventSource.processComponentEvents(eventType: ComponentEvent
         }
     })
 }
+
+@Deprecated(
+        "use UIEventSource.handleMouseEvents",
+        replaceWith = ReplaceWith(
+                "handleMouseEvents(eventType, fn)",
+                "org.hexworks.zircon.api.extensions.handleMouseEvents"))
+inline fun UIEventSource.onMouseEvent(eventType: MouseEventType, crossinline fn: (MouseEvent, UIEventPhase) -> UIEventResponse): Subscription {
+    return handleMouseEvents(eventType, fn)
+}
+
+@Deprecated(
+        "use UIEventSource.handleKeyboardEvents",
+        replaceWith = ReplaceWith(
+                "handleKeyboardEvents(eventType, fn)",
+                "org.hexworks.zircon.api.extensions.handleKeyboardEvents"))
+inline fun UIEventSource.onKeyboardEvent(eventType: KeyboardEventType, crossinline fn: (KeyboardEvent, UIEventPhase) -> UIEventResponse): Subscription {
+    return handleKeyboardEvents(eventType, fn)
+}
+
+@Deprecated(
+        "use UIEventSource.handleComponentEvents",
+        replaceWith = ReplaceWith(
+                "handleComponentEvents(eventType, fn)",
+                "org.hexworks.zircon.api.extensions.handleComponentEvents"))
+inline fun ComponentEventSource.onComponentEvent(eventType: ComponentEventType, crossinline fn: (ComponentEvent) -> UIEventResponse): Subscription {
+    return handleComponentEvents(eventType, fn)
+}
+
