@@ -37,7 +37,7 @@ object ComponentAlignments {
     fun alignmentWithin(container: Container,
                         alignmentType: ComponentAlignment): AlignmentStrategy {
         return WithinAlignmentStrategy(
-                other = container.rect,
+                other = Boundable.create(size = container.contentSize),
                 alignmentType = alignmentType)
     }
 

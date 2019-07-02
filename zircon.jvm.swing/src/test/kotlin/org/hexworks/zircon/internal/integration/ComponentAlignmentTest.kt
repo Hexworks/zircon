@@ -16,6 +16,8 @@ import org.hexworks.zircon.api.component.ComponentAlignment.RIGHT_CENTER
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_CENTER
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_LEFT
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_RIGHT
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.shadow
 
 object ComponentAlignmentTest {
 
@@ -33,11 +35,9 @@ object ComponentAlignmentTest {
         val screen = Screens.createScreenFor(tileGrid)
 
         val panel = Components.panel()
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
+                .withDecorations(box(title = "Component alignment test"), shadow())
                 .withSize(Sizes.create(30, 15))
                 .withAlignmentWithin(screen, CENTER)
-                .withTitle("Component alignment test")
                 .build()
         screen.addComponent(panel)
 
