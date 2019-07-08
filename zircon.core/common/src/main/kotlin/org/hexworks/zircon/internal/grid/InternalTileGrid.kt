@@ -13,8 +13,15 @@ interface InternalTileGrid
     var layerable: Layerable
     var animationHandler: InternalAnimationHandler
 
+    /**
+     * Starts delegating all actions to the given [tileGrid].
+     */
     fun delegateActionsTo(tileGrid: InternalTileGrid)
 
+    /**
+     * Stops delegating actions to an other [TileGrid].
+     * Has no effect if no such delegation was present.
+     */
     fun reset()
 
 }

@@ -7,6 +7,7 @@ import org.hexworks.zircon.internal.data.DefaultSnapshot
  * Represents the contents of a [org.hexworks.zircon.api.behavior.DrawSurface]
  * at a given moment in time.
  */
+@Deprecated("no.")
 interface Snapshot {
 
     val cells: Iterable<Cell>

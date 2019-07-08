@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.Drawable
-import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -13,8 +12,9 @@ import org.hexworks.zircon.api.util.TileTransformer
  * An immutable image built from [Tile]s. It is completely in memory but it can be drawn onto
  * [DrawSurface]s like a [org.hexworks.zircon.api.grid.TileGrid] or a [TileGraphics].
  */
-interface TileImage : Drawable, TileComposite, TilesetOverride {
+interface TileImage : Drawable, TileComposite {
 
+    val tileset: TilesetResource
 
     /**
      * Returns a [List] of [Position]s which are not considered empty.
@@ -127,7 +127,7 @@ interface TileImage : Drawable, TileComposite, TilesetOverride {
      * Returns the contents of this [TileImage] as a map of
      * [Position] - [Tile] pairs.
      */
-    fun toTileMap(): MutableMap<Position, Tile>
+    fun toTileMap(): Map<Position, Tile>
 
     /**
      * Returns a copy of this [TileImage] with the exact same content.
@@ -138,5 +138,5 @@ interface TileImage : Drawable, TileComposite, TilesetOverride {
      * Returns a copy of this [TileImage] with the exact same content as a
      * [TileGraphics] which can be modified using the supplied style.
      */
-    fun toTileGraphic(): TileGraphics
+    fun toTileGraphics(): TileGraphics
 }

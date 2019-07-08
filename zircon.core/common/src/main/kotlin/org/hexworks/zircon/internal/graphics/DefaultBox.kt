@@ -23,7 +23,6 @@ class DefaultBox(
     : Box, TileGraphics by backend {
 
     init {
-        setStyleFrom(styleSet)
         val verticalChar = TileBuilder.newBuilder()
                 .withStyleSet(styleSet)
                 .withCharacter(boxType.vertical)

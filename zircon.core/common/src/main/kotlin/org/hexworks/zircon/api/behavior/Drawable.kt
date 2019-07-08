@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.graphics.DrawSurface
 interface Drawable {
 
     /**
-     * Draws this [Drawable] onto the given [DrawSurface] at the given position.
+     * Draws this [Drawable] onto the given [DrawSurface] at the top left corner.
      */
     fun drawOnto(surface: DrawSurface) {
         drawOnto(surface, Position.defaultPosition())

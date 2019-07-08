@@ -23,6 +23,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
  */
 interface CharacterTileString : Drawable, Iterable<CharacterTile> {
 
+    // TODO: use val instead
     fun textCharacters(): List<CharacterTile>
 
     fun toTileGraphic(tileset: TilesetResource): TileGraphics

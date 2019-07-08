@@ -64,7 +64,7 @@ public class FontSwitcherExample {
     private static void refreshText(TileGrid tileGrid, Position position) {
         tileGrid.putCursorAt(position);
         for (int i = 0; i < "Press '->' to switch Tileset!".length(); i++) {
-            tileGrid.putCharacter("Press '->' to switch Tileset!".charAt(i));
+//            tileGrid.putCharacter("Press '->' to switch Tileset!".charAt(i));
         }
     }
 

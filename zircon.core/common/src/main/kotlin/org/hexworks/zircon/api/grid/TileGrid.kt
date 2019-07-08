@@ -1,8 +1,13 @@
 package org.hexworks.zircon.api.grid
 
 import org.hexworks.zircon.api.CharacterTileStrings
+import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.animation.AnimationHandler
-import org.hexworks.zircon.api.behavior.*
+import org.hexworks.zircon.api.behavior.Clearable
+import org.hexworks.zircon.api.behavior.Closeable
+import org.hexworks.zircon.api.behavior.Layerable
+import org.hexworks.zircon.api.behavior.ShutdownHook
+import org.hexworks.zircon.api.behavior.TypingSupport
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.uievent.UIEventSource
@@ -21,7 +26,7 @@ import org.hexworks.zircon.api.uievent.UIEventSource
  */
 interface TileGrid
     : AnimationHandler, Clearable, Closeable, DrawSurface, Layerable,
-        ShutdownHook, Styleable, TypingSupport, UIEventSource {
+        ShutdownHook, TypingSupport, UIEventSource {
 
     val widthInPixels: Int
         get() = currentTileset().width * width
@@ -30,9 +35,10 @@ interface TileGrid
         get() = currentTileset().height * height
 
     /**
-     * Writes the given `text` at the given `position`.
+     * Writes the given [text] at the given [position].
      */
-    fun write(text: String, position: Position) = {
+    fun write(text: String,
+              position: Position = Positions.zero()) = run {
         CharacterTileStrings.newBuilder()
                 .withText(text)
                 .build()

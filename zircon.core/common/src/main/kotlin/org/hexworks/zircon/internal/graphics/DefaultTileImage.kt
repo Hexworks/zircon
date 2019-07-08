@@ -1,16 +1,16 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.base.BaseTileImage
 import org.hexworks.zircon.api.resource.TilesetResource
 
 class DefaultTileImage(
         override val size: Size,
-        private var tileset: TilesetResource,
+        override val tileset: TilesetResource,
         private val tiles: Map<Position, Tile> = mapOf())
     : BaseTileImage() {
 
@@ -24,12 +24,6 @@ class DefaultTileImage(
         toTileMap().forEach { (pos, tile) ->
             surface.setTileAt(pos + position, tile)
         }
-    }
-
-    override fun currentTileset() = tileset
-
-    override fun useTileset(tileset: TilesetResource) {
-        throw UnsupportedOperationException("Can't modify a TileImage.")
     }
 
 }

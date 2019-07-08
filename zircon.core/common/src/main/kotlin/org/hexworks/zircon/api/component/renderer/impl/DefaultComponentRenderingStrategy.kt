@@ -23,18 +23,19 @@ class DefaultComponentRenderingStrategy<T : Component>(
         else {
             var currentOffset = Position.defaultPosition()
             var currentSize = graphics.size
-            decorationRenderers.forEach { renderer ->
-                val bounds = Rect.create(currentOffset, currentSize)
-                renderer.render(graphics.toSubTileGraphics(bounds), ComponentDecorationRenderContext(component))
-                currentOffset += renderer.offset
-                currentSize -= renderer.occupiedSize
-            }
 
             val componentArea = graphics.toSubTileGraphics(Rect.create(currentOffset, currentSize))
 
             componentRenderer.render(
                     tileGraphics = componentArea,
                     context = ComponentRenderContext(component))
+
+            decorationRenderers.forEach { renderer ->
+                val bounds = Rect.create(currentOffset, currentSize)
+                renderer.render(graphics.toSubTileGraphics(bounds), ComponentDecorationRenderContext(component))
+                currentOffset += renderer.offset
+                currentSize -= renderer.occupiedSize
+            }
 
             componentPostProcessors.forEach { renderer ->
                 renderer.render(componentArea, ComponentPostProcessorContext(component))

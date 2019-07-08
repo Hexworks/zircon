@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.graphics
 import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Drawable
-import org.hexworks.zircon.api.behavior.Styleable
 import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
@@ -18,7 +17,7 @@ import org.hexworks.zircon.api.util.TileTransformer
  * [DrawSurface]s like a [org.hexworks.zircon.api.grid.TileGrid].
  */
 interface TileGraphics
-    : Clearable, DrawSurface, Drawable, Styleable {
+    : Clearable, DrawSurface, Drawable {
 
     /**
      * Returns a [List] of [Position]s which are not `EMPTY`.
@@ -68,9 +67,12 @@ interface TileGraphics
     fun fill(filler: Tile): TileGraphics
 
     /**
-     * Writes the given `text` at the given `position`.
+     * Writes the given [text] at the given [position] using the given
+     * [styleSet]
      */
-    fun putText(text: String, position: Position = Position.zero())
+    fun putText(text: String,
+                position: Position = Position.zero(),
+                styleSet: StyleSet = StyleSet.defaultStyle())
 
     /**
      * Transforms all of the [Tile]s in this [TileGraphics] with the given
@@ -80,9 +82,8 @@ interface TileGraphics
     fun transform(transformer: TileTransformer)
 
     /**
-     * Sets the style of this [TileGraphics] from the given `styleSet`
-     * and also applies it to all currently present
-     * [Tile]s within the bounds delimited by `offset` and `size`.
+     * Applies the given [styleSet] to all currently present [Tile]s in this
+     * [TileGraphics] within the bounds delimited by `offset` and `size`.
      * Offset is used to offset the starting position from the top left position
      * while size is used to determine the region (down and right) to overwrite
      * relative to `offset`.
@@ -95,7 +96,6 @@ interface TileGraphics
                    applyToEmptyCells: Boolean = true) {
         val offset = rect.position
         val size = rect.size
-        setStyleFrom(styleSet)
         val positions = if (applyToEmptyCells) {
             size.fetchPositions()
         } else {

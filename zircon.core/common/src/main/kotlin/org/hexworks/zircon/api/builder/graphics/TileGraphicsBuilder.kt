@@ -27,10 +27,6 @@ data class TileGraphicsBuilder(
         this.tileset = tileset
     }
 
-    fun withStyle(style: StyleSet) = also {
-        this.style = style
-    }
-
     /**
      * Sets the size for the new [TileGraphics].
      * Default is 1x1.
@@ -50,8 +46,7 @@ data class TileGraphicsBuilder(
 
     override fun build(): TileGraphics = ConcurrentTileGraphics(
             size = size,
-            tileset = tileset,
-            styleSet = StyleSet.defaultStyle()).also { image ->
+            tileset = tileset).also { image ->
         tiles.forEach { (pos, tile) ->
             image.setTileAt(pos, tile)
         }

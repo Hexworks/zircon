@@ -1,11 +1,12 @@
 package org.hexworks.zircon.api.behavior
 
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 
 /**
- * Represents an object which can contain multiple [org.hexworks.zircon.api.graphics.Layer]s
- * which are specialized [org.hexworks.zircon.api.graphics.DrawSurface] overlays displayed
+ * Represents an object which can contain multiple [Layer]s
+ * which are specialized [DrawSurface]s displayed
  * above the [Layerable] object.
  */
 interface Layerable {
