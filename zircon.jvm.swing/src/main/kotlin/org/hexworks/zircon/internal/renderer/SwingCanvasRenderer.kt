@@ -14,7 +14,15 @@ import org.hexworks.zircon.internal.tileset.transformer.toAWTColor
 import org.hexworks.zircon.internal.uievent.KeyboardEventListener
 import org.hexworks.zircon.internal.uievent.MouseEventListener
 import org.hexworks.zircon.platform.util.SystemUtils
-import java.awt.*
+import java.awt.AWTKeyStroke
+import java.awt.Canvas
+import java.awt.Color
+import java.awt.Dimension
+import java.awt.Frame
+import java.awt.Graphics
+import java.awt.Graphics2D
+import java.awt.KeyboardFocusManager
+import java.awt.RenderingHints
 import java.awt.event.HierarchyEvent
 import java.awt.event.MouseEvent
 import java.awt.image.BufferStrategy
@@ -37,8 +45,9 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         if (RuntimeConfig.config.fullScreen) {
             frame.extendedState = JFrame.MAXIMIZED_BOTH
             frame.isUndecorated = true
-        } else
+        } else {
             frame.setSize(tileGrid.widthInPixels, tileGrid.heightInPixels)
+        }
 
         frame.isVisible = true
         frame.isResizable = false

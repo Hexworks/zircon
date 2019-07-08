@@ -8,7 +8,14 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.modifier.*
+import org.hexworks.zircon.api.modifier.Border
+import org.hexworks.zircon.api.modifier.BorderType
+import org.hexworks.zircon.api.modifier.Crop
+import org.hexworks.zircon.api.modifier.Glow
+import org.hexworks.zircon.api.modifier.RayShade
+import org.hexworks.zircon.api.modifier.SimpleModifiers
+import org.hexworks.zircon.api.modifier.TextureTransformModifier
+import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.api.tileset.TileTexture
@@ -18,7 +25,19 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.modifier.TileCoordinate
 import org.hexworks.zircon.internal.resource.TileType.CHARACTER_TILE
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
-import org.hexworks.zircon.internal.tileset.transformer.*
+import org.hexworks.zircon.internal.tileset.transformer.Java2DBorderTransformer
+import org.hexworks.zircon.internal.tileset.transformer.Java2DCropTransformer
+import org.hexworks.zircon.internal.tileset.transformer.Java2DCrossedOutTransformer
+import org.hexworks.zircon.internal.tileset.transformer.Java2DGlowTransformer
+import org.hexworks.zircon.internal.tileset.transformer.Java2DHiddenTransformer
+import org.hexworks.zircon.internal.tileset.transformer.Java2DHorizontalFlipper
+import org.hexworks.zircon.internal.tileset.transformer.Java2DNoOpTransformer
+import org.hexworks.zircon.internal.tileset.transformer.Java2DRayShaderTransformer
+import org.hexworks.zircon.internal.tileset.transformer.Java2DTextureCloner
+import org.hexworks.zircon.internal.tileset.transformer.Java2DTextureColorizer
+import org.hexworks.zircon.internal.tileset.transformer.Java2DTileCoordinateTransformer
+import org.hexworks.zircon.internal.tileset.transformer.Java2DUnderlineTransformer
+import org.hexworks.zircon.internal.tileset.transformer.Java2DVerticalFlipper
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 import java.util.concurrent.TimeUnit
@@ -85,9 +104,7 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
                 image = TEXTURE_TRANSFORMER_LOOKUP[it::class]?.transform(image, fixedTile) ?: image
             }
             image = applyDebugModifiers(image, fixedTile, position)
-            if (RuntimeConfig.config.debugMode.not()) {
-                cache.put(key, image)
-            }
+            cache.put(key, image)
             image
         }
     }

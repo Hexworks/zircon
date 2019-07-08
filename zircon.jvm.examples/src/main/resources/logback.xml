@@ -18,5 +18,6 @@
 
     <!-- Or individual classes -->
     <logger name="org.hexworks.zircon.internal.uievent.UIEventDispatcher" level="ERROR"/>
+<!--    <logger name="org.hexworks.zircon.internal.application.SwingApplication" level="DEBUG"/>-->
 
 </configuration>
