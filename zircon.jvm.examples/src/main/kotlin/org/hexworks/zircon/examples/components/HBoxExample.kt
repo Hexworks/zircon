@@ -27,6 +27,7 @@ object HBoxExample {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
+                .withDebugMode(true)
                 .withSize(Sizes.create(60, 30))
                 .build())
 
