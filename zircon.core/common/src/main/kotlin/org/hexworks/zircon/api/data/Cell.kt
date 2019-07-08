@@ -1,10 +1,10 @@
 package org.hexworks.zircon.api.data
 
+import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.internal.data.DefaultCell
 
 /**
- * Represents a [Tile] which is at a given [Position]
- * on a [org.hexworks.zircon.api.behavior.DrawSurface].
+ * Represents a [Tile] which is at a given [Position] on a [DrawSurface].
  */
 interface Cell {
 

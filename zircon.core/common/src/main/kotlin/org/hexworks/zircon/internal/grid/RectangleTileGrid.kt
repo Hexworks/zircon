@@ -7,20 +7,15 @@ import org.hexworks.zircon.api.animation.AnimationInfo
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.behavior.ShutdownHook
-import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.api.util.TileTransformer
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
 import org.hexworks.zircon.internal.animation.InternalAnimationHandler
@@ -37,8 +32,7 @@ class RectangleTileGrid(
         size: Size,
         override var backend: TileGraphics = ConcurrentTileGraphics(
                 size = size,
-                tileset = tileset,
-                styleSet = StyleSet.defaultStyle()),
+                tileset = tileset),
         override var layerable: Layerable = DefaultLayerable(),
         override var animationHandler: InternalAnimationHandler = DefaultAnimationHandler(),
         private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
@@ -56,17 +50,6 @@ class RectangleTileGrid(
     private var originalBackend = backend
     private var originalLayerable = layerable
     private var originalAnimationHandler = animationHandler
-
-    override fun putCharacter(c: Char) {
-        if (TextUtils.isPrintableCharacter(c)) {
-            putTile(TileBuilder.newBuilder()
-                    .withCharacter(c)
-                    .withForegroundColor(foregroundColor)
-                    .withBackgroundColor(backgroundColor)
-                    .withModifiers(modifiers)
-                    .build())
-        }
-    }
 
     override fun putTile(tile: Tile) {
         if (tile is CharacterTile && tile.character == '\n') {
@@ -106,33 +89,7 @@ class RectangleTileGrid(
     override val size: Size
         get() = backend.size
 
-    override var foregroundColor: TileColor
-        get() = backend.foregroundColor
-        set(value) {
-            backend.foregroundColor = value
-        }
-    override var backgroundColor: TileColor
-        get() = backend.backgroundColor
-        set(value) {
-            backend.backgroundColor = value
-        }
-    override var modifiers: Set<Modifier>
-        get() = backend.modifiers
-        set(value) {
-            backend.modifiers = value
-        }
-
-    override fun toStyleSet() = backend.toStyleSet()
-
-    override fun setStyleFrom(source: StyleSet) = backend.setStyleFrom(source)
-
-    override fun enableModifiers(modifiers: Set<Modifier>) = backend.enableModifiers(modifiers)
-
-    override fun disableModifiers(modifiers: Set<Modifier>) = backend.disableModifiers(modifiers)
-
-    override fun clearModifiers() = backend.clearModifiers()
-
-    override fun startAnimation(animation: org.hexworks.zircon.api.animation.Animation): AnimationInfo {
+    override fun startAnimation(animation: Animation): AnimationInfo {
         return animationHandler.startAnimation(animation)
     }
 

@@ -141,7 +141,7 @@ public class FullExample {
                                     .withTileGraphics(img.toTileImage().transform(tile -> tile.withBackgroundColor(tile.getBackgroundColor()
                                             .darkenByPercent(idx / 20d))
                                             .withForegroundColor(tile.getForegroundColor()
-                                                    .darkenByPercent(idx / 20d))).toTileGraphic())
+                                                    .darkenByPercent(idx / 20d))).toTileGraphics())
                                     .build()),
                             loopCount));
         }
@@ -156,7 +156,7 @@ public class FullExample {
                                     .withTileGraphics(img.toTileImage().transform(tile -> tile.withBackgroundColor(tile.getBackgroundColor()
                                             .darkenByPercent(idx / 20d))
                                             .withForegroundColor(tile.getForegroundColor()
-                                                    .darkenByPercent(idx / 20d))).toTileGraphic())
+                                                    .darkenByPercent(idx / 20d))).toTileGraphics())
                                     .build()),
                             loopCount));
         }

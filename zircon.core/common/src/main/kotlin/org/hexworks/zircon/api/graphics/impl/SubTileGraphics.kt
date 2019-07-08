@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.graphics.impl
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.behavior.Drawable
-import org.hexworks.zircon.api.behavior.Styleable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.Cell
@@ -17,7 +16,6 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.util.TileTransformer
-import org.hexworks.zircon.internal.behavior.impl.DefaultStyleable
 import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride
 import org.hexworks.zircon.internal.data.DefaultCell
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
@@ -32,12 +30,9 @@ import org.hexworks.zircon.internal.graphics.DefaultTileImage
 class SubTileGraphics(
         private val rect: Rect,
         private val backend: TileGraphics,
-        private val styleable: Styleable = DefaultStyleable(
-                initialStyle = backend.toStyleSet()),
         private val tilesetOverride: TilesetOverride = DefaultTilesetOverride(
                 tileset = backend.currentTileset()))
     : TileGraphics,
-        Styleable by styleable,
         TilesetOverride by tilesetOverride {
 
     override val size = rect.size
@@ -63,11 +58,11 @@ class SubTileGraphics(
         return this
     }
 
-    override fun putText(text: String, position: Position) {
+    override fun putText(text: String, position: Position, styleSet: StyleSet) {
         text.forEachIndexed { col, char ->
             setTileAt(position.withRelativeX(col), TileBuilder
                     .newBuilder()
-                    .withStyleSet(toStyleSet())
+                    .withStyleSet(styleSet)
                     .withCharacter(char)
                     .build())
         }

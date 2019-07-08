@@ -38,7 +38,7 @@ abstract class BaseTileImage : TileImage {
             tiles[position] = tile
             return DefaultTileImage(
                     size = size,
-                    tileset = currentTileset(),
+                    tileset = tileset,
                     tiles = tiles.toMap())
         } else {
             return this
@@ -63,7 +63,7 @@ abstract class BaseTileImage : TileImage {
         }
         return DefaultTileImage(
                 size = newSize,
-                tileset = currentTileset(),
+                tileset = tileset,
                 tiles = tiles.toMap())
     }
 
@@ -77,7 +77,7 @@ abstract class BaseTileImage : TileImage {
         }
         return DefaultTileImage(
                 size = size,
-                tileset = currentTileset(),
+                tileset = tileset,
                 tiles = tiles.toMap())
     }
 
@@ -92,7 +92,7 @@ abstract class BaseTileImage : TileImage {
         }
         return DefaultTileImage(
                 size = size,
-                tileset = currentTileset(),
+                tileset = tileset,
                 tiles = tiles.toMap())
     }
 
@@ -116,7 +116,7 @@ abstract class BaseTileImage : TileImage {
         }
         return DefaultTileImage(
                 size = size,
-                tileset = currentTileset(),
+                tileset = tileset,
                 tiles = tiles.toMap())
     }
 
@@ -136,7 +136,7 @@ abstract class BaseTileImage : TileImage {
         tiles.putAll(tileImage.toTileMap().mapKeys { it.key + offset })
         return DefaultTileImage(
                 size = newSize,
-                tileset = currentTileset(),
+                tileset = tileset,
                 tiles = tiles.toMap())
     }
 
@@ -147,7 +147,7 @@ abstract class BaseTileImage : TileImage {
         }
         return DefaultTileImage(
                 size = size,
-                tileset = currentTileset(),
+                tileset = tileset,
                 tiles = tiles.toMap())
     }
 
@@ -161,7 +161,7 @@ abstract class BaseTileImage : TileImage {
                 }
         return DefaultTileImage(
                 size = size,
-                tileset = currentTileset(),
+                tileset = tileset,
                 tiles = tiles.toMap())
     }
 
@@ -177,10 +177,10 @@ abstract class BaseTileImage : TileImage {
 
     override fun toTileImage(): TileImage = toSubImage(Position.defaultPosition(), size)
 
-    override fun toTileGraphic(): TileGraphics {
+    override fun toTileGraphics(): TileGraphics {
         val result = TileGraphicsBuilder.newBuilder()
                 .withSize(size)
-                .withTileset(currentTileset())
+                .withTileset(tileset)
         toTileMap().forEach { (pos, tile) ->
             result.withTile(pos, tile)
         }

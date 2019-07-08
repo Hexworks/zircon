@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.graphics.DefaultCharacterTileString
 
 /**
- * Creates [org.hexworks.zircon.api.graphics.CharacterTileString]s.
+ * Creates [CharacterTileString]s.
  * Defaults:
  * - `text` is **mandatory**
  */

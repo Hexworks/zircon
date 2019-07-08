@@ -13,9 +13,7 @@ import org.hexworks.zircon.api.util.TileTransformer
 interface Layer : DrawSurface, Drawable, Movable, Clearable {
 
     override val size: Size
-
     override val width: Int
-
     override val height: Int
 
     val hiddenProperty: Property<Boolean>
@@ -38,14 +36,14 @@ interface Layer : DrawSurface, Drawable, Movable, Clearable {
             .toSet()
 
     /**
-     * Same as [DrawSurface.getTileAt] but will consider the given `position`
+     * Same as [DrawSurface.getTileAt] but will consider the given [position]
      * as an absolute position (the position is relative to the top left corner
      * of the screen, not the top left corner of the [DrawSurface]).
      */
     fun getAbsoluteTileAt(position: Position): Maybe<Tile>
 
     /**
-     * Same as [DrawSurface.setTileAt] but will consider the given `position`
+     * Same as [DrawSurface.setTileAt] but will consider the given [position]
      * as an absolute position (the position is relative to the top left corner
      * of the screen, not the top left corner of the [DrawSurface]).
      */

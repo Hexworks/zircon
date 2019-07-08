@@ -3,16 +3,19 @@
 package org.hexworks.zircon.examples.playground
 
 import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.Borders
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentAlignment
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
+import org.hexworks.zircon.api.extensions.border
+import org.hexworks.zircon.api.mvc.base.BaseView
+import org.hexworks.zircon.api.resource.TilesetResource
+
 
 object KotlinPlayground {
 
@@ -22,58 +25,57 @@ object KotlinPlayground {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .enableBetaFeatures()
-                .withDefaultTileset(tileset)
-                .build())
+        val zirconGameConfiguration = ZirconGameConfiguration(
+                1360, 768, CP437TilesetResources.rogueYun16x16(), ColorThemes.zenburnVanilla())
 
-
-        val screen = Screens.createScreenFor(tileGrid)
-
-
-        val content = Components.panel()
-                .withSize(40, 23)
-                .withDecorations(box(title = "Pick Tile and Color", boxType = BoxType.DOUBLE))
-                .build().apply {
-                    applyColorTheme(ColorThemes.adriftInDreams())
-                    addComponent(Components.hbox()
-                            .withSpacing(1)
-                            .withSize(38, 21)
-                            .build().apply {
-                                applyColorTheme(ColorThemes.afterTheHeist())
-                                addComponent(Components.panel()
-                                        .withDecorations(box(title = "Tile"))
-                                        .withPosition(Position.offset1x1())
-                                        .withSize(18, 18)
-                                        .withComponentRenderer(NoOpComponentRenderer())
-                                        .build().apply {
-                                            applyColorTheme(ColorThemes.afterglow())
-                                        })
-
-                                addComponent(Components.panel()
-                                        .withDecorations(box(title = "Color"))
-                                        .withPosition(Position.offset1x1())
-                                        .withSize(18, 18)
-                                        .build().apply {
-                                            applyColorTheme(ColorThemes.amigaOs())
-                                            addComponent(Components.panel()
-                                                    .withSize(16, 16)
-                                                    .withComponentRenderer(NoOpComponentRenderer())
-                                                    .build().apply {
-                                                        applyColorTheme(ColorThemes.ancestry())
-                                                    })
-                                        })
-
-                            })
-                }
-
-        content.addComponent(Components.button().withText("OK")
-                .withAlignmentWithin(content, ComponentAlignment.BOTTOM_CENTER)
-                .build().apply {
-                    applyColorTheme(ColorThemes.arc())
-                })
-        screen.addComponent(content)
-
-        screen.display()
+        val application = SwingApplications.startApplication(zirconGameConfiguration.toZironConfig())
+        application.dock(GameView(zirconGameConfiguration))
     }
+
+    class GameView(gameConfiguration: ZirconGameConfiguration) : GameClientView(gameConfiguration) {
+
+        override fun onDock() {
+            val screen = screen
+
+            val sidebar = Components.panel()
+                    .withSize(18, screen.height - 10)
+                    .withDecorations(border(Borders.newBuilder()
+                                    .withBorderWidth(2)
+                                    .withBorderColor(ANSITileColor.BRIGHT_WHITE)
+                                    .build()))
+                    .build()
+//
+            val logArea = Components.logArea()
+                    // .withDecorations(new)
+                    //   .withTitle("Log")
+                    //  .wrapWithBox(true)
+                    .withSize(screen.width - sidebar.width, 10)
+                    .withAlignmentWithin(screen, ComponentAlignment.BOTTOM_RIGHT)
+                    .build()
+
+            screen.addComponent(logArea)
+            screen.addComponent(sidebar)
+        }
+    }
+
+    open class GameClientView(val gameConfiguration: ZirconGameConfiguration) : BaseView() {
+
+        override val theme = this.gameConfiguration.colorTheme
+    }
+
+    class ZirconGameConfiguration(
+            screenWidth: Int, screenHeight: Int, private val tileSet: TilesetResource, val colorTheme: ColorTheme)
+        : GameConfiguration(screenWidth, screenHeight) {
+
+        fun toZironConfig(): AppConfig {
+            return AppConfigs.newConfig()
+                    .withDebugMode(false)
+                    .enableBetaFeatures()
+                    .withDefaultTileset(tileSet)
+                    .withSize(screenWidth / tileSet.width, screenHeight / tileSet.height)
+                    .build()
+        }
+    }
+
+    open class GameConfiguration(val screenWidth: Int, val screenHeight: Int)
 }

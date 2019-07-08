@@ -8,5 +8,6 @@ interface Cacheable {
     /**
      * Generates a **unique** key for this object.
      */
+    // TODO: use val instead
     fun generateCacheKey(): String
 }

@@ -32,6 +32,7 @@ interface Scrollable3D {
      */
     fun visibleOffset(): Position3D
 
+
     /**
      * Scrolls this [Scrollable3D] with one unit to the right (width axis).
      * If the bounds of the virtual space are already reached this method has no effect.

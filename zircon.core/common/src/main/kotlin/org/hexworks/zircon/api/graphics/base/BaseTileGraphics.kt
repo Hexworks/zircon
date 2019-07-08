@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.graphics.base
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.extensions.map
-import org.hexworks.zircon.api.behavior.Styleable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
@@ -20,7 +19,6 @@ import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.util.TileTransformer
-import org.hexworks.zircon.internal.behavior.impl.DefaultStyleable
 import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride
 import org.hexworks.zircon.internal.data.DefaultCell
 import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphics
@@ -34,15 +32,12 @@ import org.hexworks.zircon.internal.graphics.DefaultTileImage
  */
 
 abstract class BaseTileGraphics(
-        styleSet: StyleSet,
         tileset: TilesetResource,
         initialSize: Size,
         private val tilesetOverride: TilesetOverride = DefaultTilesetOverride(
                 tileset = tileset),
-        private val contents: MutableMap<Position, Tile>,
-        styleable: Styleable = DefaultStyleable(styleSet))
+        private val contents: MutableMap<Position, Tile>)
     : TileGraphics,
-        Styleable by styleable,
         TilesetOverride by tilesetOverride {
 
     override val size = initialSize
@@ -127,7 +122,6 @@ abstract class BaseTileGraphics(
         // TODO: returnThis same type, use factory for this
         val result = ConcurrentTileGraphics(
                 size = newSize,
-                styleSet = toStyleSet(),
                 tileset = currentTileset())
         createSnapshot().cells.filter { (pos) -> newSize.containsPosition(pos) }
                 .forEach { (pos, tc) ->
@@ -150,11 +144,10 @@ abstract class BaseTileGraphics(
         return this
     }
 
-    override fun putText(text: String, position: Position) {
+    override fun putText(text: String, position: Position, styleSet: StyleSet) {
         text.forEachIndexed { col, char ->
             setTileAt(position.withRelativeX(col), TileBuilder
                     .newBuilder()
-                    .withStyleSet(toStyleSet())
                     .withCharacter(char)
                     .build())
         }
@@ -184,7 +177,6 @@ abstract class BaseTileGraphics(
         return TileGraphicsBuilder.newBuilder()
                 .withSize(size)
                 .withTileset(currentTileset())
-                .withStyle(toStyleSet())
                 .build().also {
                     it.draw(this)
                 }

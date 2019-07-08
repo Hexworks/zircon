@@ -42,12 +42,12 @@ interface Component : Identifiable, Layer, UIEventSource, ComponentEventSource {
     val absolutePosition: Position
 
     /**
-     * The styles this [Component] uses.
+     * The [ComponentStyleSet] of this [Component].
      */
     var componentStyleSet: ComponentStyleSet
 
     /**
-     * The styles property this [Component] uses.
+     * The [ComponentStyleSet] property of this [Component].
      */
     val componentStyleSetProperty: Property<ComponentStyleSet>
 
@@ -73,6 +73,7 @@ interface Component : Identifiable, Layer, UIEventSource, ComponentEventSource {
      */
     fun detach()
 
+    // TODO: refactor this to a theme property instead
     /**
      * Applies a [ColorTheme] to this component and recursively to all its children (if any).
      * @return the [ComponentStyleSet] which the [ColorTheme] was converted to

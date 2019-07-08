@@ -8,10 +8,8 @@ import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
 
 class ConcurrentTileGraphics(
         size: Size,
-        tileset: TilesetResource,
-        styleSet: StyleSet = StyleSet.defaultStyle())
+        tileset: TilesetResource)
     : BaseTileGraphics(
-        styleSet = styleSet,
         tileset = tileset,
         initialSize = size,
         contents = ThreadSafeMapFactory.create())

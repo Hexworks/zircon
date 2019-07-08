@@ -21,17 +21,17 @@ interface Boundable {
     val height: Int
 
     /**
-     * Tells whether this [Boundable] intersects the other `boundable` or not.
+     * Tells whether this [Boundable] intersects with the other [boundable].
      */
     fun intersects(boundable: Boundable): Boolean
 
     /**
-     * Tells whether `position` is within this boundable's bounds.
+     * Tells whether [position] is within this boundable's bounds.
      */
     fun containsPosition(position: Position): Boolean
 
     /**
-     * Tells whether this boundable contains the other `boundable`.
+     * Tells whether this boundable contains the other [boundable].
      * A [Boundable] contains another if the other boundable's bounds
      * are within this one's. (If their bounds are the same it is considered
      * a containment).

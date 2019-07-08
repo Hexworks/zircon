@@ -36,7 +36,7 @@ public class CursorExample {
 
         String text = "Cursor example...";
         for (int i = 0; i < text.length(); i++) {
-            grid.putCharacter(text.charAt(i));
+//            grid.putCharacter(text.charAt(i));
         }
 
 

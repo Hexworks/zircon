@@ -1,10 +1,6 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.TileColors;
-import org.hexworks.zircon.api.UIEventResponses;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.CursorStyle;
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder;
 import org.hexworks.zircon.api.color.ANSITileColor;
@@ -33,8 +29,8 @@ public class TypingExample {
 
 
     private static void startTypingSupport(TileGrid tileGrid) {
-        tileGrid.setBackgroundColor(ANSITileColor.BLACK);
-        tileGrid.setForegroundColor(ANSITileColor.RED);
+//        tileGrid.setBackgroundColor(ANSITileColor.BLACK);
+//        tileGrid.setForegroundColor(ANSITileColor.RED);
         tileGrid.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
             final Position pos = tileGrid.cursorPosition();
             if (event.getCode().equals(KeyCode.ESCAPE)) {
@@ -42,7 +38,7 @@ public class TypingExample {
             } else if (event.getCode().equals(KeyCode.ENTER)) {
                 tileGrid.putCursorAt(pos.withRelativeY(1).withX(0));
             } else {
-                tileGrid.putCharacter(event.getKey().charAt(0));
+                tileGrid.putTile(Tiles.newBuilder().withCharacter(event.getKey().charAt(0)).build());
             }
             return UIEventResponses.processed();
         });

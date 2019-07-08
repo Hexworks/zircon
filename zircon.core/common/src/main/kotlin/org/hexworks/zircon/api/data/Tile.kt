@@ -24,6 +24,35 @@ interface Tile : Drawable, Cacheable, StyleSet {
     val tileType: TileType
     val styleSet: StyleSet
 
+    // TODO: use vals for these
+    fun isOpaque(): Boolean
+
+    fun isUnderlined(): Boolean
+
+    fun isCrossedOut(): Boolean
+
+    fun isBlinking(): Boolean
+
+    fun isVerticalFlipped(): Boolean
+
+    fun isHorizontalFlipped(): Boolean
+
+    fun hasBorder(): Boolean
+
+    fun fetchBorderData(): Set<Border>
+
+    /**
+     * Tells whether this [Tile] **is** an empty [Tile]
+     * (it is the [Tile.empty] instance).
+     */
+    fun isEmpty(): Boolean
+
+    /**
+     * Tells whether this [Tile] **is not** an empty [Tile]
+     * (it is not the [Tile.empty] instance).
+     */
+    fun isNotEmpty(): Boolean
+
     override fun createCopy(): Tile
 
     override fun withForegroundColor(foregroundColor: TileColor): Tile
@@ -63,34 +92,6 @@ interface Tile : Drawable, Cacheable, StyleSet {
      * Returns this [Tile] as a [GraphicalTile] if possible.
      */
     fun asGraphicTile(): Maybe<GraphicalTile>
-
-    fun isOpaque(): Boolean
-
-    fun isUnderlined(): Boolean
-
-    fun isCrossedOut(): Boolean
-
-    fun isBlinking(): Boolean
-
-    fun isVerticalFlipped(): Boolean
-
-    fun isHorizontalFlipped(): Boolean
-
-    fun hasBorder(): Boolean
-
-    fun fetchBorderData(): Set<Border>
-
-    /**
-     * Tells whether this [Tile] **is** an empty [Tile]
-     * (it is the [Tile.empty] instance).
-     */
-    fun isEmpty(): Boolean
-
-    /**
-     * Tells whether this [Tile] **is not** an empty [Tile]
-     * (it is not the [Tile.empty] instance).
-     */
-    fun isNotEmpty(): Boolean
 
     companion object {
 

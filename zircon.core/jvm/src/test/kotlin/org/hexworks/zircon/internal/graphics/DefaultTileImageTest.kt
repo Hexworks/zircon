@@ -34,7 +34,7 @@ class DefaultTileImageTest {
                 .build()
                 .withTileAt(Positions.create(1, 1), Tiles.defaultTile().withCharacter('x'))
                 .combineWith(other, Positions.offset1x1())
-                .toTileGraphic()
+                .toTileGraphics()
 
         assertThat(IMAGE.getTileAt(FILLED_POS).get()).isEqualTo(FILLER_TILE)
     }

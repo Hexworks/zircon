@@ -16,6 +16,7 @@ import org.hexworks.zircon.internal.shape.DefaultShape
  */
 interface Shape : Collection<Position> {
 
+    // TODO: use vals
     /**
      * Returns all the [Position]s this [Shape] contains.
      */

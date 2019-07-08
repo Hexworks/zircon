@@ -9,7 +9,8 @@ import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
- * Represents a coordinate on a 2D plane.
+ * Represents a coordinate on a 2D plane. [Position]
+ * destructures into [x] and [y].
  */
 interface Position : Comparable<Position> {
 
@@ -111,6 +112,7 @@ interface Position : Comparable<Position> {
      */
     fun relativeToLeftOf(component: Component): Position
 
+    // TODO: use vals instead
     /**
      * Tells whether this [Position] is `UNKNOWN`.
      */

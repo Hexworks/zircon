@@ -37,6 +37,7 @@ interface Screen
     // TODO: move this to a Themeable interface
     fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
+    // TODO: move this to a ModalHandler interface
     /**
      * Opens a new [Modal] window on top of the [Screen]. A modal
      * window blocks access to all [Component]s on this [Screen] and

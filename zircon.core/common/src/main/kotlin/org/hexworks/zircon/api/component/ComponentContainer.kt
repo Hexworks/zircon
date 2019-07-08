@@ -22,7 +22,7 @@ interface ComponentContainer {
     fun addComponent(component: Component)
 
     /**
-     * Adds the [Component] of the given [Fragment] to this [ComponentContainer].
+     * Adds the [Fragment.root] of the given [Fragment] to this [ComponentContainer].
      */
     fun addFragment(fragment: Fragment) = addComponent(fragment.root)
 
