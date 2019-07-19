@@ -53,9 +53,10 @@ class DefaultProgressBar(componentMetadata: ComponentMetadata,
 
     fun getProgressBarState(): ProgressBarState {
         val currentProgress = min(range.toDouble(), progress)
+        val currentProgressInPercent = ((currentProgress / range.toDouble()) * 100).roundToInt()
         val currentStep = ((currentProgress / range.toDouble()) * numberOfSteps).toInt()
-        val currentStepInPercent = ((currentProgress / range.toDouble()) * 100).roundToInt()
-        return ProgressBarState(currentStep, currentStepInPercent)
+        val currentStepWidth = ((contentSize.width / numberOfSteps.toDouble()) * currentStep).roundToInt()
+        return ProgressBarState(currentStepWidth, currentProgressInPercent)
     }
 
 

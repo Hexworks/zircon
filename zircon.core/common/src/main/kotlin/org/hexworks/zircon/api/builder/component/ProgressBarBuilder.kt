@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.internal.component.impl.DefaultProgressBar
 import org.hexworks.zircon.internal.component.renderer.DefaultProgressBarRenderer
 import kotlin.jvm.JvmStatic
+import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
 /**
@@ -30,6 +31,8 @@ data class ProgressBarBuilder(
     fun withNumberOfSteps(steps: Int) = also {
         require(steps in 1..range) { "Number of steps must be greater 0 and smaller than the range" }
         this.numberOfSteps = steps
+        contentSize = contentSize
+                .withWidth(max(steps, contentSize.width))
     }
 
     // TODO: add a decorator instead
