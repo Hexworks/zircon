@@ -16,7 +16,6 @@ import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.TileTransformer
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
 import org.hexworks.zircon.internal.animation.InternalAnimationHandler
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
@@ -109,7 +108,7 @@ class RectangleTileGrid(
         backend.setTileAt(position, tile)
     }
 
-    override fun transformTileAt(position: Position, tileTransformer: TileTransformer) {
+    override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
         backend.transformTileAt(position, tileTransformer)
     }
 

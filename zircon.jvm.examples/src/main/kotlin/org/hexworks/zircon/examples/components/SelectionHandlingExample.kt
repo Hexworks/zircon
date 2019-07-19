@@ -1,7 +1,6 @@
 package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.extensions.onSelectionChanged
 
 object SelectionHandlingExample {
 

@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.game
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
+import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
@@ -9,7 +9,6 @@ import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.internal.extensions.getIfPresent
 
 /**
@@ -205,6 +204,7 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
     /**
      * The fetch mode for [Block]s.
      */
+    @Suppress("unused")
     enum class BlockFetchMode {
 
         /**

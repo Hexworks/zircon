@@ -12,7 +12,6 @@ import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
-import org.hexworks.zircon.api.util.TileTransformer
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 
 class DefaultLayer(position: Position,
@@ -51,7 +50,7 @@ class DefaultLayer(position: Position,
         }
     }
 
-    override fun transform(transformer: TileTransformer) {
+    override fun transform(transformer: (Tile) -> Tile) {
         backend.transform(transformer)
     }
 

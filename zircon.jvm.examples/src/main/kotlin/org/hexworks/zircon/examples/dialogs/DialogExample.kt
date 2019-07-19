@@ -11,7 +11,6 @@ import org.hexworks.zircon.api.builder.component.ModalBuilder
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.handleComponentEvents
 import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult

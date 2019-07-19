@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -8,7 +7,6 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.api.extensions.onClosed
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEvent

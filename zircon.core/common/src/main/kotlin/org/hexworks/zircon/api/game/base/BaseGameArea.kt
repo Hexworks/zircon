@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.game.base
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile

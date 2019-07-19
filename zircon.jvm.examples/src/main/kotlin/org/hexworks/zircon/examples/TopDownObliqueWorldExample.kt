@@ -20,7 +20,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.handleKeyboardEvents
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType

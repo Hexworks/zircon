@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.screen
 
-import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.subscribe
+import org.hexworks.cobalt.factory.IdentifierFactory
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -10,8 +10,6 @@ import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.abbreviate
-import org.hexworks.zircon.api.extensions.handleKeyboardEvents
-import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.Zircon
@@ -97,18 +95,22 @@ class TileGridScreen(
         } else Pass
     }
 
-    override fun handleMouseEvents(eventType: MouseEventType, handler: MouseEventHandler): Subscription {
+    override fun handleMouseEvents(
+            eventType: MouseEventType,
+            handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
         return eventProcessor.handleMouseEvents(eventType) { event, phase ->
             if (componentContainer.isMainContainerActive()) {
-                handler.handle(event, phase)
+                handler(event, phase)
             } else Pass
         }
     }
 
-    override fun handleKeyboardEvents(eventType: KeyboardEventType, handler: KeyboardEventHandler): Subscription {
+    override fun handleKeyboardEvents(
+            eventType: KeyboardEventType,
+            handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
         return eventProcessor.handleKeyboardEvents(eventType) { event, phase ->
             if (componentContainer.isMainContainerActive()) {
-                handler.handle(event, phase)
+                handler(event, phase)
             } else Pass
         }
     }

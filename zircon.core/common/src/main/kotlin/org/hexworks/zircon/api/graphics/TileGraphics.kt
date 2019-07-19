@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.data.Cell
@@ -9,7 +8,6 @@ import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
-import org.hexworks.zircon.api.util.TileTransformer
 
 /**
  * An image built from [Tile]s with color and style information.
@@ -77,9 +75,9 @@ interface TileGraphics
     /**
      * Transforms all of the [Tile]s in this [TileGraphics] with the given
      * [transformer] and overwrites them with the results of calling
-     * [TileTransformer.invoke].
+     * [transformer].
      */
-    fun transform(transformer: TileTransformer)
+    fun transform(transformer: (Tile) -> Tile)
 
     /**
      * Applies the given [styleSet] to all currently present [Tile]s in this

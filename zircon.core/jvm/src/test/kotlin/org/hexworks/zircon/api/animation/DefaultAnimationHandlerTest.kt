@@ -2,7 +2,7 @@ package org.hexworks.zircon.api.animation
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
+import org.hexworks.cobalt.factory.IdentifierFactory
 import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.api.builder.grid.TileGridBuilder

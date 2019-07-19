@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.graphics.impl
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.data.TileBuilder
@@ -15,7 +14,6 @@ import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
-import org.hexworks.zircon.api.util.TileTransformer
 import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride
 import org.hexworks.zircon.internal.data.DefaultCell
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
@@ -134,13 +132,13 @@ class SubTileGraphics(
         }
     }
 
-    override fun transformTileAt(position: Position, tileTransformer: TileTransformer) {
+    override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
         if (size.containsPosition(position)) {
             backend.transformTileAt(position + offset, tileTransformer)
         }
     }
 
-    override fun transform(transformer: TileTransformer) {
+    override fun transform(transformer: (Tile) -> Tile) {
         fetchCells().forEach { (pos, tile) ->
             setTileAt(pos, transformer(tile))
         }

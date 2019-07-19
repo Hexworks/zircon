@@ -1,7 +1,9 @@
 package org.hexworks.zircon.examples.docs;
 
+import kotlin.Unit;
 import org.hexworks.zircon.api.ColorThemes;
 import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.Functions;
 import org.hexworks.zircon.api.Screens;
 import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.UIEventResponses;
@@ -17,6 +19,7 @@ import org.hexworks.zircon.api.uievent.UIEventPhase;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 import static org.hexworks.zircon.api.ComponentDecorations.shadow;
+import static org.hexworks.zircon.api.Functions.*;
 import static org.hexworks.zircon.api.component.ComponentAlignment.CENTER;
 import static org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED;
 
@@ -47,11 +50,11 @@ public class InputHandling {
         // note that if you try this you will only see the "A pressed..." message when
         // the panel is focused (or something else in the panel)
 
-        panel.processKeyboardEvents(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
+        panel.processKeyboardEvents(KeyboardEventType.KEY_PRESSED, fromBiConsumer((event, phase) -> {
             if (phase == UIEventPhase.BUBBLE && event.getCode() == KeyCode.KEY_A) {
                 System.out.println("A pressed in bubble phase.");
             }
-        });
+        }));
 
 
         // it doesn't matter where you add the listener, you can do it before or after
@@ -65,7 +68,9 @@ public class InputHandling {
 
         // when you process events you don't have to return a response, Zircon will treat
         // processors as if they were returning the `processed` response.
-        button.processComponentEvents(ACTIVATED, (event) -> System.out.println("Button pressed!"));
+        button.processComponentEvents(ACTIVATED, fromConsumer((event) -> {
+            System.out.println("Button pressed!");
+        }));
 
 
         // listens to mouse events

@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.modal
 
-import org.hexworks.cobalt.datatypes.sam.Consumer
+
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
@@ -31,8 +31,8 @@ open class DefaultModal<T : ModalResult>(componentMetadata: ComponentMetadata,
         }
     }
 
-    override fun onClosed(consumer: Consumer<T>) {
-        addObserver(consumer)
+    override fun onClosed(fn: (T) -> Unit) {
+        addObserver(fn)
     }
 
     init {

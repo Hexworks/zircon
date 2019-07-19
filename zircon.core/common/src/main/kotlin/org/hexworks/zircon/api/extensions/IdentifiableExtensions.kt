@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.extensions
 
-import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.Identifier
 
 /**
  * Abbreviates this [Identifier].

@@ -1,11 +1,12 @@
 package org.hexworks.zircon.internal.animation
 
-import org.hexworks.cobalt.datatypes.Identifier
-import org.hexworks.cobalt.datatypes.extensions.map
-import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
+import org.hexworks.cobalt.Identifier
+import org.hexworks.cobalt.factory.IdentifierFactory
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationInfo
-import org.hexworks.zircon.api.animation.AnimationState.*
+import org.hexworks.zircon.api.animation.AnimationState.FINISHED
+import org.hexworks.zircon.api.animation.AnimationState.INFINITE
+import org.hexworks.zircon.api.animation.AnimationState.IN_PROGRESS
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.config.RuntimeConfig

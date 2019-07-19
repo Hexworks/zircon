@@ -1,7 +1,7 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
+
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.builder.game.GameAreaBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
@@ -9,8 +9,6 @@ import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Size3D
-import org.hexworks.zircon.api.extensions.handleMouseEvents
-import org.hexworks.zircon.api.extensions.onSelection
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.Symbols

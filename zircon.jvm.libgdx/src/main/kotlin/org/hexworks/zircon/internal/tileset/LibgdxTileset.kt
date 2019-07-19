@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.tileset
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.*
 import com.github.benmanes.caffeine.cache.Caffeine
-import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.Identifier
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile

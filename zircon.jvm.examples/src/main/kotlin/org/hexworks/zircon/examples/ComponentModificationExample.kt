@@ -5,9 +5,7 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_RIGHT
-import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_RELEASED
-import org.hexworks.zircon.api.uievent.Processed
 
 object ComponentModificationExample {
 
@@ -25,9 +23,8 @@ object ComponentModificationExample {
                 .withText("Modify")
                 .withAlignmentAround(button, TOP_RIGHT)
                 .build().apply {
-                    handleMouseEvents(MOUSE_RELEASED) { _, _ ->
+                    processMouseEvents(MOUSE_RELEASED) { _, _ ->
                         button.text += "x"
-                        Processed
                     }
                 }
 

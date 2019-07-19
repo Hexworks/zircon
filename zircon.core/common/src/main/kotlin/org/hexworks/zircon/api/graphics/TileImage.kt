@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.TileTransformer
 
 /**
  * An immutable image built from [Tile]s. It is completely in memory but it can be drawn onto
@@ -113,7 +112,7 @@ interface TileImage : Drawable, TileComposite {
      * Transforms all of the [Tile]s in this [TileImage] with the given
      * `transformer` and returns a new one with the transformed characters.
      */
-    fun transform(transformer: TileTransformer): TileImage
+    fun transform(transformer: (Tile) -> Tile): TileImage
 
     /**
      * Returns a part of this [TileImage] as a new [TileImage].

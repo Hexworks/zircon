@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api.util.markovchain
 
-import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.Identifier
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
+import org.hexworks.cobalt.factory.IdentifierFactory
 import org.hexworks.zircon.api.util.Random
 
 @Suppress("DataClassPrivateConstructor")

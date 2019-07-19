@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples;
 
+import kotlin.Unit;
 import org.hexworks.zircon.api.Animations;
 import org.hexworks.zircon.api.AppConfigs;
 import org.hexworks.zircon.api.CP437TilesetResources;
@@ -34,12 +35,12 @@ import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.graphics.TileGraphics;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.internal.resource.ColorThemeResource;
 import org.hexworks.zircon.api.resource.REXPaintResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.api.uievent.MouseEventType;
 import org.hexworks.zircon.internal.animation.DefaultAnimationFrame;
+import org.hexworks.zircon.internal.resource.ColorThemeResource;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,6 +53,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static org.hexworks.zircon.api.Functions.fromConsumer;
 import static org.hexworks.zircon.internal.resource.ColorThemeResource.AFTERGLOW;
 import static org.hexworks.zircon.internal.resource.ColorThemeResource.AFTER_THE_HEIST;
 import static org.hexworks.zircon.internal.resource.ColorThemeResource.AMIGA_OS;
@@ -216,10 +218,10 @@ public class FullExample {
 
         introScreen.applyColorTheme(INTRO_THEME);
 
-        splashScreen.startAnimation(splashAnim).onFinished(info -> {
+        splashScreen.startAnimation(splashAnim).onFinished(fromConsumer(info -> {
             introScreen.display();
             introScreen.startAnimation(skullAnim);
-        });
+        }));
 
 
         // ==============
@@ -523,16 +525,19 @@ public class FullExample {
             refreshTheme(colorThemesScreen, currentTheme, currentThemeLabel, infoPanel, selection);
             sdOptions.clearSelection();
             othOptions.clearSelection();
+            return Unit.INSTANCE;
         }));
         sdOptions.onSelection((selection -> {
             refreshTheme(colorThemesScreen, currentTheme, currentThemeLabel, infoPanel, selection);
             slOptions.clearSelection();
             othOptions.clearSelection();
+            return Unit.INSTANCE;
         }));
         othOptions.onSelection((selection -> {
             refreshTheme(colorThemesScreen, currentTheme, currentThemeLabel, infoPanel, selection);
             slOptions.clearSelection();
             sdOptions.clearSelection();
+            return Unit.INSTANCE;
         }));
 
         colorThemesScreen.applyColorTheme(currentTheme.get().getTheme());
