@@ -11,9 +11,7 @@ import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_LEFT
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.handleComponentEvents
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
-import org.hexworks.zircon.api.uievent.Processed
 
 object HBoxExample {
 
@@ -48,9 +46,8 @@ object HBoxExample {
                 .withText("Add new")
                 .withAlignmentWithin(screen, TOP_LEFT)
                 .build().apply {
-                    handleComponentEvents(ACTIVATED) {
+                    processComponentEvents(ACTIVATED) {
                         addButton(hbox)
-                        Processed
                     }
                 }
 
@@ -67,9 +64,8 @@ object HBoxExample {
                 .withSize(12, 1)
                 .build().apply {
                     applyColorTheme(theme)
-                    handleComponentEvents(ACTIVATED) {
+                    processComponentEvents(ACTIVATED) {
                         hbox.removeComponent(this)
-                        Processed
                     }
                 })
         count++

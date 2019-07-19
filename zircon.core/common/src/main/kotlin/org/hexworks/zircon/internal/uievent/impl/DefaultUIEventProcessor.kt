@@ -5,17 +5,11 @@ import org.hexworks.cobalt.events.api.NotCancelled
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.uievent.ComponentEvent
-import org.hexworks.zircon.api.uievent.ComponentEventHandler
-import org.hexworks.zircon.api.uievent.ComponentEventProcessor
 import org.hexworks.zircon.api.uievent.ComponentEventSource
 import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventHandler
-import org.hexworks.zircon.api.uievent.KeyboardEventProcessor
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventHandler
-import org.hexworks.zircon.api.uievent.MouseEventProcessor
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.PreventDefault
@@ -69,50 +63,62 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
         } ?: Pass
     }
 
-    override fun handleMouseEvents(eventType: MouseEventType, handler: MouseEventHandler): Subscription {
+    override fun handleMouseEvents(
+            eventType: MouseEventType,
+            handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
-            handler.handle(event as MouseEvent, phase)
+            handler(event as MouseEvent, phase)
         }
     }
 
-    override fun processMouseEvents(eventType: MouseEventType, handler: MouseEventProcessor): Subscription {
+    override fun processMouseEvents(
+            eventType: MouseEventType,
+            handler: (event: MouseEvent, phase: UIEventPhase) -> Unit): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
-            handler.process(event as MouseEvent, phase)
+            handler(event as MouseEvent, phase)
             Processed
         }
     }
 
-    override fun handleKeyboardEvents(eventType: KeyboardEventType, handler: KeyboardEventHandler): Subscription {
+    override fun handleKeyboardEvents(
+            eventType: KeyboardEventType,
+            handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
-            handler.handle(event as KeyboardEvent, phase)
+            handler(event as KeyboardEvent, phase)
         }
     }
 
-    override fun processKeyboardEvents(eventType: KeyboardEventType, handler: KeyboardEventProcessor): Subscription {
+    override fun processKeyboardEvents(
+            eventType: KeyboardEventType,
+            handler: (event: KeyboardEvent, phase: UIEventPhase) -> Unit): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
-            handler.process(event as KeyboardEvent, phase)
+            handler(event as KeyboardEvent, phase)
             Processed
         }
     }
 
-    override fun handleComponentEvents(eventType: ComponentEventType, handler: ComponentEventHandler): Subscription {
+    override fun handleComponentEvents(
+            eventType: ComponentEventType,
+            handler: (event: ComponentEvent) -> UIEventResponse): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
             if (phase == UIEventPhase.TARGET) {
-                handler.handle(event as ComponentEvent)
+                handler(event as ComponentEvent)
             } else Pass
         }
     }
 
-    override fun processComponentEvents(eventType: ComponentEventType, handler: ComponentEventProcessor): Subscription {
+    override fun processComponentEvents(
+            eventType: ComponentEventType,
+            handler: (event: ComponentEvent) -> Unit): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
             if (phase == UIEventPhase.TARGET) {
-                handler.process(event as ComponentEvent)
+                handler(event as ComponentEvent)
             }
             Processed
         }

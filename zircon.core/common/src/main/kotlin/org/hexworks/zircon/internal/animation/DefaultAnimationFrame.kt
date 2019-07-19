@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.animation
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.animation.AnimationFrame
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size

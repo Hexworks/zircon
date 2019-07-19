@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.mvc
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.mvc.View
 import org.hexworks.zircon.api.mvc.ViewContainer

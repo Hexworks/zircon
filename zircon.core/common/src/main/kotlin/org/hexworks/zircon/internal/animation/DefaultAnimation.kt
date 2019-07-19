@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.animation
 
-import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.Identifier
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
+import org.hexworks.cobalt.factory.IdentifierFactory
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationFrame
 import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory

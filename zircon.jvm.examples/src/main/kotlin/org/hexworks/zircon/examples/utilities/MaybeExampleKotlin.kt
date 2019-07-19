@@ -1,9 +1,5 @@
 package org.hexworks.zircon.examples.utilities
 
-import org.hexworks.cobalt.datatypes.extensions.flatMap
-import org.hexworks.cobalt.datatypes.extensions.ifPresent
-import org.hexworks.cobalt.datatypes.extensions.map
-import org.hexworks.cobalt.datatypes.extensions.orElseThrow
 import org.hexworks.zircon.api.Maybes
 
 object MaybeExampleKotlin {

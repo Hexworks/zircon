@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.renderer
 
-import org.hexworks.cobalt.datatypes.extensions.fold
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile

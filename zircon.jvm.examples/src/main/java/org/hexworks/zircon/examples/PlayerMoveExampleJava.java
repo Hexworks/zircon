@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples;
 
+import kotlin.Unit;
 import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.color.ANSITileColor;
 import org.hexworks.zircon.api.data.Tile;
@@ -24,7 +25,7 @@ public class PlayerMoveExampleJava {
                 .build()
                 .fill(PLAYER_TILE);
 
-        tileGrid.processKeyboardEvents(KeyboardEventType.KEY_PRESSED, ((event, phase) -> {
+        tileGrid.processKeyboardEvents(KeyboardEventType.KEY_PRESSED, Functions.fromBiConsumer((event, phase) -> {
             switch (event.getCode()) {
                 case UP:
                     player.moveUpBy(1);

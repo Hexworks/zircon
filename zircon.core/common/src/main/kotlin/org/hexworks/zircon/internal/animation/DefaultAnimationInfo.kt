@@ -1,8 +1,7 @@
 package org.hexworks.zircon.internal.animation
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
-import org.hexworks.cobalt.datatypes.sam.Consumer
+
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandler
 import org.hexworks.zircon.api.animation.AnimationInfo
@@ -15,7 +14,7 @@ internal class DefaultAnimationInfo(private var state: AnimationState,
                                     private val animationHandler: AnimationHandler,
                                     private val animation: Animation) : AnimationInfo {
 
-    private var onFinishFn = Maybe.empty<Consumer<AnimationInfo>>()
+    private var onFinishFn = Maybe.empty<(AnimationInfo) -> Unit>()
 
     override fun isFinished() = state == AnimationState.FINISHED
 
@@ -23,7 +22,7 @@ internal class DefaultAnimationInfo(private var state: AnimationState,
 
     override fun isInfinite() = state == AnimationState.INFINITE
 
-    override fun onFinished(fn: Consumer<AnimationInfo>) {
+    override fun onFinished(fn: (AnimationInfo) -> Unit) {
         require(state != AnimationState.INFINITE) {
             "Can't wait for an infinite Animation to finish."
         }
@@ -37,7 +36,7 @@ internal class DefaultAnimationInfo(private var state: AnimationState,
     fun setState(state: AnimationState) {
         this.state = state
         if (state == AnimationState.FINISHED) {
-            onFinishFn.map { it.accept(this) }
+            onFinishFn.map { it(this) }
         }
     }
 

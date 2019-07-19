@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.util.TileTransformer
 
 interface Layer : DrawSurface, Drawable, Movable, Clearable {
 
@@ -67,9 +66,9 @@ interface Layer : DrawSurface, Drawable, Movable, Clearable {
     /**
      * Transforms all of the [Tile]s in this [Layer] with the given
      * [transformer] and overwrites them with the results of calling
-     * [TileTransformer.invoke].
+     * [transformer].
      */
-    fun transform(transformer: TileTransformer)
+    fun transform(transformer: (Tile) -> Tile)
 
     /**
      * Fills the empty positions of this [Layer] with the

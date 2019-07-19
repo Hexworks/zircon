@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.renderer
 
-import org.hexworks.cobalt.datatypes.extensions.map
+
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.Position

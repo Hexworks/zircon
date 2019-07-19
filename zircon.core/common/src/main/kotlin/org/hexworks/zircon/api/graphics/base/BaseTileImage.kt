@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.graphics.base
 
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Cell
@@ -11,7 +10,6 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.TileTransformer
 import org.hexworks.zircon.internal.data.DefaultCell
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
 import kotlin.math.max
@@ -140,7 +138,7 @@ abstract class BaseTileImage : TileImage {
                 tiles = tiles.toMap())
     }
 
-    override fun transform(transformer: TileTransformer): TileImage {
+    override fun transform(transformer: (Tile) -> Tile): TileImage {
         val tiles = mutableMapOf<Position, Tile>()
         fetchCells().forEach { (pos, tile) ->
             tiles[pos] = transformer.invoke(tile)

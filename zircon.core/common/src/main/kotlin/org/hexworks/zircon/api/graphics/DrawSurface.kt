@@ -5,7 +5,6 @@ import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.util.TileTransformer
 
 /**
  * Represents an object which can be drawn upon.
@@ -28,7 +27,7 @@ interface DrawSurface : TileComposite, TilesetOverride {
      * Transforms the [Tile] at the given [position]. Has no effect
      * if there is no [Tile] at the given [position].
      */
-    fun transformTileAt(position: Position, tileTransformer: TileTransformer)
+    fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile)
 
     /**
      * Creates a snapshot of the current state of this [DrawSurface].

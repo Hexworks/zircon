@@ -1,11 +1,21 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.color.ANSITileColor.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Layers
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.color.ANSITileColor.BLUE
+import org.hexworks.zircon.api.color.ANSITileColor.GREEN
+import org.hexworks.zircon.api.color.ANSITileColor.RED
+import org.hexworks.zircon.api.color.ANSITileColor.YELLOW
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.extensions.onSelectionChanged
-import org.hexworks.zircon.api.extensions.transform
 import org.hexworks.zircon.api.modifier.TileTransformModifier
 
 object LayerTransformerExample {

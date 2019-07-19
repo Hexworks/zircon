@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.component.Visibility
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.halfBlock
-import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.extensions.side
@@ -89,10 +88,8 @@ object ButtonsExample {
         screen.display()
         screen.applyColorTheme(theme)
 
-        invisibleBtn.handleMouseEvents(MouseEventType.MOUSE_CLICKED
-        ) { _, _ ->
+        invisibleBtn.processMouseEvents(MouseEventType.MOUSE_CLICKED) { _, _ ->
             invisibleBtn.isVisible = Visibility.Hidden
-            Processed
         }
     }
 

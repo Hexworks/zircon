@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.component.renderer.impl
 
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer

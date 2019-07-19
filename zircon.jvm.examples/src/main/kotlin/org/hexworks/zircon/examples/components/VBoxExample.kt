@@ -7,14 +7,11 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.LibgdxApplications
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_LEFT
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.handleComponentEvents
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
-import org.hexworks.zircon.api.uievent.Processed
 
 object VBoxExample {
 
@@ -48,9 +45,8 @@ object VBoxExample {
                 .withText("Add new")
                 .withAlignmentWithin(screen, TOP_LEFT)
                 .build().apply {
-                    handleComponentEvents(ACTIVATED) {
+                    processComponentEvents(ACTIVATED) {
                         addButton(vbox)
-                        Processed
                     }
                 }
 
@@ -66,9 +62,8 @@ object VBoxExample {
                 .withText("Remove: $count")
                 .build().apply {
                     applyColorTheme(theme)
-                    handleComponentEvents(ACTIVATED) {
+                    processComponentEvents(ACTIVATED) {
                         vbox.removeComponent(this)
-                        Processed
                     }
                 })
         count++

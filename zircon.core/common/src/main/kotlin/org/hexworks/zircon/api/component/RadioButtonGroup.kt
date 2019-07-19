@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.component
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.sam.Consumer
+
 import org.hexworks.cobalt.events.api.Event
 import org.hexworks.zircon.api.behavior.Scrollable
 
@@ -28,7 +28,7 @@ interface RadioButtonGroup : Component, Scrollable {
      * Adds a callback to this [RadioButtonGroup] which will be called
      * when a change in selection happens.
      */
-    fun onSelection(callback: Consumer<Selection>)
+    fun onSelection(fn: (Selection) -> Unit)
 
     /**
      * Clears the selected item in this [RadioButtonGroup].

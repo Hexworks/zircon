@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.component.renderer.impl
 
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.renderer.ComponentPostProcessor
 import org.hexworks.zircon.api.component.renderer.ComponentPostProcessorContext

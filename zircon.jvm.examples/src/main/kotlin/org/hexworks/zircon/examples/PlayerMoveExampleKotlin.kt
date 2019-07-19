@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.extensions.handleKeyboardEvents
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
 import org.hexworks.zircon.api.uievent.Pass
@@ -31,7 +30,7 @@ object PlayerMoveExampleKotlin {
                 .build()
                 .fill(PLAYER_TILE)
 
-        tileGrid.handleKeyboardEvents(KEY_PRESSED) { event, _ ->
+        tileGrid.processKeyboardEvents(KEY_PRESSED) { event, _ ->
             when (event.code) {
                 KeyCode.UP -> player.moveUpBy(1)
                 KeyCode.DOWN -> player.moveDownBy(1)
@@ -39,7 +38,6 @@ object PlayerMoveExampleKotlin {
                 KeyCode.RIGHT -> player.moveRightBy(1)
                 else -> Pass
             }
-            Processed
         }
 
         tileGrid.pushLayer(player)
