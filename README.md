@@ -558,7 +558,7 @@ we bundled into Zircon.
 [screen-primer]:https://github.com/Hexworks/zircon/wiki/A-primer-on-Screens
 [text-images]:https://github.com/Hexworks/zircon/wiki/How-to-work-with-TileGraphics
 
-[discord]:https://discord.gg/twQwhdm
+[discord]:https://discord.gg/vSNgvBh
 [examples]:https://github.com/Hexworks/zircon/tree/master/zircon.jvm.examples
 [api]:https://github.com/Hexworks/zircon/tree/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api
 [internal]:https://github.com/Hexworks/zircon/tree/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/internal

@@ -59,7 +59,7 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
             // TODO: we can do this without moving the component
             val originalRect = dc.rect
             dc.moveTo(dc.position + contentPosition)
-            if (RuntimeConfig.config.betaEnabled.not()) {
+            if (RuntimeConfig.config.debugMode.not()) {
                 val contentBounds = contentSize.toRect()
                 require(currentTileset().size == component.currentTileset().size) {
                     "Trying to add component with incompatible tileset size '${component.currentTileset().size}' to" +
@@ -70,8 +70,10 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
                             "with bounds ($originalRect) to the container (${this::class.simpleName}) " +
                             "with content bounds ($contentBounds) is not allowed."
                 }
-                require(children.none { it.intersects(dc) }) {
-                    "You can't add a component to a container which intersects with other components."
+                children.firstOrNull { it.intersects(dc) }?.let {
+                    throw IllegalArgumentException(
+                            "You can't add a component to a container which intersects with other components. " +
+                                    "$it is intersecting with $dc.")
                 }
             }
             // TODO: regression test this! order was changed! it was buggy when the component was re-added to the
