@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
@@ -38,13 +39,13 @@ object ProgressBarExample {
                 .withNumberOfSteps(10)
                 .withAlignment(positionalAlignment(0, 5))
                 .withDecorations(box())
+                .withSize(Size.create(25,3))
                 .build()
 
         val progressBarWithPercentValue = Components.progressBar()
                 .withNumberOfSteps(20)
                 .withAlignment(positionalAlignment(0, 10))
                 .withRange(100)
-                .withNumberOfSteps(10)
                 .withDecorations(box())
                 .build()
 
