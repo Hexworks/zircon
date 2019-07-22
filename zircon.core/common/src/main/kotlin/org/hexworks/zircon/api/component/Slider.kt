@@ -1,6 +1,8 @@
 package org.hexworks.zircon.api.component
 
 import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.zircon.api.behavior.ChangeListener
 import org.hexworks.zircon.api.behavior.Disablable
 
 interface Slider: Component, Disablable {
@@ -25,4 +27,5 @@ interface Slider: Component, Disablable {
      */
     val currentValueProperty: Property<Int>
 
+    fun onChange(fn: ChangeListener<Int>): Subscription
 }
