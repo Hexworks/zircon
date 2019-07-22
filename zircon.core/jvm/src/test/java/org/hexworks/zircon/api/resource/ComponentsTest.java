@@ -21,7 +21,7 @@ public class ComponentsTest {
 
     @Test
     public void shouldProperlyCreateLogBoxBuilder() {
-        assertThat(Components.textBox()).isInstanceOf(TextBoxBuilder.class);
+        assertThat(Components.textBox(1)).isInstanceOf(TextBoxBuilder.class);
     }
 
     @Test
