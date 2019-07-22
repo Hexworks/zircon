@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRendering
 import org.hexworks.zircon.internal.component.impl.DefaultSlider
 import org.hexworks.zircon.internal.component.renderer.DefaultSliderRenderer
 import kotlin.jvm.JvmStatic
+import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
 /**
@@ -30,12 +31,14 @@ data class SliderBuilder(
     fun withNumberOfSteps(steps: Int) = also {
         require(steps in 1..range) { "Number of steps must be greater 0 and smaller than the range" }
         this.numberOfSteps = steps
+        contentSize = contentSize
+                .withWidth(max(steps, contentSize.width))
     }
 
     override fun build(): Slider {
         return DefaultSlider(
                 componentMetadata = ComponentMetadata(
-                        size = Sizes.create(numberOfSteps + 1, 3),
+                        size = size,
                         position = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
