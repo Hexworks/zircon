@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.onValueChanged
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
 
@@ -53,7 +54,7 @@ object SliderExample {
 
         slider.currentValue = 30
 
-        slider.currentValueProperty.onChange {
+        slider.onValueChanged {
             label.text = "${it.newValue}"
         }
 

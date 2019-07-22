@@ -4,6 +4,7 @@ import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.behavior.ChangeListener
 import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -34,13 +35,11 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
     override var currentValue: Int by currentValueProperty.asDelegate()
 
     private val valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
-    private var onValueChangedCallback: (Int) -> Unit = {}
 
     init {
         render()
         currentValueProperty.onChange {
             render()
-            onValueChangedCallback(currentValue)
         }
         disabledProperty.onChange {
             if (it.newValue) {
@@ -145,6 +144,10 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
         val actualValue = min(range, currentValue)
         val currentStep = ((actualValue.toDouble() / range.toDouble()) * numberOfSteps).toInt()
         return CurrentValueState(currentStep)
+    }
+
+    override fun onChange(fn: ChangeListener<Int>): Subscription {
+        return currentValueProperty.onChange(fn::onChange)
     }
 
     override fun render() {
