@@ -18,6 +18,7 @@ import org.hexworks.zircon.api.builder.component.TextBoxBuilder
 import org.hexworks.zircon.api.builder.component.ToggleButtonBuilder
 import org.hexworks.zircon.api.builder.component.VBoxBuilder
 import org.hexworks.zircon.api.builder.component.SliderBuilder
+import org.hexworks.zircon.api.builder.component.VerticalSliderBuilder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 import kotlin.jvm.JvmStatic
@@ -77,4 +78,7 @@ object Components {
 
     @JvmStatic
     fun slider() = SliderBuilder.newBuilder()
+
+    @JvmStatic
+    fun verticalSlider() = VerticalSliderBuilder.newBuilder()
 }

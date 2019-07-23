@@ -9,10 +9,7 @@ import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.Label
-import org.hexworks.zircon.api.component.Slider
+import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
@@ -23,13 +20,13 @@ import kotlin.math.min
 import kotlin.math.round
 import kotlin.math.truncate
 
-class DefaultSlider(componentMetadata: ComponentMetadata,
-                    private val renderingStrategy: ComponentRenderingStrategy<Slider>,
-                    override val range: Int,
-                    override val numberOfSteps: Int,
-                    val additionalWidthNeeded: Int,
-                    val shouldOffsetMouse: Boolean
-) : Slider, DefaultComponent(
+class DefaultVerticalSlider(componentMetadata: ComponentMetadata,
+                            private val renderingStrategy: ComponentRenderingStrategy<VerticalSlider>,
+                            override val range: Int,
+                            override val numberOfSteps: Int,
+                            val additionalHeightNeeded: Int,
+                            val shouldOffsetMouse: Boolean
+) : VerticalSlider, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
         Disablable by Disablable.create() {
@@ -47,10 +44,10 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
         }
         disabledProperty.onChange {
             if (it.newValue) {
-                LOGGER.debug("Disabling Slider (id=${id.abbreviate()}, disabled=$isDisabled).")
+                LOGGER.debug("Disabling VerticalSlider (id=${id.abbreviate()}, disabled=$isDisabled).")
                 componentStyleSet.applyDisabledStyle()
             } else {
-                LOGGER.debug("Enabling Slider (id=${id.abbreviate()}, disabled=$isDisabled).")
+                LOGGER.debug("Enabling VerticalSlider (id=${id.abbreviate()}, disabled=$isDisabled).")
                 componentStyleSet.reset()
             }
             render()
@@ -60,20 +57,20 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
     override fun acceptsFocus() = isDisabled.not()
 
     override fun focusGiven() = whenEnabled {
-        LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled) was given focus.")
+        LOGGER.debug("VerticalSlider (id=${id.abbreviate()}, disabled=$isDisabled) was given focus.")
         componentStyleSet.applyFocusedStyle()
         render()
     }
 
     override fun focusTaken() = whenEnabled {
-        LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled) lost focus.")
+        LOGGER.debug("VerticalSlider (id=${id.abbreviate()}, disabled=$isDisabled) lost focus.")
         componentStyleSet.reset()
         render()
     }
 
     override fun mouseEntered(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse entered.")
+            LOGGER.debug("VerticalSlider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse entered.")
             componentStyleSet.applyMouseOverStyle()
             render()
             Processed
@@ -82,7 +79,7 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
 
     override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse exited.")
+            LOGGER.debug("VerticalSlider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse exited.")
             componentStyleSet.reset()
             render()
             Processed
@@ -91,7 +88,7 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
 
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
+            LOGGER.debug("VerticalSlider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
             componentStyleSet.applyActiveStyle()
             when (val clickPosition = getMousePosition(event)) {
                 0 -> {
@@ -110,7 +107,7 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
 
     override fun mouseReleased(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse released.")
+            LOGGER.debug("VerticalSlider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse released.")
             componentStyleSet.applyMouseOverStyle()
             render()
             Processed
@@ -119,7 +116,7 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
 
     override fun mouseDragged(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse dragged.")
+            LOGGER.debug("VerticalSlider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse dragged.")
 
             when (val dragPosition = getMousePosition(event)) {
                 0 -> {}
@@ -132,7 +129,7 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        LOGGER.debug("Applying color theme ($colorTheme) to Slider (id=${id.abbreviate()}).")
+        LOGGER.debug("Applying color theme ($colorTheme) to VerticalSlider (id=${id.abbreviate()}).")
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
@@ -167,7 +164,7 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
     }
 
     private fun getMousePosition(event: MouseEvent): Int {
-        val clickPosition = event.position.minus(this.absolutePosition).x
+        val clickPosition = event.position.minus(this.absolutePosition).y
         return when(shouldOffsetMouse) {
             true -> clickPosition - 1
             false -> clickPosition
@@ -187,7 +184,7 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
     }
 
     private fun setValueToClosestPossible(value: Int) {
-        currentValue = (truncate((value - 1) * valuePerStep)).toInt()
+        currentValue = (round((value - 1) * valuePerStep)).toInt()
     }
 
     override fun onChange(fn: ChangeListener<Int>): Subscription {
@@ -195,13 +192,13 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        LOGGER.debug("Slider (id=${id.abbreviate()}, visibility=$isVisible) was rendered.")
+        LOGGER.debug("VerticalSlider (id=${id.abbreviate()}, visibility=$isVisible) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 
     companion object {
-        val LOGGER = LoggerFactory.getLogger(Slider::class)
+        val LOGGER = LoggerFactory.getLogger(VerticalSlider::class)
     }
 
-    data class CurrentValueState(val width: Int, val actualValue: Int)
+    data class CurrentValueState(val height: Int, val actualValue: Int)
 }

@@ -90,6 +90,16 @@ object SliderExample {
 
         slider4.currentValue = 20
 
+        val vertical = Components.verticalSlider()
+                .withRange(100)
+                .withNumberOfSteps(10)
+                .withAlignment(positionalAlignment(25, 3))
+                .build()
+
+        panel.addComponent(vertical)
+
+        vertical.currentValue = 10
+
         screen.display()
         screen.applyColorTheme(theme)
     }

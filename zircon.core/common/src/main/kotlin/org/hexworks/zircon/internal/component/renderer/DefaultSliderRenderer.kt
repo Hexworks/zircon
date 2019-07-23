@@ -19,6 +19,7 @@ class DefaultSliderRenderer : ComponentRenderer<DefaultSlider> {
         val invertedDefaultStyleSet = defaultStyleSet
                 .withBackgroundColor(defaultStyleSet.foregroundColor)
                 .withForegroundColor(defaultStyleSet.backgroundColor)
+        val disabledStyleSet = context.componentStyle.fetchStyleFor(ComponentState.DISABLED)
 
         val currentValueState = context.component.getCurrentValueState()
         val label = currentValueState.actualValue.toString()
@@ -32,7 +33,7 @@ class DefaultSliderRenderer : ComponentRenderer<DefaultSlider> {
             when {
                 idx == cursorPosition -> tileGraphics.setTileAt(Positions.create(idx, 0), Tile.createCharacterTile(Symbols.DOUBLE_LINE_VERTICAL, defaultStyleSet))
                 idx < cursorPosition -> tileGraphics.setTileAt(Positions.create(idx, 0), Tile.createCharacterTile(' ', invertedDefaultStyleSet))
-                else -> tileGraphics.setTileAt(Positions.create(idx, 0), Tile.createCharacterTile(' ', defaultStyleSet))
+                else -> tileGraphics.setTileAt(Positions.create(idx, 0), Tile.createCharacterTile(' ', disabledStyleSet))
             }
         }
         tileGraphics.setTileAt(Positions.create(barWidth + 1, 0), Tile.createCharacterTile(Symbols.TRIANGLE_RIGHT_POINTING_BLACK, currentStyleSet))
