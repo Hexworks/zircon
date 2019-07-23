@@ -48,7 +48,7 @@ object SliderExample {
         val label = Components.label()
                 .withSize(5,1)
                 .withText("30")
-                .withAlignmentAround(slider1, ComponentAlignment.BOTTOM_CENTER)
+                .withAlignmentAround(slider1, ComponentAlignment.RIGHT_CENTER)
                 .build()
 
         panel.addComponent(label)
@@ -69,6 +69,26 @@ object SliderExample {
         panel.addComponent(slider2)
 
         slider2.currentValue = 2
+
+        val slider3 = Components.slider()
+                .withRange(255)
+                .withNumberOfSteps(10)
+                .withAlignment(positionalAlignment(0, 15))
+                .build()
+
+        panel.addComponent(slider3)
+
+        slider3.currentValue = 127
+
+        val slider4 = Components.slider()
+                .withRange(100)
+                .withNumberOfSteps(10)
+                .withAlignment(positionalAlignment(0, 20))
+                .build()
+
+        panel.addComponent(slider4)
+
+        slider4.currentValue = 20
 
         screen.display()
         screen.applyColorTheme(theme)

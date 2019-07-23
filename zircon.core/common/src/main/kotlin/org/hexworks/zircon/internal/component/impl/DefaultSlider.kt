@@ -20,12 +20,14 @@ import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
 import kotlin.math.min
+import kotlin.math.round
 
 class DefaultSlider(componentMetadata: ComponentMetadata,
                     private val renderingStrategy: ComponentRenderingStrategy<Slider>,
                     override val range: Int,
                     override val numberOfSteps: Int,
-                    val additionalWidthNeeded: Int
+                    val additionalWidthNeeded: Int,
+                    val shouldOffsetMouse: Boolean
 ) : Slider, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
@@ -90,18 +92,14 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
         if (phase == UIEventPhase.TARGET) {
             LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
             componentStyleSet.applyActiveStyle()
-            when (val clickPosition = event.position.minus(this.absolutePosition).x) {
+            when (val clickPosition = getMousePosition(event)) {
                 0 -> {
-                    if (currentValue > 0) {
-                        currentValue--
-                    }
+                    decrementCurrentValue()
                 }
                 (numberOfSteps + 2) -> {
-                    if (currentValue < range) {
-                        currentValue++
-                    }
+                    incrementCurrentValue()
                 }
-                else -> {currentValue = ((clickPosition - 1) * valuePerStep).toInt()}
+                else -> {setValueToClosestPossible(clickPosition)}
             }
 
             render()
@@ -122,12 +120,10 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
         if (phase == UIEventPhase.TARGET) {
             LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse dragged.")
 
-            when (val dragPosition = event.position.minus(this.absolutePosition).x) {
-                0 -> {
-                }
-                (numberOfSteps + 2) -> {
-                }
-                else -> {currentValue = ((dragPosition - 1) * valuePerStep).toInt()}
+            when (val dragPosition = getMousePosition(event)) {
+                0 -> {}
+                (numberOfSteps + 2) -> {}
+                else -> {setValueToClosestPossible(dragPosition)}
             }
             render()
             Processed
@@ -135,7 +131,7 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
     }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        LOGGER.debug("Applying color theme ($colorTheme) to Label (id=${id.abbreviate()}).")
+        LOGGER.debug("Applying color theme ($colorTheme) to Slider (id=${id.abbreviate()}).")
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
@@ -161,8 +157,32 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
 
     fun getCurrentValueState(): CurrentValueState {
         val actualValue = min(range, currentValue)
-        val currentStep = ((actualValue.toDouble() / range.toDouble()) * numberOfSteps).toInt()
+        val currentStep = round((actualValue.toDouble() / range.toDouble()) * numberOfSteps).toInt()
         return CurrentValueState(currentStep, actualValue)
+    }
+
+    private fun getMousePosition(event: MouseEvent): Int {
+        val clickPosition = event.position.minus(this.absolutePosition).x
+        return when(shouldOffsetMouse) {
+            true -> clickPosition - 1
+            false -> clickPosition
+        }
+    }
+
+    private fun incrementCurrentValue() {
+        if (currentValue < range) {
+            currentValue++
+        }
+    }
+
+    private fun decrementCurrentValue() {
+        if (currentValue > 0) {
+            currentValue--
+        }
+    }
+
+    private fun setValueToClosestPossible(value: Int) {
+        currentValue = ((value - 1) * valuePerStep).toInt()
     }
 
     override fun onChange(fn: ChangeListener<Int>): Subscription {
