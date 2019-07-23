@@ -23,6 +23,8 @@ data class SliderBuilder(
                 componentRenderer = DefaultSliderRenderer()))
     : BaseComponentBuilder<Slider, SliderBuilder>() {
 
+    private val WIDTH_OFFSET = 3
+
     fun withRange(range: Int) = also {
         require(range > 0) { "Range must be greater than 0"}
         this.range = range
@@ -31,7 +33,7 @@ data class SliderBuilder(
     fun withNumberOfSteps(steps: Int) = also {
         require(steps in 1..range) { "Number of steps must be greater 0 and smaller than the range" }
         this.numberOfSteps = steps
-        additionalWidthNeeded = range.toString().length + 3
+        additionalWidthNeeded = range.toString().length + WIDTH_OFFSET
         contentSize = contentSize
                 .withWidth(max(steps + additionalWidthNeeded, contentSize.width))
     }
