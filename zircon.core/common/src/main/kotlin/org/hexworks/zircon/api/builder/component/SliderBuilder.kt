@@ -23,7 +23,6 @@ data class SliderBuilder(
                 componentRenderer = DefaultSliderRenderer()))
     : BaseComponentBuilder<Slider, SliderBuilder>() {
 
-    //TODO: Add possibility to set another color for the other part of the bar
     private val WIDTH_OFFSET = 3
 
     fun withRange(range: Int) = also {
