@@ -21,6 +21,7 @@ import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
 import kotlin.math.min
 import kotlin.math.round
+import kotlin.math.truncate
 
 class DefaultSlider(componentMetadata: ComponentMetadata,
                     private val renderingStrategy: ComponentRenderingStrategy<Slider>,
@@ -143,7 +144,7 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
                         .build())
                 .withDisabledStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
-                        .withBackgroundColor(TileColor.transparent())
+                        .withBackgroundColor(colorTheme.secondaryBackgroundColor)
                         .build())
                 .withFocusedStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.primaryBackgroundColor)
@@ -157,7 +158,11 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
 
     fun getCurrentValueState(): CurrentValueState {
         val actualValue = min(range, currentValue)
-        val currentStep = round((actualValue.toDouble() / range.toDouble()) * numberOfSteps).toInt()
+        println("actualValue: $actualValue")
+        val ratio = actualValue.toDouble() / range.toDouble()
+        println("ratio: $ratio")
+        val currentStep = (truncate(ratio * numberOfSteps)).toInt()
+        println("currentStep: $currentStep")
         return CurrentValueState(currentStep, actualValue)
     }
 
@@ -182,7 +187,7 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
     }
 
     private fun setValueToClosestPossible(value: Int) {
-        currentValue = ((value - 1) * valuePerStep).toInt()
+        currentValue = (truncate((value - 1) * valuePerStep)).toInt()
     }
 
     override fun onChange(fn: ChangeListener<Int>): Subscription {
