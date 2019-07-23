@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
@@ -19,6 +18,7 @@ import kotlin.math.max
 data class SliderBuilder(
         private var range: Int = 100,
         private var numberOfSteps: Int = 10,
+        private var additionalWidthNeeded: Int = 5,
         override var props: CommonComponentProperties<Slider> = CommonComponentProperties(
                 componentRenderer = DefaultSliderRenderer()))
     : BaseComponentBuilder<Slider, SliderBuilder>() {
@@ -31,8 +31,9 @@ data class SliderBuilder(
     fun withNumberOfSteps(steps: Int) = also {
         require(steps in 1..range) { "Number of steps must be greater 0 and smaller than the range" }
         this.numberOfSteps = steps
+        additionalWidthNeeded = range.toString().length + 3
         contentSize = contentSize
-                .withWidth(max(steps, contentSize.width))
+                .withWidth(max(steps + additionalWidthNeeded, contentSize.width))
     }
 
     override fun build(): Slider {
@@ -44,6 +45,7 @@ data class SliderBuilder(
                         tileset = tileset),
                 range = range,
                 numberOfSteps = numberOfSteps,
+                additionalWidthNeeded = additionalWidthNeeded,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = props.componentRenderer as ComponentRenderer<Slider>))
