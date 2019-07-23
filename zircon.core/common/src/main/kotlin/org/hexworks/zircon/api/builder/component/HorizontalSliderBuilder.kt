@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.internal.component.impl.DefaultSlider
+import org.hexworks.zircon.internal.component.impl.DefaultHorizontalSlider
 import org.hexworks.zircon.internal.component.renderer.DefaultSliderRenderer
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
@@ -15,15 +15,15 @@ import kotlin.math.max
 /**
  * Builder for the slider. By default, it creates a slider with a range of 100 and 10 steps.
  */
-data class SliderBuilder(
+data class HorizontalSliderBuilder(
         private var range: Int = 100,
         private var numberOfSteps: Int = 10,
         private var additionalWidthNeeded: Int = 5,
         override var props: CommonComponentProperties<Slider> = CommonComponentProperties(
                 componentRenderer = DefaultSliderRenderer()))
-    : BaseComponentBuilder<Slider, SliderBuilder>() {
+    : BaseComponentBuilder<Slider, HorizontalSliderBuilder>() {
 
-    private val WIDTH_OFFSET = 3
+    private val WIDTH_OFFSET = 4
 
     fun withRange(range: Int) = also {
         require(range > 0) { "Range must be greater than 0"}
@@ -39,7 +39,7 @@ data class SliderBuilder(
     }
 
     override fun build(): Slider {
-        return DefaultSlider(
+        return DefaultHorizontalSlider(
                 componentMetadata = ComponentMetadata(
                         size = size,
                         position = position,
@@ -47,8 +47,7 @@ data class SliderBuilder(
                         tileset = tileset),
                 range = range,
                 numberOfSteps = numberOfSteps,
-                shouldOffsetMouse = decorationRenderers.isEmpty().not(),
-                additionalWidthNeeded = additionalWidthNeeded,
+                isDecorated = decorationRenderers.isEmpty().not(),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = props.componentRenderer as ComponentRenderer<Slider>))
@@ -59,6 +58,6 @@ data class SliderBuilder(
     companion object {
 
         @JvmStatic
-        fun newBuilder() = SliderBuilder()
+        fun newBuilder() = HorizontalSliderBuilder()
     }
 }

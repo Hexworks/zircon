@@ -36,7 +36,7 @@ object SliderExample {
                 .build()
         screen.addComponent(panel)
 
-        val slider1 = Components.slider()
+        val slider1 = Components.horizontalSlider()
                 .withRange(100)
                 .withNumberOfSteps(10)
                 .withDecorations(box())
@@ -59,7 +59,7 @@ object SliderExample {
             label.text = "${it.newValue}"
         }
 
-        val slider2 = Components.slider()
+        val slider2 = Components.horizontalSlider()
                 .withRange(3)
                 .withNumberOfSteps(3)
                 .withAlignment(positionalAlignment(0, 10))
@@ -70,7 +70,7 @@ object SliderExample {
 
         slider2.currentValue = 2
 
-        val slider3 = Components.slider()
+        val slider3 = Components.horizontalSlider()
                 .withRange(255)
                 .withNumberOfSteps(10)
                 .withAlignment(positionalAlignment(0, 15))
@@ -80,7 +80,7 @@ object SliderExample {
 
         slider3.currentValue = 127
 
-        val slider4 = Components.slider()
+        val slider4 = Components.horizontalSlider()
                 .withRange(100)
                 .withNumberOfSteps(10)
                 .withAlignment(positionalAlignment(0, 20))
@@ -89,16 +89,16 @@ object SliderExample {
         panel.addComponent(slider4)
 
         slider4.currentValue = 20
-
-        val vertical = Components.verticalSlider()
-                .withRange(100)
-                .withNumberOfSteps(10)
-                .withAlignment(positionalAlignment(25, 3))
-                .build()
-
-        panel.addComponent(vertical)
-
-        vertical.currentValue = 10
+//
+//        val vertical = Components.verticalSlider()
+//                .withRange(100)
+//                .withNumberOfSteps(10)
+//                .withAlignment(positionalAlignment(25, 3))
+//                .build()
+//
+//        panel.addComponent(vertical)
+//
+//        vertical.currentValue = 10
 
         screen.display()
         screen.applyColorTheme(theme)
