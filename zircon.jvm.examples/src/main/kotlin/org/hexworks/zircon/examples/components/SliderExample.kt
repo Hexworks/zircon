@@ -12,10 +12,11 @@ import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.onValueChanged
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
+import org.hexworks.zircon.api.graphics.BoxType
 
 object SliderExample {
 
-    private val theme = ColorThemes.solarizedLightOrange()
+    private val theme = ColorThemes.amigaOs()
     private val tileset = CP437TilesetResources.wanderlust16x16()
 
     @JvmStatic
@@ -38,6 +39,7 @@ object SliderExample {
         val slider1 = Components.slider()
                 .withRange(100)
                 .withNumberOfSteps(10)
+                .withDecorations(box())
                 .withAlignment(positionalAlignment(0, 5))
                 .build()
 
@@ -61,6 +63,7 @@ object SliderExample {
                 .withRange(3)
                 .withNumberOfSteps(3)
                 .withAlignment(positionalAlignment(0, 10))
+                .withDecorations(box(BoxType.TOP_BOTTOM_DOUBLE))
                 .build()
 
         panel.addComponent(slider2)
