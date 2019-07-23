@@ -17,7 +17,7 @@ import org.hexworks.zircon.api.builder.component.TextAreaBuilder
 import org.hexworks.zircon.api.builder.component.TextBoxBuilder
 import org.hexworks.zircon.api.builder.component.ToggleButtonBuilder
 import org.hexworks.zircon.api.builder.component.VBoxBuilder
-import org.hexworks.zircon.api.builder.component.SliderBuilder
+import org.hexworks.zircon.api.builder.component.HorizontalSliderBuilder
 import org.hexworks.zircon.api.builder.component.VerticalSliderBuilder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
@@ -77,7 +77,7 @@ object Components {
     fun vbox() = VBoxBuilder.newBuilder()
 
     @JvmStatic
-    fun slider() = SliderBuilder.newBuilder()
+    fun horizontalSlider() = HorizontalSliderBuilder.newBuilder()
 
     @JvmStatic
     fun verticalSlider() = VerticalSliderBuilder.newBuilder()

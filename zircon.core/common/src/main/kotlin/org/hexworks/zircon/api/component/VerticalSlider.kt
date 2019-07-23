@@ -5,6 +5,7 @@ import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.ChangeListener
 import org.hexworks.zircon.api.behavior.Disablable
 
+//TODO: Remove this. It's the same as Slider
 interface VerticalSlider: Component, Disablable {
 
     /**
