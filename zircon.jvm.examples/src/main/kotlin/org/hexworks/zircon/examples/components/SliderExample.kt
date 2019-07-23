@@ -35,28 +35,37 @@ object SliderExample {
                 .build()
         screen.addComponent(panel)
 
-        val slider = Components.slider()
+        val slider1 = Components.slider()
                 .withRange(100)
                 .withNumberOfSteps(10)
                 .withAlignment(positionalAlignment(0, 5))
-                .withDecorations(box())
                 .build()
 
-        panel.addComponent(slider)
+        panel.addComponent(slider1)
 
         val label = Components.label()
                 .withSize(5,1)
                 .withText("30")
-                .withAlignmentAround(slider, ComponentAlignment.BOTTOM_CENTER)
+                .withAlignmentAround(slider1, ComponentAlignment.BOTTOM_CENTER)
                 .build()
 
         panel.addComponent(label)
 
-        slider.currentValue = 30
+        slider1.currentValue = 30
 
-        slider.onValueChanged {
+        slider1.onValueChanged {
             label.text = "${it.newValue}"
         }
+
+        val slider2 = Components.slider()
+                .withRange(3)
+                .withNumberOfSteps(3)
+                .withAlignment(positionalAlignment(0, 10))
+                .build()
+
+        panel.addComponent(slider2)
+
+        slider2.currentValue = 2
 
         screen.display()
         screen.applyColorTheme(theme)

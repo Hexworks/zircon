@@ -24,7 +24,8 @@ import kotlin.math.min
 class DefaultSlider(componentMetadata: ComponentMetadata,
                     private val renderingStrategy: ComponentRenderingStrategy<Slider>,
                     override val range: Int,
-                    override val numberOfSteps: Int
+                    override val numberOfSteps: Int,
+                    val additionalWidthNeeded: Int
 ) : Slider, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
@@ -89,8 +90,20 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
         if (phase == UIEventPhase.TARGET) {
             LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
             componentStyleSet.applyActiveStyle()
-            val clickPosition = event.position.minus(this.absolutePosition).x
-            currentValue = (clickPosition * valuePerStep).toInt()
+            when (val clickPosition = event.position.minus(this.absolutePosition).x) {
+                0 -> {
+                    if (currentValue > 0) {
+                        currentValue--
+                    }
+                }
+                (numberOfSteps + 2) -> {
+                    if (currentValue < range) {
+                        currentValue++
+                    }
+                }
+                else -> {currentValue = ((clickPosition - 1) * valuePerStep).toInt()}
+            }
+
             render()
             Processed
         } else Pass
@@ -108,8 +121,14 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
     override fun mouseDragged(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse dragged.")
-            val dragPosition = event.position.minus(this.absolutePosition).x
-            currentValue = (dragPosition * valuePerStep).toInt()
+
+            when (val dragPosition = event.position.minus(this.absolutePosition).x) {
+                0 -> {
+                }
+                (numberOfSteps + 2) -> {
+                }
+                else -> {currentValue = ((dragPosition - 1) * valuePerStep).toInt()}
+            }
             render()
             Processed
         } else Pass
@@ -143,7 +162,7 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
     fun getCurrentValueState(): CurrentValueState {
         val actualValue = min(range, currentValue)
         val currentStep = ((actualValue.toDouble() / range.toDouble()) * numberOfSteps).toInt()
-        return CurrentValueState(currentStep)
+        return CurrentValueState(currentStep, actualValue)
     }
 
     override fun onChange(fn: ChangeListener<Int>): Subscription {
@@ -159,5 +178,5 @@ class DefaultSlider(componentMetadata: ComponentMetadata,
         val LOGGER = LoggerFactory.getLogger(Slider::class)
     }
 
-    data class CurrentValueState(val width: Int)
+    data class CurrentValueState(val width: Int, val actualValue: Int)
 }
