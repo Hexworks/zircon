@@ -23,6 +23,7 @@ data class SliderBuilder(
                 componentRenderer = DefaultSliderRenderer()))
     : BaseComponentBuilder<Slider, SliderBuilder>() {
 
+    //TODO: Add possibility to set another color for the other part of the bar
     private val WIDTH_OFFSET = 3
 
     fun withRange(range: Int) = also {
@@ -47,6 +48,7 @@ data class SliderBuilder(
                         tileset = tileset),
                 range = range,
                 numberOfSteps = numberOfSteps,
+                shouldOffsetMouse = decorationRenderers.isEmpty().not(),
                 additionalWidthNeeded = additionalWidthNeeded,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,

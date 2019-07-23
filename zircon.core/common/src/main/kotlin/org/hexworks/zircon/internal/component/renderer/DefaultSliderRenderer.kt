@@ -19,6 +19,7 @@ class DefaultSliderRenderer : ComponentRenderer<DefaultSlider> {
         val invertedDefaultStyleSet = defaultStyleSet
                 .withBackgroundColor(defaultStyleSet.foregroundColor)
                 .withForegroundColor(defaultStyleSet.backgroundColor)
+
         val currentValueState = context.component.getCurrentValueState()
         val label = currentValueState.actualValue.toString()
         val cursorPosition = currentValueState.width + 1
