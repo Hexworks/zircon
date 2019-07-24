@@ -23,9 +23,10 @@ interface Slider: Component, Disablable {
     var currentValue: Int
 
     /**
-     * Bindable, current progress
+     * Bindable, current value
      */
     val currentValueProperty: Property<Int>
+
 
     fun onChange(fn: ChangeListener<Int>): Subscription
 }

@@ -8,9 +8,9 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
-import org.hexworks.zircon.internal.component.impl.DefaultHorizontalSlider
+import org.hexworks.zircon.internal.component.impl.DefaultSlider
 
-class DefaultSliderGutterRenderer(private val valueCallback: () -> DefaultHorizontalSlider.CurrentValueState) : ComponentRenderer<Panel> {
+class HorizontalSliderGutterRenderer(private val valueCallback: () -> DefaultSlider.CurrentValueState) : ComponentRenderer<Panel> {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<Panel>) {
         val style = context.componentStyle.currentStyle()
@@ -23,8 +23,7 @@ class DefaultSliderGutterRenderer(private val valueCallback: () -> DefaultHorizo
         val disabledStyleSet = context.componentStyle.fetchStyleFor(ComponentState.DISABLED)
 
         val currentValueState = valueCallback()
-        val cursorPosition = currentValueState.width
-        println("$cursorPosition")
+        val cursorPosition = currentValueState.steps
         val barWidth = currentValueState.maxValue
 
         (0..barWidth).forEach { idx ->
