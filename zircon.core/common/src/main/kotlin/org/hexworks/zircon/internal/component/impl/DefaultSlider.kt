@@ -24,7 +24,9 @@ import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.component.InternalComponent
 import kotlin.math.min
 import kotlin.math.truncate
+import kotlin.math.roundToInt
 
+@Suppress("UNCHECKED_CAST")
 abstract class DefaultSlider(componentMetadata: ComponentMetadata,
                             private val renderingStrategy: ComponentRenderingStrategy<Slider>,
                             final override val range: Int,
@@ -40,9 +42,10 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
     override var currentValue: Int by currentValueProperty.asDelegate()
 
     private val valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
-    abstract val labelSize: Size
+    private val decimals = numberOfSteps.toString().length
 
     abstract val actualSize: Size
+    abstract val labelSize: Size
     abstract val decrementButtonChar: Char
     abstract val incrementButtonChar: Char
 
@@ -106,13 +109,13 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
     }
 
     fun getCurrentValueState(): CurrentValueState {
-        //TODO: Fix weird discrepencies with rounding/truncate
+        var multiplier = 1.0
+        repeat(decimals) { multiplier *= 10 }
         val actualValue = min(range, currentValue)
-        println("actualValue: $actualValue")
-        val ratio = actualValue.toDouble() / range.toDouble()
-        println("ratio: $ratio")
-        val currentStep = (truncate(ratio * numberOfSteps)).toInt()
-        println("currentStep: $currentStep")
+        val actualStep = actualValue.toDouble() / valuePerStep
+        val roundedStep = truncate(actualStep)
+        val currentStep = roundedStep.toInt()
+
         return CurrentValueState(currentStep, actualValue, range)
     }
 
@@ -131,7 +134,9 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
     }
 
     private fun setValueToClosestPossible(value: Int) {
-        currentValue = (truncate((value - 1) * valuePerStep)).toInt()
+        val stepValue = value - 1
+        val calculatedValue = stepValue * valuePerStep
+        currentValue = calculatedValue.roundToInt()
     }
 
     protected fun finishInit() {

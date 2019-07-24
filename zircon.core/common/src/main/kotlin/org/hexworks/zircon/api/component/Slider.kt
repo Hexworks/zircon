@@ -27,6 +27,8 @@ interface Slider: Component, Disablable {
      */
     val currentValueProperty: Property<Int>
 
-
+    /**
+     * Callback called when value changes
+     */
     fun onChange(fn: ChangeListener<Int>): Subscription
 }
