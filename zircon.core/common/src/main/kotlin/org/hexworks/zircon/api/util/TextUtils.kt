@@ -6,4 +6,5 @@ object TextUtils {
 
     fun isPrintableCharacter(c: Char) = !isControlCharacter(c)
 
+    fun isDigitCharacter(c: Char) = c.toInt() in 48..57
 }
