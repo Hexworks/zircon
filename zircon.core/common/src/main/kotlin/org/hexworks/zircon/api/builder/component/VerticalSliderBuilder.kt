@@ -1,13 +1,13 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.component.VerticalSlider
+import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalSlider
-import org.hexworks.zircon.internal.component.renderer.DefaultVerticalSliderRenderer
+import org.hexworks.zircon.internal.component.renderer.DefaultSliderRenderer
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
@@ -19,11 +19,11 @@ data class VerticalSliderBuilder(
         private var range: Int = 100,
         private var numberOfSteps: Int = 10,
         private var additionalHeightNeeded: Int = 5,
-        override var props: CommonComponentProperties<VerticalSlider> = CommonComponentProperties(
-                componentRenderer = DefaultVerticalSliderRenderer()))
-    : BaseComponentBuilder<VerticalSlider, VerticalSliderBuilder>() {
+        override var props: CommonComponentProperties<Slider> = CommonComponentProperties(
+                componentRenderer = DefaultSliderRenderer()))
+    : BaseComponentBuilder<Slider, VerticalSliderBuilder>() {
 
-    private val WIDTH_OFFSET = 3
+    private val WIDTH_OFFSET = 4
 
     fun withRange(range: Int) = also {
         require(range > 0) { "Range must be greater than 0"}
@@ -38,7 +38,7 @@ data class VerticalSliderBuilder(
                 .withHeight(max(steps + additionalHeightNeeded, contentSize.height))
     }
 
-    override fun build(): VerticalSlider {
+    override fun build(): Slider {
         return DefaultVerticalSlider(
                 componentMetadata = ComponentMetadata(
                         size = size,
@@ -47,11 +47,10 @@ data class VerticalSliderBuilder(
                         tileset = tileset),
                 range = range,
                 numberOfSteps = numberOfSteps,
-                shouldOffsetMouse = decorationRenderers.isEmpty().not(),
-                additionalHeightNeeded = additionalHeightNeeded,
+                isDecorated = decorationRenderers.isEmpty().not(),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<VerticalSlider>))
+                        componentRenderer = props.componentRenderer as ComponentRenderer<Slider>))
     }
 
     override fun createCopy() = copy(props = props.copy())
