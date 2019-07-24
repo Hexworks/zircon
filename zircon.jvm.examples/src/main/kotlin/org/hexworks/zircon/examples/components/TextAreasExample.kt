@@ -55,6 +55,17 @@ object TextAreasExample {
                 .withSize(Sizes.create(13, 7))
                 .withAlignment(positionalAlignment(Positions.create(2, 8))))
 
+        screen.addComponent(Components.label()
+                .withText("Numbers only!")
+                .withDecorations(box())
+                .withAlignment(positionalAlignment(Positions.create(2, 17))))
+
+        screen.addComponent(Components.numberTextArea()
+                .withInitialValue(0)
+                .withSize(Sizes.create(13, 5))
+                .withDecorations(box(), shadow())
+                .withAlignment(positionalAlignment(Positions.create(2, 20))))
+
         screen.display()
         screen.applyColorTheme(theme)
     }
