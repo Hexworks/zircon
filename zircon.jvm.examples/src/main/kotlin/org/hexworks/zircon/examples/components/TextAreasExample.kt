@@ -9,9 +9,11 @@ import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.onValueChanged
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.internal.component.impl.DefaultNumberTextArea
 
 object TextAreasExample {
 
@@ -60,11 +62,34 @@ object TextAreasExample {
                 .withDecorations(box())
                 .withAlignment(positionalAlignment(Positions.create(2, 17))))
 
-        screen.addComponent(Components.numberTextArea()
+        val boundLabel = Components.label()
+                .withText("")
+                .withSize(Sizes.create(13,3))
+                .withDecorations(box())
+                .withAlignment(positionalAlignment(Positions.create(2, 27)))
+                .build()
+
+        val numLabel = Components.label()
+                .withText("Also 256 Max!")
+                .withDecorations()
+                .withAlignment(positionalAlignment(Positions.create(2, 25)))
+                .build()
+
+        val numberTextArea = Components.numberTextArea()
                 .withInitialValue(0)
+                .withMaxValue(256)
                 .withSize(Sizes.create(13, 5))
                 .withDecorations(box(), shadow())
-                .withAlignment(positionalAlignment(Positions.create(2, 20))))
+                .withAlignment(positionalAlignment(Positions.create(2, 20)))
+                .build().apply {
+                    onValueChanged {
+                        boundLabel.text = "${it.newValue}"
+                    }
+                }
+
+        screen.addComponent(numberTextArea)
+        screen.addComponent(numLabel)
+        screen.addComponent(boundLabel)
 
         screen.display()
         screen.applyColorTheme(theme)

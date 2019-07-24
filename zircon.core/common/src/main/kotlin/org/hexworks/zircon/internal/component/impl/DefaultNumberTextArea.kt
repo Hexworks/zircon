@@ -1,6 +1,9 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.behavior.ChangeListener
 import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -8,6 +11,7 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.NumberTextArea
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -41,9 +45,10 @@ import kotlin.math.min
 
 class DefaultNumberTextArea constructor(
         initialValue: Int,
+        val maxValue: Int,
         componentMetadata: ComponentMetadata,
         private val renderingStrategy: ComponentRenderingStrategy<TextArea>)
-    : TextArea,
+    : NumberTextArea,
         Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
         Disablable by Disablable.create(),
         DefaultComponent(
@@ -55,15 +60,18 @@ class DefaultNumberTextArea constructor(
         set(value) {
             if (value.length <= maxNumberLength) {
                 val clean = value.replace(Regex("[^\\d]"), "")
-                textBuffer = EditableTextBuffer.create(clean)
-                computeDigitalValue()
-                render()
+                if (clean.toInt() <= maxValue) {
+                    textBuffer = EditableTextBuffer.create(clean)
+                    computeDigitalValue()
+                    render()
+                }
             }
         }
 
     private var textBuffer = EditableTextBuffer.create("$initialValue")
-    private var currentValue = initialValue
     private var maxNumberLength = min(Int.MAX_VALUE.toString().length, size.width)
+    override val currentValueProperty = createPropertyFrom(initialValue)
+    override var currentValue: Int by currentValueProperty.asDelegate()
 
     init {
         this.text = "$initialValue"
@@ -151,19 +159,10 @@ class DefaultNumberTextArea constructor(
                     KeyCode.LEFT -> textBuffer.applyTransformation(MoveCursor(LEFT))
                     KeyCode.DELETE -> textBuffer.applyTransformation(DeleteCharacter(DEL))
                     KeyCode.BACKSPACE -> textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
-                    KeyCode.HOME -> {
-                        // TODO
-                    }
-                    KeyCode.END -> {
-                        // TODO
-                    }
                     else -> {
                         event.key.forEach { char ->
                             if (TextUtils.isDigitCharacter(char)) {
-                                if (text.length == maxNumberLength) {
-                                    textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
-                                }
-                                textBuffer.applyTransformation(InsertCharacter(char))
+                                checkAndAddChar(char)
                             }
                         }
                     }
@@ -241,12 +240,27 @@ class DefaultNumberTextArea constructor(
         }
     }
 
+    private fun checkAndAddChar(char: Char) {
+        val virtualTextBuffer = EditableTextBuffer.create(text, textBuffer.cursor)
+        virtualTextBuffer.applyTransformation(InsertCharacter(char))
+        if (virtualTextBuffer.getText().toInt() <= maxValue) {
+            if (text.length == maxNumberLength) {
+                textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
+            }
+            textBuffer.applyTransformation(InsertCharacter(char))
+        }
+    }
+
     private fun computeDigitalValue() {
         currentValue = if (text == "") {
             0
         } else {
             text.toInt()
         }
+    }
+
+    override fun onChange(fn: ChangeListener<Int>): Subscription {
+        return currentValueProperty.onChange(fn::onChange)
     }
 
     companion object {
