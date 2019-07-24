@@ -4,7 +4,7 @@ import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.ChangeListener
 
-interface NumberTextArea: TextArea {
+interface NumberInput: TextArea {
     /**
      * Current value with respect to the range
      */

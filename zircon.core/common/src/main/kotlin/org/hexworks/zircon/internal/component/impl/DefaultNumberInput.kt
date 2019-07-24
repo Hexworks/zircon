@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.NumberTextArea
+import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -29,11 +29,8 @@ import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.DOWN
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.LEFT
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.RIGHT
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.UP
-import org.hexworks.zircon.internal.component.impl.textedit.transformation.AddRowBreak
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter.DeleteKind.BACKSPACE
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter.DeleteKind.DEL
@@ -43,12 +40,12 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.math.min
 
-class DefaultNumberTextArea constructor(
+class DefaultNumberInput constructor(
         initialValue: Int,
         val maxValue: Int,
         componentMetadata: ComponentMetadata,
         private val renderingStrategy: ComponentRenderingStrategy<TextArea>)
-    : NumberTextArea,
+    : NumberInput,
         Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
         Disablable by Disablable.create(),
         DefaultComponent(
@@ -61,7 +58,7 @@ class DefaultNumberTextArea constructor(
             if (value.length <= maxNumberLength) {
                 val clean = value.replace(Regex("[^\\d]"), "")
                 if (clean.toInt() <= maxValue) {
-                    textBuffer = EditableTextBuffer.create(clean)
+                    textBuffer = EditableTextBuffer.create(clean, textBuffer.cursor)
                     computeDigitalValue()
                     render()
                 }
