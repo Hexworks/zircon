@@ -16,12 +16,12 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.extensions.handleComponentEvents
+import org.hexworks.zircon.api.extensions.onValueChanged
 import org.hexworks.zircon.api.extensions.processMouseEvents
 import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.SliderGutter
 import kotlin.math.min
 import kotlin.math.truncate
@@ -48,10 +48,10 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
     abstract val incrementButtonChar: Char
 
     abstract val root: Container
-    abstract val labelRenderer: ComponentRenderer<DefaultLabel>
+    abstract val numberInputRenderer: ComponentRenderer<DefaultNumberInput>
     abstract val gutter: SliderGutter
 
-    private lateinit var valueLabel: Label
+    private lateinit var valueInput: NumberInput
 
     private val decrementButton = Components.button()
             .withSize(Size.one())
@@ -96,9 +96,9 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
         }
     }
 
-    private fun setValueToClosestPossible(value: Int) {
-        val stepValue = value - 1
-        val calculatedValue = stepValue * valuePerStep
+    private fun setValueToClosestPossible(step: Int) {
+        val trueStep = step - 1
+        val calculatedValue = trueStep * valuePerStep
         currentValue = calculatedValue.roundToInt()
     }
 
@@ -144,23 +144,31 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
                     }
                 }
 
-        valueLabel =  Components.label()
-                .withText("")
-                .withComponentRenderer(labelRenderer as ComponentRenderer<Label>)
+        valueInput =  Components.numberInput(range.toString().length)
+                .withInitialValue(currentValue)
+                .withMaxValue(range)
+                .withComponentRenderer(numberInputRenderer as ComponentRenderer<NumberInput>)
                 .withDecorations()
                 .withSize(labelSize)
-                .build()
+                .build().apply {
+                    onValueChanged {
+                        if (this@DefaultSlider.currentValue != it.newValue) {
+                            println("this: $this, value: ${it.newValue}")
+                            this@DefaultSlider.currentValue = it.newValue
+                        }
+                    }
+                }
 
         root.apply {
             addComponent(decrementButton)
             addComponent(gutter)
             addComponent(incrementButton)
-            addComponent(valueLabel)
+            addComponent(valueInput)
         }
         addComponent(root)
 
         currentValueProperty.onChange {
-            valueLabel.text = "${it.newValue}"
+            valueInput.text = "${it.newValue}"
             gutter.currentValue = computeCurrentStep(it.newValue)
             render()
         }

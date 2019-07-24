@@ -13,7 +13,6 @@ import org.hexworks.zircon.api.extensions.onValueChanged
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.internal.component.impl.DefaultNumberTextArea
 
 object TextAreasExample {
 
@@ -75,10 +74,9 @@ object TextAreasExample {
                 .withAlignment(positionalAlignment(Positions.create(2, 25)))
                 .build()
 
-        val numberTextArea = Components.numberTextArea()
+        val numberInput = Components.numberInput(13)
                 .withInitialValue(0)
                 .withMaxValue(256)
-                .withSize(Sizes.create(13, 5))
                 .withDecorations(box(), shadow())
                 .withAlignment(positionalAlignment(Positions.create(2, 20)))
                 .build().apply {
@@ -87,7 +85,7 @@ object TextAreasExample {
                     }
                 }
 
-        screen.addComponent(numberTextArea)
+        screen.addComponent(numberInput)
         screen.addComponent(numLabel)
         screen.addComponent(boundLabel)
 
