@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.internal.component.SliderGutter
 import org.hexworks.zircon.internal.component.impl.DefaultSlider
 
-class HorizontalSliderGutterRenderer() : ComponentRenderer<SliderGutter> {
+class HorizontalSliderGutterRenderer : ComponentRenderer<SliderGutter> {
 
     override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<SliderGutter>) {
         val style = context.componentStyle.currentStyle()
