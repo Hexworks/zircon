@@ -22,6 +22,7 @@ import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.component.SliderGutter
 import kotlin.math.min
 import kotlin.math.truncate
 import kotlin.math.roundToInt
@@ -42,7 +43,6 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
     override var currentValue: Int by currentValueProperty.asDelegate()
 
     private val valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
-    private val decimals = numberOfSteps.toString().length
 
     abstract val actualSize: Size
     abstract val labelSize: Size
@@ -51,8 +51,7 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
 
     abstract val root: Container
     abstract val labelRenderer: ComponentRenderer<DefaultLabel>
-    abstract val gutterRenderer: ComponentRenderer<Panel>
-    abstract val gutterPanelSize: Size
+    abstract val gutter: SliderGutter
 
     private val decrementButton = Components.button()
             .withSize(Size.one())
@@ -76,7 +75,6 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
                 }
             }
 
-    private lateinit var gutterPanel: Panel
     private lateinit var valueLabel: Label
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
@@ -100,23 +98,19 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
                         .build())
                 .build().also {
                     componentStyleSet = it
-                    root.componentStyleSet = it
+                    root.applyColorTheme(colorTheme)
                     root.children.forEach {component ->
-                        component.componentStyleSet = it
+                        component.applyColorTheme(colorTheme)
                     }
                     render()
                 }
     }
 
-    fun getCurrentValueState(): CurrentValueState {
-        var multiplier = 1.0
-        repeat(decimals) { multiplier *= 10 }
-        val actualValue = min(range, currentValue)
+    private fun computeCurrentStep(newValue: Int): Int {
+        val actualValue = min(range, newValue)
         val actualStep = actualValue.toDouble() / valuePerStep
         val roundedStep = truncate(actualStep)
-        val currentStep = roundedStep.toInt()
-
-        return CurrentValueState(currentStep, actualValue, range)
+        return roundedStep.toInt()
     }
 
     abstract fun getMousePosition(event: MouseEvent): Int
@@ -140,11 +134,7 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
     }
 
     protected fun finishInit() {
-        gutterPanel = Components.panel()
-                .withSize(gutterPanelSize)
-                .withDecorations()
-                .withComponentRenderer(gutterRenderer)
-                .build().apply {
+        gutter.apply {
                     processMouseEvents(MouseEventType.MOUSE_PRESSED) { event, _ ->
                         setValueToClosestPossible(getMousePosition(event))
                         render()
@@ -165,7 +155,7 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
 
         root.apply {
             addComponent(decrementButton)
-            addComponent(gutterPanel)
+            addComponent(gutter)
             addComponent(incrementButton)
             addComponent(valueLabel)
         }
@@ -173,6 +163,7 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
 
         currentValueProperty.onChange {
             valueLabel.text = "${it.newValue}"
+            gutter.currentValue = computeCurrentStep(it.newValue)
             render()
         }
 
@@ -199,10 +190,6 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
     override fun render() {
         LOGGER.debug("Slider (id=${id.abbreviate()}, visibility=$isVisible) was rendered.")
         renderingStrategy.render(this, graphics)
-        (root as? InternalComponent)?.render()
-        root.children.forEach {component ->
-            (component as? InternalComponent)?.render()
-        }
     }
 
     companion object {
