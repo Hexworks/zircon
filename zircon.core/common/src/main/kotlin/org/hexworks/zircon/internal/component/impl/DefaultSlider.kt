@@ -38,10 +38,8 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
         renderer = renderingStrategy),
         Disablable by Disablable.create() {
 
-
     final override val currentValueProperty = createPropertyFrom(0)
     override var currentValue: Int by currentValueProperty.asDelegate()
-
     private val valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
 
     abstract val actualSize: Size
@@ -52,6 +50,8 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
     abstract val root: Container
     abstract val labelRenderer: ComponentRenderer<DefaultLabel>
     abstract val gutter: SliderGutter
+
+    private lateinit var valueLabel: Label
 
     private val decrementButton = Components.button()
             .withSize(Size.one())
@@ -75,7 +75,32 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
                 }
             }
 
-    private lateinit var valueLabel: Label
+    abstract fun getMousePosition(event: MouseEvent): Int
+
+    private fun computeCurrentStep(newValue: Int): Int {
+        val actualValue = min(range, newValue)
+        val actualStep = actualValue.toDouble() / valuePerStep
+        val roundedStep = truncate(actualStep)
+        return roundedStep.toInt()
+    }
+
+    private fun incrementCurrentValue() {
+        if (currentValue < range) {
+            currentValue++
+        }
+    }
+
+    private fun decrementCurrentValue() {
+        if (currentValue > 0) {
+            currentValue--
+        }
+    }
+
+    private fun setValueToClosestPossible(value: Int) {
+        val stepValue = value - 1
+        val calculatedValue = stepValue * valuePerStep
+        currentValue = calculatedValue.roundToInt()
+    }
 
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         LOGGER.debug("Applying color theme ($colorTheme) to Slider (id=${id.abbreviate()}).")
@@ -104,33 +129,6 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
                     }
                     render()
                 }
-    }
-
-    private fun computeCurrentStep(newValue: Int): Int {
-        val actualValue = min(range, newValue)
-        val actualStep = actualValue.toDouble() / valuePerStep
-        val roundedStep = truncate(actualStep)
-        return roundedStep.toInt()
-    }
-
-    abstract fun getMousePosition(event: MouseEvent): Int
-
-    private fun incrementCurrentValue() {
-        if (currentValue < range) {
-            currentValue++
-        }
-    }
-
-    private fun decrementCurrentValue() {
-        if (currentValue > 0) {
-            currentValue--
-        }
-    }
-
-    private fun setValueToClosestPossible(value: Int) {
-        val stepValue = value - 1
-        val calculatedValue = stepValue * valuePerStep
-        currentValue = calculatedValue.roundToInt()
     }
 
     protected fun finishInit() {
@@ -195,6 +193,4 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
     companion object {
         val LOGGER = LoggerFactory.getLogger(Slider::class)
     }
-
-    data class CurrentValueState(val steps: Int, val actualValue: Int, val maxValue: Int)
 }
