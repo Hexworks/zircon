@@ -6,6 +6,8 @@ import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
+import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.internal.component.renderer.VerticalLabelRenderer
@@ -39,9 +41,14 @@ class DefaultVerticalSlider(componentMetadata: ComponentMetadata,
             .withSpacing(0)
             .build()
 
+    override val gutter = buildGutter(ComponentMetadata(
+            size = Sizes.create(1, numberOfSteps + 1),
+            position = Position.zero(),
+            componentStyleSet = componentMetadata.componentStyleSet,
+            tileset = componentMetadata.tileset
+    ), range)
+
     override val labelRenderer = VerticalLabelRenderer()
-    override val gutterRenderer = VerticalSliderGutterRenderer(::getCurrentValueState)
-    override val gutterPanelSize = Sizes.create(1, numberOfSteps + 1)
 
     init {
         finishInit()
@@ -57,5 +64,16 @@ class DefaultVerticalSlider(componentMetadata: ComponentMetadata,
 
     companion object {
         val LOGGER = LoggerFactory.getLogger(Slider::class)
+
+        private fun buildGutter(metadata: ComponentMetadata, range: Int): DefaultSliderGutter {
+            val renderingStrategy = DefaultComponentRenderingStrategy(
+                    decorationRenderers = listOf(),
+                    componentRenderer = VerticalSliderGutterRenderer()
+            )
+            return DefaultSliderGutter(
+                    numberOfSteps = range,
+                    componentMetadata = metadata,
+                    renderingStrategy = renderingStrategy)
+        }
     }
 }
