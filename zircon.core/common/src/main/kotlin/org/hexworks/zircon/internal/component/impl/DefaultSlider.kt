@@ -43,15 +43,13 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
     private val valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
 
     abstract val actualSize: Size
-    abstract val labelSize: Size
+    abstract val numberInputSize: Size
     abstract val decrementButtonChar: Char
     abstract val incrementButtonChar: Char
 
     abstract val root: Container
-    abstract val numberInputRenderer: ComponentRenderer<DefaultNumberInput>
     abstract val gutter: SliderGutter
-
-    private lateinit var valueInput: NumberInput
+    abstract val valueInput: NumberInput
 
     private val decrementButton = Components.button()
             .withSize(Size.one())
@@ -144,18 +142,9 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
                     }
                 }
 
-        valueInput =  Components.numberInput(range.toString().length)
-                .withInitialValue(currentValue)
-                .withMaxValue(range)
-                .withComponentRenderer(numberInputRenderer as ComponentRenderer<NumberInput>)
-                .withDecorations()
-                .withSize(labelSize)
-                .build().apply {
+        valueInput.apply {
                     onValueChanged {
-                        if (this@DefaultSlider.currentValue != it.newValue) {
-                            println("this: $this, value: ${it.newValue}")
-                            this@DefaultSlider.currentValue = it.newValue
-                        }
+                        this@DefaultSlider.currentValue = it.newValue
                     }
                 }
 

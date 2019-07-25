@@ -14,6 +14,9 @@ object Components {
     fun numberInput(width: Int) = NumberInputBuilder.newBuilder(width)
 
     @JvmStatic
+    fun verticalNumberInput(height: Int) = VerticalNumberInputBuilder.newBuilder(height)
+
+    @JvmStatic
     fun logArea() = LogAreaBuilder.newBuilder()
 
     @JvmStatic

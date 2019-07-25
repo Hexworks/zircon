@@ -44,9 +44,8 @@ class DefaultNumberInput constructor(
         initialValue: Int,
         val maxValue: Int,
         componentMetadata: ComponentMetadata,
-        private val renderingStrategy: ComponentRenderingStrategy<TextArea>)
+        private val renderingStrategy: ComponentRenderingStrategy<NumberInput>)
     : NumberInput,
-        Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
         Disablable by Disablable.create(),
         DefaultComponent(
                 componentMetadata = componentMetadata,
@@ -72,7 +71,6 @@ class DefaultNumberInput constructor(
 
     init {
         this.text = "$initialValue"
-        refreshVirtualSpaceSize()
         computeDigitalValue()
     }
 
@@ -164,10 +162,8 @@ class DefaultNumberInput constructor(
                         }
                     }
                 }
-                refreshVirtualSpaceSize()
-                scrollToCursor()
-                refreshCursor()
                 computeDigitalValue()
+                refreshCursor()
                 render()
                 Processed
             }
@@ -181,60 +177,14 @@ class DefaultNumberInput constructor(
     private fun isNavigationKey(event: KeyboardEvent) =
             event == TAB || event == REVERSE_TAB
 
-    private fun scrollToCursor() {
-        val bufferCursorPos = textBuffer.cursor.position
-        when {
-            bufferCursorOverflowsLeft(bufferCursorPos) -> {
-                val delta = visibleOffset.x - bufferCursorPos.x
-                scrollLeftBy(delta)
-            }
-            bufferCursorPosOverlapsRight(bufferCursorPos) -> {
-                val delta = bufferCursorPos.x - visibleOffset.x - visibleSize.width
-                scrollRightBy(delta + 1)
-            }
-            bufferCursorOverflowsUp(bufferCursorPos) -> {
-                val delta = visibleOffset.y - bufferCursorPos.y
-                scrollUpBy(delta)
-            }
-            bufferCursorPosOverlapsDown(bufferCursorPos) -> {
-                val delta = bufferCursorPos.y - visibleOffset.y - visibleSize.height
-                scrollDownBy(delta + 1)
-            }
-        }
-    }
-
-    private fun bufferCursorPosOverlapsDown(bufferCursorPos: Position) =
-            bufferCursorPos.y >= visibleOffset.y + visibleSize.height
-
-    private fun bufferCursorOverflowsUp(bufferCursorPos: Position) =
-            bufferCursorPos.y < visibleOffset.y
-
-    private fun bufferCursorPosOverlapsRight(bufferCursorPos: Position) =
-            bufferCursorPos.x >= visibleOffset.x + visibleSize.width
-
-    private fun bufferCursorOverflowsLeft(bufferPos: Position) =
-            bufferPos.x < visibleOffset.x
-
     private fun refreshCursor() {
         var pos = textBuffer.cursor.position
-                .minus(visibleOffset)
         pos = pos.withX(min(pos.x, contentSize.width))
-        pos = pos.withY(min(pos.y, contentSize.height))
+        pos = pos.withY(0)
         Zircon.eventBus.publish(
                 event = ZirconEvent.RequestCursorAt(pos
                         .withRelative(absolutePosition + contentPosition)),
                 eventScope = ZirconScope)
-    }
-
-    private fun refreshVirtualSpaceSize() {
-        val (actualWidth, actualHeight) = actualSize
-        val (bufferWidth, bufferHeight) = textBuffer.getBoundingBoxSize()
-        if (bufferWidth >= actualWidth) {
-            actualSize = actualSize.withWidth(bufferWidth)
-        }
-        if (bufferHeight >= actualHeight) {
-            actualSize = actualSize.withHeight(bufferHeight)
-        }
     }
 
     private fun checkAndAddChar(char: Char) {
@@ -245,6 +195,13 @@ class DefaultNumberInput constructor(
                 textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
             }
             textBuffer.applyTransformation(InsertCharacter(char))
+        } else {
+            if (textBuffer.getCharAt(textBuffer.cursor.position).isPresent) {
+                textBuffer.applyTransformation(DeleteCharacter(DEL))
+            } else {
+                textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
+            }
+            checkAndAddChar(char)
         }
     }
 
@@ -272,6 +229,6 @@ class DefaultNumberInput constructor(
                 code = KeyCode.TAB,
                 shiftDown = true)
 
-        val LOGGER = LoggerFactory.getLogger(TextArea::class)
+        val LOGGER = LoggerFactory.getLogger(NumberInput::class)
     }
 }

@@ -23,13 +23,13 @@ data class NumberInputBuilder(
 
     fun withInitialValue(value: Int) = also {
         this.initialValue = value
-        contentSize = contentSize
-                .withWidth(max(this.initialValue.toString().length, width))
-                .withHeight(1)
     }
 
     fun withMaxValue(value: Int) = also {
         this.maxValue = value
+        contentSize = contentSize
+                .withWidth(max(this.maxValue.toString().length + 1, width))
+                .withHeight(1)
     }
 
     override fun build(): NumberInput {

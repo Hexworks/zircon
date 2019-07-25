@@ -5,14 +5,11 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.internal.component.renderer.DefaultVerticalNumberInputRenderer
-import org.hexworks.zircon.internal.component.renderer.VerticalLabelRenderer
 import org.hexworks.zircon.internal.component.renderer.VerticalSliderGutterRenderer
 
 class DefaultVerticalSlider(componentMetadata: ComponentMetadata,
@@ -35,7 +32,7 @@ class DefaultVerticalSlider(componentMetadata: ComponentMetadata,
         false -> size
     }
 
-    override val labelSize = Sizes.create(1, range.toString().length)
+    override val numberInputSize = Sizes.create(1, range.toString().length)
 
     override val root = Components.vbox()
             .withSize(actualSize)
@@ -50,7 +47,12 @@ class DefaultVerticalSlider(componentMetadata: ComponentMetadata,
             tileset = componentMetadata.tileset
     ), range)
 
-    override val numberInputRenderer: ComponentRenderer<DefaultNumberInput> = DefaultVerticalNumberInputRenderer()
+    override val valueInput =  Components.verticalNumberInput(range.toString().length)
+            .withInitialValue(currentValue)
+            .withMaxValue(range)
+            .withDecorations()
+            .withSize(numberInputSize)
+            .build()
 
     init {
         finishInit()
