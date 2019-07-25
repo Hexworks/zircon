@@ -29,14 +29,12 @@ data class HorizontalSliderBuilder(
     }
 
     fun withNumberOfSteps(steps: Int) = also {
-        require(steps in 1..range) { "Number of steps must be greater 0 and smaller than the range" }
         this.numberOfSteps = steps
         contentSize = contentSize
                 .withWidth(max(steps + 1, contentSize.width))
     }
 
-    override fun build(): Slider {
-        return DefaultHorizontalSlider(
+    override fun build(): Slider = DefaultHorizontalSlider(
                 componentMetadata = ComponentMetadata(
                         size = size,
                         position = position,
@@ -47,7 +45,6 @@ data class HorizontalSliderBuilder(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = props.componentRenderer as ComponentRenderer<Slider>))
-    }
 
     override fun createCopy() = copy(props = props.copy())
 

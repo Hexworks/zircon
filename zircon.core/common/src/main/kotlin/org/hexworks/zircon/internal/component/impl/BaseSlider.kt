@@ -21,10 +21,10 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlin.math.truncate
 
-abstract class DefaultSlider(override val range: Int,
-                             override val numberOfSteps: Int,
-                             componentMetadata: ComponentMetadata,
-                             private val renderingStrategy: ComponentRenderingStrategy<Slider>) :
+abstract class BaseSlider(override val range: Int,
+                          override val numberOfSteps: Int,
+                          componentMetadata: ComponentMetadata,
+                          private val renderingStrategy: ComponentRenderingStrategy<Slider>) :
     Slider, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),

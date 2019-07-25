@@ -31,8 +31,7 @@ data class HorizontalNumberInputBuilder(
                 .withHeight(1)
     }
 
-    override fun build(): NumberInput {
-        return DefaultHorizontalNumberInput(
+    override fun build(): NumberInput = DefaultHorizontalNumberInput(
                 componentMetadata = ComponentMetadata(
                         size = size,
                         position = position,
@@ -43,7 +42,6 @@ data class HorizontalNumberInputBuilder(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = props.componentRenderer as ComponentRenderer<NumberInput>))
-    }
 
     override fun createCopy() = copy()
 

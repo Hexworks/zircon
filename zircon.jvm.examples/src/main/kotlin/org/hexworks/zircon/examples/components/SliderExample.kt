@@ -13,7 +13,6 @@ import org.hexworks.zircon.api.extensions.*
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.uievent.ComponentEventType
-import org.hexworks.zircon.internal.component.impl.DefaultSlider
 
 object SliderExample {
 

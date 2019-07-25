@@ -13,7 +13,7 @@ class DefaultHorizontalNumberInput(
         maxValue: Int,
         componentMetadata: ComponentMetadata,
         renderingStrategy: ComponentRenderingStrategy<NumberInput>)
-    : DefaultNumberInput(
+    : BaseNumberInput(
         initialValue, maxValue, componentMetadata, renderingStrategy
 ) {
     override var maxNumberLength = min(Int.MAX_VALUE.toString().length, size.width)
@@ -21,7 +21,7 @@ class DefaultHorizontalNumberInput(
     override fun refreshCursor() {
         var pos = textBuffer.cursor.position
         pos = pos.withX(min(pos.x, contentSize.width))
-        pos = pos.withY(0)
+                .withY(0)
         Zircon.eventBus.publish(
                 event = ZirconEvent.RequestCursorAt(pos
                         .withRelative(absolutePosition + contentPosition)),

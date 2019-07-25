@@ -35,8 +35,7 @@ data class VerticalSliderBuilder(
                 .withHeight(max(steps + 1, contentSize.height))
     }
 
-    override fun build(): Slider {
-        return DefaultVerticalSlider(
+    override fun build(): Slider = DefaultVerticalSlider(
                 componentMetadata = ComponentMetadata(
                         size = size,
                         position = position,
@@ -47,7 +46,6 @@ data class VerticalSliderBuilder(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = props.componentRenderer as ComponentRenderer<Slider>))
-    }
 
     override fun createCopy() = copy(props = props.copy())
 

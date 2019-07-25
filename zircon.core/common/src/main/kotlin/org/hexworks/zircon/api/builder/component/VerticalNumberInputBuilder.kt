@@ -32,8 +32,7 @@ data class VerticalNumberInputBuilder(
                 .withWidth(1)
     }
 
-    override fun build(): NumberInput {
-        return DefaultVerticalNumberInput(
+    override fun build(): NumberInput = DefaultVerticalNumberInput(
                 componentMetadata = ComponentMetadata(
                         size = size,
                         position = position,
@@ -44,7 +43,6 @@ data class VerticalNumberInputBuilder(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = props.componentRenderer as ComponentRenderer<NumberInput>))
-    }
 
     override fun createCopy() = copy()
 
