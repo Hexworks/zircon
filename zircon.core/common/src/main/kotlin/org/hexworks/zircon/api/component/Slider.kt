@@ -39,6 +39,8 @@ interface Slider: Component, Disablable {
 
     fun decrementCurrentValue()
     fun incrementCurrentValue()
+    fun decrementCurrentStep()
+    fun incrementCurrentStep()
 
     /**
      * Callback called when value changes
