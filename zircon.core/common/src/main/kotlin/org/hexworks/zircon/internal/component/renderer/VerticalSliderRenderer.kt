@@ -1,19 +1,17 @@
 package org.hexworks.zircon.internal.component.renderer
 
 import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.component.Panel
+import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
-import org.hexworks.zircon.internal.component.SliderGutter
-import org.hexworks.zircon.internal.component.impl.DefaultSlider
 
-class HorizontalSliderGutterRenderer : ComponentRenderer<SliderGutter> {
+class VerticalSliderRenderer : ComponentRenderer<Slider> {
 
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<SliderGutter>) {
+    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<Slider>) {
         val style = context.componentStyle.currentStyle()
         tileGraphics.applyStyle(style)
 
@@ -23,14 +21,14 @@ class HorizontalSliderGutterRenderer : ComponentRenderer<SliderGutter> {
                 .withForegroundColor(defaultStyleSet.backgroundColor)
         val disabledStyleSet = context.componentStyle.fetchStyleFor(ComponentState.DISABLED)
 
-        val cursorPosition = context.component.currentValue
+        val cursorPosition = context.component.currentStep
         val barWidth = context.component.numberOfSteps
 
         (0..barWidth).forEach { idx ->
             when {
-                idx == cursorPosition -> tileGraphics.setTileAt(Positions.create(idx, 0), Tile.createCharacterTile(Symbols.DOUBLE_LINE_VERTICAL, style))
-                idx < cursorPosition -> tileGraphics.setTileAt(Positions.create(idx, 0), Tile.createCharacterTile(' ', invertedDefaultStyleSet))
-                else -> tileGraphics.setTileAt(Positions.create(idx, 0), Tile.createCharacterTile(' ', disabledStyleSet))
+                idx == cursorPosition -> tileGraphics.setTileAt(Positions.create(0, idx), Tile.createCharacterTile(Symbols.DOUBLE_LINE_HORIZONTAL, style))
+                idx < cursorPosition -> tileGraphics.setTileAt(Positions.create(0, idx), Tile.createCharacterTile(' ', invertedDefaultStyleSet))
+                else -> tileGraphics.setTileAt(Positions.create(0, idx), Tile.createCharacterTile(' ', disabledStyleSet))
             }
         }
     }

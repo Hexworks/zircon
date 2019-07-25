@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultHorizontalSlider
-import org.hexworks.zircon.internal.component.renderer.DefaultSliderRenderer
+import org.hexworks.zircon.internal.component.renderer.HorizontalSliderRenderer
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
@@ -20,10 +20,8 @@ data class HorizontalSliderBuilder(
         private var numberOfSteps: Int = 10,
         private var additionalWidthNeeded: Int = 5,
         override var props: CommonComponentProperties<Slider> = CommonComponentProperties(
-                componentRenderer = DefaultSliderRenderer()))
+                componentRenderer = HorizontalSliderRenderer()))
     : BaseComponentBuilder<Slider, HorizontalSliderBuilder>() {
-
-    private val WIDTH_OFFSET = 4
 
     fun withRange(range: Int) = also {
         require(range > 0) { "Range must be greater than 0"}
@@ -33,9 +31,8 @@ data class HorizontalSliderBuilder(
     fun withNumberOfSteps(steps: Int) = also {
         require(steps in 1..range) { "Number of steps must be greater 0 and smaller than the range" }
         this.numberOfSteps = steps
-        additionalWidthNeeded = range.toString().length + WIDTH_OFFSET
         contentSize = contentSize
-                .withWidth(max(steps + additionalWidthNeeded, contentSize.width))
+                .withWidth(max(steps + 1, contentSize.width))
     }
 
     override fun build(): Slider {
@@ -47,7 +44,6 @@ data class HorizontalSliderBuilder(
                         tileset = tileset),
                 range = range,
                 numberOfSteps = numberOfSteps,
-                isDecorated = decorationRenderers.isEmpty().not(),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = props.componentRenderer as ComponentRenderer<Slider>))

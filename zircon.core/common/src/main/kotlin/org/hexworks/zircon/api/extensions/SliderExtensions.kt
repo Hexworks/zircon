@@ -6,7 +6,15 @@ import org.hexworks.zircon.api.behavior.ChangeListener
 import org.hexworks.zircon.api.component.Slider
 
 inline fun Slider.onValueChanged(crossinline fn: (ChangeEvent<Int>) -> Unit): Subscription {
-    return onChange(object : ChangeListener<Int> {
+    return onValueChange(object : ChangeListener<Int> {
+        override fun onChange(event: ChangeEvent<Int>) {
+            fn(event)
+        }
+    })
+}
+
+inline fun Slider.onStepChanged(crossinline fn: (ChangeEvent<Int>) -> Unit): Subscription {
+    return onStepChange(object : ChangeListener<Int> {
         override fun onChange(event: ChangeEvent<Int>) {
             fn(event)
         }

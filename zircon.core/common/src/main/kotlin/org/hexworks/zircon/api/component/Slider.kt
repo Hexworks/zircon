@@ -28,7 +28,21 @@ interface Slider: Component, Disablable {
     val currentValueProperty: Property<Int>
 
     /**
+     * Current step with respect to the number of steps
+     */
+    var currentStep: Int
+
+    /**
+     * Bindable, current step
+     */
+    val currentStepProperty: Property<Int>
+
+    /**
      * Callback called when value changes
      */
-    fun onChange(fn: ChangeListener<Int>): Subscription
+    fun onValueChange(fn: ChangeListener<Int>): Subscription
+    /**
+     * Callback called when step changes
+     */
+    fun onStepChange(fn: ChangeListener<Int>): Subscription
 }
