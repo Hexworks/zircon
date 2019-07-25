@@ -83,13 +83,13 @@ abstract class DefaultNumberInput(
         }
     }
 
-    fun incrementCurrentValue() {
+    override fun incrementCurrentValue() {
         if (currentValue < maxValue) {
             currentValue++
         }
     }
 
-    fun decrementCurrentValue() {
+    override fun decrementCurrentValue() {
         if (currentValue > 0) {
             currentValue--
         }

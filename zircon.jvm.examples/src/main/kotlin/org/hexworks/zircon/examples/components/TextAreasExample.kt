@@ -97,9 +97,7 @@ object TextAreasExample {
                 .withDecorations()
                 .build().apply {
                     processComponentEvents(ComponentEventType.ACTIVATED) {
-                        (numberInput as? DefaultNumberInput)?.let {
-                            it.decrementCurrentValue()
-                        }
+                        numberInput.decrementCurrentValue()
                     }
                 }
         val incrementButton = Components.button()
@@ -108,9 +106,7 @@ object TextAreasExample {
                 .withDecorations()
                 .build().apply {
                     processComponentEvents(ComponentEventType.ACTIVATED) {
-                        (numberInput as? DefaultNumberInput)?.let {
-                            it.incrementCurrentValue()
-                        }
+                        numberInput.incrementCurrentValue()
                     }
                 }
         hbox.addComponent(decrementButton)
