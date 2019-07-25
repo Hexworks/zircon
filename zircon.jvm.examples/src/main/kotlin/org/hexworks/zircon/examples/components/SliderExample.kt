@@ -9,11 +9,11 @@ import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.component.ComponentAlignment
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.onValueChanged
-import org.hexworks.zircon.api.extensions.positionalAlignment
-import org.hexworks.zircon.api.extensions.shadow
+import org.hexworks.zircon.api.extensions.*
 import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.api.graphics.Symbols
+import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.internal.component.impl.DefaultSlider
 
 object SliderExample {
 
@@ -32,7 +32,6 @@ object SliderExample {
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
-
         val panel = Components.panel()
                 .withDecorations(box(title = "Slider on panel"), shadow())
                 .withSize(Sizes.create(30, 28))
@@ -40,28 +39,25 @@ object SliderExample {
                 .build()
         screen.addComponent(panel)
 
+
         val slider1 = Components.horizontalSlider()
                 .withRange(100)
                 .withNumberOfSteps(10)
                 .withDecorations(box())
                 .withAlignment(positionalAlignment(0, 5))
                 .build()
-
-        panel.addComponent(slider1)
-
         val label = Components.label()
                 .withSize(5,1)
                 .withText("30")
                 .withAlignmentAround(slider1, ComponentAlignment.RIGHT_CENTER)
                 .build()
-
+        panel.addComponent(slider1)
         panel.addComponent(label)
-
         slider1.currentValue = 30
-
         slider1.onValueChanged {
             label.text = "${it.newValue}"
         }
+
 
         val slider2 = Components.horizontalSlider()
                 .withRange(3)
@@ -69,40 +65,73 @@ object SliderExample {
                 .withAlignment(positionalAlignment(0, 10))
                 .withDecorations(box(BoxType.TOP_BOTTOM_DOUBLE))
                 .build()
-
+        slider2.currentValue = 2
         panel.addComponent(slider2)
 
-        slider2.currentValue = 2
 
-        val slider3 = Components.horizontalSlider()
-                .withRange(255)
-                .withNumberOfSteps(10)
+        val compositeSliderPanel1 = Components.hbox()
+                .withSize(17,1)
+                .withSpacing(0)
                 .withAlignment(positionalAlignment(0, 15))
                 .build()
-
-        panel.addComponent(slider3)
-
+        val slider3 = Components.horizontalSlider()
+                .withRange(255)
+                .withDecorations()
+                .withNumberOfSteps(10)
+                .build()
+        val decrementButton = Components.button()
+                .withText("${Symbols.TRIANGLE_LEFT_POINTING_BLACK}")
+                .withSize(1,1)
+                .withDecorations()
+                .build().apply {
+                    processComponentEvents(ComponentEventType.ACTIVATED) {
+                        (slider3 as? DefaultSlider)?.let {
+                            it.decrementCurrentValue()
+                        }
+                    }
+                }
+        val incrementButton = Components.button()
+                .withText("${Symbols.TRIANGLE_RIGHT_POINTING_BLACK}")
+                .withSize(1,1)
+                .withDecorations()
+                .build().apply {
+                    processComponentEvents(ComponentEventType.ACTIVATED) {
+                        (slider3 as? DefaultSlider)?.let {
+                            it.incrementCurrentValue()
+                        }
+                    }
+                }
+        val numberInput = Components.horizontalNumberInput(3)
+                .withInitialValue(0)
+                .withMaxValue(255)
+                .withDecorations()
+                .build()
+        slider3.currentValueProperty.bind(numberInput.currentValueProperty)
+        compositeSliderPanel1.addComponent(decrementButton)
+        compositeSliderPanel1.addComponent(slider3)
+        compositeSliderPanel1.addComponent(incrementButton)
+        compositeSliderPanel1.addComponent(numberInput)
+        panel.addComponent(compositeSliderPanel1)
         slider3.currentValue = 127
+
 
         val slider4 = Components.horizontalSlider()
                 .withRange(100)
                 .withNumberOfSteps(10)
                 .withAlignment(positionalAlignment(0, 20))
                 .build()
-
+        slider4.currentValue = 20
         panel.addComponent(slider4)
 
-        slider4.currentValue = 20
 
         val vertical = Components.verticalSlider()
                 .withRange(100)
                 .withNumberOfSteps(10)
                 .withAlignment(positionalAlignment(25, 3))
                 .build()
-
+        vertical.currentValue = 10
         panel.addComponent(vertical)
 
-        vertical.currentValue = 10
 
         screen.display()
         screen.applyColorTheme(theme)

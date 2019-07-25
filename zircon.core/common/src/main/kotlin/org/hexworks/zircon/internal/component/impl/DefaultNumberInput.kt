@@ -42,7 +42,7 @@ import kotlin.math.min
 
 abstract class DefaultNumberInput(
         initialValue: Int,
-        val maxValue: Int,
+        private val maxValue: Int,
         componentMetadata: ComponentMetadata,
         protected val renderingStrategy: ComponentRenderingStrategy<NumberInput>)
     : NumberInput,
@@ -51,7 +51,7 @@ abstract class DefaultNumberInput(
                 componentMetadata = componentMetadata,
                 renderer = renderingStrategy) {
 
-    override var text: String
+    final override var text: String
         get() = textBuffer.getText()
         set(value) {
             if (value == "") {
@@ -69,12 +69,30 @@ abstract class DefaultNumberInput(
     protected var textBuffer = EditableTextBuffer.create("$initialValue")
     abstract var maxNumberLength: Int
     private var textBeforeModifications = ""
-    override val currentValueProperty = createPropertyFrom(initialValue)
+
+    final override val currentValueProperty = createPropertyFrom(initialValue)
     override var currentValue: Int by currentValueProperty.asDelegate()
 
     init {
         this.text = "$initialValue"
         computeDigitalValue()
+        currentValueProperty.onChange {
+            if (it.newValue <= maxValue) {
+                text = it.newValue.toString()
+            }
+        }
+    }
+
+    fun incrementCurrentValue() {
+        if (currentValue < maxValue) {
+            currentValue++
+        }
+    }
+
+    fun decrementCurrentValue() {
+        if (currentValue > 0) {
+            currentValue--
+        }
     }
 
     override fun textBuffer() = textBuffer

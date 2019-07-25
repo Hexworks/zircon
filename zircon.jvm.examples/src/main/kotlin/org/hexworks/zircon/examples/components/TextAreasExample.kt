@@ -8,11 +8,11 @@ import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.onValueChanged
-import org.hexworks.zircon.api.extensions.positionalAlignment
-import org.hexworks.zircon.api.extensions.shadow
+import org.hexworks.zircon.api.extensions.*
 import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.api.graphics.Symbols
+import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.internal.component.impl.DefaultNumberInput
 
 object TextAreasExample {
 
@@ -74,18 +74,50 @@ object TextAreasExample {
                 .withAlignment(positionalAlignment(Positions.create(2, 25)))
                 .build()
 
+        val hbox = Components.hbox()
+                .withSize(18, 4)
+                .withSpacing(0)
+                .withAlignment(positionalAlignment(Positions.create(2, 20)))
+                .withDecorations(box(), shadow())
+                .build()
+
         val numberInput = Components.horizontalNumberInput(13)
                 .withInitialValue(0)
                 .withMaxValue(256)
-                .withDecorations(box(), shadow())
-                .withAlignment(positionalAlignment(Positions.create(2, 20)))
+                .withDecorations()
                 .build().apply {
                     onValueChanged {
                         boundLabel.text = "${it.newValue}"
                     }
                 }
 
-        screen.addComponent(numberInput)
+        val decrementButton = Components.button()
+                .withText("${Symbols.TRIANGLE_DOWN_POINTING_BLACK}")
+                .withSize(1,1)
+                .withDecorations()
+                .build().apply {
+                    processComponentEvents(ComponentEventType.ACTIVATED) {
+                        (numberInput as? DefaultNumberInput)?.let {
+                            it.decrementCurrentValue()
+                        }
+                    }
+                }
+        val incrementButton = Components.button()
+                .withText("${Symbols.TRIANGLE_UP_POINTING_BLACK}")
+                .withSize(1,1)
+                .withDecorations()
+                .build().apply {
+                    processComponentEvents(ComponentEventType.ACTIVATED) {
+                        (numberInput as? DefaultNumberInput)?.let {
+                            it.incrementCurrentValue()
+                        }
+                    }
+                }
+        hbox.addComponent(decrementButton)
+        hbox.addComponent(numberInput)
+        hbox.addComponent(incrementButton)
+
+        screen.addComponent(hbox)
         screen.addComponent(numLabel)
         screen.addComponent(boundLabel)
 

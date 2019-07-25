@@ -3,92 +3,87 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.behavior.ChangeListener
 import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.component.*
+import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.abbreviate
-import org.hexworks.zircon.api.extensions.handleComponentEvents
-import org.hexworks.zircon.api.extensions.onValueChanged
-import org.hexworks.zircon.api.extensions.processMouseEvents
-import org.hexworks.zircon.api.extensions.handleKeyboardEvents
+import org.hexworks.zircon.api.extensions.whenEnabled
+import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
-import org.hexworks.zircon.internal.component.SliderGutter
 import kotlin.math.min
-import kotlin.math.truncate
 import kotlin.math.roundToInt
+import kotlin.math.truncate
 
-@Suppress("UNCHECKED_CAST")
-abstract class DefaultSlider(componentMetadata: ComponentMetadata,
-                            private val renderingStrategy: ComponentRenderingStrategy<Slider>,
-                            final override val range: Int,
-                            final override val numberOfSteps: Int,
-                            val isDecorated: Boolean
-) : Slider, DefaultContainer(
+abstract class DefaultSlider(override val range: Int,
+                             override val numberOfSteps: Int,
+                             componentMetadata: ComponentMetadata,
+                             private val renderingStrategy: ComponentRenderingStrategy<Slider>) :
+    Slider, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
-        Disablable by Disablable.create() {
+    Disablable by Disablable.create(){
+
+    private val valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
 
     final override val currentValueProperty = createPropertyFrom(0)
     override var currentValue: Int by currentValueProperty.asDelegate()
-    private val valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
 
-    abstract val actualSize: Size
-    abstract val numberInputSize: Size
-    abstract val decrementButtonChar: Char
-    abstract val incrementButtonChar: Char
+    final override val currentStepProperty = createPropertyFrom(0)
+    override var currentStep: Int by currentStepProperty.asDelegate()
 
-    abstract val root: Container
-    abstract val gutter: SliderGutter
-    abstract val valueInput: NumberInput
-
-    private val decrementButton = Components.button()
-            .withSize(Size.one())
-            .withDecorations()
-            .withText("")
-            .build().apply {
-                handleComponentEvents(ComponentEventType.ACTIVATED) {
-                    decrementCurrentValue()
-                    Processed
-                }
+    init {
+        render()
+        currentValueProperty.onChange {
+            computeCurrentStep(it.newValue)
+            render()
+        }
+        currentStepProperty.onChange {
+            render()
+        }
+        disabledProperty.onChange {
+            if (it.newValue) {
+                LOGGER.debug("Disabling Slider (id=${id.abbreviate()}, disabled=$isDisabled).")
+                componentStyleSet.applyDisabledStyle()
+            } else {
+                LOGGER.debug("Enabling Slider (id=${id.abbreviate()}, disabled=$isDisabled).")
+                componentStyleSet.reset()
             }
+            render()
+        }
+    }
 
-    private val incrementButton = Components.button()
-            .withSize(Size.one())
-            .withDecorations()
-            .withText("")
-            .build().apply {
-                handleComponentEvents(ComponentEventType.ACTIVATED) {
-                    incrementCurrentValue()
-                    Processed
-                }
-            }
-
-    abstract fun getMousePosition(event: MouseEvent): Int
-
-    private fun computeCurrentStep(newValue: Int): Int {
+    private fun computeCurrentStep(newValue: Int) {
         val actualValue = min(range, newValue)
         val actualStep = actualValue.toDouble() / valuePerStep
         val roundedStep = truncate(actualStep)
-        return roundedStep.toInt()
+        currentStep = roundedStep.toInt()
     }
 
-    private fun incrementCurrentValue() {
+    fun incrementCurrentValue() {
         if (currentValue < range) {
             currentValue++
         }
     }
 
-    private fun decrementCurrentValue() {
+    fun decrementCurrentValue() {
         if (currentValue > 0) {
             currentValue--
         }
+    }
+
+    fun incrementCurrentStep() {
+        setValueToClosestOfStep(currentStep + 1)
+    }
+
+    fun decrementCurrentStep() {
+        setValueToClosestOfStep(currentStep - 1)
     }
 
     private fun addToCurrentValue(value: Int) {
@@ -107,16 +102,119 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
         }
     }
 
-    private fun setValueToClosestPossible(step: Int) {
-        val calculatedValue = step * valuePerStep
+    private fun setValueToClosestOfStep(step: Int) {
+        var actualStep = step
+        if (step < 0) {
+            actualStep = 0
+        }
+        val calculatedValue = actualStep * valuePerStep
         currentValue = calculatedValue.roundToInt()
     }
 
+    abstract fun getMousePosition(event: MouseEvent): Int
+
+    override fun acceptsFocus() = isDisabled.not()
+
+    override fun focusGiven() = whenEnabled {
+        LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was given focus.")
+        componentStyleSet.applyFocusedStyle()
+        render()
+    }
+
+    override fun focusTaken() = whenEnabled {
+        LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) lost focus.")
+        componentStyleSet.reset()
+        render()
+    }
+
+    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET) {
+            LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse entered.")
+            componentStyleSet.applyMouseOverStyle()
+            render()
+            Processed
+        } else Pass
+    }
+
+    override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET) {
+            LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse exited.")
+            componentStyleSet.reset()
+            render()
+            Processed
+        } else Pass
+    }
+
+    override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET) {
+            LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
+            componentStyleSet.applyActiveStyle()
+            setValueToClosestOfStep(getMousePosition(event))
+            render()
+            Processed
+        } else Pass
+    }
+
+    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET) {
+            LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse released.")
+            componentStyleSet.applyMouseOverStyle()
+            render()
+            Processed
+        } else Pass
+    }
+
+    override fun mouseDragged(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET) {
+            LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
+            componentStyleSet.applyActiveStyle()
+            setValueToClosestOfStep(getMousePosition(event))
+            render()
+            Processed
+        } else Pass
+    }
+
+    override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET) {
+            when (event.code) {
+                KeyCode.RIGHT -> {
+                    incrementCurrentValue()
+                    Processed
+                }
+                KeyCode.LEFT -> {
+                    decrementCurrentValue()
+                    Processed
+                }
+                KeyCode.UP -> {
+                    addToCurrentValue(valuePerStep.roundToInt())
+                    Processed
+                }
+                KeyCode.DOWN -> {
+                    subtractToCurrentValue(valuePerStep.roundToInt())
+                    Processed
+                }
+                else -> Pass
+            }
+        } else Pass
+    }
+
+    override fun activated() = whenEnabledRespondWith {
+        if (isDisabled) {
+            LOGGER.warn("Trying to activate disabled Gutter (id=${id.abbreviate()}. Request dropped.")
+            Pass
+        } else {
+            LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was activated.")
+            componentStyleSet.applyMouseOverStyle()
+            render()
+            Processed
+        }
+    }
+
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        LOGGER.debug("Applying color theme ($colorTheme) to Slider (id=${id.abbreviate()}).")
+        LOGGER.debug("Applying color theme: $colorTheme to Gutter (id=${id.abbreviate()}, disabled=$isDisabled).")
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryForegroundColor)
+                        .withForegroundColor(colorTheme.primaryForegroundColor)
                         .withBackgroundColor(TileColor.transparent())
                         .build())
                 .withMouseOverStyle(StyleSetBuilder.newBuilder()
@@ -133,92 +231,21 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
                         .build())
                 .build().also {
                     componentStyleSet = it
-                    root.applyColorTheme(colorTheme)
-                    root.children.forEach {component ->
-                        component.applyColorTheme(colorTheme)
-                    }
                     render()
                 }
     }
 
-    protected fun finishInit() {
-        gutter.apply {
-                    processMouseEvents(MouseEventType.MOUSE_PRESSED) { event, _ ->
-                        setValueToClosestPossible(getMousePosition(event))
-                        render()
-                    }
-
-                    processMouseEvents(MouseEventType.MOUSE_DRAGGED) { event, _ ->
-                        setValueToClosestPossible(getMousePosition(event))
-                        render()
-                    }
-
-                    handleKeyboardEvents(KeyboardEventType.KEY_PRESSED) { event, _ ->
-                        when(event.code) {
-                            KeyCode.LEFT -> {
-                                decrementCurrentValue()
-                                Processed
-                            }
-                            KeyCode.RIGHT -> {
-                                incrementCurrentValue()
-                                Processed
-                            }
-                            KeyCode.UP -> {
-                                addToCurrentValue(valuePerStep.roundToInt())
-                                Processed
-                            }
-                            KeyCode.DOWN -> {
-                                subtractToCurrentValue(valuePerStep.roundToInt())
-                                Processed
-                            }
-                            else -> Pass
-                        }
-                    }
-                }
-
-        valueInput.apply {
-                    onValueChanged {
-                        this@DefaultSlider.currentValue = it.newValue
-                    }
-                }
-
-        root.apply {
-            addComponent(decrementButton)
-            addComponent(gutter)
-            addComponent(incrementButton)
-            addComponent(valueInput)
-        }
-        addComponent(root)
-
-        currentValueProperty.onChange {
-            valueInput.text = "${it.newValue}"
-            gutter.currentValue = computeCurrentStep(it.newValue)
-            render()
-        }
-
-        disabledProperty.onChange {
-            if (it.newValue) {
-                LOGGER.debug("Disabling Slider (id=${id.abbreviate()}, disabled=$isDisabled).")
-                componentStyleSet.applyDisabledStyle()
-            } else {
-                LOGGER.debug("Enabling Slider (id=${id.abbreviate()}, disabled=$isDisabled).")
-                componentStyleSet.reset()
-            }
-            render()
-        }
-
-        incrementButton.text = "$incrementButtonChar"
-        decrementButton.text = "$decrementButtonChar"
-        render()
+    final override fun render() {
+        LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled, visibility=$isVisible) was rendered.")
+        renderingStrategy.render(this, graphics)
     }
 
-    override fun onChange(fn: ChangeListener<Int>): Subscription {
+    override fun onValueChange(fn: ChangeListener<Int>): Subscription {
         return currentValueProperty.onChange(fn::onChange)
     }
 
-    override fun render() {
-        LOGGER.debug("Slider (id=${id.abbreviate()}, visibility=$isVisible) was rendered.")
-        renderingStrategy.render(this, graphics)
+    override fun onStepChange(fn: ChangeListener<Int>): Subscription {
+        return currentStepProperty.onChange(fn::onChange)
     }
 
     companion object {
