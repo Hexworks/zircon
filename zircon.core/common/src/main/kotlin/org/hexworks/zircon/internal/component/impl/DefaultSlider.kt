@@ -78,11 +78,11 @@ abstract class DefaultSlider(override val range: Int,
         }
     }
 
-    fun incrementCurrentStep() {
+    override fun incrementCurrentStep() {
         setValueToClosestOfStep(currentStep + 1)
     }
 
-    fun decrementCurrentStep() {
+    override fun decrementCurrentStep() {
         setValueToClosestOfStep(currentStep - 1)
     }
 
