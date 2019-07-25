@@ -3,19 +3,17 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.behavior.ChangeListener
 import org.hexworks.zircon.api.behavior.Disablable
-import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.NumberInput
-import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.KeyCode
@@ -27,10 +25,9 @@ import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.Zircon
-import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.LEFT
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.RIGHT
+import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.LEFT
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter.DeleteKind.BACKSPACE
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter.DeleteKind.DEL
@@ -40,7 +37,7 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.math.min
 
-class DefaultNumberInput constructor(
+class DefaultVerticalNumberInput constructor(
         initialValue: Int,
         val maxValue: Int,
         componentMetadata: ComponentMetadata,
@@ -65,7 +62,7 @@ class DefaultNumberInput constructor(
         }
 
     private var textBuffer = EditableTextBuffer.create("$initialValue")
-    private var maxNumberLength = min(Int.MAX_VALUE.toString().length, size.width)
+    private var maxNumberLength = min(Int.MAX_VALUE.toString().length, size.height)
     override val currentValueProperty = createPropertyFrom(initialValue)
     override var currentValue: Int by currentValueProperty.asDelegate()
 
@@ -179,10 +176,11 @@ class DefaultNumberInput constructor(
 
     private fun refreshCursor() {
         var pos = textBuffer.cursor.position
-        pos = pos.withX(min(pos.x, contentSize.width))
+        pos = pos.withX(min(pos.x, contentSize.height))
         pos = pos.withY(0)
+        val invertedPosition = Positions.create(pos.y, pos.x)
         Zircon.eventBus.publish(
-                event = ZirconEvent.RequestCursorAt(pos
+                event = ZirconEvent.RequestCursorAt(invertedPosition
                         .withRelative(absolutePosition + contentPosition)),
                 eventScope = ZirconScope)
     }
