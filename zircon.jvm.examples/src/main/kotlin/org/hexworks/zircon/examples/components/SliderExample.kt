@@ -85,9 +85,7 @@ object SliderExample {
                 .withDecorations()
                 .build().apply {
                     processComponentEvents(ComponentEventType.ACTIVATED) {
-                        (slider3 as? DefaultSlider)?.let {
-                            it.decrementCurrentValue()
-                        }
+                        slider3.decrementCurrentValue()
                     }
                 }
         val incrementButton = Components.button()
@@ -96,9 +94,7 @@ object SliderExample {
                 .withDecorations()
                 .build().apply {
                     processComponentEvents(ComponentEventType.ACTIVATED) {
-                        (slider3 as? DefaultSlider)?.let {
-                            it.incrementCurrentValue()
-                        }
+                        slider3.incrementCurrentValue()
                     }
                 }
         val numberInput = Components.horizontalNumberInput(3)

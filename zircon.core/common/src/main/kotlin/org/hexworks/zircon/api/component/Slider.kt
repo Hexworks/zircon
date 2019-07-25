@@ -37,6 +37,9 @@ interface Slider: Component, Disablable {
      */
     val currentStepProperty: Property<Int>
 
+    fun decrementCurrentValue()
+    fun incrementCurrentValue()
+
     /**
      * Callback called when value changes
      */

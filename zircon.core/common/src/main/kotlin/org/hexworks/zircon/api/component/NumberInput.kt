@@ -18,6 +18,10 @@ interface NumberInput: Component, Disablable {
      * Bindable, current value
      */
     val currentValueProperty: Property<Int>
+
+    fun decrementCurrentValue()
+    fun incrementCurrentValue()
+
     /**
      * Callback called when value changes
      */
