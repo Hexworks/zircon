@@ -28,7 +28,7 @@ class VerticalSliderGutterRenderer : ComponentRenderer<SliderGutter> {
 
         (0..barWidth).forEach { idx ->
             when {
-                idx == cursorPosition -> tileGraphics.setTileAt(Positions.create(0, idx), Tile.createCharacterTile(Symbols.DOUBLE_LINE_HORIZONTAL, defaultStyleSet))
+                idx == cursorPosition -> tileGraphics.setTileAt(Positions.create(0, idx), Tile.createCharacterTile(Symbols.DOUBLE_LINE_HORIZONTAL, style))
                 idx < cursorPosition -> tileGraphics.setTileAt(Positions.create(0, idx), Tile.createCharacterTile(' ', invertedDefaultStyleSet))
                 else -> tileGraphics.setTileAt(Positions.create(0, idx), Tile.createCharacterTile(' ', disabledStyleSet))
             }
