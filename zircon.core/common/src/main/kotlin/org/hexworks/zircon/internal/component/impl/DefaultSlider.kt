@@ -11,17 +11,14 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.extensions.handleComponentEvents
 import org.hexworks.zircon.api.extensions.onValueChanged
 import org.hexworks.zircon.api.extensions.processMouseEvents
-import org.hexworks.zircon.api.uievent.ComponentEventType
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType
-import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.extensions.handleKeyboardEvents
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.component.SliderGutter
 import kotlin.math.min
 import kotlin.math.truncate
@@ -94,9 +91,24 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
         }
     }
 
+    private fun addToCurrentValue(value: Int) {
+        if (currentValue + value <= range) {
+            currentValue += value
+        } else {
+            currentValue = range
+        }
+    }
+
+    private fun subtractToCurrentValue(value: Int) {
+        if (currentValue - value > 0) {
+            currentValue -= value
+        } else {
+            currentValue = 0
+        }
+    }
+
     private fun setValueToClosestPossible(step: Int) {
-        val trueStep = step - 1
-        val calculatedValue = trueStep * valuePerStep
+        val calculatedValue = step * valuePerStep
         currentValue = calculatedValue.roundToInt()
     }
 
@@ -139,6 +151,28 @@ abstract class DefaultSlider(componentMetadata: ComponentMetadata,
                     processMouseEvents(MouseEventType.MOUSE_DRAGGED) { event, _ ->
                         setValueToClosestPossible(getMousePosition(event))
                         render()
+                    }
+
+                    handleKeyboardEvents(KeyboardEventType.KEY_PRESSED) { event, _ ->
+                        when(event.code) {
+                            KeyCode.LEFT -> {
+                                decrementCurrentValue()
+                                Processed
+                            }
+                            KeyCode.RIGHT -> {
+                                incrementCurrentValue()
+                                Processed
+                            }
+                            KeyCode.UP -> {
+                                addToCurrentValue(valuePerStep.roundToInt())
+                                Processed
+                            }
+                            KeyCode.DOWN -> {
+                                subtractToCurrentValue(valuePerStep.roundToInt())
+                                Processed
+                            }
+                            else -> Pass
+                        }
                     }
                 }
 

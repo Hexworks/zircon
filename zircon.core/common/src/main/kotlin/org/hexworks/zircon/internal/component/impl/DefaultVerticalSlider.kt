@@ -61,8 +61,8 @@ class DefaultVerticalSlider(componentMetadata: ComponentMetadata,
     override fun getMousePosition(event: MouseEvent): Int {
         val clickPosition = event.position.minus(this.absolutePosition).y
         return when(isDecorated) {
-            true -> clickPosition - 1
-            false -> clickPosition
+            true -> clickPosition - 2
+            false -> clickPosition - 1
         }
     }
 

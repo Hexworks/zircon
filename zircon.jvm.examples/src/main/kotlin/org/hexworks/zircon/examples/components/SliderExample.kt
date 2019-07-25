@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.onValueChanged
@@ -24,6 +25,9 @@ object SliderExample {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
+                .withCursorBlinking(true)
+                .withCursorStyle(CursorStyle.UNDER_BAR)
+                .withCursorColor(theme.accentColor)
                 .withSize(Sizes.create(60, 30))
                 .build())
 
