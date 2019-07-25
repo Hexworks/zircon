@@ -5,17 +5,14 @@ import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.ChangeListener
 import org.hexworks.zircon.api.behavior.Disablable
-import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.NumberInput
-import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.KeyCode
@@ -27,7 +24,6 @@ import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.Zircon
-import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.LEFT
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.RIGHT
@@ -38,9 +34,8 @@ import org.hexworks.zircon.internal.component.impl.textedit.transformation.Inser
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.MoveCursor
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
-import kotlin.math.min
 
-abstract class DefaultNumberInput(
+abstract class BaseNumberInput(
         initialValue: Int,
         private val maxValue: Int,
         componentMetadata: ComponentMetadata,
@@ -60,7 +55,7 @@ abstract class DefaultNumberInput(
                 val clean = value.replace(Regex("[^\\d]"), "")
                 if (clean.toInt() <= maxValue) {
                     textBuffer = EditableTextBuffer.create(clean, textBuffer.cursor)
-                    computeDigitalValue()
+                    computeNumberValue()
                     render()
                 }
             }
@@ -75,7 +70,7 @@ abstract class DefaultNumberInput(
 
     init {
         this.text = "$initialValue"
-        computeDigitalValue()
+        computeNumberValue()
         currentValueProperty.onChange {
             if (it.newValue <= maxValue) {
                 text = it.newValue.toString()
@@ -130,7 +125,7 @@ abstract class DefaultNumberInput(
     override fun focusTaken() = whenEnabled {
         componentStyleSet.reset()
         text = textBeforeModifications
-        computeDigitalValue()
+        computeNumberValue()
         render()
         Zircon.eventBus.publish(
                 event = ZirconEvent.HideCursor,
@@ -224,7 +219,7 @@ abstract class DefaultNumberInput(
         }
     }
 
-    private fun computeDigitalValue() {
+    private fun computeNumberValue() {
         currentValue = if (text == "") {
             0
         } else {

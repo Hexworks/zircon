@@ -14,7 +14,7 @@ class DefaultVerticalNumberInput(
         maxValue: Int,
         componentMetadata: ComponentMetadata,
         renderingStrategy: ComponentRenderingStrategy<NumberInput>)
-    : DefaultNumberInput(
+    : BaseNumberInput(
         initialValue, maxValue, componentMetadata, renderingStrategy
 ) {
     override var maxNumberLength = min(Int.MAX_VALUE.toString().length, size.height)

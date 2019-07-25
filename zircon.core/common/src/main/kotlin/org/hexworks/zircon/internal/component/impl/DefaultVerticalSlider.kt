@@ -9,7 +9,7 @@ class DefaultVerticalSlider(componentMetadata: ComponentMetadata,
                             renderingStrategy: ComponentRenderingStrategy<Slider>,
                             range: Int,
                             numberOfSteps: Int
-) : DefaultSlider(
+) : BaseSlider(
         componentMetadata = componentMetadata,
         renderingStrategy = renderingStrategy,
         range = range,
