@@ -1,25 +1,24 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.NumberInput
-import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.internal.component.impl.DefaultNumberInput
+import org.hexworks.zircon.internal.component.impl.DefaultHorizontalNumberInput
 import org.hexworks.zircon.internal.component.renderer.DefaultNumberInputRenderer
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
-data class NumberInputBuilder(
+data class HorizontalNumberInputBuilder(
         val width: Int,
         private var initialValue: Int = 0,
         private var maxValue: Int = Int.MAX_VALUE,
         override val props: CommonComponentProperties<NumberInput> = CommonComponentProperties(
                 componentRenderer = DefaultNumberInputRenderer()))
-    : BaseComponentBuilder<NumberInput, NumberInputBuilder>() {
+    : BaseComponentBuilder<NumberInput, HorizontalNumberInputBuilder>() {
 
     fun withInitialValue(value: Int) = also {
         this.initialValue = value
@@ -33,7 +32,7 @@ data class NumberInputBuilder(
     }
 
     override fun build(): NumberInput {
-        return DefaultNumberInput(
+        return DefaultHorizontalNumberInput(
                 componentMetadata = ComponentMetadata(
                         size = size,
                         position = position,
@@ -43,7 +42,7 @@ data class NumberInputBuilder(
                 maxValue = maxValue,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<TextArea>))
+                        componentRenderer = props.componentRenderer as ComponentRenderer<NumberInput>))
     }
 
     override fun createCopy() = copy()
@@ -51,6 +50,6 @@ data class NumberInputBuilder(
     companion object {
 
         @JvmStatic
-        fun newBuilder(width: Int) = NumberInputBuilder(width = width)
+        fun newBuilder(width: Int) = HorizontalNumberInputBuilder(width = width)
     }
 }

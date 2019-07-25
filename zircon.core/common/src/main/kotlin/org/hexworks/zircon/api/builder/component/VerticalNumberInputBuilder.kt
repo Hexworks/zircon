@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.internal.component.impl.DefaultNumberInput
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalNumberInput
 import org.hexworks.zircon.internal.component.renderer.DefaultVerticalNumberInputRenderer
 import kotlin.jvm.JvmStatic
@@ -44,7 +43,7 @@ data class VerticalNumberInputBuilder(
                 maxValue = maxValue,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<TextArea>))
+                        componentRenderer = props.componentRenderer as ComponentRenderer<NumberInput>))
     }
 
     override fun createCopy() = copy()

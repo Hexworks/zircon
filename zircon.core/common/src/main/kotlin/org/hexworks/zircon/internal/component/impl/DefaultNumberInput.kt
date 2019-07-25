@@ -40,11 +40,11 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.math.min
 
-class DefaultNumberInput constructor(
+abstract class DefaultNumberInput(
         initialValue: Int,
         val maxValue: Int,
         componentMetadata: ComponentMetadata,
-        private val renderingStrategy: ComponentRenderingStrategy<NumberInput>)
+        protected val renderingStrategy: ComponentRenderingStrategy<NumberInput>)
     : NumberInput,
         Disablable by Disablable.create(),
         DefaultComponent(
@@ -54,7 +54,9 @@ class DefaultNumberInput constructor(
     override var text: String
         get() = textBuffer.getText()
         set(value) {
-            if (value.length <= maxNumberLength) {
+            if (value == "") {
+                textBuffer = EditableTextBuffer.create("")
+            } else if (value.length <= maxNumberLength) {
                 val clean = value.replace(Regex("[^\\d]"), "")
                 if (clean.toInt() <= maxValue) {
                     textBuffer = EditableTextBuffer.create(clean, textBuffer.cursor)
@@ -64,8 +66,9 @@ class DefaultNumberInput constructor(
             }
         }
 
-    private var textBuffer = EditableTextBuffer.create("$initialValue")
-    private var maxNumberLength = min(Int.MAX_VALUE.toString().length, size.width)
+    protected var textBuffer = EditableTextBuffer.create("$initialValue")
+    abstract var maxNumberLength: Int
+    private var textBeforeModifications = ""
     override val currentValueProperty = createPropertyFrom(initialValue)
     override var currentValue: Int by currentValueProperty.asDelegate()
 
@@ -100,12 +103,16 @@ class DefaultNumberInput constructor(
 
     override fun focusGiven() = whenEnabled {
         componentStyleSet.applyFocusedStyle()
+        textBeforeModifications = text
+        text = ""
         render()
         refreshCursor()
     }
 
     override fun focusTaken() = whenEnabled {
         componentStyleSet.reset()
+        text = textBeforeModifications
+        computeDigitalValue()
         render()
         Zircon.eventBus.publish(
                 event = ZirconEvent.HideCursor,
@@ -150,6 +157,11 @@ class DefaultNumberInput constructor(
                 Pass
             } else {
                 when (event.code) {
+                    KeyCode.ENTER -> {
+                        saveModifications()
+                        clearFocus()
+                    }
+                    KeyCode.ESCAPE -> clearFocus()
                     KeyCode.RIGHT -> textBuffer.applyTransformation(MoveCursor(RIGHT))
                     KeyCode.LEFT -> textBuffer.applyTransformation(MoveCursor(LEFT))
                     KeyCode.DELETE -> textBuffer.applyTransformation(DeleteCharacter(DEL))
@@ -162,7 +174,6 @@ class DefaultNumberInput constructor(
                         }
                     }
                 }
-                computeDigitalValue()
                 refreshCursor()
                 render()
                 Processed
@@ -176,16 +187,6 @@ class DefaultNumberInput constructor(
 
     private fun isNavigationKey(event: KeyboardEvent) =
             event == TAB || event == REVERSE_TAB
-
-    private fun refreshCursor() {
-        var pos = textBuffer.cursor.position
-        pos = pos.withX(min(pos.x, contentSize.width))
-        pos = pos.withY(0)
-        Zircon.eventBus.publish(
-                event = ZirconEvent.RequestCursorAt(pos
-                        .withRelative(absolutePosition + contentPosition)),
-                eventScope = ZirconScope)
-    }
 
     private fun checkAndAddChar(char: Char) {
         val virtualTextBuffer = EditableTextBuffer.create(text, textBuffer.cursor)
@@ -213,9 +214,15 @@ class DefaultNumberInput constructor(
         }
     }
 
+    private fun saveModifications() {
+        textBeforeModifications = text
+    }
+
     override fun onChange(fn: ChangeListener<Int>): Subscription {
         return currentValueProperty.onChange(fn::onChange)
     }
+
+    protected abstract fun refreshCursor()
 
     companion object {
         val TAB = KeyboardEvent(

@@ -1,18 +1,15 @@
 package org.hexworks.zircon.internal.component.renderer
 
 import org.hexworks.cobalt.datatypes.extensions.fold
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
-import org.hexworks.zircon.internal.component.impl.DefaultNumberInput
+import org.hexworks.zircon.internal.component.impl.DefaultHorizontalNumberInput
 
-class DefaultNumberInputRenderer : ComponentRenderer<DefaultNumberInput> {
+class DefaultNumberInputRenderer : ComponentRenderer<DefaultHorizontalNumberInput> {
 
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<DefaultNumberInput>) {
+    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<DefaultHorizontalNumberInput>) {
         val style = context.componentStyle.currentStyle()
         val component = context.component
         tileGraphics.applyStyle(style)

@@ -47,7 +47,7 @@ class DefaultHorizontalSlider(componentMetadata: ComponentMetadata,
             tileset = componentMetadata.tileset
     ), range)
 
-    override val valueInput =  Components.numberInput(range.toString().length)
+    override val valueInput =  Components.horizontalNumberInput(range.toString().length)
         .withInitialValue(currentValue)
         .withMaxValue(range)
         .withDecorations()
@@ -61,8 +61,8 @@ class DefaultHorizontalSlider(componentMetadata: ComponentMetadata,
     override fun getMousePosition(event: MouseEvent): Int {
         val clickPosition = event.position.minus(this.absolutePosition).x
         return when(isDecorated) {
-            true -> clickPosition - 1
-            false -> clickPosition
+            true -> clickPosition - 2
+            false -> clickPosition - 1
         }
     }
 

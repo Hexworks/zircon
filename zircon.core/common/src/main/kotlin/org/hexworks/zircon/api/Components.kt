@@ -11,7 +11,7 @@ object Components {
     fun textArea() = TextAreaBuilder.newBuilder()
 
     @JvmStatic
-    fun numberInput(width: Int) = NumberInputBuilder.newBuilder(width)
+    fun horizontalNumberInput(width: Int) = HorizontalNumberInputBuilder.newBuilder(width)
 
     @JvmStatic
     fun verticalNumberInput(height: Int) = VerticalNumberInputBuilder.newBuilder(height)

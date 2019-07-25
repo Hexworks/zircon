@@ -74,7 +74,7 @@ object TextAreasExample {
                 .withAlignment(positionalAlignment(Positions.create(2, 25)))
                 .build()
 
-        val numberInput = Components.numberInput(13)
+        val numberInput = Components.horizontalNumberInput(13)
                 .withInitialValue(0)
                 .withMaxValue(256)
                 .withDecorations(box(), shadow())
