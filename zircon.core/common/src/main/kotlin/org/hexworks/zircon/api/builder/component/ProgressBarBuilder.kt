@@ -13,7 +13,7 @@ import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
 /**
- * Builder for the progress bar. By default, it creates a progress bar with a range of 100 and 10 steps.
+ * Builder for the progress bar. By default, it creates a progress bar with a maxValue of 100 and 10 steps.
  */
 data class ProgressBarBuilder(
         private var range: Int = 100,
@@ -29,7 +29,7 @@ data class ProgressBarBuilder(
     }
 
     fun withNumberOfSteps(steps: Int) = also {
-        require(steps in 1..range) { "Number of steps must be greater 0 and smaller than the range" }
+        require(steps in 1..range) { "Number of steps must be greater 0 and smaller than the maxValue" }
         this.numberOfSteps = steps
         contentSize = contentSize
                 .withWidth(max(steps, contentSize.width))
