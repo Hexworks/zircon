@@ -11,7 +11,7 @@ interface NumberInput: Component, Disablable {
 
     fun textBuffer(): EditableTextBuffer
     /**
-     * Current value with respect to the range
+     * Current value with respect to the maxValue
      */
     var currentValue: Int
     /**

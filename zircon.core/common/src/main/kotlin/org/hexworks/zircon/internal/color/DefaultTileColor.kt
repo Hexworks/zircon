@@ -15,7 +15,7 @@ internal data class DefaultTileColor(override val red: Int,
 
     override fun tint(factor: Double): TileColor {
         require(factor in 0.0..1.0) {
-            "The given percentage ($factor) is not between the required range (0 - 1)."
+            "The given percentage ($factor) is not between the required maxValue (0 - 1)."
         }
         var r = red
         var g = green
@@ -38,7 +38,7 @@ internal data class DefaultTileColor(override val red: Int,
 
     override fun shade(factor: Double): TileColor {
         require(factor in 0.0..1.0) {
-            "The given percentage ($factor) is not between the required range (0 - 1)."
+            "The given percentage ($factor) is not between the required maxValue (0 - 1)."
         }
         return TileColor.create(max((red * factor).toInt(), 0),
                 max((green * factor).toInt(), 0),
@@ -52,7 +52,7 @@ internal data class DefaultTileColor(override val red: Int,
 
     override fun darkenByPercent(percentage: Double): TileColor {
         require(percentage in 0.0..1.0) {
-            "The given percentage ($percentage) is not between the required range (0 - 1)."
+            "The given percentage ($percentage) is not between the required maxValue (0 - 1)."
         }
         return TileColor.create(
                 red = (red * (1f - percentage)).toInt(),
@@ -63,7 +63,7 @@ internal data class DefaultTileColor(override val red: Int,
 
     override fun lightenByPercent(percentage: Double): TileColor {
         require(percentage in 0.0..1.0) {
-            "The given percentage ($percentage) is not between the required range (0 - 1)."
+            "The given percentage ($percentage) is not between the required maxValue (0 - 1)."
         }
         return TileColor.create(
                 red = (red * (1f + percentage)).toInt(),

@@ -13,23 +13,30 @@ import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
 /**
- * Builder for the slider. By default, it creates a slider with a range of 100 and 10 steps.
+ * Builder for the slider. By default, it creates a slider with a maxValue of 100 and 10 steps.
  */
 data class VerticalSliderBuilder(
-        private var range: Int = 100,
+        private var minValue: Int = 0,
+        private var maxValue: Int = 100,
         private var numberOfSteps: Int = 10,
         private var additionalHeightNeeded: Int = 5,
         override var props: CommonComponentProperties<Slider> = CommonComponentProperties(
                 componentRenderer = VerticalSliderRenderer()))
     : BaseComponentBuilder<Slider, VerticalSliderBuilder>() {
 
-    fun withRange(range: Int) = also {
-        require(range > 0) { "Range must be greater than 0"}
-        this.range = range
+    fun withMaxValue(max: Int) = also {
+        require(max > minValue) { "Max value must be greater than min value"}
+        this.maxValue = max
+    }
+
+    fun withMinValue(min: Int) = also {
+        require(min > 0) { "Min value must be greater than 0"}
+        require(min < maxValue) {"Min value must be smaller than max value"}
+        this.minValue = min
     }
 
     fun withNumberOfSteps(steps: Int) = also {
-        require(steps in 1..range) { "Number of steps must be greater 0 and smaller than the range" }
+        require(steps in 1..maxValue) { "Number of steps must be greater 0 and smaller than the maxValue" }
         this.numberOfSteps = steps
         contentSize = contentSize
                 .withHeight(max(steps + 1, contentSize.height))
@@ -41,7 +48,8 @@ data class VerticalSliderBuilder(
                         position = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
-                range = range,
+                minValue = minValue,
+                maxValue = maxValue,
                 numberOfSteps = numberOfSteps,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,

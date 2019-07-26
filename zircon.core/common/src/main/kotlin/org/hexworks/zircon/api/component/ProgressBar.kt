@@ -27,7 +27,7 @@ interface ProgressBar : Component {
     val displayPercentValueOfProgress: Boolean
 
     /**
-     * Current progress with respect to the range
+     * Current progress with respect to the maxValue
      */
     var progress: Double
 

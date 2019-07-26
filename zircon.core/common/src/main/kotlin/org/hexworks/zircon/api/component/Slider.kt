@@ -8,9 +8,12 @@ import org.hexworks.zircon.api.behavior.Disablable
 interface Slider: Component, Disablable {
 
     /**
-     * Range (0..value) of the [Slider]
+     * Maximum value of the [Slider]
      */
-    val range: Int
+    val maxValue: Int /**
+     * Minimum value of the [Slider]
+     */
+    val minValue: Int
 
     /**
      * Number of visible steps
@@ -18,7 +21,7 @@ interface Slider: Component, Disablable {
     val numberOfSteps: Int
 
     /**
-     * Current value with respect to the range
+     * Current value with respect to the maxValue
      */
     var currentValue: Int
 
