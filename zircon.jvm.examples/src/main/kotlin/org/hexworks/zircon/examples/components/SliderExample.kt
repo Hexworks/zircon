@@ -40,7 +40,8 @@ object SliderExample {
 
 
         val slider1 = Components.horizontalSlider()
-                .withRange(100)
+                .withMinValue(7)
+                .withMaxValue(100)
                 .withNumberOfSteps(10)
                 .withDecorations(box())
                 .withAlignment(positionalAlignment(0, 5))
@@ -52,14 +53,14 @@ object SliderExample {
                 .build()
         panel.addComponent(slider1)
         panel.addComponent(label)
-        slider1.currentValue = 30
-        slider1.onValueChanged {
-            label.text = "${it.newValue}"
+        label.textProperty.updateFrom(slider1.currentValueProperty) {
+            it.toString()
         }
+        slider1.currentValue = 35
 
 
         val slider2 = Components.horizontalSlider()
-                .withRange(3)
+                .withMaxValue(3)
                 .withNumberOfSteps(3)
                 .withAlignment(positionalAlignment(0, 10))
                 .withDecorations(box(BoxType.TOP_BOTTOM_DOUBLE))
@@ -74,7 +75,7 @@ object SliderExample {
                 .withAlignment(positionalAlignment(0, 15))
                 .build()
         val slider3 = Components.horizontalSlider()
-                .withRange(255)
+                .withMaxValue(255)
                 .withDecorations()
                 .withNumberOfSteps(10)
                 .build()
@@ -111,7 +112,7 @@ object SliderExample {
 
 
         val slider4 = Components.horizontalSlider()
-                .withRange(100)
+                .withMaxValue(100)
                 .withNumberOfSteps(10)
                 .withAlignment(positionalAlignment(0, 20))
                 .build()
@@ -120,7 +121,7 @@ object SliderExample {
 
 
         val vertical = Components.verticalSlider()
-                .withRange(100)
+                .withMaxValue(100)
                 .withNumberOfSteps(10)
                 .withAlignment(positionalAlignment(25, 3))
                 .build()

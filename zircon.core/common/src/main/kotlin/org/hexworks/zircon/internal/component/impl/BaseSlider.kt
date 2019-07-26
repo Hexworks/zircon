@@ -21,8 +21,9 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlin.math.truncate
 
-abstract class BaseSlider(override val range: Int,
-                          override val numberOfSteps: Int,
+abstract class BaseSlider(final override val minValue: Int,
+                          final override val maxValue: Int,
+                          final override val numberOfSteps: Int,
                           componentMetadata: ComponentMetadata,
                           private val renderingStrategy: ComponentRenderingStrategy<Slider>) :
     Slider, DefaultComponent(
@@ -30,9 +31,10 @@ abstract class BaseSlider(override val range: Int,
         renderer = renderingStrategy),
     Disablable by Disablable.create(){
 
-    private val valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
+    private val range: Int = maxValue - minValue
+    protected val valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
 
-    final override val currentValueProperty = createPropertyFrom(0)
+    final override val currentValueProperty = createPropertyFrom(minValue)
     override var currentValue: Int by currentValueProperty.asDelegate()
 
     final override val currentStepProperty = createPropertyFrom(0)
@@ -60,54 +62,63 @@ abstract class BaseSlider(override val range: Int,
     }
 
     private fun computeCurrentStep(newValue: Int) {
-        val actualValue = min(range, newValue)
+        val actualValue = when {
+            newValue > maxValue -> maxValue
+            newValue < minValue -> minValue
+            else -> newValue
+        }
         val actualStep = actualValue.toDouble() / valuePerStep
         val roundedStep = truncate(actualStep)
         currentStep = roundedStep.toInt()
     }
 
     override fun incrementCurrentValue() {
-        if (currentValue < range) {
+        if (currentValue < maxValue) {
             currentValue++
         }
     }
 
     override fun decrementCurrentValue() {
-        if (currentValue > 0) {
+        if (currentValue > minValue) {
             currentValue--
         }
     }
 
     override fun incrementCurrentStep() {
-        setValueToClosestOfStep(currentStep + 1)
-    }
-
-    override fun decrementCurrentStep() {
-        setValueToClosestOfStep(currentStep - 1)
-    }
-
-    private fun addToCurrentValue(value: Int) {
-        if (currentValue + value <= range) {
-            currentValue += value
-        } else {
-            currentValue = range
+        if (currentStep + 1 < numberOfSteps) {
+            setValueToClosestOfStep(currentStep + 1)
         }
     }
 
-    private fun subtractToCurrentValue(value: Int) {
-        if (currentValue - value > 0) {
+    override fun decrementCurrentStep() {
+        if (currentStep - 1 > 0) {
+            setValueToClosestOfStep(currentStep - 1)
+        }
+    }
+
+    protected fun addToCurrentValue(value: Int) {
+        if (currentValue + value <= maxValue) {
+            currentValue += value
+        } else {
+            currentValue = maxValue
+        }
+    }
+
+    protected fun subtractToCurrentValue(value: Int) {
+        if (currentValue - value > minValue) {
             currentValue -= value
         } else {
-            currentValue = 0
+            currentValue = minValue
         }
     }
 
     private fun setValueToClosestOfStep(step: Int) {
-        var actualStep = step
-        if (step < 0) {
-            actualStep = 0
+        val actualStep = when {
+            step < 0 -> 0
+            step > numberOfSteps -> numberOfSteps
+            else -> step
         }
-        val calculatedValue = actualStep * valuePerStep
+        val calculatedValue = (actualStep * valuePerStep) + minValue
         currentValue = calculatedValue.roundToInt()
     }
 
@@ -174,29 +185,7 @@ abstract class BaseSlider(override val range: Int,
         } else Pass
     }
 
-    override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            when (event.code) {
-                KeyCode.RIGHT -> {
-                    incrementCurrentValue()
-                    Processed
-                }
-                KeyCode.LEFT -> {
-                    decrementCurrentValue()
-                    Processed
-                }
-                KeyCode.UP -> {
-                    addToCurrentValue(valuePerStep.roundToInt())
-                    Processed
-                }
-                KeyCode.DOWN -> {
-                    subtractToCurrentValue(valuePerStep.roundToInt())
-                    Processed
-                }
-                else -> Pass
-            }
-        } else Pass
-    }
+    abstract override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse
 
     override fun activated() = whenEnabledRespondWith {
         if (isDisabled) {
