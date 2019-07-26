@@ -35,8 +35,10 @@ import org.hexworks.zircon.internal.component.impl.textedit.transformation.MoveC
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
 
+//TODO: Finish minValue impl. and bug fixing
 abstract class BaseNumberInput(
         initialValue: Int,
+        private val minValue: Int,
         private val maxValue: Int,
         componentMetadata: ComponentMetadata,
         protected val renderingStrategy: ComponentRenderingStrategy<NumberInput>)
@@ -49,15 +51,14 @@ abstract class BaseNumberInput(
     final override var text: String
         get() = textBuffer.getText()
         set(value) {
-            if (value == "") {
-                textBuffer = EditableTextBuffer.create("")
-            } else if (value.length <= maxNumberLength) {
+            if (value.length <= maxNumberLength) {
                 val clean = value.replace(Regex("[^\\d]"), "")
-                if (clean.toInt() <= maxValue) {
-                    textBuffer = EditableTextBuffer.create(clean, textBuffer.cursor)
-                    computeNumberValue()
-                    render()
+                textBuffer = when {
+                    clean == "" -> EditableTextBuffer.create("")
+                    clean.toInt() <= maxValue -> EditableTextBuffer.create(clean, textBuffer.cursor)
+                    else -> textBuffer
                 }
+                render()
             }
         }
 
@@ -66,15 +67,19 @@ abstract class BaseNumberInput(
     private var textBeforeModifications = ""
 
     final override val currentValueProperty = createPropertyFrom(initialValue)
-    override var currentValue: Int by currentValueProperty.asDelegate()
+    final override var currentValue: Int by currentValueProperty.asDelegate()
 
     init {
-        this.text = "$initialValue"
-        computeNumberValue()
         currentValueProperty.onChange {
-            if (it.newValue <= maxValue) {
+            if (it.newValue in minValue..maxValue) {
                 text = it.newValue.toString()
             }
+        }
+
+        currentValue = when {
+            initialValue < minValue -> minValue
+            initialValue > maxValue -> maxValue
+            else -> initialValue
         }
     }
 
@@ -85,7 +90,7 @@ abstract class BaseNumberInput(
     }
 
     override fun decrementCurrentValue() {
-        if (currentValue > 0) {
+        if (currentValue > minValue) {
             currentValue--
         }
     }
@@ -220,10 +225,11 @@ abstract class BaseNumberInput(
     }
 
     private fun computeNumberValue() {
-        currentValue = if (text == "") {
-            0
-        } else {
-            text.toInt()
+        currentValue = when {
+            text == "" -> minValue
+            text.toInt() < minValue -> minValue
+            text.toInt() > maxValue -> maxValue
+            else -> text.toInt()
         }
     }
 

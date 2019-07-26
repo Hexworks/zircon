@@ -10,11 +10,12 @@ import kotlin.math.min
 
 class DefaultHorizontalNumberInput(
         initialValue: Int,
+        minValue: Int,
         maxValue: Int,
         componentMetadata: ComponentMetadata,
         renderingStrategy: ComponentRenderingStrategy<NumberInput>)
     : BaseNumberInput(
-        initialValue, maxValue, componentMetadata, renderingStrategy
+        initialValue, minValue, maxValue, componentMetadata, renderingStrategy
 ) {
     override var maxNumberLength = min(Int.MAX_VALUE.toString().length, size.width)
 
