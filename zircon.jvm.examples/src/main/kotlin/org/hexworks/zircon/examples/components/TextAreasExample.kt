@@ -8,10 +8,10 @@ import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.positionalAlignment
-import org.hexworks.zircon.api.extensions.shadow
+import org.hexworks.zircon.api.extensions.*
 import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.api.graphics.Symbols
+import org.hexworks.zircon.api.uievent.ComponentEventType
 
 object TextAreasExample {
 
@@ -54,6 +54,68 @@ object TextAreasExample {
                 .withDecorations(box(boxType = BoxType.DOUBLE), shadow())
                 .withSize(Sizes.create(13, 7))
                 .withAlignment(positionalAlignment(Positions.create(2, 8))))
+
+        screen.addComponent(Components.label()
+                .withText("Numbers only!")
+                .withDecorations(box())
+                .withAlignment(positionalAlignment(Positions.create(2, 17))))
+
+        val boundLabel = Components.label()
+                .withText("")
+                .withSize(Sizes.create(13,3))
+                .withDecorations(box())
+                .withAlignment(positionalAlignment(Positions.create(2, 27)))
+                .build()
+
+        val numLabel = Components.label()
+                .withText("Also 256 Max!")
+                .withDecorations()
+                .withAlignment(positionalAlignment(Positions.create(2, 25)))
+                .build()
+
+        val hbox = Components.hbox()
+                .withSize(18, 4)
+                .withSpacing(0)
+                .withAlignment(positionalAlignment(Positions.create(2, 20)))
+                .withDecorations(box(), shadow())
+                .build()
+
+        val numberInput = Components.horizontalNumberInput(13)
+                .withInitialValue(0)
+                .withMinValue(14)
+                .withMaxValue(256)
+                .withDecorations()
+                .build()
+
+        boundLabel.textProperty.updateFrom(numberInput.currentValueProperty) {
+            it.toString()
+        }
+
+        val decrementButton = Components.button()
+                .withText("${Symbols.TRIANGLE_DOWN_POINTING_BLACK}")
+                .withSize(1,1)
+                .withDecorations()
+                .build().apply {
+                    processComponentEvents(ComponentEventType.ACTIVATED) {
+                        numberInput.decrementCurrentValue()
+                    }
+                }
+        val incrementButton = Components.button()
+                .withText("${Symbols.TRIANGLE_UP_POINTING_BLACK}")
+                .withSize(1,1)
+                .withDecorations()
+                .build().apply {
+                    processComponentEvents(ComponentEventType.ACTIVATED) {
+                        numberInput.incrementCurrentValue()
+                    }
+                }
+        hbox.addComponent(decrementButton)
+        hbox.addComponent(numberInput)
+        hbox.addComponent(incrementButton)
+
+        screen.addComponent(hbox)
+        screen.addComponent(numLabel)
+        screen.addComponent(boundLabel)
 
         screen.display()
         screen.applyColorTheme(theme)
