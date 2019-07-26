@@ -16,20 +16,35 @@ import kotlin.math.max
 data class VerticalNumberInputBuilder(
         val height: Int,
         private var initialValue: Int = 0,
+        private var minValue: Int = 0,
         private var maxValue: Int = Int.MAX_VALUE,
         override val props: CommonComponentProperties<NumberInput> = CommonComponentProperties(
                 componentRenderer = DefaultVerticalNumberInputRenderer()))
     : BaseComponentBuilder<NumberInput, VerticalNumberInputBuilder>() {
 
     fun withInitialValue(value: Int) = also {
-        this.initialValue = value
+        initialValue = when {
+            value < minValue -> minValue
+            value > maxValue -> maxValue
+            else -> value
+        }
     }
 
     fun withMaxValue(value: Int) = also {
-        this.maxValue = value
+        maxValue = value
+        if (initialValue > maxValue) {
+            initialValue = maxValue
+        }
         contentSize = contentSize
                 .withHeight(max(this.maxValue.toString().length + 1, height))
                 .withWidth(1)
+    }
+
+    fun withMinValue(value: Int) = also {
+        minValue = value
+        if (initialValue < minValue) {
+            initialValue = minValue
+        }
     }
 
     override fun build(): NumberInput = DefaultVerticalNumberInput(
@@ -39,6 +54,7 @@ data class VerticalNumberInputBuilder(
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialValue = initialValue,
+                minValue = minValue,
                 maxValue = maxValue,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,

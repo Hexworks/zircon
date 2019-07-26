@@ -15,20 +15,35 @@ import kotlin.math.max
 data class HorizontalNumberInputBuilder(
         val width: Int,
         private var initialValue: Int = 0,
+        private var minValue: Int = 0,
         private var maxValue: Int = Int.MAX_VALUE,
         override val props: CommonComponentProperties<NumberInput> = CommonComponentProperties(
                 componentRenderer = DefaultNumberInputRenderer()))
     : BaseComponentBuilder<NumberInput, HorizontalNumberInputBuilder>() {
 
     fun withInitialValue(value: Int) = also {
-        this.initialValue = value
+        initialValue = when {
+            value < minValue -> minValue
+            value > maxValue -> maxValue
+            else -> value
+        }
     }
 
     fun withMaxValue(value: Int) = also {
-        this.maxValue = value
+        maxValue = value
+        if (initialValue > maxValue) {
+            initialValue = maxValue
+        }
         contentSize = contentSize
                 .withWidth(max(this.maxValue.toString().length + 1, width))
                 .withHeight(1)
+    }
+
+    fun withMinValue(value: Int) = also {
+        minValue = value
+        if (initialValue < minValue) {
+            initialValue = minValue
+        }
     }
 
     override fun build(): NumberInput = DefaultHorizontalNumberInput(
@@ -38,6 +53,7 @@ data class HorizontalNumberInputBuilder(
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialValue = initialValue,
+                minValue = minValue,
                 maxValue = maxValue,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,

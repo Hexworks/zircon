@@ -82,13 +82,14 @@ object TextAreasExample {
 
         val numberInput = Components.horizontalNumberInput(13)
                 .withInitialValue(0)
+                .withMinValue(14)
                 .withMaxValue(256)
                 .withDecorations()
-                .build().apply {
-                    onValueChanged {
-                        boundLabel.text = "${it.newValue}"
-                    }
-                }
+                .build()
+
+        boundLabel.textProperty.updateFrom(numberInput.currentValueProperty) {
+            it.toString()
+        }
 
         val decrementButton = Components.button()
                 .withText("${Symbols.TRIANGLE_DOWN_POINTING_BLACK}")
