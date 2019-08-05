@@ -16,7 +16,7 @@ interface InternalTileGrid
     /**
      * Starts delegating all actions to the given [tileGrid].
      */
-    fun delegateActionsTo(tileGrid: InternalTileGrid)
+    fun delegateTo(tileGrid: InternalTileGrid)
 
     /**
      * Stops delegating actions to an other [TileGrid].

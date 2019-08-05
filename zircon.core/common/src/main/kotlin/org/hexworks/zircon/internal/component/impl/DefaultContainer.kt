@@ -17,7 +17,6 @@ import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 @Suppress("UNCHECKED_CAST")
 open class DefaultContainer(componentMetadata: ComponentMetadata,
@@ -29,7 +28,7 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
     override val children: List<Component>
         get() = components.toList()
 
-    private val components = ThreadSafeQueueFactory.create<InternalComponent>()
+    private val components = mutableListOf<InternalComponent>()
 
     override fun acceptsFocus() = false
 

@@ -76,7 +76,7 @@ public class FontSwitcherExample {
                 .withSize(Sizes.create("Press '<-' to switch Layer!".length(), 1))
                 .build();
 //        layer.putText(text, Positions.defaultPosition());
-        tileGrid.pushLayer(layer);
+        tileGrid.addLayer(layer);
     }
 
 }

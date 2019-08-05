@@ -32,7 +32,6 @@ interface Scrollable3D {
      */
     fun visibleOffset(): Position3D
 
-
     /**
      * Scrolls this [Scrollable3D] with one unit to the right (width axis).
      * If the bounds of the virtual space are already reached this method has no effect.
@@ -82,7 +81,6 @@ interface Scrollable3D {
      */
     fun scrollRightBy(x: Int): Position3D
 
-
     /**
      * Scrolls this [Scrollable3D] with `width` units to the left (width axis).
      * If the bounds of the virtual space are already reached this method has no effect.
@@ -96,7 +94,6 @@ interface Scrollable3D {
      * @return the new visible offset
      */
     fun scrollUpBy(z: Int): Position3D
-
 
     /**
      * Scrolls this [Scrollable3D] with `height` units down (height axis).
@@ -112,14 +109,12 @@ interface Scrollable3D {
      */
     fun scrollForwardBy(y: Int): Position3D
 
-
     /**
      * Scrolls this [Scrollable3D] with `depth` units backward (depth axis).
      * If the bounds of the virtual space are already reached this method has no effect.
      * @return the new visible offset
      */
     fun scrollBackwardBy(y: Int): Position3D
-
 
     /**
      * Scrolls this [Scrollable3D] to the provided position

@@ -14,7 +14,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultTextBox
 import org.hexworks.zircon.internal.component.renderer.DefaultTextBoxRenderer
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
@@ -27,7 +26,7 @@ data class TextBoxBuilder(
                 componentRenderer = DefaultTextBoxRenderer()))
     : BaseComponentBuilder<TextBox, TextBoxBuilder>() {
 
-    private val inlineElements = ThreadSafeQueueFactory.create<Component>()
+    private val inlineElements = mutableListOf<Component>()
     private val contentWidth: Int
         get() = contentSize.width
 
@@ -144,10 +143,11 @@ data class TextBoxBuilder(
     }
 
     fun commitInlineElements() = also {
-        inlineElements.drainAll().forEach { component ->
+        inlineElements.forEach { component ->
             component.moveDownBy(nextPosition.y)
             components.add(component)
         }
+        inlineElements.clear()
         updateSizeAndPosition(1)
     }
 

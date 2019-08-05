@@ -7,12 +7,7 @@ import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.Cell3D
 import org.hexworks.zircon.api.game.base.BaseGameArea
-import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.internal.util.ThreadSafeMap
-import org.hexworks.zircon.internal.util.ThreadSafeQueue
 import org.hexworks.zircon.internal.util.TreeMap
-import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 import org.hexworks.zircon.platform.factory.TreeMapFactory
 
 class InMemoryGameArea<T : Tile, B : Block<T>>(

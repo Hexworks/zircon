@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.screen.Screen
  * be originated from other [UIEvent]s like [KeyboardEvent] and [MouseEvent] or it
  * can also come from programmatic sources (like [Component.requestFocus]).
  *
- * [ComponentEvent]s don't have [UIEventPhase]s, but [ComponentEventHandler]s can
+ * [ComponentEvent]s don't have [UIEventPhase]s, but handlers can
  * influence the [ComponentEvent] processing by returning [PreventDefault] or
  * [StopPropagation].
  */

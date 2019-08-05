@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.Drawable
-import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -14,26 +13,6 @@ import org.hexworks.zircon.api.resource.TilesetResource
 interface TileImage : Drawable, TileComposite {
 
     val tileset: TilesetResource
-
-    /**
-     * Returns a [List] of [Position]s which are not considered empty.
-     * @see [Tile.empty]
-     */
-    fun fetchFilledPositions(): List<Position>
-
-    /**
-     * Returns all the [Cell]s ([Tile]s with associated [Position] information)
-     * of this [TileImage].
-     */
-    fun fetchCells(): Iterable<Cell>
-
-    /**
-     * Returns the [Cell]s in this [TileImage] from the given `offset`
-     * position and area.
-     * Throws an exception if either `offset` or `size` would overlap
-     * with this [TileImage].
-     */
-    fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell>
 
     /**
      * Sets a [Tile] at a specific position in the [DrawSurface] to `tile`.

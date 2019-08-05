@@ -9,7 +9,7 @@ import org.hexworks.cobalt.events.api.Subscription
 interface UIEventSource {
 
     /**
-     * Adds a [MouseEventHandler] for mouse events. Use this if you selectively
+     * Adds the given [handler] for mouse events. Use this if you selectively
      * consume events.
      */
     fun handleMouseEvents(
@@ -17,7 +17,7 @@ interface UIEventSource {
             handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse): Subscription
 
     /**
-     * Handler for [MouseEvent]s. Differs from a [handleMouseEvents]
+     * Adds the given [handler] for [MouseEvent]s. Differs from a [handleMouseEvents]
      * in a way that its [handler] doesn't return an [UIEventResponse], but
      * [Processed] is returned implicitly to the framework.
      *
@@ -30,7 +30,7 @@ interface UIEventSource {
             handler: (event: MouseEvent, phase: UIEventPhase) -> Unit): Subscription
 
     /**
-     * Adds a [KeyboardEventHandler] for mouse events. Use this if you selectively
+     * Adds the given [handler] for keyboard events. Use this if you selectively
      * consume events.
      */
     fun handleKeyboardEvents(
@@ -38,7 +38,13 @@ interface UIEventSource {
             handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse): Subscription
 
     /**
-     * Adds a [KeyboardEventProcessor] for mouse events. Use this if you handle all events.
+     * Adds the given [handler] for [KeyboardEvent]s. Differs from a [handleKeyboardEvents]
+     * in a way that its [handler] doesn't return an [UIEventResponse], but
+     * [Processed] is returned implicitly to the framework.
+     *
+     * Use [processKeyboardEvents] if you **always** handle the event
+     * (you never skip/drop events). This means that [processKeyboardEvents] can
+     * be used if you find yourself always returning [Processed] form your event listeners.
      */
     fun processKeyboardEvents(
             eventType: KeyboardEventType,

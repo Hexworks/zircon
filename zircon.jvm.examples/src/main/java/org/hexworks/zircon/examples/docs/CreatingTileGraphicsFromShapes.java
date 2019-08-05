@@ -23,12 +23,12 @@ public class CreatingTileGraphicsFromShapes {
 
         final TileGraphics background = DrawSurfaces.tileGraphicsBuilder()
                 .withSize(tileGrid.getSize()) // you can fetch the size of a TileGrid like this
-                .build()
-                .fill(Tiles.newBuilder()
+                .withFiller(Tiles.newBuilder()
                         .withCharacter(Symbols.BULLET)
                         .withBackgroundColor(ANSITileColor.BLUE)
                         .withForegroundColor(ANSITileColor.CYAN)
-                        .build());
+                        .build())
+                .build();
 
         final TileGraphics rectangle = Shapes.buildRectangle(
                 Positions.zero(),

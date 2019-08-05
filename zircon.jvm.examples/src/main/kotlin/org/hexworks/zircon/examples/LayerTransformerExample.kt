@@ -16,6 +16,8 @@ import org.hexworks.zircon.api.color.ANSITileColor.RED
 import org.hexworks.zircon.api.color.ANSITileColor.YELLOW
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.extensions.hide
+import org.hexworks.zircon.api.extensions.show
 import org.hexworks.zircon.api.modifier.TileTransformModifier
 
 object LayerTransformerExample {
@@ -34,22 +36,24 @@ object LayerTransformerExample {
         val transformingLayer = Layers.newBuilder()
                 .withSize(Sizes.create(20, 20))
                 .withOffset(Positions.create(1, 5))
-                .build()
-                .fill(Tiles.newBuilder()
-                        .withBackgroundColor(RED)
-                        .withForegroundColor(GREEN)
-                        .withCharacter('x')
-                        .buildCharacterTile())
+                .build().apply {
+                    fill(Tiles.newBuilder()
+                            .withBackgroundColor(RED)
+                            .withForegroundColor(GREEN)
+                            .withCharacter('x')
+                            .buildCharacterTile())
+                }
 
         val hideableLayer = Layers.newBuilder()
                 .withSize(Sizes.create(20, 20))
                 .withOffset(Positions.create(39, 5))
-                .build()
-                .fill(Tiles.newBuilder()
-                        .withBackgroundColor(BLUE)
-                        .withForegroundColor(YELLOW)
-                        .withCharacter('+')
-                        .buildCharacterTile())
+                .build().apply {
+                    fill(Tiles.newBuilder()
+                            .withBackgroundColor(BLUE)
+                            .withForegroundColor(YELLOW)
+                            .withCharacter('+')
+                            .buildCharacterTile())
+                }
 
         val transformToggle = Components.toggleButton()
                 .withText("Transform")
@@ -85,8 +89,8 @@ object LayerTransformerExample {
         screen.applyColorTheme(theme)
         screen.display()
 
-        screen.pushLayer(transformingLayer)
-        screen.pushLayer(hideableLayer)
+        screen.addLayer(transformingLayer)
+        screen.addLayer(hideableLayer)
     }
 
 }

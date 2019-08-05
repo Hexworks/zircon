@@ -35,7 +35,7 @@ public class RexLoaderExample {
         screen.setCursorVisibility(false);
         List<Layer> layers = rex.toLayerList(TILESET);
         for (Layer layer : layers) {
-            screen.pushLayer(layer);
+            screen.addLayer(layer);
         }
         screen.display();
     }

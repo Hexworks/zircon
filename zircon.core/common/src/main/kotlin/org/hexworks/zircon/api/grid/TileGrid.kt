@@ -42,7 +42,7 @@ interface TileGrid
         CharacterTileStrings.newBuilder()
                 .withText(text)
                 .build()
-                .toTileGraphic(currentTileset())
+                .toTileGraphics(currentTileset())
                 .drawOnto(this, position)
     }
 

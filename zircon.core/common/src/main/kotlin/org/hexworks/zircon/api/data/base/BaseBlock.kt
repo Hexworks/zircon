@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.data.Tile
  * Base class which implements common functionality from
  * [Block].
  */
-abstract class BlockBase<T : Tile> : Block<T> {
+abstract class BaseBlock<T : Tile> : Block<T> {
 
     override var top: T
         get() = fetchSide(TOP)

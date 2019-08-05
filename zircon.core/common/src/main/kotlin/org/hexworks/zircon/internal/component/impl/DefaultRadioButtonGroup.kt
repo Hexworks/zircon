@@ -21,7 +21,6 @@ import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
-import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
 
 class DefaultRadioButtonGroup constructor(
         componentMetadata: ComponentMetadata,
@@ -33,7 +32,7 @@ class DefaultRadioButtonGroup constructor(
                 componentMetadata = componentMetadata,
                 renderer = renderingStrategy) {
 
-    private val items = ThreadSafeMapFactory.create<String, DefaultRadioButton>()
+    private val items = mutableMapOf<String, DefaultRadioButton>()
     private var selectedItem: Maybe<String> = Maybe.empty()
     private val buttonRenderingStrategy = DefaultComponentRenderingStrategy(
             decorationRenderers = listOf(),

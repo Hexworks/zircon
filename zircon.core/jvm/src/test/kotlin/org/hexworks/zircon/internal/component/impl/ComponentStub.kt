@@ -1,28 +1,39 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.Identifier
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.cobalt.Identifier
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.factory.IdentifierFactory
 import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.cobalt.factory.IdentifierFactory
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.Visibility
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.DrawSurfaceSnapshot
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.uievent.*
-import org.hexworks.zircon.api.util.TileTransformer
+import org.hexworks.zircon.api.uievent.ComponentEvent
+import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.UIEvent
+import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 
 class ComponentStub(
         override val position: Position,
@@ -37,16 +48,43 @@ class ComponentStub(
                 .withTileset(tileset)
                 .build()) : InternalComponent {
 
+    override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
+        TODO("not implemented")
+    }
+
+    override val tiles: Map<Position, Tile>
+        get() = TODO("not implemented")
+
+    override fun handleMouseEvents(eventType: MouseEventType, handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
+        TODO("not implemented")
+    }
+
+    override fun processMouseEvents(eventType: MouseEventType, handler: (event: MouseEvent, phase: UIEventPhase) -> Unit): Subscription {
+        TODO("not implemented")
+    }
+
+    override fun handleKeyboardEvents(eventType: KeyboardEventType, handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
+        TODO("not implemented")
+    }
+
+    override fun processKeyboardEvents(eventType: KeyboardEventType, handler: (event: KeyboardEvent, phase: UIEventPhase) -> Unit): Subscription {
+        TODO("not implemented")
+    }
+
+    override fun handleComponentEvents(eventType: ComponentEventType, handler: (event: ComponentEvent) -> UIEventResponse): Subscription {
+        TODO("not implemented")
+    }
+
+    override fun processComponentEvents(eventType: ComponentEventType, handler: (event: ComponentEvent) -> Unit): Subscription {
+        TODO("not implemented")
+    }
+
     override val hiddenProperty: Property<Boolean>
         get() = TODO("not implemented")
 
     override var isHidden: Boolean
         get() = TODO("not implemented")
         set(value) {}
-
-    override fun transform(transformer: TileTransformer) {
-        TODO("not implemented")
-    }
 
     override val componentStyleSetProperty: Property<ComponentStyleSet> = createPropertyFrom(ComponentStyleSet.defaultStyleSet())
     override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
@@ -78,35 +116,7 @@ class ComponentStub(
         TODO("not implemented")
     }
 
-    override fun processMouseEvents(eventType: MouseEventType, handler: MouseEventProcessor): Subscription {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun processKeyboardEvents(eventType: KeyboardEventType, handler: KeyboardEventProcessor): Subscription {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun processComponentEvents(eventType: ComponentEventType, handler: ComponentEventProcessor): Subscription {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun handleMouseEvents(eventType: MouseEventType, handler: MouseEventHandler): Subscription {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun handleKeyboardEvents(eventType: KeyboardEventType, handler: KeyboardEventHandler): Subscription {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun handleComponentEvents(eventType: ComponentEventType, handler: ComponentEventHandler): Subscription {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun transformTileAt(position: Position, tileTransformer: TileTransformer) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -135,7 +145,7 @@ class ComponentStub(
         TODO("This operation is unsupported for a Stub")
     }
 
-    override fun fill(filler: Tile): Layer {
+    override fun fill(filler: Tile) {
         TODO("This operation is unsupported for a Stub")
     }
 
@@ -143,11 +153,7 @@ class ComponentStub(
         TODO("This operation is unsupported for a Stub")
     }
 
-    override fun createSnapshot(): Snapshot {
-        TODO("This operation is unsupported for a Stub")
-    }
-
-    override fun getTileAt(position: Position): Maybe<Tile> {
+    override fun createSnapshot(): DrawSurfaceSnapshot {
         TODO("This operation is unsupported for a Stub")
     }
 
@@ -232,14 +238,6 @@ class ComponentStub(
     }
 
     override fun clear() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun toTileImage(): TileImage {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun toTileGraphics(): TileGraphics {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

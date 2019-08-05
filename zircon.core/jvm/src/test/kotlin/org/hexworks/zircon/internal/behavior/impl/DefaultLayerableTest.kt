@@ -28,7 +28,7 @@ class DefaultLayerableTest {
                 .withOffset(Position.zero())
                 .build()
 
-        target.pushLayer(layer)
+        target.addLayer(layer)
 
         assertThat(target.layers)
                 .isNotEmpty
@@ -42,7 +42,7 @@ class DefaultLayerableTest {
                 .withOffset(Position.zero())
                 .build()
 
-        target.pushLayer(layer)
+        target.addLayer(layer)
         target.removeLayer(layer)
 
         assertThat(target.layers)
@@ -57,7 +57,7 @@ class DefaultLayerableTest {
                 .withOffset(Position.zero())
                 .build()
 
-        target.pushLayer(layer)
+        target.addLayer(layer)
         val result = target.popLayer()
 
         assertThat(target.layers)
@@ -86,8 +86,8 @@ class DefaultLayerableTest {
                         .build())
 
 
-        target.pushLayer(offset1x1layer)
-        target.pushLayer(offset2x2layer)
+        target.addLayer(offset1x1layer)
+        target.addLayer(offset2x2layer)
 
         val result = target.layers
                 .flatMap { it.createSnapshot().cells }
@@ -115,8 +115,8 @@ class DefaultLayerableTest {
                 .build()
                 .fill(expectedChar)
 
-        target.pushLayer(offset1x1layer)
-        target.pushLayer(offset2x2layer)
+        target.addLayer(offset1x1layer)
+        target.addLayer(offset2x2layer)
 
         val result = target.layers
                 .flatMap { it.createSnapshot().cells }

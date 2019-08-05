@@ -1,9 +1,11 @@
 package org.hexworks.zircon.api.builder.graphics
 
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -22,7 +24,8 @@ data class LayerBuilder(
         private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
         private var size: Size = Size.defaultGridSize(),
         private var offset: Position = Position.defaultPosition(),
-        private var tileGraphics: Maybe<TileGraphics> = Maybe.empty()) : Builder<Layer> {
+        private var tileGraphics: Maybe<TileGraphics> = Maybe.empty(),
+        private var filler: Tile = Tiles.empty()) : Builder<Layer> {
 
     /**
      * Sets the [Tileset] to use with the resulting [Layer].
@@ -54,6 +57,15 @@ data class LayerBuilder(
         this.tileGraphics = Maybe.of(tileGraphics)
     }
 
+    /**
+     * Sets the filler for the new [TileGraphics] which
+     * will be used to fill the empty spaces. Default is
+     * [Tiles.empty] which means no filling
+     */
+    fun withFiller(filler: Tile) = also {
+        this.filler = filler
+    }
+
     override fun build(): Layer = if (tileGraphics.isPresent) {
         DefaultLayer(
                 position = offset,
@@ -64,6 +76,8 @@ data class LayerBuilder(
                 backend = TileGraphicsBuilder(
                         tileset = tileset,
                         size = size).build())
+    }.apply {
+        if (filler != Tiles.empty()) fill(filler)
     }
 
     override fun createCopy() = copy()

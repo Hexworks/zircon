@@ -1,30 +1,23 @@
 package org.hexworks.zircon.api.graphics.impl
 
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.TilesetOverride
-import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.data.Cell
+import org.hexworks.zircon.api.data.DrawSurfaceSnapshot
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.extensions.toTileImage
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride
-import org.hexworks.zircon.internal.data.DefaultCell
-import org.hexworks.zircon.internal.graphics.DefaultTileImage
 
 /**
- * this is a basic building block which can be re-used by complex image
- * classes like layers, boxes, components, and more
- * all classes which are implementing the DrawSurface or the Drawable operations can
- * use this class as a base class just like how the TileGrid uses it
+ * Represents a sub-section of a [TileGraphics]. This class can be used to
+ * restrict edits to the original [TileGraphics]. Note that the contents of
+ * the two [TileGraphics] are shared so edits will be visible for both.
  */
-
 class SubTileGraphics(
         private val rect: Rect,
         private val backend: TileGraphics,
@@ -34,48 +27,10 @@ class SubTileGraphics(
         TilesetOverride by tilesetOverride {
 
     override val size = rect.size
-
-    override fun fetchFilledTiles() = backend.fetchFilledTiles()
-
-    override fun fetchCells(): Iterable<Cell> {
-        return fetchCellsBy(Position.defaultPosition(), size)
-    }
-
-    override fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell> {
-        return size.fetchPositions()
-                .map { it + offset }
-                .map { DefaultCell(it, getTileAt(it).get()) }
-    }
-
-    override fun fill(filler: Tile): TileGraphics {
-        size.fetchPositions().filter { pos ->
-            getTileAt(pos).map { it == Tile.empty() }.orElse(false)
-        }.forEach { pos ->
-            setTileAt(pos, filler)
+    override val tiles: Map<Position, Tile>
+        get() = backend.tiles.filter {
+            size.containsPosition(it.key)
         }
-        return this
-    }
-
-    override fun putText(text: String, position: Position, styleSet: StyleSet) {
-        text.forEachIndexed { col, char ->
-            setTileAt(position.withRelativeX(col), TileBuilder
-                    .newBuilder()
-                    .withStyleSet(styleSet)
-                    .withCharacter(char)
-                    .build())
-        }
-    }
-
-    override fun toSubTileGraphics(rect: Rect): SubTileGraphics {
-        return SubTileGraphics(
-                rect = rect,
-                backend = this)
-    }
-
-    // TODO: fix this as this doesn't create a proper copy
-    override fun createCopy(): TileGraphics {
-        return toSubTileGraphics(size.toRect())
-    }
 
     private val offset = rect.position
 
@@ -88,42 +43,32 @@ class SubTileGraphics(
         }
     }
 
-    override fun fetchFilledPositions(): List<Position> {
-        return backend.createSnapshot().cells
-                .filter { rect.containsPosition(it.position) }
-                .map { it.position - offset }
+    override fun fill(filler: Tile) {
+        val (tiles, tileset, size) = createSnapshot()
+        size.fetchPositions().minus(tiles.keys).map {
+            it to filler
+        }.toTileImage(size, tileset).drawOnto(this)
     }
 
-    override fun resize(newSize: Size) = restrictOperation()
-
-    override fun resize(newSize: Size, filler: Tile) = restrictOperation()
+    override fun toSubTileGraphics(rect: Rect) = SubTileGraphics(
+            rect = rect,
+            backend = backend)
 
     override fun applyStyle(styleSet: StyleSet, rect: Rect, keepModifiers: Boolean, applyToEmptyCells: Boolean) {
         super.applyStyle(
                 styleSet = styleSet,
                 // this is needed because I don't want to re-implement applyStyle...
+                // TODO: why is this?
                 rect = rect.withPosition(Position.defaultPosition()),
                 keepModifiers = keepModifiers,
                 applyToEmptyCells = applyToEmptyCells)
     }
 
-    override fun toTileImage(): TileImage {
-        return DefaultTileImage(
-                size = size,
-                tileset = currentTileset(),
-                tiles = fetchCells().map { it.position to it.tile }.toMap())
-    }
-
+    // TODO: optimize this
     override fun clear() {
         size.fetchPositions().forEach {
             backend.setTileAt(it + offset, Tile.empty())
         }
-    }
-
-    override fun getTileAt(position: Position): Maybe<Tile> {
-        return if (size.containsPosition(position)) {
-            return backend.getTileAt(position + offset)
-        } else Maybe.empty()
     }
 
     override fun setTileAt(position: Position, tile: Tile) {
@@ -138,29 +83,29 @@ class SubTileGraphics(
         }
     }
 
-    override fun transform(transformer: (Tile) -> Tile) {
-        fetchCells().forEach { (pos, tile) ->
-            setTileAt(pos, transformer(tile))
-        }
+    override fun drawOnto(surface: DrawSurface, position: Position) {
+        val (tiles, tileset, size) = createSnapshot()
+        tiles.toTileImage(size, tileset).drawOnto(surface)
     }
 
-    override fun createSnapshot(): Snapshot {
-        // TODO: this wont work if we create a SubTileGraphics out of another one!
-        restrictOperation()
+    override fun createSnapshot(): DrawSurfaceSnapshot {
+        val (tiles, tileset) = backend.createSnapshot()
+        return DrawSurfaceSnapshot.create(
+                tiles = tiles.filter {
+                    size.containsPosition(it.key)
+                }, tileset = tileset, size = size)
     }
 
+    // TODO: why restrict this?
     override fun draw(drawable: Drawable, position: Position) {
         restrictOperation()
     }
 
-    // TODO: test this
-    override fun drawOnto(surface: DrawSurface, position: Position) {
-        rect.size.fetchPositions().forEach { pos ->
-            getTileAt(pos).map { tile ->
-                surface.setTileAt(pos + offset + position, tile)
-            }
-        }
-    }
+    override fun createCopy() = restrictOperation()
+
+    override fun resize(newSize: Size) = restrictOperation()
+
+    override fun resize(newSize: Size, filler: Tile) = restrictOperation()
 
     private fun restrictOperation(): Nothing {
         throw UnsupportedOperationException("This operation is not supported for sub tile graphics.")

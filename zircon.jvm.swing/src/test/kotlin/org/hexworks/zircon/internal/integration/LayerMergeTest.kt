@@ -24,7 +24,7 @@ object LayerMergeTest {
                 .build()
                 .fill(Tiles.empty().withCharacter('x').withBackgroundColor(ANSITileColor.GREEN))
 
-        tileGrid.pushLayer(tempLayer)
+        tileGrid.addLayer(tempLayer)
 
         tempLayer.drawOnto(tileGrid, Positions.create(10, 10))
 

@@ -9,7 +9,6 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
 import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.Processed
 
 object PlayerMoveExampleKotlin {
 
@@ -27,8 +26,7 @@ object PlayerMoveExampleKotlin {
         val player = Layers.newBuilder()
                 .withSize(Sizes.one())
                 .withOffset(Positions.create(tileGrid.width / 2, tileGrid.height / 2))
-                .build()
-                .fill(PLAYER_TILE)
+                .build().apply { fill(PLAYER_TILE) }
 
         tileGrid.processKeyboardEvents(KEY_PRESSED) { event, _ ->
             when (event.code) {
@@ -40,6 +38,6 @@ object PlayerMoveExampleKotlin {
             }
         }
 
-        tileGrid.pushLayer(player)
+        tileGrid.addLayer(player)
     }
 }

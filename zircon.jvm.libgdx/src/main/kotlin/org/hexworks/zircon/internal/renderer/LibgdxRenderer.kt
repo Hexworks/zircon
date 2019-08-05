@@ -9,15 +9,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import org.hexworks.cobalt.datatypes.Maybe
-
 import org.hexworks.zircon.api.Maybes
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.data.DrawSurfaceSnapshot
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.base.BasePosition
 import org.hexworks.zircon.api.data.impl.PixelPosition
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.tileset.Tileset
@@ -99,7 +97,7 @@ class LibgdxRenderer(private val grid: TileGrid,
     }
 
     private fun renderTiles(batch: SpriteBatch,
-                            snapshot: Snapshot,
+                            snapshot: DrawSurfaceSnapshot,
                             tileset: Tileset<SpriteBatch>,
                             offset: PixelPosition = PixelPosition(0, 0)) {
         /*
@@ -111,7 +109,7 @@ class LibgdxRenderer(private val grid: TileGrid,
          * can only hope to save those that think they can optimize this. Leave it,
          * for your own sanity
          */
-        snapshot.cells.forEach { (pos, tile) ->
+        snapshot.tiles.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
                 val actualTile =
                         if (tile.isBlinking() /*&& blinkOn*/) {
@@ -135,7 +133,7 @@ class LibgdxRenderer(private val grid: TileGrid,
                 )
             }
         }
-        snapshot.cells.forEach { (pos, tile) ->
+        snapshot.tiles.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
                 val actualTile =
                         if (tile.isBlinking() /*&& blinkOn*/) {

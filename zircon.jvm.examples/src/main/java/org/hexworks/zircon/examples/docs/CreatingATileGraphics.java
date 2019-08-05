@@ -13,9 +13,9 @@ public class CreatingATileGraphics {
         TileGraphics graphics = DrawSurfaces.tileGraphicsBuilder()
                 .withSize(Sizes.create(10, 10))
                 .withTileset(CP437TilesetResources.rexPaint16x16())
-                .build()
-                .fill(Tiles.newBuilder()
+                .withFiller(Tiles.newBuilder()
                         .withCharacter('x')
-                        .build());
+                        .build())
+                .build();
     }
 }

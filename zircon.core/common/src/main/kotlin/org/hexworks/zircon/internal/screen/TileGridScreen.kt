@@ -123,7 +123,7 @@ class TileGridScreen(
             setCursorVisibility(false)
             putCursorAt(Position.defaultPosition())
             activate()
-            tileGrid.delegateActionsTo(bufferGrid)
+            tileGrid.delegateTo(bufferGrid)
         }
     }
 

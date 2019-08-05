@@ -14,7 +14,8 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Snapshot
+import org.hexworks.zircon.api.data.DrawSurfaceSnapshot
+import org.hexworks.zircon.api.data.LayerSnapshot
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.uievent.ComponentEventSource
@@ -38,7 +39,7 @@ abstract class DefaultComponent(
                 .newBuilder()
                 .withTileset(componentMetadata.tileset)
                 .withSize(componentMetadata.size)
-                .build(),
+                .buildReadSafeTileGraphics(),
         private val renderer: ComponentRenderingStrategy<out Component>,
         private val layer: Layer = LayerBuilder.newBuilder()
                 .withOffset(componentMetadata.position)
@@ -95,12 +96,8 @@ abstract class DefaultComponent(
         }
     }
 
-    final override fun createSnapshot(): Snapshot {
-        return graphics.createSnapshot().let { snapshot ->
-            Snapshot.create(
-                    cells = snapshot.cells.map { it.withPosition(it.position + absolutePosition) },
-                    tileset = snapshot.tileset)
-        }
+    final override fun createSnapshot(): LayerSnapshot {
+        TODO()
     }
 
     override fun focusGiven(): UIEventResponse = Pass

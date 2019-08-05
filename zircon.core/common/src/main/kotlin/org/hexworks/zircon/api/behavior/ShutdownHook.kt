@@ -1,7 +1,5 @@
 package org.hexworks.zircon.api.behavior
 
-import org.hexworks.zircon.api.util.Runnable
-
 /**
  * Interface for listening to the shutdown of the environment (JVM, browser, etc).
  */
@@ -12,6 +10,6 @@ interface ShutdownHook {
      * Note that this is only true for graceful termination.
      * If a `SIGKILL` is sent for example graceful termination is not possible.
      */
-    fun onShutdown(listener: Runnable)
+    fun onShutdown(listener: () -> Unit)
 
 }

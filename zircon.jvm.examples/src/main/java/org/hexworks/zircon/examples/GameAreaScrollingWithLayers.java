@@ -174,7 +174,7 @@ public class GameAreaScrollingWithLayers {
                         .withForegroundColor(TileColors.fromString("#aaaadd"))
                         .withText(String.format("Position: (x=%s, y=%s, z=%s)", 0, 0, 0))
                         .build()
-                        .toTileGraphic(TILESET))
+                        .toTileGraphics(TILESET))
                 .withOffset(Positions.create(21, 1))
                 .build());
         screen.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
@@ -208,10 +208,10 @@ public class GameAreaScrollingWithLayers {
                                 .withText(String.format("Position: (x=%s, y=%s, z=%s)",
                                         visibleOffset.getX(), visibleOffset.getY(), visibleOffset.getZ()))
                                 .build()
-                                .toTileGraphic(TILESET))
+                                .toTileGraphics(TILESET))
                         .withOffset(Positions.create(21, 1))
                         .build());
-                screen.pushLayer(coordinates.get());
+                screen.addLayer(coordinates.get());
             }
             return UIEventResponses.processed();
         });

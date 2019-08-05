@@ -30,12 +30,12 @@ public class CreatingAScreen {
 
         final TileGraphics image = DrawSurfaces.tileGraphicsBuilder()
                 .withSize(tileGrid.getSize())
-                .build()
-                .fill(Tiles.newBuilder()
+                .withFiller(Tiles.newBuilder()
                         .withForegroundColor(theme.getPrimaryForegroundColor())
                         .withBackgroundColor(theme.getPrimaryBackgroundColor())
                         .withCharacter('~')
-                        .build());
+                        .build())
+                .build();
 
         screen.draw(image, Positions.zero());
 

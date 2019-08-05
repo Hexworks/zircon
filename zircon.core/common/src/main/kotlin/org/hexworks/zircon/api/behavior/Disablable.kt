@@ -1,8 +1,6 @@
 package org.hexworks.zircon.api.behavior
 
-import org.hexworks.cobalt.databinding.api.event.ChangeEvent
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.internal.behavior.impl.DefaultDisablable
 
 /**
@@ -13,16 +11,8 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultDisablable
 interface Disablable {
 
     var isDisabled: Boolean
-    var isEnabled: Boolean
-        get() = isDisabled.not()
-        set(value) {
-            isDisabled = value.not()
-        }
-    val disabledProperty: Property<Boolean>
 
-    fun onDisabledChanged(fn: (ChangeEvent<Boolean>) -> Unit): Subscription {
-        return disabledProperty.onChange(fn)
-    }
+    val disabledProperty: Property<Boolean>
 
     companion object {
 

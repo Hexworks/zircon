@@ -3,8 +3,8 @@ package org.hexworks.zircon.internal.renderer
 
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetOverride
+import org.hexworks.zircon.api.data.DrawSurfaceSnapshot
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.config.RuntimeConfig
@@ -172,9 +172,9 @@ class SwingCanvasRenderer(private val canvas: Canvas,
     }
 
     private fun renderTiles(graphics: Graphics2D,
-                            snapshot: Snapshot,
+                            snapshot: DrawSurfaceSnapshot,
                             tileset: Tileset<Graphics2D>) {
-        snapshot.cells.forEach { (pos, tile) ->
+        snapshot.tiles.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
                 val actualTile = if (tile.isBlinking() && blinkOn) {
                     tile.withBackgroundColor(tile.foregroundColor)
