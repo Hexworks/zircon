@@ -11,16 +11,17 @@ import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.platform.extension.getOrDefault
-import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
+import org.hexworks.zircon.platform.factory.PersistentMapFactory
 
 internal class DefaultAnimationHandler : InternalAnimationHandler, Closeable {
 
-    private val animations = ThreadSafeMapFactory.create<Identifier, Animation>()
-    private val results = ThreadSafeMapFactory.create<Identifier, DefaultAnimationInfo>()
     private val nextUpdatesForAnimations = HashMap<Identifier, Long>()
     private val debug = RuntimeConfig.config.debugMode
-    private var running = true
     private val id = IdentifierFactory.randomIdentifier()
+
+    private var animations = PersistentMapFactory.create<Identifier, Animation>()
+    private var results = PersistentMapFactory.create<Identifier, DefaultAnimationInfo>()
+    private var running = true
 
     override fun startAnimation(animation: Animation): AnimationInfo {
         if (debug) println("Adding animation to AnimationHandler ($id).")
@@ -28,13 +29,13 @@ internal class DefaultAnimationHandler : InternalAnimationHandler, Closeable {
                 state = if (animation.isLoopedIndefinitely()) INFINITE else IN_PROGRESS,
                 animation = animation,
                 animationHandler = this)
-        results[animation.id] = result
-        animations[animation.id] = animation
+        results = results.put(animation.id, result)
+        animations = animations.put(animation.id, animation)
         return result
     }
 
     override fun stopAnimation(animation: Animation) {
-        animations.remove(animation.id)?.let {
+        animations.remove(animation.id).let {
             results[animation.id]?.setState(FINISHED)
         }
         animation.clearCurrentFrame()
@@ -52,13 +53,13 @@ internal class DefaultAnimationHandler : InternalAnimationHandler, Closeable {
                     animation.fetchNextFrame().map { frame ->
                         frame.layers.forEach { layer ->
                             layer.moveTo(frame.position)
-                            tileGrid.pushLayer(layer)
+                            tileGrid.addLayer(layer)
                         }
                     }
                     if (animation.hasNextFrame()) {
                         nextUpdatesForAnimations[key] = currentTimeMs + animation.tick
                     } else {
-                        animations.remove(key)?.let {
+                        animations.remove(key).let {
                             results[key]?.setState(FINISHED)
                         }
                         animation.fetchCurrentFrame().layers.forEach {

@@ -5,26 +5,14 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Movable
+import org.hexworks.zircon.api.data.LayerSnapshot
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 
 interface Layer : DrawSurface, Drawable, Movable, Clearable {
 
-    override val size: Size
-    override val width: Int
-    override val height: Int
-
     val hiddenProperty: Property<Boolean>
     var isHidden: Boolean
-
-    fun hide() {
-        isHidden = true
-    }
-
-    fun show() {
-        isHidden = false
-    }
 
     /**
      * Fetches all the (absolute) [Position]s which this
@@ -51,29 +39,13 @@ interface Layer : DrawSurface, Drawable, Movable, Clearable {
     /**
      * Creates a copy of this [Layer].
      */
-    fun createCopy(): Layer
+    override fun createCopy(): Layer
 
     /**
-     * Copies this [Layer] to a new immutable [TileImage].
+     * Creates a snapshot of the current state of this [Layer].
+     * A snapshot is useful to see a consistent state of a [Layer]
+     * regardless of potential changes by other threads.
      */
-    fun toTileImage(): TileImage
-
-    /**
-     * Copies this [Layer] to a new [TileGraphics].
-     */
-    fun toTileGraphics(): TileGraphics
-
-    /**
-     * Transforms all of the [Tile]s in this [Layer] with the given
-     * [transformer] and overwrites them with the results of calling
-     * [transformer].
-     */
-    fun transform(transformer: (Tile) -> Tile)
-
-    /**
-     * Fills the empty positions of this [Layer] with the
-     * given `filler` [Tile].
-     */
-    fun fill(filler: Tile): Layer
+    override fun createSnapshot(): LayerSnapshot
 
 }

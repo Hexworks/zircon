@@ -52,14 +52,14 @@ public class LayersExample {
     }
 
     private static void addOverlayAt(TileGrid tileGrid, Position offset, Size size, TileColor color) {
-        tileGrid.pushLayer(new LayerBuilder()
+        tileGrid.addLayer(new LayerBuilder()
                 .withOffset(offset)
                 .withSize(size)
-                .build()
-                .fill(Tiles.newBuilder()
+                .withFiller(Tiles.newBuilder()
                         .withBackgroundColor(color)
                         .withCharacter(' ')
-                        .build()));
+                        .build())
+                .build());
     }
 
     @NotNull

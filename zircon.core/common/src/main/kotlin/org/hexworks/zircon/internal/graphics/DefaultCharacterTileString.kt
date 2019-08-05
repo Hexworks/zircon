@@ -95,7 +95,7 @@ data class DefaultCharacterTileString(private val textChars: List<CharacterTile>
         }
     }
 
-    override fun toTileGraphic(tileset: TilesetResource) =
+    override fun toTileGraphics(tileset: TilesetResource) =
             TileGraphicsBuilder.newBuilder()
                     .withTileset(tileset)
                     .withSize(size)

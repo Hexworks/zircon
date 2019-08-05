@@ -54,7 +54,7 @@ fun main(args: Array<String>) {
                 .withTileGraphics(imageLayer)
                 .build()
 
-        screen.pushLayer(layer)
+        screen.addLayer(layer)
         layer
     }
 

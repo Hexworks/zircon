@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.renderer
 
-import org.hexworks.zircon.api.data.Snapshot
+import org.hexworks.zircon.api.data.DrawSurfaceSnapshot
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.grid.InternalTileGrid
@@ -36,8 +36,8 @@ class VirtualRenderer(private val tileGrid: InternalTileGrid) : Renderer {
         lastRender = now
     }
 
-    private fun renderTiles(snapshot: Snapshot) {
-        snapshot.cells.forEach { (pos, tile) ->
+    private fun renderTiles(snapshot: DrawSurfaceSnapshot) {
+        snapshot.tiles.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
                 tileset.drawTile(tile, 'x', pos)
             }

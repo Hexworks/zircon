@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.uievent.impl
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.hexworks.cobalt.events.api.CancelState
 import org.hexworks.cobalt.events.api.NotCancelled
 import org.hexworks.cobalt.events.api.Subscription
@@ -21,22 +23,27 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.api.uievent.UIEventSource
 import org.hexworks.zircon.api.uievent.UIEventType
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
-import org.hexworks.zircon.internal.util.ThreadSafeQueue
-import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
+import org.hexworks.zircon.internal.util.PersistentList
+import org.hexworks.zircon.platform.factory.PersistentListFactory
+import org.hexworks.zircon.platform.factory.PersistentMapFactory
+import org.hexworks.zircon.platform.util.Dispatchers
 
-class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventSource {
+class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventSource, CoroutineScope {
+
+    override val coroutineContext = Dispatchers.Single
 
     private val logger = LoggerFactory.getLogger(this::class)
-    private val listeners = ThreadSafeMapFactory.create<UIEventType, ThreadSafeQueue<InputEventSubscription>>()
+    private val listeners = PersistentMapFactory.create<UIEventType, PersistentList<InputEventSubscription>>()
     private var closed = false
 
     override fun close() {
-        closed = true
-        listeners.flatMap { it.value }.forEach {
-            it.cancel()
+        launch {
+            closed = true
+            listeners.flatMap { it.value }.forEach {
+                it.cancel()
+            }
+            listeners.clear()
         }
-        listeners.clear()
     }
 
     override fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse {
@@ -125,27 +132,33 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
     }
 
     private fun buildSubscription(eventType: UIEventType, listener: (UIEvent, UIEventPhase) -> UIEventResponse): Subscription {
-        return listeners.getOrPut(eventType) { ThreadSafeQueueFactory.create() }.let {
-            val subscription = InputEventSubscription(
-                    listener = listener,
-                    subscriptions = it)
-            it.add(subscription)
-            subscription
+        val subscription = InputEventSubscription(
+                eventType = eventType,
+                listener = listener)
+        launch {
+            val subscriptions = listeners.getOrElse(eventType) { PersistentListFactory.create() }
+            listeners.put(eventType, subscriptions.add(subscription))
         }
+        return subscription
     }
 
     private fun checkClosed() {
         if (closed) throw IllegalStateException("This UIEventProcessor is closed.")
     }
 
-    class InputEventSubscription(
-            val listener: (UIEvent, UIEventPhase) -> UIEventResponse,
-            private val subscriptions: ThreadSafeQueue<InputEventSubscription>) : Subscription {
+    inner class InputEventSubscription(
+            private val eventType: UIEventType,
+            val listener: (UIEvent, UIEventPhase) -> UIEventResponse) : Subscription {
 
         override var cancelState: CancelState = NotCancelled
 
         override fun cancel(cancelState: CancelState) {
-            subscriptions.remove(this)
+            val subscription = this
+            launch {
+                listeners[eventType]?.let { subscriptions ->
+                    listeners.put(eventType, subscriptions.remove(subscription))
+                }
+            }
             this.cancelState = cancelState
         }
     }

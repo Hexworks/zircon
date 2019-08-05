@@ -60,7 +60,7 @@ class GdxExample : ApplicationAdapter() {
                 .withTileGraphics(imageLayer)
                 .build()
 
-        tileGrid.pushLayer(layer)
+        tileGrid.addLayer(layer)
         layer
     }
 

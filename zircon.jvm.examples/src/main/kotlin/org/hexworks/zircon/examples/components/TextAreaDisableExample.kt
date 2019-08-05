@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.LibgdxApplications
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.extensions.isEnabled
 import org.hexworks.zircon.api.uievent.MouseEventType
 
 object TextAreaDisableExample {

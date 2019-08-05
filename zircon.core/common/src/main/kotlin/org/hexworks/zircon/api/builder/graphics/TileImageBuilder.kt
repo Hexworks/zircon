@@ -49,11 +49,20 @@ data class TileImageBuilder(
         tiles[position] = tile
     }
 
+    /**
+     * Sets the given [tiles] to be used for the new [TileGraphics].
+     */
+    fun withTiles(tiles: Map<Position, Tile>) = also {
+        this.tiles.clear()
+        this.tiles.putAll(tiles)
+    }
+
     override fun build(): TileImage {
         return DefaultTileImage(
                 size = size,
                 tileset = tileset,
-                tiles = tiles.toMap()).withFiller(filler)
+                initialTiles = tiles.filter { size.containsPosition(it.key) })
+                .withFiller(filler)
     }
 
     override fun createCopy() = copy()

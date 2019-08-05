@@ -10,15 +10,15 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
  * A [Boundable] object can provide useful information
  * about its geometry relating to other [Boundable]s (like intersection).
  */
-interface Boundable {
+interface Boundable : Sizeable {
 
-    val position: Position
-    val size: Size
     val rect: Rect
+    val position: Position
+        get() = rect.position
     val x: Int
+        get() = rect.x
     val y: Int
-    val width: Int
-    val height: Int
+        get() = rect.y
 
     /**
      * Tells whether this [Boundable] intersects with the other [boundable].

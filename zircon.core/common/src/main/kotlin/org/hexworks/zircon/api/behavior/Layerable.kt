@@ -1,14 +1,14 @@
 package org.hexworks.zircon.api.behavior
 
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 
 /**
  * Represents an object which can contain multiple [Layer]s
- * which are specialized [DrawSurface]s displayed
- * above the [Layerable] object.
+ * which are specialized [DrawSurface]s which can be displayed
+ * above each other within the [Layerable] object.
  */
+// TODO: sanetize the api!
 interface Layerable {
 
     /**
@@ -19,13 +19,7 @@ interface Layerable {
     /**
      * Adds a layer on top of the currently present layers.
      */
-    fun pushLayer(layer: Layer)
-
-    /**
-     * Removes and returns the layer which is at the top of the currently present layers
-     * (if any).
-     */
-    fun popLayer(): Maybe<Layer>
+    fun addLayer(layer: Layer)
 
     /**
      * Removes a [Layer] from the current layers.

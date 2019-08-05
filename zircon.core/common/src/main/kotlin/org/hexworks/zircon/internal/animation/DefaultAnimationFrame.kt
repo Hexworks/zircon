@@ -25,7 +25,7 @@ data class DefaultAnimationFrame(override val size: Size,
     override fun displayOn(tileGrid: TileGrid) {
         remove()
         layers.forEach { layer ->
-            tileGrid.pushLayer(layer)
+            tileGrid.addLayer(layer)
         }
     }
 

@@ -88,9 +88,9 @@ public class TilesetExample {
 
         final Layer overlay = new LayerBuilder()
                 .withSize(tileGrid.getSize())
-                .build()
-                .fill(Tiles.empty()
-                        .withBackgroundColor(TileColors.create(0, 0, 0, 50)));
+                .withFiller(Tiles.empty()
+                        .withBackgroundColor(TileColors.create(0, 0, 0, 50)))
+                .build();
 
         for (int i = 0; i < RANDOM_CHAR_COUNT; i++) {
             overlay.setTileAt(
@@ -103,6 +103,6 @@ public class TilesetExample {
                             .withBackgroundColor(TileColors.transparent())
                             .build());
         }
-        tileGrid.pushLayer(overlay);
+        tileGrid.addLayer(overlay);
     }
 }

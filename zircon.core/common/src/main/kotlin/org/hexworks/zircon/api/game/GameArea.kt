@@ -186,15 +186,14 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
     fun getOverlaysAt(level: Int): Iterable<Layer>
 
     /**
+     * Removes the topmost overlay at the given [level].
+     */
+    fun popOverlayAt(level: Int) = removeOverlay(getOverlaysAt(level).first(), level)
+
+    /**
      * Adds an overlay on top of a z `level`.
      */
     fun pushOverlayAt(layer: Layer, level: Int)
-
-    /**
-     * Removes and returns the overlay which is at the top of the currently present overlays
-     * at the given `level`.(if any).
-     */
-    fun popOverlayAt(level: Int): Maybe<Layer>
 
     /**
      * Removes an overlay from the current overlays at the given `level`.

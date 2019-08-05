@@ -49,7 +49,7 @@ fun main(args: Array<String>) {
                 .withTileGraphics(imageLayer)
                 .build()
 
-        tileGrid.pushLayer(layer)
+        tileGrid.addLayer(layer)
         layer
     }
 

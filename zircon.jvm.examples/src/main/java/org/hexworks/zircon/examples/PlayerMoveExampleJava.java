@@ -1,6 +1,5 @@
 package org.hexworks.zircon.examples;
 
-import kotlin.Unit;
 import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.color.ANSITileColor;
 import org.hexworks.zircon.api.data.Tile;
@@ -22,8 +21,8 @@ public class PlayerMoveExampleJava {
         Layer player = Layers.newBuilder()
                 .withSize(Sizes.one())
                 .withOffset(Positions.create(tileGrid.getWidth() / 2, tileGrid.getHeight() / 2))
-                .build()
-                .fill(PLAYER_TILE);
+                .withFiller(PLAYER_TILE)
+                .build();
 
         tileGrid.processKeyboardEvents(KeyboardEventType.KEY_PRESSED, Functions.fromBiConsumer((event, phase) -> {
             switch (event.getCode()) {
@@ -42,7 +41,7 @@ public class PlayerMoveExampleJava {
             }
         }));
 
-        tileGrid.pushLayer(player);
+        tileGrid.addLayer(player);
     }
 
 }

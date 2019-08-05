@@ -14,17 +14,17 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.resource.ColorThemeResource
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 
 /**
  * This [InternalComponentContainer] holds a "main" container which holds components
  * and a stack of modal containers which hold modals.
  */
 // TODO: test me pls
-class CompositeComponentContainer(private val metadata: ComponentMetadata,
-                                  private val mainContainer: InternalComponentContainer = buildContainer(metadata)) : InternalComponentContainer {
+class CompositeComponentContainer(
+        private val metadata: ComponentMetadata,
+        private val mainContainer: InternalComponentContainer = buildContainer(metadata)) : InternalComponentContainer {
 
-    private val containerStack = ThreadSafeQueueFactory.create<InternalComponentContainer>()
+    private val containerStack = mutableListOf<InternalComponentContainer>()
 
     init {
         containerStack.add(mainContainer)
@@ -33,7 +33,7 @@ class CompositeComponentContainer(private val metadata: ComponentMetadata,
     fun isMainContainerActive() = mainContainer.isActive()
 
     override fun dispatch(event: UIEvent): UIEventResponse {
-        return containerStack.peekLast().map { it.dispatch(event) }.orElse(Pass)
+        return containerStack.lastOrNull()?.dispatch(event) ?: Pass
     }
 
     override fun isActive(): Boolean {
@@ -45,9 +45,10 @@ class CompositeComponentContainer(private val metadata: ComponentMetadata,
     }
 
     override fun deactivate() {
-        containerStack.drainAll().forEach {
+        containerStack.forEach {
             it.deactivate()
         }
+        containerStack.clear()
         containerStack.add(mainContainer)
     }
 
@@ -68,19 +69,16 @@ class CompositeComponentContainer(private val metadata: ComponentMetadata,
     }
 
     fun addModal(modal: Modal<out ModalResult>) {
-        containerStack.peekLast().map {
-            it.deactivate()
-        }
+        containerStack.lastOrNull()?.deactivate()
         val modalContainer = buildContainer(metadata)
         modalContainer.activate()
         containerStack.add(modalContainer)
         modalContainer.addComponent(modal)
         modal.onClosed {
-            containerStack.pollLast().map {
-                it.deactivate()
-            }
-            containerStack.peekLast().map {
-                it.activate()
+            containerStack.lastOrNull()?.let { last ->
+                last.deactivate()
+                containerStack.remove(last)
+                containerStack.lastOrNull()?.activate()
             }
         }
         modal.requestFocus()

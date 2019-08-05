@@ -26,7 +26,7 @@ interface CharacterTileString : Drawable, Iterable<CharacterTile> {
     // TODO: use val instead
     fun textCharacters(): List<CharacterTile>
 
-    fun toTileGraphic(tileset: TilesetResource): TileGraphics
+    fun toTileGraphics(tileset: TilesetResource): TileGraphics
 
     /**
      * Creates a new [CharacterTileString] which contains the contents of `this` string

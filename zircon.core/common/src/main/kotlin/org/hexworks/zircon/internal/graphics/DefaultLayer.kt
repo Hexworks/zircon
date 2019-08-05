@@ -2,16 +2,16 @@ package org.hexworks.zircon.internal.graphics
 
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Movable
+import org.hexworks.zircon.api.data.LayerSnapshot
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 
 class DefaultLayer(position: Position,
@@ -22,7 +22,8 @@ class DefaultLayer(position: Position,
     : Layer,
         DrawSurface by backend,
         Drawable by backend,
-        Movable by movable {
+        Movable by movable,
+        Clearable by backend {
 
     override val size: Size
         get() = movable.size
@@ -37,29 +38,17 @@ class DefaultLayer(position: Position,
 
     override var isHidden: Boolean by hiddenProperty.asDelegate()
 
-
-    override fun createSnapshot(): Snapshot {
+    override fun createSnapshot(): LayerSnapshot {
+        val (tiles, tileset, size) = backend.createSnapshot()
         return if (isHidden) {
-            Snapshot.create(listOf(), currentTileset())
+            LayerSnapshot.create(mapOf(), tileset, size, position)
         } else {
-            backend.createSnapshot().let { snapshot ->
-                Snapshot.create(
-                        cells = snapshot.cells.map { it.withPosition(it.position + position) },
-                        tileset = snapshot.tileset)
-            }
+            LayerSnapshot.create(
+                    tiles = tiles.mapKeys { it.key.withRelative(position) },
+                    tileset = tileset,
+                    size = size,
+                    position = position)
         }
-    }
-
-    override fun transform(transformer: (Tile) -> Tile) {
-        backend.transform(transformer)
-    }
-
-    override fun toTileImage(): TileImage {
-        return backend.toTileImage()
-    }
-
-    override fun toTileGraphics(): TileGraphics {
-        return backend.createCopy()
     }
 
     override fun getAbsoluteTileAt(position: Position): Maybe<Tile> {
@@ -73,14 +62,5 @@ class DefaultLayer(position: Position,
     override fun createCopy() = DefaultLayer(
             position = position,
             backend = backend.createCopy())
-
-    override fun fill(filler: Tile): Layer {
-        backend.fill(filler)
-        return this
-    }
-
-    override fun clear() {
-        backend.clear()
-    }
 
 }

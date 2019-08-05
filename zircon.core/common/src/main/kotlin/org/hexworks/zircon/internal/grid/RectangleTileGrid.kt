@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.grid
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.animation.Animation
@@ -8,9 +10,9 @@ import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.DrawSurfaceSnapshot
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
@@ -23,13 +25,14 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.hexworks.zircon.internal.extensions.cancelAll
-import org.hexworks.zircon.internal.graphics.ConcurrentTileGraphics
+import org.hexworks.zircon.internal.graphics.ThreadSafeTileGraphics
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
+import org.hexworks.zircon.platform.util.Dispatchers
 
 class RectangleTileGrid(
         tileset: TilesetResource,
         size: Size,
-        override var backend: TileGraphics = ConcurrentTileGraphics(
+        override var backend: TileGraphics = ThreadSafeTileGraphics(
                 size = size,
                 tileset = tileset),
         override var layerable: Layerable = DefaultLayerable(),
@@ -41,44 +44,61 @@ class RectangleTileGrid(
     : InternalTileGrid,
         InternalCursorHandler by cursorHandler,
         ShutdownHook by DefaultShutdownHook(),
-        UIEventProcessor by eventProcessor {
+        UIEventProcessor by eventProcessor,
+        CoroutineScope {
+
+    // TODO: backend or backend + layers?
+    override val tiles: Map<Position, Tile>
+        get() = TODO("not implemented")
 
     override val layers: List<Layer>
         get() = layerable.layers
+
+    override val coroutineContext = Dispatchers.Single
 
     private var originalBackend = backend
     private var originalLayerable = layerable
     private var originalAnimationHandler = animationHandler
 
     override fun putTile(tile: Tile) {
-        if (tile is CharacterTile && tile.character == '\n') {
-            moveCursorToNextLine()
-        } else {
-            backend.setTileAt(cursorPosition(), tile)
-            moveCursorForward()
+        launch {
+            if (tile is CharacterTile && tile.character == '\n') {
+                moveCursorToNextLine()
+            } else {
+                backend.setTileAt(cursorPosition(), tile)
+                moveCursorForward()
+            }
         }
     }
 
     override fun close() {
-        animationHandler.close()
-        subscriptions.cancelAll()
+        launch {
+            animationHandler.close()
+            subscriptions.cancelAll()
+        }
     }
 
-    override fun delegateActionsTo(tileGrid: InternalTileGrid) {
-        backend = tileGrid.backend
-        layerable = tileGrid.layerable
-        animationHandler = tileGrid.animationHandler
+    override fun delegateTo(tileGrid: InternalTileGrid) {
+        launch {
+            backend = tileGrid.backend
+            layerable = tileGrid.layerable
+            animationHandler = tileGrid.animationHandler
+        }
     }
 
     override fun reset() {
-        backend = originalBackend
-        layerable = originalLayerable
-        animationHandler = originalAnimationHandler
+        launch {
+            backend = originalBackend
+            layerable = originalLayerable
+            animationHandler = originalAnimationHandler
+        }
     }
 
     override fun clear() {
-        backend.clear()
-        layerable = DefaultLayerable()
+        launch {
+            backend.clear()
+            layerable = DefaultLayerable()
+        }
     }
 
     // note that we need all of the below functions here and can't delegate to the corresponding
@@ -87,6 +107,10 @@ class RectangleTileGrid(
 
     override val size: Size
         get() = backend.size
+
+    ///////////////
+    // ANIMATIONS
+    ///////////////
 
     override fun startAnimation(animation: Animation): AnimationInfo {
         return animationHandler.startAnimation(animation)
@@ -100,9 +124,17 @@ class RectangleTileGrid(
         animationHandler.updateAnimations(currentTimeMs, tileGrid)
     }
 
+    ///////////////////
+    // TILE COMPOSITE
+    ///////////////////
+
     override fun getTileAt(position: Position): Maybe<Tile> {
         return backend.getTileAt(position)
     }
+
+    /////////////////
+    // DRAW SURFACE
+    /////////////////
 
     override fun setTileAt(position: Position, tile: Tile) {
         backend.setTileAt(position, tile)
@@ -112,13 +144,17 @@ class RectangleTileGrid(
         backend.transformTileAt(position, tileTransformer)
     }
 
-    override fun createSnapshot(): Snapshot {
+    override fun createSnapshot(): DrawSurfaceSnapshot {
         return backend.createSnapshot()
     }
 
     override fun draw(drawable: Drawable, position: Position) {
         backend.draw(drawable, position)
     }
+
+    /////////////////////
+    // TILESET OVERRIDE
+    /////////////////////
 
     override fun currentTileset(): TilesetResource {
         return backend.currentTileset()
@@ -128,12 +164,12 @@ class RectangleTileGrid(
         backend.useTileset(tileset)
     }
 
-    override fun pushLayer(layer: Layer) {
-        layerable.pushLayer(layer)
-    }
+    //////////////
+    // LAYERABLE
+    //////////////
 
-    override fun popLayer(): Maybe<Layer> {
-        return layerable.popLayer()
+    override fun addLayer(layer: Layer) {
+        layerable.addLayer(layer)
     }
 
     override fun removeLayer(layer: Layer) {
