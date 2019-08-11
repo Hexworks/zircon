@@ -25,30 +25,30 @@ data class VerticalScrollBarBuilder(
                     componentRenderer = VerticalScrollBarRenderer()))
         : BaseComponentBuilder<ScrollBar, VerticalScrollBarBuilder>() {
 
-        fun withNumberOfScrollableItems(max: Int) = also {
-            require(max > 0) { "Max value must be greater than min value"}
-            this.maxValue = max
-        }
+    fun withNumberOfScrollableItems(items: Int) = also {
+        require(items > 0) { "Number of items must be greater than 0." }
+        this.maxValue = items
+    }
 
-        override fun build(): ScrollBar = DefaultVerticalScrollBar(
-                componentMetadata = ComponentMetadata(
-                        size = size,
-                        position = position,
-                        componentStyleSet = componentStyleSet,
-                        tileset = tileset),
-                minValue = minValue,
-                maxValue = maxValue,
-                itemsShownAtOnce = size.height,
-                numberOfSteps = size.height,
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<ScrollBar>))
+    override fun build(): ScrollBar = DefaultVerticalScrollBar(
+            componentMetadata = ComponentMetadata(
+                    size = size,
+                    position = position,
+                    componentStyleSet = componentStyleSet,
+                    tileset = tileset),
+            minValue = minValue,
+            maxValue = maxValue,
+            itemsShownAtOnce = size.height,
+            numberOfSteps = size.height,
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                    decorationRenderers = decorationRenderers,
+                    componentRenderer = props.componentRenderer as ComponentRenderer<ScrollBar>))
 
-        override fun createCopy() = copy(props = props.copy())
+    override fun createCopy() = copy(props = props.copy())
 
-        companion object {
+    companion object {
 
-            @JvmStatic
-            fun newBuilder() = VerticalScrollBarBuilder()
-        }
+        @JvmStatic
+        fun newBuilder() = VerticalScrollBarBuilder()
+    }
 }
