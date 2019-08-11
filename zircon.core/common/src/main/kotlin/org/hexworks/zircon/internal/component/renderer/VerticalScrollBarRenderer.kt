@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 
 class VerticalScrollBarRenderer : ComponentRenderer<ScrollBar> {
