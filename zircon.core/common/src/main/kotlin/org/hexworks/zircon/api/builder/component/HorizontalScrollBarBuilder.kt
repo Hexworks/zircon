@@ -23,9 +23,9 @@ data class HorizontalScrollBarBuilder(
                 componentRenderer = HorizontalScrollBarRenderer()))
     : BaseComponentBuilder<ScrollBar, HorizontalScrollBarBuilder>() {
 
-    fun withNumberOfScrollableItems(max: Int) = also {
-        require(max > 0) { "Max value must be greater than min value" }
-        this.maxValue = max
+    fun withNumberOfScrollableItems(items: Int) = also {
+        require(items > 0) { "Number of items must be greater than 0." }
+        this.maxValue = items
     }
 
     override fun build(): ScrollBar = DefaultHorizontalScrollBar(
