@@ -69,4 +69,10 @@ object Components {
 
     @JvmStatic
     fun verticalSlider() = VerticalSliderBuilder.newBuilder()
+
+    @JvmStatic
+    fun horizontalScrollbar() = HorizontalScrollBarBuilder.newBuilder()
+
+    @JvmStatic
+    fun verticalScrollbar() = VerticalScrollBarBuilder.newBuilder()
 }
