@@ -1,22 +1,18 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.ScrollBar
-import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalScrollBar
-import org.hexworks.zircon.internal.component.impl.DefaultVerticalSlider
 import org.hexworks.zircon.internal.component.renderer.VerticalScrollBarRenderer
-import org.hexworks.zircon.internal.component.renderer.VerticalSliderRenderer
 import kotlin.jvm.JvmStatic
-import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
 /**
- * Builder for the scrollbar. By default, it creates a scrollbar with a maxValue of 100.
+ * Builder for the scrollbar. By default, it creates a scrollbar with a number of items of 100.
  */
 data class VerticalScrollBarBuilder(
             private var minValue: Int = 0,

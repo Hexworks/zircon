@@ -7,14 +7,12 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultHorizontalScrollBar
-import org.hexworks.zircon.internal.component.impl.DefaultVerticalScrollBar
 import org.hexworks.zircon.internal.component.renderer.HorizontalScrollBarRenderer
-import org.hexworks.zircon.internal.component.renderer.VerticalScrollBarRenderer
 import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 /**
- * Builder for the scrollbar. By default, it creates a scrollbar with a maxValue of 100.
+ * Builder for the scrollbar. By default, it creates a scrollbar with a number of items of 100.
  */
 data class HorizontalScrollBarBuilder(
         private var minValue: Int = 0,
