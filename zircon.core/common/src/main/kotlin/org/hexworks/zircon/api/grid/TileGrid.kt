@@ -1,49 +1,37 @@
 package org.hexworks.zircon.api.grid
 
-import org.hexworks.zircon.api.CharacterTileStrings
-import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.animation.AnimationHandler
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.behavior.TypingSupport
-import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.DrawSurface
+import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.uievent.UIEventSource
 
 /**
- * This is the main grid interface, at the lowest level supported. You can write your own
- * implementation of this if you want to have a custom grid handling algorithm
- * but you should probably use one of the existing implementations.
- *
- * This interface abstracts a grid at a more fundamental level, expressing methods for not
- * only printing titles but also changing colors, moving the cursor to new positions,
- * enable special modifiers and get notified when the grid's size has changed.
- *
- * If you want to write an application that has a very precise control of the grid,
- * this is the interface you should be programming against.
+ * The [TileGrid] is the most fundamental interface in Zircon.
+ * It is an abstraction which lets you manage a 2D grid composed of [Tile]s.
+ * It also supports layering (see [Layerable] for more info), cursor handling
+ * and character printing through [TypingSupport], event handling through [UIEventSource]
+ * and simple [Tile] drawing operations through [DrawSurface] and animation handling
+ * with [AnimationHandler].
+ * You can consider a [TileGrid] as an easy to use **facade** for all your tile grid
+ * needs.
+ * **Note That** all [TileGrid]s have a [Layer] at index `0` which is used
+ * for implementing the [DrawSurface] operations and it can't be removed from the grid.
+ * In short all [TileGrid]s have at least **one** [Layer] in them.
  */
 interface TileGrid
     : AnimationHandler, Clearable, Closeable, DrawSurface, Layerable,
         ShutdownHook, TypingSupport, UIEventSource {
 
     val widthInPixels: Int
-        get() = currentTileset().width * width
+        get() = tileset.width * width
 
     val heightInPixels: Int
-        get() = currentTileset().height * height
-
-    /**
-     * Writes the given [text] at the given [position].
-     */
-    fun write(text: String,
-              position: Position = Positions.zero()) = run {
-        CharacterTileStrings.newBuilder()
-                .withText(text)
-                .build()
-                .toTileGraphics(currentTileset())
-                .drawOnto(this, position)
-    }
+        get() = tileset.height * height
 
 }

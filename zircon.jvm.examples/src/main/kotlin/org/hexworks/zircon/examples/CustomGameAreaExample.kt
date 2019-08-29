@@ -1,7 +1,16 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.Blocks
+import org.hexworks.zircon.api.GameComponents
+import org.hexworks.zircon.api.Maybes
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.TileColors
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
@@ -14,6 +23,7 @@ import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.api.graphics.Symbols
 import java.util.*
 
+// TODO: not working
 object CustomGameAreaExample {
 
     class CustomGameArea(visibleSize: Size3D,
@@ -23,8 +33,8 @@ object CustomGameAreaExample {
                                  .addLayer(Tiles.empty())
                                  .withEmptyTile(Tiles.empty())
                                  .build()) : BaseGameArea<Tile, Block<Tile>>(
-            visibleSize = visibleSize,
-            actualSize = actualSize) {
+            initialVisibleSize = visibleSize,
+            initialActualSize = actualSize) {
 
         private val blocks = java.util.TreeMap<Position3D, Block<Tile>>()
 
@@ -49,8 +59,8 @@ object CustomGameAreaExample {
         }
 
         override fun setBlockAt(position: Position3D, block: Block<Tile>) {
-            if (!actualSize().containsPosition(position)) {
-                throw IllegalArgumentException("The supplied position ($position) is not within the size (${actualSize()}) of this game area.")
+            if (!actualSize.containsPosition(position)) {
+                throw IllegalArgumentException("The supplied position ($position) is not within the size (${actualSize}) of this game area.")
             }
             val layerCount = block.layers.size
             if (layerCount != layersPerBlock()) {
@@ -84,10 +94,10 @@ object CustomGameAreaExample {
     }
 
     private fun makeCaves(gameArea: GameArea<Tile, Block<Tile>>, smoothTimes: Int = 8) {
-        val width = gameArea.actualSize().xLength
-        val height = gameArea.actualSize().yLength
+        val width = gameArea.actualSize.xLength
+        val height = gameArea.actualSize.yLength
         var tiles: MutableMap<Position, Tile> = mutableMapOf()
-        gameArea.actualSize().to2DSize().fetchPositions().forEach { pos ->
+        gameArea.actualSize.to2DSize().fetchPositions().forEach { pos ->
             tiles[pos] = if (Math.random() < 0.5) FLOOR else WALL
         }
         val newTiles: MutableMap<Position, Tile> = mutableMapOf()

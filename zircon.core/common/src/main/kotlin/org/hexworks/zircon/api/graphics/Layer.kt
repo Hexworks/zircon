@@ -2,25 +2,31 @@ package org.hexworks.zircon.api.graphics
 
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.behavior.Clearable
-import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.behavior.Movable
-import org.hexworks.zircon.api.data.LayerSnapshot
+import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.internal.behavior.Identifiable
 
-interface Layer : DrawSurface, Drawable, Movable, Clearable {
+/**
+ *A [Layer] is a [TileGraphics] which can be positioned and
+ * moved over a [TileGrid]. With [Layer]s one can create a
+ * quasi 3D effect (like top down oblique projections).
+ * A [Layer] can also be hidden (invisible) by using either
+ * [hiddenProperty] or [isHidden].
+ */
+interface Layer : TileGraphics, Identifiable, Movable {
+
+    override val state: LayerState
 
     val hiddenProperty: Property<Boolean>
     var isHidden: Boolean
 
     /**
-     * Fetches all the (absolute) [Position]s which this
-     * [Layer] contains.
+     * Creates a copy of this [Layer].
      */
-    fun fetchPositions(): Set<Position> = size.fetchPositions()
-            .map { it + position }
-            .toSet()
+    override fun createCopy(): Layer
 
     /**
      * Same as [DrawSurface.getTileAt] but will consider the given [position]
@@ -35,17 +41,5 @@ interface Layer : DrawSurface, Drawable, Movable, Clearable {
      * of the screen, not the top left corner of the [DrawSurface]).
      */
     fun setAbsoluteTileAt(position: Position, tile: Tile)
-
-    /**
-     * Creates a copy of this [Layer].
-     */
-    override fun createCopy(): Layer
-
-    /**
-     * Creates a snapshot of the current state of this [Layer].
-     * A snapshot is useful to see a consistent state of a [Layer]
-     * regardless of potential changes by other threads.
-     */
-    override fun createSnapshot(): LayerSnapshot
 
 }

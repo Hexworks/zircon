@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalFragment
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.internal.behavior.Identifiable
 
 /**
  * A [Screen] is an in-memory representation of a [TileGrid] which can be displayed using an
@@ -22,7 +21,7 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  * [Component]s you'll have to use [Screen]s.
  */
 interface Screen
-    : TileGrid, ComponentContainer, Identifiable {
+    : TileGrid, ComponentContainer {
 
     /**
      * Moves the contents of this [Screen] to the underlying [TileGrid],

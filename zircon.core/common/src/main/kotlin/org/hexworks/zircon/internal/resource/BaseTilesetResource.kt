@@ -17,4 +17,10 @@ internal abstract class BaseTilesetResource : TilesetResource {
                 other.width == width &&
                 other.height == height
     }
+
+    override fun toString(): String {
+        return "TilesetResource(id=$id, size=$size, tileType=$tileType, tilesetType=$tilesetType, tilesetSourceType=$tilesetSourceType)"
+    }
+
+
 }

@@ -50,9 +50,9 @@ class DefaultRadioButtonGroup constructor(
                 initialText = text,
                 renderingStrategy = buttonRenderingStrategy,
                 componentMetadata = ComponentMetadata(
-                        position = Position.create(0, items.size),
+                        relativePosition = Position.create(0, items.size),
                         size = Size.create(renderingStrategy.calculateContentSize(size).width, 1),
-                        tileset = currentTileset(),
+                        tileset = tileset,
                         componentStyleSet = componentStyleSet)).also { button ->
             items[key] = button
             button.onSelectionChanged { (_, _, selected) ->

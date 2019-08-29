@@ -29,7 +29,7 @@ data class HorizontalScrollBarBuilder(
     override fun build(): ScrollBar = DefaultHorizontalScrollBar(
             componentMetadata = ComponentMetadata(
                     size = size,
-                    position = position,
+                    relativePosition = position,
                     componentStyleSet = componentStyleSet,
                     tileset = tileset),
             minValue = minValue,

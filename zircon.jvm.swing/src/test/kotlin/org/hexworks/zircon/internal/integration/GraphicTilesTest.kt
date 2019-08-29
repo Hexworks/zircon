@@ -26,7 +26,7 @@ object GraphicTilesTest {
                 .withIcon(Tiles.newBuilder()
                         .withName("Plate mail")
                         .withTileset(GraphicalTilesetResources.nethack16x16())
-                        .buildGraphicTile())
+                        .buildGraphicalTile())
                 .build())
         screen.addComponent(Components.label()
                 .withText("Label with icon")

@@ -24,12 +24,12 @@ class PositionTest {
 
     @Test
     fun shouldBeUnknownWhenUnknown() {
-        assertThat(Position.unknown().isUnknown()).isTrue()
+        assertThat(Position.unknown().isUnknown).isTrue()
     }
 
     @Test
     fun shouldNotBeUnknownWhenNotUnknown() {
-        assertThat(Position.unknown().isNotUnknown()).isFalse()
+        assertThat(Position.unknown().isNotUnknown).isFalse()
     }
 
     @Test

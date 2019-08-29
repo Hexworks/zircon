@@ -1,6 +1,13 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Modifiers
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.TileColor
 
 object FadeInOutExample {
@@ -18,7 +25,7 @@ object FadeInOutExample {
 
         val text = "This text fades in and then after a few seconds out"
 
-        tileGrid.putCursorAt(Positions.create(1, 1))
+        tileGrid.cursorPosition = Positions.create(1, 1)
         text.forEach { c ->
             tileGrid.putTile(Tiles.defaultTile()
                     .withBackgroundColor(TileColor.transparent())

@@ -6,6 +6,6 @@ import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButto
 
 interface RadioButton : Component, TextHolder, Selectable {
 
-    val state: RadioButtonState
+    val radioButtonState: RadioButtonState
 
 }

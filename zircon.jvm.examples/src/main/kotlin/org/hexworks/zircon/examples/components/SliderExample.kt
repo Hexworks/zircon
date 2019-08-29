@@ -9,11 +9,15 @@ import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.component.ComponentAlignment
-import org.hexworks.zircon.api.extensions.*
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.api.uievent.MouseEventType
 
+// TODO: slider is buggy
 object SliderExample {
 
     private val theme = ColorThemes.amigaOs()
@@ -21,7 +25,6 @@ object SliderExample {
 
     @JvmStatic
     fun main(args: Array<String>) {
-
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
                 .withCursorBlinking(true)
@@ -47,7 +50,7 @@ object SliderExample {
                 .withAlignment(positionalAlignment(0, 5))
                 .build()
         val label = Components.label()
-                .withSize(5,1)
+                .withSize(5, 1)
                 .withText("30")
                 .withAlignmentAround(slider1, ComponentAlignment.RIGHT_CENTER)
                 .build()
@@ -70,7 +73,7 @@ object SliderExample {
 
 
         val compositeSliderPanel1 = Components.hbox()
-                .withSize(17,1)
+                .withSize(17, 1)
                 .withSpacing(0)
                 .withAlignment(positionalAlignment(0, 15))
                 .build()
@@ -81,16 +84,19 @@ object SliderExample {
                 .build()
         val decrementButton = Components.button()
                 .withText("${Symbols.TRIANGLE_LEFT_POINTING_BLACK}")
-                .withSize(1,1)
+                .withSize(1, 1)
                 .withDecorations()
                 .build().apply {
+                    processMouseEvents(MouseEventType.MOUSE_PRESSED) { _, _ ->
+                        slider3.decrementCurrentValue()
+                    }
                     processComponentEvents(ComponentEventType.ACTIVATED) {
                         slider3.decrementCurrentValue()
                     }
                 }
         val incrementButton = Components.button()
                 .withText("${Symbols.TRIANGLE_RIGHT_POINTING_BLACK}")
-                .withSize(1,1)
+                .withSize(1, 1)
                 .withDecorations()
                 .build().apply {
                     processComponentEvents(ComponentEventType.ACTIVATED) {

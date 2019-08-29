@@ -4,8 +4,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.ImageTile
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
@@ -18,7 +18,7 @@ class DefaultImageTileTest {
     fun shouldGenerateProperCacheKey() {
         val target: ImageTile = Tile.createImageTile(NAME, TILESET)
 
-        assertThat(target.generateCacheKey()).isEqualTo("ImageTile(t=/cp_437_tilesets/wanderlust_16x16.png,n=NAME)")
+        assertThat(target.cacheKey).isEqualTo("ImageTile(t=/cp_437_tilesets/wanderlust_16x16.png,n=NAME)")
     }
 
     @Test

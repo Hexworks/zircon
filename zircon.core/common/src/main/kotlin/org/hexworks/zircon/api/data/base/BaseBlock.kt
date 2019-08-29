@@ -49,7 +49,7 @@ abstract class BaseBlock<T : Tile> : Block<T> {
 
     override fun isEmpty(): Boolean {
         return layers.isEmpty() and
-                listOf(top, bottom, front, back, left, right).all { it.isEmpty() }
+                listOf(top, bottom, front, back, left, right).all { it.isEmpty }
     }
 
     override fun withFlippedAroundX(): Block<T> {

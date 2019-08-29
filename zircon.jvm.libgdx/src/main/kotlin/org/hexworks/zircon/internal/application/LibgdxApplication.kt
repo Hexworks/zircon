@@ -6,14 +6,14 @@ import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.mvc.ViewContainer
 import org.hexworks.zircon.internal.grid.InternalTileGrid
-import org.hexworks.zircon.internal.grid.RectangleTileGrid
+import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.mvc.DefaultViewContainer
 import org.hexworks.zircon.internal.renderer.LibgdxRenderer
 
 class LibgdxApplication(appConfig: AppConfig,
-                        override val tileGrid: InternalTileGrid = RectangleTileGrid(
-                                tileset = appConfig.defaultTileset,
-                                size = appConfig.size))
+                        override val tileGrid: InternalTileGrid = ThreadSafeTileGrid(
+                                initialTileset = appConfig.defaultTileset,
+                                initialSize = appConfig.size))
     : Disposable, Application, ViewContainer by DefaultViewContainer(tileGrid) {
 
     private val logger = LoggerFactory.getLogger(javaClass)

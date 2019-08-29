@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.extensions.box
 
 object ComponentMoveExample {
 
@@ -21,12 +22,12 @@ object ComponentMoveExample {
 
         val panel = Components.panel()
                 .withSize(Sizes.create(20, 10))
-                .wrapWithBox(true)
+                .withDecorations(box())
                 .build()
 
         val innerPanel = Components.panel()
                 .withSize(Sizes.create(10, 5))
-                .wrapWithBox(true)
+                .withDecorations(box())
                 .build()
 
         innerPanel.addComponent(Components.button()
@@ -47,7 +48,7 @@ object ComponentMoveExample {
 
         Thread.sleep(2000)
 
-        innerPanel.moveTo(Positions.create(2, 2))
+        innerPanel.moveBy(Positions.create(2, 2))
     }
 
 }

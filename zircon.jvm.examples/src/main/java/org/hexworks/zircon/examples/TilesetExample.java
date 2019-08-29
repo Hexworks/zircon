@@ -1,11 +1,6 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.TileColors;
-import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder;
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder;
@@ -70,17 +65,17 @@ public class TilesetExample {
         final Random random = new Random();
         for (int y = 0; y < TERMINAL_HEIGHT; y++) {
             for (int x = 0; x < TERMINAL_WIDTH; x++) {
-                tileGrid.setTileAt(Positions.create(x, y), GRASSES[random.nextInt(3)]);
+                tileGrid.draw(GRASSES[random.nextInt(3)], Positions.create(x, y));
             }
         }
         final String text = "Tileset Example";
         for (int i = 0; i < text.length(); i++) {
-            tileGrid.setTileAt(Positions.create(i + 2, 1),
-                    Tiles.newBuilder()
+            tileGrid.draw(Tiles.newBuilder()
                             .withCharacter(text.charAt(i))
                             .withForegroundColor(TEXT_COLOR)
                             .withBackgroundColor(TEXT_BG_COLOR)
-                            .build());
+                            .build(),
+                    Positions.create(i + 2, 1));
         }
 
         final int charCount = RANDOM_CHARS.length;
@@ -88,20 +83,18 @@ public class TilesetExample {
 
         final Layer overlay = new LayerBuilder()
                 .withSize(tileGrid.getSize())
-                .withFiller(Tiles.empty()
-                        .withBackgroundColor(TileColors.create(0, 0, 0, 50)))
+                .withFiller(Tiles.empty().withBackgroundColor(TileColors.create(0, 0, 0, 50)))
                 .build();
 
         for (int i = 0; i < RANDOM_CHAR_COUNT; i++) {
-            overlay.setTileAt(
-                    Positions.create(
-                            random.nextInt(TERMINAL_WIDTH),
-                            random.nextInt(TERMINAL_HEIGHT - 2) + 2),
-                    Tiles.newBuilder()
+            overlay.draw(Tiles.newBuilder()
                             .withCharacter(RANDOM_CHARS[random.nextInt(charCount)])
                             .withForegroundColor(ANSITileColor.values()[random.nextInt(ansiCount)])
                             .withBackgroundColor(TileColors.transparent())
-                            .build());
+                            .build(),
+                    Positions.create(
+                            random.nextInt(TERMINAL_WIDTH),
+                            random.nextInt(TERMINAL_HEIGHT - 2) + 2));
         }
         tileGrid.addLayer(overlay);
     }

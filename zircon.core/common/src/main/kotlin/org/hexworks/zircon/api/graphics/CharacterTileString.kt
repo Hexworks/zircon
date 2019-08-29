@@ -1,8 +1,7 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.data.Size
 
 /**
  * A [CharacterTileString] is an aggregation of [CharacterTile]s. You can draw a
@@ -21,19 +20,21 @@ import org.hexworks.zircon.api.resource.TilesetResource
  * [CharacterTileString] comes with its own builder and you can create them in a simple
  * way from plain Java [String]s.
  */
-interface CharacterTileString : Drawable, Iterable<CharacterTile> {
+interface CharacterTileString : Iterable<CharacterTile>, TileComposite {
 
-    // TODO: use val instead
-    fun textCharacters(): List<CharacterTile>
-
-    fun toTileGraphics(tileset: TilesetResource): TileGraphics
+    val characterTiles: List<CharacterTile>
 
     /**
      * Creates a new [CharacterTileString] which contains the contents of `this` string
      * and the `other` string. The original strings are left untouched. So if you `plus`
      * `[x, y]` to `[a, b]`, you'll get `[a, b, x, y]`
      * **Note that** the [TextWrap] form the original (`this`) string will be used in the
-     * resulting string!
+     * resulting string, and their sizes will be added together.
      */
     operator fun plus(other: CharacterTileString): CharacterTileString
+
+    /**
+     * Returns a new [CharacterTileString] with the given [size]
+     */
+    fun withSize(size: Size): CharacterTileString
 }

@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.component
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 
 /**
@@ -29,16 +29,11 @@ interface InternalComponentContainer : ComponentContainer, UIEventDispatcher {
     fun deactivate()
 
     /**
-     * Creates a list of [Layer]s out of the current components
-     * this container is holding. The [Layer]s are ordered from
-     * bottom to top to make it easy to render them.
-     */
-    fun toFlattenedLayers(): Iterable<Layer>
-
-    /**
      * Applies a [ColorTheme] to this component and recursively to all its children (if any).
-     * @return the [ComponentStyleSet] which the [ColorTheme] was converted to
+     * @return the [ComponentStyleSet] which the [ColorTheme] was converted to.
      */
     fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet
+
+    val layerStates: Iterable<LayerState>
 
 }

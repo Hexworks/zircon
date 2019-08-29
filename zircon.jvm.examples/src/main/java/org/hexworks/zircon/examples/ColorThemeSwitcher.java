@@ -1,10 +1,8 @@
 package org.hexworks.zircon.examples;
 
-import kotlin.Unit;
 import org.hexworks.zircon.api.AppConfigs;
 import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.Functions;
 import org.hexworks.zircon.api.Positions;
 import org.hexworks.zircon.api.Screens;
 import org.hexworks.zircon.api.Sizes;
@@ -31,7 +29,7 @@ import java.util.stream.Collectors;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 import static org.hexworks.zircon.api.ComponentDecorations.shadow;
-import static org.hexworks.zircon.api.Functions.*;
+import static org.hexworks.zircon.api.Functions.fromConsumer;
 
 @SuppressWarnings("ALL")
 public class ColorThemeSwitcher {
@@ -45,6 +43,7 @@ public class ColorThemeSwitcher {
         TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(TILESET)
                 .withSize(SCREEN_SIZE)
+                .withDebugMode(true)
                 .build());
 
         Screen screen = Screens.createScreenFor(tileGrid);

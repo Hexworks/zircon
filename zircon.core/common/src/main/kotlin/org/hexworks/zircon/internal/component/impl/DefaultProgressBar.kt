@@ -61,7 +61,7 @@ class DefaultProgressBar(componentMetadata: ComponentMetadata,
 
 
     override fun render() {
-        LOGGER.debug("Label (id=${id.abbreviate()}, visibility=$isVisible) was rendered.")
+        LOGGER.debug("Label (id=${id.abbreviate()}, hidden=$isHidden) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 

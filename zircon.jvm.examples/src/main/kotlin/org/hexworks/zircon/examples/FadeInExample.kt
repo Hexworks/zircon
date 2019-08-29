@@ -1,6 +1,13 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Modifiers
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.modifier.FadeIn
 
@@ -19,7 +26,7 @@ object FadeInExample {
 
         val text = "This text fades in with a glow"
 
-        tileGrid.putCursorAt(Positions.create(1, 1))
+        tileGrid.cursorPosition = Positions.create(1, 1)
         text.forEach { c ->
             tileGrid.putTile(Tiles.defaultTile()
                     .withBackgroundColor(TileColor.transparent())
@@ -30,7 +37,7 @@ object FadeInExample {
 
         val textWithoutGlow = "This text fades in without a glow"
 
-        tileGrid.putCursorAt(Positions.create(1, 3))
+        tileGrid.cursorPosition = Positions.create(1, 3)
         textWithoutGlow.forEach { c ->
             tileGrid.putTile(Tiles.defaultTile()
                     .withBackgroundColor(TileColor.transparent())

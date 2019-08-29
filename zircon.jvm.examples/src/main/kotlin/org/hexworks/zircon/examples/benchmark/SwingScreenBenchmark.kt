@@ -44,7 +44,7 @@ fun main(args: Array<String>) {
                 .withTileset(tileset)
                 .build()
         layerSize.fetchPositions().forEach {
-            imageLayer.setTileAt(it, filler)
+            imageLayer.draw(filler, it)
         }
 
         val layer = LayerBuilder.newBuilder()
@@ -79,7 +79,7 @@ fun main(args: Array<String>) {
 private fun fillGrid(tileGrid: TileGrid, tile: Tile) {
     (0..tileGrid.size.height).forEach { y ->
         (0..tileGrid.size.width).forEach { x ->
-            tileGrid.setTileAt(GridPosition(x, y), tile)
+            tileGrid.draw(tile, GridPosition(x, y))
         }
     }
 }

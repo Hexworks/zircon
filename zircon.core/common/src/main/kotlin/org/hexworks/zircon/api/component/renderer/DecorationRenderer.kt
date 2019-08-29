@@ -16,5 +16,5 @@ interface DecorationRenderer<T: RenderContext> {
      * is already constrained to the bounds of this renderer so no extra positioning is
      * necessary.
      */
-    fun render(tileGraphics: SubTileGraphics, context: T)
+    fun render(tileGraphics: TileGraphics, context: T)
 }

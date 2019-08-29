@@ -11,8 +11,6 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.handleComponentEvents
-import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
@@ -36,7 +34,7 @@ class DefaultComponentContainerTest {
     fun setUp() {
         target = DefaultComponentContainer(RootContainer(
                 componentMetadata = ComponentMetadata(
-                        position = Position.defaultPosition(),
+                        relativePosition = Position.defaultPosition(),
                         size = SIZE,
                         tileset = TILESET,
                         componentStyleSet = buildStyles()),
@@ -49,12 +47,12 @@ class DefaultComponentContainerTest {
     fun shouldProperlyRemoveComponent() {
         val button = createButton()
         target.addComponent(button)
-        assertThat(target.toFlattenedLayers()).hasSize(2)
+        assertThat(target.layerStates).hasSize(2)
 
         val result = target.removeComponent(button)
 
         assertThat(result).isTrue()
-        assertThat(target.toFlattenedLayers()).hasSize(1) // default container
+        assertThat(target.layerStates).hasSize(1) // default container
     }
 
     // TODO: wtf is the problem with this?

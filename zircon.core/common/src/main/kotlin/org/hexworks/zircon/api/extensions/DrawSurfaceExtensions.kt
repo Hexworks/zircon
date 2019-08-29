@@ -8,12 +8,19 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.resource.TilesetResource
 
+/**
+ * Transforms an [Iterable] of [Position] to [Tile] [Pair]s to a [TileImage] with
+ * the given [size] and [tileset].
+ */
 fun Iterable<Pair<Position, Tile>>.toTileImage(size: Size, tileset: TilesetResource): TileImage {
     return toMap().toTileImage(size, tileset)
 }
 
+/**
+ * Transforms the given [Map] to a [TileImage] with the given [size] and [tileset].
+ */
 fun Map<Position, Tile>.toTileImage(size: Size, tileset: TilesetResource): TileImage {
-    require(keys.none { it.hasNegativeComponent() }) {
+    require(keys.none { it.hasNegativeComponent }) {
         "Can't create a TileImage with positions which have a negative component (x or y)."
     }
     return DrawSurfaces.tileImageBuilder()
@@ -23,12 +30,19 @@ fun Map<Position, Tile>.toTileImage(size: Size, tileset: TilesetResource): TileI
             .build()
 }
 
+/**
+ * Transforms an [Iterable] of [Position] to [Tile] [Pair]s to a [TileGraphics] with
+ * the given [size] and [tileset].
+ */
 fun Iterable<Pair<Position, Tile>>.toTileGraphics(size: Size, tileset: TilesetResource): TileGraphics {
     return toMap().toTileGraphics(size, tileset)
 }
 
+/**
+ * Transforms the given [Map] to a [TileGraphics] with the given [size] and [tileset].
+ */
 fun Map<Position, Tile>.toTileGraphics(size: Size, tileset: TilesetResource): TileGraphics {
-    require(keys.none { it.hasNegativeComponent() }) {
+    require(keys.none { it.hasNegativeComponent }) {
         "Can't create a TileImage with positions which have a negative component (x or y)."
     }
     return DrawSurfaces.tileGraphicsBuilder()

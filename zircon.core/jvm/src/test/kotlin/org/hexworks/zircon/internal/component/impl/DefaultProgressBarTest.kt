@@ -37,7 +37,7 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
         rendererStub = ComponentRendererStub(DefaultProgressBarRenderer())
         target = DefaultProgressBar(
                 componentMetadata = ComponentMetadata(
-                        position = POSITION_2_3,
+                        relativePosition = POSITION_2_3,
                         componentStyleSet = COMPONENT_STYLES,
                         size = SIZE_10X1,
                         tileset = TILESET_REX_PAINT_20X20),
@@ -55,7 +55,7 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
     fun shouldProperlyRenderProgressBar() {
         target.progress = PROGRESS
         val surface = target.graphics
-        val offset = target.contentPosition.x
+        val offset = target.contentOffset.x
         val styleSet = target.componentStyleSet.fetchStyleFor(DEFAULT)
         val invertedStyleSet = styleSet
                 .withBackgroundColor(styleSet.foregroundColor)

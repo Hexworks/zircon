@@ -89,7 +89,7 @@ data class TileBuilder(
                 name = name)
     }
 
-    fun buildGraphicTile(): GraphicalTile {
+    fun buildGraphicalTile(): GraphicalTile {
         return DefaultGraphicalTile(
                 name = name,
                 tags = tags,

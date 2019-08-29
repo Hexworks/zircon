@@ -17,7 +17,6 @@ interface AnimationFrame {
      */
     val repeatCount: Int
 
-    // TODO: immutable + builder
     /**
      * The [Position] at which this [AnimationFrame] should be drawn.
      */

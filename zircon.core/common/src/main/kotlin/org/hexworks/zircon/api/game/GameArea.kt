@@ -64,7 +64,7 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
         return if (fetchMode == BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocks()
         } else {
-            actualSize().fetchPositions().map { createCell(it) }
+            actualSize.fetchPositions().map { createCell(it) }
         }
     }
 
@@ -133,7 +133,7 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
         } else {
             fetchPositionsWithOffset(
                     offset = Position3D.defaultPosition(),
-                    size = Size3D.create(actualSize().xLength, actualSize().yLength, z))
+                    size = Size3D.create(actualSize.xLength, actualSize.yLength, z))
                     .map { createCell(it) }
         }
     }

@@ -1,16 +1,23 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.util.PersistentMap
 
 /**
  * An immutable image built from [Tile]s. It is completely in memory but it can be drawn onto
  * [DrawSurface]s like a [org.hexworks.zircon.api.grid.TileGrid] or a [TileGraphics].
  */
-interface TileImage : Drawable, TileComposite {
+interface TileImage : TileComposite {
+
+    /**
+     * The [Tile]s this [TileComposite] contains. Note that a [TileImage]
+     * uses a [PersistentMap] to store the tiles to enable creating new
+     * images fast.
+     */
+    override val tiles: PersistentMap<Position, Tile>
 
     val tileset: TilesetResource
 
@@ -100,12 +107,6 @@ interface TileImage : Drawable, TileComposite {
      * If the new image would overflow an exception is thrown
      */
     fun toSubImage(offset: Position, size: Size): TileImage
-
-    /**
-     * Returns the contents of this [TileImage] as a map of
-     * [Position] - [Tile] pairs.
-     */
-    fun toTileMap(): Map<Position, Tile>
 
     /**
      * Returns a copy of this [TileImage] with the exact same content.

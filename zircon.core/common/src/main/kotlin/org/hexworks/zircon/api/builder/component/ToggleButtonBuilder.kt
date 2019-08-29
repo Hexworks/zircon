@@ -37,7 +37,7 @@ data class ToggleButtonBuilder(
                 componentRenderer = componentRenderer as ComponentRenderer<ToggleButton>)
         return DefaultToggleButton(
                 componentMetadata = ComponentMetadata(
-                        position = position,
+                        relativePosition = position,
                         size = size,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),

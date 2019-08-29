@@ -1,72 +1,86 @@
 package org.hexworks.zircon.internal.graphics
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.data.DrawSurfaceState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.data.DefaultDrawSurfaceState
 import org.hexworks.zircon.platform.factory.PersistentMapFactory
-import org.hexworks.zircon.platform.util.Dispatchers
-import kotlin.coroutines.CoroutineContext
+import kotlin.jvm.Synchronized
 
 /**
- * This is a thread-safe [TileGraphics] implementation. It offers consistent
- * snapshot creation, and consistent writes.
- * **Note that** writes are confined to one thread so batch writing might be
- * inefficient (eg: calling [setTileAt] repeatedly). Consider using [FastTileGraphics]
- * or [ReadSafeTileGraphics] if you need to do many transformations,
- * but you only use one thread.
+ * This is a read-safe [TileGraphics] implementation. Read safety means
+ * that all read operations ([getTileAt], [state], etc) are consistent
+ * even if concurrent write operations are being performed. Use this implementation
+ * if you own't use multiple threads when writing to this object.
  */
 class ThreadSafeTileGraphics(
-        size: Size,
-        tileset: TilesetResource,
+        initialSize: Size,
+        initialTileset: TilesetResource,
         initialTiles: Map<Position, Tile> = mapOf())
-    : BaseTileGraphics(
-        tileset = tileset,
-        initialSize = size), CoroutineScope {
+    : BaseTileGraphics(initialSize = initialSize, initialTileset = initialTileset) {
 
-    override val tiles: Map<Position, Tile>
-        get() = contents
-    override val coroutineContext: CoroutineContext = Dispatchers.Single
-
-    private var contents = PersistentMapFactory.create<Position, Tile>()
+    override var tiles = PersistentMapFactory.create<Position, Tile>()
             .putAll(initialTiles)
+        private set
 
-    override fun drawOnto(surface: DrawSurface, position: Position) {
-        launch {
-            contents = contents.putAll(surface.tiles.mapKeys { it.key + position })
+    override var tileset: TilesetResource = initialTileset
+        @Synchronized
+        set(value) {
+            value.checkCompatibilityWith(field)
+            field = value
+            currentState = currentState.copy(tileset = value)
+        }
+
+    override val state: DrawSurfaceState
+        get() = currentState
+
+    private var currentState = DefaultDrawSurfaceState(
+            size = initialSize,
+            tileset = initialTileset,
+            tiles = initialTiles)
+
+    @Synchronized
+    override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
+        tiles = tiles.putAll(tileMap.asSequence()
+                .filter { drawArea.containsPosition(it.key) && size.containsPosition(it.key + drawPosition) }
+                .map { it.key + drawPosition to it.value }
+                .toMap())
+        currentState = currentState.copy(tiles = tiles)
+    }
+
+    @Synchronized
+    override fun draw(tile: Tile, drawPosition: Position) {
+        if (size.containsPosition(drawPosition)) {
+            tiles = tiles.put(drawPosition, tile)
+            currentState = currentState.copy(tiles = tiles)
         }
     }
 
+    @Synchronized
     override fun clear() {
-        launch {
-            contents = contents.clear()
-        }
+        tiles = tiles.clear()
+        currentState = currentState.copy(tiles = tiles)
     }
 
-    override fun setTileAt(position: Position, tile: Tile) {
-        launch {
-            if (size.containsPosition(position)) {
-                contents[position]?.let { previous ->
-                    if (previous != tile) {
-                        contents = contents.put(position, tile)
-                    }
-                } ?: run {
-                    contents = contents.put(position, tile)
-                }
-            }
-        }
+    @Synchronized
+    override fun fill(filler: Tile) {
+        val (currentTiles, _, currentSize) = currentState
+        tiles = tiles.putAll(currentSize.fetchPositions()
+                .minus(currentTiles.filterValues { it != Tiles.empty() }.keys)
+                .map { it to filler }.toMap())
+        currentState = currentState.copy(tiles = tiles)
     }
 
+    @Synchronized
     override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
-        launch {
-            getTileAt(position).map { tile ->
-                setTileAt(position, tileTransformer(tile))
-            }
+        tiles[position]?.let { tile ->
+            tiles = tiles.put(position, tileTransformer(tile))
+            currentState = currentState.copy(tiles = tiles)
         }
     }
 }

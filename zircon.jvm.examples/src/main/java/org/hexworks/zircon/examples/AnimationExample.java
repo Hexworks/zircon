@@ -1,12 +1,6 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Screens;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.animation.Animation;
 import org.hexworks.zircon.api.animation.AnimationResource;
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder;
@@ -27,8 +21,6 @@ public class AnimationExample {
     private static final TilesetResource TILESET = CP437TilesetResources.taffer20x20();
 
     public static void main(String[] args) {
-
-        // TODO: Libgdx doesn't have animations yet
         Screen screen = Screens.createScreenFor(SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(TILESET)
                 .withSize(TERMINAL_SIZE)
@@ -68,6 +60,7 @@ public class AnimationExample {
 
         screen.startAnimation(leftAnim);
         screen.startAnimation(rightAnim);
+
 
     }
 

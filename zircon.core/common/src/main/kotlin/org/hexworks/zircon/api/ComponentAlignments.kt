@@ -51,7 +51,7 @@ object ComponentAlignments {
     fun alignmentAround(component: Component,
                         alignmentType: ComponentAlignment): AlignmentStrategy {
         return AroundAlignmentStrategy(
-                other = component,
+                other = component.relativeBounds,
                 alignmentType = alignmentType)
     }
 

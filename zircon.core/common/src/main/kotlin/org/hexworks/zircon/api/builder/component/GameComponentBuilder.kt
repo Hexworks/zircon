@@ -40,7 +40,6 @@ data class GameComponentBuilder<T : Tile, B : Block<T>>(
         this.visibleSize = visibleSize
     }
 
-    // TODO: fishy
     override fun withComponentRenderer(componentRenderer: ComponentRenderer<GameComponent<T, B>>): GameComponentBuilder<T, B> {
         throw UnsupportedOperationException("Can't set a custom component renderer for a game component.")
     }
@@ -54,7 +53,7 @@ data class GameComponentBuilder<T : Tile, B : Block<T>>(
                 gameArea = gameArea.get(),
                 projectionMode = projectionMode,
                 componentMetadata = ComponentMetadata(
-                        position = position,
+                        relativePosition = position,
                         size = size,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset))

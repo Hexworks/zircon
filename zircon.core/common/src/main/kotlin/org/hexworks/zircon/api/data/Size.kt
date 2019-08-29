@@ -20,16 +20,15 @@ interface Size : Comparable<Size> {
 
     operator fun component2() = height
 
-    // TODO: use vals instead
     /**
      * Tells whether this [Size] **is** the same as [Size.unknown].
      */
-    fun isUnknown(): Boolean
+    val isUnknown: Boolean
 
     /**
      * Tells whether this [Size] **is not** the same as [Size.unknown].
      */
-    fun isNotUnknown(): Boolean
+    val isNotUnknown: Boolean
 
     /**
      * Creates a list of [Position]s in the order in which they should

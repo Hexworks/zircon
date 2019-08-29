@@ -45,7 +45,7 @@ data class VerticalSliderBuilder(
     override fun build(): Slider = DefaultVerticalSlider(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 minValue = minValue,

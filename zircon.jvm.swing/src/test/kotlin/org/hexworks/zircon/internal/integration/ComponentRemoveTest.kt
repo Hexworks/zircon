@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.integration
 
 import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.extensions.handleMouseEvents
+import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_RELEASED
 import org.hexworks.zircon.api.uievent.Processed
 
@@ -22,7 +22,7 @@ object ComponentRemoveTest {
 
         val panel = Components.panel()
                 .withSize(screen.size)
-                .wrapWithBox()
+                .withDecorations(box())
                 .build()
 
         screen.addComponent(panel)

@@ -1,14 +1,6 @@
 package org.hexworks.zircon.examples.docs;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.ColorThemes;
-import org.hexworks.zircon.api.DrawSurfaces;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Screens;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.graphics.TileGraphics;
 import org.hexworks.zircon.api.grid.TileGrid;
@@ -20,7 +12,7 @@ public class CreatingAScreen {
 
         TileGrid tileGrid = SwingApplications.startTileGrid(
                 AppConfigs.newConfig()
-                        .withSize(Sizes.create(20, 8))
+                        .withSize(20, 8)
                         .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
                         .build());
 
@@ -37,7 +29,7 @@ public class CreatingAScreen {
                         .build())
                 .build();
 
-        screen.draw(image, Positions.zero());
+        screen.draw(image, Positions.zero(), image.getSize());
 
         screen.display();
     }

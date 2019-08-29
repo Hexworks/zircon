@@ -1,7 +1,5 @@
 package org.hexworks.zircon.internal.uievent.impl
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import org.hexworks.cobalt.events.api.CancelState
 import org.hexworks.cobalt.events.api.NotCancelled
 import org.hexworks.cobalt.events.api.Subscription
@@ -26,24 +24,19 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.util.PersistentList
 import org.hexworks.zircon.platform.factory.PersistentListFactory
 import org.hexworks.zircon.platform.factory.PersistentMapFactory
-import org.hexworks.zircon.platform.util.Dispatchers
 
-class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventSource, CoroutineScope {
-
-    override val coroutineContext = Dispatchers.Single
+class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventSource {
 
     private val logger = LoggerFactory.getLogger(this::class)
-    private val listeners = PersistentMapFactory.create<UIEventType, PersistentList<InputEventSubscription>>()
+    private var listeners = PersistentMapFactory.create<UIEventType, PersistentList<InputEventSubscription>>()
     private var closed = false
 
     override fun close() {
-        launch {
-            closed = true
-            listeners.flatMap { it.value }.forEach {
-                it.cancel()
-            }
-            listeners.clear()
+        closed = true
+        listeners.flatMap { it.value }.forEach {
+            it.cancel()
         }
+        listeners = listeners.clear()
     }
 
     override fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse {
@@ -51,8 +44,7 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
         return listeners[event.type]?.let { list ->
             var finalResult: UIEventResponse = Pass
             list.forEach {
-                val result = it.listener.invoke(event, phase)
-                when (result) {
+                when (val result = it.listener.invoke(event, phase)) {
                     Processed,
                     PreventDefault -> if (result.hasPrecedenceOver(finalResult)) {
                         finalResult = result
@@ -135,10 +127,8 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
         val subscription = InputEventSubscription(
                 eventType = eventType,
                 listener = listener)
-        launch {
-            val subscriptions = listeners.getOrElse(eventType) { PersistentListFactory.create() }
-            listeners.put(eventType, subscriptions.add(subscription))
-        }
+        val subscriptions = listeners.getOrElse(eventType) { PersistentListFactory.create() }
+        listeners = listeners.put(eventType, subscriptions.add(subscription))
         return subscription
     }
 
@@ -154,10 +144,8 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
 
         override fun cancel(cancelState: CancelState) {
             val subscription = this
-            launch {
-                listeners[eventType]?.let { subscriptions ->
-                    listeners.put(eventType, subscriptions.remove(subscription))
-                }
+            listeners[eventType]?.let { subscriptions ->
+                listeners = listeners.put(eventType, subscriptions.remove(subscription))
             }
             this.cancelState = cancelState
         }

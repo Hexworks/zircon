@@ -30,7 +30,7 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
                 componentMetadata = componentMetadata,
                 renderer = renderingStrategy) {
 
-    override val state: RadioButtonState
+    override val radioButtonState: RadioButtonState
         get() = currentState
 
     private var currentState = NOT_SELECTED

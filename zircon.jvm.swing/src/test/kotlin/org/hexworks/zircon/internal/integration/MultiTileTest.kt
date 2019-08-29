@@ -2,12 +2,17 @@
 
 package org.hexworks.zircon.internal.integration
 
-import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.extensions.box
 
 object MultiTileTest {
 
-    private val logger = LoggerFactory.getLogger(javaClass)
     private val theme = ColorThemes.arc()
     private val tileset = CP437TilesetResources.rexPaint20x20()
 
@@ -32,18 +37,16 @@ object MultiTileTest {
                 .withTileset(CP437TilesetResources.yobbo20x20()))
 
         screen.addComponent(Components.panel()
-                .withTitle("Anikki 20x20")
+                .withDecorations(box(title = "Anikki 20x20"))
                 .withPosition(1, 5)
                 .withSize(17, 2)
-                .wrapWithBox()
                 .withTileset(CP437TilesetResources.anikki20x20()))
 
         val container = Components.panel()
                 .withPosition(1, 8)
                 .withSize(17, 3)
                 .withTileset(CP437TilesetResources.bisasam20x20())
-                .wrapWithBox()
-                .withTitle("Bisasam 20x20")
+                .withDecorations(box(title = "Bisasam 20x20"))
                 .build()
         container.addComponent(Components.label()
                 .withText("Oreslam 20x20")

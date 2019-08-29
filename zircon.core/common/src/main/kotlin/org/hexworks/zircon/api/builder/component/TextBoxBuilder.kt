@@ -34,7 +34,6 @@ data class TextBoxBuilder(
         contentSize = Sizes.unknown().withWidth(initialContentWidth)
     }
 
-    // TODO: fishy
     override fun withSize(size: Size): TextBoxBuilder {
         throw UnsupportedOperationException("You can't set a size for a TextBox by hand. Try setting width instead.")
     }
@@ -129,8 +128,8 @@ data class TextBoxBuilder(
         require(component.height == 1) {
             "An inline Component can only have a height of 1."
         }
-        require(tileset.size == component.currentTileset().size) {
-            "Trying to add component with incompatible tileset size '${component.currentTileset().size}' to" +
+        require(tileset.size == component.tileset.size) {
+            "Trying to add component with incompatible tileset size '${component.tileset.size}' to" +
                     "container with tileset size: '${tileset.size}'!"
         }
         component.moveRightBy(currentInlineLength)
@@ -155,7 +154,7 @@ data class TextBoxBuilder(
         return DefaultTextBox(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 renderingStrategy = DefaultComponentRenderingStrategy(

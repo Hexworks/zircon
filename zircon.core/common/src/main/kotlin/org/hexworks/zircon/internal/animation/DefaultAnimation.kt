@@ -4,59 +4,56 @@ import org.hexworks.cobalt.Identifier
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.factory.IdentifierFactory
 import org.hexworks.zircon.api.animation.Animation
-import org.hexworks.zircon.api.animation.AnimationFrame
+import org.hexworks.zircon.api.behavior.Layerable
 
 internal class DefaultAnimation(override val tick: Long,
                                 override val loopCount: Int,
                                 override val totalFrameCount: Int,
                                 override val uniqueFrameCount: Int,
-                                private val frames: List<InternalAnimationFrame>) : Animation {
+                                frames: List<InternalAnimationFrame>) : Animation {
 
     override val id: Identifier = IdentifierFactory.randomIdentifier()
+
+    override val isLoopedIndefinitely = loopCount == 0
 
     private val infiniteLoop = loopCount == 0
     private var currentLoopCount = loopCount
     private val framesInOrder = mutableListOf<InternalAnimationFrame>()
 
-    private var currentFrame: InternalAnimationFrame
+    private var currentFrame: Maybe<InternalAnimationFrame> = Maybe.empty()
+
+    private val flattenedFrames = frames.flatMap { frame ->
+        (0 until frame.repeatCount).map { frame }
+    }
 
     init {
-        flattenFrames().forEach {
-            framesInOrder.add(it)
-        }
-        require(framesInOrder.isNotEmpty()) {
+        require(frames.isNotEmpty()) {
             "There are no frames in this Animation."
         }
-        currentFrame = framesInOrder.first()
+        flattenedFrames.forEach {
+            framesInOrder.add(it)
+        }
     }
 
-    override fun isLoopedIndefinitely() = loopCount == 0
-
-    override fun hasNextFrame() = infiniteLoop || currentLoopCount > 0
-
-    override fun clearCurrentFrame() {
-        currentFrame.remove()
-    }
-
-    override fun fetchCurrentFrame() = currentFrame
-
-    override fun fetchNextFrame(): Maybe<out AnimationFrame> {
-        return Maybe.ofNullable(if (hasNextFrame()) {
-            framesInOrder.first().also {
-                if (framesInOrder.isEmpty()) {
-                    currentLoopCount--
-                    framesInOrder.addAll(flattenFrames())
-                }
+    override fun displayNextFrame(layerable: Layerable): Boolean {
+        removeCurrentFrame()
+        if (hasNextFrame()) {
+            currentFrame = Maybe.of(framesInOrder.removeAt(0))
+        }
+        return currentFrame.map { currentFrame ->
+            if (framesInOrder.isEmpty()) {
+                currentLoopCount--
+                framesInOrder.addAll(flattenedFrames)
             }
-        } else {
-            null
-        })
+            currentFrame.displayOn(layerable)
+            true
+        }.orElse(false)
     }
 
-    override fun fetchAllFrames() = frames
+    override fun removeCurrentFrame() {
+        currentFrame.map(InternalAnimationFrame::remove)
+    }
 
-    private fun flattenFrames() =
-            frames.flatMap { frame ->
-                (0 until frame.repeatCount).map { frame }
-            }
+    private fun hasNextFrame() = infiniteLoop || currentLoopCount > 0
+
 }

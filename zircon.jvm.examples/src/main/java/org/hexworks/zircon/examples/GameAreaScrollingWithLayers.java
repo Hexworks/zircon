@@ -1,20 +1,6 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.Blocks;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.CharacterTileStrings;
-import org.hexworks.zircon.api.ColorThemes;
-import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.DrawSurfaces;
-import org.hexworks.zircon.api.Layers;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Screens;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.TileColors;
-import org.hexworks.zircon.api.Tiles;
-import org.hexworks.zircon.api.UIEventResponses;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.builder.component.GameComponentBuilder;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.ColorTheme;
@@ -27,10 +13,7 @@ import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.data.impl.Position3D;
 import org.hexworks.zircon.api.data.impl.Size3D;
 import org.hexworks.zircon.api.game.GameArea;
-import org.hexworks.zircon.api.graphics.BoxType;
-import org.hexworks.zircon.api.graphics.Layer;
-import org.hexworks.zircon.api.graphics.Symbols;
-import org.hexworks.zircon.api.graphics.TileGraphics;
+import org.hexworks.zircon.api.graphics.*;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
@@ -38,6 +21,7 @@ import org.hexworks.zircon.api.uievent.KeyCode;
 import org.hexworks.zircon.api.uievent.KeyboardEventType;
 import org.hexworks.zircon.internal.game.DefaultGameComponent;
 import org.hexworks.zircon.internal.game.InMemoryGameArea;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -48,6 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 
+// TODO: not working
 @SuppressWarnings("ALL")
 public class GameAreaScrollingWithLayers {
 
@@ -168,15 +153,8 @@ public class GameAreaScrollingWithLayers {
     }
 
     private static void enableMovement(final Screen screen, final GameArea<Tile, Block<Tile>> gameArea) {
-        final AtomicReference<Layer> coordinates = new AtomicReference<>(Layers.newBuilder()
-                .withTileGraphics(CharacterTileStrings.newBuilder()
-                        .withBackgroundColor(TileColors.transparent())
-                        .withForegroundColor(TileColors.fromString("#aaaadd"))
-                        .withText(String.format("Position: (x=%s, y=%s, z=%s)", 0, 0, 0))
-                        .build()
-                        .toTileGraphics(TILESET))
-                .withOffset(Positions.create(21, 1))
-                .build());
+        final AtomicReference<Layer> coordinates = new AtomicReference<>();
+        coordinates.set(createCoordinates(Positions.create3DPosition(0, 0, 0)));
         screen.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
             if (event.getCode().equals(KeyCode.ESCAPE) && !headless) {
                 System.exit(0);
@@ -200,20 +178,26 @@ public class GameAreaScrollingWithLayers {
                     gameArea.scrollOneDown();
                 }
                 screen.removeLayer(coordinates.get());
-                Position3D visibleOffset = gameArea.visibleOffset();
-                coordinates.set(Layers.newBuilder()
-                        .withTileGraphics(CharacterTileStrings.newBuilder()
-                                .withBackgroundColor(TileColors.transparent())
-                                .withForegroundColor(TileColors.fromString("#aaaadd"))
-                                .withText(String.format("Position: (x=%s, y=%s, z=%s)",
-                                        visibleOffset.getX(), visibleOffset.getY(), visibleOffset.getZ()))
-                                .build()
-                                .toTileGraphics(TILESET))
-                        .withOffset(Positions.create(21, 1))
-                        .build());
+                coordinates.set(createCoordinates(gameArea.getVisibleOffset()));
                 screen.addLayer(coordinates.get());
             }
             return UIEventResponses.processed();
         });
+    }
+
+    @NotNull
+    private static Layer createCoordinates(Position3D pos) {
+        String text = String.format("Position: (x=%s, y=%s, z=%s)", pos.getX(), pos.getY(), pos.getZ());
+        TileComposite tc = CharacterTileStrings.newBuilder()
+                .withBackgroundColor(TileColors.transparent())
+                .withForegroundColor(TileColors.fromString("#aaaadd"))
+                .withText(text)
+                .withSize(Sizes.create(text.length(), 1))
+                .build();
+        Layer layer = Layers.newBuilder()
+                .withOffset(Positions.create(21, 1))
+                .build();
+        layer.draw(tc, Positions.zero(), Sizes.create(text.length(), 1));
+        return layer;
     }
 }

@@ -43,7 +43,7 @@ class DefaultHeader(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        LOGGER.debug("Header (id=${id.abbreviate()}, visibility=$isVisible) was rendered.")
+        LOGGER.debug("Header (id=${id.abbreviate()}, hidden=$isHidden) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 

@@ -1,7 +1,5 @@
 package org.hexworks.zircon.api.game.base
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
@@ -20,15 +18,12 @@ import org.hexworks.zircon.internal.util.PersistentList
 import org.hexworks.zircon.internal.util.PersistentMap
 import org.hexworks.zircon.platform.factory.PersistentListFactory
 import org.hexworks.zircon.platform.factory.PersistentMapFactory
-import org.hexworks.zircon.platform.util.Dispatchers
 
-abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
-                                                    actualSize: Size3D)
-    : GameArea<T, B>, CoroutineScope, Scrollable3D by DefaultScrollable3D(
-        visibleSize = visibleSize,
-        actualSize = actualSize) {
-
-    override val coroutineContext = Dispatchers.Single
+abstract class BaseGameArea<T : Tile, B : Block<T>>(initialVisibleSize: Size3D,
+                                                    initialActualSize: Size3D)
+    : GameArea<T, B>, Scrollable3D by DefaultScrollable3D(
+        initialVisibleSize = initialVisibleSize,
+        initialActualSize = initialActualSize) {
 
     private var overlays: PersistentMap<Int, PersistentList<Layer>> = PersistentMapFactory.create()
 
@@ -36,7 +31,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
         return if (fetchMode == GameArea.BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocks()
         } else {
-            actualSize().fetchPositions().map { createCell(it) }
+            actualSize.fetchPositions().map { createCell(it) }
         }
     }
 
@@ -77,7 +72,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
         } else {
             fetchPositionsWithOffset(
                     offset = Position3D.defaultPosition(),
-                    size = Size3D.create(actualSize().xLength, actualSize().yLength, z))
+                    size = Size3D.create(actualSize.xLength, actualSize.yLength, z))
                     .map { createCell(it) }
         }
     }
@@ -127,15 +122,11 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
     }
 
     override fun pushOverlayAt(layer: Layer, level: Int) {
-        launch {
-            overlays = overlays.put(level, fetchLayersAt(level).add(layer))
-        }
+        overlays = overlays.put(level, fetchLayersAt(level).add(layer))
     }
 
     override fun removeOverlay(layer: Layer, level: Int) {
-        launch {
-            overlays = overlays.put(level, fetchLayersAt(level).remove(layer))
-        }
+        overlays = overlays.put(level, fetchLayersAt(level).remove(layer))
     }
 
     private fun fetchLayersAt(level: Int): PersistentList<Layer> {

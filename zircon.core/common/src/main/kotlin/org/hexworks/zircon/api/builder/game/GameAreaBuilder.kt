@@ -63,8 +63,8 @@ data class GameAreaBuilder<T : Tile, B : Block<T>>(
         }
         return InMemoryGameArea(
                 layersPerBlock = layersPerBlock,
-                visibleSize = visibleSize,
-                actualSize = actualSize,
+                initialVisibleSize = visibleSize,
+                initialActualSize = actualSize,
                 defaultBlock = defaultBlock.get())
     }
 

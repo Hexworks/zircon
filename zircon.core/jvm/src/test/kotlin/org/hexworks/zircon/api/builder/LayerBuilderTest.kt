@@ -22,8 +22,9 @@ class LayerBuilderTest {
         val result = target
                 .withSize(SIZE)
                 .withOffset(OFFSET)
-                .build()
-                .fill(FILLER)
+                .build().apply {
+                    fill(FILLER)
+                }
 
         assertThat(result.size)
                 .isEqualTo(SIZE)

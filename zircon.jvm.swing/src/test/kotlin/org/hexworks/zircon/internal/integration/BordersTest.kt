@@ -77,7 +77,7 @@ object BordersTest {
         )
 
         repeat(tiles.size) {
-            tileGrid.setTileAt(Positions.create(1 + it, 1), tiles[it])
+            tileGrid.draw(tiles[it], Positions.create(1 + it, 1))
         }
     }
 

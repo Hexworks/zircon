@@ -11,26 +11,20 @@ import org.hexworks.zircon.api.data.impl.Size3D
  */
 interface Scrollable3D {
 
-    // TODO: refactor to vals
     /**
      * Returns the [Size3D] of the virtual space this [Scrollable3D] can scroll through.
      */
-    fun actualSize(): Size3D
-
-    /**
-     * Sets the [Size3D] of the virtual space this [Scrollable3D] can scroll through.
-     */
-    fun setActualSize(size: Size3D)
+    var actualSize: Size3D
 
     /**
      * Returns the size of the visible part of this [Scrollable3D].
      */
-    fun visibleSize(): Size3D
+    val visibleSize: Size3D
 
     /**
      * Returns the offset where the visible part of this [Scrollable3D] starts.
      */
-    fun visibleOffset(): Position3D
+    val visibleOffset: Position3D
 
     /**
      * Scrolls this [Scrollable3D] with one unit to the right (width axis).

@@ -16,6 +16,7 @@ import org.hexworks.zircon.api.util.markovchain.MarkovChain
 import org.hexworks.zircon.api.util.markovchain.MarkovChainNode
 import java.util.*
 
+// TODO: not working
 object GlitchEffectMarkovChainExample {
 
     private val tileset = CP437TilesetResources.taffer20x20()

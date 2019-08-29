@@ -1,12 +1,6 @@
 package org.hexworks.zircon.examples.docs;
 
-import kotlin.Unit;
-import org.hexworks.zircon.api.ColorThemes;
-import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.Functions;
-import org.hexworks.zircon.api.Screens;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.UIEventResponses;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.Panel;
 import org.hexworks.zircon.api.graphics.BoxType;
@@ -19,7 +13,8 @@ import org.hexworks.zircon.api.uievent.UIEventPhase;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 import static org.hexworks.zircon.api.ComponentDecorations.shadow;
-import static org.hexworks.zircon.api.Functions.*;
+import static org.hexworks.zircon.api.Functions.fromBiConsumer;
+import static org.hexworks.zircon.api.Functions.fromConsumer;
 import static org.hexworks.zircon.api.component.ComponentAlignment.CENTER;
 import static org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED;
 
