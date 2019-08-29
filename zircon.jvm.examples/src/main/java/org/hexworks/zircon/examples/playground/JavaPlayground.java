@@ -1,33 +1,45 @@
 package org.hexworks.zircon.examples.playground;
 
-import org.hexworks.zircon.api.AppConfigs;
 import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.Screens;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.component.ToggleButton;
-import org.hexworks.zircon.api.data.Size;
-import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.TilesetResource;
-import org.hexworks.zircon.api.screen.Screen;
+import org.hexworks.zircon.api.Positions;
+import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.color.ANSITileColor;
+import org.hexworks.zircon.api.tileset.Tileset;
+import org.hexworks.zircon.internal.tileset.SwingTilesetLoader;
+
+import javax.imageio.ImageIO;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class JavaPlayground {
 
-    private static final Size SIZE = Sizes.create(50, 30);
-    private static final TilesetResource TILESET = CP437TilesetResources.taffer20x20();
+    public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args) {
+        // you create an image and the corresponding graphics
+        final BufferedImage image = new BufferedImage(800, 600, BufferedImage.TRANSLUCENT);
+        final Graphics2D graphics = image.createGraphics();
 
-        TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .withDefaultTileset(TILESET)
-                .withSize(SIZE)
-                .withDebugMode(true)
-                .build());
+        // you load the tileset you want
+        SwingTilesetLoader loader = new SwingTilesetLoader();
+        final Tileset<Graphics2D> tileset = loader.loadTilesetFrom(CP437TilesetResources.rexPaint20x20());
 
-        Screen screen = Screens.createScreenFor(tileGrid);
+        // you draw tiles on the image using the graphics
+        tileset.drawTile(Tiles.newBuilder()
+                .withCharacter('a')
+                .withBackgroundColor(ANSITileColor.RED)
+                .withForegroundColor(ANSITileColor.WHITE)
+                .build(), graphics, Positions.create(0, 0));
 
-        ToggleButton tb = Components.toggleButton().withText("foo").build();
+        tileset.drawTile(Tiles.newBuilder()
+                .withCharacter('b')
+                .withBackgroundColor(ANSITileColor.GREEN)
+                .withForegroundColor(ANSITileColor.YELLOW)
+                .build(), graphics, Positions.create(1, 0));
+
+        // and you write the result into a file
+        ImageIO.write(image, "png", new File("saved.png"));
 
     }
 

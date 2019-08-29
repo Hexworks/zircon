@@ -8,12 +8,11 @@ import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.graphics.TileImageBuilder
 import org.hexworks.zircon.api.color.ANSITileColor.GREEN
 import org.hexworks.zircon.api.color.ANSITileColor.YELLOW
-import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.extensions.transform
+import org.hexworks.zircon.fetchCharacters
 import org.junit.Test
 
 class DefaultTileImageTest {
@@ -36,144 +35,124 @@ class DefaultTileImageTest {
                 .combineWith(other, Positions.offset1x1())
                 .toTileGraphics()
 
-        assertThat(IMAGE.getTileAt(FILLED_POS).get()).isEqualTo(FILLER_TILE)
+        assertThat(IMAGE_3X3.getTileAt(FILLED_POS).get()).isEqualTo(FILLER_TILE_A)
     }
 
     @Test
     fun shouldProperlyGetEmptyTile() {
-        assertThat(IMAGE.getTileAt(EMPTY_POS).get()).isEqualTo(Tile.empty())
+        assertThat(IMAGE_3X3.getTileAt(EMPTY_POS).get()).isEqualTo(Tile.empty())
     }
 
     @Test
     fun shouldProperlyCreateCopyWithTileAt() {
-        val result = IMAGE.withTileAt(Positions.offset1x1(), NEW_TILE)
+        val result = IMAGE_3X3.withTileAt(Positions.offset1x1(), NEW_TILE_B)
 
-        assertThat(result.getTileAt(Positions.offset1x1()).get()).isEqualTo(NEW_TILE)
-
-        val cells = IMAGE.fetchCells()
-
-        assertThat(cells.filter { it.position != EMPTY_POS }.all { it.tile == FILLER_TILE }).isTrue()
-    }
-
-    @Test
-    fun shouldReturnSameImageWhenWithTileIsCalledWithSameChar() {
-        val result = IMAGE.withTileAt(Positions.offset1x1(), FILLER_TILE)
-
-        assertThat(result).isSameAs(IMAGE)
-    }
-
-    @Test
-    fun shouldProperlyReturnFilledPositions() {
-        val result = IMAGE.fetchFilledPositions()
-
-        assertThat(SIZE.fetchPositions().subtract(result)).containsExactly(EMPTY_POS)
+        assertThat(result.getTileAt(Positions.offset1x1()).get()).isEqualTo(NEW_TILE_B)
     }
 
     @Test
     fun shouldProperlyCopyImage() {
-        val result = IMAGE.toTileImage()
+        val result = IMAGE_3X3.toTileImage()
 
-        assertThat(result.fetchCells()).containsExactlyElementsOf(IMAGE.fetchCells())
+        assertThat(result.tiles).isEqualTo(IMAGE_3X3.tiles)
     }
 
     @Test
     fun shouldProperlyCreateSubImage() {
-        val result = IMAGE.toSubImage(Position.offset1x1(), Size.create(2, 1))
+        val result = IMAGE_3X3.toSubImage(Position.offset1x1(), Size.create(2, 1))
 
-        assertThat(result.fetchCells()).containsExactly(
-                Cell.create(Positions.create(0, 0), FILLER_TILE),
-                Cell.create(Positions.create(1, 0), Tiles.empty()))
+        assertThat(result.tiles.toMap()).isEqualTo(mapOf(
+                Positions.create(0, 0) to FILLER_TILE_A,
+                Positions.create(1, 0) to Tiles.empty()))
     }
 
     @Test
     fun shouldProperlyResizeToSmaller() {
-        val result = IMAGE.withNewSize(Sizes.create(1, 1))
+        val result = IMAGE_3X3.withNewSize(Sizes.create(1, 1))
 
-        assertThat(result.fetchCells()).containsExactly(
-                Cell.create(Positions.create(0, 0), FILLER_TILE))
+        assertThat(result.tiles.toMap()).isEqualTo(
+                mapOf(Positions.create(0, 0) to FILLER_TILE_A))
     }
 
     @Test
     fun shouldProperlyResizeToLarger() {
-        val result = IMAGE.withNewSize(Sizes.create(4, 1))
+        val result = IMAGE_3X3.withNewSize(Sizes.create(4, 1))
 
-        assertThat(result.fetchCells()).containsExactly(
-                Cell.create(Positions.create(0, 0), FILLER_TILE),
-                Cell.create(Positions.create(1, 0), FILLER_TILE),
-                Cell.create(Positions.create(2, 0), FILLER_TILE),
-                Cell.create(Positions.create(3, 0), Tiles.empty()))
+        assertThat(result.tiles.toMap()).isEqualTo(mapOf(
+                Positions.create(0, 0) to FILLER_TILE_A,
+                Positions.create(1, 0) to FILLER_TILE_A,
+                Positions.create(2, 0) to FILLER_TILE_A))
     }
 
     @Test
     fun shouldProperlyResizeToLargerWithFiller() {
-        val result = IMAGE.withNewSize(Sizes.create(4, 1), NEW_TILE)
+        val result = IMAGE_3X3.withNewSize(Sizes.create(4, 1), NEW_TILE_B)
 
-        assertThat(result.fetchCells()).containsExactly(
-                Cell.create(Positions.create(0, 0), FILLER_TILE),
-                Cell.create(Positions.create(1, 0), FILLER_TILE),
-                Cell.create(Positions.create(2, 0), FILLER_TILE),
-                Cell.create(Positions.create(3, 0), NEW_TILE))
+        assertThat(result.tiles.toMap()).isEqualTo(mapOf(
+                Positions.create(0, 0) to FILLER_TILE_A,
+                Positions.create(1, 0) to FILLER_TILE_A,
+                Positions.create(2, 0) to FILLER_TILE_A,
+                Positions.create(3, 0) to NEW_TILE_B))
     }
 
     @Test
     fun shouldProperlyFill() {
-        val result = IMAGE.withFiller(NEW_TILE)
+        val result = IMAGE_3X3.withFiller(NEW_TILE_B)
 
 
-        assertThat(result.fetchCells().map { it.tile }).containsExactly(
-                FILLER_TILE, FILLER_TILE, FILLER_TILE,
-                FILLER_TILE, FILLER_TILE, NEW_TILE,
-                FILLER_TILE, FILLER_TILE, FILLER_TILE)
+        assertThat(result.fetchCharacters()).containsExactly(
+                'a', 'a', 'a',
+                'a', 'a', 'b',
+                'a', 'a', 'a')
     }
 
     @Test
     fun shouldProperlyFetchCellsBy() {
-        val result = IMAGE.fetchCellsBy(Position.offset1x1(), Size.create(2, 1))
+        val result = IMAGE_3X3.toSubImage(Position.offset1x1(), Size.create(2, 1))
 
-        assertThat(result).containsExactly(
-                Cell.create(Position.create(1, 1), FILLER_TILE),
-                Cell.create(Position.create(2, 1), Tiles.empty()))
+        assertThat(result.tiles.toMap()).isEqualTo(mapOf(
+                Position.create(0, 0) to FILLER_TILE_A,
+                Position.create(1, 0) to Tiles.empty()))
     }
 
     @Test
     fun shouldProperlyCombineWith() {
-        val result = IMAGE.combineWith(OTHER_IMAGE, Position.create(2, 2))
+        val result = IMAGE_3X3.combineWith(OTHER_IMAGE_2X2, Position.create(2, 2))
 
-        assertThat(result.fetchCells().map { it.tile }).containsExactly(
-                FILLER_TILE, FILLER_TILE, FILLER_TILE, Tile.empty(),
-                FILLER_TILE, FILLER_TILE, Tile.empty(), Tile.empty(),
-                FILLER_TILE, FILLER_TILE, NEW_TILE, NEW_TILE,
-                Tile.empty(), Tile.empty(), NEW_TILE, NEW_TILE)
+        assertThat(result.fetchCharacters()).containsExactly(
+                'a', 'a', 'a', ' ',
+                'a', 'a', ' ', ' ',
+                'a', 'a', 'b', 'b',
+                ' ', ' ', 'b', 'b')
     }
 
     @Test
     fun shouldProperlyTransform() {
-        val result = IMAGE.transform {
-            NEW_TILE
+        val result = IMAGE_3X3.transform {
+            NEW_TILE_B
         }
 
-        assertThat(result.fetchCells().map { it.tile }.toSet()).containsExactly(
-                NEW_TILE)
+        assertThat(result.tiles.values.toSet()).containsExactly(
+                NEW_TILE_B)
     }
 
     @Test
     fun shouldProperlyWithText() {
         val style = StyleSet.create(YELLOW, GREEN)
-        val result = IMAGE.withText("foo", style, Position.create(1, 1))
+        val result = IMAGE_3X3.withText("foo", style, Position.create(1, 1))
 
-        assertThat(result.fetchCells().map { it.tile }).containsExactly(
-                FILLER_TILE, FILLER_TILE, FILLER_TILE, FILLER_TILE,
-                Tile.createCharacterTile('f', style),
-                Tile.createCharacterTile('o', style),
-                FILLER_TILE, FILLER_TILE, FILLER_TILE)
+        assertThat(result.fetchCharacters()).containsExactly(
+                'a', 'a', 'a',
+                'a', 'f', 'o',
+                'a', 'a', 'a')
     }
 
     @Test
     fun shouldProperlyWithStyle() {
         val style = StyleSet.create(YELLOW, GREEN)
-        val result = IMAGE.withFiller(FILLER_TILE).withStyle(style)
+        val result = IMAGE_3X3.withFiller(FILLER_TILE_A).withStyle(style)
 
-        assertThat(result.fetchCells().map { it.tile }.toSet()).containsExactly(
+        assertThat(result.tiles.values.toSet()).containsExactly(
                 Tile.createCharacterTile('a', style))
     }
 
@@ -181,13 +160,9 @@ class DefaultTileImageTest {
     fun shouldProperlyWithTileset() {
         val tileset = CP437TilesetResources.rexPaint12x12()
 
-        val result = IMAGE.withTileset(tileset)
-
-        assertThat(result.fetchCells().map { it.tile }).containsExactly(
-                FILLER_TILE, FILLER_TILE, FILLER_TILE,
-                FILLER_TILE, FILLER_TILE, Tile.empty(),
-                FILLER_TILE, FILLER_TILE, FILLER_TILE)
-        assertThat(result.currentTileset() == tileset)
+        val result = IMAGE_3X3.withTileset(tileset)
+        
+        assertThat(result.tileset == tileset)
     }
 
 
@@ -195,32 +170,32 @@ class DefaultTileImageTest {
 
         val FILLED_POS = Positions.create(1, 0)
         val EMPTY_POS = Positions.create(2, 1)
-        val FILLER_TILE = Tiles.defaultTile().withCharacter('a')
-        val NEW_TILE = Tiles.defaultTile().withCharacter('b')
+        val FILLER_TILE_A = Tiles.defaultTile().withCharacter('a')
+        val NEW_TILE_B = Tiles.defaultTile().withCharacter('b')
 
-        val TILESET = CP437TilesetResources.cheepicus16x16()
-        val SIZE = Sizes.create(3, 3)
-        val IMAGE = DefaultTileImage(
-                size = SIZE,
-                tileset = TILESET,
-                tiles = mapOf(
-                        Positions.create(0, 0) to FILLER_TILE,
-                        Positions.create(1, 0) to FILLER_TILE,
-                        Positions.create(2, 0) to FILLER_TILE,
-                        Positions.create(0, 1) to FILLER_TILE,
-                        Positions.create(1, 1) to FILLER_TILE,
+        val TILESET_CHEEPICUS = CP437TilesetResources.cheepicus16x16()
+        val SIZE_3X3 = Sizes.create(3, 3)
+        val IMAGE_3X3 = DefaultTileImage(
+                size = SIZE_3X3,
+                tileset = TILESET_CHEEPICUS,
+                initialTiles = mapOf(
+                        Positions.create(0, 0) to FILLER_TILE_A,
+                        Positions.create(1, 0) to FILLER_TILE_A,
+                        Positions.create(2, 0) to FILLER_TILE_A,
+                        Positions.create(0, 1) to FILLER_TILE_A,
+                        Positions.create(1, 1) to FILLER_TILE_A,
                         // 2, 1 empty
-                        Positions.create(0, 2) to FILLER_TILE,
-                        Positions.create(1, 2) to FILLER_TILE,
-                        Positions.create(2, 2) to FILLER_TILE))
+                        Positions.create(0, 2) to FILLER_TILE_A,
+                        Positions.create(1, 2) to FILLER_TILE_A,
+                        Positions.create(2, 2) to FILLER_TILE_A))
 
-        val OTHER_IMAGE = DefaultTileImage(
+        val OTHER_IMAGE_2X2 = DefaultTileImage(
                 size = Size.create(2, 2),
                 tileset = CP437TilesetResources.acorn8X16(),
-                tiles = mapOf(
-                        Positions.create(0, 0) to NEW_TILE,
-                        Positions.create(1, 0) to NEW_TILE,
-                        Positions.create(0, 1) to NEW_TILE,
-                        Positions.create(1, 1) to NEW_TILE))
+                initialTiles = mapOf(
+                        Positions.create(0, 0) to NEW_TILE_B,
+                        Positions.create(1, 0) to NEW_TILE_B,
+                        Positions.create(0, 1) to NEW_TILE_B,
+                        Positions.create(1, 1) to NEW_TILE_B))
     }
 }

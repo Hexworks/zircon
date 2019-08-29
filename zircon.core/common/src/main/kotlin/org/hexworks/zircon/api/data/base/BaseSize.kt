@@ -21,9 +21,11 @@ abstract class BaseSize : Size {
 
     override fun compareTo(other: Size) = (this.width * this.height).compareTo(other.width * other.height)
 
-    override fun isUnknown() = this === Size.unknown()
+    override val isUnknown: Boolean
+        get() = this === Size.unknown()
 
-    override fun isNotUnknown() = this !== Size.unknown()
+    override val isNotUnknown: Boolean
+        get() = this !== Size.unknown()
 
     override fun fetchPositions(): Iterable<Position> = Iterable {
         var currY = 0
@@ -52,7 +54,7 @@ abstract class BaseSize : Size {
     override fun fetchBoundingBoxPositions(): Set<Position> {
         return RectangleFactory
                 .buildRectangle(Position.defaultPosition(), this)
-                .positions()
+                .positions
     }
 
     override fun fetchTopLeftPosition() = Position.topLeftCorner()

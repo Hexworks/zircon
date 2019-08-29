@@ -28,7 +28,7 @@ data class HBoxBuilder(
         return DefaultHBox(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = props.componentStyleSet,
                         tileset = tileset),
                 initialTitle = title,

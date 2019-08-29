@@ -35,10 +35,9 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
         Selectable by Selectable.create(),
         Disablable by Disablable.create() {
 
-    override val state: CheckBoxState
-        get() = checkBoxState
+    override var checkBoxState = UNCHECKED
+    private set
 
-    private var checkBoxState = UNCHECKED
     private var pressing = false
 
     init {
@@ -49,7 +48,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
             render()
         }
         selectedProperty.onChange {
-            checkBoxState = if (it.newValue) CHECKED else UNCHECKED
+            this.checkBoxState = if (it.newValue) CHECKED else UNCHECKED
             render()
         }
         disabledProperty.onChange {
@@ -78,7 +77,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
         if (phase == UIEventPhase.TARGET) {
             LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) was mouse exited.")
             pressing = false
-            checkBoxState = if (isSelected) CHECKED else UNCHECKED
+            this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
             componentStyleSet.reset()
             render()
             Processed
@@ -89,7 +88,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
         if (phase == UIEventPhase.TARGET) {
             LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) was mouse pressed.")
             pressing = true
-            checkBoxState = if (isSelected) UNCHECKING else CHECKING
+            this.checkBoxState = if (isSelected) UNCHECKING else CHECKING
             componentStyleSet.applyActiveStyle()
             render()
             Processed
@@ -110,7 +109,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
             componentStyleSet.applyMouseOverStyle()
             pressing = false
             isSelected = isSelected.not()
-            checkBoxState = if (isSelected) CHECKED else UNCHECKED
+            this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
             render()
             Processed
         } else Pass
@@ -160,7 +159,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        LOGGER.debug("CheckBox (id=${id.abbreviate()}, visibility=$isVisible, selected=$isSelected) was rendered.")
+        LOGGER.debug("CheckBox (id=${id.abbreviate()}, hidden=$isHidden, selected=$isSelected) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 

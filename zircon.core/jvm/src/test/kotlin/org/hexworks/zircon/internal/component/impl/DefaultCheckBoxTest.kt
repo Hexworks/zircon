@@ -56,7 +56,7 @@ class DefaultCheckBoxTest : ComponentImplementationTest<DefaultCheckBox>() {
         target = DefaultCheckBox(
                 componentMetadata = ComponentMetadata(
                         size = SIZE_20X1,
-                        position = POSITION_2_3,
+                        relativePosition = POSITION_2_3,
                         componentStyleSet = COMPONENT_STYLES,
                         tileset = TILESET_REX_PAINT_20X20),
                 renderingStrategy = DefaultComponentRenderingStrategy(

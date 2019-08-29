@@ -5,13 +5,11 @@ import kotlin.math.max
 import kotlin.math.min
 
 internal data class DefaultTileColor(override val red: Int,
-                            override val green: Int,
-                            override val blue: Int,
-                            override val alpha: Int = TileColor.defaultAlpha()) : TileColor {
+                                     override val green: Int,
+                                     override val blue: Int,
+                                     override val alpha: Int = TileColor.defaultAlpha()) : TileColor {
 
-    private val cacheKey = "TextColor(r=$red,g=$green,b=$blue,a=$alpha)"
-
-    override fun generateCacheKey() = cacheKey
+    override val cacheKey = "TextColor(r=$red,g=$green,b=$blue,a=$alpha)"
 
     override fun tint(factor: Double): TileColor {
         require(factor in 0.0..1.0) {
@@ -26,9 +24,9 @@ internal data class DefaultTileColor(override val red: Int,
         if (r == 0 && g == 0 && b == 0) {
             return DefaultTileColor(i, i, i, alpha)
         }
-        if (r in 1..(i - 1)) r = i
-        if (g in 1..(i - 1)) g = i
-        if (b in 1..(i - 1)) b = i
+        if (r in 1 until i) r = i
+        if (g in 1 until i) g = i
+        if (b in 1 until i) b = i
 
         return DefaultTileColor(min((r / factor).toInt(), 255),
                 min((g / factor).toInt(), 255),

@@ -8,10 +8,9 @@ data class DefaultCharacterTile(
         override val styleSet: StyleSet = StyleSet.defaultStyle())
     : BaseCharacterTile() {
 
-    private val cacheKey = "CharacterTile(c=$character,s=${styleSet.generateCacheKey()})"
+    override val cacheKey: String
+        get() = "CharacterTile(c=$character,s=${styleSet.cacheKey})"
 
     override fun createCopy() = copy()
-
-    override fun generateCacheKey() = cacheKey
 
 }

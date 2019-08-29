@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.event.ChangeEvent
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.behavior.ChangeListener
 import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -16,7 +16,12 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 import kotlin.math.truncate
@@ -27,10 +32,10 @@ abstract class BaseScrollBar(final override val minValue: Int,
                              final override var itemsShownAtOnce: Int,
                              componentMetadata: ComponentMetadata,
                              private val renderingStrategy: ComponentRenderingStrategy<ScrollBar>) :
-    ScrollBar, DefaultComponent(
+        ScrollBar, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
-        Disablable by Disablable.create(){
+        Disablable by Disablable.create() {
 
     private var range: Int = maxValue - minValue
     protected var valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
@@ -41,7 +46,7 @@ abstract class BaseScrollBar(final override val minValue: Int,
     final override val currentStepProperty = createPropertyFrom(minValue)
     final override var currentStep: Int by currentStepProperty.asDelegate()
 
-    override var barSizeInSteps = (itemsShownAtOnce/valuePerStep).roundToInt()
+    override var barSizeInSteps = (itemsShownAtOnce / valuePerStep).roundToInt()
 
     init {
         render()
@@ -100,13 +105,13 @@ abstract class BaseScrollBar(final override val minValue: Int,
         }
     }
 
-    override fun resizeScrollBar(newMaxValue: Int) {
-        if (newMaxValue >= 0) {
-            maxValue = newMaxValue
-            range = maxValue - minValue
+    override fun resizeScrollBar(maxValue: Int) {
+        if (maxValue >= 0) {
+            this.maxValue = maxValue
+            range = this.maxValue - minValue
             valuePerStep = range.toDouble() / numberOfSteps.toDouble()
 
-            barSizeInSteps = ceil(itemsShownAtOnce/valuePerStep).toInt()
+            barSizeInSteps = ceil(itemsShownAtOnce / valuePerStep).toInt()
             addToCurrentValues(0)
             render()
         }
@@ -138,7 +143,7 @@ abstract class BaseScrollBar(final override val minValue: Int,
         currentValue = ceil(calculatedValue).toInt()
     }
 
-    private fun computeClickedZone(clickPosition: Int) : ClickedZone {
+    private fun computeClickedZone(clickPosition: Int): ClickedZone {
         return when {
             clickPosition < currentStep -> Companion.ClickedZone.TowardsLow
             clickPosition > currentStep + barSizeInSteps -> Companion.ClickedZone.TowardsHigh
@@ -188,7 +193,8 @@ abstract class BaseScrollBar(final override val minValue: Int,
             when (computeClickedZone(getMousePosition(event))) {
                 Companion.ClickedZone.TowardsLow -> decrementStep()
                 Companion.ClickedZone.TowardsHigh -> incrementStep()
-                else -> {}
+                else -> {
+                }
             }
 
             render()
@@ -211,7 +217,7 @@ abstract class BaseScrollBar(final override val minValue: Int,
             componentStyleSet.applyActiveStyle()
 
             val mousePosition = getMousePosition(event)
-            computeValueToClosestOfStep(mousePosition - (barSizeInSteps/2))
+            computeValueToClosestOfStep(mousePosition - (barSizeInSteps / 2))
 
             render()
             Processed
@@ -258,16 +264,16 @@ abstract class BaseScrollBar(final override val minValue: Int,
     }
 
     final override fun render() {
-        LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled, visibility=$isVisible) was rendered.")
+        LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled, hidden=$isHidden) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 
-    override fun onValueChange(fn: ChangeListener<Int>): Subscription {
-        return currentValueProperty.onChange(fn::onChange)
+    override fun onValueChange(fn: (ChangeEvent<Int>) -> Unit): Subscription {
+        return currentValueProperty.onChange(fn)
     }
 
-    override fun onStepChange(fn: ChangeListener<Int>): Subscription {
-        return currentStepProperty.onChange(fn::onChange)
+    override fun onStepChange(fn: (ChangeEvent<Int>) -> Unit): Subscription {
+        return currentStepProperty.onChange(fn)
     }
 
     companion object {

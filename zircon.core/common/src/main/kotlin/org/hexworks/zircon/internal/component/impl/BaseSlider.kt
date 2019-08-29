@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.event.ChangeEvent
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.behavior.ChangeListener
 import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -16,8 +16,12 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
-import org.hexworks.zircon.api.uievent.*
-import kotlin.math.min
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import kotlin.math.roundToInt
 import kotlin.math.truncate
 
@@ -26,10 +30,10 @@ abstract class BaseSlider(final override val minValue: Int,
                           final override val numberOfSteps: Int,
                           componentMetadata: ComponentMetadata,
                           private val renderingStrategy: ComponentRenderingStrategy<Slider>) :
-    Slider, DefaultComponent(
+        Slider, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
-    Disablable by Disablable.create(){
+        Disablable by Disablable.create() {
 
     private val range: Int = maxValue - minValue
     protected val valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
@@ -225,16 +229,16 @@ abstract class BaseSlider(final override val minValue: Int,
     }
 
     final override fun render() {
-        LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled, visibility=$isVisible) was rendered.")
+        LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled, hidden=$isHidden) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 
-    override fun onValueChange(fn: ChangeListener<Int>): Subscription {
-        return currentValueProperty.onChange(fn::onChange)
+    override fun onValueChange(fn: (ChangeEvent<Int>) -> Unit): Subscription {
+        return currentValueProperty.onChange(fn)
     }
 
-    override fun onStepChange(fn: ChangeListener<Int>): Subscription {
-        return currentStepProperty.onChange(fn::onChange)
+    override fun onStepChange(fn: (ChangeEvent<Int>) -> Unit): Subscription {
+        return currentStepProperty.onChange(fn)
     }
 
     companion object {

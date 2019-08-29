@@ -26,9 +26,7 @@ enum class ANSITileColor(final override val red: Int,
     BRIGHT_CYAN(0, 255, 255, TileColor.defaultAlpha()),
     BRIGHT_WHITE(255, 255, 255, TileColor.defaultAlpha());
 
-    private val cacheKey = "TextColor(r=$red,g=$green,b=$blue,a=$alpha)"
-
-    override fun generateCacheKey() = cacheKey
+    override val cacheKey = "TextColor(r=$red,g=$green,b=$blue,a=$alpha)"
 
     override fun tint(factor: Double): TileColor {
         return TileColor.create(red, green, blue, alpha).tint(factor)

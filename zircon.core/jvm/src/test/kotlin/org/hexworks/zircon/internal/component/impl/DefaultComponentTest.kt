@@ -6,21 +6,18 @@ import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.builder.component.LabelBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
-import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.Visibility
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType.*
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_CLICKED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_ENTERED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase.BUBBLE
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
@@ -29,7 +26,7 @@ import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
 
-@Suppress("MemberVisibilityCanBePrivate")
+@Suppress("MemberVisibilityCanBePrivate", "UsePropertyAccessSyntax")
 class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     override lateinit var target: DefaultComponent
@@ -47,7 +44,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         target = object : DefaultComponent(
                 componentMetadata = ComponentMetadata(
                         size = DefaultContainerTest.SIZE_4x4,
-                        position = POSITION_2_3,
+                        relativePosition = POSITION_2_3,
                         componentStyleSet = COMPONENT_STYLES,
                         tileset = TILESET_REX_PAINT_20X20),
                 renderer = DefaultComponentRenderingStrategy(
@@ -68,14 +65,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
         }
     }
-
-    @Test
-    fun shouldUseTilesetFromComponentWhenTransformingToLayer() {
-        target.toFlattenedLayers().forEach {
-            assertThat(it.currentTileset().id).isEqualTo(TILESET_REX_PAINT_20X20.id)
-        }
-    }
-
 
     @Test
     fun shouldProperlyApplyStylesOnInit() {
@@ -111,24 +100,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     }
 
     @Test
-    fun shouldProperlyDrawOntoTileGraphic() {
-        val image = TileGraphicsBuilder.newBuilder()
-                .withSize(SIZE_4x4 + Size.create(POSITION_2x3.x, POSITION_2x3.y))
-                .build()
-        val filler = Tile.defaultTile().withCharacter('f')
-        target.fill(filler)
-        target.drawOnto(image, POSITION_2x3)
-
-        assertThat(image.getTileAt(POSITION_2x3 - Position.offset1x1()).get())
-                .isEqualTo(Tile.empty())
-
-        target.size.fetchPositions().forEach {
-            assertThat(image.getTileAt(it + POSITION_2x3).get())
-                    .isEqualTo(filler)
-        }
-    }
-
-    @Test
     fun shouldRenderWhenComponentStyleSetIsSet() {
         target.componentStyleSet = ComponentStyleSet.empty()
 
@@ -137,7 +108,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     @Test
     fun shouldRenderWhenVisibilityIsSet() {
-        target.isVisible = Visibility.Hidden
+        target.isHidden = true
 
         assertThat(rendered).isTrue()
     }
@@ -156,17 +127,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
                 phase = BUBBLE)
 
         assertThat(notified).isTrue()
-    }
-
-    @Test
-    fun shouldProperlyCreateSnapshot() {
-        target.fill(TileBuilder.newBuilder().withCharacter('x').build())
-        val result = target.createSnapshot()
-        val cells = result.cells.toList()
-
-        assertThat(result.tileset).isEqualTo(target.currentTileset())
-        assertThat(cells.size).isEqualTo(16)
-        assertThat(cells.first().position).isEqualTo(POSITION_2x3)
     }
 
     @Test
@@ -234,29 +194,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     }
 
     @Test
-    fun shouldNotListenToMousePressOnOtherComponents() {
-        // TODO: move this test to component container!
-    }
-
-    @Test
-    fun shouldProperlyListenToMouseRelease() {
-        // TODO: move this test to component container!
-    }
-
-    @Test
-    fun shouldNotListenToMouseReleaseOnOtherComponents() {
-        // TODO: move this test to component container!
-    }
-
-    @Test
-    fun shouldProperlyTransformToLayers() {
-        val result = target.toFlattenedLayers()
-        assertThat(result).hasSize(1)
-        assertThat(result.first().size).isEqualTo(target.size)
-        assertThat(result.first().position).isEqualTo(target.position)
-    }
-
-    @Test
     fun shouldBeEqualToItself() {
         assertThat(target).isEqualTo(target)
     }
@@ -265,7 +202,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     fun shouldProperlyCalculatePathFromRoot() {
         val root = RootContainer(
                 componentMetadata = ComponentMetadata(
-                        position = Positions.defaultPosition(),
+                        relativePosition = Positions.defaultPosition(),
                         size = Sizes.create(100, 100),
                         tileset = TILESET_REX_PAINT_20X20,
                         componentStyleSet = ComponentStyleSet.empty()),

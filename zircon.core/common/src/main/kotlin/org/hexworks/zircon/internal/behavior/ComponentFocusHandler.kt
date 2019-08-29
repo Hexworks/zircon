@@ -12,12 +12,12 @@ interface ComponentFocusHandler {
     /**
      * Returns the next component to focus (if any).
      */
-    fun findNext(): Maybe<InternalComponent>
+    fun findNext(): Maybe<out InternalComponent>
 
     /**
      * Returns the previous component to focus (if any).
      */
-    fun findPrevious(): Maybe<InternalComponent>
+    fun findPrevious(): Maybe<out InternalComponent>
 
     /**
      * Focuses the given component (if it is possible).

@@ -45,8 +45,6 @@ abstract class BaseApplication(private val appConfig: AppConfig) : Application, 
                             }
                         } catch (e: Exception) {
                             logger.error("Render failed", e)
-                            // TODO: remove this when logger.error gets fixed
-                            e.printStackTrace()
                         }
                     }
                 }

@@ -39,14 +39,13 @@ data class REXLayer(private val width: Int,
                     // Skip transparent characters
                     continue
                 }
-                layer.setTileAt(
-                        Position.create(x, y),
-                        TileBuilder.newBuilder()
+                layer.draw(
+                        tile = TileBuilder.newBuilder()
                                 .withCharacter(cell.getCharacter())
                                 .withBackgroundColor(cell.getBackgroundColor())
                                 .withForegroundColor(cell.getForegroundColor())
-                                .build()
-                )
+                                .build(),
+                        drawPosition = Position.create(x, y))
             }
         }
         return layer

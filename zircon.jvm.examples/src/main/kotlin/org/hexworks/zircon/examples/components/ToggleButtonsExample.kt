@@ -45,7 +45,10 @@ object ToggleButtonsExample {
                 .withDecorations(box())
                 .withAlignment(positionalAlignment(Positions.create(1, 5)))
 
-
+        // we can add them to both because these are just builders, so
+        // 4 components will be built below
+        screen.addComponent(unselectedToggleButton)
+        screen.addComponent(selectedToggleButton)
         panel.addComponent(unselectedToggleButton)
         panel.addComponent(selectedToggleButton)
 

@@ -21,12 +21,12 @@ object LayerMergeTest {
         val tempLayer = Layers.newBuilder()
                 .withOffset(Positions.create(4, 4))
                 .withSize(Sizes.create(2, 2))
+                .withFiller(Tiles.empty().withCharacter('x').withBackgroundColor(ANSITileColor.GREEN))
                 .build()
-                .fill(Tiles.empty().withCharacter('x').withBackgroundColor(ANSITileColor.GREEN))
 
         tileGrid.addLayer(tempLayer)
 
-        tempLayer.drawOnto(tileGrid, Positions.create(10, 10))
+        tileGrid.draw(tempLayer, Positions.create(10, 10))
 
         tileGrid.removeLayer(tempLayer)
 

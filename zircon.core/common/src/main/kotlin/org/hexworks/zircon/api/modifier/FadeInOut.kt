@@ -12,22 +12,21 @@ data class FadeInOut(private val stepsFadeIn: Int = 20,
                      private val stepsFadeOut: Int = 20,
                      private val timeMsFadeOut: Long = 2000) : TileTransformModifier<CharacterTile>, Fade {
 
-    private var currentFadeMode = FadeInOutMode.FadeIn
-    private val fadeIn = FadeIn(stepsFadeIn, timeMsFadeIn, glowOnFinalFadeInStep)
-    private val fadeOut = FadeOut(stepsFadeOut, timeMsFadeOut)
-    private var startNoFadingRender: Long = Long.MIN_VALUE
-
     override fun isFadingFinished(): Boolean {
         return fadeOut.isFadingFinished()
     }
 
-    override fun generateCacheKey(): String {
-        return when (currentFadeMode) {
-            FadeInOutMode.FadeIn -> fadeIn.generateCacheKey()
+    override val cacheKey: String
+        get() = when (currentFadeMode) {
+            FadeInOutMode.FadeIn -> fadeIn.cacheKey
             FadeInOutMode.NoFading -> "Modifier.FadeInOut.($currentFadeMode)"
-            FadeInOutMode.FadeOut -> fadeOut.generateCacheKey()
+            FadeInOutMode.FadeOut -> fadeOut.cacheKey
         }
-    }
+
+    private var currentFadeMode = FadeInOutMode.FadeIn
+    private val fadeIn = FadeIn(stepsFadeIn, timeMsFadeIn, glowOnFinalFadeInStep)
+    private val fadeOut = FadeOut(stepsFadeOut, timeMsFadeOut)
+    private var startNoFadingRender: Long = Long.MIN_VALUE
 
     override fun canTransform(tile: Tile) = tile is CharacterTile
 

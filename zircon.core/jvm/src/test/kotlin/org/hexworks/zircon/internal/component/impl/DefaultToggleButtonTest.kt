@@ -15,7 +15,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.component.renderer.DefaultToggleButtonRenderer
@@ -54,7 +53,7 @@ class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>
         target = DefaultToggleButton(
                 componentMetadata = ComponentMetadata(
                         size = SIZE_15X1,
-                        position = POSITION_2_3,
+                        relativePosition = POSITION_2_3,
                         componentStyleSet = COMPONENT_STYLES,
                         tileset = TILESET_REX_PAINT_20X20),
                 renderingStrategy = DefaultComponentRenderingStrategy(
@@ -81,7 +80,7 @@ class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>
     @Test
     fun shouldProperlyAddButtonText() {
         val surface = target.graphics
-        val offset = target.contentPosition.x
+        val offset = target.contentOffset.x
         TEXT.forEachIndexed { i, char ->
             assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
                     .isEqualTo(TileBuilder.newBuilder()

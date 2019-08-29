@@ -9,10 +9,8 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.shape.Shape
 import kotlin.math.max
 
-class DefaultShape(private val positions: Set<Position> = setOf())
+class DefaultShape(override val positions: Set<Position> = setOf())
     : Shape, Collection<Position> by positions {
-
-    override fun positions() = positions
 
     override fun toTileGraphics(tile: Tile, tileset: TilesetResource): TileGraphics {
         val offsetPositions = offsetToDefaultPosition()
@@ -27,7 +25,7 @@ class DefaultShape(private val positions: Set<Position> = setOf())
                 .withTileset(tileset)
                 .build()
         offsetPositions.forEach {
-            result.setTileAt(it, tile)
+            result.draw(tile, it)
         }
         return result
     }

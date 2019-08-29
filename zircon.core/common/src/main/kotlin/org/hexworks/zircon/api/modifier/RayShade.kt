@@ -5,5 +5,6 @@ data class RayShade(val opacity: Float = 1.0f,
                     val strength: Float = 0.5f,
                     val raysOnly: Boolean = false) : TextureTransformModifier {
 
-    override fun generateCacheKey(): String = "Modifier.RayShade($opacity,$threshold,$strength,$raysOnly)"
+    override val cacheKey: String
+        get() = "Modifier.RayShade($opacity,$threshold,$strength,$raysOnly)"
 }

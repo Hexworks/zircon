@@ -15,7 +15,7 @@ import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 
 object VBoxExample {
 
-    private val theme = ColorThemes.techLight()
+    private val theme = ColorThemes.amigaOs()
     private val tileset = CP437TilesetResources.rexPaint20x20()
 
     var count = 0

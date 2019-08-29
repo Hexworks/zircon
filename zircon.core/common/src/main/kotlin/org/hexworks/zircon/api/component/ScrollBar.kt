@@ -1,16 +1,17 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.cobalt.databinding.api.event.ChangeEvent
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.api.behavior.ChangeListener
 import org.hexworks.zircon.api.behavior.Disablable
 
-interface ScrollBar: Component, Disablable {
+interface ScrollBar : Component, Disablable {
 
     /**
      * Maximum value of the [ScrollBar]
      */
-    val maxValue: Int /**
+    val maxValue: Int
+    /**
      * Minimum value of the [ScrollBar]
      */
     val minValue: Int
@@ -63,10 +64,10 @@ interface ScrollBar: Component, Disablable {
     /**
      * Callback called when low value changes
      */
-    fun onValueChange(fn: ChangeListener<Int>): Subscription
+    fun onValueChange(fn: (ChangeEvent<Int>) -> Unit): Subscription
 
     /**
      * Callback called when low step changes
      */
-    fun onStepChange(fn: ChangeListener<Int>): Subscription
+    fun onStepChange(fn: (ChangeEvent<Int>) -> Unit): Subscription
 }

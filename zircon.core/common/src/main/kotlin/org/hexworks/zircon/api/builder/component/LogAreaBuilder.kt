@@ -24,7 +24,7 @@ data class LogAreaBuilder(
     override fun build(): LogArea {
         return DefaultLogArea(
                 componentMetadata = ComponentMetadata(
-                        position = position,
+                        relativePosition = position,
                         size = size,
                         tileset = tileset,
                         componentStyleSet = componentStyleSet),

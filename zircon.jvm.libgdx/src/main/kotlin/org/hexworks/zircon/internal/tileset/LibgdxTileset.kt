@@ -73,7 +73,7 @@ class LibgdxTileset(override val width: Int,
                 fixedTile = modifier.transform(fixedTile)
             }
         }
-        val key = fixedTile.generateCacheKey()
+        val key = fixedTile.cacheKey
         val meta = CP437_METADATA[fixedTile.character]!!
         val tr = TextureRegion(texture, meta.x * width, meta.y * height, width, height)
         val maybeRegion = cache.getIfPresent(key)

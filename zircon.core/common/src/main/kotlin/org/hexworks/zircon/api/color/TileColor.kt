@@ -7,12 +7,16 @@ import org.hexworks.zircon.internal.color.DefaultTileColor
 
 interface TileColor : Cacheable {
 
-    fun isOpaque() = alpha == 255
-
     val alpha: Int
+
     val red: Int
+
     val green: Int
+
     val blue: Int
+
+    val isOpaque: Boolean
+        get() = alpha == 255
 
     /**
      * Returns a new [TileColor] which is tinted by the [DEFAULT_FACTOR] (.7).

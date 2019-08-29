@@ -7,6 +7,6 @@ import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState
 
 interface CheckBox : Component, TextHolder, Selectable, Disablable {
 
-    val state: CheckBoxState
+    val checkBoxState: CheckBoxState
 
 }

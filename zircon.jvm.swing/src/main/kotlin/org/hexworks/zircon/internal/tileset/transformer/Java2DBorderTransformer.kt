@@ -17,7 +17,7 @@ class Java2DBorderTransformer : TextureTransformer<BufferedImage> {
         return texture.also {
             val txt = it.texture
             txt.graphics.apply {
-                if (tile.hasBorder()) {
+                if (tile.hasBorder) {
                     tile.fetchBorderData().forEach { border ->
                         color = border.borderColor.toAWTColor()
                         border.borderPositions.forEach { pos ->

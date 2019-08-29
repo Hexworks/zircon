@@ -1,14 +1,22 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.cobalt.datatypes.Maybe
-
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.Blocks
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Layers
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.game.GameAreaBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Size3D
+import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.Symbols
@@ -18,6 +26,7 @@ import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
 
+// TODO: not working
 object DrawingExample {
 
     private const val TOOLS_WIDTH = 15
@@ -68,7 +77,7 @@ object DrawingExample {
         override fun execute(context: Context, gameArea: GameArea<Tile, Block<Tile>>, mouseAction: MouseEvent) {
             val (layer, offset) = context
             if (mouseAction.type == MouseEventType.MOUSE_RELEASED) {
-                layer.setTileAt(mouseAction.position - offset, TEST_TILE)
+                layer.draw(TEST_TILE, mouseAction.position - offset)
             }
         }
 
@@ -96,8 +105,8 @@ object DrawingExample {
                         val pos = mouseAction.position - offset
                         if (pos != pressedAt) {
                             tempLayer.clear()
-                            LineFactory.buildLine(pressedAt, pos).positions().forEach {
-                                tempLayer.setTileAt(it, TEST_TILE)
+                            LineFactory.buildLine(pressedAt, pos).positions.forEach {
+                                tempLayer.draw(TEST_TILE, it)
                             }
                             layer.draw(tempLayer)
                         }
@@ -110,8 +119,8 @@ object DrawingExample {
                         val pos = mouseAction.position - offset
                         if (pos != pressedAt) {
                             tempLayer.clear()
-                            LineFactory.buildLine(pressedAt, pos).positions().forEach {
-                                tempLayer.setTileAt(it, TEST_TILE)
+                            LineFactory.buildLine(pressedAt, pos).positions.forEach {
+                                tempLayer.draw(TEST_TILE, it)
                             }
                         }
                     }
@@ -123,6 +132,7 @@ object DrawingExample {
 
     }
 
+    @Suppress("unused")
     enum class DrawOption(val drawCommand: DrawCommand) {
         FREE(FreeDrawCommand()),
         LINE(DrawLineCommand());
@@ -143,7 +153,7 @@ object DrawingExample {
         private var chosenLayer = 0 to overlays.getValue(0)
 
         init {
-            gameArea.actualSize().to2DSize().fetchPositions().forEach {
+            gameArea.actualSize.to2DSize().fetchPositions().forEach {
                 gameArea.setBlockAt(Positions.from2DTo3D(it), BLACK_BLOCK)
             }
             gameArea.pushOverlayAt(chosenLayer.second, chosenLayer.first)
@@ -178,8 +188,7 @@ object DrawingExample {
 
             val tools = Components.panel()
                     .withSize(TOOLS_WIDTH, 4)
-                    .wrapWithBox()
-                    .withTitle("Tools")
+                    .withDecorations(box(title = "Tools"))
                     .build().apply {
                         val chooseTool = Components.radioButtonGroup()
                                 .withSize(TOOLS_WIDTH - 2, 2)
@@ -199,8 +208,7 @@ object DrawingExample {
 
             val layers = Components.panel()
                     .withSize(TOOLS_WIDTH, LAYERS + 2)
-                    .wrapWithBox()
-                    .withTitle("Layers")
+                    .withDecorations(box(title = "Layers"))
                     .withPosition(0, tools.height)
                     .build().apply {
                         val chooseLayer = Components.radioButtonGroup()
@@ -222,8 +230,7 @@ object DrawingExample {
             val drawArea = Components.panel()
                     .withSize(screen.size.withRelativeWidth(-TOOLS_WIDTH))
                     .withPosition(TOOLS_WIDTH, 0)
-                    .wrapWithBox()
-                    .withTitle(("Draw Surface"))
+                    .withDecorations(box(title = ("Draw Surface")))
                     .build().apply {
                         val gc = Components.gameComponent<Tile, Block<Tile>>()
                                 .withSize(contentSize)

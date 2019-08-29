@@ -9,15 +9,15 @@ import org.hexworks.zircon.api.resource.TilesetResource
  * Contains metadata which is common to **all**
  * [org.hexworks.zircon.api.component.Component]s
  */
-data class ComponentMetadata(val position: Position,
+data class ComponentMetadata(val relativePosition: Position,
                              val size: Size,
                              val tileset: TilesetResource,
                              val componentStyleSet: ComponentStyleSet) {
 
     init {
-        require(position.hasNegativeComponent().not()) {
-            "Can't have a Component with a position ($position) which has a " +
-                    "negative component (x or y)."
+        require(relativePosition.hasNegativeComponent.not()) {
+            "Can't have a Component with a relative position ($relativePosition) which has a " +
+                    "negative dimension."
         }
     }
 }

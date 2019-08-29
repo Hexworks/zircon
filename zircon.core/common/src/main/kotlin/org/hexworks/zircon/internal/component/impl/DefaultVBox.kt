@@ -77,7 +77,7 @@ open class DefaultVBox(componentMetadata: ComponentMetadata,
     }
 
     final override fun render() {
-        LOGGER.debug("VBox (id=${id.abbreviate()}, visibility=$isVisible) was rendered.")
+        LOGGER.debug("VBox (id=${id.abbreviate()}, hidden=$isHidden) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 

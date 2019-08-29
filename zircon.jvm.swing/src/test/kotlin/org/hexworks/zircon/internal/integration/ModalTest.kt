@@ -17,8 +17,6 @@ import org.hexworks.zircon.api.component.ComponentAlignment.BOTTOM_RIGHT
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.alignmentWithin
 import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.handleComponentEvents
-import org.hexworks.zircon.api.extensions.handleKeyboardEvents
 import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED

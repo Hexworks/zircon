@@ -1,12 +1,22 @@
 package org.hexworks.zircon.internal.integration
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.ComponentDecorations
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
-object  PanelsTest {
+object PanelsTest {
 
     private val theme = ColorThemes.techLight()
     private val tileset = CP437TilesetResources.rexPaint20x20()
@@ -22,19 +32,18 @@ object  PanelsTest {
         val screen = Screens.createScreenFor(tileGrid)
 
         screen.addComponent(Components.panel()
-                .wrapWithBox(true)
+                .withDecorations(box())
                 .withSize(Sizes.create(18, 5))
                 .withComponentRenderer(NoOpComponentRenderer())
                 .withPosition(Positions.create(1, 1)))
 
         screen.addComponent(Components.panel()
-                .wrapWithShadow(true)
+                .withDecorations(shadow())
                 .withSize(Sizes.create(18, 5))
                 .withPosition(Positions.create(1, 8)))
 
         screen.addComponent(Components.panel()
-                .wrapWithShadow(true)
-                .wrapWithBox(true)
+                .withDecorations(box(), shadow())
                 .withSize(Sizes.create(18, 5))
                 .withPosition(Positions.create(1, 15)))
 
@@ -49,8 +58,7 @@ object  PanelsTest {
                 .withPosition(Positions.create(21, 1)))
 
         screen.addComponent(Components.panel()
-                .wrapWithBox(true)
-                .withTitle("Qux")
+                .withDecorations(box(title = "Qux"))
                 .withSize(Sizes.create(18, 5))
                 .withPosition(Positions.create(21, 8)))
 
@@ -63,7 +71,7 @@ object  PanelsTest {
 
         screen.addComponent(Components.panel()
                 .withSize(Sizes.create(18, 5))
-                .withTitle("Wombat")
+                .withDecorations(box(title = "Wombat"))
                 .withDecorations(ComponentDecorations.box(BoxType.TOP_BOTTOM_DOUBLE))
                 .withPosition(Positions.create(21, 22)))
 
@@ -74,8 +82,7 @@ object  PanelsTest {
 
         val panel = Components.panel()
                 .withSize(Sizes.create(18, 19))
-                .wrapWithBox(true)
-                .withTitle("Parent")
+                .withDecorations(box(title = "Parent"))
                 .withPosition(Positions.create(41, 8))
                 .build()
 

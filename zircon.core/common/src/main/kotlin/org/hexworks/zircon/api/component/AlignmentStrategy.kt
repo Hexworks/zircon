@@ -14,5 +14,5 @@ interface AlignmentStrategy {
      * Calculates the [Position] for an object having
      * the given [size] relative to a [Boundable].
      */
-    fun calculateAlignment(size: Size): Position
+    fun calculatePosition(size: Size): Position
 }

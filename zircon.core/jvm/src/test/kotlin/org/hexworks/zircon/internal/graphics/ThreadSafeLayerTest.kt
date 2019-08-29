@@ -10,15 +10,16 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import org.junit.Before
 import org.junit.Test
 
-class DefaultLayerTest {
+@Suppress("UsePropertyAccessSyntax")
+class ThreadSafeLayerTest {
 
-    lateinit var target: DefaultLayer
+    lateinit var target: ThreadSafeLayer
 
     @Before
     fun setUp() {
-        target = DefaultLayer(
-                position = OFFSET,
-                backend = TILE_IMAGE)
+        target = ThreadSafeLayer(
+                initialPosition = OFFSET,
+                initialContents = TILE_IMAGE)
 
     }
 
@@ -68,13 +69,13 @@ class DefaultLayerTest {
 
     @Test
     fun shouldProperlySetChar() {
-        target.setTileAt(CONTAINED_POSITION, CHAR)
+        target.draw(CHAR, CONTAINED_POSITION)
         assertThat(target.getTileAt(CONTAINED_POSITION).get())
                 .isEqualTo(CHAR)
     }
 
     companion object {
-        val TILESET = CP437TilesetResources.cla18x18()
+        private val TILESET = CP437TilesetResources.cla18x18()
         val CHAR = TileBuilder.newBuilder()
                 .withCharacter('x')
                 .build()

@@ -8,13 +8,16 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.handleKeyboardEvents
-import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.KeyboardEventType.*
 import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType.*
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_CLICKED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_DRAGGED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_MOVED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_WHEEL_ROTATED_DOWN
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_WHEEL_ROTATED_UP
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -37,7 +40,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
     val TILESET_REX_PAINT_20X20 = CP437TilesetResources.rexPaint20x20()
     val COMPONENT_STYLES = ComponentStyleSet.defaultStyleSet()
     val COMMON_COMPONENT_METADATA = ComponentMetadata(
-            position = POSITION_2_3,
+            relativePosition = POSITION_2_3,
             size = SIZE_3_4,
             tileset = TILESET_REX_PAINT_20X20,
             componentStyleSet = COMPONENT_STYLES)
@@ -46,21 +49,21 @@ abstract class CommonComponentTest<T : InternalComponent> {
 
     @Test
     fun shouldUseProperTileset() {
-        assertThat(target.currentTileset().id)
+        assertThat(target.tileset.id)
                 .isEqualTo(TILESET_REX_PAINT_20X20.id)
     }
 
     @Test
     fun shouldProperlyChangeTileset() {
         val newTileset = BuiltInCP437TilesetResource.TAFFER_20X20
-        target.useTileset(newTileset)
-        assertThat(target.currentTileset().id)
+        target.tileset = newTileset
+        assertThat(target.tileset.id)
                 .isEqualTo(newTileset.id)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotAllowTilesetWithDifferentSize() {
-        target.useTileset(BuiltInCP437TilesetResource.ACORN_8X16)
+        target.tileset = BuiltInCP437TilesetResource.ACORN_8X16
     }
 
     @Test
@@ -68,7 +71,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
         rendererStub.clear()
 
         target.keyPressed(KeyboardEvent(
-                type = KeyboardEventType.KEY_PRESSED,
+                type = KEY_PRESSED,
                 key = "x",
                 code = KeyCode.KEY_X), TARGET)
 
@@ -121,15 +124,15 @@ abstract class CommonComponentTest<T : InternalComponent> {
 
 
     @Test
-    open fun shouldProperlyHandleOnKeyStroke() {
+    open fun shouldProperlyHandleKeyboardEvents() {
         var maybeEvent = Maybe.empty<KeyboardEvent>()
-        target.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED) { event, _ ->
+        target.handleKeyboardEvents(KEY_PRESSED) { event, _ ->
             maybeEvent = Maybe.of(event)
             Processed
         }
 
         val keyboardEvent = KeyboardEvent(
-                type = KeyboardEventType.KEY_PRESSED,
+                type = KEY_PRESSED,
                 key = "x",
                 code = KeyCode.KEY_X)
 

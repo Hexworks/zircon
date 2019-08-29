@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.component.ScrollBar
-import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
@@ -23,7 +22,7 @@ class DefaultVerticalScrollBar(componentMetadata: ComponentMetadata,
         numberOfSteps = numberOfSteps) {
 
     override fun getMousePosition(event: MouseEvent): Int {
-        return event.position.minus(absolutePosition + contentPosition).y
+        return event.position.minus(relativePosition + contentOffset).y
     }
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {

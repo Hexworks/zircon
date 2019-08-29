@@ -2,56 +2,55 @@ package org.hexworks.zircon.api.data
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Cacheable
-import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.Modifier
-import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.data.DefaultCharacterTile
 import org.hexworks.zircon.internal.data.DefaultGraphicalTile
 import org.hexworks.zircon.internal.data.DefaultImageTile
+import org.hexworks.zircon.internal.resource.TileType
 
 /**
  * A [Tile] is the basic building block which can be drawn
  * on a screen. It is a rectangular graphic, or character
  * which can be composed to more complex objects.
  */
-interface Tile : Drawable, Cacheable, StyleSet {
+interface Tile : Cacheable, StyleSet {
 
     val tileType: TileType
+
     val styleSet: StyleSet
 
-    // TODO: use vals for these
-    fun isOpaque(): Boolean
+    val isOpaque: Boolean
 
-    fun isUnderlined(): Boolean
+    val isUnderlined: Boolean
 
-    fun isCrossedOut(): Boolean
+    val isCrossedOut: Boolean
 
-    fun isBlinking(): Boolean
+    val isBlinking: Boolean
 
-    fun isVerticalFlipped(): Boolean
+    val isVerticalFlipped: Boolean
 
-    fun isHorizontalFlipped(): Boolean
+    val isHorizontalFlipped: Boolean
 
-    fun hasBorder(): Boolean
-
-    fun fetchBorderData(): Set<Border>
+    val hasBorder: Boolean
 
     /**
      * Tells whether this [Tile] **is** an empty [Tile]
      * (it is the [Tile.empty] instance).
      */
-    fun isEmpty(): Boolean
+    val isEmpty: Boolean
 
     /**
      * Tells whether this [Tile] **is not** an empty [Tile]
      * (it is not the [Tile.empty] instance).
      */
-    fun isNotEmpty(): Boolean
+    val isNotEmpty: Boolean
+
+    fun fetchBorderData(): Set<Border>
 
     override fun createCopy(): Tile
 

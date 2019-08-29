@@ -1,9 +1,6 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.TileColors;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.application.CursorStyle;
@@ -32,12 +29,11 @@ public class CursorExample {
         TileGrid grid = app.getTileGrid();
 
         // for this example we need the cursor to be visible
-        grid.setCursorVisibility(true);
+        grid.setCursorVisible(true);
 
         String text = "Cursor example...";
-        for (int i = 0; i < text.length(); i++) {
-//            grid.putCharacter(text.charAt(i));
-        }
+        grid.draw(CharacterTileStrings.newBuilder().withText(text).build());
+        grid.setCursorPosition(Positions.create(text.length(), 0));
 
 
     }

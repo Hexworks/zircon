@@ -2,12 +2,12 @@ package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.data.DefaultDrawSurfaceSnapshot
+import org.hexworks.zircon.internal.data.DefaultDrawSurfaceState
 
 /**
  * Represents the contents of a [DrawSurface] at a given moment in time.
  */
-interface DrawSurfaceSnapshot {
+interface DrawSurfaceState {
 
     val tiles: Map<Position, Tile>
     val tileset: TilesetResource
@@ -22,10 +22,10 @@ interface DrawSurfaceSnapshot {
     companion object {
 
         /**
-         * Creates a new [DrawSurfaceSnapshot].
+         * Creates a new [DrawSurfaceState].
          */
-        fun create(tiles: Map<Position, Tile>, tileset: TilesetResource, size: Size): DrawSurfaceSnapshot {
-            return DefaultDrawSurfaceSnapshot(tiles, tileset, size)
+        fun create(tiles: Map<Position, Tile>, tileset: TilesetResource, size: Size): DrawSurfaceState {
+            return DefaultDrawSurfaceState(tiles, tileset, size)
         }
     }
 }

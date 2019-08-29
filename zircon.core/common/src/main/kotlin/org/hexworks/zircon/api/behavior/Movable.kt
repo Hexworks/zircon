@@ -1,14 +1,11 @@
 package org.hexworks.zircon.api.behavior
 
-import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 
 /**
- * Represents an object which is positionable within its parent.
- * For example a [Component] can be positioned relative to is parent
- * or an [Layer] can be positioned within a [TileGrid].
+ * A [Movable] is a [Boundable] object which can change its position.
  */
 interface Movable : Boundable {
 
@@ -33,4 +30,10 @@ interface Movable : Boundable {
     fun moveUpBy(delta: Int) = moveTo(position.withRelativeY(-delta))
 
     fun moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
+
+    companion object {
+
+        fun create(size: Size, position: Position = Position.zero()): Movable =
+                DefaultMovable(size, position)
+    }
 }

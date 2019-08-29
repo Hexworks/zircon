@@ -22,6 +22,7 @@ import org.hexworks.zircon.api.modifier.TileTransformModifier
 
 object LayerTransformerExample {
 
+    // TODO: transform hide not working
     @JvmStatic
     fun main(args: Array<String>) {
 
@@ -97,9 +98,11 @@ object LayerTransformerExample {
 
 object HideModifier : TileTransformModifier<CharacterTile> {
 
+    override val cacheKey: String
+        get() = "Modifier.HideModifier"
+
     override fun canTransform(tile: Tile) = true
 
     override fun transform(tile: CharacterTile) = Tiles.empty()
 
-    override fun generateCacheKey() = "Modifier.HideModifier"
 }

@@ -27,7 +27,7 @@ class DefaultVerticalNumberInput(
         val invertedPosition = Positions.create(pos.y, pos.x)
         Zircon.eventBus.publish(
                 event = ZirconEvent.RequestCursorAt(invertedPosition
-                        .withRelative(absolutePosition + contentPosition)),
+                        .withRelative(relativePosition + contentOffset)),
                 eventScope = ZirconScope)
     }
 }

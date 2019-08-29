@@ -16,11 +16,10 @@ import org.hexworks.zircon.internal.shape.DefaultShape
  */
 interface Shape : Collection<Position> {
 
-    // TODO: use vals
     /**
-     * Returns all the [Position]s this [Shape] contains.
+     * All the [Position]s this [Shape] contains.
      */
-    fun positions(): Set<Position>
+    val positions: Set<Position>
 
     /**
      * Combines two [Shape]s into a new one which means that this operation
@@ -29,7 +28,7 @@ interface Shape : Collection<Position> {
      * creates a new [Shape].
      */
     operator fun plus(shape: Shape): Shape {
-        return DefaultShape(positions().plus(shape.positions()))
+        return DefaultShape(positions.plus(shape.positions))
     }
 
     /**

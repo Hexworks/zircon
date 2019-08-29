@@ -1,12 +1,6 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.GraphicalTilesetResources;
-import org.hexworks.zircon.api.LibgdxApplications;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.TilesetResource;
@@ -39,10 +33,11 @@ public class GraphicTilesetExample {
         for (int row = 0; row < TERMINAL_HEIGHT; row++) {
             for (int col = 0; col < TERMINAL_WIDTH; col++) {
                 final String name = NAMES[RANDOM.nextInt(NAMES.length)];
-                tileGrid.setTileAt(Positions.create(col, row), Tiles.newBuilder()
-                        .withName(name)
-                        .withTileset(TILESET)
-                        .buildGraphicTile());
+                tileGrid.draw(Tiles.newBuilder()
+                                .withName(name)
+                                .withTileset(TILESET)
+                                .buildGraphicalTile(),
+                        Positions.create(col, row));
             }
         }
 

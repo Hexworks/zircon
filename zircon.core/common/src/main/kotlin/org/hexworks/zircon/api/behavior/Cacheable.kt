@@ -6,8 +6,7 @@ package org.hexworks.zircon.api.behavior
 interface Cacheable {
 
     /**
-     * Generates a **unique** key for this object.
+     * A **unique** and immutable cache key for this object.
      */
-    // TODO: use val instead
-    fun generateCacheKey(): String
+    val cacheKey: String
 }

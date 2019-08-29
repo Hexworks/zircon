@@ -1,6 +1,14 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.shadow
@@ -22,13 +30,23 @@ object InCP437WeTrust {
 
         val screen = Screens.createScreenFor(tileGrid)
 
+        val loader = CP437TileMetadataLoader(16, 16)
+
         val cp437panel = Components.panel()
                 .withSize(Sizes.create(19, 19))
                 .withPosition(Positions.create(2, 2))
                 .withDecorations(box(BoxType.SINGLE), shadow())
-                .build()
-
-        val loader = CP437TileMetadataLoader(16, 16)
+                .withRendererFunction { tileGraphics, _ ->
+                    loader.fetchMetadata().forEach { (char, meta) ->
+                        tileGraphics.draw(
+                                tile = Tiles.defaultTile()
+                                        .withCharacter(char)
+                                        .withBackgroundColor(theme.primaryBackgroundColor)
+                                        .withForegroundColor(ANSITileColor.values()[Random().nextInt(ANSITileColor.values().size)]),
+                                drawPosition = Positions.create(meta.x, meta.y)
+                                        .plus(Positions.offset1x1()))
+                    }
+                }.build()
 
         screen.addComponent(cp437panel)
 
@@ -39,15 +57,6 @@ object InCP437WeTrust {
         screen.addComponent(btn.build())
 
         screen.applyColorTheme(theme)
-
-        loader.fetchMetadata().forEach { char, meta ->
-            cp437panel.draw(drawable = Tiles.defaultTile()
-                    .withCharacter(char)
-                    .withBackgroundColor(theme.primaryBackgroundColor)
-                    .withForegroundColor(ANSITileColor.values()[Random().nextInt(ANSITileColor.values().size)]),
-                    position = Positions.create(meta.x, meta.y)
-                            .plus(Positions.offset1x1()))
-        }
 
         screen.display()
     }

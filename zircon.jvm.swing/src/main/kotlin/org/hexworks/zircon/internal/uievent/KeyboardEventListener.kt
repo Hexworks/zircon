@@ -1,39 +1,36 @@
 package org.hexworks.zircon.internal.uievent
 
 import org.hexworks.zircon.api.uievent.KeyCode
-import org.hexworks.zircon.api.uievent.KeyCode.INSERT
 import org.hexworks.zircon.api.uievent.KeyboardEvent
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.KeyboardEventType.*
+import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
-import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.grid.InternalTileGrid
-import java.awt.Toolkit
-import java.awt.datatransfer.DataFlavor
 import java.awt.event.InputEvent
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 
-class KeyboardEventListener(private val tileGrid: InternalTileGrid) : KeyListener {
+class KeyboardEventListener : KeyListener {
 
-    override fun keyPressed(e: KeyEvent) {
-        val keyboardEvent = createKeyboardEvent(e, KEY_PRESSED)
+    private val events = mutableListOf<Pair<KeyboardEvent, UIEventPhase>>()
 
-        // check for paste TODO: customizable?
-
-        if (RuntimeConfig.config.isClipboardAvailable && keyboardEvent.isPasteEvent()) {
-            pasteClipboardContent()
-        } else {
-            tileGrid.process(keyboardEvent, TARGET)
+    fun drainEvents(): Iterable<Pair<KeyboardEvent, UIEventPhase>> {
+        return events.toList().also {
+            events.clear()
         }
     }
 
+    override fun keyPressed(e: KeyEvent) {
+        val keyboardEvent = createKeyboardEvent(e, KEY_PRESSED)
+        events.add(keyboardEvent to TARGET)
+    }
+
     override fun keyTyped(e: KeyEvent) {
-        tileGrid.process(createKeyboardEvent(e, KEY_TYPED), TARGET)
+        events.add(createKeyboardEvent(e, KEY_TYPED) to TARGET)
     }
 
     override fun keyReleased(e: KeyEvent) {
-        tileGrid.process(createKeyboardEvent(e, KEY_RELEASED), TARGET)
+        events.add(createKeyboardEvent(e, KEY_RELEASED) to TARGET)
     }
 
     private fun createKeyboardEvent(e: KeyEvent, type: KeyboardEventType): KeyboardEvent {
@@ -53,13 +50,4 @@ class KeyboardEventListener(private val tileGrid: InternalTileGrid) : KeyListene
                 metaDown = metaDown,
                 shiftDown = shiftDown)
     }
-
-    private fun pasteClipboardContent() {
-        Toolkit.getDefaultToolkit().systemClipboard?.let {
-            injectStringAsKeyboardEvents(it.getData(DataFlavor.stringFlavor) as String, tileGrid)
-        }
-    }
-
-    private fun KeyboardEvent.isPasteEvent() = (code == INSERT &&
-            ctrlDown.not() && altDown.not() && metaDown.not() && shiftDown)
 }

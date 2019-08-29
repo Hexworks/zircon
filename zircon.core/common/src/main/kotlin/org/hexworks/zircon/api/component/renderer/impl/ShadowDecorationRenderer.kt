@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Symbols
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.shape.LineFactory
 
@@ -22,18 +23,20 @@ data class ShadowDecorationRenderer(private val shadowChar: Char = DEFAULT_SHADO
             .withCharacter(shadowChar)
             .build()
 
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
+    override fun render(tileGraphics: TileGraphics, context: ComponentDecorationRenderContext) {
         val graphicsSize = tileGraphics.size
-        LineFactory.buildLine(
-                fromPoint = Position.create(1, 0),
-                toPoint = Position.create(graphicsSize.width - 1, 0))
-                .toTileGraphics(shadowTile, tileGraphics.currentTileset())
-                .drawOnto(tileGraphics, Position.create(1, graphicsSize.height - 1))
-        LineFactory.buildLine(
-                fromPoint = Position.create(0, 1),
-                toPoint = Position.create(0, graphicsSize.height - 1))
-                .toTileGraphics(shadowTile, tileGraphics.currentTileset())
-                .drawOnto(tileGraphics, Position.create(graphicsSize.width - 1, 1))
+        tileGraphics.draw(
+                tileMap = LineFactory.buildLine(
+                        fromPoint = Position.create(0, 0),
+                        toPoint = Position.create(graphicsSize.width - 1, 0))
+                        .map { it to shadowTile }.toMap(),
+                drawPosition = Position.create(1, graphicsSize.height - 1))
+        tileGraphics.draw(
+                tileMap = LineFactory.buildLine(
+                        fromPoint = Position.create(0, 0),
+                        toPoint = Position.create(0, graphicsSize.height - 1))
+                        .map { it to shadowTile }.toMap(),
+                drawPosition = Position.create(graphicsSize.width - 1, 1))
     }
 
     companion object {

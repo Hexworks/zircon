@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.NumberInput
-import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -50,7 +49,7 @@ data class VerticalNumberInputBuilder(
     override fun build(): NumberInput = DefaultVerticalNumberInput(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialValue = initialValue,

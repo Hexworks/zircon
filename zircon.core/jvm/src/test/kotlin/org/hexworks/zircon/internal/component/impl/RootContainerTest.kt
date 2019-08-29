@@ -29,7 +29,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
         target = RootContainer(
                 componentMetadata = ComponentMetadata(
-                        position = POSITION_2_3,
+                        relativePosition = POSITION_2_3,
                         size = SIZE_3_4,
                         tileset = TILESET_REX_PAINT_20X20,
                         componentStyleSet = COMPONENT_STYLES),

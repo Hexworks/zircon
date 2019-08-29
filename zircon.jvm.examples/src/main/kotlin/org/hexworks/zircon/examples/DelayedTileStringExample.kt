@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
+import org.hexworks.zircon.api.extensions.box
 
 object DelayedTileStringExample {
 
@@ -26,7 +27,7 @@ object DelayedTileStringExample {
         val screen = ScreenBuilder.createScreenFor(tileGrid)
 
         val panel = Components.panel()
-                .wrapWithBox()
+                .withDecorations(box())
                 .withSize(Sizes.create(48, 20))
                 .build()
 

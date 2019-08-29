@@ -1,14 +1,16 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.BorderPosition
-import org.hexworks.zircon.api.modifier.SimpleModifiers.*
-import org.hexworks.zircon.api.Modifiers
+import org.hexworks.zircon.api.modifier.SimpleModifiers.CrossedOut
+import org.hexworks.zircon.api.modifier.SimpleModifiers.HorizontalFlip
+import org.hexworks.zircon.api.modifier.SimpleModifiers.VerticalFlip
 import org.junit.Test
 
 class DefaultStyleSetTest {
@@ -19,7 +21,7 @@ class DefaultStyleSetTest {
                 .withBackgroundColor(ANSITileColor.WHITE)
                 .withForegroundColor(TileColor.fromString("#aabbcc"))
                 .withModifiers(Modifiers.crossedOut(), BorderBuilder.newBuilder().withBorderPositions(BorderPosition.TOP).build())
-                .build().generateCacheKey()
+                .build().cacheKey
         assertThat(result).isEqualTo("StyleSet(fg=TextColor(r=170,g=187,b=204,a=255),bg=TextColor(r=192,g=192,b=192,a=255),m=[Modifier.CrossedOut,Modifier.Border(t=SOLID,bp=[TOP])])")
     }
 

@@ -8,12 +8,14 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.AlignmentStrategy
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
+import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.alignmentAround
 import org.hexworks.zircon.api.extensions.alignmentWithin
 import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
@@ -46,6 +48,12 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> {
      * Sets the [ComponentRenderer] for the resulting [Component].
      */
     fun withComponentRenderer(componentRenderer: ComponentRenderer<T>): U
+
+    /**
+     * Creates a [ComponentRenderer] for the resulting [Component] using the
+     * given component renderer [fn].
+     */
+    fun withRendererFunction(fn: (TileGraphics, ComponentRenderContext<T>) -> Unit): U
 
     /**
      * Sets the [Size] of the resulting [Component].

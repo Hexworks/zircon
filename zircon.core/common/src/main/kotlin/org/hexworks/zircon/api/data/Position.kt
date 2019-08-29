@@ -1,4 +1,4 @@
-@file:Suppress("unused", "ReplaceSingleLineLet")
+@file:Suppress("unused", "ReplaceSingleLineLet", "SpellCheckingInspection")
 
 package org.hexworks.zircon.api.data
 
@@ -16,6 +16,21 @@ interface Position : Comparable<Position> {
 
     val x: Int
     val y: Int
+
+    /**
+     * Tells whether this [Position] is `UNKNOWN`.
+     */
+    val isUnknown: Boolean
+
+    /**
+     * Tells whether this [Position] is not `UNKNOWN`.
+     */
+    val isNotUnknown: Boolean
+
+    /**
+     * Tells whether this [Position] has a negative component (x or y) or not.
+     */
+    val hasNegativeComponent: Boolean
 
     operator fun component1() = x
 
@@ -111,22 +126,6 @@ interface Position : Comparable<Position> {
      * The y coordinate is used to shift down
      */
     fun relativeToLeftOf(component: Component): Position
-
-    // TODO: use vals instead
-    /**
-     * Tells whether this [Position] is `UNKNOWN`.
-     */
-    fun isUnknown(): Boolean
-
-    /**
-     * Tells whether this [Position] is not `UNKNOWN`.
-     */
-    fun isNotUnknown(): Boolean
-
-    /**
-     * Tells whether this [Position] has a negative component (x or y) or not.
-     */
-    fun hasNegativeComponent(): Boolean
 
     companion object {
 

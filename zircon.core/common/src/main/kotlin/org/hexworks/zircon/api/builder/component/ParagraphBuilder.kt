@@ -38,7 +38,7 @@ data class ParagraphBuilder(
         }
         return DefaultParagraph(
                 componentMetadata = ComponentMetadata(
-                        position = position,
+                        relativePosition = position,
                         size = size,
                         tileset = tileset,
                         componentStyleSet = componentStyleSet),

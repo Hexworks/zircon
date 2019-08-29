@@ -25,7 +25,7 @@ object DelayedExample {
 
         val text = "This text is typed like on a typewriter"
 
-        tileGrid.putCursorAt(Positions.create(1, 1))
+        tileGrid.cursorPosition = Positions.create(1, 1)
         text.forEachIndexed { index, c ->
             val delayTime = 250 + index * 250
             tileGrid.putTile(Tiles.defaultTile()
