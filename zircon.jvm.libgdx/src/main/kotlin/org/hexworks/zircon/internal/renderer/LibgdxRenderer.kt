@@ -17,7 +17,6 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.base.BasePosition
 import org.hexworks.zircon.api.data.impl.PixelPosition
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.tileset.Tileset
