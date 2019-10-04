@@ -8,8 +8,6 @@ kotlin {
         withJava()
     }
 
-    withZirconStyleSourceSets()
-
     dependencies {
         with (Libs) {
             commonMainApi(kotlinStdLibCommon)
