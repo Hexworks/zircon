@@ -14,7 +14,7 @@ class AnimationResourceTest {
     fun shouldProperlyLoadAnimationFile() {
         AppConfigs.newConfig().enableBetaFeatures().build()
         val result = AnimationResource.loadAnimationFromStream(
-                zipStream = File("jvm/src/test/resources/animations/skull.zap").inputStream(),
+                zipStream = File("src/jvmTest/resources/animations/skull.zap").inputStream(),
                 tileset = BuiltInCP437TilesetResource.ADU_DHABI_16X16)
         Assertions.assertThat(result).isNotNull()
     }

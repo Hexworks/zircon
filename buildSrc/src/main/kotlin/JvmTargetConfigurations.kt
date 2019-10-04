@@ -23,17 +23,3 @@ fun DependencyHandler.jvmMainApi(dependencyNotation: Any): Dependency? =
 
 fun DependencyHandler.jvmTestApi(dependencyNotation: Any): Dependency? =
         add("jvmTestApi", dependencyNotation)
-
-fun KotlinProjectExtension.withZirconStyleSourceSets() {
-    sourceSets.forEach {
-        val name = it.kotlin.name.split(" ").firstOrNull() ?: return@forEach
-        val type = when {
-            name.endsWith("Main") -> "main"
-            name.endsWith("Test") -> "test"
-            else -> null
-        } ?: return@forEach
-        val prefix = name.substring(0 until (name.length - type.length))
-        it.kotlin.srcDirs("$prefix/src/$type/kotlin")
-        it.resources.srcDirs("$prefix/src/$type/resources")
-    }
-}
