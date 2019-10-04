@@ -1,7 +1,5 @@
 package org.hexworks.zircon.api.animation
 
-import org.hexworks.cobalt.datatypes.sam.Consumer
-
 /**
  * Stores information about an [Animation] which is currently running.
  */
@@ -25,7 +23,7 @@ interface AnimationInfo {
     /**
      * Adds a callback which will be called when the [Animation] finishes.
      */
-    fun onFinished(fn: Consumer<AnimationInfo>)
+    fun onFinished(fn: (AnimationInfo) -> Unit)
 
     /**
      * Stops the [Animation] regardless of its state.

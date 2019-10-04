@@ -43,7 +43,7 @@ object Logo {
                                                         .darkenByPercent(idx.toDouble().div(20)))
                                                         .withForegroundColor(tc.foregroundColor
                                                                 .darkenByPercent(idx.toDouble().div(20)))
-                                            }.toTileGraphic())
+                                            }.toTileGraphics())
                                     .build()),
                             repeatCount = repeat))
         }
@@ -59,7 +59,7 @@ object Logo {
                                                 .darkenByPercent(idx.toDouble().div(20)))
                                                 .withForegroundColor(tc.foregroundColor
                                                         .darkenByPercent(idx.toDouble().div(20)))
-                                    }.toTileGraphic())
+                                    }.toTileGraphics())
                                     .build()),
                             repeatCount = repeat))
         }

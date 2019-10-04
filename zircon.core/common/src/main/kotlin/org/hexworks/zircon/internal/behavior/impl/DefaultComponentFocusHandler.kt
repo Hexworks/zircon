@@ -1,21 +1,25 @@
 package org.hexworks.zircon.internal.behavior.impl
 
+import org.hexworks.cobalt.Identifier
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.subscribe
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
 import org.hexworks.zircon.internal.behavior.Focusable
 import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
 
-class DefaultComponentFocusHandler(private val rootComponent: InternalComponent) : ComponentFocusHandler {
+class DefaultComponentFocusHandler(private val rootComponent: InternalContainer) : ComponentFocusHandler {
 
     override var focusedComponent: InternalComponent = rootComponent
         private set
 
-    private val nextsLookup = mutableMapOf(Pair(rootComponent.id, rootComponent))
-    private val prevsLookup = nextsLookup.toMutableMap()
+    private val nextsLookup: MutableMap<Identifier, InternalComponent>
+            = mutableMapOf(Pair(rootComponent.id, rootComponent))
+    private val prevsLookup: MutableMap<Identifier, InternalComponent>
+            = nextsLookup.toMutableMap()
 
     override fun findNext() = Maybe.ofNullable(nextsLookup[focusedComponent.id])
 
@@ -31,7 +35,7 @@ class DefaultComponentFocusHandler(private val rootComponent: InternalComponent)
         nextsLookup.clear()
         prevsLookup.clear()
 
-        val tree = rootComponent.toFlattenedComponents().filter { it.acceptsFocus() }
+        val tree = rootComponent.descendants.filter { it.acceptsFocus() }
         if (tree.isNotEmpty()) {
             val first = tree.first()
             nextsLookup[rootComponent.id] = first

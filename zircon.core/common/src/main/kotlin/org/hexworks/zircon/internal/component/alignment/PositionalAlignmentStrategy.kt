@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.data.Size
 
 class PositionalAlignmentStrategy(private val position: Position) : AlignmentStrategy {
 
-    override fun calculateAlignment(size: Size): Position {
+    override fun calculatePosition(size: Size): Position {
         return position
     }
 }

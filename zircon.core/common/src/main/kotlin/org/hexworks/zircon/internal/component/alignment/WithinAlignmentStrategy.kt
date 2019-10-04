@@ -10,7 +10,7 @@ data class WithinAlignmentStrategy(
         private val other: Boundable,
         private val alignmentType: ComponentAlignment) : AlignmentStrategy {
 
-    override fun calculateAlignment(size: Size): Position {
+    override fun calculatePosition(size: Size): Position {
         return alignmentType.alignWithin(other.rect, size)
     }
 }

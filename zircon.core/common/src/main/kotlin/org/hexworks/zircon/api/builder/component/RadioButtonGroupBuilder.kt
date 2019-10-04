@@ -20,7 +20,7 @@ data class RadioButtonGroupBuilder(
         return DefaultRadioButtonGroup(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 renderingStrategy = DefaultComponentRenderingStrategy(

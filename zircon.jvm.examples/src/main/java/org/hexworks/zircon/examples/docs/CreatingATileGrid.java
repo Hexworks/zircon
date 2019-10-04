@@ -1,11 +1,6 @@
 package org.hexworks.zircon.examples.docs;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.color.ANSITileColor;
 import org.hexworks.zircon.api.grid.TileGrid;
 
@@ -20,28 +15,28 @@ public class CreatingATileGrid {
                         .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
                         .build());
 
-        tileGrid.setTileAt(
-                Positions.create(2, 3),
+        tileGrid.draw(
                 Tiles.newBuilder()
                         .withBackgroundColor(ANSITileColor.CYAN)
                         .withForegroundColor(ANSITileColor.WHITE)
                         .withCharacter('x')
-                        .build());
+                        .build(),
+                Positions.create(2, 3));
 
-        tileGrid.setTileAt(
-                Positions.create(3, 4),
+        tileGrid.draw(
                 Tiles.newBuilder()
                         .withBackgroundColor(ANSITileColor.RED)
                         .withForegroundColor(ANSITileColor.GREEN)
                         .withCharacter('y')
-                        .build());
+                        .build(),
+                Positions.create(3, 4));
 
-        tileGrid.setTileAt(
-                Positions.create(4, 5),
+        tileGrid.draw(
                 Tiles.newBuilder()
                         .withBackgroundColor(ANSITileColor.BLUE)
                         .withForegroundColor(ANSITileColor.MAGENTA)
                         .withCharacter('z')
-                        .build());
+                        .build(),
+                Positions.create(4, 5));
     }
 }

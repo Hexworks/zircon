@@ -1,14 +1,6 @@
 package org.hexworks.zircon.examples.docs;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.ColorThemes;
-import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Screens;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.UIEventResponses;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.CheckBox;
 import org.hexworks.zircon.api.component.Header;
@@ -27,7 +19,7 @@ public class UsingComponents {
 
         final TileGrid tileGrid = SwingApplications.startTileGrid(
                 AppConfigs.newConfig()
-                        .withSize(Sizes.create(34, 18))
+                        .withSize(34, 18)
                         .withDefaultTileset(CP437TilesetResources.aduDhabi16x16())
                         .build());
         final Screen screen = Screens.createScreenFor(tileGrid);
@@ -38,13 +30,13 @@ public class UsingComponents {
                         box(BoxType.SINGLE, "Panel"),
                         shadow()) // shadow can be added
                 .withSize(32, 16) // the size must be smaller than the parent's size
-                .withPosition(Positions.offset1x1())
+                .withPosition(1, 1)
                 .build(); // position is always relative to the parent
 
         final Header header = Components.header()
                 // this will be 1x1 left and down from the top left
                 // corner of the panel
-                .withPosition(Positions.offset1x1())
+                .withPosition(1, 1)
                 .withText("Header")
                 .build();
 

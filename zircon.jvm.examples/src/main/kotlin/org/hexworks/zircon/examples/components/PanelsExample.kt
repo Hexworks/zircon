@@ -63,8 +63,8 @@ object PanelsExample {
 
         screen.addComponent(Components.panel()
                 .withDecorations(
-                        ShadowDecorationRenderer(),
-                        HalfBlockDecorationRenderer())
+                        HalfBlockDecorationRenderer(),
+                        shadow())
                 .withSize(18, 5)
                 .withAlignment(positionalAlignment(21, 15)))
 

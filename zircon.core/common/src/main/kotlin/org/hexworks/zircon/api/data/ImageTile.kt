@@ -1,15 +1,16 @@
 package org.hexworks.zircon.api.data
 
-import org.hexworks.zircon.api.behavior.TilesetOverride
+import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
 
-interface ImageTile : Tile, TilesetOverride {
+interface ImageTile : Tile, TilesetHolder {
 
     val name: String
-    val tileset: TilesetResource
+
+    override val tileset: TilesetResource
 
     fun withName(name: String): ImageTile
 

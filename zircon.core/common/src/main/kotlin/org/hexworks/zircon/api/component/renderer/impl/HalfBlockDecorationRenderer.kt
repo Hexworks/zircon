@@ -6,8 +6,8 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.graphics.Symbols
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.modifier.Crop
 import org.hexworks.zircon.api.shape.LineFactory
 
@@ -17,7 +17,7 @@ class HalfBlockDecorationRenderer : ComponentDecorationRenderer {
 
     override val occupiedSize = Size.create(2, 2)
 
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
+    override fun render(tileGraphics: TileGraphics, context: ComponentDecorationRenderContext) {
         val size = tileGraphics.size
         val style = context.component.componentStyleSet.currentStyle()
         val topLeft = Position.defaultPosition()
@@ -31,28 +31,28 @@ class HalfBlockDecorationRenderer : ComponentDecorationRenderer {
                 .withForegroundColor(style.foregroundColor)
                 .asCharacterTile().get()
 
-        LineFactory.buildLine(topLeft, topRight).positions()
+        LineFactory.buildLine(topLeft, topRight).positions
                 .drop(1)
                 .dropLast(1).forEach {
-                    tileGraphics.setTileAt(it, topTile)
+                    tileGraphics.draw(topTile, it)
                 }
-        LineFactory.buildLine(topLeft, bottomLeft).positions()
+        LineFactory.buildLine(topLeft, bottomLeft).positions
                 .drop(1)
                 .dropLast(1).forEach {
-                    tileGraphics.setTileAt(it, topTile.withCharacter(Symbols.RIGHT_HALF_BLOCK))
+                    tileGraphics.draw(topTile.withCharacter(Symbols.RIGHT_HALF_BLOCK), it)
                 }
-        LineFactory.buildLine(topRight, bottomRight).positions()
+        LineFactory.buildLine(topRight, bottomRight).positions
                 .drop(1)
                 .dropLast(1).forEach {
-                    tileGraphics.setTileAt(it, topTile.withCharacter(Symbols.LEFT_HALF_BLOCK))
+                    tileGraphics.draw(topTile.withCharacter(Symbols.LEFT_HALF_BLOCK), it)
                 }
-        LineFactory.buildLine(bottomLeft, bottomRight).positions()
+        LineFactory.buildLine(bottomLeft, bottomRight).positions
                 .drop(1)
                 .dropLast(1).forEach {
-                    tileGraphics.setTileAt(it, topTile.withCharacter(Symbols.UPPER_HALF_BLOCK))
+                    tileGraphics.draw(topTile.withCharacter(Symbols.UPPER_HALF_BLOCK), it)
                 }
 
-        val tileset = tileGraphics.currentTileset()
+        val tileset = tileGraphics.tileset
 
         val cropRight = Crop(
                 x = tileset.width.div(2),
@@ -82,17 +82,9 @@ class HalfBlockDecorationRenderer : ComponentDecorationRenderer {
         val bottomRightTile = bottomLeftTile
                 .withModifiers(cropLeft)
 
-        tileGraphics.setTileAt(
-                position = topLeft,
-                tile = topLeftTile)
-        tileGraphics.setTileAt(
-                position = topRight,
-                tile = topRightTile)
-        tileGraphics.setTileAt(
-                position = bottomLeft,
-                tile = bottomLeftTile)
-        tileGraphics.setTileAt(
-                position = bottomRight,
-                tile = bottomRightTile)
+        tileGraphics.draw(topLeftTile, topLeft)
+        tileGraphics.draw(topRightTile, topRight)
+        tileGraphics.draw(bottomLeftTile, bottomLeft)
+        tileGraphics.draw(bottomRightTile, bottomRight)
     }
 }

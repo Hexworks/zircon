@@ -8,12 +8,11 @@ data class DefaultStyleSet(override val foregroundColor: TileColor = TileColor.d
                            override val backgroundColor: TileColor = TileColor.defaultBackgroundColor(),
                            override val modifiers: Set<Modifier> = setOf()) : StyleSet {
 
-    private val cacheKey = "StyleSet(" +
-            "fg=${foregroundColor.generateCacheKey()}," +
-            "bg=${backgroundColor.generateCacheKey()}," +
-            "m=[" + modifiers.joinToString(",") { it.generateCacheKey() } + "])"
-
-    override fun generateCacheKey() = cacheKey
+    override val cacheKey: String
+        get() = "StyleSet(" +
+                "fg=${foregroundColor.cacheKey}," +
+                "bg=${backgroundColor.cacheKey}," +
+                "m=[" + modifiers.joinToString(",") { it.cacheKey } + "])"
 
     override fun createCopy() = copy()
 

@@ -6,11 +6,9 @@ import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.extensions.handleKeyboardEvents
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
 import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.Processed
 
 object PlayerMoveExampleKotlin {
 
@@ -28,10 +26,9 @@ object PlayerMoveExampleKotlin {
         val player = Layers.newBuilder()
                 .withSize(Sizes.one())
                 .withOffset(Positions.create(tileGrid.width / 2, tileGrid.height / 2))
-                .build()
-                .fill(PLAYER_TILE)
+                .build().apply { fill(PLAYER_TILE) }
 
-        tileGrid.handleKeyboardEvents(KEY_PRESSED) { event, _ ->
+        tileGrid.processKeyboardEvents(KEY_PRESSED) { event, _ ->
             when (event.code) {
                 KeyCode.UP -> player.moveUpBy(1)
                 KeyCode.DOWN -> player.moveDownBy(1)
@@ -39,9 +36,8 @@ object PlayerMoveExampleKotlin {
                 KeyCode.RIGHT -> player.moveRightBy(1)
                 else -> Pass
             }
-            Processed
         }
 
-        tileGrid.pushLayer(player)
+        tileGrid.addLayer(player)
     }
 }

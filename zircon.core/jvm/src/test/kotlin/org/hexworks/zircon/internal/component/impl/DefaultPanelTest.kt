@@ -34,7 +34,7 @@ class DefaultPanelTest : ComponentImplementationTest<DefaultPanel>() {
         target = DefaultPanel(
                 componentMetadata = ComponentMetadata(
                         size = SIZE,
-                        position = POSITION,
+                        relativePosition = POSITION,
                         componentStyleSet = COMPONENT_STYLES,
                         tileset = TILESET_REX_PAINT_20X20),
                 renderingStrategy = DefaultComponentRenderingStrategy(

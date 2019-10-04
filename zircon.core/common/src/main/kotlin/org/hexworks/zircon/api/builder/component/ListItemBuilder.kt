@@ -29,7 +29,7 @@ data class ListItemBuilder(
         return DefaultListItem(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialText = fixedText,

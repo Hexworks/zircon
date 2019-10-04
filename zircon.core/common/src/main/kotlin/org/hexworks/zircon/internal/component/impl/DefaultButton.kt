@@ -140,7 +140,7 @@ class DefaultButton(componentMetadata: ComponentMetadata,
     }
 
     override fun render() {
-        LOGGER.debug("Button (id=${id.abbreviate()}, disabled=$isDisabled, visibility=$isVisible, text=$text) was rendered.")
+        LOGGER.debug("Button (id=${id.abbreviate()}, disabled=$isDisabled, hidden=$isHidden, text=$text) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 

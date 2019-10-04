@@ -28,7 +28,7 @@ data class VBoxBuilder(
         return DefaultVBox(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialTitle = title,

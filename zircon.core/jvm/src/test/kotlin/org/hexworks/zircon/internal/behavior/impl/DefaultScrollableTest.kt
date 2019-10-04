@@ -128,7 +128,7 @@ class DefaultScrollableTest {
     }
 
     @Test
-    fun shouldProperlyScrollToProvided3dPosition(){
+    fun shouldProperlyScrollToProvided3dPosition() {
         val newPosition = Position.create(5, 5)
         target.scrollToPosition(newPosition)
 
@@ -157,7 +157,7 @@ class DefaultScrollableTest {
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun shouldThrowExceptionWhenTryingToScrollOutsideOfTheActualSize(){
+    fun shouldThrowExceptionWhenTryingToScrollOutsideOfTheActualSize() {
         target.scrollToPosition(Position.create(15, 0))
     }
 

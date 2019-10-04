@@ -7,13 +7,13 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.extensions.onTextChanged
+import org.hexworks.zircon.api.TrueTypeFontResources
 import org.hexworks.zircon.api.extensions.shadow
 
 object TextHandlingExample {
 
     private val theme = ColorThemes.solarizedLightOrange()
-    private val tileset = CP437TilesetResources.taffer20x20()
+    private val tileset = TrueTypeFontResources.ibmBios(20)
 
     @JvmStatic
     fun main(args: Array<String>) {

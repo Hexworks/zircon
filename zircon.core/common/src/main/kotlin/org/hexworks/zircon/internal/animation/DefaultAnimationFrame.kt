@@ -1,12 +1,11 @@
 package org.hexworks.zircon.internal.animation
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.animation.AnimationFrame
+import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.grid.TileGrid
 
 /**
  * Default implementation of the [AnimationFrame] interface.
@@ -21,18 +20,21 @@ data class DefaultAnimationFrame(override val size: Size,
             layers.forEach { it.moveTo(value) }
         }
 
-    private var displayedOn: Maybe<TileGrid> = Maybe.empty()
+    private var displayLayerable: Maybe<Layerable> = Maybe.empty()
 
-    override fun displayOn(tileGrid: TileGrid) {
+    override fun displayOn(layerable: Layerable) {
         remove()
-        layers.forEach { layer ->
-            tileGrid.pushLayer(layer)
+        this.displayLayerable = Maybe.of(layerable)
+        layers.forEach {
+            it.moveTo(position)
+            layerable.addLayer(it)
         }
     }
 
     override fun remove() {
-        displayedOn.map { prevDisplay ->
-            layers.forEach(prevDisplay::removeLayer)
+        displayLayerable.map { currDisplay ->
+            layers.forEach(currDisplay::removeLayer)
+            displayLayerable = Maybe.empty()
         }
     }
 }

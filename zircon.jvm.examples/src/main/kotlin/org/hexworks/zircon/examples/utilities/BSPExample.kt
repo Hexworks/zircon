@@ -2,8 +2,16 @@ package org.hexworks.zircon.examples.utilities
 
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.Blocks
+import org.hexworks.zircon.api.GameComponents
+import org.hexworks.zircon.api.Maybes
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.TileColors
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Tile
@@ -12,11 +20,10 @@ import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.Cell3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.base.BaseGameArea
-import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.util.BSPTree
-import org.hexworks.zircon.examples.CustomGameAreaExample
-import java.util.ArrayList
+import java.util.*
 
+// TODO: not working, fix game area
 object BSPExample {
 
     private val VISIBLE_SIZE = Sizes.create3DSize(50, 50, 1)
@@ -30,7 +37,7 @@ object BSPExample {
         createMap(gameArea, ACTUAL_SIZE.xLength, ACTUAL_SIZE.yLength)
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .withSize(Sizes.create(ACTUAL_SIZE.xLength+1, ACTUAL_SIZE.yLength+1))
+                .withSize(Sizes.create(ACTUAL_SIZE.xLength + 1, ACTUAL_SIZE.yLength + 1))
                 .enableBetaFeatures()
                 .build())
 
@@ -81,8 +88,8 @@ object BSPExample {
                                  .addLayer(Tiles.empty())
                                  .withEmptyTile(Tiles.empty())
                                  .build()) : BaseGameArea<Tile, Block<Tile>>(
-            visibleSize = visibleSize,
-            actualSize = actualSize) {
+            initialVisibleSize = visibleSize,
+            initialActualSize = actualSize) {
 
         private val blocks = java.util.TreeMap<Position3D, Block<Tile>>()
 
@@ -107,8 +114,8 @@ object BSPExample {
         }
 
         override fun setBlockAt(position: Position3D, block: Block<Tile>) {
-            if (!actualSize().containsPosition(position)) {
-                throw IllegalArgumentException("The supplied position ($position) is not within the size (${actualSize()}) of this game area.")
+            if (!actualSize.containsPosition(position)) {
+                throw IllegalArgumentException("The supplied position ($position) is not within the size (${actualSize}) of this game area.")
             }
             val layerCount = block.layers.size
             if (layerCount != layersPerBlock()) {

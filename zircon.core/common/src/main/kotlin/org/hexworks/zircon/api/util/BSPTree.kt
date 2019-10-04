@@ -1,8 +1,6 @@
 package org.hexworks.zircon.api.util
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.fold
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size

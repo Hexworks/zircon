@@ -5,11 +5,11 @@ import org.hexworks.zircon.internal.data.DefaultSize
 /**
  * Represents a rectangular area in a 2D space.
  * This class is immutable and cannot change its internal state after creation.
+ * [Size] supports destructuring to [width] and [height].
  */
 interface Size : Comparable<Size> {
 
     val width: Int
-
     val height: Int
 
     operator fun plus(other: Size): Size
@@ -23,12 +23,12 @@ interface Size : Comparable<Size> {
     /**
      * Tells whether this [Size] **is** the same as [Size.unknown].
      */
-    fun isUnknown(): Boolean
+    val isUnknown: Boolean
 
     /**
      * Tells whether this [Size] **is not** the same as [Size.unknown].
      */
-    fun isNotUnknown(): Boolean
+    val isNotUnknown: Boolean
 
     /**
      * Creates a list of [Position]s in the order in which they should

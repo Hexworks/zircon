@@ -57,7 +57,7 @@ class DefaultButtonTest : ComponentImplementationTest<DefaultButton>() {
         target = DefaultButton(
                 componentMetadata = ComponentMetadata(
                         size = SIZE_15X1,
-                        position = POSITION_2_3,
+                        relativePosition = POSITION_2_3,
                         componentStyleSet = COMPONENT_STYLES,
                         tileset = TILESET_REX_PAINT_20X20),
                 renderingStrategy = DefaultComponentRenderingStrategy(
@@ -69,9 +69,8 @@ class DefaultButtonTest : ComponentImplementationTest<DefaultButton>() {
     @Test
     fun shouldProperlyAddButtonText() {
         val surface = target.graphics
-        val offset = target.contentPosition.x
         TEXT.forEachIndexed { i, char ->
-            assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
+            assertThat(surface.getTileAt(Position.create(i, 0)).get())
                     .isEqualTo(TileBuilder.newBuilder()
                             .withCharacter(char)
                             .withStyleSet(target.componentStyleSet.fetchStyleFor(DEFAULT))

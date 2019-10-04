@@ -5,73 +5,65 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import kotlin.math.min
 
-class DefaultCursorHandler(private var cursorSpace: Size)
+class DefaultCursorHandler(initialCursorSpace: Size)
     : InternalCursorHandler {
 
-    private var cursorPosition = Position.defaultPosition()
-    private var cursorVisible = false
+    override var isCursorVisible = false
 
-    override fun cursorPosition(): Position = cursorPosition
+    override val isCursorAtTheEndOfTheLine: Boolean
+        get() = cursorPosition.x == cursorSpaceSize.width - 1
 
-    override fun putCursorAt(cursorPosition: Position): Boolean {
-        require(cursorPosition.hasNegativeComponent().not()) {
-            "Can't put the cursor at a negative position: $cursorPosition"
+    override val isCursorAtTheStartOfTheLine: Boolean
+        get() = cursorPosition.x == 0
+
+    override val isCursorAtTheFirstRow: Boolean
+        get() = cursorPosition.y == 0
+
+    override val isCursorAtTheLastRow: Boolean
+        get() = cursorPosition.y == cursorSpaceSize.height - 1
+
+    override var cursorSpaceSize = initialCursorSpace
+        set(value) {
+            field = value
+            this.cursorPosition = cursorPosition
         }
-        val newCursorPos = cursorPosition
-                .withX(min(cursorPosition.x, cursorSpace.width - 1))
-                .withY(min(cursorPosition.y, cursorSpace.height - 1))
-        return if (this.cursorPosition == newCursorPos) {
-            false
-        } else {
-            this.cursorPosition = newCursorPos
-            true
+
+    override var cursorPosition = Position.defaultPosition()
+        set(value) {
+            require(value.hasNegativeComponent.not()) {
+                "Can't put the cursor at a negative position: $value"
+            }
+            field = cursorPosition
+                    .withX(min(value.x, cursorSpaceSize.width - 1))
+                    .withY(min(value.y, cursorSpaceSize.height - 1))
+        }
+
+    override fun moveCursorForward() {
+        this.cursorPosition = cursorPosition.let { (column) ->
+            if (cursorIsAtTheEndOfTheLine(column)) {
+                cursorPosition.withX(0).withRelativeY(1)
+            } else {
+                cursorPosition.withRelativeX(1)
+            }
         }
     }
 
-    override fun moveCursorForward() =
-            putCursorAt(cursorPosition().let { (column) ->
-                if (cursorIsAtTheEndOfTheLine(column)) {
-                    cursorPosition().withX(0).withRelativeY(1)
+
+    override fun moveCursorBackward() {
+        this.cursorPosition = cursorPosition.let { (column) ->
+            if (cursorIsAtTheStartOfTheLine(column)) {
+                if (cursorPosition.y > 0) {
+                    cursorPosition.withX(cursorSpaceSize.width - 1).withRelativeY(-1)
                 } else {
-                    cursorPosition().withRelativeX(1)
+                    cursorPosition
                 }
-            })
-
-    override fun moveCursorBackward() =
-            putCursorAt(cursorPosition().let { (column) ->
-                if (cursorIsAtTheStartOfTheLine(column)) {
-                    if (cursorPosition().y > 0) {
-                        cursorPosition().withX(cursorSpace.width - 1).withRelativeY(-1)
-                    } else {
-                        cursorPosition()
-                    }
-                } else {
-                    cursorPosition().withRelativeX(-1)
-                }
-            })
-
-    override fun isCursorVisible() = cursorVisible
-
-    override fun isCursorAtTheEndOfTheLine() = cursorPosition.x == cursorSpace.width - 1
-
-    override fun isCursorAtTheStartOfTheLine() = cursorPosition.x == 0
-
-    override fun isCursorAtTheFirstRow() = cursorPosition.y == 0
-
-    override fun isCursorAtTheLastRow() = cursorPosition.y == cursorSpace.height - 1
-
-    override fun setCursorVisibility(cursorVisible: Boolean) {
-        this.cursorVisible = cursorVisible
+            } else {
+                cursorPosition.withRelativeX(-1)
+            }
+        }
     }
 
-    override fun getCursorSpaceSize() = cursorSpace
-
-    override fun resizeCursorSpace(size: Size) {
-        this.cursorSpace = size
-        putCursorAt(cursorPosition())
-    }
-
-    private fun cursorIsAtTheEndOfTheLine(column: Int) = column + 1 == cursorSpace.width
+    private fun cursorIsAtTheEndOfTheLine(column: Int) = column + 1 == cursorSpaceSize.width
 
     private fun cursorIsAtTheStartOfTheLine(column: Int) = column == 0
 

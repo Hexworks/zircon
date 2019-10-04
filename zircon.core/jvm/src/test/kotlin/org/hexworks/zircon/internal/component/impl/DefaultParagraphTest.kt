@@ -33,7 +33,7 @@ class DefaultParagraphTest : ComponentImplementationTest<DefaultParagraph>() {
         target = DefaultParagraph(
                 componentMetadata = ComponentMetadata(
                         size = DefaultRadioButtonGroupTest.SIZE,
-                        position = DefaultRadioButtonGroupTest.POSITION,
+                        relativePosition = DefaultRadioButtonGroupTest.POSITION,
                         componentStyleSet = COMPONENT_STYLES,
                         tileset = TILESET_REX_PAINT_20X20),
                 renderingStrategy = DefaultComponentRenderingStrategy(

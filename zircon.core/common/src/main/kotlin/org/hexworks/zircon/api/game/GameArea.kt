@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.game
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
+import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
@@ -9,7 +9,6 @@ import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.internal.extensions.getIfPresent
 
 /**
@@ -65,7 +64,7 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
         return if (fetchMode == BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocks()
         } else {
-            actualSize().fetchPositions().map { createCell(it) }
+            actualSize.fetchPositions().map { createCell(it) }
         }
     }
 
@@ -134,7 +133,7 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
         } else {
             fetchPositionsWithOffset(
                     offset = Position3D.defaultPosition(),
-                    size = Size3D.create(actualSize().xLength, actualSize().yLength, z))
+                    size = Size3D.create(actualSize.xLength, actualSize.yLength, z))
                     .map { createCell(it) }
         }
     }
@@ -187,15 +186,14 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
     fun getOverlaysAt(level: Int): Iterable<Layer>
 
     /**
+     * Removes the topmost overlay at the given [level].
+     */
+    fun popOverlayAt(level: Int) = removeOverlay(getOverlaysAt(level).first(), level)
+
+    /**
      * Adds an overlay on top of a z `level`.
      */
     fun pushOverlayAt(layer: Layer, level: Int)
-
-    /**
-     * Removes and returns the overlay which is at the top of the currently present overlays
-     * at the given `level`.(if any).
-     */
-    fun popOverlayAt(level: Int): Maybe<Layer>
 
     /**
      * Removes an overlay from the current overlays at the given `level`.
@@ -205,6 +203,7 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
     /**
      * The fetch mode for [Block]s.
      */
+    @Suppress("unused")
     enum class BlockFetchMode {
 
         /**

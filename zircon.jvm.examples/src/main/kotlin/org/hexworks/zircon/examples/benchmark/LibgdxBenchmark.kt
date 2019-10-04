@@ -1,12 +1,16 @@
 package org.hexworks.zircon.examples.benchmark
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.DrawSurfaces
+import org.hexworks.zircon.api.LibgdxApplications
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.impl.GridPosition
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.grid.TileGrid
 import java.util.*
@@ -39,7 +43,7 @@ fun main(args: Array<String>) {
                 .withTileset(tileset)
                 .build()
         layerSize.fetchPositions().forEach {
-            imageLayer.setTileAt(it, filler)
+            imageLayer.draw(filler, it)
         }
 
         val layer = LayerBuilder.newBuilder()
@@ -49,7 +53,7 @@ fun main(args: Array<String>) {
                 .withTileGraphics(imageLayer)
                 .build()
 
-        tileGrid.pushLayer(layer)
+        tileGrid.addLayer(layer)
         layer
     }
 
@@ -81,7 +85,7 @@ fun main(args: Array<String>) {
 private fun fillGrid(tileGrid: TileGrid, tile: Tile) {
     (0..tileGrid.size.height).forEach { y ->
         (0..tileGrid.size.width).forEach { x ->
-            tileGrid.setTileAt(GridPosition(x, y), tile)
+            tileGrid.draw(tile, GridPosition(x, y))
         }
     }
 }

@@ -14,7 +14,9 @@ class TileGraphicsBuilderTest {
         val result = TileGraphicsBuilder.newBuilder()
                 .withSize(SIZE)
                 .build()
-                .fill(FILLER)
+                .apply {
+                    fill(FILLER)
+                }
 
         assertThat(result.size).isEqualTo(SIZE)
 

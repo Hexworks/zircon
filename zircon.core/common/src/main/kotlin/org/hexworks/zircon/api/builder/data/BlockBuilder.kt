@@ -1,11 +1,15 @@
 package org.hexworks.zircon.api.builder.data
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockSide
-import org.hexworks.zircon.api.data.BlockSide.*
+import org.hexworks.zircon.api.data.BlockSide.BACK
+import org.hexworks.zircon.api.data.BlockSide.BOTTOM
+import org.hexworks.zircon.api.data.BlockSide.FRONT
+import org.hexworks.zircon.api.data.BlockSide.LEFT
+import org.hexworks.zircon.api.data.BlockSide.RIGHT
+import org.hexworks.zircon.api.data.BlockSide.TOP
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.data.DefaultBlock
 

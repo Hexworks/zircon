@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 import static org.hexworks.zircon.api.ComponentDecorations.shadow;
+import static org.hexworks.zircon.api.Functions.fromConsumer;
 
 @SuppressWarnings("ALL")
 public class ColorThemeSwitcher {
@@ -42,6 +43,7 @@ public class ColorThemeSwitcher {
         TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(TILESET)
                 .withSize(SCREEN_SIZE)
+                .withDebugMode(true)
                 .build());
 
         Screen screen = Screens.createScreenFor(tileGrid);
@@ -224,21 +226,21 @@ public class ColorThemeSwitcher {
                 option.name()));
         otherPanel.addComponent(othOptions);
 
-        slOptions.onSelection((selection -> {
+        slOptions.onSelection(fromConsumer((selection -> {
             refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-        }));
-        sdOptions.onSelection((selection -> {
+        })));
+        sdOptions.onSelection(fromConsumer((selection -> {
             refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-        }));
-        zbOptions.onSelection((selection -> {
+        })));
+        zbOptions.onSelection(fromConsumer((selection -> {
             refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-        }));
-        mOptions.onSelection((selection -> {
+        })));
+        mOptions.onSelection(fromConsumer((selection -> {
             refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-        }));
-        othOptions.onSelection((selection -> {
+        })));
+        othOptions.onSelection(fromConsumer((selection -> {
             refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-        }));
+        })));
 
         screen.applyColorTheme(currentTheme.get().getTheme());
         screen.display();

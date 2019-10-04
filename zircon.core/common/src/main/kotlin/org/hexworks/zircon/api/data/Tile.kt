@@ -2,27 +2,55 @@ package org.hexworks.zircon.api.data
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Cacheable
-import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.Modifier
-import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.data.DefaultCharacterTile
 import org.hexworks.zircon.internal.data.DefaultGraphicalTile
 import org.hexworks.zircon.internal.data.DefaultImageTile
+import org.hexworks.zircon.internal.resource.TileType
 
 /**
  * A [Tile] is the basic building block which can be drawn
  * on a screen. It is a rectangular graphic, or character
  * which can be composed to more complex objects.
  */
-interface Tile : Drawable, Cacheable, StyleSet {
+interface Tile : Cacheable, StyleSet {
 
     val tileType: TileType
+
     val styleSet: StyleSet
+
+    val isOpaque: Boolean
+
+    val isUnderlined: Boolean
+
+    val isCrossedOut: Boolean
+
+    val isBlinking: Boolean
+
+    val isVerticalFlipped: Boolean
+
+    val isHorizontalFlipped: Boolean
+
+    val hasBorder: Boolean
+
+    /**
+     * Tells whether this [Tile] **is** an empty [Tile]
+     * (it is the [Tile.empty] instance).
+     */
+    val isEmpty: Boolean
+
+    /**
+     * Tells whether this [Tile] **is not** an empty [Tile]
+     * (it is not the [Tile.empty] instance).
+     */
+    val isNotEmpty: Boolean
+
+    fun fetchBorderData(): Set<Border>
 
     override fun createCopy(): Tile
 
@@ -63,34 +91,6 @@ interface Tile : Drawable, Cacheable, StyleSet {
      * Returns this [Tile] as a [GraphicalTile] if possible.
      */
     fun asGraphicTile(): Maybe<GraphicalTile>
-
-    fun isOpaque(): Boolean
-
-    fun isUnderlined(): Boolean
-
-    fun isCrossedOut(): Boolean
-
-    fun isBlinking(): Boolean
-
-    fun isVerticalFlipped(): Boolean
-
-    fun isHorizontalFlipped(): Boolean
-
-    fun hasBorder(): Boolean
-
-    fun fetchBorderData(): Set<Border>
-
-    /**
-     * Tells whether this [Tile] **is** an empty [Tile]
-     * (it is the [Tile.empty] instance).
-     */
-    fun isEmpty(): Boolean
-
-    /**
-     * Tells whether this [Tile] **is not** an empty [Tile]
-     * (it is not the [Tile.empty] instance).
-     */
-    fun isNotEmpty(): Boolean
 
     companion object {
 

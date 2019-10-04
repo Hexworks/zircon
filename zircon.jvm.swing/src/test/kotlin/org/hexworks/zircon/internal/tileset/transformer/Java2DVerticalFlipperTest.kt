@@ -20,8 +20,6 @@ class Java2DVerticalFlipperTest {
     fun shouldProperlyRun() {
         val image = BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB)
         target.transform(DefaultTileTexture(WIDTH, HEIGHT, image), CHAR)
-
-        // TODO: check vertical flip?
     }
 
     companion object {

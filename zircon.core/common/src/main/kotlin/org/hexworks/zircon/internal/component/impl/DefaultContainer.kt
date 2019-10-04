@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.behavior.Drawable
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -9,15 +8,13 @@ import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.graphics.DrawSurface
-import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
+import kotlin.jvm.Synchronized
 
 @Suppress("UNCHECKED_CAST")
 open class DefaultContainer(componentMetadata: ComponentMetadata,
@@ -26,73 +23,73 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
         componentMetadata = componentMetadata,
         renderer = renderer) {
 
-    override val children: List<Component>
+    override val children: List<InternalComponent>
+        @Synchronized
         get() = components.toList()
 
-    private val components = ThreadSafeQueueFactory.create<InternalComponent>()
+    override val descendants: Iterable<InternalComponent>
+        @Synchronized
+        get() {
+            return children.flatMap { listOf(it).plus(it.descendants) }
+        }
+
+    private val components = mutableListOf<InternalComponent>()
 
     override fun acceptsFocus() = false
 
-    override fun draw(drawable: Drawable, position: Position) {
-        if (drawable is Component) {
-            require(position == drawable.position) {
-                "The component to draw has different position (${drawable.position}) than the " +
-                        "position given to the draw operation ($position). You may consider using " +
-                        "the addComponent function instead."
-            }
-            addComponent(drawable)
-        } else {
-            super<DefaultComponent>.draw(drawable, position)
+    // TODO: test the hell out of this
+    @Synchronized
+    override fun moveTo(position: Position, signalComponentChange: Boolean) {
+        val diff = position - this.position
+        super.moveTo(position, signalComponentChange)
+        children.forEach {
+            it.moveTo(it.position + diff, false)
         }
     }
 
-    override fun clear() {
-        detachAllComponents()
-    }
-
+    @Synchronized
     override fun addComponent(component: Component) {
-        require(component !== this) {
-            "You can't add a component to itself!"
-        }
-        (component as? InternalComponent)?.let { dc ->
-            // TODO: this is fishy, let's investigate whether
-            // TODO: we can do this without moving the component
-            val originalRect = dc.rect
-            dc.moveTo(dc.position + contentPosition)
+        (component as? InternalComponent)?.let {
+            require(component !== this) {
+                "You can't add a component to itself."
+            }
+            require(component.descendants.none { it == component }) {
+                "A component can't become its own descendant."
+            }
+            val originalRect = component.rect
+            component.moveTo(component.position + contentOffset + position)
             if (RuntimeConfig.config.debugMode.not()) {
                 val contentBounds = contentSize.toRect()
-                require(currentTileset().size == component.currentTileset().size) {
-                    "Trying to add component with incompatible tileset size '${component.currentTileset().size}' to" +
-                            "container with tileset size: '${currentTileset().size}'!"
-                }
+                tileset.checkCompatibilityWith(component.tileset)
                 require(contentBounds.containsBoundable(originalRect)) {
                     "Adding out of bounds component (${component::class.simpleName}) " +
                             "with bounds ($originalRect) to the container (${this::class.simpleName}) " +
                             "with content bounds ($contentBounds) is not allowed."
                 }
-                children.firstOrNull { it.intersects(dc) }?.let {
+                children.firstOrNull { it.intersects(component) }?.let {
                     throw IllegalArgumentException(
                             "You can't add a component to a container which intersects with other components. " +
-                                    "$it is intersecting with $dc.")
+                                    "$it is intersecting with $component.")
                 }
             }
-            // TODO: regression test this! order was changed! it was buggy when the component was re-added to the
-            // TODO: same container!
-            dc.attachTo(this)
-            components.add(dc)
+            // TODO: regression test this! order was changed! it was buggy when the
+            // TODO: component was re-added to the same container!
+            component.attachTo(this)
+            components.add(component)
             Zircon.eventBus.publish(
-                    event = ZirconEvent.ComponentAddition,
+                    event = ZirconEvent.ComponentAdded,
                     eventScope = ZirconScope)
         } ?: throw IllegalArgumentException(
                 "The supplied component does not implement InternalComponent.")
     }
 
+    @Synchronized
     override fun removeComponent(component: Component): Boolean {
         var removalHappened = components.remove(component)
         if (removalHappened.not()) {
             val childResults = components
-                    .filter { it is Container }
-                    .map { (it as Container).removeComponent(component) }
+                    .filterIsInstance<Container>()
+                    .map { it.removeComponent(component) }
             removalHappened = if (childResults.isEmpty()) {
                 false
             } else {
@@ -103,46 +100,33 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
             // TODO: regression test this!
             component.detach()
             Zircon.eventBus.publish(
-                    event = ZirconEvent.ComponentRemoval,
+                    event = ZirconEvent.ComponentRemoved,
                     eventScope = ZirconScope)
         }
         return removalHappened
     }
 
+    @Synchronized
     override fun detachAllComponents(): Boolean {
         val removalHappened = components.isNotEmpty()
-        components.forEach {
+        components.toList().forEach {
             removeComponent(it)
         }
         if (removalHappened) {
             Zircon.eventBus.publish(
-                    event = ZirconEvent.ComponentRemoval,
+                    event = ZirconEvent.ComponentRemoved,
                     eventScope = ZirconScope)
         }
         return removalHappened
     }
 
-    override fun toFlattenedLayers(): Iterable<Layer> {
-        return listOf(this).plus(components.flatMap { it.toFlattenedLayers() })
-    }
-
-    override fun toFlattenedComponents(): Iterable<InternalComponent> {
-        return listOf(this).plus(components.flatMap { it.toFlattenedComponents() })
-    }
-
-    override fun drawOnto(surface: DrawSurface, position: Position) {
-        surface.draw(graphics, position)
-        components.forEach {
-            it.drawOnto(surface)
-        }
-    }
-
-    override fun fetchComponentByPosition(position: Position) =
-            if (this.containsPosition(position).not()) {
+    @Synchronized
+    override fun fetchComponentByPosition(absolutePosition: Position) =
+            if (this.containsPosition(absolutePosition).not()) {
                 Maybe.empty()
             } else {
                 components.map {
-                    it.fetchComponentByPosition(position - this.position)
+                    it.fetchComponentByPosition(absolutePosition)
                 }.filter {
                     it.isPresent
                 }.let { hits ->
@@ -154,10 +138,12 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
                 }
             }
 
+    @Synchronized
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSet.empty()
     }
 
     override fun render() {
+        // by default a container won't render anything
     }
 }

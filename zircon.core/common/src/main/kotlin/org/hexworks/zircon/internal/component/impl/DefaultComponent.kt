@@ -3,20 +3,18 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
-import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
+import org.hexworks.zircon.api.behavior.Movable
+import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.Visibility
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
+import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Snapshot
-import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.uievent.ComponentEventSource
 import org.hexworks.zircon.api.uievent.MouseEvent
@@ -25,82 +23,88 @@ import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.Zircon
+import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
+import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.graphics.ComponentLayer
+import org.hexworks.zircon.internal.graphics.InternalLayer
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.uievent.impl.DefaultUIEventProcessor
+import kotlin.jvm.Synchronized
 
 @Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
         componentMetadata: ComponentMetadata,
-        override val graphics: TileGraphics = TileGraphicsBuilder
-                .newBuilder()
-                .withTileset(componentMetadata.tileset)
-                .withSize(componentMetadata.size)
-                .build(),
         private val renderer: ComponentRenderingStrategy<out Component>,
-        private val layer: Layer = LayerBuilder.newBuilder()
-                .withOffset(componentMetadata.position)
-                .withTileGraphics(graphics)
-                .build(),
+        private val contentLayer: InternalLayer = ComponentLayer(
+                initialPosition = componentMetadata.relativePosition,
+                initialContents = TileGraphicsBuilder
+                        .newBuilder()
+                        .withTileset(componentMetadata.tileset)
+                        .withSize(componentMetadata.size)
+                        .buildThreadSafeTileGraphics()),
         private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault())
     : InternalComponent,
-        Layer by layer,
         UIEventProcessor by uiEventProcessor,
+        Identifiable by contentLayer,
+        Movable by contentLayer,
+        TilesetOverride by contentLayer,
         ComponentEventSource by uiEventProcessor {
 
-    // identifiable
-    final override val id = IdentifierFactory.randomIdentifier()
+    override val absolutePosition: Position
+        get() = position
 
-    // component
+    final override val relativePosition: Position
+        @Synchronized
+        get() = position - parent.map { it.position }.orElse(Position.zero())
 
-    final override val contentPosition: Position
+    override val relativeBounds: Rect
+        @Synchronized
+        get() = rect.withPosition(relativePosition)
+
+    final override val contentOffset: Position
+        @Synchronized
         get() = renderer.calculateContentPosition()
 
-    // TODO: position comes from layer now and it is absolute. wtf?
-    final override val absolutePosition: Position
-        get() = position + parent.map { it.absolutePosition }.orElse(Position.zero())
-
     final override val contentSize: Size
+        @Synchronized
         get() = renderer.calculateContentSize(size)
 
     final override val componentStyleSetProperty: Property<ComponentStyleSet> = createPropertyFrom(componentMetadata.componentStyleSet)
 
     final override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
 
+    override var isHidden: Boolean
+        get() = contentLayer.isHidden
+        set(value) {
+            contentLayer.isHidden = value
+        }
+
+    final override val hiddenProperty: Property<Boolean> = contentLayer.hiddenProperty
+
+    override val children: Iterable<InternalComponent> = listOf()
+
+    override val descendants: Iterable<InternalComponent> = listOf()
+
+    override val layerStates: Iterable<LayerState>
+        @Synchronized
+        get() = listOf(contentLayer.state)
+
+    override val graphics: TileGraphics
+        get() = contentLayer
 
     private var parent = Maybe.empty<InternalContainer>()
 
-    final override val hiddenProperty: Property<Boolean> = layer.hiddenProperty
-
-    final override val visibilityProperty: Property<Visibility> = createPropertyFrom(Visibility.Visible)
-
-    final override var isVisible: Visibility by visibilityProperty.asDelegate()
-
     init {
         hiddenProperty.onChange {
-            isVisible = if (it.newValue) {
-                Visibility.Hidden
-            } else {
-                Visibility.Visible
-            }
-        }
-        visibilityProperty.onChange {
             render()
         }
-
         componentStyleSetProperty.onChange {
             render()
-        }
-    }
-
-    final override fun createSnapshot(): Snapshot {
-        return graphics.createSnapshot().let { snapshot ->
-            Snapshot.create(
-                    cells = snapshot.cells.map { it.withPosition(it.position + absolutePosition) },
-                    tileset = snapshot.tileset)
         }
     }
 
@@ -108,19 +112,58 @@ abstract class DefaultComponent(
 
     override fun focusTaken(): UIEventResponse = Pass
 
+    @Synchronized
+    override fun moveTo(position: Position) {
+        moveTo(position, true)
+    }
+
+    @Synchronized
+    override fun moveTo(position: Position, signalComponentChange: Boolean) {
+        parent.map {
+            val newBounds = contentLayer.rect.withPosition(position)
+            require(it.containsBoundable(newBounds)) {
+                "Can't move Component ($this) with new bounds ($newBounds) out of its parent's bounds (${it})."
+            }
+        }
+        contentLayer.moveTo(position)
+        if (signalComponentChange) {
+            Zircon.eventBus.publish(
+                    event = ZirconEvent.ComponentMoved,
+                    eventScope = ZirconScope)
+        }
+    }
+
+    @Synchronized
+    final override fun moveBy(position: Position) = moveTo(this.position + position)
+
+    @Synchronized
+    final override fun moveRightBy(delta: Int) = moveTo(position.withRelativeX(delta))
+
+    @Synchronized
+    final override fun moveLeftBy(delta: Int) = moveTo(position.withRelativeX(-delta))
+
+    @Synchronized
+    final override fun moveUpBy(delta: Int) = moveTo(position.withRelativeY(-delta))
+
+    @Synchronized
+    final override fun moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
+
+    @Synchronized
     final override fun requestFocus() {
         Zircon.eventBus.publish(
-                event = ZirconEvent.RequestFocusFor(this),
+                event = RequestFocusFor(this),
                 eventScope = ZirconScope)
     }
 
 
+    @Synchronized
     override fun clearFocus() {
         Zircon.eventBus.publish(
-                event = ZirconEvent.ClearFocus(this),
+                event = ClearFocus(this),
                 eventScope = ZirconScope)
     }
 
+    @Synchronized
     override fun mouseEntered(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
         return if (phase == UIEventPhase.TARGET) {
             componentStyleSet.applyMouseOverStyle()
@@ -129,6 +172,7 @@ abstract class DefaultComponent(
         } else Pass
     }
 
+    @Synchronized
     override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
         return if (phase == UIEventPhase.TARGET) {
             componentStyleSet.reset()
@@ -137,6 +181,7 @@ abstract class DefaultComponent(
         } else Pass
     }
 
+    @Synchronized
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
         return if (phase == UIEventPhase.TARGET) {
             componentStyleSet.applyActiveStyle()
@@ -145,6 +190,7 @@ abstract class DefaultComponent(
         } else Pass
     }
 
+    @Synchronized
     override fun mouseReleased(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
         return if (phase == UIEventPhase.TARGET) {
             componentStyleSet.applyMouseOverStyle()
@@ -155,18 +201,23 @@ abstract class DefaultComponent(
 
     final override fun fetchParent() = parent
 
-    override fun calculatePathFromRoot(): Iterable<InternalComponent> {
+    @Synchronized
+    override fun calculatePathFromRoot(): List<InternalComponent> {
         return parent.map { it.calculatePathFromRoot() }.orElse(listOf()).plus(this)
     }
 
-    final override fun attachTo(parent: InternalContainer) {
+    @Synchronized
+    override fun attachTo(parent: InternalContainer) {
         LOGGER.debug("Attaching Component ($this) to parent ($parent).")
-        this.parent.map {
-            it.removeComponent(this)
+        this.parent.map { oldParent ->
+            if (parent !== oldParent) {
+                oldParent.removeComponent(this)
+            }
         }
         this.parent = Maybe.of(parent)
     }
 
+    @Synchronized
     final override fun detach() {
         LOGGER.debug("Attaching Component ($this) from parent (${fetchParent()}).")
         parent.map {
@@ -175,26 +226,13 @@ abstract class DefaultComponent(
         }
     }
 
-    override fun fetchComponentByPosition(position: Position): Maybe<out InternalComponent> {
-        return if (containsPosition(position)) {
+    @Synchronized
+    override fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent> {
+        return if (containsPosition(absolutePosition)) {
             Maybe.of(this)
         } else {
             Maybe.empty()
         }
-    }
-
-    override fun clear() {
-        // no-op, by default clear does nothing on a Component, since components by default
-        // have no notion of "clear". This might be different for specific components like
-        // a TextArea.
-    }
-
-    override fun toFlattenedLayers(): Iterable<Layer> {
-        return listOf(this)
-    }
-
-    override fun toFlattenedComponents(): Iterable<InternalComponent> {
-        return listOf(this)
     }
 
     override fun toString(): String {

@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.tileset.impl
 
-import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
+import org.hexworks.cobalt.factory.IdentifierFactory
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile

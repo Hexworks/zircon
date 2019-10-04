@@ -3,10 +3,8 @@ package org.hexworks.zircon.api.builder.component
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.component.TextBox
 import org.hexworks.zircon.api.data.Size
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import java.lang.UnsupportedOperationException
 
 class TextBoxBuilderTest : ComponentBuilderTest<TextBox, TextBoxBuilder>() {
 

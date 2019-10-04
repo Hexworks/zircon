@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.animation
 
-import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.internal.behavior.Identifiable
 
 /**
@@ -32,33 +32,21 @@ interface Animation : Identifiable {
     val tick: Long
 
     /**
-     * Returns the next [AnimationFrame] to be drawn.
+     * Tells whether this [Animation] is looped indefinitely.
      */
-    fun fetchCurrentFrame(): AnimationFrame
+    val isLoopedIndefinitely: Boolean
 
     /**
-     * Returns whether this [Animation] is looped indefinitely.
+     * Displays the next frame on the given [layerable]. If there
+     * are no frames left to display [displayNextFrame] will
+     * return `false`
+     * @return `true` if a frame was displayed, `false` if not.
      */
-    fun isLoopedIndefinitely(): Boolean
+    fun displayNextFrame(layerable: Layerable): Boolean
 
     /**
-     * Removes the current frame from the screen (if it is displayed)
+     * Removes the current frame from the screen (if it is displayed).
      */
-    fun clearCurrentFrame()
-
-    /**
-     * Returns the next frame to be drawn (if any).
-     */
-    fun fetchNextFrame(): Maybe<out AnimationFrame>
-
-    /**
-     * Tells whether this [Animation] has any frames left.
-     */
-    fun hasNextFrame(): Boolean
-
-    /**
-     * Returns all the [AnimationFrame]s of this [Animation].
-     */
-    fun fetchAllFrames(): List<AnimationFrame>
+    fun removeCurrentFrame()
 
 }

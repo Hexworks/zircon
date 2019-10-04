@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.behavior.impl
 
-import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.data.Position
@@ -38,13 +37,8 @@ class DefaultMovable(size: Size,
 
     private var currentRect: Rect = Rect.create(position, size)
 
-    override fun moveTo(position: Position): Boolean {
-        return if (this.position == position) {
-            false
-        } else {
-            currentRect = rect.withPosition(position)
-            true
-        }
+    override fun moveTo(position: Position) {
+        currentRect = currentRect.withPosition(position)
     }
 
     override fun intersects(boundable: Boundable): Boolean {

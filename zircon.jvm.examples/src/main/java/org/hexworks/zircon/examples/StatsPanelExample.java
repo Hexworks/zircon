@@ -37,7 +37,7 @@ public class StatsPanelExample {
         attack.addComponent(Components.icon().withIcon(Tiles.newBuilder()
                 .withName("Short sword")
                 .withTileset(nethack16x16())
-                .buildGraphicTile()).build());
+                .buildGraphicalTile()).build());
         attack.addComponent(Components.label().withText("Attack:5"));
         panel.addComponent(attack);
 
@@ -48,7 +48,7 @@ public class StatsPanelExample {
                 .withIcon(Tiles.newBuilder()
                         .withName("Small shield")
                         .withTileset(nethack16x16())
-                        .buildGraphicTile()).build());
+                        .buildGraphicalTile()).build());
         defense.addComponent(Components.label()
                 .withText("Defense:4"));
         panel.addComponent(defense);
@@ -64,7 +64,7 @@ public class StatsPanelExample {
                 .build());
 
         screen.addComponent(panel);
-        screen.applyColorTheme(ColorThemes.tron());
+        screen.applyColorTheme(ColorThemes.zenburnVanilla());
         screen.display();
 
     }

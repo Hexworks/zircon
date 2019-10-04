@@ -1,47 +1,38 @@
 package org.hexworks.zircon.api.graphics
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.fetchCharacters
 import org.junit.Before
 import org.junit.Test
 
 class SubTileGraphicsTest {
 
     private val backend = TileGraphicsBuilder.newBuilder()
-            .withSize(BACKEND_SIZE)
+            .withSize(BACKEND_SIZE_5X5)
             .build()
     lateinit var target: TileGraphics
 
     @Before
     fun setUp() {
-        target = backend.toSubTileGraphics(SUB_GRAPHICS_BOUNDS)
-    }
-
-    @Test
-    fun shouldProperlyReportFilledPositions() {
-
-        val positionsToFill = listOf(Position.create(1, 1), Position.create(2, 1))
-        val wrongPosition = Position.create(6, 4)
-
-        positionsToFill.plus(wrongPosition).forEach {
-            target.setTileAt(it, Tile.defaultTile().withCharacter('y'))
-        }
-
-        assertThat(target.fetchFilledPositions()).containsExactlyElementsOf(positionsToFill)
+        target = backend.toSubTileGraphics(BOUNDS_1TO1_3X3)
     }
 
     @Test(expected = UnsupportedOperationException::class)
     fun shouldRestrictResize() {
-        target.resize(Size.defaultGridSize())
+        target.toResized(Size.defaultGridSize())
     }
 
     @Test(expected = UnsupportedOperationException::class)
     fun shouldRestrictResizeWithFiller() {
-        target.resize(Size.defaultGridSize(), Tile.empty())
+        target.toResized(Size.defaultGridSize(), Tile.empty())
     }
 
     @Test
@@ -50,7 +41,7 @@ class SubTileGraphicsTest {
 
         target.fill(subFiller)
 
-        val chars = backend.fetchCells().map { it.tile.asCharacterTile().get().character }
+        val chars = backend.fetchCharacters()
 
         assertThat(chars).containsExactly(
                 ' ', ' ', ' ', ' ', ' ',
@@ -62,71 +53,38 @@ class SubTileGraphicsTest {
 
     @Test
     fun shouldProperlyFetchCells() {
-        assertThat(target.fetchCells().map { it.position })
-                .containsExactlyElementsOf(SUB_GRAPHICS_BOUNDS.size.fetchPositions().toList())
+        assertThat(target.size.fetchPositions().toList())
+                .containsExactlyElementsOf(BOUNDS_1TO1_3X3.size.fetchPositions().toList())
     }
 
-    @Test
-    fun shouldProperlyFetchCellsBy() {
-        assertThat(target.fetchCellsBy(Position.offset1x1(), Size.create(2, 1)))
-                .containsExactly(
-                        Cell.create(Position.create(1, 1), Tile.empty()),
-                        Cell.create(Position.create(2, 1), Tile.empty()))
-    }
-
-    @Test
-    fun shouldProperlyPutText() {
-        target.putText("foo")
-
-        val chars = backend.fetchCells().map { it.tile.asCharacterTile().get().character }
-
-        assertThat(chars).containsExactly(
-                ' ', ' ', ' ', ' ', ' ',
-                ' ', 'f', 'o', 'o', ' ',
-                ' ', ' ', ' ', ' ', ' ',
-                ' ', ' ', ' ', ' ', ' ',
-                ' ', ' ', ' ', ' ', ' ')
-    }
-
-    @Test
-    fun shouldProperlyPutOverlappingText() {
-        target.putText("foo", Position.offset1x1())
-
-        val chars = backend.fetchCells().map { it.tile.asCharacterTile().get().character }
-
-        assertThat(chars).containsExactly(
-                ' ', ' ', ' ', ' ', ' ',
-                ' ', ' ', ' ', ' ', ' ',
-                ' ', ' ', 'f', 'o', ' ',
-                ' ', ' ', ' ', ' ', ' ',
-                ' ', ' ', ' ', ' ', ' ')
-    }
 
     @Test
     fun shouldProperlyApplyStyle() {
-        backend.applyStyle(BACKEND_STYLE)
+        backend.fill(Tiles.defaultTile())
+        backend.applyStyle(BLUE_RED_STYLE)
 
-        target.applyStyle(TARGET_STYLE)
+        target.applyStyle(YELLOW_GREEN_STYLE)
 
-        assertThat(backend.fetchCells().map { it.tile.styleSet }).containsExactly(
-                BACKEND_STYLE, BACKEND_STYLE, BACKEND_STYLE, BACKEND_STYLE, BACKEND_STYLE,
-                BACKEND_STYLE, TARGET_STYLE, TARGET_STYLE, TARGET_STYLE, BACKEND_STYLE,
-                BACKEND_STYLE, TARGET_STYLE, TARGET_STYLE, TARGET_STYLE, BACKEND_STYLE,
-                BACKEND_STYLE, TARGET_STYLE, TARGET_STYLE, TARGET_STYLE, BACKEND_STYLE,
-                BACKEND_STYLE, BACKEND_STYLE, BACKEND_STYLE, BACKEND_STYLE, BACKEND_STYLE)
+        assertThat(backend.size.fetchPositions()
+                .map { backend.getTileAt(it).get().styleSet }).containsExactly(
+                BLUE_RED_STYLE, BLUE_RED_STYLE, BLUE_RED_STYLE, BLUE_RED_STYLE, BLUE_RED_STYLE,
+                BLUE_RED_STYLE, YELLOW_GREEN_STYLE, YELLOW_GREEN_STYLE, YELLOW_GREEN_STYLE, BLUE_RED_STYLE,
+                BLUE_RED_STYLE, YELLOW_GREEN_STYLE, YELLOW_GREEN_STYLE, YELLOW_GREEN_STYLE, BLUE_RED_STYLE,
+                BLUE_RED_STYLE, YELLOW_GREEN_STYLE, YELLOW_GREEN_STYLE, YELLOW_GREEN_STYLE, BLUE_RED_STYLE,
+                BLUE_RED_STYLE, BLUE_RED_STYLE, BLUE_RED_STYLE, BLUE_RED_STYLE, BLUE_RED_STYLE)
     }
 
     @Test
     fun shouldProperlyCreateTileImage() {
-        target.fill(FILLER).applyStyle(TARGET_STYLE)
+        target.apply { fill(FILLER_UNDERSCORE) }.applyStyle(YELLOW_GREEN_STYLE)
 
         val result = target.toTileImage()
 
-        target.fill(Tiles.empty()).applyStyle(BACKEND_STYLE)
+        target.apply { fill(Tiles.empty()) }.applyStyle(BLUE_RED_STYLE)
 
-        val expectedTile = FILLER.withStyle(TARGET_STYLE)
+        val expectedTile = FILLER_UNDERSCORE.withStyle(YELLOW_GREEN_STYLE)
 
-        assertThat(result.toTileMap().map { it.value }).containsExactly(
+        assertThat(result.tiles.values).containsExactly(
                 expectedTile, expectedTile, expectedTile,
                 expectedTile, expectedTile, expectedTile,
                 expectedTile, expectedTile, expectedTile)
@@ -134,12 +92,17 @@ class SubTileGraphicsTest {
 
     @Test
     fun shouldProperlyCreateSubSubTileGraphics() {
-        val subFiller = FILLER.withCharacter('x')
+        val subFiller = FILLER_UNDERSCORE.withCharacter('x')
 
-        val result = target.toSubTileGraphics(Rect.create(Position.offset1x1(), Size.create(2, 1)))
+        val result = target
+                .toSubTileGraphics(Rect.create(Position.offset1x1(), Size.create(2, 1)))
         result.fill(subFiller)
 
-        val chars = backend.fetchCells().map { it.tile.asCharacterTile().get().character }
+        val chars = backend.size.fetchPositions().map {
+            backend.getTileAt(it)
+                    .map { tile -> tile.asCharacterTile().get().character }
+                    .orElse(' ')
+        }
 
         assertThat(chars).containsExactly(
                 ' ', ' ', ' ', ' ', ' ',
@@ -150,35 +113,14 @@ class SubTileGraphicsTest {
 
     }
 
-    @Test
-    fun shouldBeAbleToUseDifferentTileset() {
-        val backendTileset = CP437TilesetResources.rexPaint16x16()
-        val subTileset = CP437TilesetResources.wanderlust16x16()
-
-        backend.useTileset(backendTileset)
-        target.useTileset(subTileset)
-
-        assertThat(backend.currentTileset()).isEqualTo(backendTileset)
-        assertThat(target.currentTileset()).isEqualTo(subTileset)
-    }
-
-    @Test
-    fun shouldBeAbleToUseDifferentStyles() {
-        backend.setStyleFrom(BACKEND_STYLE)
-        target.setStyleFrom(TARGET_STYLE)
-
-        assertThat(backend.toStyleSet()).isEqualTo(BACKEND_STYLE)
-        assertThat(target.toStyleSet()).isEqualTo(TARGET_STYLE)
-    }
-
     companion object {
 
-        private val BACKEND_STYLE = StyleSet.create(ANSITileColor.BLUE, ANSITileColor.RED)
-        private val TARGET_STYLE = StyleSet.create(ANSITileColor.YELLOW, ANSITileColor.GREEN)
-        private val BACKEND_SIZE = Size.create(5, 5)
-        private val FILLER = Tiles.defaultTile().withCharacter('_')
+        private val BLUE_RED_STYLE = StyleSet.create(ANSITileColor.BLUE, ANSITileColor.RED)
+        private val YELLOW_GREEN_STYLE = StyleSet.create(ANSITileColor.YELLOW, ANSITileColor.GREEN)
+        private val BACKEND_SIZE_5X5 = Size.create(5, 5)
+        private val FILLER_UNDERSCORE = Tiles.defaultTile().withCharacter('_')
 
-        val SUB_GRAPHICS_BOUNDS = Rect.create(Position.offset1x1(), Size.create(3, 3))
+        val BOUNDS_1TO1_3X3 = Rect.create(Position.offset1x1(), Size.create(3, 3))
     }
 
 }

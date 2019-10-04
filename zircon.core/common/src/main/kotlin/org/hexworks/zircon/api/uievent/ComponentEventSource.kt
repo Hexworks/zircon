@@ -9,16 +9,20 @@ import org.hexworks.cobalt.events.api.Subscription
 interface ComponentEventSource {
 
     /**
-     * Adds a [ComponentEventHandler] for [ComponentEvent]s. Use this if you selectively
+     * Adds the given [handler] for [ComponentEvent]s. Use this if you selectively
      * respond to events.
      */
-    fun handleComponentEvents(eventType: ComponentEventType, handler: ComponentEventHandler): Subscription
+    fun handleComponentEvents(
+            eventType: ComponentEventType,
+            handler: (event: ComponentEvent) -> UIEventResponse): Subscription
 
     /**
-     * Adds a [ComponentEventProcessor] for [ComponentEvent]s. Use this if you handle all
+     * Adds the given [handler] for [ComponentEvent]s. Use this if you handle all
      * events.
      */
-    fun processComponentEvents(eventType: ComponentEventType, handler: ComponentEventProcessor): Subscription
+    fun processComponentEvents(
+            eventType: ComponentEventType,
+            handler: (event: ComponentEvent) -> Unit): Subscription
 
 
 }

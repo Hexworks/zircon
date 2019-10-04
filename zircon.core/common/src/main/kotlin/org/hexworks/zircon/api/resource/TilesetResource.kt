@@ -22,9 +22,18 @@ interface TilesetResource : Identifiable {
     val size: Size
         get() = Size.create(width, height)
 
+    /**
+     * A [TilesetResource] is compatible with another if they have
+     * the same size. TODO: why did we check for [tileType]?
+     */
     fun isCompatibleWith(other: TilesetResource): Boolean {
-        return other.tileType == tileType &&
-                other.width == width &&
+        return other.width == width &&
                 other.height == height
+    }
+
+    fun checkCompatibilityWith(other: TilesetResource) {
+        require(isCompatibleWith(other)) {
+            "The supplied tileset: $other is not compatible with this: $this."
+        }
     }
 }

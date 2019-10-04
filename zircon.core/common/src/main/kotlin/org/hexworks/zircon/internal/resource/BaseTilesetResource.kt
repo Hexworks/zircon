@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.resource
 
-import org.hexworks.cobalt.datatypes.Identifier
-import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
+import org.hexworks.cobalt.Identifier
+import org.hexworks.cobalt.factory.IdentifierFactory
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 
@@ -17,4 +17,10 @@ internal abstract class BaseTilesetResource : TilesetResource {
                 other.width == width &&
                 other.height == height
     }
+
+    override fun toString(): String {
+        return "TilesetResource(id=$id, size=$size, tileType=$tileType, tilesetType=$tilesetType, tilesetSourceType=$tilesetSourceType)"
+    }
+
+
 }

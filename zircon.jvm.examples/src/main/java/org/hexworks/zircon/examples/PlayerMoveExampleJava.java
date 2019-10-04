@@ -21,10 +21,10 @@ public class PlayerMoveExampleJava {
         Layer player = Layers.newBuilder()
                 .withSize(Sizes.one())
                 .withOffset(Positions.create(tileGrid.getWidth() / 2, tileGrid.getHeight() / 2))
-                .build()
-                .fill(PLAYER_TILE);
+                .withFiller(PLAYER_TILE)
+                .build();
 
-        tileGrid.processKeyboardEvents(KeyboardEventType.KEY_PRESSED, ((event, phase) -> {
+        tileGrid.processKeyboardEvents(KeyboardEventType.KEY_PRESSED, Functions.fromBiConsumer((event, phase) -> {
             switch (event.getCode()) {
                 case UP:
                     player.moveUpBy(1);
@@ -41,7 +41,7 @@ public class PlayerMoveExampleJava {
             }
         }));
 
-        tileGrid.pushLayer(player);
+        tileGrid.addLayer(player);
     }
 
 }

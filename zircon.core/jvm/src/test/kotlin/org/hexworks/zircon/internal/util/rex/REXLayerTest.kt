@@ -24,7 +24,7 @@ class REXLayerTest {
     @Test
     @Ignore
     fun shouldProperlyLoadFromByteBuffer() {
-        val layer = target.toLayer(TILESET)
+        val layer = target.toLayer(TILESET_CHEEPICUS)
         assertThat(layer.size).isEqualTo(Size.create(2, 1))
 
         assertChar(
@@ -41,9 +41,9 @@ class REXLayerTest {
 
     @Test
     fun shouldHaveNoFontByDefault() {
-        val layer = target.toLayer(TILESET)
+        val layer = target.toLayer(TILESET_CHEEPICUS)
 
-        assertThat(layer.currentTileset()).isSameAs(TILESET)
+        assertThat(layer.tileset).isSameAs(TILESET_CHEEPICUS)
     }
 
     @Test
@@ -92,6 +92,6 @@ class REXLayerTest {
 
     companion object {
 
-        val TILESET = CP437TilesetResources.cheepicus16x16()
+        val TILESET_CHEEPICUS = CP437TilesetResources.cheepicus16x16()
     }
 }

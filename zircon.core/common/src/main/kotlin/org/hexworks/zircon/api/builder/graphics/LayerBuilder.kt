@@ -1,15 +1,19 @@
 package org.hexworks.zircon.api.builder.graphics
 
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.graphics.DefaultLayer
+import org.hexworks.zircon.internal.graphics.ThreadSafeLayer
 
 /**
  * Use this to build [Layer]s. Defaults are:
@@ -22,7 +26,8 @@ data class LayerBuilder(
         private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
         private var size: Size = Size.defaultGridSize(),
         private var offset: Position = Position.defaultPosition(),
-        private var tileGraphics: Maybe<TileGraphics> = Maybe.empty()) : Builder<Layer> {
+        private var tileGraphics: Maybe<TileGraphics> = Maybe.empty(),
+        private var filler: Tile = Tiles.empty()) : Builder<Layer> {
 
     /**
      * Sets the [Tileset] to use with the resulting [Layer].
@@ -40,11 +45,25 @@ data class LayerBuilder(
     }
 
     /**
+     * Sets the size for the new [org.hexworks.zircon.api.graphics.Layer].
+     * Default is 1x1.
+     */
+    fun withSize(width: Int, height: Int) = withSize(Sizes.create(width, height))
+
+    /**
      * Sets the `offset` for the new [org.hexworks.zircon.api.graphics.Layer].
      * Default is 0x0.
      */
     fun withOffset(offset: Position) = also {
         this.offset = offset
+    }
+
+    /**
+     * Sets the `offset` for the new [org.hexworks.zircon.api.graphics.Layer].
+     * Default is 0x0.
+     */
+    fun withOffset(x: Int, y: Int) = also {
+        this.offset = Positions.create(x, y)
     }
 
     /**
@@ -54,16 +73,28 @@ data class LayerBuilder(
         this.tileGraphics = Maybe.of(tileGraphics)
     }
 
+    /**
+     * Sets the filler for the new [TileGraphics] which
+     * will be used to fill the empty spaces. Default is
+     * [Tiles.empty] which means no filling
+     */
+    fun withFiller(filler: Tile) = also {
+        this.filler = filler
+    }
+
     override fun build(): Layer = if (tileGraphics.isPresent) {
-        DefaultLayer(
-                position = offset,
-                backend = tileGraphics.get())
+        ThreadSafeLayer(
+                initialPosition = offset,
+                initialContents = tileGraphics.get())
     } else {
-        DefaultLayer(
-                position = offset,
-                backend = TileGraphicsBuilder(
-                        tileset = tileset,
-                        size = size).build())
+        ThreadSafeLayer(
+                initialPosition = offset,
+                initialContents = TileGraphicsBuilder.newBuilder()
+                        .withSize(size)
+                        .withTileset(tileset)
+                        .buildThreadSafeTileGraphics())
+    }.apply {
+        if (filler != Tiles.empty()) fill(filler)
     }
 
     override fun createCopy() = copy()

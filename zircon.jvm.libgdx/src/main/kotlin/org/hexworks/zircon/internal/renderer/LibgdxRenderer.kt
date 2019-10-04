@@ -9,25 +9,23 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.zircon.api.Maybes
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.base.BasePosition
 import org.hexworks.zircon.api.data.impl.PixelPosition
-import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.tileset.LibgdxTilesetLoader
 
 
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
-class LibgdxRenderer(private val grid: TileGrid,
+class LibgdxRenderer(private val grid: InternalTileGrid,
                      private val debug: Boolean = false) : Renderer {
 
     private val config = RuntimeConfig.config
@@ -76,30 +74,26 @@ class LibgdxRenderer(private val grid: TileGrid,
 
         maybeBatch.map { batch ->
             batch.begin()
-            renderTiles(
-                    batch = batch,
-                    snapshot = grid.createSnapshot(),
-                    tileset = tilesetLoader.loadTilesetFrom(grid.currentTileset()))
-            grid.layers.forEach { layer ->
+            grid.layerStates.forEach { state ->
                 renderTiles(
                         batch = batch,
-                        snapshot = layer.createSnapshot(),
-                        tileset = tilesetLoader.loadTilesetFrom(grid.currentTileset()),
-                        offset = layer.position.toPixelPosition(grid.currentTileset())
+                        state = state,
+                        tileset = tilesetLoader.loadTilesetFrom(grid.tileset),
+                        offset = state.position.toPixelPosition(grid.tileset)
                 )
             }
             batch.end()
             cursorRenderer.projectionMatrix = batch.projectionMatrix
             if (shouldDrawCursor()) {
-                grid.getTileAt(grid.cursorPosition()).map {
-                    drawCursor(cursorRenderer, it, grid.cursorPosition())
+                grid.getTileAt(grid.cursorPosition).map {
+                    drawCursor(cursorRenderer, it, grid.cursorPosition)
                 }
             }
         }
     }
 
     private fun renderTiles(batch: SpriteBatch,
-                            snapshot: Snapshot,
+                            state: LayerState,
                             tileset: Tileset<SpriteBatch>,
                             offset: PixelPosition = PixelPosition(0, 0)) {
         /*
@@ -111,10 +105,11 @@ class LibgdxRenderer(private val grid: TileGrid,
          * can only hope to save those that think they can optimize this. Leave it,
          * for your own sanity
          */
-        snapshot.cells.forEach { (pos, tile) ->
+        state.tiles.forEach { (pos, tile) ->
+            val actualPos = pos + state.position
             if (tile !== Tile.empty()) {
                 val actualTile =
-                        if (tile.isBlinking() /*&& blinkOn*/) {
+                        if (tile.isBlinking /*&& blinkOn*/) {
                             tile.withBackgroundColor(tile.foregroundColor)
                                     .withForegroundColor(tile.backgroundColor)
                         } else {
@@ -122,23 +117,24 @@ class LibgdxRenderer(private val grid: TileGrid,
                         }
                 val actualTileset: Tileset<SpriteBatch> =
                         if (actualTile is TilesetOverride) {
-                            tilesetLoader.loadTilesetFrom(actualTile.currentTileset())
+                            tilesetLoader.loadTilesetFrom(actualTile.tileset)
                         } else {
                             tileset
                         }
 
-                val actualPos = Position.create(pos.x * actualTileset.width, pos.y * actualTileset.height)
+                val pixelPos = Position.create(actualPos.x * actualTileset.width, actualPos.y * actualTileset.height)
                 drawBack(
                         tile = actualTile,
                         surface = batch,
-                        position = actualPos
+                        position = pixelPos
                 )
             }
         }
-        snapshot.cells.forEach { (pos, tile) ->
+        state.tiles.forEach { (pos, tile) ->
+            val actualPos = pos + state.position
             if (tile !== Tile.empty()) {
                 val actualTile =
-                        if (tile.isBlinking() /*&& blinkOn*/) {
+                        if (tile.isBlinking /*&& blinkOn*/) {
                             tile.withBackgroundColor(tile.foregroundColor)
                                     .withForegroundColor(tile.backgroundColor)
                         } else {
@@ -146,16 +142,15 @@ class LibgdxRenderer(private val grid: TileGrid,
                         }
                 val actualTileset: Tileset<SpriteBatch> =
                         if (actualTile is TilesetOverride) {
-                            tilesetLoader.loadTilesetFrom(actualTile.currentTileset())
+                            tilesetLoader.loadTilesetFrom(actualTile.tileset)
                         } else {
                             tileset
                         }
-
-                val actualPos = Position.create(pos.x * actualTileset.width, pos.y * actualTileset.height)
+                val pixelPos = Position.create(actualPos.x * actualTileset.width, actualPos.y * actualTileset.height)
                 actualTileset.drawTile(
                         tile = actualTile,
                         surface = batch,
-                        position = actualPos
+                        position = pixelPos
                 )
             }
         }
@@ -186,8 +181,8 @@ class LibgdxRenderer(private val grid: TileGrid,
     }
 
     private fun drawCursor(shapeRenderer: ShapeRenderer, character: Tile, position: Position) {
-        val tileWidth = grid.currentTileset().width
-        val tileHeight = grid.currentTileset().height
+        val tileWidth = grid.tileset.width
+        val tileHeight = grid.tileset.height
         val x = (position.x * tileWidth).toFloat()
         val y = (position.y * tileHeight).toFloat()
         val cursorColor = colorToGDXColor(config.cursorColor)
@@ -208,7 +203,7 @@ class LibgdxRenderer(private val grid: TileGrid,
     }
 
     private fun shouldDrawCursor(): Boolean {
-        return grid.isCursorVisible() &&
+        return grid.isCursorVisible &&
                 (config.isCursorBlinking.not() || config.isCursorBlinking && blinkOn)
     }
 

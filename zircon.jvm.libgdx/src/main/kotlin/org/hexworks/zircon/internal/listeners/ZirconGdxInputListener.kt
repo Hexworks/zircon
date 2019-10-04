@@ -32,7 +32,7 @@ class ZirconInputListener(private val fontWidth: Int,
 
     override fun keyTyped(character: Char): Boolean {
         val keyCode = KeyCode.findByChar(character)
-        return if (keyCode.isUnknown()) {
+        return if (keyCode.isUnknown) {
             false
         } else {
             val event = createKeyboardEvent(

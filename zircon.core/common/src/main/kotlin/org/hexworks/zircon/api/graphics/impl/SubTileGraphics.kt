@@ -1,88 +1,49 @@
 package org.hexworks.zircon.api.graphics.impl
 
-import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
-import org.hexworks.zircon.api.behavior.Drawable
-import org.hexworks.zircon.api.behavior.Styleable
-import org.hexworks.zircon.api.behavior.TilesetOverride
-import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.data.Cell
+import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.data.DrawSurfaceState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.graphics.TileImage
-import org.hexworks.zircon.api.util.TileTransformer
-import org.hexworks.zircon.internal.behavior.impl.DefaultStyleable
-import org.hexworks.zircon.internal.behavior.impl.DefaultTilesetOverride
-import org.hexworks.zircon.internal.data.DefaultCell
-import org.hexworks.zircon.internal.graphics.DefaultTileImage
+import org.hexworks.zircon.api.resource.TilesetResource
+import kotlin.jvm.Synchronized
 
 /**
- * this is a basic building block which can be re-used by complex image
- * classes like layers, boxes, components, and more
- * all classes which are implementing the DrawSurface or the Drawable operations can
- * use this class as a base class just like how the TileGrid uses it
+ * Represents a sub-section of a [TileGraphics]. This class can be used to
+ * restrict edits to the original [TileGraphics]. Note that the contents of
+ * the two [TileGraphics] are shared so edits will be visible for both.
  */
-
+@Suppress("OverridingDeprecatedMember")
 class SubTileGraphics(
         private val rect: Rect,
-        private val backend: TileGraphics,
-        private val styleable: Styleable = DefaultStyleable(
-                initialStyle = backend.toStyleSet()),
-        private val tilesetOverride: TilesetOverride = DefaultTilesetOverride(
-                tileset = backend.currentTileset()))
-    : TileGraphics,
-        Styleable by styleable,
-        TilesetOverride by tilesetOverride {
+        private val backend: TileGraphics)
+    : TileGraphics {
 
     override val size = rect.size
 
-    override fun fetchFilledTiles() = backend.fetchFilledTiles()
+    override val tiles: Map<Position, Tile>
+        get() = state.tiles
 
-    override fun fetchCells(): Iterable<Cell> {
-        return fetchCellsBy(Position.defaultPosition(), size)
-    }
-
-    override fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell> {
-        return size.fetchPositions()
-                .map { it + offset }
-                .map { DefaultCell(it, getTileAt(it).get()) }
-    }
-
-    override fun fill(filler: Tile): TileGraphics {
-        size.fetchPositions().filter { pos ->
-            getTileAt(pos).map { it == Tile.empty() }.orElse(false)
-        }.forEach { pos ->
-            setTileAt(pos, filler)
+    override val state: DrawSurfaceState
+        get() {
+            val (tiles, tileset) = backend.state
+            return DrawSurfaceState.create(
+                    tiles = tiles.filter {
+                        rect.containsPosition(it.key)
+                    }.map {
+                        it.key - offset to it.value
+                    }.toMap(), tileset = tileset, size = size)
         }
-        return this
-    }
 
-    override fun putText(text: String, position: Position) {
-        text.forEachIndexed { col, char ->
-            setTileAt(position.withRelativeX(col), TileBuilder
-                    .newBuilder()
-                    .withStyleSet(toStyleSet())
-                    .withCharacter(char)
-                    .build())
+    override var tileset: TilesetResource
+        get() = backend.tileset
+        set(_) {
+            restrictOperation()
         }
-    }
-
-    override fun toSubTileGraphics(rect: Rect): SubTileGraphics {
-        return SubTileGraphics(
-                rect = rect,
-                backend = this)
-    }
-
-    // TODO: fix this as this doesn't create a proper copy
-    override fun createCopy(): TileGraphics {
-        return toSubTileGraphics(size.toRect())
-    }
 
     private val offset = rect.position
 
@@ -91,83 +52,74 @@ class SubTileGraphics(
             "The size of a sub tile graphics can't be bigger than the original tile graphics."
         }
         require(offset.toSize() + size <= backend.size) {
-            "sub tile graphics offset ($offset) is too big for size '$size'."
+            "sub tile graphics offset ($offset) and size ($size)" +
+                    " is too big for backend size '${backend.size}'."
         }
     }
 
-    override fun fetchFilledPositions(): List<Position> {
-        return backend.createSnapshot().cells
-                .filter { rect.containsPosition(it.position) }
-                .map { it.position - offset }
+    override fun setTileAt(position: Position, tile: Tile) = draw(tile, position)
+
+    override fun draw(tileComposite: TileComposite, drawPosition: Position, drawArea: Size) {
+        draw(tileComposite.tiles, drawPosition, drawArea)
     }
 
-    override fun resize(newSize: Size) = restrictOperation()
-
-    override fun resize(newSize: Size, filler: Tile) = restrictOperation()
-
-    override fun applyStyle(styleSet: StyleSet, rect: Rect, keepModifiers: Boolean, applyToEmptyCells: Boolean) {
-        super.applyStyle(
-                styleSet = styleSet,
-                // this is needed because I don't want to re-implement applyStyle...
-                rect = rect.withPosition(Position.defaultPosition()),
-                keepModifiers = keepModifiers,
-                applyToEmptyCells = applyToEmptyCells)
+    override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
+        backend.draw(tileMap, drawPosition + offset, drawArea)
     }
 
-    override fun toTileImage(): TileImage {
-        return DefaultTileImage(
-                size = size,
-                tileset = currentTileset(),
-                tiles = fetchCells().map { it.position to it.tile }.toMap())
+    override fun draw(tile: Tile, drawPosition: Position) {
+        backend.draw(tile, drawPosition + offset)
     }
 
-    override fun clear() {
-        size.fetchPositions().forEach {
-            backend.setTileAt(it + offset, Tile.empty())
-        }
-    }
-
-    override fun getTileAt(position: Position): Maybe<Tile> {
-        return if (size.containsPosition(position)) {
-            return backend.getTileAt(position + offset)
-        } else Maybe.empty()
-    }
-
-    override fun setTileAt(position: Position, tile: Tile) {
-        if (size.containsPosition(position)) {
-            backend.setTileAt(position + offset, tile)
-        }
-    }
-
-    override fun transformTileAt(position: Position, tileTransformer: TileTransformer) {
+    override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
         if (size.containsPosition(position)) {
             backend.transformTileAt(position + offset, tileTransformer)
         }
     }
 
-    override fun transform(transformer: TileTransformer) {
-        fetchCells().forEach { (pos, tile) ->
-            setTileAt(pos, transformer(tile))
+    @Synchronized
+    override fun fill(filler: Tile) {
+        val (tiles, _, size) = state
+        val result = mutableMapOf<Position, Tile>()
+        size.fetchPositions()
+                .minus(tiles.keys.filter { it != Tiles.empty() })
+                .forEach { emptyPos ->
+                    result[emptyPos] = filler
+                }
+        draw(result)
+    }
+
+    @Synchronized
+    override fun transform(transformer: (Tile) -> Tile) {
+        val result = mutableMapOf<Position, Tile>()
+        state.tiles.forEach { (pos, tile) ->
+            result[pos] = transformer(tile)
+        }
+        draw(result)
+    }
+
+    @Synchronized
+    override fun applyStyle(styleSet: StyleSet) {
+        transform { it.withStyle(styleSet) }
+    }
+
+    override fun toSubTileGraphics(rect: Rect) = backend.toSubTileGraphics(
+            Rect.create(
+                    position = offset + rect.position,
+                    size = size.min(rect.size)))
+
+    @Synchronized
+    override fun clear() {
+        size.fetchPositions().forEach {
+            backend.draw(Tile.empty(), it + offset)
         }
     }
 
-    override fun createSnapshot(): Snapshot {
-        // TODO: this wont work if we create a SubTileGraphics out of another one!
-        restrictOperation()
-    }
+    override fun createCopy() = restrictOperation()
 
-    override fun draw(drawable: Drawable, position: Position) {
-        restrictOperation()
-    }
+    override fun toResized(newSize: Size) = restrictOperation()
 
-    // TODO: test this
-    override fun drawOnto(surface: DrawSurface, position: Position) {
-        rect.size.fetchPositions().forEach { pos ->
-            getTileAt(pos).map { tile ->
-                surface.setTileAt(pos + offset + position, tile)
-            }
-        }
-    }
+    override fun toResized(newSize: Size, filler: Tile) = restrictOperation()
 
     private fun restrictOperation(): Nothing {
         throw UnsupportedOperationException("This operation is not supported for sub tile graphics.")

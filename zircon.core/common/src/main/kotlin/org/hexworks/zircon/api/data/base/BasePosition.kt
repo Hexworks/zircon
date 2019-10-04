@@ -2,10 +2,10 @@ package org.hexworks.zircon.api.data.base
 
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.data.impl.GridPosition
-import org.hexworks.zircon.api.data.impl.PixelPosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.impl.GridPosition
+import org.hexworks.zircon.api.data.impl.PixelPosition
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.resource.TilesetResource
 
@@ -13,6 +13,24 @@ import org.hexworks.zircon.api.resource.TilesetResource
  * Base class for [Position] implementations.
  */
 abstract class BasePosition : Position {
+
+    /**
+     * Tells whether this [Position] is `UNKNOWN`.
+     */
+    override val isUnknown: Boolean
+        get() = this === Position.unknown()
+
+    /**
+     * Tells whether this [Position] is not `UNKNOWN`.
+     */
+    override val isNotUnknown: Boolean
+        get() = this !== Position.unknown()
+
+    /**
+     * Tells whether this [Position] has a negative component (x or y) or not.
+     */
+    override val hasNegativeComponent: Boolean
+        get() = x < 0 || y < 0
 
     /**
      * Turns this [Position] to a [PixelPosition]. Has no effect if
@@ -156,21 +174,6 @@ abstract class BasePosition : Position {
     override fun relativeToLeftOf(component: Component) = component.position.let { (compX, compY) ->
         Position.create(maxOf(compX - x, 0), compY + y)
     }
-
-    /**
-     * Tells whether this [Position] is `UNKNOWN`.
-     */
-    override fun isUnknown() = this === Position.unknown()
-
-    /**
-     * Tells whether this [Position] is not `UNKNOWN`.
-     */
-    override fun isNotUnknown() = this !== Position.unknown()
-
-    /**
-     * Tells whether this [Position] has a negative component (x or y) or not.
-     */
-    override fun hasNegativeComponent(): Boolean = x < 0 || y < 0
 
     override fun compareTo(other: Position): Int {
         checkType(this, other)

@@ -6,15 +6,14 @@ import org.hexworks.zircon.platform.util.SystemUtils
 
 data class Delay(private val timeMs: Long = 2000) : TileTransformModifier<CharacterTile> {
 
+    override val cacheKey: String
+        get() = "Modifier.Delay.$currentStep"
+
     private val steps = 2
     private var currentStep = 1
     private var delay: Long = timeMs / steps
     private var lastRender: Long = Long.MIN_VALUE
     private lateinit var currentTile: CharacterTile
-
-    override fun generateCacheKey(): String {
-        return "Modifier.Delay.$currentStep"
-    }
 
     override fun canTransform(tile: Tile) = tile is CharacterTile
 

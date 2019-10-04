@@ -11,11 +11,17 @@ import org.hexworks.zircon.api.data.impl.Position3D
 interface Block<T : Tile> {
 
     val layers: MutableList<T>
+
     var top: T
+
     var bottom: T
+
     var front: T
+
     var back: T
+
     var left: T
+
     var right: T
 
     fun createCopy(): Block<T>

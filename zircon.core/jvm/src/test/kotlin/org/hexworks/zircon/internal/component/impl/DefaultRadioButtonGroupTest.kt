@@ -11,11 +11,9 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.onSelection
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
 import org.junit.Before
 import org.junit.Test
@@ -40,7 +38,7 @@ class DefaultRadioButtonGroupTest : ComponentImplementationTest<DefaultRadioButt
         target = DefaultRadioButtonGroup(
                 componentMetadata = ComponentMetadata(
                         size = SIZE,
-                        position = POSITION,
+                        relativePosition = POSITION,
                         componentStyleSet = COMPONENT_STYLES,
                         tileset = TILESET_REX_PAINT_20X20),
                 renderingStrategy = DefaultComponentRenderingStrategy(

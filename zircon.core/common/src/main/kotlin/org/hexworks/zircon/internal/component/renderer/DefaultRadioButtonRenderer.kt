@@ -1,20 +1,21 @@
 package org.hexworks.zircon.internal.component.renderer
 
+import org.hexworks.zircon.api.CharacterTileStrings
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
+import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.NOT_SELECTED
+import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.PRESSED
+import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.SELECTED
 import kotlin.math.max
 
 class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> {
 
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<DefaultRadioButton>) {
-        val style = context.componentStyle.currentStyle()
-        tileGraphics.applyStyle(style)
-        val checkBoxState = context.component.state
+    override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultRadioButton>) {
+        val checkBoxState = context.component.radioButtonState
         val text = context.component.text
         val maxTextLength = max(0, tileGraphics.size.width - BUTTON_WIDTH - 1)
         val clearedText = if (text.length > maxTextLength) {
@@ -22,11 +23,16 @@ class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> {
         } else {
             text
         }
-        val finalText = "${STATES[checkBoxState]!!} $clearedText"
-        tileGraphics.putText(finalText)
+        val finalText = "${STATES[checkBoxState] ?: error("")} $clearedText"
+        tileGraphics.draw(CharacterTileStrings
+                .newBuilder()
+                .withText(finalText)
+                .withSize(tileGraphics.size)
+                .build())
         (finalText.length until tileGraphics.width).forEach { idx ->
-            tileGraphics.setTileAt(Positions.create(idx, 0), Tiles.empty())
+            tileGraphics.draw(Tiles.empty(), Positions.create(idx, 0))
         }
+        tileGraphics.applyStyle(context.currentStyle)
     }
 
     companion object {

@@ -23,7 +23,6 @@ class DefaultBox(
     : Box, TileGraphics by backend {
 
     init {
-        setStyleFrom(styleSet)
         val verticalChar = TileBuilder.newBuilder()
                 .withStyleSet(styleSet)
                 .withCharacter(boxType.vertical)
@@ -36,7 +35,7 @@ class DefaultBox(
                 toPoint = Position.create(size.width - 3, 0))
                 .toTileGraphics(
                         tile = horizontalChar,
-                        tileset = backend.currentTileset())
+                        tileset = backend.tileset)
         val verticalLine = LineFactory.buildLine(
                 fromPoint = Position.create(0, 0),
                 toPoint = Position.create(0, size.height - 3))
@@ -45,14 +44,10 @@ class DefaultBox(
         draw(horizontalLine, Position.create(1, size.height - 1))
         draw(verticalLine, Position.create(0, 1))
         draw(verticalLine, Position.create(size.width - 1, 1))
-        setTileAt(Position.create(0, 0),
-                verticalChar.withCharacter(boxType.topLeft))
-        setTileAt(Position.create(size.width - 1, 0),
-                verticalChar.withCharacter(boxType.topRight))
-        setTileAt(Position.create(0, size.height - 1),
-                verticalChar.withCharacter(boxType.bottomLeft))
-        setTileAt(Position.create(size.width - 1, size.height - 1),
-                verticalChar.withCharacter(boxType.bottomRight))
+        draw(verticalChar.withCharacter(boxType.topLeft), Position.create(0, 0))
+        draw(verticalChar.withCharacter(boxType.topRight), Position.create(size.width - 1, 0))
+        draw(verticalChar.withCharacter(boxType.bottomLeft), Position.create(0, size.height - 1))
+        draw(verticalChar.withCharacter(boxType.bottomRight), Position.create(size.width - 1, size.height - 1))
     }
 
     override fun toString() = backend.toString()

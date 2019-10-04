@@ -7,16 +7,14 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.LibgdxApplications
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.component.Visibility
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.halfBlock
-import org.hexworks.zircon.api.extensions.handleMouseEvents
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.extensions.side
 import org.hexworks.zircon.api.graphics.BoxType.DOUBLE
 import org.hexworks.zircon.api.uievent.MouseEventType
-import org.hexworks.zircon.api.uievent.Processed
 
 object ButtonsExample {
 
@@ -26,7 +24,7 @@ object ButtonsExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
                 .withSize(Sizes.create(60, 40))
                 .build())
@@ -36,7 +34,7 @@ object ButtonsExample {
         val panel = Components.panel()
                 .withDecorations(box(title = "Buttons on panel"), shadow())
                 .withSize(30, 32)
-                .withAlignment(positionalAlignment(29, 1))
+                .withPosition(29, 1)
                 .build()
         screen.addComponent(panel)
 
@@ -89,10 +87,8 @@ object ButtonsExample {
         screen.display()
         screen.applyColorTheme(theme)
 
-        invisibleBtn.handleMouseEvents(MouseEventType.MOUSE_CLICKED
-        ) { _, _ ->
-            invisibleBtn.isVisible = Visibility.Hidden
-            Processed
+        invisibleBtn.processMouseEvents(MouseEventType.MOUSE_CLICKED) { _, _ ->
+            invisibleBtn.isHidden = true
         }
     }
 

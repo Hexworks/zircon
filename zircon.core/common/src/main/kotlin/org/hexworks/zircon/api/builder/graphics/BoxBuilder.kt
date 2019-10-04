@@ -15,7 +15,6 @@ data class BoxBuilder(
         private var style: StyleSet = StyleSet.defaultStyle(),
         private var boxType: BoxType = BoxType.BASIC) : Builder<Box> {
 
-    // TODO: extract size, style, box type and tileset to a common builder
     /**
      * Sets the size for the new [org.hexworks.zircon.api.graphics.Box].
      * Default is 3x3.

@@ -2,20 +2,18 @@ package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.Cell
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.api.extensions.toMap
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.modifier.SimpleModifiers
+import org.hexworks.zircon.fetchCharacters
 import org.junit.Before
 import org.junit.Test
 
@@ -28,7 +26,7 @@ class TileGraphicsTest {
         target = TileGraphicsBuilder.newBuilder()
                 .withSize(SIZE_OF_3X3)
                 .withTileset(TILESET)
-                .build()
+                .buildThreadSafeTileGraphics()
     }
 
     @Test
@@ -38,19 +36,18 @@ class TileGraphicsTest {
 
     @Test
     fun shouldProperlyClear() {
-        target.fill(FILLER)
+        target.apply {
+            fill(FILLER)
+        }
 
         target.clear()
 
-        assertThat(target.fetchCells().map { it.tile }).containsExactly(
-                EMPTY_TILE, EMPTY_TILE, EMPTY_TILE,
-                EMPTY_TILE, EMPTY_TILE, EMPTY_TILE,
-                EMPTY_TILE, EMPTY_TILE, EMPTY_TILE)
+        assertThat(target.tiles.toMap()).isEmpty()
     }
 
     @Test
     fun shouldProperlyGetTileWhenTileIsPresent() {
-        target.setTileAt(FILLED_POS, FILLER)
+        target.draw(FILLER, FILLED_POS)
 
         assertThat(target.getTileAt(FILLED_POS).get()).isEqualTo(FILLER)
     }
@@ -76,43 +73,41 @@ class TileGraphicsTest {
     @Test
     fun shouldNotSetAnythingWhenSetTileAtIsCalledWithOutOfBounds() {
         fetchOutOfBoundsPositions().forEach {
-            target.setTileAt(it, FILLER)
+            target.draw(FILLER, it)
             assertThat(fetchTargetChars().filter { it == FILLER }).isEmpty()
         }
     }
 
     @Test
     fun shouldSetTileProperlyWhenCalledWithinBounds() {
-        target.setTileAt(Position.offset1x1(), FILLER)
+        target.draw(FILLER, Position.offset1x1())
         assertThat(target.getTileAt(Position.offset1x1()).get())
                 .isEqualTo(FILLER)
     }
 
     @Test
     fun shouldProperlyCreateSnapshot() {
-        target.setTileAt(FILLED_POS, FILLER)
+        target.draw(FILLER, FILLED_POS)
 
-        assertThat(target.createSnapshot().cells.toMap()).isEqualTo(mapOf(FILLED_POS to FILLER))
+        assertThat(target.state.tiles.toMap()).isEqualTo(mapOf(FILLED_POS to FILLER))
     }
 
     @Test
     fun shouldNotChangeSnapshotAfterCreation() {
 
-        val result = target.createSnapshot()
+        val result = target.state
 
-        target.setTileAt(FILLED_POS, FILLER)
+        target.draw(FILLER, FILLED_POS)
 
-        assertThat(result.cells).isEmpty()
+        assertThat(result.tiles).isEmpty()
     }
 
     @Test
     fun shouldProperlyDrawTile() {
-        target.draw(FILLER, Position.create(1, 1))
+        val pos = Position.create(1, 1)
+        target.draw(FILLER, pos)
 
-        assertThat(target.fetchCells().map { it.tile }).containsExactly(
-                EMPTY_TILE, EMPTY_TILE, EMPTY_TILE,
-                EMPTY_TILE, FILLER, EMPTY_TILE,
-                EMPTY_TILE, EMPTY_TILE, EMPTY_TILE)
+        assertThat(target.tiles.toMap()).isEqualTo(mapOf(pos to FILLER))
     }
 
     @Test
@@ -120,13 +115,14 @@ class TileGraphicsTest {
         val other = TileGraphicsBuilder.newBuilder()
                 .withSize(Size.create(2, 2))
                 .build()
-                .fill(FILLER)
-        target.draw(other, Position.create(1, 1))
+                .apply {
+                    fill(FILLER)
+                }
+        target.draw(other, pos(1, 1))
 
-        assertThat(target.fetchCells().map { it.tile }).containsExactly(
-                EMPTY_TILE, EMPTY_TILE, EMPTY_TILE,
-                EMPTY_TILE, FILLER, FILLER,
-                EMPTY_TILE, FILLER, FILLER)
+        assertThat(target.tiles.toMap()).isEqualTo(mapOf(
+                pos(1, 1) to FILLER, pos(2, 1) to FILLER,
+                pos(1, 2) to FILLER, pos(2, 2) to FILLER))
     }
 
     @Test
@@ -134,13 +130,12 @@ class TileGraphicsTest {
         val other = TileGraphicsBuilder.newBuilder()
                 .withSize(Size.create(2, 2))
                 .build()
-                .fill(FILLER)
-        target.draw(other, Position.create(2, 2))
+                .apply {
+                    fill(FILLER)
+                }
+        target.draw(other, pos(2, 2))
 
-        assertThat(target.fetchCells().map { it.tile }).containsExactly(
-                EMPTY_TILE, EMPTY_TILE, EMPTY_TILE,
-                EMPTY_TILE, EMPTY_TILE, EMPTY_TILE,
-                EMPTY_TILE, EMPTY_TILE, FILLER)
+        assertThat(target.tiles.toMap()).isEqualTo(mapOf(pos(2, 2) to FILLER))
     }
 
     @Test
@@ -148,178 +143,78 @@ class TileGraphicsTest {
         val other = TileGraphicsBuilder.newBuilder()
                 .withSize(Size.create(2, 2))
                 .build()
-                .fill(FILLER)
-        other.drawOnto(target, Position.create(2, 2))
+                .apply {
+                    fill(FILLER)
+                }
+        target.draw(other, pos(2, 2))
 
-        assertThat(target.fetchCells().map { it.tile }).containsExactly(
-                EMPTY_TILE, EMPTY_TILE, EMPTY_TILE,
-                EMPTY_TILE, EMPTY_TILE, EMPTY_TILE,
-                EMPTY_TILE, EMPTY_TILE, FILLER)
+        assertThat(target.tiles.toMap()).isEqualTo(mapOf(
+                pos(2, 2) to FILLER))
     }
 
     @Test
     fun shouldBeAbleToUseDifferentTileset() {
         val tileset = CP437TilesetResources.rexPaint12x12()
 
-        target.useTileset(tileset)
+        target.tileset = tileset
 
-        assertThat(target.currentTileset()).isEqualTo(tileset)
+        assertThat(target.tileset).isEqualTo(tileset)
     }
 
-    @Test
-    fun shouldBeAbleToUseDifferentStyles() {
-        val style = StyleSet.defaultStyle()
-                .withForegroundColor(ANSITileColor.GREEN)
-                .withBackgroundColor(ANSITileColor.YELLOW)
-        target.setStyleFrom(style)
-
-        assertThat(target.toStyleSet()).isEqualTo(style)
-    }
-
-    @Test
-    fun shouldProperlySetStyleFrom() {
-        val style = StyleSet.defaultStyle()
-                .withForegroundColor(ANSITileColor.GREEN)
-                .withBackgroundColor(ANSITileColor.YELLOW)
-        target.setStyleFrom(style)
-        assertThat(target.toStyleSet()).isEqualTo(style)
-    }
-
-    @Test
-    fun shouldReturnEmptyListIfFetchingFilledPositionsOfEmptyTileGraphics() {
-        assertThat(target.fetchFilledPositions()).isEmpty()
-    }
-
-    @Test
-    fun shouldReturnFilledPositionsWhenThereAreSome() {
-        target.setTileAt(Position.offset1x1(), FILLER)
-        assertThat(target.fetchFilledPositions()).containsExactly(Position.offset1x1())
-    }
 
     @Test
     fun shouldProperlyResizeWhenResizeCalledWithFiller() {
         val defaultTile = FILLER.withCharacter('x')
         target.fill(defaultTile)
-        val result = target.resize(Size.create(4, 4), FILLER)
-        assertThat(result.fetchCells().map { it.tile }).containsExactly(
-                defaultTile, defaultTile, defaultTile, FILLER,
-                defaultTile, defaultTile, defaultTile, FILLER,
-                defaultTile, defaultTile, defaultTile, FILLER,
-                FILLER, FILLER, FILLER, FILLER)
+        val result = target.toResized(Size.create(4, 4), FILLER)
+        assertThat(result.fetchCharacters()).containsExactly(
+                'x', 'x', 'x', 'a',
+                'x', 'x', 'x', 'a',
+                'x', 'x', 'x', 'a',
+                'a', 'a', 'a', 'a')
     }
 
     @Test
     fun shouldProperlyResizeWhenResizeCalledWithoutFiller() {
         val defaultTile = FILLER.withCharacter('x')
         target.fill(defaultTile)
-        val result = target.resize(Size.create(4, 4))
-        assertThat(result.fetchCells().map { it.tile }).containsExactly(
-                defaultTile, defaultTile, defaultTile, EMPTY_TILE,
-                defaultTile, defaultTile, defaultTile, EMPTY_TILE,
-                defaultTile, defaultTile, defaultTile, EMPTY_TILE,
-                EMPTY_TILE, EMPTY_TILE, EMPTY_TILE, EMPTY_TILE)
+        val result = target.toResized(Size.create(4, 4))
+        assertThat(result.fetchCharacters()).containsExactly(
+                'x', 'x', 'x', ' ',
+                'x', 'x', 'x', ' ',
+                'x', 'x', 'x', ' ',
+                ' ', ' ', ' ', ' ')
     }
 
     @Test
     fun shouldProperlyResizeToSmallerGraphics() {
         val defaultTile = FILLER.withCharacter('x')
         target.fill(defaultTile)
-        val result = target.resize(Size.create(2, 2))
-        assertThat(result.fetchCells().map { it.tile }).containsExactly(
+        val result = target.toResized(Size.create(2, 2))
+        assertThat(result.tiles.values).containsExactly(
                 defaultTile, defaultTile,
                 defaultTile, defaultTile)
     }
 
-    @Test
-    fun shouldProperlyFetchCells() {
-        val graphics = target.resize(Sizes.create(2, 2))
-        val result = graphics.fetchCells()
-        assertThat(result).containsExactly(
-                Cell.create(Position.create(0, 0), EMPTY_TILE), Cell.create(Position.create(1, 0), EMPTY_TILE),
-                Cell.create(Position.create(0, 1), EMPTY_TILE), Cell.create(Position.create(1, 1), EMPTY_TILE))
-    }
-
-    @Test
-    fun shouldProperlyFetchCellsBy() {
-        val result = target.fetchCellsBy(Position.offset1x1(), Size.create(2, 1))
-        assertThat(result).containsExactly(
-                Cell.create(Position.create(1, 1), EMPTY_TILE),
-                Cell.create(Position.create(2, 1), EMPTY_TILE))
-    }
-
-    @Test
-    fun shouldProperlyPutTextWithStyle() {
-        val style = StyleSet.defaultStyle()
-                .withForegroundColor(ANSITileColor.GREEN)
-                .withBackgroundColor(ANSITileColor.YELLOW)
-        target.setStyleFrom(style)
-
-        target.putText("foo", Position.offset1x1())
-
-        assertThat(target.fetchCells().map { it.tile }).containsExactly(
-                EMPTY_TILE, EMPTY_TILE, EMPTY_TILE,
-                EMPTY_TILE, Tile.empty().withCharacter('f').withStyle(style), Tile.empty().withCharacter('o').withStyle(style),
-                EMPTY_TILE, EMPTY_TILE, EMPTY_TILE)
-    }
 
     @Test
     fun shouldProperlyApplyStyle() {
-        val oldStyle = StyleSet.empty()
+        target.fill(FILLER)
+        val oldStyle = FILLER.styleSet
         val newStyle = StyleSet.defaultStyle()
                 .withForegroundColor(ANSITileColor.GREEN)
                 .withBackgroundColor(ANSITileColor.YELLOW)
 
-        target.applyStyle(newStyle, Rect.create(Position.offset1x1(), Size.one()))
+        target.toSubTileGraphics(Rect.create(Position.offset1x1(), Size.one()))
+                .applyStyle(newStyle)
 
-        assertThat(target.fetchCells().map { it.tile.styleSet }).containsExactly(
+        assertThat(target.size.fetchPositions().map {
+            target.getTileAt(it).get().styleSet
+        }).containsExactly(
                 oldStyle, oldStyle, oldStyle,
                 oldStyle, newStyle, oldStyle,
                 oldStyle, oldStyle, oldStyle)
     }
-
-    @Test
-    fun shouldNotApplyStyleToEmptyCells() {
-        val oldStyle = StyleSet.empty()
-        val newStyle = StyleSet.defaultStyle()
-                .withForegroundColor(ANSITileColor.GREEN)
-                .withBackgroundColor(ANSITileColor.YELLOW)
-
-        target.applyStyle(
-                styleSet = newStyle,
-                rect = Rect.create(Position.offset1x1(), Size.one()),
-                applyToEmptyCells = false)
-
-        assertThat(target.fetchCells().map { it.tile.styleSet }).containsExactly(
-                oldStyle, oldStyle, oldStyle,
-                oldStyle, oldStyle, oldStyle,
-                oldStyle, oldStyle, oldStyle)
-    }
-
-    @Test
-    fun shouldKeepModifiersWhenApplyingStyle() {
-        val oldStyle = StyleSet.defaultStyle().withModifiers(SimpleModifiers.Underline)
-        val newStyle = StyleSet.defaultStyle()
-                .withForegroundColor(ANSITileColor.GREEN)
-                .withBackgroundColor(ANSITileColor.YELLOW)
-                .withModifiers(SimpleModifiers.Underline)
-        val styleToApply = StyleSet.defaultStyle()
-                .withForegroundColor(ANSITileColor.GREEN)
-                .withBackgroundColor(ANSITileColor.YELLOW)
-
-
-        target.fill(Tile.defaultTile().withStyle(oldStyle))
-
-        target.applyStyle(
-                styleSet = styleToApply,
-                rect = Rect.create(Position.offset1x1(), Size.create(2, 1)),
-                keepModifiers = true)
-
-        assertThat(target.fetchCells().map { it.tile.styleSet }).containsExactly(
-                oldStyle, oldStyle, oldStyle,
-                oldStyle, newStyle, newStyle,
-                oldStyle, oldStyle, oldStyle)
-    }
-
 
     private fun fetchTargetChars(): List<Tile> {
         return (0..2).flatMap { col ->
@@ -335,9 +230,10 @@ class TileGraphicsTest {
                 Position.create(Int.MAX_VALUE, Int.MAX_VALUE))
     }
 
+    private fun pos(x: Int, y: Int) = Positions.create(x, y)
+
     companion object {
         val TILESET = CP437TilesetResources.jolly12x12()
-        val EMPTY_TILE = Tile.empty()
         val FILLED_POS = Position.create(1, 2)
         val SIZE_OF_3X3 = Size.create(3, 3)
         val FILLER: CharacterTile = TileBuilder.newBuilder()

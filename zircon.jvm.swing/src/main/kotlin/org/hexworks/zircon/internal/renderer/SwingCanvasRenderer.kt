@@ -1,11 +1,13 @@
 package org.hexworks.zircon.internal.renderer
 
-import org.hexworks.cobalt.datatypes.extensions.map
+
 import org.hexworks.zircon.api.application.CursorStyle
+import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.behavior.TilesetOverride
+import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Snapshot
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.grid.InternalTileGrid
@@ -33,12 +35,23 @@ class SwingCanvasRenderer(private val canvas: Canvas,
     private var lastRender: Long = SystemUtils.getCurrentTimeMs()
     private var lastBlink: Long = lastRender
 
+    private val keyboardEventListener = KeyboardEventListener()
+    private val mouseEventListener = object : MouseEventListener(
+            fontWidth = tileGrid.tileset.width,
+            fontHeight = tileGrid.tileset.height) {
+        override fun mouseClicked(e: MouseEvent) {
+            super.mouseClicked(e)
+            canvas.requestFocusInWindow()
+        }
+    }
+
     override fun create() {
         if (RuntimeConfig.config.fullScreen) {
             frame.extendedState = JFrame.MAXIMIZED_BOTH
             frame.isUndecorated = true
-        } else
+        } else {
             frame.setSize(tileGrid.widthInPixels, tileGrid.heightInPixels)
+        }
 
         frame.isVisible = true
         frame.isResizable = false
@@ -51,24 +64,15 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         canvas.preferredSize = Dimension(
                 tileGrid.widthInPixels,
                 tileGrid.heightInPixels)
-        canvas.minimumSize = Dimension(tileGrid.currentTileset().width, tileGrid.currentTileset().height)
+        canvas.minimumSize = Dimension(tileGrid.tileset.width, tileGrid.tileset.height)
         canvas.isFocusable = true
         canvas.requestFocusInWindow()
         canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
-        canvas.addKeyListener(KeyboardEventListener(tileGrid))
-        val newListener = object : MouseEventListener(
-                fontWidth = tileGrid.currentTileset().width,
-                fontHeight = tileGrid.currentTileset().height,
-                tileGrid = tileGrid) {
-            override fun mouseClicked(e: MouseEvent) {
-                super.mouseClicked(e)
-                canvas.requestFocusInWindow()
-            }
-        }
-        canvas.addMouseListener(newListener)
-        canvas.addMouseMotionListener(newListener)
-        canvas.addMouseWheelListener(newListener)
+        canvas.addKeyListener(keyboardEventListener)
+        canvas.addMouseListener(mouseEventListener)
+        canvas.addMouseMotionListener(mouseEventListener)
+        canvas.addMouseWheelListener(mouseEventListener)
         canvas.addHierarchyListener { e ->
             if (e.changeFlags == HierarchyEvent.DISPLAYABILITY_CHANGED.toLong()) {
                 if (e.changed.isDisplayable) {
@@ -96,6 +100,15 @@ class SwingCanvasRenderer(private val canvas: Canvas,
 
     override fun render() {
         val now = SystemUtils.getCurrentTimeMs()
+
+        keyboardEventListener.drainEvents().forEach { (event, phase) ->
+            tileGrid.process(event, phase)
+        }
+        mouseEventListener.drainEvents().forEach { (event, phase) ->
+            tileGrid.process(event, phase)
+        }
+        tileGrid.updateAnimations(now, tileGrid)
+
         val bs = getBufferStrategy()
         handleFirstDraw(bs)
         handleBlink(now)
@@ -106,21 +119,35 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         val gc = configureGraphics(img.graphics)
         gc.fillRect(0, 0, tileGrid.widthInPixels, tileGrid.heightInPixels)
 
-        val snapshot = tileGrid.createSnapshot()
-        tileGrid.updateAnimations(now, tileGrid)
-        renderTiles(
-                graphics = gc,
-                snapshot = snapshot,
-                tileset = tilesetLoader.loadTilesetFrom(tileGrid.currentTileset()))
-        tileGrid.layers.forEach { layer ->
-            renderTiles(
-                    graphics = gc,
-                    snapshot = layer.createSnapshot(),
-                    tileset = tilesetLoader.loadTilesetFrom(layer.currentTileset()))
+
+        val layerStates = tileGrid.layerStates
+
+        val tilesToRender = linkedMapOf<Position, MutableList<Pair<Tile, TilesetResource>>>()
+
+        layerStates.forEach { state ->
+            if (state.isHidden.not()) {
+                state.tiles.forEach { (tilePos, tile) ->
+                    val finalPos = tilePos + state.position
+                    tilesToRender.getOrPut(finalPos) { mutableListOf() }
+                    if (tile.isOpaque) {
+                        tilesToRender[finalPos] = mutableListOf(tile to state.tileset)
+                    } else {
+                        tilesToRender[finalPos]?.add(tile to state.tileset)
+                    }
+                }
+            }
         }
+
+        tilesToRender.map { (pos, tiles) ->
+            tiles.forEach { (tile, tileset) ->
+                renderTile(gc, pos, tile, tilesetLoader.loadTilesetFrom(tileset))
+            }
+        }
+
+
         if (shouldDrawCursor()) {
-            tileGrid.getTileAt(tileGrid.cursorPosition()).map {
-                drawCursor(gc, it, tileGrid.cursorPosition())
+            tileGrid.getTileAt(tileGrid.cursorPosition).map {
+                drawCursor(gc, it, tileGrid.cursorPosition)
             }
         }
 
@@ -162,19 +189,40 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         return gc
     }
 
+    private fun renderTile(graphics: Graphics2D,
+                           position: Position,
+                           tile: Tile,
+                           tileset: Tileset<Graphics2D>) {
+        if (tile !== Tile.empty()) {
+            val actualTile = if (tile.isBlinking && blinkOn) {
+                tile.withBackgroundColor(tile.foregroundColor)
+                        .withForegroundColor(tile.backgroundColor)
+            } else {
+                tile
+            }
+            if (actualTile is TilesetHolder) {
+                tilesetLoader.loadTilesetFrom(actualTile.tileset)
+            } else {
+                tileset
+            }.drawTile(tile = actualTile,
+                    surface = graphics,
+                    position = position)
+        }
+    }
+
     private fun renderTiles(graphics: Graphics2D,
-                            snapshot: Snapshot,
+                            state: LayerState,
                             tileset: Tileset<Graphics2D>) {
-        snapshot.cells.forEach { (pos, tile) ->
+        state.tiles.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
-                val actualTile = if (tile.isBlinking() && blinkOn) {
+                val actualTile = if (tile.isBlinking && blinkOn) {
                     tile.withBackgroundColor(tile.foregroundColor)
                             .withForegroundColor(tile.backgroundColor)
                 } else {
                     tile
                 }
                 val actualTileset: Tileset<Graphics2D> = if (actualTile is TilesetOverride) {
-                    tilesetLoader.loadTilesetFrom(actualTile.currentTileset())
+                    tilesetLoader.loadTilesetFrom(actualTile.tileset)
                 } else {
                     tileset
                 }
@@ -182,14 +230,14 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                 actualTileset.drawTile(
                         tile = actualTile,
                         surface = graphics,
-                        position = pos)
+                        position = pos + state.position)
             }
         }
     }
 
     private fun drawCursor(graphics: Graphics, character: Tile, position: Position) {
-        val tileWidth = tileGrid.currentTileset().width
-        val tileHeight = tileGrid.currentTileset().height
+        val tileWidth = tileGrid.tileset.width
+        val tileHeight = tileGrid.tileset.height
         val x = position.x * tileWidth
         val y = position.y * tileHeight
         val cursorColor = config.cursorColor.toAWTColor()
@@ -208,7 +256,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
     }
 
     private fun shouldDrawCursor(): Boolean {
-        return tileGrid.isCursorVisible() &&
+        return tileGrid.isCursorVisible &&
                 (config.isCursorBlinking.not() || config.isCursorBlinking && blinkOn)
     }
 

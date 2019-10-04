@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.component.renderer.DefaultLogAreaRenderer
 import org.junit.Before
@@ -45,7 +46,7 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
         target = DefaultLogArea(
                 componentMetadata = ComponentMetadata(
                         size = SIZE,
-                        position = POSITION,
+                        relativePosition = POSITION,
                         componentStyleSet = COMPONENT_STYLES,
                         tileset = TILESET_REX_PAINT_20X20),
                 renderingStrategy = DefaultComponentRenderingStrategy(
@@ -68,21 +69,22 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
 
     @Test
     fun shouldProperlyAddComponent() {
-        target.addInlineComponent(COMPONENT)
+        val testComponent = testComponent()
+        target.addInlineComponent(testComponent)
         target.commitInlineElements()
         val child = (target.children.first() as DefaultTextBox)
         assertThat(target.children.size).isEqualTo(1)
-        assertThat(child.children.first()).isSameAs(COMPONENT)
+        assertThat(child.children.first()).isSameAs(testComponent)
     }
 
     @Test
-    fun shouldProperlyRemoveComponentIfItGetsDisposedDueHistorySize() {
-        target.addInlineComponent(COMPONENT)
+    fun shouldProperlyRemoveComponentIfItGetsDisposedDueToHistorySize() {
+        target.addInlineComponent(testComponent())
         target.commitInlineElements()
         target.addNewRows(ROW_HISTORY_SIZE)
         target.addParagraph(TEXT)
 
-        assertThat(target.children.contains(COMPONENT)).isFalse()
+        assertThat(target.children).doesNotContain(testComponent())
     }
 
 
@@ -117,10 +119,11 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
         const val ROW_HISTORY_SIZE = 15
         const val TEXT = "This is my log row"
         const val ALTERNATE_TEXT = "This is my other log row"
-        val COMPONENT = Components.button()
+
+        fun testComponent() = Components.button()
                 .withDecorations()
                 .withTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
                 .withText("Button")
-                .build()
+                .build() as InternalComponent
     }
 }

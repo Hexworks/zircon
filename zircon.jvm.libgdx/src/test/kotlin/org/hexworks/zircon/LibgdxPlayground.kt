@@ -77,7 +77,7 @@ object LibgdxPlayground : Game() {
                 .withIcon(Tiles.newBuilder()
                         .withName("Plate mail")
                         .withTileset(GraphicalTilesetResources.nethack16x16())
-                        .buildGraphicTile())
+                        .buildGraphicalTile())
         )
         screen.addComponent(Components.label()
                 .withText("Label with icon")

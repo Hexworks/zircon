@@ -1,13 +1,13 @@
 package org.hexworks.zircon.api.util.markovchain
 
-import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.Identifier
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
-import org.hexworks.zircon.api.util.Random
+import org.hexworks.cobalt.factory.IdentifierFactory
+import kotlin.random.Random
 
 @Suppress("DataClassPrivateConstructor")
 class DefaultMarkovChainNode<T : Any>(data: T? = null,
-                                      private val random: Random = Random.create()) : MarkovChainNode<T> {
+                                      private val random: Random = Random(5234321)) : MarkovChainNode<T> {
 
     private val nextNodes: MutableList<Pair<Double, MarkovChainNode<T>>> = mutableListOf()
     private var data: Maybe<T> = Maybe.ofNullable(data)

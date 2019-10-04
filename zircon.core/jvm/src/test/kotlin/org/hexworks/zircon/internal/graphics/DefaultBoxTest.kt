@@ -17,7 +17,9 @@ class DefaultBoxTest {
                 .withSize(Size.create(5, 5))
                 .withStyle(StyleSetBuilder.newBuilder().build())
                 .build()
-                .fill(TileBuilder.newBuilder().withCharacter('x').build())
+                .apply {
+                    fill(TileBuilder.newBuilder().withCharacter('x').build())
+                }
                 .toString())
                 .isEqualTo(EXPECTED_BOX)
     }

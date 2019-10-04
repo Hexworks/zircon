@@ -1,9 +1,8 @@
 package org.hexworks.zircon.api.extensions
 
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.util.TileTransformer
 
-fun List<Tile>.transform(tileTransformer: TileTransformer): List<Tile> {
+fun List<Tile>.transform(tileTransformer: (Tile) -> Tile): List<Tile> {
     return this.map(tileTransformer::invoke)
 }
 
