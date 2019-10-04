@@ -75,7 +75,6 @@ interface Scrollable {
      */
     fun scrollUpBy(rows: Int): Position
 
-
     /**
      * Scrolls this [Scrollable] with `rows` rows down.
      * If the bounds of the virtual space are already reached this method has no effect.
@@ -87,6 +86,5 @@ interface Scrollable {
      * Scrolls this [Scrollable] to the provided position
      */
     fun scrollToPosition(position: Position)
-
 
 }

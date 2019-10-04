@@ -11,7 +11,12 @@ interface Container : ComponentContainer, Component {
     /**
      * The immediate child [Component]s of this [Container].
      */
-    val children: List<Component>
+    val children: Iterable<Component>
+
+    /**
+     * All descendant [Component]s of this [Container].
+     */
+    val descendants: Iterable<Component>
 
     /**
      * Removes all [Component]s from this [Container].

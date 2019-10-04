@@ -7,12 +7,13 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Symbols
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 
+@Suppress("DuplicatedCode")
 class HorizontalSliderRenderer : ComponentRenderer<Slider> {
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<Slider>) {
-        val style = context.componentStyle.currentStyle()
-        tileGraphics.applyStyle(style)
+    override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<Slider>) {
+        tileGraphics.applyStyle(context.currentStyle)
 
         val defaultStyleSet = context.componentStyle.fetchStyleFor(ComponentState.DEFAULT)
         val invertedDefaultStyleSet = defaultStyleSet
@@ -25,9 +26,9 @@ class HorizontalSliderRenderer : ComponentRenderer<Slider> {
 
         (0..barWidth).forEach { idx ->
             when {
-                idx == cursorPosition -> tileGraphics.setTileAt(Positions.create(idx, 0), Tile.createCharacterTile(Symbols.DOUBLE_LINE_VERTICAL, style))
-                idx < cursorPosition -> tileGraphics.setTileAt(Positions.create(idx, 0), Tile.createCharacterTile(' ', invertedDefaultStyleSet))
-                else -> tileGraphics.setTileAt(Positions.create(idx, 0), Tile.createCharacterTile(' ', disabledStyleSet))
+                idx == cursorPosition -> tileGraphics.draw(Tile.createCharacterTile(Symbols.DOUBLE_LINE_VERTICAL, context.currentStyle), Positions.create(idx, 0))
+                idx < cursorPosition -> tileGraphics.draw(Tile.createCharacterTile(' ', invertedDefaultStyleSet), Positions.create(idx, 0))
+                else -> tileGraphics.draw(Tile.createCharacterTile(' ', disabledStyleSet), Positions.create(idx, 0))
             }
         }
     }

@@ -28,6 +28,7 @@ import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
 
+@Suppress("UsePropertyAccessSyntax")
 class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     override lateinit var target: DefaultContainer
@@ -44,35 +45,12 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         target = DefaultContainer(
                 componentMetadata = ComponentMetadata(
                         size = SIZE_4x4,
-                        position = POSITION_2_3,
+                        relativePosition = POSITION_2_3,
                         componentStyleSet = COMPONENT_STYLES,
                         tileset = TILESET_REX_PAINT_20X20),
                 renderer = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub))
-    }
-
-    @Test
-    fun shouldProperlyDrawOntoDrawSurface() {
-
-        val componentTile = TileBuilder.newBuilder()
-                .withCharacter('x')
-                .build()
-        val surfaceTile = TileBuilder.newBuilder()
-                .withCharacter('y')
-                .build()
-
-        val surface = TileGraphicsBuilder.newBuilder()
-                .withSize(SIZE_3_4 + Size.one())
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .build()
-                .fill(surfaceTile)
-        target.fill(componentTile)
-
-        target.drawOnto(surface, Position.offset1x1())
-
-        assertThat(surface.getTileAt(Position.offset1x1()).get()).isEqualTo(componentTile)
-        assertThat(surface.getTileAt(Position.zero()).get()).isEqualTo(surfaceTile)
     }
 
     @Test
@@ -236,27 +214,6 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun shouldNotAllowDrawingAComponentWithWrongPosition() {
-        target.draw(componentStub, Position.zero())
-    }
-
-    @Test
-    fun shouldAddComponentWhenTryingToDrawIt() {
-        target.draw(componentStub, componentStub.position)
-
-        assertThat(target.children.asSequence().map { it.id }.contains(componentStub.id))
-    }
-
-    @Test
-    fun drawingANonComponentShouldDrawItOntoItsDrawSurface() {
-        val drawable = Tile.defaultTile().withCharacter('x')
-
-        target.draw(drawable, Position.zero())
-
-        assertThat(target.getTileAt(Position.zero()).get()).isEqualTo(drawable)
-    }
-
-    @Test(expected = IllegalArgumentException::class)
     fun shouldNotAllowAddingAComponentToItself() {
         target.addComponent(target)
     }
@@ -285,7 +242,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 .build()
         target.addComponent(comp)
         val removalHappened = AtomicBoolean(false)
-        Zircon.eventBus.subscribe<ZirconEvent.ComponentRemoval>(ZirconScope) {
+        Zircon.eventBus.subscribe<ZirconEvent.ComponentRemoved>(ZirconScope) {
             removalHappened.set(true)
         }
 
@@ -308,7 +265,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 .build()
         target.addComponent(comp2)
         val removalHappened = AtomicBoolean(false)
-        Zircon.eventBus.subscribe<ZirconEvent.ComponentRemoval>(ZirconScope) {
+        Zircon.eventBus.subscribe<ZirconEvent.ComponentRemoved>(ZirconScope) {
             removalHappened.set(true)
         }
 
@@ -341,7 +298,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         panel.addComponent(comp)
         target.addComponent(panel)
         val removalHappened = AtomicBoolean(false)
-        Zircon.eventBus.subscribe<ZirconEvent.ComponentRemoval>(ZirconScope) {
+        Zircon.eventBus.subscribe<ZirconEvent.ComponentRemoved>(ZirconScope) {
             removalHappened.set(true)
         }
 

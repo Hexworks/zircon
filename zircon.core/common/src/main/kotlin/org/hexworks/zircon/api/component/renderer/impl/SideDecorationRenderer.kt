@@ -5,6 +5,8 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderConte
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.extensions.toCharacterTile
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 
 data class SideDecorationRenderer(
@@ -15,11 +17,11 @@ data class SideDecorationRenderer(
 
     override val occupiedSize = Size.create(2, 0)
 
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
-        tileGraphics.applyStyle(context.component.componentStyleSet.currentStyle())
+    override fun render(tileGraphics: TileGraphics, context: ComponentDecorationRenderContext) {
         0.until(tileGraphics.height).forEach { idx ->
-            tileGraphics.putText("$leftSideCharacter", Positions.create(0, idx))
-            tileGraphics.putText("$rightSideCharacter", Positions.create(tileGraphics.size.width - 1, idx))
+            tileGraphics.draw(leftSideCharacter.toCharacterTile(), Positions.create(0, idx))
+            tileGraphics.draw(rightSideCharacter.toCharacterTile(), Positions.create(tileGraphics.size.width - 1, idx))
         }
+        tileGraphics.applyStyle(context.component.componentStyleSet.currentStyle())
     }
 }

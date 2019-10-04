@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.game.base
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
+import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
@@ -12,27 +12,26 @@ import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameArea.Companion.fetchPositionsWithOffset
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.hexworks.zircon.internal.extensions.getIfPresent
-import org.hexworks.zircon.internal.util.ThreadSafeMap
-import org.hexworks.zircon.internal.util.ThreadSafeQueue
-import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
+import org.hexworks.zircon.internal.util.PersistentList
+import org.hexworks.zircon.internal.util.PersistentMap
+import org.hexworks.zircon.platform.factory.PersistentListFactory
+import org.hexworks.zircon.platform.factory.PersistentMapFactory
 
-abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
-                                                    actualSize: Size3D)
+abstract class BaseGameArea<T : Tile, B : Block<T>>(initialVisibleSize: Size3D,
+                                                    initialActualSize: Size3D)
     : GameArea<T, B>, Scrollable3D by DefaultScrollable3D(
-        visibleSize = visibleSize,
-        actualSize = actualSize) {
+        initialVisibleSize = initialVisibleSize,
+        initialActualSize = initialActualSize) {
 
-    private val overlays: ThreadSafeMap<Int, ThreadSafeQueue<Layer>> = ThreadSafeMapFactory.create()
+    private var overlays: PersistentMap<Int, PersistentList<Layer>> = PersistentMapFactory.create()
 
     override fun fetchBlocks(fetchMode: GameArea.BlockFetchMode): Iterable<Cell3D<T, B>> {
         return if (fetchMode == GameArea.BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocks()
         } else {
-            actualSize().fetchPositions().map { createCell(it) }
+            actualSize.fetchPositions().map { createCell(it) }
         }
     }
 
@@ -71,9 +70,9 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
         return if (blockFetchMode == GameArea.BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocksAtLevel(z)
         } else {
-            GameArea.fetchPositionsWithOffset(
+            fetchPositionsWithOffset(
                     offset = Position3D.defaultPosition(),
-                    size = Size3D.create(actualSize().xLength, actualSize().yLength, z))
+                    size = Size3D.create(actualSize.xLength, actualSize.yLength, z))
                     .map { createCell(it) }
         }
     }
@@ -90,6 +89,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
      * A layer is a collection of [Tile]s at a given `z` level and `layerIndex`.
      */
     override fun fetchLayersAt(offset: Position3D, size: Size3D): Iterable<TileGraphics> {
+        val currentOverlays = overlays
         val offset2D = offset.to2DPosition()
         val window = size.to2DSize().fetchPositions()
         return (offset.z until size.zLength + offset.z).flatMap { z ->
@@ -104,7 +104,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
                 images.add(builder.build())
             }
             // TODO: test overlay stuff
-            getOverlaysAt(z).forEach { overlay ->
+            (currentOverlays[z] ?: listOf<Layer>()).forEach { overlay ->
                 val builder = TileGraphicsBuilder.newBuilder().withSize(size.to2DSize())
                 window.forEach { pos ->
                     overlay.getTileAt(pos + offset2D).map { char ->
@@ -118,19 +118,20 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
     }
 
     override fun getOverlaysAt(level: Int): Iterable<Layer> {
-        return overlays[level]?.toList() ?: listOf()
+        return overlays[level] ?: listOf()
     }
 
     override fun pushOverlayAt(layer: Layer, level: Int) {
-        overlays.getOrPut(level) { ThreadSafeQueueFactory.create() }.offer(layer)
-    }
-
-    override fun popOverlayAt(level: Int): Maybe<Layer> {
-        return overlays[level]?.poll() ?: Maybe.empty()
+        overlays = overlays.put(level, fetchLayersAt(level).add(layer))
     }
 
     override fun removeOverlay(layer: Layer, level: Int) {
-        overlays[level]?.remove(layer)
+        overlays = overlays.put(level, fetchLayersAt(level).remove(layer))
+    }
+
+    private fun fetchLayersAt(level: Int): PersistentList<Layer> {
+        val layers = overlays[level] ?: PersistentListFactory.create()
+        return layers
     }
 
 }

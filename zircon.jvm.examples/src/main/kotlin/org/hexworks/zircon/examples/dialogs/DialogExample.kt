@@ -11,18 +11,18 @@ import org.hexworks.zircon.api.builder.component.ModalBuilder
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.handleComponentEvents
 import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
 
+// TODO: not working
 object DialogExample {
 
     private val tileset = CP437TilesetResources.taffer20x20()
     private val theme = ColorThemes.adriftInDreams()
 
     class TestFragment : Fragment {
-        override val root = Components.panel().withSize(25, 16).build()
+        override val root = Components.panel().withSize(23, 13).build()
     }
 
     @JvmStatic
@@ -43,12 +43,18 @@ object DialogExample {
 
         panel.addFragment(TestFragment())
 
+        val modal = ModalBuilder.newBuilder<EmptyModalResult>()
+                .withCenteredDialog(true)
+                .withParentSize(screen.size)
+                .withComponent(panel)
+                .build()
+
         panel.addComponent(Components.button()
                 .withText("Close")
-                .withAlignmentWithin(panel, ComponentAlignment.BOTTOM_LEFT)
+                .withAlignmentWithin(panel, ComponentAlignment.BOTTOM_CENTER)
                 .build().apply {
-                    handleComponentEvents(ComponentEventType.ACTIVATED) {
-                        Processed
+                    processComponentEvents(ComponentEventType.ACTIVATED) {
+                        modal.close(EmptyModalResult)
                     }
                 })
         panel.applyColorTheme(theme)
@@ -56,11 +62,7 @@ object DialogExample {
         screen.display()
         screen.applyColorTheme(theme)
 
-        screen.openModal(ModalBuilder.newBuilder<EmptyModalResult>()
-                .withCenteredDialog(true)
-                .withParentSize(screen.size)
-                .withComponent(panel)
-                .build())
+        screen.openModal(modal)
     }
 
 }

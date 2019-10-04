@@ -20,7 +20,7 @@ class DefaultHorizontalSlider(componentMetadata: ComponentMetadata,
         numberOfSteps = numberOfSteps) {
 
     override fun getMousePosition(event: MouseEvent): Int {
-            return event.position.minus(absolutePosition + contentPosition).x
+            return event.position.minus(relativePosition + contentOffset).x
     }
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {

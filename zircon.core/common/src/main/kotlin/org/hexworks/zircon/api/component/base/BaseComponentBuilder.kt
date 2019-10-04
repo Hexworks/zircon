@@ -10,11 +10,13 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.builder.ComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
+import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
@@ -26,7 +28,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>()
     protected abstract val props: CommonComponentProperties<T>
 
     val position: Position
-        get() = props.alignmentStrategy.calculateAlignment(size)
+        get() = props.alignmentStrategy.calculatePosition(size)
 
     val componentStyleSet: ComponentStyleSet
         get() = props.componentStyleSet
@@ -87,6 +89,14 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>()
     override fun withComponentRenderer(componentRenderer: ComponentRenderer<T>): U {
         props.componentRenderer = componentRenderer
         return this as U
+    }
+
+    override fun withRendererFunction(fn: (TileGraphics, ComponentRenderContext<T>) -> Unit): U {
+        return withComponentRenderer(object : ComponentRenderer<T> {
+            override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<T>) {
+                fn(tileGraphics, context)
+            }
+        })
     }
 
     override fun withSize(size: Size): U {

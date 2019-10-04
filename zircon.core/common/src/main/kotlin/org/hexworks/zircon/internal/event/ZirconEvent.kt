@@ -1,8 +1,9 @@
 package org.hexworks.zircon.internal.event
 
-import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.Identifier
 import org.hexworks.cobalt.events.api.Event
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Position
 
 sealed class ZirconEvent : Event {
@@ -36,18 +37,32 @@ sealed class ZirconEvent : Event {
     data class ScreenSwitch(val screenId: Identifier) : ZirconEvent()
 
     /**
-     * A component was added
+     * An attached component was moved within a container.
      */
-    object ComponentAddition : ZirconEvent()
+    object ComponentMoved : ZirconEvent()
+
+    /**
+     * A component was added to a component container.
+     */
+    object ComponentAdded : ZirconEvent()
 
     /**
      * A component was removed
      */
-    object ComponentRemoval : ZirconEvent()
+    object ComponentRemoved : ZirconEvent()
 
     /**
-     * A Hyperlink was triggered
-     * eg. used in [org.hexworks.zircon.api.component.LogArea]
+     * A layer was added.
      */
-    data class TriggeredHyperLink(val linkId: String) : ZirconEvent()
+    object LayerAdded : ZirconEvent()
+
+    /**
+     * A layer was removed.
+     */
+    object LayerRemoved : ZirconEvent()
+
+    /**
+     * This event is fired when the state of a layer changes.
+     */
+    data class LayerChanged(val state: LayerState) : ZirconEvent()
 }

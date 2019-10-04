@@ -26,12 +26,12 @@ class SizeTest {
 
     @Test
     fun shouldBeUnknownWhenUnknown() {
-        assertThat(Size.unknown().isUnknown()).isTrue()
+        assertThat(Size.unknown().isUnknown).isTrue()
     }
 
     @Test
     fun shouldNotBeUnknownWhenNotUnknown() {
-        assertThat(Size.create(1, 2).isNotUnknown()).isTrue()
+        assertThat(Size.create(1, 2).isNotUnknown).isTrue()
     }
 
     @Test

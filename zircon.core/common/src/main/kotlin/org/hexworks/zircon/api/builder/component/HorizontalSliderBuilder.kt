@@ -44,7 +44,7 @@ data class HorizontalSliderBuilder(
     override fun build(): Slider = DefaultHorizontalSlider(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 minValue = minValue,

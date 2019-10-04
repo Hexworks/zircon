@@ -1,12 +1,15 @@
 package org.hexworks.zircon.internal.data
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.color.ANSITileColor.*
+import org.hexworks.zircon.api.color.ANSITileColor.GREEN
+import org.hexworks.zircon.api.color.ANSITileColor.YELLOW
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.modifier.SimpleModifiers.*
+import org.hexworks.zircon.api.modifier.SimpleModifiers.Blink
+import org.hexworks.zircon.api.modifier.SimpleModifiers.HorizontalFlip
+import org.hexworks.zircon.api.modifier.SimpleModifiers.VerticalFlip
 import org.hexworks.zircon.internal.resource.TileType
 import org.junit.Test
 
@@ -16,7 +19,7 @@ class DefaultGraphicalTileTest {
     fun shouldGenerateProperCacheKey() {
         val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
 
-        assertThat(target.generateCacheKey()).isEqualTo("GraphicTile(n=NAME,t=[BAR, FOO])")
+        assertThat(target.cacheKey).isEqualTo("GraphicTile(n=NAME,t=[BAR, FOO])")
     }
 
     @Test

@@ -1,40 +1,25 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.zircon.api.behavior.Drawable
-import org.hexworks.zircon.api.behavior.TilesetOverride
-import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.util.TileTransformer
+import org.hexworks.zircon.internal.util.PersistentMap
 
 /**
  * An immutable image built from [Tile]s. It is completely in memory but it can be drawn onto
  * [DrawSurface]s like a [org.hexworks.zircon.api.grid.TileGrid] or a [TileGraphics].
  */
-interface TileImage : Drawable, TileComposite, TilesetOverride {
-
-
-    /**
-     * Returns a [List] of [Position]s which are not considered empty.
-     * @see [Tile.empty]
-     */
-    fun fetchFilledPositions(): List<Position>
+interface TileImage : TileComposite {
 
     /**
-     * Returns all the [Cell]s ([Tile]s with associated [Position] information)
-     * of this [TileImage].
+     * The [Tile]s this [TileComposite] contains. Note that a [TileImage]
+     * uses a [PersistentMap] to store the tiles to enable creating new
+     * images fast.
      */
-    fun fetchCells(): Iterable<Cell>
+    override val tiles: PersistentMap<Position, Tile>
 
-    /**
-     * Returns the [Cell]s in this [TileImage] from the given `offset`
-     * position and area.
-     * Throws an exception if either `offset` or `size` would overlap
-     * with this [TileImage].
-     */
-    fun fetchCellsBy(offset: Position, size: Size): Iterable<Cell>
+    val tileset: TilesetResource
 
     /**
      * Sets a [Tile] at a specific position in the [DrawSurface] to `tile`.
@@ -113,7 +98,7 @@ interface TileImage : Drawable, TileComposite, TilesetOverride {
      * Transforms all of the [Tile]s in this [TileImage] with the given
      * `transformer` and returns a new one with the transformed characters.
      */
-    fun transform(transformer: TileTransformer): TileImage
+    fun transform(transformer: (Tile) -> Tile): TileImage
 
     /**
      * Returns a part of this [TileImage] as a new [TileImage].
@@ -124,12 +109,6 @@ interface TileImage : Drawable, TileComposite, TilesetOverride {
     fun toSubImage(offset: Position, size: Size): TileImage
 
     /**
-     * Returns the contents of this [TileImage] as a map of
-     * [Position] - [Tile] pairs.
-     */
-    fun toTileMap(): MutableMap<Position, Tile>
-
-    /**
      * Returns a copy of this [TileImage] with the exact same content.
      */
     fun toTileImage(): TileImage
@@ -138,5 +117,5 @@ interface TileImage : Drawable, TileComposite, TilesetOverride {
      * Returns a copy of this [TileImage] with the exact same content as a
      * [TileGraphics] which can be modified using the supplied style.
      */
-    fun toTileGraphic(): TileGraphics
+    fun toTileGraphics(): TileGraphics
 }

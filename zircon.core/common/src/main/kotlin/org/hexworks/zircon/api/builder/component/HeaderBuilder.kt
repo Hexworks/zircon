@@ -28,7 +28,7 @@ data class HeaderBuilder(
         return DefaultHeader(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialText = text,

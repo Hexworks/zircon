@@ -8,7 +8,7 @@ class DefaultTileColorTest {
 
     @Test
     fun shouldGenerateProperCacheKey() {
-        val result = DefaultTileColor(RED, GREEN, BLUE, 123).generateCacheKey()
+        val result = DefaultTileColor(RED, GREEN, BLUE, 123).cacheKey
 
         assertThat(result).isEqualTo("TextColor(r=5,g=10,b=15,a=123)")
     }

@@ -5,9 +5,15 @@ import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.color.ANSITileColor.*
+import org.hexworks.zircon.api.color.ANSITileColor.BLACK
+import org.hexworks.zircon.api.color.ANSITileColor.GREEN
+import org.hexworks.zircon.api.color.ANSITileColor.RED
+import org.hexworks.zircon.api.color.ANSITileColor.WHITE
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.modifier.SimpleModifiers.*
+import org.hexworks.zircon.api.modifier.SimpleModifiers.Blink
+import org.hexworks.zircon.api.modifier.SimpleModifiers.CrossedOut
+import org.hexworks.zircon.api.modifier.SimpleModifiers.Underline
+import org.hexworks.zircon.api.modifier.SimpleModifiers.VerticalFlip
 import org.hexworks.zircon.internal.resource.TileType
 import org.junit.Test
 
@@ -71,7 +77,7 @@ class DefaultTileTest {
                 .withForegroundColor(TileColor.fromString("#aabbcc"))
                 .withModifiers(VerticalFlip)
                 .build()
-                .generateCacheKey()
+                .cacheKey
 
         assertThat(result).isEqualTo("CharacterTile(c=x,s=StyleSet(fg=TextColor(r=170,g=187,b=204,a=255),bg=TextColor(r=0,g=128,b=0,a=255),m=[Modifier.VerticalFlip]))")
     }
@@ -88,23 +94,23 @@ class DefaultTileTest {
     fun shouldProperlyReportHavingABorderWhenThereIsBorder() {
         assertThat(TileBuilder.newBuilder()
                 .withModifiers(Modifiers.border())
-                .build().hasBorder()).isTrue()
+                .build().hasBorder).isTrue()
     }
 
     @Test
     fun shouldProperlyReportHavingABorderWhenThereIsNoBorder() {
         assertThat(TileBuilder.newBuilder()
-                .build().hasBorder()).isFalse()
+                .build().hasBorder).isFalse()
     }
 
     @Test
     fun shouldNotBeEmptyWhenNotEmpty() {
-        assertThat(Tile.defaultTile().isNotEmpty()).isTrue()
+        assertThat(Tile.defaultTile().isNotEmpty).isTrue()
     }
 
     @Test
     fun shouldBeEmptyWhenEmpty() {
-        assertThat(Tile.empty().isNotEmpty()).isFalse()
+        assertThat(Tile.empty().isNotEmpty).isFalse()
     }
 
     @Test
@@ -136,27 +142,27 @@ class DefaultTileTest {
 
     @Test
     fun boldModifierShouldBeBold() {
-        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.crossedOut()).build().isCrossedOut()).isTrue()
+        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.crossedOut()).build().isCrossedOut).isTrue()
     }
 
     @Test
     fun underlinedModifierShouldBeUnderlined() {
-        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.underline()).build().isUnderlined()).isTrue()
+        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.underline()).build().isUnderlined).isTrue()
     }
 
     @Test
     fun crossedOutModifierShouldBeCrossedOut() {
-        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.crossedOut()).build().isCrossedOut()).isTrue()
+        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.crossedOut()).build().isCrossedOut).isTrue()
     }
 
     @Test
     fun italicModifierShouldBeItalic() {
-        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.verticalFlip()).build().isVerticalFlipped()).isTrue()
+        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.verticalFlip()).build().isVerticalFlipped).isTrue()
     }
 
     @Test
     fun blinkingModifierShouldBeBlinking() {
-        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.blink()).build().isBlinking()).isTrue()
+        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.blink()).build().isBlinking).isTrue()
     }
 
     @Test

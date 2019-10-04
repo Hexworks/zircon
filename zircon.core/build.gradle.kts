@@ -13,6 +13,7 @@ kotlin {
     dependencies {
         with (Libs) {
             commonMainApi(kotlinStdLibCommon)
+            commonMainApi(kotlinxCoroutinesCommon)
             commonMainApi(cobaltEvents)
             commonMainApi(cobaltDatabinding)
             commonMainApi(cobaltDatatypes)
@@ -27,6 +28,8 @@ kotlin {
         with (Libs) {
             jvmMainApi(kotlinStdLibJdk8)
             jvmMainApi(kotlinReflect)
+            jvmMainApi(kotlinxCoroutines)
+            jvmMainApi(kotlinxCollectionsImmutable)
             jvmMainApi(caffeine)
             jvmMainApi(snakeYaml)
             jvmMainApi(slf4jApi)

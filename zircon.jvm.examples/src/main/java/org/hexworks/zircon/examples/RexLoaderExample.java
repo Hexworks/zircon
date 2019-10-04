@@ -1,10 +1,6 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.LibgdxApplications;
-import org.hexworks.zircon.api.Screens;
-import org.hexworks.zircon.api.Sizes;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.grid.TileGrid;
@@ -25,17 +21,16 @@ public class RexLoaderExample {
     public static void main(String[] args) {
         REXPaintResource rex = REXPaintResource.loadREXFile(RESOURCE);
 
-        TileGrid tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+        TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(CP437TilesetResources.taffer20x20())
                 .withSize(SIZE)
                 .withDebugMode(true)
                 .build());
 
         final Screen screen = Screens.createScreenFor(tileGrid);
-        screen.setCursorVisibility(false);
         List<Layer> layers = rex.toLayerList(TILESET);
         for (Layer layer : layers) {
-            screen.pushLayer(layer);
+            screen.addLayer(layer);
         }
         screen.display();
     }

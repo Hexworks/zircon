@@ -5,5 +5,6 @@ data class Crop(val x: Int,
                 val width: Int,
                 val height: Int) : TextureTransformModifier {
 
-    override fun generateCacheKey(): String = "Modifier.Crop($x,$y,$width,$height)"
+    override val cacheKey: String
+        get() = "Modifier.Crop($x,$y,$width,$height)"
 }

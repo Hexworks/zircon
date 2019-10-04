@@ -1,4 +1,4 @@
-@file:Suppress("unused", "ReplaceSingleLineLet")
+@file:Suppress("unused", "ReplaceSingleLineLet", "SpellCheckingInspection")
 
 package org.hexworks.zircon.api.data
 
@@ -9,12 +9,28 @@ import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
- * Represents a coordinate on a 2D plane.
+ * Represents a coordinate on a 2D plane. [Position]
+ * destructures into [x] and [y].
  */
 interface Position : Comparable<Position> {
 
     val x: Int
     val y: Int
+
+    /**
+     * Tells whether this [Position] is `UNKNOWN`.
+     */
+    val isUnknown: Boolean
+
+    /**
+     * Tells whether this [Position] is not `UNKNOWN`.
+     */
+    val isNotUnknown: Boolean
+
+    /**
+     * Tells whether this [Position] has a negative component (x or y) or not.
+     */
+    val hasNegativeComponent: Boolean
 
     operator fun component1() = x
 
@@ -110,21 +126,6 @@ interface Position : Comparable<Position> {
      * The y coordinate is used to shift down
      */
     fun relativeToLeftOf(component: Component): Position
-
-    /**
-     * Tells whether this [Position] is `UNKNOWN`.
-     */
-    fun isUnknown(): Boolean
-
-    /**
-     * Tells whether this [Position] is not `UNKNOWN`.
-     */
-    fun isNotUnknown(): Boolean
-
-    /**
-     * Tells whether this [Position] has a negative component (x or y) or not.
-     */
-    fun hasNegativeComponent(): Boolean
 
     companion object {
 

@@ -20,6 +20,7 @@ object HBoxVBoxExample {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
+                .withDebugMode(true)
                 .withSize(Sizes.create(60, 30))
                 .build())
 
@@ -86,9 +87,8 @@ object HBoxVBoxExample {
         table.addComponent(steveThrush)
 
         screen.addComponent(table)
-
-        screen.display()
         screen.applyColorTheme(theme)
+        screen.display()
     }
 
 }

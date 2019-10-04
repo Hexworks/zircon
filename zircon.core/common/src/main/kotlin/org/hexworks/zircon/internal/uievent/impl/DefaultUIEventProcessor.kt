@@ -5,17 +5,11 @@ import org.hexworks.cobalt.events.api.NotCancelled
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.uievent.ComponentEvent
-import org.hexworks.zircon.api.uievent.ComponentEventHandler
-import org.hexworks.zircon.api.uievent.ComponentEventProcessor
 import org.hexworks.zircon.api.uievent.ComponentEventSource
 import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventHandler
-import org.hexworks.zircon.api.uievent.KeyboardEventProcessor
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventHandler
-import org.hexworks.zircon.api.uievent.MouseEventProcessor
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.PreventDefault
@@ -27,14 +21,14 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.api.uievent.UIEventSource
 import org.hexworks.zircon.api.uievent.UIEventType
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
-import org.hexworks.zircon.internal.util.ThreadSafeQueue
-import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
+import org.hexworks.zircon.internal.util.PersistentList
+import org.hexworks.zircon.platform.factory.PersistentListFactory
+import org.hexworks.zircon.platform.factory.PersistentMapFactory
 
 class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventSource {
 
     private val logger = LoggerFactory.getLogger(this::class)
-    private val listeners = ThreadSafeMapFactory.create<UIEventType, ThreadSafeQueue<InputEventSubscription>>()
+    private var listeners = PersistentMapFactory.create<UIEventType, PersistentList<InputEventSubscription>>()
     private var closed = false
 
     override fun close() {
@@ -42,7 +36,7 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
         listeners.flatMap { it.value }.forEach {
             it.cancel()
         }
-        listeners.clear()
+        listeners = listeners.clear()
     }
 
     override fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse {
@@ -50,8 +44,7 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
         return listeners[event.type]?.let { list ->
             var finalResult: UIEventResponse = Pass
             list.forEach {
-                val result = it.listener.invoke(event, phase)
-                when (result) {
+                when (val result = it.listener.invoke(event, phase)) {
                     Processed,
                     PreventDefault -> if (result.hasPrecedenceOver(finalResult)) {
                         finalResult = result
@@ -69,77 +62,91 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
         } ?: Pass
     }
 
-    override fun handleMouseEvents(eventType: MouseEventType, handler: MouseEventHandler): Subscription {
+    override fun handleMouseEvents(
+            eventType: MouseEventType,
+            handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
-            handler.handle(event as MouseEvent, phase)
+            handler(event as MouseEvent, phase)
         }
     }
 
-    override fun processMouseEvents(eventType: MouseEventType, handler: MouseEventProcessor): Subscription {
+    override fun processMouseEvents(
+            eventType: MouseEventType,
+            handler: (event: MouseEvent, phase: UIEventPhase) -> Unit): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
-            handler.process(event as MouseEvent, phase)
+            handler(event as MouseEvent, phase)
             Processed
         }
     }
 
-    override fun handleKeyboardEvents(eventType: KeyboardEventType, handler: KeyboardEventHandler): Subscription {
+    override fun handleKeyboardEvents(
+            eventType: KeyboardEventType,
+            handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
-            handler.handle(event as KeyboardEvent, phase)
+            handler(event as KeyboardEvent, phase)
         }
     }
 
-    override fun processKeyboardEvents(eventType: KeyboardEventType, handler: KeyboardEventProcessor): Subscription {
+    override fun processKeyboardEvents(
+            eventType: KeyboardEventType,
+            handler: (event: KeyboardEvent, phase: UIEventPhase) -> Unit): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
-            handler.process(event as KeyboardEvent, phase)
+            handler(event as KeyboardEvent, phase)
             Processed
         }
     }
 
-    override fun handleComponentEvents(eventType: ComponentEventType, handler: ComponentEventHandler): Subscription {
+    override fun handleComponentEvents(
+            eventType: ComponentEventType,
+            handler: (event: ComponentEvent) -> UIEventResponse): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
             if (phase == UIEventPhase.TARGET) {
-                handler.handle(event as ComponentEvent)
+                handler(event as ComponentEvent)
             } else Pass
         }
     }
 
-    override fun processComponentEvents(eventType: ComponentEventType, handler: ComponentEventProcessor): Subscription {
+    override fun processComponentEvents(
+            eventType: ComponentEventType,
+            handler: (event: ComponentEvent) -> Unit): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
             if (phase == UIEventPhase.TARGET) {
-                handler.process(event as ComponentEvent)
+                handler(event as ComponentEvent)
             }
             Processed
         }
     }
 
     private fun buildSubscription(eventType: UIEventType, listener: (UIEvent, UIEventPhase) -> UIEventResponse): Subscription {
-        return listeners.getOrPut(eventType) { ThreadSafeQueueFactory.create() }.let {
-            val subscription = InputEventSubscription(
-                    listener = listener,
-                    subscriptions = it)
-            it.add(subscription)
-            subscription
-        }
+        val subscription = InputEventSubscription(
+                eventType = eventType,
+                listener = listener)
+        val subscriptions = listeners.getOrElse(eventType) { PersistentListFactory.create() }
+        listeners = listeners.put(eventType, subscriptions.add(subscription))
+        return subscription
     }
 
     private fun checkClosed() {
         if (closed) throw IllegalStateException("This UIEventProcessor is closed.")
     }
 
-    class InputEventSubscription(
-            val listener: (UIEvent, UIEventPhase) -> UIEventResponse,
-            private val subscriptions: ThreadSafeQueue<InputEventSubscription>) : Subscription {
+    inner class InputEventSubscription(
+            private val eventType: UIEventType,
+            val listener: (UIEvent, UIEventPhase) -> UIEventResponse) : Subscription {
 
         override var cancelState: CancelState = NotCancelled
 
         override fun cancel(cancelState: CancelState) {
-            subscriptions.remove(this)
+            val subscription = this
+            listeners[eventType]?.let { subscriptions ->
+                listeners = listeners.put(eventType, subscriptions.remove(subscription))
+            }
             this.cancelState = cancelState
         }
     }

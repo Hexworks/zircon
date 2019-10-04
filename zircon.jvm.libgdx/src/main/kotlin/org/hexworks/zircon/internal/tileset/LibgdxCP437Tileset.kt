@@ -1,9 +1,12 @@
 package org.hexworks.zircon.internal.tileset
 
-import com.badlogic.gdx.graphics.*
-import com.badlogic.gdx.graphics.g2d.*
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.Sprite
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.github.benmanes.caffeine.cache.Caffeine
-import org.hexworks.cobalt.datatypes.Identifier
+import org.hexworks.cobalt.Identifier
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -13,9 +16,9 @@ import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.hexworks.zircon.internal.tileset.transformer.LibgdxTextureCloner
-import java.util.concurrent.TimeUnit
 import org.hexworks.zircon.internal.tileset.transformer.LibgdxTextureColorizer
 import org.hexworks.zircon.internal.util.Assets
+import java.util.concurrent.TimeUnit
 
 /**
  * Represents a tileset which is backed by a sprite sheet.
@@ -39,11 +42,11 @@ class LibgdxCP437Tileset(override val width: Int,
             .build<String, TileTexture<TextureRegion>>()
 
     private val texture: Texture by lazy {
-        if(!Assets.MANAGER.isLoaded(path)) {
+        if (!Assets.MANAGER.isLoaded(path)) {
             Assets.MANAGER.load(Assets.getCP437TextureDescriptor(path))
         }
 
-        while(!Assets.MANAGER.update()) {
+        while (!Assets.MANAGER.update()) {
             //Loading...
         }
 
@@ -69,11 +72,11 @@ class LibgdxCP437Tileset(override val width: Int,
     private fun fetchTextureForTile(tile: Tile): TileTexture<TextureRegion> {
         var fixedTile = tile as? CharacterTile ?: throw IllegalArgumentException("Wrong tile type")
         fixedTile.modifiers.filterIsInstance<TileTransformModifier<CharacterTile>>().forEach { modifier ->
-            if(modifier.canTransform(fixedTile)) {
+            if (modifier.canTransform(fixedTile)) {
                 fixedTile = modifier.transform(fixedTile)
             }
         }
-        val key = fixedTile.generateCacheKey()
+        val key = fixedTile.cacheKey
         val meta = CP437_METADATA[fixedTile.character]!!
         val tr = TextureRegion(texture, meta.x * width, meta.y * height, width, height)
         val maybeRegion = cache.getIfPresent(key)

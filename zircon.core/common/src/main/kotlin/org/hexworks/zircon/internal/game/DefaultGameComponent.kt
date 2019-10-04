@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.game
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.ifPresent
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
@@ -9,6 +8,7 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Block
+import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
@@ -18,8 +18,11 @@ import org.hexworks.zircon.api.game.GameComponent
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.impl.DefaultComponent
+import org.hexworks.zircon.internal.component.impl.DefaultContainer
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
+import kotlin.jvm.Synchronized
 import kotlin.math.min
 
 /**
@@ -30,13 +33,23 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
         componentMetadata: ComponentMetadata,
         private val gameArea: GameArea<T, B>,
         private val projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN)
-    : GameComponent<T, B>, DefaultComponent(
+    : GameComponent<T, B>, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),
                 componentRenderer = NoOpComponentRenderer())) {
 
-    private val visibleLevelCount = gameArea.visibleSize().zLength
+    private val visibleLevelCount = gameArea.visibleSize.zLength
+
+    override val children: List<InternalComponent>
+        @Synchronized
+        get() = super.children
+
+    override val descendants: Iterable<InternalComponent>
+        @Synchronized
+        get() {
+            return children.flatMap { listOf(it).plus(it.descendants) }
+        }
 
     override fun acceptsFocus() = true
 
@@ -48,23 +61,23 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
         return ComponentStyleSet.defaultStyleSet()
     }
 
-    override fun toFlattenedLayers(): Iterable<Layer> {
-        val height = gameArea.actualSize().zLength
-        val fromZ = gameArea.visibleOffset().z
-        val screenSize = gameArea.visibleSize().to2DSize()
+    fun layers(): List<LayerState> {
+        val height = gameArea.actualSize.zLength
+        val fromZ = gameArea.visibleOffset.z
+        val screenSize = gameArea.visibleSize.to2DSize()
 
         val result = mutableListOf<Layer>()
 
         if (projectionMode == ProjectionMode.TOP_DOWN) {
             (fromZ until min(fromZ + visibleLevelCount, height)).forEach { levelIdx ->
                 val segment = gameArea.fetchLayersAt(
-                        offset = Position3D.from2DPosition(gameArea.visibleOffset().to2DPosition(), levelIdx),
+                        offset = Position3D.from2DPosition(gameArea.visibleOffset.to2DPosition(), levelIdx),
                         size = Size3D.from2DSize(size, 1))
                 segment.forEach {
                     result.add(LayerBuilder.newBuilder()
                             .withTileGraphics(it)
                             // TODO: regression test this: position vs absolutePosition
-                            .withOffset(absolutePosition)
+                            .withOffset(relativePosition)
                             .build())
                 }
             }
@@ -75,7 +88,7 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
             val builders = (0 until totalLayerCount * height).map {
                 TileGraphicsBuilder.newBuilder().withSize(screenSize)
             }
-            val (fromX, fromY) = gameArea.visibleOffset().to2DPosition()
+            val (fromX, fromY) = gameArea.visibleOffset.to2DPosition()
             val toX = fromX + size.width
             val toY = fromY + size.height
             (fromZ until min(fromZ + visibleLevelCount, height)).forEach { z ->
@@ -112,11 +125,12 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
             builders.forEach {
                 result.add(LayerBuilder.newBuilder()
                         .withTileGraphics(it.build())
-                        .withOffset(absolutePosition)
+                        .withOffset(relativePosition)
                         .build())
             }
         }
-        return result
+        // TODO: fix
+        return result.map { it.state }
     }
 
     override fun render() {

@@ -1,11 +1,11 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package org.hexworks.zircon.api.color
 
 import org.hexworks.zircon.api.behavior.Cacheable
 import org.hexworks.zircon.internal.color.DefaultTileColor
 
 interface TileColor : Cacheable {
-
-    fun isOpaque() = alpha == 255
 
     val alpha: Int
 
@@ -15,23 +15,26 @@ interface TileColor : Cacheable {
 
     val blue: Int
 
+    val isOpaque: Boolean
+        get() = alpha == 255
+
     /**
-     * Returns a new [TileColor] which is tinted by the default factor (.7).
+     * Returns a new [TileColor] which is tinted by the [DEFAULT_FACTOR] (.7).
      */
     fun tint(): TileColor = tint(defaultFactor())
 
     /**
-     * Returns a new [TileColor] which is tinted by `factor`.
+     * Returns a new [TileColor] which is tinted by [factor].
      */
     fun tint(factor: Double): TileColor
 
     /**
-     * Returns a new [TileColor] which is shaded by the default factor (.7).
+     * Returns a new [TileColor] which is shaded by the [DEFAULT_FACTOR] (.7).
      */
     fun shade(): TileColor = shade(defaultFactor())
 
     /**
-     * Returns a new [TileColor] which is shaded by `factor`.
+     * Returns a new [TileColor] which is shaded by [factor].
      */
     fun shade(factor: Double): TileColor
 
@@ -41,13 +44,13 @@ interface TileColor : Cacheable {
     fun invert(): TileColor
 
     /**
-     * Returns a new [TileColor] which is darkened by the given `percentage`.
+     * Returns a new [TileColor] which is darkened by the given [percentage].
      * The number must be between `0` and `1`.
      */
     fun darkenByPercent(percentage: Double): TileColor
 
     /**
-     * Returns a new [TileColor] which is lightened by the given `percentage`.
+     * Returns a new [TileColor] which is lightened by the given [percentage].
      * The number must be between `0` and `1`.
      */
     fun lightenByPercent(percentage: Double): TileColor
@@ -103,8 +106,8 @@ interface TileColor : Cacheable {
             return DefaultTileColor(red, green, blue, alpha)
         }
 
-        private val TRANSPARENT = TileColor.create(0, 0, 0, 0)
-        private const val DEFAULT_ALPHA = 255
-        private const val DEFAULT_FACTOR = 0.7
+        private val TRANSPARENT = create(0, 0, 0, 0)
+        const val DEFAULT_ALPHA = 255
+        const val DEFAULT_FACTOR = 0.7
     }
 }

@@ -7,21 +7,16 @@ import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.Cell3D
 import org.hexworks.zircon.api.game.base.BaseGameArea
-import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.internal.util.ThreadSafeMap
-import org.hexworks.zircon.internal.util.ThreadSafeQueue
 import org.hexworks.zircon.internal.util.TreeMap
-import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 import org.hexworks.zircon.platform.factory.TreeMapFactory
 
 class InMemoryGameArea<T : Tile, B : Block<T>>(
-        visibleSize: Size3D,
-        actualSize: Size3D,
+        initialVisibleSize: Size3D,
+        initialActualSize: Size3D,
         override val defaultBlock: B,
         private val layersPerBlock: Int) : BaseGameArea<T, B>(
-        visibleSize = visibleSize,
-        actualSize = actualSize) {
+        initialVisibleSize = initialVisibleSize,
+        initialActualSize = initialActualSize) {
 
     private val blocks: TreeMap<Position3D, B> = TreeMapFactory.create()
 
@@ -44,8 +39,8 @@ class InMemoryGameArea<T : Tile, B : Block<T>>(
     }
 
     override fun setBlockAt(position: Position3D, block: B) {
-        require(actualSize().containsPosition(position)) {
-            "The supplied position ($position) is not within the size (${actualSize()}) of this game area."
+        require(actualSize.containsPosition(position)) {
+            "The supplied position ($position) is not within the size (${actualSize}) of this game area."
         }
         val layerCount = block.layers.size
         require(layerCount == layersPerBlock) {

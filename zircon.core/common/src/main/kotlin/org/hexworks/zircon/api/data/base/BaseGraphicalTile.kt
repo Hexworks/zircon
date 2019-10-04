@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.resource.TileType
-import org.hexworks.zircon.api.resource.TilesetResource
 
 abstract class BaseGraphicalTile : BaseTile(), GraphicalTile {
 
@@ -59,7 +58,4 @@ abstract class BaseGraphicalTile : BaseTile(), GraphicalTile {
 
     override fun withNoModifiers() = this
 
-    override fun useTileset(tileset: TilesetResource) {
-        throw UnsupportedOperationException("Can't use a custom tileset for a GraphicTile")
-    }
 }

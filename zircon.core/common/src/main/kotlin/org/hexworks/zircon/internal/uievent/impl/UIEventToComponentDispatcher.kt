@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.uievent.impl
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
 import org.hexworks.cobalt.events.api.subscribe
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.Component
@@ -19,6 +18,7 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
+import kotlin.jvm.Synchronized
 
 /**
  * This implementation of [UIEventDispatcher] dispatches [UIEvent]s

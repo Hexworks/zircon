@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.component.impl.DefaultIcon
 import org.hexworks.zircon.internal.component.renderer.DefaultIconRenderer
@@ -22,7 +23,9 @@ data class IconBuilder(
 
     private var icon = Maybe.empty<Tile>()
 
-    // TODO: don't allow resizing
+    override fun withSize(size: Size) = also {
+        throw UnsupportedOperationException("Can't set the Size of a Modal by hand, use withParentSize instead.")
+    }
 
     fun withIcon(icon: Tile) = also {
         this.icon = Maybe.of(icon)
@@ -35,7 +38,7 @@ data class IconBuilder(
         return DefaultIcon(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialIcon = icon.get(),

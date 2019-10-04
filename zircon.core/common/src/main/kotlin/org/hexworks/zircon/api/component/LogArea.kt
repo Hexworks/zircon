@@ -58,5 +58,5 @@ interface LogArea : Component {
     /**
      * Clears the complete log.
      */
-    override fun clear()
+    fun clear()
 }

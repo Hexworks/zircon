@@ -5,6 +5,10 @@ import org.hexworks.zircon.internal.data.DefaultRect
 
 /**
  * Represents a rectangular area with a given [Size] and [Position] on a 2D plane.
+ * Enhances [Boundable] with additional information like [topLeft] and [rightCenter],
+ * supports destructuring and can be copied with the `with*` functions.
+ *
+ * A [Rect] destructures into [x], [y], [width] and [height].
  */
 interface Rect : Boundable {
 

@@ -1,8 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.map
-import org.hexworks.cobalt.datatypes.sam.Consumer
+
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -18,12 +17,10 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.onSelectionChanged
 import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
-import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
 
 class DefaultRadioButtonGroup constructor(
         componentMetadata: ComponentMetadata,
@@ -35,7 +32,7 @@ class DefaultRadioButtonGroup constructor(
                 componentMetadata = componentMetadata,
                 renderer = renderingStrategy) {
 
-    private val items = ThreadSafeMapFactory.create<String, DefaultRadioButton>()
+    private val items = mutableMapOf<String, DefaultRadioButton>()
     private var selectedItem: Maybe<String> = Maybe.empty()
     private val buttonRenderingStrategy = DefaultComponentRenderingStrategy(
             decorationRenderers = listOf(),
@@ -53,9 +50,9 @@ class DefaultRadioButtonGroup constructor(
                 initialText = text,
                 renderingStrategy = buttonRenderingStrategy,
                 componentMetadata = ComponentMetadata(
-                        position = Position.create(0, items.size),
+                        relativePosition = Position.create(0, items.size),
                         size = Size.create(renderingStrategy.calculateContentSize(size).width, 1),
-                        tileset = currentTileset(),
+                        tileset = tileset,
                         componentStyleSet = componentStyleSet)).also { button ->
             items[key] = button
             button.onSelectionChanged { (_, _, selected) ->
@@ -113,8 +110,8 @@ class DefaultRadioButtonGroup constructor(
                 }
     }
 
-    override fun onSelection(callback: Consumer<Selection>) {
-        addObserver(callback)
+    override fun onSelection(fn: (Selection) -> Unit) {
+        addObserver(fn)
     }
 
     override fun render() {

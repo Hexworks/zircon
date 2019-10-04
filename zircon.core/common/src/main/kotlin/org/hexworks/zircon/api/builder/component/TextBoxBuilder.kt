@@ -14,7 +14,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultTextBox
 import org.hexworks.zircon.internal.component.renderer.DefaultTextBoxRenderer
-import org.hexworks.zircon.platform.factory.ThreadSafeQueueFactory
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
@@ -27,7 +26,7 @@ data class TextBoxBuilder(
                 componentRenderer = DefaultTextBoxRenderer()))
     : BaseComponentBuilder<TextBox, TextBoxBuilder>() {
 
-    private val inlineElements = ThreadSafeQueueFactory.create<Component>()
+    private val inlineElements = mutableListOf<Component>()
     private val contentWidth: Int
         get() = contentSize.width
 
@@ -35,7 +34,6 @@ data class TextBoxBuilder(
         contentSize = Sizes.unknown().withWidth(initialContentWidth)
     }
 
-    // TODO: fishy
     override fun withSize(size: Size): TextBoxBuilder {
         throw UnsupportedOperationException("You can't set a size for a TextBox by hand. Try setting width instead.")
     }
@@ -130,8 +128,8 @@ data class TextBoxBuilder(
         require(component.height == 1) {
             "An inline Component can only have a height of 1."
         }
-        require(tileset.size == component.currentTileset().size) {
-            "Trying to add component with incompatible tileset size '${component.currentTileset().size}' to" +
+        require(tileset.size == component.tileset.size) {
+            "Trying to add component with incompatible tileset size '${component.tileset.size}' to" +
                     "container with tileset size: '${tileset.size}'!"
         }
         component.moveRightBy(currentInlineLength)
@@ -144,10 +142,11 @@ data class TextBoxBuilder(
     }
 
     fun commitInlineElements() = also {
-        inlineElements.drainAll().forEach { component ->
+        inlineElements.forEach { component ->
             component.moveDownBy(nextPosition.y)
             components.add(component)
         }
+        inlineElements.clear()
         updateSizeAndPosition(1)
     }
 
@@ -155,7 +154,7 @@ data class TextBoxBuilder(
         return DefaultTextBox(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 renderingStrategy = DefaultComponentRenderingStrategy(

@@ -197,6 +197,12 @@ enum class KeyCode(
     BEGIN(0xFF58);
 
     /**
+     * Tells whether this is the [UNKNOWN] [KeyCode].
+     */
+    val isUnknown: Boolean
+        get() = this == UNKNOWN
+
+    /**
      * Converts this [KeyCode] to a [Char] if possible.
      */
     fun toChar(): Maybe<Char> {
@@ -205,11 +211,6 @@ enum class KeyCode(
             char
         } else null)
     }
-
-    /**
-     * Tells wheher this is the [UNKNOWN] [KeyCode].
-     */
-    fun isUnknown() = this == UNKNOWN
 
     companion object {
 

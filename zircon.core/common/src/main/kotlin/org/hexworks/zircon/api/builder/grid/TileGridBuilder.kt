@@ -7,15 +7,15 @@ import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.grid.InternalTileGrid
-import org.hexworks.zircon.internal.grid.RectangleTileGrid
 import org.hexworks.zircon.internal.screen.TileGridScreen
 
 /**
  * Builds [TileGrid]s.
  * Defaults are:
  * - default `initialSize` is 80x24
- * - default `tileset` is `WANDERLUST` (cp437)
+ * - default `tileset` is `WANDERLUST` (CP437)
  */
 open class TileGridBuilder(
         private var size: Size = Size.defaultGridSize(),
@@ -23,9 +23,9 @@ open class TileGridBuilder(
 ) : Builder<TileGrid> {
 
     override fun build(): TileGrid {
-        return RectangleTileGrid(
-                tileset = tileset,
-                size = size)
+        return ThreadSafeTileGrid(
+                initialTileset = tileset,
+                initialSize = size)
     }
 
     override fun createCopy(): TileGridBuilder = TileGridBuilder(
@@ -56,8 +56,7 @@ open class TileGridBuilder(
     /**
      * Creates a [TileGrid] using this builder's settings and immediately wraps it up in a [Screen].
      */
-    fun buildScreen() = TileGridScreen(
-            tileGrid = build() as InternalTileGrid)
+    fun buildScreen(): Screen = TileGridScreen(build() as InternalTileGrid)
 
     companion object {
 

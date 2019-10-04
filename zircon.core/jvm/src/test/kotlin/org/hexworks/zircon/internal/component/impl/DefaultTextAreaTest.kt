@@ -13,8 +13,6 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
 import org.hexworks.zircon.api.uievent.KeyboardEventType
@@ -27,7 +25,7 @@ import org.hexworks.zircon.platform.util.SystemUtils
 import org.junit.Before
 import org.junit.Test
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "UsePropertyAccessSyntax", "unused")
 class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
 
     override lateinit var target: DefaultTextArea
@@ -66,7 +64,7 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
 
     @Test
     fun shouldUseProperFont() {
-        assertThat(target.currentTileset().id)
+        assertThat(target.tileset.id)
                 .isEqualTo(TILESET_REX_PAINT_20X20.id)
     }
 
@@ -181,9 +179,6 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
     @Test
     fun shouldProperlyGiveFocus() {
         target.applyColorTheme(DEFAULT_THEME)
-        val pos = Position.create(2, 3)
-        val tile = Tile.createCharacterTile('x', StyleSet.defaultStyle())
-        target.setTileAt(pos, tile)
         var cursorVisible = false
         Zircon.eventBus.subscribe<ZirconEvent.RequestCursorAt>(ZirconScope) {
             cursorVisible = true
@@ -193,7 +188,6 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
 
         assertThat(target.componentStyleSet.currentState())
                 .isEqualTo(FOCUSED)
-        assertThat(target.getTileAt(pos)).isNotEqualTo(tile)
         assertThat(cursorVisible).isTrue()
     }
 
@@ -227,7 +221,7 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
     }
 
     companion object {
-        val SEP = SystemUtils.getLineSeparator()
+        val SEP = SystemUtils.getLineSeparator()!!
         const val TEXT = "text"
         const val UPDATE_TEXT = 'U'
         val MULTI_LINE_TEXT = "text${SEP}text$SEP"

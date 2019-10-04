@@ -1,12 +1,6 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.TileColors;
-import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder;
 import org.hexworks.zircon.api.color.TileColor;
 import org.hexworks.zircon.api.data.Position;
@@ -23,8 +17,7 @@ public class LayersExample {
 
     public static void main(String[] args) {
 
-        // TODO: this doesn't show the text with libgdx!
-        final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        final TileGrid tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(CP437TilesetResources.rogueYun16x16())
                 .withSize(SIZE)
                 .withDebugMode(true)
@@ -32,16 +25,16 @@ public class LayersExample {
 
         final String firstRow = "This is white title on black";
         for (int x = 0; x < firstRow.length(); x++) {
-            tileGrid.setTileAt(
-                    Positions.create(x + 1, 1),
-                    buildWhiteOnBlack(firstRow.charAt(x)));
+            tileGrid.draw(
+                    buildWhiteOnBlack(firstRow.charAt(x)),
+                    Positions.create(x + 1, 1));
         }
 
         final String secondRow = "Like the row above but with blue overlay.";
         for (int x = 0; x < secondRow.length(); x++) {
-            tileGrid.setTileAt(
-                    Positions.create(x + 1, 2),
-                    buildWhiteOnBlack(secondRow.charAt(x)));
+            tileGrid.draw(
+                    buildWhiteOnBlack(secondRow.charAt(x)),
+                    Positions.create(x + 1, 2));
         }
 
         addOverlayAt(tileGrid,
@@ -52,14 +45,14 @@ public class LayersExample {
     }
 
     private static void addOverlayAt(TileGrid tileGrid, Position offset, Size size, TileColor color) {
-        tileGrid.pushLayer(new LayerBuilder()
+        tileGrid.addLayer(new LayerBuilder()
                 .withOffset(offset)
                 .withSize(size)
-                .build()
-                .fill(Tiles.newBuilder()
+                .withFiller(Tiles.newBuilder()
                         .withBackgroundColor(color)
                         .withCharacter(' ')
-                        .build()));
+                        .build())
+                .build());
     }
 
     @NotNull

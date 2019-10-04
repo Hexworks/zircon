@@ -49,7 +49,7 @@ data class HorizontalNumberInputBuilder(
     override fun build(): NumberInput = DefaultHorizontalNumberInput(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialValue = initialValue,

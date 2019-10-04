@@ -10,8 +10,7 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.extensions.handleComponentEvents
-import org.hexworks.zircon.api.extensions.handleMouseEvents
+import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
@@ -33,9 +32,8 @@ object DataBindingTest {
         val screen = Screens.createScreenFor(tileGrid)
 
         val panel = Components.panel()
-                .withTitle("Panel title")
+                .withDecorations(box(title = "Panel title"))
                 .withSize(40, 20)
-                .wrapWithBox()
                 .build()
 
         val label = Components.label()

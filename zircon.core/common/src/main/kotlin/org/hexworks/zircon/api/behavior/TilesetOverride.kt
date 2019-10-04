@@ -1,21 +1,12 @@
 package org.hexworks.zircon.api.behavior
 
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.tileset.Tileset
 
 /**
- * Interface which adds functionality for overriding [Tileset]s used
+ * Interface which adds functionality for overriding [TilesetResource]s used
  * in its implementors (components, layers, etc).
  */
-interface TilesetOverride {
+interface TilesetOverride : TilesetHolder {
 
-    /**
-     * Returns the currently used [Tileset].
-     */
-    fun currentTileset(): TilesetResource
-
-    /**
-     * Sets the [Tileset] to use.
-     */
-    fun useTileset(tileset: TilesetResource)
+    override var tileset: TilesetResource
 }

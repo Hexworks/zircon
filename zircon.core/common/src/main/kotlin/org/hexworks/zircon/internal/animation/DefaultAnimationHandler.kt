@@ -1,76 +1,72 @@
 package org.hexworks.zircon.internal.animation
 
-import org.hexworks.cobalt.datatypes.Identifier
-import org.hexworks.cobalt.datatypes.extensions.map
-import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
+import org.hexworks.cobalt.Identifier
+import org.hexworks.cobalt.factory.IdentifierFactory
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationInfo
-import org.hexworks.zircon.api.animation.AnimationState.*
+import org.hexworks.zircon.api.animation.AnimationState.FINISHED
+import org.hexworks.zircon.api.animation.AnimationState.INFINITE
+import org.hexworks.zircon.api.animation.AnimationState.IN_PROGRESS
 import org.hexworks.zircon.api.behavior.Closeable
-import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.platform.extension.getOrDefault
-import org.hexworks.zircon.platform.factory.ThreadSafeMapFactory
+import org.hexworks.zircon.platform.util.SystemUtils
+import kotlin.jvm.Synchronized
 
 internal class DefaultAnimationHandler : InternalAnimationHandler, Closeable {
 
-    private val animations = ThreadSafeMapFactory.create<Identifier, Animation>()
-    private val results = ThreadSafeMapFactory.create<Identifier, DefaultAnimationInfo>()
-    private val nextUpdatesForAnimations = HashMap<Identifier, Long>()
     private val debug = RuntimeConfig.config.debugMode
-    private var running = true
     private val id = IdentifierFactory.randomIdentifier()
 
+    private val results = mutableMapOf<Identifier, DefaultAnimationInfo>()
+    private val animations = mutableMapOf<Identifier, Animation>()
+    private val nextUpdatesForAnimations = mutableMapOf<Identifier, Long>()
+    private var running = true
+
+    @Synchronized
     override fun startAnimation(animation: Animation): AnimationInfo {
         if (debug) println("Adding animation to AnimationHandler ($id).")
         val result = DefaultAnimationInfo(
-                state = if (animation.isLoopedIndefinitely()) INFINITE else IN_PROGRESS,
+                state = if (animation.isLoopedIndefinitely) INFINITE else IN_PROGRESS,
                 animation = animation,
                 animationHandler = this)
         results[animation.id] = result
         animations[animation.id] = animation
+        nextUpdatesForAnimations[animation.id] = SystemUtils.getCurrentTimeMs()
         return result
     }
 
+    @Synchronized
     override fun stopAnimation(animation: Animation) {
-        animations.remove(animation.id)?.let {
-            results[animation.id]?.setState(FINISHED)
-        }
-        animation.clearCurrentFrame()
+        results[animation.id]?.setState(FINISHED)
+        results.remove(animation.id)
+        animations.remove(animation.id)
+        nextUpdatesForAnimations.remove(animation.id)
+        animation.removeCurrentFrame()
     }
 
-    override fun updateAnimations(currentTimeMs: Long, tileGrid: TileGrid) {
+    @Synchronized
+    override fun updateAnimations(currentTimeMs: Long, layerable: Layerable) {
         if (running) {
-            val currentAnimationKeys = animations.keys
-            currentAnimationKeys.forEach { key ->
-                val animation = animations[key]!!
-                val updateTime = nextUpdatesForAnimations.getOrDefault(key, currentTimeMs)
+            animations.forEach { (key, animation) ->
+                val updateTime = nextUpdatesForAnimations.getValue(key)
                 if (updateTime <= currentTimeMs) {
-                    val currentFrame = animation.fetchCurrentFrame()
-                    currentFrame.layers.forEach { tileGrid.removeLayer(it) }
-                    animation.fetchNextFrame().map { frame ->
-                        frame.layers.forEach { layer ->
-                            layer.moveTo(frame.position)
-                            tileGrid.pushLayer(layer)
-                        }
-                    }
-                    if (animation.hasNextFrame()) {
+                    if (animation.displayNextFrame(layerable)) {
                         nextUpdatesForAnimations[key] = currentTimeMs + animation.tick
                     } else {
-                        animations.remove(key)?.let {
-                            results[key]?.setState(FINISHED)
-                        }
-                        animation.fetchCurrentFrame().layers.forEach {
-                            tileGrid.removeLayer(it)
-                        }
+                        stopAnimation(animation)
                     }
                 }
             }
         }
     }
 
+    @Synchronized
     override fun close() {
         running = false
+        animations.forEach { (_, animation) ->
+            stopAnimation(animation)
+        }
         animations.clear()
     }
 }

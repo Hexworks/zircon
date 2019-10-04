@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.grid.RectangleTileGrid
+import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
@@ -17,58 +17,42 @@ class TileGridScreenTest {
 
     lateinit var target: TileGridScreen
     lateinit var tileset: TilesetResource
-    lateinit var grid: RectangleTileGrid
+    lateinit var grid: ThreadSafeTileGrid
 
     @Before
     fun setUp() {
         AppConfigs.newConfig().enableBetaFeatures().build()
         tileset = FONT
-        grid = RectangleTileGrid(
-                tileset = tileset,
-                size = SIZE)
+        grid = ThreadSafeTileGrid(
+                initialTileset = tileset,
+                initialSize = SIZE)
         MockitoAnnotations.initMocks(this)
         target = TileGridScreen(grid)
     }
 
     @Test
-    fun shouldBeAbleToPutCharacterWhenPutCharacterIsCalled() {
-        val char = 'x'
-        val expected = TileBuilder.newBuilder()
-                .withStyleSet(target.toStyleSet())
-                .withCharacter(char)
-                .build()
-        val currCursorPos = target.cursorPosition()
-
-        target.putCharacter(char)
-
-        assertThat(target.getTileAt(currCursorPos).get()).isEqualTo(expected)
-        assertThat(target.cursorPosition()).isEqualTo(currCursorPos.withRelativeX(1))
-
-    }
-
-    @Test
     fun shouldUseTerminalsFontWhenCreating() {
-        assertThat(target.currentTileset().id)
-                .isEqualTo(grid.currentTileset().id)
+        assertThat(target.tileset.id)
+                .isEqualTo(grid.tileset.id)
     }
 
     @Test
-    fun shouldProperlyOverrideTerminalFontWhenHasOverrideFontAndDisplayIsCalled() {
+    fun shouldProperlyOverrideGridTilesetWhenHasOverrideFontAndDisplayIsCalled() {
         val expectedFont = BuiltInCP437TilesetResource.AESOMATICA_16X16
-        target.useTileset(expectedFont)
+        target.tileset = expectedFont
         target.display()
-        assertThat(target.currentTileset().id).isEqualTo(expectedFont.id)
-        assertThat(grid.currentTileset().id).isEqualTo(expectedFont.id)
+        assertThat(target.tileset.id).isEqualTo(expectedFont.id)
+        assertThat(grid.tileset.id).isEqualTo(expectedFont.id)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldProperlyThrowExceptionWhenTyringToSetNonCompatibleFont() {
-        target.useTileset(BuiltInCP437TilesetResource.BISASAM_20X20)
+        target.tileset = BuiltInCP437TilesetResource.BISASAM_20X20
     }
 
     @Test
     fun shouldBeDrawnWhenCharacterSet() {
-        target.setTileAt(Position.offset1x1(), CHAR)
+        target.draw(CHAR, Position.offset1x1())
         assertThat(target.getTileAt(Position.offset1x1()).get())
                 .isEqualTo(CHAR)
 
@@ -76,7 +60,7 @@ class TileGridScreenTest {
 
     @Test
     fun shouldClearProperlyWhenClearIsCalled() {
-        target.setTileAt(Position.offset1x1(), CHAR)
+        target.draw(CHAR, Position.offset1x1())
         target.display()
 
         target.clear()

@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
@@ -24,7 +25,6 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     private var currentInlineBuilder = createTextBoxBuilder()
     private var currentTheme: ColorTheme = ColorThemeBuilder.newBuilder().build()
 
-    // TODO: fix decoration problem
     init {
         render()
     }
@@ -116,7 +116,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     }
 
     private fun addLogElement(element: TextBox, applyTheme: Boolean = true) {
-        val currentHeight = children.asSequence().map { it.height }.fold(0, Int::plus)
+        var currentHeight = children.map { it.height }.fold(0, Int::plus)
         val maxHeight = contentSize.height
         val elementHeight = element.height
         val remainingHeight = maxHeight - currentHeight
@@ -135,10 +135,9 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
             children.forEach { child ->
                 child.moveUpBy(currentFreedSpace)
             }
+            currentHeight -= currentFreedSpace
         }
-        children.lastOrNull()?.let { lastChild ->
-            element.moveTo(lastChild.position.minus(contentPosition).withRelativeY(lastChild.height))
-        }
+        element.moveTo(Positions.create(0, currentHeight))
         addComponent(element)
         if (applyTheme) {
             element.applyColorTheme(currentTheme)
@@ -149,11 +148,11 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     private fun createTextBoxBuilder(): TextBoxBuilder {
         return TextBoxBuilder
                 .newBuilder(contentSize.width)
-                .withTileset(currentTileset())
+                .withTileset(tileset)
     }
 
     override fun render() {
-        LOGGER.debug("LogArea (id=${id.abbreviate()},visibility=$isVisible) was rendered.")
+        LOGGER.debug("LogArea (id=${id.abbreviate()},hidden=$isHidden) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 

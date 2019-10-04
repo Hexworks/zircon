@@ -1,17 +1,20 @@
 package org.hexworks.zircon.api.builder.graphics
 
-import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
+import org.hexworks.cobalt.factory.IdentifierFactory
+import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.CharacterTileString
+import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.api.graphics.TextWrap.WRAP
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.graphics.DefaultCharacterTileString
 
 /**
- * Creates [org.hexworks.zircon.api.graphics.CharacterTileString]s.
+ * Creates [CharacterTileString]s.
  * Defaults:
  * - `text` is **mandatory**
  */
@@ -19,6 +22,7 @@ import org.hexworks.zircon.internal.graphics.DefaultCharacterTileString
 data class CharacterTileStringBuilder(
         private var text: String = NO_VALUE,
         private var textWrap: TextWrap = WRAP,
+        private var size: Size = Sizes.unknown(),
         private val modifiers: MutableSet<Modifier> = mutableSetOf(),
         private var foregroundColor: TileColor = TileColor.defaultForegroundColor(),
         private var backgroundColor: TileColor = TileColor.defaultBackgroundColor())
@@ -28,10 +32,28 @@ data class CharacterTileStringBuilder(
 
     fun withText(text: String) = also {
         this.text = text
+        if (size.isUnknown) {
+            size = Sizes.create(text.length, 1)
+        }
+    }
+
+    fun withSize(size: Size) = also {
+        this.size = size
+    }
+
+    fun withSize(width: Int, height: Int) = also {
+        this.size = Sizes.create(width, height)
     }
 
     fun withTextWrap(textWrap: TextWrap) = also {
         this.textWrap = textWrap
+    }
+
+    fun withStyleSet(styleSet: StyleSet) = also {
+        modifiers.clear()
+        modifiers.addAll(styleSet.modifiers)
+        foregroundColor = styleSet.foregroundColor
+        backgroundColor = styleSet.backgroundColor
     }
 
     fun withModifiers(vararg modifier: Modifier) = also {
@@ -47,21 +69,20 @@ data class CharacterTileStringBuilder(
     }
 
     override fun build(): CharacterTileString {
-        require(text != NO_VALUE) {
-            "You must set some text for a CharacterTileString!"
-        }
-        require(text.isNotBlank()) {
-            "'text' must not be blank!"
-        }
         return DefaultCharacterTileString(
-                textChars = text.map {
-                    TileBuilder.newBuilder()
-                            .withForegroundColor(foregroundColor)
-                            .withBackgroundColor(backgroundColor)
-                            .withCharacter(it)
-                            .withModifiers(modifiers)
-                            .buildCharacterTile()
+                characterTiles = if (text == NO_VALUE || text.isBlank()) {
+                    listOf()
+                } else {
+                    text.map {
+                        TileBuilder.newBuilder()
+                                .withForegroundColor(foregroundColor)
+                                .withBackgroundColor(backgroundColor)
+                                .withCharacter(it)
+                                .withModifiers(modifiers)
+                                .buildCharacterTile()
+                    }
                 },
+                size = size,
                 textWrap = textWrap)
     }
 

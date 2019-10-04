@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
+import org.hexworks.zircon.api.graphics.TileGraphics
 
 data class BoxDecorationRenderer(
         val boxType: BoxType = BoxType.SINGLE,
@@ -21,16 +21,15 @@ data class BoxDecorationRenderer(
 
     val title: String by titleProperty.asDelegate()
 
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentDecorationRenderContext) {
+    override fun render(tileGraphics: TileGraphics, context: ComponentDecorationRenderContext) {
         val size = tileGraphics.size
         val style = context.component.componentStyleSet.currentStyle()
-        val box = BoxBuilder.newBuilder()
+        tileGraphics.draw(BoxBuilder.newBuilder()
                 .withBoxType(boxType)
                 .withSize(size)
                 .withStyle(style)
-                .withTileset(context.component.currentTileset())
-                .build()
-        box.drawOnto(tileGraphics)
+                .withTileset(context.component.tileset)
+                .build())
         if (size.width > 4) {
             if (titleProperty.value.isNotBlank()) {
                 val cleanText = if (titleProperty.value.length > size.width - 4) {
@@ -38,25 +37,25 @@ data class BoxDecorationRenderer(
                 } else {
                     titleProperty.value
                 }
-                tileGraphics.setTileAt(Position.create(1, 0), TileBuilder.newBuilder()
+                tileGraphics.draw(TileBuilder.newBuilder()
                         .withStyleSet(style)
                         .withCharacter(boxType.connectorLeft)
-                        .build())
+                        .build(), Position.create(1, 0))
                 val pos = Position.create(2, 0)
-                (0 until cleanText.length).forEach { idx ->
-                    tileGraphics.setTileAt(
-                            position = pos.withRelativeX(idx),
+                (cleanText.indices).forEach { idx ->
+                    tileGraphics.draw(
                             tile = TileBuilder.newBuilder()
                                     .withStyleSet(style)
                                     .withCharacter(cleanText[idx])
-                                    .build())
+                                    .build(),
+                            drawPosition = pos.withRelativeX(idx))
                 }
-                tileGraphics.setTileAt(
-                        position = Position.create(2 + cleanText.length, 0),
+                tileGraphics.draw(
                         tile = TileBuilder.newBuilder()
                                 .withStyleSet(style)
                                 .withCharacter(boxType.connectorRight)
-                                .build())
+                                .build(),
+                        drawPosition = Position.create(2 + cleanText.length, 0))
             }
         }
     }

@@ -12,7 +12,6 @@ sealed class SimpleModifiers : TextureTransformModifier {
     object HorizontalFlip : SimpleModifiers()
     object Hidden : SimpleModifiers()
 
-    override fun generateCacheKey(): String {
-        return "Modifier.${this::class.simpleName}"
-    }
+    override val cacheKey: String
+        get() = "Modifier.${this::class.simpleName}"
 }

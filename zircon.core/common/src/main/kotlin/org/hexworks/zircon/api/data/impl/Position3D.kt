@@ -27,6 +27,9 @@ data class Position3D private constructor(val x: Int,
                                           val y: Int,
                                           val z: Int) : Comparable<Position3D> {
 
+    val isUnknown: Boolean
+        get() = this == UNKNOWN
+
     override fun compareTo(other: Position3D): Int {
         return when {
             other.z > z -> -1
@@ -132,8 +135,6 @@ data class Position3D private constructor(val x: Int,
      * the `y` component is lost during the conversion!
      */
     fun to2DPosition() = Position.create(x, y)
-
-    fun isUnknown() = this == UNKNOWN
 
     companion object {
 

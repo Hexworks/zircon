@@ -1,19 +1,10 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.ColorThemes;
-import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.LibgdxApplications;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Screens;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.UIEventResponses;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.component.Button;
-import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.Label;
 import org.hexworks.zircon.api.component.Panel;
-import org.hexworks.zircon.api.component.RadioButtonGroup;
+import org.hexworks.zircon.api.component.*;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.BoxType;
@@ -22,8 +13,7 @@ import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.util.Arrays;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
@@ -53,7 +43,7 @@ public class GameMockupExample {
         double rows = screenSize.getHeight() / TILESET.getHeight();
         Size terminalSize = Sizes.create((int) columns, (int) rows);
 
-        final TileGrid tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+        final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(TILESET)
                 .withSize(terminalSize)
                 .withDebugMode(true)
@@ -117,7 +107,6 @@ public class GameMockupExample {
 
         Button applyButton = Components.button()
                 .withText(APPLY_LABEL)
-                // TODO: FIX CAST
                 .withPosition((Positions.create(PANEL_SPACING, 0)).relativeToRightOf(backButton))
                 .build();
         optionsScreen.addComponent(applyButton);

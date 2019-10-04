@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.resource
 
-import org.hexworks.cobalt.datatypes.Identifier
-import org.hexworks.cobalt.datatypes.factory.IdentifierFactory
+import org.hexworks.cobalt.Identifier
+import org.hexworks.cobalt.factory.IdentifierFactory
 import org.hexworks.zircon.api.resource.TilesetResource
 
 internal enum class BuiltInGraphicalTilesetResource(

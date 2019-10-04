@@ -3,10 +3,12 @@ package org.hexworks.zircon.internal.component
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.behavior.Focusable
+import org.hexworks.zircon.internal.component.impl.RootContainer
+import org.hexworks.zircon.internal.event.ZirconEvent.ComponentMoved
 import org.hexworks.zircon.internal.uievent.ComponentEventAdapter
 import org.hexworks.zircon.internal.uievent.KeyboardEventAdapter
 import org.hexworks.zircon.internal.uievent.MouseEventAdapter
@@ -18,16 +20,55 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
  * a clean API for [Component]s but enables Zircon and the developers of custom [Component]s
  * to interact with them in a more meaningful manner.
  */
-interface InternalComponent : Component, ComponentEventAdapter, Focusable, KeyboardEventAdapter, MouseEventAdapter, UIEventProcessor {
+interface InternalComponent : Component, ComponentEventAdapter, Focusable,
+        KeyboardEventAdapter, MouseEventAdapter, UIEventProcessor {
 
     /**
-     * The [org.hexworks.zircon.api.graphics.TileGraphics] which this
-     * component uses for drawing.
+     * The immediate child [Component]s of this [Component].
+     */
+    val children: Iterable<InternalComponent>
+
+    /**
+     * All descendant [Component]s of this [Component].
+     */
+    val descendants: Iterable<InternalComponent>
+
+    /**
+     * Returns the flattened component tree rooted at this
+     * component. Similar to [descendants] with the exception that
+     * this [Component] is also included in the result.
+     */
+    val flattenedTree: Iterable<InternalComponent>
+        get() = listOf(this).plus(descendants)
+
+    /**
+     * The [TileGraphics] through which this [InternalComponent]
+     * can be drawn upon.
      */
     val graphics: TileGraphics
 
-    // TODO: make val
+    /**
+     * The [LayerState] (s) representing the contents of this
+     * [InternalComponent]. Apart from the [graphics] a component
+     * can have multiple layers representing its content.
+     */
+    val layerStates: Iterable<LayerState>
+
     override fun isAttached(): Boolean = fetchParent().isPresent
+
+    /**
+     * Tells whether this [Component] is attached to a [RootContainer] or not.
+     */
+    fun isAttachedToRoot(): Boolean = calculatePathFromRoot()
+            .filterIsInstance<RootContainer>()
+            .isNotEmpty()
+
+    /**
+     * Moves this [InternalComponent] to the given [position].
+     * If [signalComponentChange] is `true` this function will send
+     * a [ComponentMoved] event.
+     */
+    fun moveTo(position: Position, signalComponentChange: Boolean)
 
     /**
      * Attaches this [Component] to the given parent [Container].
@@ -44,19 +85,7 @@ interface InternalComponent : Component, ComponentEventAdapter, Focusable, Keybo
      * If no [InternalComponent] intersects with the given `position` an
      * empty [Maybe] is returned.
      */
-    fun fetchComponentByPosition(position: Position): Maybe<out InternalComponent>
-
-    /**
-     * Returns the this [Component] and its children (if any)
-     * flattened into an [Iterable] of [Layer]s.
-     */
-    fun toFlattenedLayers(): Iterable<Layer>
-
-    /**
-     * Returns the this [Component] and its children (if any)
-     * flattened into an [Iterable] of [InternalComponent]s.
-     */
-    fun toFlattenedComponents(): Iterable<InternalComponent>
+    fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent>
 
     /**
      * Returns the parent of this [Component] (if any).
@@ -67,7 +96,7 @@ interface InternalComponent : Component, ComponentEventAdapter, Focusable, Keybo
      * Recursively traverses the parents of this [InternalComponent]
      * until the root is reached and returns them.
      */
-    fun calculatePathFromRoot(): Iterable<InternalComponent>
+    fun calculatePathFromRoot(): List<InternalComponent>
 
     /**
      * Renders this component to the underlying [TileGraphics].

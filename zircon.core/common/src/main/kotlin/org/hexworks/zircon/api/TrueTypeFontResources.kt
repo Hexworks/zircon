@@ -28,8 +28,8 @@ object TrueTypeFontResources {
     @JvmStatic
     fun amstradNarrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.AMSTRAD_NARROW.toTilesetResource(height)
 
-    @JvmStatic
-    fun ibmBios(height: Int): TilesetResource = BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(height)
+@JvmStatic
+fun ibmBios(height: Int): TilesetResource = BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(height)
 
     @JvmStatic
     fun ibmBiosNarrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.IBM_BIOS_NARROW.toTilesetResource(height)
