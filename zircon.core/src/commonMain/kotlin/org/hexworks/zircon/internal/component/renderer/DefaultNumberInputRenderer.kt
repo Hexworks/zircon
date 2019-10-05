@@ -4,7 +4,6 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.internal.component.impl.DefaultHorizontalNumberInput
 
 class DefaultNumberInputRenderer : ComponentRenderer<DefaultHorizontalNumberInput> {

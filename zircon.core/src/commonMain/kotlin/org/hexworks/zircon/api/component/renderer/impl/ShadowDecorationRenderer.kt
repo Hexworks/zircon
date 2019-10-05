@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.shape.LineFactory
 
 data class ShadowDecorationRenderer(private val shadowChar: Char = DEFAULT_SHADOW_CHAR) : ComponentDecorationRenderer {

@@ -2,11 +2,11 @@ package org.hexworks.zircon.api.component.builder
 
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.component.AlignmentStrategy
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
-import org.hexworks.zircon.api.component.AlignmentStrategy
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer

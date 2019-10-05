@@ -1,17 +1,16 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.hexworks.zircon.api.Tiles
-import org.hexworks.zircon.api.data.DrawSurfaceState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.TileGraphicsState
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
- * This is a non thread-safe, but very fast [TileGraphics]
- * implementation.
+ * This is a non thread-safe, but very fast [TileGraphics] implementation.
  */
 class FastTileGraphics(
         initialSize: Size,
@@ -23,28 +22,41 @@ class FastTileGraphics(
 
     override val tiles = initialTiles.toMutableMap()
 
-    override val state: DrawSurfaceState
-        get() = DrawSurfaceState.create(
+    override val state: TileGraphicsState
+        get() = TileGraphicsState.create(
                 tiles = tiles.toMap(),
                 tileset = tileset,
                 size = size)
 
     override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
-        this.tiles.putAll(tileMap.asSequence()
+        tileMap.asSequence()
                 .filter { drawArea.containsPosition(it.key) && size.containsPosition(it.key + drawPosition) }
-                .map { it.key + drawPosition to it.value }
-                .toMap())
+                .map { (key, value) -> key + drawPosition to value }
+                .forEach { (pos, tile) ->
+                    if (tile.isEmpty) {
+                        tiles.remove(pos)
+                    } else {
+                        tiles[pos] = tile
+                    }
+                }
     }
 
+    // TODO: regression test removal
     override fun draw(tile: Tile, drawPosition: Position) {
         if (size.containsPosition(drawPosition)) {
-            tiles[drawPosition] = tile
+            if (tile.isEmpty) {
+                tiles.remove(drawPosition)
+            } else {
+                tiles[drawPosition] = tile
+            }
         }
     }
 
     override fun fill(filler: Tile) {
-        size.fetchPositions().minus(tiles.keys.filter { it != Tiles.empty() }).forEach {
-            tiles[it] = filler
+        if (filler.isNotEmpty) {
+            size.fetchPositions().minus(tiles.keys.filter { it != Tiles.empty() }).forEach {
+                tiles[it] = filler
+            }
         }
     }
 
@@ -52,9 +64,15 @@ class FastTileGraphics(
         tiles.clear()
     }
 
+    // TODO: test removal
     override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
         getTileAt(position).map { tile ->
-            tiles[position] = tileTransformer(tile)
+            val newTile = tileTransformer(tile)
+            if (newTile.isEmpty) {
+                tiles.remove(position)
+            } else {
+                tiles[position] = newTile
+            }
         }
     }
 }

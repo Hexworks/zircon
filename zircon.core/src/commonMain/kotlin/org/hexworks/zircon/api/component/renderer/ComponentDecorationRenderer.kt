@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.component.renderer
 
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.TileGraphics
 
 /**
  * A [ComponentDecorationRenderer] is responsible for rendering decorations for a given

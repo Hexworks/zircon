@@ -1,22 +1,22 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.hexworks.zircon.api.Tiles
-import org.hexworks.zircon.api.data.DrawSurfaceState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.TileGraphicsState
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.data.DefaultDrawSurfaceState
+import org.hexworks.zircon.internal.data.DefaultTileGraphicsState
 import org.hexworks.zircon.platform.factory.PersistentMapFactory
 import kotlin.jvm.Synchronized
 
 /**
- * This is a read-safe [TileGraphics] implementation. Read safety means
- * that all read operations ([getTileAt], [state], etc) are consistent
- * even if concurrent write operations are being performed. Use this implementation
- * if you own't use multiple threads when writing to this object.
+ * This is a thread-safe [TileGraphics] All read / write operations
+ * ([getTileAt], [state], etc) are consistent even if concurrent write
+ * operations are being performed. Use this implementation if you want
+ * to read / write from multiple threads.
  */
 class ThreadSafeTileGraphics(
         initialSize: Size,
@@ -36,29 +36,39 @@ class ThreadSafeTileGraphics(
             currentState = currentState.copy(tileset = value)
         }
 
-    override val state: DrawSurfaceState
+    override val state: TileGraphicsState
         get() = currentState
 
-    private var currentState = DefaultDrawSurfaceState(
+    private var currentState = DefaultTileGraphicsState(
             size = initialSize,
             tileset = initialTileset,
             tiles = initialTiles)
 
     @Synchronized
-    override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
-        tiles = tiles.putAll(tileMap.asSequence()
-                .filter { drawArea.containsPosition(it.key) && size.containsPosition(it.key + drawPosition) }
-                .map { it.key + drawPosition to it.value }
-                .toMap())
-        currentState = currentState.copy(tiles = tiles)
+    override fun draw(tile: Tile, drawPosition: Position) {
+        if (size.containsPosition(drawPosition)) {
+            tiles = if (tile.isEmpty) {
+                tiles.remove(drawPosition)
+            } else {
+                tiles.put(drawPosition, tile)
+            }
+            currentState = currentState.copy(tiles = tiles)
+        }
     }
 
     @Synchronized
-    override fun draw(tile: Tile, drawPosition: Position) {
-        if (size.containsPosition(drawPosition)) {
-            tiles = tiles.put(drawPosition, tile)
-            currentState = currentState.copy(tiles = tiles)
-        }
+    override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
+        tileMap.asSequence()
+                .filter { drawArea.containsPosition(it.key) && size.containsPosition(it.key + drawPosition) }
+                .map { (key, value) -> key + drawPosition to value }
+                .forEach { (pos, tile) ->
+                    tiles = if (tile.isEmpty) {
+                        tiles.remove(pos)
+                    } else {
+                        tiles.put(pos, tile)
+                    }
+                }
+        currentState = currentState.copy(tiles = tiles)
     }
 
     @Synchronized
@@ -69,18 +79,36 @@ class ThreadSafeTileGraphics(
 
     @Synchronized
     override fun fill(filler: Tile) {
-        val (currentTiles, _, currentSize) = currentState
-        tiles = tiles.putAll(currentSize.fetchPositions()
-                .minus(currentTiles.filterValues { it != Tiles.empty() }.keys)
-                .map { it to filler }.toMap())
-        currentState = currentState.copy(tiles = tiles)
+        if (filler.isNotEmpty) {
+            val (currentTiles, _, currentSize) = currentState
+            tiles = tiles.putAll(currentSize.fetchPositions()
+                    .minus(currentTiles.filterValues { it.isNotEmpty }.keys)
+                    .map { it to filler }.toMap())
+            currentState = currentState.copy(tiles = tiles)
+        }
     }
 
     @Synchronized
     override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
-        tiles[position]?.let { tile ->
-            tiles = tiles.put(position, tileTransformer(tile))
+        getTileAt(position).map { oldTile ->
+            updateTile(position, tileTransformer(oldTile))
             currentState = currentState.copy(tiles = tiles)
+        }
+    }
+
+    @Synchronized
+    override fun transform(transformer: (Position, Tile) -> Tile) {
+        size.fetchPositions().forEach { pos ->
+            updateTile(pos, transformer(pos, tiles.getOrElse(pos) { Tiles.empty() }))
+        }
+        currentState = currentState.copy(tiles = tiles)
+    }
+
+    private fun updateTile(pos: Position, tile: Tile) {
+        tiles = if (tile.isEmpty) {
+            tiles.remove(pos)
+        } else {
+            tiles.put(pos, tile)
         }
     }
 }

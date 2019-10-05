@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 
 @Suppress("DuplicatedCode")
 class HorizontalSliderRenderer : ComponentRenderer<Slider> {

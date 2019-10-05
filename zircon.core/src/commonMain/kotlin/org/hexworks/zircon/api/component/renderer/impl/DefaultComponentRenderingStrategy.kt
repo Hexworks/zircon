@@ -12,7 +12,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.internal.component.InternalComponent
 
 class DefaultComponentRenderingStrategy<T : Component>(
         override val componentRenderer: ComponentRenderer<in T>,
@@ -25,10 +24,12 @@ class DefaultComponentRenderingStrategy<T : Component>(
             var currentOffset = Position.defaultPosition()
             var currentSize = graphics.size
 
-            val componentArea = graphics.toSubTileGraphics(Rect.create(
+            val graphicsCopy = graphics.createCopy()
+
+            val componentArea = graphicsCopy.toSubTileGraphics(Rect.create(
                     position = decorationRenderers
                             .map { it.offset }.fold(Position.zero(), Position::plus),
-                    size = graphics.size - decorationRenderers
+                    size = graphicsCopy.size - decorationRenderers
                             .map { it.occupiedSize }.fold(Size.zero(), Size::plus)))
 
             componentRenderer.render(
@@ -37,13 +38,17 @@ class DefaultComponentRenderingStrategy<T : Component>(
 
             decorationRenderers.forEach { renderer ->
                 val bounds = Rect.create(currentOffset, currentSize)
-                renderer.render(graphics.toSubTileGraphics(bounds), ComponentDecorationRenderContext(component))
+                renderer.render(graphicsCopy.toSubTileGraphics(bounds), ComponentDecorationRenderContext(component))
                 currentOffset += renderer.offset
                 currentSize -= renderer.occupiedSize
             }
 
             componentPostProcessors.forEach { renderer ->
                 renderer.render(componentArea, ComponentPostProcessorContext(component))
+            }
+
+            graphics.transform { position, _ ->
+                graphicsCopy.getTileAt(position).get()
             }
         }
     }

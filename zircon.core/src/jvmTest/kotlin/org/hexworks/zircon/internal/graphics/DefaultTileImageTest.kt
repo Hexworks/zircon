@@ -51,13 +51,6 @@ class DefaultTileImageTest {
     }
 
     @Test
-    fun shouldProperlyCopyImage() {
-        val result = IMAGE_3X3.toTileImage()
-
-        assertThat(result.tiles).isEqualTo(IMAGE_3X3.tiles)
-    }
-
-    @Test
     fun shouldProperlyCreateSubImage() {
         val result = IMAGE_3X3.toSubImage(Position.offset1x1(), Size.create(2, 1))
 
@@ -137,17 +130,6 @@ class DefaultTileImageTest {
     }
 
     @Test
-    fun shouldProperlyWithText() {
-        val style = StyleSet.create(YELLOW, GREEN)
-        val result = IMAGE_3X3.withText("foo", style, Position.create(1, 1))
-
-        assertThat(result.fetchCharacters()).containsExactly(
-                'a', 'a', 'a',
-                'a', 'f', 'o',
-                'a', 'a', 'a')
-    }
-
-    @Test
     fun shouldProperlyWithStyle() {
         val style = StyleSet.create(YELLOW, GREEN)
         val result = IMAGE_3X3.withFiller(FILLER_TILE_A).withStyle(style)
@@ -161,7 +143,7 @@ class DefaultTileImageTest {
         val tileset = CP437TilesetResources.rexPaint12x12()
 
         val result = IMAGE_3X3.withTileset(tileset)
-        
+
         assertThat(result.tileset == tileset)
     }
 

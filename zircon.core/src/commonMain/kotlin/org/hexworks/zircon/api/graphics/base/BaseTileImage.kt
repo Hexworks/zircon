@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.graphics.base
 
-import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -61,43 +60,8 @@ abstract class BaseTileImage : TileImage {
                 initialTiles = newTiles)
     }
 
-    override fun withText(text: String, style: StyleSet, position: Position): TileImage {
-        var newTiles = tiles
-        text.forEachIndexed { col, char ->
-            newTiles = newTiles.put(position.withRelativeX(col), TileBuilder
-                    .newBuilder()
-                    .withStyleSet(style)
-                    .withCharacter(char)
-                    .build())
-        }
-        return DefaultTileImage(
-                size = size,
-                tileset = tileset,
-                initialTiles = newTiles)
-    }
-
-    override fun withStyle(styleSet: StyleSet,
-                           offset: Position,
-                           size: Size,
-                           keepModifiers: Boolean): TileImage {
-        var newTiles = tiles
-        size.fetchPositions().forEach { pos ->
-            pos.plus(offset).let { fixedPos ->
-                getTileAt(fixedPos).map { tile: Tile ->
-                    val oldMods = tile.styleSet.modifiers
-                    val newTile = if (keepModifiers) {
-                        tile.withStyle(styleSet.withAddedModifiers(oldMods))
-                    } else {
-                        tile.withStyle(styleSet)
-                    }
-                    newTiles = newTiles.put(fixedPos, newTile)
-                }
-            }
-        }
-        return DefaultTileImage(
-                size = size,
-                tileset = tileset,
-                initialTiles = newTiles)
+    override fun withStyle(styleSet: StyleSet) = transform {
+        it.withStyle(styleSet)
     }
 
     override fun withTileset(tileset: TilesetResource): TileImage {
@@ -146,8 +110,6 @@ abstract class BaseTileImage : TileImage {
                 tileset = tileset,
                 initialTiles = newTiles)
     }
-
-    override fun toTileImage() = this
 
     override fun toTileGraphics() = TileGraphicsBuilder.newBuilder()
             .withSize(size)

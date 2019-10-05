@@ -8,12 +8,12 @@ import org.hexworks.zircon.api.animation.AnimationInfo
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.api.data.DrawSurfaceState
 import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
@@ -48,9 +48,6 @@ class ThreadSafeTileGrid(
 
     override val tiles: Map<Position, Tile>
         get() = backend.tiles
-
-    override val state: DrawSurfaceState
-        get() = backend.state
 
     override val size: Size
         get() = backend.size
@@ -122,6 +119,8 @@ class ThreadSafeTileGrid(
         initializeLayerable(size, tileset)
     }
 
+    // ANIMATION HANDLER
+
     @Synchronized
     override fun startAnimation(animation: Animation): AnimationInfo {
         return animationHandler.startAnimation(animation)
@@ -136,6 +135,8 @@ class ThreadSafeTileGrid(
     override fun updateAnimations(currentTimeMs: Long, layerable: Layerable) {
         animationHandler.updateAnimations(currentTimeMs, layerable)
     }
+
+    // DRAW SURFACE
 
     @Synchronized
     override fun setTileAt(position: Position, tile: Tile) {
@@ -162,10 +163,38 @@ class ThreadSafeTileGrid(
         backend.draw(tile, drawPosition)
     }
 
+    override fun draw(tileComposite: TileComposite) {
+        backend.draw(tileComposite)
+    }
+
+    override fun draw(tileComposite: TileComposite, drawPosition: Position) {
+        backend.draw(tileComposite, drawPosition)
+    }
+
+    override fun draw(tileMap: Map<Position, Tile>) {
+        backend.draw(tileMap)
+    }
+
+    override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position) {
+        backend.draw(tileMap, drawPosition)
+    }
+
     @Synchronized
     override fun fill(filler: Tile) {
         backend.fill(filler)
     }
+
+    override fun toTileImage() = backend.toTileImage()
+
+    override fun transform(transformer: (Position, Tile) -> Tile) {
+        backend.transform(transformer)
+    }
+
+    override fun applyStyle(styleSet: StyleSet) {
+        backend.applyStyle(styleSet)
+    }
+
+    // LAYERABLE
 
     @Synchronized
     override fun addLayer(layer: Layer) {
