@@ -14,9 +14,9 @@ import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.toTileGraphics
-import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -29,7 +29,7 @@ open class ThreadSafeLayer(
         initialContents: TileGraphics,
         private val movable: Movable = DefaultMovable(
                 position = initialPosition,
-                size = initialContents.size)) : Clearable, DrawSurface, InternalLayer, Movable {
+                size = initialContents.size)) : Clearable, TileGraphics, InternalLayer, Movable {
 
     final override val tiles: Map<Position, Tile>
         get() = currentState.tiles
@@ -110,6 +110,17 @@ open class ThreadSafeLayer(
         }
     }
 
+    final override fun toTileImage() = backend.toTileImage()
+
+    final override fun toLayer(offset: Position) = apply {
+        moveTo(offset)
+    }
+
+    final override fun toResized(newSize: Size) = backend.toResized(newSize)
+
+    final override fun toResized(newSize: Size, filler: Tile) = backend.toResized(newSize, filler)
+
+
     final override fun toSubTileGraphics(rect: Rect) = SubTileGraphics(rect, this)
 
     @Synchronized
@@ -132,6 +143,36 @@ open class ThreadSafeLayer(
     }
 
     @Synchronized
+    final override fun draw(tileComposite: TileComposite) {
+        backend.draw(tileComposite)
+        replaceState(currentState.copy(tiles = backend.tiles))
+    }
+
+    @Synchronized
+    final override fun draw(tileComposite: TileComposite, drawPosition: Position) {
+        backend.draw(tileComposite, drawPosition)
+        replaceState(currentState.copy(tiles = backend.tiles))
+    }
+
+    @Synchronized
+    final override fun draw(tileComposite: TileComposite, drawPosition: Position, drawArea: Size) {
+        backend.draw(tileComposite, drawPosition, drawArea)
+        replaceState(currentState.copy(tiles = backend.tiles))
+    }
+
+    @Synchronized
+    final override fun draw(tileMap: Map<Position, Tile>) {
+        backend.draw(tileMap)
+        replaceState(currentState.copy(tiles = backend.tiles))
+    }
+
+    @Synchronized
+    final override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position) {
+        backend.draw(tileMap, drawPosition)
+        replaceState(currentState.copy(tiles = backend.tiles))
+    }
+
+    @Synchronized
     final override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
         backend.transformTileAt(position, tileTransformer)
         replaceState(currentState.copy(tiles = backend.tiles))
@@ -144,7 +185,7 @@ open class ThreadSafeLayer(
     }
 
     @Synchronized
-    final override fun transform(transformer: (Tile) -> Tile) {
+    final override fun transform(transformer: (Position, Tile) -> Tile) {
         backend.transform(transformer)
         replaceState(currentState.copy(tiles = backend.tiles))
     }

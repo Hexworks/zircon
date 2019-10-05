@@ -18,7 +18,8 @@ interface TileComposite : Sizeable {
 
     /**
      * Returns the [Tile] stored at a particular position in this [TileComposite].
-     * Returns an empty [Maybe] if no [Tile] is present at the given [Position].
+     * Returns an empty [Maybe] if [position] is outside of this [TileComposite]'s
+     * [size].
      */
     fun getTileAt(position: Position): Maybe<Tile> {
         return if (size.containsPosition(position)) {

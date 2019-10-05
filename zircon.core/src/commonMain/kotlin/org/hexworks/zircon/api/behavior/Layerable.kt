@@ -3,13 +3,12 @@ package org.hexworks.zircon.api.behavior
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.DrawSurface
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.Layer
-import kotlin.jvm.Synchronized
 
 /**
  * Represents an object which can contain multiple [Layer]s
- * which are specialized [DrawSurface]s which can be displayed
+ * which are specialized [TileGraphics]s which can be displayed
  * above each other within the [Layerable] object. Indexing is done
  * from bottom to top, eg: calling [addLayer] with a [Layerable] which
  * has only one [Layer] (at index `0`) will add the new [Layer] at

@@ -586,7 +586,7 @@ we bundled into Zircon.
 [Container]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/component/Container.kt
 [BuiltInCP437TilesetResource]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/resource/BuiltInCP437TilesetResource.kt
 [Drawable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/behavior/Drawable.kt
-[DrawSurface]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/graphics/DrawSurface.kt
+[DrawSurface]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/graphics/TileGraphics.kt
 [Input]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/input/Input.kt
 [InputEmitter]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/behavior/InputEmitter.kt
 [Layerable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/behavior/Layerable.kt

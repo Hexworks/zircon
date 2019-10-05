@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.graphics
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
@@ -72,22 +71,6 @@ class SubTileGraphicsTest {
                 BLUE_RED_STYLE, YELLOW_GREEN_STYLE, YELLOW_GREEN_STYLE, YELLOW_GREEN_STYLE, BLUE_RED_STYLE,
                 BLUE_RED_STYLE, YELLOW_GREEN_STYLE, YELLOW_GREEN_STYLE, YELLOW_GREEN_STYLE, BLUE_RED_STYLE,
                 BLUE_RED_STYLE, BLUE_RED_STYLE, BLUE_RED_STYLE, BLUE_RED_STYLE, BLUE_RED_STYLE)
-    }
-
-    @Test
-    fun shouldProperlyCreateTileImage() {
-        target.apply { fill(FILLER_UNDERSCORE) }.applyStyle(YELLOW_GREEN_STYLE)
-
-        val result = target.toTileImage()
-
-        target.apply { fill(Tiles.empty()) }.applyStyle(BLUE_RED_STYLE)
-
-        val expectedTile = FILLER_UNDERSCORE.withStyle(YELLOW_GREEN_STYLE)
-
-        assertThat(result.tiles.values).containsExactly(
-                expectedTile, expectedTile, expectedTile,
-                expectedTile, expectedTile, expectedTile,
-                expectedTile, expectedTile, expectedTile)
     }
 
     @Test

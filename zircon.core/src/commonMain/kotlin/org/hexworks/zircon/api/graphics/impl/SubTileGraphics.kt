@@ -1,16 +1,15 @@
 package org.hexworks.zircon.api.graphics.impl
 
 import org.hexworks.zircon.api.Tiles
-import org.hexworks.zircon.api.data.DrawSurfaceState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.TileGraphicsState
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
-import kotlin.jvm.Synchronized
 
 /**
  * Represents a sub-section of a [TileGraphics]. This class can be used to
@@ -28,10 +27,10 @@ class SubTileGraphics(
     override val tiles: Map<Position, Tile>
         get() = state.tiles
 
-    override val state: DrawSurfaceState
+    override val state: TileGraphicsState
         get() {
             val (tiles, tileset) = backend.state
-            return DrawSurfaceState.create(
+            return TileGraphicsState.create(
                     tiles = tiles.filter {
                         rect.containsPosition(it.key)
                     }.map {
@@ -59,10 +58,6 @@ class SubTileGraphics(
 
     override fun setTileAt(position: Position, tile: Tile) = draw(tile, position)
 
-    override fun draw(tileComposite: TileComposite, drawPosition: Position, drawArea: Size) {
-        draw(tileComposite.tiles, drawPosition, drawArea)
-    }
-
     override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
         backend.draw(tileMap, drawPosition + offset, drawArea)
     }
@@ -71,13 +66,32 @@ class SubTileGraphics(
         backend.draw(tile, drawPosition + offset)
     }
 
+    override fun draw(tileComposite: TileComposite, drawPosition: Position, drawArea: Size) {
+        draw(tileComposite.tiles, drawPosition, drawArea)
+    }
+
+    override fun draw(tileComposite: TileComposite) {
+        draw(tileComposite.tiles, Position.defaultPosition(), size)
+    }
+
+    override fun draw(tileComposite: TileComposite, drawPosition: Position) {
+        draw(tileComposite.tiles, drawPosition, size)
+    }
+
+    override fun draw(tileMap: Map<Position, Tile>) {
+        draw(tileMap, Position.defaultPosition(), size)
+    }
+
+    override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position) {
+        draw(tileMap, drawPosition, size)
+    }
+
     override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
         if (size.containsPosition(position)) {
             backend.transformTileAt(position + offset, tileTransformer)
         }
     }
 
-    @Synchronized
     override fun fill(filler: Tile) {
         val (tiles, _, size) = state
         val result = mutableMapOf<Position, Tile>()
@@ -89,18 +103,22 @@ class SubTileGraphics(
         draw(result)
     }
 
-    @Synchronized
-    override fun transform(transformer: (Tile) -> Tile) {
+    override fun transform(transformer: (Position, Tile) -> Tile) {
         val result = mutableMapOf<Position, Tile>()
         state.tiles.forEach { (pos, tile) ->
-            result[pos] = transformer(tile)
+            result[pos] = transformer(pos, tile)
         }
         draw(result)
     }
 
-    @Synchronized
     override fun applyStyle(styleSet: StyleSet) {
-        transform { it.withStyle(styleSet) }
+        transform { _, tile -> tile.withStyle(styleSet) }
+    }
+
+    override fun clear() {
+        size.fetchPositions().forEach {
+            backend.draw(Tile.empty(), it + offset)
+        }
     }
 
     override fun toSubTileGraphics(rect: Rect) = backend.toSubTileGraphics(
@@ -108,18 +126,18 @@ class SubTileGraphics(
                     position = offset + rect.position,
                     size = size.min(rect.size)))
 
-    @Synchronized
-    override fun clear() {
-        size.fetchPositions().forEach {
-            backend.draw(Tile.empty(), it + offset)
-        }
-    }
+
+    // RESTRICTED OPERATIONS
 
     override fun createCopy() = restrictOperation()
 
     override fun toResized(newSize: Size) = restrictOperation()
 
     override fun toResized(newSize: Size, filler: Tile) = restrictOperation()
+
+    override fun toTileImage() = restrictOperation()
+
+    override fun toLayer(offset: Position) = restrictOperation()
 
     private fun restrictOperation(): Nothing {
         throw UnsupportedOperationException("This operation is not supported for sub tile graphics.")

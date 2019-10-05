@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.renderer
 
-import org.hexworks.zircon.api.data.DrawSurfaceState
+import org.hexworks.zircon.api.data.TileGraphicsState
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.grid.InternalTileGrid
@@ -34,7 +34,7 @@ class VirtualRenderer(private val tileGrid: InternalTileGrid) : Renderer {
         lastRender = now
     }
 
-    private fun renderTiles(state: DrawSurfaceState) {
+    private fun renderTiles(state: TileGraphicsState) {
         state.tiles.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
                 tileset.drawTile(tile, 'x', pos)

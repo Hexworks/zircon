@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.shape.LineFactory
 class DefaultBox(
         size: Size,
         styleSet: StyleSet,
-        boxType: BoxType,
+        override val boxType: BoxType,
         tileset: TilesetResource,
         private val backend: TileGraphics = TileGraphicsBuilder.newBuilder()
                 .withTileset(tileset)

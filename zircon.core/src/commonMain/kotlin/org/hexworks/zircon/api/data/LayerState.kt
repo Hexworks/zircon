@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.graphics.Layer
 /**
  * Holds the immutable contents of a [Layer] at a given moment in time.
  */
-interface LayerState : DrawSurfaceState {
+interface LayerState : TileGraphicsState {
 
     val id: Identifier
     val position: Position

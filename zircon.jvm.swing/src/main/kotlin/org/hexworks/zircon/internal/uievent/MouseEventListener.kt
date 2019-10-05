@@ -18,6 +18,7 @@ open class MouseEventListener(
 
     private var lastMouseLocation = Position.unknown()
 
+    @Synchronized
     fun drainEvents(): Iterable<Pair<org.hexworks.zircon.api.uievent.MouseEvent, UIEventPhase>> {
         return events.toList().also {
             events.clear()

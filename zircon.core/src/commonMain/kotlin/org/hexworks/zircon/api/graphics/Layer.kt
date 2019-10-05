@@ -16,7 +16,7 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  * A [Layer] can also be hidden (invisible) by using either
  * [hiddenProperty] or [isHidden].
  */
-interface Layer : TileGraphics, Identifiable, Movable {
+interface Layer : Identifiable, Movable, TileGraphics {
 
     override val state: LayerState
 
@@ -29,16 +29,16 @@ interface Layer : TileGraphics, Identifiable, Movable {
     override fun createCopy(): Layer
 
     /**
-     * Same as [DrawSurface.getTileAt] but will consider the given [position]
+     * Same as [TileGraphics.getTileAt] but will consider the given [position]
      * as an absolute position (the position is relative to the top left corner
-     * of the screen, not the top left corner of the [DrawSurface]).
+     * of the screen, not the top left corner of the [TileGraphics]).
      */
     fun getAbsoluteTileAt(position: Position): Maybe<Tile>
 
     /**
-     * Same as [DrawSurface.setTileAt] but will consider the given [position]
+     * Same as [TileGraphics.setTileAt] but will consider the given [position]
      * as an absolute position (the position is relative to the top left corner
-     * of the screen, not the top left corner of the [DrawSurface]).
+     * of the screen, not the top left corner of the [TileGraphics]).
      */
     fun setAbsoluteTileAt(position: Position, tile: Tile)
 

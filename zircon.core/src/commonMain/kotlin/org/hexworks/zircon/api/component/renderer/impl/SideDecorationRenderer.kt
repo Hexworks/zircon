@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.toCharacterTile
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 
 data class SideDecorationRenderer(
         private val leftSideCharacter: Char = '[',

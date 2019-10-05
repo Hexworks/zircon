@@ -61,11 +61,11 @@ object LayerTransformerExample {
                 .build().apply {
                     onSelectionChanged {
                         if (it.newValue) {
-                            transformingLayer.transform { tile ->
+                            transformingLayer.transform { _, tile ->
                                 tile.withAddedModifiers(HideModifier)
                             }
                         } else {
-                            transformingLayer.transform { tile ->
+                            transformingLayer.transform { _, tile ->
                                 tile.withRemovedModifiers(HideModifier)
                             }
                         }
