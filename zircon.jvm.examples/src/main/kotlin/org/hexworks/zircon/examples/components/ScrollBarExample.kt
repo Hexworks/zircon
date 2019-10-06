@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.extensions.*
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.uievent.ComponentEventType
 
-// TODO: 1 cell displacement problem
 object ScrollBarExample {
     private val theme = ColorThemes.arc()
     private val tileset = CP437TilesetResources.wanderlust16x16()
