@@ -17,7 +17,6 @@ import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.MouseEventType
 
-// TODO: slider is buggy
 object SliderExample {
 
     private val theme = ColorThemes.amigaOs()
