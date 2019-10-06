@@ -20,7 +20,7 @@ class DefaultVerticalSlider(componentMetadata: ComponentMetadata,
         numberOfSteps = numberOfSteps) {
 
     override fun getMousePosition(event: MouseEvent): Int {
-       return event.position.minus(relativePosition + contentOffset).y
+       return event.position.minus(absolutePosition + contentOffset).y
     }
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {
