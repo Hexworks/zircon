@@ -25,8 +25,6 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(initialVisibleSize: Size3D,
         initialVisibleSize = initialVisibleSize,
         initialActualSize = initialActualSize) {
 
-    private var overlays: PersistentMap<Int, PersistentList<Layer>> = PersistentMapFactory.create()
-
     override fun fetchBlocks(fetchMode: GameArea.BlockFetchMode): Iterable<Cell3D<T, B>> {
         return if (fetchMode == GameArea.BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocks()
@@ -89,7 +87,6 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(initialVisibleSize: Size3D,
      * A layer is a collection of [Tile]s at a given `z` level and `layerIndex`.
      */
     override fun fetchLayersAt(offset: Position3D, size: Size3D): Iterable<TileGraphics> {
-        val currentOverlays = overlays
         val offset2D = offset.to2DPosition()
         val window = size.to2DSize().fetchPositions()
         return (offset.z until size.zLength + offset.z).flatMap { z ->
@@ -104,34 +101,8 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(initialVisibleSize: Size3D,
                 images.add(builder.build())
             }
             // TODO: test overlay stuff
-            (currentOverlays[z] ?: listOf<Layer>()).forEach { overlay ->
-                val builder = TileGraphicsBuilder.newBuilder().withSize(size.to2DSize())
-                window.forEach { pos ->
-                    overlay.getTileAt(pos + offset2D).map { char ->
-                        builder.withTile(pos, char)
-                    }
-                }
-                images.add(builder.build())
-            }
             images
         }
-    }
-
-    override fun getOverlaysAt(level: Int): Iterable<Layer> {
-        return overlays[level] ?: listOf()
-    }
-
-    override fun pushOverlayAt(layer: Layer, level: Int) {
-        overlays = overlays.put(level, fetchLayersAt(level).add(layer))
-    }
-
-    override fun removeOverlay(layer: Layer, level: Int) {
-        overlays = overlays.put(level, fetchLayersAt(level).remove(layer))
-    }
-
-    private fun fetchLayersAt(level: Int): PersistentList<Layer> {
-        val layers = overlays[level] ?: PersistentListFactory.create()
-        return layers
     }
 
 }
