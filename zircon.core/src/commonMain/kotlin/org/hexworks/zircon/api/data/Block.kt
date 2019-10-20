@@ -78,7 +78,7 @@ interface Block<T : Tile> {
 
         fun <T : Tile> create(emptyTile: T): Block<T> {
             return BlockBuilder.newBuilder<T>()
-                    .addLayer(emptyTile)
+                    .withEmptyTile(emptyTile)
                     .build()
         }
     }

@@ -99,9 +99,8 @@ public class GameAreaScrollingWithLayers {
                         Sizes.from2DTo3D(actualGameAreaSize, totalLevels),
                         Blocks.newBuilder()
                                 .withEmptyTile(Tiles.empty())
-                                .addLayer(Tiles.empty())
-                                .build(),
-                        1);
+                                .withContent(Tiles.empty())
+                                .build());
 
         ComponentBuilder builder = Components.gameComponent()
                 .withGameArea(gameArea)
@@ -142,7 +141,7 @@ public class GameAreaScrollingWithLayers {
                 gameArea.setBlockAt(
                         pos,
                         Blocks.newBuilder()
-                                .addLayer(wall
+                                .withContent(wall
                                         .withBackgroundColor(wall.getBackgroundColor().darkenByPercent(currPercent))
                                         .withForegroundColor(wall.getForegroundColor().darkenByPercent(currPercent)))
                                 .withEmptyTile(Tiles.empty())

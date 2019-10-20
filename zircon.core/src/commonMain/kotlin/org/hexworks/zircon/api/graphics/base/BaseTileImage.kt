@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.graphics.base
 
+import kotlinx.collections.immutable.persistentMapOf
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -29,7 +30,7 @@ abstract class BaseTileImage : TileImage {
 
     override fun withNewSize(newSize: Size, filler: Tile): TileImage {
         if (newSize == size) return this
-        var newTiles = PersistentMapFactory.create<Position, Tile>()
+        var newTiles = persistentMapOf<Position, Tile>()
         tiles.filterKeys { newSize.containsPosition(it) }
                 .forEach { (pos, tile) ->
                     newTiles = newTiles.put(pos, tile)
@@ -95,7 +96,7 @@ abstract class BaseTileImage : TileImage {
     }
 
     override fun toSubImage(offset: Position, size: Size): TileImage {
-        var newTiles = PersistentMapFactory.create<Position, Tile>()
+        var newTiles = persistentMapOf<Position, Tile>()
         size.fetchPositions()
                 .map { it + offset }
                 .intersect(this.size.fetchPositions())

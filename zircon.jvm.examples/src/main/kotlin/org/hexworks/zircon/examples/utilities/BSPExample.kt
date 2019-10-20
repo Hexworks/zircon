@@ -2,26 +2,15 @@ package org.hexworks.zircon.examples.utilities
 
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.AppConfigs
-import org.hexworks.zircon.api.Blocks
-import org.hexworks.zircon.api.GameComponents
-import org.hexworks.zircon.api.Maybes
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.TileColors
-import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
-import org.hexworks.zircon.api.game.Cell3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.api.util.BSPTree
-import java.util.*
 
 // TODO: not working, fix game area
 object BSPExample {
@@ -70,7 +59,7 @@ object BSPExample {
                                 .withForegroundColor(TileColors.fromString("#999999"))
                                 .buildCharacterTile()
                         gameArea.setBlockAt(Position3D.create(x, y, 0), Blocks.newBuilder<Tile>()
-                                .addLayer(tile)
+                                .withContent(tile)
                                 .withEmptyTile(Tiles.empty())
                                 .build())
                     }
@@ -85,17 +74,13 @@ object BSPExample {
                          actualSize: Size3D,
                          private val layersPerBlock: Int,
                          override val defaultBlock: Block<Tile> = Blocks.newBuilder<Tile>()
-                                 .addLayer(Tiles.empty())
+                                 .withContent(Tiles.empty())
                                  .withEmptyTile(Tiles.empty())
                                  .build()) : BaseGameArea<Tile, Block<Tile>>(
             initialVisibleSize = visibleSize,
             initialActualSize = actualSize) {
 
         private val blocks = java.util.TreeMap<Position3D, Block<Tile>>()
-
-        override fun layersPerBlock(): Int {
-            return layersPerBlock
-        }
 
         override fun hasBlockAt(position: Position3D): Boolean {
             return blocks.containsKey(position)
@@ -109,17 +94,13 @@ object BSPExample {
             return blocks.getOrDefault(position, defaultBlock)
         }
 
-        override fun fetchBlocks(): Iterable<Cell3D<Tile, Block<Tile>>> {
-            return ArrayList(blocks.map { Cell3D.create(it.key, it.value) })
+        override fun fetchBlocks(): Map<Position3D, Block<Tile>> {
+            return blocks.toMap()
         }
 
         override fun setBlockAt(position: Position3D, block: Block<Tile>) {
-            if (!actualSize.containsPosition(position)) {
-                throw IllegalArgumentException("The supplied position ($position) is not within the size (${actualSize}) of this game area.")
-            }
-            val layerCount = block.layers.size
-            if (layerCount != layersPerBlock()) {
-                throw IllegalArgumentException("The number of layers per block for this game area is $layersPerBlock. The supplied layers have a size of $layerCount.")
+            require(actualSize.containsPosition(position)) {
+                "The supplied position ($position) is not within the size (${actualSize}) of this game area."
             }
             blocks[position] = block
         }

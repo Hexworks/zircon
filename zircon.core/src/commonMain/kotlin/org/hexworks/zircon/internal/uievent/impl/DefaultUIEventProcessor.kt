@@ -1,32 +1,19 @@
 package org.hexworks.zircon.internal.uievent.impl
 
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentMapOf
 import org.hexworks.cobalt.events.api.CancelState
 import org.hexworks.cobalt.events.api.NotCancelled
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.uievent.ComponentEvent
-import org.hexworks.zircon.api.uievent.ComponentEventSource
-import org.hexworks.zircon.api.uievent.ComponentEventType
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.PreventDefault
-import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.api.uievent.StopPropagation
-import org.hexworks.zircon.api.uievent.UIEvent
-import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
-import org.hexworks.zircon.api.uievent.UIEventSource
-import org.hexworks.zircon.api.uievent.UIEventType
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
-import org.hexworks.zircon.internal.util.PersistentList
 
 class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventSource {
 
     private val logger = LoggerFactory.getLogger(this::class)
-    private var listeners = PersistentMapFactory.create<UIEventType, PersistentList<InputEventSubscription>>()
+    private var listeners = persistentMapOf<UIEventType, PersistentList<InputEventSubscription>>()
     private var closed = false
 
     override fun close() {
@@ -125,7 +112,7 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
         val subscription = InputEventSubscription(
                 eventType = eventType,
                 listener = listener)
-        val subscriptions = listeners.getOrElse(eventType) { PersistentListFactory.create() }
+        val subscriptions = listeners.getOrElse(eventType) { persistentListOf() }
         listeners = listeners.put(eventType, subscriptions.add(subscription))
         return subscription
     }

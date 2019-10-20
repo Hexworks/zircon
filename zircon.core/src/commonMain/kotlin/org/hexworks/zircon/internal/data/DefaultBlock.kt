@@ -5,4 +5,5 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.base.BaseBlock
 
 class DefaultBlock<T : Tile>(
-        initialTiles: Map<BlockTileType, T>) : BaseBlock<T>(initialTiles)
+        emptyTile: T,
+        initialTiles: Map<BlockTileType, T>) : BaseBlock<T>(emptyTile, initialTiles)

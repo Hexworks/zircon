@@ -1,8 +1,7 @@
 package org.hexworks.zircon.internal.behavior
 
-
+import kotlinx.collections.immutable.PersistentList
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.internal.util.PersistentList
 
 interface Observable<T : Any> {
 

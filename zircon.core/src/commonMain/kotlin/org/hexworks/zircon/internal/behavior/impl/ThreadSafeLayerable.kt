@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.behavior.impl
 
+import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.data.LayerState
@@ -13,7 +14,7 @@ class ThreadSafeLayerable(initialSize: Size)
 
     override val size: Size = initialSize
 
-    override var layers = PersistentListFactory.create<Layer>()
+    override var layers = persistentListOf<Layer>()
 
     override val layerStates: Iterable<LayerState>
         @Synchronized

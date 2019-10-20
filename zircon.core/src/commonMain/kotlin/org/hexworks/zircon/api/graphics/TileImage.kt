@@ -1,11 +1,11 @@
 package org.hexworks.zircon.api.graphics
 
+import kotlinx.collections.immutable.PersistentMap
 import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.util.PersistentMap
 
 /**
  * An immutable image built from [Tile]s. It is completely in memory but it can be drawn onto

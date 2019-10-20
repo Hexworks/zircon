@@ -43,11 +43,13 @@ data class Size3D private constructor(val xLength: Int,
      * - from furthest to closest (y axis),
      * - from left to right (x axis)
      */
-    fun fetchPositions(): Iterable<Position3D> {
-        return (0 until zLength).flatMap { z ->
-            (0 until yLength).flatMap { y ->
-                (0 until xLength).map { x ->
-                    Position3D.create(x, y, z)
+    fun fetchPositions(): Sequence<Position3D> {
+        return sequence {
+            (0 until zLength).flatMap { z ->
+                (0 until yLength).flatMap { y ->
+                    (0 until xLength).map { x ->
+                        yield(Position3D.create(x, y, z))
+                    }
                 }
             }
         }

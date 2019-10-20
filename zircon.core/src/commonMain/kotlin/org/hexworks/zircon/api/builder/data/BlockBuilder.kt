@@ -4,12 +4,7 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType
-import org.hexworks.zircon.api.data.BlockTileType.BACK
-import org.hexworks.zircon.api.data.BlockTileType.BOTTOM
-import org.hexworks.zircon.api.data.BlockTileType.FRONT
-import org.hexworks.zircon.api.data.BlockTileType.LEFT
-import org.hexworks.zircon.api.data.BlockTileType.RIGHT
-import org.hexworks.zircon.api.data.BlockTileType.TOP
+import org.hexworks.zircon.api.data.BlockTileType.*
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.data.DefaultBlock
 
@@ -30,24 +25,12 @@ data class BlockBuilder<T : Tile>(
         private var back: Maybe<T> = Maybe.empty(),
         private var left: Maybe<T> = Maybe.empty(),
         private var right: Maybe<T> = Maybe.empty(),
-        private var layers: MutableList<T> = mutableListOf(),
-        private var layerCount: Int = 1) : Builder<Block<T>> {
+        private var content: Maybe<T> = Maybe.empty()) : Builder<Block<T>> {
 
     private var currLayerIdx = 0
 
     fun withEmptyTile(tile: T) = also {
         this.emptyTile = Maybe.of(tile)
-    }
-
-    fun withSide(blockTileType: BlockTileType, tile: T) = also {
-        when (blockTileType) {
-            TOP -> withTop(tile)
-            BOTTOM -> withBottom(tile)
-            LEFT -> withLeft(tile)
-            RIGHT -> withRight(tile)
-            FRONT -> withFront(tile)
-            BACK -> withBack(tile)
-        }
     }
 
     fun withTop(top: T) = also {
@@ -74,46 +57,24 @@ data class BlockBuilder<T : Tile>(
         this.right = Maybe.of(right)
     }
 
-    fun addLayer(layer: T) = also {
-        require(currLayerIdx < layerCount) {
-            "Can't add more layers to this Block, it has already reached maximum."
-        }
-        this.layers.add(layer)
-        currLayerIdx++
-    }
-
-    fun withLayers(layers: List<T>) = also {
-        layerCount = layers.size
-        currLayerIdx = layerCount - 1
-        this.layers.clear()
-        this.layers.addAll(layers)
-    }
-
-    fun withLayers(vararg layers: T) = also {
-        withLayers(layers.toList())
-    }
-
-    fun withLayerCount(layerCount: Int) = also {
-        this.layerCount = layerCount
+    fun withContent(content: T) = also {
+        this.content = Maybe.of(content)
     }
 
     override fun build(): Block<T> {
-        require(layers.size <= layerCount) {
-            "Can't have more layers in a Block than the expected layer count."
-        }
         require(emptyTile.isPresent) {
-            "No empty tile supplied"
+            "No empty tile supplied."
         }
-        val sides = mutableMapOf<BlockTileType, T>()
-        listOf(TOP to top, BOTTOM to bottom, LEFT to left, RIGHT to right, FRONT to front, BACK to back).forEach { pair ->
-            pair.second.map {
-                sides[pair.first] = it
-            }
-        }
+        val initialTiles = mutableMapOf<BlockTileType, T>()
+        listOf(TOP to top, BOTTOM to bottom, LEFT to left, RIGHT to right, FRONT to front, BACK to back)
+                .map { (type, maybeTile) ->
+                    maybeTile.map {
+                        initialTiles[type] = it
+                    }
+                }
         return DefaultBlock(
-                layers = layers.toMutableList(),
-                sides = sides.toMutableMap(),
-                emptyTile = emptyTile.get())
+                emptyTile = emptyTile.get(),
+                initialTiles = initialTiles)
     }
 
     override fun createCopy() = copy()

@@ -1,11 +1,10 @@
 package org.hexworks.zircon.internal.behavior.impl
 
-
+import kotlinx.collections.immutable.PersistentList
 import org.hexworks.cobalt.events.api.CancelState
 import org.hexworks.cobalt.events.api.NotCancelled
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.internal.behavior.InternalSubscription
-import org.hexworks.zircon.internal.util.PersistentList
 
 class DefaultSubscription<T : Any>(
         val listener: (T) -> Unit,
