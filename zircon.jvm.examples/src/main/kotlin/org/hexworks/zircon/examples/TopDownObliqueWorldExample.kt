@@ -1,19 +1,6 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.AppConfigs
-import org.hexworks.zircon.api.Blocks
-import org.hexworks.zircon.api.Borders
-import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.GameComponents
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Shapes
-import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.TileColors
-import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
@@ -24,12 +11,7 @@ import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
-import org.hexworks.zircon.api.uievent.KeyCode.DOWN
-import org.hexworks.zircon.api.uievent.KeyCode.LEFT
-import org.hexworks.zircon.api.uievent.KeyCode.PAGE_DOWN
-import org.hexworks.zircon.api.uievent.KeyCode.PAGE_UP
-import org.hexworks.zircon.api.uievent.KeyCode.RIGHT
-import org.hexworks.zircon.api.uievent.KeyCode.UP
+import org.hexworks.zircon.api.uievent.KeyCode.*
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.Processed
 import kotlin.random.Random
@@ -90,12 +72,12 @@ object TopDownObliqueWorldExample {
             .withForegroundColor(BROWN)
 
     private val BLOCK_BASE = Blocks.newBuilder<Tile>()
-            .withLayers(EMPTY)
+            .withContent(EMPTY)
             .withEmptyTile(EMPTY)
             .build()
 
     private fun roof() = Blocks.newBuilder<Tile>()
-            .withLayers(EMPTY)
+            .withContent(EMPTY)
             .withTop(ROOF_TOP)
             .withFront(ROOF_FRONT)
             .withEmptyTile(EMPTY)
@@ -117,7 +99,7 @@ object TopDownObliqueWorldExample {
 
     private fun grass() = Blocks.newBuilder<Tile>()
             .withEmptyTile(Tiles.empty())
-            .withLayers(Tiles.empty())
+            .withContent(Tiles.empty())
             .withBottom(GRASS_TILES[random.nextInt(GRASS_TILES.size)].let {
                 it.withForegroundColor(it.foregroundColor.darkenByPercent(random.nextDouble(.1)))
                         .withBackgroundColor(it.backgroundColor.lightenByPercent(random.nextDouble(.1)))
@@ -126,23 +108,23 @@ object TopDownObliqueWorldExample {
 
     private val EMPTY_BLOCK = Blocks.newBuilder<Tile>()
             .withEmptyTile(EMPTY)
-            .withLayers(EMPTY)
+            .withContent(EMPTY)
             .build()
 
     private val FLOOR_BLOCK = Blocks.newBuilder<Tile>()
             .withEmptyTile(Tiles.empty())
-            .withLayers(EMPTY)
+            .withContent(EMPTY)
             .withBottom(FLOOR)
             .build()
 
     private val GLASS_BLOCK_FRONT = Blocks.newBuilder<Tile>()
-            .withLayers(EMPTY)
+            .withContent(EMPTY)
             .withFront(GLASS)
             .withEmptyTile(EMPTY)
             .build()
 
     private val GLASS_BLOCK_BACK = Blocks.newBuilder<Tile>()
-            .withLayers(EMPTY)
+            .withContent(EMPTY)
             .withBack(GLASS)
             .withEmptyTile(EMPTY)
             .build()
@@ -158,7 +140,7 @@ object TopDownObliqueWorldExample {
             .withForegroundColor(GREY.lightenByPercent(random.nextDouble(.25)))
 
     private fun wallFront() = Blocks.newBuilder<Tile>()
-            .withLayers(EMPTY)
+            .withContent(EMPTY)
             .withTop(WALL_TOP)
             .withFront(wallOutside())
             .withBack(wallInside())

@@ -18,8 +18,7 @@ class DefaultBlockTest {
                 .withTop(top)
                 .build()
 
-        assertThat(target.fetchSide(BlockTileType.TOP))
-                .isEqualTo(top)
+        assertThat(target.top).isEqualTo(top)
     }
 
     @Test

@@ -25,10 +25,6 @@ import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import kotlin.jvm.Synchronized
 import kotlin.math.min
 
-/**
- * Note that this class is in **BETA**!
- * It's API is subject to change!
- */
 class DefaultGameComponent<T : Tile, B : Block<T>>(
         componentMetadata: ComponentMetadata,
         private val gameArea: GameArea<T, B>,
@@ -68,67 +64,67 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
 
         val result = mutableListOf<Layer>()
 
-        if (projectionMode == ProjectionMode.TOP_DOWN) {
-            (fromZ until min(fromZ + visibleLevelCount, height)).forEach { levelIdx ->
-                val segment = gameArea.fetchLayersAt(
-                        offset = Position3D.from2DPosition(gameArea.visibleOffset.to2DPosition(), levelIdx),
-                        size = Size3D.from2DSize(size, 1))
-                segment.forEach {
-                    result.add(LayerBuilder.newBuilder()
-                            .withTileGraphics(it)
-                            // TODO: regression test this: position vs absolutePosition
-                            .withOffset(relativePosition)
-                            .build())
-                }
-            }
-        } else {
-            val fixedLayerCount = 4
-            val customLayersPerBlock = gameArea.layersPerBlock()
-            val totalLayerCount = fixedLayerCount + customLayersPerBlock
-            val builders = (0 until totalLayerCount * height).map {
-                TileGraphicsBuilder.newBuilder().withSize(screenSize)
-            }
-            val (fromX, fromY) = gameArea.visibleOffset.to2DPosition()
-            val toX = fromX + size.width
-            val toY = fromY + size.height
-            (fromZ until min(fromZ + visibleLevelCount, height)).forEach { z ->
-                (fromY until toY).forEach { screenY ->
-                    (fromX until toX).forEach { x ->
-                        val y = screenY + z // we need to add `z` to `y` because of isometric
-                        val maybeBlock: Maybe<out Block<T>> = gameArea.fetchBlockAt(Position3D.create(x, y, z))
-                        val maybeNext = gameArea.fetchBlockAt(Position3D.create(x, y + 1, z))
-                        val screenPos = Position.create(x, screenY)
-                        val bottomIdx = z * totalLayerCount
-                        val frondIdx = bottomIdx + customLayersPerBlock + 1
-                        val backIdx = frondIdx + 1
-                        val topIdx = backIdx + 1
-                        maybeBlock.ifPresent { block ->
-                            val bot = block.bottom
-                            val layers = block.layers
-                            val front = block.front
-
-                            builders[bottomIdx].withTile(screenPos, bot)
-                            layers.forEachIndexed { idx, layer ->
-                                builders[bottomIdx + idx + 1].withTile(screenPos, layer)
-                            }
-                            builders[frondIdx].withTile(screenPos, front)
-                        }
-                        maybeNext.ifPresent { block ->
-                            val back = block.back
-                            val top = block.top
-                            builders[backIdx].withTile(screenPos, back)
-                            builders[topIdx].withTile(screenPos, top)
-                        }
-                    }
-                }
-            }
-            builders.forEach {
-                result.add(LayerBuilder.newBuilder()
-                        .withTileGraphics(it.build())
-                        .withOffset(relativePosition)
-                        .build())
-            }
-        }
+//        if (projectionMode == ProjectionMode.TOP_DOWN) {
+//            (fromZ until min(fromZ + visibleLevelCount, height)).forEach { levelIdx ->
+//                val segment = gameArea.fetchLayersAt(
+//                        offset = Position3D.from2DPosition(gameArea.visibleOffset.to2DPosition(), levelIdx),
+//                        size = Size3D.from2DSize(size, 1))
+//                segment.forEach {
+//                    result.add(LayerBuilder.newBuilder()
+//                            .withTileGraphics(it)
+//                            // TODO: regression test this: position vs absolutePosition
+//                            .withOffset(relativePosition)
+//                            .build())
+//                }
+//            }
+//        } else {
+//            val fixedLayerCount = 4
+//            val customLayersPerBlock = gameArea.layersPerBlock()
+//            val totalLayerCount = fixedLayerCount + customLayersPerBlock
+//            val builders = (0 until totalLayerCount * height).map {
+//                TileGraphicsBuilder.newBuilder().withSize(screenSize)
+//            }
+//            val (fromX, fromY) = gameArea.visibleOffset.to2DPosition()
+//            val toX = fromX + size.width
+//            val toY = fromY + size.height
+//            (fromZ until min(fromZ + visibleLevelCount, height)).forEach { z ->
+//                (fromY until toY).forEach { screenY ->
+//                    (fromX until toX).forEach { x ->
+//                        val y = screenY + z // we need to add `z` to `y` because of isometric
+//                        val maybeBlock: Maybe<out Block<T>> = gameArea.fetchBlockAt(Position3D.create(x, y, z))
+//                        val maybeNext = gameArea.fetchBlockAt(Position3D.create(x, y + 1, z))
+//                        val screenPos = Position.create(x, screenY)
+//                        val bottomIdx = z * totalLayerCount
+//                        val frondIdx = bottomIdx + customLayersPerBlock + 1
+//                        val backIdx = frondIdx + 1
+//                        val topIdx = backIdx + 1
+//                        maybeBlock.ifPresent { block ->
+//                            val bot = block.bottom
+//                            val layers = block.layers
+//                            val front = block.front
+//
+//                            builders[bottomIdx].withTile(screenPos, bot)
+//                            layers.forEachIndexed { idx, layer ->
+//                                builders[bottomIdx + idx + 1].withTile(screenPos, layer)
+//                            }
+//                            builders[frondIdx].withTile(screenPos, front)
+//                        }
+//                        maybeNext.ifPresent { block ->
+//                            val back = block.back
+//                            val top = block.top
+//                            builders[backIdx].withTile(screenPos, back)
+//                            builders[topIdx].withTile(screenPos, top)
+//                        }
+//                    }
+//                }
+//            }
+//            builders.forEach {
+//                result.add(LayerBuilder.newBuilder()
+//                        .withTileGraphics(it.build())
+//                        .withOffset(relativePosition)
+//                        .build())
+//            }
+//        }
         // TODO: fix
         return result.map { it.state }
     }

@@ -48,7 +48,7 @@ class Size3DTest {
     fun shouldFetchPositionsInProperOrder() {
         val size = Size3D.create(2, 2, 2)
 
-        assertThat(size.fetchPositions()).containsExactly(
+        assertThat(size.fetchPositions().toList()).containsExactly(
                 Position3D.create(0, 0, 0),
                 Position3D.create(1, 0, 0),
                 Position3D.create(0, 1, 0),

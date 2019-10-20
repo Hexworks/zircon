@@ -62,7 +62,6 @@ data class GameAreaBuilder<T : Tile, B : Block<T>>(
             "No default block supplied."
         }
         return InMemoryGameArea(
-                layersPerBlock = layersPerBlock,
                 initialVisibleSize = visibleSize,
                 initialActualSize = actualSize,
                 defaultBlock = defaultBlock.get())

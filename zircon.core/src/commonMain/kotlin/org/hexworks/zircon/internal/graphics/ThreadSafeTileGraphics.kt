@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.graphics
 
+import kotlinx.collections.immutable.persistentMapOf
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -23,7 +24,7 @@ class ThreadSafeTileGraphics(
         initialTiles: Map<Position, Tile> = mapOf())
     : BaseTileGraphics(initialSize = initialSize, initialTileset = initialTileset) {
 
-    override var tiles = PersistentMapFactory.create<Position, Tile>()
+    override var tiles = persistentMapOf<Position, Tile>()
             .putAll(initialTiles)
         private set
 
