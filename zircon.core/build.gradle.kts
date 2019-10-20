@@ -1,8 +1,17 @@
+import Libs.kotlinxCollectionsImmutable
+
 plugins {
     kotlinMpp
 }
 
 kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                api(kotlinxCollectionsImmutable)
+            }
+        }
+    }
     jvm {
         jvmTarget(JavaVersion.VERSION_1_8)
         withJava()
@@ -27,7 +36,6 @@ kotlin {
             jvmMainApi(kotlinStdLibJdk8)
             jvmMainApi(kotlinReflect)
             jvmMainApi(kotlinxCoroutines)
-            jvmMainApi(kotlinxCollectionsImmutable)
             jvmMainApi(caffeine)
             jvmMainApi(snakeYaml)
             jvmMainApi(slf4jApi)

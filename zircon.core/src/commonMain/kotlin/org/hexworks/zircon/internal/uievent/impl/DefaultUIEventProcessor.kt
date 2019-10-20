@@ -22,8 +22,6 @@ import org.hexworks.zircon.api.uievent.UIEventSource
 import org.hexworks.zircon.api.uievent.UIEventType
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.util.PersistentList
-import org.hexworks.zircon.platform.factory.PersistentListFactory
-import org.hexworks.zircon.platform.factory.PersistentMapFactory
 
 class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventSource {
 

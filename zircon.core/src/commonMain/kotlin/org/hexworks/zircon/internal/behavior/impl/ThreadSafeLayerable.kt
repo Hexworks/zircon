@@ -5,7 +5,6 @@ import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.platform.factory.PersistentListFactory
 import kotlin.jvm.Synchronized
 
 // TODO: test this thoroughly

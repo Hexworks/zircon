@@ -3,13 +3,13 @@ package org.hexworks.zircon.api.builder.data
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Block
-import org.hexworks.zircon.api.data.BlockSide
-import org.hexworks.zircon.api.data.BlockSide.BACK
-import org.hexworks.zircon.api.data.BlockSide.BOTTOM
-import org.hexworks.zircon.api.data.BlockSide.FRONT
-import org.hexworks.zircon.api.data.BlockSide.LEFT
-import org.hexworks.zircon.api.data.BlockSide.RIGHT
-import org.hexworks.zircon.api.data.BlockSide.TOP
+import org.hexworks.zircon.api.data.BlockTileType
+import org.hexworks.zircon.api.data.BlockTileType.BACK
+import org.hexworks.zircon.api.data.BlockTileType.BOTTOM
+import org.hexworks.zircon.api.data.BlockTileType.FRONT
+import org.hexworks.zircon.api.data.BlockTileType.LEFT
+import org.hexworks.zircon.api.data.BlockTileType.RIGHT
+import org.hexworks.zircon.api.data.BlockTileType.TOP
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.data.DefaultBlock
 
@@ -39,8 +39,8 @@ data class BlockBuilder<T : Tile>(
         this.emptyTile = Maybe.of(tile)
     }
 
-    fun withSide(blockSide: BlockSide, tile: T) = also {
-        when (blockSide) {
+    fun withSide(blockTileType: BlockTileType, tile: T) = also {
+        when (blockTileType) {
             TOP -> withTop(tile)
             BOTTOM -> withBottom(tile)
             LEFT -> withLeft(tile)
@@ -104,7 +104,7 @@ data class BlockBuilder<T : Tile>(
         require(emptyTile.isPresent) {
             "No empty tile supplied"
         }
-        val sides = mutableMapOf<BlockSide, T>()
+        val sides = mutableMapOf<BlockTileType, T>()
         listOf(TOP to top, BOTTOM to bottom, LEFT to left, RIGHT to right, FRONT to front, BACK to back).forEach { pair ->
             pair.second.map {
                 sides[pair.first] = it

@@ -1,7 +1,7 @@
 object Versions {
     const val kotlinVersion = "1.3.50"
     const val kotlinxCoroutinesVersion = "1.3.2"
-    const val kotlinxCollectionsImmutableVersion = "0.2"
+    const val kotlinxCollectionsImmutableVersion = "0.3"
 
     const val cobaltVersion = "2019.1.5-PREVIEW"
 

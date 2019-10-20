@@ -1,56 +1,70 @@
 package org.hexworks.zircon.api.data.base
 
+import kotlinx.collections.immutable.PersistentMap
+import kotlinx.collections.immutable.toPersistentMap
 import org.hexworks.zircon.api.data.Block
-import org.hexworks.zircon.api.data.BlockSide
-import org.hexworks.zircon.api.data.BlockSide.*
+import org.hexworks.zircon.api.data.BlockTileType
+import org.hexworks.zircon.api.data.BlockTileType.BACK
+import org.hexworks.zircon.api.data.BlockTileType.BOTTOM
+import org.hexworks.zircon.api.data.BlockTileType.CONTENT
+import org.hexworks.zircon.api.data.BlockTileType.FRONT
+import org.hexworks.zircon.api.data.BlockTileType.LEFT
+import org.hexworks.zircon.api.data.BlockTileType.RIGHT
+import org.hexworks.zircon.api.data.BlockTileType.TOP
 import org.hexworks.zircon.api.data.Tile
 
 /**
  * Base class which implements common functionality from
  * [Block].
  */
-abstract class BaseBlock<T : Tile> : Block<T> {
+abstract class BaseBlock<T : Tile>(
+        initialTiles: Map<BlockTileType, T>) : Block<T> {
+
+    private var tiles: PersistentMap<BlockTileType, T> = initialTiles.toPersistentMap()
 
     override var top: T
-        get() = fetchSide(TOP)
+        get() = tiles.getValue(TOP)
         set(value) {
-            setSide(TOP, value)
+            tiles = tiles.put(TOP, value)
         }
 
     override var bottom: T
-        get() = fetchSide(BOTTOM)
+        get() = tiles.getValue(BOTTOM)
         set(value) {
-            setSide(BOTTOM, value)
+            tiles = tiles.put(BOTTOM, value)
         }
 
     override var front: T
-        get() = fetchSide(FRONT)
+        get() = tiles.getValue(FRONT)
         set(value) {
-            setSide(FRONT, value)
+            tiles = tiles.put(FRONT, value)
         }
 
     override var back: T
-        get() = fetchSide(BACK)
+        get() = tiles.getValue(BACK)
         set(value) {
-            setSide(BACK, value)
+            tiles = tiles.put(BACK, value)
         }
 
     override var left: T
-        get() = fetchSide(LEFT)
+        get() = tiles.getValue(LEFT)
         set(value) {
-            setSide(LEFT, value)
+            tiles = tiles.put(LEFT, value)
         }
 
     override var right: T
-        get() = fetchSide(RIGHT)
+        get() = tiles.getValue(RIGHT)
         set(value) {
-            setSide(RIGHT, value)
+            tiles = tiles.put(RIGHT, value)
         }
 
-    override fun isEmpty(): Boolean {
-        return layers.isEmpty() and
-                listOf(top, bottom, front, back, left, right).all { it.isEmpty }
-    }
+    override var content: T
+        get() = tiles.getValue(CONTENT)
+        set(value) {
+            tiles = tiles.put(CONTENT, value)
+        }
+
+    override fun isEmpty() = tiles.values.all { it.isEmpty }
 
     override fun withFlippedAroundX(): Block<T> {
         return createCopy().apply {
@@ -74,11 +88,6 @@ abstract class BaseBlock<T : Tile> : Block<T> {
             this.top = bottom
             bottom = temp
         }
-    }
-
-    override fun setSide(side: BlockSide, tile: T) {
-        throw UnsupportedOperationException(
-                "This implementation of Block doesn't support setting a side. Consider extending BlockBase and implementing it.")
     }
 
     override fun createCopy(): Block<T> {

@@ -12,24 +12,16 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.extensions.getIfPresent
 
 /**
- * A [GameArea] represents the 3D space in which the entities of a
- * game take place. The space is composed of [Block]s which are just
- * cubes (like in Minecraft) which have 6 sides (all optional), and
- * layers within the cube itself (optional as well).
+ * A [GameArea] represents the 3D space in which the entities of a game take place.
+ * The space is composed of [Block]s which are just cubes (like in Minecraft) which
+ * have 6 sides (all optional), and a content tile within the cube itself (optional as well).
  */
 interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
 
     /**
-     * The default block which is used in this [GameArea]
+     * The default block which is used in this [GameArea].
      */
     val defaultBlock: B
-
-    /**
-     * Tells how many layers are in each [Block].
-     * **Note that** front/back/top/bottom characters are not considered
-     * a layer!
-     */
-    fun layersPerBlock(): Int
 
     /**
      * Tells whether there is an actual [Block] at the given `position`.
