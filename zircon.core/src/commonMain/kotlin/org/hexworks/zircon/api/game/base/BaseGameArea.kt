@@ -10,14 +10,10 @@ import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.Cell3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameArea.Companion.fetchPositionsWithOffset
-import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable3D
-import org.hexworks.zircon.internal.extensions.getIfPresent
 import org.hexworks.zircon.internal.util.PersistentList
 import org.hexworks.zircon.internal.util.PersistentMap
-import org.hexworks.zircon.platform.factory.PersistentListFactory
-import org.hexworks.zircon.platform.factory.PersistentMapFactory
 
 abstract class BaseGameArea<T : Tile, B : Block<T>>(initialVisibleSize: Size3D,
                                                     initialActualSize: Size3D)

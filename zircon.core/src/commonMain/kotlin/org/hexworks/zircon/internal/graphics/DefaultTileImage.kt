@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.base.BaseTileImage
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.util.PersistentMap
-import org.hexworks.zircon.platform.factory.PersistentMapFactory
 
 class DefaultTileImage(
         override val size: Size,

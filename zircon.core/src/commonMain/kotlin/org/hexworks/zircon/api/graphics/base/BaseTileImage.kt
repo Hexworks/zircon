@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
-import org.hexworks.zircon.platform.factory.PersistentMapFactory
 import kotlin.math.max
 
 abstract class BaseTileImage : TileImage {

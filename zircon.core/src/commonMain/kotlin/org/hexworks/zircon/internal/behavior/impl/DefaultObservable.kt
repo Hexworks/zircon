@@ -4,7 +4,6 @@ package org.hexworks.zircon.internal.behavior.impl
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.internal.behavior.InternalSubscription
 import org.hexworks.zircon.internal.behavior.Observable
-import org.hexworks.zircon.platform.factory.PersistentListFactory
 
 class DefaultObservable<T : Any> : Observable<T> {
 

@@ -9,7 +9,6 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.data.DefaultTileGraphicsState
-import org.hexworks.zircon.platform.factory.PersistentMapFactory
 import kotlin.jvm.Synchronized
 
 /**

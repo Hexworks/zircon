@@ -1,16 +1,14 @@
 package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.builder.data.BlockBuilder
-import org.hexworks.zircon.api.data.impl.Position3D
 
 /**
- * Represents a 3D block at a given [Position3D] which
- * consists of layers of [Tile]s.
- * The layers are ordered from bottom to top.
+ * A [Block] is a voxel which consists of [Tile]s representing
+ * each side, and the internal [content] of the [Block].
  */
 interface Block<T : Tile> {
 
-    val layers: MutableList<T>
+    var content: T
 
     var top: T
 
@@ -24,24 +22,26 @@ interface Block<T : Tile> {
 
     var right: T
 
+    operator fun component1() = content
+    operator fun component2() = top
+    operator fun component3() = bottom
+    operator fun component4() = front
+    operator fun component5() = back
+    operator fun component6() = left
+    operator fun component7() = right
+
     fun createCopy(): Block<T>
 
     /**
-     * Returns one of the [BlockSide]s of this [Block].
-     */
-    fun fetchSide(side: BlockSide): T
-
-    /**
-     * Sets one of the [BlockSide]s of this [Block].
-     */
-    fun setSide(side: BlockSide, tile: T)
-
-    /**
      * Tells whether this [Block] is empty (all of its sides are [Tile.empty],
-     * and it has no `layers`).
+     * and its content is also [Tile.empty]).
      */
     fun isEmpty(): Boolean
 
+    /**
+     * Returns a new [Block] which is a rotation of this [Block]
+     * around the *x* axis.
+     */
     fun withFlippedAroundX(): Block<T> {
         return createCopy().apply {
             val temp = right
@@ -50,6 +50,10 @@ interface Block<T : Tile> {
         }
     }
 
+    /**
+     * Returns a new [Block] which is a rotation of this [Block]
+     * around the *y* axis.
+     */
     fun withFlippedAroundY(): Block<T> {
         return createCopy().apply {
             val temp = front
@@ -58,6 +62,10 @@ interface Block<T : Tile> {
         }
     }
 
+    /**
+     * Returns a new [Block] which is a rotation of this [Block]
+     * around the *z* axis.
+     */
     fun withFlippedAroundZ(): Block<T> {
         return createCopy().apply {
             val temp = top
@@ -67,7 +75,6 @@ interface Block<T : Tile> {
     }
 
     companion object {
-
 
         fun <T : Tile> create(emptyTile: T): Block<T> {
             return BlockBuilder.newBuilder<T>()
