@@ -167,14 +167,12 @@ object TopDownObliqueWorldExample {
         val ga = GameComponents.newGameAreaBuilder<Tile, Block<Tile>>()
                 .withActualSize(WORLD_SIZE)
                 .withVisibleSize(Sizes.from2DTo3D(panel.contentSize, VISIBLE_Z_LEVELS))
-                .withDefaultBlock(EMPTY_BLOCK)
-                .withLayersPerBlock(1)
+                .withProjectionMode(ProjectionMode.TOP_DOWN_OBLIQUE)
                 .build()
 
         val gc = GameComponents.newGameComponentBuilder<Tile, Block<Tile>>()
                 .withGameArea(ga)
-                .withVisibleSize(ga.visibleSize)
-                .withProjectionMode(ProjectionMode.TOP_DOWN_OBLIQUE)
+                .withSize(ga.visibleSize.to2DSize())
                 .build()
 
         panel.addComponent(gc)

@@ -17,12 +17,7 @@ class DefaultScrollable3D(initialVisibleSize: Size3D,
 
     override val visibleSize = initialVisibleSize
 
-    override var actualSize = initialActualSize
-        set(value) {
-            checkSizes(value)
-            field = value
-            scrollable2D.actualSize = value.to2DSize()
-        }
+    override val actualSize = initialActualSize
 
     init {
         checkSizes(initialActualSize)

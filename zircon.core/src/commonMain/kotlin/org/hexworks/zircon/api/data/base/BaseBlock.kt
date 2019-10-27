@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.data.base
 
 import kotlinx.collections.immutable.PersistentMap
-import kotlinx.collections.immutable.toPersistentMap
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType
 import org.hexworks.zircon.api.data.BlockTileType.*
@@ -9,14 +8,13 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.platform.extension.getOrDefault
 
 /**
- * Base class which implements common functionality from
- * [Block].
+ * Base class which implements common functionality of
+ * [Block]. This class is intended as a base class for
+ * [Block] to implement custom blocks.
  */
 abstract class BaseBlock<T : Tile>(
-        private val emptyTile: T,
-        initialTiles: Map<BlockTileType, T>) : Block<T> {
-
-    private var tiles: PersistentMap<BlockTileType, T> = initialTiles.toPersistentMap()
+        override val emptyTile: T,
+        private var tiles: PersistentMap<BlockTileType, T>) : Block<T> {
 
     override var top: T
         get() = tiles.getOrDefault(TOP, emptyTile)
@@ -60,7 +58,7 @@ abstract class BaseBlock<T : Tile>(
             tiles = tiles.put(CONTENT, value)
         }
 
-    override fun isEmpty() = tiles.isEmpty() || tiles.values.all { it.isEmpty }
+    override fun isEmpty() = tiles.isEmpty() || tiles.values.all { it == emptyTile }
 
     override fun withFlippedAroundX(): Block<T> {
         return createCopy().apply {

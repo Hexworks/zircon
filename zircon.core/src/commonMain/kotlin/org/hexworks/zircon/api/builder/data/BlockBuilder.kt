@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.data
 
+import kotlinx.collections.immutable.toPersistentMap
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Block
@@ -9,80 +10,72 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.data.DefaultBlock
 
 /**
- * Builds [Tile]s.
- * Defaults:
- * - Default character is a space
- * - Default modifiers is an empty set
- * also
- * @see [org.hexworks.zircon.api.color.TileColor] to check default colors.
+ * Builds [Block]s.
+ * Has no [Tile]s for either sides by default.
+ * Setting an [emptyTile] is **mandatory** and has no default.
  */
 @Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 data class BlockBuilder<T : Tile>(
         private var emptyTile: Maybe<T> = Maybe.empty(),
-        private var top: Maybe<T> = Maybe.empty(),
-        private var bottom: Maybe<T> = Maybe.empty(),
-        private var front: Maybe<T> = Maybe.empty(),
-        private var back: Maybe<T> = Maybe.empty(),
-        private var left: Maybe<T> = Maybe.empty(),
-        private var right: Maybe<T> = Maybe.empty(),
-        private var content: Maybe<T> = Maybe.empty()) : Builder<Block<T>> {
-
-    private var currLayerIdx = 0
+        private val tiles: MutableMap<BlockTileType, T> = mutableMapOf()) : Builder<Block<T>> {
 
     fun withEmptyTile(tile: T) = also {
         this.emptyTile = Maybe.of(tile)
     }
 
     fun withTop(top: T) = also {
-        this.top = Maybe.of(top)
+        tiles[TOP] = top
     }
 
     fun withBottom(bottom: T) = also {
-        this.bottom = Maybe.of(bottom)
+        tiles[BOTTOM] = bottom
     }
 
     fun withFront(front: T) = also {
-        this.front = Maybe.of(front)
+        tiles[FRONT] = front
     }
 
     fun withBack(back: T) = also {
-        this.back = Maybe.of(back)
+        tiles[BACK] = back
     }
 
     fun withLeft(left: T) = also {
-        this.left = Maybe.of(left)
+        tiles[LEFT] = left
     }
 
     fun withRight(right: T) = also {
-        this.right = Maybe.of(right)
+        tiles[RIGHT] = right
     }
 
     fun withContent(content: T) = also {
-        this.content = Maybe.of(content)
+        tiles[CONTENT] = content
+    }
+
+    /**
+     * Overwrites the [Tile]s in this [BlockBuilder] with the
+     * given [BlockTileType] -> [Tile] mapping.
+     */
+    fun withTiles(tiles: Map<BlockTileType, T>) = also {
+        this.tiles.clear()
+        this.tiles.putAll(tiles)
     }
 
     override fun build(): Block<T> {
         require(emptyTile.isPresent) {
-            "No empty tile supplied."
+            "Can't build block: no empty tile supplied."
         }
-        val initialTiles = mutableMapOf<BlockTileType, T>()
-        listOf(TOP to top, BOTTOM to bottom, LEFT to left, RIGHT to right, FRONT to front, BACK to back)
-                .map { (type, maybeTile) ->
-                    maybeTile.map {
-                        initialTiles[type] = it
-                    }
-                }
         return DefaultBlock(
                 emptyTile = emptyTile.get(),
-                initialTiles = initialTiles)
+                initialTiles = tiles.toPersistentMap())
     }
 
-    override fun createCopy() = copy()
+    override fun createCopy() = copy(
+            tiles = tiles.toMutableMap())
 
     companion object {
 
         /**
-         * Creates a new [BlockBuilder] for creating [Tile]s.
+         * Creates a new [BlockBuilder] for creating [Block]s.
          */
         fun <T : Tile> newBuilder() = BlockBuilder<T>()
 

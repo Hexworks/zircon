@@ -37,7 +37,7 @@ data class Size3D private constructor(val xLength: Int,
     }
 
     /**
-     * Creates a collection of [Position]s in the order in which they should
+     * Creates a collection of [Position3D]s in the order in which they should
      * be iterated when drawing:
      * - from bottom to top (z axis),
      * - from furthest to closest (y axis),

@@ -1,7 +1,6 @@
 package org.hexworks.zircon.examples.utilities
 
 
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Rect
@@ -21,7 +20,7 @@ object BSPExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val gameArea = BSPExample.CustomGameArea(VISIBLE_SIZE, ACTUAL_SIZE, 1)
+        val gameArea = BSPExample.CustomGameArea(VISIBLE_SIZE, ACTUAL_SIZE)
 
         createMap(gameArea, ACTUAL_SIZE.xLength, ACTUAL_SIZE.yLength)
 
@@ -33,7 +32,7 @@ object BSPExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         screen.addComponent(GameComponents.newGameComponentBuilder<Tile, Block<Tile>>()
-                .withVisibleSize(Sizes.create3DSize(ACTUAL_SIZE.xLength, ACTUAL_SIZE.yLength, 1))
+                .withSize(ACTUAL_SIZE.xLength, ACTUAL_SIZE.yLength)
                 .withGameArea(gameArea)
                 .build())
 
@@ -71,40 +70,9 @@ object BSPExample {
     }
 
     class CustomGameArea(visibleSize: Size3D,
-                         actualSize: Size3D,
-                         private val layersPerBlock: Int,
-                         override val defaultBlock: Block<Tile> = Blocks.newBuilder<Tile>()
-                                 .withContent(Tiles.empty())
-                                 .withEmptyTile(Tiles.empty())
-                                 .build()) : BaseGameArea<Tile, Block<Tile>>(
+                         actualSize: Size3D) : BaseGameArea<Tile, Block<Tile>>(
             initialVisibleSize = visibleSize,
-            initialActualSize = actualSize) {
-
-        private val blocks = java.util.TreeMap<Position3D, Block<Tile>>()
-
-        override fun hasBlockAt(position: Position3D): Boolean {
-            return blocks.containsKey(position)
-        }
-
-        override fun fetchBlockAt(position: Position3D): Maybe<Block<Tile>> {
-            return Maybes.ofNullable(blocks[position])
-        }
-
-        override fun fetchBlockOrDefault(position: Position3D): Block<Tile> {
-            return blocks.getOrDefault(position, defaultBlock)
-        }
-
-        override fun fetchBlocks(): Map<Position3D, Block<Tile>> {
-            return blocks.toMap()
-        }
-
-        override fun setBlockAt(position: Position3D, block: Block<Tile>) {
-            require(actualSize.containsPosition(position)) {
-                "The supplied position ($position) is not within the size (${actualSize}) of this game area."
-            }
-            blocks[position] = block
-        }
-    }
+            initialActualSize = actualSize)
 
 }
 

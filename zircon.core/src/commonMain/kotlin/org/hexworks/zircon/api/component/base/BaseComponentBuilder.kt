@@ -57,8 +57,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>()
      * The size which is set by the user. This takes precedence
      * over [contentSize] when set by the user.
      */
-    protected var preferredSize = Maybe.empty<Size>()
-        private set
+    private var preferredSize = Maybe.empty<Size>()
 
     /**
      * The size which is needed to properly display current contents.

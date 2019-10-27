@@ -1,12 +1,10 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.base.BaseGameArea
@@ -16,45 +14,14 @@ import org.hexworks.zircon.api.graphics.Symbols
 object CustomGameAreaExample {
 
     class CustomGameArea(visibleSize: Size3D,
-                         actualSize: Size3D,
-                         private val layersPerBlock: Int,
-                         override val defaultBlock: Block<Tile> = Blocks.newBuilder<Tile>()
-                                 .withContent(Tiles.empty())
-                                 .withEmptyTile(Tiles.empty())
-                                 .build()) : BaseGameArea<Tile, Block<Tile>>(
+                         actualSize: Size3D) : BaseGameArea<Tile, Block<Tile>>(
             initialVisibleSize = visibleSize,
-            initialActualSize = actualSize) {
-
-        private val blocks = java.util.TreeMap<Position3D, Block<Tile>>()
-
-        override fun hasBlockAt(position: Position3D): Boolean {
-            return blocks.containsKey(position)
-        }
-
-        override fun fetchBlockAt(position: Position3D): Maybe<Block<Tile>> {
-            return Maybes.ofNullable(blocks[position])
-        }
-
-        override fun fetchBlockOrDefault(position: Position3D): Block<Tile> {
-            return blocks.getOrDefault(position, defaultBlock)
-        }
-
-        override fun fetchBlocks(): Map<Position3D, Block<Tile>> {
-            return blocks.toMap()
-        }
-
-        override fun setBlockAt(position: Position3D, block: Block<Tile>) {
-            require(actualSize.containsPosition(position)) {
-                "The supplied position ($position) is not within the size (${actualSize}) of this game area."
-            }
-            blocks[position] = block
-        }
-    }
+            initialActualSize = actualSize)
 
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val gameArea = CustomGameArea(VISIBLE_SIZE, ACTUAL_SIZE, 1)
+        val gameArea = CustomGameArea(VISIBLE_SIZE, ACTUAL_SIZE)
 
         makeCaves(gameArea)
 
@@ -66,7 +33,7 @@ object CustomGameAreaExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         screen.addComponent(GameComponents.newGameComponentBuilder<Tile, Block<Tile>>()
-                .withVisibleSize(Sizes.create3DSize(60, 30, 1))
+                .withSize(60, 30)
                 .withGameArea(gameArea)
                 .build())
 

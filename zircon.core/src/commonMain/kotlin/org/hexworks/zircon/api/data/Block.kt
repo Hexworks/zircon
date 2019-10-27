@@ -1,12 +1,15 @@
 package org.hexworks.zircon.api.data
 
+import org.hexworks.zircon.api.behavior.Copiable
 import org.hexworks.zircon.api.builder.data.BlockBuilder
 
 /**
  * A [Block] is a voxel which consists of [Tile]s representing
- * each side, and the internal [content] of the [Block].
+ * each side, and the internal [content] of the [Block]. All
+ * sides of the [Block] are optional. If any of them are missing
+ * the [emptyTile] will be used when the sides are dereferenced.
  */
-interface Block<T : Tile> {
+interface Block<T : Tile> : Copiable<Block<T>> {
 
     var content: T
 
@@ -22,6 +25,8 @@ interface Block<T : Tile> {
 
     var right: T
 
+    val emptyTile: T
+
     operator fun component1() = content
     operator fun component2() = top
     operator fun component3() = bottom
@@ -30,11 +35,9 @@ interface Block<T : Tile> {
     operator fun component6() = left
     operator fun component7() = right
 
-    fun createCopy(): Block<T>
-
     /**
-     * Tells whether this [Block] is empty (all of its sides are [Tile.empty],
-     * and its content is also [Tile.empty]).
+     * Tells whether this [Block] is empty (all of its sides and content are
+     * the the [emptyTile]).
      */
     fun isEmpty(): Boolean
 
@@ -42,37 +45,19 @@ interface Block<T : Tile> {
      * Returns a new [Block] which is a rotation of this [Block]
      * around the *x* axis.
      */
-    fun withFlippedAroundX(): Block<T> {
-        return createCopy().apply {
-            val temp = right
-            this.right = left
-            left = temp
-        }
-    }
+    fun withFlippedAroundX(): Block<T>
 
     /**
      * Returns a new [Block] which is a rotation of this [Block]
      * around the *y* axis.
      */
-    fun withFlippedAroundY(): Block<T> {
-        return createCopy().apply {
-            val temp = front
-            this.front = back
-            back = temp
-        }
-    }
+    fun withFlippedAroundY(): Block<T>
 
     /**
      * Returns a new [Block] which is a rotation of this [Block]
      * around the *z* axis.
      */
-    fun withFlippedAroundZ(): Block<T> {
-        return createCopy().apply {
-            val temp = top
-            this.top = bottom
-            bottom = temp
-        }
-    }
+    fun withFlippedAroundZ(): Block<T>
 
     companion object {
 

@@ -2,6 +2,7 @@ package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.builder.component.GameComponentBuilder;
+import org.hexworks.zircon.api.builder.game.GameAreaBuilder;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.Panel;
@@ -19,8 +20,8 @@ import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.api.uievent.KeyCode;
 import org.hexworks.zircon.api.uievent.KeyboardEventType;
-import org.hexworks.zircon.internal.game.DefaultGameComponent;
-import org.hexworks.zircon.internal.game.InMemoryGameArea;
+import org.hexworks.zircon.internal.game.impl.DefaultGameArea;
+import org.hexworks.zircon.internal.game.impl.DefaultGameComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -93,14 +94,10 @@ public class GameAreaScrollingWithLayers {
                     .build()));
         }
 
-        final GameArea gameArea =
-                new InMemoryGameArea<Tile, Block<Tile>>(
-                        visibleGameAreaSize,
-                        Sizes.from2DTo3D(actualGameAreaSize, totalLevels),
-                        Blocks.newBuilder()
-                                .withEmptyTile(Tiles.empty())
-                                .withContent(Tiles.empty())
-                                .build());
+        final GameArea gameArea = GameComponents.newGameAreaBuilder()
+                .withActualSize(Sizes.from2DTo3D(actualGameAreaSize, totalLevels))
+                .withVisibleSize(visibleGameAreaSize)
+                .build();
 
         ComponentBuilder builder = Components.gameComponent()
                 .withGameArea(gameArea)
@@ -108,7 +105,7 @@ public class GameAreaScrollingWithLayers {
 
         final DefaultGameComponent gameComponent = ((GameComponentBuilder<Tile, Block<Tile>>) Components.gameComponent()
                 .withGameArea(gameArea)
-                .withVisibleSize(visibleGameAreaSize)
+                .withSize(visibleGameAreaSize.to2DSize())
                 .withTileset(CP437TilesetResources.phoebus16x16()))
                 .build();
 

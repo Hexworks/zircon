@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api.builder
 
-interface Builder<out T> {
+import org.hexworks.zircon.api.behavior.Copiable
+
+interface Builder<out T> : Copiable<Builder<T>> {
 
     fun build(): T
-
-    fun createCopy(): Builder<T>
 }
