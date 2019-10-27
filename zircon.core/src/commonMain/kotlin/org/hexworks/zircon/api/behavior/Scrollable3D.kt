@@ -14,7 +14,7 @@ interface Scrollable3D {
     /**
      * Returns the [Size3D] of the virtual space this [Scrollable3D] can scroll through.
      */
-    var actualSize: Size3D
+    val actualSize: Size3D
 
     /**
      * Returns the size of the visible part of this [Scrollable3D].
