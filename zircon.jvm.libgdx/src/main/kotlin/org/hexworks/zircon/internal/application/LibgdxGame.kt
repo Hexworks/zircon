@@ -21,7 +21,7 @@ class LibgdxGame(private val appConfig: AppConfig,
 
     private lateinit var batch: SpriteBatch
 
-    lateinit var libgdxApplication: LibgdxApplication
+    val libgdxApplication = LibgdxApplication(appConfig)
 
     fun start() {
         if(!started) {
@@ -36,7 +36,7 @@ class LibgdxGame(private val appConfig: AppConfig,
         batch = SpriteBatch()
         batch.enableBlending()
 
-        libgdxApplication = LibgdxApplications.buildApplication(appConfig)
+
         libgdxApplication.start()
         val tileGrid = libgdxApplication.tileGrid
 
