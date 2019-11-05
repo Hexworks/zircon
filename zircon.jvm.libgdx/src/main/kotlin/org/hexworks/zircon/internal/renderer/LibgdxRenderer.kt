@@ -104,6 +104,10 @@ class LibgdxRenderer(private val grid: InternalTileGrid,
          * loop. I dare you. Have fun with the 14 fps, freak. I can't explain it, I
          * can only hope to save those that think they can optimize this. Leave it,
          * for your own sanity
+         *
+         * I think the problem resolved itself, magically. If this turns out to be not
+         * the case uncomment the commented block of code and delete the first
+         * actualTileset.drawTile()
          */
         state.tiles.forEach { (pos, tile) ->
             val actualPos = pos + state.position
@@ -128,9 +132,14 @@ class LibgdxRenderer(private val grid: InternalTileGrid,
                         surface = batch,
                         position = pixelPos
                 )
+                actualTileset.drawTile(
+                        tile = actualTile,
+                        surface = batch,
+                        position = pixelPos
+                )
             }
         }
-        state.tiles.forEach { (pos, tile) ->
+        /*state.tiles.forEach { (pos, tile) ->
             val actualPos = pos + state.position
             if (tile !== Tile.empty()) {
                 val actualTile =
@@ -153,7 +162,7 @@ class LibgdxRenderer(private val grid: InternalTileGrid,
                         position = pixelPos
                 )
             }
-        }
+        }*/
     }
 
     private fun drawBack(tile: Tile, surface: SpriteBatch, position: Position) {
