@@ -38,21 +38,23 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
      * this operation creates a consistent snapshot, eg: modifying the underlying
      * [GameArea] has no effect on the generated [Sequence].
      *
+     * The returned [Sequence]
+     *
      * @param offset the position where the collection of Blocks will start.
      * @param size the size of the area which you need the blocks from.
      *
      * Example: offset=(x=2, y=4, z=8), size=(xLength=9,yLength=3,zLength=4)
      *<pre>
-     *         ^ (2,4,12) (z)
-     *         \
-     *         \
-     *         \
-     *         \
-     *  (2,4,8)O---------> (11,4,8) (x)
-     *        /
-     *      /
-     *    /
-     *  L (2,7,8) (y)
+     *          ^ (2,4,12) (z)
+     *          \
+     *          \
+     *          \
+     *          \
+     *  (2,4,8) O---------> (11,4,8) (x)
+     *         /
+     *       /
+     *     /
+     *   L (2,7,8) (y)
      *</pre>
      */
     fun fetchBlocksAt(offset: Position3D, size: Size3D): Sequence<Pair<Position3D, B>>

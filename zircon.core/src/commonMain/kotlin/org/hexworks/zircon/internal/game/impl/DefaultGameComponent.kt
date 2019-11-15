@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.game.impl
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.Layers
 import org.hexworks.zircon.api.behavior.TitleHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -32,7 +33,11 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
         TitleHolder by TitleHolder.create(initialTitle) {
 
     override val layerStates: Iterable<LayerState>
-        get() = gameArea.layerStates.toList() + super.layerStates
+        get() = gameArea.fetchImageLayers(tileset).map {
+            Layers.newBuilder()
+                    .withTileGraphics(it.toTileGraphics())
+                    .build().state
+        }.asIterable() + super.layerStates
 
     init {
         render()
