@@ -5,12 +5,15 @@ import kotlinx.collections.immutable.toPersistentMap
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.data.Block
-import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.impl.Size3D
+import org.hexworks.zircon.api.extensions.toTileImage
 import org.hexworks.zircon.api.game.GameArea.Companion.fetchPositionsWithOffset
+import org.hexworks.zircon.api.game.GameAreaState
 import org.hexworks.zircon.api.game.ProjectionMode
+import org.hexworks.zircon.api.graphics.TileImage
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.hexworks.zircon.internal.game.InternalGameArea
 import org.hexworks.zircon.internal.game.ProjectionStrategy
@@ -29,8 +32,18 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     override val blocks: Map<Position3D, B>
         get() = persistentBlocks
 
-    override val layerStates: Sequence<LayerState>
-        get() = projectionStrategy.project(this)
+    override val state: GameAreaState<T, B>
+        get() = GameAreaState(
+                blocks = blocks,
+                actualSize = actualSize,
+                visibleSize = visibleSize,
+                visibleOffset = visibleOffset)
+
+    override fun fetchImageLayers(tileset: TilesetResource): Sequence<TileImage> {
+        return projectionStrategy.projectGameArea(state).map {
+            it.tiles.toTileImage(visibleSize.to2DSize(), tileset)
+        }
+    }
 
     override fun fetchBlocksAt(offset: Position3D, size: Size3D): Sequence<Pair<Position3D, B>> {
         val currentBlocks = blocks

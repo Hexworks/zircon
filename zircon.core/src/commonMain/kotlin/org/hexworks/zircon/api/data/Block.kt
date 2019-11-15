@@ -27,6 +27,8 @@ interface Block<T : Tile> : Copiable<Block<T>> {
 
     val emptyTile: T
 
+    val tiles: Map<BlockTileType, T>
+
     operator fun component1() = content
     operator fun component2() = top
     operator fun component3() = bottom
@@ -58,6 +60,8 @@ interface Block<T : Tile> : Copiable<Block<T>> {
      * around the *z* axis.
      */
     fun withFlippedAroundZ(): Block<T>
+
+    fun getTileByType(blockTileType: BlockTileType): T
 
     companion object {
 

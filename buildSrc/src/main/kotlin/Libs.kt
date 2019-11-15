@@ -14,6 +14,7 @@ object Versions {
 
     const val junitVersion = "4.12"
     const val mockitoVersion = "1.10.19"
+    const val mockitoKotlinVersion = "1.6.0"
     const val assertjVersion = "3.6.2"
 }
 
@@ -51,6 +52,7 @@ object LibsTest {
 
     const val junit = "junit:junit:${Versions.junitVersion}"
     const val mockitoAll = "org.mockito:mockito-all:${Versions.mockitoVersion}"
+    const val mockitoKotlin = "com.nhaarman:mockito-kotlin:${Versions.mockitoKotlinVersion}"
     const val assertJCore = "org.assertj:assertj-core:${Versions.assertjVersion}"
     const val logbackClassic = "ch.qos.logback:logback-classic:${Versions.logbackVersion}"
     const val logbackCore = "ch.qos.logback:logback-core:${Versions.logbackVersion}"

@@ -1,39 +1,64 @@
 package org.hexworks.zircon.internal.game.impl
 
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
-import org.hexworks.zircon.api.data.Block
-import org.hexworks.zircon.api.data.LayerState
+import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.data.BlockTileType.BOTTOM
+import org.hexworks.zircon.api.data.BlockTileType.CONTENT
+import org.hexworks.zircon.api.data.BlockTileType.TOP
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
-import org.hexworks.zircon.api.data.impl.Size3D
-import org.hexworks.zircon.api.game.GameArea
+import org.hexworks.zircon.api.extensions.toTileComposite
+import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.internal.game.ProjectionStrategy
-import kotlin.math.min
+import org.hexworks.zircon.internal.util.AnyGameAreaState
+import org.hexworks.zircon.internal.util.RenderSequence
 
 class TopDownProjectionStrategy : ProjectionStrategy {
 
-    override fun project(gameArea: GameArea<out Tile, out Block<out Tile>>): Sequence<LayerState> {
+    override fun renderSequence(position: Position3D): RenderSequence {
+        return sequence {
+            var currPos = position
+            while (true) {
+                SIDES.forEach { type ->
+                    yield(currPos to type)
+                }
+                currPos = currPos.withRelativeZ(-1)
+            }
+        }
+    }
 
-        val visibleLevelCount = gameArea.visibleSize.zLength
-        val actualSize = gameArea.actualSize
-        val visibleSize = gameArea.visibleSize
-        val blocks = gameArea.blocks
-        val height = gameArea.actualSize.zLength
-        val fromZ = gameArea.visibleOffset.z
-        val screenSize = gameArea.visibleSize.to2DSize()
+    override fun projectGameArea(gameAreaState: AnyGameAreaState): Sequence<TileComposite> {
+        val (blocks, _, visibleSize, visibleOffset) = gameAreaState
+        val size = visibleSize.to2DSize()
+        val remainingPositions = size.fetchPositions().toMutableSet()
+        val lastZ = visibleOffset.z
+        var currentPos = visibleOffset.withZ(visibleSize.zLength + lastZ)
+        val renderSequence = renderSequence(currentPos).iterator()
+        return sequence {
+            while (currentPos.z >= lastZ && remainingPositions.isNotEmpty()) {
+                val tiles = mutableMapOf<Position, Tile>()
+                val posIter = remainingPositions.iterator()
+                val (topLeftCorner, nextSide) = renderSequence.next()
+                while (posIter.hasNext()) {
+                    val pos = posIter.next()
+                    val tile = blocks[topLeftCorner.withRelativeX(pos.x).withRelativeY(pos.y)]
+                            ?.getTileByType(nextSide) ?: Tiles.empty()
+                    if (tile.isNotEmpty) {
+                        tiles[pos] = tile
+                    }
+                    if (tile.isOpaque) {
+                        posIter.remove()
+                    }
+                }
+                currentPos = topLeftCorner
+                if (tiles.isNotEmpty()) {
+                    yield(tiles.toTileComposite(size))
+                }
+            }
+        }
+    }
 
-//        (fromZ until min(fromZ + visibleLevelCount, height)).forEach { levelIdx ->
-//            val segment = gameArea.fetchLayersAt(
-//                    offset = Position3D.from2DPosition(gameArea.visibleOffset.to2DPosition(), levelIdx),
-//                    size = Size3D.from2DSize(size, 1))
-//            segment.forEach {
-//                result.add(LayerBuilder.newBuilder()
-//                        .withTileGraphics(it)
-//                        // TODO: regression test this: position vs absolutePosition
-//                        .withOffset(relativePosition)
-//                        .build())
-//            }
-//        }
-        TODO()
+    companion object {
+        private val SIDES = listOf(TOP, CONTENT, BOTTOM)
     }
 }

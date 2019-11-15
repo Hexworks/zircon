@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api
 
+import org.hexworks.zircon.api.builder.graphics.TileCompositeBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.builder.graphics.TileImageBuilder
 import kotlin.jvm.JvmStatic
@@ -17,4 +18,10 @@ object DrawSurfaces {
      */
     @JvmStatic
     fun tileGraphicsBuilder() = TileGraphicsBuilder.newBuilder()
+
+    /**
+     * Creates a new [TileCompositeBuilder] to build [org.hexworks.zircon.api.graphics.TileComposite]s.
+     */
+    @JvmStatic
+    fun tileCompositeBuilder() = TileCompositeBuilder.newBuilder()
 }

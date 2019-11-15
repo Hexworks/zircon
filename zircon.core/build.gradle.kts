@@ -18,7 +18,7 @@ kotlin {
     }
 
     dependencies {
-        with (Libs) {
+        with(Libs) {
             commonMainApi(kotlinStdLibCommon)
             commonMainApi(kotlinxCoroutinesCommon)
             commonMainApi(cobaltEvents)
@@ -27,12 +27,12 @@ kotlin {
             commonMainApi(cobaltLogging)
         }
 
-        with (LibsTest) {
+        with(LibsTest) {
             commonTestImplementation(kotlinTestCommon)
             commonTestImplementation(kotlinTestAnnotationsCommon)
         }
 
-        with (Libs) {
+        with(Libs) {
             jvmMainApi(kotlinStdLibJdk8)
             jvmMainApi(kotlinReflect)
             jvmMainApi(kotlinxCoroutines)
@@ -41,9 +41,10 @@ kotlin {
             jvmMainApi(slf4jApi)
         }
 
-        with (LibsTest) {
+        with(LibsTest) {
             jvmTestApi(junit)
             jvmTestApi(mockitoAll)
+            jvmTestApi(mockitoKotlin)
             jvmTestApi(assertJCore)
             jvmTestApi(logbackClassic)
             jvmTestApi(logbackCore)

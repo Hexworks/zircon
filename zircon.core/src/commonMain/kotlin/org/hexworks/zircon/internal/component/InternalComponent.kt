@@ -50,7 +50,8 @@ interface InternalComponent : Component, ComponentEventAdapter, Focusable,
     /**
      * The [LayerState] (s) representing the contents of this
      * [InternalComponent]. Apart from the [graphics] a component
-     * can have multiple layers representing its content.
+     * can have multiple layers representing its content. Layers
+     * are ordered from top to bottom with regards to the Z axis.
      */
     val layerStates: Iterable<LayerState>
 
