@@ -1,10 +1,8 @@
 package org.hexworks.zircon.internal.game
 
-import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.internal.util.AnyGameAreaState
-import org.hexworks.zircon.internal.util.RenderSequence
 
 /**
  * Can be used to create projections of a [GameArea] which can be used
@@ -24,11 +22,4 @@ interface ProjectionStrategy {
      */
     fun projectGameArea(
             gameAreaState: AnyGameAreaState): Sequence<TileComposite>
-
-    /**
-     * Creates a render sequence from the supplied [position]. The elements
-     * are ordered from the viewpoint from near to far. For example with a
-     * top down oblique [ProjectionStrategy] they are ordered from top to bottom.
-     */
-    fun renderSequence(position: Position3D): RenderSequence
 }

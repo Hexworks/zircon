@@ -53,7 +53,7 @@ data class GameComponentBuilder<T : Tile, B : Block<T>>(
     companion object {
 
         @JvmStatic
-        fun <T : Tile, B : Block<T>> newBuilder(): GameComponentBuilder<T, B> {
+        fun <T : Tile, B : Block<T>>    newBuilder(): GameComponentBuilder<T, B> {
             return GameComponentBuilder()
         }
     }

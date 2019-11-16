@@ -16,7 +16,6 @@ import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.Processed
 import kotlin.random.Random
 
-// TODO: not working, fix game area
 object TopDownObliqueWorldExample {
 
     private val WORLD_SIZE = Sizes.create3DSize(100, 100, 100)
@@ -167,12 +166,12 @@ object TopDownObliqueWorldExample {
         val ga = GameComponents.newGameAreaBuilder<Tile, Block<Tile>>()
                 .withActualSize(WORLD_SIZE)
                 .withVisibleSize(Sizes.from2DTo3D(panel.contentSize, VISIBLE_Z_LEVELS))
-                .withProjectionMode(ProjectionMode.TOP_DOWN_OBLIQUE)
+                .withProjectionMode(ProjectionMode.TOP_DOWN_OBLIQUE_FRONT)
                 .build()
 
         val gc = GameComponents.newGameComponentBuilder<Tile, Block<Tile>>()
                 .withGameArea(ga)
-                .withSize(ga.visibleSize.to2DSize())
+                .withSize(panel.contentSize)
                 .build()
 
         panel.addComponent(gc)
@@ -187,15 +186,15 @@ object TopDownObliqueWorldExample {
                 ga.scrollOneRight()
             }
             if (event.code == UP) {
-                ga.scrollOneForward()
-            }
-            if (event.code == DOWN) {
                 ga.scrollOneBackward()
             }
-            if (event.code == PAGE_UP) {
+            if (event.code == DOWN) {
+                ga.scrollOneForward()
+            }
+            if (event.code == KEY_U) {
                 ga.scrollOneUp()
             }
-            if (event.code == PAGE_DOWN) {
+            if (event.code == KEY_D) {
                 ga.scrollOneDown()
             }
             Processed

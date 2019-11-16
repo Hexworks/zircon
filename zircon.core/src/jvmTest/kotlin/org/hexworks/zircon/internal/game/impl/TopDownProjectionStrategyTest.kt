@@ -23,10 +23,8 @@ class TopDownProjectionStrategyTest {
     }
 
     @Test
-    fun shouldProjectProperlyFromPositionWithOpaqueBlock() {
-        val state = DEFAULT_STATE.copy(blocks = mapOf(
-                pos(1, 1, 2) to OPAQUE_TOP_BLOCK))
-        val result = target.renderSequence(pos(1, 1, 2))
+    fun shouldCreateRenderSequenceProperly() {
+        val result = target.createRenderingSequence(pos(1, 1, 2))
 
         assertThat(result.take(4).toList()).containsExactly(
                 pos(1, 1, 2) to BlockTileType.TOP,
@@ -39,24 +37,72 @@ class TopDownProjectionStrategyTest {
     fun shouldOnlyCreateOneLevelWithOpaqueTiles() {
 
         val state = DEFAULT_STATE.copy(blocks = mapOf(
-                pos(1, 1, 2) to OPAQUE_TOP_BLOCK,
-                pos(2, 1, 2) to OPAQUE_TOP_BLOCK,
-                pos(1, 1, 1) to OPAQUE_TOP_BLOCK))
+                pos(1, 1, 2) to OPAQUE_BLOCK_A_B_C,
+                pos(2, 1, 2) to OPAQUE_BLOCK_A_B_C,
+                pos(1, 1, 1) to OPAQUE_BLOCK_A_B_C))
 
         val result = target.projectGameArea(state).toList()
-        val windowSize = size(state.visibleSize.xLength, state.visibleSize.zLength)
 
-        assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(
-                mapOf(
-                        Positions.create(0, 0) to OPAQUE_TILE_A,
-                        Positions.create(1, 0) to OPAQUE_TILE_A))
+        assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(mapOf(
+                Positions.create(0, 0) to OPAQUE_TILE_A,
+                Positions.create(1, 0) to OPAQUE_TILE_A))
+    }
+
+    @Test
+    fun shouldCreateTwoLevelsWithEmptyLayerBetweenTransparentTiles() {
+
+        val state = DEFAULT_STATE.copy(blocks = mapOf(
+                pos(1, 1, 2) to OPAQUE_BLOCK_A_B_C,
+                pos(2, 1, 2) to TRANSPARENT_TOP_EMPTY_CONTENT_BLOCK_A_C,
+                pos(1, 1, 1) to OPAQUE_BLOCK_A_B_C))
+
+        val result = target.projectGameArea(state).toList()
+
+        assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(mapOf(
+                Positions.create(0, 0) to OPAQUE_TILE_A,
+                Positions.create(1, 0) to TRANSPARENT_TILE_A), mapOf(
+                Positions.create(1, 0) to OPAQUE_TILE_C))
+    }
+
+    @Test
+    fun shouldCreateFourLevelsWithTransparentWholeBlockOverOpaqueBlock() {
+
+        val state = DEFAULT_STATE.copy(blocks = mapOf(
+                pos(1, 1, 2) to TRANSPARENT_WHOLE_BLOCK,
+                pos(2, 1, 2) to OPAQUE_BLOCK_A_B_C,
+                pos(1, 1, 1) to OPAQUE_BLOCK_D_E_F))
+
+        val result = target.projectGameArea(state).toList()
+
+        assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(mapOf(
+                Positions.create(0, 0) to TRANSPARENT_TILE_A,
+                Positions.create(1, 0) to OPAQUE_TILE_A), mapOf(
+                Positions.create(0, 0) to TRANSPARENT_TILE_B), mapOf(
+                Positions.create(0, 0) to TRANSPARENT_TILE_C), mapOf(
+                Positions.create(0, 0) to OPAQUE_TILE_D))
+    }
+
+    @Test
+    fun shouldCreateThreeLevelsWithVaryingEmptiness() {
+
+        val state = DEFAULT_STATE.copy(blocks = mapOf(
+                pos(1, 1, 2) to TRANSPARENT_TOP_EMPTY_CONTENT_BLOCK_A_C,
+                pos(2, 1, 2) to EMPTY_TOP_TRANSPARENT_CONTENT_BLOCK_B_D))
+
+        val result = target.projectGameArea(state).toList()
+
+        assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(mapOf(
+                Positions.create(0, 0) to TRANSPARENT_TILE_A), mapOf(
+                Positions.create(1, 0) to TRANSPARENT_TILE_B), mapOf(
+                Positions.create(0, 0) to OPAQUE_TILE_C,
+                Positions.create(1, 0) to OPAQUE_TILE_D))
     }
 
     companion object {
 
-        val ACTUAL_SIZE_4X4X4 = Sizes.create3DSize(4, 4, 4)
-        val VISIBLE_SIZE_3X2X2 = Sizes.create3DSize(3, 2, 2)
-        val VISIBLE_OFFSET_1_1_1 = Positions.create3DPosition(1, 1, 1)
+        private val ACTUAL_SIZE_4X4X4 = Sizes.create3DSize(4, 4, 4)
+        private val VISIBLE_SIZE_3X2X2 = Sizes.create3DSize(3, 2, 2)
+        private val VISIBLE_OFFSET_1_1_1 = Positions.create3DPosition(1, 1, 1)
 
         val DEFAULT_STATE = GameAreaState<Tile, Block<Tile>>(
                 blocks = mapOf(),
@@ -67,24 +113,38 @@ class TopDownProjectionStrategyTest {
         val TRANSPARENT_TILE_A = Tiles.empty().withCharacter('a')
         val TRANSPARENT_TILE_B = Tiles.empty().withCharacter('b')
         val TRANSPARENT_TILE_C = Tiles.empty().withCharacter('c')
-        val TRANSPARENT_TILE_D = Tiles.empty().withCharacter('d')
-        val TRANSPARENT_TILE_E = Tiles.empty().withCharacter('e')
 
         val OPAQUE_TILE_A = Tiles.defaultTile().withCharacter('a')
         val OPAQUE_TILE_B = Tiles.defaultTile().withCharacter('b')
         val OPAQUE_TILE_C = Tiles.defaultTile().withCharacter('c')
         val OPAQUE_TILE_D = Tiles.defaultTile().withCharacter('d')
         val OPAQUE_TILE_E = Tiles.defaultTile().withCharacter('e')
+        val OPAQUE_TILE_F = Tiles.defaultTile().withCharacter('f')
 
-        val OPAQUE_TOP_BLOCK = block(
+        val OPAQUE_BLOCK_A_B_C = block(
                 top = OPAQUE_TILE_A,
                 content = OPAQUE_TILE_B,
                 bottom = OPAQUE_TILE_C)
 
-        val TRANSPARENT_TOP_BLOCK = block(
+        val OPAQUE_BLOCK_D_E_F = block(
+                top = OPAQUE_TILE_D,
+                content = OPAQUE_TILE_E,
+                bottom = OPAQUE_TILE_F)
+
+        val TRANSPARENT_TOP_EMPTY_CONTENT_BLOCK_A_C = block(
                 top = TRANSPARENT_TILE_A,
-                content = OPAQUE_TILE_B,
+                content = Tiles.empty(),
                 bottom = OPAQUE_TILE_C)
+
+        val EMPTY_TOP_TRANSPARENT_CONTENT_BLOCK_B_D = block(
+                top = Tiles.empty(),
+                content = TRANSPARENT_TILE_B,
+                bottom = OPAQUE_TILE_D)
+
+        val TRANSPARENT_WHOLE_BLOCK = block(
+                top = TRANSPARENT_TILE_A,
+                content = TRANSPARENT_TILE_B,
+                bottom = TRANSPARENT_TILE_C)
 
         private fun size(width: Int, height: Int) = Sizes.create(width, height)
 

@@ -15,7 +15,7 @@ import org.hexworks.zircon.internal.util.RenderSequence
 
 class TopDownProjectionStrategy : ProjectionStrategy {
 
-    override fun renderSequence(position: Position3D): RenderSequence {
+    fun createRenderingSequence(position: Position3D): RenderSequence {
         return sequence {
             var currPos = position
             while (true) {
@@ -33,7 +33,7 @@ class TopDownProjectionStrategy : ProjectionStrategy {
         val remainingPositions = size.fetchPositions().toMutableSet()
         val lastZ = visibleOffset.z
         var currentPos = visibleOffset.withZ(visibleSize.zLength + lastZ)
-        val renderSequence = renderSequence(currentPos).iterator()
+        val renderSequence = createRenderingSequence(currentPos).iterator()
         return sequence {
             while (currentPos.z >= lastZ && remainingPositions.isNotEmpty()) {
                 val tiles = mutableMapOf<Position, Tile>()

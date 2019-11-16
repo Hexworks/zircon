@@ -36,6 +36,8 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
         get() = gameArea.fetchImageLayers(tileset).map {
             Layers.newBuilder()
                     .withTileGraphics(it.toTileGraphics())
+                    .withTileset(tileset)
+                    .withOffset(absolutePosition)
                     .build().state
         }.asIterable() + super.layerStates
 
