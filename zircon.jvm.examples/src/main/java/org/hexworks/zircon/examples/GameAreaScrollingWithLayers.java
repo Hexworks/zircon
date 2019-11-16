@@ -2,7 +2,6 @@ package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.builder.component.GameComponentBuilder;
-import org.hexworks.zircon.api.builder.game.GameAreaBuilder;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.Panel;
@@ -20,7 +19,6 @@ import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.api.uievent.KeyCode;
 import org.hexworks.zircon.api.uievent.KeyboardEventType;
-import org.hexworks.zircon.internal.game.impl.DefaultGameArea;
 import org.hexworks.zircon.internal.game.impl.DefaultGameComponent;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +31,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 
-// TODO: not working
 @SuppressWarnings("ALL")
 public class GameAreaScrollingWithLayers {
 
@@ -167,10 +164,10 @@ public class GameAreaScrollingWithLayers {
                 if (event.getCode().equals(KeyCode.RIGHT)) {
                     gameArea.scrollOneRight();
                 }
-                if (event.getCode().equals(KeyCode.PAGE_UP)) {
+                if (event.getCode().equals(KeyCode.KEY_U)) {
                     gameArea.scrollOneUp();
                 }
-                if (event.getCode().equals(KeyCode.PAGE_DOWN)) {
+                if (event.getCode().equals(KeyCode.KEY_D)) {
                     gameArea.scrollOneDown();
                 }
                 screen.removeLayer(coordinates.get());
