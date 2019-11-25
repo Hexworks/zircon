@@ -347,7 +347,7 @@ These components are rather simple and you can expect them to work in a way you 
 
 - You can click on them (press and release are different events)
 - You can attach event listeners on them
-- Zircon implements focus handling so you can navigate between the components using the `[Tab]` key
+- Zircon implements focus handling so you can between the components using the `[Tab]` key
  (forwards) or the `[Shift]+[Tab]` key stroke (backwards).
 - Components can be hovered and they can change their styling when you do so
 
@@ -560,7 +560,7 @@ we bundled into Zircon.
 
 [discord]:https://discord.gg/vSNgvBh
 [examples]:https://github.com/Hexworks/zircon/tree/master/zircon.jvm.examples
-[api]:https://github.com/Hexworks/zircon/tree/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api
+[api]:https://github.com/Hexworks/zircon/tree/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api
 [internal]:https://github.com/Hexworks/zircon/tree/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/internal
 
 [resource-handling]:https://github.com/Hexworks/zircon/wiki/Resource-Handling
