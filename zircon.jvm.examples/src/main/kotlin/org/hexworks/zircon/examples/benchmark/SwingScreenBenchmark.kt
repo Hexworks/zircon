@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.internal.data.GridPosition
 import org.hexworks.zircon.api.grid.TileGrid
 import java.util.*
@@ -35,7 +36,7 @@ fun main(args: Array<String>) {
     val layerWidth = 20
     val layerHeight = 10
     val layerSize = Size.create(layerWidth, layerHeight)
-    val filler = Tiles.defaultTile().withCharacter('x')
+    val filler = Tile.defaultTile().withCharacter('x')
 
     val layers = (0..layerCount).map {
 
@@ -64,7 +65,7 @@ fun main(args: Array<String>) {
 
 
     while (true) {
-        val tile = Tiles.defaultTile().withCharacter(chars[currIdx])
+        val tile = Tile.defaultTile().withCharacter(chars[currIdx])
         fillGrid(screen, tile)
         layers.forEach {
             it.moveTo(Position.create(

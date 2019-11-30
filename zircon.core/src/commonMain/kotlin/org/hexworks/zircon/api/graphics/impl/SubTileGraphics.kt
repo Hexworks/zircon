@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.internal.data.TileGraphicsState
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileComposite
@@ -96,7 +97,7 @@ class SubTileGraphics(
         val (tiles, _, size) = state
         val result = mutableMapOf<Position, Tile>()
         size.fetchPositions()
-                .minus(tiles.keys.filter { it != Tiles.empty() })
+                .minus(tiles.keys.filter { it != Tile.empty() })
                 .forEach { emptyPos ->
                     result[emptyPos] = filler
                 }

@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.data.BlockTileType.CONTENT
 import org.hexworks.zircon.api.data.BlockTileType.TOP
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.extensions.toTileComposite
 import org.hexworks.zircon.api.graphics.TileComposite
@@ -42,7 +43,7 @@ class TopDownProjectionStrategy : ProjectionStrategy {
                 while (posIter.hasNext()) {
                     val pos = posIter.next()
                     val tile = blocks[topLeftCorner.withRelativeX(pos.x).withRelativeY(pos.y)]
-                            ?.getTileByType(nextSide) ?: Tiles.empty()
+                            ?.getTileByType(nextSide) ?: Tile.empty()
                     if (tile.isNotEmpty) {
                         tiles[pos] = tile
                     }

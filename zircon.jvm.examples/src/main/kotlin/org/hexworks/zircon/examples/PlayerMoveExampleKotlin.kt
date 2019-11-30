@@ -4,15 +4,15 @@ import org.hexworks.zircon.api.Layers
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
 import org.hexworks.zircon.api.uievent.Pass
 
 object PlayerMoveExampleKotlin {
 
-    private val PLAYER_TILE = Tiles.newBuilder()
+    private val PLAYER_TILE = Tile.newBuilder()
             .withBackgroundColor(ANSITileColor.BLACK)
             .withForegroundColor(ANSITileColor.WHITE)
             .withCharacter('@')

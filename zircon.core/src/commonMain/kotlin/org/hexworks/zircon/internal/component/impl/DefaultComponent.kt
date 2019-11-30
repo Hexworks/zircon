@@ -27,6 +27,7 @@ import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
+import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
@@ -50,8 +51,7 @@ abstract class DefaultComponent(
                         .withSize(componentMetadata.size)
                         .buildThreadSafeTileGraphics()),
         private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault(),
-        private val themeable: Themeable = Themeable.create(AppConfig
-                .defaultConfiguration().defaultColorTheme))
+        private val themeable: Themeable = Themeable.create(RuntimeConfig.config.defaultColorTheme))
     : InternalComponent,
         UIEventProcessor by uiEventProcessor,
         Identifiable by contentLayer,

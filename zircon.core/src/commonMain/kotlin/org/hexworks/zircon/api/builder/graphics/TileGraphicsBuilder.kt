@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -25,7 +26,7 @@ data class TileGraphicsBuilder(
         private var size: Size = Size.one(),
         private var style: StyleSet = StyleSet.defaultStyle(),
         private val tiles: MutableMap<Position, Tile> = mutableMapOf(),
-        private var filler: Tile = Tiles.empty()) : Builder<TileGraphics> {
+        private var filler: Tile = Tile.empty()) : Builder<TileGraphics> {
 
     override fun createCopy() = copy(
             tiles = tiles.toMutableMap())
@@ -96,7 +97,7 @@ data class TileGraphicsBuilder(
         if (hasToFill()) fill(filler)
     }
 
-    private fun hasToFill() = filler != Tiles.empty()
+    private fun hasToFill() = filler != Tile.empty()
 
     companion object {
 

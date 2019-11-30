@@ -2,9 +2,11 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.color.TileColor.Companion
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.game.GameArea
@@ -18,40 +20,40 @@ import kotlin.random.Random
 
 object TopDownObliqueWorldExample {
 
-    private val WORLD_SIZE = Sizes.create3DSize(100, 100, 100)
+    private val WORLD_SIZE = Size3D.create(100, 100, 100)
     private val VISIBLE_Z_LEVELS = 5
     private val random = Random(5643218)
 
-    private val BLACK = TileColors.fromString("#140c1c")
-    private val DARK_BROWN = TileColors.fromString("#442434")
-    private val PURPLE = TileColors.fromString("#30346d")
-    private val DARK_GREY = TileColors.fromString("#4e4a4e")
-    private val BROWN = TileColors.fromString("#854c30")
-    private val DARK_GREEN = TileColors.fromString("#346524")
-    private val RED = TileColors.fromString("#d04648")
-    private val GREY = TileColors.fromString("#757161")
-    private val BLUE = TileColors.fromString("#597dce")
-    private val ORANGE = TileColors.fromString("#d27d2c")
-    private val LIGHT_GREY = TileColors.fromString("#8595a1")
-    private val LIGHT_GREEN = TileColors.fromString("#6daa2c")
-    private val CREAM = TileColors.fromString("#d2aa99")
-    private val TEAL = TileColors.fromString("#6dc2ca")
-    private val YELLOW = TileColors.fromString("#dad45e")
-    private val BRIGHT_GREEN = TileColors.fromString("#deeed6")
-    private val TRANSPARENT = TileColors.transparent()
+    private val BLACK = TileColor.fromString("#140c1c")
+    private val DARK_BROWN = TileColor.fromString("#442434")
+    private val PURPLE = TileColor.fromString("#30346d")
+    private val DARK_GREY = TileColor.fromString("#4e4a4e")
+    private val BROWN = TileColor.fromString("#854c30")
+    private val DARK_GREEN = TileColor.fromString("#346524")
+    private val RED = TileColor.fromString("#d04648")
+    private val GREY = TileColor.fromString("#757161")
+    private val BLUE = TileColor.fromString("#597dce")
+    private val ORANGE = TileColor.fromString("#d27d2c")
+    private val LIGHT_GREY = TileColor.fromString("#8595a1")
+    private val LIGHT_GREEN = TileColor.fromString("#6daa2c")
+    private val CREAM = TileColor.fromString("#d2aa99")
+    private val TEAL = TileColor.fromString("#6dc2ca")
+    private val YELLOW = TileColor.fromString("#dad45e")
+    private val BRIGHT_GREEN = TileColor.fromString("#deeed6")
+    private val TRANSPARENT = TileColor.transparent()
 
 
-    private val EMPTY = Tiles.empty()
-    private val FLOOR = Tiles.defaultTile()
+    private val EMPTY = Tile.empty()
+    private val FLOOR = Tile.defaultTile()
             .withCharacter(Symbols.BLOCK_SPARSE)
             .withBackgroundColor(BROWN)
             .withForegroundColor(CREAM)
 
-    private val WALL_TOP = Tiles.defaultTile()
+    private val WALL_TOP = Tile.defaultTile()
             .withCharacter(Symbols.BLOCK_SOLID)
             .withForegroundColor(DARK_GREY)
 
-    private val GLASS = Tiles.defaultTile()
+    private val GLASS = Tile.defaultTile()
             .withCharacter(' ')
             .withBackgroundColor(TileColors.create(
                     red = BLUE.red,
@@ -59,13 +61,13 @@ object TopDownObliqueWorldExample {
                     blue = BLUE.blue,
                     alpha = 125))
 
-    private val ROOF_TOP = Tiles.defaultTile()
+    private val ROOF_TOP = Tile.defaultTile()
             .withCharacter(Symbols.DOUBLE_LINE_HORIZONTAL)
             .withModifiers(Borders.newBuilder().withBorderColor(BROWN).build())
             .withBackgroundColor(BROWN)
             .withForegroundColor(RED)
 
-    private val ROOF_FRONT = Tiles.defaultTile()
+    private val ROOF_FRONT = Tile.defaultTile()
             .withCharacter(Symbols.DOUBLE_LINE_HORIZONTAL)
             .withBackgroundColor(DARK_BROWN)
             .withForegroundColor(BROWN)
@@ -83,22 +85,22 @@ object TopDownObliqueWorldExample {
             .build()
 
     private val GRASS_TILES = listOf(
-            Tiles.defaultTile()
+            Tile.defaultTile()
                     .withCharacter(',')
                     .withBackgroundColor(DARK_GREEN)
                     .withForegroundColor(LIGHT_GREEN),
-            Tiles.defaultTile()
+            Tile.defaultTile()
                     .withCharacter('.')
                     .withBackgroundColor(DARK_GREEN)
                     .withForegroundColor(BRIGHT_GREEN),
-            Tiles.defaultTile()
+            Tile.defaultTile()
                     .withCharacter('"')
                     .withBackgroundColor(DARK_GREEN)
                     .withForegroundColor(LIGHT_GREEN))
 
     private fun grass() = Blocks.newBuilder<Tile>()
-            .withEmptyTile(Tiles.empty())
-            .withContent(Tiles.empty())
+            .withEmptyTile(Tile.empty())
+            .withContent(Tile.empty())
             .withBottom(GRASS_TILES[random.nextInt(GRASS_TILES.size)].let {
                 it.withForegroundColor(it.foregroundColor.darkenByPercent(random.nextDouble(.1)))
                         .withBackgroundColor(it.backgroundColor.lightenByPercent(random.nextDouble(.1)))
@@ -111,7 +113,7 @@ object TopDownObliqueWorldExample {
             .build()
 
     private val FLOOR_BLOCK = Blocks.newBuilder<Tile>()
-            .withEmptyTile(Tiles.empty())
+            .withEmptyTile(Tile.empty())
             .withContent(EMPTY)
             .withBottom(FLOOR)
             .build()
@@ -128,12 +130,12 @@ object TopDownObliqueWorldExample {
             .withEmptyTile(EMPTY)
             .build()
 
-    private fun wallOutside() = Tiles.defaultTile()
+    private fun wallOutside() = Tile.defaultTile()
             .withCharacter(Symbols.DOUBLE_LINE_HORIZONTAL_SINGLE_LINE_CROSS)
             .withBackgroundColor(BROWN.darkenByPercent(random.nextDouble(.15)))
             .withForegroundColor(CREAM.lightenByPercent(random.nextDouble(.15)))
 
-    private fun wallInside() = Tiles.defaultTile()
+    private fun wallInside() = Tile.defaultTile()
             .withCharacter(Symbols.DOUBLE_LINE_VERTICAL_SINGLE_LINE_CROSS)
             .withBackgroundColor(DARK_GREY.darkenByPercent(random.nextDouble(.25)))
             .withForegroundColor(GREY.lightenByPercent(random.nextDouble(.25)))
@@ -165,7 +167,7 @@ object TopDownObliqueWorldExample {
 
         val ga = GameComponents.newGameAreaBuilder<Tile, Block<Tile>>()
                 .withActualSize(WORLD_SIZE)
-                .withVisibleSize(Sizes.from2DTo3D(panel.contentSize, VISIBLE_Z_LEVELS))
+                .withVisibleSize(panel.contentSize.to3DSize(VISIBLE_Z_LEVELS))
                 .withProjectionMode(ProjectionMode.TOP_DOWN_OBLIQUE_FRONT)
                 .build()
 
@@ -203,23 +205,23 @@ object TopDownObliqueWorldExample {
         addGrass(ga)
 
         val goblinFront = BLOCK_BASE.createCopy().apply {
-            front = Tiles.empty().withCharacter('g')
+            front = Tile.empty().withCharacter('g')
                     .withBackgroundColor(GREY)
                     .withForegroundColor(BLACK)
-            top = Tiles.empty().withCharacter(Symbols.ARROW_DOWN)
+            top = Tile.empty().withCharacter(Symbols.ARROW_DOWN)
                     .withBackgroundColor(LIGHT_GREY)
                     .withForegroundColor(CREAM)
         }
         val trollLegs = BLOCK_BASE.createCopy().apply {
-            front = Tiles.empty().withCharacter(Symbols.DOUBLE_LINE_VERTICAL)
+            front = Tile.empty().withCharacter(Symbols.DOUBLE_LINE_VERTICAL)
                     .withBackgroundColor(TileColor.transparent())
                     .withForegroundColor(ORANGE)
         }
         val trollTorso = BLOCK_BASE.createCopy().apply {
-            front = Tiles.empty().withCharacter('t')
+            front = Tile.empty().withCharacter('t')
                     .withBackgroundColor(GREY)
                     .withForegroundColor(BLACK)
-            top = Tiles.empty().withCharacter(Symbols.ARROW_DOWN)
+            top = Tile.empty().withCharacter(Symbols.ARROW_DOWN)
                     .withBackgroundColor(LIGHT_GREY)
                     .withForegroundColor(CREAM)
         }

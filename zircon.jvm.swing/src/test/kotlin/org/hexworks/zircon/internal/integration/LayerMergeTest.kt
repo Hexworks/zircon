@@ -2,8 +2,15 @@
 
 package org.hexworks.zircon.internal.integration
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.Layers
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 
 object LayerMergeTest {
 
@@ -15,13 +22,13 @@ object LayerMergeTest {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(60, 30))
+                .withSize(Size.create(60, 30))
                 .build())
 
         val tempLayer = Layers.newBuilder()
                 .withOffset(Positions.create(4, 4))
                 .withSize(Sizes.create(2, 2))
-                .withFiller(Tiles.empty().withCharacter('x').withBackgroundColor(ANSITileColor.GREEN))
+                .withFiller(Tile.empty().withCharacter('x').withBackgroundColor(ANSITileColor.GREEN))
                 .build()
 
         tileGrid.addLayer(tempLayer)

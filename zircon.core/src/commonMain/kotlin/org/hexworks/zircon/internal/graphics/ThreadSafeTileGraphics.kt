@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.internal.data.TileGraphicsState
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
@@ -99,7 +100,7 @@ class ThreadSafeTileGraphics(
     @Synchronized
     override fun transform(transformer: (Position, Tile) -> Tile) {
         size.fetchPositions().forEach { pos ->
-            updateTile(pos, transformer(pos, tiles.getOrElse(pos) { Tiles.empty() }))
+            updateTile(pos, transformer(pos, tiles.getOrElse(pos) { Tile.empty() }))
         }
         currentState = currentState.copy(tiles = tiles)
     }

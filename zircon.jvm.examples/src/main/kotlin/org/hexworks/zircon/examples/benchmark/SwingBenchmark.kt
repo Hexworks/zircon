@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.internal.data.GridPosition
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.grid.TileGrid
@@ -34,7 +35,7 @@ fun main(args: Array<String>) {
     val layerWidth = 20
     val layerHeight = 10
     val layerSize = Sizes.create(layerWidth, layerHeight)
-    val filler = Tiles.defaultTile().withCharacter('x')
+    val filler = Tile.defaultTile().withCharacter('x')
 
     val layers = (0..layerCount).map {
 
@@ -58,11 +59,11 @@ fun main(args: Array<String>) {
     }
 
     val tiles = listOf(
-            Tiles.newBuilder().withCharacter('a').withStyleSet(StyleSet.create(
+            Tile.newBuilder().withCharacter('a').withStyleSet(StyleSet.create(
                     foregroundColor = ANSITileColor.YELLOW,
                     backgroundColor = ANSITileColor.BLUE))
                     .buildCharacterTile(),
-            Tiles.newBuilder().withCharacter('b').withStyleSet(StyleSet.create(
+            Tile.newBuilder().withCharacter('b').withStyleSet(StyleSet.create(
                     foregroundColor = ANSITileColor.GREEN,
                     backgroundColor = ANSITileColor.RED))
                     .buildCharacterTile())

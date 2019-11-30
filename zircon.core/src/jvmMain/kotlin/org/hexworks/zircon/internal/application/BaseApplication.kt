@@ -28,8 +28,9 @@ abstract class BaseApplication(private val appConfig: AppConfig) : Application, 
     private var paused = false
     private var lastRender = 0L
 
+    @Synchronized
     override fun start() {
-        if (!stopped) {
+        if (stopped.not() && running.not()) {
             renderer.create()
             running = true
             launch {
@@ -61,6 +62,7 @@ abstract class BaseApplication(private val appConfig: AppConfig) : Application, 
         paused = false
     }
 
+    @Synchronized
     override fun stop() {
         stopped = true
         running = false

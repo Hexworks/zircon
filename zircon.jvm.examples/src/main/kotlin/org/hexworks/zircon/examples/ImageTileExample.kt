@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.CharacterTileStrings
 import org.hexworks.zircon.api.ImageDictionaryTilesetResources
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.data.Tile
 
 object ImageTileExample {
 
@@ -20,7 +20,7 @@ object ImageTileExample {
                 .build())
 
 
-        val imageTile = Tiles.newBuilder()
+        val imageTile = Tile.newBuilder()
                 .withTileset(imageDictionary)
                 .withName("hexworks_logo.png")
                 .buildImageTile()
