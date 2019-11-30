@@ -1,19 +1,20 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.LibgdxApplications
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.halfBlock
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.extensions.side
 import org.hexworks.zircon.api.graphics.BoxType.DOUBLE
+import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.MouseEventType
 
 object ButtonsExample {
@@ -24,12 +25,12 @@ object ButtonsExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(60, 40))
+                .withSize(Size.create(60, 40))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         val panel = Components.panel()
                 .withDecorations(box(title = "Buttons on panel"), shadow())
@@ -50,7 +51,7 @@ object ButtonsExample {
                 .withText("Too long name for button")
                 .withDecorations(box(), shadow())
                 .withAlignment(positionalAlignment(1, 9))
-                .withSize(Sizes.create(10, 4))
+                .withSize(Size.create(10, 4))
         val overTheTopBtn = Components.button()
                 .withText("Over the top button")
                 .withDecorations(box(boxType = DOUBLE), halfBlock(), shadow())
@@ -85,7 +86,7 @@ object ButtonsExample {
         screen.addComponent(invisibleBtn)
 
         screen.display()
-        screen.applyColorTheme(theme)
+        screen.theme = theme
 
         invisibleBtn.processMouseEvents(MouseEventType.MOUSE_CLICKED) { _, _ ->
             invisibleBtn.isHidden = true

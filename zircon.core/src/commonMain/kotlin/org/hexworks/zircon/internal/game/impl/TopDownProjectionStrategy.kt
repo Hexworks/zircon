@@ -1,13 +1,11 @@
 package org.hexworks.zircon.internal.game.impl
 
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.data.BlockTileType.BOTTOM
 import org.hexworks.zircon.api.data.BlockTileType.CONTENT
 import org.hexworks.zircon.api.data.BlockTileType.TOP
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.Tile.Companion
-import org.hexworks.zircon.api.data.impl.Position3D
+import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.extensions.toTileComposite
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.internal.game.ProjectionStrategy

@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.component.renderer.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -10,6 +9,7 @@ import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.fetchCharacters
 import org.hexworks.zircon.internal.component.impl.DefaultButton
@@ -39,7 +39,7 @@ class DefaultComponentRenderingStrategyTest {
 
     @Test
     fun shouldRenderButtonWithDecorations() {
-        val size = Sizes.create(8, 4)
+        val size = Size.create(8, 4)
         val graphics = TileGraphicsBuilder.newBuilder()
                 .withSize(size)
                 .build().apply {
@@ -76,7 +76,7 @@ class DefaultComponentRenderingStrategyTest {
 
     @Test
     fun shouldNotRenderButtonWhenItIsInvisible() {
-        val size = Sizes.create(8, 4)
+        val size = Size.create(8, 4)
         val graphics = TileGraphicsBuilder.newBuilder()
                 .withSize(size)
                 .build()
@@ -102,12 +102,12 @@ class DefaultComponentRenderingStrategyTest {
         target.render(btn, graphics)
 
         assertThat(graphics.fetchCharacters())
-                .containsExactlyElementsOf(MutableList(32) { ' ' } )
+                .containsExactlyElementsOf(MutableList(32) { ' ' })
     }
 
-        @Test
+    @Test
     fun shouldProperlyRenderComponentWithoutDecorations() {
-        val size = Sizes.create(5, 5)
+        val size = Size.create(5, 5)
         val graphics = TileGraphicsBuilder.newBuilder()
                 .withSize(size)
                 .build()
@@ -138,7 +138,7 @@ class DefaultComponentRenderingStrategyTest {
     @Test
     fun `Should properly render decorations and the component on a filled TileGraphics`() {
 
-        val size = Sizes.create(5, 5)
+        val size = Size.create(5, 5)
         val graphics = TileGraphicsBuilder.newBuilder()
                 .withSize(size)
                 .build()
@@ -170,7 +170,7 @@ class DefaultComponentRenderingStrategyTest {
     @Test
     fun `Should properly render decorations and the component on a blank TileGraphics`() {
 
-        val size = Sizes.create(4, 4)
+        val size = Size.create(4, 4)
         val graphics = TileGraphicsBuilder.newBuilder()
                 .withSize(size)
                 .build()

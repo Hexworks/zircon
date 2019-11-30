@@ -1,14 +1,12 @@
 package org.hexworks.zircon.api.graphics
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.fetchCharacters
 import org.junit.Before
 import org.junit.Test

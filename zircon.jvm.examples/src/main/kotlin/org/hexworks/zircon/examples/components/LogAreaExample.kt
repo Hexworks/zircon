@@ -1,18 +1,20 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.ComponentStyleSets
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.screen.Screen
 
 object LogAreaExample {
 
@@ -21,13 +23,13 @@ object LogAreaExample {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .enableBetaFeatures()
-                .withSize(Sizes.create(70, 30))
+                .withSize(Size.create(70, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         val logArea = Components.logArea()
                 .withDecorations(box(title = "Log"))
@@ -59,7 +61,7 @@ object LogAreaExample {
                 .withComponentStyleSet(paragraphStyleSet))
 
         screen.addComponent(logArea)
-        screen.applyColorTheme(theme)
+        screen.theme = theme
         screen.display()
 
 

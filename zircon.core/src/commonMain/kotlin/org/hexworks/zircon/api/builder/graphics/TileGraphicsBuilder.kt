@@ -1,12 +1,9 @@
 package org.hexworks.zircon.api.builder.graphics
 
-import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -39,7 +36,7 @@ data class TileGraphicsBuilder(
      * Sets the size for the new [TileGraphics].
      * Default is 1x1.
      */
-    fun withSize(width: Int, height: Int) = withSize(Sizes.create(width, height))
+    fun withSize(width: Int, height: Int) = withSize(Size.create(width, height))
 
     /**
      * Sets the size for the new [TileGraphics].
@@ -52,7 +49,7 @@ data class TileGraphicsBuilder(
     /**
      * Sets the filler for the new [TileGraphics] which
      * will be used to fill the empty spaces. Default is
-     * [Tiles.empty] which means no filling
+     * [Tile.empty] which means no filling
      */
     fun withFiller(filler: Tile) = also {
         this.filler = filler

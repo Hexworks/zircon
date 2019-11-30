@@ -1,9 +1,14 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.*;
+;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.CharacterTileStrings;
+import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.application.CursorStyle;
+import org.hexworks.zircon.api.color.TileColor;
+import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.grid.TileGrid;
 
@@ -15,8 +20,8 @@ public class CursorExample {
 
     public static void main(String[] args) {
 
-        AppConfig config = AppConfigs.newConfig()
-                .withCursorColor(TileColors.fromString("#ff8844"))
+        AppConfig config = AppConfig.newBuilder()
+                .withCursorColor(TileColor.fromString("#ff8844"))
                 .withBlinkLengthInMilliSeconds(500)
                 .withCursorStyle(CursorStyle.FIXED_BACKGROUND)
                 .withCursorBlinking(true)
@@ -33,7 +38,7 @@ public class CursorExample {
 
         String text = "Cursor example...";
         grid.draw(CharacterTileStrings.newBuilder().withText(text).build());
-        grid.setCursorPosition(Positions.create(text.length(), 0));
+        grid.setCursorPosition(Position.create(text.length(), 0));
 
 
     }

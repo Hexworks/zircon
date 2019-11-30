@@ -1,23 +1,23 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.AppConfigs
-import org.hexworks.zircon.api.Blocks
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.GameComponents
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.data.Block
+import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.game.ProjectionMode
+import org.hexworks.zircon.api.screen.Screen
 
 object GameComponentExample {
 
@@ -114,12 +114,12 @@ object GameComponentExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(width, height))
+                .withSize(Size.create(width, height))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         val gameArea = GameComponents.newGameAreaBuilder<Tile, Block<Tile>>()
                 .withActualSize(Size3D.create(3, 6, 3))
@@ -141,19 +141,19 @@ object GameComponentExample {
         panel.addComponent(gameComponent)
         screen.addComponent(panel)
 
-        gameArea.setBlockAt(Positions.create3DPosition(0, 2, 1), blockA)
-        gameArea.setBlockAt(Positions.create3DPosition(0, 2, 0), blockB)
-        gameArea.setBlockAt(Positions.create3DPosition(1, 2, 0), blockC)
-        gameArea.setBlockAt(Positions.create3DPosition(1, 1, 0), blockD)
-        gameArea.setBlockAt(Positions.create3DPosition(0, 1, 0), blockE)
-        gameArea.setBlockAt(Positions.create3DPosition(2, 0, 0), blockF)
-        gameArea.setBlockAt(Positions.create3DPosition(0, 0, 1), blockG)
+        gameArea.setBlockAt(Position3D.create(0, 2, 1), blockA)
+        gameArea.setBlockAt(Position3D.create(0, 2, 0), blockB)
+        gameArea.setBlockAt(Position3D.create(1, 2, 0), blockC)
+        gameArea.setBlockAt(Position3D.create(1, 1, 0), blockD)
+        gameArea.setBlockAt(Position3D.create(0, 1, 0), blockE)
+        gameArea.setBlockAt(Position3D.create(2, 0, 0), blockF)
+        gameArea.setBlockAt(Position3D.create(0, 0, 1), blockG)
 
         screen.display()
-        screen.applyColorTheme(theme)
+        screen.theme = theme
     }
 
-    private fun block(side: Tile, top: Tile) = Blocks.newBuilder<Tile>()
+    private fun block(side: Tile, top: Tile) = Block.newBuilder<Tile>()
             .withLeft(side)
             .withRight(side)
             .withFront(side)

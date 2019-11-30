@@ -6,10 +6,7 @@ import org.hexworks.zircon.api.component.Panel;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.screen.Screen;
-import org.hexworks.zircon.api.uievent.KeyCode;
-import org.hexworks.zircon.api.uievent.KeyboardEventType;
-import org.hexworks.zircon.api.uievent.MouseEventType;
-import org.hexworks.zircon.api.uievent.UIEventPhase;
+import org.hexworks.zircon.api.uievent.*;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 import static org.hexworks.zircon.api.ComponentDecorations.shadow;
@@ -23,7 +20,7 @@ public class InputHandling {
     public static void main(String[] args) {
 
         TileGrid tileGrid = SwingApplications.startTileGrid();
-        Screen screen = Screens.createScreenFor(tileGrid);
+        Screen screen = Screen.create(tileGrid);
 
         Panel panel = Components.panel()
                 .withDecorations(box(BoxType.SINGLE, "New Game"), shadow())
@@ -58,7 +55,7 @@ public class InputHandling {
         // when you handle events you need to return a response
         button.handleComponentEvents(ACTIVATED, (event) -> {
             System.out.println("Skipped component event");
-            return UIEventResponses.pass(); // pass means that you didn't handle the event
+            return UIEventResponse.pass(); // pass means that you didn't handle the event
         });
 
         // when you process events you don't have to return a response, Zircon will treat
@@ -74,7 +71,7 @@ public class InputHandling {
             System.out.println(String.format("Mouse event was: %s.", event));
 
             // we return a response indicating that we processed the event
-            return UIEventResponses.processed();
+            return UIEventResponse.processed();
         }));
 
         // listens to keyboard events
@@ -83,16 +80,16 @@ public class InputHandling {
             if (event.getCode().equals(KeyCode.UP)) {
                 // only prints it when we press Arrow Up
                 System.out.println(String.format("Keyboard event was: %s.", event));
-                return UIEventResponses.processed();
+                return UIEventResponse.processed();
             } else {
                 // otherwise we just pass on it
                 System.out.println("Keyboard event was not UP, we pass.");
-                return UIEventResponses.pass(); // we didn't handle it so we pass on the event
+                return UIEventResponse.pass(); // we didn't handle it so we pass on the event
             }
         }));
 
         // we make the contents of the screen visible.
         screen.display();
-        screen.applyColorTheme(ColorThemes.entrappedInAPalette());
+        screen.setTheme(ColorThemes.entrappedInAPalette());
     }
 }

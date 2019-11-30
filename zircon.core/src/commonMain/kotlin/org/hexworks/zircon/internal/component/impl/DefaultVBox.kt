@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.behavior.TitleHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -11,6 +10,7 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.abbreviate
 
 open class DefaultVBox(componentMetadata: ComponentMetadata,
@@ -22,7 +22,7 @@ open class DefaultVBox(componentMetadata: ComponentMetadata,
         renderer = renderingStrategy),
         TitleHolder by TitleHolder.create(initialTitle) {
 
-    private var filledUntil = Positions.create(0, 0)
+    private var filledUntil = Position.create(0, 0)
     private var availableSpace = contentSize.toRect()
 
     init {

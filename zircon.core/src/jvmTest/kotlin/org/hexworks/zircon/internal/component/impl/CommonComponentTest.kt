@@ -3,14 +3,13 @@ package org.hexworks.zircon.internal.component.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType.*
+import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_CLICKED
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_DRAGGED
@@ -152,7 +151,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
         val event = MouseEvent(
                 type = MOUSE_PRESSED,
                 button = 1,
-                position = Positions.defaultPosition())
+                position = Position.defaultPosition())
 
         target.process(event, TARGET)
 

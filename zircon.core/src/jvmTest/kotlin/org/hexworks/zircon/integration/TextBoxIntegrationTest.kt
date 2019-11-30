@@ -1,7 +1,7 @@
 package org.hexworks.zircon.integration
 
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
@@ -34,7 +34,7 @@ class TextBoxIntegrationTest : ComponentIntegrationTestBase() {
                 .addNewLine()
                 .addParagraph("And a multi-line paragraph with typewriter effect...", withTypingEffectSpeedInMs = 200))
         panel.addComponent(Components.textBox(26)
-                .withAlignment(positionalAlignment(Positions.zero()))
+                .withAlignment(positionalAlignment(Position.zero()))
                 .addHeader("Header!")
                 .addParagraph("This is a plain text box.")
                 .addNewLine()

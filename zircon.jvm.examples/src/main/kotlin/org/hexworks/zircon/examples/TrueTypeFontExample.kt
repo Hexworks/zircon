@@ -1,11 +1,12 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CharacterTileStrings
 import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.TrueTypeFontResources
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.data.Size
 
 object TrueTypeFontExample {
 
@@ -14,8 +15,8 @@ object TrueTypeFontExample {
 
         val theme = ColorThemes.amigaOs()
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .withSize(Sizes.create(20, 10))
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+                .withSize(Size.create(20, 10))
                 .withDefaultTileset(TrueTypeFontResources.ibmBios(60))
                 .build())
 

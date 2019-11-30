@@ -1,25 +1,24 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Layers
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.color.ANSITileColor.BLUE
 import org.hexworks.zircon.api.color.ANSITileColor.GREEN
 import org.hexworks.zircon.api.color.ANSITileColor.RED
 import org.hexworks.zircon.api.color.ANSITileColor.YELLOW
 import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.api.extensions.hide
 import org.hexworks.zircon.api.extensions.show
+import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.modifier.TileTransformModifier
+import org.hexworks.zircon.api.screen.Screen
 
 object LayerTransformerExample {
 
@@ -29,15 +28,15 @@ object LayerTransformerExample {
 
         val theme = ColorThemes.solarizedLightOrange()
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(CP437TilesetResources.taffer20x20())
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
-        val transformingLayer = Layers.newBuilder()
-                .withSize(Sizes.create(20, 20))
-                .withOffset(Positions.create(1, 5))
+        val transformingLayer = Layer.newBuilder()
+                .withSize(Size.create(20, 20))
+                .withOffset(Position.create(1, 5))
                 .build().apply {
                     fill(Tile.newBuilder()
                             .withBackgroundColor(RED)
@@ -46,9 +45,9 @@ object LayerTransformerExample {
                             .buildCharacterTile())
                 }
 
-        val hideableLayer = Layers.newBuilder()
-                .withSize(Sizes.create(20, 20))
-                .withOffset(Positions.create(39, 5))
+        val hideableLayer = Layer.newBuilder()
+                .withSize(Size.create(20, 20))
+                .withOffset(Position.create(39, 5))
                 .build().apply {
                     fill(Tile.newBuilder()
                             .withBackgroundColor(BLUE)
@@ -77,7 +76,7 @@ object LayerTransformerExample {
 
         screen.addComponent(Components.toggleButton()
                 .withText("Hide")
-                .withPosition(Positions.topRightOf(transformToggle) + Positions.create(1, 0))
+                .withPosition(Position.topRightOf(transformToggle) + Position.create(1, 0))
                 .build().apply {
                     onSelectionChanged {
                         if (it.newValue) {
@@ -88,7 +87,7 @@ object LayerTransformerExample {
                     }
                 })
 
-        screen.applyColorTheme(theme)
+        screen.theme = theme
         screen.display()
 
         screen.addLayer(transformingLayer)

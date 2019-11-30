@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.data
 
-import org.hexworks.zircon.api.data.impl.Position3D
 import kotlin.jvm.JvmStatic
 
 /**

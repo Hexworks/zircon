@@ -1,17 +1,19 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.extensions.side
+import org.hexworks.zircon.api.screen.Screen
 
 object ToggleButtonsExample {
 
@@ -21,16 +23,16 @@ object ToggleButtonsExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(60, 30))
+                .withSize(Size.create(60, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         val panel = Components.panel()
-                .withSize(Sizes.create(30, 28))
-                .withAlignment(positionalAlignment(Positions.create(29, 1)))
+                .withSize(Size.create(30, 28))
+                .withAlignment(positionalAlignment(Position.create(29, 1)))
                 .withDecorations(box(title = "Toolbar buttons on panel"), shadow())
                 .build()
         screen.addComponent(panel)
@@ -38,12 +40,12 @@ object ToggleButtonsExample {
         val unselectedToggleButton = Components.toggleButton()
                 .withText("Toggle me")
                 .withDecorations(side())
-                .withAlignment(positionalAlignment(Positions.create(1, 3)))
+                .withAlignment(positionalAlignment(Position.create(1, 3)))
         val selectedToggleButton = Components.toggleButton()
                 .withText("Boxed Toggle Button")
                 .withIsSelected(true)
                 .withDecorations(box())
-                .withAlignment(positionalAlignment(Positions.create(1, 5)))
+                .withAlignment(positionalAlignment(Position.create(1, 5)))
 
         // we can add them to both because these are just builders, so
         // 4 components will be built below
@@ -54,7 +56,7 @@ object ToggleButtonsExample {
 
 
         screen.display()
-        screen.applyColorTheme(theme)
+        screen.theme = theme
     }
 
 }

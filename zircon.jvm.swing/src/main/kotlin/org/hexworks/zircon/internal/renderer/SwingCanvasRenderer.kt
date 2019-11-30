@@ -83,9 +83,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         canvas.addMouseWheelListener(mouseEventListener)
         canvas.addHierarchyListener { e ->
             if (e.changeFlags == HierarchyEvent.DISPLAYABILITY_CHANGED.toLong()) {
-                if (e.changed.isDisplayable) {
-                    // no op
-                } else {
+                if (!e.changed.isDisplayable) {
                     close()
                 }
             }
@@ -98,7 +96,6 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         // buffering
         canvas.createBufferStrategy(2)
         initializeBufferStrategy()
-
     }
 
     override fun close() {

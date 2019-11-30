@@ -1,7 +1,6 @@
-package org.hexworks.zircon.api.data.impl
+package org.hexworks.zircon.api.data
 
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size3D
+import kotlin.jvm.JvmStatic
 
 /**
  * Represents a coordinate in 3D space. Extends [Position] with
@@ -142,19 +141,23 @@ data class Position3D private constructor(val x: Int,
         /**
          * Factory method for [Position3D].
          */
+        @JvmStatic
         fun create(x: Int, y: Int, z: Int) = Position3D(x = x, y = y, z = z)
 
         /**
          * Position3d(0, 0, 0)
          */
+        @JvmStatic
         fun defaultPosition() = DEFAULT_POSITION
 
+        @JvmStatic
         fun unknown() = UNKNOWN
 
         /**
          * Creates a new [Position3D] from a [Position].
          * If `y` is not supplied it defaults to `0` (ground level).
          */
+        @JvmStatic
         fun from2DPosition(position: Position, z: Int = 0) = Position3D(
                 x = position.x,
                 y = position.y,

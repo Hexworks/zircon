@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
@@ -14,6 +13,7 @@ import org.hexworks.zircon.api.component.LogArea
 import org.hexworks.zircon.api.component.TextBox
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.abbreviate
 
 class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
@@ -137,10 +137,10 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
             }
             currentHeight -= currentFreedSpace
         }
-        element.moveTo(Positions.create(0, currentHeight))
+        element.moveTo(Position.create(0, currentHeight))
         addComponent(element)
         if (applyTheme) {
-            element.applyColorTheme(currentTheme)
+            element.theme = currentTheme
         }
         render()
     }

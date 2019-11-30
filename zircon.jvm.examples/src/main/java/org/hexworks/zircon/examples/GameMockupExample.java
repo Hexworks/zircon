@@ -1,6 +1,10 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.ColorThemes;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.Label;
 import org.hexworks.zircon.api.component.Panel;
@@ -12,6 +16,7 @@ import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
+import org.hexworks.zircon.api.uievent.UIEventResponse;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -41,9 +46,9 @@ public class GameMockupExample {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double columns = screenSize.getWidth() / TILESET.getWidth();
         double rows = screenSize.getHeight() / TILESET.getHeight();
-        Size terminalSize = Sizes.create((int) columns, (int) rows);
+        Size terminalSize = Size.create((int) columns, (int) rows);
 
-        final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
                 .withSize(terminalSize)
                 .withDebugMode(true)
@@ -54,8 +59,8 @@ public class GameMockupExample {
         // MAIN MENU
         // ==========
 
-        Screen mainMenuScreen = Screens.createScreenFor(tileGrid);
-        Position menuPosition = Positions.create(
+        Screen mainMenuScreen = Screen.create(tileGrid);
+        Position menuPosition = Position.create(
                 (terminalSize.getWidth() - MAIN_MENU_PANEL_WIDTH) / 2,
                 (terminalSize.getHeight() - MAIN_MENU_PANEL_HEIGHT) / 2);
         Label mainMenuLabel = Components.label()
@@ -67,39 +72,39 @@ public class GameMockupExample {
         Panel menuPanel = Components.panel()
                 .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE))
                 .withPosition(menuPosition)
-                .withSize(Sizes.create(MAIN_MENU_PANEL_WIDTH, MAIN_MENU_PANEL_HEIGHT))
+                .withSize(Size.create(MAIN_MENU_PANEL_WIDTH, MAIN_MENU_PANEL_HEIGHT))
                 .build();
 
         Button newGameButton = Components.button()
                 .withText(NEW_GAME_BUTTON_LABEL)
-                .withPosition(Positions.create(3, 1))
+                .withPosition(Position.create(3, 1))
                 .build();
         menuPanel.addComponent(newGameButton);
 
         Button optionsButton = Components.button()
                 .withText(OPTIONS_BUTTON_LABEL)
-                .withPosition(Positions.create(4, 3))
+                .withPosition(Position.create(4, 3))
                 .build();
         menuPanel.addComponent(optionsButton);
 
         Button quitButton = Components.button()
                 .withText(QUIT_BUTTON_LABEL)
-                .withPosition(Positions.create(7, 5))
+                .withPosition(Position.create(7, 5))
                 .build();
         menuPanel.addComponent(quitButton);
 
         mainMenuScreen.addComponent(menuPanel);
-        mainMenuScreen.applyColorTheme(THEME);
+        mainMenuScreen.setTheme(THEME);
 
         // ==========
         // OPTIONS
         // ==========
 
-        Screen optionsScreen = Screens.createScreenFor(tileGrid);
+        Screen optionsScreen = Screen.create(tileGrid);
 
         Button backButton = Components.button()
                 .withText(BACK_LABEL)
-                .withPosition(Positions.create(
+                .withPosition(Position.create(
                         PANEL_SPACING,
                         terminalSize.getHeight() - (PANEL_SPACING * 2)))
                 .build();
@@ -107,18 +112,18 @@ public class GameMockupExample {
 
         Button applyButton = Components.button()
                 .withText(APPLY_LABEL)
-                .withPosition((Positions.create(PANEL_SPACING, 0)).relativeToRightOf(backButton))
+                .withPosition((Position.create(PANEL_SPACING, 0)).relativeToRightOf(backButton))
                 .build();
         optionsScreen.addComponent(applyButton);
 
         Panel difficultyPanel = Components.panel()
-                .withSize(Sizes.create((terminalSize.getWidth() - PANEL_SPACING) / 3, 9))
-                .withPosition(Positions.create(PANEL_SPACING, PANEL_SPACING))
+                .withSize(Size.create((terminalSize.getWidth() - PANEL_SPACING) / 3, 9))
+                .withPosition(Position.create(PANEL_SPACING, PANEL_SPACING))
                 .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, DIFFICULTY_LABEL))
                 .build();
 
         RadioButtonGroup difficultyRadio = Components.radioButtonGroup()
-                .withSize(difficultyPanel.getSize().minus(Sizes.create(2, 2)))
+                .withSize(difficultyPanel.getSize().minus(Size.create(2, 2)))
                 .build();
 
         Arrays.asList(DIFFICULTIES).forEach((diff) -> {
@@ -129,23 +134,23 @@ public class GameMockupExample {
         optionsScreen.addComponent(difficultyPanel);
 
 
-        optionsScreen.applyColorTheme(THEME);
+        optionsScreen.setTheme(THEME);
 
         // INTERACTIONS
 
         quitButton.handleComponentEvents(ACTIVATED, (event) -> {
             System.exit(0);
-            return UIEventResponses.processed();
+            return UIEventResponse.processed();
         });
 
         optionsButton.handleComponentEvents(ACTIVATED, (event) -> {
             optionsScreen.display();
-            return UIEventResponses.processed();
+            return UIEventResponse.processed();
         });
 
         backButton.handleComponentEvents(ACTIVATED, (event) -> {
             mainMenuScreen.display();
-            return UIEventResponses.processed();
+            return UIEventResponse.processed();
         });
 
         // START IT UP

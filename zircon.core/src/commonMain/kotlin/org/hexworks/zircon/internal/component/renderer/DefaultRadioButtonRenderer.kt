@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.component.renderer
 
 import org.hexworks.zircon.api.CharacterTileStrings
-import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton
@@ -30,7 +30,7 @@ class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> {
                 .withSize(tileGraphics.size)
                 .build())
         (finalText.length until tileGraphics.width).forEach { idx ->
-            tileGraphics.draw(Tile.empty(), Positions.create(idx, 0))
+            tileGraphics.draw(Tile.empty(), Position.create(idx, 0))
         }
         tileGraphics.applyStyle(context.currentStyle)
     }

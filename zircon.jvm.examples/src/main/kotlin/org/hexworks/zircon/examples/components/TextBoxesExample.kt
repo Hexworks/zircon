@@ -1,18 +1,18 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.AppConfigs
-import org.hexworks.zircon.api.CP437TilesetResources
+
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.LibgdxApplications
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.TrueTypeFontResources
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
+import org.hexworks.zircon.api.screen.Screen
 
 object TextBoxesExample {
 
@@ -22,22 +22,22 @@ object TextBoxesExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(60, 30))
+                .withSize(Size.create(60, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         val panel = Components.panel()
                 .withDecorations(box())
-                .withSize(Sizes.create(28, 28))
-                .withAlignment(positionalAlignment(Positions.create(30, 1)))
+                .withSize(Size.create(28, 28))
+                .withAlignment(positionalAlignment(Position.create(30, 1)))
                 .build()
         screen.addComponent(panel)
 
         screen.addComponent(Components.textBox(26)
-                .withAlignment(positionalAlignment(Positions.create(2, 2)))
+                .withAlignment(positionalAlignment(Position.create(2, 2)))
                 .addHeader("Header!")
                 .addParagraph("This is a plain text box.")
                 .addNewLine()
@@ -53,7 +53,7 @@ object TextBoxesExample {
                 .addNewLine()
                 .addParagraph("And a multi-line paragraph with typewriter effect...", withTypingEffectSpeedInMs = 200))
         panel.addComponent(Components.textBox(26)
-                .withAlignment(positionalAlignment(Positions.zero()))
+                .withAlignment(positionalAlignment(Position.zero()))
                 .addHeader("Header!")
                 .addParagraph("This is a plain text box.")
                 .addNewLine()
@@ -70,18 +70,18 @@ object TextBoxesExample {
                 .addParagraph("And a multi-line paragraph with typewriter effect...", withTypingEffectSpeedInMs = 200))
 
         screen.addComponent(Components.textBox(22)
-                .withAlignment(positionalAlignment(Positions.create(1, 17)))
+                .withAlignment(positionalAlignment(Position.create(1, 17)))
                 .addHeader("Decorated!")
                 .withDecorations(box(), shadow())
                 .addParagraph("This is a paragraph which won't fit on one line."))
         panel.addComponent(Components.textBox(22)
-                .withAlignment(positionalAlignment(Positions.create(0, 15)))
+                .withAlignment(positionalAlignment(Position.create(0, 15)))
                 .withDecorations(box(), shadow())
                 .addHeader("Decorated!")
                 .addParagraph("This is a paragraph which won't fit on one line."))
 
         screen.display()
-        screen.applyColorTheme(theme)
+        screen.theme = theme
     }
 
 }

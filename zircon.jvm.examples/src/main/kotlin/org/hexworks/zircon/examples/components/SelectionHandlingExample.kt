@@ -1,6 +1,14 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.*
+
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.screen.Screen
 
 object SelectionHandlingExample {
 
@@ -10,12 +18,12 @@ object SelectionHandlingExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(60, 30))
+                .withSize(Size.create(60, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         val cb0 = Components.checkBox()
                 .withText("Foo")
@@ -30,7 +38,7 @@ object SelectionHandlingExample {
         screen.addComponent(cb1)
 
         screen.display()
-        screen.applyColorTheme(theme)
+        screen.theme = theme
 
         cb0.onSelectionChanged {
             println("Selection changed")

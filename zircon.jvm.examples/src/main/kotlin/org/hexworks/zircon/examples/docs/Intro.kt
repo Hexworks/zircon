@@ -1,40 +1,42 @@
 package org.hexworks.zircon.examples.docs
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.animation.AnimationResource
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.examples.AnimationExample
 
 object Intro {
 
     val tileset = CP437TilesetResources.wanderlust16x16()
-    private val screenSize = Sizes.create(65, 33)
+    private val screenSize = Size.create(65, 33)
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val grid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val grid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
                 .withSize(screenSize)
                 .enableBetaFeatures()
                 .withTitle("Zircon")
                 .build())
 
-        val introScreen = Screens.createScreenFor(grid)
+        val introScreen = Screen.create(grid)
 
         val animBuilder = AnimationResource.loadAnimationFromStream(
                 AnimationExample::class.java.getResourceAsStream("/animations/skull.zap"),
                 tileset).withLoopCount(0)
         for (i in 0 until animBuilder.totalFrameCount) {
-            animBuilder.addPosition(Positions.create(2, 5))
+            animBuilder.addPosition(Position.create(2, 5))
         }
         val zirconSplash = animBuilder.build()
 
@@ -49,7 +51,7 @@ object Intro {
                 .build()
 
         introPanel.addComponent(Components.header()
-                .withAlignment(positionalAlignment(Positions.offset1x1()))
+                .withAlignment(positionalAlignment(Position.offset1x1()))
                 .withText("Do you plan to make a roguelike?")
                 .build())
 
@@ -72,7 +74,7 @@ object Intro {
                 .build()
 
         val nextButton = Components.button()
-                .withAlignment(positionalAlignment(Positions.bottomLeftOf(introBox)))
+                .withAlignment(positionalAlignment(Position.bottomLeftOf(introBox)))
                 .withText("Next")
                 .build()
 
@@ -82,7 +84,7 @@ object Intro {
         introScreen.addComponent(splashPanel)
         introScreen.addComponent(introPanel)
 
-        introPanel.applyColorTheme(ColorThemes.tron())
+        introPanel.theme = ColorThemes.tron()
 
         introScreen.startAnimation(zirconSplash)
 

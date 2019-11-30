@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.api.uievent.ComponentEventType;
+import org.hexworks.zircon.api.uievent.UIEventResponse;
 
 public class SwitchingScreens {
 
@@ -16,14 +17,14 @@ public class SwitchingScreens {
 
         TileGrid tileGrid = SwingApplications.startTileGrid();
 
-        final Screen screen0 = Screens.createScreenFor(tileGrid);
+        final Screen screen0 = Screen.create(tileGrid);
         final Button next = Components.button()
                 .withText("Next")
                 .withPosition(8, 1)
                 .build();
         screen0.addComponent(next);
 
-        final Screen screen1 = Screens.createScreenFor(tileGrid);
+        final Screen screen1 = Screen.create(tileGrid);
         final Button prev = Components.button()
                 .withText("Prev")
                 .withPosition(1, 1)
@@ -33,16 +34,16 @@ public class SwitchingScreens {
         next.handleComponentEvents(ComponentEventType.ACTIVATED, (event) -> {
             LOGGER.info("Switching to Screen 1");
             screen1.display();
-            return UIEventResponses.preventDefault();
+            return UIEventResponse.preventDefault();
         });
         prev.handleComponentEvents(ComponentEventType.ACTIVATED, (event) -> {
             LOGGER.info("Switching to Screen 0");
             screen0.display();
-            return UIEventResponses.processed();
+            return UIEventResponse.processed();
         });
 
-        screen0.applyColorTheme(ColorThemes.adriftInDreams());
-        screen1.applyColorTheme(ColorThemes.afterTheHeist());
+        screen0.setTheme(ColorThemes.adriftInDreams());
+        screen1.setTheme(ColorThemes.afterTheHeist());
 
         screen1.display();
     }

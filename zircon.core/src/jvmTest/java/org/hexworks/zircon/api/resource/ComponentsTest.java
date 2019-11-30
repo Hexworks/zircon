@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.resource;
 
-import org.hexworks.zircon.api.AppConfigs;
 import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.builder.component.*;
 import org.junit.Test;
 
@@ -51,7 +51,7 @@ public class ComponentsTest {
 
     @Test
     public void shouldProperlyCreateGameComponentBuilder() {
-        AppConfigs.newConfig().enableBetaFeatures().build();
+        AppConfig.newBuilder().enableBetaFeatures().build();
         assertThat(Components.gameComponent()).isInstanceOf(GameComponentBuilder.class);
     }
 

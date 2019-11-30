@@ -2,8 +2,8 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.CharacterTileStrings
 import org.hexworks.zircon.api.ImageDictionaryTilesetResources
-import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 
 object ImageTileExample {
@@ -25,7 +25,7 @@ object ImageTileExample {
                 .withName("hexworks_logo.png")
                 .buildImageTile()
 
-        tileGrid.draw(imageTile, Positions.create(30, 20))
+        tileGrid.draw(imageTile, Position.create(30, 20))
 
     }
 

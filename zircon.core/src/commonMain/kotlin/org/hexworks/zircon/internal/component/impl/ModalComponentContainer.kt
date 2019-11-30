@@ -1,19 +1,19 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.InternalComponentContainer
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.resource.ColorThemeResource
 import kotlin.jvm.Synchronized
 
@@ -33,6 +33,16 @@ class ModalComponentContainer(
     override val layerStates: Iterable<LayerState>
         @Synchronized
         get() = containerStack.flatMap { it.layerStates }
+
+    override var theme: ColorTheme
+        get() = mainContainer.theme
+        @Synchronized
+        set(value) {
+            mainContainer.theme = value
+        }
+
+    override val themeProperty: Property<ColorTheme>
+        get() = mainContainer.themeProperty
 
     private val logger = LoggerFactory.getLogger(this::class)
     private val containerStack = mutableListOf<InternalComponentContainer>()
@@ -78,11 +88,6 @@ class ModalComponentContainer(
     }
 
     @Synchronized
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        return mainContainer.applyColorTheme(colorTheme)
-    }
-
-    @Synchronized
     fun addModal(modal: Modal<out ModalResult>) {
         val previousContainer = containerStack.fetchLast()
         previousContainer.deactivate()
@@ -117,7 +122,7 @@ class ModalComponentContainer(
                     root = RootContainer(
                             componentMetadata = metadata,
                             renderingStrategy = renderingStrategy))
-            container.applyColorTheme(ColorThemeResource.EMPTY.getTheme())
+            container.theme = ColorThemeResource.EMPTY.getTheme()
             return container
         }
     }

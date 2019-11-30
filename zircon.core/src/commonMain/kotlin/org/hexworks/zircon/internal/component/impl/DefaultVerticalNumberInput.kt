@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
@@ -24,7 +24,7 @@ class DefaultVerticalNumberInput(
         var pos = textBuffer.cursor.position
         pos = pos.withX(min(pos.x, contentSize.height))
         pos = pos.withY(0)
-        val invertedPosition = Positions.create(pos.y, pos.x)
+        val invertedPosition = Position.create(pos.y, pos.x)
         Zircon.eventBus.publish(
                 event = ZirconEvent.RequestCursorAt(invertedPosition
                         .withRelative(relativePosition + contentOffset)),

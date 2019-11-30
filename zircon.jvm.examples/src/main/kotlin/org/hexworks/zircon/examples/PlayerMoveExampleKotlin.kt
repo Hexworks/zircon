@@ -1,11 +1,11 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.Layers
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
 import org.hexworks.zircon.api.uievent.Pass
@@ -23,9 +23,9 @@ object PlayerMoveExampleKotlin {
 
         val tileGrid = SwingApplications.startTileGrid()
 
-        val player = Layers.newBuilder()
-                .withSize(Sizes.one())
-                .withOffset(Positions.create(tileGrid.width / 2, tileGrid.height / 2))
+        val player = Layer.newBuilder()
+                .withSize(Size.one())
+                .withOffset(Position.create(tileGrid.width / 2, tileGrid.height / 2))
                 .build().apply { fill(PLAYER_TILE) }
 
         tileGrid.processKeyboardEvents(KEY_PRESSED) { event, _ ->

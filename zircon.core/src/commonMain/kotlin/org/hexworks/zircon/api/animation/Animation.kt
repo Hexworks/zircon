@@ -1,7 +1,9 @@
 package org.hexworks.zircon.api.animation
 
 import org.hexworks.zircon.api.behavior.Layerable
+import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.internal.behavior.Identifiable
+import kotlin.jvm.JvmStatic
 
 /**
  * Represents a series of [AnimationFrame]s which if drawn on the screen
@@ -49,4 +51,9 @@ interface Animation : Identifiable {
      */
     fun removeCurrentFrame()
 
+    companion object {
+
+        @JvmStatic
+        fun newBuilder() = AnimationBuilder.newBuilder()
+    }
 }

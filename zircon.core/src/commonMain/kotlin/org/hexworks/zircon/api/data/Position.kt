@@ -3,10 +3,10 @@
 package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.data.GridPosition
 import org.hexworks.zircon.internal.data.PixelPosition
-import org.hexworks.zircon.api.data.impl.Position3D
-import org.hexworks.zircon.api.resource.TilesetResource
+import kotlin.jvm.JvmStatic
 
 /**
  * Represents a coordinate on a 2D plane. [Position]
@@ -127,36 +127,44 @@ interface Position : Comparable<Position> {
      */
     fun relativeToLeftOf(component: Component): Position
 
+    fun to3DPosition(z: Int) = Position3D.from2DPosition(this, z)
+
     companion object {
 
         /**
          * Constant for the top-left corner (0x0)
          */
+        @JvmStatic
         fun topLeftCorner() = TOP_LEFT_CORNER
 
         /**
          * Constant for the 1x1 position (one offset in both directions from top-left)
          */
+        @JvmStatic
         fun offset1x1() = OFFSET_1X1
 
         /**
          * Constant for the 0x0 position.
          */
+        @JvmStatic
         fun zero() = DEFAULT_POSITION
 
         /**
          * This position can be considered as the default (0x0).
          */
+        @JvmStatic
         fun defaultPosition() = DEFAULT_POSITION
 
         /**
          * Used in place of a possible null value. Means that the position is unknown (cursor for example).
          */
+        @JvmStatic
         fun unknown() = UNKNOWN
 
         /**
          * Creates a new [Position] using the given `x` and `y` values.
          */
+        @JvmStatic
         fun create(x: Int, y: Int): Position {
             return GridPosition(x, y)
         }
@@ -164,21 +172,25 @@ interface Position : Comparable<Position> {
         /**
          * Returns the top left position of the given [Component].
          */
+        @JvmStatic
         fun topLeftOf(component: Component) = component.position
 
         /**
          * Returns the top right position of the given [Component].
          */
+        @JvmStatic
         fun topRightOf(component: Component) = component.position.withRelativeX(component.width)
 
         /**
          * Returns the bottom left position of the given [Component].
          */
+        @JvmStatic
         fun bottomLeftOf(component: Component) = component.position.withRelativeY(component.height)
 
         /**
          * Returns the bottom right position of the given [Component].
          */
+        @JvmStatic
         fun bottomRightOf(component: Component) = component.position.withRelative(component.size.toPosition())
 
         private val TOP_LEFT_CORNER = create(0, 0)

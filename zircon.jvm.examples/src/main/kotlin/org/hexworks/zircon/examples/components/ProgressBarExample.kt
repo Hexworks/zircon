@@ -1,16 +1,17 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
+import org.hexworks.zircon.api.screen.Screen
 
 object ProgressBarExample {
 
@@ -20,16 +21,16 @@ object ProgressBarExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(60, 30))
+                .withSize(Size.create(60, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         val panel = Components.panel()
                 .withDecorations(box(title = "Progress Bars on panel"), shadow())
-                .withSize(Sizes.create(30, 28))
+                .withSize(Size.create(30, 28))
                 .withAlignment(positionalAlignment(29, 1))
                 .build()
         screen.addComponent(panel)
@@ -39,7 +40,7 @@ object ProgressBarExample {
                 .withNumberOfSteps(10)
                 .withAlignment(positionalAlignment(0, 5))
                 .withDecorations(box())
-                .withSize(Size.create(25,3))
+                .withSize(Size.create(25, 3))
                 .build()
 
         val progressBarWithPercentValue = Components.progressBar()
@@ -57,7 +58,7 @@ object ProgressBarExample {
         progressBarWithPercentValue.progress = 90.0
 
         screen.display()
-        screen.applyColorTheme(theme)
+        screen.theme = theme
     }
 
 }

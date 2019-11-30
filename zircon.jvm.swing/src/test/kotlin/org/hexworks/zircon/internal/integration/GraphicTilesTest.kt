@@ -3,9 +3,17 @@
 package org.hexworks.zircon.internal.integration
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.*
+
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.GraphicalTilesetResources
+
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.Tile.Companion
+import org.hexworks.zircon.api.screen.Screen
 
 object GraphicTilesTest {
 
@@ -16,12 +24,12 @@ object GraphicTilesTest {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(60, 30))
+                .withSize(Size.create(60, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         screen.addComponent(Components.icon()
                 .withPosition(1, 1)
@@ -36,7 +44,7 @@ object GraphicTilesTest {
 
         screen.display()
 
-        screen.applyColorTheme(theme)
+        screen.theme = theme
     }
 
 }

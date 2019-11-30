@@ -1,11 +1,20 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.*
+
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.*
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.Symbols
+import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.ComponentEventType
 
 object ScrollBarExample {
@@ -14,29 +23,29 @@ object ScrollBarExample {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(60, 30))
+                .withSize(Size.create(60, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
         val panel = Components.panel()
                 .withDecorations(box(title = "Scrollbar on panel"), shadow())
-                .withSize(Sizes.create(30, 28))
+                .withSize(Size.create(30, 28))
                 .withAlignment(positionalAlignment(29, 1))
                 .build()
         screen.addComponent(panel)
 
 
         val demoList = mutableListOf<String>()
-        (0 until 70).forEach {idx ->
+        (0 until 70).forEach { idx ->
             demoList.add("Item $idx")
         }
-        val scrollFragment = DemoScrollFragment(Size.create(20, 15), Position.create(0,1), demoList)
+        val scrollFragment = DemoScrollFragment(Size.create(20, 15), Position.create(0, 1), demoList)
         panel.addFragment(scrollFragment)
 
         val compositeScrollBarPanel = Components.vbox()
-                .withSize(1,17)
+                .withSize(1, 17)
                 .withSpacing(0)
                 .withAlignment(positionalAlignment(20, 0))
                 .build()
@@ -47,7 +56,7 @@ object ScrollBarExample {
                 .build()
         val decrementButton = Components.button()
                 .withText("${Symbols.TRIANGLE_UP_POINTING_BLACK}")
-                .withSize(1,1)
+                .withSize(1, 1)
                 .withDecorations()
                 .build().apply {
                     processComponentEvents(ComponentEventType.ACTIVATED) {
@@ -56,7 +65,7 @@ object ScrollBarExample {
                 }
         val incrementButton = Components.button()
                 .withText("${Symbols.TRIANGLE_DOWN_POINTING_BLACK}")
-                .withSize(1,1)
+                .withSize(1, 1)
                 .withDecorations()
                 .build().apply {
                     processComponentEvents(ComponentEventType.ACTIVATED) {
@@ -72,7 +81,7 @@ object ScrollBarExample {
         panel.addComponent(compositeScrollBarPanel)
 
         val scrollbar2 = Components.horizontalScrollbar()
-                .withSize(20,1)
+                .withSize(20, 1)
                 .withNumberOfScrollableItems(200)
                 .withDecorations()
                 .withAlignment(positionalAlignment(1, 23))
@@ -97,10 +106,10 @@ object ScrollBarExample {
         panel.addComponent(label2)
 
         screen.display()
-        screen.applyColorTheme(theme)
+        screen.theme = theme
     }
 
-    class DemoScrollFragment(private val size: Size, position: Position, private var items: List<String>): Fragment {
+    class DemoScrollFragment(private val size: Size, position: Position, private var items: List<String>) : Fragment {
         private var topDisplayedItem: Int = 0
         override val root = Components.vbox()
                 .withSize(size)
@@ -127,7 +136,7 @@ object ScrollBarExample {
                                 .build()
                 )
             }
-            root.applyColorTheme(theme)
+            root.theme = theme
         }
 
         fun scrollTo(idx: Int) {

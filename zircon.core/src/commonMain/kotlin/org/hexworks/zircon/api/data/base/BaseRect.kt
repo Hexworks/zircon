@@ -1,7 +1,5 @@
 package org.hexworks.zircon.api.data.base
 
-import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
@@ -67,14 +65,14 @@ abstract class BaseRect : Rect {
             size = size - rect.size)
 
     override fun splitHorizontal(splitAtX: Int): Pair<Rect, Rect> {
-        val left = Rect.create(Position.create(x, y), Sizes.create(splitAtX, height))
-        val right = Rect.create(Position.create(x + splitAtX, y), Sizes.create(width - splitAtX, height))
+        val left = Rect.create(Position.create(x, y), Size.create(splitAtX, height))
+        val right = Rect.create(Position.create(x + splitAtX, y), Size.create(width - splitAtX, height))
         return left to right
     }
 
     override fun splitVertical(splitAtY: Int): Pair<Rect, Rect> {
-        val left = Rect.create(Position.create(x, y), Sizes.create(width, splitAtY))
-        val right = Rect.create(Position.create(x, y + splitAtY), Sizes.create(width, height - splitAtY))
+        val left = Rect.create(Position.create(x, y), Size.create(width, splitAtY))
+        val right = Rect.create(Position.create(x, y + splitAtY), Size.create(width, height - splitAtY))
         return left to right
     }
 

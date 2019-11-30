@@ -2,16 +2,18 @@
 
 package org.hexworks.zircon.examples.playground
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.component.ComponentAlignment
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.alignmentWithin
+import org.hexworks.zircon.api.screen.Screen
 
 object TestPlayground {
 
@@ -19,11 +21,11 @@ object TestPlayground {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .withSize(Sizes.create(60, 30))
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+                .withSize(Size.create(60, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         screen.addComponent(Components.hbox()
                 .withDecorations(box())
@@ -34,7 +36,7 @@ object TestPlayground {
                 })
 
         screen.display()
-        screen.applyColorTheme(ColorThemes.adriftInDreams())
+        screen.theme = ColorThemes.adriftInDreams()
     }
 
 }

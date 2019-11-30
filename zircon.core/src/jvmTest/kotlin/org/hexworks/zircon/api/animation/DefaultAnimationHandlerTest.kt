@@ -1,9 +1,9 @@
 package org.hexworks.zircon.api.animation
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.factory.IdentifierFactory
-import org.hexworks.zircon.api.AppConfigs
+
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.api.builder.grid.TileGridBuilder
 import org.hexworks.zircon.api.data.Position
@@ -17,9 +17,9 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
-import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
 
+@Suppress("UNUSED_VARIABLE")
 class DefaultAnimationHandlerTest {
 
     private lateinit var target: DefaultAnimationHandler
@@ -30,7 +30,7 @@ class DefaultAnimationHandlerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        AppConfigs.newConfig().enableBetaFeatures().build()
+        AppConfig.newBuilder().enableBetaFeatures().build()
         target = DefaultAnimationHandler()
     }
 

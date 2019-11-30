@@ -1,22 +1,24 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.animation.AnimationResource
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.screen.Screen
 
 object HexworksSkull {
 
     private val tileset = CP437TilesetResources.wanderlust16x16()
-    private val size = Sizes.create(17, 27)
+    private val size = Size.create(17, 27)
 
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val screen = Screens.createScreenFor(SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val screen = Screen.create(SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .enableBetaFeatures()
                 .withDefaultTileset(tileset)
                 .withSize(size)
@@ -29,7 +31,7 @@ object HexworksSkull {
                 tileset)
         first.withLoopCount(0)
         for (i in 0 until first.totalFrameCount) {
-            first.addPosition(Positions.create(2, 2))
+            first.addPosition(Position.create(2, 2))
         }
         val leftAnim = first.build()
 

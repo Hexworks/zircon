@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.behavior.Copiable
 import org.hexworks.zircon.api.builder.data.BlockBuilder
+import kotlin.jvm.JvmStatic
 
 /**
  * A [Block] is a voxel which consists of [Tile]s representing
@@ -65,6 +66,10 @@ interface Block<T : Tile> : Copiable<Block<T>> {
 
     companion object {
 
+        @JvmStatic
+        fun <T : Tile> newBuilder() = BlockBuilder<T>()
+
+        @JvmStatic
         fun <T : Tile> create(emptyTile: T): Block<T> {
             return BlockBuilder.newBuilder<T>()
                     .withEmptyTile(emptyTile)

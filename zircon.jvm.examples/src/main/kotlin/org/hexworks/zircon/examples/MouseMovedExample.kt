@@ -2,10 +2,11 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.MouseEventType
 
 object MouseMovedExample {
@@ -16,10 +17,10 @@ object MouseMovedExample {
 
         val tileGrid = SwingApplications.startTileGrid()
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         val panel = Components.panel()
-                .withSize(Sizes.create(4, 5))
+                .withSize(Size.create(4, 5))
                 .withDecorations(box())
                 .build()
 
@@ -30,7 +31,7 @@ object MouseMovedExample {
         }
 
         screen.display()
-        screen.applyColorTheme(ColorThemes.adriftInDreams())
+        screen.theme = ColorThemes.adriftInDreams()
     }
 
 }

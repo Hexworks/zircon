@@ -1,10 +1,11 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.modifier.Markov
@@ -71,9 +72,9 @@ object LavaMarkovChainExample {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(80, 40))
+                .withSize(Size.create(80, 40))
                 .withDebugMode(true)
                 .build())
 

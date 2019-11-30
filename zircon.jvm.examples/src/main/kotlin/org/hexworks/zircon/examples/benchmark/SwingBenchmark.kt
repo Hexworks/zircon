@@ -2,23 +2,21 @@ package org.hexworks.zircon.examples.benchmark
 
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.DrawSurfaces
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.Tile.Companion
-import org.hexworks.zircon.internal.data.GridPosition
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.internal.data.GridPosition
 import java.util.*
 
 fun main(args: Array<String>) {
 
-    val size = Sizes.create(80, 40)
+    val size = Size.create(80, 40)
 
     val tileset = CP437TilesetResources.zaratustra16x16()
 
@@ -34,7 +32,7 @@ fun main(args: Array<String>) {
     val layerCount = 20
     val layerWidth = 20
     val layerHeight = 10
-    val layerSize = Sizes.create(layerWidth, layerHeight)
+    val layerSize = Size.create(layerWidth, layerHeight)
     val filler = Tile.defaultTile().withCharacter('x')
 
     val layers = (0..layerCount).map {

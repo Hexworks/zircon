@@ -2,9 +2,10 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Screens
+
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_RIGHT
+import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_RELEASED
 
 object ComponentModificationExample {
@@ -13,7 +14,7 @@ object ComponentModificationExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val screen = Screens.createScreenFor(SwingApplications.startTileGrid())
+        val screen = Screen.create(SwingApplications.startTileGrid())
 
         val button = Components.label()
                 .withText("Label ")
@@ -33,7 +34,7 @@ object ComponentModificationExample {
         screen.addComponent(modifyButton)
 
         screen.display()
-        screen.applyColorTheme(ColorThemes.adriftInDreams())
+        screen.theme = ColorThemes.adriftInDreams()
     }
 
 }

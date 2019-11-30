@@ -1,24 +1,25 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 
 object DelayedTileStringExample {
 
-    private val SIZE = Sizes.create(50, 30)
+    private val SIZE = Size.create(50, 30)
     private val TILESET = CP437TilesetResources.taffer20x20()
     private val THEME = ColorThemes.cyberpunk()
 
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
                 .withSize(SIZE)
                 .withDebugMode(true)
@@ -28,7 +29,7 @@ object DelayedTileStringExample {
 
         val panel = Components.panel()
                 .withDecorations(box())
-                .withSize(Sizes.create(48, 20))
+                .withSize(Size.create(48, 20))
                 .build()
 
         screen.addComponent(panel)
@@ -39,7 +40,7 @@ object DelayedTileStringExample {
                 .addParagraph(paragraph = myText,
                         withTypingEffectSpeedInMs = 200))
 
-        screen.applyColorTheme(THEME)
+        screen.theme = THEME
         screen.display()
 
     }

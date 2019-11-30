@@ -3,18 +3,18 @@
 package org.hexworks.zircon.internal.integration
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.component.ModalBuilder
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ComponentAlignment.BOTTOM_RIGHT
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.alignmentWithin
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.shadow
@@ -35,17 +35,17 @@ object ModalTest {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(60, 30))
+                .withSize(Size.create(60, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         screen.addComponent(createOpenAnotherButton(screen))
 
         screen.display()
-        screen.applyColorTheme(theme)
+        screen.theme = theme
 
         openModal(screen)
     }
@@ -53,7 +53,7 @@ object ModalTest {
     private fun openModal(screen: Screen, level: Int = 1) {
 
         val modalPanel = Components.panel()
-                .withSize(Sizes.create(30, 20))
+                .withSize(Size.create(30, 20))
                 .withDecorations(box(title = "Modal level: $level"), shadow())
                 .build()
 
@@ -86,12 +86,12 @@ object ModalTest {
                 position = closeButton.position.withX(0),
                 level = level + 1))
         modalPanel.addComponent(closeButton)
-        modal.applyColorTheme(theme)
+        modal.theme = theme
         screen.openModal(modal)
     }
 
     private fun createOpenAnotherButton(screen: Screen,
-                                        position: Position = Positions.zero(),
+                                        position: Position = Position.zero(),
                                         level: Int = 1): Button {
         return Components.button()
                 .withText("Open another")

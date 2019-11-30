@@ -1,8 +1,9 @@
 package org.hexworks.zircon.internal.screen
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -21,7 +22,7 @@ class TileGridScreenTest {
 
     @Before
     fun setUp() {
-        AppConfigs.newConfig().enableBetaFeatures().build()
+        AppConfig.newBuilder().enableBetaFeatures().build()
         tileset = FONT
         grid = ThreadSafeTileGrid(
                 initialTileset = tileset,

@@ -1,10 +1,10 @@
 package org.hexworks.zircon.internal.component.renderer
 
-import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
 
@@ -26,9 +26,9 @@ class HorizontalScrollBarRenderer : ComponentRenderer<ScrollBar> {
 
         (0..totalScrollBarWidth).forEach { idx ->
             when {
-                idx < lowBarPosition -> tileGraphics.draw(Tile.createCharacterTile(' ', disabledStyleSet), Positions.create(idx, 0))
-                idx > highBarPosition -> tileGraphics.draw(Tile.createCharacterTile(' ', disabledStyleSet), Positions.create(idx, 0))
-                else -> tileGraphics.draw(Tile.createCharacterTile(' ', invertedDefaultStyleSet), Positions.create(idx, 0))
+                idx < lowBarPosition -> tileGraphics.draw(Tile.createCharacterTile(' ', disabledStyleSet), Position.create(idx, 0))
+                idx > highBarPosition -> tileGraphics.draw(Tile.createCharacterTile(' ', disabledStyleSet), Position.create(idx, 0))
+                else -> tileGraphics.draw(Tile.createCharacterTile(' ', invertedDefaultStyleSet), Position.create(idx, 0))
             }
         }
     }

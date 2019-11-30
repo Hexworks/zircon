@@ -1,14 +1,15 @@
 package org.hexworks.zircon.api.application
 
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.mvc.ViewContainer
 
 /**
  * An [Application] enhances a [TileGrid] with continuous rendering,
  * and some additional functionality for starting, pausing, resuming and
  * stopping it.
  */
-interface Application : ViewContainer {
+interface Application {
+
+    val tileGrid: TileGrid
 
     /**
      * Initializes this [Application] and starts continuous rendering.

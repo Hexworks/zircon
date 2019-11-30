@@ -1,9 +1,14 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.ColorThemes;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.component.ComponentAlignment;
 import org.hexworks.zircon.api.component.HBox;
 import org.hexworks.zircon.api.component.VBox;
+import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.screen.Screen;
@@ -16,11 +21,11 @@ public class StatsPanelExample {
 
     public static void main(String[] args) {
 
-        final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
                 .build());
 
-        final Screen screen = Screens.createScreenFor(tileGrid);
+        final Screen screen = Screen.create(tileGrid);
 
         final VBox panel = Components.vbox()
                 .withDecorations(box(BoxType.SINGLE, "Sel Darkstrom"), shadow())
@@ -34,7 +39,7 @@ public class StatsPanelExample {
         HBox attack = Components.hbox()
                 .withSize(panel.getContentSize().getWidth(), 1)
                 .build();
-        attack.addComponent(Components.icon().withIcon(Tiles.newBuilder()
+        attack.addComponent(Components.icon().withIcon(Tile.newBuilder()
                 .withName("Short sword")
                 .withTileset(nethack16x16())
                 .buildGraphicalTile()).build());
@@ -45,7 +50,7 @@ public class StatsPanelExample {
                 .withSize(panel.getContentSize().getWidth(), 1)
                 .build();
         defense.addComponent(Components.icon()
-                .withIcon(Tiles.newBuilder()
+                .withIcon(Tile.newBuilder()
                         .withName("Small shield")
                         .withTileset(nethack16x16())
                         .buildGraphicalTile()).build());
@@ -64,7 +69,7 @@ public class StatsPanelExample {
                 .build());
 
         screen.addComponent(panel);
-        screen.applyColorTheme(ColorThemes.zenburnVanilla());
+        screen.setTheme(ColorThemes.zenburnVanilla());
         screen.display();
 
     }

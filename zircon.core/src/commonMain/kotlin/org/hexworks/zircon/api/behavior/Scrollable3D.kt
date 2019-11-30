@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.behavior
 
-import org.hexworks.zircon.api.data.impl.Position3D
+import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 
 /**
