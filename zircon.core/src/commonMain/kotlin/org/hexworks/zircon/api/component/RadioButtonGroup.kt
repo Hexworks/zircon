@@ -5,18 +5,21 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Event
 import org.hexworks.zircon.api.behavior.Scrollable
 
+// refactor this to be a logical `Group`, not a `Component`
 interface RadioButtonGroup : Component, Scrollable {
 
     /**
      * Adds an option to this [RadioButtonGroup] and returns the
      * resulting [RadioButton] which was added.
      */
+    // TODO: refactor this to take a `RadioButton` instead
     fun addOption(key: String, text: String): RadioButton
 
     /**
      * Removes the given [key] from this [RadioButtonGroup].
      * Has no effect if the given [key] is not present.
      */
+    // TODO: refactor this to take a `RadioButton` instead
     fun removeOption(key: String)
 
     /**

@@ -2,15 +2,15 @@ package org.hexworks.zircon.internal.behavior.impl
 
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.behavior.Layerable
-import org.hexworks.zircon.api.data.LayerState
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.internal.behavior.InternalLayerable
 import kotlin.jvm.Synchronized
 
 // TODO: test this thoroughly
 class ThreadSafeLayerable(initialSize: Size)
-    : Layerable {
+    : InternalLayerable {
 
     override val size: Size = initialSize
 

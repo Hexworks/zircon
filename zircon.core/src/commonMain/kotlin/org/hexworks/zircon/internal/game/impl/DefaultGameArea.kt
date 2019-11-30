@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.game.impl
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
-import org.hexworks.zircon.api.data.impl.Size3D
+import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.internal.game.ProjectionStrategy

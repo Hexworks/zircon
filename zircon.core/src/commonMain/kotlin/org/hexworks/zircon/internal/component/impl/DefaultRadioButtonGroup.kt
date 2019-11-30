@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.component.RadioButtonGroup
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.behavior.Observable

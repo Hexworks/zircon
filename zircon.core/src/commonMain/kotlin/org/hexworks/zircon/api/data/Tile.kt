@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.data
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Cacheable
+import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Border
@@ -12,6 +13,7 @@ import org.hexworks.zircon.internal.data.DefaultCharacterTile
 import org.hexworks.zircon.internal.data.DefaultGraphicalTile
 import org.hexworks.zircon.internal.data.DefaultImageTile
 import org.hexworks.zircon.internal.resource.TileType
+import kotlin.jvm.JvmStatic
 
 /**
  * A [Tile] is the basic building block which can be drawn
@@ -101,6 +103,7 @@ interface Tile : Cacheable, StyleSet {
          * - and default background
          * - and no modifiers.
          */
+        @JvmStatic
         fun defaultTile(): CharacterTile = DEFAULT_CHARACTER_TILE
 
         /**
@@ -110,7 +113,14 @@ interface Tile : Cacheable, StyleSet {
          * - and transparent background
          * - and no modifiers.
          */
+        @JvmStatic
         fun empty(): CharacterTile = EMPTY_CHARACTER_TILE
+
+        /**
+         * Creates a new [TileBuilder] for creating [Tile]s.
+         */
+        @JvmStatic
+        fun newBuilder() = TileBuilder()
 
         /**
          * Creates a new [CharacterTile].

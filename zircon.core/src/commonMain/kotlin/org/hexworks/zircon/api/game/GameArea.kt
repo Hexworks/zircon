@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
-import org.hexworks.zircon.api.data.impl.Size3D
+import org.hexworks.zircon.api.data.Size3D
 
 /**
  * A [GameArea] represents the 3D space in which the entities of a game take place.

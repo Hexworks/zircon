@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.component
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
-import org.hexworks.zircon.api.data.LayerState
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.behavior.Focusable

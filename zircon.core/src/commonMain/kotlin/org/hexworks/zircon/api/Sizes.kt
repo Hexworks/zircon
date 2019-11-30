@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.impl.Size3D
+import org.hexworks.zircon.api.data.Size3D
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
@@ -11,42 +11,56 @@ object Sizes {
      * Represents a [Size] which is an unknown (can be used instead of a `null` value).
      */
     @JvmStatic
+    @Deprecated("Use Size.unknown instead", replaceWith = ReplaceWith(
+            "Size.unknown", "org.hexworks.zircon.api.data.Size"))
     fun unknown() = Size.unknown()
 
     /**
      * The default grid size is (80 * 24)
      */
     @JvmStatic
-    fun defaultTerminalSize() = Size.defaultGridSize()
+    @Deprecated("Use Size.defaultGridSize instead", replaceWith = ReplaceWith(
+            "Size.defaultGridSize", "org.hexworks.zircon.api.data.Size"))
+    fun defaultGridSize() = Size.defaultGridSize()
 
     /**
      * Size of (0 * 0).
      */
     @JvmStatic
+    @Deprecated("Use Size.zero instead", replaceWith = ReplaceWith(
+            "Size.zero", "org.hexworks.zircon.api.data.Size"))
     fun zero() = Size.zero()
 
     /**
      * Size of (1 * 1).
      */
     @JvmStatic
+    @Deprecated("Use Size.one instead", replaceWith = ReplaceWith(
+            "Size.one", "org.hexworks.zircon.api.data.Size"))
     fun one() = Size.one()
 
     /**
      * Factory method for creating [Size]s.
      */
     @JvmStatic
+    @Deprecated("Use Size.create instead", replaceWith = ReplaceWith(
+            "Size.create", "org.hexworks.zircon.api.data.Size"))
     fun create(xLength: Int, yLength: Int) = Size.create(xLength, yLength)
 
     /**
      * Size of (1 * 1 * 1).
      */
     @JvmStatic
+    @Deprecated("Use Size.one3D instead", replaceWith = ReplaceWith(
+            "Size.one3D", "org.hexworks.zircon.api.data.Size"))
     fun one3D() = Size3D.one()
 
     /**
      * Factory method for [Size3D].
      */
     @JvmStatic
+    @Deprecated("Use Size3D.create instead", replaceWith = ReplaceWith(
+            "Size3D.create", "org.hexworks.zircon.api.data.Size3D"))
     fun create3DSize(xLength: Int, yLength: Int, zLength: Int) = Size3D.create(
             xLength = xLength,
             yLength = yLength,
@@ -58,6 +72,8 @@ object Sizes {
      */
     @JvmStatic
     @JvmOverloads
+    @Deprecated("Use Size.to3DSize instead", replaceWith = ReplaceWith(
+            "Size.to3DSize", "org.hexworks.zircon.api.data.Size"))
     fun from2DTo3D(size: Size, zLength: Int = 0) = create3DSize(
             xLength = size.width,
             yLength = size.height,

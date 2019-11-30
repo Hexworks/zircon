@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.data.BlockTileType
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.game.GameArea
-import org.hexworks.zircon.api.game.GameAreaState
+import org.hexworks.zircon.internal.game.GameAreaState
 
 typealias AnyGameArea = GameArea<out Tile, out Block<out Tile>>
 

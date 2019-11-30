@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.Cacheable
+import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.graphics.DefaultStyleSet
@@ -80,6 +81,7 @@ interface StyleSet : Cacheable {
          * - default background color (black)
          * - no modifiers
          */
+        @JvmStatic
         fun defaultStyle() = DEFAULT_STYLE
 
         /**
@@ -88,7 +90,14 @@ interface StyleSet : Cacheable {
          * - and transparent background
          * - and no modifiers.
          */
+        @JvmStatic
         fun empty() = EMPTY
+
+        /**
+         * Creates a new [StyleSetBuilder] for creating [org.hexworks.zircon.api.graphics.StyleSet]s.
+         */
+        @JvmStatic
+        fun newBuilder() = StyleSetBuilder()
 
         /**
          * Creates a new [StyleSet].

@@ -4,8 +4,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.data.impl.GridPosition
-import org.hexworks.zircon.api.data.impl.PixelPosition
+import org.hexworks.zircon.internal.data.GridPosition
+import org.hexworks.zircon.internal.data.PixelPosition
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test

@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.data.impl
+package org.hexworks.zircon.internal.data
 
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.base.BasePosition

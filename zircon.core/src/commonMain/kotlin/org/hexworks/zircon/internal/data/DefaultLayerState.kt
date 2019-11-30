@@ -2,7 +2,6 @@ package org.hexworks.zircon.internal.data
 
 import org.hexworks.cobalt.Identifier
 import org.hexworks.zircon.api.DrawSurfaces
-import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile

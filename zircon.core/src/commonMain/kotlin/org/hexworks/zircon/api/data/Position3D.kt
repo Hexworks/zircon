@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.data.impl
 
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size3D
 
 /**
  * Represents a coordinate in 3D space. Extends [Position] with

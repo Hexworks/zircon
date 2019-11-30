@@ -1,9 +1,6 @@
 package org.hexworks.zircon.api.component
 
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.zircon.api.behavior.Scrollable
-import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
-import org.hexworks.zircon.internal.util.TextBuffer
 
 /**
  * A [ProgressBar] visualizes the progress of an operation.
@@ -20,7 +17,6 @@ interface ProgressBar : Component {
      */
     val numberOfSteps: Int
 
-
     /**
      * Indicates if the current progress is displayed next to the progress bar
      */
@@ -30,7 +26,6 @@ interface ProgressBar : Component {
      * Current progress with respect to the maxValue
      */
     var progress: Double
-
 
     /**
      * Bindable, current progress

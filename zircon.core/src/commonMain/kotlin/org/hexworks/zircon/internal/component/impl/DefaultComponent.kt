@@ -4,14 +4,15 @@ import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.behavior.Movable
+import org.hexworks.zircon.api.behavior.Themeable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
@@ -26,6 +27,7 @@ import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
@@ -47,12 +49,15 @@ abstract class DefaultComponent(
                         .withTileset(componentMetadata.tileset)
                         .withSize(componentMetadata.size)
                         .buildThreadSafeTileGraphics()),
-        private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault())
+        private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault(),
+        private val themeable: Themeable = Themeable.create(AppConfig
+                .defaultConfiguration().defaultColorTheme))
     : InternalComponent,
         UIEventProcessor by uiEventProcessor,
         Identifiable by contentLayer,
         Movable by contentLayer,
         TilesetOverride by contentLayer,
+        Themeable by themeable,
         ComponentEventSource by uiEventProcessor {
 
     override val absolutePosition: Position
@@ -68,7 +73,7 @@ abstract class DefaultComponent(
 
     final override val contentOffset: Position
         @Synchronized
-        get() = renderer.calculateContentPosition()
+        get() = renderer.contentPosition
 
     final override val contentSize: Size
         @Synchronized
@@ -105,6 +110,9 @@ abstract class DefaultComponent(
         }
         componentStyleSetProperty.onChange {
             render()
+        }
+        themeProperty.onChange {
+            applyColorTheme(it.newValue)
         }
     }
 

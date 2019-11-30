@@ -9,9 +9,9 @@ import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.decoration.HalfBlockDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.decoration.ShadowDecorationRenderer
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType

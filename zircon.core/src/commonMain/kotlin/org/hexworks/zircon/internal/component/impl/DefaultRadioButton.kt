@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -26,6 +27,7 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
     : RadioButton,
         TextHolder by TextHolder.create(initialText),
         Selectable by Selectable.create(),
+        Disablable by Disablable.create(),
         DefaultComponent(
                 componentMetadata = componentMetadata,
                 renderer = renderingStrategy) {

@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.impl.GridPosition
+import org.hexworks.zircon.internal.data.GridPosition
 import org.hexworks.zircon.api.grid.TileGrid
 import java.util.*
 

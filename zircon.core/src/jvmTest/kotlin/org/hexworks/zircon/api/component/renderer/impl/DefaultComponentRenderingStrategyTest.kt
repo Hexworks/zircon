@@ -15,7 +15,11 @@ import org.hexworks.zircon.fetchCharacters
 import org.hexworks.zircon.internal.component.impl.DefaultButton
 import org.hexworks.zircon.internal.component.impl.DefaultLabel
 import org.hexworks.zircon.internal.component.renderer.DefaultButtonRenderer
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultLabelRenderer
+import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.decoration.ShadowDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.decoration.SideDecorationRenderer
 import org.junit.Before
 import org.junit.Test
 

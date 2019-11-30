@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.behavior
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.Layer
@@ -17,8 +16,6 @@ import org.hexworks.zircon.api.graphics.Layer
 interface Layerable {
 
     val layers: Iterable<Layer>
-
-    val layerStates: Iterable<LayerState>
 
     /**
      * The area this [Layerable] covers. This means that the maximum size

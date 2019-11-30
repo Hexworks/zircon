@@ -4,8 +4,8 @@ import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.impl.GridPosition
-import org.hexworks.zircon.api.data.impl.PixelPosition
+import org.hexworks.zircon.internal.data.GridPosition
+import org.hexworks.zircon.internal.data.PixelPosition
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.resource.TilesetResource
 

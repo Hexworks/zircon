@@ -8,17 +8,17 @@ interface AnimationInfo {
     /**
      * Tells whether the [Animation] is finished.
      */
-    fun isFinished(): Boolean
+    val isFinished: Boolean
 
     /**
      * Tells whether the [Animation] is still running.
      */
-    fun isRunning(): Boolean
+    val isRunning: Boolean
 
     /**
      * Tells whether this [Animation] will run forever.
      */
-    fun isInfinite(): Boolean
+    val isInfinite: Boolean
 
     /**
      * Adds a callback which will be called when the [Animation] finishes.

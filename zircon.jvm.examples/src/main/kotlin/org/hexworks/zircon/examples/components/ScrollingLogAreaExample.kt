@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.extensions.box
 import java.util.*
 
+// TODO: this can get into a deadlock!
 object ScrollingLogAreaExample {
 
     private val tileset = CP437TilesetResources.rogueYun16x16()

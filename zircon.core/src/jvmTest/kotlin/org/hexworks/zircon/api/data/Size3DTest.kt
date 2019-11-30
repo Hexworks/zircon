@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.data
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.data.impl.Position3D
-import org.hexworks.zircon.api.data.impl.Size3D
 import org.junit.Test
 
 class Size3DTest {

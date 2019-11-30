@@ -23,7 +23,7 @@ interface Boundable : Sizeable {
     /**
      * Tells whether this [Boundable] intersects with the other [boundable].
      */
-    fun intersects(boundable: Boundable): Boolean {
+    infix fun intersects(boundable: Boundable): Boolean {
         val otherBounds = boundable.rect
         var tw = size.width
         var th = size.height
@@ -49,7 +49,7 @@ interface Boundable : Sizeable {
     /**
      * Tells whether [position] is within this boundable's bounds.
      */
-    fun containsPosition(position: Position): Boolean {
+    infix fun containsPosition(position: Position): Boolean {
         val (otherX, otherY) = position
         var width = width
         var height = height
@@ -72,7 +72,7 @@ interface Boundable : Sizeable {
      * are within this one's. (If their bounds are the same it is considered
      * a containment).
      */
-    fun containsBoundable(boundable: Boundable): Boolean {
+    infix fun containsBoundable(boundable: Boundable): Boolean {
         var (otherX, otherY, otherWidth, otherHeight) = boundable.rect
         var w = width
         var h = height

@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.TileGraphicsState
+import org.hexworks.zircon.internal.data.TileGraphicsState
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource

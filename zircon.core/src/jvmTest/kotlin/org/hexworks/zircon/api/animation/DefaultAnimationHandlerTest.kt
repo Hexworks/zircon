@@ -57,7 +57,7 @@ class DefaultAnimationHandlerTest {
 
         val result = target.startAnimation(infiniteAnimation)
 
-        assertThat(result.isInfinite()).isTrue()
+        assertThat(result.isInfinite).isTrue()
     }
 
     @Test
@@ -78,7 +78,7 @@ class DefaultAnimationHandlerTest {
 
         val result = target.startAnimation(animationMock)
 
-        assertThat(result.isRunning()).isTrue()
+        assertThat(result.isRunning).isTrue()
 //        lock.lock()
 //        cond.signalAll()
     }
@@ -108,6 +108,6 @@ class DefaultAnimationHandlerTest {
 
         target.updateAnimations(System.currentTimeMillis() + 1000, tileGrid)
 
-        assertThat(result.isFinished()).isTrue()
+        assertThat(result.isFinished).isTrue()
     }
 }

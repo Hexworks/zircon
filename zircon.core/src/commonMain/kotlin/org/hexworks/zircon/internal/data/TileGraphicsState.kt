@@ -1,8 +1,10 @@
-package org.hexworks.zircon.api.data
+package org.hexworks.zircon.internal.data
 
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.data.DefaultTileGraphicsState
 
 /**
  * Represents the contents of a [TileGraphics] at a given moment in time.
