@@ -29,7 +29,7 @@ object TileColors {
      */
     @JvmStatic
     @Deprecated("Use TileColor.transparent instead", replaceWith = ReplaceWith(
-            "TileColor.transparent", "org.hexworks.zircon.api.color.TileColor"))
+            "TileColor.transparent()", "org.hexworks.zircon.api.color.TileColor"))
     fun transparent() = TileColor.transparent()
 
     @JvmStatic
@@ -45,7 +45,7 @@ object TileColors {
      */
     @JvmStatic
     @Deprecated("Use TileColor.fromString instead", replaceWith = ReplaceWith(
-            "TileColor.fromString", "org.hexworks.zircon.api.color.TileColor"))
+            "TileColor.fromString(value)", "org.hexworks.zircon.api.color.TileColor"))
     fun fromString(value: String): TileColor = TileColor.fromString(value)
 
     /**

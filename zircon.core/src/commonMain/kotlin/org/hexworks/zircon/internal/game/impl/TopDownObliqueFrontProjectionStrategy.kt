@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.api.extensions.toTileComposite
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.internal.game.ProjectionStrategy
@@ -71,7 +72,7 @@ class TopDownObliqueFrontProjectionStrategy : ProjectionStrategy {
                 topRenderingSequence(visibleSize, pos)
             }
             seq.forEach sequenceLoop@{ (blockPos, blockSide) ->
-                val tile = blocks[blockPos + visibleOffset]?.getTileByType(blockSide) ?: Tiles.empty()
+                val tile = blocks[blockPos + visibleOffset]?.getTileByType(blockSide) ?: Tile.empty()
                 val layerPos = Positions.create(pos.x, pos.y)
                 if (tile.isNotEmpty) {
                     result.getOrPut(idx) { mutableMapOf() }[layerPos] = tile

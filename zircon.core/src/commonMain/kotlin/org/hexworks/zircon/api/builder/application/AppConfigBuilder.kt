@@ -27,7 +27,7 @@ data class AppConfigBuilder(
         private var cursorBlinking: Boolean = false,
         private var clipboardAvailable: Boolean = true,
         private var defaultTileset: TilesetResource = BuiltInCP437TilesetResource.ROGUE_YUN_16X16,
-        private var defaultGraphicTileset: TilesetResource = BuiltInGraphicalTilesetResource.NETHACK_16X16,
+        private var defaultGraphicalTileset: TilesetResource = BuiltInGraphicalTilesetResource.NETHACK_16X16,
         private var defaultColorTheme: ColorTheme = ColorThemeResource.TECH_LIGHT.getTheme(),
         private var title: String = "Zircon Application",
         private var fullScreen: Boolean = false,
@@ -37,27 +37,6 @@ data class AppConfigBuilder(
         private var fpsLimit: Int = 60,
         private var debugConfig: DebugConfig = DebugConfigBuilder.newBuilder().build())
     : Builder<AppConfig> {
-
-    override fun build() = AppConfig(
-            blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
-            cursorStyle = cursorStyle,
-            cursorColor = cursorColor,
-            isCursorBlinking = cursorBlinking,
-            isClipboardAvailable = clipboardAvailable,
-            defaultTileset = defaultTileset,
-            defaultGraphicTileset = defaultGraphicTileset,
-            defaultColorTheme = defaultColorTheme,
-            debugMode = debugMode,
-            size = defaultSize,
-            fullScreen = fullScreen,
-            betaEnabled = betaEnabled,
-            title = title,
-            fpsLimit = fpsLimit,
-            debugConfig = debugConfig).also {
-        RuntimeConfig.config = it
-    }
-
-    override fun createCopy() = copy()
 
     /**
      * Sets the [debugConfig] to use.
@@ -139,8 +118,8 @@ data class AppConfigBuilder(
         this.defaultTileset = defaultTileset
     }
 
-    fun withDefaultGraphicTileset(defaultGraphicTileset: TilesetResource) = also {
-        this.defaultGraphicTileset = defaultGraphicTileset
+    fun withDefaultGraphicalTileset(defaultGraphicalTileset: TilesetResource) = also {
+        this.defaultGraphicalTileset = defaultGraphicalTileset
     }
 
     fun enableBetaFeatures() = also {
@@ -150,6 +129,27 @@ data class AppConfigBuilder(
     fun disableBetaFeatures() = also {
         this.betaEnabled = false
     }
+
+    override fun build() = AppConfig(
+            blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
+            cursorStyle = cursorStyle,
+            cursorColor = cursorColor,
+            isCursorBlinking = cursorBlinking,
+            isClipboardAvailable = clipboardAvailable,
+            defaultTileset = defaultTileset,
+            defaultGraphicTileset = defaultGraphicalTileset,
+            defaultColorTheme = defaultColorTheme,
+            debugMode = debugMode,
+            size = defaultSize,
+            fullScreen = fullScreen,
+            betaEnabled = betaEnabled,
+            title = title,
+            fpsLimit = fpsLimit,
+            debugConfig = debugConfig).also {
+        RuntimeConfig.config = it
+    }
+
+    override fun createCopy() = copy()
 
     companion object {
 

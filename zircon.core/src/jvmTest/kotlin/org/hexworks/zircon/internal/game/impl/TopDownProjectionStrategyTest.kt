@@ -4,9 +4,9 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.Blocks
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType
+import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.game.GameAreaState
 import org.junit.Before
@@ -100,8 +100,8 @@ class TopDownProjectionStrategyTest {
 
     companion object {
 
-        private val ACTUAL_SIZE_4X4X4 = Sizes.create3DSize(4, 4, 4)
-        private val VISIBLE_SIZE_3X2X2 = Sizes.create3DSize(3, 2, 2)
+        private val ACTUAL_SIZE_4X4X4 = Size3D.create(4, 4, 4)
+        private val VISIBLE_SIZE_3X2X2 = Size3D.create(3, 2, 2)
         private val VISIBLE_OFFSET_1_1_1 = Positions.create3DPosition(1, 1, 1)
 
         val DEFAULT_STATE = GameAreaState<Tile, Block<Tile>>(
@@ -110,16 +110,16 @@ class TopDownProjectionStrategyTest {
                 visibleSize = VISIBLE_SIZE_3X2X2,
                 visibleOffset = VISIBLE_OFFSET_1_1_1)
 
-        val TRANSPARENT_TILE_A = Tiles.empty().withCharacter('a')
-        val TRANSPARENT_TILE_B = Tiles.empty().withCharacter('b')
-        val TRANSPARENT_TILE_C = Tiles.empty().withCharacter('c')
+        val TRANSPARENT_TILE_A = Tile.empty().withCharacter('a')
+        val TRANSPARENT_TILE_B = Tile.empty().withCharacter('b')
+        val TRANSPARENT_TILE_C = Tile.empty().withCharacter('c')
 
-        val OPAQUE_TILE_A = Tiles.defaultTile().withCharacter('a')
-        val OPAQUE_TILE_B = Tiles.defaultTile().withCharacter('b')
-        val OPAQUE_TILE_C = Tiles.defaultTile().withCharacter('c')
-        val OPAQUE_TILE_D = Tiles.defaultTile().withCharacter('d')
-        val OPAQUE_TILE_E = Tiles.defaultTile().withCharacter('e')
-        val OPAQUE_TILE_F = Tiles.defaultTile().withCharacter('f')
+        val OPAQUE_TILE_A = Tile.defaultTile().withCharacter('a')
+        val OPAQUE_TILE_B = Tile.defaultTile().withCharacter('b')
+        val OPAQUE_TILE_C = Tile.defaultTile().withCharacter('c')
+        val OPAQUE_TILE_D = Tile.defaultTile().withCharacter('d')
+        val OPAQUE_TILE_E = Tile.defaultTile().withCharacter('e')
+        val OPAQUE_TILE_F = Tile.defaultTile().withCharacter('f')
 
         val OPAQUE_BLOCK_A_B_C = block(
                 top = OPAQUE_TILE_A,
@@ -133,11 +133,11 @@ class TopDownProjectionStrategyTest {
 
         val TRANSPARENT_TOP_EMPTY_CONTENT_BLOCK_A_C = block(
                 top = TRANSPARENT_TILE_A,
-                content = Tiles.empty(),
+                content = Tile.empty(),
                 bottom = OPAQUE_TILE_C)
 
         val EMPTY_TOP_TRANSPARENT_CONTENT_BLOCK_B_D = block(
-                top = Tiles.empty(),
+                top = Tile.empty(),
                 content = TRANSPARENT_TILE_B,
                 bottom = OPAQUE_TILE_D)
 
@@ -155,7 +155,7 @@ class TopDownProjectionStrategyTest {
                 .withTop(top)
                 .withContent(content)
                 .withBottom(bottom)
-                .withEmptyTile(Tiles.empty())
+                .withEmptyTile(Tile.empty())
                 .build()
     }
 }

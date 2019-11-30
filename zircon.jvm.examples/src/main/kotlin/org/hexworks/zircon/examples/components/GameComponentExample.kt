@@ -10,13 +10,12 @@ import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.data.Block
+import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.impl.Position3D
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.game.ProjectionMode
 
@@ -27,7 +26,7 @@ object GameComponentExample {
     private val width = 24
     private val height = 12
 
-    private val greenA = Tiles.newBuilder()
+    private val greenA = Tile.newBuilder()
             .withCharacter('a')
             .withBackgroundColor(TileColor.fromString("#bdd5ac"))
             .withForegroundColor(TileColor.fromString("#314c1c"))
@@ -46,7 +45,7 @@ object GameComponentExample {
             side = greenB,
             top = greenB.withBackgroundColor(TileColor.fromString("#dce9d5")))
 
-    private val tealC = Tiles.newBuilder()
+    private val tealC = Tile.newBuilder()
             .withCharacter('c')
             .withBackgroundColor(TileColor.fromString("#a8c3c8"))
             .withForegroundColor(TileColor.fromString("#19353e"))
@@ -59,7 +58,7 @@ object GameComponentExample {
             side = tealC,
             top = tealC.withBackgroundColor(TileColor.fromString("#d3dfe2")))
 
-    private val redD = Tiles.newBuilder()
+    private val redD = Tile.newBuilder()
             .withCharacter('d')
             .withBackgroundColor(TileColor.fromString("#df9d9b"))
             .withForegroundColor(TileColor.fromString("#5d0e07"))
@@ -72,7 +71,7 @@ object GameComponentExample {
             side = redD,
             top = redD.withBackgroundColor(TileColor.fromString("#eecdcd")))
 
-    private val blueE = Tiles.newBuilder()
+    private val blueE = Tile.newBuilder()
             .withCharacter('e')
             .withBackgroundColor(TileColor.fromString("#a9c2f0"))
             .withForegroundColor(TileColor.fromString("#2d4e89"))
@@ -85,7 +84,7 @@ object GameComponentExample {
             side = blueE,
             top = blueE.withBackgroundColor(TileColor.fromString("#ccdaf5")))
 
-    private val purpleF = Tiles.newBuilder()
+    private val purpleF = Tile.newBuilder()
             .withCharacter('f')
             .withBackgroundColor(TileColor.fromString("#a9a0c8"))
             .withForegroundColor(TileColor.fromString("#1f184c"))
@@ -98,7 +97,7 @@ object GameComponentExample {
             side = purpleF,
             top = purpleF.withBackgroundColor(TileColor.fromString("#d8d3e7")))
 
-    private val mallowG = Tiles.newBuilder()
+    private val mallowG = Tile.newBuilder()
             .withCharacter('g')
             .withBackgroundColor(TileColor.fromString("#cea8bc"))
             .withForegroundColor(TileColor.fromString("#50213a"))
@@ -123,9 +122,9 @@ object GameComponentExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         val gameArea = GameComponents.newGameAreaBuilder<Tile, Block<Tile>>()
-                .withActualSize(Sizes.create3DSize(3, 6, 3))
+                .withActualSize(Size3D.create(3, 6, 3))
                 .withProjectionMode(ProjectionMode.TOP_DOWN_OBLIQUE_FRONT)
-                .withVisibleSize(Sizes.create3DSize(3, 6, 3))
+                .withVisibleSize(Size3D.create(3, 6, 3))
                 .build()
 
         val panel = Components.panel()
@@ -160,7 +159,7 @@ object GameComponentExample {
             .withFront(side)
             .withBack(side)
             .withTop(top)
-            .withEmptyTile(Tiles.empty())
+            .withEmptyTile(Tile.empty())
             .build()
 
 }

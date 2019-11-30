@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.color.ANSITileColor.YELLOW
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.fetchCharacters
 import org.junit.Test
@@ -27,11 +28,11 @@ class DefaultTileImageTest {
                 .build()
 
         TileImageBuilder.newBuilder()
-                .withFiller(Tiles.defaultTile())
+                .withFiller(Tile.defaultTile())
                 .withSize(Sizes.create(5, 5))
                 .withTileset(CP437TilesetResources.aduDhabi16x16())
                 .build()
-                .withTileAt(Positions.create(1, 1), Tiles.defaultTile().withCharacter('x'))
+                .withTileAt(Positions.create(1, 1), Tile.defaultTile().withCharacter('x'))
                 .combineWith(other, Positions.offset1x1())
                 .toTileGraphics()
 
@@ -56,7 +57,7 @@ class DefaultTileImageTest {
 
         assertThat(result.tiles.toMap()).isEqualTo(mapOf(
                 Positions.create(0, 0) to FILLER_TILE_A,
-                Positions.create(1, 0) to Tiles.empty()))
+                Positions.create(1, 0) to Tile.empty()))
     }
 
     @Test
@@ -105,7 +106,7 @@ class DefaultTileImageTest {
 
         assertThat(result.tiles.toMap()).isEqualTo(mapOf(
                 Position.create(0, 0) to FILLER_TILE_A,
-                Position.create(1, 0) to Tiles.empty()))
+                Position.create(1, 0) to Tile.empty()))
     }
 
     @Test
@@ -152,8 +153,8 @@ class DefaultTileImageTest {
 
         val FILLED_POS = Positions.create(1, 0)
         val EMPTY_POS = Positions.create(2, 1)
-        val FILLER_TILE_A = Tiles.defaultTile().withCharacter('a')
-        val NEW_TILE_B = Tiles.defaultTile().withCharacter('b')
+        val FILLER_TILE_A = Tile.defaultTile().withCharacter('a')
+        val NEW_TILE_B = Tile.defaultTile().withCharacter('b')
 
         val TILESET_CHEEPICUS = CP437TilesetResources.cheepicus16x16()
         val SIZE_3X3 = Sizes.create(3, 3)

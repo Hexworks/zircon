@@ -12,7 +12,7 @@ object Tiles {
      */
     @JvmStatic
     @Deprecated("Use Tile.newBuilder instead", replaceWith = ReplaceWith(
-            "Tile.newBuilder", "org.hexworks.zircon.api.data.Tile"))
+            "Tile.newBuilder()", "org.hexworks.zircon.api.data.Tile"))
     fun newBuilder() = TileBuilder()
 
     /**
@@ -24,7 +24,7 @@ object Tiles {
      */
     @JvmStatic
     @Deprecated("Use Tile.defaultTile instead", replaceWith = ReplaceWith(
-            "Tile.defaultTile", "org.hexworks.zircon.api.data.Tile"))
+            "Tile.defaultTile()", "org.hexworks.zircon.api.data.Tile"))
     fun defaultTile(): CharacterTile = Tile.defaultTile()
 
     /**
@@ -36,6 +36,6 @@ object Tiles {
      */
     @JvmStatic
     @Deprecated("Use Tile.empty instead", replaceWith = ReplaceWith(
-            "Tile.empty", "org.hexworks.zircon.api.data.Tile"))
+            "Tile.empty()", "org.hexworks.zircon.api.data.Tile"))
     fun empty(): CharacterTile = Tile.empty()
 }

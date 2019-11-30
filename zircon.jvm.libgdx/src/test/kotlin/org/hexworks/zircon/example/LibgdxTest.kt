@@ -16,6 +16,7 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.internal.data.GridPosition
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.grid.TileGrid
@@ -46,7 +47,7 @@ class LibgdxTest : ApplicationAdapter() {
     private val layerWidth = 15
     private val layerHeight = 15
     private val layerSize = Size.create(layerWidth, layerHeight)
-    private val filler = Tiles.defaultTile().withCharacter('x')
+    private val filler = Tile.defaultTile().withCharacter('x')
     private var layers: List<Layer> = (0..layerCount).map {
 
         val imageLayer = DrawSurfaces.tileGraphicsBuilder()
@@ -93,7 +94,7 @@ class LibgdxTest : ApplicationAdapter() {
 
     override fun render() {
         RunTimeStats.addTimedStatFor("debug.render.time") {
-            val tile = Tiles.newBuilder()
+            val tile = Tile.newBuilder()
                     .withCharacter(chars[currIdx])
                     .withStyleSet(styles[currIdx])
                     .build()

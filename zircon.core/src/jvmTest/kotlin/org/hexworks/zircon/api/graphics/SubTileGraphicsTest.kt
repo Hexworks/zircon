@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.fetchCharacters
 import org.junit.Before
 import org.junit.Test
@@ -36,7 +37,7 @@ class SubTileGraphicsTest {
 
     @Test
     fun shouldProperlyFillBackendWhenFillIsCalled() {
-        val subFiller = Tiles.defaultTile().withCharacter('x')
+        val subFiller = Tile.defaultTile().withCharacter('x')
 
         target.fill(subFiller)
 
@@ -59,7 +60,7 @@ class SubTileGraphicsTest {
 
     @Test
     fun shouldProperlyApplyStyle() {
-        backend.fill(Tiles.defaultTile())
+        backend.fill(Tile.defaultTile())
         backend.applyStyle(BLUE_RED_STYLE)
 
         target.applyStyle(YELLOW_GREEN_STYLE)
@@ -101,7 +102,7 @@ class SubTileGraphicsTest {
         private val BLUE_RED_STYLE = StyleSet.create(ANSITileColor.BLUE, ANSITileColor.RED)
         private val YELLOW_GREEN_STYLE = StyleSet.create(ANSITileColor.YELLOW, ANSITileColor.GREEN)
         private val BACKEND_SIZE_5X5 = Size.create(5, 5)
-        private val FILLER_UNDERSCORE = Tiles.defaultTile().withCharacter('_')
+        private val FILLER_UNDERSCORE = Tile.defaultTile().withCharacter('_')
 
         val BOUNDS_1TO1_3X3 = Rect.create(Position.offset1x1(), Size.create(3, 3))
     }

@@ -7,8 +7,8 @@ import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.data.Tile
 
 object FadeOutExample {
 
@@ -27,7 +27,7 @@ object FadeOutExample {
 
         tileGrid.cursorPosition = Positions.create(1, 1)
         text.forEach { c ->
-            tileGrid.putTile(Tiles.defaultTile()
+            tileGrid.putTile(Tile.defaultTile()
                     .withBackgroundColor(TileColor.transparent())
                     .withForegroundColor(ColorThemes.nord().accentColor)
                     .withCharacter(c)

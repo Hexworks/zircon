@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.tileset.transformer
 
-import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.junit.Before
 import org.junit.Test
@@ -24,7 +24,7 @@ class Java2DNoOpTransformerTest {
     companion object {
         val WIDTH = 10
         val HEIGHT = 10
-        val CHAR = Tiles.newBuilder()
+        val CHAR = Tile.newBuilder()
                 .build()
     }
 }

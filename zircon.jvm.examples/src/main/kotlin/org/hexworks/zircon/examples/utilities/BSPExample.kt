@@ -1,20 +1,27 @@
 package org.hexworks.zircon.examples.utilities
 
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.Blocks
+import org.hexworks.zircon.api.GameComponents
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
-import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.api.util.BSPTree
 
 object BSPExample {
 
-    private val VISIBLE_SIZE = Sizes.create3DSize(50, 50, 1)
-    private val ACTUAL_SIZE = Sizes.create3DSize(100, 50, 1)
+    private val VISIBLE_SIZE = Size3D.create(50, 50, 1)
+    private val ACTUAL_SIZE = Size3D.create(100, 50, 1)
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -52,13 +59,13 @@ object BSPExample {
             BSPTree.whenHasRoom { rec ->
                 for (y in rec.position.y until rec.position.y + rec.height) {
                     for (x in rec.position.x until rec.position.x + rec.width) {
-                        val tile = Tiles.newBuilder()
+                        val tile = Tile.newBuilder()
                                 .withCharacter(char)
-                                .withForegroundColor(TileColors.fromString("#999999"))
+                                .withForegroundColor(TileColor.fromString("#999999"))
                                 .buildCharacterTile()
                         gameArea.setBlockAt(Position3D.create(x, y, 0), Blocks.newBuilder<Tile>()
                                 .withContent(tile)
-                                .withEmptyTile(Tiles.empty())
+                                .withEmptyTile(Tile.empty())
                                 .build())
                     }
                 }

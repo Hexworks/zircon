@@ -4,6 +4,8 @@ package org.hexworks.zircon.internal.integration
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Tile.Companion
 
 object GraphicTilesTest {
 
@@ -23,7 +25,7 @@ object GraphicTilesTest {
 
         screen.addComponent(Components.icon()
                 .withPosition(1, 1)
-                .withIcon(Tiles.newBuilder()
+                .withIcon(Tile.newBuilder()
                         .withName("Plate mail")
                         .withTileset(GraphicalTilesetResources.nethack16x16())
                         .buildGraphicalTile())

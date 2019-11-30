@@ -7,13 +7,14 @@ import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.TileColors
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.api.graphics.Symbols
@@ -84,23 +85,23 @@ object CustomGameAreaExample {
             val pos3D = Positions.from2DTo3D(pos)
             gameArea.setBlockAt(pos3D, Blocks.newBuilder<Tile>()
                     .withContent(tile)
-                    .withEmptyTile(Tiles.empty())
+                    .withEmptyTile(Tile.empty())
                     .build())
         }
     }
 
-    private val FLOOR = Tiles.newBuilder()
+    private val FLOOR = Tile.newBuilder()
             .withCharacter(Symbols.INTERPUNCT)
             .withForegroundColor(ANSITileColor.YELLOW)
             .buildCharacterTile()
 
-    private val WALL = Tiles.newBuilder()
+    private val WALL = Tile.newBuilder()
             .withCharacter('#')
-            .withForegroundColor(TileColors.fromString("#999999"))
+            .withForegroundColor(TileColor.fromString("#999999"))
             .buildCharacterTile()
 
-    private val VISIBLE_SIZE = Sizes.create3DSize(60, 30, 10)
-    private val ACTUAL_SIZE = Sizes.create3DSize(100, 100, 200)
+    private val VISIBLE_SIZE = Size3D.create(60, 30, 10)
+    private val ACTUAL_SIZE = Size3D.create(100, 100, 200)
 
 
 }

@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.internal.data.TileGraphicsState
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
@@ -54,7 +55,7 @@ class FastTileGraphics(
 
     override fun fill(filler: Tile) {
         if (filler.isNotEmpty) {
-            size.fetchPositions().minus(tiles.keys.filter { it != Tiles.empty() }).forEach {
+            size.fetchPositions().minus(tiles.keys.filter { it != Tile.empty() }).forEach {
                 tiles[it] = filler
             }
         }

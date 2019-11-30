@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.LibgdxApplications
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType
@@ -36,7 +36,7 @@ object CP437CharsExample {
                 .withRendererFunction { tileGraphics, _ ->
                     loader.fetchMetadata().forEach { (char, meta) ->
                         tileGraphics.draw(
-                                tile = Tiles.defaultTile()
+                                tile = Tile.defaultTile()
                                         .withCharacter(char)
                                         .withBackgroundColor(theme.primaryBackgroundColor)
                                         .withForegroundColor(theme.primaryForegroundColor),

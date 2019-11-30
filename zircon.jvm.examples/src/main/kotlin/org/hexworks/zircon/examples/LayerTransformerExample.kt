@@ -16,6 +16,7 @@ import org.hexworks.zircon.api.color.ANSITileColor.RED
 import org.hexworks.zircon.api.color.ANSITileColor.YELLOW
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.api.extensions.hide
 import org.hexworks.zircon.api.extensions.show
 import org.hexworks.zircon.api.modifier.TileTransformModifier
@@ -38,7 +39,7 @@ object LayerTransformerExample {
                 .withSize(Sizes.create(20, 20))
                 .withOffset(Positions.create(1, 5))
                 .build().apply {
-                    fill(Tiles.newBuilder()
+                    fill(Tile.newBuilder()
                             .withBackgroundColor(RED)
                             .withForegroundColor(GREEN)
                             .withCharacter('x')
@@ -49,7 +50,7 @@ object LayerTransformerExample {
                 .withSize(Sizes.create(20, 20))
                 .withOffset(Positions.create(39, 5))
                 .build().apply {
-                    fill(Tiles.newBuilder()
+                    fill(Tile.newBuilder()
                             .withBackgroundColor(BLUE)
                             .withForegroundColor(YELLOW)
                             .withCharacter('+')
@@ -103,6 +104,6 @@ object HideModifier : TileTransformModifier<CharacterTile> {
 
     override fun canTransform(tile: Tile) = true
 
-    override fun transform(tile: CharacterTile) = Tiles.empty()
+    override fun transform(tile: CharacterTile) = Tile.empty()
 
 }

@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.api.extensions.toTileGraphics
 import org.hexworks.zircon.api.extensions.toTileImage
 import org.hexworks.zircon.api.graphics.Layer
@@ -71,9 +72,9 @@ abstract class BaseTileGraphics(
         val currTiles = tiles
         return (0 until height).joinToString("") { y ->
             (0 until width).joinToString("") { x ->
-                (currTiles[Positions.create(x, y)] ?: Tiles.defaultTile())
+                (currTiles[Positions.create(x, y)] ?: Tile.defaultTile())
                         .asCharacterTile()
-                        .orElse(Tiles.defaultTile())
+                        .orElse(Tile.defaultTile())
                         .character.toString()
             }.plus("\n")
         }.trim()
@@ -104,7 +105,7 @@ abstract class BaseTileGraphics(
         }
     }
 
-    override fun toResized(newSize: Size): TileGraphics = toResized(newSize, Tiles.empty())
+    override fun toResized(newSize: Size): TileGraphics = toResized(newSize, Tile.empty())
 
     override fun toResized(newSize: Size, filler: Tile): TileGraphics {
         val (tiles, tileset) = state
@@ -112,7 +113,7 @@ abstract class BaseTileGraphics(
         tiles.forEach { (pos, tile) ->
             if (newSize.containsPosition(pos)) newTiles[pos] = tile
         }
-        if (filler != Tiles.empty()) {
+        if (filler != Tile.empty()) {
             newSize.fetchPositions().subtract(size.fetchPositions()).forEach { pos ->
                 newTiles[pos] = filler
             }
@@ -129,7 +130,7 @@ abstract class BaseTileGraphics(
         val (tiles, _, size) = state
         val newTiles = mutableMapOf<Position, Tile>()
         size.fetchPositions().forEach { pos ->
-            newTiles[pos] = transformer(pos, tiles.getOrElse(pos) { Tiles.defaultTile() })
+            newTiles[pos] = transformer(pos, tiles.getOrElse(pos) { Tile.defaultTile() })
         }
         draw(newTiles)
     }

@@ -13,8 +13,8 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.GraphicalTilesetResources
 import org.hexworks.zircon.api.LibgdxApplications
 import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.internal.application.LibgdxApplication
 import org.hexworks.zircon.internal.listeners.ZirconInputListener
@@ -74,7 +74,7 @@ object LibgdxPlayground : Game() {
 
         screen.addComponent(Components.icon()
                 .withAlignment(positionalAlignment(2, 2))
-                .withIcon(Tiles.newBuilder()
+                .withIcon(Tile.newBuilder()
                         .withName("Plate mail")
                         .withTileset(GraphicalTilesetResources.nethack16x16())
                         .buildGraphicalTile())
