@@ -12,10 +12,8 @@ import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.uievent.ComponentEventType
-import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
 
-// TODO: not working
 object DialogExample {
 
     private val tileset = CP437TilesetResources.taffer20x20()

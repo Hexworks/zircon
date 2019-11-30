@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.event
 import org.hexworks.cobalt.Identifier
 import org.hexworks.cobalt.events.api.Event
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.data.LayerState
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Position
 
 sealed class ZirconEvent : Event {

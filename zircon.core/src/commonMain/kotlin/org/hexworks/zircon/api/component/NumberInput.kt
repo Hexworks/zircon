@@ -19,9 +19,11 @@ interface NumberInput : Component, Disablable {
      */
     val currentValueProperty: Property<Int>
 
+    // TODO: do we need to expose this?
     fun textBuffer(): EditableTextBuffer
 
     fun incrementCurrentValue()
+
     fun decrementCurrentValue()
 
     /**

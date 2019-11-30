@@ -7,16 +7,13 @@ import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.builder.component.HeaderBuilder
 import org.hexworks.zircon.api.builder.component.LabelBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
-import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.builder.grid.TileGridBuilder
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.uievent.Pass

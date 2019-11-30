@@ -12,21 +12,29 @@ object TileColors {
      * The default foreground color is `WHITE`.
      */
     @JvmStatic
+    @Deprecated("Use TileColor.defaultForegroundColor instead", replaceWith = ReplaceWith(
+            "TileColor.defaultForegroundColor", "org.hexworks.zircon.api.color.TileColor"))
     fun defaultForegroundColor() = TileColor.defaultForegroundColor()
 
     /**
      * The default background color is `BLACK`.
      */
     @JvmStatic
+    @Deprecated("Use TileColor.defaultBackgroundColor instead", replaceWith = ReplaceWith(
+            "TileColor.defaultBackgroundColor", "org.hexworks.zircon.api.color.TileColor"))
     fun defaultBackgroundColor() = TileColor.defaultBackgroundColor()
 
     /**
      * Shorthand for a [TileColor] which is fully transparent.
      */
     @JvmStatic
+    @Deprecated("Use TileColor.transparent instead", replaceWith = ReplaceWith(
+            "TileColor.transparent", "org.hexworks.zircon.api.color.TileColor"))
     fun transparent() = TileColor.transparent()
 
     @JvmStatic
+    @Deprecated("Use TileColor.defaultAlpha instead", replaceWith = ReplaceWith(
+            "TileColor.defaultAlpha", "org.hexworks.zircon.api.color.TileColor"))
     fun defaultAlpha() = TileColor.defaultAlpha()
 
     /**
@@ -36,6 +44,8 @@ object TileColors {
      *  parsing the tuples as Red, Green and Blue.
      */
     @JvmStatic
+    @Deprecated("Use TileColor.fromString instead", replaceWith = ReplaceWith(
+            "TileColor.fromString", "org.hexworks.zircon.api.color.TileColor"))
     fun fromString(value: String): TileColor = TileColor.fromString(value)
 
     /**
@@ -43,6 +53,8 @@ object TileColors {
      */
     @JvmStatic
     @JvmOverloads
+    @Deprecated("Use TileColor.create instead", replaceWith = ReplaceWith(
+            "TileColor.create", "org.hexworks.zircon.api.color.TileColor"))
     fun create(red: Int, green: Int, blue: Int, alpha: Int = 255): TileColor =
             TileColor.create(red, green, blue, alpha)
 

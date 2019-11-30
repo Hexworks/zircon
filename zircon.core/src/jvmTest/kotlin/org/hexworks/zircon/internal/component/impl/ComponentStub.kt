@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
-import org.hexworks.zircon.api.data.LayerState
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
@@ -42,6 +42,11 @@ class ComponentStub(
                 .withSize(size)
                 .withTileset(tileset)
                 .build()) : InternalComponent {
+    override var theme: ColorTheme
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        set(value) {}
+    override val themeProperty: Property<ColorTheme>
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
     override val layerStates: Iterable<LayerState>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.

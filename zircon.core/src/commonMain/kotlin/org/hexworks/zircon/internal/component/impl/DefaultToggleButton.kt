@@ -28,8 +28,8 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
         Disablable by Disablable.create() {
 
     init {
-        // TODO: when the toggle button is selected by default (on create) it should be rendered as selected
-        // TODO: this if branch is supposed to do the trick, but it doesn't for some reason.
+        // TODO: when the toggle button is selected by default (on create) it should be rendered as
+        // TODO: selected this if branch is supposed to do the trick, but it doesn't for some reason.
         if (isSelected) {
             applyIsSelectedStyle()
         }

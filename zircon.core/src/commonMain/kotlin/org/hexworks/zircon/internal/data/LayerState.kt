@@ -1,6 +1,7 @@
-package org.hexworks.zircon.api.data
+package org.hexworks.zircon.internal.data
 
 import org.hexworks.cobalt.Identifier
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.Layer
 
 /**

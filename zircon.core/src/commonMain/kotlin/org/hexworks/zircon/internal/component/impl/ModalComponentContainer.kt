@@ -7,8 +7,8 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
-import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.api.data.LayerState
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.api.uievent.UIEventResponse

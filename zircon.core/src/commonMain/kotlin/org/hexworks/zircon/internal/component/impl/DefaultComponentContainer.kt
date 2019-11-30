@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.data.LayerState
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.api.uievent.UIEventResponse

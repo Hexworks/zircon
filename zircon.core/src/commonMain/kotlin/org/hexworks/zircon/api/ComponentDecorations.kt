@@ -3,11 +3,11 @@ package org.hexworks.zircon.api
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.BorderDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.HalfBlockDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.SideDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.decoration.BorderDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.decoration.HalfBlockDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.decoration.ShadowDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.decoration.SideDecorationRenderer
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.modifier.Border
 import kotlin.jvm.JvmOverloads

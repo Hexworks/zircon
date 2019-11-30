@@ -1,3 +1,4 @@
+@file:JvmName("DisablableUtils")
 package org.hexworks.zircon.api.extensions
 
 import org.hexworks.cobalt.databinding.api.event.ChangeEvent
@@ -6,6 +7,7 @@ import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventResponse
+import kotlin.jvm.JvmName
 
 fun Disablable.onDisabledChanged(fn: (ChangeEvent<Boolean>) -> Unit): Subscription {
     return disabledProperty.onChange(fn)

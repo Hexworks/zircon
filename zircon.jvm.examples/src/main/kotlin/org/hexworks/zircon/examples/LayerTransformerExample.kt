@@ -26,7 +26,7 @@ object LayerTransformerExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val theme = ColorThemes.amigaOs()
+        val theme = ColorThemes.solarizedLightOrange()
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(CP437TilesetResources.taffer20x20())

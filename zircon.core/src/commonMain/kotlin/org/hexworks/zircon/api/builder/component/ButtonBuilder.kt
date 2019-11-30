@@ -1,12 +1,12 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.Button
-import org.hexworks.zircon.api.component.base.BaseComponentBuilder
+import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.api.component.renderer.impl.SideDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.internal.component.renderer.decoration.SideDecorationRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultButton
 import org.hexworks.zircon.internal.component.renderer.DefaultButtonRenderer
 import kotlin.jvm.JvmStatic

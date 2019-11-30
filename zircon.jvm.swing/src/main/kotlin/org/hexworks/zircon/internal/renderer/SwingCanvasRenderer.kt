@@ -4,7 +4,7 @@ package org.hexworks.zircon.internal.renderer
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.behavior.TilesetOverride
-import org.hexworks.zircon.api.data.LayerState
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource

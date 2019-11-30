@@ -10,6 +10,8 @@ object UIEventResponses {
      * that no event processing happened.
      */
     @JvmStatic
+    @Deprecated("Use UIEventResponse.pass instead", replaceWith = ReplaceWith(
+            "UIEventResponse.pass", "org.hexworks.zircon.api.uievent.UIEventResponse"))
     fun pass() = Pass
 
     /**
@@ -21,6 +23,8 @@ object UIEventResponses {
      * want to tamper with other listeners.
      */
     @JvmStatic
+    @Deprecated("Use UIEventResponse.processed instead", replaceWith = ReplaceWith(
+            "UIEventResponse.processed", "org.hexworks.zircon.api.uievent.UIEventResponse"))
     fun processed() = Processed
 
     /**
@@ -32,6 +36,8 @@ object UIEventResponses {
      * on components for example).
      */
     @JvmStatic
+    @Deprecated("Use UIEventResponse.preventDefault instead", replaceWith = ReplaceWith(
+            "UIEventResponse.preventDefault", "org.hexworks.zircon.api.uievent.UIEventResponse"))
     fun preventDefault() = PreventDefault
 
     /**
@@ -44,6 +50,8 @@ object UIEventResponses {
      * handling it.
      */
     @JvmStatic
+    @Deprecated("Use UIEventResponse.stopPropagation instead", replaceWith = ReplaceWith(
+            "UIEventResponse.stopPropagation", "org.hexworks.zircon.api.uievent.UIEventResponse"))
     fun stopPropagation() = StopPropagation
 
 }

@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.component.renderer.impl
+package org.hexworks.zircon.internal.component.renderer.decoration
 
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.property.Property

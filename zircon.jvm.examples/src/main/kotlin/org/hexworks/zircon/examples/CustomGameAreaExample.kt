@@ -1,16 +1,23 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.AppConfigs
+import org.hexworks.zircon.api.Blocks
+import org.hexworks.zircon.api.GameComponents
+import org.hexworks.zircon.api.Positions
+import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.TileColors
+import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.impl.Size3D
+import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.api.graphics.Symbols
 
-// TODO: not working
 object CustomGameAreaExample {
 
     class CustomGameArea(visibleSize: Size3D,
@@ -26,14 +33,14 @@ object CustomGameAreaExample {
         makeCaves(gameArea)
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .withSize(Sizes.create(60, 30))
+                .withSize(VISIBLE_SIZE.to2DSize())
                 .enableBetaFeatures()
                 .build())
 
         val screen = Screens.createScreenFor(tileGrid)
 
         screen.addComponent(GameComponents.newGameComponentBuilder<Tile, Block<Tile>>()
-                .withSize(60, 30)
+                .withSize(VISIBLE_SIZE.to2DSize())
                 .withGameArea(gameArea)
                 .build())
 
@@ -92,7 +99,7 @@ object CustomGameAreaExample {
             .withForegroundColor(TileColors.fromString("#999999"))
             .buildCharacterTile()
 
-    private val VISIBLE_SIZE = Sizes.create3DSize(100, 100, 100)
+    private val VISIBLE_SIZE = Sizes.create3DSize(60, 30, 10)
     private val ACTUAL_SIZE = Sizes.create3DSize(100, 100, 200)
 
 

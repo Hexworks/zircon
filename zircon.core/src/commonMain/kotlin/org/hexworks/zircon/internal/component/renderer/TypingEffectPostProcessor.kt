@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.component.renderer.impl
+package org.hexworks.zircon.internal.component.renderer
 
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.renderer.ComponentPostProcessor

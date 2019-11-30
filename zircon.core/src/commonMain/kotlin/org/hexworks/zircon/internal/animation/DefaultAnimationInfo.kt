@@ -16,11 +16,14 @@ internal class DefaultAnimationInfo(private var state: AnimationState,
 
     private var onFinishFn = Maybe.empty<(AnimationInfo) -> Unit>()
 
-    override fun isFinished() = state == AnimationState.FINISHED
+    override val isFinished: Boolean
+        get() = state == AnimationState.FINISHED
 
-    override fun isRunning() = state == AnimationState.IN_PROGRESS
+    override val isRunning: Boolean
+        get() = state == AnimationState.IN_PROGRESS
 
-    override fun isInfinite() = state == AnimationState.INFINITE
+    override val isInfinite: Boolean
+        get() = state == AnimationState.INFINITE
 
     override fun onFinished(fn: (AnimationInfo) -> Unit) {
         require(state != AnimationState.INFINITE) {

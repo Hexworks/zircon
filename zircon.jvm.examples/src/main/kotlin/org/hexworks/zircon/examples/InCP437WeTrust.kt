@@ -43,8 +43,7 @@ object InCP437WeTrust {
                                         .withCharacter(char)
                                         .withBackgroundColor(theme.primaryBackgroundColor)
                                         .withForegroundColor(ANSITileColor.values()[Random().nextInt(ANSITileColor.values().size)]),
-                                drawPosition = Positions.create(meta.x, meta.y)
-                                        .plus(Positions.offset1x1()))
+                                drawPosition = Positions.create(meta.x, meta.y))
                     }
                 }.build()
 

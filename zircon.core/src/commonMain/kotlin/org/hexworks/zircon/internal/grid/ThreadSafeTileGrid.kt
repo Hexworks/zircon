@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.animation.AnimationInfo
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.api.data.LayerState
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -19,6 +19,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
 import org.hexworks.zircon.internal.animation.InternalAnimationHandler
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
+import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
@@ -30,7 +31,7 @@ import kotlin.jvm.Synchronized
 class ThreadSafeTileGrid(
         initialTileset: TilesetResource,
         initialSize: Size,
-        override var layerable: Layerable = buildLayerable(initialSize),
+        override var layerable: InternalLayerable = buildLayerable(initialSize),
         override var animationHandler: InternalAnimationHandler = DefaultAnimationHandler(),
         private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                 initialCursorSpace = initialSize),

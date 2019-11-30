@@ -6,12 +6,11 @@ import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
-import org.hexworks.zircon.api.data.impl.Size3D
+import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.api.util.BSPTree
 
-// TODO: not working, fix game area
 object BSPExample {
 
     private val VISIBLE_SIZE = Sizes.create3DSize(50, 50, 1)
@@ -32,7 +31,7 @@ object BSPExample {
         val screen = Screens.createScreenFor(tileGrid)
 
         screen.addComponent(GameComponents.newGameComponentBuilder<Tile, Block<Tile>>()
-                .withSize(ACTUAL_SIZE.xLength, ACTUAL_SIZE.yLength)
+                .withSize(VISIBLE_SIZE.xLength, VISIBLE_SIZE.yLength)
                 .withGameArea(gameArea)
                 .build())
 

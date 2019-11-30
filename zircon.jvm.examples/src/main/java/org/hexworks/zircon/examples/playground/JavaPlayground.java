@@ -3,8 +3,12 @@ package org.hexworks.zircon.examples.playground;
 import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.Positions;
 import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.UIEventResponses;
 import org.hexworks.zircon.api.color.ANSITileColor;
+import org.hexworks.zircon.api.graphics.StyleSet;
 import org.hexworks.zircon.api.tileset.Tileset;
+import org.hexworks.zircon.api.uievent.Pass;
+import org.hexworks.zircon.api.uievent.UIEventResponse;
 import org.hexworks.zircon.internal.tileset.SwingTilesetLoader;
 
 import javax.imageio.ImageIO;
@@ -17,6 +21,7 @@ public class JavaPlayground {
 
     public static void main(String[] args) throws IOException {
 
+        final UIEventResponse r = UIEventResponse.pass();
         // you create an image and the corresponding graphics
         final BufferedImage image = new BufferedImage(800, 600, BufferedImage.TRANSLUCENT);
         final Graphics2D graphics = image.createGraphics();

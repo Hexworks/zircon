@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.LibgdxApplications
 import org.hexworks.zircon.api.Sizes
@@ -17,7 +16,7 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.impl.GridPosition
+import org.hexworks.zircon.internal.data.GridPosition
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.RunTimeStats

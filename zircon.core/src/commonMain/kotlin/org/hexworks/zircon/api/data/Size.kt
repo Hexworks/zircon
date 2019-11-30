@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.internal.data.DefaultSize
+import kotlin.jvm.JvmStatic
 
 /**
  * Represents a rectangular area in a 2D space.
@@ -126,31 +127,41 @@ interface Size : Comparable<Size> {
      */
     fun toRect(position: Position): Rect
 
+    /**
+     * Creates a new [Size3D] from this [Size] and the given [zLength].
+     */
+    fun to3DSize(zLength: Int = 0) = Size3D.from2DSize(this, zLength)
+
     companion object {
 
         /**
          * Represents a [Size] which is an unknown (can be used instead of a `null` value).
          */
+        @JvmStatic
         fun unknown() = UNKNOWN
 
         /**
          * The default grid size is (80 * 24)
          */
+        @JvmStatic
         fun defaultGridSize() = DEFAULT_GRID_SIZE
 
         /**
          * Size of (0 * 0).
          */
+        @JvmStatic
         fun zero() = ZERO
 
         /**
          * Size of (1 * 1).
          */
+        @JvmStatic
         fun one() = ONE
 
         /**
          * Creates a new [Size] using the given `width` (width) and `height` (height).
          */
+        @JvmStatic
         fun create(width: Int, height: Int): Size = DefaultSize(width, height)
 
         private val UNKNOWN = create(Int.MAX_VALUE, Int.MAX_VALUE)

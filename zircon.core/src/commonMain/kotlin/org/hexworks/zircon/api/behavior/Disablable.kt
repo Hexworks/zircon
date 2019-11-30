@@ -11,7 +11,6 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultDisablable
 interface Disablable {
 
     var isDisabled: Boolean
-
     val disabledProperty: Property<Boolean>
 
     companion object {

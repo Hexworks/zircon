@@ -13,10 +13,10 @@ import org.hexworks.zircon.api.Maybes
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.LayerState
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.impl.PixelPosition
+import org.hexworks.zircon.internal.data.PixelPosition
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.config.RuntimeConfig

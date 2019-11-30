@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.component.impl.DefaultContainer
+import kotlin.jvm.Synchronized
 
 open class DefaultModal<T : ModalResult>(componentMetadata: ComponentMetadata,
                                          override val darkenPercent: Double,
@@ -23,7 +24,7 @@ open class DefaultModal<T : ModalResult>(componentMetadata: ComponentMetadata,
 
     private var closed = false
 
-    // TODO: test this double closing thing
+    @Synchronized
     override fun close(result: T) {
         if (closed.not()) {
             closed = true

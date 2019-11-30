@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.behavior.impl
 import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.impl.Position3D
-import org.hexworks.zircon.api.data.impl.Size3D
+import org.hexworks.zircon.api.data.Size3D
 import kotlin.math.max
 import kotlin.math.min
 

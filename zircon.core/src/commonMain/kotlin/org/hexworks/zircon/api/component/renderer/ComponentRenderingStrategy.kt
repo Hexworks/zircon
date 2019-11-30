@@ -6,29 +6,10 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
 
 /**
- * Strategy for applying decorations to and rendering
+ * Strategy for applying decorations and rendering
  * [org.hexworks.zircon.api.component.Component]s.
  */
 interface ComponentRenderingStrategy<T : Component> {
-
-    /**
-     * The [ComponentDecorationRenderer]s this [Component] has.
-     */
-    val decorationRenderers: List<ComponentDecorationRenderer>
-    /**
-     * The [ComponentRenderer] which will be used to render
-     * the *content* of this [Component].
-     */
-    val componentRenderer: ComponentRenderer<in T>
-    /**
-     * The [ComponentPostProcessor]s this [Component] has.
-     */
-    val componentPostProcessors: List<ComponentPostProcessor<T>>
-
-    /**
-     * Renders the given `component` onto the given `graphics`.
-     */
-    fun render(component: T, graphics: TileGraphics)
 
     /**
      * The [Position] where the content of the rendered [Component] starts
@@ -36,7 +17,12 @@ interface ComponentRenderingStrategy<T : Component> {
      * the content position is the sum of the offset positions for each
      * decoration.
      */
-    fun calculateContentPosition(): Position
+    val contentPosition: Position
+    
+    /**
+     * Renders the given [component] onto the given [graphics].
+     */
+    fun render(component: T, graphics: TileGraphics)
 
     /**
      * Calculates the [Size] of the content of the [Component] which is

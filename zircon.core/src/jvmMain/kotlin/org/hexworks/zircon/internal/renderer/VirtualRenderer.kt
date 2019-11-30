@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.renderer
 
-import org.hexworks.zircon.api.data.TileGraphicsState
+import org.hexworks.zircon.internal.data.TileGraphicsState
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.grid.InternalTileGrid

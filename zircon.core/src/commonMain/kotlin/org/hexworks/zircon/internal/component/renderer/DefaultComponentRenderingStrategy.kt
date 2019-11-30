@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.component.renderer.impl
+package org.hexworks.zircon.internal.component.renderer
 
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
@@ -14,9 +14,25 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
 
 class DefaultComponentRenderingStrategy<T : Component>(
-        override val componentRenderer: ComponentRenderer<in T>,
-        override val decorationRenderers: List<ComponentDecorationRenderer> = listOf(),
-        override val componentPostProcessors: List<ComponentPostProcessor<T>> = listOf()) : ComponentRenderingStrategy<T> {
+        /**
+         * The [ComponentRenderer] which will be used to render
+         * the *content* of this [Component].
+         */
+        val componentRenderer: ComponentRenderer<in T>,
+        /**
+         * The [ComponentDecorationRenderer]s this [Component] has.
+         */
+        val decorationRenderers: List<ComponentDecorationRenderer> = listOf(),
+        /**
+         * The [ComponentPostProcessor]s this [Component] has.
+         */
+        val componentPostProcessors: List<ComponentPostProcessor<T>> = listOf())
+    : ComponentRenderingStrategy<T> {
+
+    override val contentPosition: Position = decorationRenderers.asSequence()
+            .map {
+                it.offset
+            }.fold(Position.defaultPosition(), Position::plus)
 
     override fun render(component: T, graphics: TileGraphics) {
 
@@ -52,10 +68,6 @@ class DefaultComponentRenderingStrategy<T : Component>(
             }
         }
     }
-
-    override fun calculateContentPosition(): Position = decorationRenderers.asSequence().map {
-        it.offset
-    }.fold(Position.defaultPosition(), Position::plus)
 
     override fun calculateContentSize(componentSize: Size): Size = componentSize -
             decorationRenderers.asSequence().map {

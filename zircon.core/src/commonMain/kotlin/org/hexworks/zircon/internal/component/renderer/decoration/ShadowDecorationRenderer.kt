@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.component.renderer.impl
+package org.hexworks.zircon.internal.component.renderer.decoration
 
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor

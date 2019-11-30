@@ -1,6 +1,7 @@
-package org.hexworks.zircon.api.data.impl
+package org.hexworks.zircon.api.data
 
-import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.impl.Position3D
+import kotlin.jvm.JvmStatic
 
 /**
  * Represents the size of a 3D space. Extends [org.hexworks.zircon.api.data.Size]
@@ -73,11 +74,13 @@ data class Size3D private constructor(val xLength: Int,
 
     companion object {
 
+        @JvmStatic
         fun one() = create(1, 1, 1)
 
         /**
          * Factory method for [Size3D].
          */
+        @JvmStatic
         fun create(xLength: Int, yLength: Int, zLength: Int): Size3D {
             require(listOf(xLength, yLength, zLength).all { it >= 0 }) {
                 "Can't create a Size3D with a negative length."
@@ -91,6 +94,7 @@ data class Size3D private constructor(val xLength: Int,
          * Creates a new [Size3D] from a [Size].
          * If `zLength` is not supplied, it defaults to `0`.
          */
+        @JvmStatic
         fun from2DSize(size: Size, zLength: Int = 0) = Size3D(
                 xLength = size.width,
                 yLength = size.height,

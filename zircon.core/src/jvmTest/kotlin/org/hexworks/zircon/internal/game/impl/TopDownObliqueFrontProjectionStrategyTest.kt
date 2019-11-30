@@ -6,14 +6,8 @@ import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.data.Block
-import org.hexworks.zircon.api.data.BlockTileType.BACK
-import org.hexworks.zircon.api.data.BlockTileType.BOTTOM
-import org.hexworks.zircon.api.data.BlockTileType.CONTENT
-import org.hexworks.zircon.api.data.BlockTileType.FRONT
-import org.hexworks.zircon.api.data.BlockTileType.TOP
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.impl.Position3D
-import org.hexworks.zircon.api.game.GameAreaState
+import org.hexworks.zircon.internal.game.GameAreaState
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test

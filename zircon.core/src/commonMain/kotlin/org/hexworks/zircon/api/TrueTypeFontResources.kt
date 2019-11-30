@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api
 
-import org.hexworks.zircon.internal.resource.BuiltInTrueTypeFontResource
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.resource.BuiltInTrueTypeFontResource
 import org.hexworks.zircon.internal.resource.TilesetSourceType
 import org.hexworks.zircon.internal.resource.TrueTypeTilesetResource
 import kotlin.jvm.JvmStatic
@@ -28,8 +28,8 @@ object TrueTypeFontResources {
     @JvmStatic
     fun amstradNarrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.AMSTRAD_NARROW.toTilesetResource(height)
 
-@JvmStatic
-fun ibmBios(height: Int): TilesetResource = BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(height)
+    @JvmStatic
+    fun ibmBios(height: Int): TilesetResource = BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(height)
 
     @JvmStatic
     fun ibmBiosNarrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.IBM_BIOS_NARROW.toTilesetResource(height)

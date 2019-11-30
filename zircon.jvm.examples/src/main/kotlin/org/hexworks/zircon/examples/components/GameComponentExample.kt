@@ -24,8 +24,8 @@ object GameComponentExample {
 
     private val theme = ColorThemes.cyberpunk()
     private val tileset = CP437TilesetResources.hack64x64()
-    private val width = 25
-    private val height = 15
+    private val width = 24
+    private val height = 12
 
     private val greenA = Tiles.newBuilder()
             .withCharacter('a')

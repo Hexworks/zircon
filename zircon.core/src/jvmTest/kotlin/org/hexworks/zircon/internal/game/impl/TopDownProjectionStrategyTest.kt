@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.game.GameAreaState
+import org.hexworks.zircon.internal.game.GameAreaState
 import org.junit.Before
 import org.junit.Test
 

@@ -58,7 +58,7 @@ object ButtonsExample {
         val halfBlockBtn = Components.button()
                 .withText("Half block button")
                 .withDecorations(
-                        shadow(), halfBlock())
+                        halfBlock(), shadow())
                 .withAlignment(positionalAlignment(1, 23))
         val invisibleBtn = Components.button()
                 .withText("Make me invisible")

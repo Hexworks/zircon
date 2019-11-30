@@ -3,12 +3,11 @@ package org.hexworks.zircon.api.graphics
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.behavior.Clearable
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.TileGraphicsState
+import org.hexworks.zircon.internal.data.TileGraphicsState
 
 /**
  * Represents a [TileComposite] which can be *drawn* upon. A [TileGraphics] is the most

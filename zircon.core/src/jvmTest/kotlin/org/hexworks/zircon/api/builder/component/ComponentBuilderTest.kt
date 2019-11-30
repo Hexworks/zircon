@@ -6,9 +6,9 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor.GREEN
 import org.hexworks.zircon.api.color.ANSITileColor.RED
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.renderer.impl.BoxDecorationRenderer
-import org.hexworks.zircon.api.component.renderer.impl.ShadowDecorationRenderer
+import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
+import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
+import org.hexworks.zircon.internal.component.renderer.decoration.ShadowDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.border

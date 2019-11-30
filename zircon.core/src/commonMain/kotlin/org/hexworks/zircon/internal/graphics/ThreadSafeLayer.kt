@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
-import org.hexworks.zircon.api.data.LayerState
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size

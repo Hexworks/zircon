@@ -7,10 +7,10 @@ import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
-import org.hexworks.zircon.api.data.impl.Size3D
+import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.extensions.toTileImage
 import org.hexworks.zircon.api.game.GameArea.Companion.fetchPositionsWithOffset
-import org.hexworks.zircon.api.game.GameAreaState
+import org.hexworks.zircon.internal.game.GameAreaState
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.resource.TilesetResource
