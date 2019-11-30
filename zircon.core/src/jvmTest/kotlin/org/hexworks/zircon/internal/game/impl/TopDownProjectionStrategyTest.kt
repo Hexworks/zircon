@@ -1,11 +1,11 @@
 package org.hexworks.zircon.internal.game.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.Blocks
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.game.GameAreaState
@@ -44,8 +44,8 @@ class TopDownProjectionStrategyTest {
         val result = target.projectGameArea(state).toList()
 
         assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(mapOf(
-                Positions.create(0, 0) to OPAQUE_TILE_A,
-                Positions.create(1, 0) to OPAQUE_TILE_A))
+                Position.create(0, 0) to OPAQUE_TILE_A,
+                Position.create(1, 0) to OPAQUE_TILE_A))
     }
 
     @Test
@@ -59,9 +59,9 @@ class TopDownProjectionStrategyTest {
         val result = target.projectGameArea(state).toList()
 
         assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(mapOf(
-                Positions.create(0, 0) to OPAQUE_TILE_A,
-                Positions.create(1, 0) to TRANSPARENT_TILE_A), mapOf(
-                Positions.create(1, 0) to OPAQUE_TILE_C))
+                Position.create(0, 0) to OPAQUE_TILE_A,
+                Position.create(1, 0) to TRANSPARENT_TILE_A), mapOf(
+                Position.create(1, 0) to OPAQUE_TILE_C))
     }
 
     @Test
@@ -75,11 +75,11 @@ class TopDownProjectionStrategyTest {
         val result = target.projectGameArea(state).toList()
 
         assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(mapOf(
-                Positions.create(0, 0) to TRANSPARENT_TILE_A,
-                Positions.create(1, 0) to OPAQUE_TILE_A), mapOf(
-                Positions.create(0, 0) to TRANSPARENT_TILE_B), mapOf(
-                Positions.create(0, 0) to TRANSPARENT_TILE_C), mapOf(
-                Positions.create(0, 0) to OPAQUE_TILE_D))
+                Position.create(0, 0) to TRANSPARENT_TILE_A,
+                Position.create(1, 0) to OPAQUE_TILE_A), mapOf(
+                Position.create(0, 0) to TRANSPARENT_TILE_B), mapOf(
+                Position.create(0, 0) to TRANSPARENT_TILE_C), mapOf(
+                Position.create(0, 0) to OPAQUE_TILE_D))
     }
 
     @Test
@@ -92,17 +92,17 @@ class TopDownProjectionStrategyTest {
         val result = target.projectGameArea(state).toList()
 
         assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(mapOf(
-                Positions.create(0, 0) to TRANSPARENT_TILE_A), mapOf(
-                Positions.create(1, 0) to TRANSPARENT_TILE_B), mapOf(
-                Positions.create(0, 0) to OPAQUE_TILE_C,
-                Positions.create(1, 0) to OPAQUE_TILE_D))
+                Position.create(0, 0) to TRANSPARENT_TILE_A), mapOf(
+                Position.create(1, 0) to TRANSPARENT_TILE_B), mapOf(
+                Position.create(0, 0) to OPAQUE_TILE_C,
+                Position.create(1, 0) to OPAQUE_TILE_D))
     }
 
     companion object {
 
         private val ACTUAL_SIZE_4X4X4 = Size3D.create(4, 4, 4)
         private val VISIBLE_SIZE_3X2X2 = Size3D.create(3, 2, 2)
-        private val VISIBLE_OFFSET_1_1_1 = Positions.create3DPosition(1, 1, 1)
+        private val VISIBLE_OFFSET_1_1_1 = Position3D.create(1, 1, 1)
 
         val DEFAULT_STATE = GameAreaState<Tile, Block<Tile>>(
                 blocks = mapOf(),
@@ -146,11 +146,11 @@ class TopDownProjectionStrategyTest {
                 content = TRANSPARENT_TILE_B,
                 bottom = TRANSPARENT_TILE_C)
 
-        private fun size(width: Int, height: Int) = Sizes.create(width, height)
+        private fun size(width: Int, height: Int) = Size.create(width, height)
 
-        private fun pos(x: Int, y: Int, z: Int) = Positions.create3DPosition(x, y, z)
+        private fun pos(x: Int, y: Int, z: Int) = Position3D.create(x, y, z)
 
-        private fun block(top: Tile, content: Tile, bottom: Tile) = Blocks
+        private fun block(top: Tile, content: Tile, bottom: Tile) = Block
                 .newBuilder<Tile>()
                 .withTop(top)
                 .withContent(content)

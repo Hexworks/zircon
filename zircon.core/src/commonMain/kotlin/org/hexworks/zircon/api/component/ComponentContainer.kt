@@ -1,12 +1,13 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.zircon.api.behavior.Themeable
 import org.hexworks.zircon.api.builder.Builder
 
 /**
  * Represents an object which can hold gui [Component]s.
  * @see Component for more info
  */
-interface ComponentContainer {
+interface ComponentContainer : Themeable {
 
     /**
      * Builds a [Component] using the given component [Builder]

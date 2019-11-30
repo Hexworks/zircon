@@ -1,18 +1,15 @@
 package org.hexworks.zircon.internal.game.impl
 
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.data.BlockTileType.BACK
 import org.hexworks.zircon.api.data.BlockTileType.BOTTOM
 import org.hexworks.zircon.api.data.BlockTileType.CONTENT
 import org.hexworks.zircon.api.data.BlockTileType.FRONT
 import org.hexworks.zircon.api.data.BlockTileType.TOP
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.impl.Position3D
+import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Size3D
-import org.hexworks.zircon.api.data.Tile.Companion
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.toTileComposite
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.internal.game.ProjectionStrategy
@@ -24,8 +21,7 @@ class TopDownObliqueFrontProjectionStrategy : ProjectionStrategy {
 
     fun frontRenderingSequence(size: Size3D, position: Position): RenderSequence {
         return sequence {
-            var currPos = Positions.create3DPosition(
-                    x = position.x,
+            var currPos = Position3D.create(x = position.x,
                     y = size.yLength - 1,
                     z = size.zLength - 1 - (size.yLength - position.y))
             var counter = 0
@@ -42,8 +38,7 @@ class TopDownObliqueFrontProjectionStrategy : ProjectionStrategy {
 
     fun topRenderingSequence(size: Size3D, position: Position): RenderSequence {
         return sequence {
-            var currPos = Positions.create3DPosition(
-                    x = position.x,
+            var currPos = Position3D.create(x = position.x,
                     y = position.y,
                     z = size.zLength - 1)
             var counter = 1
@@ -61,7 +56,7 @@ class TopDownObliqueFrontProjectionStrategy : ProjectionStrategy {
 
     override fun projectGameArea(gameAreaState: AnyGameAreaState): Sequence<TileComposite> {
         val (blocks, _, visibleSize, visibleOffset) = gameAreaState
-        val sectionSize = Sizes.create(visibleSize.xLength, max(visibleSize.zLength, visibleSize.yLength))
+        val sectionSize = Size.create(visibleSize.xLength, max(visibleSize.zLength, visibleSize.yLength))
         val result = linkedMapOf<Int, MutableMap<Position, Tile>>()
 
         sectionSize.fetchPositions().forEach sectionLoop@{ pos ->
@@ -73,7 +68,7 @@ class TopDownObliqueFrontProjectionStrategy : ProjectionStrategy {
             }
             seq.forEach sequenceLoop@{ (blockPos, blockSide) ->
                 val tile = blocks[blockPos + visibleOffset]?.getTileByType(blockSide) ?: Tile.empty()
-                val layerPos = Positions.create(pos.x, pos.y)
+                val layerPos = Position.create(pos.x, pos.y)
                 if (tile.isNotEmpty) {
                     result.getOrPut(idx) { mutableMapOf() }[layerPos] = tile
                     idx++

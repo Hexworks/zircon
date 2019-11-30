@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
+import kotlin.jvm.JvmStatic
 
 /**
  * Object that encapsulates the configuration parameters for an application.
@@ -30,6 +31,10 @@ data class AppConfig(
 
     companion object {
 
+        @JvmStatic
+        fun newBuilder() = AppConfigBuilder()
+        
+        @JvmStatic
         fun defaultConfiguration() = AppConfigBuilder.newBuilder().build()
 
     }

@@ -165,7 +165,7 @@ public class CreatingATileGrid {
 Now let's see how we can specify how a [TileGrid] is created. We'll use the [AppConfigs] helper for this:
 
 ```java
-import org.hexworks.zircon.api.AppConfigs;
+;
 import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.Sizes;
 import org.hexworks.zircon.api.SwingApplications;
@@ -176,8 +176,8 @@ public class CreatingAnApplication {
     public static void main(String[] args) {
 
         Application application = SwingApplications.startApplication(
-                AppConfigs.newConfig()
-                        .withSize(Sizes.create(30, 20))
+                AppConfig.newConfig()
+                        .withSize(Size.create(30, 20))
                         .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
                         .withClipboardAvailable(true)
                         .build());
@@ -188,7 +188,7 @@ public class CreatingAnApplication {
 Adding and formatting [Tile]s is very simple:
 
 ```java
-import org.hexworks.zircon.api.AppConfigs;
+;
 import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.Positions;
 import org.hexworks.zircon.api.Sizes;
@@ -202,30 +202,30 @@ public class CreatingAnApplication {
     public static void main(String[] args) {
 
         TileGrid tileGrid = SwingApplications.startTileGrid(
-                AppConfigs.newConfig()
-                        .withSize(Sizes.create(10, 10))
+                AppConfig.newConfig()
+                        .withSize(Size.create(10, 10))
                         .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
                         .build());
 
         tileGrid.setTileAt(
-                Positions.create(2, 3),
-                Tiles.newBuilder()
+                Position.create(2, 3),
+                Tile.newBuilder()
                         .withBackgroundColor(ANSITileColor.CYAN)
                         .withForegroundColor(ANSITileColor.WHITE)
                         .withCharacter('x')
                         .build());
 
         tileGrid.setTileAt(
-                Positions.create(3, 4),
-                Tiles.newBuilder()
+                Position.create(3, 4),
+                Tile.newBuilder()
                         .withBackgroundColor(ANSITileColor.RED)
                         .withForegroundColor(ANSITileColor.GREEN)
                         .withCharacter('y')
                         .build());
 
         tileGrid.setTileAt(
-                Positions.create(4, 5),
-                Tiles.newBuilder()
+                Position.create(4, 5),
+                Tile.newBuilder()
                         .withBackgroundColor(ANSITileColor.BLUE)
                         .withForegroundColor(ANSITileColor.MAGENTA)
                         .withCharacter('z')
@@ -239,8 +239,8 @@ Running the above code will result in something like this:
 
 ![](https://cdn.discordapp.com/attachments/363771631727804416/477469640205926401/CreatingATileGrid.png)
 
-As you can see there is a helper for every class which you might want to use. Here we used `Positions.create`
-to create a [Position], `Sizes.create` for creating [Size]s and the [TileBuilder] to create tiles.
+As you can see there is a helper for every class which you might want to use. Here we used `Position.create`
+to create a [Position], `Size.create` for creating [Size]s and the [TileBuilder] to create tiles.
 
 A `Position` denotes a coordinate on a `TileGrid`, so for example a `Position` of (`2`, `3`) points to the 3rd
 column and the 4th row (x, y) on the grid.
@@ -287,19 +287,19 @@ public class CreatingAScreen {
     public static void main(String[] args) {
 
         TileGrid tileGrid = SwingApplications.startTileGrid(
-                AppConfigs.newConfig()
-                        .withSize(Sizes.create(20, 8))
+                AppConfig.newConfig()
+                        .withSize(Size.create(20, 8))
                         .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
                         .build());
 
-        final Screen screen = Screens.createScreenFor(tileGrid);
+        final Screen screen = Screen.create(tileGrid);
 
         final ColorTheme theme = ColorThemes.adriftInDreams();
 
         final TileGraphics image = DrawSurfaces.tileGraphicsBuilder()
                 .withSize(tileGrid.getSize())
                 .build()
-                .fill(Tiles.newBuilder()
+                .fill(Tile.newBuilder()
                         .withForegroundColor(theme.getPrimaryForegroundColor())
                         .withBackgroundColor(theme.getPrimaryBackgroundColor())
                         .withCharacter('~')
@@ -367,17 +367,17 @@ public class UsingComponents {
     public static void main(String[] args) {
 
         final TileGrid tileGrid = SwingApplications.startTileGrid(
-                AppConfigs.newConfig()
-                        .withSize(Sizes.create(34, 18))
+                AppConfig.newConfig()
+                        .withSize(Size.create(34, 18))
                         .withDefaultTileset(CP437TilesetResources.aduDhabi16x16())
                         .build());
-        final Screen screen = Screens.createScreenFor(tileGrid);
+        final Screen screen = Screen.create(tileGrid);
 
         Panel panel = Components.panel()
                 .wrapWithBox(true) // panels can be wrapped in a box
                 .withTitle("Panel") // if a panel is wrapped in a box a title can be displayed
                 .wrapWithShadow(true) // shadow can be added
-                .withSize(Sizes.create(32, 16)) // the size must be smaller than the parent's size
+                .withSize(Size.create(32, 16)) // the size must be smaller than the parent's size
                 .withPosition(Positions.offset1x1())
                 .build(); // position is always relative to the parent
 
@@ -390,7 +390,7 @@ public class UsingComponents {
 
         final CheckBox checkBox = Components.checkBox()
                 .withText("Check me!")
-                .withPosition(Positions.create(0, 1)
+                .withPosition(Position.create(0, 1)
                         // the position class has some convenience methods
                         // for you to specify your component's position as
                         // relative to another one
@@ -398,13 +398,13 @@ public class UsingComponents {
                 .build();
 
         final Button left = Components.button()
-                .withPosition(Positions.create(0, 1) // this means 1 row below the check box
+                .withPosition(Position.create(0, 1) // this means 1 row below the check box
                         .relativeToBottomOf(checkBox))
                 .withText("Left")
                 .build();
 
         final Button right = Components.button()
-                .withPosition(Positions.create(1, 0) // 1 column right relative to the left BUTTON
+                .withPosition(Position.create(1, 0) // 1 column right relative to the left BUTTON
                         .relativeToRightOf(left))
                 .withText("Right")
                 .build();
@@ -575,7 +575,7 @@ we bundled into Zircon.
 
 [Animation]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/animation/Animation.kt
 [AnimationHandler]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/animation/AnimationHandler.kt
-[AppConfigs]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/AppConfigs.kt
+[AppConfigs]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/AppConfig.kt
 [Application]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/application/Application.kt
 [ANSITileColor]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/color/ANSITileColor.kt
 [Boundable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/behavior/Boundable.kt

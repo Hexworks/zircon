@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
@@ -24,7 +23,7 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
     // TODO: delete tile when drawing empty tile
     /**
      * Draws the given [Tile] on this [TileGraphics] at the given [drawPosition].
-     * Drawing the empty tile ([Tiles.empty]) will result in the deletion of the
+     * Drawing the empty tile ([Tile.empty]) will result in the deletion of the
      * [Tile] at [drawPosition].
      */
     fun draw(tile: Tile,

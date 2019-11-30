@@ -2,7 +2,6 @@ package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
@@ -230,7 +229,7 @@ class TileGraphicsTest {
                 Position.create(Int.MAX_VALUE, Int.MAX_VALUE))
     }
 
-    private fun pos(x: Int, y: Int) = Positions.create(x, y)
+    private fun pos(x: Int, y: Int) = Position.create(x, y)
 
     companion object {
         val TILESET = CP437TilesetResources.jolly12x12()

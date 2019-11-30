@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.builder.game
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.impl.Position3D
+import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.ProjectionMode

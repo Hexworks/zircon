@@ -1,8 +1,11 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.animation.Animation;
 import org.hexworks.zircon.api.animation.AnimationResource;
+import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder;
 import org.hexworks.zircon.api.component.Panel;
 import org.hexworks.zircon.api.data.Position;
@@ -15,13 +18,13 @@ import static org.hexworks.zircon.api.ComponentDecorations.box;
 
 public class AnimationExample {
 
-    private static final Size TERMINAL_SIZE = Sizes.create(50, 30);
-    private static final Position LEFT_POS = Positions.create(8, 5);
-    private static final Position RIGHT_POS = Positions.create(29, 5);
+    private static final Size TERMINAL_SIZE = Size.create(50, 30);
+    private static final Position LEFT_POS = Position.create(8, 5);
+    private static final Position RIGHT_POS = Position.create(29, 5);
     private static final TilesetResource TILESET = CP437TilesetResources.taffer20x20();
 
     public static void main(String[] args) {
-        Screen screen = Screens.createScreenFor(SwingApplications.startTileGrid(AppConfigs.newConfig()
+        Screen screen = Screen.create(SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
                 .withSize(TERMINAL_SIZE)
                 .withDebugMode(true)

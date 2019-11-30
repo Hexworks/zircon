@@ -2,10 +2,11 @@
 
 package org.hexworks.zircon.internal.integration
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.Pass
 
@@ -17,9 +18,9 @@ object KeyEventTest {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(60, 30))
+                .withSize(Size.create(60, 30))
                 .build())
 
         tileGrid.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED) { event, phase ->

@@ -20,7 +20,7 @@ class VirtualTileset : Tileset<Char> {
 
     private fun fetchTextureForTile(tile: Tile): TileTexture<Char> {
         require(tile is CharacterTile) {
-            "A VirtualTileset only works with CharacterTiles."
+            "A VirtualTileset only works with CharacterTile."
         }
         return DefaultTileTexture(
                 width = width,

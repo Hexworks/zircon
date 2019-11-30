@@ -76,6 +76,7 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
             // TODO: component was re-added to the same container!
             component.attachTo(this)
             components.add(component)
+            component.theme = this.theme
             Zircon.eventBus.publish(
                     event = ZirconEvent.ComponentAdded,
                     eventScope = ZirconScope)

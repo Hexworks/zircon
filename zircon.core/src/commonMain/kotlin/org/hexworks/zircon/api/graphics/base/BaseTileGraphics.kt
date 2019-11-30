@@ -1,14 +1,11 @@
 package org.hexworks.zircon.api.graphics.base
 
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.api.extensions.toTileGraphics
 import org.hexworks.zircon.api.extensions.toTileImage
 import org.hexworks.zircon.api.graphics.Layer
@@ -72,7 +69,7 @@ abstract class BaseTileGraphics(
         val currTiles = tiles
         return (0 until height).joinToString("") { y ->
             (0 until width).joinToString("") { x ->
-                (currTiles[Positions.create(x, y)] ?: Tile.defaultTile())
+                (currTiles[Position.create(x, y)] ?: Tile.defaultTile())
                         .asCharacterTile()
                         .orElse(Tile.defaultTile())
                         .character.toString()

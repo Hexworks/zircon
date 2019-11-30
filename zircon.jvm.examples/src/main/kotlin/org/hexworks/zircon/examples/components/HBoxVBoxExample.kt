@@ -1,14 +1,16 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.screen.Screen
 
 object HBoxVBoxExample {
 
@@ -18,13 +20,13 @@ object HBoxVBoxExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withDebugMode(true)
-                .withSize(Sizes.create(60, 30))
+                .withSize(Size.create(60, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         val contentWidth = 46
 
@@ -87,7 +89,7 @@ object HBoxVBoxExample {
         table.addComponent(steveThrush)
 
         screen.addComponent(table)
-        screen.applyColorTheme(theme)
+        screen.theme = theme
         screen.display()
     }
 

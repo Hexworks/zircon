@@ -1,12 +1,12 @@
 package org.hexworks.zircon.internal.integration
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.component.ComponentAlignment.BOTTOM_CENTER
 import org.hexworks.zircon.api.component.ComponentAlignment.BOTTOM_LEFT
 import org.hexworks.zircon.api.component.ComponentAlignment.BOTTOM_RIGHT
@@ -16,8 +16,10 @@ import org.hexworks.zircon.api.component.ComponentAlignment.RIGHT_CENTER
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_CENTER
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_LEFT
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_RIGHT
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.shadow
+import org.hexworks.zircon.api.screen.Screen
 
 object ComponentAlignmentTest {
 
@@ -27,16 +29,16 @@ object ComponentAlignmentTest {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(60, 30))
+                .withSize(Size.create(60, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         val panel = Components.panel()
                 .withDecorations(box(title = "Component alignment test"), shadow())
-                .withSize(Sizes.create(30, 15))
+                .withSize(Size.create(30, 15))
                 .withAlignmentWithin(screen, CENTER)
                 .build()
         screen.addComponent(panel)
@@ -169,7 +171,7 @@ object ComponentAlignmentTest {
                 .build())
 
         screen.display()
-        screen.applyColorTheme(theme)
+        screen.theme = theme
     }
 
 }

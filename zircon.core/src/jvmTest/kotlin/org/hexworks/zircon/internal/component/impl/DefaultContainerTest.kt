@@ -2,8 +2,8 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.events.api.subscribe
-import org.hexworks.zircon.api.AppConfigs
-import org.hexworks.zircon.api.Positions
+
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.component.HeaderBuilder
 import org.hexworks.zircon.api.builder.component.LabelBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
@@ -11,13 +11,13 @@ import org.hexworks.zircon.api.builder.grid.TileGridBuilder
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.Zircon
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
@@ -88,7 +88,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 .withAlignment(positionalAlignment(1, 1))
                 .build()
         val panelHeader = HeaderBuilder.newBuilder()
-                .withAlignment(positionalAlignment(Positions.create(1, 0)))
+                .withAlignment(positionalAlignment(Position.create(1, 0)))
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withText("Header")
                 .build()
@@ -125,10 +125,10 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
         assertThat(panel.isAttached()).isTrue()
 
-        assertThat(panel.absolutePosition).isEqualTo(Positions.create(1, 1))
-        assertThat(panelHeader.absolutePosition).isEqualTo(Positions.create(3, 2)) // + 1x1 because of the wrapper
-        assertThat(innerPanel.absolutePosition).isEqualTo(Positions.create(3, 4))
-        assertThat(innerPanelHeader.absolutePosition).isEqualTo(Positions.create(5, 5))
+        assertThat(panel.absolutePosition).isEqualTo(Position.create(1, 1))
+        assertThat(panelHeader.absolutePosition).isEqualTo(Position.create(3, 2)) // + 1x1 because of the wrapper
+        assertThat(innerPanel.absolutePosition).isEqualTo(Position.create(3, 4))
+        assertThat(innerPanelHeader.absolutePosition).isEqualTo(Position.create(5, 5))
     }
 
     @Test
@@ -164,18 +164,18 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         panel0.addComponent(header0)
 
         assertThat(header0.isAttached()).isTrue()
-        assertThat(header0.absolutePosition).isEqualTo(Positions.create(3, 2))
+        assertThat(header0.absolutePosition).isEqualTo(Position.create(3, 2))
 
         panel0.addComponent(panel1)
 
         assertThat(panel1.isAttached())
-        assertThat(panel1.absolutePosition).isEqualTo(Positions.create(3, 3))
+        assertThat(panel1.absolutePosition).isEqualTo(Position.create(3, 3))
 
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionIfComponentWithUnsupportedFontSizeIsAdded() {
-        AppConfigs.newConfig().disableBetaFeatures().build()
+        AppConfig.newBuilder().disableBetaFeatures().build()
         target.addComponent(LabelBuilder.newBuilder()
                 .withText("foo")
                 .withTileset(badTileset)
@@ -189,7 +189,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotLetToAddAComponentWhichIntersectsWithAnother() {
-        AppConfigs.newConfig().disableBetaFeatures().build()
+        AppConfig.newBuilder().disableBetaFeatures().build()
         val pos = Position.create(1, 1)
         val comp = LabelBuilder.newBuilder()
                 .withAlignment(positionalAlignment(pos))

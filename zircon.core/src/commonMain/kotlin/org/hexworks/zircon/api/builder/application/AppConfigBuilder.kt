@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.builder.application
 
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.application.DebugConfig
@@ -112,7 +111,7 @@ data class AppConfigBuilder(
         this.fpsLimit = fpsLimit
     }
 
-    fun withSize(width: Int, height: Int) = withSize(Sizes.create(width, height))
+    fun withSize(width: Int, height: Int) = withSize(Size.create(width, height))
 
     fun withDefaultTileset(defaultTileset: TilesetResource) = also {
         this.defaultTileset = defaultTileset

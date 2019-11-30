@@ -44,7 +44,7 @@ class ComponentStub(
                 .build()) : InternalComponent {
     override var theme: ColorTheme
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(value) {}
+        set(_) {}
     override val themeProperty: Property<ColorTheme>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 

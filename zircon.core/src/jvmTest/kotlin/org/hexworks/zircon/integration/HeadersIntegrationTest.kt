@@ -1,8 +1,8 @@
 package org.hexworks.zircon.integration
 
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
@@ -14,7 +14,7 @@ class HeadersIntegrationTest : ComponentIntegrationTestBase() {
     override fun buildScreenContent(screen: Screen) {
         val panel = Components.panel()
                 .withDecorations(box())
-                .withSize(Sizes.create(28, 28))
+                .withSize(Size.create(28, 28))
                 .withAlignment(positionalAlignment(31, 1))
                 .build()
         screen.addComponent(panel)
@@ -29,7 +29,7 @@ class HeadersIntegrationTest : ComponentIntegrationTestBase() {
         val decoratedLabel = Components.label()
                 .withText("Some label")
                 .withDecorations(box(boxType = BoxType.DOUBLE), shadow())
-                .withAlignment(positionalAlignment(Positions.create(2, 4)))
+                .withAlignment(positionalAlignment(Position.create(2, 4)))
 
         screen.addComponent(decoratedLabel)
         panel.addComponent(decoratedLabel)

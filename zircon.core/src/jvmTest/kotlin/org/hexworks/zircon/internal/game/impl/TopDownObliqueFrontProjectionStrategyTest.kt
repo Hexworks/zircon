@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.game.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.Blocks
-import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.data.Block
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.game.GameAreaState
@@ -46,10 +46,10 @@ class TopDownObliqueFrontProjectionStrategyTest {
         val result = target.projectGameArea(state).map { it.tiles }.toList()
 
         assertThat(result).containsExactlyInAnyOrder(mapOf(
-                Positions.create(0, 0) to OPAQUE_TILE_A,
-                Positions.create(1, 0) to OPAQUE_TILE_A,
-                Positions.create(0, 1) to OPAQUE_TILE_D,
-                Positions.create(1, 1) to OPAQUE_TILE_D))
+                Position.create(0, 0) to OPAQUE_TILE_A,
+                Position.create(1, 0) to OPAQUE_TILE_A,
+                Position.create(0, 1) to OPAQUE_TILE_D,
+                Position.create(1, 1) to OPAQUE_TILE_D))
     }
 
     @Test
@@ -78,11 +78,11 @@ class TopDownObliqueFrontProjectionStrategyTest {
         val result = target.projectGameArea(state).map { it.tiles }.toList()
 
         assertThat(result).containsExactlyInAnyOrder(mapOf(
-                Positions.create(0, 0) to OPAQUE_TILE_A,
-                Positions.create(1, 0) to OPAQUE_TILE_A,
-                Positions.create(0, 1) to TRANSPARENT_TILE_B,
-                Positions.create(1, 1) to OPAQUE_TILE_D), mapOf(
-                Positions.create(0, 1) to OPAQUE_TILE_C))
+                Position.create(0, 0) to OPAQUE_TILE_A,
+                Position.create(1, 0) to OPAQUE_TILE_A,
+                Position.create(0, 1) to TRANSPARENT_TILE_B,
+                Position.create(1, 1) to OPAQUE_TILE_D), mapOf(
+                Position.create(0, 1) to OPAQUE_TILE_C))
     }
 
     @Ignore
@@ -106,19 +106,19 @@ class TopDownObliqueFrontProjectionStrategyTest {
         val result = target.projectGameArea(state).map { it.tiles }.toList()
 
         assertThat(result).containsExactlyInAnyOrder(mapOf(
-                Positions.create(0, 0) to OPAQUE_TILE_A,
-                Positions.create(1, 0) to OPAQUE_TILE_A,
-                Positions.create(0, 1) to TRANSPARENT_TILE_B,
-                Positions.create(1, 1) to OPAQUE_TILE_D), mapOf(
-                Positions.create(0, 1) to TRANSPARENT_TILE_A), mapOf(
-                Positions.create(0, 1) to OPAQUE_TILE_E))
+                Position.create(0, 0) to OPAQUE_TILE_A,
+                Position.create(1, 0) to OPAQUE_TILE_A,
+                Position.create(0, 1) to TRANSPARENT_TILE_B,
+                Position.create(1, 1) to OPAQUE_TILE_D), mapOf(
+                Position.create(0, 1) to TRANSPARENT_TILE_A), mapOf(
+                Position.create(0, 1) to OPAQUE_TILE_E))
     }
 
     companion object {
 
         private val VISIBLE_SIZE_2X2X2 = Size3D.create(2, 2, 2)
         private val ACTUAL_SIZE_4X4X4 = Size3D.create(4, 4, 4)
-        private val VISIBLE_OFFSET_1X1X1 = Positions.create3DPosition(1, 1, 1)
+        private val VISIBLE_OFFSET_1X1X1 = Position3D.create(1, 1, 1)
 
         val DEFAULT_STATE = GameAreaState<Tile, Block<Tile>>(
                 actualSize = ACTUAL_SIZE_4X4X4,
@@ -135,9 +135,9 @@ class TopDownObliqueFrontProjectionStrategyTest {
         val OPAQUE_TILE_D = Tile.defaultTile().withCharacter('d')
         val OPAQUE_TILE_E = Tile.defaultTile().withCharacter('e')
 
-        private fun pos(x: Int, y: Int, z: Int) = Positions.create3DPosition(x, y, z)
+        private fun pos(x: Int, y: Int, z: Int) = Position3D.create(x, y, z)
 
-        private fun block(top: Tile, front: Tile, content: Tile, bottom: Tile, back: Tile) = Blocks
+        private fun block(top: Tile, front: Tile, content: Tile, bottom: Tile, back: Tile) = Block
                 .newBuilder<Tile>()
                 .withTop(top)
                 .withFront(front)

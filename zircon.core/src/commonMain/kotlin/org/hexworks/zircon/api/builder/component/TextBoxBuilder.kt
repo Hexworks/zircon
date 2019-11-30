@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.TextBox
@@ -9,10 +8,10 @@ import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultTextBox
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultTextBoxRenderer
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
@@ -31,7 +30,7 @@ data class TextBoxBuilder(
         get() = contentSize.width
 
     init {
-        contentSize = Sizes.unknown().withWidth(initialContentWidth)
+        contentSize = Size.unknown().withWidth(initialContentWidth)
     }
 
     override fun withSize(size: Size): TextBoxBuilder {

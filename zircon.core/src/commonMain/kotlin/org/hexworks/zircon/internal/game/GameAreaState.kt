@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.game
 
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.impl.Position3D
+import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 
 data class GameAreaState<T : Tile, B : Block<T>>(

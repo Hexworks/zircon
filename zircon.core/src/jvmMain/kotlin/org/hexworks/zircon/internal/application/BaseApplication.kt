@@ -8,19 +8,22 @@ import kotlinx.coroutines.launch
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
+import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.renderer.Renderer
 import org.hexworks.zircon.platform.util.SystemUtils
 import java.util.concurrent.Executors
 
-abstract class BaseApplication(private val appConfig: AppConfig) : Application, CoroutineScope {
+abstract class BaseApplication(
+        private val config: AppConfig,
+        override val tileGrid: TileGrid) : Application, CoroutineScope {
 
     abstract val renderer: Renderer
 
     override val coroutineContext = Executors.newSingleThreadExecutor().asCoroutineDispatcher() + SupervisorJob()
 
     private val logger = LoggerFactory.getLogger(this::class)
-    private val renderInterval = 1000.div(appConfig.fpsLimit)
+    private val renderInterval = 1000.div(config.fpsLimit)
 
     private var stopped = false
     private var running = false
@@ -72,7 +75,7 @@ abstract class BaseApplication(private val appConfig: AppConfig) : Application, 
     }
 
     private fun doRender() {
-        if (appConfig.debugMode) {
+        if (config.debugMode) {
             RunTimeStats.addTimedStatFor("debug.render.time") {
                 renderer.render()
             }

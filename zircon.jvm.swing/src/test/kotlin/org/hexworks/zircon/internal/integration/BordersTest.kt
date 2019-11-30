@@ -1,14 +1,15 @@
 package org.hexworks.zircon.internal.integration
 
-import org.hexworks.zircon.api.AppConfigs
-import org.hexworks.zircon.api.Borders
+
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.BorderPosition
 import org.hexworks.zircon.api.modifier.BorderType
 
@@ -19,16 +20,16 @@ object BordersTest {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(10, 5))
+                .withSize(Size.create(10, 5))
                 .build())
 
         val tiles = listOf(
                 Tile.defaultTile()
                         .withBackgroundColor(ANSITileColor.GREEN)
                         .withCharacter('a')
-                        .withModifiers(Borders.newBuilder()
+                        .withModifiers(Border.newBuilder()
                                 .withBorderPositions(BorderPosition.TOP)
                                 .withBorderType(BorderType.DOTTED)
                                 .withBorderColor(TileColor.fromString("#ffaadd"))
@@ -37,7 +38,7 @@ object BordersTest {
                 Tile.defaultTile()
                         .withBackgroundColor(ANSITileColor.BLUE)
                         .withCharacter('b')
-                        .withModifiers(Borders.newBuilder()
+                        .withModifiers(Border.newBuilder()
                                 .withBorderPositions(BorderPosition.RIGHT)
                                 .withBorderType(BorderType.SOLID)
                                 .withBorderColor(TileColor.fromString("#caacaa"))
@@ -46,7 +47,7 @@ object BordersTest {
                 Tile.defaultTile()
                         .withBackgroundColor(ANSITileColor.GRAY)
                         .withCharacter('c')
-                        .withModifiers(Borders.newBuilder()
+                        .withModifiers(Border.newBuilder()
                                 .withBorderPositions(BorderPosition.BOTTOM)
                                 .withBorderType(BorderType.DASHED)
                                 .withBorderColor(TileColor.fromString("#caacaa"))
@@ -55,7 +56,7 @@ object BordersTest {
                 Tile.defaultTile()
                         .withBackgroundColor(ANSITileColor.RED)
                         .withCharacter('d')
-                        .withModifiers(Borders.newBuilder()
+                        .withModifiers(Border.newBuilder()
                                 .withBorderPositions(BorderPosition.LEFT)
                                 .withBorderType(BorderType.SOLID)
                                 .withBorderColor(TileColor.create(80, 80, 80, 80))
@@ -65,17 +66,17 @@ object BordersTest {
                         .withBackgroundColor(ANSITileColor.RED)
                         .withCharacter('e')
                         .withModifiers(
-                                Borders.newBuilder()
+                                Border.newBuilder()
                                         .withBorderPositions(BorderPosition.TOP)
                                         .withBorderColor(TileColor.create(0, 0, 0, 20))
                                         .withBorderWidth(30)
                                         .build(),
-                                Borders.newBuilder()
+                                Border.newBuilder()
                                         .withBorderPositions(BorderPosition.TOP)
                                         .withBorderColor(TileColor.create(0, 0, 0, 20))
                                         .withBorderWidth(20)
                                         .build(),
-                                Borders.newBuilder()
+                                Border.newBuilder()
                                         .withBorderPositions(BorderPosition.TOP)
                                         .withBorderColor(TileColor.create(0, 0, 0, 20))
                                         .withBorderWidth(10)
@@ -83,7 +84,7 @@ object BordersTest {
         )
 
         repeat(tiles.size) {
-            tileGrid.draw(tiles[it], Positions.create(1 + it, 1))
+            tileGrid.draw(tiles[it], Position.create(1 + it, 1))
         }
     }
 

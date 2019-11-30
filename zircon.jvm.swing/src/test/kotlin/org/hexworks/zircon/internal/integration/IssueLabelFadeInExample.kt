@@ -1,11 +1,14 @@
 package org.hexworks.zircon.internal.integration
 
-import org.hexworks.zircon.api.*
-import org.hexworks.zircon.api.application.CursorStyle
+import org.hexworks.zircon.api.Components
+
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.FadeIn
+import org.hexworks.zircon.api.screen.Screen
 
 object IssueLabelFadeInExample {
 
@@ -14,11 +17,11 @@ object IssueLabelFadeInExample {
 
         val tileGrid = SwingApplications.startTileGrid()
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
         screen.display()
 
 
-        val styleSet = StyleSets.newBuilder()
+        val styleSet = StyleSet.newBuilder()
                 .withForegroundColor(ANSITileColor.YELLOW)
                 .withModifiers(FadeIn(10, 1000, true))
                 .build()

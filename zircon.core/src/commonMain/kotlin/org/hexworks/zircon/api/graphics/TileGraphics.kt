@@ -1,7 +1,5 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
@@ -37,7 +35,7 @@ interface TileGraphics : Clearable, DrawSurface, TileComposite {
      * other.
      * @param offset the offset for the new [Layer], `(0, 0)` by default
      */
-    fun toLayer(offset: Position = Positions.zero()): Layer
+    fun toLayer(offset: Position = Position.zero()): Layer
 
     /**
      * Creates a **new** copy from the contents of this
@@ -49,7 +47,7 @@ interface TileGraphics : Clearable, DrawSurface, TileComposite {
 
     /**
      * Returns a copy of this [TileGraphics] resized to a new size and using
-     * [Tiles.empty] if the new size is larger than the old and
+     * [Tile.empty] if the new size is larger than the old and
      * it needs to fill in empty areas. The copy will be independent from the
      * one this method is invoked on, so modifying one will not affect the other.
      */

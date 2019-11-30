@@ -1,13 +1,15 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.screen.Screen
 import java.util.*
 
 // TODO: this can get into a deadlock!
@@ -41,21 +43,21 @@ object ScrollingLogAreaExample {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(70, 30))
+                .withSize(Size.create(70, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         val logArea = Components.logArea()
                 .withDecorations(box(title = "Log"))
-                .withSize(Sizes.create(60, 25))
+                .withSize(Size.create(60, 25))
                 .build()
         screen.addComponent(logArea)
 
         screen.display()
-        screen.applyColorTheme(theme)
+        screen.theme = theme
 
         val random = Random()
 

@@ -2,17 +2,15 @@ package org.hexworks.zircon.internal.application
 
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
-import org.hexworks.zircon.api.mvc.ViewContainer
-import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.grid.InternalTileGrid
-import org.hexworks.zircon.internal.mvc.DefaultViewContainer
+import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.renderer.VirtualRenderer
 
-class VirtualApplication(private val appConfig: AppConfig,
+class VirtualApplication(private val config: AppConfig,
                          override val tileGrid: InternalTileGrid = ThreadSafeTileGrid(
-                                 initialTileset = appConfig.defaultTileset,
-                                 initialSize = appConfig.size))
-    : BaseApplication(appConfig), ViewContainer by DefaultViewContainer(tileGrid) {
+                                 initialTileset = config.defaultTileset,
+                                 initialSize = config.size))
+    : BaseApplication(config, tileGrid) {
 
     override val renderer = VirtualRenderer(tileGrid)
 

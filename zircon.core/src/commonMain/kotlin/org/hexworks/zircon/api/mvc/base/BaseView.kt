@@ -1,30 +1,33 @@
 package org.hexworks.zircon.api.mvc.base
 
-import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.Screens
+import org.hexworks.zircon.api.behavior.Themeable
+import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.mvc.View
-import org.hexworks.zircon.api.mvc.ViewContainer
 import org.hexworks.zircon.api.screen.Screen
+import org.hexworks.zircon.internal.config.RuntimeConfig
 
-abstract class BaseView : View {
+abstract class BaseView(
+        private val tileGrid: TileGrid,
+        final override var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme)
+    : View, Themeable by Themeable.create(theme) {
 
-    override val theme = ColorThemes.cyberpunk()
+    final override val screen = Screen.create(tileGrid)
 
-    final override val screen: Screen by lazy {
-        Screens.createScreenFor(viewContainerProvider.invoke().tileGrid)
-    }
-
-    internal var viewContainerProvider: () -> ViewContainer = {
-        throw IllegalStateException("This View is not ready. Try docking it to an Application first.")
+    init {
+        screen.theme = theme
     }
 
     final override fun replaceWith(view: View) {
-        viewContainerProvider.invoke().dock(view)
+        tileGrid.dock(view)
+    }
+
+    final override fun dock() {
+        tileGrid.dock(this)
     }
 
     override fun onDock() {}
 
     override fun onUndock() {}
 
-    override fun close() {}
 }

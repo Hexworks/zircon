@@ -1,14 +1,14 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.LibgdxApplications
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.application.AppConfig
+
 import org.hexworks.zircon.api.extensions.isEnabled
+import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.MouseEventType
 
 object TextAreaDisableExample {
@@ -19,12 +19,12 @@ object TextAreaDisableExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = LibgdxApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(60, 30)
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         val textArea = Components.textArea()
                 .withText("Enabled")
@@ -51,7 +51,7 @@ object TextAreaDisableExample {
         screen.addComponent(toggleButton)
 
         screen.display()
-        screen.applyColorTheme(theme)
+        screen.theme = theme
     }
 
 }

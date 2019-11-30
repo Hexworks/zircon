@@ -3,11 +3,8 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.subscribe
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentContainer
-import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.api.uievent.UIEventResponse
@@ -19,6 +16,7 @@ import org.hexworks.zircon.internal.component.ComponentContainerState.INACTIVE
 import org.hexworks.zircon.internal.component.ComponentContainerState.INITIALIZING
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import org.hexworks.zircon.internal.event.ZirconScope
@@ -94,7 +92,4 @@ class DefaultComponentContainer(
         state = INACTIVE
     }
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        return root.applyColorTheme(colorTheme)
-    }
 }

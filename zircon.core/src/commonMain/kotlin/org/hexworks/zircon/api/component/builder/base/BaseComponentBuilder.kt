@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.component.builder.base
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.AlignmentStrategy
 import org.hexworks.zircon.api.component.Component
@@ -62,7 +61,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>()
      * The size which is needed to properly display current contents.
      * This field is ignored if the user explicitly sets [size].
      */
-    protected var contentSize = Sizes.one()
+    protected var contentSize = Size.one()
 
     override fun withComponentStyleSet(componentStyleSet: ComponentStyleSet): U {
         props.componentStyleSet = componentStyleSet

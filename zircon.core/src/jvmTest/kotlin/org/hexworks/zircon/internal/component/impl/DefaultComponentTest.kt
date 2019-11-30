@@ -2,15 +2,12 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.builder.component.LabelBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
@@ -22,6 +19,7 @@ import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase.BUBBLE
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.component.InternalContainer
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -202,8 +200,8 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     fun shouldProperlyCalculatePathFromRoot() {
         val root = RootContainer(
                 componentMetadata = ComponentMetadata(
-                        relativePosition = Positions.defaultPosition(),
-                        size = Sizes.create(100, 100),
+                        relativePosition = Position.defaultPosition(),
+                        size = Size.create(100, 100),
                         tileset = TILESET_REX_PAINT_20X20,
                         componentStyleSet = ComponentStyleSet.empty()),
                 renderingStrategy = DefaultComponentRenderingStrategy(NoOpGenericRenderer()))

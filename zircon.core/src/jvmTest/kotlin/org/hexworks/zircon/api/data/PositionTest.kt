@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.data
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.internal.data.GridPosition
@@ -70,14 +69,14 @@ class PositionTest {
 
     @Test
     fun shouldProperlyPlusTwoPositionsWhenBothArePositive() {
-        assertThat(Positions.create(1, 2).plus(Positions.create(2, 3)))
-                .isEqualTo(Positions.create(3, 5))
+        assertThat(Position.create(1, 2).plus(Position.create(2, 3)))
+                .isEqualTo(Position.create(3, 5))
     }
 
     @Test
     fun shouldProperlyPlusTwoPositionsWhenOneIsNegative() {
-        assertThat(Positions.create(-1, -2).plus(Positions.create(2, 3)))
-                .isEqualTo(Positions.create(1, 1))
+        assertThat(Position.create(-1, -2).plus(Position.create(2, 3)))
+                .isEqualTo(Position.create(1, 1))
     }
 
     @Test
@@ -94,14 +93,14 @@ class PositionTest {
 
     @Test
     fun shouldProperlyMinusTwoPositionsWhenBothArePositive() {
-        assertThat(Positions.create(5, 4).minus(Positions.create(1, 2)))
-                .isEqualTo(Positions.create(4, 2))
+        assertThat(Position.create(5, 4).minus(Position.create(1, 2)))
+                .isEqualTo(Position.create(4, 2))
     }
 
     @Test
     fun shouldProperlyMinusTwoPositionsWhenOneIsNegative() {
-        assertThat(Positions.create(-1, -2).minus(Positions.create(2, 3)))
-                .isEqualTo(Positions.create(-3, -5))
+        assertThat(Position.create(-1, -2).minus(Position.create(2, 3)))
+                .isEqualTo(Position.create(-3, -5))
     }
 
     @Test

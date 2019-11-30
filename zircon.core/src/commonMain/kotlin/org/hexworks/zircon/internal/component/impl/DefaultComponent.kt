@@ -111,6 +111,7 @@ abstract class DefaultComponent(
         componentStyleSetProperty.onChange {
             render()
         }
+        @Suppress("LeakingThis")
         themeProperty.onChange {
             applyColorTheme(it.newValue)
         }

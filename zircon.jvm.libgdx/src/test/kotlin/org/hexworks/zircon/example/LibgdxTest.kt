@@ -5,22 +5,20 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.utils.viewport.ExtendViewport
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.LibgdxApplications
-import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.Tiles
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.Tile.Companion
-import org.hexworks.zircon.internal.data.GridPosition
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.RunTimeStats
+import org.hexworks.zircon.internal.data.GridPosition
 import org.hexworks.zircon.internal.graphics.DefaultStyleSet
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
@@ -85,9 +83,9 @@ class LibgdxTest : ApplicationAdapter() {
         viewport.update(screenWidth.toInt(), screenHeight.toInt())
         viewport.apply()
         println(camera.viewportHeight)
-        LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+        LibgdxApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(terminalWidth, terminalHeight))
+                .withSize(Size.create(terminalWidth, terminalHeight))
                 .build())
         renderer.create()
     }

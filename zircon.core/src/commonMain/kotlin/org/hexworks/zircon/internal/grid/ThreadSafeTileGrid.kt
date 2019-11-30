@@ -2,19 +2,18 @@ package org.hexworks.zircon.internal.grid
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.api.Layers
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationInfo
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileComposite
+import org.hexworks.zircon.api.mvc.ViewContainer
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
 import org.hexworks.zircon.internal.animation.InternalAnimationHandler
@@ -23,6 +22,7 @@ import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.extensions.cancelAll
 import org.hexworks.zircon.internal.graphics.ThreadSafeTileGraphics
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
@@ -39,7 +39,8 @@ class ThreadSafeTileGrid(
     : InternalTileGrid,
         InternalCursorHandler by cursorHandler,
         ShutdownHook by DefaultShutdownHook(),
-        UIEventProcessor by eventProcessor {
+        UIEventProcessor by eventProcessor,
+        ViewContainer by ViewContainer.create() {
 
     init {
         initializeLayerable(initialSize, initialTileset)
@@ -261,7 +262,7 @@ class ThreadSafeTileGrid(
     }
 
     private fun initializeLayerable(initialSize: Size, initialTileset: TilesetResource) {
-        layerable.addLayer(Layers.newBuilder()
+        layerable.addLayer(Layer.newBuilder()
                 .withTileGraphics(ThreadSafeTileGraphics(
                         initialSize = initialSize,
                         initialTileset = initialTileset))

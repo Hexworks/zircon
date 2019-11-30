@@ -1,12 +1,17 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.application.CursorStyle;
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder;
+import org.hexworks.zircon.api.color.TileColor;
 import org.hexworks.zircon.api.data.Position;
+import org.hexworks.zircon.api.data.Size;
+import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.uievent.KeyCode;
 import org.hexworks.zircon.api.uievent.KeyboardEventType;
+import org.hexworks.zircon.api.uievent.UIEventResponse;
 
 public class TypingExample {
 
@@ -16,10 +21,10 @@ public class TypingExample {
 
         final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigBuilder.Companion.newBuilder()
                 .withDefaultTileset(CP437TilesetResources.bisasam16x16())
-                .withSize(Sizes.create(TERMINAL_WIDTH, 10))
+                .withSize(Size.create(TERMINAL_WIDTH, 10))
                 .withCursorBlinking(true)
                 .withCursorStyle(CursorStyle.FIXED_BACKGROUND)
-                .withCursorColor(TileColors.fromString("#ff00ff"))
+                .withCursorColor(TileColor.fromString("#ff00ff"))
                 .build());
 
         tileGrid.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
@@ -29,9 +34,9 @@ public class TypingExample {
             } else if (event.getCode().equals(KeyCode.ENTER)) {
                 tileGrid.setCursorPosition(pos.withRelativeY(1).withX(0));
             } else {
-                tileGrid.putTile(Tiles.newBuilder().withCharacter(event.getKey().charAt(0)).build());
+                tileGrid.putTile(Tile.newBuilder().withCharacter(event.getKey().charAt(0)).build());
             }
-            return UIEventResponses.processed();
+            return UIEventResponse.processed();
         });
     }
 }

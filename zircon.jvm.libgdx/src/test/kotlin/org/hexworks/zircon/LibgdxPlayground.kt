@@ -6,14 +6,15 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 import com.badlogic.gdx.graphics.GL20
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.GraphicalTilesetResources
 import org.hexworks.zircon.api.LibgdxApplications
-import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.internal.application.LibgdxApplication
@@ -31,10 +32,9 @@ object LibgdxPlayground : Game() {
 
     override fun create() {
         logger.info("Creating LibgdxPlayground...")
-        zirconApplication = LibgdxApplications.buildApplication(AppConfigs.newConfig()
+        zirconApplication = LibgdxApplications.buildApplication(AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
-                .withSize(Sizes.create(
-                        screenWidth / TILESET.width,
+                .withSize(Size.create(screenWidth / TILESET.width,
                         screenHeight / TILESET.height))
                 .build())
         zirconApplication.start()
@@ -44,8 +44,8 @@ object LibgdxPlayground : Game() {
         /*val panel = Components.panel()
                 .wrapWithBox(true)
                 .wrapWithShadow(true)
-                .withSize(Sizes.create(30, 28))
-                .withPosition(Positions.create(0, 0))
+                .withSize(Size.create(30, 28))
+                .withPosition(Position.create(0, 0))
                 .withTitle("Toolbar buttons on panel")
                 .build()
         screen.addComponent(panel)
@@ -53,13 +53,13 @@ object LibgdxPlayground : Game() {
         val unselectedToggleButton = Components.toggleButton()
                 .withText("Toggle me")
                 .wrapSides(true)
-                .withPosition(Positions.create(1, 3))
+                .withPosition(Position.create(1, 3))
         val selectedToggleButton = Components.toggleButton()
                 .withText("Boxed Toggle Button")
                 .withIsSelected(true)
                 .wrapWithBox(true)
                 .wrapSides(false)
-                .withPosition(Positions.create(1, 5))
+                .withPosition(Position.create(1, 5))
         val label = Components.label()
                 .withText("I'm on the right!")
                 .withPosition(Position.create(20, 9).fromRight(panel))
@@ -84,7 +84,7 @@ object LibgdxPlayground : Game() {
                 .withAlignment(positionalAlignment(2, 1)))
 
 
-        screen.applyColorTheme(theme)
+        screen.theme = theme
         screen.display()
 
         Gdx.input.inputProcessor = ZirconInputListener(

@@ -1,13 +1,19 @@
 package org.hexworks.zircon.examples.docs;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.ColorThemes;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.CheckBox;
 import org.hexworks.zircon.api.component.Header;
 import org.hexworks.zircon.api.component.Panel;
+import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.screen.Screen;
+import org.hexworks.zircon.api.uievent.UIEventResponse;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 import static org.hexworks.zircon.api.ComponentDecorations.shadow;
@@ -18,11 +24,11 @@ public class UsingComponents {
     public static void main(String[] args) {
 
         final TileGrid tileGrid = SwingApplications.startTileGrid(
-                AppConfigs.newConfig()
+                AppConfig.newBuilder()
                         .withSize(34, 18)
                         .withDefaultTileset(CP437TilesetResources.aduDhabi16x16())
                         .build());
-        final Screen screen = Screens.createScreenFor(tileGrid);
+        final Screen screen = Screen.create(tileGrid);
 
         Panel panel = Components.panel()
                 .withDecorations(
@@ -42,7 +48,7 @@ public class UsingComponents {
 
         final CheckBox checkBox = Components.checkBox()
                 .withText("Check me!")
-                .withPosition(Positions.create(0, 1)
+                .withPosition(Position.create(0, 1)
                         // the position class has some convenience methods
                         // for you to specify your component's position as
                         // relative to another one
@@ -50,13 +56,13 @@ public class UsingComponents {
                 .build();
 
         final Button left = Components.button()
-                .withPosition(Positions.create(0, 1) // this means 1 row below the check box
+                .withPosition(Position.create(0, 1) // this means 1 row below the check box
                         .relativeToBottomOf(checkBox))
                 .withText("Left")
                 .build();
 
         final Button right = Components.button()
-                .withPosition(Positions.create(1, 0) // 1 column right relative to the left BUTTON
+                .withPosition(Position.create(1, 0) // 1 column right relative to the left BUTTON
                         .relativeToRightOf(left))
                 .withText("Right")
                 .build();
@@ -69,17 +75,17 @@ public class UsingComponents {
         screen.addComponent(panel);
 
         // we can apply color themes to a screen
-        screen.applyColorTheme(ColorThemes.monokaiBlue());
+        screen.setTheme(ColorThemes.monokaiBlue());
 
         // this is how you can define interactions with a component
         left.handleComponentEvents(ACTIVATED, (event) -> {
-            screen.applyColorTheme(ColorThemes.monokaiGreen());
-            return UIEventResponses.processed();
+            screen.setTheme(ColorThemes.monokaiGreen());
+            return UIEventResponse.processed();
         });
 
         right.handleComponentEvents(ACTIVATED, (event) -> {
-            screen.applyColorTheme(ColorThemes.monokaiViolet());
-            return UIEventResponses.processed();
+            screen.setTheme(ColorThemes.monokaiViolet());
+            return UIEventResponse.processed();
         });
 
         // in order to see the changes you need to display your screen.

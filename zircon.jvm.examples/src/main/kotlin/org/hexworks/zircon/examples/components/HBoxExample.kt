@@ -1,35 +1,37 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_LEFT
 import org.hexworks.zircon.api.component.HBox
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 
 object HBoxExample {
 
-    private val theme = ColorThemes.techLight()
-    private val tileset = CP437TilesetResources.rexPaint20x20()
+    private val THEME = ColorThemes.techLight()
+    private val TILESET = CP437TilesetResources.rexPaint20x20()
 
     var count = 0
 
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
-                .withDefaultTileset(tileset)
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+                .withDefaultTileset(TILESET)
                 .withDebugMode(true)
-                .withSize(Sizes.create(60, 30))
+                .withSize(Size.create(60, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         val hbox = Components.hbox()
                 .withSpacing(0)
@@ -55,7 +57,7 @@ object HBoxExample {
         screen.addComponent(addNew)
 
         screen.display()
-        screen.applyColorTheme(theme)
+        screen.theme = THEME
     }
 
     private fun addButton(hbox: HBox) {
@@ -63,7 +65,7 @@ object HBoxExample {
                 .withText("Remove: $count")
                 .withSize(12, 1)
                 .build().apply {
-                    applyColorTheme(theme)
+                    theme = THEME
                     processComponentEvents(ACTIVATED) {
                         hbox.removeComponent(this)
                     }

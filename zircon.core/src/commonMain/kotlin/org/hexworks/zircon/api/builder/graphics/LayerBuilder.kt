@@ -1,14 +1,10 @@
 package org.hexworks.zircon.api.builder.graphics
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.Tile.Companion
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -49,7 +45,7 @@ data class LayerBuilder(
      * Sets the size for the new [org.hexworks.zircon.api.graphics.Layer].
      * Default is 1x1.
      */
-    fun withSize(width: Int, height: Int) = withSize(Sizes.create(width, height))
+    fun withSize(width: Int, height: Int) = withSize(Size.create(width, height))
 
     /**
      * Sets the `offset` for the new [org.hexworks.zircon.api.graphics.Layer].
@@ -64,7 +60,7 @@ data class LayerBuilder(
      * Default is 0x0.
      */
     fun withOffset(x: Int, y: Int) = also {
-        this.offset = Positions.create(x, y)
+        this.offset = Position.create(x, y)
     }
 
     /**
@@ -77,7 +73,7 @@ data class LayerBuilder(
     /**
      * Sets the filler for the new [TileGraphics] which
      * will be used to fill the empty spaces. Default is
-     * [Tiles.empty] which means no filling
+     * [Tile.empty] which means no filling
      */
     fun withFiller(filler: Tile) = also {
         this.filler = filler

@@ -25,7 +25,8 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  * The [Component] abstraction implements the **Composite** design pattern with [Component]
  * and [Container].
  */
-interface Component : ComponentEventSource, Identifiable, Movable, Themeable, TilesetOverride, UIEventSource {
+interface Component : ComponentEventSource, Identifiable, Movable, Themeable,
+        TilesetOverride, UIEventSource {
 
     /**
      * The absolute position of this [Component], eg: the [Position] relative the
@@ -90,14 +91,6 @@ interface Component : ComponentEventSource, Identifiable, Movable, Themeable, Ti
      * Detaches this [Component] from its parent (if any).
      */
     fun detach()
-
-    /**
-     * Applies a [ColorTheme] to this component and recursively to all its children (if any).
-     * @return the [ComponentStyleSet] which the [ColorTheme] was converted to
-     */
-    @Deprecated("Use the theme property instead", replaceWith = ReplaceWith(
-            "this.theme = colorTheme"))
-    fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
     /**
      * Requests that this [Component] be focused.

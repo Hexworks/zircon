@@ -2,7 +2,6 @@ package org.hexworks.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -66,6 +65,6 @@ class ThreadSafeLayerableTest {
 
     companion object {
         val TILESET = CP437TilesetResources.wanderlust16x16()
-        val SIZE = Sizes.create(80, 24)
+        val SIZE = Size.create(80, 24)
     }
 }

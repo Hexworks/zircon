@@ -1,8 +1,8 @@
 package org.hexworks.zircon.integration
 
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Sizes
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.halfBlock
 import org.hexworks.zircon.api.extensions.positionalAlignment
@@ -16,7 +16,7 @@ class ButtonIntegrationTest : ComponentIntegrationTestBase() {
     override fun buildScreenContent(screen: Screen) {
         val panel = Components.panel()
                 .withDecorations(box(title = "Buttons on panel"), shadow())
-                .withSize(Sizes.create(30, 28))
+                .withSize(Size.create(30, 28))
                 .withAlignment(positionalAlignment(29, 1))
                 .build()
         screen.addComponent(panel)
@@ -33,7 +33,7 @@ class ButtonIntegrationTest : ComponentIntegrationTestBase() {
                 .withText("Too long name for button")
                 .withDecorations(box(), shadow())
                 .withAlignment(positionalAlignment(1, 9))
-                .withSize(Sizes.create(10, 4))
+                .withSize(Size.create(10, 4))
         val overTheTopBtn = Components.button()
                 .withText("Over the top button")
                 .withDecorations(box(boxType = BoxType.DOUBLE), halfBlock(), shadow())
@@ -41,23 +41,23 @@ class ButtonIntegrationTest : ComponentIntegrationTestBase() {
         val halfBlockBtn = Components.button()
                 .withText("Half block button")
                 .withDecorations(halfBlock(), shadow())
-                .withAlignment(positionalAlignment(Positions.create(1, 23)))
+                .withAlignment(positionalAlignment(Position.create(1, 23)))
 
 
         screen.addComponent(simpleBtn)
-        panel.addComponent(simpleBtn.withPosition(Positions.create(1, 1)).build())
+        panel.addComponent(simpleBtn.withPosition(Position.create(1, 1)).build())
 
         screen.addComponent(boxedBtn)
-        panel.addComponent(boxedBtn.withPosition(Positions.create(1, 3)).build())
+        panel.addComponent(boxedBtn.withPosition(Position.create(1, 3)).build())
 
         screen.addComponent(tooLongBtn)
-        panel.addComponent(tooLongBtn.withPosition(Positions.create(1, 7)).build())
+        panel.addComponent(tooLongBtn.withPosition(Position.create(1, 7)).build())
 
         screen.addComponent(overTheTopBtn)
-        panel.addComponent(overTheTopBtn.withPosition(Positions.create(1, 12)).build())
+        panel.addComponent(overTheTopBtn.withPosition(Position.create(1, 12)).build())
 
         screen.addComponent(halfBlockBtn)
-        panel.addComponent(halfBlockBtn.withPosition(Positions.create(1, 21)).build())
+        panel.addComponent(halfBlockBtn.withPosition(Position.create(1, 21)).build())
     }
 
 }

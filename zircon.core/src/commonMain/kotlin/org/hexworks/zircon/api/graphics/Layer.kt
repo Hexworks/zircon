@@ -4,11 +4,13 @@ import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Copiable
 import org.hexworks.zircon.api.behavior.Movable
+import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.data.LayerState
+import kotlin.jvm.JvmStatic
 
 /**
  * A [Layer] is a [TileGraphics] which can be positioned and moved over a [TileGrid].
@@ -37,4 +39,9 @@ interface Layer : Copiable<Layer>, Identifiable, Movable, TileGraphics {
      */
     fun setAbsoluteTileAt(position: Position, tile: Tile)
 
+    companion object {
+
+        @JvmStatic
+        fun newBuilder() = LayerBuilder()
+    }
 }

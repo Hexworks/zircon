@@ -102,6 +102,7 @@ interface StyleSet : Cacheable {
         /**
          * Creates a new [StyleSet].
          */
+        @JvmStatic
         fun create(foregroundColor: TileColor, backgroundColor: TileColor, modifiers: Set<Modifier> = setOf()): StyleSet {
             return DefaultStyleSet(
                     foregroundColor = foregroundColor,

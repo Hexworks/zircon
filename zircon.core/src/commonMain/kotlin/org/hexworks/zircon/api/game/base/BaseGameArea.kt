@@ -6,7 +6,7 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.impl.Position3D
+import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.extensions.toTileImage
 import org.hexworks.zircon.api.game.GameArea.Companion.fetchPositionsWithOffset

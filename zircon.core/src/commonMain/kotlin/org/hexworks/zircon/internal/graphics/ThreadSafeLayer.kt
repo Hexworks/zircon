@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
@@ -22,6 +21,7 @@ import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import org.hexworks.zircon.internal.data.DefaultLayerState
+import org.hexworks.zircon.internal.data.LayerState
 import kotlin.jvm.Synchronized
 
 open class ThreadSafeLayer(

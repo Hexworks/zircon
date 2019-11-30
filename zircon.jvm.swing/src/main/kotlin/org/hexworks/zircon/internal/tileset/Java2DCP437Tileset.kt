@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.tileset
 import com.github.benmanes.caffeine.cache.Caffeine
 import org.hexworks.cobalt.Identifier
 import org.hexworks.cobalt.factory.IdentifierFactory
-import org.hexworks.zircon.api.Borders
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
@@ -129,7 +128,7 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
 
     companion object {
 
-        private val GRID_BORDER = Borders.newBuilder()
+        private val GRID_BORDER = Border.newBuilder()
                 .withBorderColor(ANSITileColor.BRIGHT_MAGENTA)
                 .withBorderWidth(1)
                 .withBorderType(BorderType.SOLID)

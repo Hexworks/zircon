@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Position.Companion
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.component.alignment.AroundAlignmentStrategy
 import org.hexworks.zircon.internal.component.alignment.PositionalAlignmentStrategy
@@ -61,7 +62,7 @@ object ComponentAlignments {
      * using the given [x],[y] coordinates.
      */
     fun positionalAlignment(x: Int, y: Int): AlignmentStrategy {
-        return positionalAlignment(Positions.create(x, y))
+        return positionalAlignment(Position.create(x, y))
     }
 
     /**

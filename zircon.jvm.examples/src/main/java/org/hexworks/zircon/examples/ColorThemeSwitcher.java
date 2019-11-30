@@ -1,20 +1,12 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.AppConfigs;
 import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Screens;
-import org.hexworks.zircon.api.Sizes;
 import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.component.Button;
-import org.hexworks.zircon.api.component.CheckBox;
-import org.hexworks.zircon.api.component.Header;
-import org.hexworks.zircon.api.component.Label;
-import org.hexworks.zircon.api.component.Panel;
-import org.hexworks.zircon.api.component.RadioButtonGroup;
+import org.hexworks.zircon.api.application.AppConfig;
+import org.hexworks.zircon.api.component.*;
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection;
-import org.hexworks.zircon.api.component.TextArea;
+import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.grid.TileGrid;
@@ -34,19 +26,19 @@ import static org.hexworks.zircon.api.Functions.fromConsumer;
 @SuppressWarnings("ALL")
 public class ColorThemeSwitcher {
 
-    private static final Size SCREEN_SIZE = Sizes.create(80, 41);
+    private static final Size SCREEN_SIZE = Size.create(80, 41);
     private static final TilesetResource TILESET = CP437TilesetResources.rogueYun16x16();
     private static final ColorThemeResource THEME = ColorThemeResource.GAMEBOOKERS;
 
     public static void main(String[] args) {
 
-        TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        TileGrid tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
                 .withSize(SCREEN_SIZE)
                 .withDebugMode(true)
                 .build());
 
-        Screen screen = Screens.createScreenFor(tileGrid);
+        Screen screen = Screen.create(tileGrid);
 
         addScreenTitle(screen, "Color themes");
 
@@ -58,33 +50,33 @@ public class ColorThemeSwitcher {
         final Panel infoPanel = Components.panel()
                 .withDecorations(box(BoxType.SINGLE, "Components example:"))
                 .withSize(infoPanelSize)
-                .withPosition(Positions.create(2, 2).relativeToBottomOf(currentThemeLabel.get()))
+                .withPosition(Position.create(2, 2).relativeToBottomOf(currentThemeLabel.get()))
                 .build();
 
         final Button testButton = Components.button()
                 .withText("Button")
-                .withPosition(Positions.create(0, 2))
+                .withPosition(Position.create(0, 2))
                 .build();
 
         final CheckBox checkBox = Components.checkBox()
                 .withText("Checkbox")
-                .withPosition(Positions.create(0, 1).relativeToBottomOf(testButton))
+                .withPosition(Position.create(0, 1).relativeToBottomOf(testButton))
                 .build();
 
         final Header header = Components.header()
                 .withText("Header")
-                .withPosition(Positions.create(0, 1).relativeToBottomOf(checkBox))
+                .withPosition(Position.create(0, 1).relativeToBottomOf(checkBox))
                 .build();
 
         final Label label = Components.label()
                 .withText("Label")
-                .withPosition(Positions.create(8, 0)
+                .withPosition(Position.create(8, 0)
                         .relativeToRightOf(testButton))
                 .build();
 
         RadioButtonGroup rbg = Components.radioButtonGroup()
-                .withSize(Sizes.create(15, 3))
-                .withPosition(Positions.create(0, 1).relativeToBottomOf(label))
+                .withSize(Size.create(15, 3))
+                .withPosition(Position.create(0, 1).relativeToBottomOf(label))
                 .build();
         rbg.addOption("0", "Option 0");
         rbg.addOption("1", "Option 1");
@@ -92,15 +84,15 @@ public class ColorThemeSwitcher {
 
 
         final Panel panel = Components.panel()
-                .withSize(Sizes.create(20, 6))
+                .withSize(Size.create(20, 6))
                 .withDecorations(box(BoxType.SINGLE, "Panel"), shadow())
-                .withPosition(Positions.create(10, 0)
+                .withPosition(Position.create(10, 0)
                         .relativeToRightOf(label))
                 .build();
 
         TextArea textArea = Components.textArea()
-                .withPosition(Positions.create(1, 0).relativeToRightOf(panel))
-                .withSize(Sizes.create(20, 6))
+                .withPosition(Position.create(1, 0).relativeToRightOf(panel))
+                .withSize(Size.create(20, 6))
                 .withText("Text box")
                 .build();
 
@@ -126,27 +118,27 @@ public class ColorThemeSwitcher {
 
         final Panel solarizedLightPanel = Components.panel()
                 .withDecorations(box(BoxType.SINGLE, "Solarized Light"))
-                .withPosition(Positions.create(0, 1).relativeToBottomOf(infoPanel))
+                .withPosition(Position.create(0, 1).relativeToBottomOf(infoPanel))
                 .withSize(smallPanelSize)
                 .build();
         final Panel solarizedDarkPanel = Components.panel()
                 .withDecorations(box(BoxType.SINGLE, "Solarized Dark"))
-                .withPosition(Positions.create(0, 1).relativeToBottomOf(solarizedLightPanel))
+                .withPosition(Position.create(0, 1).relativeToBottomOf(solarizedLightPanel))
                 .withSize(smallPanelSize)
                 .build();
         final Panel zenburnPanel = Components.panel()
                 .withDecorations(box(BoxType.SINGLE, "Zenburn"))
-                .withPosition(Positions.create(1, 0).relativeToRightOf(solarizedLightPanel))
+                .withPosition(Position.create(1, 0).relativeToRightOf(solarizedLightPanel))
                 .withSize(smallPanelSize)
                 .build();
         final Panel monokaiPanel = Components.panel()
                 .withDecorations(box(BoxType.SINGLE, "MonokaiLight"))
-                .withPosition(Positions.create(1, 0).relativeToRightOf(solarizedDarkPanel))
+                .withPosition(Position.create(1, 0).relativeToRightOf(solarizedDarkPanel))
                 .withSize(smallPanelSize)
                 .build();
         final Panel otherPanel = Components.panel()
                 .withDecorations(box(BoxType.SINGLE, "Other"))
-                .withPosition(Positions.create(1, 0).relativeToRightOf(zenburnPanel))
+                .withPosition(Position.create(1, 0).relativeToRightOf(zenburnPanel))
                 .withSize(themePickerSize.withRelativeWidth(3).withRelativeHeight(-1))
                 .build();
 
@@ -242,7 +234,7 @@ public class ColorThemeSwitcher {
             refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
         })));
 
-        screen.applyColorTheme(currentTheme.get().getTheme());
+        screen.setTheme(currentTheme.get().getTheme());
         screen.display();
 
     }
@@ -256,7 +248,7 @@ public class ColorThemeSwitcher {
         infoPanel.removeComponent(labelRef.get());
         labelRef.set(createHeaderForTheme(themeRef.get()));
         infoPanel.addComponent(labelRef.get());
-        screen.applyColorTheme(themeRef.get().getTheme());
+        screen.setTheme(themeRef.get().getTheme());
     }
 
     private static Header createHeaderForTheme(ColorThemeResource currentTheme) {
@@ -268,7 +260,7 @@ public class ColorThemeSwitcher {
     private static void addScreenTitle(Screen screen, String title) {
         final Header header = Components.header()
                 .withText(title)
-                .withPosition(Positions.create(2, 1))
+                .withPosition(Position.create(2, 1))
                 .build();
         screen.addComponent(header);
     }

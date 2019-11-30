@@ -1,6 +1,11 @@
 package org.hexworks.zircon.examples.docs;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.ColorThemes;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.LibgdxApplications;
+import org.hexworks.zircon.api.application.AppConfig;
+import org.hexworks.zircon.api.color.TileColor;
 import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.grid.TileGrid;
@@ -8,19 +13,19 @@ import org.hexworks.zircon.api.screen.Screen;
 
 import java.util.Random;
 
-import static org.hexworks.zircon.api.ComponentDecorations.*;
+import static org.hexworks.zircon.api.ComponentDecorations.box;
 
 public class WorkingWithColorThemes {
 
     public static void main(String[] args) {
 
         final TileGrid tileGrid = LibgdxApplications.startTileGrid(
-                AppConfigs.newConfig()
+                AppConfig.newBuilder()
                         .withSize(12, 10)
                         .withDefaultTileset(CP437TilesetResources.rogueYun16x16())
                         .build());
 
-        final Screen screen = Screens.createScreenFor(tileGrid);
+        final Screen screen = Screen.create(tileGrid);
 
         screen.addComponent(Components.label()
                 .withText("Hello")
@@ -34,16 +39,16 @@ public class WorkingWithColorThemes {
                 .build());
 
         ColorTheme custom = ColorThemes.newBuilder()
-                .withAccentColor(TileColors.fromString("#ff0000"))
-                .withPrimaryForegroundColor(TileColors.fromString("#ffaaff"))
-                .withSecondaryForegroundColor(TileColors.fromString("#dd88dd"))
-                .withPrimaryBackgroundColor(TileColors.fromString("#555555"))
-                .withSecondaryBackgroundColor(TileColors.fromString("#222222"))
+                .withAccentColor(TileColor.fromString("#ff0000"))
+                .withPrimaryForegroundColor(TileColor.fromString("#ffaaff"))
+                .withSecondaryForegroundColor(TileColor.fromString("#dd88dd"))
+                .withPrimaryBackgroundColor(TileColor.fromString("#555555"))
+                .withSecondaryBackgroundColor(TileColor.fromString("#222222"))
                 .build();
 
         ColorTheme builtIn = ColorThemes.adriftInDreams();
 
-        screen.applyColorTheme(new Random().nextInt(2) > 0 ? custom : builtIn);
+        screen.setTheme(new Random().nextInt(2) > 0 ? custom : builtIn);
 
         screen.display();
     }

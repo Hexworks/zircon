@@ -1,16 +1,14 @@
 package org.hexworks.zircon.api.graphics.impl
 
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.Tile.Companion
-import org.hexworks.zircon.internal.data.TileGraphicsState
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.data.TileGraphicsState
 
 /**
  * Represents a sub-section of a [TileGraphics]. This class can be used to

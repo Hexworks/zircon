@@ -1,7 +1,9 @@
 package org.hexworks.zircon.internal.component
 
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Position
@@ -103,5 +105,7 @@ interface InternalComponent : Component, ComponentEventAdapter, Focusable,
      * Renders this component to the underlying [TileGraphics].
      */
     fun render()
+
+    fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
 }

@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.mvc.ViewContainer
 import org.hexworks.zircon.api.uievent.UIEventSource
 
 /**
@@ -27,7 +28,7 @@ import org.hexworks.zircon.api.uievent.UIEventSource
  */
 interface TileGrid
     : AnimationHandler, Clearable, Closeable, DrawSurface, Layerable,
-        ShutdownHook, TypingSupport, UIEventSource {
+        ShutdownHook, TypingSupport, UIEventSource, ViewContainer {
 
     val widthInPixels: Int
         get() = tileset.width * width

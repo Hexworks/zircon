@@ -3,6 +3,9 @@ package org.hexworks.zircon.examples.docs;
 import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.color.ANSITileColor;
+import org.hexworks.zircon.api.color.TileColor;
+import org.hexworks.zircon.api.data.Position;
+import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.graphics.TileGraphics;
 import org.hexworks.zircon.api.grid.TileGrid;
@@ -14,7 +17,7 @@ public class CreatingTileGraphicsFromShapes {
 
     public static void main(String[] args) {
 
-        AppConfig config = AppConfigs.newConfig()
+        AppConfig config = AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
                 .build();
 
@@ -23,7 +26,7 @@ public class CreatingTileGraphicsFromShapes {
 
         final TileGraphics background = DrawSurfaces.tileGraphicsBuilder()
                 .withSize(tileGrid.getSize()) // you can fetch the size of a TileGrid like this
-                .withFiller(Tiles.newBuilder()
+                .withFiller(Tile.newBuilder()
                         .withCharacter(Symbols.BULLET)
                         .withBackgroundColor(ANSITileColor.BLUE)
                         .withForegroundColor(ANSITileColor.CYAN)
@@ -31,19 +34,19 @@ public class CreatingTileGraphicsFromShapes {
                 .build();
 
         final TileGraphics rectangle = Shapes.buildRectangle(
-                Positions.zero(),
+                Position.zero(),
                 tileGrid.getSize())
-                .toTileGraphics(Tiles.newBuilder()
+                .toTileGraphics(Tile.newBuilder()
                                 .withCharacter(Symbols.BLOCK_DENSE)
-                                .withBackgroundColor(TileColors.transparent())
+                                .withBackgroundColor(TileColor.transparent())
                                 .withForegroundColor(ANSITileColor.RED)
                                 .build(),
                         config.getDefaultTileset());
 
-        background.draw(rectangle, Positions.zero());
+        background.draw(rectangle, Position.zero());
 
         // the default position is (0x0) which is the top left corner
-        tileGrid.draw(background, Positions.zero());
+        tileGrid.draw(background, Position.zero());
 
     }
 }

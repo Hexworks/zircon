@@ -1,16 +1,18 @@
 package org.hexworks.zircon.examples.components
 
-import org.hexworks.zircon.api.AppConfigs
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.Screens
-import org.hexworks.zircon.api.Sizes
+
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.api.screen.Screen
 
 object HeadersExample {
 
@@ -20,12 +22,12 @@ object HeadersExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Sizes.create(60, 30))
+                .withSize(Size.create(60, 30))
                 .build())
 
-        val screen = Screens.createScreenFor(tileGrid)
+        val screen = Screen.create(tileGrid)
 
         val panel = Components.panel()
                 .withDecorations(box())
@@ -59,7 +61,7 @@ object HeadersExample {
 
         val tooLongHeader = Components.header()
                 .withText("Too long header")
-                .withSize(Sizes.create(10, 1))
+                .withSize(Size.create(10, 1))
                 .withAlignment(positionalAlignment(2, 13))
 
         screen.addComponent(tooLongHeader)
@@ -79,7 +81,7 @@ object HeadersExample {
 
 
         screen.display()
-        screen.applyColorTheme(theme)
+        screen.theme = theme
     }
 
 }

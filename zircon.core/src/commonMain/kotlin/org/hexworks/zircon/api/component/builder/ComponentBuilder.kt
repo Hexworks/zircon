@@ -1,7 +1,5 @@
 package org.hexworks.zircon.api.component.builder
 
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.component.AlignmentStrategy
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentAlignment
@@ -63,7 +61,7 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> {
     /**
      * Sets the [Size] of the resulting [Component].
      */
-    fun withSize(width: Int, height: Int): U = withSize(Sizes.create(width, height))
+    fun withSize(width: Int, height: Int): U = withSize(Size.create(width, height))
 
     /**
      * Aligns the resulting [Component] positionally, relative to its parent.
@@ -75,7 +73,7 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> {
      * Aligns the resulting [Component] positionally, relative to its parent.
      * Same as calling `withAlignment(positionalAlignment(x, y))`
      */
-    fun withPosition(x: Int, y: Int): U = withPosition(Positions.create(x, y))
+    fun withPosition(x: Int, y: Int): U = withPosition(Position.create(x, y))
 
     /**
      * Aligns the resulting [Component] within the [tileGrid] using the

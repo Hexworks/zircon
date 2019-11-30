@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.builder.graphics
 
 import org.hexworks.cobalt.factory.IdentifierFactory
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -22,7 +21,7 @@ import org.hexworks.zircon.internal.graphics.DefaultCharacterTileString
 data class CharacterTileStringBuilder(
         private var text: String = NO_VALUE,
         private var textWrap: TextWrap = WRAP,
-        private var size: Size = Sizes.unknown(),
+        private var size: Size = Size.unknown(),
         private val modifiers: MutableSet<Modifier> = mutableSetOf(),
         private var foregroundColor: TileColor = TileColor.defaultForegroundColor(),
         private var backgroundColor: TileColor = TileColor.defaultBackgroundColor())
@@ -33,7 +32,7 @@ data class CharacterTileStringBuilder(
     fun withText(text: String) = also {
         this.text = text
         if (size.isUnknown) {
-            size = Sizes.create(text.length, 1)
+            size = Size.create(text.length, 1)
         }
     }
 
@@ -42,7 +41,7 @@ data class CharacterTileStringBuilder(
     }
 
     fun withSize(width: Int, height: Int) = also {
-        this.size = Sizes.create(width, height)
+        this.size = Size.create(width, height)
     }
 
     fun withTextWrap(textWrap: TextWrap) = also {

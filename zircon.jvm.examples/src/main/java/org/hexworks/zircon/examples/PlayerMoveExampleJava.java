@@ -1,7 +1,10 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.Functions;
+import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.color.ANSITileColor;
+import org.hexworks.zircon.api.data.Position;
+import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.grid.TileGrid;
@@ -9,7 +12,7 @@ import org.hexworks.zircon.api.uievent.KeyboardEventType;
 
 public class PlayerMoveExampleJava {
 
-    private static Tile PLAYER_TILE = Tiles.newBuilder()
+    private static Tile PLAYER_TILE = Tile.newBuilder()
             .withBackgroundColor(ANSITileColor.BLACK)
             .withForegroundColor(ANSITileColor.WHITE)
             .withCharacter('@')
@@ -18,9 +21,9 @@ public class PlayerMoveExampleJava {
     public static void main(String[] args) {
         TileGrid tileGrid = SwingApplications.startTileGrid();
 
-        Layer player = Layers.newBuilder()
-                .withSize(Sizes.one())
-                .withOffset(Positions.create(tileGrid.getWidth() / 2, tileGrid.getHeight() / 2))
+        Layer player = Layer.newBuilder()
+                .withSize(Size.one())
+                .withOffset(Position.create(tileGrid.getWidth() / 2, tileGrid.getHeight() / 2))
                 .withFiller(PLAYER_TILE)
                 .build();
 
