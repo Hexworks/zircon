@@ -5,6 +5,7 @@ import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.factory.IdentifierFactory
 import org.hexworks.zircon.api.DrawSurfaces
+import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
@@ -29,7 +30,8 @@ open class ThreadSafeLayer(
         initialContents: TileGraphics,
         private val movable: Movable = DefaultMovable(
                 position = initialPosition,
-                size = initialContents.size)) : Clearable, TileGraphics, InternalLayer, Movable {
+                size = initialContents.size))
+    : Clearable, TileGraphics, InternalLayer, Boundable by movable {
 
     final override val tiles: Map<Position, Tile>
         get() = currentState.tiles

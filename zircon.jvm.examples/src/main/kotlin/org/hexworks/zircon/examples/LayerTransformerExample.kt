@@ -59,7 +59,7 @@ object LayerTransformerExample {
         val transformToggle = Components.toggleButton()
                 .withText("Transform")
                 .build().apply {
-                    onSelectionChanged {
+                    selectedProperty.onChange {
                         if (it.newValue) {
                             transformingLayer.transform { _, tile ->
                                 tile.withAddedModifiers(HideModifier)
@@ -78,7 +78,7 @@ object LayerTransformerExample {
                 .withText("Hide")
                 .withPosition(Position.topRightOf(transformToggle) + Position.create(1, 0))
                 .build().apply {
-                    onSelectionChanged {
+                    selectedProperty.onChange {
                         if (it.newValue) {
                             hideableLayer.hide()
                         } else {

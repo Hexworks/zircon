@@ -107,7 +107,7 @@ class DefaultScrollable3D(initialVisibleSize: Size3D,
         return visibleOffset
     }
 
-    override fun scrollTo3DPosition(position3D: Position3D) {
+    override fun scrollTo(position3D: Position3D) {
         require(actualSize.containsPosition(position3D))
         {
             "new position $position3D has to be within the actual size $actualSize"

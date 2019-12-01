@@ -40,7 +40,7 @@ object SelectionHandlingExample {
         screen.display()
         screen.theme = theme
 
-        cb0.onSelectionChanged {
+        cb0.selectedProperty.onChange {
             println("Selection changed")
         }
 

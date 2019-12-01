@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.behavior
 
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.internal.behavior.impl.DefaultDisablable
+import kotlin.jvm.JvmStatic
 
 /**
  * Represents an object which supports the notion of disabling.
@@ -15,6 +16,7 @@ interface Disablable {
 
     companion object {
 
+        @JvmStatic
         fun create(initialDisabled: Boolean = false): Disablable = DefaultDisablable(initialDisabled)
     }
 }

@@ -62,6 +62,7 @@ interface Component : ComponentEventSource, Identifiable, Movable, Themeable,
      */
     val relativeBounds: Rect
 
+    // TODO: introduce Hideable
     /**
      * Tells whether this [Component] is visible or not.
      */
@@ -75,12 +76,7 @@ interface Component : ComponentEventSource, Identifiable, Movable, Themeable,
     /**
      * The [ComponentStyleSet] of this [Component].
      */
-    var componentStyleSet: ComponentStyleSet
-
-    /**
-     * The [ComponentStyleSet] property of this [Component].
-     */
-    val componentStyleSetProperty: Property<ComponentStyleSet>
+    val componentStyleSet: ComponentStyleSet
 
     /**
      * Tells whether this [Component] is attached to a parent or not.

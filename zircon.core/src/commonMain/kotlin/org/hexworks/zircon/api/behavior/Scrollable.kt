@@ -4,10 +4,9 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 
 /**
- * A [Scrollable] object has a visible 2D space which might be smaller than
- * its virtual size. A scrollable is supposed to maintain a visible "window" over
- * its content which can be bigger either vertically or horizontally than
- * its visible part.
+ * A [Scrollable] object has a visible 2D space which might be smaller than its virtual size.
+ * A scrollable is supposed to maintain a visible "window" over its content which can be bigger
+ * either vertically or horizontally than its visible part.
  */
 interface Scrollable {
 
@@ -85,6 +84,6 @@ interface Scrollable {
     /**
      * Scrolls this [Scrollable] to the provided position
      */
-    fun scrollToPosition(position: Position)
+    fun scrollTo(position: Position)
 
 }

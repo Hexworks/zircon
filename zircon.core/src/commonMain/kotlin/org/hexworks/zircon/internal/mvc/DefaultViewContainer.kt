@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.mvc
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.mvc.View
-import org.hexworks.zircon.api.mvc.ViewContainer
-import org.hexworks.zircon.api.mvc.base.BaseView
+import org.hexworks.zircon.api.view.View
+import org.hexworks.zircon.api.view.ViewContainer
+import org.hexworks.zircon.api.view.base.BaseView
 
 class DefaultViewContainer : ViewContainer {
 

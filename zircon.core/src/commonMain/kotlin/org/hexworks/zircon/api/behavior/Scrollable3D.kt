@@ -4,10 +4,9 @@ import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 
 /**
- * A [Scrollable3D] object has a visible 3D space which might be smaller than
- * its real size. A 3D scrollable maintains a visible "cube" over
- * its content which is usually bigger in at least one dimension than the visible
- * part.
+ * A [Scrollable3D] object has a visible 3D space which might be smaller than its real size.
+ * A 3D scrollable maintains a visible "cube" over its content which is usually bigger in at
+ * least one dimension than the visible part.
  */
 interface Scrollable3D {
 
@@ -113,5 +112,5 @@ interface Scrollable3D {
     /**
      * Scrolls this [Scrollable3D] to the provided position
      */
-    fun scrollTo3DPosition(position3D: Position3D)
+    fun scrollTo(position3D: Position3D)
 }

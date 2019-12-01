@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.mvc
+package org.hexworks.zircon.api.view
 
 import org.hexworks.zircon.api.behavior.Themeable
 import org.hexworks.zircon.api.screen.Screen

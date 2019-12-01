@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.datatypes.Maybe
-
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -14,12 +13,12 @@ import org.hexworks.zircon.api.component.RadioButtonGroup
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
 
 class DefaultRadioButtonGroup constructor(
@@ -55,7 +54,7 @@ class DefaultRadioButtonGroup constructor(
                         tileset = tileset,
                         componentStyleSet = componentStyleSet)).also { button ->
             items[key] = button
-            button.onSelectionChanged { (_, _, selected) ->
+            button.selectedProperty.onChange { (_, _, selected) ->
                 if (selected) {
                     selectedItem.map {
                         if (it != key) {

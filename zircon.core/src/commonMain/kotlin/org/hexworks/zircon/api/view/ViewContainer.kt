@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.mvc
+package org.hexworks.zircon.api.view
 
 import org.hexworks.zircon.internal.mvc.DefaultViewContainer
 import kotlin.jvm.JvmStatic
