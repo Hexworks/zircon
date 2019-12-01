@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.Clearable
+import org.hexworks.zircon.api.behavior.Copiable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
@@ -12,7 +13,7 @@ import org.hexworks.zircon.internal.data.TileGraphicsState
  * basic interface for all drawable surfaces which exposes simple get, set and draw
  * functions, and other useful operations for transforming it.
  */
-interface TileGraphics : Clearable, DrawSurface, TileComposite {
+interface TileGraphics : Clearable, Copiable<TileGraphics>, DrawSurface, TileComposite {
 
     /**
      * Holds a snapshot of the current state of this [TileGraphics].
@@ -36,14 +37,6 @@ interface TileGraphics : Clearable, DrawSurface, TileComposite {
      * @param offset the offset for the new [Layer], `(0, 0)` by default
      */
     fun toLayer(offset: Position = Position.zero()): Layer
-
-    /**
-     * Creates a **new** copy from the contents of this
-     * [TileGraphics]. The result is detached from the current one
-     * which means that changes to one are not reflected in the
-     * other.
-     */
-    fun createCopy(): TileGraphics
 
     /**
      * Returns a copy of this [TileGraphics] resized to a new size and using

@@ -1,15 +1,16 @@
 package org.hexworks.zircon.internal.component
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.behavior.Focusable
 import org.hexworks.zircon.internal.component.impl.RootContainer
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentMoved
 import org.hexworks.zircon.internal.uievent.ComponentEventAdapter
 import org.hexworks.zircon.internal.uievent.KeyboardEventAdapter
@@ -56,6 +57,16 @@ interface InternalComponent : Component, ComponentEventAdapter, Focusable,
      * are ordered from top to bottom with regards to the Z axis.
      */
     val layerStates: Iterable<LayerState>
+
+    /**
+     * The [ComponentStyleSet] of this [Component].
+     */
+    override var componentStyleSet: ComponentStyleSet
+
+    /**
+     * The [ComponentStyleSet] property of this [Component].
+     */
+    val componentStyleSetProperty: Property<ComponentStyleSet>
 
     override fun isAttached(): Boolean = fetchParent().isPresent
 

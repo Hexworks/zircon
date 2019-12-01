@@ -43,7 +43,7 @@ object TextHandlingExample {
         screen.display()
         screen.theme = theme
 
-        label.onTextChanged {
+        label.textProperty.onChange {
             println("Text changed")
         }
 

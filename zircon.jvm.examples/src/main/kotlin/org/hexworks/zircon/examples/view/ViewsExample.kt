@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.mvc.base.BaseView
+import org.hexworks.zircon.api.view.base.BaseView
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 
 object ViewsExample {

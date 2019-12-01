@@ -55,8 +55,6 @@ class SubTileGraphics(
         }
     }
 
-    override fun setTileAt(position: Position, tile: Tile) = draw(tile, position)
-
     override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
         backend.draw(tileMap, drawPosition + offset, drawArea)
     }

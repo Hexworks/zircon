@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.TilesetOverride
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -106,15 +105,4 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
      * [TileGraphics.toSubTileGraphics].
      */
     fun applyStyle(styleSet: StyleSet)
-
-
-    /**
-     * Sets a [Tile] at a specific position in the [TileGraphics] to [tile].
-     * If the position is outside of the [TileGraphics]'s size, this method has no effect.
-     * **Note that** repeated calls to [setTileAt] can be inefficient, depending on the
-     * implementation of [TileGraphics] you are using. Please refer to the docs in
-     * [TileGraphicsBuilder] for more info.
-     */
-    @Deprecated("Use draw instead", replaceWith = ReplaceWith("draw(tile, position)"))
-    fun setTileAt(position: Position, tile: Tile) = draw(tile, position)
 }

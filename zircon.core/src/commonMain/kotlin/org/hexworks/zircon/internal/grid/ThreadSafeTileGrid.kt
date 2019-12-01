@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileComposite
-import org.hexworks.zircon.api.mvc.ViewContainer
+import org.hexworks.zircon.api.view.ViewContainer
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
 import org.hexworks.zircon.internal.animation.InternalAnimationHandler
@@ -139,11 +139,6 @@ class ThreadSafeTileGrid(
     }
 
     // DRAW SURFACE
-
-    @Synchronized
-    override fun setTileAt(position: Position, tile: Tile) {
-        backend.draw(tile, position)
-    }
 
     @Synchronized
     override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {

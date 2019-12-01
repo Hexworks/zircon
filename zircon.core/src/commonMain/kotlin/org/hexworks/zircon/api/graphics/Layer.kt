@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.graphics
 
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.behavior.Copiable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position
@@ -17,13 +16,15 @@ import kotlin.jvm.JvmStatic
  * With [Layer]s one can create a quasi 3D effect (like top down oblique projections).
  * A [Layer] can also be hidden (invisible) by using either [hiddenProperty] or [isHidden].
  */
-interface Layer : Copiable<Layer>, Identifiable, Movable, TileGraphics {
+interface Layer : Identifiable, Movable, TileGraphics {
 
     override val state: LayerState
 
     val hiddenProperty: Property<Boolean>
 
     var isHidden: Boolean
+
+    override fun createCopy(): Layer
 
     /**
      * Same as [TileGraphics.getTileAt] but will consider the given [position]

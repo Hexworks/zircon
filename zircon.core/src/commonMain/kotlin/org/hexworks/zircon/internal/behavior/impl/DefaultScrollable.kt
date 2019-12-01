@@ -90,7 +90,7 @@ class DefaultScrollable(override val visibleSize: Size,
         return offset
     }
 
-    override fun scrollToPosition(position: Position) {
+    override fun scrollTo(position: Position) {
         require(actualSize.containsPosition(position))
         {
             "new position $position has to be within the actual size $actualSize"

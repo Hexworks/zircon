@@ -3,12 +3,10 @@ package org.hexworks.zircon.api.component
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 
 /**
- * A [LogArea] provides the possibility to display messages.
- * The messages are composed of log elements, which can be
- * for instance text or other Zircon components
- * New rows have to be explicitly created by calling
- * [LogArea.addNewRows]
-
+ * A [LogArea] provides the possibility to display messages. The messages are composed of log
+ * elements, which can be for instance text or other Zircon components. New rows have to be
+ * explicitly created by calling [LogArea.addNewRows].
+ *
  * Currently the log area scrolls automatically down. When later
  * Zircon provides scrollbars, this behavior will be then configurable
  */

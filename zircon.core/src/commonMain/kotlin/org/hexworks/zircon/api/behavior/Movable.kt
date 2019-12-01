@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.behavior
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
+import kotlin.jvm.JvmStatic
 
 /**
  * A [Movable] is a [Boundable] object which can change its position.
@@ -11,8 +12,6 @@ interface Movable : Boundable {
 
     /**
      * Sets the position of this [Movable].
-     * Note that if the supplied `position` is same as the [Movable]'s current
-     * position nothing will change.
      */
     fun moveTo(position: Position)
 
@@ -33,6 +32,7 @@ interface Movable : Boundable {
 
     companion object {
 
+        @JvmStatic
         fun create(size: Size, position: Position = Position.zero()): Movable =
                 DefaultMovable(size, position)
     }

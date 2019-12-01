@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.mvc.ViewContainer
+import org.hexworks.zircon.api.view.ViewContainer
 import org.hexworks.zircon.api.uievent.UIEventSource
 
 /**

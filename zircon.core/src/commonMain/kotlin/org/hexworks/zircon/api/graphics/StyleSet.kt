@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.Cacheable
+import org.hexworks.zircon.api.behavior.Copiable
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.modifier.Modifier
@@ -14,16 +15,11 @@ import kotlin.jvm.JvmStatic
  * - modifiers
  * and a set of useful operations on them.
  */
-interface StyleSet : Cacheable {
+interface StyleSet : Cacheable, Copiable<StyleSet> {
 
     val foregroundColor: TileColor
     val backgroundColor: TileColor
     val modifiers: Set<Modifier>
-
-    /**
-     * Returns a copy of the style information stored in this [StyleSet].
-     */
-    fun createCopy(): StyleSet
 
     /**
      * Creates a copy of this [StyleSet] with the given foreground color.

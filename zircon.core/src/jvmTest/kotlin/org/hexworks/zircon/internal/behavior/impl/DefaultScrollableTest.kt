@@ -130,7 +130,7 @@ class DefaultScrollableTest {
     @Test
     fun shouldProperlyScrollToProvided3dPosition() {
         val newPosition = Position.create(5, 5)
-        target.scrollToPosition(newPosition)
+        target.scrollTo(newPosition)
 
         assertThat(target.visibleOffset)
                 .isEqualTo(newPosition)
@@ -158,7 +158,7 @@ class DefaultScrollableTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionWhenTryingToScrollOutsideOfTheActualSize() {
-        target.scrollToPosition(Position.create(15, 0))
+        target.scrollTo(Position.create(15, 0))
     }
 
     companion object {
