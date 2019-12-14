@@ -42,19 +42,13 @@ open class DefaultModal<T : ModalResult>(componentMetadata: ComponentMetadata,
 
     override fun acceptsFocus() = true
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
                         .withBackgroundColor(colorTheme.primaryBackgroundColor)
                         .build())
-                .build().also { css ->
-                    componentStyleSet = css
-                    render()
-                    children.forEach {
-                        it.applyColorTheme(colorTheme)
-                    }
-                }
+                .build()
     }
 
     final override fun render() {

@@ -104,15 +104,6 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
         assertThat(target.children).isEmpty()
     }
 
-    @Test
-    fun shouldProperlyApplyThemeToChildren() {
-        target.addComponent(componentStub)
-        target.applyColorTheme(DEFAULT_THEME)
-
-        assertThat(componentStub.colorTheme)
-                .isEqualTo(DEFAULT_THEME)
-    }
-
     companion object {
         val POSITION = Position.create(4, 5)
         val SIZE = Size.create(40, 10)

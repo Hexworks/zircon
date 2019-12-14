@@ -273,7 +273,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldReturnEmptyStylesWhenThemeApplied() {
-        assertThat(target.applyColorTheme(DEFAULT_THEME)).isEqualTo(ComponentStyleSet.empty())
+        assertThat(target.convertColorTheme(DEFAULT_THEME)).isEqualTo(ComponentStyleSet.empty())
     }
 
     @Test

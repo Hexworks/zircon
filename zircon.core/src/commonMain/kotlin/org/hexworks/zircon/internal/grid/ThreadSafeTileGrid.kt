@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.grid
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.animation.Animation
@@ -13,8 +14,8 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileComposite
-import org.hexworks.zircon.api.view.ViewContainer
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.view.ViewContainer
 import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
 import org.hexworks.zircon.internal.animation.InternalAnimationHandler
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
@@ -60,6 +61,9 @@ class ThreadSafeTileGrid(
         set(value) {
             backend.tileset = value
         }
+
+    override val tilesetProperty: Property<TilesetResource>
+        get() = backend.tilesetProperty
 
     override val layerStates: Iterable<LayerState>
         @Synchronized

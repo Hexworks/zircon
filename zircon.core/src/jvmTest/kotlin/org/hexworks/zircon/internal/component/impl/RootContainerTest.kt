@@ -1,15 +1,13 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.junit.Before
-import org.junit.Test
 
 class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
@@ -37,13 +35,4 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
                         componentRenderer = rendererStub))
     }
 
-
-    @Test
-    fun shouldProperlyApplyThemeToChildren() {
-        target.addComponent(componentStub)
-
-        target.applyColorTheme(DEFAULT_THEME)
-
-        assertThat(componentStub.colorTheme).isEqualTo(DEFAULT_THEME)
-    }
 }

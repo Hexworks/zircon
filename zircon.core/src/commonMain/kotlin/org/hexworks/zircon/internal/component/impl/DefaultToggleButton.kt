@@ -81,7 +81,7 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
         render()
     }
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.accentColor)
@@ -99,10 +99,7 @@ class DefaultToggleButton(componentMetadata: ComponentMetadata,
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
                         .withBackgroundColor(colorTheme.accentColor)
                         .build())
-                .build().also {
-                    componentStyleSet = it
-                    render()
-                }
+                .build()
     }
 
     override fun render() {

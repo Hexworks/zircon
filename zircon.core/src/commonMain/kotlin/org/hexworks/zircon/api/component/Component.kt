@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.component
 
 import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.zircon.api.behavior.Hideable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.behavior.Themeable
 import org.hexworks.zircon.api.behavior.TilesetOverride
@@ -25,7 +26,7 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  * The [Component] abstraction implements the **Composite** design pattern with [Component]
  * and [Container].
  */
-interface Component : ComponentEventSource, Identifiable, Movable, Themeable,
+interface Component : ComponentEventSource, Hideable, Identifiable, Movable, Themeable,
         TilesetOverride, UIEventSource {
 
     /**
@@ -62,21 +63,17 @@ interface Component : ComponentEventSource, Identifiable, Movable, Themeable,
      */
     val relativeBounds: Rect
 
-    // TODO: introduce Hideable
     /**
-     * Tells whether this [Component] is visible or not.
+     * The [ComponentStyleSet] of this [Component]. *Note that* if a [ColorTheme] is
+     * applied to this [Component] (or any of its ancestors) [componentStyleSet]
+     * will be overwritten.
      */
-    var isHidden: Boolean
+    var componentStyleSet: ComponentStyleSet
 
     /**
-     * [Property] which tells whether this [Component] is visible or not.
+     * [Property] for [componentStyleSet].
      */
-    val hiddenProperty: Property<Boolean>
-
-    /**
-     * The [ComponentStyleSet] of this [Component].
-     */
-    val componentStyleSet: ComponentStyleSet
+    val componentStyleSetProperty: Property<ComponentStyleSet>
 
     /**
      * Tells whether this [Component] is attached to a parent or not.

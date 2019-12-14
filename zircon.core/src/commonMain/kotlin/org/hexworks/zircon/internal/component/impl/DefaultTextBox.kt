@@ -20,19 +20,13 @@ class DefaultTextBox(componentMetadata: ComponentMetadata,
         render()
     }
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
                         .withBackgroundColor(TileColor.transparent())
                         .build())
-                .build().also { css ->
-                    componentStyleSet = css
-                    render()
-                    children.forEach {
-                        it.applyColorTheme(colorTheme)
-                    }
-                }
+                .build()
     }
 
     override fun render() {

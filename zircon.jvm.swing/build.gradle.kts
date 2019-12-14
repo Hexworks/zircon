@@ -22,7 +22,7 @@ kotlin {
             compile(filters)
         }
 
-        with (LibsTest) {
+        with (TestLibs) {
             testCompile(junit)
             testCompile(mockitoAll)
             testCompile(assertJCore)

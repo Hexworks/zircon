@@ -99,7 +99,7 @@ abstract class BaseNumberInput(
 
     override fun acceptsFocus() = isDisabled.not()
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.secondaryBackgroundColor)
@@ -113,10 +113,7 @@ abstract class BaseNumberInput(
                         .withForegroundColor(colorTheme.primaryBackgroundColor)
                         .withBackgroundColor(colorTheme.primaryForegroundColor)
                         .build())
-                .build().also {
-                    componentStyleSet = it
-                    render()
-                }
+                .build()
     }
 
     override fun focusGiven() = whenEnabled {

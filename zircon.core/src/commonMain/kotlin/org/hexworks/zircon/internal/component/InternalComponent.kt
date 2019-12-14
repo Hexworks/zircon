@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component
 
-import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -58,16 +57,6 @@ interface InternalComponent : Component, ComponentEventAdapter, Focusable,
      */
     val layerStates: Iterable<LayerState>
 
-    /**
-     * The [ComponentStyleSet] of this [Component].
-     */
-    override var componentStyleSet: ComponentStyleSet
-
-    /**
-     * The [ComponentStyleSet] property of this [Component].
-     */
-    val componentStyleSetProperty: Property<ComponentStyleSet>
-
     override fun isAttached(): Boolean = fetchParent().isPresent
 
     /**
@@ -117,6 +106,9 @@ interface InternalComponent : Component, ComponentEventAdapter, Focusable,
      */
     fun render()
 
-    fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet
+    /**
+     * Converts the given [ColorTheme] to the equivalent [ComponentStyleSet] representation.
+     */
+    fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
 }

@@ -16,16 +16,12 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.api.uievent.*
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 import kotlin.math.truncate
 
+@Suppress("LeakingThis")
 abstract class BaseScrollBar(final override val minValue: Int,
                              final override var maxValue: Int,
                              final override val numberOfSteps: Int,
@@ -238,8 +234,7 @@ abstract class BaseScrollBar(final override val minValue: Int,
         }
     }
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        LOGGER.debug("Applying color theme: $colorTheme to ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled).")
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.primaryForegroundColor)
@@ -257,10 +252,7 @@ abstract class BaseScrollBar(final override val minValue: Int,
                         .withForegroundColor(colorTheme.primaryBackgroundColor)
                         .withBackgroundColor(colorTheme.primaryForegroundColor)
                         .build())
-                .build().also {
-                    componentStyleSet = it
-                    render()
-                }
+                .build()
     }
 
     final override fun render() {

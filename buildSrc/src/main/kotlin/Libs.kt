@@ -1,24 +1,5 @@
-object Versions {
-    const val kotlinVersion = "1.3.50"
-    const val kotlinxCoroutinesVersion = "1.3.2"
-    const val kotlinxCollectionsImmutableVersion = "0.3"
-
-    const val cobaltVersion = "2019.1.5-PREVIEW"
-
-    const val caffeineVersion = "2.5.4"
-    const val snakeyamlVersion = "1.18"
-    const val slf4jVersion = "1.7.25"
-    const val logbackVersion = "1.2.3"
-    const val gdxVersion = "1.9.8"
-    const val filtersVersion =  "2.0.235-1"
-
-    const val junitVersion = "4.12"
-    const val mockitoVersion = "1.10.19"
-    const val mockitoKotlinVersion = "1.6.0"
-    const val assertjVersion = "3.6.2"
-}
-
 object Libs {
+
     const val kotlinStdLibCommon = "org.jetbrains.kotlin:kotlin-stdlib-common:${Versions.kotlinVersion}"
     const val kotlinStdLibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}"
@@ -44,16 +25,4 @@ object Libs {
     const val gdxBox2DPlatform = "com.badlogicgames.gdx:gdx-box2d-platform:${Versions.gdxVersion}:natives-desktop"
     const val logbackClassic = "ch.qos.logback:logback-classic:${Versions.logbackVersion}"
     const val filters = "com.jhlabs:filters:${Versions.filtersVersion}"
-}
-
-object LibsTest {
-    const val kotlinTestCommon = "org.jetbrains.kotlin:kotlin-test-common"
-    const val kotlinTestAnnotationsCommon = "org.jetbrains.kotlin:kotlin-test-annotations-common"
-
-    const val junit = "junit:junit:${Versions.junitVersion}"
-    const val mockitoAll = "org.mockito:mockito-all:${Versions.mockitoVersion}"
-    const val mockitoKotlin = "com.nhaarman:mockito-kotlin:${Versions.mockitoKotlinVersion}"
-    const val assertJCore = "org.assertj:assertj-core:${Versions.assertjVersion}"
-    const val logbackClassic = "ch.qos.logback:logback-classic:${Versions.logbackVersion}"
-    const val logbackCore = "ch.qos.logback:logback-core:${Versions.logbackVersion}"
 }

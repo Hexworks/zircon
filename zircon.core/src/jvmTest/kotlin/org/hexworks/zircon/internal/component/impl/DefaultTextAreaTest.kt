@@ -178,7 +178,7 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
 
     @Test
     fun shouldProperlyGiveFocus() {
-        target.applyColorTheme(DEFAULT_THEME)
+        target.convertColorTheme(DEFAULT_THEME)
         var cursorVisible = false
         Zircon.eventBus.subscribe<ZirconEvent.RequestCursorAt>(ZirconScope) {
             cursorVisible = true

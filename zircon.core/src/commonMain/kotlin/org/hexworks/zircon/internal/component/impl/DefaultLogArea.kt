@@ -1,16 +1,11 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 import org.hexworks.zircon.api.builder.component.TextBoxBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.LogArea
-import org.hexworks.zircon.api.component.TextBox
+import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
@@ -23,7 +18,6 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
         renderer = renderingStrategy) {
 
     private var currentInlineBuilder = createTextBoxBuilder()
-    private var currentTheme: ColorTheme = ColorThemeBuilder.newBuilder().build()
 
     init {
         render()
@@ -90,9 +84,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
         children.forEach { removeComponent(it) }
     }
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        LOGGER.debug("Applying color theme ($colorTheme) to LogArea (id=${id.abbreviate()}).")
-        currentTheme = colorTheme
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
@@ -106,13 +98,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
                         .withForegroundColor(colorTheme.primaryBackgroundColor)
                         .withBackgroundColor(colorTheme.primaryForegroundColor)
                         .build())
-                .build().also { css ->
-                    componentStyleSet = css
-                    render()
-                    children.forEach {
-                        it.applyColorTheme(colorTheme)
-                    }
-                }
+                .build()
     }
 
     private fun addLogElement(element: TextBox, applyTheme: Boolean = true) {
@@ -140,7 +126,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
         element.moveTo(Position.create(0, currentHeight))
         addComponent(element)
         if (applyTheme) {
-            element.theme = currentTheme
+            element.theme = theme
         }
         render()
     }

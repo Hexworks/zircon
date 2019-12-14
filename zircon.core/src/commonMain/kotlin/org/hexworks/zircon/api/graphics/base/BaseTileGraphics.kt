@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.graphics.base
 
+import org.hexworks.cobalt.databinding.api.toProperty
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position
@@ -8,11 +9,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.toTileGraphics
 import org.hexworks.zircon.api.extensions.toTileImage
-import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.graphics.TileComposite
-import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.graphics.TileImage
+import org.hexworks.zircon.api.graphics.*
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 
@@ -25,42 +22,41 @@ import org.hexworks.zircon.api.resource.TilesetResource
 abstract class BaseTileGraphics(
         initialTileset: TilesetResource,
         initialSize: Size)
-    : TileGraphics,
-        TilesetOverride {
+    : TileGraphics, TilesetOverride {
 
-    override var tileset: TilesetResource = initialTileset
-        set(value) {
-            value.checkCompatibilityWith(tileset)
-            field = value
-        }
+    final override val tilesetProperty = initialTileset.toProperty { newValue ->
+        tileset.isCompatibleWith(newValue)
+    }
 
-    override val size = initialSize
+    override var tileset: TilesetResource by tilesetProperty.asDelegate()
 
-    override fun draw(tileComposite: TileComposite) = draw(
+    final override val size = initialSize
+
+    final override fun draw(tileComposite: TileComposite) = draw(
             tileComposite = tileComposite,
             drawPosition = Position.zero(),
             drawArea = tileComposite.size)
 
-    override fun draw(tileComposite: TileComposite,
-                      drawPosition: Position) = draw(
+    final override fun draw(tileComposite: TileComposite,
+                            drawPosition: Position) = draw(
             tileComposite = tileComposite,
             drawPosition = drawPosition,
             drawArea = tileComposite.size)
 
-    override fun draw(tileComposite: TileComposite,
-                      drawPosition: Position,
-                      drawArea: Size) = draw(
+    final override fun draw(tileComposite: TileComposite,
+                            drawPosition: Position,
+                            drawArea: Size) = draw(
             tileMap = tileComposite.tiles,
             drawPosition = drawPosition,
             drawArea = drawArea)
 
-    override fun draw(tileMap: Map<Position, Tile>) = draw(
+    final override fun draw(tileMap: Map<Position, Tile>) = draw(
             tileMap = tileMap,
             drawPosition = Position.zero(),
             drawArea = this.size)
 
-    override fun draw(tileMap: Map<Position, Tile>,
-                      drawPosition: Position) = draw(
+    final override fun draw(tileMap: Map<Position, Tile>,
+                            drawPosition: Position) = draw(
             tileMap = tileMap,
             drawPosition = drawPosition,
             drawArea = this.size)

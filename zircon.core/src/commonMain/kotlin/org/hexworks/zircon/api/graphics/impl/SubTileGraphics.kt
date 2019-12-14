@@ -1,5 +1,12 @@
 package org.hexworks.zircon.api.graphics.impl
 
+import org.hexworks.cobalt.databinding.api.binding.Binding
+import org.hexworks.cobalt.databinding.api.converter.IsomorphicConverter
+import org.hexworks.cobalt.databinding.api.event.ChangeEvent
+import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
+import org.hexworks.cobalt.databinding.api.value.ValueValidationResult
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
@@ -25,7 +32,6 @@ class SubTileGraphics(
 
     override val tiles: Map<Position, Tile>
         get() = state.tiles
-
     override val state: TileGraphicsState
         get() {
             val (tiles, tileset) = backend.state
@@ -37,11 +43,38 @@ class SubTileGraphics(
                     }.toMap(), tileset = tileset, size = size)
         }
 
-    override var tileset: TilesetResource
-        get() = backend.tileset
-        set(_) {
+    override val tilesetProperty = object : Property<TilesetResource> {
+
+        override var value: TilesetResource
+            get() = backend.tileset
+            set(_) {}
+
+        override fun bind(other: Property<TilesetResource>): Binding<TilesetResource> {
             restrictOperation()
         }
+
+        override fun <U : Any> bind(other: Property<U>, converter: IsomorphicConverter<TilesetResource, U>): Binding<TilesetResource> {
+            restrictOperation()
+        }
+
+        override fun onChange(fn: (ChangeEvent<TilesetResource>) -> Unit): Subscription {
+            restrictOperation()
+        }
+
+        override fun updateFrom(observable: ObservableValue<TilesetResource>): Binding<TilesetResource> {
+            restrictOperation()
+        }
+
+        override fun <U : Any> updateFrom(observable: ObservableValue<U>, converter: (U) -> TilesetResource): Binding<TilesetResource> {
+            restrictOperation()
+        }
+
+        override fun updateValue(newValue: TilesetResource): ValueValidationResult {
+            restrictOperation()
+        }
+    }
+
+    override var tileset: TilesetResource by tilesetProperty.asDelegate()
 
     private val offset = rect.position
 

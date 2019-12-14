@@ -10,7 +10,7 @@ import org.hexworks.zircon.internal.data.TileGraphicsState
 
 /**
  * Represents a [TileComposite] which can be *drawn* upon. A [TileGraphics] is the most
- * basic interface for all drawable surfaces which exposes simple get, set and draw
+ * basic interface for all drawable surfaces which exposes simple get and draw
  * functions, and other useful operations for transforming it.
  */
 interface TileGraphics : Clearable, Copiable<TileGraphics>, DrawSurface, TileComposite {

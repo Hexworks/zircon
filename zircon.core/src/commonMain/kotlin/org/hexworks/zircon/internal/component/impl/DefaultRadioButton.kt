@@ -12,15 +12,10 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.NOT_SELECTED
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.PRESSED
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.SELECTED
+import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 
+@Suppress("DuplicatedCode")
 class DefaultRadioButton(componentMetadata: ComponentMetadata,
                          initialText: String,
                          private val renderingStrategy: ComponentRenderingStrategy<DefaultRadioButton>)
@@ -91,7 +86,7 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
         return Processed
     }
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.accentColor)
@@ -109,10 +104,7 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
                         .withBackgroundColor(colorTheme.accentColor)
                         .build())
-                .build().also {
-                    componentStyleSet = it
-                    render()
-                }
+                .build()
     }
 
     override fun render() {

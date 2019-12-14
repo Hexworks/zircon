@@ -30,8 +30,7 @@ class DefaultIcon(componentMetadata: ComponentMetadata,
 
     override fun acceptsFocus() = false
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        LOGGER.debug("Trying to apply color theme ($colorTheme) to non-themeable Icon (id=${id.abbreviate()}). Operation ignored.")
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSets.empty()
     }
 

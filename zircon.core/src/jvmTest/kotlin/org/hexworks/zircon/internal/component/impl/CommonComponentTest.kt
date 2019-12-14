@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.databinding.api.value.ValueValidationFailedException
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -60,7 +61,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
                 .isEqualTo(newTileset.id)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test(expected = ValueValidationFailedException::class)
     fun shouldNotAllowTilesetWithDifferentSize() {
         target.tileset = BuiltInCP437TilesetResource.ACORN_8X16
     }

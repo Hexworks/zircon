@@ -29,17 +29,14 @@ class DefaultListItem(componentMetadata: ComponentMetadata,
 
     override fun acceptsFocus() = false
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         LOGGER.debug("Applying color theme ($colorTheme) to ListItem (id=${id.abbreviate()}).")
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
                         .withBackgroundColor(TileColor.transparent())
                         .build())
-                .build().also {
-                    componentStyleSet = it
-                    render()
-                }
+                .build()
     }
 
     override fun render() {
