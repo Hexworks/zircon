@@ -4,18 +4,13 @@ package org.hexworks.zircon.examples.components
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.halfBlock
-import org.hexworks.zircon.api.extensions.positionalAlignment
-import org.hexworks.zircon.api.extensions.shadow
-import org.hexworks.zircon.api.extensions.side
+import org.hexworks.zircon.api.extensions.*
 import org.hexworks.zircon.api.graphics.BoxType.DOUBLE
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.ComponentEventType
 
 object ButtonsExample {
 
@@ -88,7 +83,7 @@ object ButtonsExample {
         screen.display()
         screen.theme = theme
 
-        invisibleBtn.processMouseEvents(MouseEventType.MOUSE_CLICKED) { _, _ ->
+        invisibleBtn.processComponentEvents(ComponentEventType.ACTIVATED) {
             invisibleBtn.isHidden = true
         }
     }

@@ -74,7 +74,9 @@ class SubTileGraphics(
         }
     }
 
-    override var tileset: TilesetResource by tilesetProperty.asDelegate()
+    override var tileset: TilesetResource
+        get() = backend.tileset
+        set(_) {}
 
     private val offset = rect.position
 
