@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.abbreviate
 
-open class DefaultVBox(componentMetadata: ComponentMetadata,
+class DefaultVBox(componentMetadata: ComponentMetadata,
                        initialTitle: String,
                        private val spacing: Int,
                        private val renderingStrategy: ComponentRenderingStrategy<VBox>)
@@ -69,7 +69,7 @@ open class DefaultVBox(componentMetadata: ComponentMetadata,
                 .build()
     }
 
-    final override fun render() {
+    override fun render() {
         LOGGER.debug("VBox (id=${id.abbreviate()}, hidden=$isHidden) was rendered.")
         renderingStrategy.render(this, graphics)
     }

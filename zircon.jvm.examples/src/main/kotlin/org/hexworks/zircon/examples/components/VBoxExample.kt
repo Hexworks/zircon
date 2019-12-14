@@ -1,10 +1,7 @@
 package org.hexworks.zircon.examples.components
 
 
-import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.LibgdxApplications
+import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.application.AppConfig
 
 import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
@@ -25,7 +22,7 @@ object VBoxExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = LibgdxApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
                 .withSize(Size.create(60, 30))
                 .build())
@@ -63,7 +60,6 @@ object VBoxExample {
         vbox.addComponent(Components.button()
                 .withText("Remove: $count")
                 .build().apply {
-                    theme = THEME
                     processComponentEvents(ACTIVATED) {
                         vbox.removeComponent(this)
                     }

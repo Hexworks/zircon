@@ -194,19 +194,26 @@ abstract class DefaultComponent(
         return parent.map { it.calculatePathFromRoot() }.orElse(listOf()).plus(this)
     }
 
+    // TODO: test this thoroughly (regression)!
     @Synchronized
     override fun attachTo(parent: InternalContainer) {
+
         LOGGER.debug("Attaching Component ($this) to parent ($parent).")
-        this.parent.map { oldParent ->
+
+        val parentChanged = this.parent.map { oldParent ->
             if (parent !== oldParent) {
                 oldParent.removeComponent(this)
-                bindings.add(hiddenProperty.updateFrom(parent.hiddenProperty))
-                bindings.add(themeProperty.updateFrom(parent.themeProperty))
-                bindings.add(componentStyleSetProperty.updateFrom(parent.componentStyleSetProperty))
-                bindings.add(tilesetProperty.updateFrom(parent.tilesetProperty))
-            }
+                true
+            } else false
+        }.orElse(true)
+
+        if (parentChanged) {
+            this.parent = Maybe.of(parent)
+            bindings.add(hiddenProperty.updateFrom(parent.hiddenProperty))
+            bindings.add(themeProperty.updateFrom(parent.themeProperty))
+            bindings.add(componentStyleSetProperty.updateFrom(parent.componentStyleSetProperty))
+            bindings.add(tilesetProperty.updateFrom(parent.tilesetProperty))
         }
-        this.parent = Maybe.of(parent)
     }
 
     @Synchronized
