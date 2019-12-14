@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import kotlin.jvm.Synchronized
 
@@ -36,19 +35,13 @@ class RootContainer(componentMetadata: ComponentMetadata,
     override fun calculatePathFromRoot() = listOf<InternalContainer>(this)
 
     @Synchronized
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        // we don't need to call render here because a component is automatically
-        // rendered when its style changes
-        componentStyleSet = ComponentStyleSetBuilder.newBuilder()
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+        return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
                         .withBackgroundColor(colorTheme.secondaryBackgroundColor)
                         .build())
                 .build()
-        children.forEach {
-            it.applyColorTheme(colorTheme)
-        }
-        return componentStyleSet
     }
 
     override fun render() {

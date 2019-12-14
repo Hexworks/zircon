@@ -45,23 +45,16 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
         render()
     }
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        LOGGER.debug("Applying color theme ($colorTheme) to Panel (id=${id.abbreviate()}).")
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
                         .withBackgroundColor(colorTheme.primaryBackgroundColor)
                         .build())
-                .build().also { css ->
-                    componentStyleSet = css
-                    render()
-                    children.forEach {
-                        it.applyColorTheme(colorTheme)
-                    }
-                }
+                .build()
     }
 
-    final override fun render() {
+    override fun render() {
         LOGGER.debug("Panel (id=${id.abbreviate()},hidden=$isHidden) was rendered.")
         renderingStrategy.render(this, graphics)
     }

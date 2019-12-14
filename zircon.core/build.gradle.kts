@@ -27,7 +27,7 @@ kotlin {
             commonMainApi(cobaltLogging)
         }
 
-        with(LibsTest) {
+        with(TestLibs) {
             commonTestImplementation(kotlinTestCommon)
             commonTestImplementation(kotlinTestAnnotationsCommon)
         }
@@ -41,7 +41,7 @@ kotlin {
             jvmMainApi(slf4jApi)
         }
 
-        with(LibsTest) {
+        with(TestLibs) {
             jvmTestApi(junit)
             jvmTestApi(mockitoAll)
             jvmTestApi(mockitoKotlin)

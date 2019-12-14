@@ -29,17 +29,13 @@ class DefaultHeader(componentMetadata: ComponentMetadata,
 
     override fun acceptsFocus() = false
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        LOGGER.debug("Applying color theme ($colorTheme) to Header (id=${id.abbreviate()}).")
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.primaryForegroundColor)
                         .withBackgroundColor(TileColor.transparent())
                         .build())
-                .build().also {
-                    componentStyleSet = it
-                    render()
-                }
+                .build()
     }
 
     override fun render() {

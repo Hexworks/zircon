@@ -23,6 +23,8 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
         componentMetadata = componentMetadata,
         renderer = renderer) {
 
+    private val components = mutableListOf<InternalComponent>()
+
     override val children: List<InternalComponent>
         @Synchronized
         get() = components.toList()
@@ -32,8 +34,6 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
         get() {
             return children.flatMap { listOf(it).plus(it.descendants) }
         }
-
-    private val components = mutableListOf<InternalComponent>()
 
     override fun acceptsFocus() = false
 
@@ -76,7 +76,6 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
             // TODO: component was re-added to the same container!
             component.attachTo(this)
             components.add(component)
-            component.theme = this.theme
             Zircon.eventBus.publish(
                     event = ZirconEvent.ComponentAdded,
                     eventScope = ZirconScope)
@@ -140,9 +139,7 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
             }
 
     @Synchronized
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        return ComponentStyleSet.empty()
-    }
+    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.empty()
 
     override fun render() {
         // by default a container won't render anything

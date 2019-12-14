@@ -33,36 +33,26 @@ open class ThreadSafeLayer(
                 size = initialContents.size))
     : Clearable, TileGraphics, InternalLayer, Boundable by movable {
 
-    final override val tiles: Map<Position, Tile>
-        get() = currentState.tiles
-
     final override val size: Size
         get() = currentState.size
-
     final override val width: Int
         get() = currentState.size.width
-
     final override val height: Int
         get() = currentState.size.height
-
     final override val rect: Rect
         get() = movable.rect
 
+    final override val tiles: Map<Position, Tile>
+        get() = currentState.tiles
     final override val state: LayerState
         get() = currentState
 
     final override val id: Identifier = IdentifierFactory.randomIdentifier()
 
     final override val hiddenProperty = createPropertyFrom(false)
-
     final override var isHidden: Boolean by hiddenProperty.asDelegate()
 
-    init {
-        hiddenProperty.onChange {
-            replaceState(currentState.copy(isHidden = it.newValue))
-        }
-    }
-
+    final override val tilesetProperty = createPropertyFrom(initialContents.tileset)
     final override var tileset: TilesetResource
         get() = currentState.tileset
         @Synchronized
@@ -70,6 +60,15 @@ open class ThreadSafeLayer(
             backend.tileset = value
             replaceState(currentState.copy(tileset = value))
         }
+
+    init {
+        hiddenProperty.onChange {
+            replaceState(currentState.copy(isHidden = it.newValue))
+        }
+        tilesetProperty.onChange {
+            tileset = it.newValue
+        }
+    }
 
     override fun toString(): String {
         return DrawSurfaces.tileGraphicsBuilder()
@@ -98,7 +97,7 @@ open class ThreadSafeLayer(
     }
 
     @Synchronized
-    final override fun setAbsoluteTileAt(position: Position, tile: Tile) {
+    final override fun drawAbsoluteTileAt(position: Position, tile: Tile) {
         backend.draw(tile, position - this.position)
         replaceState(currentState.copy(tiles = backend.tiles))
     }

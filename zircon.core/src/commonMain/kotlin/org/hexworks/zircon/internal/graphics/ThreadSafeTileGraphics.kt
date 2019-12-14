@@ -27,14 +27,6 @@ class ThreadSafeTileGraphics(
             .putAll(initialTiles)
         private set
 
-    override var tileset: TilesetResource = initialTileset
-        @Synchronized
-        set(value) {
-            value.checkCompatibilityWith(field)
-            field = value
-            currentState = currentState.copy(tileset = value)
-        }
-
     override val state: TileGraphicsState
         get() = currentState
 
@@ -42,6 +34,12 @@ class ThreadSafeTileGraphics(
             size = initialSize,
             tileset = initialTileset,
             tiles = initialTiles)
+
+    init {
+        tilesetProperty.onChange {
+            updateTileset(it.newValue)
+        }
+    }
 
     @Synchronized
     override fun draw(tile: Tile, drawPosition: Position) {
@@ -101,6 +99,11 @@ class ThreadSafeTileGraphics(
             updateTile(pos, transformer(pos, tiles.getOrElse(pos) { Tile.empty() }))
         }
         currentState = currentState.copy(tiles = tiles)
+    }
+
+    @Synchronized
+    fun updateTileset(newTileset: TilesetResource) {
+        currentState = currentState.copy(tileset = newTileset)
     }
 
     private fun updateTile(pos: Position, tile: Tile) {

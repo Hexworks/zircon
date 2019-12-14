@@ -1,14 +1,13 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.binding.Binding
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
-import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.behavior.Movable
-import org.hexworks.zircon.api.behavior.Themeable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -17,12 +16,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.uievent.ComponentEventSource
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -50,70 +44,55 @@ abstract class DefaultComponent(
                         .withTileset(componentMetadata.tileset)
                         .withSize(componentMetadata.size)
                         .buildThreadSafeTileGraphics()),
-        private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault(),
-        private val themeable: Themeable = Themeable.create(RuntimeConfig.config.defaultColorTheme))
+        private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault())
     : InternalComponent,
         UIEventProcessor by uiEventProcessor,
         Identifiable by contentLayer,
         Movable by contentLayer,
         TilesetOverride by contentLayer,
-        Themeable by themeable,
         ComponentEventSource by uiEventProcessor {
 
-    override val absolutePosition: Position
+    final override val absolutePosition: Position
         get() = position
-
     final override val relativePosition: Position
         @Synchronized
         get() = position - parent.map { it.position }.orElse(Position.zero())
-
-    override val relativeBounds: Rect
+    final override val relativeBounds: Rect
         @Synchronized
         get() = rect.withPosition(relativePosition)
-
     final override val contentOffset: Position
         @Synchronized
         get() = renderer.contentPosition
-
     final override val contentSize: Size
         @Synchronized
         get() = renderer.calculateContentSize(size)
 
-    final override val componentStyleSetProperty: Property<ComponentStyleSet> = createPropertyFrom(componentMetadata.componentStyleSet)
+    final override val componentStyleSetProperty = createPropertyFrom(componentMetadata.componentStyleSet)
+    final override val themeProperty = createPropertyFrom(RuntimeConfig.config.defaultColorTheme)
+    final override val hiddenProperty = createPropertyFrom(false)
 
     final override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
-
-    override var isHidden: Boolean
-        get() = contentLayer.isHidden
-        set(value) {
-            contentLayer.isHidden = value
-        }
-
-    final override val hiddenProperty: Property<Boolean> = contentLayer.hiddenProperty
+    final override var theme: ColorTheme by themeProperty.asDelegate()
+    final override var isHidden: Boolean by hiddenProperty.asDelegate()
 
     override val children: Iterable<InternalComponent> = listOf()
-
     override val descendants: Iterable<InternalComponent> = listOf()
-
     override val layerStates: Iterable<LayerState>
         @Synchronized
         get() = listOf(contentLayer.state)
-
     override val graphics: TileGraphics
         get() = contentLayer
 
     private var parent = Maybe.empty<InternalContainer>()
+    private val bindings = mutableListOf<Binding<Any>>()
 
     init {
-        hiddenProperty.onChange {
-            render()
+        contentLayer.hiddenProperty.updateFrom(hiddenProperty)
+        themeProperty.onChange {
+            componentStyleSet = convertColorTheme(it.newValue)
         }
         componentStyleSetProperty.onChange {
             render()
-        }
-        @Suppress("LeakingThis")
-        themeProperty.onChange {
-            applyColorTheme(it.newValue)
         }
     }
 
@@ -221,6 +200,10 @@ abstract class DefaultComponent(
         this.parent.map { oldParent ->
             if (parent !== oldParent) {
                 oldParent.removeComponent(this)
+                bindings.add(hiddenProperty.updateFrom(parent.hiddenProperty))
+                bindings.add(themeProperty.updateFrom(parent.themeProperty))
+                bindings.add(componentStyleSetProperty.updateFrom(parent.componentStyleSetProperty))
+                bindings.add(tilesetProperty.updateFrom(parent.tilesetProperty))
             }
         }
         this.parent = Maybe.of(parent)
@@ -228,9 +211,10 @@ abstract class DefaultComponent(
 
     @Synchronized
     final override fun detach() {
-        LOGGER.debug("Attaching Component ($this) from parent (${fetchParent()}).")
+        LOGGER.debug("Detaching Component ($this) from parent (${fetchParent()}).")
         parent.map {
             it.removeComponent(this)
+            bindings.clearBindings()
             this.parent = Maybe.empty()
         }
     }
@@ -260,6 +244,13 @@ abstract class DefaultComponent(
 
     override fun hashCode(): Int {
         return id.hashCode()
+    }
+
+    private fun MutableList<Binding<Any>>.clearBindings() {
+        forEach {
+            it.dispose()
+        }
+        clear()
     }
 
     companion object {

@@ -19,6 +19,7 @@ import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
 
+@Suppress("DuplicatedCode")
 class DefaultButton(componentMetadata: ComponentMetadata,
                     initialText: String,
                     private val renderingStrategy: ComponentRenderingStrategy<Button>)
@@ -38,10 +39,10 @@ class DefaultButton(componentMetadata: ComponentMetadata,
         }
         disabledProperty.onChange {
             if (it.newValue) {
-                DefaultCheckBox.LOGGER.debug("Disabling Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text).")
+                LOGGER.debug("Disabling Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text).")
                 componentStyleSet.applyDisabledStyle()
             } else {
-                DefaultCheckBox.LOGGER.debug("Enabling Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text).")
+                LOGGER.debug("Enabling Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text).")
                 componentStyleSet.reset()
             }
             render()
@@ -110,8 +111,7 @@ class DefaultButton(componentMetadata: ComponentMetadata,
         }
     }
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        LOGGER.debug("Applying color theme: $colorTheme to Button (id=${id.abbreviate()}, disabled=$isDisabled, text=$text).")
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.accentColor)
@@ -133,10 +133,7 @@ class DefaultButton(componentMetadata: ComponentMetadata,
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
                         .withBackgroundColor(TileColor.transparent())
                         .build())
-                .build().also {
-                    componentStyleSet = it
-                    render()
-                }
+                .build()
     }
 
     override fun render() {

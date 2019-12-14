@@ -11,23 +11,16 @@ import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.uievent.ComponentEvent
-import org.hexworks.zircon.api.uievent.ComponentEventType
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType
-import org.hexworks.zircon.api.uievent.UIEvent
-import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
+import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 
 class ComponentStub(
@@ -43,8 +36,10 @@ class ComponentStub(
                 .withTileset(tileset)
                 .build()) : InternalComponent {
     override var theme: ColorTheme
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(_) {}
+        get() = colorTheme
+        set(value) {
+            colorTheme = value
+        }
     override val themeProperty: Property<ColorTheme>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
@@ -54,7 +49,10 @@ class ComponentStub(
     override fun calculatePathFromRoot(): List<InternalComponent> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-    
+
+    override val tilesetProperty: Property<TilesetResource>
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+
     override val children: Iterable<InternalComponent>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
     override val descendants: Iterable<InternalComponent>
@@ -106,7 +104,7 @@ class ComponentStub(
     override val y: Int
         get() = position.y
 
-    lateinit var colorTheme: ColorTheme
+    var colorTheme: ColorTheme = RuntimeConfig.config.defaultColorTheme
         private set
 
     private val movedToPositions = mutableListOf<Position>()
@@ -135,7 +133,7 @@ class ComponentStub(
         TODO("This operation is unsupported for a Stub")
     }
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         this.colorTheme = colorTheme
         return componentStyleSet
     }

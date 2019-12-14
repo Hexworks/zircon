@@ -28,7 +28,7 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
 
     @Test
     fun shouldProperlyApplyTheme() {
-        target.applyColorTheme(DEFAULT_THEME)
+        target.theme = DEFAULT_THEME
 
         assertThat(target.componentStyleSet).isEqualTo(expectedComponentStyles)
     }

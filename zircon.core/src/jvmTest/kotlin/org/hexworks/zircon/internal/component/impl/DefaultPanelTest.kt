@@ -7,9 +7,9 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultPanelRenderer
 import org.junit.Before
 import org.junit.Test
@@ -46,16 +46,6 @@ class DefaultPanelTest : ComponentImplementationTest<DefaultPanel>() {
     @Test
     fun shouldHaveProperTitle() {
         assertThat(target.title).isEqualTo(TITLE)
-    }
-
-
-    @Test
-    fun shouldProperlyApplyThemeToChildren() {
-        target.addComponent(componentStub)
-        target.applyColorTheme(DEFAULT_THEME)
-
-        assertThat(componentStub.colorTheme)
-                .isEqualTo(DEFAULT_THEME)
     }
 
     companion object {

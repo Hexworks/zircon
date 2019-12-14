@@ -203,7 +203,7 @@ abstract class BaseSlider(final override val minValue: Int,
         }
     }
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         LOGGER.debug("Applying color theme: $colorTheme to Gutter (id=${id.abbreviate()}, disabled=$isDisabled).")
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()

@@ -15,16 +15,10 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
-import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.CHECKED
-import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.CHECKING
-import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.UNCHECKED
-import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.UNCHECKING
+import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
 
+@Suppress("DuplicatedCode")
 class DefaultCheckBox(componentMetadata: ComponentMetadata,
                       initialText: String,
                       private val renderingStrategy: ComponentRenderingStrategy<CheckBox>)
@@ -36,7 +30,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
         Disablable by Disablable.create() {
 
     override var checkBoxState = UNCHECKED
-    private set
+        private set
 
     private var pressing = false
 
@@ -129,8 +123,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
         render()
     }
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        LOGGER.debug("Applying color theme ($colorTheme) for CheckBox (id=${id.abbreviate()}, selected=$isSelected).")
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.accentColor)
@@ -152,10 +145,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
                         .withForegroundColor(colorTheme.secondaryForegroundColor)
                         .withBackgroundColor(TileColor.transparent())
                         .build())
-                .build().also {
-                    componentStyleSet = it
-                    render()
-                }
+                .build()
     }
 
     override fun render() {

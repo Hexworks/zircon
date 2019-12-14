@@ -52,7 +52,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
                 rendered = true
             }
 
-            override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+            override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
                 appliedColorTheme = colorTheme
                 return ComponentStyleSet.empty()
             }
@@ -100,13 +100,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     @Test
     fun shouldRenderWhenComponentStyleSetIsSet() {
         target.componentStyleSet = ComponentStyleSet.empty()
-
-        assertThat(rendered).isTrue()
-    }
-
-    @Test
-    fun shouldRenderWhenVisibilityIsSet() {
-        target.isHidden = true
 
         assertThat(rendered).isTrue()
     }

@@ -14,21 +14,12 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
-import org.hexworks.zircon.api.uievent.KeyCode
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.DOWN
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.LEFT
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.RIGHT
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.UP
+import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.*
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.AddRowBreak
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter.DeleteKind.BACKSPACE
@@ -39,6 +30,7 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.math.min
 
+@Suppress("DuplicatedCode")
 class DefaultTextArea constructor(
         initialText: String,
         componentMetadata: ComponentMetadata,
@@ -68,7 +60,7 @@ class DefaultTextArea constructor(
 
     override fun acceptsFocus() = isDisabled.not()
 
-    override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
                         .withForegroundColor(colorTheme.secondaryBackgroundColor)
@@ -82,10 +74,7 @@ class DefaultTextArea constructor(
                         .withForegroundColor(colorTheme.primaryBackgroundColor)
                         .withBackgroundColor(colorTheme.primaryForegroundColor)
                         .build())
-                .build().also {
-                    componentStyleSet = it
-                    render()
-                }
+                .build()
     }
 
     override fun focusGiven() = whenEnabled {

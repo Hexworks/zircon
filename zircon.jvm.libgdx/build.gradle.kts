@@ -25,7 +25,7 @@ kotlin {
             compile(logbackClassic)
         }
 
-        with (LibsTest) {
+        with (TestLibs) {
             testCompile(junit)
             testCompile(mockitoAll)
             testCompile(assertJCore)
