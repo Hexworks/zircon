@@ -1,14 +1,15 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.internal.component.renderer.decoration.SideDecorationRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultButton
 import org.hexworks.zircon.internal.component.renderer.DefaultButtonRenderer
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.internal.component.renderer.decoration.SideDecorationRenderer
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
@@ -39,7 +40,11 @@ data class ButtonBuilder(
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialText = text,
-                renderingStrategy = componentRenderer)
+                renderingStrategy = componentRenderer).also {
+            if (colorTheme !== ColorThemes.default()) {
+                it.theme = colorTheme
+            }
+        }
     }
 
     override fun createCopy() = copy(props = props.copy())

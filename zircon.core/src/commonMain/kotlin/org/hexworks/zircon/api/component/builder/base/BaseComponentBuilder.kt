@@ -4,6 +4,7 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.AlignmentStrategy
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.builder.ComponentBuilder
@@ -33,6 +34,9 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>()
 
     val tileset: TilesetResource
         get() = props.tileset
+
+    val colorTheme: ColorTheme
+        get() = props.colorTheme
 
     val decorationRenderers: List<ComponentDecorationRenderer>
         get() = props.decorationRenderers
@@ -70,6 +74,11 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>()
 
     override fun withTileset(tileset: TilesetResource): U {
         props.tileset = tileset
+        return this as U
+    }
+
+    override fun withColorTheme(colorTheme: ColorTheme): U {
+        props.colorTheme = colorTheme
         return this as U
     }
 

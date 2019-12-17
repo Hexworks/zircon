@@ -1,12 +1,13 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultHorizontalSlider
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.HorizontalSliderRenderer
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
@@ -25,13 +26,13 @@ data class HorizontalSliderBuilder(
     : BaseComponentBuilder<Slider, HorizontalSliderBuilder>() {
 
     fun withMaxValue(max: Int) = also {
-        require(max > minValue) { "Max value must be greater than min value"}
+        require(max > minValue) { "Max value must be greater than min value" }
         this.maxValue = max
     }
 
     fun withMinValue(min: Int) = also {
-        require(min > 0) { "Min value must be greater than 0"}
-        require(min < maxValue) {"Min value must be smaller than max value"}
+        require(min > 0) { "Min value must be greater than 0" }
+        require(min < maxValue) { "Min value must be smaller than max value" }
         this.minValue = min
     }
 
@@ -42,17 +43,21 @@ data class HorizontalSliderBuilder(
     }
 
     override fun build(): Slider = DefaultHorizontalSlider(
-                componentMetadata = ComponentMetadata(
-                        size = size,
-                        relativePosition = position,
-                        componentStyleSet = componentStyleSet,
-                        tileset = tileset),
-                minValue = minValue,
-                maxValue = maxValue,
-                numberOfSteps = numberOfSteps,
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<Slider>))
+            componentMetadata = ComponentMetadata(
+                    size = size,
+                    relativePosition = position,
+                    componentStyleSet = componentStyleSet,
+                    tileset = tileset),
+            minValue = minValue,
+            maxValue = maxValue,
+            numberOfSteps = numberOfSteps,
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                    decorationRenderers = decorationRenderers,
+                    componentRenderer = props.componentRenderer as ComponentRenderer<Slider>)).also {
+        if (colorTheme !== ColorThemes.default()) {
+            it.theme = colorTheme
+        }
+    }
 
     override fun createCopy() = copy(props = props.copy())
 

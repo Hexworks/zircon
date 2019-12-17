@@ -75,4 +75,7 @@ object Components {
 
     @JvmStatic
     fun verticalScrollbar() = VerticalScrollBarBuilder.newBuilder()
+
+    @JvmStatic
+    fun group() = GroupBuilder.newBuilder()
 }

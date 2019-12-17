@@ -122,7 +122,7 @@ class ModalComponentContainer(
                     root = RootContainer(
                             componentMetadata = metadata,
                             renderingStrategy = renderingStrategy))
-            container.theme = ColorThemeResource.EMPTY.getTheme()
+            container.theme = ColorThemeResource.DEFAULT.getTheme()
             return container
         }
     }

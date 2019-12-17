@@ -1,10 +1,6 @@
 package org.hexworks.zircon.api.component.builder
 
-import org.hexworks.zircon.api.component.AlignmentStrategy
-import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentAlignment
-import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
@@ -29,6 +25,11 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> {
      * Sets the [Tileset] to use for the [Component].
      */
     fun withTileset(tileset: TilesetResource): U
+
+    /**
+     * Sets the [ColorTheme] to use for the [Component].
+     */
+    fun withColorTheme(colorTheme: ColorTheme): U
 
     /**
      * Sets the [AlignmentStrategy] to use for the [Component].

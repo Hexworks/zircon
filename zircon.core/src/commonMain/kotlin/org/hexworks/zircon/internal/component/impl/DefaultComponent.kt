@@ -88,11 +88,13 @@ abstract class DefaultComponent(
 
     init {
         contentLayer.hiddenProperty.updateFrom(hiddenProperty)
-        themeProperty.onChange {
-            componentStyleSet = convertColorTheme(it.newValue)
-        }
         componentStyleSetProperty.onChange {
+            LOGGER.debug("Component style changed for component $this to ${it.newValue}. Rendering.")
             render()
+        }
+        themeProperty.onChange {
+            LOGGER.debug("Theme changed for component $this to ${it.newValue}")
+            componentStyleSet = convertColorTheme(it.newValue)
         }
     }
 
@@ -209,10 +211,13 @@ abstract class DefaultComponent(
 
         if (parentChanged) {
             this.parent = Maybe.of(parent)
-            bindings.add(hiddenProperty.updateFrom(parent.hiddenProperty))
-            bindings.add(themeProperty.updateFrom(parent.themeProperty))
-            bindings.add(componentStyleSetProperty.updateFrom(parent.componentStyleSetProperty))
-            bindings.add(tilesetProperty.updateFrom(parent.tilesetProperty))
+            // TODO: test these!
+            if (parent !is RootContainer) {
+                bindings.add(hiddenProperty.updateFrom(parent.hiddenProperty))
+                bindings.add(themeProperty.updateFrom(parent.themeProperty))
+                bindings.add(componentStyleSetProperty.updateFrom(parent.componentStyleSetProperty))
+                bindings.add(tilesetProperty.updateFrom(parent.tilesetProperty))
+            }
         }
     }
 
@@ -221,7 +226,7 @@ abstract class DefaultComponent(
         LOGGER.debug("Detaching Component ($this) from parent (${fetchParent()}).")
         parent.map {
             it.removeComponent(this)
-            bindings.clearBindings()
+            bindings.unbindAll()
             this.parent = Maybe.empty()
         }
     }
@@ -236,9 +241,8 @@ abstract class DefaultComponent(
     }
 
     override fun toString(): String {
-        return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}," +
-                "position=$position," +
-                "size=$size)"
+        return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}, " +
+                "pos=${position.x};${position.y}, size=${size.width};${size.height})"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -253,7 +257,7 @@ abstract class DefaultComponent(
         return id.hashCode()
     }
 
-    private fun MutableList<Binding<Any>>.clearBindings() {
+    private fun MutableList<Binding<Any>>.unbindAll() {
         forEach {
             it.dispose()
         }

@@ -28,6 +28,7 @@ import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.impl.ModalComponentContainer
 import org.hexworks.zircon.internal.component.modal.DefaultModal
+import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.extensions.cancelAll

@@ -16,6 +16,8 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
             .withSecondaryBackgroundColor(TileColor.transparent())
             .build()),
 
+    DEFAULT(ColorThemeBuilder.newBuilder().build()),
+
     /**
      * Taken from
      * http://www.colourlovers.com/palette/580974/Adrift_in_Dreams

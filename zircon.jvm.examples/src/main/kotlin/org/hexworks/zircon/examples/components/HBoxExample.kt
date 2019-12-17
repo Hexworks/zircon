@@ -65,7 +65,6 @@ object HBoxExample {
                 .withText("Remove: $count")
                 .withSize(12, 1)
                 .build().apply {
-                    theme = THEME
                     processComponentEvents(ACTIVATED) {
                         hbox.removeComponent(this)
                     }
