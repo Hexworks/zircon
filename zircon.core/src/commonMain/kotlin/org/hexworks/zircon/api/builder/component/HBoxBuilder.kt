@@ -1,12 +1,13 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultHBox
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
 import kotlin.jvm.JvmStatic
 
@@ -35,7 +36,11 @@ data class HBoxBuilder(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = componentRenderer as ComponentRenderer<HBox>),
-                spacing = spacing)
+                spacing = spacing).also {
+            if (colorTheme !== ColorThemes.default()) {
+                it.theme = colorTheme
+            }
+        }
     }
 
     override fun createCopy() = copy(props = props.copy())

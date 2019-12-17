@@ -11,6 +11,8 @@ internal data class DefaultTileColor(override val red: Int,
 
     override val cacheKey = "TextColor(r=$red,g=$green,b=$blue,a=$alpha)"
 
+    override fun toString() = "TileColor(r=$red, g:$green, b:$blue, a:$alpha)"
+
     override fun tint(factor: Double): TileColor {
         require(factor in 0.0..1.0) {
             "The given percentage ($factor) is not between the required maxValue (0 - 1)."

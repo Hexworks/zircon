@@ -1,12 +1,13 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultHorizontalNumberInput
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultNumberInputRenderer
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
@@ -47,17 +48,21 @@ data class HorizontalNumberInputBuilder(
     }
 
     override fun build(): NumberInput = DefaultHorizontalNumberInput(
-                componentMetadata = ComponentMetadata(
-                        size = size,
-                        relativePosition = position,
-                        componentStyleSet = componentStyleSet,
-                        tileset = tileset),
-                initialValue = initialValue,
-                minValue = minValue,
-                maxValue = maxValue,
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<NumberInput>))
+            componentMetadata = ComponentMetadata(
+                    size = size,
+                    relativePosition = position,
+                    componentStyleSet = componentStyleSet,
+                    tileset = tileset),
+            initialValue = initialValue,
+            minValue = minValue,
+            maxValue = maxValue,
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                    decorationRenderers = decorationRenderers,
+                    componentRenderer = props.componentRenderer as ComponentRenderer<NumberInput>)).also {
+        if (colorTheme !== ColorThemes.default()) {
+            it.theme = colorTheme
+        }
+    }
 
     override fun createCopy() = copy()
 

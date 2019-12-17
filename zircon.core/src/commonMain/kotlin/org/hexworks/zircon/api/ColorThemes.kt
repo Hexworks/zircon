@@ -17,6 +17,12 @@ object ColorThemes {
     fun empty() = ColorThemeResource.EMPTY.getTheme()
 
     /**
+     * The default theme which is produced from the default
+     * [ComponentStyleSets].
+     */
+    fun default() = ColorThemeResource.DEFAULT.getTheme()
+
+    /**
      * Taken from
      * http://www.colourlovers.com/palette/580974/Adrift_in_Dreams
      */

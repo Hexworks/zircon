@@ -3,7 +3,7 @@
     <!-- We only print to the console (stdout) by default using the following format -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -18,5 +18,7 @@
 
     <!-- Or individual classes -->
     <logger name="org.hexworks.zircon.internal.uievent.UIEventDispatcher" level="ERROR"/>
+
+    <logger name="org.hexworks.zircon.api.component.Component" level="debug" />
 
 </configuration>

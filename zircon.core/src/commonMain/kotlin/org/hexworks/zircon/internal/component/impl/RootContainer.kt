@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -19,6 +18,12 @@ class RootContainer(componentMetadata: ComponentMetadata,
 
     init {
         render()
+        // TODO: test this
+        themeProperty.onChange {
+            children.forEach { child ->
+                child.theme = it.newValue
+            }
+        }
     }
 
     // TODO: let's check the other methods as well! attachTo especially
@@ -35,14 +40,12 @@ class RootContainer(componentMetadata: ComponentMetadata,
     override fun calculatePathFromRoot() = listOf<InternalContainer>(this)
 
     @Synchronized
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        return ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryForegroundColor)
-                        .withBackgroundColor(colorTheme.secondaryBackgroundColor)
-                        .build())
-                .build()
-    }
+    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
+            .withDefaultStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.secondaryForegroundColor)
+                    .withBackgroundColor(colorTheme.secondaryBackgroundColor)
+                    .build())
+            .build()
 
     override fun render() {
         renderingStrategy.render(this, graphics)

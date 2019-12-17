@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
@@ -53,7 +54,11 @@ data class VerticalSliderBuilder(
                 numberOfSteps = numberOfSteps,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<Slider>))
+                        componentRenderer = props.componentRenderer as ComponentRenderer<Slider>)).also {
+        if(colorTheme !== ColorThemes.default()) {
+            it.theme = colorTheme
+        }
+    }
 
     override fun createCopy() = copy(props = props.copy())
 

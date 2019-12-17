@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
@@ -35,7 +36,11 @@ data class TextAreaBuilder(
                 initialText = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<TextArea>))
+                        componentRenderer = props.componentRenderer as ComponentRenderer<TextArea>)).also {
+            if(colorTheme !== ColorThemes.default()) {
+                it.theme = colorTheme
+            }
+        }
     }
 
     override fun createCopy() = copy()

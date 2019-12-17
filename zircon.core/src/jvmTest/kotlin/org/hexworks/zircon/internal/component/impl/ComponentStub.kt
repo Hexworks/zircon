@@ -36,9 +36,9 @@ class ComponentStub(
                 .withTileset(tileset)
                 .build()) : InternalComponent {
     override var theme: ColorTheme
-        get() = colorTheme
+        get() = this.theme
         set(value) {
-            colorTheme = value
+            this.theme = value
         }
     override val themeProperty: Property<ColorTheme>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
@@ -134,7 +134,7 @@ class ComponentStub(
     }
 
     override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        this.colorTheme = colorTheme
+        this.theme = colorTheme
         return componentStyleSet
     }
 

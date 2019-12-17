@@ -1,15 +1,16 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameComponent
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.game.InternalGameArea
 import org.hexworks.zircon.internal.game.impl.DefaultGameComponent
 import kotlin.jvm.JvmStatic
@@ -47,13 +48,17 @@ data class GameComponentBuilder<T : Tile, B : Block<T>>(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = componentRenderer as ComponentRenderer<GameComponent<T, B>>),
-                gameArea = gameArea.get())
+                gameArea = gameArea.get()).also {
+            if (colorTheme !== ColorThemes.default()) {
+                it.theme = colorTheme
+            }
+        }
     }
 
     companion object {
 
         @JvmStatic
-        fun <T : Tile, B : Block<T>>    newBuilder(): GameComponentBuilder<T, B> {
+        fun <T : Tile, B : Block<T>> newBuilder(): GameComponentBuilder<T, B> {
             return GameComponentBuilder()
         }
     }

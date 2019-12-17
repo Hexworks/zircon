@@ -2,7 +2,13 @@
 
 package org.hexworks.zircon.examples.playground
 
-import kotlinx.collections.immutable.persistentListOf
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.screen.Screen
 
 
 object KotlinPlayground {
@@ -10,10 +16,24 @@ object KotlinPlayground {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        var list = persistentListOf("A", "B", "C")
+        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+//                .withDebugMode(true)
+                .withSize(Size.create(60, 30))
+                .build())
 
-        list = list.add(1, "X")
+        val screen = Screen.create(tileGrid)
 
-        println(list)
+        val panel = Components.panel()
+                .withSize(8, 6)
+                .withDecorations(box(title = "test"))
+                .build()
+
+        screen.theme = ColorThemes.solarizedLightGreen()
+        screen.addComponent(panel)
+
+
+        screen.display()
+
+
     }
 }

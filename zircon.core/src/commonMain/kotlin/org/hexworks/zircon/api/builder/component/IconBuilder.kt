@@ -1,15 +1,16 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.component.impl.DefaultIcon
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultIconRenderer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import kotlin.jvm.JvmStatic
@@ -44,7 +45,11 @@ data class IconBuilder(
                 initialIcon = icon.get(),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = componentRenderer as ComponentRenderer<Icon>))
+                        componentRenderer = componentRenderer as ComponentRenderer<Icon>)).also {
+            if (colorTheme !== ColorThemes.default()) {
+                it.theme = colorTheme
+            }
+        }
     }
 
     override fun createCopy() = copy(props = props.copy())

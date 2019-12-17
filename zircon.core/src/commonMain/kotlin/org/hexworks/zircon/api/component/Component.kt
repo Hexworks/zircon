@@ -1,10 +1,7 @@
 package org.hexworks.zircon.api.component
 
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.zircon.api.behavior.Hideable
 import org.hexworks.zircon.api.behavior.Movable
-import org.hexworks.zircon.api.behavior.Themeable
-import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
@@ -26,8 +23,7 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  * The [Component] abstraction implements the **Composite** design pattern with [Component]
  * and [Container].
  */
-interface Component : ComponentEventSource, Hideable, Identifiable, Movable, Themeable,
-        TilesetOverride, UIEventSource {
+interface Component : ComponentEventSource, ComponentProperties, Identifiable, Movable, UIEventSource {
 
     /**
      * The absolute position of this [Component], eg: the [Position] relative the

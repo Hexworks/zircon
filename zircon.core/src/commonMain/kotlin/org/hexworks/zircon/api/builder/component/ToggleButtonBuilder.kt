@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.ToggleButton
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
@@ -43,7 +44,11 @@ data class ToggleButtonBuilder(
                         tileset = tileset),
                 initialText = text,
                 initialSelected = isSelected,
-                renderingStrategy = componentRenderer)
+                renderingStrategy = componentRenderer).also {
+            if(colorTheme !== ColorThemes.default()) {
+                it.theme = colorTheme
+            }
+        }
     }
 
     override fun createCopy() = copy(props = props.copy())
