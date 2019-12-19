@@ -138,11 +138,6 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
                 .withTileset(tileset)
     }
 
-    override fun render() {
-        LOGGER.debug("LogArea (id=${id.abbreviate()},hidden=$isHidden) was rendered.")
-        renderingStrategy.render(this, graphics)
-    }
-
     companion object {
         val LOGGER = LoggerFactory.getLogger(LogArea::class)
     }

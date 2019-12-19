@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.event.ChangeEvent
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -150,10 +149,6 @@ abstract class BaseNumberInput(
         } else Pass
     }
 
-    override fun render() {
-        renderingStrategy.render(this, graphics)
-    }
-
     private fun isNavigationKey(event: KeyboardEvent) =
             event == TAB || event == REVERSE_TAB
 
@@ -205,7 +200,5 @@ abstract class BaseNumberInput(
                 key = "\t",
                 code = KeyCode.TAB,
                 shiftDown = true)
-
-        val LOGGER = LoggerFactory.getLogger(NumberInput::class)
     }
 }

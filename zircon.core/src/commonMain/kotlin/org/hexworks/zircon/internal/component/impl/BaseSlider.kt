@@ -172,11 +172,6 @@ abstract class BaseSlider(final override val minValue: Int,
                     .build())
             .build()
 
-    final override fun render() {
-        LOGGER.debug("Slider (id=${id.abbreviate()}, disabled=$isDisabled, hidden=$isHidden) was rendered.")
-        renderingStrategy.render(this, graphics)
-    }
-
     override fun onValueChange(fn: (ChangeEvent<Int>) -> Unit): Subscription {
         return currentValueProperty.onChange(fn)
     }

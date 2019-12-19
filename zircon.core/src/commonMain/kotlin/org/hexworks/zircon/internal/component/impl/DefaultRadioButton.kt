@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -92,17 +91,9 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
                     .build())
             .build()
 
-    override fun render() {
-        renderingStrategy.render(this, graphics)
-    }
-
     enum class RadioButtonState {
         PRESSED,
         SELECTED,
         NOT_SELECTED
-    }
-
-    companion object {
-        val LOGGER = LoggerFactory.getLogger(RadioButton::class)
     }
 }

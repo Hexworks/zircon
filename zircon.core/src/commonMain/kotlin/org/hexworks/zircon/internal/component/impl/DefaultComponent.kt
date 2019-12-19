@@ -221,6 +221,11 @@ abstract class DefaultComponent(
         } else Pass
     }
 
+    final override fun render() {
+        logger.debug("$this was rendered.")
+        (renderer as ComponentRenderingStrategy<Component>).render(this, graphics)
+    }
+
     final override fun fetchParent() = parent
 
     @Synchronized
