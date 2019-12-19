@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
@@ -53,9 +52,9 @@ data class HorizontalSliderBuilder(
             numberOfSteps = numberOfSteps,
             renderingStrategy = DefaultComponentRenderingStrategy(
                     decorationRenderers = decorationRenderers,
-                    componentRenderer = props.componentRenderer as ComponentRenderer<Slider>)).also {
-        if (colorTheme !== ColorThemes.default()) {
-            it.theme = colorTheme
+                    componentRenderer = props.componentRenderer as ComponentRenderer<Slider>)).apply {
+        colorTheme.map {
+            theme = it
         }
     }
 

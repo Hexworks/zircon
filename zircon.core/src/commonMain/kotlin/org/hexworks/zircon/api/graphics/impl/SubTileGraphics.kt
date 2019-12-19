@@ -43,17 +43,16 @@ class SubTileGraphics(
                     }.toMap(), tileset = tileset, size = size)
         }
 
-    override val tilesetProperty = object : Property<TilesetResource> {
-
+    override val tilesetProperty = object: Property<TilesetResource> {
         override var value: TilesetResource
             get() = backend.tileset
             set(_) {}
 
-        override fun bind(other: Property<TilesetResource>): Binding<TilesetResource> {
+        override fun bind(other: Property<TilesetResource>, updateWhenBound: Boolean): Binding<TilesetResource> {
             restrictOperation()
         }
 
-        override fun <U : Any> bind(other: Property<U>, converter: IsomorphicConverter<TilesetResource, U>): Binding<TilesetResource> {
+        override fun <U : Any> bind(other: Property<U>, updateWhenBound: Boolean, converter: IsomorphicConverter<TilesetResource, U>): Binding<TilesetResource> {
             restrictOperation()
         }
 
@@ -61,17 +60,18 @@ class SubTileGraphics(
             restrictOperation()
         }
 
-        override fun updateFrom(observable: ObservableValue<TilesetResource>): Binding<TilesetResource> {
+        override fun updateFrom(observable: ObservableValue<TilesetResource>, updateWhenBound: Boolean): Binding<TilesetResource> {
             restrictOperation()
         }
 
-        override fun <U : Any> updateFrom(observable: ObservableValue<U>, converter: (U) -> TilesetResource): Binding<TilesetResource> {
+        override fun <U : Any> updateFrom(observable: ObservableValue<U>, updateWhenBound: Boolean, converter: (U) -> TilesetResource): Binding<TilesetResource> {
             restrictOperation()
         }
 
         override fun updateValue(newValue: TilesetResource): ValueValidationResult {
             restrictOperation()
         }
+
     }
 
     override var tileset: TilesetResource

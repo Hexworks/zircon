@@ -1,13 +1,12 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.ToggleButton
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultToggleButton
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultToggleButtonRenderer
 import org.hexworks.zircon.internal.component.withNewLinesStripped
 import kotlin.jvm.JvmStatic
@@ -44,9 +43,9 @@ data class ToggleButtonBuilder(
                         tileset = tileset),
                 initialText = text,
                 initialSelected = isSelected,
-                renderingStrategy = componentRenderer).also {
-            if(colorTheme !== ColorThemes.default()) {
-                it.theme = colorTheme
+                renderingStrategy = componentRenderer).apply {
+            colorTheme.map {
+                theme = it
             }
         }
     }

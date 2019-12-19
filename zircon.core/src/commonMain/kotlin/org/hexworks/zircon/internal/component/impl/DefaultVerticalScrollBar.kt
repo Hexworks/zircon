@@ -45,6 +45,8 @@ class DefaultVerticalScrollBar(componentMetadata: ComponentMetadata,
                     Processed
                 }
                 else -> Pass
+            }.apply {
+                render()
             }
         } else Pass
     }

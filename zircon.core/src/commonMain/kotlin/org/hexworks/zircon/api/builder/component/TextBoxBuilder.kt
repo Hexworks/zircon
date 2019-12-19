@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Paragraph
@@ -163,9 +162,9 @@ data class TextBoxBuilder(
             components.forEach {
                 textBox.addComponent(it)
             }
-        }.also {
-            if(colorTheme !== ColorThemes.default()) {
-                it.theme = colorTheme
+        }.apply {
+            colorTheme.map {
+                theme = it
             }
         }
     }

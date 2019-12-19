@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.component.data
 
-import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.ComponentAlignments
 import org.hexworks.zircon.api.component.AlignmentStrategy
 import org.hexworks.zircon.api.component.ColorTheme
@@ -13,7 +13,7 @@ import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 
 data class CommonComponentProperties<T : Component>(
-        var colorTheme: ColorTheme = ColorThemes.default(),
+        var colorTheme: Maybe<ColorTheme> = Maybe.empty(),
         var componentStyleSet: ComponentStyleSet = ComponentStyleSet.defaultStyleSet(),
         var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
         var alignmentStrategy: AlignmentStrategy = ComponentAlignments.positionalAlignment(0, 0),

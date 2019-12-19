@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -48,9 +47,9 @@ data class GameComponentBuilder<T : Tile, B : Block<T>>(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = componentRenderer as ComponentRenderer<GameComponent<T, B>>),
-                gameArea = gameArea.get()).also {
-            if (colorTheme !== ColorThemes.default()) {
-                it.theme = colorTheme
+                gameArea = gameArea.get()).apply {
+            colorTheme.map {
+                theme = it
             }
         }
     }

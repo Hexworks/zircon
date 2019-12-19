@@ -1,13 +1,12 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultTextArea
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
 import org.hexworks.zircon.internal.component.withNewLinesStripped
 import kotlin.jvm.JvmStatic
@@ -36,9 +35,9 @@ data class TextAreaBuilder(
                 initialText = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<TextArea>)).also {
-            if(colorTheme !== ColorThemes.default()) {
-                it.theme = colorTheme
+                        componentRenderer = props.componentRenderer as ComponentRenderer<TextArea>)).apply {
+            colorTheme.map {
+                theme = it
             }
         }
     }

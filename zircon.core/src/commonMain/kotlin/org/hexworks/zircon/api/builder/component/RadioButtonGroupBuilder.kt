@@ -1,13 +1,12 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.RadioButtonGroup
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButtonGroup
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
 import kotlin.jvm.JvmStatic
 
@@ -26,9 +25,9 @@ data class RadioButtonGroupBuilder(
                         tileset = tileset),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = componentRenderer as ComponentRenderer<RadioButtonGroup>)).also {
-            if(colorTheme !== ColorThemes.default()) {
-                it.theme = colorTheme
+                        componentRenderer = componentRenderer as ComponentRenderer<RadioButtonGroup>)).apply {
+            colorTheme.map {
+                theme = it
             }
         }
     }

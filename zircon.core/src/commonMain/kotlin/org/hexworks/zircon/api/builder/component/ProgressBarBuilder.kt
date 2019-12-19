@@ -1,13 +1,12 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.ProgressBar
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultProgressBar
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultProgressBarRenderer
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
@@ -53,9 +52,9 @@ data class ProgressBarBuilder(
                 displayPercentValueOfProgress = displayPercentValueOfProgress,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<ProgressBar>)).also {
-            if(colorTheme !== ColorThemes.default()) {
-                it.theme = colorTheme
+                        componentRenderer = props.componentRenderer as ComponentRenderer<ProgressBar>)).apply {
+            colorTheme.map {
+                theme = it
             }
         }
     }

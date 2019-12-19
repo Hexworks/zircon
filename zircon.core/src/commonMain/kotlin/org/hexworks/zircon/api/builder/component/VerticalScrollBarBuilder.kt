@@ -39,9 +39,9 @@ data class VerticalScrollBarBuilder(
             numberOfSteps = size.height,
             renderingStrategy = DefaultComponentRenderingStrategy(
                     decorationRenderers = decorationRenderers,
-                    componentRenderer = props.componentRenderer as ComponentRenderer<ScrollBar>)).also {
-        if(colorTheme !== ColorThemes.default()) {
-            it.theme = colorTheme
+                    componentRenderer = props.componentRenderer as ComponentRenderer<ScrollBar>)).apply {
+        colorTheme.map {
+            theme = it
         }
     }
 

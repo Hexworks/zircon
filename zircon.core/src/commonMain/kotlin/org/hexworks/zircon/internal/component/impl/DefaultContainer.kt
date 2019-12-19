@@ -8,6 +8,8 @@ import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
@@ -36,6 +38,10 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
         }
 
     override fun acceptsFocus() = false
+
+    override fun focusGiven(): UIEventResponse = Pass
+
+    override fun focusTaken(): UIEventResponse = Pass
 
     // TODO: test the hell out of this
     @Synchronized

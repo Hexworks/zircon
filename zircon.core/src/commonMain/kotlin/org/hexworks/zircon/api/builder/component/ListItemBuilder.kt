@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.ListItem
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
@@ -36,9 +35,9 @@ data class ListItemBuilder(
                 initialText = fixedText,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = componentRenderer as ComponentRenderer<ListItem>)).also {
-            if (colorTheme !== ColorThemes.default()) {
-                it.theme = colorTheme
+                        componentRenderer = componentRenderer as ComponentRenderer<ListItem>)).apply {
+            colorTheme.map {
+                theme = it
             }
         }
     }

@@ -1,13 +1,12 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultVBox
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultVBoxRenderer
 import kotlin.jvm.JvmStatic
 
@@ -36,9 +35,9 @@ data class VBoxBuilder(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = componentRenderer as ComponentRenderer<VBox>),
-                spacing = spacing).also {
-            if(colorTheme !== ColorThemes.default()) {
-                it.theme = colorTheme
+                spacing = spacing).apply {
+            colorTheme.map {
+                theme = it
             }
         }
     }
