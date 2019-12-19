@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.TitleHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -10,7 +9,6 @@ import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.extensions.abbreviate
 
 class DefaultVBox(componentMetadata: ComponentMetadata,
                   initialTitle: String,
@@ -66,17 +64,9 @@ class DefaultVBox(componentMetadata: ComponentMetadata,
                     .build())
             .build()
 
-    override fun render() {
-        LOGGER.debug("VBox (id=${id.abbreviate()}, hidden=$isHidden) was rendered.")
-        renderingStrategy.render(this, graphics)
-    }
-
     private fun checkAvailableSpace(component: Component) =
             require(availableSpace.withRelativeHeight(-spacing).containsBoundable(component.rect)) {
                 "There is not enough space ($availableSpace) left for the component: $component."
             }
 
-    companion object {
-        val LOGGER = LoggerFactory.getLogger(VBox::class)
-    }
 }

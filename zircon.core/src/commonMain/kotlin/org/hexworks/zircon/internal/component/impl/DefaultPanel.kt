@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.TitleHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -27,12 +26,4 @@ open class DefaultPanel(componentMetadata: ComponentMetadata,
                     .build())
             .build()
 
-    final override fun render() {
-        LOGGER.debug("$this was rendered.")
-        renderingStrategy.render(this, graphics)
-    }
-
-    companion object {
-        val LOGGER = LoggerFactory.getLogger(Panel::class)
-    }
 }

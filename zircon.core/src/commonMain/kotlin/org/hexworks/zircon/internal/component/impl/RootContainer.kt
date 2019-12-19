@@ -41,8 +41,4 @@ class RootContainer(componentMetadata: ComponentMetadata,
                     .build())
             .build()
 
-    override fun render() {
-        renderingStrategy.render(this, graphics)
-    }
-
 }

@@ -12,9 +12,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_CLICKED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_ENTERED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
+import org.hexworks.zircon.api.uievent.MouseEventType.*
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase.BUBBLE
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
@@ -32,7 +30,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSet.empty()
 
-    var rendered = false
     lateinit var appliedColorTheme: ColorTheme
 
     @Before
@@ -48,9 +45,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
                 renderer = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub)) {
-            override fun render() {
-                rendered = true
-            }
 
             override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
                 appliedColorTheme = colorTheme
@@ -101,7 +95,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     fun shouldRenderWhenComponentStyleSetIsSet() {
         target.componentStyleSet = ComponentStyleSet.empty()
 
-        assertThat(rendered).isTrue()
+        assertThat(rendererStub.renderings).isNotEmpty
     }
 
     @Test
@@ -127,7 +121,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
                 phase = TARGET)
 
         assertThat(target.componentStyleSet.currentState()).isEqualTo(ComponentState.MOUSE_OVER)
-        assertThat(rendered).isTrue()
+        assertThat(rendererStub.renderings).isNotEmpty
     }
 
     @Test

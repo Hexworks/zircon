@@ -50,8 +50,4 @@ open class DefaultModal<T : ModalResult>(componentMetadata: ComponentMetadata,
                         .build())
                 .build()
     }
-
-    final override fun render() {
-        renderingStrategy.render(this, graphics)
-    }
 }

@@ -53,13 +53,4 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
                         .build())
                 .build()
     }
-
-    override fun render() {
-        LOGGER.debug("Panel (id=${id.abbreviate()},hidden=$isHidden) was rendered.")
-        renderingStrategy.render(this, graphics)
-    }
-
-    companion object {
-        val LOGGER = LoggerFactory.getLogger(Panel::class)
-    }
 }

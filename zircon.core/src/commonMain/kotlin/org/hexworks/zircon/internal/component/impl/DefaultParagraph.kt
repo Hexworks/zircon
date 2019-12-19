@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -40,12 +39,4 @@ class DefaultParagraph(componentMetadata: ComponentMetadata,
                     .build())
             .build()
 
-    override fun render() {
-        LOGGER.debug("$this was rendered.")
-        renderingStrategy.render(this, graphics)
-    }
-
-    companion object {
-        val LOGGER = LoggerFactory.getLogger(Paragraph::class)
-    }
 }

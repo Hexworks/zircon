@@ -61,11 +61,6 @@ class DefaultButton(componentMetadata: ComponentMetadata,
                     .build())
             .build()
 
-    override fun render() {
-        LOGGER.debug("$this was rendered.")
-        renderingStrategy.render(this, graphics)
-    }
-
     companion object {
         val LOGGER = LoggerFactory.getLogger(Button::class)
     }

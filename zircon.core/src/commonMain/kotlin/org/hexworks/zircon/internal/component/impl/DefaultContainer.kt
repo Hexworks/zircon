@@ -147,7 +147,4 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
     @Synchronized
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.empty()
 
-    override fun render() {
-        // by default a container won't render anything
-    }
 }

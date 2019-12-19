@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -104,10 +103,6 @@ class DefaultRadioButtonGroup constructor(
         addObserver(fn)
     }
 
-    override fun render() {
-        renderingStrategy.render(this, graphics)
-    }
-
     private fun refreshContent() {
         items.values.forEach {
             removeComponent(it)
@@ -121,8 +116,4 @@ class DefaultRadioButtonGroup constructor(
 
     data class DefaultSelection(override val key: String,
                                 override val value: String) : Selection
-
-    companion object {
-        val LOGGER = LoggerFactory.getLogger(RadioButtonGroup::class)
-    }
 }
