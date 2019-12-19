@@ -1,13 +1,11 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -37,7 +35,6 @@ class DefaultTextArea constructor(
         private val renderingStrategy: ComponentRenderingStrategy<TextArea>)
     : TextArea,
         Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
-        Disablable by Disablable.create(),
         DefaultComponent(
                 componentMetadata = componentMetadata,
                 renderer = renderingStrategy) {
@@ -58,69 +55,31 @@ class DefaultTextArea constructor(
 
     override fun textBuffer() = textBuffer
 
-    override fun acceptsFocus() = isDisabled.not()
-
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        return ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryBackgroundColor)
-                        .withBackgroundColor(colorTheme.secondaryForegroundColor)
-                        .build())
-                .withDisabledStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryForegroundColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .withFocusedStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.primaryBackgroundColor)
-                        .withBackgroundColor(colorTheme.primaryForegroundColor)
-                        .build())
-                .build()
-    }
+    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
+            .withDefaultStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.secondaryBackgroundColor)
+                    .withBackgroundColor(colorTheme.secondaryForegroundColor)
+                    .build())
+            .withDisabledStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.secondaryForegroundColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build())
+            .withFocusedStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.primaryBackgroundColor)
+                    .withBackgroundColor(colorTheme.primaryForegroundColor)
+                    .build())
+            .build()
 
     override fun focusGiven() = whenEnabled {
         componentStyleSet.applyFocusedStyle()
-        render()
         refreshCursor()
     }
 
     override fun focusTaken() = whenEnabled {
         componentStyleSet.reset()
-        render()
         Zircon.eventBus.publish(
                 event = ZirconEvent.HideCursor,
                 eventScope = ZirconScope)
-    }
-
-    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            componentStyleSet.applyMouseOverStyle()
-            render()
-            Processed
-        } else Pass
-    }
-
-    override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            componentStyleSet.reset()
-            render()
-            Processed
-        } else Pass
-    }
-
-    override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            componentStyleSet.applyActiveStyle()
-            render()
-            Processed
-        } else Pass
-    }
-
-    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            componentStyleSet.applyMouseOverStyle()
-            render()
-            Processed
-        } else Pass
     }
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {

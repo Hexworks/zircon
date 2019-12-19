@@ -18,12 +18,6 @@ class RootContainer(componentMetadata: ComponentMetadata,
 
     init {
         render()
-        // TODO: test this
-        themeProperty.onChange {
-            children.forEach { child ->
-                child.theme = it.newValue
-            }
-        }
     }
 
     // TODO: let's check the other methods as well! attachTo especially

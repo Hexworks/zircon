@@ -15,8 +15,8 @@ class DefaultHorizontalNumberInput(
         componentMetadata: ComponentMetadata,
         renderingStrategy: ComponentRenderingStrategy<NumberInput>)
     : BaseNumberInput(
-        initialValue, minValue, maxValue, componentMetadata, renderingStrategy
-) {
+        initialValue, minValue, maxValue, componentMetadata, renderingStrategy) {
+
     override var maxNumberLength = min(Int.MAX_VALUE.toString().length, size.width)
 
     override fun refreshCursor() {

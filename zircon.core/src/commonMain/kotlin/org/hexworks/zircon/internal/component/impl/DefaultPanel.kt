@@ -5,11 +5,9 @@ import org.hexworks.zircon.api.behavior.TitleHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.extensions.abbreviate
 
 open class DefaultPanel(componentMetadata: ComponentMetadata,
                         initialTitle: String,
@@ -22,17 +20,15 @@ open class DefaultPanel(componentMetadata: ComponentMetadata,
         render()
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        return ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryForegroundColor)
-                        .withBackgroundColor(colorTheme.primaryBackgroundColor)
-                        .build())
-                .build()
-    }
+    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
+            .withDefaultStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.secondaryForegroundColor)
+                    .withBackgroundColor(colorTheme.primaryBackgroundColor)
+                    .build())
+            .build()
 
     final override fun render() {
-        LOGGER.debug("Panel (id=${id.abbreviate()},hidden=$isHidden) was rendered.")
+        LOGGER.debug("$this was rendered.")
         renderingStrategy.render(this, graphics)
     }
 

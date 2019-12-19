@@ -4,24 +4,16 @@ import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.event.ChangeEvent
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
-import org.hexworks.zircon.api.uievent.KeyCode
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
@@ -42,11 +34,9 @@ abstract class BaseNumberInput(
         private val maxValue: Int,
         componentMetadata: ComponentMetadata,
         protected val renderingStrategy: ComponentRenderingStrategy<NumberInput>)
-    : NumberInput,
-        Disablable by Disablable.create(),
-        DefaultComponent(
-                componentMetadata = componentMetadata,
-                renderer = renderingStrategy) {
+    : NumberInput, DefaultComponent(
+        componentMetadata = componentMetadata,
+        renderer = renderingStrategy) {
 
     final override var text: String
         get() = textBuffer.getText()
@@ -97,73 +87,35 @@ abstract class BaseNumberInput(
 
     override fun textBuffer() = textBuffer
 
-    override fun acceptsFocus() = isDisabled.not()
-
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        return ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryBackgroundColor)
-                        .withBackgroundColor(colorTheme.secondaryForegroundColor)
-                        .build())
-                .withDisabledStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryForegroundColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .withFocusedStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.primaryBackgroundColor)
-                        .withBackgroundColor(colorTheme.primaryForegroundColor)
-                        .build())
-                .build()
-    }
+    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
+            .withDefaultStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.secondaryBackgroundColor)
+                    .withBackgroundColor(colorTheme.secondaryForegroundColor)
+                    .build())
+            .withDisabledStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.secondaryForegroundColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build())
+            .withFocusedStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.primaryBackgroundColor)
+                    .withBackgroundColor(colorTheme.primaryForegroundColor)
+                    .build())
+            .build()
 
     override fun focusGiven() = whenEnabled {
-        componentStyleSet.applyFocusedStyle()
         textBeforeModifications = text
         text = ""
-        render()
         refreshCursor()
+        componentStyleSet.applyFocusedStyle()
     }
 
     override fun focusTaken() = whenEnabled {
-        componentStyleSet.reset()
         text = textBeforeModifications
         computeNumberValue()
-        render()
+        componentStyleSet.reset()
         Zircon.eventBus.publish(
                 event = ZirconEvent.HideCursor,
                 eventScope = ZirconScope)
-    }
-
-    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            componentStyleSet.applyMouseOverStyle()
-            render()
-            Processed
-        } else Pass
-    }
-
-    override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            componentStyleSet.reset()
-            render()
-            Processed
-        } else Pass
-    }
-
-    override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            componentStyleSet.applyActiveStyle()
-            render()
-            Processed
-        } else Pass
-    }
-
-    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            componentStyleSet.applyMouseOverStyle()
-            render()
-            Processed
-        } else Pass
     }
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {

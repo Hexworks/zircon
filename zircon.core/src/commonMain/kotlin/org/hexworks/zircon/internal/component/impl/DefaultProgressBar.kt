@@ -6,12 +6,10 @@ import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.ProgressBar
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.extensions.abbreviate
 import kotlin.math.min
 import kotlin.math.roundToInt
 
@@ -19,14 +17,13 @@ class DefaultProgressBar(componentMetadata: ComponentMetadata,
                          private val renderingStrategy: ComponentRenderingStrategy<ProgressBar>,
                          override val range: Int,
                          override val numberOfSteps: Int,
-                         override val displayPercentValueOfProgress: Boolean
-) : ProgressBar, DefaultComponent(
+                         override val displayPercentValueOfProgress: Boolean)
+    : ProgressBar, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
     override val progressProperty = createPropertyFrom(0.0)
     override var progress: Double by progressProperty.asDelegate()
-
 
     init {
         render()
@@ -38,14 +35,12 @@ class DefaultProgressBar(componentMetadata: ComponentMetadata,
 
     override fun acceptsFocus() = false
 
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        return ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryForegroundColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .build()
-    }
+    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
+            .withDefaultStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.secondaryForegroundColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build())
+            .build()
 
     fun getProgressBarState(): ProgressBarState {
         val currentProgress = min(range.toDouble(), progress)
@@ -57,7 +52,7 @@ class DefaultProgressBar(componentMetadata: ComponentMetadata,
 
 
     override fun render() {
-        LOGGER.debug("Label (id=${id.abbreviate()}, hidden=$isHidden) was rendered.")
+        LOGGER.debug("$this was rendered.")
         renderingStrategy.render(this, graphics)
     }
 
