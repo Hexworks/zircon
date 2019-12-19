@@ -73,6 +73,7 @@ class DefaultTextArea constructor(
     override fun focusGiven() = whenEnabled {
         componentStyleSet.applyFocusedStyle()
         refreshCursor()
+        render()
     }
 
     override fun focusTaken() = whenEnabled {
@@ -80,6 +81,7 @@ class DefaultTextArea constructor(
         Zircon.eventBus.publish(
                 event = ZirconEvent.HideCursor,
                 eventScope = ZirconScope)
+        render()
     }
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {
@@ -145,6 +147,7 @@ class DefaultTextArea constructor(
                 scrollDownBy(delta + 1)
             }
         }
+        render()
     }
 
     private fun bufferCursorPosOverlapsDown(bufferCursorPos: Position) =

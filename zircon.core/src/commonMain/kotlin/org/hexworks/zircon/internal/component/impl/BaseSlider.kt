@@ -124,6 +124,7 @@ abstract class BaseSlider(final override val minValue: Int,
             LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
             componentStyleSet.applyActiveStyle()
             setValueToClosestOfStep(getMousePosition(event))
+            render()
             Processed
         } else Pass
     }

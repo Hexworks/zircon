@@ -22,6 +22,8 @@ object GroupExample {
                 .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
                 .withSize(Size.create(60, 30))
                 .build()).toScreen()
+        screen.theme = ColorThemes.arc()
+        screen.display()
 
         val leftPanel = Components.panel()
                 .withSize(15, 10)
@@ -36,7 +38,7 @@ object GroupExample {
                 .withPosition(Position.create(18, 0).relativeToRightOf(leftPanel))
                 .withDecorations(box(title = "Right Panel"))
                 .withColorTheme(ColorThemes.afterTheHeist())
-                .withTileset(CP437TilesetResources.bisasam16x16())
+                .withTileset(CP437TilesetResources.cooz16x16())
                 .build()
 
         val group = Components.group()

@@ -49,7 +49,6 @@ abstract class BaseScrollBar(final override val minValue: Int,
         currentStepProperty.onChange {
             render()
         }
-
         disabledProperty.onChange {
             if (it.newValue) {
                 LOGGER.debug("Disabling ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled).")

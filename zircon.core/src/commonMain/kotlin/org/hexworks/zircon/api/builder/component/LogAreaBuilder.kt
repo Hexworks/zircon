@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.LogArea
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
@@ -31,9 +30,9 @@ data class LogAreaBuilder(
                         componentStyleSet = componentStyleSet),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<LogArea>)).also {
-            if (colorTheme !== ColorThemes.default()) {
-                it.theme = colorTheme
+                        componentRenderer = props.componentRenderer as ComponentRenderer<LogArea>)).apply {
+            colorTheme.map {
+                theme = it
             }
         }
     }

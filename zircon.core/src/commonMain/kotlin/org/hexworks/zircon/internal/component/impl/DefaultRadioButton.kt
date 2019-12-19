@@ -54,6 +54,7 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
         if (phase == UIEventPhase.TARGET) {
             currentState = if (selectedProperty.value) SELECTED else NOT_SELECTED
             componentStyleSet.reset()
+            render()
             Processed
         } else Pass
     }
@@ -62,6 +63,7 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
         if (phase == UIEventPhase.TARGET) {
             currentState = PRESSED
             componentStyleSet.applyActiveStyle()
+            render()
             Processed
         } else Pass
     }

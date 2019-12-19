@@ -35,7 +35,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>()
     val tileset: TilesetResource
         get() = props.tileset
 
-    val colorTheme: ColorTheme
+    val colorTheme: Maybe<ColorTheme>
         get() = props.colorTheme
 
     val decorationRenderers: List<ComponentDecorationRenderer>
@@ -78,7 +78,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>()
     }
 
     override fun withColorTheme(colorTheme: ColorTheme): U {
-        props.colorTheme = colorTheme
+        props.colorTheme = Maybe.of(colorTheme)
         return this as U
     }
 

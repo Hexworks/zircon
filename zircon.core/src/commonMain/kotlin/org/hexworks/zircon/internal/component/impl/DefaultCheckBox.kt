@@ -64,6 +64,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
             pressing = false
             this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
             componentStyleSet.reset()
+            render()
             Processed
         } else Pass
     }
@@ -75,6 +76,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
             pressing = true
             this.checkBoxState = if (isSelected) UNCHECKING else CHECKING
             componentStyleSet.applyActiveStyle()
+            render()
             Processed
         } else Pass
     }
@@ -87,6 +89,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
             isSelected = isSelected.not()
             this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
             componentStyleSet.applyMouseOverStyle()
+            render()
             Processed
         } else Pass
     }
@@ -96,6 +99,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
         LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) lost focus.")
         pressing = false
         componentStyleSet.reset()
+        render()
     }
 
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()

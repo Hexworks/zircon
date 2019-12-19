@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
@@ -47,9 +46,9 @@ data class ParagraphBuilder(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = componentRenderer as ComponentRenderer<Paragraph>,
-                        componentPostProcessors = postProcessors)).also {
-            if (colorTheme !== ColorThemes.default()) {
-                it.theme = colorTheme
+                        componentPostProcessors = postProcessors)).apply {
+            colorTheme.map {
+                theme = it
             }
         }
     }

@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
@@ -40,9 +39,9 @@ data class ButtonBuilder(
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialText = text,
-                renderingStrategy = componentRenderer).also {
-            if (colorTheme !== ColorThemes.default()) {
-                it.theme = colorTheme
+                renderingStrategy = componentRenderer).apply {
+            colorTheme.map {
+                theme = it
             }
         }
     }

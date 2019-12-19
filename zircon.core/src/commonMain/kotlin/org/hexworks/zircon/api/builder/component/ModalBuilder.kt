@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
@@ -73,9 +72,9 @@ data class ModalBuilder<T : ModalResult>(
                         relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
-                renderingStrategy = componentRenderer).also {
-            if (colorTheme !== ColorThemes.default()) {
-                it.theme = colorTheme
+                renderingStrategy = componentRenderer).apply {
+            colorTheme.map {
+                theme = it
             }
         }
         modal.addComponent(component)

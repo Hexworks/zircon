@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
@@ -45,9 +44,9 @@ data class IconBuilder(
                 initialIcon = icon.get(),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = componentRenderer as ComponentRenderer<Icon>)).also {
-            if (colorTheme !== ColorThemes.default()) {
-                it.theme = colorTheme
+                        componentRenderer = componentRenderer as ComponentRenderer<Icon>)).apply {
+            colorTheme.map {
+                theme = it
             }
         }
     }

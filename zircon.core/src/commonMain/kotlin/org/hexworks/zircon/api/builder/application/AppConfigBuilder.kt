@@ -1,5 +1,7 @@
 package org.hexworks.zircon.api.builder.application
 
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.application.DebugConfig
@@ -25,9 +27,9 @@ data class AppConfigBuilder(
         private var cursorColor: TileColor = TileColor.defaultForegroundColor(),
         private var cursorBlinking: Boolean = false,
         private var clipboardAvailable: Boolean = true,
-        private var defaultTileset: TilesetResource = BuiltInCP437TilesetResource.ROGUE_YUN_16X16,
+        private var defaultTileset: TilesetResource = CP437TilesetResources.wanderlust16x16(),
         private var defaultGraphicalTileset: TilesetResource = BuiltInGraphicalTilesetResource.NETHACK_16X16,
-        private var defaultColorTheme: ColorTheme = ColorThemeResource.TECH_LIGHT.getTheme(),
+        private var defaultColorTheme: ColorTheme = ColorThemes.default(),
         private var title: String = "Zircon Application",
         private var fullScreen: Boolean = false,
         private var debugMode: Boolean = false,

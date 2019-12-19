@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
@@ -36,9 +35,9 @@ data class HBoxBuilder(
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = componentRenderer as ComponentRenderer<HBox>),
-                spacing = spacing).also {
-            if (colorTheme !== ColorThemes.default()) {
-                it.theme = colorTheme
+                spacing = spacing).apply {
+            colorTheme.map {
+                theme = it
             }
         }
     }

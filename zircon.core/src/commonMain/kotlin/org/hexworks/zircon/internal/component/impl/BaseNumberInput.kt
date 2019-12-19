@@ -107,12 +107,14 @@ abstract class BaseNumberInput(
         text = ""
         refreshCursor()
         componentStyleSet.applyFocusedStyle()
+        render()
     }
 
     override fun focusTaken() = whenEnabled {
         text = textBeforeModifications
         computeNumberValue()
         componentStyleSet.reset()
+        render()
         Zircon.eventBus.publish(
                 event = ZirconEvent.HideCursor,
                 eventScope = ZirconScope)

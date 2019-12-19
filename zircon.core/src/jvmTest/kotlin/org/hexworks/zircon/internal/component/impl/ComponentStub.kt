@@ -37,13 +37,13 @@ class ComponentStub(
                 .build()) : InternalComponent {
     override var isDisabled: Boolean
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(value) {}
+        set(_) {}
     override val disabledProperty: Property<Boolean>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
     override var theme: ColorTheme
-        get() = this.theme
+        get() = this.colorTheme
         set(value) {
-            this.theme = value
+            this.colorTheme = value
         }
     override val themeProperty: Property<ColorTheme>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.

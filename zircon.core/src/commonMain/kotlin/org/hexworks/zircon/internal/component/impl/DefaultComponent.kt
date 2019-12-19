@@ -4,8 +4,8 @@ import org.hexworks.cobalt.databinding.api.binding.Binding
 import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.behavior.Movable
-import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -52,7 +52,6 @@ abstract class DefaultComponent(
         UIEventProcessor by uiEventProcessor,
         Identifiable by contentLayer,
         Movable by contentLayer,
-        TilesetOverride by contentLayer,
         ComponentEventSource by uiEventProcessor {
 
     private val logger = LoggerFactory.getLogger(this::class)
@@ -76,7 +75,9 @@ abstract class DefaultComponent(
     final override val disabledProperty = createPropertyFrom(false)
     final override val hiddenProperty = createPropertyFrom(false)
     final override val themeProperty = createPropertyFrom(RuntimeConfig.config.defaultColorTheme)
-    final override val tilesetProperty = createPropertyFrom(componentMetadata.tileset)
+    final override val tilesetProperty = createPropertyFrom(componentMetadata.tileset) {
+        tileset.isCompatibleWith(it)
+    }
 
     final override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
     final override var isDisabled: Boolean by disabledProperty.asDelegate()
@@ -168,11 +169,13 @@ abstract class DefaultComponent(
     override fun focusGiven() = whenEnabled {
         logger.debug("$this was given focus.")
         componentStyleSet.applyFocusedStyle()
+        render()
     }
 
     override fun focusTaken() = whenEnabled {
         logger.debug("$this lost focus.")
         componentStyleSet.reset()
+        render()
     }
 
     @Synchronized
@@ -183,6 +186,7 @@ abstract class DefaultComponent(
         if (phase == UIEventPhase.TARGET) {
             logger.debug("$this was mouse entered.")
             componentStyleSet.applyMouseOverStyle()
+            render()
             Processed
         } else Pass
     }
@@ -192,6 +196,7 @@ abstract class DefaultComponent(
         if (phase == UIEventPhase.TARGET) {
             logger.debug("$this was mouse exited.")
             componentStyleSet.reset()
+            render()
             Processed
         } else Pass
     }
@@ -201,6 +206,7 @@ abstract class DefaultComponent(
         if (phase == UIEventPhase.TARGET) {
             logger.debug("$this was mouse pressed.")
             componentStyleSet.applyActiveStyle()
+            render()
             Processed
         } else Pass
     }
@@ -210,6 +216,7 @@ abstract class DefaultComponent(
         if (phase == UIEventPhase.TARGET) {
             logger.debug("$this was mouse released.")
             componentStyleSet.applyMouseOverStyle()
+            render()
             Processed
         } else Pass
     }
@@ -235,10 +242,20 @@ abstract class DefaultComponent(
 
         if (parentChanged) {
             this.parent = Maybe.of(parent)
-            bindings.add(disabledProperty.updateFrom(parent.disabledProperty))
-            bindings.add(hiddenProperty.updateFrom(parent.hiddenProperty))
-            bindings.add(themeProperty.updateFrom(parent.themeProperty))
-            bindings.add(tilesetProperty.updateFrom(parent.tilesetProperty))
+            // TODO: test this check
+            val hasNoCustomTheme = theme == ColorThemes.default()
+            bindings.add(disabledProperty.updateFrom(
+                    observable = parent.disabledProperty,
+                    updateWhenBound = hasNoCustomTheme))
+            bindings.add(hiddenProperty.updateFrom(
+                    observable = parent.hiddenProperty,
+                    updateWhenBound = hasNoCustomTheme))
+            bindings.add(themeProperty.updateFrom(
+                    observable = parent.themeProperty,
+                    updateWhenBound = hasNoCustomTheme))
+            bindings.add(tilesetProperty.updateFrom(
+                    observable = parent.tilesetProperty,
+                    updateWhenBound = hasNoCustomTheme))
         }
     }
 
