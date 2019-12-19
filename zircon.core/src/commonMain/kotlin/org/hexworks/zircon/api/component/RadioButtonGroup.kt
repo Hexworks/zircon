@@ -1,12 +1,9 @@
 package org.hexworks.zircon.api.component
 
 import org.hexworks.cobalt.datatypes.Maybe
-
 import org.hexworks.cobalt.events.api.Event
-import org.hexworks.zircon.api.behavior.Scrollable
 
-// refactor this to be a logical `Group`, not a `Component`
-interface RadioButtonGroup : Component, Scrollable {
+interface RadioButtonGroup : Component {
 
     /**
      * Adds an option to this [RadioButtonGroup] and returns the

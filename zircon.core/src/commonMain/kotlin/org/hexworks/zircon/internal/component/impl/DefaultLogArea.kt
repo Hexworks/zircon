@@ -5,7 +5,10 @@ import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 import org.hexworks.zircon.api.builder.component.TextBoxBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.component.*
+import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.LogArea
+import org.hexworks.zircon.api.component.TextBox
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
@@ -84,22 +87,20 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
         children.forEach { removeComponent(it) }
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        return ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryForegroundColor)
-                        .withBackgroundColor(colorTheme.primaryBackgroundColor)
-                        .build())
-                .withDisabledStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryForegroundColor)
-                        .withBackgroundColor(colorTheme.secondaryBackgroundColor)
-                        .build())
-                .withFocusedStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.primaryBackgroundColor)
-                        .withBackgroundColor(colorTheme.primaryForegroundColor)
-                        .build())
-                .build()
-    }
+    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
+            .withDefaultStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.secondaryForegroundColor)
+                    .withBackgroundColor(colorTheme.primaryBackgroundColor)
+                    .build())
+            .withDisabledStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.secondaryForegroundColor)
+                    .withBackgroundColor(colorTheme.secondaryBackgroundColor)
+                    .build())
+            .withFocusedStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.primaryBackgroundColor)
+                    .withBackgroundColor(colorTheme.primaryForegroundColor)
+                    .build())
+            .build()
 
     private fun addLogElement(element: TextBox, applyTheme: Boolean = true) {
         var currentHeight = children.map { it.height }.fold(0, Int::plus)

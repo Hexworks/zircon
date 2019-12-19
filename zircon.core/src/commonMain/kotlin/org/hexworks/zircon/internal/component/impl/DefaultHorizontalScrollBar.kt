@@ -12,8 +12,8 @@ class DefaultHorizontalScrollBar(componentMetadata: ComponentMetadata,
                                  minValue: Int,
                                  maxValue: Int,
                                  itemsShownAtOnce: Int,
-                                 numberOfSteps: Int
-) : BaseScrollBar(
+                                 numberOfSteps: Int) : BaseScrollBar(
+
         componentMetadata = componentMetadata,
         renderingStrategy = renderingStrategy,
         minValue = minValue,

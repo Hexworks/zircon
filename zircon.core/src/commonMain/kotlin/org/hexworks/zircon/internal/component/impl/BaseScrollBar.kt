@@ -4,17 +4,14 @@ import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.event.ChangeEvent
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
-import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
 import kotlin.math.ceil
@@ -30,8 +27,7 @@ abstract class BaseScrollBar(final override val minValue: Int,
                              private val renderingStrategy: ComponentRenderingStrategy<ScrollBar>) :
         ScrollBar, DefaultComponent(
         componentMetadata = componentMetadata,
-        renderer = renderingStrategy),
-        Disablable by Disablable.create() {
+        renderer = renderingStrategy) {
 
     private var range: Int = maxValue - minValue
     protected var valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
@@ -149,38 +145,6 @@ abstract class BaseScrollBar(final override val minValue: Int,
 
     abstract fun getMousePosition(event: MouseEvent): Int
 
-    override fun acceptsFocus() = isDisabled.not()
-
-    override fun focusGiven() = whenEnabled {
-        LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was given focus.")
-        componentStyleSet.applyFocusedStyle()
-        render()
-    }
-
-    override fun focusTaken() = whenEnabled {
-        LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) lost focus.")
-        componentStyleSet.reset()
-        render()
-    }
-
-    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was mouse entered.")
-            componentStyleSet.applyMouseOverStyle()
-            render()
-            Processed
-        } else Pass
-    }
-
-    override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was mouse exited.")
-            componentStyleSet.reset()
-            render()
-            Processed
-        } else Pass
-    }
-
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
@@ -193,15 +157,6 @@ abstract class BaseScrollBar(final override val minValue: Int,
                 }
             }
 
-            render()
-            Processed
-        } else Pass
-    }
-
-    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was mouse released.")
-            componentStyleSet.applyMouseOverStyle()
             render()
             Processed
         } else Pass
@@ -234,26 +189,24 @@ abstract class BaseScrollBar(final override val minValue: Int,
         }
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        return ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.primaryForegroundColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .withMouseOverStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.primaryBackgroundColor)
-                        .withBackgroundColor(colorTheme.accentColor)
-                        .build())
-                .withDisabledStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryForegroundColor)
-                        .withBackgroundColor(colorTheme.secondaryBackgroundColor)
-                        .build())
-                .withFocusedStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.primaryBackgroundColor)
-                        .withBackgroundColor(colorTheme.primaryForegroundColor)
-                        .build())
-                .build()
-    }
+    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
+            .withDefaultStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.primaryForegroundColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build())
+            .withMouseOverStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.primaryBackgroundColor)
+                    .withBackgroundColor(colorTheme.accentColor)
+                    .build())
+            .withDisabledStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.secondaryForegroundColor)
+                    .withBackgroundColor(colorTheme.secondaryBackgroundColor)
+                    .build())
+            .withFocusedStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.primaryBackgroundColor)
+                    .withBackgroundColor(colorTheme.primaryForegroundColor)
+                    .build())
+            .build()
 
     final override fun render() {
         LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled, hidden=$isHidden) was rendered.")

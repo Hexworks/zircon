@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -14,9 +13,9 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.abbreviate
 
 class DefaultVBox(componentMetadata: ComponentMetadata,
-                       initialTitle: String,
-                       private val spacing: Int,
-                       private val renderingStrategy: ComponentRenderingStrategy<VBox>)
+                  initialTitle: String,
+                  private val spacing: Int,
+                  private val renderingStrategy: ComponentRenderingStrategy<VBox>)
     : VBox, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
@@ -60,14 +59,12 @@ class DefaultVBox(componentMetadata: ComponentMetadata,
         availableSpace = availableSpace.withRelativeHeight(delta)
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        return ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryForegroundColor)
-                        .withBackgroundColor(colorTheme.primaryBackgroundColor)
-                        .build())
-                .build()
-    }
+    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
+            .withDefaultStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.secondaryForegroundColor)
+                    .withBackgroundColor(colorTheme.primaryBackgroundColor)
+                    .build())
+            .build()
 
     override fun render() {
         LOGGER.debug("VBox (id=${id.abbreviate()}, hidden=$isHidden) was rendered.")

@@ -47,19 +47,6 @@ open class DefaultHBox(componentMetadata: ComponentMetadata,
         return result
     }
 
-    private fun reorganizeComponents(component: Component) {
-        val width = component.width
-        val delta = width + if (children.isEmpty()) 0 else spacing
-        val x = component.position.x
-        children.filter {
-            it.position.x >= x
-        }.forEach {
-            it.moveLeftBy(delta)
-        }
-        filledUntil = filledUntil.withRelativeX(-delta)
-        availableSpace = availableSpace.withRelativeWidth(delta)
-    }
-
     override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSetBuilder.newBuilder()
@@ -72,6 +59,19 @@ open class DefaultHBox(componentMetadata: ComponentMetadata,
     final override fun render() {
         LOGGER.debug("HBox (id=${id.abbreviate()}, hidden=$isHidden) was rendered.")
         renderingStrategy.render(this, graphics)
+    }
+
+    private fun reorganizeComponents(component: Component) {
+        val width = component.width
+        val delta = width + if (children.isEmpty()) 0 else spacing
+        val x = component.position.x
+        children.filter {
+            it.position.x >= x
+        }.forEach {
+            it.moveLeftBy(delta)
+        }
+        filledUntil = filledUntil.withRelativeX(-delta)
+        availableSpace = availableSpace.withRelativeWidth(delta)
     }
 
     private fun checkAvailableSpace(component: Component) =

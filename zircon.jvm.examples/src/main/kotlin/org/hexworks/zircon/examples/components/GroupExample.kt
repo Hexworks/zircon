@@ -40,7 +40,7 @@ object GroupExample {
                 .build()
 
         val group = Components.group()
-                .withColorTheme(ColorThemes.capturedByPirates())
+                .withTheme(ColorThemes.capturedByPirates())
                 .withTileset(CP437TilesetResources.rexPaint16x16())
                 .build()
 
@@ -54,8 +54,6 @@ object GroupExample {
                         group.add(rightPanel)
                     }
                 }
-
-        screen.display()
 
         screen.addComponent(leftPanel)
         screen.addComponent(rightPanel)

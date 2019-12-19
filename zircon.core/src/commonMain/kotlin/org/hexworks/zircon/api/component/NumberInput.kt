@@ -3,10 +3,9 @@ package org.hexworks.zircon.api.component
 import org.hexworks.cobalt.databinding.api.event.ChangeEvent
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
 
-interface NumberInput : Component, Disablable {
+interface NumberInput : Component {
 
     var text: String
 

@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ListItem
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -29,15 +28,12 @@ class DefaultListItem(componentMetadata: ComponentMetadata,
 
     override fun acceptsFocus() = false
 
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        LOGGER.debug("Applying color theme ($colorTheme) to ListItem (id=${id.abbreviate()}).")
-        return ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryForegroundColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .build()
-    }
+    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
+            .withDefaultStyle(StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.secondaryForegroundColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build())
+            .build()
 
     override fun render() {
         LOGGER.debug("ListItem (id=${id.abbreviate()}, hidden=$isHidden) was rendered.")
