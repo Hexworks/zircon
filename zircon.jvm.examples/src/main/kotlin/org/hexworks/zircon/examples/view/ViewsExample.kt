@@ -44,7 +44,7 @@ object ViewsExample {
 
         val dockInitial = Components.button()
                 .withText("Dock initial")
-                .withPosition(0, 2)
+                .withPosition(12, 2)
                 .build()
 
         init {

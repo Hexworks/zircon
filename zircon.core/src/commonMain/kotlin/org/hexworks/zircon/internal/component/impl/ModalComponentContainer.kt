@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -122,7 +123,7 @@ class ModalComponentContainer(
                     root = RootContainer(
                             componentMetadata = metadata,
                             renderingStrategy = renderingStrategy))
-            container.theme = ColorThemeResource.DEFAULT.getTheme()
+            container.theme = ColorThemes.empty()
             return container
         }
     }
