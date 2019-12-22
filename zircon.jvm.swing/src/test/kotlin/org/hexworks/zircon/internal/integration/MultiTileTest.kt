@@ -13,6 +13,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.screen.Screen
 
+// TODO: doesn't work
 object MultiTileTest {
 
     private val theme = ColorThemes.arc()
@@ -28,6 +29,8 @@ object MultiTileTest {
                 .build())
 
         val screen = Screen.create(tileGrid)
+        screen.display()
+        screen.theme = theme
 
         screen.addComponent(Components.label()
                 .withText("Rexpaint 20x20")
@@ -55,9 +58,6 @@ object MultiTileTest {
                 .withTileset(CP437TilesetResources.oreslam20x20()))
 
         screen.addComponent(container)
-
-        screen.display()
-        screen.theme = theme
     }
 
 }

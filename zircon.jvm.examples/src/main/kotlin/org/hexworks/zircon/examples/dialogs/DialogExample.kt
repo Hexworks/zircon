@@ -22,7 +22,10 @@ object DialogExample {
     private val theme = ColorThemes.adriftInDreams()
 
     class TestFragment : Fragment {
-        override val root = Components.panel().withSize(23, 13).build()
+        override val root = Components.panel()
+                .withSize(23, 13)
+                .withColorTheme(theme)
+                .build()
     }
 
     @JvmStatic
@@ -46,6 +49,7 @@ object DialogExample {
         val modal = ModalBuilder.newBuilder<EmptyModalResult>()
                 .withCenteredDialog(true)
                 .withParentSize(screen.size)
+                .withColorTheme(theme)
                 .withComponent(panel)
                 .build()
 
@@ -57,7 +61,6 @@ object DialogExample {
                         modal.close(EmptyModalResult)
                     }
                 })
-        panel.theme = theme
 
         screen.display()
         screen.theme = theme
