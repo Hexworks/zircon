@@ -1,13 +1,11 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalScrollBar
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.VerticalScrollBarRenderer
 import kotlin.jvm.JvmStatic
 
@@ -15,12 +13,10 @@ import kotlin.jvm.JvmStatic
 /**
  * Builder for the scrollbar. By default, it creates a scrollbar with a number of items of 100.
  */
-data class VerticalScrollBarBuilder(
-            private var minValue: Int = 0,
-            private var maxValue: Int = 100,
-            override var props: CommonComponentProperties<ScrollBar> = CommonComponentProperties(
-                    componentRenderer = VerticalScrollBarRenderer()))
-        : BaseComponentBuilder<ScrollBar, VerticalScrollBarBuilder>() {
+class VerticalScrollBarBuilder(
+        private var minValue: Int = 0,
+        private var maxValue: Int = 100)
+    : BaseComponentBuilder<ScrollBar, VerticalScrollBarBuilder>(VerticalScrollBarRenderer()) {
 
     fun withNumberOfScrollableItems(items: Int) = also {
         require(items > 0) { "Number of items must be greater than 0." }
@@ -45,7 +41,8 @@ data class VerticalScrollBarBuilder(
         }
     }
 
-    override fun createCopy() = copy(props = props.copy())
+    override fun createCopy() = newBuilder().withProps(props.copy())
+            .withNumberOfScrollableItems(maxValue)
 
     companion object {
 

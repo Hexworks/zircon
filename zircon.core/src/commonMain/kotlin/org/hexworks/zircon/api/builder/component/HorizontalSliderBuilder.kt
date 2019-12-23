@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultHorizontalSlider
@@ -15,14 +14,11 @@ import kotlin.math.max
 /**
  * Builder for the slider. By default, it creates a slider with a maxValue of 100 and 10 steps.
  */
-data class HorizontalSliderBuilder(
+class HorizontalSliderBuilder(
         private var minValue: Int = 0,
         private var maxValue: Int = 100,
-        private var numberOfSteps: Int = 10,
-        private var additionalWidthNeeded: Int = 5,
-        override var props: CommonComponentProperties<Slider> = CommonComponentProperties(
-                componentRenderer = HorizontalSliderRenderer()))
-    : BaseComponentBuilder<Slider, HorizontalSliderBuilder>() {
+        private var numberOfSteps: Int = 10)
+    : BaseComponentBuilder<Slider, HorizontalSliderBuilder>(HorizontalSliderRenderer()) {
 
     fun withMaxValue(max: Int) = also {
         require(max > minValue) { "Max value must be greater than min value" }
@@ -58,7 +54,10 @@ data class HorizontalSliderBuilder(
         }
     }
 
-    override fun createCopy() = copy(props = props.copy())
+    override fun createCopy() = newBuilder().withProps(props.copy())
+            .withMinValue(minValue)
+            .withMaxValue(maxValue)
+            .withNumberOfSteps(numberOfSteps)
 
     companion object {
 

@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.CheckBox
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox
@@ -12,11 +11,9 @@ import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
-data class CheckBoxBuilder(
-        private var text: String = "",
-        override val props: CommonComponentProperties<CheckBox> = CommonComponentProperties(
-                componentRenderer = DefaultCheckBoxRenderer()))
-    : BaseComponentBuilder<CheckBox, CheckBoxBuilder>() {
+class CheckBoxBuilder(
+        private var text: String = "")
+    : BaseComponentBuilder<CheckBox, CheckBoxBuilder>(DefaultCheckBoxRenderer()) {
 
     fun withText(text: String) = also {
         this.text = text
@@ -41,7 +38,8 @@ data class CheckBoxBuilder(
         }
     }
 
-    override fun createCopy() = copy(props = props.copy())
+    override fun createCopy() = newBuilder().withProps(props.copy())
+            .withText(text)
 
     companion object {
 

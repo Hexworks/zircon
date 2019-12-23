@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultHBox
@@ -11,11 +10,9 @@ import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
 import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
-data class HBoxBuilder(
-        private var spacing: Int = 0,
-        override val props: CommonComponentProperties<HBox> = CommonComponentProperties(
-                componentRenderer = DefaultHBoxRenderer()))
-    : BaseComponentBuilder<HBox, HBoxBuilder>() {
+class HBoxBuilder(
+        private var spacing: Int = 0)
+    : BaseComponentBuilder<HBox, HBoxBuilder>(DefaultHBoxRenderer()) {
 
     fun withSpacing(spacing: Int) = also {
         require(spacing >= 0) {
@@ -42,7 +39,8 @@ data class HBoxBuilder(
         }
     }
 
-    override fun createCopy() = copy(props = props.copy())
+    override fun createCopy() = newBuilder().withProps(props.copy())
+            .withSpacing(spacing)
 
     companion object {
 

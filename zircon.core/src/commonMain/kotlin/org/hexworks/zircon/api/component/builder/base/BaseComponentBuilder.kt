@@ -19,12 +19,15 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
 
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
-abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>()
+abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
+        initialRenderer: ComponentRenderer<out T>)
     : ComponentBuilder<T, U>, Builder<T> {
 
     private val logger = LoggerFactory.getLogger(this::class)
 
-    protected abstract val props: CommonComponentProperties<T>
+    protected var props: CommonComponentProperties<T> = CommonComponentProperties(
+            componentRenderer = initialRenderer)
+        private set
 
     val position: Position
         get() = props.alignmentStrategy.calculatePosition(size)
@@ -48,6 +51,9 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>()
         get() = preferredSize.orElse(decorationRenderers
                 .map { it.occupiedSize }
                 .fold(contentSize, Size::plus))
+
+    private val alignmentStrategy: AlignmentStrategy
+        get() = props.alignmentStrategy
 
 
     val title: String
@@ -110,5 +116,8 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>()
         return this as U
     }
 
-    protected fun copyProps() = props.copy()
+    internal fun withProps(props: CommonComponentProperties<T>): U {
+        this.props = props
+        return this as U
+    }
 }

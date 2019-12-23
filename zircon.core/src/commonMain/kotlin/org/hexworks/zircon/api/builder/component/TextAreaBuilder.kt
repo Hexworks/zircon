@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultTextArea
@@ -13,11 +12,9 @@ import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
-data class TextAreaBuilder(
-        private var text: String = "",
-        override val props: CommonComponentProperties<TextArea> = CommonComponentProperties(
-                componentRenderer = DefaultTextAreaRenderer()))
-    : BaseComponentBuilder<TextArea, TextAreaBuilder>() {
+class TextAreaBuilder(
+        private var text: String = "")
+    : BaseComponentBuilder<TextArea, TextAreaBuilder>(DefaultTextAreaRenderer()) {
 
     fun withText(text: String) = also {
         this.text = text.withNewLinesStripped()
@@ -42,7 +39,8 @@ data class TextAreaBuilder(
         }
     }
 
-    override fun createCopy() = copy()
+    override fun createCopy() = newBuilder().withProps(props.copy())
+            .withText(text)
 
     companion object {
 

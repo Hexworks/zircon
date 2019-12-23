@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultHorizontalScrollBar
@@ -14,12 +13,10 @@ import kotlin.jvm.JvmStatic
 /**
  * Builder for the scrollbar. By default, it creates a scrollbar with a number of items of 100.
  */
-data class HorizontalScrollBarBuilder(
+class HorizontalScrollBarBuilder(
         private var minValue: Int = 0,
-        private var maxValue: Int = 100,
-        override var props: CommonComponentProperties<ScrollBar> = CommonComponentProperties(
-                componentRenderer = HorizontalScrollBarRenderer()))
-    : BaseComponentBuilder<ScrollBar, HorizontalScrollBarBuilder>() {
+        private var maxValue: Int = 100)
+    : BaseComponentBuilder<ScrollBar, HorizontalScrollBarBuilder>(HorizontalScrollBarRenderer()) {
 
     fun withNumberOfScrollableItems(items: Int) = also {
         require(items > 0) { "Number of items must be greater than 0." }
@@ -44,7 +41,8 @@ data class HorizontalScrollBarBuilder(
         }
     }
 
-    override fun createCopy() = copy(props = props.copy())
+    override fun createCopy() = newBuilder().withProps(props.copy())
+            .withNumberOfScrollableItems(maxValue)
 
     companion object {
 

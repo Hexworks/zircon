@@ -1,26 +1,24 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.ComponentDecorations.side
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultButton
 import org.hexworks.zircon.internal.component.renderer.DefaultButtonRenderer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.internal.component.renderer.decoration.SideDecorationRenderer
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
-data class ButtonBuilder(
-        private var text: String = "",
-        private var wrapSides: Boolean = true,
-        override val props: CommonComponentProperties<Button> = CommonComponentProperties(
-                decorationRenderers = listOf(SideDecorationRenderer()),
-                componentRenderer = DefaultButtonRenderer()))
-    : BaseComponentBuilder<Button, ButtonBuilder>() {
+class ButtonBuilder(
+        private var text: String = "")
+    : BaseComponentBuilder<Button, ButtonBuilder>(DefaultButtonRenderer()) {
 
+    init {
+        withDecorations(side())
+    }
 
     fun withText(text: String) = also {
         this.text = text
@@ -46,7 +44,8 @@ data class ButtonBuilder(
         }
     }
 
-    override fun createCopy() = copy(props = props.copy())
+    override fun createCopy() = newBuilder().withProps(props.copy())
+            .withText(text)
 
     companion object {
 

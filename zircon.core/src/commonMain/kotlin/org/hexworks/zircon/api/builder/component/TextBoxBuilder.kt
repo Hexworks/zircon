@@ -5,7 +5,6 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.TextBox
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
@@ -17,13 +16,11 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
-data class TextBoxBuilder(
+class TextBoxBuilder(
         private val initialContentWidth: Int,
         private var nextPosition: Position = Position.defaultPosition(),
-        private val components: MutableList<Component> = mutableListOf(),
-        override val props: CommonComponentProperties<TextBox> = CommonComponentProperties(
-                componentRenderer = DefaultTextBoxRenderer()))
-    : BaseComponentBuilder<TextBox, TextBoxBuilder>() {
+        private val components: MutableList<Component> = mutableListOf())
+    : BaseComponentBuilder<TextBox, TextBoxBuilder>(DefaultTextBoxRenderer()) {
 
     private val inlineElements = mutableListOf<Component>()
     private val contentWidth: Int
@@ -188,7 +185,11 @@ data class TextBoxBuilder(
                 .fold(0, Int::plus)
     }
 
-    override fun createCopy() = copy()
+    override fun createCopy() = TextBoxBuilder(
+            initialContentWidth = contentWidth,
+            nextPosition = nextPosition,
+            components = components.toMutableList())
+            .withProps(props.copy())
 
     companion object {
 

@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Size
@@ -15,13 +14,13 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
-data class IconBuilder(
-        override val props: CommonComponentProperties<Icon> = CommonComponentProperties(
-                componentRenderer = DefaultIconRenderer(),
-                tileset = RuntimeConfig.config.defaultGraphicTileset))
-    : BaseComponentBuilder<Icon, IconBuilder>() {
+class IconBuilder : BaseComponentBuilder<Icon, IconBuilder>(DefaultIconRenderer()) {
 
     private var icon = Maybe.empty<Tile>()
+
+    init {
+        withTileset(RuntimeConfig.config.defaultGraphicTileset)
+    }
 
     override fun withSize(size: Size) = also {
         throw UnsupportedOperationException("Can't set the Size of a Modal by hand, use withParentSize instead.")
@@ -51,7 +50,11 @@ data class IconBuilder(
         }
     }
 
-    override fun createCopy() = copy(props = props.copy())
+    override fun createCopy() = newBuilder().withProps(props.copy()).apply {
+        icon.map {
+            withIcon(it)
+        }
+    }
 
     companion object {
 

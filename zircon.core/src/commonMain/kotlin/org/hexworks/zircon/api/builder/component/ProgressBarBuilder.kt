@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.ProgressBar
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultProgressBar
@@ -11,17 +10,15 @@ import org.hexworks.zircon.internal.component.renderer.DefaultProgressBarRendere
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 /**
  * Builder for the progress bar. By default, it creates a progress bar with a maxValue of 100 and 10 steps.
  */
-data class ProgressBarBuilder(
+class ProgressBarBuilder(
         private var range: Int = 100,
         private var numberOfSteps: Int = 10,
-        private var displayPercentValueOfProgress: Boolean = false,
-        override var props: CommonComponentProperties<ProgressBar> = CommonComponentProperties(
-                componentRenderer = DefaultProgressBarRenderer()))
-    : BaseComponentBuilder<ProgressBar, ProgressBarBuilder>() {
+        private var displayPercentValueOfProgress: Boolean = false)
+    : BaseComponentBuilder<ProgressBar, ProgressBarBuilder>(DefaultProgressBarRenderer()) {
 
     fun withRange(range: Int) = also {
         require(range > 0) { "Range must be greater 0" }
@@ -59,7 +56,10 @@ data class ProgressBarBuilder(
         }
     }
 
-    override fun createCopy() = copy(props = props.copy())
+    override fun createCopy() = newBuilder().withProps(props.copy())
+            .withDisplayPercentValueOfProgress(displayPercentValueOfProgress)
+            .withNumberOfSteps(numberOfSteps)
+            .withRange(range)
 
     companion object {
 
