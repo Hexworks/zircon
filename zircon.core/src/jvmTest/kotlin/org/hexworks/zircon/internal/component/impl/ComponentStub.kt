@@ -16,7 +16,15 @@ import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.ComponentEvent
+import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.UIEvent
+import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
@@ -35,6 +43,7 @@ class ComponentStub(
                 .withSize(size)
                 .withTileset(tileset)
                 .build()) : InternalComponent {
+
     override var isDisabled: Boolean
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
         set(_) {}
@@ -64,6 +73,10 @@ class ComponentStub(
         get() = listOf()
     override val relativeBounds: Rect
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+
+    override fun clearCustomStyle() {
+        TODO("not implemented")
+    }
 
     override fun handleMouseEvents(eventType: MouseEventType, handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
         TODO("not implemented")

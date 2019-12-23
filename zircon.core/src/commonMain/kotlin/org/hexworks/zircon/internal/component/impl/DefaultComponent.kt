@@ -19,7 +19,11 @@ import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.ComponentEventSource
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -79,7 +83,18 @@ abstract class DefaultComponent(
         tileset.isCompatibleWith(it)
     }
 
-    final override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
+    private var styleOverride = Maybe.ofNullable(if (componentMetadata.componentStyleSet.isDefault) {
+        null
+    } else componentMetadata.componentStyleSet)
+    private var themeStyle = componentMetadata.componentStyleSet
+
+    final override var componentStyleSet
+        get() = styleOverride.orElse(themeStyle)
+        set(value) {
+            componentStyleSetProperty.value = value
+            styleOverride = Maybe.of(value)
+        }
+
     final override var isDisabled: Boolean by disabledProperty.asDelegate()
     final override var isHidden: Boolean by hiddenProperty.asDelegate()
     final override var theme: ColorTheme by themeProperty.asDelegate()
@@ -107,11 +122,17 @@ abstract class DefaultComponent(
             }
         }
         themeProperty.onChange {
-            componentStyleSet = convertColorTheme(it.newValue)
+            themeStyle = convertColorTheme(it.newValue)
+            render()
         }
         componentStyleSetProperty.onChange {
             render()
         }
+    }
+
+    @Synchronized
+    override fun clearCustomStyle() {
+        componentStyleSet = ComponentStyleSet.defaultStyleSet()
     }
 
     @Synchronized

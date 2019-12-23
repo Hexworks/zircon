@@ -10,6 +10,9 @@ import org.hexworks.zircon.api.graphics.StyleSet
  */
 interface ComponentStyleSet {
 
+    val isDefault
+        get() = this == defaultStyleSet()
+
     fun currentState(): ComponentState
 
     /**

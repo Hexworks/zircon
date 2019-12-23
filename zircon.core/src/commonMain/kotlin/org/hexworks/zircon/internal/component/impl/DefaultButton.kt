@@ -16,7 +16,7 @@ import org.hexworks.zircon.api.uievent.Processed
 @Suppress("DuplicatedCode")
 class DefaultButton(componentMetadata: ComponentMetadata,
                     initialText: String,
-                    private val renderingStrategy: ComponentRenderingStrategy<Button>)
+                    renderingStrategy: ComponentRenderingStrategy<Button>)
     : Button, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
