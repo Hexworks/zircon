@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.ToggleButton
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultToggleButton
@@ -13,13 +12,11 @@ import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
-data class ToggleButtonBuilder(
+class ToggleButtonBuilder(
         private var text: String = "",
         private var wrapSides: Boolean = true,
-        private var isSelected: Boolean = false,
-        override val props: CommonComponentProperties<ToggleButton> = CommonComponentProperties(
-                componentRenderer = DefaultToggleButtonRenderer()))
-    : BaseComponentBuilder<ToggleButton, ToggleButtonBuilder>() {
+        private var isSelected: Boolean = false)
+    : BaseComponentBuilder<ToggleButton, ToggleButtonBuilder>(DefaultToggleButtonRenderer()) {
 
     fun withText(text: String) = also {
         this.text = text.withNewLinesStripped()
@@ -50,7 +47,9 @@ data class ToggleButtonBuilder(
         }
     }
 
-    override fun createCopy() = copy(props = props.copy())
+    override fun createCopy() = newBuilder().withProps(props.copy())
+            .withText(text)
+            .withIsSelected(isSelected)
 
     companion object {
 

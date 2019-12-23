@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton
@@ -13,12 +12,10 @@ import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
-data class RadioButtonBuilder(
+class RadioButtonBuilder(
         private var text: String = "",
-        private var key: Maybe<String> = Maybe.empty(),
-        override val props: CommonComponentProperties<RadioButton> = CommonComponentProperties(
-                componentRenderer = DefaultRadioButtonRenderer()))
-    : BaseComponentBuilder<RadioButton, RadioButtonBuilder>() {
+        private var key: Maybe<String> = Maybe.empty())
+    : BaseComponentBuilder<RadioButton, RadioButtonBuilder>(DefaultRadioButtonRenderer()) {
 
     fun withKey(key: String) = also {
         this.key = Maybe.of(key)
@@ -51,7 +48,12 @@ data class RadioButtonBuilder(
         }
     }
 
-    override fun createCopy() = copy(props = props.copy())
+    override fun createCopy() = newBuilder().withProps(props.copy())
+            .withText(text).apply {
+                key.map { actualKey ->
+                    withKey(actualKey)
+                }
+            }
 
     companion object {
 

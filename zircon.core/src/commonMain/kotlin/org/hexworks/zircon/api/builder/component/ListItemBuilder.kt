@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.ListItem
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultListItem
@@ -12,11 +11,9 @@ import org.hexworks.zircon.internal.component.withNewLinesStripped
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
-data class ListItemBuilder(
-        private var text: String = "",
-        override val props: CommonComponentProperties<ListItem> = CommonComponentProperties(
-                componentRenderer = DefaultListItemRenderer()))
-    : BaseComponentBuilder<ListItem, ListItemBuilder>() {
+class ListItemBuilder(
+        private var text: String = "")
+    : BaseComponentBuilder<ListItem, ListItemBuilder>(DefaultListItemRenderer()) {
 
     fun withText(text: String) = also {
         this.text = text.withNewLinesStripped()
@@ -42,7 +39,8 @@ data class ListItemBuilder(
         }
     }
 
-    override fun createCopy() = copy(props = props.copy())
+    override fun createCopy() = newBuilder().withProps(props.copy())
+            .withText(text)
 
     companion object {
 

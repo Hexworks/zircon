@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
@@ -17,13 +16,11 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
-data class ModalBuilder<T : ModalResult>(
+class ModalBuilder<T : ModalResult>(
         private var darkenPercent: Double = .5,
         private var centeredDialog: Boolean = true,
-        private var contentComponent: Maybe<Component> = Maybe.empty(),
-        override val props: CommonComponentProperties<Modal<T>> = CommonComponentProperties(
-                componentRenderer = DefaultModalRenderer()))
-    : BaseComponentBuilder<Modal<T>, ModalBuilder<T>>() {
+        private var contentComponent: Maybe<Component> = Maybe.empty())
+    : BaseComponentBuilder<Modal<T>, ModalBuilder<T>>(DefaultModalRenderer()) {
 
     fun withParentSize(size: Size) = also {
         super.withSize(size)
@@ -81,7 +78,13 @@ data class ModalBuilder<T : ModalResult>(
         return modal
     }
 
-    override fun createCopy() = copy(props = props.copy())
+    override fun createCopy() = newBuilder<T>().withProps(props.copy())
+            .withCenteredDialog(centeredDialog).apply {
+                contentComponent.map { component ->
+                    withComponent(component)
+                }
+            }.withDarkenPercent(darkenPercent)
+            .withParentSize(size)
 
     companion object {
 

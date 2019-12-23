@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultLabel
@@ -13,11 +12,9 @@ import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
-data class LabelBuilder(
-        private var text: String = "",
-        override val props: CommonComponentProperties<Label> = CommonComponentProperties(
-                componentRenderer = DefaultLabelRenderer()))
-    : BaseComponentBuilder<Label, LabelBuilder>() {
+class LabelBuilder(
+        private var text: String = "")
+    : BaseComponentBuilder<Label, LabelBuilder>(DefaultLabelRenderer()) {
 
 
     fun withText(text: String) = also {
@@ -47,7 +44,8 @@ data class LabelBuilder(
         }
     }
 
-    override fun createCopy() = copy(props = props.copy())
+    override fun createCopy() = newBuilder().withProps(props.copy())
+            .withText(text)
 
     companion object {
 

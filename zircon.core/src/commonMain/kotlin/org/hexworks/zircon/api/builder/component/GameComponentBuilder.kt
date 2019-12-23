@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Block
@@ -10,17 +9,15 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameComponent
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.game.InternalGameArea
 import org.hexworks.zircon.internal.game.impl.DefaultGameComponent
 import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
-data class GameComponentBuilder<T : Tile, B : Block<T>>(
-        private var gameArea: Maybe<InternalGameArea<T, B>> = Maybe.empty(),
-        override val props: CommonComponentProperties<GameComponent<T, B>> = CommonComponentProperties())
-    : BaseComponentBuilder<GameComponent<T, B>, GameComponentBuilder<T, B>>() {
-
-    override fun createCopy() = copy(props = props.copy())
+class GameComponentBuilder<T : Tile, B : Block<T>>(
+        private var gameArea: Maybe<InternalGameArea<T, B>> = Maybe.empty())
+    : BaseComponentBuilder<GameComponent<T, B>, GameComponentBuilder<T, B>>(NoOpComponentRenderer()) {
 
     fun withGameArea(gameArea: GameArea<T, B>) = also {
         require(gameArea is InternalGameArea<T, B>) {
@@ -51,6 +48,12 @@ data class GameComponentBuilder<T : Tile, B : Block<T>>(
             colorTheme.map {
                 theme = it
             }
+        }
+    }
+
+    override fun createCopy() = newBuilder<T, B>().withProps(props.copy()).apply {
+        gameArea.map {
+            withGameArea(it)
         }
     }
 

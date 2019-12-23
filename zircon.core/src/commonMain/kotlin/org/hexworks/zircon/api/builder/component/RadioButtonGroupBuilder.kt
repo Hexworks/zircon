@@ -9,7 +9,7 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
-data class RadioButtonGroupBuilder(
+class RadioButtonGroupBuilder(
         private var isDisabled: Boolean = false,
         private var isHidden: Boolean = false,
         private var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme,
@@ -39,7 +39,11 @@ data class RadioButtonGroupBuilder(
             initialTheme = theme,
             initialTileset = tileset)
 
-    override fun createCopy() = copy()
+    override fun createCopy() = RadioButtonGroupBuilder(
+            isDisabled = isDisabled,
+            isHidden = isHidden,
+            theme = theme,
+            tileset = tileset)
 
     companion object {
 

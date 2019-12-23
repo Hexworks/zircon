@@ -12,14 +12,13 @@ import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
-data class VerticalNumberInputBuilder(
+class VerticalNumberInputBuilder(
         val height: Int,
         private var initialValue: Int = 0,
         private var minValue: Int = 0,
-        private var maxValue: Int = Int.MAX_VALUE,
-        override val props: CommonComponentProperties<NumberInput> = CommonComponentProperties(
-                componentRenderer = DefaultVerticalNumberInputRenderer()))
-    : BaseComponentBuilder<NumberInput, VerticalNumberInputBuilder>() {
+        private var maxValue: Int = Int.MAX_VALUE)
+    : BaseComponentBuilder<NumberInput, VerticalNumberInputBuilder>(
+        DefaultVerticalNumberInputRenderer() as ComponentRenderer<NumberInput>) {
 
     fun withInitialValue(value: Int) = also {
         initialValue = when {
@@ -63,7 +62,11 @@ data class VerticalNumberInputBuilder(
         }
     }
 
-    override fun createCopy() = copy()
+    override fun createCopy() = newBuilder(height)
+            .withProps(props.copy())
+            .withInitialValue(initialValue)
+            .withMinValue(minValue)
+            .withMaxValue(maxValue)
 
     companion object {
 

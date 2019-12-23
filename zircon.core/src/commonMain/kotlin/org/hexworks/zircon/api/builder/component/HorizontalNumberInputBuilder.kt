@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultHorizontalNumberInput
@@ -12,14 +11,12 @@ import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
-data class HorizontalNumberInputBuilder(
+class HorizontalNumberInputBuilder(
         val width: Int,
         private var initialValue: Int = 0,
         private var minValue: Int = 0,
-        private var maxValue: Int = Int.MAX_VALUE,
-        override val props: CommonComponentProperties<NumberInput> = CommonComponentProperties(
-                componentRenderer = DefaultNumberInputRenderer()))
-    : BaseComponentBuilder<NumberInput, HorizontalNumberInputBuilder>() {
+        private var maxValue: Int = Int.MAX_VALUE)
+    : BaseComponentBuilder<NumberInput, HorizontalNumberInputBuilder>(DefaultNumberInputRenderer()) {
 
     fun withInitialValue(value: Int) = also {
         initialValue = when {
@@ -63,7 +60,10 @@ data class HorizontalNumberInputBuilder(
         }
     }
 
-    override fun createCopy() = copy()
+    override fun createCopy() = newBuilder(width).withProps(props.copy())
+            .withInitialValue(initialValue)
+            .withMinValue(minValue)
+            .withMaxValue(maxValue)
 
     companion object {
 

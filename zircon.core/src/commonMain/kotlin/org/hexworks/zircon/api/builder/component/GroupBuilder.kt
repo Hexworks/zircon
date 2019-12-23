@@ -9,7 +9,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultGroup
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import kotlin.jvm.JvmStatic
 
-data class GroupBuilder<T : Component>(
+class GroupBuilder<T : Component>(
         private var isDisabled: Boolean = false,
         private var isHidden: Boolean = false,
         private var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme,
@@ -39,7 +39,11 @@ data class GroupBuilder<T : Component>(
             initialTheme = theme,
             initialTileset = tileset)
 
-    override fun createCopy() = copy()
+    override fun createCopy() = GroupBuilder<T>(
+            isDisabled = isDisabled,
+            isHidden = isHidden,
+            tileset = tileset,
+            theme = theme)
 
     companion object {
 
