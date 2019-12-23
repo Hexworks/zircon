@@ -60,16 +60,18 @@ interface Component : ComponentEventSource, ComponentProperties, Identifiable, M
     val relativeBounds: Rect
 
     /**
-     * The [ComponentStyleSet] of this [Component]. *Note that* if a [ColorTheme] is
-     * applied to this [Component] (or any of its ancestors) [componentStyleSet]
-     * will be overwritten.
+     * The [ComponentStyleSet] of this [Component]. Note that if you set
+     * it by hand it will take precedence over the [ComponentStyleSet] provided
+     * by [theme].
      */
     var componentStyleSet: ComponentStyleSet
 
-    /**
-     * [Property] for [componentStyleSet].
-     */
     val componentStyleSetProperty: Property<ComponentStyleSet>
+
+    /**
+     * Clears any custom [componentStyleSet] (if present).
+     */
+    fun clearCustomStyle()
 
     /**
      * Tells whether this [Component] is attached to a parent or not.
