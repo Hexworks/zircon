@@ -9,23 +9,25 @@ import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.UNCHECKED
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.UNCHECKING
 
+@Suppress("DuplicatedCode")
 class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
 
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultCheckBox>) {
-        val checkBoxState = context.component.checkBoxState
+        val state = context.component.checkBoxState
         val text = context.component.text
-        val maxTextLength = tileGraphics.size.width - BUTTON_WIDTH - 1
+        val maxTextLength = tileGraphics.size.width - DECORATION_WIDTH
         val clearedText = if (text.length > maxTextLength) {
-            text.substring(0, maxTextLength - 3).plus("...")
+            text.substring(0, maxTextLength - 3).plus(ELLIPSIS)
         } else {
             text
         }
-        val finalText = "${STATES.getValue(checkBoxState)} $clearedText"
-        tileGraphics.fillWithText(finalText, context.currentStyle)
+        tileGraphics.fillWithText(
+                text = "${STATES.getValue(state)} $clearedText",
+                style = context.currentStyle)
     }
 
     companion object {
-
+        private const val ELLIPSIS = "..."
         private const val CHECKING_BUTTON = "[+]"
         private const val UNCHECKING_BUTTON = "[-]"
         private const val CHECKED_BUTTON = "[*]"

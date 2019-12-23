@@ -62,11 +62,14 @@ object DataBindingTest {
                 .withSize(20, 1)
                 .build()
 
-        val rbg = Components.radioButtonGroup()
+        val radioBox = Components.vbox()
                 .withPosition(1, 5)
                 .withSize(20, 1)
                 .build()
-        val option = rbg.addOption("btn0", "Radio button")
+        val option = Components.radioButton()
+                .withKey("btn0")
+                .withText("Radio button")
+                .build()
 
         val paragraph = Components.paragraph()
                 .withPosition(1, 6)
@@ -125,7 +128,7 @@ object DataBindingTest {
         panel.addComponent(header)
         panel.addComponent(btn)
         panel.addComponent(checkBox)
-        panel.addComponent(rbg)
+        panel.addComponent(radioBox)
         panel.addComponent(paragraph)
 
         panel.addComponent(master)

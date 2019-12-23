@@ -8,6 +8,8 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
@@ -32,8 +34,8 @@ class DefaultParagraphTest : ComponentImplementationTest<DefaultParagraph>() {
         rendererStub = ComponentRendererStub(DefaultParagraphRenderer())
         target = DefaultParagraph(
                 componentMetadata = ComponentMetadata(
-                        size = DefaultRadioButtonGroupTest.SIZE,
-                        relativePosition = DefaultRadioButtonGroupTest.POSITION,
+                        size = SIZE,
+                        relativePosition = POSITION,
                         componentStyleSet = COMPONENT_STYLES,
                         tileset = TILESET_REX_PAINT_20X20),
                 renderingStrategy = DefaultComponentRenderingStrategy(
@@ -55,6 +57,8 @@ class DefaultParagraphTest : ComponentImplementationTest<DefaultParagraph>() {
     companion object {
 
         const val TEXT = "TEXT"
+        val SIZE = Size.create(5, 6)
+        val POSITION = Position.create(2, 3)
     }
 
 }

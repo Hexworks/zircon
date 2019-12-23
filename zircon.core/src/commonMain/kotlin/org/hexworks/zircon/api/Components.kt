@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.component.*
+import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 import kotlin.jvm.JvmStatic
@@ -21,9 +22,6 @@ object Components {
 
     @JvmStatic
     fun textBox(contentWidth: Int) = TextBoxBuilder.newBuilder(contentWidth)
-
-    @JvmStatic
-    fun radioButtonGroup() = RadioButtonGroupBuilder.newBuilder()
 
     @JvmStatic
     fun panel() = PanelBuilder.newBuilder()
@@ -77,5 +75,12 @@ object Components {
     fun verticalScrollbar() = VerticalScrollBarBuilder.newBuilder()
 
     @JvmStatic
-    fun group() = GroupBuilder.newBuilder()
+    fun radioButton() = RadioButtonBuilder.newBuilder()
+
+    @JvmStatic
+    fun <T: Component> group() = GroupBuilder.newBuilder<T>()
+
+    @JvmStatic
+    fun radioButtonGroup() = RadioButtonGroupBuilder.newBuilder()
+
 }

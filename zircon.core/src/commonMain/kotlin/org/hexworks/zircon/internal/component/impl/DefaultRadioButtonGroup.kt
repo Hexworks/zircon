@@ -1,119 +1,66 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.createPropertyFrom
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.behavior.Scrollable
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.Group
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.RadioButtonGroup
-import org.hexworks.zircon.api.component.RadioButtonGroup.Selection
-import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.internal.behavior.Observable
-import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
-import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
+import org.hexworks.zircon.api.resource.TilesetResource
+import kotlin.jvm.Synchronized
 
-class DefaultRadioButtonGroup constructor(
-        componentMetadata: ComponentMetadata,
-        private val renderingStrategy: ComponentRenderingStrategy<RadioButtonGroup>)
-    : RadioButtonGroup,
-        Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
-        Observable<Selection> by DefaultObservable(),
-        DefaultContainer(
-                componentMetadata = componentMetadata,
-                renderer = renderingStrategy) {
+class DefaultRadioButtonGroup(
+        initialIsDisabled: Boolean,
+        initialIsHidden: Boolean,
+        initialTheme: ColorTheme,
+        initialTileset: TilesetResource,
+        private val groupDelegate: Group<RadioButton> = Components.group<RadioButton>()
+                .withIsDisabled(initialIsDisabled)
+                .withIsHidden(initialIsHidden)
+                .withTheme(initialTheme)
+                .withTileset(initialTileset)
+                .build()) : RadioButtonGroup, Group<RadioButton> by groupDelegate {
 
-    private val items = mutableMapOf<String, DefaultRadioButton>()
-    private var selectedItem: Maybe<String> = Maybe.empty()
-    private val buttonRenderingStrategy = DefaultComponentRenderingStrategy(
-            decorationRenderers = listOf(),
-            componentRenderer = DefaultRadioButtonRenderer())
+    private val buttons = mutableMapOf<String, Pair<RadioButton, Subscription>>()
 
-    init {
-        refreshContent()
-    }
+    override val selectedButtonProperty = createPropertyFrom(Maybe.empty<RadioButton>())
+    override var selectedButton: Maybe<RadioButton> by selectedButtonProperty.asDelegate()
 
-    override fun addOption(key: String, text: String): RadioButton {
-        require(items.size < renderingStrategy.calculateContentSize(size).height) {
-            "This RadioButtonGroup does not have enough space for another option!"
+    @Synchronized
+    override fun add(component: RadioButton) {
+        require(buttons.containsKey(component.key).not()) {
+            "There is already a Radio Button in this Radio Button Group with the key '${component.key}'."
         }
-        return DefaultRadioButton(
-                initialText = text,
-                renderingStrategy = buttonRenderingStrategy,
-                componentMetadata = ComponentMetadata(
-                        relativePosition = Position.create(0, items.size),
-                        size = Size.create(renderingStrategy.calculateContentSize(size).width, 1),
-                        tileset = tileset,
-                        componentStyleSet = componentStyleSet)).also { button ->
-            items[key] = button
-            button.selectedProperty.onChange { (_, _, selected) ->
-                if (selected) {
-                    selectedItem.map {
-                        if (it != key) {
-                            items[it]?.isSelected = false
-                        }
-                    }
-                    selectedItem = Maybe.of(key)
-                    items[key]?.let { button ->
-                        notifyObservers(DefaultSelection(key, button.text))
-                    }
-                } else {
-                    selectedItem.map {
-                        if (it == key) {
-                            selectedItem = Maybe.empty()
-                        }
-                    }
+        buttons[component.key] = component to component.selectedProperty.onChange { (_, _, newlySelected) ->
+            selectedButton.map { previousSelected ->
+                if (newlySelected && previousSelected !== component) {
+                    previousSelected.isSelected = false
+                    selectedButton = Maybe.of(component)
                 }
+            }.orElseGet {
+                selectedButton = Maybe.of(component)
             }
-            addComponent(button)
         }
+        if (component.isSelected) {
+            selectedButton.map { oldSelection ->
+                oldSelection.isSelected = false
+            }
+            selectedButton = Maybe.of(component)
+        }
+        groupDelegate.add(component)
     }
 
-    override fun removeOption(key: String) {
-        items.remove(key)?.let {
-            removeComponent(it)
-            it.isSelected = false
-        }
+    @Synchronized
+    override fun addAll(vararg components: RadioButton) = components.forEach(::add)
+
+    @Synchronized
+    override fun remove(component: RadioButton) {
+        buttons.remove(component.key)?.second?.cancel()
+        groupDelegate.remove(component)
     }
 
-    override fun fetchSelectedOption() = selectedItem
-
-    override fun acceptsFocus() = false
-
-    override fun clearSelection() {
-        selectedItem.map {
-            items[it]?.isSelected = false
-        }
-    }
-
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
-                    .withBackgroundColor(TileColor.transparent())
-                    .build())
-            .build()
-
-    override fun onSelection(fn: (Selection) -> Unit) {
-        addObserver(fn)
-    }
-
-    private fun refreshContent() {
-        items.values.forEach {
-            removeComponent(it)
-        }
-        items.values.forEachIndexed { idx, comp ->
-            comp.moveTo(Position.create(0, idx))
-            addComponent(comp)
-        }
-        render()
-    }
-
-    data class DefaultSelection(override val key: String,
-                                override val value: String) : Selection
+    @Synchronized
+    override fun removeAll(vararg components: RadioButton) = components.forEach(::remove)
 }

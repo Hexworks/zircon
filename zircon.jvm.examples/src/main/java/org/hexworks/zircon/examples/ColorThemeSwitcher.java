@@ -1,11 +1,12 @@
 package org.hexworks.zircon.examples;
 
+import org.hexworks.cobalt.databinding.api.property.Property;
+import org.hexworks.cobalt.datatypes.Maybe;
 import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.Components;
 import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.component.*;
-import org.hexworks.zircon.api.component.RadioButtonGroup.Selection;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.BoxType;
@@ -13,6 +14,7 @@ import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.internal.resource.ColorThemeResource;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +32,11 @@ public class ColorThemeSwitcher {
     private static final TilesetResource TILESET = CP437TilesetResources.rogueYun16x16();
     private static final ColorThemeResource THEME = ColorThemeResource.GAMEBOOKERS;
 
+    private static final Size INFO_PANEL_SIZE = SCREEN_SIZE.withHeight(10).withRelativeWidth(-4);
+    private static final Size THEME_PICKER_SIZE = SCREEN_SIZE
+            .withRelativeHeight(-INFO_PANEL_SIZE.getHeight() - 4)
+            .withWidth(SCREEN_SIZE.getWidth() / 3 - 1);
+
     public static void main(String[] args) {
 
         TileGrid tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
@@ -45,11 +52,9 @@ public class ColorThemeSwitcher {
         AtomicReference<ColorThemeResource> currentTheme = new AtomicReference<>(THEME);
         AtomicReference<Header> currentThemeLabel = new AtomicReference<>(createHeaderForTheme(currentTheme.get()));
 
-        final Size infoPanelSize = SCREEN_SIZE.withHeight(10).withRelativeWidth(-4);
-
         final Panel infoPanel = Components.panel()
                 .withDecorations(box(BoxType.SINGLE, "Components example:"))
-                .withSize(infoPanelSize)
+                .withSize(INFO_PANEL_SIZE)
                 .withPosition(Position.create(2, 2).relativeToBottomOf(currentThemeLabel.get()))
                 .build();
 
@@ -74,14 +79,28 @@ public class ColorThemeSwitcher {
                         .relativeToRightOf(testButton))
                 .build();
 
-        RadioButtonGroup rbg = Components.radioButtonGroup()
+        VBox radioBox = Components.vbox()
                 .withSize(Size.create(15, 3))
                 .withPosition(Position.create(0, 1).relativeToBottomOf(label))
                 .build();
-        rbg.addOption("0", "Option 0");
-        rbg.addOption("1", "Option 1");
-        rbg.addOption("2", "Option 2");
+        RadioButton radio0 = Components.radioButton()
+                .withKey("0")
+                .withText("Option 0")
+                .build();
+        RadioButton radio1 = Components.radioButton()
+                .withKey("1")
+                .withText("Option 1")
+                .build();
+        RadioButton radio2 = Components.radioButton()
+                .withKey("2")
+                .withText("Option 2")
+                .build();
 
+        RadioButtonGroup group = Components.radioButtonGroup().build();
+        group.addAll(radio0, radio1, radio2);
+
+
+        radioBox.addComponents(radio0, radio1, radio2);
 
         final Panel panel = Components.panel()
                 .withSize(Size.create(20, 6))
@@ -101,20 +120,15 @@ public class ColorThemeSwitcher {
         infoPanel.addComponent(checkBox);
         infoPanel.addComponent(header);
         infoPanel.addComponent(label);
-        infoPanel.addComponent(rbg);
+        infoPanel.addComponent(panel);
         infoPanel.addComponent(panel);
         infoPanel.addComponent(textArea);
 
         screen.addComponent(infoPanel);
 
-
-        final Size themePickerSize = SCREEN_SIZE
-                .withRelativeHeight(-infoPanelSize.getHeight() - 4)
-                .withWidth(SCREEN_SIZE.getWidth() / 3 - 1);
-
-        final Size smallPanelSize = themePickerSize
+        final Size smallPanelSize = THEME_PICKER_SIZE
                 .withRelativeWidth(-2)
-                .withHeight(themePickerSize.getHeight() / 2 - 1);
+                .withHeight(THEME_PICKER_SIZE.getHeight() / 2 - 1);
 
         final Panel solarizedLightPanel = Components.panel()
                 .withDecorations(box(BoxType.SINGLE, "Solarized Light"))
@@ -139,15 +153,11 @@ public class ColorThemeSwitcher {
         final Panel otherPanel = Components.panel()
                 .withDecorations(box(BoxType.SINGLE, "Other"))
                 .withPosition(Position.create(1, 0).relativeToRightOf(zenburnPanel))
-                .withSize(themePickerSize.withRelativeWidth(3).withRelativeHeight(-1))
+                .withSize(THEME_PICKER_SIZE.withRelativeWidth(3).withRelativeHeight(-1))
                 .build();
 
 
-        screen.addComponent(solarizedLightPanel);
-        screen.addComponent(solarizedDarkPanel);
-        screen.addComponent(zenburnPanel);
-        screen.addComponent(monokaiPanel);
-        screen.addComponent(otherPanel);
+        screen.addComponents(solarizedLightPanel, solarizedDarkPanel, zenburnPanel, monokaiPanel, otherPanel);
 
         final List<ColorThemeResource> solarizedLightOptions = Arrays.stream(ColorThemeResource.values())
                 .filter(option -> option.name().startsWith("SOLARIZED_LIGHT"))
@@ -168,82 +178,60 @@ public class ColorThemeSwitcher {
                         !option.name().startsWith("EMPTY"))
                 .collect(Collectors.toList());
 
-        final RadioButtonGroup slOptions = Components.radioButtonGroup()
-                .withSize(themePickerSize
-                        .withHeight(solarizedLightOptions.size())
-                        .withRelativeWidth(-4))
-                .build();
-        solarizedLightOptions.forEach((option) -> slOptions.addOption(
-                option.name(),
-                option.name().replace("SOLARIZED_LIGHT_", "")));
-        solarizedLightPanel.addComponent(slOptions);
+        final RadioButtonGroup slOptions = addThemeOptionsTo(solarizedLightPanel, solarizedLightOptions);
+        final RadioButtonGroup sdOptions = addThemeOptionsTo(solarizedDarkPanel, solarizedDarkOptions);
+        final RadioButtonGroup zbOptions = addThemeOptionsTo(zenburnPanel, zenburnOptions);
+        final RadioButtonGroup mOptions = addThemeOptionsTo(monokaiPanel, monokaiOptions);
+        final RadioButtonGroup othOptions = addThemeOptionsTo(otherPanel, otherOptions);
 
-        final RadioButtonGroup sdOptions = Components.radioButtonGroup()
-                .withSize(themePickerSize
-                        .withHeight(solarizedDarkOptions.size())
-                        .withRelativeWidth(-4))
-                .build();
-        solarizedDarkOptions.forEach((option) -> sdOptions.addOption(
-                option.name(),
-                option.name().replace("SOLARIZED_DARK_", "")));
-        solarizedDarkPanel.addComponent(sdOptions);
+//        Property<Maybe<RadioButton>> selectedButtonProperty = slOptions.getSelectedButtonProperty();
 
-        final RadioButtonGroup zbOptions = Components.radioButtonGroup()
-                .withSize(themePickerSize
-                        .withHeight(zenburnOptions.size())
-                        .withRelativeWidth(-4))
-                .build();
-        zenburnOptions.forEach((option) -> zbOptions.addOption(
-                option.name(),
-                option.name().replace("ZENBURN_", "")));
-        zenburnPanel.addComponent(zbOptions);
-
-        final RadioButtonGroup mOptions = Components.radioButtonGroup()
-                .withSize(themePickerSize
-                        .withHeight(monokaiOptions.size())
-                        .withRelativeWidth(-4))
-                .build();
-        monokaiOptions.forEach((option) -> mOptions.addOption(
-                option.name(),
-                option.name().replace("MONOKAI_", "")));
-        monokaiPanel.addComponent(mOptions);
-
-        final RadioButtonGroup othOptions = Components.radioButtonGroup()
-                .withSize(otherPanel.getSize()
-                        .withHeight(otherOptions.size())
-                        .withRelativeWidth(-2))
-                .build();
-        otherOptions.forEach((option) -> othOptions.addOption(
-                option.name(),
-                option.name()));
-        otherPanel.addComponent(othOptions);
-
-        slOptions.onSelection(fromConsumer((selection -> {
-            refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-        })));
-        sdOptions.onSelection(fromConsumer((selection -> {
-            refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-        })));
-        zbOptions.onSelection(fromConsumer((selection -> {
-            refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-        })));
-        mOptions.onSelection(fromConsumer((selection -> {
-            refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-        })));
-        othOptions.onSelection(fromConsumer((selection -> {
-            refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
-        })));
+//        slOptions.onSelection(fromConsumer((selection -> {
+//            refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
+//        })));
+//        sdOptions.onSelection(fromConsumer((selection -> {
+//            refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
+//        })));
+//        zbOptions.onSelection(fromConsumer((selection -> {
+//            refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
+//        })));
+//        mOptions.onSelection(fromConsumer((selection -> {
+//            refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
+//        })));
+//        othOptions.onSelection(fromConsumer((selection -> {
+//            refreshTheme(screen, currentTheme, currentThemeLabel, infoPanel, selection);
+//        })));
 
         screen.setTheme(currentTheme.get().getTheme());
         screen.display();
 
     }
 
+    @NotNull
+    private static RadioButtonGroup addThemeOptionsTo(Panel panel, List<ColorThemeResource> options) {
+        final RadioButtonGroup group = Components.radioButtonGroup().build();
+        final VBox box = Components.vbox()
+                .withSize(THEME_PICKER_SIZE
+                        .withHeight(options.size())
+                        .withRelativeWidth(-4))
+                .build();
+        options.forEach((option) -> {
+            RadioButton btn = Components.radioButton()
+                    .withText(option.name())
+                    .withKey(option.name().replace("SOLARIZED_LIGHT_", ""))
+                    .build();
+            box.addComponent(btn);
+            group.add(btn);
+        });
+        panel.addComponent(box);
+        return group;
+    }
+
     private static void refreshTheme(Screen screen,
                                      AtomicReference<ColorThemeResource> themeRef,
                                      AtomicReference<Header> labelRef,
                                      Panel infoPanel,
-                                     Selection selection) {
+                                     RadioButton selection) {
         themeRef.set(ColorThemeResource.valueOf(selection.getKey()));
         infoPanel.removeComponent(labelRef.get());
         labelRef.set(createHeaderForTheme(themeRef.get()));

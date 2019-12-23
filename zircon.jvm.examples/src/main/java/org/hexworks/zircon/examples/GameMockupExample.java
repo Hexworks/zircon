@@ -122,15 +122,22 @@ public class GameMockupExample {
                 .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, DIFFICULTY_LABEL))
                 .build();
 
-        RadioButtonGroup difficultyRadio = Components.radioButtonGroup()
+        VBox difficultyBox = Components.vbox()
                 .withSize(difficultyPanel.getSize().minus(Size.create(2, 2)))
                 .build();
 
+        RadioButtonGroup difficultyGroup = Components.radioButtonGroup().build();
+
         Arrays.asList(DIFFICULTIES).forEach((diff) -> {
-            difficultyRadio.addOption(diff, diff);
+            RadioButton btn = Components.radioButton()
+                    .withText(diff)
+                    .withKey(diff)
+                    .build();
+            difficultyBox.addComponent(btn);
+            difficultyGroup.add(btn);
         });
 
-        difficultyPanel.addComponent(difficultyRadio);
+        difficultyPanel.addComponent(difficultyBox);
         optionsScreen.addComponent(difficultyPanel);
 
 

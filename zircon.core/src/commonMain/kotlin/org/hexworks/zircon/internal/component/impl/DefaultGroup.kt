@@ -10,11 +10,11 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.extensions.disposeAll
 import kotlin.jvm.Synchronized
 
-class DefaultGroup(
+class DefaultGroup<T : Component>(
         initialIsDisabled: Boolean,
         initialIsHidden: Boolean,
         initialTheme: ColorTheme,
-        initialTileset: TilesetResource) : Group {
+        initialTileset: TilesetResource) : Group<T> {
 
     private val componentBindings: ComponentBindings = mutableMapOf()
 
@@ -31,7 +31,7 @@ class DefaultGroup(
     override var tileset: TilesetResource by tilesetProperty.asDelegate()
 
     @Synchronized
-    override fun add(component: Component) {
+    override fun add(component: T) {
         componentBindings[component.id] ?: run {
             componentBindings[component.id] = component to mutableListOf(
                     component.disabledProperty.updateFrom(disabledProperty),
@@ -42,9 +42,15 @@ class DefaultGroup(
     }
 
     @Synchronized
-    override fun remove(component: Component) {
+    override fun addAll(vararg components: T) = components.forEach(::add)
+
+    @Synchronized
+    override fun remove(component: T) {
         componentBindings.remove(component)
     }
+
+    @Synchronized
+    override fun removeAll(vararg components: T) = components.forEach(::remove)
 }
 
 private fun ComponentBindings.remove(component: Component) {
