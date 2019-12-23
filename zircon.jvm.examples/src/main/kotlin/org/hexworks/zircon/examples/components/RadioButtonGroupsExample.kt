@@ -4,78 +4,81 @@ package org.hexworks.zircon.examples.components
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.positionalAlignment
-import org.hexworks.zircon.api.extensions.shadow
-import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.api.screen.Screen
+import org.hexworks.zircon.api.extensions.toScreen
 
 object RadioButtonGroupsExample {
 
-    private val theme = ColorThemes.ghostOfAChance()
-    private val tileset = CP437TilesetResources.cheepicus16x16()
+    private val THEME = ColorThemes.ghostOfAChance()
+    private val TILESET = CP437TilesetResources.cla18x18()
 
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
-                .withDefaultTileset(tileset)
+        val screen = SwingApplications.startTileGrid(AppConfig.newBuilder()
+                .withDefaultTileset(TILESET)
                 .withSize(Size.create(60, 30))
-                .build())
+                .build()).toScreen().apply {
+            theme = THEME
+            display()
+        }
 
-        val screen = Screen.create(tileGrid)
-
-        val panel = Components.panel()
+        val leftBox = Components.vbox()
+                .withPosition(5, 5)
+                .withSize(20, 15)
                 .withDecorations(box())
-                .withSize(Size.create(28, 28))
-                .withAlignment(positionalAlignment(30, 1))
-                .build()
-        screen.addComponent(panel)
-
-        val simpleRadioButtonGroup0 = Components.radioButtonGroup()
-                .withAlignment(positionalAlignment(2, 2))
-                .withSize(14, 3)
-                .build()
-        val simpleRadioButtonGroup1 = Components.radioButtonGroup()
-                .withAlignment(positionalAlignment(0, 0))
-                .withSize(14, 3)
-                .build()
-        val decoratedRadioButtonGroup0 = Components.radioButtonGroup()
-                .withDecorations(box(boxType = BoxType.DOUBLE), shadow())
-                .withSize(17, 6)
-                .withAlignment(positionalAlignment(2, 8))
-                .build()
-        val decoratedRadioButtonGroup1 = Components.radioButtonGroup()
-                .withDecorations(box(boxType = BoxType.DOUBLE), shadow())
-                .withSize(17, 6)
-                .withAlignment(positionalAlignment(0, 6))
                 .build()
 
-        listOf(simpleRadioButtonGroup0, simpleRadioButtonGroup1).forEach {
-            it.addOption("key0", "First")
-            it.addOption("key1", "Second")
-            it.addOption("key2", "Third")
-        }
+        val rightBox = Components.vbox()
+                .withPosition(35, 5)
+                .withSize(20, 15)
+                .withDecorations(box())
+                .build()
 
-        screen.addComponent(simpleRadioButtonGroup0)
-        panel.addComponent(simpleRadioButtonGroup1)
+        val group0 = Components.radioButtonGroup().build()
+        val group1 = Components.radioButtonGroup().build()
 
-        screen.addComponent(decoratedRadioButtonGroup0)
-        panel.addComponent(decoratedRadioButtonGroup1)
+        val btn0 = Components.radioButton()
+                .withKey("0")
+                .withText("Button 0")
+                .build()
 
-        listOf(decoratedRadioButtonGroup0, decoratedRadioButtonGroup1).forEach {
-            it.addOption("key0", "First")
-            it.addOption("key1", "Second")
-            it.addOption("key2", "Third")
-        }
+        val btn1 = Components.radioButton()
+                .withKey("1")
+                .withText("Button 1")
+                .build()
 
+        val btn2 = Components.radioButton()
+                .withKey("2")
+                .withText("Button 2")
+                .build()
 
-        screen.display()
-        screen.theme = theme
+        val btnA = Components.radioButton()
+                .withKey("A")
+                .withText("Button A")
+                .build()
+
+        val btnB = Components.radioButton()
+                .withKey("B")
+                .withText("Button B")
+                .build()
+
+        val btnC = Components.radioButton()
+                .withKey("C")
+                .withText("Button C")
+                .build()
+
+        leftBox.addComponents(btn0, btnA, btn1)
+        rightBox.addComponents(btn2, btnB, btnC)
+
+        group0.addAll(btn0, btn1, btn2)
+        group1.addAll(btnA, btnB, btnC)
+
+        screen.addComponents(leftBox, rightBox)
+
     }
 
 }

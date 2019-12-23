@@ -1,42 +1,29 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.events.api.Event
+import kotlin.jvm.Synchronized
 
-interface RadioButtonGroup : Component {
+/**
+ * A [RadioButtonGroup] is a specialization of a [Group] which will enforce
+ * that only one [RadioButton] is selected in it at all times.
+ */
+interface RadioButtonGroup : Group<RadioButton> {
 
-    /**
-     * Adds an option to this [RadioButtonGroup] and returns the
-     * resulting [RadioButton] which was added.
-     */
-    // TODO: refactor this to take a `RadioButton` instead
-    fun addOption(key: String, text: String): RadioButton
-
-    /**
-     * Removes the given [key] from this [RadioButtonGroup].
-     * Has no effect if the given [key] is not present.
-     */
-    // TODO: refactor this to take a `RadioButton` instead
-    fun removeOption(key: String)
+    var selectedButton: Maybe<RadioButton>
+    val selectedButtonProperty: Property<Maybe<RadioButton>>
 
     /**
-     * Returns the currently selected item's key (if any).
+     * Adds the given [component] to this [Group]. After the addition is complete
+     * the [ComponentProperties] of the given [component] will be updated whenever this
+     * [Group]'s properties are updated. Has no effect if the [component] is already in this [Group].
      */
-    fun fetchSelectedOption(): Maybe<String>
+    override fun add(component: RadioButton)
 
     /**
-     * Adds a callback to this [RadioButtonGroup] which will be called
-     * when a change in selection happens.
+     * Removes the given [component] from this [Group]. After the removal the given
+     * [component] won't be updated anymore when the properties of this [Group] change.
+     * Note that this function has no effect if the given [component] was not part of this group.
      */
-    fun onSelection(fn: (Selection) -> Unit)
-
-    /**
-     * Clears the selected item in this [RadioButtonGroup].
-     */
-    fun clearSelection()
-
-    interface Selection : Event {
-        override val key: String
-        val value: String
-    }
+    override fun remove(component: RadioButton)
 }

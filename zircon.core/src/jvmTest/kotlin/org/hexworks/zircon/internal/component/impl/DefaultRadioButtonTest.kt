@@ -27,7 +27,6 @@ class DefaultRadioButtonTest : ComponentImplementationTest<DefaultRadioButton>()
                         .withBackgroundColor(TileColor.transparent())
                         .build())
                 .withMouseOverStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
                         .withBackgroundColor(DEFAULT_THEME.accentColor)
                         .build())
                 .withFocusedStyle(StyleSetBuilder.newBuilder()
@@ -53,7 +52,8 @@ class DefaultRadioButtonTest : ComponentImplementationTest<DefaultRadioButton>()
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub),
-                initialText = DefaultCheckBoxTest.TEXT)
+                initialText = DefaultCheckBoxTest.TEXT,
+                key = "key")
     }
 
     @Test
@@ -100,7 +100,6 @@ class DefaultRadioButtonTest : ComponentImplementationTest<DefaultRadioButton>()
 
         assertThat(getButtonChar()).isEqualTo('O')
         assertThat(target.isSelected).isTrue()
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(MOUSE_OVER)
     }
 
     @Test

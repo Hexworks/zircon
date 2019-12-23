@@ -11,15 +11,18 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
+import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.NOT_SELECTED
+import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.PRESSED
+import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.SELECTED
 
 @Suppress("DuplicatedCode")
 class DefaultRadioButton(componentMetadata: ComponentMetadata,
                          initialText: String,
-                         private val renderingStrategy: ComponentRenderingStrategy<DefaultRadioButton>)
+                         override val key: String,
+                         renderingStrategy: ComponentRenderingStrategy<DefaultRadioButton>)
     : RadioButton,
         TextHolder by TextHolder.create(initialText),
         Selectable by Selectable.create(),
@@ -27,10 +30,7 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
                 componentMetadata = componentMetadata,
                 renderer = renderingStrategy) {
 
-    override val radioButtonState: RadioButtonState
-        get() = currentState
-
-    private var currentState = NOT_SELECTED
+    override var state = NOT_SELECTED
 
     init {
         render()
@@ -38,11 +38,9 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
             render()
         }
         selectedProperty.onChange { (_, _, newValue) ->
-            currentState = if (newValue) {
-                componentStyleSet.applyMouseOverStyle()
+            state = if (newValue) {
                 SELECTED
             } else {
-                componentStyleSet.reset()
                 NOT_SELECTED
             }
             render()
@@ -51,20 +49,24 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
 
     override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            currentState = if (selectedProperty.value) SELECTED else NOT_SELECTED
-            componentStyleSet.reset()
-            render()
-            Processed
-        } else Pass
+            state = if (isSelected) SELECTED else NOT_SELECTED
+        }
+        super.mouseExited(event, phase)
     }
 
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            currentState = PRESSED
-            componentStyleSet.applyActiveStyle()
-            render()
-            Processed
-        } else Pass
+            state = PRESSED
+        }
+        super.mousePressed(event, phase)
+    }
+
+    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        if (phase == UIEventPhase.TARGET) {
+            state = SELECTED
+            isSelected = true
+        }
+        return super.mouseReleased(event, phase)
     }
 
     override fun activated() = whenEnabledRespondWith {
@@ -78,7 +80,6 @@ class DefaultRadioButton(componentMetadata: ComponentMetadata,
                     .withBackgroundColor(TileColor.transparent())
                     .build())
             .withMouseOverStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.primaryBackgroundColor)
                     .withBackgroundColor(colorTheme.accentColor)
                     .build())
             .withFocusedStyle(StyleSetBuilder.newBuilder()

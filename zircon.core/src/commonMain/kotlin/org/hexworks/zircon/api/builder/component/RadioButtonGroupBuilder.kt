@@ -1,38 +1,45 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.RadioButtonGroup
-import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
-import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButtonGroup
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonGroupRenderer
+import org.hexworks.zircon.internal.config.RuntimeConfig
 import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 data class RadioButtonGroupBuilder(
-        override val props: CommonComponentProperties<RadioButtonGroup> = CommonComponentProperties(
-                componentRenderer = DefaultRadioButtonGroupRenderer()))
-    : BaseComponentBuilder<RadioButtonGroup, RadioButtonGroupBuilder>() {
+        private var isDisabled: Boolean = false,
+        private var isHidden: Boolean = false,
+        private var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme,
+        private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset)
+    : Builder<RadioButtonGroup> {
 
-    override fun build(): RadioButtonGroup {
-        return DefaultRadioButtonGroup(
-                componentMetadata = ComponentMetadata(
-                        size = size,
-                        relativePosition = position,
-                        componentStyleSet = componentStyleSet,
-                        tileset = tileset),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = decorationRenderers,
-                        componentRenderer = componentRenderer as ComponentRenderer<RadioButtonGroup>)).apply {
-            colorTheme.map {
-                theme = it
-            }
-        }
+    fun withIsDisabled(isDisabled: Boolean) = also {
+        this.isDisabled = isDisabled
     }
 
-    override fun createCopy() = copy(props = props.copy())
+    fun withIsHidden(isHidden: Boolean) = also {
+        this.isHidden = isHidden
+    }
+
+    fun withTheme(theme: ColorTheme) = also {
+        this.theme = theme
+    }
+
+
+    fun withTileset(tileset: TilesetResource) = also {
+        this.tileset = tileset
+    }
+
+    override fun build(): RadioButtonGroup = DefaultRadioButtonGroup(
+            initialIsDisabled = isDisabled,
+            initialIsHidden = isHidden,
+            initialTheme = theme,
+            initialTileset = tileset)
+
+    override fun createCopy() = copy()
 
     companion object {
 

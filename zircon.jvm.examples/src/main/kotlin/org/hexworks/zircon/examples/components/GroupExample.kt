@@ -6,7 +6,8 @@ import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.component.ComponentAlignment.*
+import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.ComponentAlignment.BOTTOM_CENTER
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
@@ -41,7 +42,7 @@ object GroupExample {
                 .withTileset(CP437TilesetResources.cooz16x16())
                 .build()
 
-        val group = Components.group()
+        val group = Components.group<Component>()
                 .withTheme(ColorThemes.capturedByPirates())
                 .withTileset(CP437TilesetResources.rexPaint16x16())
                 .build()
