@@ -17,7 +17,6 @@ object KotlinPlayground {
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
-//                .withDebugMode(true)
                 .withSize(Size.create(60, 30))
                 .build())
 
