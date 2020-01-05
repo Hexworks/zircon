@@ -97,7 +97,7 @@ object CustomGameAreaExample {
             .buildCharacterTile()
 
     private val VISIBLE_SIZE = Size3D.create(60, 30, 10)
-    private val ACTUAL_SIZE = Size3D.create(100, 100, 200)
+    private val ACTUAL_SIZE = Size3D.create(100, 100, 100)
 
 
 }
