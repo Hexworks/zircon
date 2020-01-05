@@ -13,6 +13,9 @@ import org.hexworks.zircon.api.screen.Screen
 import java.util.*
 
 // TODO: this can get into a deadlock!
+// TODO: it happens because the renderer tries to fetch the layers while
+// TODO: we try to add a paragraph and they are waiting for each other to
+// TODO: unlock
 object ScrollingLogAreaExample {
 
     private val tileset = CP437TilesetResources.rogueYun16x16()

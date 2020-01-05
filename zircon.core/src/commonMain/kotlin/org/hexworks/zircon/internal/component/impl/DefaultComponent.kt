@@ -126,6 +126,7 @@ abstract class DefaultComponent(
             render()
         }
         componentStyleSetProperty.onChange {
+            styleOverride = Maybe.of(it.newValue) // TODO: add regression test for this line!
             render()
         }
     }
