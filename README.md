@@ -60,12 +60,12 @@ from Maven:
     <dependency>
         <groupId>org.hexworks.zircon</groupId>
         <artifactId>zircon.core-jvm</artifactId>
-        <version>2018.12.25-XMAS</version>
+        <version>2019.1.2-PREVIEW</version>
     </dependency>
     <dependency>
         <groupId>org.hexworks.zircon</groupId>
         <artifactId>zircon.jvm.swing</artifactId>
-        <version>2018.12.25-XMAS</version>
+        <version>2019.1.2-PREVIEW</version>
     </dependency>
 </dependencies>
 
@@ -81,8 +81,8 @@ allprojects {
 }
 
 dependencies {
-    implementation 'org.hexworks.zircon:zircon.core-jvm:2018.12.25-XMAS'
-    implementation 'org.hexworks.zircon:zircon.jvm.swing:2018.12.25-XMAS'
+    implementation 'org.hexworks.zircon:zircon.core-jvm:2019.1.2-PREVIEW'
+    implementation 'org.hexworks.zircon:zircon.jvm.swing:2019.1.2-PREVIEW'
 }
 ```
 
@@ -95,13 +95,14 @@ Before we start there are some guidelines which can help you if you are stuck:
 
 - If you want to build something (a `TileGraphics`, a `Component` or anything which is part of the public API) it
   is almost sure that there is a `Builder` or a `Factory` for it. The convention is that if you want to create a
-  `Tile` for example, then you can use the `Tiles` class to do so. (so it is the plural form of the
-  thing which you want to build). Your IDE will help you with this. These classes reside in the 
+  `Tile` you can use the factory functions defined on said class. If there are multiple classes of objects which
+  can be created there might also be an utility class (like `Shapes` to create different `Shape` objects.
+   Your IDE will help you with this. These classes reside in the
   `org.hexworks.zircon.api` package. There are some classes which are grouped together into a single utility class
   however. With `Components` you can obtain `Builder`s for all `Component`s like `Components.panel()` or
-  `Components.checkBox()`. Likewise you can use `DrawSurfaces` to obtain builders for `TileGraphcs` and
+  `Components.checkBox()`. Likewise you can use `DrawSurfaces` to obtain builders for `TileGraphics` and
   `TileImage`.
-- If you want to work with external files like tilesets or REXPaint files check the same package 
+- If you want to work with external files like tilesets or REXPaint files check the same package
   (`org.hexworks.zircon.api`), and look for classes which end with `*Resources`. There are a bunch of
   built-in tilesets for example which you can choose from but you can also load your own.
   The rule of thumb is that if you need something external there is probably a `*Resources` class
@@ -109,11 +110,10 @@ Before we start there are some guidelines which can help you if you are stuck:
 - You can use *anything* you can find in the [API][api] package, they are part of the public API, and safe to use. The
   [internal][internal] package however is considered private to *Zircon* so don't depend on anything in it because
   it can change any time.
-- Some topics are explained in depth on the [Wiki](https://github.com/Hexworks/zircon/wiki)
-- If you want to see some example code look [here][examples].  
+- Some topics are explained in depth on the [documentation](/zircon/docs).
+- If you want to see some example code look [here][examples].
 - If all else fails read the javadoc. API classes are well documented.
-- If you have any problems which are not answered here feel free to ask us at the [Hexworks Discord server][discord]. 
-  
+- If you have any problems which are not answered here feel free to ask us at the [Hexworks Discord server][discord].
 
 ### Creating an Application
 
@@ -150,96 +150,58 @@ Since most of the time you don't care about the [Application] itself, there is a
 [TileGrid] directly:
 
 ```java
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.grid.TileGrid;
-
-public class CreatingATileGrid {
-
-    public static void main(String[] args) {
-
-        TileGrid tileGrid = SwingApplications.startTileGrid();
-    }
-}
+TileGrid tileGrid = SwingApplications.startTileGrid();
 ```
 
-Now let's see how we can specify how a [TileGrid] is created. We'll use the [AppConfigs] helper for this:
+Now let's see how we can specify how a [TileGrid] is created. We'll use the [AppConfig] for this:
 
 ```java
-;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.application.Application;
-
-public class CreatingAnApplication {
-
-    public static void main(String[] args) {
-
-        Application application = SwingApplications.startApplication(
-                AppConfig.newConfig()
-                        .withSize(Size.create(30, 20))
-                        .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
-                        .withClipboardAvailable(true)
-                        .build());
-    }
-}
+TileGrid tileGrid = SwingApplications.startTileGrid(
+        AppConfig.newBuilder()
+                .withSize(10, 10)
+                .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
+                .build());
 ```
 
 Adding and formatting [Tile]s is very simple:
 
 ```java
-;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.Tiles;
-import org.hexworks.zircon.api.color.ANSITileColor;
-import org.hexworks.zircon.api.grid.TileGrid;
+TileGrid tileGrid = SwingApplications.startTileGrid(
+        AppConfig.newBuilder()
+                .withSize(10, 10)
+                .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
+                .build());
 
-public class CreatingAnApplication {
+tileGrid.draw(
+        Tile.newBuilder()
+                .withBackgroundColor(ANSITileColor.CYAN)
+                .withForegroundColor(ANSITileColor.WHITE)
+                .withCharacter('x')
+                .build(),
+        Position.create(2, 3));
 
-    public static void main(String[] args) {
+tileGrid.draw(
+        Tile.newBuilder()
+                .withBackgroundColor(ANSITileColor.RED)
+                .withForegroundColor(ANSITileColor.GREEN)
+                .withCharacter('y')
+                .build(),
+        Position.create(3, 4));
 
-        TileGrid tileGrid = SwingApplications.startTileGrid(
-                AppConfig.newConfig()
-                        .withSize(Size.create(10, 10))
-                        .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
-                        .build());
-
-        tileGrid.setTileAt(
-                Position.create(2, 3),
-                Tile.newBuilder()
-                        .withBackgroundColor(ANSITileColor.CYAN)
-                        .withForegroundColor(ANSITileColor.WHITE)
-                        .withCharacter('x')
-                        .build());
-
-        tileGrid.setTileAt(
-                Position.create(3, 4),
-                Tile.newBuilder()
-                        .withBackgroundColor(ANSITileColor.RED)
-                        .withForegroundColor(ANSITileColor.GREEN)
-                        .withCharacter('y')
-                        .build());
-
-        tileGrid.setTileAt(
-                Position.create(4, 5),
-                Tile.newBuilder()
-                        .withBackgroundColor(ANSITileColor.BLUE)
-                        .withForegroundColor(ANSITileColor.MAGENTA)
-                        .withCharacter('z')
-                        .build());
-    }
-}
-
-```      
+tileGrid.draw(
+        Tile.newBuilder()
+                .withBackgroundColor(ANSITileColor.BLUE)
+                .withForegroundColor(ANSITileColor.MAGENTA)
+                .withCharacter('z')
+                .build(),
+        Position.create(4, 5));
+```
 
 Running the above code will result in something like this:
 
 ![](https://cdn.discordapp.com/attachments/363771631727804416/477469640205926401/CreatingATileGrid.png)
 
-As you can see there is a helper for every class which you might want to use. Here we used `Position.create`
+As you can see there are factory methods for every class which you might want to use. Here we used `Position.create`
 to create a [Position], `Size.create` for creating [Size]s and the [TileBuilder] to create tiles.
 
 A `Position` denotes a coordinate on a `TileGrid`, so for example a `Position` of (`2`, `3`) points to the 3rd
@@ -276,40 +238,28 @@ the previous [Screen].
 Let's create a [Screen] and fill it up with some stuff:
 
 ```java
-import org.hexworks.zircon.api.*;
-import org.hexworks.zircon.api.component.ColorTheme;
-import org.hexworks.zircon.api.graphics.TileGraphics;
-import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.screen.Screen;
+TileGrid tileGrid = SwingApplications.startTileGrid(
+        AppConfig.newBuilder()
+                .withSize(20, 8)
+                .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
+                .build());
 
-public class CreatingAScreen {
+final Screen screen = Screen.create(tileGrid);
 
-    public static void main(String[] args) {
+final ColorTheme theme = ColorThemes.adriftInDreams();
 
-        TileGrid tileGrid = SwingApplications.startTileGrid(
-                AppConfig.newConfig()
-                        .withSize(Size.create(20, 8))
-                        .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
-                        .build());
+final TileGraphics image = DrawSurfaces.tileGraphicsBuilder()
+        .withSize(tileGrid.getSize())
+        .withFiller(Tile.newBuilder()
+                .withForegroundColor(theme.getPrimaryForegroundColor())
+                .withBackgroundColor(theme.getPrimaryBackgroundColor())
+                .withCharacter('~')
+                .build())
+        .build();
 
-        final Screen screen = Screen.create(tileGrid);
+screen.draw(image, Position.zero(), image.getSize());
 
-        final ColorTheme theme = ColorThemes.adriftInDreams();
-
-        final TileGraphics image = DrawSurfaces.tileGraphicsBuilder()
-                .withSize(tileGrid.getSize())
-                .build()
-                .fill(Tile.newBuilder()
-                        .withForegroundColor(theme.getPrimaryForegroundColor())
-                        .withBackgroundColor(theme.getPrimaryBackgroundColor())
-                        .withCharacter('~')
-                        .build());
-
-        screen.draw(image, Positions.zero());
-
-        screen.display();
-    }
-}
+screen.display();
 ```
 
 and we've got a nice ocean:
@@ -323,111 +273,104 @@ What happens here is that we:
 - Create a [TileGraphics] with the colors added and fill it with `~`s
 - Draw the graphic onto the [Screen]
 
-For more explanation about these jump to the [Zircon Crash Course](https://github.com/Hexworks/zircon/wiki/A-Zircon-Crash-Course).
+For more explanation about these jump to the [Zircon Crash Course][crash-course].
 
 > You can do so much more with [Screen]s. If interested then check out [A primer on Screens][screen-primer]
-on the Wiki! 
+on the documentation!
 
 ### Components
 
 Zircon supports a bunch of [Component]s out of the box:
 
-- `Button`: A simple clickable component with corresponding event listeners
-- `CheckBox`: Like a `Button` but with checked / unchecked state
-- `Header`: Like a label but this one has emphasis (useful when using [ColorTheme]s)
-- `Label`: Simple component with text
+- `Button`: A simple clickable component with corresponding event listeners.
+- `CheckBox`: Like a `Button` but with checked / unchecked state.
+- `Header`: Like a label but this one has emphasis (useful when using [ColorTheme]s).
+- `Label`: Simple component with text.
 - `LogArea`: Component with a list of items. New items can be added, and they will be srolled.
-- `Panel`: A [Container] which can hold multiple [Components]
-- `RadioButtonGroup` and `RadioButton`: Like a `CheckBox` but only one can be selected at a time
-- `TextArea`: Similar to a text area in HTML this [Component] can be written into
-- `TextBox`: A `TextBox` is more like a hypertext document where you can add elements with semantic
-  meaning. It supports adding `Header`s, `Paragraph`s, `ListItem`s and even `Button`s
+- `Panel`: A [Container] which can hold multiple [Components].
+- `RadioButtonGroup` and `RadioButton`: Like a `CheckBox` but only one can be selected at a time.
+- `TextArea`: Similar to a text area in HTML this [Component] can be written into.
+- `TextBox`: A `TextBox` is more like a hypertext document where you can add elements with semantic.
+  meaning. It supports adding `Header`s, `Paragraph`s, `ListItem`s and even `Button`s.
 
 These components are rather simple and you can expect them to work in a way you might be familiar with:
 
-- You can click on them (press and release are different events)
-- You can attach event listeners on them
-- Zircon implements focus handling so you can between the components using the `[Tab]` key
+- You can click on them (press and release are different events).
+- You can attach event listeners on them.
+- Zircon implements focus handling so you can navigate between the components using the `[Tab]` key
  (forwards) or the `[Shift]+[Tab]` key stroke (backwards).
-- Components can be hovered and they can change their styling when you do so
+- Components can be hovered and they can change their styling when you do so.
 
 Let's look at an example (notes about how it works are in the comments):
 
 ```java
-import org.hexworks.zircon.api.*;
-import org.hexworks.zircon.api.component.Button;
-import org.hexworks.zircon.api.component.CheckBox;
-import org.hexworks.zircon.api.component.Header;
-import org.hexworks.zircon.api.component.Panel;
-import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.screen.Screen;
+final TileGrid tileGrid = SwingApplications.startTileGrid(
+        AppConfig.newBuilder()
+                .withSize(34, 18)
+                .withDefaultTileset(CP437TilesetResources.aduDhabi16x16())
+                .build());
+final Screen screen = Screen.create(tileGrid);
 
-public class UsingComponents {
+Panel panel = Components.panel()
+        .withDecorations(
+                // panels can be wrapped in a box
+                box(BoxType.SINGLE, "Panel"),
+                shadow()) // shadow can be added
+        .withSize(32, 16) // the size must be smaller than the parent's size
+        .withPosition(1, 1)
+        .build(); // position is always relative to the parent
 
-    public static void main(String[] args) {
+final Header header = Components.header()
+        // this will be 1x1 left and down from the top left
+        // corner of the panel
+        .withPosition(1, 1)
+        .withText("Header")
+        .build();
 
-        final TileGrid tileGrid = SwingApplications.startTileGrid(
-                AppConfig.newConfig()
-                        .withSize(Size.create(34, 18))
-                        .withDefaultTileset(CP437TilesetResources.aduDhabi16x16())
-                        .build());
-        final Screen screen = Screen.create(tileGrid);
+final CheckBox checkBox = Components.checkBox()
+        .withText("Check me!")
+        .withPosition(Position.create(0, 1)
+                // the position class has some convenience methods
+                // for you to specify your component's position as
+                // relative to another one
+                .relativeToBottomOf(header))
+        .build();
 
-        Panel panel = Components.panel()
-                .wrapWithBox(true) // panels can be wrapped in a box
-                .withTitle("Panel") // if a panel is wrapped in a box a title can be displayed
-                .wrapWithShadow(true) // shadow can be added
-                .withSize(Size.create(32, 16)) // the size must be smaller than the parent's size
-                .withPosition(Positions.offset1x1())
-                .build(); // position is always relative to the parent
+final Button left = Components.button()
+        .withPosition(Position.create(0, 1) // this means 1 row below the check box
+                .relativeToBottomOf(checkBox))
+        .withText("Left")
+        .build();
 
-        final Header header = Components.header()
-                // this will be 1x1 left and down from the top left
-                // corner of the panel
-                .withPosition(Positions.offset1x1())
-                .withText("Header")
-                .build();
+final Button right = Components.button()
+        .withPosition(Position.create(1, 0) // 1 column right relative to the left BUTTON
+                .relativeToRightOf(left))
+        .withText("Right")
+        .build();
 
-        final CheckBox checkBox = Components.checkBox()
-                .withText("Check me!")
-                .withPosition(Position.create(0, 1)
-                        // the position class has some convenience methods
-                        // for you to specify your component's position as
-                        // relative to another one
-                        .relativeToBottomOf(header))
-                .build();
+panel.addComponent(header);
+panel.addComponent(checkBox);
+panel.addComponent(left);
+panel.addComponent(right);
 
-        final Button left = Components.button()
-                .withPosition(Position.create(0, 1) // this means 1 row below the check box
-                        .relativeToBottomOf(checkBox))
-                .withText("Left")
-                .build();
+screen.addComponent(panel);
 
-        final Button right = Components.button()
-                .withPosition(Position.create(1, 0) // 1 column right relative to the left BUTTON
-                        .relativeToRightOf(left))
-                .withText("Right")
-                .build();
+// we can apply color themes to a screen
+screen.setTheme(ColorThemes.monokaiBlue());
 
-        panel.addComponent(header);
-        panel.addComponent(checkBox);
-        panel.addComponent(left);
-        panel.addComponent(right);
+// this is how you can define interactions with a component
+left.handleComponentEvents(ACTIVATED, (event) -> {
+    screen.setTheme(ColorThemes.monokaiGreen());
+    return UIEventResponse.processed();
+});
 
-        screen.addComponent(panel);
+right.handleComponentEvents(ACTIVATED, (event) -> {
+    screen.setTheme(ColorThemes.monokaiViolet());
+    return UIEventResponse.processed();
+});
 
-        // we can apply color themes to a screen
-        screen.applyColorTheme(ColorThemes.monokaiBlue());
-
-        // this is how you can define interactions with a component
-        left.onMouseReleased((mouseAction -> screen.applyColorTheme(ColorThemes.monokaiGreen())));
-
-        right.onMouseReleased((mouseAction -> screen.applyColorTheme(ColorThemes.monokaiViolet())));
-
-        // in order to see the changes you need to display your screen.
-        screen.display();
-    }
-}
+// in order to see the changes you need to display your screen.
+screen.display();
 ```
 
 And the result will look like this:
@@ -563,53 +506,80 @@ we bundled into Zircon.
 [api]:https://github.com/Hexworks/zircon/tree/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api
 [internal]:https://github.com/Hexworks/zircon/tree/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/internal
 
-[resource-handling]:https://github.com/Hexworks/zircon/wiki/Resource-Handling
-[design-philosophy]:https://github.com/Hexworks/zircon/wiki/The-design-philosophy-behind-Zircon
-[color-themes]:https://github.com/Hexworks/zircon/wiki/Working-with-ColorThemes
-[layers]:https://github.com/Hexworks/zircon/wiki/How-Layers-work
-[inputs]:https://github.com/Hexworks/zircon/wiki/Input-handling
-[components]:https://github.com/Hexworks/zircon/wiki/The-component-system
-[shapes]:https://github.com/Hexworks/zircon/wiki/Shapes
-[animations]:https://github.com/Hexworks/zircon/wiki/Animation-support
-[behaviors]:https://github.com/Hexworks/zircon/wiki/Behaviors
+[release-process]:https://hexworks.org/projects/zircon/docs/2019-01-11-release-process-and-versioning-scheme
+[crash-course]:https://hexworks.org/projects/zircon/docs/2018-07-18-a-zircon-crash-course
+[screen-primer]:https://hexworks.org/projects/zircon/docs/2018-08-18-a-primer-on-screens
+[tile-graphics]:https://hexworks.org/projects/zircon/docs/2018-11-19-how-to-work-with-tile-graphics
+[resource-handling]:https://hexworks.org/projects/zircon/docs/2018-11-22-resource-handling
+[design-philosophy]:https://hexworks.org/projects/zircon/docs/2018-11-20-the-design-philosophy-behind-zircon
+[color-themes]:https://hexworks.org/projects/zircon/docs/2018-11-20-working-with-color-themes
+[how-layers-work]:https://hexworks.org/projects/zircon/docs/2018-11-21-how-layers-work
+[input-handling]:https://hexworks.org/projects/zircon/docs/2018-11-21-input-handling
+[the-component-system]:https://hexworks.org/projects/zircon/docs/2018-11-15-the-component-system
+[drawing-shapes]:https://hexworks.org/projects/zircon/docs/2018-11-21-shapes
+[logging]:https://hexworks.org/projects/zircon/docs/2019-03-27-logging
+[animations]:https://hexworks.org/projects/zircon/docs/2019-04-26-animation-support
+[zircon-docs]:https://hexworks.org/projects/zircon/docs/
 
-[Animation]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/animation/Animation.kt
-[AnimationHandler]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/animation/AnimationHandler.kt
-[AppConfigs]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/AppConfig.kt
-[Application]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/application/Application.kt
-[ANSITileColor]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/color/ANSITileColor.kt
-[Boundable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/behavior/Boundable.kt
-[Button]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/component/Button.kt
-[ColorTheme]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/component/ColorTheme.kt
-[Clearable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/behavior/Clearable.kt
-[Component]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/component/Component.kt
-[Container]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/component/Container.kt
-[BuiltInCP437TilesetResource]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/resource/BuiltInCP437TilesetResource.kt
-[Drawable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/behavior/Drawable.kt
-[DrawSurface]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/graphics/TileGraphics.kt
-[Input]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/input/Input.kt
-[InputEmitter]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/behavior/InputEmitter.kt
-[Layerable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/behavior/Layerable.kt
-[Layer]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/graphics/Layer.kt
-[Layers]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/Layers.kt
-[Modifier]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/modifier/Modifier.kt
-[Modifiers]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/Modifiers.kt
-[Panel]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/component/Panel.kt
-[Position]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/data/Position.kt
-[Renderer]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/internal/renderer/Renderer.kt
-[Screen]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/screen/Screen.kt
-[Shape]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/shape/Shape.kt
-[ShapeFactory]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/shape/ShapeFactory.kt
-[ShutdownHook]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/behavior/ShutdownHook.kt
-[Size]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/data/Size.kt
-[Styleable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/behavior/Styleable.kt
-[StyleSet]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/graphics/StyleSet.kt  
+
+[api]:https://github.com/Hexworks/zircon/tree/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api
+[internal]:https://github.com/Hexworks/zircon/tree/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/internal
+[resource]:https://github.com/Hexworks/zircon/tree/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/resource
+
+[Animation]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/animation/Animation.kt
+[AnimationHandler]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/animation/AnimationHandler.kt
+[Application]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/application/Application.kt
+[ANSITileColor]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/color/ANSITileColor.kt
+[Boundable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/behavior/Boundable.kt
+[Button]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/component/Button.kt
+[CharacterTile]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/data/CharacterTile.kt
+[Clearable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/behavior/Clearable.kt
+[ColorTheme]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/component/ColorTheme.kt
+[ColorThemes]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/ColorThemes.kt
+[Component]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/component/Component.kt
+[ComponentEvent]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/ComponentEvent.kt
+[ComponentEventHandler]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/ComponentEventHandler.kt
+[ComponentEventSource]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/ComponentEventSource.kt
+[ComponentEventType]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/ComponentEventType.kt
+[Container]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/component/Container.kt
+[DrawSurface]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/graphics/DrawSurface.kt
+[DrawSurfaces]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/DrawSurfaces.kt
+[KeyboardEvent]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/KeyboardEvent.kt
+[KeyboardEventHandler]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/KeyboardEventHandler.kt
+[KeyboardEventType]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/KeyboardEventType.kt
+[KeyCode]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/KeyCode.kt
+[Layerable]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/behavior/Layerable.kt
+[Layer]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/graphics/Layer.kt
+[Modifier]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/modifier/Modifier.kt
+[Modifiers]:https://github.com/Hexworks/zircon/blob/master/zircon.core/jvm/src/main/kotlin/org/hexworks/zircon/api/Modifiers.kt
+[MouseEvent]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/MouseEvent.kt
+[MouseEventHandler]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/MouseEventHandler.kt
+[MouseEventType]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/MouseEventType.kt
+[Panel]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/component/Panel.kt
+[Position]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/data/Position.kt
+[Pass]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/UIEventResponse.kt
+[Processed]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/UIEventResponse.kt
+[PreventDefault]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/UIEventResponse.kt
+[StopPropagation]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/UIEventResponse.kt
+[Renderer]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/internal/renderer/Renderer.kt
+[Screen]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/screen/Screen.kt
+[Shape]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/shape/Shape.kt
+[Shapes]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/Shapes.kt
+[ShapeFactory]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/shape/ShapeFactory.kt
+[ShutdownHook]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/behavior/ShutdownHook.kt
+[Size]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/data/Size.kt
+[StyleSet]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/graphics/StyleSet.kt  
 [SwingApplications]:https://github.com/Hexworks/zircon/blob/master/zircon.jvm.swing/src/main/kotlin/org/hexworks/zircon/api/SwingApplications.kt
-[TileColor]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/color/TileColor.kt
-[TileColors]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/TileColors.kt
-[Tile]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/data/Tile.kt
-[TileGraphics]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/graphics/TileGraphics.kt
-[TileGrid]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/grid/TileGrid.kt
-[TileBuilder]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/builder/data/TileBuilder.kt
-[TilesetOverride]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/behavior/TilesetOverride.kt
-[TypingSupport]:https://github.com/Hexworks/zircon/blob/master/zircon.core/common/src/main/kotlin/org/hexworks/zircon/api/behavior/TypingSupport.kt
+[TileColor]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/color/TileColor.kt
+[Tile]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/data/Tile.kt
+[TileGraphics]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/graphics/TileGraphics.kt
+[TileGrid]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/grid/TileGrid.kt
+[TileBuilder]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/builder/data/TileBuilder.kt
+[TilesetOverride]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/behavior/TilesetOverride.kt
+[TypingSupport]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/behavior/TypingSupport.kt
+[UIEvent]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/UIEvent.kt
+[UIEventHandler]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/UIEventHandler.kt
+[UIEventPhase]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/UIEventPhase.kt
+[UIEventResponse]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/UIEventResponse.kt
+[UIEventSource]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/UIEventSource.kt
+[UIEventType]:https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/uievent/UIEventType.kt
