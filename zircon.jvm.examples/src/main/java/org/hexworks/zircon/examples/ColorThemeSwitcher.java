@@ -1,7 +1,5 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.cobalt.databinding.api.property.Property;
-import org.hexworks.cobalt.datatypes.Maybe;
 import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.Components;
 import org.hexworks.zircon.api.SwingApplications;
@@ -23,7 +21,6 @@ import java.util.stream.Collectors;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 import static org.hexworks.zircon.api.ComponentDecorations.shadow;
-import static org.hexworks.zircon.api.Functions.fromConsumer;
 
 @SuppressWarnings("ALL")
 public class ColorThemeSwitcher {
