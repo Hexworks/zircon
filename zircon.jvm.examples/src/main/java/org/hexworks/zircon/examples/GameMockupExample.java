@@ -46,11 +46,11 @@ public class GameMockupExample {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double columns = screenSize.getWidth() / TILESET.getWidth();
         double rows = screenSize.getHeight() / TILESET.getHeight();
-        Size terminalSize = Size.create((int) columns, (int) rows);
+        Size gridSize = Size.create((int) columns, (int) rows);
 
         final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
-                .withSize(terminalSize)
+                .withSize(gridSize)
                 .withDebugMode(true)
                 .fullScreen()
                 .build());
@@ -61,8 +61,8 @@ public class GameMockupExample {
 
         Screen mainMenuScreen = Screen.create(tileGrid);
         Position menuPosition = Position.create(
-                (terminalSize.getWidth() - MAIN_MENU_PANEL_WIDTH) / 2,
-                (terminalSize.getHeight() - MAIN_MENU_PANEL_HEIGHT) / 2);
+                (gridSize.getWidth() - MAIN_MENU_PANEL_WIDTH) / 2,
+                (gridSize.getHeight() - MAIN_MENU_PANEL_HEIGHT) / 2);
         Label mainMenuLabel = Components.label()
                 .withText(MAIN_MENU_LABEL)
                 .withPosition(menuPosition.withRelativeY(-3).withRelativeX(4))
@@ -106,7 +106,7 @@ public class GameMockupExample {
                 .withText(BACK_LABEL)
                 .withPosition(Position.create(
                         PANEL_SPACING,
-                        terminalSize.getHeight() - (PANEL_SPACING * 2)))
+                        gridSize.getHeight() - (PANEL_SPACING * 2)))
                 .build();
         optionsScreen.addComponent(backButton);
 
@@ -117,7 +117,7 @@ public class GameMockupExample {
         optionsScreen.addComponent(applyButton);
 
         Panel difficultyPanel = Components.panel()
-                .withSize(Size.create((terminalSize.getWidth() - PANEL_SPACING) / 3, 9))
+                .withSize(Size.create((gridSize.getWidth() - PANEL_SPACING) / 3, 9))
                 .withPosition(Position.create(PANEL_SPACING, PANEL_SPACING))
                 .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, DIFFICULTY_LABEL))
                 .build();
