@@ -15,7 +15,7 @@ import java.util.*
 // TODO: this can get into a deadlock!
 // TODO: it happens because the renderer tries to fetch the layers while
 // TODO: we try to add a paragraph and they are waiting for each other to
-// TODO: unlock
+// TODO: unlock --> https://cdn.discordapp.com/attachments/390913999505719308/663473133826736138/unknown.png
 object ScrollingLogAreaExample {
 
     private val tileset = CP437TilesetResources.rogueYun16x16()
