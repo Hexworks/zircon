@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.fragment.MultiSelect
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
 import org.hexworks.zircon.internal.fragment.impl.DefaultMultiSelect
+import kotlin.jvm.JvmStatic
 
 /**
  * Builder for a [MultiSelect]
@@ -47,7 +48,14 @@ class MultiSelectBuilder<T : Any>(val width: Int, val values: List<T>) : Fragmen
         this.clickable = clickable
     }
 
-    override fun build(): MultiSelect<T> = DefaultMultiSelect(width, values, callback, centeredText, toStringMethod, clickable)
+    override fun build(): MultiSelect<T> =
+            DefaultMultiSelect(
+                width = width,
+                values = values,
+                callback = callback,
+                centeredText = centeredText,
+                toStringMethod = toStringMethod,
+                clickable = clickable)
 
     override fun createCopy(): Builder<MultiSelect<T>> {
         return newBuilder(width, values).
@@ -65,6 +73,7 @@ class MultiSelectBuilder<T : Any>(val width: Int, val values: List<T>) : Fragmen
          * @param values The values to cycle through
          * @param N The type of the values
          */
+        @JvmStatic
         fun <N: Any> newBuilder(width: Int, values: List<N>) = MultiSelectBuilder(width, values)
     }
 }
