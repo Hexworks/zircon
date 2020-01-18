@@ -10,10 +10,10 @@ import org.hexworks.zircon.api.uievent.ComponentEventType
 class DefaultMultiSelect<T : Any>(
         width: Int,
         override val values: List<T>,
-        override val callback: (oldValue: T, newValue: T) -> Unit,
+        val callback: (oldValue: T, newValue: T) -> Unit,
         private val centeredText: Boolean = true,
         private val toStringMethod: (T) -> String = Any::toString,
-        private val clickable: Boolean = false
+        clickable: Boolean = false
 ) : MultiSelect<T> {
 
     init {

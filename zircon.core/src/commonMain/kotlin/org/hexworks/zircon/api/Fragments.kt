@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.component.Fragment
 import kotlin.jvm.JvmStatic
 
 /**
- * Provides builders for [Fragment]s (more complex Components that come with own logic).
+ * Provides builders for [Fragment]s (more complex Components that come with their own logic).
  */
 object Fragments {
 

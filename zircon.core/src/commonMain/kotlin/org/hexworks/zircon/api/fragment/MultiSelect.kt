@@ -14,5 +14,4 @@ import org.hexworks.zircon.api.component.Fragment
  */
 interface MultiSelect<T: Any>: Fragment {
     val values: List<T>
-    val callback: (oldValue: T, newValue: T) -> Unit
 }
