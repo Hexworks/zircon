@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.graphics
 
-import org.hexworks.cobalt.Identifier
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.factory.IdentifierFactory
+import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Clearable

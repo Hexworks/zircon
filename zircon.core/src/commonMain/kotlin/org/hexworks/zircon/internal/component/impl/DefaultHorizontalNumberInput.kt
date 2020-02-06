@@ -24,8 +24,9 @@ class DefaultHorizontalNumberInput(
         pos = pos.withX(min(pos.x, contentSize.width))
                 .withY(0)
         Zircon.eventBus.publish(
-                event = ZirconEvent.RequestCursorAt(pos
-                        .withRelative(relativePosition + contentOffset)),
+                event = ZirconEvent.RequestCursorAt(
+                        position = pos.withRelative(relativePosition + contentOffset),
+                        emitter = this),
                 eventScope = ZirconScope)
     }
 }

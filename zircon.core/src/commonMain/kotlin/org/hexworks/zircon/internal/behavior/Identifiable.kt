@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.behavior
 
-import org.hexworks.cobalt.Identifier
+import org.hexworks.cobalt.core.api.Identifier
 
 /**
  * Represents any object, which has an unique identifier.

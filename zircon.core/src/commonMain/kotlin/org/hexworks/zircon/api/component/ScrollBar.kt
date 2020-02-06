@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.cobalt.databinding.api.event.ChangeEvent
+import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
 
@@ -63,10 +63,10 @@ interface ScrollBar : Component {
     /**
      * Callback called when low value changes
      */
-    fun onValueChange(fn: (ChangeEvent<Int>) -> Unit): Subscription
+    fun onValueChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription
 
     /**
      * Callback called when low step changes
      */
-    fun onStepChange(fn: (ChangeEvent<Int>) -> Unit): Subscription
+    fun onStepChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription
 }

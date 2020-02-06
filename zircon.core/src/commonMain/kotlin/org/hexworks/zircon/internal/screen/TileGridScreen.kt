@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.screen
 
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.cobalt.events.api.subscribe
-import org.hexworks.cobalt.factory.IdentifierFactory
+import org.hexworks.cobalt.events.api.subscribeTo
+import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -80,7 +80,7 @@ class TileGridScreen(
                 } else Pass
             }.also { subscriptions.add(it) }
         }
-        Zircon.eventBus.subscribe<ZirconEvent.ScreenSwitch>(ZirconScope) { (screenId) ->
+        Zircon.eventBus.subscribeTo<ZirconEvent.ScreenSwitch>(ZirconScope) { (screenId) ->
             LOGGER.debug("Screen switch event received (id=${screenId.abbreviate()}) in screen object (id=${id.abbreviate()}).")
             activeScreenId = screenId
             if (id != screenId) {
@@ -88,13 +88,13 @@ class TileGridScreen(
                 deactivate()
             }
         }.also { subscriptions.add(it) }
-        Zircon.eventBus.subscribe<ZirconEvent.RequestCursorAt>(ZirconScope) { (position) ->
+        Zircon.eventBus.subscribeTo<ZirconEvent.RequestCursorAt>(ZirconScope) { (position) ->
             if (isActive()) {
                 tileGrid.isCursorVisible = true
                 tileGrid.cursorPosition = position
             }
         }.also { subscriptions.add(it) }
-        Zircon.eventBus.subscribe<ZirconEvent.HideCursor>(ZirconScope) {
+        Zircon.eventBus.subscribeTo<ZirconEvent.HideCursor>(ZirconScope) {
             if (isActive()) {
                 tileGrid.isCursorVisible = false
             }
@@ -142,7 +142,7 @@ class TileGridScreen(
     override fun display() {
         if (activeScreenId != id) {
             Zircon.eventBus.publish(
-                    event = ZirconEvent.ScreenSwitch(id),
+                    event = ZirconEvent.ScreenSwitch(id, this),
                     eventScope = ZirconScope)
             isCursorVisible = false
             cursorPosition = Position.defaultPosition()

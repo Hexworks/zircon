@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.Components
@@ -33,7 +33,7 @@ class DefaultRadioButtonGroup(
         require(buttons.containsKey(component.key).not()) {
             "There is already a Radio Button in this Radio Button Group with the key '${component.key}'."
         }
-        buttons[component.key] = component to component.selectedProperty.onChange { (_, _, newlySelected) ->
+        buttons[component.key] = component to component.selectedProperty.onChange { (_, newlySelected) ->
             selectedButton.map { previousSelected ->
                 if (newlySelected && previousSelected !== component) {
                     previousSelected.isSelected = false
