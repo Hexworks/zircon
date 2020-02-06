@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.graphics.base
 
-import org.hexworks.cobalt.databinding.api.toProperty
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position

@@ -1,23 +1,8 @@
 allprojects {
     repositories {
-        mavenLocal() {
-            metadataSources {
-                gradleMetadata()
-                mavenPom()
-            }
-        }
-        mavenCentral() {
-            metadataSources {
-                gradleMetadata()
-                mavenPom()
-            }
-        }
-        jcenter() {
-            metadataSources {
-                gradleMetadata()
-                mavenPom()
-            }
-        }
+        mavenLocal()
+        mavenCentral()
+        jcenter()
         kotlinx()
         jitpack()
     }

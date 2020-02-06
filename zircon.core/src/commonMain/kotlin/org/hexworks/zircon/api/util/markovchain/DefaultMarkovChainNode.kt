@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api.util.markovchain
 
-import org.hexworks.cobalt.Identifier
+import org.hexworks.cobalt.core.api.Identifier
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.factory.IdentifierFactory
+import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
 import kotlin.random.Random
 
 @Suppress("DataClassPrivateConstructor")

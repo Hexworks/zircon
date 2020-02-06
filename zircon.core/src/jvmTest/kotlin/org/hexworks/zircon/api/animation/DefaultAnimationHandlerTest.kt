@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.animation
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.cobalt.factory.IdentifierFactory
+import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
 
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder

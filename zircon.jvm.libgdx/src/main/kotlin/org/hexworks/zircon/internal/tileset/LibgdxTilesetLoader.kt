@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.tileset
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import org.hexworks.cobalt.Identifier
+import org.hexworks.cobalt.core.api.Identifier
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.internal.resource.TileType.*
 import org.hexworks.zircon.api.resource.TilesetResource
