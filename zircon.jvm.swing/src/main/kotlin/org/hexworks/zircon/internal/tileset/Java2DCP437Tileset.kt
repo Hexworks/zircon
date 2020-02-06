@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.tileset
 
 import com.github.benmanes.caffeine.cache.Caffeine
-import org.hexworks.cobalt.Identifier
-import org.hexworks.cobalt.factory.IdentifierFactory
+import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position

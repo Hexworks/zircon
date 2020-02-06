@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.Identifier
+import org.hexworks.cobalt.core.api.Identifier
 import org.hexworks.cobalt.databinding.api.binding.Binding
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Group

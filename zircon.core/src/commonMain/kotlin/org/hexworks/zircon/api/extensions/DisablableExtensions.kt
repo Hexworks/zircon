@@ -2,7 +2,7 @@
 
 package org.hexworks.zircon.api.extensions
 
-import org.hexworks.cobalt.databinding.api.event.ChangeEvent
+import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.uievent.Pass
@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import kotlin.jvm.JvmName
 
-fun Disablable.onDisabledChanged(fn: (ChangeEvent<Boolean>) -> Unit): Subscription {
+fun Disablable.onDisabledChanged(fn: (ObservableValueChanged<Boolean>) -> Unit): Subscription {
     return disabledProperty.onChange(fn)
 }
 

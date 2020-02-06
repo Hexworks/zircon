@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.cobalt.events.api.subscribe
+import org.hexworks.cobalt.events.api.subscribeTo
 
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.component.HeaderBuilder
@@ -239,7 +239,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 .build()
         target.addComponent(comp)
         val removalHappened = AtomicBoolean(false)
-        Zircon.eventBus.subscribe<ZirconEvent.ComponentRemoved>(ZirconScope) {
+        Zircon.eventBus.subscribeTo<ZirconEvent.ComponentRemoved>(ZirconScope) {
             removalHappened.set(true)
         }
 
@@ -262,7 +262,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 .build()
         target.addComponent(comp2)
         val removalHappened = AtomicBoolean(false)
-        Zircon.eventBus.subscribe<ZirconEvent.ComponentRemoved>(ZirconScope) {
+        Zircon.eventBus.subscribeTo<ZirconEvent.ComponentRemoved>(ZirconScope) {
             removalHappened.set(true)
         }
 
@@ -295,7 +295,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         panel.addComponent(comp)
         target.addComponent(panel)
         val removalHappened = AtomicBoolean(false)
-        Zircon.eventBus.subscribe<ZirconEvent.ComponentRemoved>(ZirconScope) {
+        Zircon.eventBus.subscribeTo<ZirconEvent.ComponentRemoved>(ZirconScope) {
             removalHappened.set(true)
         }
 

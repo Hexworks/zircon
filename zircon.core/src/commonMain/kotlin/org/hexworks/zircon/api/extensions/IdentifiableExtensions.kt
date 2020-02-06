@@ -1,7 +1,7 @@
 @file:JvmName("IdentifiableUtils")
 package org.hexworks.zircon.api.extensions
 
-import org.hexworks.cobalt.Identifier
+import org.hexworks.cobalt.core.api.Identifier
 import kotlin.jvm.JvmName
 
 /**

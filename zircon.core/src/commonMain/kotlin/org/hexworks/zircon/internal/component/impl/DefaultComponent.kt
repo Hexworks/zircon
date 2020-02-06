@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.binding.Binding
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.ColorThemes
@@ -19,11 +19,7 @@ import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.uievent.ComponentEventSource
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -152,7 +148,7 @@ abstract class DefaultComponent(
         contentLayer.moveTo(position)
         if (signalComponentChange) {
             Zircon.eventBus.publish(
-                    event = ZirconEvent.ComponentMoved,
+                    event = ZirconEvent.ComponentMoved(this),
                     eventScope = ZirconScope)
         }
     }
@@ -175,7 +171,7 @@ abstract class DefaultComponent(
     @Synchronized
     final override fun requestFocus() {
         Zircon.eventBus.publish(
-                event = RequestFocusFor(this),
+                event = RequestFocusFor(this, this),
                 eventScope = ZirconScope)
     }
 
@@ -183,7 +179,7 @@ abstract class DefaultComponent(
     @Synchronized
     final override fun clearFocus() {
         Zircon.eventBus.publish(
-                event = ClearFocus(this),
+                event = ClearFocus(this, this),
                 eventScope = ZirconScope)
     }
 

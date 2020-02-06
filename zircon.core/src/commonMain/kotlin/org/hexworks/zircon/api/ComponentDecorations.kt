@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api
 
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.internal.component.renderer.decoration.BorderDecorationRenderer

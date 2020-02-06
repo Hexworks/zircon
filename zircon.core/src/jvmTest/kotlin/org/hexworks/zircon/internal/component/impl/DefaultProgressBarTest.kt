@@ -8,11 +8,10 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ProgressBar
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultProgressBarRenderer
 import org.junit.Before
 import org.junit.Test
@@ -30,7 +29,6 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
                         .withBackgroundColor(TileColor.transparent())
                         .build())
                 .build()
-
 
     @Before
     override fun setUp() {
@@ -53,15 +51,15 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
 
     @Test
     fun shouldProperlyRenderProgressBar() {
-        target.progress = PROGRESS
+        target.progress = PROGRESS_50_PERCENT
         val surface = target.graphics
         val offset = target.contentOffset.x
-        val styleSet = target.componentStyleSet.fetchStyleFor(DEFAULT)
-        val invertedStyleSet = styleSet
-                .withBackgroundColor(styleSet.foregroundColor)
-                .withForegroundColor(styleSet.backgroundColor)
+        val css = target.componentStyleSet.currentStyle()
+        val invertedStyleSet = css
+                .withBackgroundColor(css.foregroundColor)
+                .withForegroundColor(css.backgroundColor)
 
-        (0 until EXPECTED_PROGRESSBAR_SIZE).forEachIndexed { i, _ ->
+        (0 until PROGRESS_BAR_SIZE_5).forEachIndexed { i, _ ->
             assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
                     .isEqualTo(TileBuilder.newBuilder()
                             .withCharacter(' ')
@@ -72,20 +70,20 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
 
     @Test
     fun shouldProperlyCalculateProgressBarState() {
-        target.progress = PROGRESS
+        target.progress = PROGRESS_50_PERCENT
         val state = target.getProgressBarState()
         assertThat(state.currentProgressInPercent)
-                .isEqualTo(EXPECTED_CURRENT_PROGRESS_IN_PERCENT)
+                .isEqualTo(EXPECTED_PROGRESS_50_PERCENT)
         assertThat(state.width)
-                .isEqualTo(EXPECTED_PROGRESSBAR_SIZE)
+                .isEqualTo(PROGRESS_BAR_SIZE_5)
     }
 
     companion object {
         val SIZE_10X1 = Size.create(10, 1)
         const val RANGE = 100
         const val STEPS = 10
-        const val PROGRESS = 50.0
-        const val EXPECTED_PROGRESSBAR_SIZE = 5
-        const val EXPECTED_CURRENT_PROGRESS_IN_PERCENT = 50
+        const val PROGRESS_50_PERCENT = 50.0
+        const val EXPECTED_PROGRESS_50_PERCENT = 50
+        const val PROGRESS_BAR_SIZE_5 = 5
     }
 }
