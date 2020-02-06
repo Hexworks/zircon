@@ -24,6 +24,7 @@ class GameComponentBuilder<T : Tile, B : Block<T>>(
             "The supplied game area does not implement the internal game area api."
         }
         this.gameArea = Maybe.of(gameArea)
+        this.contentSize = gameArea.visibleSize.to2DSize()
     }
 
     override fun build(): DefaultGameComponent<T, B> {
@@ -31,7 +32,7 @@ class GameComponentBuilder<T : Tile, B : Block<T>>(
             "Can't build a game component without a game area."
         }
         val gameAreaSize = gameArea.get().visibleSize.to2DSize()
-        require(size == gameAreaSize) {
+        require(contentSize == gameAreaSize) {
             "Can't build a game component with a size ($size) different from its game area's visible size ($gameAreaSize)."
         }
         return DefaultGameComponent(
