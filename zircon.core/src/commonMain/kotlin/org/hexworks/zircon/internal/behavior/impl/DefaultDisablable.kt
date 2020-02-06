@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.behavior.impl
 
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.zircon.api.behavior.Disablable
 
 class DefaultDisablable(initialEnabled: Boolean) : Disablable {

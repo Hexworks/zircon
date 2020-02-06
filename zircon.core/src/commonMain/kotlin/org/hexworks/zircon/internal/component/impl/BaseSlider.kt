@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
-import org.hexworks.cobalt.databinding.api.event.ChangeEvent
+import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -172,11 +172,11 @@ abstract class BaseSlider(final override val minValue: Int,
                     .build())
             .build()
 
-    override fun onValueChange(fn: (ChangeEvent<Int>) -> Unit): Subscription {
+    override fun onValueChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription {
         return currentValueProperty.onChange(fn)
     }
 
-    override fun onStepChange(fn: (ChangeEvent<Int>) -> Unit): Subscription {
+    override fun onStepChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription {
         return currentStepProperty.onChange(fn)
     }
 

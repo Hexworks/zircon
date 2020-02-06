@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.game.impl
 
-import org.hexworks.cobalt.Identifier
+import org.hexworks.cobalt.core.api.Identifier
 import org.hexworks.zircon.api.behavior.TitleHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder

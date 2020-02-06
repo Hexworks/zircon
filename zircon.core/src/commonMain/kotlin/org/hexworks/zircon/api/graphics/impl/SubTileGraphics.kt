@@ -2,7 +2,7 @@ package org.hexworks.zircon.api.graphics.impl
 
 import org.hexworks.cobalt.databinding.api.binding.Binding
 import org.hexworks.cobalt.databinding.api.converter.IsomorphicConverter
-import org.hexworks.cobalt.databinding.api.event.ChangeEvent
+import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.databinding.api.value.ValueValidationResult
@@ -52,11 +52,7 @@ class SubTileGraphics(
             restrictOperation()
         }
 
-        override fun <U : Any> bind(other: Property<U>, updateWhenBound: Boolean, converter: IsomorphicConverter<TilesetResource, U>): Binding<TilesetResource> {
-            restrictOperation()
-        }
-
-        override fun onChange(fn: (ChangeEvent<TilesetResource>) -> Unit): Subscription {
+        override fun onChange(fn: (ObservableValueChanged<TilesetResource>) -> Unit): Subscription {
             restrictOperation()
         }
 
@@ -68,7 +64,11 @@ class SubTileGraphics(
             restrictOperation()
         }
 
-        override fun updateValue(newValue: TilesetResource): ValueValidationResult {
+        override fun updateValue(newValue: TilesetResource): ValueValidationResult<TilesetResource> {
+            restrictOperation()
+        }
+
+        override fun <S : Any> bind(other: Property<S>, updateWhenBound: Boolean, converter: IsomorphicConverter<S, TilesetResource>): Binding<TilesetResource> {
             restrictOperation()
         }
 

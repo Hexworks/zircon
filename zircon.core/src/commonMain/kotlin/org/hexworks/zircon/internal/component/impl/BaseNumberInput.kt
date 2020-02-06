@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
-import org.hexworks.cobalt.databinding.api.event.ChangeEvent
+import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
+import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -115,7 +115,7 @@ abstract class BaseNumberInput(
         componentStyleSet.reset()
         render()
         Zircon.eventBus.publish(
-                event = ZirconEvent.HideCursor,
+                event = ZirconEvent.HideCursor(this),
                 eventScope = ZirconScope)
     }
 
@@ -183,7 +183,7 @@ abstract class BaseNumberInput(
         textBeforeModifications = text
     }
 
-    override fun onChange(fn: (ChangeEvent<Int>) -> Unit): Subscription {
+    override fun onChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription {
         return currentValueProperty.onChange(fn)
     }
 

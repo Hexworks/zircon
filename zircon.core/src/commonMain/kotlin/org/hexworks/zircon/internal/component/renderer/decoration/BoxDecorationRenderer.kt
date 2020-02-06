@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.renderer.decoration
 
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.BoxBuilder

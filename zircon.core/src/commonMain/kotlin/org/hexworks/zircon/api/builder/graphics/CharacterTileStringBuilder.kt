@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.builder.graphics
 
-import org.hexworks.cobalt.factory.IdentifierFactory
+import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor

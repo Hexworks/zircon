@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.cobalt.events.api.subscribe
+import org.hexworks.cobalt.events.api.subscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentContainer
@@ -11,9 +11,7 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultComponentFocusHandler
-import org.hexworks.zircon.internal.component.ComponentContainerState.ACTIVE
-import org.hexworks.zircon.internal.component.ComponentContainerState.INACTIVE
-import org.hexworks.zircon.internal.component.ComponentContainerState.INITIALIZING
+import org.hexworks.zircon.internal.component.ComponentContainerState.*
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.data.LayerState
@@ -76,10 +74,10 @@ class DefaultComponentContainer(
     override fun activate() {
         logger.debug("Activating component container.")
         refreshFocusables()
-        subscriptions.add(Zircon.eventBus.subscribe<ComponentAdded>(ZirconScope) {
+        subscriptions.add(Zircon.eventBus.subscribeTo<ComponentAdded>(ZirconScope) {
             refreshFocusables()
         })
-        subscriptions.add(Zircon.eventBus.subscribe<ComponentRemoved>(ZirconScope) {
+        subscriptions.add(Zircon.eventBus.subscribeTo<ComponentRemoved>(ZirconScope) {
             refreshFocusables()
         })
         state = ACTIVE

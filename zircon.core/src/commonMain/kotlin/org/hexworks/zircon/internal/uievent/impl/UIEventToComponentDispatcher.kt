@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.uievent.impl
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.events.api.subscribe
+import org.hexworks.cobalt.events.api.subscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
@@ -18,7 +18,6 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
-import kotlin.jvm.Synchronized
 
 /**
  * This implementation of [UIEventDispatcher] dispatches [UIEvent]s
@@ -33,13 +32,13 @@ class UIEventToComponentDispatcher(private val root: InternalContainer,
     private var lastHoveredComponent: InternalComponent = root
 
     init {
-        Zircon.eventBus.subscribe<ZirconEvent.RequestFocusFor>(ZirconScope) { (component) ->
+        Zircon.eventBus.subscribeTo<ZirconEvent.RequestFocusFor>(ZirconScope) { (component) ->
             require(component is InternalComponent) {
                 "Only InternalComponents can be focused."
             }
             focusComponent(component)
         }
-        Zircon.eventBus.subscribe<ZirconEvent.ClearFocus>(ZirconScope) { (component) ->
+        Zircon.eventBus.subscribeTo<ZirconEvent.ClearFocus>(ZirconScope) { (component) ->
             if (focusHandler.isFocused(component as InternalComponent)) {
                 focusComponent(root)
             }
