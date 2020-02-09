@@ -6,19 +6,11 @@ import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentAlignment
-import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
-import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.ProjectionMode
-import org.hexworks.zircon.api.graphics.TextWrap
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.api.uievent.KeyCode
-import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.Processed
 
 object GameComponentExample {
 
@@ -124,8 +116,8 @@ object GameComponentExample {
 
         val gameArea = GameComponents.newGameAreaBuilder<Tile, Block<Tile>>()
                 .withActualSize(Size3D.create(3, 6, 3))
-                .withProjectionMode(ProjectionMode.TOP_DOWN)
-                .withVisibleSize(Size3D.create(3, 6, 1))
+                .withProjectionMode(ProjectionMode.TOP_DOWN_OBLIQUE_FRONT)
+                .withVisibleSize(Size3D.create(3, 6, 3))
                 .build()
 
         val panel = Components.panel()
@@ -135,24 +127,12 @@ object GameComponentExample {
 
         val gameComponent = GameComponents.newGameComponentBuilder<Tile, Block<Tile>>()
                 .withGameArea(gameArea)
-                .withDecorations(MyDecoration(gameArea))
+                .withDecorations(box(BoxType.DOUBLE))
                 .withAlignmentWithin(panel, ComponentAlignment.CENTER)
                 .build()
 
         panel.addComponent(gameComponent)
         screen.addComponent(panel)
-
-        screen.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED) {event, _ ->
-            if(event.code == KeyCode.DOWN) {
-                gameArea.scrollDownBy(1)
-                Processed
-            } else if(event.code == KeyCode.UP) {
-                gameArea.scrollUpBy(1)
-                Processed
-            } else {
-                Pass
-            }
-        }
 
         gameArea.setBlockAt(Position3D.create(0, 2, 1), blockA)
         gameArea.setBlockAt(Position3D.create(0, 2, 0), blockB)
@@ -174,29 +154,5 @@ object GameComponentExample {
             .withTop(top)
             .withEmptyTile(Tile.empty())
             .build()
-
-}
-
-class MyDecoration(val gameArea: GameArea<Tile, Block<Tile>>): ComponentDecorationRenderer {
-    override val offset: Position
-        get() = Position.offset1x1()
-    override val occupiedSize: Size
-        get() = Size.create(1, 1)
-
-    override fun render(tileGraphics: TileGraphics, context: ComponentDecorationRenderContext) {
-        val style = context.component.componentStyleSet.currentStyle()
-        println("rendering decorations!")
-        val str = gameArea.visibleOffset.z.toString()
-        val text = CharacterTileStrings
-                .newBuilder()
-                .withStyleSet(style)
-                .withBackgroundColor(style.backgroundColor)
-                .withForegroundColor(style.foregroundColor)
-                .withTextWrap(TextWrap.NO_WRAPPING)
-                .withSize(str.length, 1)
-                .withText(str)
-                .build()
-        tileGraphics.draw(text, tileGraphics.size.fetchTopLeftPosition())
-    }
 
 }
