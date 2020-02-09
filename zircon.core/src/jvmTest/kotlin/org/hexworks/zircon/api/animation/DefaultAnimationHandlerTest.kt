@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.animation
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder
@@ -63,7 +63,7 @@ class DefaultAnimationHandlerTest {
     @Test
     fun shouldReturnInProgressWhenAnimationIsInProgress() {
 
-        val uuid = IdentifierFactory.randomIdentifier()
+        val uuid = UUIDFactory.randomUUID()
         val lock = ReentrantLock()
         val cond = lock.newCondition()
 
@@ -86,7 +86,7 @@ class DefaultAnimationHandlerTest {
     @Test
     fun shouldReturnFinishedWhenAnimationIsFinished() {
 
-        val uuid = IdentifierFactory.randomIdentifier()
+        val uuid = UUIDFactory.randomUUID()
         val currFrame = DefaultAnimationFrame(Size.one(), listOf(), 1)
 
         // TODO

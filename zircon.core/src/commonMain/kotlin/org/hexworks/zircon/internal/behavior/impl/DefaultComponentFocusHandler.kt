@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.behavior.impl
 
-import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
 import org.hexworks.zircon.internal.behavior.Focusable
@@ -12,8 +12,8 @@ class DefaultComponentFocusHandler(private val rootComponent: InternalContainer)
     override var focusedComponent: InternalComponent = rootComponent
         private set
 
-    private val nextsLookup: MutableMap<Identifier, InternalComponent> = mutableMapOf(Pair(rootComponent.id, rootComponent))
-    private val prevsLookup: MutableMap<Identifier, InternalComponent> = nextsLookup.toMutableMap()
+    private val nextsLookup: MutableMap<UUID, InternalComponent> = mutableMapOf(Pair(rootComponent.id, rootComponent))
+    private val prevsLookup: MutableMap<UUID, InternalComponent> = nextsLookup.toMutableMap()
 
     override fun findNext() = Maybe.ofNullable(nextsLookup[focusedComponent.id])
 

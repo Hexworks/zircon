@@ -1,17 +1,9 @@
-import Libs.kotlinxCollectionsImmutable
-
 plugins {
     kotlinMpp
 }
 
 kotlin {
-    sourceSets {
-        commonMain {
-            dependencies {
-                api(kotlinxCollectionsImmutable)
-            }
-        }
-    }
+
     jvm {
         jvmTarget(JavaVersion.VERSION_1_8)
         withJava()
@@ -20,7 +12,10 @@ kotlin {
     dependencies {
         with(Libs) {
             commonMainApi(kotlinStdLibCommon)
+
             commonMainApi(kotlinxCoroutinesCommon)
+            commonMainApi(kotlinxCollectionsImmutable)
+
             commonMainApi(cobaltEvents)
             commonMainApi(cobaltDatabinding)
             commonMainApi(cobaltDatatypes)
@@ -35,7 +30,9 @@ kotlin {
         with(Libs) {
             jvmMainApi(kotlinStdLibJdk8)
             jvmMainApi(kotlinReflect)
+
             jvmMainApi(kotlinxCoroutines)
+
             jvmMainApi(caffeine)
             jvmMainApi(snakeYaml)
             jvmMainApi(slf4jApi)

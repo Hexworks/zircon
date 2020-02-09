@@ -4,7 +4,6 @@ allprojects {
         mavenCentral()
         jcenter()
         kotlinx()
-        jitpack()
     }
 }
 

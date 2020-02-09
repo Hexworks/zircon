@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.resource
 
-import org.hexworks.cobalt.core.api.Identifier
-import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
+import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 
@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
  */
 internal abstract class BaseTilesetResource : TilesetResource {
 
-    override val id: Identifier = IdentifierFactory.randomIdentifier()
+    override val id: UUID = UUIDFactory.randomUUID()
 
     override fun isCompatibleWith(other: TilesetResource): Boolean {
         return other.tileType == tileType &&

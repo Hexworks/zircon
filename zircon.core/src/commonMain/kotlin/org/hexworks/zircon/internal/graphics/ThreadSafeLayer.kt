@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.graphics
 
-import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Clearable
@@ -47,7 +47,7 @@ open class ThreadSafeLayer(
     final override val state: LayerState
         get() = currentState
 
-    final override val id: Identifier = IdentifierFactory.randomIdentifier()
+    final override val id: UUID = UUIDFactory.randomUUID()
 
     final override val hiddenProperty = createPropertyFrom(false)
     final override var isHidden: Boolean by hiddenProperty.asDelegate()

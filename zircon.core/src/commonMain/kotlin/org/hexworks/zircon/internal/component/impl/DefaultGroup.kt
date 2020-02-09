@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.binding.Binding
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.zircon.api.component.ColorTheme
@@ -59,4 +59,4 @@ private fun ComponentBindings.remove(component: Component) {
     }
 }
 
-private typealias ComponentBindings = MutableMap<Identifier, Pair<Component, MutableList<Binding<Any>>>>
+private typealias ComponentBindings = MutableMap<UUID, Pair<Component, MutableList<Binding<Any>>>>

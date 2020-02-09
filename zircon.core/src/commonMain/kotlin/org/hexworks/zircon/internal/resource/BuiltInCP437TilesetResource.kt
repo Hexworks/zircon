@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.resource
 
-import org.hexworks.cobalt.core.api.Identifier
-import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
+import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
@@ -12,7 +12,7 @@ internal enum class BuiltInCP437TilesetResource(
         override val width: Int,
         override val height: Int,
         val fileName: String = "${tilesetName}_${width}x$height.png",
-        override val id: Identifier = IdentifierFactory.randomIdentifier(),
+        override val id: UUID = UUIDFactory.randomUUID(),
         override val tileType: TileType = TileType.CHARACTER_TILE,
         override val tilesetType: TilesetType = TilesetType.CP437_TILESET,
         override val path: String = "/cp_437_tilesets/$fileName",

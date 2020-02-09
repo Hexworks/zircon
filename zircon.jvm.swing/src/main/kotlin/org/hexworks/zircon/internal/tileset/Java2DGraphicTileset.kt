@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.tileset
 
-import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -23,7 +23,7 @@ import javax.imageio.ImageIO
 class Java2DGraphicTileset(private val resource: TilesetResource)
     : Tileset<Graphics2D> {
 
-    override val id: Identifier = resource.id
+    override val id: UUID = resource.id
     override val targetType = Graphics2D::class
     override val width: Int
         get() = resource.width

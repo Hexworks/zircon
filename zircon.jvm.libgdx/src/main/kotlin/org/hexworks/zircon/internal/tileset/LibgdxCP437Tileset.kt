@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.github.benmanes.caffeine.cache.Caffeine
-import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -28,7 +28,7 @@ class LibgdxCP437Tileset(override val width: Int,
                          private val path: String)
     : Tileset<SpriteBatch> {
 
-    override val id: Identifier = Identifier.randomIdentifier()
+    override val id: UUID = UUID.randomUUID()
     override val targetType = SpriteBatch::class
 
     private val lookup = CP437TileMetadataLoader(

@@ -1,11 +1,11 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
@@ -38,7 +38,7 @@ class ComponentStub(
         override val relativePosition: Position = position,
         override val contentOffset: Position = position,
         override val contentSize: Size = size,
-        override val id: Identifier = IdentifierFactory.randomIdentifier(),
+        override val id: UUID = UUIDFactory.randomUUID(),
         override val graphics: TileGraphics = TileGraphicsBuilder.newBuilder()
                 .withSize(size)
                 .withTileset(tileset)
