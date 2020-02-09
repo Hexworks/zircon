@@ -10,9 +10,10 @@ import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.component.InternalContainer
 import kotlin.jvm.Synchronized
 
-class RootContainer(componentMetadata: ComponentMetadata,
-                    private val renderingStrategy: ComponentRenderingStrategy<RootContainer>)
-    : Container, DefaultContainer(
+class RootContainer(
+        componentMetadata: ComponentMetadata,
+        renderingStrategy: ComponentRenderingStrategy<RootContainer>
+) : Container, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 

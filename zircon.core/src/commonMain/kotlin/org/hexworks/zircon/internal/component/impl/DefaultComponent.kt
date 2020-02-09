@@ -47,8 +47,8 @@ abstract class DefaultComponent(
                         .withTileset(componentMetadata.tileset)
                         .withSize(componentMetadata.size)
                         .buildThreadSafeTileGraphics()),
-        private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault())
-    : InternalComponent,
+        private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault()
+) : InternalComponent,
         UIEventProcessor by uiEventProcessor,
         Identifiable by contentLayer,
         Movable by contentLayer,
@@ -58,15 +58,19 @@ abstract class DefaultComponent(
 
     final override val absolutePosition: Position
         get() = position
+
     final override val relativePosition: Position
         @Synchronized
         get() = position - parent.map { it.position }.orElse(Position.zero())
+
     final override val relativeBounds: Rect
         @Synchronized
         get() = rect.withPosition(relativePosition)
+
     final override val contentOffset: Position
         @Synchronized
         get() = renderer.contentPosition
+
     final override val contentSize: Size
         @Synchronized
         get() = renderer.calculateContentSize(size)
@@ -78,11 +82,6 @@ abstract class DefaultComponent(
     final override val tilesetProperty = createPropertyFrom(componentMetadata.tileset) {
         tileset.isCompatibleWith(it)
     }
-
-    private var styleOverride = Maybe.ofNullable(if (componentMetadata.componentStyleSet.isDefault) {
-        null
-    } else componentMetadata.componentStyleSet)
-    private var themeStyle = componentMetadata.componentStyleSet
 
     final override var componentStyleSet
         get() = styleOverride.orElse(themeStyle)
@@ -104,6 +103,10 @@ abstract class DefaultComponent(
     override val graphics: TileGraphics
         get() = contentLayer
 
+    private var styleOverride = Maybe.ofNullable(if (componentMetadata.componentStyleSet.isDefault) {
+        null
+    } else componentMetadata.componentStyleSet)
+    private var themeStyle = componentMetadata.componentStyleSet
     private var parent = Maybe.empty<InternalContainer>()
     private val bindings = mutableListOf<Binding<Any>>()
 
@@ -168,7 +171,6 @@ abstract class DefaultComponent(
     @Synchronized
     final override fun moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
 
-    @Synchronized
     final override fun requestFocus() {
         Zircon.eventBus.publish(
                 event = RequestFocusFor(this, this),
@@ -176,14 +178,12 @@ abstract class DefaultComponent(
     }
 
 
-    @Synchronized
     final override fun clearFocus() {
         Zircon.eventBus.publish(
                 event = ClearFocus(this, this),
                 eventScope = ZirconScope)
     }
 
-    @Synchronized
     override fun focusGiven() = whenEnabled {
         logger.debug("$this was given focus.")
         componentStyleSet.applyFocusedStyle()
@@ -196,10 +196,8 @@ abstract class DefaultComponent(
         render()
     }
 
-    @Synchronized
     override fun acceptsFocus() = isDisabled.not()
 
-    @Synchronized
     override fun mouseEntered(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             logger.debug("$this was mouse entered.")
@@ -209,7 +207,6 @@ abstract class DefaultComponent(
         } else Pass
     }
 
-    @Synchronized
     override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             logger.debug("$this was mouse exited.")
@@ -219,7 +216,6 @@ abstract class DefaultComponent(
         } else Pass
     }
 
-    @Synchronized
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             logger.debug("$this was mouse pressed.")
@@ -229,7 +225,6 @@ abstract class DefaultComponent(
         } else Pass
     }
 
-    @Synchronized
     override fun mouseReleased(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             logger.debug("$this was mouse released.")

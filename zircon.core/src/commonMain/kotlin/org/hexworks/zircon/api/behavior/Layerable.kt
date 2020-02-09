@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.behavior
 
+import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer

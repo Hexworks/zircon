@@ -36,16 +36,14 @@ interface InternalComponent : Component, ComponentEventAdapter, Focusable,
     val descendants: Iterable<InternalComponent>
 
     /**
-     * Returns the flattened component tree rooted at this
-     * component. Similar to [descendants] with the exception that
-     * this [Component] is also included in the result.
+     * Returns the flattened component tree rooted at this component. Similar to [descendants]
+     * with the exception that **this** [Component] is also included in the result.
      */
     val flattenedTree: Iterable<InternalComponent>
-        get() = listOf(this).plus(descendants)
+        get() = listOf(this) + descendants
 
     /**
-     * The [TileGraphics] through which this [InternalComponent]
-     * can be drawn upon.
+     * The [TileGraphics] through which this [InternalComponent] can be drawn upon.
      */
     val graphics: TileGraphics
 

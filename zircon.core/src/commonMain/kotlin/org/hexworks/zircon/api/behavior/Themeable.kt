@@ -11,6 +11,7 @@ import kotlin.jvm.JvmStatic
 interface Themeable {
 
     var theme: ColorTheme
+
     val themeProperty: Property<ColorTheme>
 
     companion object {
