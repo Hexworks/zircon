@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.animation
 
-import org.hexworks.cobalt.core.api.Identifier
-import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
+import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationInfo
 import org.hexworks.zircon.api.animation.AnimationState.FINISHED
@@ -16,11 +16,11 @@ import kotlin.jvm.Synchronized
 internal class DefaultAnimationHandler : InternalAnimationHandler, Closeable {
 
     private val debug = RuntimeConfig.config.debugMode
-    private val id = IdentifierFactory.randomIdentifier()
+    private val id = UUIDFactory.randomUUID()
 
-    private val results = mutableMapOf<Identifier, DefaultAnimationInfo>()
-    private val animations = mutableMapOf<Identifier, Animation>()
-    private val nextUpdatesForAnimations = mutableMapOf<Identifier, Long>()
+    private val results = mutableMapOf<UUID, DefaultAnimationInfo>()
+    private val animations = mutableMapOf<UUID, Animation>()
+    private val nextUpdatesForAnimations = mutableMapOf<UUID, Long>()
     private var running = true
 
     @Synchronized

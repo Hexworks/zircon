@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.screen
 
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.subscribeTo
-import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -60,10 +60,10 @@ class TileGridScreen(
     // we make this random because we don't know which one is the active
     // yet and we only need this to determine whether this Screen is the active
     // one or not, so a random id will do fine by default
-    private var activeScreenId = IdentifierFactory.randomIdentifier()
+    private var activeScreenId = UUIDFactory.randomUUID()
 
     private val subscriptions: MutableList<Subscription> = mutableListOf()
-    private val id = IdentifierFactory.randomIdentifier()
+    private val id = UUIDFactory.randomUUID()
 
     init {
         MouseEventType.values().forEach { eventType ->

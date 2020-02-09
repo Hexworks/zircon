@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.animation
 
-import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.behavior.Layerable
 
@@ -12,7 +12,7 @@ internal class DefaultAnimation(override val tick: Long,
                                 override val uniqueFrameCount: Int,
                                 frames: List<InternalAnimationFrame>) : Animation {
 
-    override val id: Identifier = IdentifierFactory.randomIdentifier()
+    override val id: UUID = UUIDFactory.randomUUID()
 
     override val isLoopedIndefinitely = loopCount == 0
 

@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.tileset
 
 import com.github.benmanes.caffeine.cache.Caffeine
-import org.hexworks.cobalt.core.api.Identifier
-import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
+import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
@@ -47,7 +47,7 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
                          private val source: BufferedImage)
     : Tileset<Graphics2D> {
 
-    override val id: Identifier = IdentifierFactory.randomIdentifier()
+    override val id: UUID = UUIDFactory.randomUUID()
     override val width: Int
         get() = resource.width
     override val height: Int

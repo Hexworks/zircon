@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.GraphicalTile
@@ -24,7 +24,7 @@ import java.io.InputStream
 class LibgdxGraphicTileset(private val resource: TilesetResource)
     : Tileset<SpriteBatch> {
 
-    override val id: Identifier = resource.id
+    override val id: UUID = resource.id
     override val targetType = SpriteBatch::class
     override val width: Int
         get() = resource.width

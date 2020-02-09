@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.tileset
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.internal.resource.TileType.*
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.tileset.TilesetLoader
 @Suppress("UNCHECKED_CAST")
 class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
 
-    private val tilesetCache = mutableMapOf<Identifier, Tileset<SpriteBatch>>()
+    private val tilesetCache = mutableMapOf<UUID, Tileset<SpriteBatch>>()
 
 
     override fun loadTilesetFrom(resource: TilesetResource): Tileset<SpriteBatch> {

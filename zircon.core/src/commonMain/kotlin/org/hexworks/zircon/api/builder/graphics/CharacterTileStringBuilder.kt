@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.builder.graphics
 
-import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -92,7 +92,7 @@ data class CharacterTileStringBuilder(
          */
         fun newBuilder() = CharacterTileStringBuilder()
 
-        private val NO_VALUE = IdentifierFactory.randomIdentifier().toString()
+        private val NO_VALUE = UUIDFactory.randomUUID().toString()
 
     }
 }

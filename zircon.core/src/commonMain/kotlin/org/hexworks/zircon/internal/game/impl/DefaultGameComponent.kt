@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.game.impl
 
-import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.behavior.TitleHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -33,7 +33,7 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
                     tileset = tileset,
                     position = absolutePosition,
                     size = imageLayer.size,
-                    id = Identifier.randomIdentifier(),
+                    id = UUID.randomUUID(),
                     isHidden = isHidden)
         }.asIterable() + super.layerStates
 

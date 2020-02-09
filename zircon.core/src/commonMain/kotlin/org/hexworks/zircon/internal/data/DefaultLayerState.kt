@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.data
 
-import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -11,7 +11,7 @@ data class DefaultLayerState(
         override val tiles: Map<Position, Tile>,
         override val tileset: TilesetResource,
         override val size: Size,
-        override val id: Identifier,
+        override val id: UUID,
         override val position: Position,
         override val isHidden: Boolean) : LayerState {
 
