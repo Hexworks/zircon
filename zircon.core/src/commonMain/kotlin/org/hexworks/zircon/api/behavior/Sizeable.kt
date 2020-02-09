@@ -8,8 +8,10 @@ import org.hexworks.zircon.api.data.Size
 interface Sizeable {
 
     val size: Size
+
     val width: Int
         get() = size.width
+
     val height: Int
         get() = size.height
 }

@@ -14,10 +14,13 @@ import kotlin.jvm.JvmStatic
 interface Boundable : Sizeable {
 
     val rect: Rect
+
     val position: Position
         get() = rect.position
+
     val x: Int
         get() = rect.x
+
     val y: Int
         get() = rect.y
 

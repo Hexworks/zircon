@@ -36,8 +36,8 @@ class ThreadSafeTileGrid(
         override var animationHandler: InternalAnimationHandler = DefaultAnimationHandler(),
         private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                 initialCursorSpace = initialSize),
-        private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault())
-    : InternalTileGrid,
+        private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
+) : InternalTileGrid,
         InternalCursorHandler by cursorHandler,
         ShutdownHook by DefaultShutdownHook(),
         UIEventProcessor by eventProcessor,
