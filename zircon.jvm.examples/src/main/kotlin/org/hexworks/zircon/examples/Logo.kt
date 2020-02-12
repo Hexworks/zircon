@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.resource.REXPaintResource
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.internal.animation.DefaultAnimationFrame
+import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
 
 object Logo {
 
@@ -77,7 +77,7 @@ object Logo {
 
         screen.display()
 
-        screen.startAnimation(anim)
+        screen.start(anim)
 
     }
 

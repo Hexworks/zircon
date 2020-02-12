@@ -1,9 +1,10 @@
 package org.hexworks.zircon.api.animation
 
 /**
- * Stores information about an [Animation] which is currently running.
+ * Represents an [Animation] which is currently running and adds
+ * additional functionality to it.
  */
-interface AnimationInfo {
+interface AnimationHandle : Animation {
 
     /**
      * Tells whether the [Animation] is finished.
@@ -23,7 +24,7 @@ interface AnimationInfo {
     /**
      * Adds a callback which will be called when the [Animation] finishes.
      */
-    fun onFinished(fn: (AnimationInfo) -> Unit)
+    fun onFinished(fn: (AnimationHandle) -> Unit)
 
     /**
      * Stops the [Animation] regardless of its state.

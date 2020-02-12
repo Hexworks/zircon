@@ -12,9 +12,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInGraphicalTilesetResource
-import org.hexworks.zircon.internal.resource.ColorThemeResource
 
 /**
  * Builder for [AppConfig]s.
@@ -138,7 +136,7 @@ data class AppConfigBuilder(
             isCursorBlinking = cursorBlinking,
             isClipboardAvailable = clipboardAvailable,
             defaultTileset = defaultTileset,
-            defaultGraphicTileset = defaultGraphicalTileset,
+            defaultGraphicalTileset = defaultGraphicalTileset,
             defaultColorTheme = defaultColorTheme,
             debugMode = debugMode,
             size = defaultSize,

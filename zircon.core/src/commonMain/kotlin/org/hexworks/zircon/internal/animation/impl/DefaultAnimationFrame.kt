@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.animation
+package org.hexworks.zircon.internal.animation.impl
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.animation.AnimationFrame
@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.internal.animation.InternalAnimationFrame
 
 /**
  * Default implementation of the [AnimationFrame] interface.

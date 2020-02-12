@@ -19,7 +19,7 @@ class IconBuilder : BaseComponentBuilder<Icon, IconBuilder>(DefaultIconRenderer(
     private var icon = Maybe.empty<Tile>()
 
     init {
-        withTileset(RuntimeConfig.config.defaultGraphicTileset)
+        withTileset(RuntimeConfig.config.defaultGraphicalTileset)
     }
 
     override fun withSize(size: Size) = also {

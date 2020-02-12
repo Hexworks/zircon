@@ -35,7 +35,7 @@ object HexworksSkull {
         }
         val leftAnim = first.build()
 
-        screen.startAnimation(leftAnim)
+        screen.start(leftAnim)
 
     }
 

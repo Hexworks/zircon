@@ -61,8 +61,8 @@ public class AnimationExample {
         Animation leftAnim = first.build();
         Animation rightAnim = second.build();
 
-        screen.startAnimation(leftAnim);
-        screen.startAnimation(rightAnim);
+        screen.start(leftAnim);
+        screen.start(rightAnim);
 
 
     }
