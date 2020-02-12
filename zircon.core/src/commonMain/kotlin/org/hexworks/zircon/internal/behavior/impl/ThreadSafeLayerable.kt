@@ -2,10 +2,13 @@ package org.hexworks.zircon.internal.behavior.impl
 
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.behavior.Layerable.Companion.WRONG_LAYER_TYPE_MSG
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.graphics.LayerHandle
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.data.LayerState
+import org.hexworks.zircon.internal.graphics.DefaultLayerHandle
 import org.hexworks.zircon.internal.graphics.InternalLayer
 import kotlin.jvm.Synchronized
 
@@ -21,62 +24,43 @@ class ThreadSafeLayerable(initialSize: Size)
         @Synchronized
         get() = layers.map { it.state }
 
-    override fun getLayerAt(level: Int): Maybe<Layer> {
-        return Maybe.ofNullable(layers[level])
+    override fun getLayerAt(level: Int): Maybe<LayerHandle> {
+        return Maybe.ofNullable(DefaultLayerHandle(layers[level], this))
     }
 
     @Synchronized
-    override fun addLayer(layer: Layer) {
-        layer as? InternalLayer ?: error(ERROR_MSG)
+    override fun addLayer(layer: Layer): LayerHandle {
+        layer as? InternalLayer ?: error(WRONG_LAYER_TYPE_MSG)
         layers = layers.add(layer)
+        return DefaultLayerHandle(layer, this)
     }
 
     @Synchronized
-    override fun setLayerAt(level: Int, layer: Layer) {
-        layer as? InternalLayer ?: error(ERROR_MSG)
+    override fun setLayerAt(level: Int, layer: Layer): LayerHandle {
+        layer as? InternalLayer ?: error(WRONG_LAYER_TYPE_MSG)
         level.whenValidIndex {
             layers = layers.set(level, layer)
         }
+        return DefaultLayerHandle(layer, this)
     }
 
     @Synchronized
-    override fun insertLayerAt(level: Int, layer: Layer) {
-        layer as? InternalLayer ?: error(ERROR_MSG)
+    override fun insertLayerAt(level: Int, layer: Layer): LayerHandle {
+        layer as? InternalLayer ?: error(WRONG_LAYER_TYPE_MSG)
         level.whenValidIndex {
             layers = layers.add(level, layer)
         }
-    }
-
-
-    @Synchronized
-    override fun removeLayerAt(index: Int) {
-        index.whenValidIndex {
-            layers = layers.removeAt(index)
-        }
+        return DefaultLayerHandle(layer, this)
     }
 
     // DERIVED FUNCTIONS
 
     @Synchronized
-    override fun removeLayer(layer: Layer) {
+    override fun remove(layer: Layer): Layer {
         layers.indexOfFirst { it.id == layer.id }.whenValidIndex { idx ->
-            removeLayerAt(idx)
+            layers = layers.removeAt(idx)
         }
-    }
-
-    @Synchronized
-    override fun removeLayers(layers: Collection<Layer>) {
-        layers.forEach(::removeLayer)
-    }
-
-    @Synchronized
-    override fun removeAllLayers() {
-        removeLayers(layers)
-    }
-
-    @Synchronized
-    override fun clear() {
-        removeLayers(layers)
+        return layer
     }
 
     private fun Int.whenValidIndex(fn: (Int) -> Unit) {
@@ -85,7 +69,4 @@ class ThreadSafeLayerable(initialSize: Size)
         }
     }
 
-    companion object {
-        private const val ERROR_MSG = "The supplied component does not implement required interface: InternalLayer."
-    }
 }
