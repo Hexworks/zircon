@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.animation
 
-import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.internal.behavior.Identifiable
 import kotlin.jvm.JvmStatic
@@ -37,19 +36,6 @@ interface Animation : Identifiable {
      * Tells whether this [Animation] is looped indefinitely.
      */
     val isLoopedIndefinitely: Boolean
-
-    /**
-     * Displays the next frame on the given [layerable]. If there
-     * are no frames left to display [displayNextFrame] will
-     * return `false`
-     * @return `true` if a frame was displayed, `false` if not.
-     */
-    fun displayNextFrame(layerable: Layerable): Boolean
-
-    /**
-     * Removes the current frame from the screen (if it is displayed).
-     */
-    fun removeCurrentFrame()
 
     companion object {
 

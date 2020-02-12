@@ -86,7 +86,7 @@ object Intro {
 
         introPanel.theme = ColorThemes.tron()
 
-        introScreen.startAnimation(zirconSplash)
+        introScreen.start(zirconSplash)
 
         introScreen.display()
     }

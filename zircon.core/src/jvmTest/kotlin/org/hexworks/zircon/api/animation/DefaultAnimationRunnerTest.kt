@@ -8,9 +8,10 @@ import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.api.builder.grid.TileGridBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.internal.animation.DefaultAnimation
-import org.hexworks.zircon.internal.animation.DefaultAnimationFrame
-import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
+import org.hexworks.zircon.internal.animation.impl.DefaultAnimation
+import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
+import org.hexworks.zircon.internal.animation.DefaultAnimationRunner
+import org.hexworks.zircon.internal.animation.InternalAnimation
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
@@ -20,25 +21,25 @@ import org.mockito.MockitoAnnotations
 import java.util.concurrent.locks.ReentrantLock
 
 @Suppress("UNUSED_VARIABLE")
-class DefaultAnimationHandlerTest {
+class DefaultAnimationRunnerTest {
 
-    private lateinit var target: DefaultAnimationHandler
+    private lateinit var target: DefaultAnimationRunner
 
     @Mock
-    lateinit var animationMock: Animation
+    lateinit var animationMock: InternalAnimation
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         AppConfig.newBuilder().enableBetaFeatures().build()
-        target = DefaultAnimationHandler()
+        target = DefaultAnimationRunner()
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldCloseProperlyWhenClosed() {
         target.close()
 
-        target.startAnimation(DefaultAnimation(
+        target.start(DefaultAnimation(
                 tick = 1,
                 loopCount = 1,
                 totalFrameCount = 1,
@@ -55,7 +56,7 @@ class DefaultAnimationHandlerTest {
                 .withFps(1)
                 .build()
 
-        val result = target.startAnimation(infiniteAnimation)
+        val result = target.start(infiniteAnimation)
 
         assertThat(result.isInfinite).isTrue()
     }
@@ -69,18 +70,10 @@ class DefaultAnimationHandlerTest {
 
         Mockito.`when`(animationMock.id).thenReturn(uuid)
         Mockito.`when`(animationMock.isLoopedIndefinitely).thenReturn(false)
-        // TODO
-//        Mockito.`when`(animationMock.fetchCurrentFrame).then {
-//            lock.lock()
-//            cond.await(2, TimeUnit.SECONDS)
-//            DefaultAnimationFrame(Size.one(), listOf(), 1)
-//        }
 
-        val result = target.startAnimation(animationMock)
+        val result = target.start(animationMock)
 
         assertThat(result.isRunning).isTrue()
-//        lock.lock()
-//        cond.signalAll()
     }
 
     @Test
@@ -104,7 +97,7 @@ class DefaultAnimationHandlerTest {
                 .withTileset(BuiltInCP437TilesetResource.ADU_DHABI_16X16)
                 .build()
 
-        val result = target.startAnimation(animationMock)
+        val result = target.start(animationMock)
 
         target.updateAnimations(System.currentTimeMillis() + 1000, tileGrid)
 

@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.grid
 
-import org.hexworks.zircon.api.animation.AnimationHandler
+import org.hexworks.zircon.api.animation.AnimationRunner
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.behavior.Layerable
@@ -19,7 +19,7 @@ import org.hexworks.zircon.api.uievent.UIEventSource
  * It also supports layering (see [Layerable] for more info), cursor handling
  * and character printing through [TypingSupport], event handling through [UIEventSource]
  * and simple [Tile] drawing operations through [TileGraphics] and animation handling
- * with [AnimationHandler].
+ * with [AnimationRunner].
  * You can consider a [TileGrid] as an easy to use **facade** for all your tile grid
  * needs.
  * **Note That** all [TileGrid]s have a [Layer] at index `0` which is used
@@ -27,7 +27,7 @@ import org.hexworks.zircon.api.uievent.UIEventSource
  * In short all [TileGrid]s have at least **one** [Layer] in them.
  */
 interface TileGrid
-    : AnimationHandler, Clearable, Closeable, DrawSurface, Layerable,
+    : AnimationRunner, Clearable, Closeable, DrawSurface, Layerable,
         ShutdownHook, TypingSupport, UIEventSource, ViewContainer {
 
     val widthInPixels: Int

@@ -4,7 +4,7 @@ import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.animation.Animation
-import org.hexworks.zircon.api.animation.AnimationInfo
+import org.hexworks.zircon.api.animation.AnimationHandle
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.data.CharacterTile
@@ -16,8 +16,9 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.view.ViewContainer
-import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
-import org.hexworks.zircon.internal.animation.InternalAnimationHandler
+import org.hexworks.zircon.internal.animation.DefaultAnimationRunner
+import org.hexworks.zircon.internal.animation.InternalAnimation
+import org.hexworks.zircon.internal.animation.InternalAnimationRunner
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
@@ -33,7 +34,7 @@ class ThreadSafeTileGrid(
         initialTileset: TilesetResource,
         initialSize: Size,
         override var layerable: InternalLayerable = buildLayerable(initialSize),
-        override var animationHandler: InternalAnimationHandler = DefaultAnimationHandler(),
+        override var animationHandler: InternalAnimationRunner = DefaultAnimationRunner(),
         private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                 initialCursorSpace = initialSize),
         private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
@@ -128,13 +129,13 @@ class ThreadSafeTileGrid(
     // ANIMATION HANDLER
 
     @Synchronized
-    override fun startAnimation(animation: Animation): AnimationInfo {
-        return animationHandler.startAnimation(animation)
+    override fun start(animation: Animation): AnimationHandle {
+        return animationHandler.start(animation)
     }
 
     @Synchronized
-    override fun stopAnimation(animation: Animation) {
-        animationHandler.stopAnimation(animation)
+    override fun stop(animation: InternalAnimation) {
+        animationHandler.stop(animation)
     }
 
     @Synchronized

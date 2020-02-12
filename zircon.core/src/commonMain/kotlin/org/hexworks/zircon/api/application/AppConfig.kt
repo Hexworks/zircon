@@ -19,7 +19,7 @@ data class AppConfig(
         val isCursorBlinking: Boolean,
         val isClipboardAvailable: Boolean,
         val defaultTileset: TilesetResource,
-        val defaultGraphicTileset: TilesetResource,
+        val defaultGraphicalTileset: TilesetResource,
         val defaultColorTheme: ColorTheme,
         val debugMode: Boolean,
         val size: Size,
@@ -27,13 +27,14 @@ data class AppConfig(
         val betaEnabled: Boolean,
         val title: String,
         val fpsLimit: Int,
-        val debugConfig: DebugConfig) {
+        val debugConfig: DebugConfig
+) {
 
     companion object {
 
         @JvmStatic
         fun newBuilder() = AppConfigBuilder()
-        
+
         @JvmStatic
         fun defaultConfiguration() = AppConfigBuilder.newBuilder().build()
 

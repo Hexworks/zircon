@@ -1,16 +1,17 @@
-package org.hexworks.zircon.internal.animation
+package org.hexworks.zircon.internal.animation.impl
 
 import org.hexworks.cobalt.core.api.UUID
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
-import org.hexworks.zircon.api.animation.Animation
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Layerable
+import org.hexworks.zircon.internal.animation.InternalAnimation
+import org.hexworks.zircon.internal.animation.InternalAnimationFrame
 
 internal class DefaultAnimation(override val tick: Long,
                                 override val loopCount: Int,
                                 override val totalFrameCount: Int,
                                 override val uniqueFrameCount: Int,
-                                frames: List<InternalAnimationFrame>) : Animation {
+                                frames: List<InternalAnimationFrame>) : InternalAnimation {
 
     override val id: UUID = UUIDFactory.randomUUID()
 

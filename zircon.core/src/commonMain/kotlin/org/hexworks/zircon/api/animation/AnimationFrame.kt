@@ -12,6 +12,7 @@ interface AnimationFrame {
     val size: Size
 
     val layers: List<Layer>
+
     /**
      * How many times this frame will be repeated.
      */
@@ -20,5 +21,5 @@ interface AnimationFrame {
     /**
      * The [Position] at which this [AnimationFrame] should be drawn.
      */
-    var position: Position
+    val position: Position
 }

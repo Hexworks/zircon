@@ -1,7 +1,9 @@
 package org.hexworks.zircon.api.application
 
+import org.hexworks.zircon.api.grid.TileGrid
+
 /**
- * Different cursor styles supported by [org.hexworks.zircon.api.grid.TileGrid].
+ * Different cursor styles supported by [TileGrid].
  */
 enum class CursorStyle {
     /**
