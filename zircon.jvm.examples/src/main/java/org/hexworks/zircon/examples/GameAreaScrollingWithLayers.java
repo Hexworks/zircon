@@ -3,14 +3,15 @@ package org.hexworks.zircon.examples;
 import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.builder.component.GameComponentBuilder;
-import org.hexworks.zircon.api.color.TileColor;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.Panel;
 import org.hexworks.zircon.api.component.builder.ComponentBuilder;
 import org.hexworks.zircon.api.data.*;
 import org.hexworks.zircon.api.game.GameArea;
-import org.hexworks.zircon.api.graphics.*;
+import org.hexworks.zircon.api.graphics.BoxType;
+import org.hexworks.zircon.api.graphics.Symbols;
+import org.hexworks.zircon.api.graphics.TileGraphics;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
@@ -18,14 +19,12 @@ import org.hexworks.zircon.api.uievent.KeyCode;
 import org.hexworks.zircon.api.uievent.KeyboardEventType;
 import org.hexworks.zircon.api.uievent.UIEventResponse;
 import org.hexworks.zircon.internal.game.impl.DefaultGameComponent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 
@@ -144,8 +143,6 @@ public class GameAreaScrollingWithLayers {
     }
 
     private static void enableMovement(final Screen screen, final GameArea<Tile, Block<Tile>> gameArea) {
-        final AtomicReference<Layer> coordinates = new AtomicReference<>();
-        coordinates.set(createCoordinates(Position3D.create(0, 0, 0)));
         screen.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
             if (event.getCode().equals(KeyCode.ESCAPE) && !headless) {
                 System.exit(0);
@@ -168,27 +165,10 @@ public class GameAreaScrollingWithLayers {
                 if (event.getCode().equals(KeyCode.KEY_D)) {
                     gameArea.scrollOneDown();
                 }
-                screen.removeLayer(coordinates.get());
-                coordinates.set(createCoordinates(gameArea.getVisibleOffset()));
-                screen.addLayer(coordinates.get());
+                // TODO: rething coordinates
             }
             return UIEventResponse.processed();
         });
     }
 
-    @NotNull
-    private static Layer createCoordinates(Position3D pos) {
-        String text = String.format("Position: (x=%s, y=%s, z=%s)", pos.getX(), pos.getY(), pos.getZ());
-        TileComposite tc = CharacterTileStrings.newBuilder()
-                .withBackgroundColor(TileColor.transparent())
-                .withForegroundColor(TileColor.fromString("#aaaadd"))
-                .withText(text)
-                .withSize(Size.create(text.length(), 1))
-                .build();
-        Layer layer = Layer.newBuilder()
-                .withOffset(Position.create(21, 1))
-                .build();
-        layer.draw(tc, Position.zero(), Size.create(text.length(), 1));
-        return layer;
-    }
 }

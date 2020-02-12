@@ -72,6 +72,10 @@ class ThreadSafeTileGrid(
             return layerable.layerStates
         }
 
+    override fun remove(layer: Layer): Layer {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override val layers: Iterable<Layer>
         get() {
             return layerable.layers
@@ -86,8 +90,6 @@ class ThreadSafeTileGrid(
     override fun getTileAt(position: Position): Maybe<Tile> {
         return backend.getTileAt(position)
     }
-
-    override fun getLayerAt(level: Int) = layerable.getLayerAt(level)
 
     @Synchronized
     override fun putTile(tile: Tile) {
@@ -160,18 +162,22 @@ class ThreadSafeTileGrid(
         backend.draw(tile, drawPosition)
     }
 
+    @Synchronized
     override fun draw(tileComposite: TileComposite) {
         backend.draw(tileComposite)
     }
 
+    @Synchronized
     override fun draw(tileComposite: TileComposite, drawPosition: Position) {
         backend.draw(tileComposite, drawPosition)
     }
 
+    @Synchronized
     override fun draw(tileMap: Map<Position, Tile>) {
         backend.draw(tileMap)
     }
 
+    @Synchronized
     override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position) {
         backend.draw(tileMap, drawPosition)
     }
@@ -192,55 +198,16 @@ class ThreadSafeTileGrid(
     // LAYERABLE
 
     @Synchronized
-    override fun addLayer(layer: Layer) {
-        layerable.addLayer(layer)
-    }
+    override fun getLayerAt(level: Int) = layerable.getLayerAt(level)
 
     @Synchronized
-    override fun setLayerAt(level: Int, layer: Layer) {
-        require(level != 0) {
-            "Can't displace the base layer (index 0) of a TileGrid."
-        }
-        layerable.setLayerAt(level, layer)
-    }
+    override fun addLayer(layer: Layer) = layerable.addLayer(layer)
 
     @Synchronized
-    override fun insertLayerAt(level: Int, layer: Layer) {
-        require(level != 0) {
-            "Can't displace the base layer (index 0) of a TileGrid."
-        }
-        layerable.insertLayerAt(level, layer)
-    }
+    override fun insertLayerAt(level: Int, layer: Layer) = layerable.insertLayerAt(level, layer)
 
     @Synchronized
-    override fun removeLayer(layer: Layer) {
-        require(layer != backend) {
-            "Can't remove the base layer (index 0) of a TileGrid"
-        }
-        layerable.removeLayer(layer)
-    }
-
-    @Synchronized
-    override fun removeLayerAt(index: Int) {
-        require(index != 0) {
-            "Can't remove the base layer (index 0) of a TileGrid."
-        }
-        layerable.removeLayerAt(index)
-    }
-
-    @Synchronized
-    override fun removeLayers(layers: Collection<Layer>) {
-        require(layers.none { it === backend }) {
-            "Can't remove the base layer (index 0) of a TileGrid."
-        }
-        layerable.removeLayers(layers)
-    }
-
-    // TODO: regression test this (drop(0))
-    @Synchronized
-    override fun removeAllLayers() {
-        layers.drop(1).forEach(this::removeLayer)
-    }
+    override fun setLayerAt(level: Int, layer: Layer) = layerable.setLayerAt(level, layer)
 
     private fun moveCursorToNextLine() {
         cursorPosition = cursorPosition.withRelativeY(1).withX(0)

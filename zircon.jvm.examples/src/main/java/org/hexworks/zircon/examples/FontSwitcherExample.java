@@ -64,7 +64,7 @@ public class FontSwitcherExample {
 
     private static void refreshLayer(TileGrid tileGrid, Random random) {
         String text = "Press '<-' to switch Layer!";
-        tileGrid.removeAllLayers();
+        tileGrid.clear();
         Layer layer = Layer.newBuilder()
                 .withTileset(TILESETS.get(random.nextInt(TILESETS.size())))
                 .withOffset(Position.create(0, 1))

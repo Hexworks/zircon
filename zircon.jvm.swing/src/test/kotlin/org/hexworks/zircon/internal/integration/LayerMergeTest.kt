@@ -31,11 +31,11 @@ object LayerMergeTest {
                 .withFiller(Tile.empty().withCharacter('x').withBackgroundColor(ANSITileColor.GREEN))
                 .build()
 
-        tileGrid.addLayer(tempLayer)
+        val handle = tileGrid.addLayer(tempLayer)
 
         tileGrid.draw(tempLayer, Position.create(10, 10))
 
-        tileGrid.removeLayer(tempLayer)
+        handle.remove()
 
 
     }
