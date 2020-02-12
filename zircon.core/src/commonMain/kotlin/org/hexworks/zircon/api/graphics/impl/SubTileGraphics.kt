@@ -123,12 +123,6 @@ class SubTileGraphics(
         draw(tileMap, drawPosition, size)
     }
 
-    override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
-        if (size.containsPosition(position)) {
-            backend.transformTileAt(position + offset, tileTransformer)
-        }
-    }
-
     override fun fill(filler: Tile) {
         val (tiles, _, size) = state
         val result = mutableMapOf<Position, Tile>()

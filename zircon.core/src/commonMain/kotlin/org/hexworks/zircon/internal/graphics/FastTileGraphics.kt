@@ -62,16 +62,4 @@ class FastTileGraphics(
     override fun clear() {
         tiles.clear()
     }
-
-    // TODO: test removal
-    override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
-        getTileAt(position).map { tile ->
-            val newTile = tileTransformer(tile)
-            if (newTile.isEmpty) {
-                tiles.remove(position)
-            } else {
-                tiles[position] = newTile
-            }
-        }
-    }
 }

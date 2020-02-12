@@ -146,11 +146,6 @@ class ThreadSafeTileGrid(
     // DRAW SURFACE
 
     @Synchronized
-    override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
-        backend.transformTileAt(position, tileTransformer)
-    }
-
-    @Synchronized
     override fun draw(tileComposite: TileComposite, drawPosition: Position, drawArea: Size) {
         backend.draw(tileComposite, drawPosition, drawArea)
     }
@@ -186,8 +181,6 @@ class ThreadSafeTileGrid(
         backend.fill(filler)
     }
 
-    override fun toTileImage() = backend.toTileImage()
-
     override fun transform(transformer: (Position, Tile) -> Tile) {
         backend.transform(transformer)
     }
@@ -217,14 +210,6 @@ class ThreadSafeTileGrid(
             "Can't displace the base layer (index 0) of a TileGrid."
         }
         layerable.insertLayerAt(level, layer)
-    }
-
-    @Synchronized
-    override fun insertLayersAt(level: Int, layers: Collection<Layer>) {
-        require(level != 0) {
-            "Can't displace the base layer (index 0) of a TileGrid."
-        }
-        layerable.insertLayersAt(level, layers)
     }
 
     @Synchronized
