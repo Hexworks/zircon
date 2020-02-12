@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.component
 
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
-import kotlin.jvm.Synchronized
 
 /**
  * A [RadioButtonGroup] is a specialization of a [Group] which will enforce
@@ -11,6 +10,7 @@ import kotlin.jvm.Synchronized
 interface RadioButtonGroup : Group<RadioButton> {
 
     var selectedButton: Maybe<RadioButton>
+
     val selectedButtonProperty: Property<Maybe<RadioButton>>
 
     /**
@@ -20,6 +20,7 @@ interface RadioButtonGroup : Group<RadioButton> {
      */
     override fun add(component: RadioButton)
 
+    // TODO: remove this and return a handle instead
     /**
      * Removes the given [component] from this [Group]. After the removal the given
      * [component] won't be updated anymore when the properties of this [Group] change.

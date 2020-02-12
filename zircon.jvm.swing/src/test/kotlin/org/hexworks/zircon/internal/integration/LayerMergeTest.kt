@@ -35,7 +35,7 @@ object LayerMergeTest {
 
         tileGrid.draw(tempLayer, Position.create(10, 10))
 
-        handle.remove()
+        handle.removeLayer()
 
 
     }
