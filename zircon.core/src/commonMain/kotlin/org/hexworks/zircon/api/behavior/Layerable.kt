@@ -10,8 +10,10 @@ import org.hexworks.zircon.api.graphics.TileGraphics
  * [TileGraphics] objects which can be displayed above each other within the [Layerable] object.
  * Indexing is done from bottom to top, eg: calling [addLayer] with a [Layerable] which
  * has only one [Layer] (at index `0`) will add the new [Layer] at index `1`.
+ * [Layerable] also implements [Clearable]. In this context [clear] can be used to remove
+ * all layers.
  */
-interface Layerable {
+interface Layerable : Clearable {
 
     val layers: Iterable<Layer>
 
@@ -35,11 +37,6 @@ interface Layerable {
      * Inserts the given [Layer] into this [Layerable] at the given [level].
      */
     fun insertLayerAt(level: Int, layer: Layer)
-
-    /**
-     * Inserts the given [Layer]s into this [Layerable] at the given [level].
-     */
-    fun insertLayersAt(level: Int, layers: Collection<Layer>)
 
     /**
      * Sets the given [Layer] in this [Layerable] at the given [level].

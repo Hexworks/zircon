@@ -65,19 +65,17 @@ class ThreadSafeLayerable(initialSize: Size)
     }
 
     @Synchronized
-    override fun insertLayersAt(level: Int, layers: Collection<Layer>) {
-        layers.forEachIndexed { idx, layer ->
-            insertLayerAt(level + idx, layer)
-        }
-    }
-
-    @Synchronized
     override fun removeLayers(layers: Collection<Layer>) {
         layers.forEach(::removeLayer)
     }
 
     @Synchronized
     override fun removeAllLayers() {
+        removeLayers(layers)
+    }
+
+    @Synchronized
+    override fun clear() {
         removeLayers(layers)
     }
 

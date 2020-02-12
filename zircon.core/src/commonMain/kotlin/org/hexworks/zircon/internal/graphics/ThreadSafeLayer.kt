@@ -174,12 +174,6 @@ open class ThreadSafeLayer(
     }
 
     @Synchronized
-    final override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
-        backend.transformTileAt(position, tileTransformer)
-        replaceState(currentState.copy(tiles = backend.tiles))
-    }
-
-    @Synchronized
     final override fun fill(filler: Tile) {
         backend.fill(filler)
         replaceState(currentState.copy(tiles = backend.tiles))

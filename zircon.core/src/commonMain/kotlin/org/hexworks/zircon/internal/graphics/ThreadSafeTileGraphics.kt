@@ -86,14 +86,6 @@ class ThreadSafeTileGraphics(
     }
 
     @Synchronized
-    override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
-        getTileAt(position).map { oldTile ->
-            updateTile(position, tileTransformer(oldTile))
-            currentState = currentState.copy(tiles = tiles)
-        }
-    }
-
-    @Synchronized
     override fun transform(transformer: (Position, Tile) -> Tile) {
         size.fetchPositions().forEach { pos ->
             updateTile(pos, transformer(pos, tiles.getOrElse(pos) { Tile.empty() }))
