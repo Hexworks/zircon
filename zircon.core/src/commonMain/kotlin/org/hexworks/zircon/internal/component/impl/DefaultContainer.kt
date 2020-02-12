@@ -86,7 +86,7 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
                     event = ZirconEvent.ComponentAdded(this),
                     eventScope = ZirconScope)
         } ?: throw IllegalArgumentException(
-                "The supplied component does not implement InternalComponent.")
+                "The supplied component does not implement required interface: InternalComponent.")
     }
 
     @Synchronized

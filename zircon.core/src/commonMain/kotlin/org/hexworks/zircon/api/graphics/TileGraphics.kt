@@ -16,11 +16,6 @@ import org.hexworks.zircon.internal.data.TileGraphicsState
 interface TileGraphics : Clearable, Copiable<TileGraphics>, DrawSurface, TileComposite {
 
     /**
-     * Holds a snapshot of the current state of this [TileGraphics].
-     */
-    val state: TileGraphicsState
-
-    /**
      * Creates a new [TileGraphics] which will use this one as the underlying [TileGraphics].
      * Writing is restricted to the area represented by `rect` so if `rect` consists
      * of Position(1, 1) and Size(2, 2), the resulting [TileGraphics] will have a size

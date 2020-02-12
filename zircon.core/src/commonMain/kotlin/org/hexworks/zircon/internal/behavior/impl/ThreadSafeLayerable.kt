@@ -2,10 +2,11 @@ package org.hexworks.zircon.internal.behavior.impl
 
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.internal.behavior.InternalLayerable
+import org.hexworks.zircon.internal.data.LayerState
+import org.hexworks.zircon.internal.graphics.InternalLayer
 import kotlin.jvm.Synchronized
 
 // TODO: test this thoroughly
@@ -14,7 +15,7 @@ class ThreadSafeLayerable(initialSize: Size)
 
     override val size: Size = initialSize
 
-    override var layers = persistentListOf<Layer>()
+    override var layers = persistentListOf<InternalLayer>()
 
     override val layerStates: Iterable<LayerState>
         @Synchronized
@@ -26,11 +27,13 @@ class ThreadSafeLayerable(initialSize: Size)
 
     @Synchronized
     override fun addLayer(layer: Layer) {
+        layer as? InternalLayer ?: error(ERROR_MSG)
         layers = layers.add(layer)
     }
 
     @Synchronized
     override fun setLayerAt(index: Int, layer: Layer) {
+        layer as? InternalLayer ?: error(ERROR_MSG)
         index.whenValidIndex {
             layers = layers.set(index, layer)
         }
@@ -38,6 +41,7 @@ class ThreadSafeLayerable(initialSize: Size)
 
     @Synchronized
     override fun insertLayerAt(index: Int, layer: Layer) {
+        layer as? InternalLayer ?: error(ERROR_MSG)
         index.whenValidIndex {
             layers = layers.add(index, layer)
         }
@@ -81,5 +85,9 @@ class ThreadSafeLayerable(initialSize: Size)
         if (this in 0 until layers.size) {
             fn(this)
         }
+    }
+
+    companion object {
+        private const val ERROR_MSG = "The supplied component does not implement required interface: InternalLayer."
     }
 }
