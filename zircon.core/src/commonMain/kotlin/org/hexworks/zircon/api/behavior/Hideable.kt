@@ -9,14 +9,8 @@ import kotlin.jvm.JvmStatic
  */
 interface Hideable {
 
-    /**
-     * Tells whether this [Hideable] is visible or not.
-     */
     var isHidden: Boolean
 
-    /**
-     * [Property] for [isHidden].
-     */
     val hiddenProperty: Property<Boolean>
 
     companion object {
