@@ -6,5 +6,6 @@ import org.hexworks.zircon.api.data.Tile
 interface Icon : Component {
 
     var icon: Tile
+
     val iconProperty: Property<Tile>
 }

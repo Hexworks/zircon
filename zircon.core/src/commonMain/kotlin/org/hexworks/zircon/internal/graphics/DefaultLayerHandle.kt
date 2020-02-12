@@ -9,6 +9,6 @@ class DefaultLayerHandle(
         private val parent: InternalLayerable
 ) : LayerHandle, Layer by backend {
 
-    override fun remove() = parent.remove(backend)
+    override fun removeLayer() = parent.remove(backend)
 
 }
