@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.behavior
 
-import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
@@ -8,7 +7,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 
 /**
  * Represents an object which can contain multiple [Layer]s which are specialized
- * [TileGraphics]s which can be displayed above each other within the [Layerable] object.
+ * [TileGraphics] objects which can be displayed above each other within the [Layerable] object.
  * Indexing is done from bottom to top, eg: calling [addLayer] with a [Layerable] which
  * has only one [Layer] (at index `0`) will add the new [Layer] at index `1`.
  */
@@ -23,9 +22,9 @@ interface Layerable {
     val size: Size
 
     /**
-     * Returns the [Layer] at the given [index] (if present).
+     * Returns the [Layer] at the given [level] (if present).
      */
-    fun getLayerAt(index: Int): Maybe<Layer>
+    fun getLayerAt(level: Int): Maybe<Layer>
 
     /**
      * Adds a layer on top of the currently present layers.
@@ -33,19 +32,19 @@ interface Layerable {
     fun addLayer(layer: Layer)
 
     /**
-     * Inserts the given [Layer] into this [Layerable] at the given [index].
+     * Inserts the given [Layer] into this [Layerable] at the given [level].
      */
-    fun insertLayerAt(index: Int, layer: Layer)
+    fun insertLayerAt(level: Int, layer: Layer)
 
     /**
-     * Inserts the given [Layer]s into this [Layerable] at the given [index].
+     * Inserts the given [Layer]s into this [Layerable] at the given [level].
      */
-    fun insertLayersAt(index: Int, layers: Collection<Layer>)
+    fun insertLayersAt(level: Int, layers: Collection<Layer>)
 
     /**
-     * Sets the given [Layer] in this [Layerable] at the given [index].
+     * Sets the given [Layer] in this [Layerable] at the given [level].
      */
-    fun setLayerAt(index: Int, layer: Layer)
+    fun setLayerAt(level: Int, layer: Layer)
 
     /**
      * Removes the given [layer] from the current layers. This method has no effect

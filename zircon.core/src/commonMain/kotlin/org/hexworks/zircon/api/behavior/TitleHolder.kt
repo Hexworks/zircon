@@ -10,6 +10,7 @@ import kotlin.jvm.JvmStatic
 interface TitleHolder {
 
     var title: String
+
     val titleProperty: Property<String>
 
     companion object {

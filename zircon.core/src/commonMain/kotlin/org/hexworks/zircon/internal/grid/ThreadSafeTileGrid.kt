@@ -87,7 +87,7 @@ class ThreadSafeTileGrid(
         return backend.getTileAt(position)
     }
 
-    override fun getLayerAt(index: Int) = layerable.getLayerAt(index)
+    override fun getLayerAt(level: Int) = layerable.getLayerAt(level)
 
     @Synchronized
     override fun putTile(tile: Tile) {
@@ -204,27 +204,27 @@ class ThreadSafeTileGrid(
     }
 
     @Synchronized
-    override fun setLayerAt(index: Int, layer: Layer) {
-        require(index != 0) {
+    override fun setLayerAt(level: Int, layer: Layer) {
+        require(level != 0) {
             "Can't displace the base layer (index 0) of a TileGrid."
         }
-        layerable.setLayerAt(index, layer)
+        layerable.setLayerAt(level, layer)
     }
 
     @Synchronized
-    override fun insertLayerAt(index: Int, layer: Layer) {
-        require(index != 0) {
+    override fun insertLayerAt(level: Int, layer: Layer) {
+        require(level != 0) {
             "Can't displace the base layer (index 0) of a TileGrid."
         }
-        layerable.insertLayerAt(index, layer)
+        layerable.insertLayerAt(level, layer)
     }
 
     @Synchronized
-    override fun insertLayersAt(index: Int, layers: Collection<Layer>) {
-        require(index != 0) {
+    override fun insertLayersAt(level: Int, layers: Collection<Layer>) {
+        require(level != 0) {
             "Can't displace the base layer (index 0) of a TileGrid."
         }
-        layerable.insertLayersAt(index, layers)
+        layerable.insertLayersAt(level, layers)
     }
 
     @Synchronized

@@ -21,8 +21,8 @@ class ThreadSafeLayerable(initialSize: Size)
         @Synchronized
         get() = layers.map { it.state }
 
-    override fun getLayerAt(index: Int): Maybe<Layer> {
-        return Maybe.ofNullable(layers[index])
+    override fun getLayerAt(level: Int): Maybe<Layer> {
+        return Maybe.ofNullable(layers[level])
     }
 
     @Synchronized
@@ -32,18 +32,18 @@ class ThreadSafeLayerable(initialSize: Size)
     }
 
     @Synchronized
-    override fun setLayerAt(index: Int, layer: Layer) {
+    override fun setLayerAt(level: Int, layer: Layer) {
         layer as? InternalLayer ?: error(ERROR_MSG)
-        index.whenValidIndex {
-            layers = layers.set(index, layer)
+        level.whenValidIndex {
+            layers = layers.set(level, layer)
         }
     }
 
     @Synchronized
-    override fun insertLayerAt(index: Int, layer: Layer) {
+    override fun insertLayerAt(level: Int, layer: Layer) {
         layer as? InternalLayer ?: error(ERROR_MSG)
-        index.whenValidIndex {
-            layers = layers.add(index, layer)
+        level.whenValidIndex {
+            layers = layers.add(level, layer)
         }
     }
 
@@ -65,9 +65,9 @@ class ThreadSafeLayerable(initialSize: Size)
     }
 
     @Synchronized
-    override fun insertLayersAt(index: Int, layers: Collection<Layer>) {
+    override fun insertLayersAt(level: Int, layers: Collection<Layer>) {
         layers.forEachIndexed { idx, layer ->
-            insertLayerAt(index + idx, layer)
+            insertLayerAt(level + idx, layer)
         }
     }
 

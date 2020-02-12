@@ -3,9 +3,8 @@ package org.hexworks.zircon.api.behavior
 import org.hexworks.zircon.api.data.Position
 
 /**
- * Represents an object which manipulates a cursor (a [org.hexworks.zircon.api.grid.TileGrid]
- * or a [org.hexworks.zircon.api.component.TextArea] for example.
- * All operations which work with [Position]s are relative to the [CursorHandler]'s position!
+ * Represents an object which manipulates a cursor. All operations which work with
+ * [Position]s are relative to the [CursorHandler]'s position.
  */
 interface CursorHandler {
 
@@ -43,7 +42,6 @@ interface CursorHandler {
      * Moves the cursor one [Position] to the right. If the [Position] would be out
      * of bound regards to columns, the cursor will be moved the the 0th position
      * in the next row or left where it was if there is no next row.
-     * @return `true` if the cursor position changed `false` if not.
      */
     fun moveCursorForward()
 
@@ -51,7 +49,6 @@ interface CursorHandler {
      * Moves the cursor one [Position] to the left. If the [Position] would be out
      * of bounds regards to columns, the cursor will be moved the the last position
      * in the previous row or left where it was if there is no previous row.
-     * @return `true` if the cursor position changed `false` if not.
      */
     fun moveCursorBackward()
 }

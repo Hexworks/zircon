@@ -7,9 +7,9 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import kotlin.jvm.JvmStatic
 
 /**
- * Represents an object which has bounds and a position in 2D space.
- * A [Boundable] object can provide useful information
- * about its geometry relating to other [Boundable]s (like intersection).
+ * Represents an object which has bounds and a position in 2D space. A [Boundable] object
+ * can provide useful information about its geometry relating to other [Boundable]s
+ * (like intersection).
  */
 interface Boundable : Sizeable {
 
