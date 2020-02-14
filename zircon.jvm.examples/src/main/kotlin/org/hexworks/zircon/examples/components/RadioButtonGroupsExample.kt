@@ -74,8 +74,8 @@ object RadioButtonGroupsExample {
         leftBox.addComponents(btn0, btnA, btn1)
         rightBox.addComponents(btn2, btnB, btnC)
 
-        group0.addAll(btn0, btn1, btn2)
-        group1.addAll(btnA, btnB, btnC)
+        group0.addComponents(btn0, btn1, btn2)
+        group1.addComponents(btnA, btnB, btnC)
 
         screen.addComponents(leftBox, rightBox)
 

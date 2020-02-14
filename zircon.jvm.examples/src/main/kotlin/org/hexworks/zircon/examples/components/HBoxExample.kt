@@ -64,11 +64,11 @@ object HBoxExample {
         hbox.addComponent(Components.button()
                 .withText("Remove: $count")
                 .withSize(12, 1)
-                .build().apply {
-                    processComponentEvents(ACTIVATED) {
-                        hbox.removeComponent(this)
-                    }
-                })
+                .build()).apply {
+            processComponentEvents(ACTIVATED) {
+                detach()
+            }
+        }
         count++
     }
 

@@ -2,18 +2,21 @@ package org.hexworks.zircon.internal.tileset
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.behavior.Closeable
-import org.hexworks.zircon.internal.resource.TileType.*
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.resource.TilesetType.*
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
+import org.hexworks.zircon.internal.resource.TileType.CHARACTER_TILE
+import org.hexworks.zircon.internal.resource.TileType.GRAPHIC_TILE
+import org.hexworks.zircon.internal.resource.TilesetType.*
 
 @Suppress("UNCHECKED_CAST")
 class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
 
-    private val tilesetCache = mutableMapOf<UUID, Tileset<SpriteBatch>>()
+    override val isClosed = false.toProperty()
 
+    private val tilesetCache = mutableMapOf<UUID, Tileset<SpriteBatch>>()
 
     override fun loadTilesetFrom(resource: TilesetResource): Tileset<SpriteBatch> {
         return tilesetCache.getOrPut(resource.id) {
@@ -23,6 +26,7 @@ class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
     }
 
     override fun close() {
+        isClosed.value = true
         tilesetCache.clear()
     }
 

@@ -123,7 +123,7 @@ object ScrollBarExample {
         }
 
         private fun displayListFromIndex() {
-            root.detachAllComponents()
+            root.clear()
             val maxIdx = when {
                 topDisplayedItem + size.height < items.size -> topDisplayedItem + size.height
                 else -> items.size

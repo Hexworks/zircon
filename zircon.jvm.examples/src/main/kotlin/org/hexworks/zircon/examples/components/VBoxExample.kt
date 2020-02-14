@@ -1,9 +1,11 @@
 package org.hexworks.zircon.examples.components
 
 
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
-
 import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_LEFT
 import org.hexworks.zircon.api.component.VBox
@@ -59,11 +61,11 @@ object VBoxExample {
     private fun addButton(vbox: VBox) {
         vbox.addComponent(Components.button()
                 .withText("Remove: $count")
-                .build().apply {
-                    processComponentEvents(ACTIVATED) {
-                        vbox.removeComponent(this)
-                    }
-                })
+                .build()).apply {
+            processComponentEvents(ACTIVATED) {
+                detach()
+            }
+        }
         count++
     }
 

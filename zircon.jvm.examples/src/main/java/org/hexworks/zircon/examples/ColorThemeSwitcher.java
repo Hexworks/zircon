@@ -94,7 +94,7 @@ public class ColorThemeSwitcher {
                 .build();
 
         RadioButtonGroup group = Components.radioButtonGroup().build();
-        group.addAll(radio0, radio1, radio2);
+        group.addComponents(radio0, radio1, radio2);
 
 
         radioBox.addComponents(radio0, radio1, radio2);
@@ -218,7 +218,7 @@ public class ColorThemeSwitcher {
                     .withKey(option.name().replace("SOLARIZED_LIGHT_", ""))
                     .build();
             box.addComponent(btn);
-            group.add(btn);
+            group.addComponent(btn);
         });
         panel.addComponent(box);
         return group;
@@ -230,7 +230,7 @@ public class ColorThemeSwitcher {
                                      Panel infoPanel,
                                      RadioButton selection) {
         themeRef.set(ColorThemeResource.valueOf(selection.getKey()));
-        infoPanel.removeComponent(labelRef.get());
+        infoPanel.clear();
         labelRef.set(createHeaderForTheme(themeRef.get()));
         infoPanel.addComponent(labelRef.get());
         screen.setTheme(themeRef.get().getTheme());
