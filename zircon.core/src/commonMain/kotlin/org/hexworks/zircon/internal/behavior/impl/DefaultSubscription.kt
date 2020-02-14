@@ -1,22 +1,23 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import kotlinx.collections.immutable.PersistentList
-import org.hexworks.cobalt.events.api.CancelState
-import org.hexworks.cobalt.events.api.NotCancelled
+import org.hexworks.cobalt.core.behavior.DisposeState
+import org.hexworks.cobalt.core.behavior.NotDisposed
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.internal.behavior.InternalSubscription
 
 class DefaultSubscription<T : Any>(
         val listener: (T) -> Unit,
-        private var subscriptions: PersistentList<Subscription>) : InternalSubscription<T> {
+        private var subscriptions: PersistentList<Subscription>
+) : InternalSubscription<T> {
 
-    override val cancelState: CancelState = NotCancelled
+    override val disposeState: DisposeState = NotDisposed
 
     override fun notify(event: T) {
         listener(event)
     }
 
-    override fun cancel(cancelState: CancelState) {
+    override fun dispose(disposeState: DisposeState) {
         subscriptions = subscriptions.remove(this)
     }
 }

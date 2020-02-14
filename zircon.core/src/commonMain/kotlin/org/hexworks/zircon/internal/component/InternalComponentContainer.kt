@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component
 
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
@@ -9,10 +10,9 @@ import org.hexworks.zircon.internal.uievent.UIEventDispatcher
  */
 interface InternalComponentContainer : ComponentContainer, UIEventDispatcher {
 
-    /**
-     * Tells whether this [InternalComponentContainer] is active or not.
-     */
-    fun isActive(): Boolean
+    val layerStates: Iterable<LayerState>
+
+    val isActive: ObservableValue<Boolean>
 
     /**
      * Activates this [InternalComponentContainer]. It will (re) start listening to
@@ -26,6 +26,5 @@ interface InternalComponentContainer : ComponentContainer, UIEventDispatcher {
      */
     fun deactivate()
 
-    val layerStates: Iterable<LayerState>
 
 }

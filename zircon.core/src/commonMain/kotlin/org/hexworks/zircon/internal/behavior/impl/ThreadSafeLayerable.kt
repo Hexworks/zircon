@@ -56,7 +56,7 @@ class ThreadSafeLayerable(initialSize: Size)
     // DERIVED FUNCTIONS
 
     @Synchronized
-    override fun remove(layer: Layer): Layer {
+    override fun removeLayer(layer: Layer): Layer {
         layers.indexOfFirst { it.id == layer.id }.whenValidIndex { idx ->
             layers = layers.removeAt(idx)
         }

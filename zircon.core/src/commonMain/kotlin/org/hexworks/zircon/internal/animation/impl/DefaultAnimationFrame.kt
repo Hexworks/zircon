@@ -38,7 +38,7 @@ data class DefaultAnimationFrame(
 
     override fun remove() {
         displayLayerable.map { currDisplay ->
-            layers.forEach { currDisplay.remove(it) }
+            layers.forEach { currDisplay.removeLayer(it) }
             displayLayerable = Maybe.empty()
         }
     }

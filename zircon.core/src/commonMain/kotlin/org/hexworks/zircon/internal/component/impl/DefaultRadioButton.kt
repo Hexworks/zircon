@@ -17,11 +17,12 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 
 @Suppress("DuplicatedCode")
-class DefaultRadioButton(componentMetadata: ComponentMetadata,
-                         initialText: String,
-                         override val key: String,
-                         renderingStrategy: ComponentRenderingStrategy<DefaultRadioButton>)
-    : RadioButton,
+class DefaultRadioButton(
+        componentMetadata: ComponentMetadata,
+        initialText: String,
+        override val key: String,
+        renderingStrategy: ComponentRenderingStrategy<DefaultRadioButton>
+) : RadioButton,
         TextHolder by TextHolder.create(initialText),
         Selectable by Selectable.create(),
         DefaultComponent(

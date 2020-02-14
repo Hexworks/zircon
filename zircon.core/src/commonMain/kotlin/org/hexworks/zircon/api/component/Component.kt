@@ -74,23 +74,12 @@ interface Component : ComponentEventSource, ComponentProperties, Identifiable, M
     fun clearCustomStyle()
 
     /**
-     * Tells whether this [Component] is attached to a parent or not.
-     */
-    fun isAttached(): Boolean
-
-    /**
-     * Detaches this [Component] from its parent (if any).
-     */
-    fun detach()
-
-    /**
      * Requests that this [Component] be focused.
      */
     fun requestFocus()
 
     /**
-     * Clears focus from this [Component]. Has no effect
-     * if this [Component] is not focused.
+     * Clears focus from this [Component]. Has no effect if this [Component] is not focused.
      */
     fun clearFocus()
 
