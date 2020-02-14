@@ -13,18 +13,4 @@ interface RadioButtonGroup : Group<RadioButton> {
 
     val selectedButtonProperty: Property<Maybe<RadioButton>>
 
-    /**
-     * Adds the given [component] to this [Group]. After the addition is complete
-     * the [ComponentProperties] of the given [component] will be updated whenever this
-     * [Group]'s properties are updated. Has no effect if the [component] is already in this [Group].
-     */
-    override fun add(component: RadioButton)
-
-    // TODO: remove this and return a handle instead
-    /**
-     * Removes the given [component] from this [Group]. After the removal the given
-     * [component] won't be updated anymore when the properties of this [Group] change.
-     * Note that this function has no effect if the given [component] was not part of this group.
-     */
-    override fun remove(component: RadioButton)
 }

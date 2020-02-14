@@ -5,8 +5,10 @@ import org.hexworks.cobalt.databinding.api.binding.Binding
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.Group
+import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.component.InternalGroup
 import org.hexworks.zircon.internal.extensions.disposeAll
 import kotlin.jvm.Synchronized
 
@@ -14,7 +16,7 @@ class DefaultGroup<T : Component>(
         initialIsDisabled: Boolean,
         initialIsHidden: Boolean,
         initialTheme: ColorTheme,
-        initialTileset: TilesetResource) : Group<T> {
+        initialTileset: TilesetResource) : InternalGroup<T> {
 
     private val componentBindings: ComponentBindings = mutableMapOf()
 
@@ -31,26 +33,27 @@ class DefaultGroup<T : Component>(
     override var tileset: TilesetResource by tilesetProperty.asDelegate()
 
     @Synchronized
-    override fun add(component: T) {
-        componentBindings[component.id] ?: run {
-            componentBindings[component.id] = component to mutableListOf(
+    override fun addComponent(component: T): AttachedComponent {
+        require(component is InternalComponent) {
+            "The supplied component does not implement required interface: InternalComponent."
+        }
+        return componentBindings[component.id]?.first ?: run {
+            val handle = GroupAttachedComponent(component, this)
+            componentBindings[component.id] = handle to mutableListOf(
                     component.disabledProperty.updateFrom(disabledProperty),
                     component.hiddenProperty.updateFrom(hiddenProperty),
                     component.themeProperty.updateFrom(themeProperty),
                     component.tilesetProperty.updateFrom(tilesetProperty))
+            handle
         }
     }
 
-    @Synchronized
-    override fun addAll(vararg components: T) = components.forEach(::add)
+    override fun addComponents(vararg components: T) = components.map(::addComponent)
 
-    @Synchronized
-    override fun remove(component: T) {
+    override fun removeComponent(component: Component) {
         componentBindings.remove(component)
     }
 
-    @Synchronized
-    override fun removeAll(vararg components: T) = components.forEach(::remove)
 }
 
 private fun ComponentBindings.remove(component: Component) {
@@ -59,4 +62,4 @@ private fun ComponentBindings.remove(component: Component) {
     }
 }
 
-private typealias ComponentBindings = MutableMap<UUID, Pair<Component, MutableList<Binding<Any>>>>
+private typealias ComponentBindings = MutableMap<UUID, Pair<AttachedComponent, MutableList<Binding<Any>>>>

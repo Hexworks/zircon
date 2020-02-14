@@ -1,9 +1,8 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.cobalt.events.api.subscribeTo
+import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEvent
@@ -11,14 +10,11 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultComponentFocusHandler
-import org.hexworks.zircon.internal.component.ComponentContainerState.*
-import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import org.hexworks.zircon.internal.event.ZirconScope
-import org.hexworks.zircon.internal.extensions.cancelAll
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import org.hexworks.zircon.internal.uievent.impl.UIEventToComponentDispatcher
 import kotlin.contracts.ExperimentalContracts
@@ -29,8 +25,8 @@ class DefaultComponentContainer(
         private val focusHandler: ComponentFocusHandler = DefaultComponentFocusHandler(root),
         private val dispatcher: UIEventToComponentDispatcher = UIEventToComponentDispatcher(
                 root = root,
-                focusHandler = focusHandler)) :
-        InternalComponentContainer,
+                focusHandler = focusHandler)
+) : InternalComponentContainer,
         ComponentContainer by root,
         ComponentFocusHandler by focusHandler,
         UIEventDispatcher by dispatcher {
@@ -39,55 +35,35 @@ class DefaultComponentContainer(
         @Synchronized
         get() = root.flattenedTree.flatMap { it.layerStates }
 
-    private val subscriptions = mutableListOf<Subscription>()
+    override val isActive = false.toProperty()
     private val logger = LoggerFactory.getLogger(this::class)
-    private var state = INITIALIZING
 
     @ExperimentalContracts
     @Synchronized
     override fun dispatch(event: UIEvent): UIEventResponse {
-        return if (isActive()) {
+        return if (isActive.value) {
             dispatcher.dispatch(event)
         } else Pass
     }
 
-    @Synchronized
-    override fun addComponent(component: Component) {
-        require(component is InternalComponent) {
-            "Adding a component which does not implement InternalComponent " +
-                    "to a ComponentContainer is not allowed."
-        }
-        root.addComponent(component)
-        refreshFocusables()
-    }
-
-    @Synchronized
-    override fun removeComponent(component: Component): Boolean {
-        return root.removeComponent(component).also {
-            refreshFocusables()
-        }
-    }
-
-    override fun isActive() = state == ACTIVE
 
     @Synchronized
     override fun activate() {
         logger.debug("Activating component container.")
+        isActive.value = true
         refreshFocusables()
-        subscriptions.add(Zircon.eventBus.subscribeTo<ComponentAdded>(ZirconScope) {
+        Zircon.eventBus.simpleSubscribeTo<ComponentAdded>(ZirconScope) {
             refreshFocusables()
-        })
-        subscriptions.add(Zircon.eventBus.subscribeTo<ComponentRemoved>(ZirconScope) {
+        }.keepWhile(isActive)
+        Zircon.eventBus.simpleSubscribeTo<ComponentRemoved>(ZirconScope) {
             refreshFocusables()
-        })
-        state = ACTIVE
+        }.keepWhile(isActive)
     }
 
     @Synchronized
     override fun deactivate() {
-        subscriptions.cancelAll()
+        isActive.value = false
         dispatcher.focusComponent(root)
-        state = INACTIVE
     }
 
 }

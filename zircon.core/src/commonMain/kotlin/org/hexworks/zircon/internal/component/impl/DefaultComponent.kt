@@ -1,14 +1,15 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.databinding.api.binding.Binding
+import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.ComponentProperties
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -18,7 +19,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.Identifiable
@@ -52,9 +52,22 @@ abstract class DefaultComponent(
         UIEventProcessor by uiEventProcessor,
         Identifiable by contentLayer,
         Movable by contentLayer,
-        ComponentEventSource by uiEventProcessor {
+        ComponentEventSource by uiEventProcessor,
+        ComponentProperties by DefaultComponentProperties(
+                initialDisabled = false,
+                initialHidden = false,
+                initialTheme = RuntimeConfig.config.defaultColorTheme,
+                initialTileset = componentMetadata.tileset) {
 
     private val logger = LoggerFactory.getLogger(this::class)
+
+    final override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
+    final override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
+
+    final override val isAttached: Boolean
+        get() = parent.isPresent
+
+    override val hasParent: ObservableValue<Boolean> = parentProperty.bindTransform { it.isPresent }
 
     final override val absolutePosition: Position
         get() = position
@@ -76,12 +89,6 @@ abstract class DefaultComponent(
         get() = renderer.calculateContentSize(size)
 
     final override val componentStyleSetProperty = createPropertyFrom(componentMetadata.componentStyleSet)
-    final override val disabledProperty = createPropertyFrom(false)
-    final override val hiddenProperty = createPropertyFrom(false)
-    final override val themeProperty = createPropertyFrom(RuntimeConfig.config.defaultColorTheme)
-    final override val tilesetProperty = createPropertyFrom(componentMetadata.tileset) {
-        tileset.isCompatibleWith(it)
-    }
 
     final override var componentStyleSet
         get() = styleOverride.orElse(themeStyle)
@@ -89,11 +96,6 @@ abstract class DefaultComponent(
             componentStyleSetProperty.value = value
             styleOverride = Maybe.of(value)
         }
-
-    final override var isDisabled: Boolean by disabledProperty.asDelegate()
-    final override var isHidden: Boolean by hiddenProperty.asDelegate()
-    final override var theme: ColorTheme by themeProperty.asDelegate()
-    final override var tileset: TilesetResource by tilesetProperty.asDelegate()
 
     override val children: Iterable<InternalComponent> = listOf()
     override val descendants: Iterable<InternalComponent> = listOf()
@@ -107,8 +109,6 @@ abstract class DefaultComponent(
         null
     } else componentMetadata.componentStyleSet)
     private var themeStyle = componentMetadata.componentStyleSet
-    private var parent = Maybe.empty<InternalContainer>()
-    private val bindings = mutableListOf<Binding<Any>>()
 
     init {
         contentLayer.hiddenProperty.updateFrom(hiddenProperty)
@@ -239,52 +239,9 @@ abstract class DefaultComponent(
         (renderer as ComponentRenderingStrategy<Component>).render(this, graphics)
     }
 
-    final override fun fetchParent() = parent
-
     @Synchronized
     override fun calculatePathFromRoot(): List<InternalComponent> {
         return parent.map { it.calculatePathFromRoot() }.orElse(listOf()).plus(this)
-    }
-
-    // TODO: test this thoroughly (regression)!
-    @Synchronized
-    override fun attachTo(parent: InternalContainer) {
-        logger.debug("Attaching $this to parent ($parent).")
-
-        val parentChanged = this.parent.map { oldParent ->
-            if (parent !== oldParent) {
-                oldParent.removeComponent(this)
-                true
-            } else false
-        }.orElse(true)
-
-        if (parentChanged) {
-            this.parent = Maybe.of(parent)
-            // TODO: test this check
-            val hasNoCustomTheme = theme == ColorThemes.default()
-            bindings.add(disabledProperty.updateFrom(
-                    observable = parent.disabledProperty,
-                    updateWhenBound = hasNoCustomTheme))
-            bindings.add(hiddenProperty.updateFrom(
-                    observable = parent.hiddenProperty,
-                    updateWhenBound = hasNoCustomTheme))
-            bindings.add(themeProperty.updateFrom(
-                    observable = parent.themeProperty,
-                    updateWhenBound = hasNoCustomTheme))
-            bindings.add(tilesetProperty.updateFrom(
-                    observable = parent.tilesetProperty,
-                    updateWhenBound = hasNoCustomTheme))
-        }
-    }
-
-    @Synchronized
-    final override fun detach() {
-        logger.debug("Detaching $this from parent (${fetchParent()}).")
-        parent.map {
-            it.removeComponent(this)
-            bindings.unbindAll()
-            this.parent = Maybe.empty()
-        }
     }
 
     @Synchronized
@@ -303,7 +260,8 @@ abstract class DefaultComponent(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (this::class != other!!::class) return false
+        if (other == null) return false
+        if (this::class != other::class) return false
         other as DefaultComponent
         if (id != other.id) return false
         return true
@@ -313,10 +271,4 @@ abstract class DefaultComponent(
         return id.hashCode()
     }
 
-    private fun MutableList<Binding<Any>>.unbindAll() {
-        forEach {
-            it.dispose()
-        }
-        clear()
-    }
 }

@@ -7,7 +7,9 @@ import org.hexworks.zircon.internal.behavior.Focusable
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 
-class DefaultComponentFocusHandler(private val rootComponent: InternalContainer) : ComponentFocusHandler {
+class DefaultComponentFocusHandler(
+        private val rootComponent: InternalContainer
+) : ComponentFocusHandler {
 
     override var focusedComponent: InternalComponent = rootComponent
         private set
@@ -52,7 +54,7 @@ class DefaultComponentFocusHandler(private val rootComponent: InternalContainer)
     }
 
     override fun canFocus(component: InternalComponent) =
-            component.acceptsFocus() && isNotAlreadyFocused(component) && component.isAttached()
+            component.acceptsFocus() && isNotAlreadyFocused(component) && component.isAttached
 
     private fun isNotAlreadyFocused(focusable: Focusable) =
             focusedComponent.id != focusable.id

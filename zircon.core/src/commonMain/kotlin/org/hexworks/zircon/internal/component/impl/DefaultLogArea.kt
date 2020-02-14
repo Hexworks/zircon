@@ -5,22 +5,22 @@ import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 import org.hexworks.zircon.api.builder.component.TextBoxBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.LogArea
-import org.hexworks.zircon.api.component.TextBox
+import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.abbreviate
+import kotlin.jvm.Synchronized
 
-class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
-                                 private val renderingStrategy: ComponentRenderingStrategy<LogArea>)
-    : LogArea, DefaultContainer(
+class DefaultLogArea constructor(
+        componentMetadata: ComponentMetadata,
+        renderingStrategy: ComponentRenderingStrategy<LogArea>
+) : LogArea, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
     private var currentInlineBuilder = createTextBoxBuilder()
+    private val logElements = mutableListOf<AttachedComponent>()
 
     init {
         render()
@@ -69,8 +69,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
         LOGGER.debug("Committing inline elements of LogArea (id=${id.abbreviate()}).")
         val builder = currentInlineBuilder
         currentInlineBuilder = createTextBoxBuilder()
-        addLogElement(builder.commitInlineElements()
-                .build())
+        addLogElement(builder.commitInlineElements().build())
     }
 
     override fun addNewRows(numberOfRows: Int) {
@@ -82,9 +81,14 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
         }
     }
 
+    @Synchronized
     override fun clear() {
-        LOGGER.debug("Clearing to LogArea (id=${id.abbreviate()}).")
-        children.forEach { removeComponent(it) }
+        logElements.iterator().apply {
+            while (hasNext()) {
+                next().detach()
+                remove()
+            }
+        }
     }
 
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
@@ -102,8 +106,9 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
                     .build())
             .build()
 
+    @Synchronized
     private fun addLogElement(element: TextBox, applyTheme: Boolean = true) {
-        var currentHeight = children.map { it.height }.fold(0, Int::plus)
+        var currentHeight = logElements.map { it.height }.fold(0, Int::plus)
         val maxHeight = contentSize.height
         val elementHeight = element.height
         val remainingHeight = maxHeight - currentHeight
@@ -114,18 +119,18 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
             val linesToFree = elementHeight - remainingHeight
             var currentFreedSpace = 0
             while (currentFreedSpace < linesToFree) {
-                children.firstOrNull()?.let { topChild ->
+                logElements.firstOrNull()?.let { topChild ->
                     topChild.detach()
                     currentFreedSpace += topChild.height
                 }
             }
-            children.forEach { child ->
+            logElements.forEach { child ->
                 child.moveUpBy(currentFreedSpace)
             }
             currentHeight -= currentFreedSpace
         }
         element.moveTo(Position.create(0, currentHeight))
-        addComponent(element)
+        logElements.add(addComponent(element))
         if (applyTheme) {
             element.theme = theme
         }

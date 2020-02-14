@@ -8,5 +8,5 @@ interface InternalLayerable : Layerable {
 
     val layerStates: Iterable<LayerState>
 
-    fun remove(layer: Layer): Layer
+    fun removeLayer(layer: Layer): Layer
 }

@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.grid
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
 import org.hexworks.zircon.api.behavior.Layerable
@@ -25,7 +25,6 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
 import org.hexworks.zircon.internal.data.LayerState
-import org.hexworks.zircon.internal.extensions.cancelAll
 import org.hexworks.zircon.internal.graphics.ThreadSafeTileGraphics
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import kotlin.jvm.Synchronized
@@ -72,9 +71,7 @@ class ThreadSafeTileGrid(
             return layerable.layerStates
         }
 
-    override fun remove(layer: Layer): Layer {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override val isClosed = false.toProperty()
 
     override val layers: Iterable<Layer>
         get() {
@@ -84,8 +81,6 @@ class ThreadSafeTileGrid(
     private var originalBackend = backend
     private var originalLayerable = layerable
     private var originalAnimationHandler = animationHandler
-
-    private val subscriptions: MutableList<Subscription> = mutableListOf()
 
     override fun getTileAt(position: Position): Maybe<Tile> {
         return backend.getTileAt(position)
@@ -104,7 +99,7 @@ class ThreadSafeTileGrid(
     @Synchronized
     override fun close() {
         animationHandler.close()
-        subscriptions.cancelAll()
+        isClosed.value = true
     }
 
     @Synchronized
@@ -208,6 +203,10 @@ class ThreadSafeTileGrid(
 
     @Synchronized
     override fun setLayerAt(level: Int, layer: Layer) = layerable.setLayerAt(level, layer)
+
+    override fun removeLayer(layer: Layer): Layer {
+        return layerable.removeLayer(layer)
+    }
 
     private fun moveCursorToNextLine() {
         cursorPosition = cursorPosition.withRelativeY(1).withX(0)

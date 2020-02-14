@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.animation
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
@@ -15,6 +16,8 @@ import kotlin.jvm.Synchronized
 
 internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
 
+    override val isClosed = false.toProperty()
+
     private val id = UUIDFactory.randomUUID()
     private val debug = RuntimeConfig.config.debugMode
     private val logger = LoggerFactory.getLogger(this::class)
@@ -22,7 +25,6 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
     private val results = mutableMapOf<UUID, DefaultAnimationHandle>()
     private val animations = mutableMapOf<UUID, InternalAnimation>()
     private val nextUpdatesForAnimations = mutableMapOf<UUID, Long>()
-    private var running = true
 
     @Synchronized
     override fun start(animation: Animation): AnimationHandle {
@@ -50,7 +52,7 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
 
     @Synchronized
     override fun updateAnimations(currentTimeMs: Long, layerable: Layerable) {
-        if (running) {
+        if (isClosed.value.not()) {
             animations.forEach { (key, animation) ->
                 val updateTime = nextUpdatesForAnimations.getValue(key)
                 if (updateTime <= currentTimeMs) {
@@ -66,7 +68,7 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
 
     @Synchronized
     override fun close() {
-        running = false
+        isClosed.value = true
         animations.forEach { (_, animation) ->
             stop(animation)
         }

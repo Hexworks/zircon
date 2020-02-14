@@ -1,11 +1,14 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
+import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
@@ -16,15 +19,7 @@ import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.uievent.ComponentEvent
-import org.hexworks.zircon.api.uievent.ComponentEventType
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType
-import org.hexworks.zircon.api.uievent.UIEvent
-import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
@@ -44,38 +39,53 @@ class ComponentStub(
                 .withTileset(tileset)
                 .build()) : InternalComponent {
 
-    override var isDisabled: Boolean
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(_) {}
-    override val disabledProperty: Property<Boolean>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-    override var theme: ColorTheme
-        get() = this.colorTheme
-        set(value) {
-            this.colorTheme = value
-        }
-    override val themeProperty: Property<ColorTheme>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val disabledProperty: Property<Boolean> = false.toProperty()
+    override var isDisabled: Boolean by disabledProperty.asDelegate()
+
+    override val themeProperty: Property<ColorTheme> = RuntimeConfig.config.defaultColorTheme.toProperty()
+    override var theme: ColorTheme by themeProperty.asDelegate()
 
     override val layerStates: Iterable<LayerState>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = listOf()
 
-    override fun calculatePathFromRoot(): List<InternalComponent> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun calculatePathFromRoot(): List<InternalComponent> = listOf()
 
-    override val tilesetProperty: Property<TilesetResource>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val tilesetProperty = RuntimeConfig.config.defaultTileset.toProperty()
 
-    override val children: Iterable<InternalComponent>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
+    override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
+    override val hasParent = parentProperty.bindTransform { it.isPresent }
+
+    override val isAttached: Boolean
+        get() = parent.isPresent
+
+    override val children: Iterable<InternalComponent> = listOf()
     override val descendants: Iterable<InternalComponent>
         get() = listOf()
-    override val relativeBounds: Rect
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val relativeBounds: Rect = Rect.create(size = Size.zero())
+
+    override val hiddenProperty = false.toProperty()
+
+    override var isHidden: Boolean by hiddenProperty.asDelegate()
+
+    override val componentStyleSetProperty: Property<ComponentStyleSet> = createPropertyFrom(ComponentStyleSet.defaultStyleSet())
+    override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
+
+    override val width: Int
+        get() = size.width
+    override val height: Int
+        get() = size.height
+    override var rect: Rect = Rect.create(position, size)
+    override val x: Int
+        get() = position.x
+    override val y: Int
+        get() = position.y
+
+    private val movedToPositions = mutableListOf<Position>()
+    private val attachedToContainers = mutableListOf<Container>()
 
     override fun clearCustomStyle() {
-        TODO("not implemented")
+
     }
 
     override fun handleMouseEvents(eventType: MouseEventType, handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
@@ -102,34 +112,6 @@ class ComponentStub(
         TODO("not implemented")
     }
 
-    override val hiddenProperty: Property<Boolean>
-        get() = TODO("not implemented")
-
-    override var isHidden: Boolean
-        get() = TODO("not implemented")
-        set(_) {}
-
-    override val componentStyleSetProperty: Property<ComponentStyleSet> = createPropertyFrom(ComponentStyleSet.defaultStyleSet())
-    override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
-
-    override val width: Int
-        get() = size.width
-    override val height: Int
-        get() = size.height
-    override var rect: Rect = Rect.create(position, size)
-    override val x: Int
-        get() = position.x
-    override val y: Int
-        get() = position.y
-
-    var colorTheme: ColorTheme = RuntimeConfig.config.defaultColorTheme
-        private set
-
-    private val movedToPositions = mutableListOf<Position>()
-    private val attachedToContainers = mutableListOf<Container>()
-
-    private lateinit var parent: InternalContainer
-
     override fun moveTo(position: Position, signalComponentChange: Boolean) {
         rect = rect.withPosition(position)
         movedToPositions.add(position)
@@ -143,13 +125,8 @@ class ComponentStub(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun isAttached(): Boolean {
-        TODO("This operation is unsupported for a Stub")
-    }
-
-    override fun detach() {
-        TODO("This operation is unsupported for a Stub")
-    }
+    override val isClosed: ObservableValue<Boolean>
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
     override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         this.theme = colorTheme
@@ -177,15 +154,6 @@ class ComponentStub(
         return Maybe.ofNullable(if (rect.containsPosition(absolutePosition)) {
             this
         } else null)
-    }
-
-    override fun fetchParent(): Maybe<InternalContainer> {
-        return Maybe.of(parent)
-    }
-
-    override fun attachTo(parent: InternalContainer) {
-        attachedToContainers.add(parent)
-        this.parent = parent
     }
 
     override fun render() {

@@ -1,35 +1,43 @@
 package org.hexworks.zircon.internal.component.impl
 
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentMapOf
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.events.api.DisposeSubscription
+import org.hexworks.cobalt.events.api.KeepSubscription
+import org.hexworks.cobalt.events.api.subscribeTo
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.Zircon
+import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
+import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.jvm.Synchronized
 
 @Suppress("UNCHECKED_CAST")
-open class DefaultContainer(componentMetadata: ComponentMetadata,
-                            renderer: ComponentRenderingStrategy<out Component>)
-    : InternalContainer, DefaultComponent(
+open class DefaultContainer(
+        componentMetadata: ComponentMetadata,
+        renderer: ComponentRenderingStrategy<out Component>
+) : InternalContainer, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderer) {
 
-    private val components = mutableListOf<InternalComponent>()
+    private var componentLookup = persistentMapOf<UUID, InternalAttachedComponent>()
 
-    override val children: List<InternalComponent>
-        @Synchronized
-        get() = components.toList()
+    final override var children: PersistentList<InternalComponent> = persistentListOf()
+        private set
 
     override val descendants: Iterable<InternalComponent>
         @Synchronized
@@ -54,97 +62,86 @@ open class DefaultContainer(componentMetadata: ComponentMetadata,
     }
 
     @Synchronized
-    override fun addComponent(component: Component) {
-        (component as? InternalComponent)?.let {
-            require(component !== this) {
-                "You can't add a component to itself."
-            }
-            require(component.descendants.none { it == component }) {
-                "A component can't become its own descendant."
-            }
-            val originalRect = component.rect
-            component.moveTo(component.position + contentOffset + position)
-            if (RuntimeConfig.config.debugMode.not()) {
-                val contentBounds = contentSize.toRect()
-                tileset.checkCompatibilityWith(component.tileset)
-                require(contentBounds.containsBoundable(originalRect)) {
-                    "Adding out of bounds component (${component::class.simpleName}) " +
-                            "with bounds ($originalRect) to the container (${this::class.simpleName}) " +
-                            "with content bounds ($contentBounds) is not allowed."
-                }
-                children.firstOrNull { it.intersects(component) }?.let {
-                    throw IllegalArgumentException(
-                            "You can't add a component to a container which intersects with other components. " +
-                                    "$it is intersecting with $component.")
-                }
-            }
-            // TODO: regression test this! order was changed! it was buggy when the
-            // TODO: component was re-added to the same container!
-            component.attachTo(this)
-            components.add(component)
-            Zircon.eventBus.publish(
-                    event = ZirconEvent.ComponentAdded(this),
-                    eventScope = ZirconScope)
-        } ?: throw IllegalArgumentException(
-                "The supplied component does not implement required interface: InternalComponent.")
+    override fun addComponent(component: Component): InternalAttachedComponent {
+
+        val ic = performChecks(component)
+        val attachment = DefaultAttachedComponent(ic, this)
+
+        componentLookup = componentLookup.put(ic.id, attachment)
+        children = children.add(ic)
+
+        Zircon.eventBus.subscribeTo<ComponentRemoved>(ZirconScope) { (_, removedComponent) ->
+            if (removedComponent == component) {
+                componentLookup = componentLookup.remove(component.id)
+                children = children.remove(ic)
+                DisposeSubscription
+            } else KeepSubscription
+        }
+
+        Zircon.eventBus.publish(
+                event = ComponentAdded(
+                        parent = this,
+                        component = component,
+                        emitter = this),
+                eventScope = ZirconScope)
+
+        return attachment
     }
 
     @Synchronized
-    override fun removeComponent(component: Component): Boolean {
-        var removalHappened = components.remove(component)
-        if (removalHappened.not()) {
-            val childResults = components
-                    .filterIsInstance<Container>()
-                    .map { it.removeComponent(component) }
-            removalHappened = if (childResults.isEmpty()) {
-                false
+    override fun fetchComponentByPosition(absolutePosition: Position) = if (this.containsPosition(absolutePosition).not()) {
+        Maybe.empty()
+    } else {
+        componentLookup.values.map {
+            it.fetchComponentByPosition(absolutePosition)
+        }.filter {
+            it.isPresent
+        }.let { hits ->
+            if (hits.isEmpty()) {
+                Maybe.of(this)
             } else {
-                childResults.reduce(Boolean::or)
+                hits.first()
             }
         }
-        if (removalHappened) {
-            // TODO: regression test this!
-            component.detach()
-            Zircon.eventBus.publish(
-                    event = ZirconEvent.ComponentRemoved(this),
-                    eventScope = ZirconScope)
-        }
-        return removalHappened
     }
-
-    @Synchronized
-    override fun detachAllComponents(): Boolean {
-        val removalHappened = components.isNotEmpty()
-        components.toList().forEach {
-            removeComponent(it)
-        }
-        if (removalHappened) {
-            Zircon.eventBus.publish(
-                    event = ZirconEvent.ComponentRemoved(this),
-                    eventScope = ZirconScope)
-        }
-        return removalHappened
-    }
-
-    @Synchronized
-    override fun fetchComponentByPosition(absolutePosition: Position) =
-            if (this.containsPosition(absolutePosition).not()) {
-                Maybe.empty()
-            } else {
-                components.map {
-                    it.fetchComponentByPosition(absolutePosition)
-                }.filter {
-                    it.isPresent
-                }.let { hits ->
-                    if (hits.isEmpty()) {
-                        Maybe.of(this)
-                    } else {
-                        hits.first()
-                    }
-                }
-            }
 
     @Synchronized
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.empty()
+
+    override fun clear() {
+        componentLookup.values.forEach { it.detach() }
+    }
+
+    private fun performChecks(component: Component): InternalComponent {
+        require(component is InternalComponent) {
+            "The supplied component does not implement required interface: InternalComponent."
+        }
+        require(component !== this) {
+            "You can't add a component to itself."
+        }
+        require(component.descendants.none { it == component }) {
+            "A component can't become its own descendant."
+        }
+        require(component.isAttached.not()) {
+            "This component is already attached to a parent. Please detach it first."
+        }
+        val originalRect = component.rect
+        component.moveTo(component.position + contentOffset + position)
+        if (RuntimeConfig.config.debugMode.not()) {
+            val contentBounds = contentSize.toRect()
+            tileset.checkCompatibilityWith(component.tileset)
+            require(contentBounds.containsBoundable(originalRect)) {
+                "Adding out of bounds component (${component::class.simpleName}) " +
+                        "with bounds ($originalRect) to the container (${this::class.simpleName}) " +
+                        "with content bounds ($contentBounds) is not allowed."
+            }
+            children.firstOrNull { it.intersects(component) }?.let {
+                throw IllegalArgumentException(
+                        "You can't add a component to a container which intersects with other components. " +
+                                "$it is intersecting with $component.")
+            }
+        }
+        return component
+    }
 
 }

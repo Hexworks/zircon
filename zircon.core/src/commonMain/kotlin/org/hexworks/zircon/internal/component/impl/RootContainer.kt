@@ -21,11 +21,6 @@ class RootContainer(
         render()
     }
 
-    // TODO: let's check the other methods as well! attachTo especially
-
-    // a RootContainer is always attached
-    override fun isAttached() = true
-
     override fun acceptsFocus() = true
 
     override fun focusGiven() = Processed
