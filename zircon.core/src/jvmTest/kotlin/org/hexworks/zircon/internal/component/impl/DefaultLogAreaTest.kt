@@ -9,12 +9,12 @@ import org.hexworks.zircon.api.component.LogArea
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.InternalComponent
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultLogAreaRenderer
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
 
@@ -45,8 +45,8 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
         rendererStub = ComponentRendererStub(DefaultLogAreaRenderer())
         target = DefaultLogArea(
                 componentMetadata = ComponentMetadata(
-                        size = SIZE,
-                        relativePosition = POSITION,
+                        size = SIZE_40x10,
+                        relativePosition = POSITION_4_5,
                         componentStyleSet = COMPONENT_STYLES,
                         tileset = TILESET_REX_PAINT_20X20),
                 renderingStrategy = DefaultComponentRenderingStrategy(
@@ -63,7 +63,7 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
     @Test
     fun shouldProperlyAddNewText() {
         target.addParagraph(TEXT)
-        val child = (target.children.first() as DefaultTextBox)
+        val child = target.children.first()
         assertThat((child.children.first() as Paragraph).text).isEqualTo(TEXT)
     }
 
@@ -72,7 +72,7 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
         val testComponent = testComponent()
         target.addInlineComponent(testComponent)
         target.commitInlineElements()
-        val child = (target.children.first() as DefaultTextBox)
+        val child = target.children.first()
         assertThat(target.children.size).isEqualTo(1)
         assertThat(child.children.first()).isSameAs(testComponent)
     }
@@ -84,7 +84,7 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
         target.addNewRows(ROW_HISTORY_SIZE)
         target.addParagraph(TEXT)
 
-        assertThat(target.children).doesNotContain(testComponent())
+        assertThat(target.children as Iterable<InternalComponent>).doesNotContain(testComponent())
     }
 
 
@@ -93,7 +93,7 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
         target.addParagraph(TEXT)
         target.addNewRows(10)
         target.addParagraph(ALTERNATE_TEXT)
-        val child = (target.children.first() as DefaultTextBox)
+        val child = (target.children.first())
         assertThat(child.children).isEmpty() // this means it has no paragraph as a child
     }
 
@@ -105,8 +105,8 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
     }
 
     companion object {
-        val POSITION = Position.create(4, 5)
-        val SIZE = Size.create(40, 10)
+        val POSITION_4_5 = Position.create(4, 5)
+        val SIZE_40x10 = Size.create(40, 10)
         const val ROW_HISTORY_SIZE = 15
         const val TEXT = "This is my log row"
         const val ALTERNATE_TEXT = "This is my other log row"
