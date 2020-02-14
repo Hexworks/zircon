@@ -9,10 +9,12 @@ import org.hexworks.zircon.api.resource.TilesetResource
 /**
  * Contains metadata which is common to **all** [Component]s
  */
-data class ComponentMetadata(val relativePosition: Position,
-                             val size: Size,
-                             val tileset: TilesetResource,
-                             val componentStyleSet: ComponentStyleSet) {
+data class ComponentMetadata(
+        val relativePosition: Position,
+        val size: Size,
+        val tileset: TilesetResource,
+        val componentStyleSet: ComponentStyleSet
+) {
 
     init {
         require(relativePosition.hasNegativeComponent.not()) {
