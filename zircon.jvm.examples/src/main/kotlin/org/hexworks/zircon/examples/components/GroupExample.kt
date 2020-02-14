@@ -53,8 +53,7 @@ object GroupExample {
                 .withColorTheme(ColorThemes.cyberpunk())
                 .build().apply {
                     processComponentEvents(ACTIVATED) {
-                        group.add(leftPanel)
-                        group.add(rightPanel)
+                        group.addComponents(leftPanel, rightPanel)
                     }
                 }
 

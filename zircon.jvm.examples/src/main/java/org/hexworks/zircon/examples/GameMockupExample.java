@@ -134,7 +134,7 @@ public class GameMockupExample {
                     .withKey(diff)
                     .build();
             difficultyBox.addComponent(btn);
-            difficultyGroup.add(btn);
+            difficultyGroup.addComponent(btn);
         });
 
         difficultyPanel.addComponent(difficultyBox);
