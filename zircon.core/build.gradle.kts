@@ -16,10 +16,7 @@ kotlin {
             commonMainApi(kotlinxCoroutinesCommon)
             commonMainApi(kotlinxCollectionsImmutable)
 
-            commonMainApi(cobaltEvents)
-            commonMainApi(cobaltDatabinding)
-            commonMainApi(cobaltDatatypes)
-            commonMainApi(cobaltLogging)
+            commonMainApi(cobaltCore)
         }
 
         with(TestLibs) {

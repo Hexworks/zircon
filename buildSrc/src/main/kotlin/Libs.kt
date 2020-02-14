@@ -15,11 +15,7 @@ object Libs {
     const val kotlinxCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
     const val kotlinxCollectionsImmutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:$kotlinxCollectionsImmutableVersion"
 
-    const val cobaltEvents = "org.hexworks.cobalt:cobalt.events:$cobaltVersion"
-    const val cobaltDatabinding = "org.hexworks.cobalt:cobalt.databinding:$cobaltVersion"
-    const val cobaltLogging = "org.hexworks.cobalt:cobalt.logging:$cobaltVersion"
-    const val cobaltLoggingJvm = "org.hexworks.cobalt:cobalt.logging-jvm:$cobaltVersion"
-    const val cobaltDatatypes = "org.hexworks.cobalt:cobalt.datatypes:$cobaltVersion"
+    const val cobaltCore = "org.hexworks.cobalt:cobalt.core:$cobaltVersion"
 
     const val caffeine = "com.github.ben-manes.caffeine:caffeine:${Versions.caffeineVersion}"
     const val snakeYaml = "org.yaml:snakeyaml:${Versions.snakeyamlVersion}"
