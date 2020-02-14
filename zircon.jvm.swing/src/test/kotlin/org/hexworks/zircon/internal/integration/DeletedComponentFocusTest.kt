@@ -3,17 +3,14 @@
 package org.hexworks.zircon.internal.integration
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
-
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.MouseEventType
-import org.hexworks.zircon.api.uievent.Processed
 
 object DeletedComponentFocusTest {
 
@@ -33,19 +30,18 @@ object DeletedComponentFocusTest {
 
         val button = Components.button()
                 .withText("Delete me")
-                .build().apply {
-                    handleMouseEvents(MouseEventType.MOUSE_RELEASED) { _, _ ->
-                        screen.removeComponent(this)
-                        Processed
-                    }
-                }
+                .build()
 
         val other = Components.button()
                 .withText("Other")
                 .withPosition(0, 1)
                 .build()
 
-        screen.addComponent(button)
+        screen.addComponent(button).apply {
+            processMouseEvents(MouseEventType.MOUSE_RELEASED) { _, _ ->
+                detach()
+            }
+        }
         screen.addComponent(other)
 
         screen.display()

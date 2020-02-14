@@ -8,16 +8,12 @@ import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.uievent.ComponentEventType
-import org.hexworks.zircon.api.uievent.KeyCode
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.uievent.MouseEventType.*
-import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.junit.Before
 import org.junit.Ignore
@@ -45,13 +41,12 @@ class DefaultComponentContainerTest {
 
     @Test
     fun shouldProperlyRemoveComponent() {
-        val button = createButton()
-        target.addComponent(button)
+        val button = createButton() as InternalComponent
+        val handle = target.addComponent(button)
         assertThat(target.layerStates).hasSize(2)
 
-        val result = target.removeComponent(button)
+        handle.detach()
 
-        assertThat(result).isTrue()
         assertThat(target.layerStates).hasSize(1) // default container
     }
 

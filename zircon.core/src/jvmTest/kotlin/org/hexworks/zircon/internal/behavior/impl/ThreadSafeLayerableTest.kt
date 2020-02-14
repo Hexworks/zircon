@@ -42,7 +42,7 @@ class ThreadSafeLayerableTest {
                 .build()
 
         target.addLayer(layer)
-        target.remove(layer)
+        target.removeLayer(layer)
 
         assertThat(target.layerStates)
                 .isEmpty()
@@ -57,7 +57,7 @@ class ThreadSafeLayerableTest {
                 .build()
 
         target.addLayer(layer)
-        target.remove(layer)
+        target.removeLayer(layer)
 
         assertThat(target.layerStates)
                 .isEmpty()
