@@ -83,12 +83,8 @@ class DefaultLogArea constructor(
 
     @Synchronized
     override fun clear() {
-        logElements.iterator().apply {
-            while (hasNext()) {
-                next().detach()
-                remove()
-            }
-        }
+        logElements.forEach { it.detach() }
+        logElements.clear()
     }
 
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
@@ -108,7 +104,7 @@ class DefaultLogArea constructor(
 
     @Synchronized
     private fun addLogElement(element: TextBox, applyTheme: Boolean = true) {
-        var currentHeight = logElements.map { it.height }.fold(0, Int::plus)
+        var currentHeight = children.map { it.height }.fold(0, Int::plus)
         val maxHeight = contentSize.height
         val elementHeight = element.height
         val remainingHeight = maxHeight - currentHeight
@@ -120,8 +116,9 @@ class DefaultLogArea constructor(
             var currentFreedSpace = 0
             while (currentFreedSpace < linesToFree) {
                 logElements.firstOrNull()?.let { topChild ->
-                    topChild.detach()
                     currentFreedSpace += topChild.height
+                    topChild.detach()
+                    logElements.remove(topChild)
                 }
             }
             logElements.forEach { child ->

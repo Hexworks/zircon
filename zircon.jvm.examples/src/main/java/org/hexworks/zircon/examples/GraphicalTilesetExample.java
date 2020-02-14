@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.resource.TilesetResource;
 
 import java.util.Random;
 
-public class GraphicTilesetExample {
+public class GraphicalTilesetExample {
 
     private static final int TERMINAL_WIDTH = 50;
     private static final int TERMINAL_HEIGHT = 24;

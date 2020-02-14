@@ -6,8 +6,6 @@ import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.resource.TilesetResource;
 
-;
-
 public class WindowTitleExample {
 
     private static final Size GRID_SIZE = Size.create(20, 10);

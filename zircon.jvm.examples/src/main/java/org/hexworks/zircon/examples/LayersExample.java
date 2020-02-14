@@ -11,8 +11,6 @@ import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.jetbrains.annotations.NotNull;
 
-;
-
 public class LayersExample {
 
     private static final int TERMINAL_WIDTH = 45;
