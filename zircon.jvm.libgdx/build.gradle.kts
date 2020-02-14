@@ -11,30 +11,33 @@ kotlin {
 
     dependencies {
         with(Projects) {
-            compile(zirconCore)
+            api(zirconCore)
         }
 
-        with (Libs) {
-            compile(gdx)
-            compile(gdxFreetype)
-            compile(gdxFreetypePlatform)
-            compile(gdxBox2D)
-            compile(gdxBackendLwjgl)
-            compile(gdxPlatform)
-            compile(gdxBox2DPlatform)
-            compile(logbackClassic)
+        with(Libs) {
+            api(cobaltCore)
+            api(kotlinxCollectionsImmutable)
+
+            api(gdx)
+            api(gdxFreetype)
+            api(gdxFreetypePlatform)
+            api(gdxBox2D)
+            api(gdxBackendLwjgl)
+            api(gdxPlatform)
+            api(gdxBox2DPlatform)
+            api(logbackClassic)
         }
 
-        with (TestLibs) {
-            testCompile(junit)
-            testCompile(mockitoAll)
-            testCompile(assertJCore)
+        with(TestLibs) {
+            testImplementation(junit)
+            testImplementation(mockitoAll)
+            testImplementation(assertJCore)
         }
     }
 }
 
 val sourcesJar by tasks.registering(Jar::class) {
-    with (archiveClassifier) {
+    with(archiveClassifier) {
         convention("sources")
         set("sources")
     }

@@ -10,22 +10,21 @@ kotlin {
     }
 
     dependencies {
+
         with(Projects) {
-            compile(zirconCore)
+            api(zirconCore)
         }
 
         with (Libs) {
-            compile(cobaltEvents)
-            compile(cobaltDatatypes)
-            compile(cobaltDatabinding)
-            compile(cobaltLoggingJvm)
-            compile(filters)
+            api(cobaltCore)
+            api(kotlinxCollectionsImmutable)
+            api(filters)
         }
 
         with (TestLibs) {
-            testCompile(junit)
-            testCompile(mockitoAll)
-            testCompile(assertJCore)
+            testImplementation(junit)
+            testImplementation(mockitoAll)
+            testImplementation(assertJCore)
         }
     }
 }
