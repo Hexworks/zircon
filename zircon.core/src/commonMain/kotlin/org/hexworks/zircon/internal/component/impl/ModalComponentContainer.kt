@@ -65,6 +65,7 @@ class ModalComponentContainer(
     @Synchronized
     override fun activate() {
         mainContainer.activate()
+        updateIsActive()
     }
 
     @Synchronized
@@ -74,7 +75,7 @@ class ModalComponentContainer(
         }
         containerStack.clear()
         containerStack.add(mainContainer)
-        isActive.value = false
+        updateIsActive()
     }
 
     @Synchronized
@@ -89,16 +90,20 @@ class ModalComponentContainer(
         val modalContainer = buildContainer(
                 metadata = metadata)
         containerStack.add(modalContainer)
-        isActive.value = containerStack.any { it.isActive.value }
         modal.onClosed {
             modalContainer.deactivate()
             containerStack.remove(modalContainer)
-            isActive.value = containerStack.any { it.isActive.value }
             containerStack.fetchLast().activate()
+            updateIsActive()
         }
         modalContainer.activate()
         modalContainer.addComponent(modal)
         modal.requestFocus()
+        updateIsActive()
+    }
+
+    private fun updateIsActive() {
+        isActive.value = containerStack.any { it.isActive.value }
     }
 
     private fun List<InternalComponentContainer>.fetchLast(): InternalComponentContainer {

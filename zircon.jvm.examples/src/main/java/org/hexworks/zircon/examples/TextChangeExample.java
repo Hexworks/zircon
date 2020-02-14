@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples;
 
+import org.hexworks.zircon.api.ColorThemes;
 import org.hexworks.zircon.api.Components;
 import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.component.Label;
@@ -16,6 +17,7 @@ public class TextChangeExample {
         label.setText("foo");
         screen.addComponent(label);
         screen.display();
+        screen.setTheme(ColorThemes.adriftInDreams());
     }
 
 }

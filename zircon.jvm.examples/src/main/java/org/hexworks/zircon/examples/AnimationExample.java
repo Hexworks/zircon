@@ -1,6 +1,7 @@
 package org.hexworks.zircon.examples;
 
 import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.ColorThemes;
 import org.hexworks.zircon.api.Components;
 import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.animation.Animation;

@@ -8,6 +8,7 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentProperties
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -19,6 +20,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.Identifiable
@@ -52,12 +54,7 @@ abstract class DefaultComponent(
         UIEventProcessor by uiEventProcessor,
         Identifiable by contentLayer,
         Movable by contentLayer,
-        ComponentEventSource by uiEventProcessor,
-        ComponentProperties by DefaultComponentProperties(
-                initialDisabled = false,
-                initialHidden = false,
-                initialTheme = RuntimeConfig.config.defaultColorTheme,
-                initialTileset = componentMetadata.tileset) {
+        ComponentEventSource by uiEventProcessor {
 
     private val logger = LoggerFactory.getLogger(this::class)
 
@@ -104,6 +101,20 @@ abstract class DefaultComponent(
         get() = listOf(contentLayer.state)
     override val graphics: TileGraphics
         get() = contentLayer
+
+    final override val disabledProperty = false.toProperty()
+    final override var isDisabled: Boolean by disabledProperty.asDelegate()
+
+    final override val hiddenProperty = false.toProperty()
+    final override var isHidden: Boolean by hiddenProperty.asDelegate()
+
+    final override val themeProperty = RuntimeConfig.config.defaultColorTheme.toProperty()
+    final override var theme: ColorTheme by themeProperty.asDelegate()
+
+    final override val tilesetProperty = componentMetadata.tileset.toProperty {
+        tileset.isCompatibleWith(it)
+    }
+    final override var tileset: TilesetResource by tilesetProperty.asDelegate()
 
     private var styleOverride = Maybe.ofNullable(if (componentMetadata.componentStyleSet.isDefault) {
         null
@@ -235,7 +246,7 @@ abstract class DefaultComponent(
     }
 
     final override fun render() {
-        logger.debug("$this was rendered.")
+        logger.trace("$this was rendered.")
         (renderer as ComponentRenderingStrategy<Component>).render(this, graphics)
     }
 

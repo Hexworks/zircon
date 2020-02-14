@@ -118,7 +118,6 @@ public class ColorThemeSwitcher {
         infoPanel.addComponent(header);
         infoPanel.addComponent(label);
         infoPanel.addComponent(panel);
-        infoPanel.addComponent(panel);
         infoPanel.addComponent(textArea);
 
         screen.addComponent(infoPanel);

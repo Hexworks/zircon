@@ -21,7 +21,7 @@ import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.impl.ModalComponentContainer
 import org.hexworks.zircon.internal.component.modal.DefaultModal
 import org.hexworks.zircon.internal.data.LayerState
-import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconEvent.*
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
@@ -39,8 +39,8 @@ class TileGridScreen(
                         componentContainer = componentContainer,
                         layerable = ThreadSafeLayerable(
                                 initialSize = tileGrid.size))),
-        private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault())
-    : InternalScreen,
+        private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
+) : InternalScreen,
         InternalTileGrid by bufferGrid,
         InternalComponentContainer by componentContainer {
 
@@ -56,41 +56,15 @@ class TileGridScreen(
     private val id = UUIDFactory.randomUUID()
 
     init {
-        MouseEventType.values().forEach { eventType ->
-            tileGrid.handleMouseEvents(eventType) { event, phase ->
-                if (isActive.value) {
-                    process(event, phase)
-                } else Pass
-            }.disposeWhen(isClosed)
-        }
-        KeyboardEventType.values().forEach { eventType ->
-            tileGrid.handleKeyboardEvents(eventType) { event, phase ->
-                if (isActive.value) {
-                    process(event, phase)
-                } else Pass
-            }.disposeWhen(isClosed)
-        }
-        Zircon.eventBus.simpleSubscribeTo<ZirconEvent.ScreenSwitch>(ZirconScope) { (screenId) ->
+        Zircon.eventBus.simpleSubscribeTo<ScreenSwitch>(ZirconScope) { (screenId) ->
             LOGGER.debug("Screen switch event received (id=${screenId.abbreviate()}) in screen object (id=${id.abbreviate()}).")
             activeScreenId = screenId
-            if (id != screenId) {
+            if (id != activeScreenId && isActive.value) {
                 LOGGER.debug("Deactivating screen (id=${id.abbreviate()}).")
                 deactivate()
             }
         }.disposeWhen(isClosed)
-        Zircon.eventBus.simpleSubscribeTo<ZirconEvent.RequestCursorAt>(ZirconScope) { (position) ->
-            if (isActive.value) {
-                tileGrid.isCursorVisible = true
-                tileGrid.cursorPosition = position
-            }
-        }.disposeWhen(isClosed)
-        Zircon.eventBus.simpleSubscribeTo<ZirconEvent.HideCursor>(ZirconScope) {
-            if (isActive.value) {
-                tileGrid.isCursorVisible = false
-            }
-        }.disposeWhen(isClosed)
     }
-
 
     // note that events / event listeners on the screen itself are only handled
     // if the main container is active (otherwise a modal is open and they would
@@ -109,7 +83,8 @@ class TileGridScreen(
     @Synchronized
     override fun handleMouseEvents(
             eventType: MouseEventType,
-            handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
+            handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse
+    ): Subscription {
         return eventProcessor.handleMouseEvents(eventType) { event, phase ->
             if (componentContainer.isMainContainerActive()) {
                 handler(event, phase)
@@ -120,7 +95,8 @@ class TileGridScreen(
     @Synchronized
     override fun handleKeyboardEvents(
             eventType: KeyboardEventType,
-            handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
+            handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse
+    ): Subscription {
         return eventProcessor.handleKeyboardEvents(eventType) { event, phase ->
             if (componentContainer.isMainContainerActive()) {
                 handler(event, phase)
@@ -132,17 +108,35 @@ class TileGridScreen(
     override fun display() {
         if (activeScreenId != id) {
             Zircon.eventBus.publish(
-                    event = ZirconEvent.ScreenSwitch(id, this),
+                    event = ScreenSwitch(id, this),
                     eventScope = ZirconScope)
             isCursorVisible = false
             cursorPosition = Position.defaultPosition()
             activate()
+            MouseEventType.values().forEach { eventType ->
+                tileGrid.handleMouseEvents(eventType) { event, phase ->
+                    process(event, phase)
+                }.keepWhile(isActive)
+            }
+            KeyboardEventType.values().forEach { eventType ->
+                tileGrid.handleKeyboardEvents(eventType) { event, phase ->
+                    process(event, phase)
+                }.keepWhile(isActive)
+            }
+            Zircon.eventBus.simpleSubscribeTo<RequestCursorAt>(ZirconScope) { (position) ->
+                tileGrid.isCursorVisible = true
+                tileGrid.cursorPosition = position
+            }.keepWhile(isActive)
+            Zircon.eventBus.simpleSubscribeTo<HideCursor>(ZirconScope) {
+                tileGrid.isCursorVisible = false
+            }.keepWhile(isActive)
             tileGrid.delegateTo(bufferGrid)
         }
     }
 
     @Synchronized
     override fun close() {
+        bufferGrid.close()
         deactivate()
     }
 
