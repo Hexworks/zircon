@@ -59,10 +59,12 @@ abstract class DefaultComponent(
 
     final override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
     final override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
-    final override val isAttached: Boolean
-        get() = parent.isPresent
     final override val hasParent: ObservableValue<Boolean> = parentProperty.bindTransform { it.isPresent }
-    override val hasFocus = false.toProperty()
+
+    override val isAttached: Boolean
+        get() = parent.isPresent
+
+    final override val hasFocus = false.toProperty()
 
     final override val absolutePosition: Position
         get() = position

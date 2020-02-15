@@ -27,8 +27,6 @@ import kotlin.contracts.contract
 class UIEventToComponentDispatcher(private val root: InternalContainer,
                                    private val focusOrderList: ComponentFocusOrderList) : UIEventDispatcher {
 
-    private val logger = LoggerFactory.getLogger(this::class)
-
     private var lastMousePosition = Position.unknown()
     private var lastHoveredComponent: InternalComponent = root
 
@@ -211,21 +209,21 @@ class UIEventToComponentDispatcher(private val root: InternalContainer,
      * can be focused (eg: it is focusable, and it is not already focused).
      */
     fun focusComponent(componentToFocus: InternalComponent): UIEventResponse {
-        LOGGER.debug("Trying to focus component $componentToFocus.")
+        logger.debug("Trying to focus component $componentToFocus.")
         return if (focusOrderList.canFocus(componentToFocus)) {
 
-            LOGGER.debug("Component $componentToFocus can be focused, proceeding.")
+            logger.debug("Component $componentToFocus can be focused, proceeding.")
             val currentlyFocusedComponent = focusOrderList.focusedComponent
 
-            LOGGER.debug("Taking focus from currently focused component $currentlyFocusedComponent.")
+            logger.debug("Taking focus from currently focused component $currentlyFocusedComponent.")
             val focusTaken = ComponentEvent(FOCUS_TAKEN)
             var takenResult = currentlyFocusedComponent.process(focusTaken, TARGET)
             if (takenResult.allowsDefaults()) {
-                LOGGER.debug("Default focus taken event was not prevented for component $currentlyFocusedComponent, proceeding.")
+                logger.debug("Default focus taken event was not prevented for component $currentlyFocusedComponent, proceeding.")
                 takenResult = takenResult.pickByPrecedence(currentlyFocusedComponent.focusTaken())
             }
 
-            LOGGER.debug("Focusing new component $componentToFocus.")
+            logger.debug("Focusing new component $componentToFocus.")
             focusOrderList.focus(componentToFocus)
 
             val focusGiven = ComponentEvent(FOCUS_GIVEN)
@@ -249,7 +247,7 @@ class UIEventToComponentDispatcher(private val root: InternalContainer,
     }
 
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(UIEventDispatcher::class)
+        private val logger = LoggerFactory.getLogger(UIEventToComponentDispatcher::class)
 
         val FOCUS_TRIGGER_EVENT_TYPES = listOf(MOUSE_PRESSED, MOUSE_RELEASED, MOUSE_DRAGGED)
         val ACTIVATE_FOCUSED_KEY = KeyboardEvent(

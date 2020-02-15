@@ -23,15 +23,15 @@ class DefaultComponentFocusOrderList(
     override fun findPrevious() = prevsLookup.getValue(focusedComponent.id)
 
     override fun focus(component: InternalComponent) {
-        LOGGER.debug("Trying to focus component: $component.")
+        logger.debug("Trying to focus component: $component.")
         if (canFocus(component)) {
-            LOGGER.debug("Component $component is focusable, focusing.")
+            logger.debug("Component $component is focusable, focusing.")
             focusedComponent = component
         }
     }
 
     override fun refreshFocusables() {
-        LOGGER.debug {
+        logger.debug {
             val prevTree = nextsLookup.keys.map { it.abbreviate() }
             val oldNexts = nextsLookup.map { "${it.key.abbreviate()}->${it.value.id.abbreviate()}" }.joinToString()
             val oldPrevs = prevsLookup.map { "${it.key.abbreviate()}->${it.value.id.abbreviate()}" }.joinToString()
@@ -42,12 +42,12 @@ class DefaultComponentFocusOrderList(
 
         // this will have at least 1 element because the root container is always focusable
         val tree = rootComponent.descendants.filter { it.acceptsFocus() }
-        LOGGER.debug("New tree is ${tree.joinToString { it.id.abbreviate() }}, root is: ${rootComponent.id.abbreviate()}")
+        logger.debug("New tree is ${tree.joinToString { it.id.abbreviate() }}, root is: ${rootComponent.id.abbreviate()}")
 
         var previous: InternalComponent = rootComponent
 
         tree.forEach { next ->
-            LOGGER.debug("Next for ${previous.id.abbreviate()} is ${next.id.abbreviate()}, " +
+            logger.debug("Next for ${previous.id.abbreviate()} is ${next.id.abbreviate()}, " +
                     "previous for ${next.id.abbreviate()} is ${previous.id.abbreviate()}")
             nextsLookup[previous.id] = next
             prevsLookup[next.id] = previous
@@ -56,9 +56,9 @@ class DefaultComponentFocusOrderList(
 
         // root has children
         if (tree.size > 1) {
-            LOGGER.debug("Root, has children, adding circle between root and last.")
+            logger.debug("Root, has children, adding circle between root and last.")
             // we make a connection between the first (root) and the last to make it circular
-            LOGGER.debug("Next for ${tree.last().id.abbreviate()} is ${rootComponent.id.abbreviate()}, " +
+            logger.debug("Next for ${tree.last().id.abbreviate()} is ${rootComponent.id.abbreviate()}, " +
                     "prev for ${rootComponent.id.abbreviate()} is ${tree.last().id.abbreviate()}")
             nextsLookup[tree.last().id] = rootComponent
             prevsLookup[rootComponent.id] = tree.last()
@@ -66,19 +66,26 @@ class DefaultComponentFocusOrderList(
 
         // if the previously focused component was removed we reset the focus to the root
         if (tree.contains(focusedComponent).not()) {
-            LOGGER.debug("Tree doesn't contain previously focused component, focusing root.")
+            logger.debug("Tree doesn't contain previously focused component, focusing root.")
             focusedComponent = rootComponent
         }
     }
 
-    override fun canFocus(component: InternalComponent) =
-            component.acceptsFocus() && isNotAlreadyFocused(component) && component.isAttached
+    override fun canFocus(component: InternalComponent): Boolean {
+        val result = component.acceptsFocus() && isNotAlreadyFocused(component) && component.isAttached
+        logger.debug {
+            "Determining whether $component can be focused. Accepts focus? ${component.acceptsFocus()} " +
+                    "Is not already focused? ${isNotAlreadyFocused(component)} " +
+                    "Is attached? ${component.isAttached} Result: $result"
+        }
+        return result
+    }
 
     private fun isNotAlreadyFocused(focusable: Focusable) =
             focusedComponent.id != focusable.id
 
     companion object {
 
-        private val LOGGER = LoggerFactory.getLogger(ComponentFocusOrderList::class)
+        private val logger = LoggerFactory.getLogger(ComponentFocusOrderList::class)
     }
 }
