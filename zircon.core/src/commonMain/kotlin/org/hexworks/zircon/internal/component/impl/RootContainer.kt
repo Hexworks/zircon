@@ -21,6 +21,10 @@ class RootContainer(
         render()
     }
 
+    // the Root Container is always attached
+    override val isAttached: Boolean
+        get() = true
+
     override fun acceptsFocus() = true
 
     override fun focusGiven() = Processed

@@ -38,7 +38,7 @@ object VBoxExample {
                 .withAlignmentWithin(screen, CENTER)
                 .build()
 
-        0.until(5).forEach { _ ->
+        0.until(2).forEach { _ ->
             addButton(vbox)
         }
 
