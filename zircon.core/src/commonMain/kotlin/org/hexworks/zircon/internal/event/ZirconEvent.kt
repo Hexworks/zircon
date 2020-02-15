@@ -63,8 +63,19 @@ sealed class ZirconEvent : Event {
 
     /**
      * A [component] was removed to a [parent] container.
+     * This always happens after [ComponentDetached].
      */
     data class ComponentRemoved(
+            val parent: Component,
+            val component: Component,
+            override val emitter: Any
+    ) : ZirconEvent()
+
+    /**
+     * A [component] was detached to a [parent] container.
+     * This always happens before [ComponentRemoved].
+     */
+    data class ComponentDetached(
             val parent: Component,
             val component: Component,
             override val emitter: Any

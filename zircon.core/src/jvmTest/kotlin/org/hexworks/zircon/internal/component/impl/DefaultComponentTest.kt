@@ -22,7 +22,7 @@ import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
 
-@Suppress("MemberVisibilityCanBePrivate", "UsePropertyAccessSyntax")
+@Suppress("MemberVisibilityCanBePrivate", "UsePropertyAccessSyntax", "TestFunctionName")
 class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     override lateinit var target: DefaultComponent
@@ -115,7 +115,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     }
 
     @Test
-    fun shouldProperlyHandleMouseEntered() {
+    fun When_a_component_is_hovered_Then_it_has_mouse_over_style_and_is_rendered() {
         target.mouseEntered(
                 event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
                 phase = TARGET)
@@ -123,6 +123,33 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         assertThat(target.componentStyleSet.currentState()).isEqualTo(ComponentState.MOUSE_OVER)
         assertThat(rendererStub.renderings).isNotEmpty
     }
+
+    @Test
+    fun When_a_component_is_no_longer_hovered_and_has_no_focus_Then_style_is_reset_and_it_is_rendered() {
+        target.mouseEntered(
+                event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
+                phase = TARGET)
+
+        target.mouseExited(
+                event = MouseEvent(MOUSE_EXITED, 1, Position.defaultPosition()),
+                phase = TARGET)
+
+        assertThat(target.componentStyleSet.currentState()).isEqualTo(ComponentState.DEFAULT)
+        assertThat(rendererStub.renderings).isNotEmpty
+    }
+
+    @Test
+    fun When_a_component_is_no_longer_hovered_and_has_focus_Then_style_is_reset_and_it_is_rendered() {
+        target.focusGiven()
+
+        target.mouseExited(
+                event = MouseEvent(MOUSE_EXITED, 1, Position.defaultPosition()),
+                phase = TARGET)
+
+        assertThat(target.componentStyleSet.currentState()).isEqualTo(ComponentState.FOCUSED)
+        assertThat(rendererStub.renderings).isNotEmpty
+    }
+
 
     @Test
     fun shouldProperlyCalculateAbsolutePositionWithDeeplyNestedComponents() {

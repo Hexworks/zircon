@@ -33,11 +33,12 @@ class DefaultAttachedComponent(
                 updateWhenBound = hasNoCustomTheme).keepWhile(component.hasParent)
     }
 
+    // TODO: regression test ComponentDetached -> ComponentRemoved event stream
     @Synchronized
     override fun detach(): Component {
         component.parent = Maybe.empty()
         Zircon.eventBus.publish(
-                event = ZirconEvent.ComponentRemoved(
+                event = ZirconEvent.ComponentDetached(
                         parent = parentContainer,
                         component = component,
                         emitter = this),
