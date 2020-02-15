@@ -8,8 +8,8 @@ import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.Zircon
-import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
-import org.hexworks.zircon.internal.behavior.impl.DefaultComponentFocusHandler
+import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
+import org.hexworks.zircon.internal.behavior.impl.DefaultComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
@@ -22,13 +22,13 @@ import kotlin.jvm.Synchronized
 
 class DefaultComponentContainer(
         private val root: RootContainer,
-        private val focusHandler: ComponentFocusHandler = DefaultComponentFocusHandler(root),
+        private val focusOrderList: ComponentFocusOrderList = DefaultComponentFocusOrderList(root),
         private val dispatcher: UIEventToComponentDispatcher = UIEventToComponentDispatcher(
                 root = root,
-                focusHandler = focusHandler)
+                focusOrderList = focusOrderList)
 ) : InternalComponentContainer,
         ComponentContainer by root,
-        ComponentFocusHandler by focusHandler,
+        ComponentFocusOrderList by focusOrderList,
         UIEventDispatcher by dispatcher {
 
     override val layerStates: Iterable<LayerState>
