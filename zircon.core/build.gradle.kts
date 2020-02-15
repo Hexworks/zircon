@@ -1,5 +1,7 @@
 plugins {
-    kotlinMpp
+    kotlin("multiplatform")
+    id("maven-publish")
+    id("signing")
 }
 
 kotlin {
@@ -15,6 +17,7 @@ kotlin {
 
             commonMainApi(kotlinxCoroutinesCommon)
             commonMainApi(kotlinxCollectionsImmutable)
+            commonMainApi(kotlinReflect)
 
             commonMainApi(cobaltCore)
         }
@@ -44,4 +47,17 @@ kotlin {
             jvmTestApi(logbackCore)
         }
     }
+}
+
+publishing {
+    publishWith(
+            project = project,
+            module = "cobalt.core",
+            desc = "Core utilities for Cobalt."
+    )
+}
+
+signing {
+    isRequired = false
+    sign(publishing.publications)
 }

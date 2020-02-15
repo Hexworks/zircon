@@ -6,7 +6,3 @@ allprojects {
         kotlinx()
     }
 }
-
-subprojects {
-    apply<MavenPublishPlugin>()
-}
