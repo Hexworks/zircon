@@ -2,7 +2,6 @@ package org.hexworks.zircon.internal.uievent.impl
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
-import org.hexworks.cobalt.events.api.subscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
@@ -11,10 +10,9 @@ import org.hexworks.zircon.api.uievent.ComponentEventType.*
 import org.hexworks.zircon.api.uievent.MouseEventType.*
 import org.hexworks.zircon.api.uievent.UIEventPhase.*
 import org.hexworks.zircon.internal.Zircon
-import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
+import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
-import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconEvent.*
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
@@ -26,7 +24,7 @@ import kotlin.contracts.contract
  * to [Component]s.
  */
 class UIEventToComponentDispatcher(private val root: InternalContainer,
-                                   private val focusHandler: ComponentFocusHandler) : UIEventDispatcher {
+                                   private val focusOrderList: ComponentFocusOrderList) : UIEventDispatcher {
 
     private val logger = LoggerFactory.getLogger(this::class)
 
@@ -41,7 +39,7 @@ class UIEventToComponentDispatcher(private val root: InternalContainer,
             focusComponent(component)
         }
         Zircon.eventBus.simpleSubscribeTo<ClearFocus>(ZirconScope) { (component) ->
-            if (focusHandler.isFocused(component as InternalComponent)) {
+            if (focusOrderList.isFocused(component as InternalComponent)) {
                 focusComponent(root)
             }
         }
@@ -73,7 +71,7 @@ class UIEventToComponentDispatcher(private val root: InternalContainer,
     private fun findTarget(event: UIEvent): Maybe<out InternalComponent> {
         return when (event) {
             is KeyboardEvent -> {
-                Maybe.of(focusHandler.focusedComponent)
+                Maybe.of(focusOrderList.focusedComponent)
             }
             is MouseEvent -> {
                 root.fetchComponentByPosition(event.position)
@@ -192,15 +190,15 @@ class UIEventToComponentDispatcher(private val root: InternalContainer,
             is KeyboardEvent -> {
                 when (event) {
                     ACTIVATE_FOCUSED_KEY -> {
-                        activateComponent(focusHandler.focusedComponent)
+                        activateComponent(focusOrderList.focusedComponent)
                     }
                     FOCUS_NEXT_KEY -> {
-                        focusHandler.findNext().map {
+                        focusOrderList.findNext().map {
                             focusComponent(it)
                         }.orElse(Pass)
                     }
                     FOCUS_PREVIOUS_KEY -> {
-                        focusHandler.findPrevious().map {
+                        focusOrderList.findPrevious().map {
                             focusComponent(it)
                         }.orElse(Pass)
                     }
@@ -217,10 +215,10 @@ class UIEventToComponentDispatcher(private val root: InternalContainer,
      */
     fun focusComponent(componentToFocus: InternalComponent): UIEventResponse {
         LOGGER.debug("Trying to focus component $componentToFocus.")
-        return if (focusHandler.canFocus(componentToFocus)) {
+        return if (focusOrderList.canFocus(componentToFocus)) {
 
             LOGGER.debug("Component $componentToFocus can be focused, proceeding.")
-            val currentlyFocusedComponent = focusHandler.focusedComponent
+            val currentlyFocusedComponent = focusOrderList.focusedComponent
 
             LOGGER.debug("Taking focus from currently focused component $currentlyFocusedComponent.")
             val focusTaken = ComponentEvent(FOCUS_TAKEN)
@@ -231,7 +229,7 @@ class UIEventToComponentDispatcher(private val root: InternalContainer,
             }
 
             LOGGER.debug("Focusing new component $componentToFocus.")
-            focusHandler.focus(componentToFocus)
+            focusOrderList.focus(componentToFocus)
 
             val focusGiven = ComponentEvent(FOCUS_GIVEN)
             var givenResult = componentToFocus.process(focusGiven, TARGET)

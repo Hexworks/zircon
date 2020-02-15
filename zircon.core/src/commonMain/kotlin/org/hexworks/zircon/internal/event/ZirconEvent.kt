@@ -19,7 +19,7 @@ sealed class ZirconEvent : Event {
 
     /**
      * Requests focus for the given [Component].
-     * @see [org.hexworks.zircon.internal.behavior.ComponentFocusHandler]
+     * @see [org.hexworks.zircon.internal.behavior.ComponentFocusOrderList]
      */
     data class RequestFocusFor(
             val component: Component,
@@ -28,7 +28,7 @@ sealed class ZirconEvent : Event {
 
     /**
      * Requests to clear focus for the given [Component].
-     * @see [org.hexworks.zircon.internal.behavior.ComponentFocusHandler]
+     * @see [org.hexworks.zircon.internal.behavior.ComponentFocusOrderList]
      */
     data class ClearFocus(
             val component: Component,

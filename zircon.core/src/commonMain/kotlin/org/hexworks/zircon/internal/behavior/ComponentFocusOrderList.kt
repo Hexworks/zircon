@@ -3,7 +3,11 @@ package org.hexworks.zircon.internal.behavior
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.internal.component.InternalComponent
 
-interface ComponentFocusHandler {
+/**
+ * Stores a doubly linked list of the focusable components of a component tree
+ * and allows operations on them.
+ */
+interface ComponentFocusOrderList {
 
     val focusedComponent: InternalComponent
 

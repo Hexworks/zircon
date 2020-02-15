@@ -2,14 +2,14 @@ package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.internal.behavior.ComponentFocusHandler
+import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.behavior.Focusable
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 
-class DefaultComponentFocusHandler(
+class DefaultComponentFocusOrderList(
         private val rootComponent: InternalContainer
-) : ComponentFocusHandler {
+) : ComponentFocusOrderList {
 
     override var focusedComponent: InternalComponent = rootComponent
         private set
@@ -50,7 +50,9 @@ class DefaultComponentFocusHandler(
             nextsLookup[prev.id] = rootComponent
             prevsLookup[rootComponent.id] = prev
         }
-        focusedComponent = rootComponent
+        if (tree.contains(focusedComponent).not()) {
+            focusedComponent = rootComponent
+        }
     }
 
     override fun canFocus(component: InternalComponent) =
